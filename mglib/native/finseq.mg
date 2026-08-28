@@ -42,15 +42,32 @@ Definition seq_assoc : set -> set -> set := fun a l => seq_hd (seq_filter (fun p
 
 // Closure, computation and induction (bridge obligations for HOL Light lists; to be proved).
 Theorem seq_nil_finseq : forall A:set, seq_nil :e finseq A.
-Admitted.
+let A.
+prove (0,Empty) :e Sigma_ n :e omega, A :^: n.
+apply (tuple_2_Sigma omega (fun n => A :^: n) 0 (nat_p_omega 0 nat_0) Empty).
+prove Empty :e Pi_ y :e 0, A.
+apply (PiI 0 (fun _ => A) Empty).
+- let u. assume Hu: u :e Empty. exact (FalseE (EmptyE u Hu) (pair_p u /\ u 0 :e 0)).
+- let x. assume Hx: x :e 0. exact (FalseE (EmptyE x Hx) (Empty x :e A)).
+Qed.
 Theorem seq_cons_finseq : forall A:set, forall a :e A, forall l :e finseq A, seq_cons a l :e finseq A.
 Admitted.
 Theorem seq_len_omega : forall A:set, forall l :e finseq A, seq_len l :e omega.
-Admitted.
+let A l. assume Hl: l :e finseq A.
+exact (ap0_Sigma omega (fun n => A :^: n) l Hl).
+Qed.
 Theorem seq_nth_in : forall A:set, forall l :e finseq A, forall i :e seq_len l, seq_nth l i :e A.
-Admitted.
+let A l. assume Hl: l :e finseq A. let i. assume Hi: i :e seq_len l.
+claim L1: proj1 l :e A :^: proj0 l.
+{ exact (proj1_Sigma omega (fun n => A :^: n) l Hl). }
+claim L2: l 1 :e A :^: l 0.
+{ rewrite <- (proj1_ap_1 l). rewrite <- (proj0_ap_0 l). exact L1. }
+prove l 1 i :e A.
+exact (ap_Pi (l 0) (fun _ => A) (l 1) i L2 Hi).
+Qed.
 Theorem seq_len_nil : seq_len seq_nil = 0.
-Admitted.
+exact (tuple_2_0_eq 0 Empty).
+Qed.
 Theorem seq_len_cons : forall A:set, forall a :e A, forall l :e finseq A, seq_len (seq_cons a l) = ordsucc (seq_len l).
 Admitted.
 Theorem seq_nth_cons_0 : forall A:set, forall a :e A, forall l :e finseq A, seq_nth (seq_cons a l) 0 = a.
@@ -90,7 +107,11 @@ Admitted.
 Theorem seq_mk_finseq : forall A:set, forall n :e omega, forall f:set -> set, (forall i :e n, f i :e A) -> seq_mk n f :e finseq A.
 Admitted.
 Theorem seq_foldr_nil : forall f:set -> set -> set, forall b:set, seq_foldr f seq_nil b = b.
-Admitted.
+let f b.
+prove nat_primrec b (fun i r => f (seq_nth seq_nil (seq_len seq_nil + - ordsucc i)) r) (seq_len seq_nil) = b.
+rewrite seq_len_nil.
+exact (nat_primrec_0 b (fun i r => f (seq_nth seq_nil (0 + - ordsucc i)) r)).
+Qed.
 Theorem seq_foldr_cons : forall A:set, forall f:set -> set -> set, forall a :e A, forall l :e finseq A, forall b:set, seq_foldr f (seq_cons a l) b = f a (seq_foldr f l b).
 Admitted.
 Theorem finseq_Empty : finseq Empty = {seq_nil}.

@@ -102,7 +102,16 @@ Definition idx_n : set -> set := fun n => {i :e omega | 1 <= i /\ i <= n}.
 Definition idx : set -> set := fun N => idx_n (dimindex N).
 
 Theorem dimindex_omega : forall N:set, dimindex N :e omega.
-Admitted.
+let N.
+prove (if finite N then finite_cardinality N else 1) :e omega.
+apply (xm (finite N)).
+- assume H1: finite N.
+  rewrite (If_i_1 (finite N) (finite_cardinality N) 1 H1).
+  exact (andEL (finite_cardinality N :e omega) (equip N (finite_cardinality N)) (god1_finite_cardinality_specification N H1)).
+- assume H2: ~ finite N.
+  rewrite (If_i_0 (finite N) (finite_cardinality N) 1 H2).
+  exact (nat_p_omega 1 nat_1).
+Qed.
 Theorem dimindex_ge_1 : forall N:set, N <> Empty -> 1 <= dimindex N.
 Admitted.
 Theorem idx_n_equip : forall n :e omega, equip (idx_n n) n.
