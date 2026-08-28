@@ -1040,8 +1040,18 @@ is correct, repeatable native statements.  `lib/literal.ml` is a stub.
 `finite`, `infinite`, `equip` (`HAS_SIZE`), `finite_cardinality` (`CARD`), `inj`, `bij`,
 `sup`, `inf`, `is_lub`, `is_glb`, `sqrt_SNo_nonneg`, `divides_int`, `divides_nat`, `factorial`.
 
-### 20.5 Status (2026-08-28)
+### 20.5 Status (2026-08-28, report 2)
 
-Core profile: 2984 theorems; 2235 public (157 exact, 1560 transport, 451 generalization,
-67 reuse), 749 pending, 0 errors; all shards check; byte-deterministic.  Biggest pending slices:
-lists (finite sequences), Cartesian types, internal construction types (quarantined by design).
+Core profile: 2984 theorems; 2677 public, 307 pending (all quarantined internals or unclassified
+type definitions).  Standard profile (core + 11 Library files): 4590 theorems; 4283 public.  All
+shards check under Megalodon; runs are byte-deterministic; golden tests pass.  Native modules:
+`prelude.mg`, `finseq.mg`, `order.mg`.  Mapping slices: `core.json`, `lists.json`, `library.json`.
+
+### 20.6 Decisions still open / next milestones
+
+1. Automatic native definitions for `new_definition` constants (see report 2) — extends §6.2 to
+   constants; auto definitions are marked `auto_definition` and are overridable by hand mappings.
+2. Megalodon-checked empty-case proofs to certify `generalization_required` statements.
+3. Proofs of the native prelude theorems.
+4. Literal semantic layer (§9.2) before the proof-export project.
+5. Side-by-side HTML review page (§13.5).
