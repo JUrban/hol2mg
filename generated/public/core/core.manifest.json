@@ -20,6 +20,7 @@
       "notes": []
     }
   ],
+  "auto_type_definitions": [],
   "auto_definition_failures": [
     [ "NUM_REP", "internal construction type ind" ],
     [ "OUTL", "specification-style definition (choice)" ],
@@ -36,7 +37,7 @@
     ]
   ],
   "mapping_files": [
-    [ "mappings/core.json", "9b818c9dd60ee97b615e8ff6344e0728" ],
+    [ "mappings/core.json", "d77603903b0b61cbddac65534b8050a4" ],
     [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ]
   ],
   "signature": "God1.mgs",

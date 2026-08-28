@@ -77,6 +77,11 @@ let () =
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
       Emptycase.rules := List.map (fun (l, r, _) -> (l, r)) reg.Registry.empty_rules;
       Rewrite.rules := reg.Registry.rewrite_rules;
+      Hashtbl.iter (fun _ es -> List.iter (fun (e : Registry.const_entry) ->
+        match e.Registry.c_result, e.Registry.c_template with
+        | (Registry.RMetaFun _ | Registry.RMetaPred _), t ->
+            (match Mg.strip_app t [] with (Mg.Cst c, _) -> Hashtbl.replace Rewrite.meta_consts c () | _ -> ())
+        | _ -> ()) es) reg.Registry.consts;
       let srcindex = read_srcindex (opt "--srcindex") in
       (* names of theorems whose proposition Megalodon reported as already known (two-pass reuse) *)
       let known = Hashtbl.create 64 in
@@ -87,44 +92,68 @@ let () =
            close_in ic
        | _ -> ());
       let items = ref [] in
-      (* ---- automatic native definitions for unmapped new_definition constants ---- *)
-      let auto_defs = ref [] and auto_failed = ref [] in
+      (* ---- automatic native definitions (constants by new_definition, types by new_type_definition) ---- *)
+      let auto_defs = ref [] and auto_tydefs = ref [] and auto_failed = ref [] in
+      let order = ref [] in
       let thm_by_name = Hashtbl.create 4096 in
       List.iter (fun (t : thm_record) -> Hashtbl.replace thm_by_name t.name t) ex.theorems;
-      if not (List.mem "--no-auto" args) then
-        List.iter (fun (d : thm_record) ->
-          let c = d.name in
-          let builtin = [ "T"; "F"; "COND"; "GABS"; "GEQ"; "GSPEC"; "SETSPEC"; "PASSOC"; "!"; "?"; "?!"; "@"; "="; "/\\"; "\\/"; "==>"; "~";
-                          "NUMERAL"; "BIT0"; "BIT1"; "_0"; "IN"; "INSERT"; "EMPTY"; "LET"; "LET_END"; "one"; "ONE_ONE"; "ONTO"; "TYPE_DEFINITION" ] in
-          if c <> "" && not (Hashtbl.mem reg.Registry.consts c) && not (List.mem c builtin) then begin
-            let valid = c <> "" && (let ch = c.[0] in (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch = '_')
-                        && String.for_all Mg.is_name_char c in
-            if not valid then auto_failed := (c, "symbolic constant name; needs a hand mapping") :: !auto_failed
-            else begin
-              match List.assoc_opt c ex.constants, dest_eq d.seq.concl with
-              | Some scheme, Some (_, _, rhs) ->
-                  let target = if Mg.is_reserved c then c ^ "_hl" else c in
-                  let names = (match Hashtbl.find_opt thm_by_name c with
-                    | Some t -> Elab.arg_names_of_theorem t.seq.concl
-                    | None -> (match Hashtbl.find_opt thm_by_name (c ^ "_DEF") with Some t -> Elab.arg_names_of_theorem t.seq.concl | None -> [])) in
-                  (try
-                     ignore (Unix.alarm 10);
-                     let ad = Elab.elab_definition reg c target scheme rhs names in
-                     ignore (Unix.alarm 0);
-                     Elab.register_auto reg ad;
-                     Hashtbl.replace Mg.sig_names target ();
-                     auto_defs := (ad, d) :: !auto_defs
-                   with
-                   | Elab.Not_definitional m -> ignore (Unix.alarm 0); auto_failed := (c, m) :: !auto_failed
-                   | Elab.Unsupported m -> ignore (Unix.alarm 0); auto_failed := (c, m) :: !auto_failed
-                   | Elab.Elab_error m -> ignore (Unix.alarm 0); auto_failed := (c, "elab: " ^ m) :: !auto_failed
-                   | Timeout -> auto_failed := (c, "timeout") :: !auto_failed
-                   | Failure m -> ignore (Unix.alarm 0); auto_failed := (c, "failure: " ^ m) :: !auto_failed
-                   | Not_found -> ignore (Unix.alarm 0); auto_failed := (c, "Not_found") :: !auto_failed
-                   | Invalid_argument m -> ignore (Unix.alarm 0); auto_failed := (c, "invalid_argument: " ^ m) :: !auto_failed)
-              | _ -> auto_failed := (c, "no constant type or not an equation") :: !auto_failed
-            end
-          end) ex.basic_definitions;
+      let builtin = [ "T"; "F"; "COND"; "GABS"; "GEQ"; "GSPEC"; "SETSPEC"; "PASSOC"; "!"; "?"; "?!"; "@"; "="; "/\\"; "\\/"; "==>"; "~";
+                      "NUMERAL"; "BIT0"; "BIT1"; "_0"; "IN"; "INSERT"; "EMPTY"; "LET"; "LET_END"; "one"; "ONE_ONE"; "ONTO"; "TYPE_DEFINITION" ] in
+      let name_map = reg.Registry.names in
+      let valid_name c = c <> "" && (let ch = c.[0] in (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch = '_') && String.for_all Mg.is_name_char c in
+      let target_of c = (match List.assoc_opt c name_map with Some t -> Some t | None -> if valid_name c then Some c else None) in
+      let with_alarm f = (try ignore (Unix.alarm 10); let r = f () in ignore (Unix.alarm 0); Ok r with
+        | Elab.Not_definitional m -> ignore (Unix.alarm 0); Error m
+        | Elab.Unsupported m -> ignore (Unix.alarm 0); Error m
+        | Elab.Elab_error m -> ignore (Unix.alarm 0); Error ("elab: " ^ m)
+        | Timeout -> Error "timeout"
+        | Failure m -> ignore (Unix.alarm 0); Error ("failure: " ^ m)
+        | Not_found -> ignore (Unix.alarm 0); Error "Not_found"
+        | Invalid_argument m -> ignore (Unix.alarm 0); Error ("invalid_argument: " ^ m)) in
+      if not (List.mem "--no-auto" args) then begin
+        let pending_defs = ref (List.filter (fun (d : thm_record) ->
+          d.name <> "" && not (Hashtbl.mem reg.Registry.consts d.name) && not (List.mem d.name builtin)) ex.basic_definitions) in
+        let pending_tys = ref (List.filter (fun (t : type_definition) -> not (Hashtbl.mem reg.Registry.types t.td_name)) ex.type_definitions) in
+        let last_err = Hashtbl.create 64 in
+        let progress = ref true in
+        while !progress do
+          progress := false;
+          pending_tys := List.filter (fun (t : type_definition) ->
+            match target_of t.td_name with
+            | None -> Hashtbl.replace last_err t.td_name "symbolic type name; needs a hand mapping"; false
+            | Some tg ->
+                let tg = if Mg.is_reserved tg then tg ^ "_hl" else tg in
+                (match with_alarm (fun () -> Elab.elab_tydef reg t.td_name tg t.td_abs t.td_rep t.td_nonempty) with
+                 | Ok at -> Elab.register_auto_tydef reg at; Hashtbl.replace Mg.sig_names tg (); auto_tydefs := at :: !auto_tydefs; order := `T at :: !order; progress := true; false
+                 | Error m -> Hashtbl.replace last_err t.td_name m; true)) !pending_tys;
+          pending_defs := List.filter (fun (d : thm_record) ->
+            let c = d.name in
+            match target_of c with
+            | None -> Hashtbl.replace last_err c "symbolic constant name; needs a hand mapping"; false
+            | Some tg ->
+                let tg = if Mg.is_reserved tg then tg ^ "_hl" else tg in
+                (match List.assoc_opt c ex.constants, dest_eq d.seq.concl with
+                 | Some scheme, Some (_, _, rhs) ->
+                     let names = (match Hashtbl.find_opt thm_by_name c with
+                       | Some t -> Elab.arg_names_of_theorem t.seq.concl
+                       | None -> (match Hashtbl.find_opt thm_by_name (c ^ "_DEF") with Some t -> Elab.arg_names_of_theorem t.seq.concl | None -> [])) in
+                     (match with_alarm (fun () -> Elab.elab_definition reg c tg scheme rhs names) with
+                      | Ok ad ->
+                          Elab.register_auto reg ad;
+                          (match ad.Elab.ad_result with
+                           | Registry.RMetaFun _ | Registry.RMetaPred _ -> Hashtbl.replace Rewrite.meta_consts ad.Elab.ad_target ()
+                           | _ -> ());
+                          Hashtbl.replace Mg.sig_names tg ();
+                          auto_defs := (ad, d) :: !auto_defs; order := `D ad :: !order; progress := true; false
+                      | Error m -> Hashtbl.replace last_err c m; true)
+                 | _ -> Hashtbl.replace last_err c "no constant type or not an equation"; false)) !pending_defs
+        done;
+        List.iter (fun (t : type_definition) -> auto_failed := (t.td_name, (try Hashtbl.find last_err t.td_name with Not_found -> "?")) :: !auto_failed) !pending_tys;
+        List.iter (fun (d : thm_record) -> auto_failed := (d.name, (try Hashtbl.find last_err d.name with Not_found -> "?")) :: !auto_failed) !pending_defs;
+        Hashtbl.iter (fun c m -> if not (List.mem_assoc c !auto_failed) && not (List.exists (fun ((ad : Elab.auto_def), _) -> ad.Elab.ad_hol = c) !auto_defs)
+                                    && not (List.exists (fun (at : Elab.auto_tydef) -> at.Elab.at_hol = c) !auto_tydefs) then auto_failed := (c, m) :: !auto_failed) last_err
+      end;
+      let auto_tydefs = List.rev !auto_tydefs in
       let auto_defs = List.rev !auto_defs in
       let thms = if only = [] then ex.theorems else List.filter (fun t -> List.mem t.name only || List.exists (fun a -> List.mem a only) t.aliases) ex.theorems in
       List.iter (fun (th : thm_record) ->
@@ -186,14 +215,20 @@ let () =
         end) shards;
       (* auto definitions shard (checked before the theorem shards) *)
       let def_file = Filename.concat out_dir "_definitions.mg" in
-      if auto_defs <> [] then begin
+      let order = List.rev !order in
+      if order <> [] then begin
         let oc = open_out def_file in
         Printf.fprintf oc "// Generated by hol2mg from HOL Light %s, profile %s: automatic native definitions.\n" hol_commit profile;
-        Printf.fprintf oc "// Each definition is the translated HOL Light new_definition right-hand side with the\n// type-variable carriers as leading set parameters.  Status auto_definition: review pending.\n\n";
-        List.iter (fun ((ad : Elab.auto_def), (d : thm_record)) ->
-          let src_file, src_line = (try Hashtbl.find srcindex ad.Elab.ad_hol with Not_found -> ("", 0)) in
-          Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" src_file (if src_line > 0 then ":" ^ string_of_int src_line else "") ad.Elab.ad_hol d.hash;
-          Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" ad.Elab.ad_target (Mg.string_of_mty ad.Elab.ad_type) (Mg.to_string ad.Elab.ad_body)) auto_defs;
+        Printf.fprintf oc "// Constants: the translated new_definition right-hand side with the type-variable carriers as\n// leading set parameters.  Types: new_type_definition subtypes as separations.  Status auto_definition: review pending.\n\n";
+        List.iter (function
+          | `D (ad : Elab.auto_def) ->
+              let d = List.assoc ad auto_defs in
+              let src_file, src_line = (try Hashtbl.find srcindex ad.Elab.ad_hol with Not_found -> ("", 0)) in
+              Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" src_file (if src_line > 0 then ":" ^ string_of_int src_line else "") ad.Elab.ad_hol d.hash;
+              Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" ad.Elab.ad_target (Mg.string_of_mty ad.Elab.ad_type) (Mg.to_string ad.Elab.ad_body)
+          | `T (at : Elab.auto_tydef) ->
+              Printf.fprintf oc "// HOL Light type definition %s (abs %s, rep %s) as a subtype of %s\n" at.Elab.at_hol at.Elab.at_abs at.Elab.at_rep (Hol.string_of_ty at.Elab.at_rep_ty);
+              Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" at.Elab.at_target (Mg.string_of_mty at.Elab.at_type) (Mg.to_string at.Elab.at_body)) order;
         close_out oc
       end else if Sys.file_exists def_file then Sys.remove def_file;
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in
@@ -202,6 +237,8 @@ let () =
                         `Assoc [ ("hol", `String ad.Elab.ad_hol); ("target", `String ad.Elab.ad_target); ("hash", `String d.hash);
                                  ("type", `String (Mg.string_of_mty ad.Elab.ad_type)); ("definition", `String (Mg.to_string ad.Elab.ad_body));
                                  ("notes", `List (List.map (fun s -> `String s) ad.Elab.ad_notes)) ]) auto_defs));
+                     ("auto_type_definitions", `List (List.map (fun (at : Elab.auto_tydef) ->
+                        `Assoc [ ("hol", `String at.Elab.at_hol); ("target", `String at.Elab.at_target); ("definition", `String (Mg.to_string at.Elab.at_body)) ]) auto_tydefs));
                      ("auto_definition_failures", `List (List.map (fun (c, m) -> `List [ `String c; `String m ]) (List.rev !auto_failed)));
                      ("mapping_files", `List (List.map (fun (f, d) -> `List [ `String f; `String d ]) reg.Registry.files));
                      ("signature", `String (Filename.basename sig_file)) ] in
@@ -211,7 +248,7 @@ let () =
       Manifest.write_report report_file profile
         [ Printf.sprintf "- HOL Light commit: `%s`" hol_commit;
           Printf.sprintf "- theorems: %d discovered, %d public" n np;
-          Printf.sprintf "- automatic definitions: %d generated, %d not generated (%s)" (List.length auto_defs) (List.length !auto_failed)
+          Printf.sprintf "- automatic definitions: %d constants and %d types generated, %d not generated (%s)" (List.length auto_defs) (List.length auto_tydefs) (List.length !auto_failed)
             (String.concat "; " (List.map (fun (c, m) -> c ^ ": " ^ m) (List.filteri (fun i _ -> i < 12) (List.rev !auto_failed))));
           Printf.sprintf "- theorems using automatic definitions: %d" (List.length (List.filter (fun i -> List.exists (fun s -> String.length s > 5 && String.sub s 0 5 = "auto:") i.Manifest.notes) items));
           Printf.sprintf "- mapping files: %s" (String.concat ", " (List.map fst reg.Registry.files)) ] items;

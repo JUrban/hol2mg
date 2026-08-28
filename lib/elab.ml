@@ -781,6 +781,7 @@ type auto_def = {
   ad_roles : R.role_spec list;
   ad_result : R.role_spec;
   ad_params : string list;         (* carrier parameter names, in scheme tyvar order *)
+  ad_tyvars : string list;         (* original HOL type variable names (template keys) *)
   ad_notes : string list;
 }
 
@@ -824,8 +825,10 @@ let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty)
   let rec leading_lams t acc = (match t with Lam (x, ty, b) -> leading_lams b ((x, ty) :: acc) | _ -> (List.rev acc, t)) in
   let lams, core = leading_lams rhs [] in
   let k = List.length lams in
+  (* new_specification encodes constants as (@f. forall code. spec) code: reject those; a genuine
+     definition by choice (@x. P x) is translated with choose_in *)
   (match head_and_args core with
-   | Const ("@", _), _ -> raise (Not_definitional "specification-style definition (choice)")
+   | Const ("@", _), _ :: _ :: _ -> raise (Not_definitional "specification-style definition (choice applied to a code)")
    | _ -> ());
   let all_doms, _ = strip_fun_ty scheme in
   if List.length all_doms < k then raise (Not_definitional "more lambdas than arguments");
@@ -834,10 +837,11 @@ let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty)
   let roles = List.map role_of_type doms in
   let result_role = role_of_type res in
   (* open the binders with named free variables and forced views *)
+  let defaults = [ "x"; "y"; "z"; "w"; "u"; "v" ] in
   let rec open_all t i names acc =
     match t with
     | Lam (x, ty, b) when i < k ->
-        let hint = (match names with n :: _ when n <> "" && n.[0] <> '_' -> n | _ -> if x <> "" && x.[0] <> '_' then x else "x") in
+        let hint = (match names with n :: _ when n <> "" && n.[0] <> '_' -> n | _ -> if x <> "" && x.[0] <> '_' then x else (try List.nth defaults i with _ -> "x")) in
         let n = fresh ctx hint in
         let v = view_of_role ctx (List.nth roles i) ty in
         ctx.vars <- (n, (ty, v, n)) :: ctx.vars;
@@ -855,11 +859,11 @@ let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty)
   let term = List.fold_right (fun (n, _, v) acc -> Mg.Lam (n, mty_of_view v, acc)) args body' in
   let term = List.fold_right (fun (_, n) acc -> Mg.Lam (n, Mg.Set, acc)) tv_names term in
   { ad_hol = cname; ad_target = target; ad_type = ty; ad_body = term; ad_scheme = scheme; ad_roles = roles;
-    ad_result = result_role; ad_params = List.map snd tv_names; ad_notes = ctx.st.notes }
+    ad_result = result_role; ad_params = List.map snd tv_names; ad_tyvars = List.map fst tv_names; ad_notes = ctx.st.notes }
 
 (* registry entry for an auto definition: template  target ?A ?B ?1 ?2 ... *)
 let register_auto (reg : R.t) (d : auto_def) =
-  let t = Mg.apps (Mg.Cst d.ad_target) (List.map (fun p -> Mg.Meta p) d.ad_params @ List.mapi (fun i _ -> Mg.Meta (string_of_int (i + 1))) d.ad_roles) in
+  let t = Mg.apps (Mg.Cst d.ad_target) (List.map (fun p -> Mg.Meta p) d.ad_tyvars @ List.mapi (fun i _ -> Mg.Meta (string_of_int (i + 1))) d.ad_roles) in
   let e = { R.c_hol = d.ad_hol; c_scheme = d.ad_scheme; c_args = d.ad_roles; c_result = d.ad_result; c_template = t;
             c_class = "definitionally_exact"; c_status = "auto"; c_bridge = ""; c_notes = "auto definition"; c_source = "auto" } in
   let prev = (try Hashtbl.find reg.R.consts d.ad_hol with Not_found -> []) in
@@ -876,3 +880,58 @@ let arg_names_of_theorem (t : tm) : string list =
       let rec lams t acc = (match t with Lam (x, _, b) -> lams b (x :: acc) | _ -> List.rev acc) in
       from_lhs @ lams rhs []
   | None -> []
+
+(* ------------------------------------------------------------------------ *)
+(* Automatic type definitions: new_type_definition T (abs,rep) |- ?x. P x   *)
+(* becomes the separation {x :e [[tau]] | P x}, parametrised by carriers.    *)
+(* ------------------------------------------------------------------------ *)
+
+type auto_tydef = {
+  at_hol : string;                 (* type constructor *)
+  at_target : string;
+  at_arity : int;
+  at_type : Mg.mty;
+  at_body : Mg.tm;                 (* fun A .. => {x :e tau | P x} *)
+  at_rep_ty : ty;                  (* representing HOL type *)
+  at_tyvars : string list;         (* sorted HOL type variables (type argument order) *)
+  at_abs : string;
+  at_rep : string;
+  at_notes : string list;
+}
+
+let elab_tydef (reg : R.t) (tname : string) (target : string) (absname : string) (repname : string) (nonempty : tm) : auto_tydef =
+  (* nonempty : ?x:tau. P x *)
+  let x, tau, body = (match nonempty with
+    | App (Const ("?", _), Lam (x, tau, b)) -> (x, tau, b)
+    | _ -> raise (Not_definitional "type definition without existential nonemptiness theorem")) in
+  let tvs = List.sort compare (uniq (tyvars_of_ty tau)) in
+  let letters = List.init 26 (fun i -> String.make 1 (Char.chr (65 + i))) in
+  let used = ref (List.map sanitize_tyvar (List.filter (fun a -> a = "" || a.[0] <> '?') tvs)) in
+  let tv_names = List.map (fun a ->
+    if a <> "" && a.[0] = '?' then begin
+      let l = (match List.find_opt (fun l -> not (List.mem l !used)) letters with Some l -> l | None -> sanitize_tyvar a) in
+      used := l :: !used; (a, l)
+    end else (a, sanitize_tyvar a)) tvs in
+  let ctx = { reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { classes = []; bridges = []; notes = [] } } in
+  let n = fresh ctx (if x <> "" && x.[0] <> '_' then x else "x") in
+  let c = carrier ctx tau in
+  ctx.vars <- (n, (tau, VSet c, n)) :: ctx.vars;
+  let p = elab ctx (open_with (Free (n, tau)) body) VProp in
+  let p, rewrites = Rewrite.run p in
+  List.iter (fun r -> note ctx ("rewrite:" ^ r)) rewrites;
+  let term = List.fold_right (fun (_, nm) acc -> Mg.Lam (nm, Mg.Set, acc)) tv_names (Mg.Sep (n, c, p)) in
+  let ty = List.fold_right (fun _ acc -> Mg.Arr (Mg.Set, acc)) tv_names Mg.Set in
+  { at_hol = tname; at_target = target; at_arity = List.length tvs; at_type = ty; at_body = term; at_rep_ty = tau;
+    at_tyvars = tvs; at_abs = absname; at_rep = repname; at_notes = ctx.st.notes }
+
+let register_auto_tydef (reg : R.t) (d : auto_tydef) =
+  let carrier_t = Mg.apps (Mg.Cst d.at_target) (List.mapi (fun i _ -> Mg.Meta (string_of_int i)) d.at_tyvars) in
+  Hashtbl.replace reg.R.types d.at_hol
+    { R.t_hol = d.at_hol; t_arity = d.at_arity; t_carrier = carrier_t; t_class = "native_isomorphism"; t_status = "auto";
+      t_bridge = "hol_typedef_" ^ d.at_hol; t_module = "auto"; t_notes = "automatic subtype definition" };
+  let new_ty = TyApp (d.at_hol, List.map (fun v -> TyVar v) d.at_tyvars) in
+  let mk name scheme cls =
+    { R.c_hol = name; c_scheme = scheme; c_args = [ R.RSet ]; c_result = R.RSet; c_template = Mg.Meta "1";
+      c_class = cls; c_status = "auto"; c_bridge = "hol_typedef_" ^ d.at_hol; c_notes = "abs/rep of automatic subtype"; c_source = "auto" } in
+  Hashtbl.replace reg.R.consts d.at_abs [ mk d.at_abs (fun_ty d.at_rep_ty new_ty) "generalization" ];
+  Hashtbl.replace reg.R.consts d.at_rep [ mk d.at_rep (fun_ty new_ty d.at_rep_ty) "definitionally_exact" ]

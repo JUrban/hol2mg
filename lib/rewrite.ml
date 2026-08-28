@@ -71,6 +71,8 @@ let try_rules t =
 
 (* names of variables with meta (function/predicate) types in scope, for eta *)
 let meta_vars : string list ref = ref []
+(* constants whose (fully applied by carriers/args) result is a meta function/predicate *)
+let meta_consts : (string, unit) Hashtbl.t = Hashtbl.create 64
 
 let note s = if not (List.mem s !applied) then applied := s :: !applied
 
@@ -95,6 +97,7 @@ let rec builtin t =
 and is_meta_head f =
   match f with
   | Var v -> List.mem v !meta_vars
+  | Cst c -> Hashtbl.mem meta_consts c
   | App (g, _) -> is_meta_head g
   | Lam _ -> true
   | _ -> false

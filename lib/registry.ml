@@ -34,6 +34,7 @@ type t = {
   files : (string * string) list;                  (* file, md5 *)
   empty_rules : (Mg.tm * Mg.tm * string) list;     (* lhs, rhs, justifying theorem *)
   rewrite_rules : (Mg.tm * Mg.tm * string * (string * string) list) list;  (* + guards: placeholder -> guard name *)
+  names : (string * string) list;                   (* HOL symbolic constant/type name -> Megalodon name (for auto definitions) *)
 }
 
 exception Registry_error of string
@@ -131,9 +132,10 @@ let strd k d j = match Yojson.Safe.Util.member k j with `String s -> s | _ -> d
 
 let load (files : string list) (type_ctors : (string * int) list) : t =
   List.iter (fun (c, n) -> Hashtbl.replace type_constructors c n) type_ctors;
-  let reg = { types = Hashtbl.create 64; consts = Hashtbl.create 512; files = []; empty_rules = []; rewrite_rules = [] } in
+  let reg = { types = Hashtbl.create 64; consts = Hashtbl.create 512; files = []; empty_rules = []; rewrite_rules = []; names = [] } in
   let rules = ref [] in
   let rw = ref [] in
+  let names = ref [] in
   let files_md5 = ref [] in
   List.iter (fun file ->
     let j = Yojson.Safe.from_file file in
@@ -179,8 +181,11 @@ let load (files : string list) (type_ctors : (string * int) list) : t =
         | `Assoc l -> List.map (fun (k, v) -> (k, to_string v)) l
         | _ -> []) in
       rw := (Mg.parse_template (str "lhs" rj), Mg.parse_template (str "rhs" rj), strd "by" "" rj, guards) :: !rw)
-      (match member "rewrite_rules" j with `List l -> l | _ -> [])) files;
-  { reg with files = List.rev !files_md5; empty_rules = List.rev !rules; rewrite_rules = List.rev !rw }
+      (match member "rewrite_rules" j with `List l -> l | _ -> []);
+    (match member "names" j with
+     | `Assoc l -> List.iter (fun (k, v) -> names := (k, to_string v) :: !names) l
+     | _ -> ())) files;
+  { reg with files = List.rev !files_md5; empty_rules = List.rev !rules; rewrite_rules = List.rev !rw; names = List.rev !names }
 
 (* first-order matching of a scheme against an occurrence type *)
 let rec tymatch sch ty sofar =

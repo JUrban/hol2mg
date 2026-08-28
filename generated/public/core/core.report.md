@@ -2,7 +2,7 @@
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
 - theorems: 2984 discovered, 2682 public
-- automatic definitions: 2 generated, 7 not generated (NUM_REP: internal construction type ind; OUTL: specification-style definition (choice); OUTR: specification-style definition (choice); _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
+- automatic definitions: 2 constants and 0 types generated, 7 not generated (NUM_REP: internal construction type ind; OUTL: specification-style definition (choice); OUTR: specification-style definition (choice); _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
 - theorems using automatic definitions: 2
 - mapping files: mappings/core.json, mappings/lists.json
 

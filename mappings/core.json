@@ -3049,5 +3049,10 @@
    "rhs": "1",
    "by": "dimindex_one"
   }
- ]
+ ],
+ "names": {
+  "%": "vector_mul",
+  "**": "matrix_mul",
+  "%%": "matrix_cmul"
+ }
 }
