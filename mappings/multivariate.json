@@ -1,0 +1,11 @@
+{
+ "version": 1,
+ "description": "Hand overrides for Multivariate concepts where the automatic definition is exact but unidiomatic.",
+ "types": [],
+ "constants": [
+  {"hol": "vector_norm", "scheme": "real^N->real", "args": ["set"], "result": "set", "template": "sqrt_SNo_nonneg (dot ?N ?1 ?1)", "class": "definitionally_exact", "status": "reviewed",
+   "notes": "HOL Light: norm x = sqrt (x dot x); dot x x >= 0, so the odd extension of sqrt is not needed"},
+  {"hol": "dist", "scheme": "real^N#real^N->real", "args": ["set"], "result": "set", "template": "vector_norm ?N (vector_sub ?N (?1 0) (?1 1))", "class": "definitionally_exact", "status": "reviewed",
+   "notes": "uncurried in HOL Light; stays a pair argument"}
+ ]
+}

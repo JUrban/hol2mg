@@ -15,3 +15,8 @@ clean:
 	rm -f lib/*.cm* lib/*.o bin/*.cm* bin/*.o $(OUT)
 
 .PHONY: all clean
+
+test:
+	tools/selftest.sh
+
+.PHONY: test

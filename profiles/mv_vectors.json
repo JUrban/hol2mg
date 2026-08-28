@@ -1,7 +1,14 @@
 {
-  "name": "mv_vectors",
-  "description": "HOL Light core plus Multivariate/vectors.ml (and the Library files it needs)",
-  "roots": ["Multivariate/vectors.ml"],
-  "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
-  "mappings": ["core.json", "lists.json", "library.json"]
+ "name": "mv_vectors",
+ "description": "HOL Light core plus Multivariate/vectors.ml (and the Library files it needs)",
+ "roots": [
+  "Multivariate/vectors.ml"
+ ],
+ "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
+ "mappings": [
+  "core.json",
+  "lists.json",
+  "library.json",
+  "multivariate.json"
+ ]
 }
