@@ -63,7 +63,9 @@ and simp1 t =
   | App (Cst "Union", a) -> let a = simp a in if is_empty a then empty else App (Cst "Union", a)
   | App (App (Cst "setexp", x), y) ->
       let x = simp x and y = simp y in
-      if is_empty y then SetEnum [ empty ] else App (App (Cst "setexp", x), y)
+      if is_empty y then SetEnum [ empty ]
+      else if is_empty x && Rewrite.nonempty y then empty
+      else App (App (Cst "setexp", x), y)
   | App (App (Cst "setprod", x), y) ->
       let x = simp x and y = simp y in
       if is_empty x || is_empty y then empty else App (App (Cst "setprod", x), y)

@@ -2102,6 +2102,30 @@ Admitted.
 Theorem INT_DIVIDES_LE : forall x y :e int, divides_int x y -> abs_SNo x <= abs_SNo y \/ y = 0.
 Admitted.
 
+// HOL Light: int.ml:1199 / int_mod
+// Source hash: md5:17852779413c6e485a026b4cf6b38fb6
+// Status: transport_required (bridges: hol_int_int)
+Theorem int_mod : forall n x y :e int, divides_int n (x + - y) <-> divides_int n (x + - y).
+Admitted.
+
+// HOL Light: int.ml:1202 / int_congruent
+// Source hash: md5:0740c3eb73e17b56c164104cffc9d0d4
+// Status: transport_required (bridges: hol_int_int)
+Theorem int_congruent : forall x y n :e int, divides_int n (x + - y) <-> exists d :e int, x + - y = n * d.
+Admitted.
+
+// HOL Light: int.ml:1206 / INT_CONG_IMP_EQ
+// Source hash: md5:64ca351c1c549d45b6d4c9d074b3bde6
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_CONG_IMP_EQ : forall x y n :e int, abs_SNo (x + - y) < n /\ divides_int n (x + - y) -> x = y.
+Admitted.
+
+// HOL Light: int.ml:1218 / int_coprime
+// Source hash: md5:5d645fcc824ab4748c8fe7b17cd497df
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem int_coprime : forall a b :e int, gcd_int a b = 1 <-> exists x y :e int, a * x + b * y = 1.
+Admitted.
+
 // HOL Light: int.ml:1331 / INT_DIVMOD_UNIQ
 // Source hash: md5:a59cba60f1a515ec1b3002d354da584b
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
@@ -2156,6 +2180,12 @@ Admitted.
 Theorem INT_REM_REM : forall m n :e int, rem_int (rem_int m n) n = rem_int m n.
 Admitted.
 
+// HOL Light: int.ml:1389 / INT_REM_EQ
+// Source hash: md5:c10c47c26992aaf42dda2fa34c0787dd
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_EQ : forall m n p :e int, rem_int m p = rem_int n p <-> divides_int p (m + - n).
+Admitted.
+
 // HOL Light: int.ml:1405 / INT_DIV_ZERO
 // Source hash: md5:3864521e3676525ec6cc992cf167648e
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
@@ -2180,10 +2210,34 @@ Admitted.
 Theorem INT_MUL_DIV_EQ : (forall m n :e int, n * div_int m n = m <-> divides_int n m) /\ forall m n :e int, div_int m n * n = m <-> divides_int n m.
 Admitted.
 
+// HOL Light: int.ml:1425 / INT_CONG_LREM
+// Source hash: md5:99b0456b86d382a0336c0334dda4479c
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_CONG_LREM : forall x y n :e int, divides_int n (rem_int x n + - y) <-> divides_int n (x + - y).
+Admitted.
+
+// HOL Light: int.ml:1429 / INT_CONG_RREM
+// Source hash: md5:ea889a3ffa5c35ebd25bdffeb137dd3d
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_CONG_RREM : forall x y n :e int, divides_int n (x + - rem_int y n) <-> divides_int n (x + - y).
+Admitted.
+
+// HOL Light: int.ml:1433 / INT_REM_MOD_SELF
+// Source hash: md5:15b03f53f2cbb253353353c73f420084
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_MOD_SELF : forall m n :e int, divides_int n (rem_int m n + - m).
+Admitted.
+
 // HOL Light: int.ml:1437 / INT_REM_REM_MUL
 // Source hash: md5:71c463e3ec501efb1c84d7f9bf28620a
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_REM_REM_MUL : (forall m n p :e int, rem_int (rem_int m (n * p)) n = rem_int m n) /\ forall m n p :e int, rem_int (rem_int m (n * p)) p = rem_int m p.
+Admitted.
+
+// HOL Light: int.ml:1445 / INT_CONG_SOLVE_BOUNDS
+// Source hash: md5:97a8ac64126bd5ed89b340fe309a11d5
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_CONG_SOLVE_BOUNDS : forall a n :e int, ~ n = 0 -> exists x :e int, 0 <= x /\ (x < abs_SNo n /\ divides_int n (x + - a)).
 Admitted.
 
 // HOL Light: int.ml:1449 / INT_NEG_REM
@@ -2342,6 +2396,12 @@ Admitted.
 Theorem INT_REM_EQ_SELF : forall m n :e int, rem_int m n = m <-> n = 0 \/ 0 <= m /\ m < abs_SNo n.
 Admitted.
 
+// HOL Light: int.ml:1635 / INT_REM_UNIQUE
+// Source hash: md5:6a5602e283ed842fa6b0c4b5cec42b18
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_UNIQUE : forall m n p :e int, rem_int m n = p <-> (n = 0 /\ m = p \/ 0 <= p /\ p < abs_SNo n) /\ divides_int n (m + - p).
+Admitted.
+
 // HOL Light: int.ml:1646 / INT_DIV_REM
 // Source hash: md5:62a02b240b8bdb126f0fd1ca92b69d5b
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
@@ -2388,6 +2448,12 @@ Admitted.
 // Source hash: md5:4d226f5a369b381b3bce5547ee9a5753
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_DIV_MUL_ADD : (forall m n p :e int, ~ n = 0 -> div_int (m * n + p) n = m + div_int p n) /\ ((forall m n p :e int, ~ n = 0 -> div_int (n * m + p) n = m + div_int p n) /\ ((forall m n p :e int, ~ n = 0 -> div_int (p + m * n) n = div_int p n + m) /\ forall m n p :e int, ~ n = 0 -> div_int (p + n * m) n = div_int p n + m)).
+Admitted.
+
+// HOL Light: int.ml:1706 / INT_CONG_DIV2
+// Source hash: md5:8817ef9c4ec367e1afc32aa782b0df29
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_CONG_DIV2 : forall a b m n :e int, divides_int (m * n) (a + - b) -> divides_int n (div_int a m + - div_int b m).
 Admitted.
 
 // HOL Light: int.ml:1715 / INT_REM_2_CASES
@@ -2498,6 +2564,18 @@ Admitted.
 Theorem INT_GCD_EXISTS_POS : forall a b :e int, exists d :e int, 0 <= d /\ (divides_int d a /\ (divides_int d b /\ exists x y :e int, d = a * x + b * y)).
 Admitted.
 
+// HOL Light: int.ml:1976 / int_gcd
+// Source hash: md5:cc4dc0393e98852218de48c840ac1a04
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem int_gcd : forall a b :e int, 0 <= gcd_int a b /\ (divides_int (gcd_int a b) a /\ (divides_int (gcd_int a b) b /\ exists x y :e int, gcd_int a b = a * x + b * y)).
+Admitted.
+
+// HOL Light: int.ml:1979 / int_lcm
+// Source hash: md5:3e2f81e18192fa729407cfda1c9cd015
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem int_lcm : forall m n :e int, lcm_int m n = if m * n = 0 then 0 else div_int (abs_SNo (m * n)) (gcd_int m n).
+Admitted.
+
 // HOL Light: int.ml:1982 / INT_DIVIDES_LABS
 // Source hash: md5:d0405fc666157042fe61e8e6934de0eb
 // Status: transport_required (bridges: hol_int_int)
@@ -2514,6 +2592,42 @@ Admitted.
 // Source hash: md5:5b524740441d5ab663e44177f1def421
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_DIVIDES_ABS : (forall d n :e int, divides_int (abs_SNo d) n <-> divides_int d n) /\ forall d n :e int, divides_int d (abs_SNo n) <-> divides_int d n.
+Admitted.
+
+// HOL Light: int.ml:1995 / INT_LCM_POS
+// Source hash: md5:b5e8a2fcb73512ef97b6f4e4dc197849
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem INT_LCM_POS : forall m n :e int, 0 <= lcm_int m n.
+Admitted.
+
+// HOL Light: int.ml:2000 / INT_MUL_GCD_LCM
+// Source hash: md5:9e7edc44bf404cc3c0b1329673ba9a49
+// Status: transport_required (bridges: hol_int_int, hol_prod_setprod)
+Theorem INT_MUL_GCD_LCM : forall m n :e int, gcd_int m n * lcm_int m n = abs_SNo (m * n).
+Admitted.
+
+// HOL Light: int.ml:2008 / INT_MUL_LCM_GCD
+// Source hash: md5:47847ad93bb9ed424129f834c06f1cfd
+// Status: transport_required (bridges: hol_int_int, hol_prod_setprod)
+Theorem INT_MUL_LCM_GCD : forall m n :e int, lcm_int m n * gcd_int m n = abs_SNo (m * n).
+Admitted.
+
+// HOL Light: int.ml:2012 / INT_DIVIDES_LCM_GCD
+// Source hash: md5:957694396f7356ea6e0ea0d772dadff6
+// Status: transport_required (bridges: hol_int_int, hol_prod_setprod)
+Theorem INT_DIVIDES_LCM_GCD : forall m n d :e int, divides_int d (lcm_int m n) <-> divides_int (d * gcd_int m n) (m * n).
+Admitted.
+
+// HOL Light: int.ml:2022 / INT_LCM_DIVIDES
+// Source hash: md5:05c1c5d88fea8771868273b3083b47df
+// Status: transport_required (bridges: hol_int_int, hol_prod_setprod)
+Theorem INT_LCM_DIVIDES : forall m n d :e int, divides_int (lcm_int m n) d <-> divides_int m d /\ divides_int n d.
+Admitted.
+
+// HOL Light: int.ml:2033 / INT_LCM
+// Source hash: md5:c054e7e768e8302cd09d9c229140e065
+// Status: transport_required (bridges: hol_int_int, hol_prod_setprod)
+Theorem INT_LCM : forall m n :e int, divides_int m (lcm_int m n) /\ (divides_int n (lcm_int m n) /\ forall d :e int, divides_int m d /\ divides_int n d -> divides_int (lcm_int m n) d).
 Admitted.
 
 // HOL Light: int.ml:2071 / num_of_int
@@ -2564,6 +2678,36 @@ Admitted.
 Theorem num_divides : forall a b :e omega, divides_nat a b <-> divides_int a b.
 Admitted.
 
+// HOL Light: int.ml:2117 / num_mod
+// Source hash: md5:e4335a2cd1f189968a27e39cf7c9bec0
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem num_mod : forall n x y :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> divides_int n (x + - y).
+Admitted.
+
+// HOL Light: int.ml:2120 / num_congruent
+// Source hash: md5:0716c1ffb97b6bcb237d37b6dcbacfa2
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem num_congruent : forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> divides_int n (x + - y).
+Admitted.
+
+// HOL Light: int.ml:2124 / num_coprime
+// Source hash: md5:a033603383a8113f0137bd5bbb618384
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem num_coprime : forall a b :e omega, gcd_int a b = 1 <-> gcd_int a b = 1.
+Admitted.
+
+// HOL Light: int.ml:2127 / num_gcd
+// Source hash: md5:88962877646a99de9617e2dde9640448
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem num_gcd : forall a b :e omega, gcd_int a b = if gcd_int a b :e omega then gcd_int a b else 0.
+Admitted.
+
+// HOL Light: int.ml:2130 / num_lcm
+// Source hash: md5:4d6f47880c271e3f113de43e43caa935
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem num_lcm : forall a b :e omega, lcm_int a b = if lcm_int a b :e omega then lcm_int a b else 0.
+Admitted.
+
 // HOL Light: int.ml:2327 / BINARY_INDUCT
 // Source hash: md5:869363624c7db47ab915a1432494e610
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
@@ -2586,6 +2730,42 @@ Admitted.
 // Source hash: md5:d334b8fa849849d2b4d889aa9fe0c20c
 // Status: transport_required (bridges: hol_int_int, hol_num_omega)
 Theorem INT_REM_REM_POW_MIN : forall x p :e int, forall m n :e omega, rem_int (rem_int x (p ^ m)) (p ^ n) = rem_int x (p ^ if m <= n then m else n).
+Admitted.
+
+// HOL Light: int.ml:2379 / NUM_GCD
+// Source hash: md5:71b969f4ff9cc7292e8e593f142bdcc9
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem NUM_GCD : forall a b :e omega, gcd_int a b = gcd_int a b.
+Admitted.
+
+// HOL Light: int.ml:2383 / NUM_LCM
+// Source hash: md5:5835913443b97f15ffa6ce8be615afcb
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
+Theorem NUM_LCM : forall a b :e omega, lcm_int a b = lcm_int a b.
+Admitted.
+
+// HOL Light: int.ml:2387 / CONG
+// Source hash: md5:724c7646174213ceafea3e62084f528f
+// Status: transport_required (bridges: hol_num_omega)
+Theorem CONG : forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n.
+Admitted.
+
+// HOL Light: int.ml:2391 / CONG_LMOD
+// Source hash: md5:cc8435758d69c43777026b9c6e3a2d76
+// Status: transport_required (bridges: hol_num_omega)
+Theorem CONG_LMOD : forall x y n :e omega, (exists q1 q2 :e omega, mod_nat x n + n * q1 = y + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2.
+Admitted.
+
+// HOL Light: int.ml:2395 / CONG_RMOD
+// Source hash: md5:9b5e1121e3c5b8f81a52b0737b342961
+// Status: transport_required (bridges: hol_num_omega)
+Theorem CONG_RMOD : forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = mod_nat y n + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2.
+Admitted.
+
+// HOL Light: int.ml:2399 / CONG_DIV2
+// Source hash: md5:887eb65183d44b09dda623c33ddb6a8d
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
+Theorem CONG_DIV2 : forall a b m n :e omega, (exists q1 q2 :e omega, a + (m * n) * q1 = b + (m * n) * q2) -> exists q1 q2 :e omega, div_nat a m + n * q1 = div_nat b m + n * q2.
 Admitted.
 
 // HOL Light: int.ml:2403 / divides
@@ -2688,6 +2868,72 @@ Admitted.
 // Source hash: md5:601fc17ada0ecb6f5c2f5a82f26fd3e9
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_DIV : (forall m n p :e omega, divides_nat p m -> div_nat (m * n) p = div_nat m p * n) /\ forall m n p :e omega, divides_nat p n -> div_nat (m * n) p = m * div_nat n p.
+Admitted.
+
+// HOL Light: int.ml:2529 / COPRIME_LMOD
+// Source hash: md5:82edd8f721fd49d9fdb847f1107441b6
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem COPRIME_LMOD : forall a n :e omega, gcd_int (mod_nat a n) n = 1 <-> gcd_int a n = 1.
+Admitted.
+
+// HOL Light: int.ml:2534 / COPRIME_RMOD
+// Source hash: md5:eba4352f0a84489e096c6c3df75885dc
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem COPRIME_RMOD : forall a n :e omega, gcd_int n (mod_nat a n) = 1 <-> gcd_int n a = 1.
+Admitted.
+
+// HOL Light: int.ml:2539 / INT_CONG_NUM_EXISTS
+// Source hash: md5:0792d2d3dc96cffba17b67f4642f41f3
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_CONG_NUM_EXISTS : forall x y :e int, (y = 0 -> 0 <= x) -> exists n :e omega, divides_int y (n + - x).
+Admitted.
+
+// HOL Light: int.ml:2557 / GCD
+// Source hash: md5:7d4d9f7b3f042d6254fdf4aee87b9ac7
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem GCD : forall a b :e omega, divides_nat (gcd_int a b) a /\ divides_nat (gcd_int a b) b /\ forall e0 :e omega, divides_nat e0 a /\ divides_nat e0 b -> divides_nat e0 (gcd_int a b).
+Admitted.
+
+// HOL Light: int.ml:2562 / coprime
+// Source hash: md5:c83526bbeb567461aea27548ec97d34b
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem coprime : forall a b :e omega, gcd_int a b = 1 <-> forall d :e omega, divides_nat d a /\ divides_nat d b -> d = 1.
+Admitted.
+
+// HOL Light: int.ml:2572 / prime
+// Source hash: md5:621cbb38fa09f55474fec032bc5c4c7f
+// Status: transport_required (bridges: hol_num_omega)
+Theorem prime : forall p :e omega, prime_nat p <-> ~ p = 1 /\ forall x :e omega, divides_nat x p -> x = 1 \/ x = p.
+Admitted.
+
+// HOL Light: int.ml:2575 / ONE_OR_PRIME
+// Source hash: md5:e305a145288b12549d90d601211f5121
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ONE_OR_PRIME : forall p :e omega, p = 1 \/ prime_nat p <-> forall n :e omega, divides_nat n p -> n = 1 \/ n = p.
+Admitted.
+
+// HOL Light: int.ml:2580 / ONE_OR_PRIME_DIVIDES_OR_COPRIME
+// Source hash: md5:cc8e9910188809abd793245177c1584e
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem ONE_OR_PRIME_DIVIDES_OR_COPRIME : forall p :e omega, p = 1 \/ prime_nat p <-> forall n :e omega, divides_nat p n \/ gcd_int p n = 1.
+Admitted.
+
+// HOL Light: int.ml:2590 / PRIME_COPRIME_EQ_NONDIVISIBLE
+// Source hash: md5:e8790d3239800c3d419eda004423072f
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem PRIME_COPRIME_EQ_NONDIVISIBLE : forall p :e omega, prime_nat p <-> forall n :e omega, gcd_int p n = 1 <-> ~ divides_nat p n.
+Admitted.
+
+// HOL Light: int.ml:2602 / ZERO_ONE_OR_PRIME_DIVPROD
+// Source hash: md5:b4800c03eb4dab79e0bc3709404d8b61
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
+Theorem ZERO_ONE_OR_PRIME_DIVPROD : forall p a b :e omega, p = 0 \/ (p = 1 \/ prime_nat p) -> (divides_nat p (a * b) <-> divides_nat p a \/ divides_nat p b).
+Admitted.
+
+// HOL Light: int.ml:2612 / ZERO_ONE_OR_PRIME
+// Source hash: md5:ad4b1a187c11358e9cc31d13334fa380
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
+Theorem ZERO_ONE_OR_PRIME : forall p :e omega, p = 0 \/ (p = 1 \/ prime_nat p) <-> forall a b :e omega, divides_nat p (a * b) -> divides_nat p a \/ divides_nat p b.
 Admitted.
 
 // HOL Light: int.ml:2638 / real_zpow

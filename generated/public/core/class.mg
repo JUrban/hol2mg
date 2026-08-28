@@ -23,13 +23,13 @@ Admitted.
 // HOL Light: class.ml:53 / SELECT_AX
 // Source hash: md5:4e877f34f5dc642b1b50fc1ef7367fcd
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
-Theorem SELECT_AX : forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A (fun x0:set => P x0)).
+Theorem SELECT_AX : forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A P).
 Admitted.
 
 // HOL Light: class.ml:60 / EXISTS_THM
 // Source hash: md5:a89cb4aa5c0e6a37ab368e12856a3e84
 // Status: exact_native (bridges: choose_in_spec)
-Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A (fun x:set => P x)).
+Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A P).
 Admitted.
 
 // HOL Light: class.ml:102 / SELECT_REFL
@@ -41,7 +41,7 @@ Admitted.
 // HOL Light: class.ml:107 / SELECT_UNIQUE
 // Source hash: md5:a3ab62395ef165d333cfc84d6aa0b583
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
-Theorem SELECT_UNIQUE : forall A:set, forall P:set -> prop, forall x :e A, (forall y :e A, P y <-> y = x) -> choose_in A (fun x0:set => P x0) = x.
+Theorem SELECT_UNIQUE : forall A:set, forall P:set -> prop, forall x :e A, (forall y :e A, P y <-> y = x) -> choose_in A P = x.
 Admitted.
 
 // HOL Light: class.ml:140 / EXCLUDED_MIDDLE

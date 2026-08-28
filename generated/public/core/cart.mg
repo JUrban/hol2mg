@@ -2,15 +2,405 @@
 // Do not edit: regenerate from the exporter, mapping registry, or overrides.
 // Statements are admitted imports; none is a new axiom.
 
+// HOL Light: cart.ml:14 / dimindex
+// Source hash: md5:ddb3842890aa45dff1fd71f34edb013d
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_dimindex, hol_finite_finite, hol_num_omega)
+Theorem dimindex_hl : forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1.
+Admitted.
+
+// HOL Light: cart.ml:17 / DIMINDEX_NONZERO
+// Source hash: md5:d3725a45e0820e3b712217990615246b
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega)
+Theorem DIMINDEX_NONZERO : forall A:set, A <> Empty -> ~ dimindex A = 0.
+Admitted.
+
+// HOL Light: cart.ml:22 / DIMINDEX_GE_1
+// Source hash: md5:6330d948a4ade390789c61f4944f6861
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem DIMINDEX_GE_1 : forall A:set, A <> Empty -> 1 <= dimindex A.
+Admitted.
+
+// HOL Light: cart.ml:26 / DIMINDEX_UNIV
+// Source hash: md5:6d36efb94145933ec1aa58b078c73e98
+// Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_num_omega)
+Theorem DIMINDEX_UNIV : forall A:set, dimindex A = dimindex A.
+Admitted.
+
+// HOL Light: cart.ml:30 / DIMINDEX_UNIQUE
+// Source hash: md5:88a36c49579122ac8804e8363815cddd
+// Status: transport_required (bridges: hol_dimindex, hol_has_size_equip, hol_num_omega)
+Theorem DIMINDEX_UNIQUE : forall A:set, A <> Empty -> forall n :e omega, equip A n -> dimindex A = n.
+Admitted.
+
+// HOL Light: cart.ml:34 / UNIV_HAS_SIZE_DIMINDEX
+// Source hash: md5:23dd1460f611c1c44082919eb9c4ba65
+// Status: transport_required (bridges: hol_dimindex, hol_finite_finite, hol_has_size_equip, hol_num_omega)
+Theorem UNIV_HAS_SIZE_DIMINDEX : forall N:set, N <> Empty -> (equip N (dimindex N) <-> finite N).
+Admitted.
+
 // HOL Light: cart.ml:38 / HAS_SIZE_1
 // Source hash: md5:3db80a1713101542583ad1c917c7c9ae
 // Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_one_1)
 Theorem HAS_SIZE_1 : equip 1 1.
 Admitted.
 
+// HOL Light: cart.ml:44 / NUMSEG_LT_DIMINDEX
+// Source hash: md5:ab5eb52dade02e50e59e1fda3e75b94a
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega, nat_lt_SNoLt)
+Theorem NUMSEG_LT_DIMINDEX : forall N:set, N <> Empty -> {i :e omega | i < dimindex N} = {i :e omega | 0 <= i /\ i <= minus_nat (dimindex N) 1}.
+Admitted.
+
+// HOL Light: cart.ml:48 / DIMINDEX_1
+// Source hash: md5:49a9d44c0dac1fb1c010affe48096fff
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1)
+Theorem DIMINDEX_1 : 1 = 1.
+Admitted.
+
+// HOL Light: cart.ml:54 / finite_image_tybij
+// Source hash: md5:f0d14a9c0235c438b189e2ac2ee50929
+// Status: generalization_required (bridges: hol_dimindex, hol_finite_image_idx, hol_num_omega)
+Theorem finite_image_tybij : forall A:set, A <> Empty -> (forall a :e idx A, a = a) /\ forall r :e omega, r :e idx A <-> r = r.
+Admitted.
+
+// HOL Light: cart.ml:60 / FINITE_IMAGE_IMAGE
+// Source hash: md5:2f5c954f5fc2c6948e501c8f48cea905
+// Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_finite_image_idx, hol_num_omega)
+Theorem FINITE_IMAGE_IMAGE : forall A:set, idx A = idx A.
+Admitted.
+
+// HOL Light: cart.ml:69 / HAS_SIZE_FINITE_IMAGE
+// Source hash: md5:bd453ada18d19f4873e5fb3bed116dd0
+// Status: transport_required (bridges: hol_dimindex, hol_finite_image_idx, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_FINITE_IMAGE : forall A:set, A <> Empty -> equip (idx A) (dimindex A).
+Admitted.
+
+// HOL Light: cart.ml:76 / CARD_FINITE_IMAGE
+// Source hash: md5:0c37ef1b1f81cc58e7a9bd6194e8dc16
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_dimindex, hol_finite_image_idx, hol_num_omega)
+Theorem CARD_FINITE_IMAGE : forall A:set, A <> Empty -> finite_cardinality (idx A) = dimindex A.
+Admitted.
+
+// HOL Light: cart.ml:80 / FINITE_FINITE_IMAGE
+// Source hash: md5:1dc7a67c001b36009e2f22ba859fec70
+// Status: transport_required (bridges: hol_finite_finite, hol_finite_image_idx)
+Theorem FINITE_FINITE_IMAGE : forall A:set, A <> Empty -> finite (idx A).
+Admitted.
+
+// HOL Light: cart.ml:84 / DIMINDEX_FINITE_IMAGE
+// Source hash: md5:4b22e9f54781a67df9b807fb7e70c2da
+// Status: transport_required (bridges: hol_dimindex, hol_finite_image_idx, hol_num_omega)
+Theorem DIMINDEX_FINITE_IMAGE : forall A:set, A <> Empty -> dimindex (idx A) = dimindex A.
+Admitted.
+
+// HOL Light: cart.ml:90 / FINITE_INDEX_WORKS
+// Source hash: md5:810a83eb9dfb8d6360f6ae65701e1d0a
+// Status: generalization_required (bridges: hol_dimindex, hol_finite_image_idx, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_INDEX_WORKS : forall A:set, A <> Empty -> forall i :e idx A, exists n :e omega, 1 <= n /\ (n <= dimindex A /\ n = i) /\ forall y :e omega, 1 <= y /\ (y <= dimindex A /\ y = i) -> y = n.
+Admitted.
+
+// HOL Light: cart.ml:95 / FINITE_INDEX_INJ
+// Source hash: md5:ed3f2b168a80aa1187743fa433a8d6e6
+// Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_finite_image_idx, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_INDEX_INJ : forall A:set, forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j).
+Admitted.
+
+// HOL Light: cart.ml:102 / FORALL_FINITE_INDEX
+// Source hash: md5:43ac0aa393472f102dd0f56823d962d3
+// Status: generalization_required (bridges: hol_dimindex, hol_finite_image_idx, hol_num_omega, nat_le_SNoLe)
+Theorem FORALL_FINITE_INDEX : forall N:set, N <> Empty -> forall P:set -> prop, (forall k :e idx N, P k) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> P i.
+Admitted.
+
+// HOL Light: cart.ml:111 / cart_tybij
+// Source hash: md5:131fcfadc4569b53594fb6d3afe4208b
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_cart_setexp, hol_finite_image_idx)
+Theorem cart_tybij : forall A B:set, (forall a :e A :^: idx B, a = a) /\ forall r :e A :^: idx B, True <-> r = r.
+Admitted.
+
+// HOL Light: cart.ml:117 / finite_index
+// Source hash: md5:9217c3b619651f33cf632eea33df50fd
+// Status: generalization_required (bridges: empty_case:A, empty_case:N, hol_cart_setexp, hol_finite_image_idx, hol_num_omega)
+Theorem finite_index : forall A N:set, forall x :e A :^: idx N, forall i :e omega, x i = x i.
+Admitted.
+
+// HOL Light: cart.ml:120 / CART_EQ
+// Source hash: md5:12d2a2739958dbd8cafb139a4bfa94c3
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem CART_EQ : forall A B:set, B <> Empty -> forall x y :e A :^: idx B, x = y <-> forall i :e omega, 1 <= i /\ i <= dimindex B -> x i = y i.
+Admitted.
+
+// HOL Light: cart.ml:128 / lambda
+// Source hash: md5:889ac2dbf8ca12a13a4d66fd3cda1b19
+// Status: transport_required (bridges: choose_in_spec, hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem lambda : forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e omega, g x :e A) -> (fun i :e idx B => g i) = choose_in (A :^: idx B) (fun f:set => forall i :e omega, 1 <= i /\ i <= dimindex B -> f i = g i).
+Admitted.
+
+// HOL Light: cart.ml:132 / LAMBDA_BETA
+// Source hash: md5:a1b73e7882037b5a6a9034c65eb72d73
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem LAMBDA_BETA : forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e omega, g x :e A) -> forall i :e omega, 1 <= i /\ i <= dimindex B -> (fun i :e idx B => g i) i = g i.
+Admitted.
+
+// HOL Light: cart.ml:143 / LAMBDA_UNIQUE
+// Source hash: md5:98f52daf731bf32f6aa2183889e678e4
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem LAMBDA_UNIQUE : forall A B:set, B <> Empty -> forall f :e A :^: idx B, forall g:set -> set, (forall x :e omega, g x :e A) -> ((forall i :e omega, 1 <= i /\ i <= dimindex B -> f i = g i) <-> (fun i :e idx B => g i) = f).
+Admitted.
+
+// HOL Light: cart.ml:149 / LAMBDA_ETA
+// Source hash: md5:bf7a9034dc52575b2f124f169fb89276
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega)
+Theorem LAMBDA_ETA : forall A B:set, B <> Empty -> forall g :e A :^: idx B, (fun i :e idx B => g i) = g.
+Admitted.
+
+// HOL Light: cart.ml:157 / FINITE_INDEX_INRANGE
+// Source hash: md5:e4e13395427e83a1f49cafbe2f46d467
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_INDEX_INRANGE : forall A N:set, A <> Empty -> N <> Empty -> forall i :e omega, exists k :e omega, 1 <= k /\ (k <= dimindex N /\ forall x :e A :^: idx N, x i = x k).
+Admitted.
+
+// HOL Light: cart.ml:161 / FINITE_INDEX_INRANGE_2
+// Source hash: md5:36e035204485169198b7e98d40aec6bc
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_INDEX_INRANGE_2 : forall A B N:set, A <> Empty -> B <> Empty -> N <> Empty -> forall i :e omega, exists k :e omega, 1 <= k /\ (k <= dimindex N /\ ((forall x :e A :^: idx N, x i = x k) /\ forall y :e B :^: idx N, y i = y k)).
+Admitted.
+
+// HOL Light: cart.ml:166 / CART_EQ_FULL
+// Source hash: md5:955cf716b47b18c6a131edcb1725c1c6
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega)
+Theorem CART_EQ_FULL : forall A N:set, N <> Empty -> forall x y :e A :^: idx N, x = y <-> forall i :e omega, x i = y i.
+Admitted.
+
+// HOL Light: cart.ml:181 / pastecart
+// Source hash: md5:970d4141355f6d6f39b68b7eb74facb6
+// Status: generalization_required (bridges: empty_case:A, empty_case:M, empty_case:N, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem pastecart : forall A M N:set, forall f :e A :^: idx M, forall g :e A :^: idx N, (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M))) = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M)).
+Admitted.
+
+// HOL Light: cart.ml:186 / fstcart
+// Source hash: md5:076ed5c08efac66eaf24e72ed8087ff0
+// Status: generalization_required (bridges: empty_case:A, empty_case:M, empty_case:N, hol_cart_setexp, hol_finite_sum_idx, hol_num_omega)
+Theorem fstcart : forall A M N:set, forall f :e A :^: idx_n (dimindex M + dimindex N), (fun i :e idx M => f i) = fun i :e idx M => f i.
+Admitted.
+
+// HOL Light: cart.ml:189 / sndcart
+// Source hash: md5:442acce9e11ba375a5854f0ad07e5d3d
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, empty_case:M, empty_case:N, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
+Theorem sndcart : forall A M N:set, forall f :e A :^: idx_n (dimindex M + dimindex N), (fun i :e idx N => f (i + dimindex M)) = fun i :e idx N => f (i + dimindex M).
+Admitted.
+
+// HOL Light: cart.ml:199 / DIMINDEX_HAS_SIZE_FINITE_SUM
+// Source hash: md5:bf62af096e5852240b46a2bcac0c7182
+// Status: transport_required (bridges: add_nat_add_SNo, hol_dimindex, hol_finite_sum_idx, hol_has_size_equip, hol_num_omega)
+Theorem DIMINDEX_HAS_SIZE_FINITE_SUM : forall M N:set, M <> Empty -> N <> Empty -> equip (idx_n (dimindex M + dimindex N)) (dimindex M + dimindex N).
+Admitted.
+
+// HOL Light: cart.ml:206 / DIMINDEX_FINITE_SUM
+// Source hash: md5:9c92b496f688797b7d7b3bea395b3a9d
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:M, empty_case:N, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
+Theorem DIMINDEX_FINITE_SUM : forall M N:set, dimindex M + dimindex N = dimindex M + dimindex N.
+Admitted.
+
+// HOL Light: cart.ml:211 / FSTCART_PASTECART
+// Source hash: md5:b2889d73733e2663083534f610fe26ec
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem FSTCART_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (fun i :e idx M => (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) i) = x.
+Admitted.
+
+// HOL Light: cart.ml:216 / SNDCART_PASTECART
+// Source hash: md5:5b9d48344251d0303100de806e31cd7c
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem SNDCART_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (fun i :e idx N => (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) (i + dimindex M)) = y.
+Admitted.
+
+// HOL Light: cart.ml:227 / PASTECART_FST_SND
+// Source hash: md5:cd1c341f949d2e3cc3661e480bad612d
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_FST_SND : forall A M N:set, M <> Empty -> N <> Empty -> forall z :e A :^: idx_n (dimindex M + dimindex N), (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then (fun i :e idx M => z i) i else (fun i :e idx N => z (i + dimindex M)) (minus_nat i (dimindex M))) = z.
+Admitted.
+
+// HOL Light: cart.ml:236 / PASTECART_EQ
+// Source hash: md5:4acc7a40e97f7ac44ece1a7ded40cc5e
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_EQ : forall A M N:set, M <> Empty -> N <> Empty -> forall x y :e A :^: idx_n (dimindex M + dimindex N), x = y <-> (fun i :e idx M => x i) = (fun i :e idx M => y i) /\ (fun i :e idx N => x (i + dimindex M)) = fun i :e idx N => y (i + dimindex M).
+Admitted.
+
+// HOL Light: cart.ml:241 / FORALL_PASTECART
+// Source hash: md5:24bf22d217fff4040bd926669c496c75
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem FORALL_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (forall p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, P (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))).
+Admitted.
+
+// HOL Light: cart.ml:245 / EXISTS_PASTECART
+// Source hash: md5:a53a9dbdade76ad7d49219b1a7ed0865
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem EXISTS_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (exists p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, P (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))).
+Admitted.
+
+// HOL Light: cart.ml:249 / PASTECART_INJ
+// Source hash: md5:870f4c2845b9ddb14f21953c1d4ea97e
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_INJ : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, forall w :e A :^: idx M, forall z :e A :^: idx N, (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) = (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then w i else z (minus_nat i (dimindex M))) <-> x = w /\ y = z.
+Admitted.
+
+// HOL Light: cart.ml:253 / FSTCART_COMPONENT
+// Source hash: md5:254b42d30d51ff285f5b66d3f841e710
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem FSTCART_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\ i <= dimindex M -> (fun i :e idx M => x i) i = x i.
+Admitted.
+
+// HOL Light: cart.ml:258 / SNDCART_COMPONENT
+// Source hash: md5:2b6160de571744152be36a7b149e5233
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem SNDCART_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\ i <= dimindex N -> (fun i :e idx N => x (i + dimindex M)) i = x (i + dimindex M).
+Admitted.
+
+// HOL Light: cart.ml:263 / PASTECART_COMPONENT
+// Source hash: md5:3f9168ec3097f0cde3fbc786aea3cc91
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem PASTECART_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> (forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\ i <= dimindex M -> (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then u i else v (minus_nat i (dimindex M))) i = u i) /\ forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, dimindex M + 1 <= i /\ i <= dimindex M + dimindex N -> (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then u i else v (minus_nat i (dimindex M))) i = v (minus_nat i (dimindex M)).
+Admitted.
+
+// HOL Light: cart.ml:294 / DIMINDEX_HAS_SIZE_FINITE_DIFF
+// Source hash: md5:6d6170cc672bc6cae12e288b5cec6547
+// Status: transport_required (bridges: hol_dimindex, hol_finite_diff_idx, hol_has_size_equip, hol_num_omega, nat_lt_SNoLt)
+Theorem DIMINDEX_HAS_SIZE_FINITE_DIFF : forall M N:set, M <> Empty -> N <> Empty -> equip (idx_n (if dimindex N < dimindex M then minus_nat (dimindex M) (dimindex N) else 1)) (if dimindex N < dimindex M then minus_nat (dimindex M) (dimindex N) else 1).
+Admitted.
+
+// HOL Light: cart.ml:302 / DIMINDEX_FINITE_DIFF
+// Source hash: md5:28a5bc47fc80defeda10fe4b95c2cb9d
+// Status: transport_required (bridges: hol_dimindex, hol_finite_diff_idx, hol_num_omega, nat_lt_SNoLt)
+Theorem DIMINDEX_FINITE_DIFF : forall M N:set, M <> Empty -> N <> Empty -> dimindex (idx_n (if dimindex N < dimindex M then minus_nat (dimindex M) (dimindex N) else 1)) = if dimindex N < dimindex M then minus_nat (dimindex M) (dimindex N) else 1.
+Admitted.
+
+// HOL Light: cart.ml:325 / DIMINDEX_HAS_SIZE_FINITE_PROD
+// Source hash: md5:90b3f294442e548ae34f01c37b5d1098
+// Status: transport_required (bridges: hol_dimindex, hol_finite_prod_idx, hol_has_size_equip, hol_num_omega, mul_nat_mul_SNo)
+Theorem DIMINDEX_HAS_SIZE_FINITE_PROD : forall M N:set, M <> Empty -> N <> Empty -> equip (idx_n (dimindex M * dimindex N)) (dimindex M * dimindex N).
+Admitted.
+
+// HOL Light: cart.ml:332 / DIMINDEX_FINITE_PROD
+// Source hash: md5:1149f086d1eb0f908226b89aaa56b44b
+// Status: generalization_required (bridges: empty_case:M, empty_case:N, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo)
+Theorem DIMINDEX_FINITE_PROD : forall M N:set, dimindex M * dimindex N = dimindex M * dimindex N.
+Admitted.
+
+// HOL Light: cart.ml:347 / HAS_SIZE_TYBIT0
+// Source hash: md5:ea3d837c4014ac0c3ad86b5e9d5d04f4
+// Status: transport_required (bridges: hol_dimindex, hol_has_size_equip, hol_num_omega, hol_tybit_idx, mul_nat_mul_SNo)
+Theorem HAS_SIZE_TYBIT0 : forall A:set, A <> Empty -> equip (idx_n (2 * dimindex A)) (2 * dimindex A).
+Admitted.
+
+// HOL Light: cart.ml:360 / HAS_SIZE_TYBIT1
+// Source hash: md5:c1d060ab4d4fb3722685a5022fd13b92
+// Status: transport_required (bridges: add_nat_add_SNo, hol_dimindex, hol_has_size_equip, hol_num_omega, hol_tybit_idx, mul_nat_mul_SNo)
+Theorem HAS_SIZE_TYBIT1 : forall A:set, A <> Empty -> equip (idx_n (2 * dimindex A + 1)) (2 * dimindex A + 1).
+Admitted.
+
+// HOL Light: cart.ml:373 / DIMINDEX_TYBIT0
+// Source hash: md5:2726109efadf953501db3fedb4c44ec0
+// Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_num_omega, hol_tybit_idx, mul_nat_mul_SNo)
+Theorem DIMINDEX_TYBIT0 : forall A:set, 2 * dimindex A = 2 * dimindex A.
+Admitted.
+
+// HOL Light: cart.ml:377 / DIMINDEX_TYBIT1
+// Source hash: md5:18db18f4fd77000629321bf157fb1353
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_dimindex, hol_num_omega, hol_tybit_idx, mul_nat_mul_SNo)
+Theorem DIMINDEX_TYBIT1 : forall A:set, 2 * dimindex A + 1 = 2 * dimindex A + 1.
+Admitted.
+
+// HOL Light: cart.ml:381 / DIMINDEX_CLAUSES
+// Source hash: md5:1c9164d9e863112afb3e9f170701e014
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx, mul_nat_mul_SNo)
+Theorem DIMINDEX_CLAUSES : forall A:set, 1 = 1 /\ (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1).
+Admitted.
+
 // HOL Light: cart.ml:389 / FINITE_1
 // Source hash: md5:90a6cd0195246fd82f4fbaf42c36e52d
 // Status: transport_required (bridges: hol_finite_finite, hol_one_1)
 Theorem FINITE_1 : finite 1.
+Admitted.
+
+// HOL Light: cart.ml:393 / FINITE_TYBIT0
+// Source hash: md5:7028ce5cbd4cf522cc4d8615d9b239b9
+// Status: transport_required (bridges: hol_finite_finite, hol_tybit_idx)
+Theorem FINITE_TYBIT0 : forall A:set, A <> Empty -> finite (idx_n (2 * dimindex A)).
+Admitted.
+
+// HOL Light: cart.ml:397 / FINITE_TYBIT1
+// Source hash: md5:a64758743525884a577bc64816c96b00
+// Status: transport_required (bridges: hol_finite_finite, hol_tybit_idx)
+Theorem FINITE_TYBIT1 : forall A:set, A <> Empty -> finite (idx_n (2 * dimindex A + 1)).
+Admitted.
+
+// HOL Light: cart.ml:401 / FINITE_CLAUSES
+// Source hash: md5:42e8dcd423445931474546e2e60002e4
+// Status: transport_required (bridges: hol_finite_finite, hol_one_1, hol_tybit_idx)
+Theorem FINITE_CLAUSES : forall A:set, A <> Empty -> finite 1 /\ (finite (idx_n (2 * dimindex A)) /\ finite (idx_n (2 * dimindex A + 1))).
+Admitted.
+
+// HOL Light: cart.ml:463 / DIMINDEX_2
+// Source hash: md5:d0a8da4f2034656bd4d9e0714a4c82f2
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx)
+Theorem DIMINDEX_2 : 2 = 2.
+Admitted.
+
+// HOL Light: cart.ml:467 / DIMINDEX_3
+// Source hash: md5:51e4181dfc4fc784261ccfc05b5c00b7
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx)
+Theorem DIMINDEX_3 : 3 = 3.
+Admitted.
+
+// HOL Light: cart.ml:471 / DIMINDEX_4
+// Source hash: md5:75e488850afa71d3a191d143cb618282
+// Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx)
+Theorem DIMINDEX_4 : 4 = 4.
+Admitted.
+
+// HOL Light: cart.ml:475 / HAS_SIZE_2
+// Source hash: md5:f82c0a70f6705c7e235e4e36d867a1a2
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_one_1, hol_tybit_idx)
+Theorem HAS_SIZE_2 : equip (idx_n 2) 2.
+Admitted.
+
+// HOL Light: cart.ml:476 / HAS_SIZE_3
+// Source hash: md5:ac76f67ba36d0e7b7fc0d59c010424af
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_one_1, hol_tybit_idx)
+Theorem HAS_SIZE_3 : equip (idx_n 3) 3.
+Admitted.
+
+// HOL Light: cart.ml:477 / HAS_SIZE_4
+// Source hash: md5:1397fa02f89f92b1eb4960c1f347e79c
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_one_1, hol_tybit_idx)
+Theorem HAS_SIZE_4 : equip (idx_n 4) 4.
+Admitted.
+
+// HOL Light: cart.ml:483 / FINITE_CART
+// Source hash: md5:a0034d785932cd5307e955f10e16d620
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_CART : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> set -> prop, (forall i :e omega, 1 <= i /\ i <= dimindex N -> finite {x :e A | P i x}) -> finite {v :e A :^: idx N | forall i :e omega, 1 <= i /\ i <= dimindex N -> P i (v i)}.
+Admitted.
+
+// HOL Light: cart.ml:528 / HAS_SIZE_CART_UNIV
+// Source hash: md5:b0b81bcc0d6110939002f2411bd9551c
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_cart_setexp, hol_dimindex, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_CART_UNIV : forall A N:set, A <> Empty -> N <> Empty -> forall m :e omega, equip A m -> equip (A :^: idx N) (m ^ dimindex N).
+Admitted.
+
+// HOL Light: cart.ml:542 / CARD_CART_UNIV
+// Source hash: md5:0f9dcb75b599efb0c1ce51ea2172f442
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega)
+Theorem CARD_CART_UNIV : forall A N:set, A <> Empty -> N <> Empty -> finite A -> finite_cardinality (A :^: idx N) = finite_cardinality A ^ dimindex N.
+Admitted.
+
+// HOL Light: cart.ml:546 / FINITE_CART_UNIV
+// Source hash: md5:dcf8ffbb9fadf298b171451ec20ea6dc
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite)
+Theorem FINITE_CART_UNIV : forall A N:set, N <> Empty -> finite A -> finite (A :^: idx N).
+Admitted.
+
+// HOL Light: cart.ml:561 / IN_ELIM_PASTECART_THM
+// Source hash: md5:2ad6de4e0f69d9906298f4dbf228d6e8
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
+Theorem IN_ELIM_PASTECART_THM : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> set -> prop, forall a :e A :^: idx M, forall b :e A :^: idx N, (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then a i else b (minus_nat i (dimindex M))) :e (\/_ x :e A :^: idx M, {(fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) | y :e A :^: idx N, P x y}) <-> P a b.
 Admitted.
 

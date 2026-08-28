@@ -67,7 +67,7 @@
    "arity": 1,
    "carrier": "1 :+: ?0",
    "class": "native_isomorphism",
-   "status": "pending",
+   "status": "reviewed",
    "bridge": "hol_option_setsum"
   },
   {
@@ -101,6 +101,70 @@
    "class": "opaque",
    "status": "internal",
    "notes": "HOL Light type of individuals (only used to construct num)."
+  },
+  {
+   "hol": "cart",
+   "arity": 2,
+   "carrier": "?0 :^: idx ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_cart_setexp",
+   "module": "native/prelude.mg",
+   "notes": "A^N as functions on the 1-based index set idx N = {1..dimindex N}"
+  },
+  {
+   "hol": "finite_image",
+   "arity": 1,
+   "carrier": "idx ?0",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_image_idx",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "finite_sum",
+   "arity": 2,
+   "carrier": "idx_n (dimindex ?0 + dimindex ?1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_sum_idx",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "finite_diff",
+   "arity": 2,
+   "carrier": "idx_n (if dimindex ?1 < dimindex ?0 then minus_nat (dimindex ?0) (dimindex ?1) else 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_diff_idx",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "finite_prod",
+   "arity": 2,
+   "carrier": "idx_n (dimindex ?0 * dimindex ?1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_prod_idx",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "tybit0",
+   "arity": 1,
+   "carrier": "idx_n (2 * dimindex ?0)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_tybit_idx",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "tybit1",
+   "arity": 1,
+   "carrier": "idx_n (2 * dimindex ?0 + 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_tybit_idx",
+   "module": "native/prelude.mg"
   }
  ],
  "constants": [
@@ -1595,6 +1659,806 @@
    "class": "definitionally_exact",
    "status": "reviewed",
    "notes": "(x == y) r  is  r x y"
+  },
+  {
+   "hol": "admissible",
+   "scheme": "(A->A->bool)->((B->C)->P->bool)->(P->A)->((B->C)->P->D)->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "superadmissible",
+   "scheme": "(A->A->bool)->((A->B)->P->bool)->(P->A)->((A->B)->P->B)->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "tailadmissible",
+   "scheme": "(A->A->bool)->((A->B)->P->bool)->(P->A)->((A->B)->P->B)->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "FINREC",
+   "scheme": "(A->B->B)->B->(A->bool)->B->num->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "ZRECSPACE",
+   "scheme": "(num->A->bool)->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "CONSTR",
+   "scheme": "num->A->(num->A recspace)->A recspace",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "BOTTOM",
+   "scheme": "A recspace",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "FCONS",
+   "scheme": "A->(num->A)->num->A",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "FNIL",
+   "scheme": "num->A",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "INJN",
+   "scheme": "num->num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "INJA",
+   "scheme": "A->num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "INJF",
+   "scheme": "(num->num->A->bool)->num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "INJP",
+   "scheme": "(num->A->bool)->(num->A->bool)->num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "ZCONSTR",
+   "scheme": "num->A->(num->num->A->bool)->num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "ZBOT",
+   "scheme": "num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_mk_rec",
+   "scheme": "(num->A->bool)->A recspace",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_dest_rec",
+   "scheme": "A recspace->num->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMLEFT",
+   "scheme": "num->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMRIGHT",
+   "scheme": "bool->num->num",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMSUM",
+   "scheme": "bool->num->num",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMPAIR",
+   "scheme": "num->num->num",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMFST",
+   "scheme": "num->num",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMSND",
+   "scheme": "num->num",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "GEQ",
+   "scheme": "A->A->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_MATCH",
+   "scheme": "A->(A->B->bool)->B",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_FUNCTION",
+   "scheme": "(A->B->bool)->A->B",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_SEQPATTERN",
+   "scheme": "(A->B->bool)->(A->B->bool)->A->B->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_UNGUARDED_PATTERN",
+   "scheme": "bool->bool->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_GUARDED_PATTERN",
+   "scheme": "bool->bool->bool->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "_FALSITY_",
+   "scheme": "bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "IND_SUC",
+   "scheme": "ind->ind",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "IND_0",
+   "scheme": "ind",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "mk_num",
+   "scheme": "ind->num",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "dest_num",
+   "scheme": "num->ind",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "mk_real",
+   "scheme": "(hreal#hreal->bool)->real",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "dest_real",
+   "scheme": "real->hreal#hreal->bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "hashek",
+   "scheme": "bool",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "iterato",
+   "scheme": "(A->bool)->A->(A->A->A)->(K->K->bool)->(K->bool)->(K->A)->A",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "CASEWISE",
+   "scheme": "((P->A)#(B->P->C)) list->B->A->C",
+   "args": [],
+   "result": "set",
+   "template": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light internal definition/datatype machinery"
+  },
+  {
+   "hol": "NUMERAL",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "numeral wrapper is the identity"
+  },
+  {
+   "hol": "BIT0",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "2 * ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "BIT1",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "2 * ?1 + 1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "_0",
+   "scheme": "num",
+   "args": [],
+   "result": "set",
+   "template": "0",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "ITSET",
+   "scheme": "(A->B->B)->(A->bool)->B->B",
+   "args": [
+    "metafun",
+    "subset",
+    "set"
+   ],
+   "result": "set",
+   "template": "set_foldr ?1 ?2 ?3",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_itset",
+   "module": "native/finseq.mg",
+   "notes": "fold over a chosen enumeration; HOL Light ITSET is likewise only determined up to the recursion order"
+  },
+  {
+   "hol": "NONE",
+   "scheme": "A option",
+   "args": [],
+   "result": "set",
+   "template": "Inj0 0",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_option_setsum"
+  },
+  {
+   "hol": "SOME",
+   "scheme": "A->A option",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "Inj1 ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_option_setsum"
+  },
+  {
+   "hol": "==",
+   "scheme": "num->num->(num->num->bool)->bool",
+   "args": [
+    "set",
+    "set",
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "?3 ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "int_mod",
+   "scheme": "int->int->int->bool",
+   "args": [
+    "set",
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "divides_int ?1 (?2 + - ?3)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "num_mod",
+   "scheme": "num->num->num->bool",
+   "args": [
+    "set",
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "exists q1 q2 :e omega, ?2 + ?1 * q1 = ?3 + ?1 * q2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "int_gcd",
+   "scheme": "int#int->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "gcd_int (?1 0) (?1 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "num_gcd",
+   "scheme": "num#num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "gcd_int (?1 0) (?1 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "int_lcm",
+   "scheme": "int#int->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "lcm_int (?1 0) (?1 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "num_lcm",
+   "scheme": "num#num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "lcm_int (?1 0) (?1 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "int_coprime",
+   "scheme": "int#int->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "gcd_int (?1 0) (?1 1) = 1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "num_coprime",
+   "scheme": "num#num->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "gcd_int (?1 0) (?1 1) = 1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "prime",
+   "scheme": "num->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "prime_nat ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "monoidal",
+   "scheme": "(A->A->A)->bool",
+   "args": [
+    "metafun"
+   ],
+   "result": "prop",
+   "template": "(forall x y :e ?A, ?1 x y = ?1 y x) /\\ (forall x y z :e ?A, ?1 x (?1 y z) = ?1 (?1 x y) z) /\\ (forall x :e ?A, ?1 (neutral_of ?A (fun a b => ?1 a b)) x = x)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "polynomial_function",
+   "scheme": "(real->real)->bool",
+   "args": [
+    "metafun"
+   ],
+   "result": "prop",
+   "template": "polynomial_function_R ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "dimindex",
+   "scheme": "(N->bool)->num",
+   "args": [
+    "subset"
+   ],
+   "result": "set",
+   "template": "dimindex ?N",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_dimindex",
+   "module": "native/prelude.mg",
+   "notes": "the set argument only carries the type"
+  },
+  {
+   "hol": "$",
+   "scheme": "A^N->num->A",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_cart_setexp",
+   "notes": "component i of a vector is application to i"
+  },
+  {
+   "hol": "lambda",
+   "scheme": "(num->A)->A^N",
+   "args": [
+    "metafun"
+   ],
+   "result": "set",
+   "template": "fun i :e idx ?N => ?1 i",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_cart_setexp"
+  },
+  {
+   "hol": "mk_cart",
+   "scheme": "(N finite_image->A)->A^N",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_cart_setexp"
+  },
+  {
+   "hol": "dest_cart",
+   "scheme": "A^N->(N finite_image->A)",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_cart_setexp"
+  },
+  {
+   "hol": "finite_index",
+   "scheme": "num->N finite_image",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "generalization",
+   "status": "reviewed",
+   "bridge": "hol_finite_image_idx",
+   "notes": "identity on 1..dimindex N; HOL Light unspecified outside"
+  },
+  {
+   "hol": "dest_finite_image",
+   "scheme": "N finite_image->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_image_idx"
+  },
+  {
+   "hol": "disjoint_union",
+   "scheme": "(K->bool)->(K->A->bool)->(K#A->bool)",
+   "args": [
+    "subset",
+    "metafun/1"
+   ],
+   "result": "subset",
+   "template": "{p :e ?K :*: ?A | p 0 :e ?1 /\\ p 1 :e ?2 (p 0)}",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "pastecart",
+   "scheme": "A^M->A^N->A^(M,N)finite_sum",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "fun i :e idx_n (dimindex ?M + dimindex ?N) => if i <= dimindex ?M then ?1 i else ?2 (minus_nat i (dimindex ?M))",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_sum_idx"
+  },
+  {
+   "hol": "fstcart",
+   "scheme": "A^(M,N)finite_sum->A^M",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "fun i :e idx ?M => ?1 i",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_sum_idx"
+  },
+  {
+   "hol": "sndcart",
+   "scheme": "A^(M,N)finite_sum->A^N",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "fun i :e idx ?N => ?1 (i + dimindex ?M)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_sum_idx"
+  }
+ ],
+ "rewrite_rules": [
+  {
+   "lhs": "{i :e omega | 1 <= i /\\ i <= ?n}",
+   "rhs": "idx_n ?n",
+   "by": "idx_n_def"
+  },
+  {
+   "lhs": "idx_n (dimindex ?N)",
+   "rhs": "idx ?N",
+   "by": "idx_def"
+  },
+  {
+   "lhs": "idx (idx_n ?k)",
+   "rhs": "idx_n ?k",
+   "by": "idx_idx_n",
+   "guard": {
+    "k": "positive_dim"
+   }
+  },
+  {
+   "lhs": "dimindex (idx_n ?k)",
+   "rhs": "?k",
+   "by": "dimindex_idx_n",
+   "guard": {
+    "k": "positive_dim"
+   }
+  },
+  {
+   "lhs": "dimindex 1",
+   "rhs": "1",
+   "by": "dimindex_one"
   }
  ]
 }

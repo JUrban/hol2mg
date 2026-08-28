@@ -92,6 +92,24 @@ Admitted.
 Theorem WF_MEASURE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall lt:set -> set -> prop, forall m:set -> set, (forall x :e A, m x :e B) -> (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt (m y) (m x).
 Admitted.
 
+// HOL Light: wf.ml:207 / WF_LEX_DEPENDENT
+// Source hash: md5:cfb5629a4954c6579cc3c886c0896747
+// Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
+Theorem WF_LEX_DEPENDENT : forall A B:set, B <> Empty -> forall R0:set -> set -> prop, forall S:set -> set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ R0 y x) /\ (forall a :e A, forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ S a y x) -> forall P c= A :*: B, P <> Empty -> exists x :e P, forall y :e P, ~ (R0 (y 0) (x 0) \/ y 0 = x 0 /\ S (y 0) (y 1) (x 1)).
+Admitted.
+
+// HOL Light: wf.ml:226 / WF_LEX
+// Source hash: md5:ab5a867a79f9dbbf98e3fa352b9392b0
+// Status: transport_required (bridges: hol_prod_setprod)
+Theorem WF_LEX : forall A B:set, A <> Empty -> B <> Empty -> forall R0 S:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ R0 y x) /\ (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ S y x) -> forall P c= A :*: B, P <> Empty -> exists x :e P, forall y :e P, ~ (R0 (y 0) (x 0) \/ y 0 = x 0 /\ S (y 1) (x 1)).
+Admitted.
+
+// HOL Light: wf.ml:231 / WF_POINTWISE
+// Source hash: md5:f0ab988208aa7f06051c0b942cda2ca0
+// Status: transport_required (bridges: hol_prod_setprod)
+Theorem WF_POINTWISE : forall A B:set, A <> Empty -> B <> Empty -> forall lt lt0:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ lt0 y x) -> forall P c= A :*: B, P <> Empty -> exists x :e P, forall y :e P, ~ (lt (y 0) (x 0) /\ lt0 (y 1) (x 1)).
+Admitted.
+
 // HOL Light: wf.ml:244 / WF_num
 // Source hash: md5:207314b216600b64e25f3b0fea660db9
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
@@ -124,8 +142,8 @@ Admitted.
 
 // HOL Light: wf.ml:298 / MINIMAL_BAD_SEQUENCE
 // Source hash: md5:626982c0fe0f800129b51817d89ba2b9
-// Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
-Theorem MINIMAL_BAD_SEQUENCE : forall A:set, A <> Empty -> forall lt:set -> set -> prop, forall bad:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ ((forall x :e A :^: omega, ~ bad x -> exists n :e omega, forall y :e A :^: omega, (forall k :e omega, k < n -> y k = x k) -> ~ bad y) /\ (exists x :e A :^: omega, bad x)) -> exists y :e A :^: omega, bad y /\ forall z :e A :^: omega, forall n :e omega, bad z /\ (forall k :e omega, k < n -> z k = y k) -> ~ lt (z n) (y n).
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega, nat_lt_SNoLt)
+Theorem MINIMAL_BAD_SEQUENCE : forall A:set, forall lt:set -> set -> prop, forall bad:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ ((forall x :e A :^: omega, ~ bad x -> exists n :e omega, forall y :e A :^: omega, (forall k :e omega, k < n -> y k = x k) -> ~ bad y) /\ (exists x :e A :^: omega, bad x)) -> exists y :e A :^: omega, bad y /\ forall z :e A :^: omega, forall n :e omega, bad z /\ (forall k :e omega, k < n -> z k = y k) -> ~ lt (z n) (y n).
 Admitted.
 
 // HOL Light: wf.ml:324 / WF_REC_TAIL

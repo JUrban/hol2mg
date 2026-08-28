@@ -83,3 +83,33 @@ Theorem finprod_R : forall s:set, forall f:set -> set, (forall x :e s, f x :e R)
 Admitted.
 Theorem finprod_omega : forall s:set, forall f:set -> set, (forall x :e s, f x :e omega) -> finprod s f :e omega.
 Admitted.
+
+// gcd and lcm on integers (HOL Light int_gcd/num_gcd take a pair).
+Definition gcd_int : set -> set -> set :=
+  fun a b => if a = 0 /\ b = 0 then 0 else choose_in int (fun d => 0 <= d /\ gcd_reln a b d).
+Definition lcm_int : set -> set -> set :=
+  fun a b => if a = 0 \/ b = 0 then 0 else abs_SNo (a * b) :/: gcd_int a b.
+
+// real polynomial functions (HOL Light polynomial_function)
+Definition polynomial_function_R : (set -> set) -> prop :=
+  fun p => exists m :e omega, exists c:set -> set, (forall i :e ordsucc m, c i :e R) /\ forall x :e R, p x = finsum (ordsucc m) (fun i => c i * x ^ i).
+
+// Finite index types of HOL Light (cart.ml).  An index type N becomes a set
+// parameter; its dimension is its cardinality when finite and 1 otherwise,
+// and vectors A^N are functions on the 1-based index set idx N.
+Definition dimindex : set -> set := fun N => if finite N then finite_cardinality N else 1.
+Definition idx_n : set -> set := fun n => {i :e omega | 1 <= i /\ i <= n}.
+Definition idx : set -> set := fun N => idx_n (dimindex N).
+
+Theorem dimindex_omega : forall N:set, dimindex N :e omega.
+Admitted.
+Theorem dimindex_ge_1 : forall N:set, 1 <= dimindex N.
+Admitted.
+Theorem idx_n_equip : forall n :e omega, equip (idx_n n) n.
+Admitted.
+Theorem dimindex_idx_n : forall n :e omega, 1 <= n -> dimindex (idx_n n) = n.
+Admitted.
+Theorem idx_idx_n : forall n :e omega, 1 <= n -> idx (idx_n n) = idx_n n.
+Admitted.
+Theorem dimindex_one : dimindex 1 = 1.
+Admitted.

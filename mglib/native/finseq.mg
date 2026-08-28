@@ -95,3 +95,8 @@ Theorem seq_foldr_cons : forall A:set, forall f:set -> set -> set, forall a :e A
 Admitted.
 Theorem finseq_Empty : finseq Empty = {seq_nil}.
 Admitted.
+
+// an enumeration of a finite set as a sequence, and folds over finite sets (HOL Light ITSET)
+Definition seq_of_set : set -> set :=
+  fun s => choose_in (finseq s) (fun l => seq_set l = s /\ seq_len l = finite_cardinality s).
+Definition set_foldr : (set -> set -> set) -> set -> set -> set := fun f s b => seq_foldr f (seq_of_set s) b.

@@ -80,16 +80,40 @@ Admitted.
 Theorem EQ_ADD_RCANCEL_0 : forall m n :e omega, m + n = n <-> m = 0.
 Admitted.
 
+// HOL Light: arith.ml:105 / BIT0
+// Source hash: md5:430d599f5e1293326bc126e234c8d908
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
+Theorem BIT0 : forall n :e omega, 2 * n = n + n.
+Admitted.
+
+// HOL Light: arith.ml:109 / BIT1
+// Source hash: md5:f52a9257f8a571885f7a8e7cb5953364
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
+Theorem BIT1 : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+Admitted.
+
+// HOL Light: arith.ml:113 / BIT0_THM
+// Source hash: md5:559c2f7303610dd8ed299cfea6532bed
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
+
+// HOL Light: arith.ml:117 / BIT1_THM
+// Source hash: md5:5654419bb755d5c6a785a1195805b6b3
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+
 // HOL Light: arith.ml:125 / ONE
 // Source hash: md5:8296249074f69ba4d09cec1afc913c50
 // Status: transport_required (bridges: hol_num_omega)
-Theorem ONE : 1 = ordsucc 0.
+Theorem ONE : 1 = 1.
 Admitted.
 
 // HOL Light: arith.ml:129 / TWO
 // Source hash: md5:0326ab129d5eb6c0d9f12e5b919e0e71
 // Status: transport_required (bridges: hol_num_omega)
-Theorem TWO : 2 = ordsucc 1.
+Theorem TWO : 2 = 2.
 Admitted.
 
 // HOL Light: arith.ml:137 / ADD1
@@ -172,9 +196,9 @@ Admitted.
 
 // HOL Light: arith.ml:203 / MULT_2
 // Source hash: md5:aefb67ed10cad5150806e529a2aa3bae
-// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
-Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
-Admitted.
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
 
 // HOL Light: arith.ml:207 / MULT_EQ_1
 // Source hash: md5:97b70f4fd951132f2f6772a1745544f6

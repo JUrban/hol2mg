@@ -102,6 +102,14 @@ let rec abstract_free (s, ty) depth tm =
   | App (f, x) -> App (abstract_free (s, ty) depth f, abstract_free (s, ty) depth x)
   | Lam (s', ty', b) -> Lam (s', ty', abstract_free (s, ty) (depth + 1) b)
 
+(* replace a free variable by a term (term must not capture bound variables: we lift it) *)
+let rec replace_free (s, ty) u depth tm =
+  match tm with
+  | Free (s', ty') when s' = s && ty' = ty -> lift depth 0 u
+  | Bound _ | Free _ | Const _ -> tm
+  | App (f, x) -> App (replace_free (s, ty) u depth f, replace_free (s, ty) u depth x)
+  | Lam (s', ty', b) -> Lam (s', ty', replace_free (s, ty) u (depth + 1) b)
+
 let rec frees tm =
   match tm with
   | Free (s, ty) -> [ (s, ty) ]

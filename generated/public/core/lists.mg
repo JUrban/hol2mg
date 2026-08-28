@@ -16,8 +16,8 @@ Admitted.
 
 // HOL Light: lists.ml:34 / APPEND
 // Source hash: md5:3ef027801213877da04628f269452000
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem APPEND : forall A:set, (forall l :e finseq A, seq_append seq_nil l = l) /\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l).
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem APPEND : forall A:set, A <> Empty -> (forall l :e finseq A, seq_append seq_nil l = l) /\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l).
 Admitted.
 
 // HOL Light: lists.ml:38 / REVERSE
@@ -155,7 +155,7 @@ Admitted.
 // HOL Light: lists.ml:136 / PAIRWISE
 // Source hash: md5:eb123e79540a9b1d62bbfe35e530d530
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem PAIRWISE : forall A:set, forall r :e Power A :^: A, forall h :e A, forall t :e finseq A, (seq_pairwise (fun x:set => fun x0:set => x0 :e r x) seq_nil <-> True) /\ (seq_pairwise (fun x:set => fun x0:set => x0 :e r x) (seq_cons h t) <-> seq_all (fun x:set => x :e r h) t /\ seq_pairwise (fun x:set => fun x0:set => x0 :e r x) t).
+Theorem PAIRWISE : forall A:set, forall r:set -> set -> prop, forall h :e A, forall t :e finseq A, (seq_pairwise r seq_nil <-> True) /\ (seq_pairwise r (seq_cons h t) <-> seq_all (r h) t /\ seq_pairwise r t).
 Admitted.
 
 // HOL Light: lists.ml:140 / list_of_seq
@@ -178,14 +178,14 @@ Admitted.
 
 // HOL Light: lists.ml:157 / APPEND_NIL
 // Source hash: md5:34e676cda4ec75f03b52d6a0a1fe6783
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem APPEND_NIL : forall A:set, forall l :e finseq A, seq_append l seq_nil = l.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem APPEND_NIL : forall A:set, A <> Empty -> forall l :e finseq A, seq_append l seq_nil = l.
 Admitted.
 
 // HOL Light: lists.ml:161 / APPEND_ASSOC
 // Source hash: md5:595245cd5d4fe352684d336877239fe8
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem APPEND_ASSOC : forall A:set, forall l m n :e finseq A, seq_append l (seq_append m n) = seq_append (seq_append l m) n.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem APPEND_ASSOC : forall A:set, A <> Empty -> forall l m n :e finseq A, seq_append l (seq_append m n) = seq_append (seq_append l m) n.
 Admitted.
 
 // HOL Light: lists.ml:165 / REVERSE_APPEND
@@ -214,9 +214,9 @@ Admitted.
 
 // HOL Light: lists.ml:182 / list_CASES
 // Source hash: md5:6c9a307f18507870c827834056fdffa7
-// Status: native_reuse (bridges: empty_case:A, hol_list_finseq)
+// Status: native_reuse (bridges: hol_list_finseq)
 // Reuse: this proposition is already a theorem of the target library.
-// Theorem list_CASES : forall A:set, forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t.
+// Theorem list_CASES : forall A:set, A <> Empty -> forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t.
 
 // HOL Light: lists.ml:187 / LIST_EQ
 // Source hash: md5:e80393494d2381101e2f9fdd59b8a934
@@ -226,26 +226,26 @@ Admitted.
 
 // HOL Light: lists.ml:198 / LENGTH_APPEND
 // Source hash: md5:87d5d63471bb0040381d1296f836489b
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_list_finseq, hol_num_omega)
-Theorem LENGTH_APPEND : forall A:set, forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_list_finseq, hol_num_omega)
+Theorem LENGTH_APPEND : forall A:set, A <> Empty -> forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m.
 Admitted.
 
 // HOL Light: lists.ml:202 / MAP_APPEND
 // Source hash: md5:e005972551ddebaef8cd43f82996650d
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem MAP_APPEND : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l1 l2 :e finseq A, seq_map f (seq_append l1 l2) = seq_append (seq_map f l1) (seq_map f l2).
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem MAP_APPEND : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l1 l2 :e finseq A, seq_map f (seq_append l1 l2) = seq_append (seq_map f l1) (seq_map f l2).
 Admitted.
 
 // HOL Light: lists.ml:206 / LENGTH_MAP
 // Source hash: md5:46b98d7ca2f174c0346df14d00117beb
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq, hol_num_omega)
-Theorem LENGTH_MAP : forall A B:set, B <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e B) -> seq_len (seq_map f l) = seq_len l.
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
+Theorem LENGTH_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e B) -> seq_len (seq_map f l) = seq_len l.
 Admitted.
 
 // HOL Light: lists.ml:210 / LENGTH_EQ_NIL
 // Source hash: md5:a50730425650e431b90f58c470a41521
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq, hol_num_omega)
-Theorem LENGTH_EQ_NIL : forall A:set, forall l :e finseq A, seq_len l = 0 <-> l = seq_nil.
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
+Theorem LENGTH_EQ_NIL : forall A:set, A <> Empty -> forall l :e finseq A, seq_len l = 0 <-> l = seq_nil.
 Admitted.
 
 // HOL Light: lists.ml:214 / LENGTH_EQ_CONS
@@ -262,14 +262,14 @@ Admitted.
 
 // HOL Light: lists.ml:225 / MAP_o
 // Source hash: md5:21dca6e4b2bded73c4144e9ca5c0eb7e
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem MAP_o : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l).
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem MAP_o : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l).
 Admitted.
 
 // HOL Light: lists.ml:230 / MAP_EQ
 // Source hash: md5:ed81072fd7af91838cbb0ef3425ceb39
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem MAP_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall l :e finseq A, seq_all (fun x:set => f x = g x) l -> seq_map f l = seq_map g l.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem MAP_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall l :e finseq A, seq_all (fun x:set => f x = g x) l -> seq_map f l = seq_map g l.
 Admitted.
 
 // HOL Light: lists.ml:235 / ALL_IMP
@@ -322,8 +322,8 @@ Admitted.
 
 // HOL Light: lists.ml:277 / MAP_EQ_DEGEN
 // Source hash: md5:361b296c0ed0074ff5265305edb5dcbe
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem MAP_EQ_DEGEN : forall A:set, forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e A) -> seq_all (fun x:set => f x = x) l -> seq_map f l = l.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem MAP_EQ_DEGEN : forall A:set, A <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e A) -> seq_all (fun x:set => f x = x) l -> seq_map f l = l.
 Admitted.
 
 // HOL Light: lists.ml:283 / ALL2_AND_RIGHT
@@ -334,8 +334,8 @@ Admitted.
 
 // HOL Light: lists.ml:289 / ITLIST_APPEND
 // Source hash: md5:8a530b09bf93bfaa44eb3847190e9bde
-// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_list_finseq)
-Theorem ITLIST_APPEND : forall A B:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall a :e B, forall l1 l2 :e finseq A, seq_foldr f (seq_append l1 l2) a = seq_foldr f l1 (seq_foldr f l2 a).
+// Status: generalization_required (bridges: empty_case:B, hol_list_finseq)
+Theorem ITLIST_APPEND : forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall a :e B, forall l1 l2 :e finseq A, seq_foldr f (seq_append l1 l2) a = seq_foldr f l1 (seq_foldr f l2 a).
 Admitted.
 
 // HOL Light: lists.ml:295 / ITLIST_EXTRA
@@ -389,13 +389,13 @@ Admitted.
 // HOL Light: lists.ml:333 / EXISTS_EX
 // Source hash: md5:d49b9f16d9da009544ebd72dd5849c7e
 // Status: transport_required (bridges: hol_list_finseq)
-Theorem EXISTS_EX : forall A B:set, A <> Empty -> B <> Empty -> forall P :e Power B :^: A, forall l :e finseq B, (exists x :e A, seq_ex (fun x0:set => x0 :e P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s = 1) l.
+Theorem EXISTS_EX : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (exists x :e A, seq_ex (P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s) l.
 Admitted.
 
 // HOL Light: lists.ml:338 / FORALL_ALL
 // Source hash: md5:e7b6a1d0c12594c67f5b793f5fe03220
 // Status: transport_required (bridges: hol_list_finseq)
-Theorem FORALL_ALL : forall A B:set, A <> Empty -> B <> Empty -> forall P :e Power B :^: A, forall l :e finseq B, (forall x :e A, seq_all (fun x0:set => x0 :e P x) l) <-> seq_all (fun s:set => forall x :e A, P x s = 1) l.
+Theorem FORALL_ALL : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (forall x :e A, seq_all (P x) l) <-> seq_all (fun s:set => forall x :e A, P x s) l.
 Admitted.
 
 // HOL Light: lists.ml:343 / MEM_APPEND
@@ -508,8 +508,8 @@ Admitted.
 
 // HOL Light: lists.ml:469 / APPEND_EQ_NIL
 // Source hash: md5:e9edc19ed23cabaa314fa3fcaec3296e
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem APPEND_EQ_NIL : forall A:set, forall l m :e finseq A, seq_append l m = seq_nil <-> l = seq_nil /\ m = seq_nil.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem APPEND_EQ_NIL : forall A:set, A <> Empty -> forall l m :e finseq A, seq_append l m = seq_nil <-> l = seq_nil /\ m = seq_nil.
 Admitted.
 
 // HOL Light: lists.ml:473 / APPEND_LCANCEL
@@ -538,8 +538,8 @@ Admitted.
 
 // HOL Light: lists.ml:496 / MAP_EQ_NIL
 // Source hash: md5:f1250992840d45e0d3f24916f01553e8
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem MAP_EQ_NIL : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_map f l = seq_nil <-> l = seq_nil.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem MAP_EQ_NIL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_map f l = seq_nil <-> l = seq_nil.
 Admitted.
 
 // HOL Light: lists.ml:500 / INJECTIVE_MAP
@@ -556,15 +556,15 @@ Admitted.
 
 // HOL Light: lists.ml:519 / MAP_ID
 // Source hash: md5:84fd0b4115f0cf85275d63eec3f2c524
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem MAP_ID : forall A:set, forall l :e finseq A, seq_map (fun x:set => x) l = l.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem MAP_ID : forall A:set, A <> Empty -> forall l :e finseq A, seq_map (fun x:set => x) l = l.
 Admitted.
 
 // HOL Light: lists.ml:523 / MAP_I
 // Source hash: md5:7308c5409ad7fe485ea20ab13aadeb1b
-// Status: native_reuse (bridges: empty_case:A, hol_list_finseq)
+// Status: native_reuse (bridges: hol_list_finseq)
 // Reuse: this proposition is already a theorem of the target library.
-// Theorem MAP_I : forall A:set, forall x :e finseq A, seq_map (fun x:set => x) x = x.
+// Theorem MAP_I : forall A:set, A <> Empty -> forall x :e finseq A, seq_map (fun x:set => x) x = x.
 
 // HOL Light: lists.ml:527 / BUTLAST_CLAUSES
 // Source hash: md5:2669bd204e0a6c6c199749e98d4535d4
@@ -574,38 +574,38 @@ Admitted.
 
 // HOL Light: lists.ml:533 / BUTLAST_APPEND
 // Source hash: md5:b9b6989022b3a40753c7c1cd6dfbc030
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem BUTLAST_APPEND : forall A:set, forall l m :e finseq A, seq_butlast (seq_append l m) = if m = seq_nil then seq_butlast l else seq_append l (seq_butlast m).
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem BUTLAST_APPEND : forall A:set, A <> Empty -> forall l m :e finseq A, seq_butlast (seq_append l m) = if m = seq_nil then seq_butlast l else seq_append l (seq_butlast m).
 Admitted.
 
 // HOL Light: lists.ml:540 / APPEND_BUTLAST_LAST
 // Source hash: md5:703f649413aa2037e3dcf32aa4963892
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem APPEND_BUTLAST_LAST : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_append (seq_butlast l) (seq_cons (seq_last l) seq_nil) = l.
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem APPEND_BUTLAST_LAST : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_append (seq_butlast l) (seq_cons (seq_last l) seq_nil) = l.
 Admitted.
 
 // HOL Light: lists.ml:545 / LAST_APPEND
 // Source hash: md5:4020322e71adb76451026919c337000e
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem LAST_APPEND : forall A:set, forall p q :e finseq A, seq_last (seq_append p q) = if q = seq_nil then seq_last p else seq_last q.
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem LAST_APPEND : forall A:set, A <> Empty -> forall p q :e finseq A, seq_last (seq_append p q) = if q = seq_nil then seq_last p else seq_last q.
 Admitted.
 
 // HOL Light: lists.ml:550 / LENGTH_TL
 // Source hash: md5:a85a29a10af63dc1de3488e67a73bc80
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq, hol_num_omega)
-Theorem LENGTH_TL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1.
+// Status: generalization_required (bridges: hol_list_finseq, hol_num_omega)
+Theorem LENGTH_TL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1.
 Admitted.
 
 // HOL Light: lists.ml:554 / LAST_REVERSE
 // Source hash: md5:c75a8f7488d5cca7950ef0e9cc55247c
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem LAST_REVERSE : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l.
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem LAST_REVERSE : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l.
 Admitted.
 
 // HOL Light: lists.ml:559 / HD_REVERSE
 // Source hash: md5:ab3ea9bf8f9519ab0c9869a62f24e123
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem HD_REVERSE : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l.
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem HD_REVERSE : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l.
 Admitted.
 
 // HOL Light: lists.ml:563 / EL_APPEND
@@ -628,20 +628,20 @@ Admitted.
 
 // HOL Light: lists.ml:580 / LAST_EL
 // Source hash: md5:cedb10fc7f4c5badbfdc4bf1fc00dcd0
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq, hol_num_omega)
-Theorem LAST_EL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last l = seq_nth l (minus_nat (seq_len l) 1).
+// Status: generalization_required (bridges: hol_list_finseq, hol_num_omega)
+Theorem LAST_EL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_last l = seq_nth l (minus_nat (seq_len l) 1).
 Admitted.
 
 // HOL Light: lists.ml:586 / HD_APPEND
 // Source hash: md5:da7d7062ece2bd17943b9d0f7e786eeb
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem HD_APPEND : forall A:set, forall l m :e finseq A, seq_hd (seq_append l m) = if l = seq_nil then seq_hd m else seq_hd l.
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem HD_APPEND : forall A:set, A <> Empty -> forall l m :e finseq A, seq_hd (seq_append l m) = if l = seq_nil then seq_hd m else seq_hd l.
 Admitted.
 
 // HOL Light: lists.ml:590 / CONS_HD_TL
 // Source hash: md5:c92d05c19eb5a4cde98682e8b8eceaaa
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem CONS_HD_TL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l).
+// Status: generalization_required (bridges: hol_list_finseq)
+Theorem CONS_HD_TL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l).
 Admitted.
 
 // HOL Light: lists.ml:594 / EL_MAP

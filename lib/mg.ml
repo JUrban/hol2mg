@@ -126,6 +126,16 @@ let load_notation_table file =
    | `Assoc l -> List.iter (fun (sym, v) -> match v with `List [ `String c; `Int p ] -> declare_notation c (Postfix (sym, p)) | _ -> ()) l
    | _ -> ())
 
+(* only the declared names of a file (used for the native prelude modules) *)
+let load_signature_names file =
+  let ic = open_in file in
+  let re_decl = Str.regexp "^\\(Definition\\|Parameter\\|Axiom\\|Theorem\\|ProofArchived\\) +\\([A-Za-z_0-9']+\\)" in
+  (try while true do
+     let l = input_line ic in
+     if Str.string_match re_decl l 0 then Hashtbl.replace sig_names (Str.matched_group 2 l) ()
+   done with End_of_file -> ());
+  close_in ic
+
 let is_reserved s = List.mem s reserved_words || Hashtbl.mem sig_names s
 
 (* ------------------------------------------------------------------------ *)

@@ -20,15 +20,51 @@ Admitted.
 Theorem sum_RECURSION : forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a).
 Admitted.
 
+// HOL Light: ind_types.ml:881 / option_INDUCT
+// Source hash: md5:e4c8e92bde030ec48006c86c6a04e07e
+// Status: transport_required (bridges: hol_option_setsum)
+Theorem option_INDUCT : forall A:set, A <> Empty -> forall P:set -> prop, P (Inj0 0) /\ (forall a :e A, P (Inj1 a)) -> forall x :e 1 :+: A, P x.
+Admitted.
+
+// HOL Light: ind_types.ml:881 / option_RECURSION
+// Source hash: md5:ce31bc473fd7b902c2d8553ec8babc5c
+// Status: generalization_required (bridges: empty_case:Z, hol_option_setsum)
+Theorem option_RECURSION : forall A Z:set, A <> Empty -> forall NONE' :e Z, forall SOME':set -> set, (forall x :e A, SOME' x :e Z) -> exists fn:set -> set, (forall x :e 1 :+: A, fn x :e Z) /\ (fn (Inj0 0) = NONE' /\ forall a :e A, fn (Inj1 a) = SOME' a).
+Admitted.
+
 // HOL Light: ind_types.ml:885 / list_INDUCT
 // Source hash: md5:e24a8b3534d12615232f89c947dd6ab3
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem list_INDUCT : forall A:set, forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x.
+// Status: transport_required (bridges: hol_list_finseq)
+Theorem list_INDUCT : forall A:set, A <> Empty -> forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x.
 Admitted.
 
 // HOL Light: ind_types.ml:885 / list_RECURSION
 // Source hash: md5:21b923915525c3b3ed6c44a773a64671
 // Status: generalization_required (bridges: empty_case:Z, hol_list_finseq)
 Theorem list_RECURSION : forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1)).
+Admitted.
+
+// HOL Light: ind_types.ml:889 / FORALL_OPTION_THM
+// Source hash: md5:938df231e9f8dddad4567e29e4b8be69
+// Status: transport_required (bridges: hol_option_setsum)
+Theorem FORALL_OPTION_THM : forall A:set, A <> Empty -> forall P:set -> prop, (forall x :e 1 :+: A, P x) <-> P (Inj0 0) /\ forall a :e A, P (Inj1 a).
+Admitted.
+
+// HOL Light: ind_types.ml:893 / EXISTS_OPTION_THM
+// Source hash: md5:84de9af6ea7f336b2eabd2fa96a39ccc
+// Status: transport_required (bridges: hol_option_setsum)
+Theorem EXISTS_OPTION_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e 1 :+: A, P x) <-> P (Inj0 0) \/ exists a :e A, P (Inj1 a).
+Admitted.
+
+// HOL Light: ind_types.ml:1049 / option_DISTINCT
+// Source hash: md5:e7925affd10224458b2c0632786b20c3
+// Status: generalization_required (bridges: empty_case:A, hol_option_setsum)
+Theorem option_DISTINCT : forall A:set, forall a :e A, ~ Inj1 a = Inj0 0.
+Admitted.
+
+// HOL Light: ind_types.ml:1053 / option_INJ
+// Source hash: md5:4b1c51697077e7e6230974a578bf806c
+// Status: generalization_required (bridges: empty_case:A, hol_option_setsum)
+Theorem option_INJ : forall A:set, forall a b :e A, Inj1 a = Inj1 b <-> a = b.
 Admitted.
 

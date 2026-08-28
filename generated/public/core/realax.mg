@@ -5,121 +5,121 @@
 // HOL Light: realax.ml:54 / dist
 // Source hash: md5:bb7a1d14b94cbe95cb66a8c29bf49c59
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
-Theorem dist : forall n m :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) = minus_nat m n + minus_nat n m.
+Theorem dist : forall n m :e omega, abs_SNo (m + - n) = minus_nat m n + minus_nat n m.
 Admitted.
 
 // HOL Light: realax.ml:61 / DIST_REFL
 // Source hash: md5:8a2c28376a8c6a0a12341c3797b33b4c
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
-Theorem DIST_REFL : forall n :e omega, abs_SNo ((n,n) 0 + - (n,n) 1) = 0.
+Theorem DIST_REFL : forall n :e omega, abs_SNo (n + - n) = 0.
 Admitted.
 
 // HOL Light: realax.ml:65 / DIST_LZERO
 // Source hash: md5:04661d2bb3851b4d752e8a6cdab98b3f
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
-Theorem DIST_LZERO : forall n :e omega, abs_SNo ((0,n) 0 + - (0,n) 1) = n.
+Theorem DIST_LZERO : forall n :e omega, abs_SNo (0 + - n) = n.
 Admitted.
 
 // HOL Light: realax.ml:69 / DIST_RZERO
 // Source hash: md5:6fbe87b28c4b5f3382719518440c5418
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
-Theorem DIST_RZERO : forall n :e omega, abs_SNo ((n,0) 0 + - (n,0) 1) = n.
+Theorem DIST_RZERO : forall n :e omega, abs_SNo (n + - 0) = n.
 Admitted.
 
 // HOL Light: realax.ml:73 / DIST_SYM
 // Source hash: md5:c9d240cfb993e478117e276a473258e0
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
-Theorem DIST_SYM : forall m n :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) = abs_SNo ((n,m) 0 + - (n,m) 1).
+Theorem DIST_SYM : forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m).
 Admitted.
 
 // HOL Light: realax.ml:77 / DIST_LADD
 // Source hash: md5:1e36b83324036d175e4172b3dac8d39d
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
-Theorem DIST_LADD : forall m p n :e omega, abs_SNo ((m + n,m + p) 0 + - (m + n,m + p) 1) = abs_SNo ((n,p) 0 + - (n,p) 1).
+Theorem DIST_LADD : forall m p n :e omega, abs_SNo ((m + n) + - (m + p)) = abs_SNo (n + - p).
 Admitted.
 
 // HOL Light: realax.ml:81 / DIST_RADD
 // Source hash: md5:9c6800d939e5f71627a4519e2f5ce9fd
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
-Theorem DIST_RADD : forall m p n :e omega, abs_SNo ((m + p,n + p) 0 + - (m + p,n + p) 1) = abs_SNo ((m,n) 0 + - (m,n) 1).
+Theorem DIST_RADD : forall m p n :e omega, abs_SNo ((m + p) + - (n + p)) = abs_SNo (m + - n).
 Admitted.
 
 // HOL Light: realax.ml:85 / DIST_LADD_0
 // Source hash: md5:1bc36ce203bd5401ca8151c1d92e2f3d
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
-Theorem DIST_LADD_0 : forall m n :e omega, abs_SNo ((m + n,m) 0 + - (m + n,m) 1) = n.
+Theorem DIST_LADD_0 : forall m n :e omega, abs_SNo ((m + n) + - m) = n.
 Admitted.
 
 // HOL Light: realax.ml:89 / DIST_RADD_0
 // Source hash: md5:35e6e9b188b102651488fd402c953e42
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
-Theorem DIST_RADD_0 : forall m n :e omega, abs_SNo ((m,m + n) 0 + - (m,m + n) 1) = n.
+Theorem DIST_RADD_0 : forall m n :e omega, abs_SNo (m + - (m + n)) = n.
 Admitted.
 
 // HOL Light: realax.ml:93 / DIST_LMUL
 // Source hash: md5:b29e6efd1b68ac3fd8ebbd2ac019738f
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
-Theorem DIST_LMUL : forall m n p :e omega, m * abs_SNo ((n,p) 0 + - (n,p) 1) = abs_SNo ((m * n,m * p) 0 + - (m * n,m * p) 1).
+Theorem DIST_LMUL : forall m n p :e omega, m * abs_SNo (n + - p) = abs_SNo (m * n + - m * p).
 Admitted.
 
 // HOL Light: realax.ml:97 / DIST_RMUL
 // Source hash: md5:04b3e12554cf65d70f7e24054a7fcbf1
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
-Theorem DIST_RMUL : forall m n p :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) * p = abs_SNo ((m * p,n * p) 0 + - (m * p,n * p) 1).
+Theorem DIST_RMUL : forall m n p :e omega, abs_SNo (m + - n) * p = abs_SNo (m * p + - n * p).
 Admitted.
 
 // HOL Light: realax.ml:101 / DIST_EQ_0
 // Source hash: md5:1613e732562c9ecccd01bf7b3a818419
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
-Theorem DIST_EQ_0 : forall m n :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) = 0 <-> m = n.
+Theorem DIST_EQ_0 : forall m n :e omega, abs_SNo (m + - n) = 0 <-> m = n.
 Admitted.
 
 // HOL Light: realax.ml:109 / DIST_ELIM_THM
 // Source hash: md5:6832c76e6a4de30364f18cbb1dfebe30
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
-Theorem DIST_ELIM_THM : forall P:set -> prop, forall x y :e omega, P (abs_SNo ((x,y) 0 + - (x,y) 1)) <-> forall d :e omega, (x = y + d -> P d) /\ (y = x + d -> P d).
+Theorem DIST_ELIM_THM : forall P:set -> prop, forall x y :e omega, P (abs_SNo (x + - y)) <-> forall d :e omega, (x = y + d -> P d) /\ (y = x + d -> P d).
 Admitted.
 
 // HOL Light: realax.ml:125 / DIST_ADD2
 // Source hash: md5:6da136930bd01b6b36d6cfd1d4d5b25d
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_ADD2 : forall m n p q :e omega, abs_SNo ((m + n,p + q) 0 + - (m + n,p + q) 1) <= abs_SNo ((m,p) 0 + - (m,p) 1) + abs_SNo ((n,q) 0 + - (n,q) 1).
+Theorem DIST_ADD2 : forall m n p q :e omega, abs_SNo ((m + n) + - (p + q)) <= abs_SNo (m + - p) + abs_SNo (n + - q).
 Admitted.
 
 // HOL Light: realax.ml:125 / DIST_ADD2_REV
 // Source hash: md5:9bb675936acbadd455253ed570bd70bc
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_ADD2_REV : forall m n p q :e omega, abs_SNo ((m,p) 0 + - (m,p) 1) <= abs_SNo ((m + n,p + q) 0 + - (m + n,p + q) 1) + abs_SNo ((n,q) 0 + - (n,q) 1).
+Theorem DIST_ADD2_REV : forall m n p q :e omega, abs_SNo (m + - p) <= abs_SNo ((m + n) + - (p + q)) + abs_SNo (n + - q).
 Admitted.
 
 // HOL Light: realax.ml:125 / DIST_ADDBOUND
 // Source hash: md5:290b0b7d002de8b3e690b7e4e70c2288
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_ADDBOUND : forall m n :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) <= m + n.
+Theorem DIST_ADDBOUND : forall m n :e omega, abs_SNo (m + - n) <= m + n.
 Admitted.
 
 // HOL Light: realax.ml:125 / DIST_LE_CASES
 // Source hash: md5:2cb461bb1082d0372a4bdc4a052a0d39
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_LE_CASES : forall m n p :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) <= p <-> m <= n + p /\ n <= m + p.
+Theorem DIST_LE_CASES : forall m n p :e omega, abs_SNo (m + - n) <= p <-> m <= n + p /\ n <= m + p.
 Admitted.
 
 // HOL Light: realax.ml:125 / DIST_TRIANGLE
 // Source hash: md5:f561e021653c7cb5529d8d52f239f699
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_TRIANGLE : forall m n p :e omega, abs_SNo ((m,p) 0 + - (m,p) 1) <= abs_SNo ((m,n) 0 + - (m,n) 1) + abs_SNo ((n,p) 0 + - (n,p) 1).
+Theorem DIST_TRIANGLE : forall m n p :e omega, abs_SNo (m + - p) <= abs_SNo (m + - n) + abs_SNo (n + - p).
 Admitted.
 
 // HOL Light: realax.ml:156 / DIST_TRIANGLE_LE
 // Source hash: md5:0d6a16da025934f533ac4a9584ff36b6
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_TRIANGLE_LE : forall m n p q :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) + abs_SNo ((n,p) 0 + - (n,p) 1) <= q -> abs_SNo ((m,p) 0 + - (m,p) 1) <= q.
+Theorem DIST_TRIANGLE_LE : forall m n p q :e omega, abs_SNo (m + - n) + abs_SNo (n + - p) <= q -> abs_SNo (m + - p) <= q.
 Admitted.
 
 // HOL Light: realax.ml:161 / DIST_TRIANGLES_LE
 // Source hash: md5:36d4c10eb2822f3300d5487766dcf2ec
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
-Theorem DIST_TRIANGLES_LE : forall m n p q r s :e omega, abs_SNo ((m,n) 0 + - (m,n) 1) <= r /\ abs_SNo ((p,q) 0 + - (p,q) 1) <= s -> abs_SNo ((m,p) 0 + - (m,p) 1) <= abs_SNo ((n,q) 0 + - (n,q) 1) + r + s.
+Theorem DIST_TRIANGLES_LE : forall m n p q r s :e omega, abs_SNo (m + - n) <= r /\ abs_SNo (p + - q) <= s -> abs_SNo (m + - p) <= abs_SNo (n + - q) + r + s.
 Admitted.
 
 // HOL Light: realax.ml:176 / BOUNDS_LINEAR

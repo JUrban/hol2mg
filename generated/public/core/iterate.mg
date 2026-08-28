@@ -101,14 +101,14 @@ Admitted.
 // HOL Light: iterate.ml:98 / CARD_NUMSEG_1
 // Source hash: md5:f4c3410d70e7ea14dc745c69c12edd65
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega)
-Theorem CARD_NUMSEG_1 : forall n :e omega, finite_cardinality {i :e omega | 1 <= i /\ i <= n} = n.
+Theorem CARD_NUMSEG_1 : forall n :e omega, finite_cardinality (idx_n n) = n.
 Admitted.
 
 // HOL Light: iterate.ml:102 / HAS_SIZE_NUMSEG_1
 // Source hash: md5:3964f0d6d7c3ae686e7c3f3bfad59e22
-// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_NUMSEG_1 : forall n :e omega, equip {i :e omega | 1 <= i /\ i <= n} n.
-Admitted.
+// Status: native_reuse (bridges: hol_has_size_equip, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem HAS_SIZE_NUMSEG_1 : forall n :e omega, equip (idx_n n) n.
 
 // HOL Light: iterate.ml:106 / NUMSEG_CLAUSES
 // Source hash: md5:aaec3d7bc1b903fbed446dba31debe52
@@ -119,7 +119,7 @@ Admitted.
 // HOL Light: iterate.ml:114 / FINITE_INDEX_NUMSEG
 // Source hash: md5:f020cb633155270e9224a2aec88a616b
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
-Theorem FINITE_INDEX_NUMSEG : forall A:set, A <> Empty -> forall s c= A, finite s <-> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall i j :e omega, i :e {i :e omega | 1 <= i /\ i <= finite_cardinality s} /\ (j :e {i :e omega | 1 <= i /\ i <= finite_cardinality s} /\ f i = f j) -> i = j) /\ s = {f x | x :e {i :e omega | 1 <= i /\ i <= finite_cardinality s}}).
+Theorem FINITE_INDEX_NUMSEG : forall A:set, A <> Empty -> forall s c= A, finite s <-> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall i j :e omega, i :e idx_n (finite_cardinality s) /\ (j :e idx_n (finite_cardinality s) /\ f i = f j) -> i = j) /\ s = {f x | x :e idx_n (finite_cardinality s)}).
 Admitted.
 
 // HOL Light: iterate.ml:126 / FINITE_INDEX_NUMBERS
@@ -173,7 +173,7 @@ Admitted.
 // HOL Light: iterate.ml:196 / TOPOLOGICAL_SORT
 // Source hash: md5:725afed5148a9d6dab323e806db0e1da
 // Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, nat_lt_SNoLt)
-Theorem TOPOLOGICAL_SORT : forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall x y :e A, lt x y /\ lt y x -> x = y) /\ (forall x y z :e A, lt x y /\ lt y z -> lt x z) -> forall n :e omega, forall s c= A, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (s = {f x | x :e {i :e omega | 1 <= i /\ i <= n}} /\ forall j k :e omega, j :e {i :e omega | 1 <= i /\ i <= n} /\ (k :e {i :e omega | 1 <= i /\ i <= n} /\ j < k) -> ~ lt (f k) (f j)).
+Theorem TOPOLOGICAL_SORT : forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall x y :e A, lt x y /\ lt y x -> x = y) /\ (forall x y z :e A, lt x y /\ lt y z -> lt x z) -> forall n :e omega, forall s c= A, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (s = {f x | x :e idx_n n} /\ forall j k :e omega, j :e idx_n n /\ (k :e idx_n n /\ j < k) -> ~ lt (f k) (f j)).
 Admitted.
 
 // HOL Light: iterate.ml:256 / FINITE_INT_SEG
@@ -185,73 +185,313 @@ Admitted.
 // HOL Light: iterate.ml:281 / neutral
 // Source hash: md5:a8873aaeb854cfc680774eff00267039
 // Status: exact_native (bridges: choose_in_spec)
-Theorem neutral : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A (fun a:set => fun b:set => op a b) = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y).
+Theorem neutral : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A op = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y).
+Admitted.
+
+// HOL Light: iterate.ml:284 / monoidal
+// Source hash: md5:1e35c2b254c00f1756dbaa5d27dddeb9
+// Status: generalization_required (bridges: empty_case:A)
+Theorem monoidal : forall A:set, forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> ((forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) <-> (forall x y :e A, op x y = op y x) /\ ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x)).
+Admitted.
+
+// HOL Light: iterate.ml:289 / MONOIDAL_AC
+// Source hash: md5:f04691f7be5cd5861ed14d28792f5cd2
+// Status: generalization_required (bridges: empty_case:A)
+Theorem MONOIDAL_AC : forall A:set, forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> (forall a :e A, op (neutral_of A op) a = a) /\ ((forall a :e A, op a (neutral_of A op) = a) /\ ((forall a b :e A, op a b = op b a) /\ ((forall a b c :e A, op (op a b) c = op a (op b c)) /\ forall a b c :e A, op a (op b c) = op b (op a c)))).
 Admitted.
 
 // HOL Light: iterate.ml:298 / support
 // Source hash: md5:db57a04db49d84b327ec80e8d4024bb4
 // Status: generalization_required (bridges: empty_case:A)
-Theorem support : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e A | x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)}.
+Theorem support : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B op} = {x :e A | x :e s /\ ~ f x = neutral_of B op}.
+Admitted.
+
+// HOL Light: iterate.ml:301 / iterate
+// Source hash: md5:46ac078c8f4320a3e7079a32d3a1439a
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate, hol_itset)
+Theorem iterate : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> iterate_op B op s f = if finite {x :e s | f x <> neutral_of B op} then set_foldr (fun x:set => op (f x)) {x :e s | f x <> neutral_of B op} (neutral_of B op) else neutral_of B op.
 Admitted.
 
 // HOL Light: iterate.ml:307 / IN_SUPPORT
 // Source hash: md5:328b596b59f06cf91f1dc806c30ccf3e
 // Status: generalization_required (bridges: empty_case:A)
-Theorem IN_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} <-> x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b).
+Theorem IN_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B op} <-> x :e s /\ ~ f x = neutral_of B op.
 Admitted.
 
 // HOL Light: iterate.ml:311 / SUPPORT_SUPPORT
 // Source hash: md5:0aedb34b9d6661fba4a5b10ecedffecd
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
+Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B op} | f x <> neutral_of B op} = {x :e s | f x <> neutral_of B op}.
 Admitted.
 
 // HOL Light: iterate.ml:315 / SUPPORT_EMPTY
 // Source hash: md5:51a15a0f30064f51df84243d65184a37
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_EMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b)) <-> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty.
+Theorem SUPPORT_EMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B op) <-> {x :e s | f x <> neutral_of B op} = Empty.
 Admitted.
 
 // HOL Light: iterate.ml:320 / SUPPORT_SUBSET
 // Source hash: md5:1cb492d6d2a10235f4796e2e45535a55
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_SUBSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s.
+Theorem SUPPORT_SUBSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B op} c= s.
 Admitted.
 
 // HOL Light: iterate.ml:324 / FINITE_SUPPORT
 // Source hash: md5:5f2e5868802d786d3586b28b029dac08
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
-Theorem FINITE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
+Theorem FINITE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B op}.
 Admitted.
 
 // HOL Light: iterate.ml:328 / SUPPORT_CLAUSES
 // Source hash: md5:ef461f246ce98a923ee8cada2ec1fb49
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_CLAUSES : forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = Empty) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = if f x = neutral_of C (fun a:set => fun b:set => op a b) then {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} else SetAdjoin {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} x) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\: {x} | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\/: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\/: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :/\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C (fun a:set => fun b:set => op a b)} = {f x | x :e {x :e s | g (f x) <> neutral_of C (fun a:set => fun b:set => op a b)}}))))).
+Theorem SUPPORT_CLAUSES : forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C op} = Empty) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C op} = if f x = neutral_of C op then {x :e s | f x <> neutral_of C op} else SetAdjoin {x :e s | f x <> neutral_of C op} x) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\: {x} | f x0 <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\: {x}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\/: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\/: {x :e t | f x <> neutral_of C op}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :/\: {x :e t | f x <> neutral_of C op}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\: {x :e t | f x <> neutral_of C op}) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C op} = {f x | x :e {x :e s | g (f x) <> neutral_of C op}}))))).
 Admitted.
 
 // HOL Light: iterate.ml:346 / SUPPORT_DELTA
 // Source hash: md5:a35d42478622c94fd25393261650c43a
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_DELTA : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)} = if a :e s then {x :e {a} | f x <> neutral_of B (fun a0:set => fun b:set => op a0 b)} else Empty.
+Theorem SUPPORT_DELTA : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B op) <> neutral_of B op} = if a :e s then {x :e {a} | f x <> neutral_of B op} else Empty.
 Admitted.
 
 // HOL Light: iterate.ml:354 / FINITE_SUPPORT_DELTA
 // Source hash: md5:4c8a32d285f23d97bdfdf46d3535970f
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
-Theorem FINITE_SUPPORT_DELTA : forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)}.
+Theorem FINITE_SUPPORT_DELTA : forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B op) <> neutral_of B op}.
 Admitted.
 
 // HOL Light: iterate.ml:364 / ITERATE_SUPPORT
 // Source hash: md5:7bbe016893acf7b63a38b08b1ad8c353
 // Status: generalization_required (bridges: empty_case:A, hol_iterate)
-Theorem ITERATE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f = iterate_op B (fun a:set => fun b:set => op a b) s f.
+Theorem ITERATE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B op {x :e s | f x <> neutral_of B op} f = iterate_op B op s f.
 Admitted.
 
 // HOL Light: iterate.ml:368 / ITERATE_EXPAND_CASES
 // Source hash: md5:ab2f925a2f6da5a2ba0afd8fe42aa902
 // Status: transport_required (bridges: hol_finite_finite, hol_iterate)
-Theorem ITERATE_EXPAND_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) s f = if finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} then iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f else neutral_of B (fun a:set => fun b:set => op a b).
+Theorem ITERATE_EXPAND_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B op s f = if finite {x :e s | f x <> neutral_of B op} then iterate_op B op {x :e s | f x <> neutral_of B op} f else neutral_of B op.
+Admitted.
+
+// HOL Light: iterate.ml:375 / ITERATE_CLAUSES_GEN
+// Source hash: md5:946bfdbdab4e1111deb795b10264c65e
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_CLAUSES_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e B) -> iterate_op B op Empty f = neutral_of B op) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, finite {x :e s | f x <> neutral_of B op} -> iterate_op B op (SetAdjoin s x) f = if x :e s then iterate_op B op s f else op (f x) (iterate_op B op s f).
+Admitted.
+
+// HOL Light: iterate.ml:394 / ITERATE_CLAUSES
+// Source hash: md5:fa9418c5d51eff616d0781182d319b2d
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_CLAUSES : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e C) -> iterate_op C op Empty f = neutral_of C op) /\ forall f:set -> set, (forall x :e B, f x :e C) -> forall x :e B, forall s c= B, finite s -> iterate_op C op (SetAdjoin s x) f = if x :e s then iterate_op C op s f else op (f x) (iterate_op C op s f).
+Admitted.
+
+// HOL Light: iterate.ml:404 / ITERATE_UNION
+// Source hash: md5:e5de30c805e35cd038291d05373725b6
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_UNION : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> iterate_op B op (s :\/: t) f = op (iterate_op B op s f) (iterate_op B op t f).
+Admitted.
+
+// HOL Light: iterate.ml:421 / ITERATE_UNION_GEN
+// Source hash: md5:69a3c79ac80e47f178e5cdd106705ce7
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_UNION_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite {x :e s | f x <> neutral_of B op} /\ (finite {x :e t | f x <> neutral_of B op} /\ {x :e s | f x <> neutral_of B op} :/\: {x :e t | f x <> neutral_of B op} = Empty) -> iterate_op B op (s :\/: t) f = op (iterate_op B op s f) (iterate_op B op t f).
+Admitted.
+
+// HOL Light: iterate.ml:430 / ITERATE_DIFF
+// Source hash: md5:824a690673ce88905b955c422a48f423
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_DIFF : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite s /\ t c= s -> op (iterate_op B op (s :\: t) f) (iterate_op B op t f) = iterate_op B op s f.
+Admitted.
+
+// HOL Light: iterate.ml:441 / ITERATE_DIFF_GEN
+// Source hash: md5:e01feebcb1c504e69446d3d624e32856
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_DIFF_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite {x :e s | f x <> neutral_of B op} /\ {x :e t | f x <> neutral_of B op} c= {x :e s | f x <> neutral_of B op} -> op (iterate_op B op (s :\: t) f) (iterate_op B op t f) = iterate_op B op s f.
+Admitted.
+
+// HOL Light: iterate.ml:450 / ITERATE_INCL_EXCL
+// Source hash: md5:c40465cdabc8786fd57fc1f4db5c9422
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_iterate)
+Theorem ITERATE_INCL_EXCL : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall s t c= A, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\ finite t -> op (iterate_op B op s f) (iterate_op B op t f) = op (iterate_op B op (s :\/: t) f) (iterate_op B op (s :/\: t) f).
+Admitted.
+
+// HOL Light: iterate.ml:471 / ITERATE_CLOSED
+// Source hash: md5:3360dabde5bd2ffa62e94d5b962b99ea
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_CLOSED : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall P:set -> prop, P (neutral_of B op) /\ (forall x y :e B, P x /\ P y -> P (op x y)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s /\ ~ f x = neutral_of B op -> P (f x)) -> P (iterate_op B op s f).
+Admitted.
+
+// HOL Light: iterate.ml:483 / ITERATE_RELATED
+// Source hash: md5:74924a56abd4860660f60db78ea5cb8d
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_RELATED : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall R0:set -> set -> prop, R0 (neutral_of B op) (neutral_of B op) /\ (forall x1 y1 x2 y2 :e B, R0 x1 x2 /\ R0 y1 y2 -> R0 (op x1 y1) (op x2 y2)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> R0 (f x) (g x)) -> R0 (iterate_op B op s f) (iterate_op B op s g).
+Admitted.
+
+// HOL Light: iterate.ml:496 / ITERATE_EQ_NEUTRAL
+// Source hash: md5:9eea13a1ac8e6810658c6eec17048cbf
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_EQ_NEUTRAL : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B op) -> iterate_op B op s f = neutral_of B op.
+Admitted.
+
+// HOL Light: iterate.ml:505 / ITERATE_SING
+// Source hash: md5:5114236959d591b2092cf62c0406338c
+// Status: generalization_required (bridges: empty_case:A, hol_iterate)
+Theorem ITERATE_SING : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, iterate_op B op {x} f = f x.
+Admitted.
+
+// HOL Light: iterate.ml:510 / ITERATE_CLOSED_NONEMPTY
+// Source hash: md5:a76f9e2fb1a3d6d5e63684fc808f2b96
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_iterate)
+Theorem ITERATE_CLOSED_NONEMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall P:set -> prop, (forall x y :e B, P x /\ P y -> P (op x y)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> P (f x))) -> P (iterate_op B op s f).
+Admitted.
+
+// HOL Light: iterate.ml:523 / ITERATE_RELATED_NONEMPTY
+// Source hash: md5:ca0b6deb2c97748c6f53ec9370c7e976
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_iterate)
+Theorem ITERATE_RELATED_NONEMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall R0:set -> set -> prop, (forall x1 y1 x2 y2 :e B, R0 x1 x2 /\ R0 y1 y2 -> R0 (op x1 y1) (op x2 y2)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> R0 (f x) (g x))) -> R0 (iterate_op B op s f) (iterate_op B op s g).
+Admitted.
+
+// HOL Light: iterate.ml:539 / ITERATE_DELETE
+// Source hash: md5:15d6d89293315e213f7688baf21984c1
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_iterate)
+Theorem ITERATE_DELETE : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, finite s /\ a :e s -> op (f a) (iterate_op B op (s :\: {a}) f) = iterate_op B op s f.
+Admitted.
+
+// HOL Light: iterate.ml:546 / ITERATE_DELTA
+// Source hash: md5:5cc29e0b6d7257bce3a1e8ab2d86940a
+// Status: generalization_required (bridges: empty_case:A, hol_iterate)
+Theorem ITERATE_DELTA : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, forall s c= A, iterate_op B op s (fun x:set => if x = a then f x else neutral_of B op) = if a :e s then f a else neutral_of B op.
+Admitted.
+
+// HOL Light: iterate.ml:556 / ITERATE_IMAGE
+// Source hash: md5:7f920c2fa06f5c24caeb4edadbda815c
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_IMAGE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> iterate_op C op {f x | x :e s} g = iterate_op C op s (fun x:set => g (f x)).
+Admitted.
+
+// HOL Light: iterate.ml:578 / ITERATE_BIJECTION
+// Source hash: md5:ab17afdaea02ebf42f269cd9c576a159
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_BIJECTION : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\ (forall y :e A, y :e s -> exists x :e A, x :e s /\ p x = y /\ forall y0 :e A, y0 :e s /\ p y0 = y -> y0 = x) -> iterate_op B op s f = iterate_op B op s (fun x:set => f (p x)).
+Admitted.
+
+// HOL Light: iterate.ml:591 / ITERATE_ITERATE_PRODUCT
+// Source hash: md5:59dafc9c087207f3a1e7cb824db397f9
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate, hol_prod_setprod)
+Theorem ITERATE_ITERATE_PRODUCT : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e C) -> finite s /\ (forall i :e A, i :e s -> finite (t i)) -> iterate_op C op s (fun i:set => iterate_op C op (t i) (x i)) = iterate_op C op (\/_ i :e A, {(i,j) | j :e B, i :e s /\ j :e t i}) (fun p:set => x (p 0) (p 1)).
+Admitted.
+
+// HOL Light: iterate.ml:624 / ITERATE_EQ
+// Source hash: md5:6048e0792558a34ef7638f8bd4fdd9b1
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> iterate_op B op s f = iterate_op B op s g.
+Admitted.
+
+// HOL Light: iterate.ml:640 / ITERATE_RESTRICT_SET
+// Source hash: md5:3f50000b96272efd5fb140c402e6cd0e
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_RESTRICT_SET : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> iterate_op B op {x :e A | x :e s /\ P x} f = iterate_op B op s (fun x:set => if P x then f x else neutral_of B op).
+Admitted.
+
+// HOL Light: iterate.ml:652 / ITERATE_EQ_GENERAL
+// Source hash: md5:96cf1eea1ab56e3ca68b7210412e61ac
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_EQ_GENERAL : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\ h x = y /\ forall y0 :e A, y0 :e s /\ h y0 = y -> y0 = x) /\ (forall x :e A, x :e s -> h x :e t /\ g (h x) = f x) -> iterate_op C op s f = iterate_op C op t g.
+Admitted.
+
+// HOL Light: iterate.ml:668 / ITERATE_EQ_GENERAL_INVERSES
+// Source hash: md5:2dd243cb0626caf09003bb1f01f5f8b2
+// Status: transport_required (bridges: hol_iterate)
+Theorem ITERATE_EQ_GENERAL_INVERSES : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall k:set -> set, (forall x :e B, k x :e A) -> (forall y :e B, y :e t -> k y :e s /\ h (k y) = y) /\ (forall x :e A, x :e s -> h x :e t /\ (k (h x) = x /\ g (h x) = f x)) -> iterate_op C op s f = iterate_op C op t g.
+Admitted.
+
+// HOL Light: iterate.ml:678 / ITERATE_INJECTION
+// Source hash: md5:7de99d67f21c28cd68e846c57dc10aef
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_INJECTION : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> iterate_op B op s (fun x:set => f (p x)) = iterate_op B op s f.
+Admitted.
+
+// HOL Light: iterate.ml:690 / ITERATE_UNION_NONZERO
+// Source hash: md5:c0d5fbbc37c2ce4bb901aa312b8b912c
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_UNION_NONZERO : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite s /\ (finite t /\ (forall x :e A, x :e s :/\: t -> f x = neutral_of B op)) -> iterate_op B op (s :\/: t) f = op (iterate_op B op s f) (iterate_op B op t f).
+Admitted.
+
+// HOL Light: iterate.ml:703 / ITERATE_OP
+// Source hash: md5:fc8ef1b06e64c744da58761198af22e4
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_OP : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite s -> iterate_op B op s (fun x:set => op (f x) (g x)) = op (iterate_op B op s f) (iterate_op B op s g).
+Admitted.
+
+// HOL Light: iterate.ml:713 / ITERATE_SUPERSET
+// Source hash: md5:4353d2fba6b5ffdf7fea1bd09dc31906
+// Status: generalization_required (bridges: empty_case:A, hol_iterate)
+Theorem ITERATE_SUPERSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall u v c= A, u c= v /\ (forall x :e A, x :e v /\ ~ x :e u -> f x = neutral_of B op) -> iterate_op B op v f = iterate_op B op u f.
+Admitted.
+
+// HOL Light: iterate.ml:723 / ITERATE_UNIV
+// Source hash: md5:2e3742b984d1d4cc902b145c3083020a
+// Status: generalization_required (bridges: empty_case:A, hol_iterate)
+Theorem ITERATE_UNIV : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e A | f x <> neutral_of B op} c= s -> iterate_op B op s f = iterate_op B op A f.
+Admitted.
+
+// HOL Light: iterate.ml:732 / ITERATE_SWAP
+// Source hash: md5:afd27a31bc1e26b01df4db8d70c464b8
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_SWAP : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t c= B, finite s /\ finite t -> iterate_op C op s (fun i:set => iterate_op C op t (f i)) = iterate_op C op t (fun j:set => iterate_op C op s (fun i:set => f i j)).
+Admitted.
+
+// HOL Light: iterate.ml:744 / ITERATE_IMAGE_NONZERO
+// Source hash: md5:faec388ce7c314f55c4c29d908cff426
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_IMAGE_NONZERO : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ (~ x = y /\ f x = f y)) -> g (f x) = neutral_of C op) -> iterate_op C op {f x | x :e s} g = iterate_op C op s (fun x:set => g (f x)).
+Admitted.
+
+// HOL Light: iterate.ml:763 / ITERATE_IMAGE_GEN
+// Source hash: md5:3b60d65e165daad642e886a788fc20dd
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_IMAGE_GEN : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s -> iterate_op C op s g = iterate_op C op {f x | x :e s} (fun y:set => iterate_op C op {x :e A | x :e s /\ f x = y} g).
+Admitted.
+
+// HOL Light: iterate.ml:783 / ITERATE_CASES
+// Source hash: md5:608c400ced7c8abe9abbca5cf6cde0f8
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall s c= A, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> finite s -> iterate_op B op s (fun x:set => if P x then f x else g x) = op (iterate_op B op {x :e A | x :e s /\ P x} f) (iterate_op B op {x :e A | x :e s /\ ~ P x} g).
+Admitted.
+
+// HOL Light: iterate.ml:802 / ITERATE_OP_GEN
+// Source hash: md5:81de55c7e74b170aa688d603d70b27a3
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_OP_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite {x :e s | f x <> neutral_of B op} /\ finite {x :e s | g x <> neutral_of B op} -> iterate_op B op s (fun x:set => op (f x) (g x)) = op (iterate_op B op s f) (iterate_op B op s g).
+Admitted.
+
+// HOL Light: iterate.ml:819 / ITERATE_CLAUSES_NUMSEG
+// Source hash: md5:c3fe183d340cf1dc864fcd89b844c8bf
+// Status: transport_required (bridges: hol_iterate, hol_num_omega, nat_le_SNoLe)
+Theorem ITERATE_CLAUSES_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> (forall m :e omega, iterate_op A op {i :e omega | m <= i /\ i <= 0} f = if m = 0 then f 0 else neutral_of A op) /\ forall m n :e omega, iterate_op A op {i :e omega | m <= i /\ i <= ordsucc n} f = if m <= ordsucc n then op (iterate_op A op {i :e omega | m <= i /\ i <= n} f) (f (ordsucc n)) else iterate_op A op {i :e omega | m <= i /\ i <= n} f.
+Admitted.
+
+// HOL Light: iterate.ml:831 / ITERATE_CLAUSES_NUMSEG_LT
+// Source hash: md5:7d3ece34021fef4946b9aee68b88ef55
+// Status: transport_required (bridges: hol_iterate, hol_num_omega, nat_lt_SNoLt)
+Theorem ITERATE_CLAUSES_NUMSEG_LT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> iterate_op A op {i :e omega | i < 0} f = neutral_of A op /\ forall k :e omega, iterate_op A op {i :e omega | i < ordsucc k} f = op (iterate_op A op {i :e omega | i < k} f) (f k).
+Admitted.
+
+// HOL Light: iterate.ml:839 / ITERATE_CLAUSES_NUMSEG_LE
+// Source hash: md5:f28f3143eb3e2b242eb9d30160a6040c
+// Status: transport_required (bridges: hol_iterate, hol_num_omega, nat_le_SNoLe)
+Theorem ITERATE_CLAUSES_NUMSEG_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> iterate_op A op {i :e omega | i <= 0} f = f 0 /\ forall k :e omega, iterate_op A op {i :e omega | i <= ordsucc k} f = op (iterate_op A op {i :e omega | i <= k} f) (f (ordsucc k)).
+Admitted.
+
+// HOL Light: iterate.ml:849 / ITERATE_PAIR
+// Source hash: md5:899f6307e25e54eeff6e89988edca4fa
+// Status: transport_required (bridges: add_nat_add_SNo, hol_iterate, hol_num_omega, mul_nat_mul_SNo)
+Theorem ITERATE_PAIR : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall m n :e omega, iterate_op A op {i :e omega | 2 * m <= i /\ i <= 2 * n + 1} f = iterate_op A op {i :e omega | m <= i /\ i <= n} (fun i:set => op (f (2 * i)) (f (2 * i + 1))).
+Admitted.
+
+// HOL Light: iterate.ml:867 / ITERATE_REFLECT
+// Source hash: md5:5a63d5aff3d3d5ef627cc38cb423ec17
+// Status: transport_required (bridges: hol_iterate, hol_num_omega, nat_lt_SNoLt)
+Theorem ITERATE_REFLECT : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> forall x:set -> set, (forall x :e omega, x x :e A) -> forall m n :e omega, iterate_op A op {i :e omega | m <= i /\ i <= n} x = if n < m then neutral_of A op else iterate_op A op {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
 Admitted.
 
 // HOL Light: iterate.ml:1194 / nproduct
@@ -266,6 +506,12 @@ Admitted.
 Theorem NEUTRAL_MUL : neutral_of omega (fun a:set => fun b:set => a * b) = 1.
 Admitted.
 
+// HOL Light: iterate.ml:1202 / MONOIDAL_MUL
+// Source hash: md5:b7daf5e6de14117b12e7346fc47f02cb
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
+Theorem MONOIDAL_MUL : (forall x y :e omega, x * y = y * x) /\ (forall x y z :e omega, x * y * z = (x * y) * z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x.
+Admitted.
+
 // HOL Light: iterate.ml:1206 / NPRODUCT_CLAUSES
 // Source hash: md5:f1fa1970dcb71c0ea266b2d511ff08c9
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
@@ -276,6 +522,12 @@ Admitted.
 // Source hash: md5:61f7c53ce7ec94316ac2a1a6b59a71ac
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem NEUTRAL_INT_MUL : neutral_of int (fun a:set => fun b:set => a * b) = 1.
+Admitted.
+
+// HOL Light: iterate.ml:1224 / MONOIDAL_INT_MUL
+// Source hash: md5:5e8744703f62ab0f3fdb1e85e68450f5
+// Status: transport_required (bridges: hol_int_int)
+Theorem MONOIDAL_INT_MUL : (forall x y :e int, x * y = y * x) /\ (forall x y z :e int, x * y * z = (x * y) * z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x.
 Admitted.
 
 // HOL Light: iterate.ml:1238 / product
@@ -290,6 +542,12 @@ Admitted.
 Theorem NEUTRAL_REAL_MUL : neutral_of R (fun a:set => fun b:set => a * b) = 1.
 Admitted.
 
+// HOL Light: iterate.ml:1246 / MONOIDAL_REAL_MUL
+// Source hash: md5:006f2e19ec12ee3f4dcbd4c7830721aa
+// Status: transport_required (bridges: hol_real_R)
+Theorem MONOIDAL_REAL_MUL : (forall x y :e R, x * y = y * x) /\ (forall x y z :e R, x * y * z = (x * y) * z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x.
+Admitted.
+
 // HOL Light: iterate.ml:1250 / PRODUCT_CLAUSES
 // Source hash: md5:464ca9b59ba521206c4856747fb68cbe
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
@@ -302,6 +560,12 @@ Admitted.
 Theorem NEUTRAL_INT_ADD : neutral_of int (fun a:set => fun b:set => a + b) = 0.
 Admitted.
 
+// HOL Light: iterate.ml:1268 / MONOIDAL_INT_ADD
+// Source hash: md5:00b4745143ee30bfdceaf4696bd1d02a
+// Status: transport_required (bridges: hol_int_int)
+Theorem MONOIDAL_INT_ADD : (forall x y :e int, x + y = y + x) /\ (forall x y z :e int, x + y + z = (x + y) + z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a + b) + x = x.
+Admitted.
+
 // HOL Light: iterate.ml:1288 / nsum
 // Source hash: md5:b14e7702a17fe114bd811d49913540c0
 // Status: transport_required (bridges: add_nat_add_SNo, hol_iterate, hol_nsum_finsum, hol_num_omega)
@@ -312,6 +576,12 @@ Admitted.
 // Source hash: md5:06c9ed2e4a3b17c780a3883291e889fb
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem NEUTRAL_ADD : neutral_of omega (fun a:set => fun b:set => a + b) = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1296 / MONOIDAL_ADD
+// Source hash: md5:bba9deba271dae756a54baac1be666fc
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
+Theorem MONOIDAL_ADD : (forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x.
 Admitted.
 
 // HOL Light: iterate.ml:1300 / NSUM_DEGENERATE
@@ -461,7 +731,7 @@ Admitted.
 // HOL Light: iterate.ml:1454 / NSUM_SWAP
 // Source hash: md5:bbf82ad215a6fe69a4be7b58478ff5fb
 // Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
-Theorem NSUM_SWAP : forall A B:set, A <> Empty -> B <> Empty -> forall f :e omega :^: B :^: A, forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun i:set => finsum t (fun x:set => f i x)) = finsum t (fun j:set => finsum s (fun i:set => f i j)).
+Theorem NSUM_SWAP : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun i:set => finsum t (f i)) = finsum t (fun j:set => finsum s (fun i:set => f i j)).
 Admitted.
 
 // HOL Light: iterate.ml:1462 / NSUM_IMAGE
@@ -551,7 +821,7 @@ Admitted.
 // HOL Light: iterate.ml:1553 / NSUM_NSUM_RESTRICT
 // Source hash: md5:8d963f584931e2f667cb58fbc9a5193f
 // Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
-Theorem NSUM_NSUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
+Theorem NSUM_NSUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (f x)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
 Admitted.
 
 // HOL Light: iterate.ml:1561 / CARD_EQ_NSUM
@@ -563,7 +833,7 @@ Admitted.
 // HOL Light: iterate.ml:1565 / NSUM_MULTICOUNT_GEN
 // Source hash: md5:34e59d62c7c5ad4aaf8db8e4670aab51
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
-Theorem NSUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t (fun i:set => k i).
+Theorem NSUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t k.
 Admitted.
 
 // HOL Light: iterate.ml:1582 / NSUM_MULTICOUNT
@@ -624,6 +894,12 @@ Admitted.
 // Source hash: md5:d983fb9375871ca0b52967d75e8028f4
 // Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
 Theorem NSUM_BIJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\ (forall y :e A, y :e s -> exists x :e A, x :e s /\ p x = y /\ forall y0 :e A, y0 :e s /\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x)).
+Admitted.
+
+// HOL Light: iterate.ml:1684 / NSUM_NSUM_PRODUCT
+// Source hash: md5:3e79246022b25eaa10016a9cf01a4436
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_prod_setprod)
+Theorem NSUM_NSUM_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e omega) -> finite s /\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\/_ i :e A, {(i,j) | j :e B, i :e s /\ j :e t i}) (fun p:set => x (p 0) (p 1)).
 Admitted.
 
 // HOL Light: iterate.ml:1692 / NSUM_EQ_GENERAL
@@ -755,7 +1031,7 @@ Admitted.
 // HOL Light: iterate.ml:1840 / NSUM_SWAP_NUMSEG
 // Source hash: md5:92168ed13fd8c7a32b73f4290a116ae0
 // Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
-Theorem NSUM_SWAP_NUMSEG : forall a b c d :e omega, forall f :e omega :^: omega :^: omega, finsum {i :e omega | a <= i /\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\ i <= d} (fun x:set => f i x)) = finsum {i :e omega | c <= i /\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
+Theorem NSUM_SWAP_NUMSEG : forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e omega) -> finsum {i :e omega | a <= i /\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\ i <= d} (f i)) = finsum {i :e omega | c <= i /\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
 Admitted.
 
 // HOL Light: iterate.ml:1846 / NSUM_ADD_SPLIT
@@ -812,6 +1088,12 @@ Admitted.
 Theorem MOD_NSUM_MOD_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall a b n :e omega, mod_nat (finsum {i :e omega | a <= i /\ i <= b} f) n = mod_nat (finsum {i :e omega | a <= i /\ i <= b} (fun i:set => mod_nat (f i) n)) n.
 Admitted.
 
+// HOL Light: iterate.ml:1897 / CONG_NSUM
+// Source hash: md5:6dca1630a965c35bdb7639f08ad4cb94
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem CONG_NSUM : forall A:set, A <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> exists q1 q2 :e omega, f x + n * q1 = g x + n * q2) -> exists q1 q2 :e omega, finsum s f + n * q1 = finsum s g + n * q2.
+Admitted.
+
 // HOL Light: iterate.ml:1923 / CARD_UNIONS_IMAGE
 // Source hash: md5:5d430c768ca9536456e51355c5591b70
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
@@ -834,6 +1116,12 @@ Admitted.
 // Source hash: md5:1e3accec9aefb529760ca0411db5fa95
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NEUTRAL_REAL_ADD : neutral_of R (fun a:set => fun b:set => a + b) = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1992 / MONOIDAL_REAL_ADD
+// Source hash: md5:56f4a58acc8d9b328a62928ef674af6d
+// Status: transport_required (bridges: hol_real_R)
+Theorem MONOIDAL_REAL_ADD : (forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x.
 Admitted.
 
 // HOL Light: iterate.ml:1996 / SUM_DEGENERATE
@@ -1025,7 +1313,7 @@ Admitted.
 // HOL Light: iterate.ml:2211 / SUM_SWAP
 // Source hash: md5:58e7fe89643cd6e38e505037691016e4
 // Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
-Theorem SUM_SWAP : forall A B:set, A <> Empty -> B <> Empty -> forall f :e R :^: B :^: A, forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun i:set => finsum t (fun x:set => f i x)) = finsum t (fun j:set => finsum s (fun i:set => f i j)).
+Theorem SUM_SWAP : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun i:set => finsum t (f i)) = finsum t (fun j:set => finsum s (fun i:set => f i j)).
 Admitted.
 
 // HOL Light: iterate.ml:2219 / SUM_IMAGE
@@ -1121,7 +1409,7 @@ Admitted.
 // HOL Light: iterate.ml:2313 / SUM_SUM_RESTRICT
 // Source hash: md5:5945aa04459515a934d2e536a5f547d5
 // Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
-Theorem SUM_SUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
+Theorem SUM_SUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (f x)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
 Admitted.
 
 // HOL Light: iterate.ml:2321 / CARD_EQ_SUM
@@ -1134,7 +1422,7 @@ Admitted.
 // Source hash: md5:4f21d5476c4f49949cc34b0c3fe4f38d
 // Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
 // Reuse: this proposition is already a theorem of the target library.
-// Theorem SUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t (fun i:set => k i).
+// Theorem SUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t k.
 
 // HOL Light: iterate.ml:2344 / SUM_MULTICOUNT
 // Source hash: md5:e60ec96027855390e454c72b8e469a51
@@ -1162,8 +1450,8 @@ Admitted.
 
 // HOL Light: iterate.ml:2386 / REAL_OF_NUM_SUM
 // Source hash: md5:5ddff68d965fb2efd936b7d447eefa06
-// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem REAL_OF_NUM_SUM : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s f = finsum s (fun x:set => f x).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_OF_NUM_SUM : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s f = finsum s f.
 Admitted.
 
 // HOL Light: iterate.ml:2391 / SUM_SUBSET
@@ -1194,6 +1482,12 @@ Admitted.
 // Source hash: md5:89065b05278b69f0971846666b2aa165
 // Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
 Theorem SUM_BIJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\ (forall y :e A, y :e s -> exists x :e A, x :e s /\ p x = y /\ forall y0 :e A, y0 :e s /\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x)).
+Admitted.
+
+// HOL Light: iterate.ml:2443 / SUM_SUM_PRODUCT
+// Source hash: md5:e92d662b4909d3bb0ae2489d58c6920b
+// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod, hol_real_R, hol_sum_finsum)
+Theorem SUM_SUM_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e R) -> finite s /\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\/_ i :e A, {(i,j) | j :e B, i :e s /\ j :e t i}) (fun p:set => x (p 0) (p 1)).
 Admitted.
 
 // HOL Light: iterate.ml:2451 / SUM_EQ_GENERAL
@@ -1276,8 +1570,8 @@ Admitted.
 
 // HOL Light: iterate.ml:2590 / REAL_OF_NUM_SUM_GEN
 // Source hash: md5:d008569d378fafe41bdfabdf038831bf
-// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem REAL_OF_NUM_SUM_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite {i :e A | i :e s /\ ~ f i = 0} -> finsum s f = finsum s (fun x:set => f x).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_OF_NUM_SUM_GEN : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite {i :e A | i :e s /\ ~ f i = 0} -> finsum s f = finsum s f.
 Admitted.
 
 // HOL Light: iterate.ml:2602 / SUM_ADD_NUMSEG
@@ -1367,7 +1661,7 @@ Admitted.
 // HOL Light: iterate.ml:2668 / SUM_SWAP_NUMSEG
 // Source hash: md5:f9c18b31fb82cd14605cf6938636517d
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem SUM_SWAP_NUMSEG : forall a b c d :e omega, forall f :e R :^: omega :^: omega, finsum {i :e omega | a <= i /\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\ i <= d} (fun x:set => f i x)) = finsum {i :e omega | c <= i /\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
+Theorem SUM_SWAP_NUMSEG : forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e R) -> finsum {i :e omega | a <= i /\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\ i <= d} (f i)) = finsum {i :e omega | c <= i /\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
 Admitted.
 
 // HOL Light: iterate.ml:2674 / SUM_ADD_SPLIT
@@ -1415,7 +1709,7 @@ Admitted.
 // HOL Light: iterate.ml:2711 / REAL_OF_NUM_SUM_NUMSEG
 // Source hash: md5:925d3afdfe70576ecfc0d85ec647f7e1
 // Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem REAL_OF_NUM_SUM_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f i).
+Theorem REAL_OF_NUM_SUM_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} f.
 Admitted.
 
 // HOL Light: iterate.ml:2719 / SUM_PARTIAL_SUC
@@ -1505,6 +1799,96 @@ Admitted.
 // HOL Light: iterate.ml:2945 / REAL_POLYFUN_EQ_CONST
 // Source hash: md5:adce8ab0ff84629d62ab9c58eb45425e
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem REAL_POLYFUN_EQ_CONST : forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> forall k :e R, (forall x :e R, finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = k) <-> c 0 = k /\ forall i :e omega, i :e {i :e omega | 1 <= i /\ i <= n} -> c i = 0.
+Theorem REAL_POLYFUN_EQ_CONST : forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> forall k :e R, (forall x :e R, finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = k) <-> c 0 = k /\ forall i :e omega, i :e idx_n n -> c i = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2966 / polynomial_function
+// Source hash: md5:bd7d18621ee78d35059d0c031542e3b4
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem polynomial_function_hl : forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R p <-> exists m :e omega, exists c:set -> set, (forall x :e omega, c x :e R) /\ forall x :e R, p x = finsum {i :e omega | 0 <= i /\ i <= m} (fun i:set => c i * x ^ i)).
+Admitted.
+
+// HOL Light: iterate.ml:2969 / POLYNOMIAL_FUNCTION_CONST
+// Source hash: md5:d662a538809b3047a3a87f458a520090
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_CONST : forall c :e R, polynomial_function_R (fun x:set => c).
+Admitted.
+
+// HOL Light: iterate.ml:2975 / POLYNOMIAL_FUNCTION_ID
+// Source hash: md5:55271e50a686f7021535c41c6e0f6776
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_ID : polynomial_function_R (fun x:set => x).
+Admitted.
+
+// HOL Light: iterate.ml:2981 / POLYNOMIAL_FUNCTION_I
+// Source hash: md5:0586efeec066f40d33919a16849fbddb
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem POLYNOMIAL_FUNCTION_I : polynomial_function_R (fun x:set => x).
+
+// HOL Light: iterate.ml:2985 / POLYNOMIAL_FUNCTION_ADD
+// Source hash: md5:5ecad3f3e5d693ee11065d465825c7a6
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_ADD : forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\ polynomial_function_R q -> polynomial_function_R (fun x:set => p x + q x).
+Admitted.
+
+// HOL Light: iterate.ml:3000 / POLYNOMIAL_FUNCTION_LMUL
+// Source hash: md5:6e55e94a3f445792e5b26664d9a5926c
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_LMUL : forall p:set -> set, (forall x :e R, p x :e R) -> forall c :e R, polynomial_function_R p -> polynomial_function_R (fun x:set => c * p x).
+Admitted.
+
+// HOL Light: iterate.ml:3008 / POLYNOMIAL_FUNCTION_RMUL
+// Source hash: md5:44879fe241858a12b8773c893d7849cb
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_RMUL : forall p:set -> set, (forall x :e R, p x :e R) -> forall c :e R, polynomial_function_R p -> polynomial_function_R (fun x:set => p x * c).
+Admitted.
+
+// HOL Light: iterate.ml:3012 / POLYNOMIAL_FUNCTION_NEG
+// Source hash: md5:53db2769ed3c76578bf05b2a8f254074
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_NEG : forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R (fun x:set => - p x) <-> polynomial_function_R p).
+Admitted.
+
+// HOL Light: iterate.ml:3018 / POLYNOMIAL_FUNCTION_SUB
+// Source hash: md5:9fd147bcc7cc9e2cc6f64350f556ce5f
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_SUB : forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\ polynomial_function_R q -> polynomial_function_R (fun x:set => p x + - q x).
+Admitted.
+
+// HOL Light: iterate.ml:3023 / POLYNOMIAL_FUNCTION_MUL
+// Source hash: md5:1790557bd42a5f9881acfae07c011486
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_MUL : forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\ polynomial_function_R q -> polynomial_function_R (fun x:set => p x * q x).
+Admitted.
+
+// HOL Light: iterate.ml:3052 / POLYNOMIAL_FUNCTION_SUM
+// Source hash: md5:c0501c832fc0f4732886b8a6a7a63e65
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem POLYNOMIAL_FUNCTION_SUM : forall A:set, A <> Empty -> forall s c= A, forall p:set -> set -> set, (forall x :e R, forall y :e A, p x y :e R) -> finite s /\ (forall i :e A, i :e s -> polynomial_function_R (fun x:set => p x i)) -> polynomial_function_R (fun x:set => finsum s (p x)).
+Admitted.
+
+// HOL Light: iterate.ml:3061 / POLYNOMIAL_FUNCTION_POW
+// Source hash: md5:f6632e434f1c68c60e01b61376655c6f
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_POW : forall p:set -> set, (forall x :e R, p x :e R) -> forall n :e omega, polynomial_function_R p -> polynomial_function_R (fun x:set => p x ^ n).
+Admitted.
+
+// HOL Light: iterate.ml:3067 / POLYNOMIAL_FUNCTION_INDUCT
+// Source hash: md5:bf5280ea57a770d85277a5aacc7179e8
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_INDUCT : forall P:set -> prop, P (fun x :e R => x) /\ ((forall c :e R, P (fun x :e R => c)) /\ ((forall p q :e R :^: R, P p /\ P q -> P (fun x :e R => p x + q x)) /\ (forall p q :e R :^: R, P p /\ P q -> P (fun x :e R => p x * q x)))) -> forall p :e R :^: R, polynomial_function_R (fun x:set => p x) -> P p.
+Admitted.
+
+// HOL Light: iterate.ml:3084 / POLYNOMIAL_FUNCTION_o
+// Source hash: md5:b5e8533e9cb3a1f961f99bcae7bc3ab8
+// Status: transport_required (bridges: hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_o : forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\ polynomial_function_R q -> polynomial_function_R (fun x:set => p (q x)).
+Admitted.
+
+// HOL Light: iterate.ml:3093 / POLYNOMIAL_FUNCTION_FINITE_ROOTS
+// Source hash: md5:5fadeefbd2800c9e384666810573bc7b
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R)
+Theorem POLYNOMIAL_FUNCTION_FINITE_ROOTS : forall p:set -> set, (forall x :e R, p x :e R) -> forall a :e R, polynomial_function_R p -> (finite {x :e R | p x = a} <-> ~ forall x :e R, p x = a).
 Admitted.
 

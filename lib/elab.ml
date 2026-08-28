@@ -116,33 +116,32 @@ let rec fun_arity ty = match ty with TyApp ("fun", [ _; b ]) -> 1 + fun_arity b 
 
 let all_occurrences_meta ctx (v : string * ty) (arity : int) (t : tm) : bool =
   let ok = ref true in
-  let rec walk ctxd t =
+  (* expect = number of further arguments the position will supply *)
+  let rec walk expect t =
     let h, args = head_and_args t in
+    let m = List.length args in
     (match h with
-     | Free (s, ty) when (s, ty) = v -> if List.length args < arity then ok := false
+     | Free (s, ty) when (s, ty) = v -> if m + expect < arity then ok := false
      | _ -> ());
     (match h with
-     | Free _ | Bound _ -> List.iter (walk ctxd) args
-     | Const ("=", TyApp ("fun", [ ty; _ ])) when is_fun_ty ty && List.length args = 2 ->
-         List.iter (fun a -> match a with Free (s, ty') when (s, ty') = v -> () | _ -> walk ctxd a) args
-     | Const ("COND", TyApp ("fun", [ _; TyApp ("fun", [ ty; _ ]) ])) when is_fun_ty ty && List.length args = 3 ->
-         walk ctxd (List.hd args);
-         List.iter (fun a -> match a with Free (s, ty') when (s, ty') = v -> () | _ -> walk ctxd a) (List.tl args)
-     | Const (("!" | "?" | "?!" | "@"), _) ->
-         List.iter (fun a -> match a with Free (s, ty') when (s, ty') = v -> () | _ -> walk ctxd a) args
+     | Free _ | Bound _ -> List.iter (walk 0) args
+     | Const ("=", TyApp ("fun", [ ty; _ ])) when m = 2 ->
+         let r = fun_arity ty in List.iter (walk r) args
+     | Const ("COND", TyApp ("fun", [ _; TyApp ("fun", [ ty; _ ]) ])) when m = 3 ->
+         walk 0 (List.hd args); List.iter (walk (fun_arity ty)) (List.tl args)
+     | Const (("!" | "?" | "?!" | "@"), _) -> List.iter (walk 1) args
      | Const (c, cty) ->
          let entry = R.find_const ctx.reg c cty in
          let roles = (match entry with Some (e, _) -> e.R.c_args | None -> []) in
          let sdoms = (match entry with Some (e, _) -> fst (strip_fun_ty e.R.c_scheme) | None -> []) in
          List.iteri (fun i a ->
            let role = (try List.nth roles i with _ -> R.RSet) in
-           let slot_arity = (match role with
+           let slot = (match role with
              | R.RMetaFun (Some k) | R.RMetaPred (Some k) -> k
-             | _ -> (try fun_arity (List.nth sdoms i) with _ -> 0)) in
-           match role, a with
-           | (R.RMetaFun _ | R.RMetaPred _), Free (s, ty') when (s, ty') = v && slot_arity <= arity -> ()
-           | _ -> walk ctxd a) args
-     | Lam (_, _, b) -> List.iter (walk ctxd) args; walk ctxd b
+             | R.RMetaFun None | R.RMetaPred None -> (try fun_arity (List.nth sdoms i) with _ -> 0)
+             | _ -> 0) in
+           walk slot a) args
+     | Lam (_, _, b) -> List.iter (walk 0) args; walk 0 b
      | App _ -> fail "walk: application head")
   in
   walk 0 t;
@@ -539,10 +538,38 @@ and elab_const ctx (t : tm) (c : string) (cty : ty) (args : tm list) (hint : vie
         let v = data_view ctx res_ty in
         (Mg.If (p', elab ctx a v, elab ctx b v), v)
       end
-  | "NUMERAL", [ _ ] ->
-      (match dest_numeral t with
-       | Some n -> (Mg.Num n, VSet (Mg.Cst "omega"))
-       | None -> unsupported "non-literal NUMERAL")
+  | "NUMERAL", [ _ ] when dest_numeral t <> None ->
+      (Mg.Num (Option.get (dest_numeral t)), VSet (Mg.Cst "omega"))
+  | "GABS", Lam (f, fty, body) :: rest ->
+      (* paired abstraction: GABS (\f. !x1..xn. GEQ (f (x1,..,xn)) t)  ==>  \p. t[xi := proj_i p] *)
+      let fv = Free (fresh ctx f, fty) in
+      let body = open_with fv body in
+      let rec strip acc t = (match t with
+        | App (Const ("!", _), Lam (x, ty, b)) -> let n = fresh ctx x in strip ((n, ty) :: acc) (open_with (Free (n, ty)) b)
+        | _ -> (List.rev acc, t)) in
+      let xs, inner = strip [] body in
+      (match inner with
+       | App (App (Const ("GEQ", _), App (fv', tuple)), rhs) when fv' = fv ->
+           let pty = type_of [] tuple in
+           let pn = fresh ctx "p" in
+           let p = Free (pn, pty) in
+           (* projections: walk the tuple structure *)
+           let rec projs tm acc_tm ty = (match tm with
+             | App (App (Const (",", _), a), b) ->
+                 let ta, tb = (match ty with TyApp ("prod", [ ta; tb ]) -> (ta, tb) | _ -> fail "GABS: tuple type") in
+                 let fst_ = App (Const ("FST", fun_ty ty ta), acc_tm) and snd_ = App (Const ("SND", fun_ty ty tb), acc_tm) in
+                 projs a fst_ ta @ projs b snd_ tb
+             | Free (x, xty) -> [ ((x, xty), acc_tm) ]
+             | _ -> fail "GABS: unsupported tuple pattern") in
+           let sub = projs tuple p pty in
+           List.iter (fun ((x, _), _) -> if not (List.mem_assoc x xs) then fail "GABS: pattern variable not bound") sub;
+           let rhs' = List.fold_left (fun t ((x, xty), proj) -> replace_free (x, xty) proj 0 t) rhs sub in
+           let lam = Lam (pn, pty, abstract_free (pn, pty) 0 rhs') in
+           List.iter (fun (n, _) -> release ctx n) xs;
+           release ctx pn; (match fv with Free (n, _) -> release ctx n | _ -> ());
+           note ctx "paired-lambda";
+           elab_nat ctx (List.fold_left (fun f a -> beta f a) lam rest) hint
+       | _ -> unsupported "GABS not in paired-abstraction form")
   | "GSPEC", [ Lam _ ] ->
       (match dest_gspec t with
        | Some (v, xs, p, body) -> (elab_gspec ctx v xs p body, VSubset (carrier ctx (fst (dest_fun_ty cty))))
@@ -563,6 +590,7 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
   let n = List.length e.R.c_args in
   let nargs = List.length args in
   if e.R.c_status = "pending" then unsupported "mapping for %s is pending" c;
+  if e.R.c_status = "internal" then unsupported "internal constant %s (%s)" c e.R.c_notes;
   use_class ctx e.R.c_class e.R.c_bridge;
   if nargs < n then begin
     (* partial application: eta-expand at the HOL level *)
@@ -666,10 +694,13 @@ and elab_gspec ctx (v : string) (xs : (string * ty) list) (p : tm) (body : tm) :
       if bb = Mg.Var x then Mg.Sep (x, c, pp)
       else if is_true then Mg.Repl (x, c, bb)
       else Mg.ReplSep (x, c, pp, bb)
-  | [ x1; x2 ], [ (_, ty1); (_, ty2) ] ->
-      let c1 = carrier ctx ty1 and c2 = carrier ctx ty2 in
-      Mg.FamUnion (x1, c1, if is_true then Mg.Repl (x2, c2, bb) else Mg.ReplSep (x2, c2, pp, bb))
-  | _ -> unsupported "GSPEC with %d bound variables" n
+  | _ ->
+      (* nested family unions over all but the last variable *)
+      let cs = List.map (fun (_, ty) -> carrier ctx ty) xs in
+      let last_x = List.nth names (n - 1) and last_c = List.nth cs (n - 1) in
+      let inner = if is_true then Mg.Repl (last_x, last_c, bb) else Mg.ReplSep (last_x, last_c, pp, bb) in
+      List.fold_right2 (fun x c acc -> Mg.FamUnion (x, c, acc))
+        (List.filteri (fun i _ -> i < n - 1) names) (List.filteri (fun i _ -> i < n - 1) cs) inner
 
 (* ------------------------------------------------------------------------ *)
 (* Theorem statements.                                                      *)
@@ -713,6 +744,8 @@ let elab_sequent (reg : R.t) (seq : sequent) : result =
         Mg.All (n, mty_of_view v, Mg.Imp (cl, acc))) decls body in
   let body = List.fold_right (fun (_, n) acc -> Mg.Imp (mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) tv_names body in
   let body = List.fold_right (fun (_, n) acc -> Mg.All (n, Mg.Set, acc)) tv_names body in
+  let body, rewrites = Rewrite.run body in
+  List.iter (fun r -> note ctx ("rewrite:" ^ r)) rewrites;
   let body, dropped = Emptycase.generalize body (List.map snd tv_names) in
   List.iter (fun p -> use_class ctx "generalization" ("empty_case:" ^ p)) dropped;
   { statement = body; tyvar_params = List.map snd tv_names; classes = ctx.st.classes; bridges = ctx.st.bridges;

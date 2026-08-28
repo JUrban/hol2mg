@@ -38,6 +38,12 @@ Admitted.
 Theorem num_Axiom : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x).
 Admitted.
 
+// HOL Light: nums.ml:149 / NUMERAL
+// Source hash: md5:2426be4ee095601a3317c8072e5b59f9
+// Status: transport_required (bridges: hol_num_omega)
+Theorem NUMERAL : forall n :e omega, n = n.
+Admitted.
+
 // HOL Light: nums.ml:169 / num_RECURSION
 // Source hash: md5:b287304fbed4be3d30468df5802532bb
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
@@ -48,5 +54,17 @@ Admitted.
 // Source hash: md5:f202972a2e9786d2257c90d475eac48a
 // Status: transport_required (bridges: hol_num_omega)
 Theorem num_CASES : forall m :e omega, m = 0 \/ exists n :e omega, m = ordsucc n.
+Admitted.
+
+// HOL Light: nums.ml:192 / BIT0_DEF
+// Source hash: md5:cee1bcf83250b63d8623c6b4cebc7e98
+// Status: transport_required (bridges: hol_num_omega)
+Theorem BIT0_DEF : 0 = 0 /\ forall n :e omega, 2 * ordsucc n = ordsucc (ordsucc (2 * n)).
+Admitted.
+
+// HOL Light: nums.ml:200 / BIT1_DEF
+// Source hash: md5:bd2631f8d3c5ce7d18b1dbba22927d46
+// Status: transport_required (bridges: hol_num_omega)
+Theorem BIT1_DEF : forall n :e omega, 2 * n + 1 = ordsucc (2 * n).
 Admitted.
 

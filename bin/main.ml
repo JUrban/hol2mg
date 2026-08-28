@@ -63,9 +63,15 @@ let () =
            if Sys.file_exists f then Mg.load_notation_table f);
       Mg.declare_notation "In" (Mg.Infix (":e", 500, Mg.NoneA));
       Mg.declare_notation "Subq" (Mg.Infix ("c=", 500, Mg.NoneA));
+      (* names declared by the native prelude modules are reserved too *)
+      let natives = (match opt "--native" with
+        | Some l -> String.split_on_char ',' l
+        | None -> List.filter Sys.file_exists [ "mglib/native/prelude.mg"; "mglib/native/finseq.mg" ]) in
+      List.iter Mg.load_signature_names natives;
       let ex = read_export export_file in
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
       Emptycase.rules := List.map (fun (l, r, _) -> (l, r)) reg.Registry.empty_rules;
+      Rewrite.rules := reg.Registry.rewrite_rules;
       let srcindex = read_srcindex (opt "--srcindex") in
       (* names of theorems whose proposition Megalodon reported as already known (two-pass reuse) *)
       let known = Hashtbl.create 64 in
