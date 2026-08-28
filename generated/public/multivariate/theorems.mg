@@ -4,9 +4,9 @@
 
 // HOL Light: theorems.ml:17 / EQ_REFL
 // Source hash: md5:5fb3b368ada0da55fa9425fc34443cce
-// Status: generalization_required (bridges: empty_case:A)
-Theorem EQ_REFL : forall A:set, forall x :e A, x = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem EQ_REFL : forall A:set, forall x :e A, x = x.
 
 // HOL Light: theorems.ml:21 / REFL_CLAUSE
 // Source hash: md5:2ce4c3adc3cbc009644ca0f1da20bfcf
@@ -124,9 +124,9 @@ Admitted.
 
 // HOL Light: theorems.ml:129 / EQ_IMP
 // Source hash: md5:889b227d11bb9b8ec4e1b0134eb5b325
-// Status: exact_native
-Theorem EQ_IMP : forall a b:prop, (a <-> b) -> a -> b.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem EQ_IMP : forall a b:prop, (a <-> b) -> a -> b.
 
 // HOL Light: theorems.ml:135 / EQ_CLAUSES
 // Source hash: md5:a45d7c9d85285642cfa3024e621fd5c5

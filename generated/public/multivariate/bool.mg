@@ -10,9 +10,9 @@ Admitted.
 
 // HOL Light: bool.ml:79 / TRUTH
 // Source hash: md5:e09aad94aa2e20c97a7a0ada09e7924e
-// Status: exact_native
-Theorem TRUTH : True.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem TRUTH : True.
 
 // HOL Light: bool.ml:97 / AND_DEF
 // Source hash: md5:1e545f23ac30b03a6b3d65a9471dee0b

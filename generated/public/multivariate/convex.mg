@@ -587,7 +587,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:1017 / TRIVIAL_LIMIT_WITHIN_CONVEX
 // Source hash: md5:c935a8be75e2f1f0a7b8190310428c6c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem TRIVIAL_LIMIT_WITHIN_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, convex N s /\ x :e s -> (trivial_limit (R :^: idx N) (within (R :^: idx N) (at N x) s) <-> s = {x}).
+Theorem TRIVIAL_LIMIT_WITHIN_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, convex N s /\ x :e s -> (trivial_limit (R :^: idx N) (within (R :^: idx N) (at_hl N x) s) <-> s = {x}).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:1026 / CONVEX_TRANSLATION_EQ
@@ -2741,7 +2741,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:6834 / CONTINUOUS_AT_CLOSEST_POINT
 // Source hash: md5:b01c182e0e33b17beb822982d5ba4683
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_AT_CLOSEST_POINT : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous A (R :^: idx A) (fun x0:set => closest_point A s x0) (at A x).
+Theorem CONTINUOUS_AT_CLOSEST_POINT : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous A (R :^: idx A) (fun x0:set => closest_point A s x0) (at_hl A x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6840 / CONTINUOUS_ON_CLOSEST_POINT
@@ -3677,7 +3677,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:10304 / IVT_INCREASING_COMPONENT_1
 // Source hash: md5:1c0b9424c7a57905a6c003bc5dcff2db
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe)
-Theorem IVT_INCREASING_COMPONENT_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> continuous N (R :^: idx 1) f (at 1 x)) /\ (f a k <= y /\ y <= f b k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
+Theorem IVT_INCREASING_COMPONENT_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> continuous N (R :^: idx 1) f (at_hl 1 x)) /\ (f a k <= y /\ y <= f b k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10313 / IVT_DECREASING_COMPONENT_ON_1
@@ -3689,7 +3689,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:10324 / IVT_DECREASING_COMPONENT_1
 // Source hash: md5:3c34be3e648859739956ed10d8967e0b
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe)
-Theorem IVT_DECREASING_COMPONENT_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> continuous N (R :^: idx 1) f (at 1 x)) /\ (f b k <= y /\ y <= f a k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
+Theorem IVT_DECREASING_COMPONENT_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> continuous N (R :^: idx 1) f (at_hl 1 x)) /\ (f b k <= y /\ y <= f a k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10337 / CONVEX_ON_CONVEX_HULL_BOUND

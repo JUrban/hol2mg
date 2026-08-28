@@ -56,7 +56,8 @@ let reserved_words =
     "Parameter"; "Admitted"; "Qed"; "Infix"; "Prefix"; "Postfix"; "Binder"; "Notation";
     "Opaque"; "Transparent"; "Unicode"; "ProofArchived"; "Conjecture"; "Lemma"; "Example";
     "Fact"; "Corollary"; "Proposition"; "SType"; "apply"; "exact"; "assume"; "claim";
-    "rewrite"; "aby"; "prove"; "witness"; "cases"; "reflexivity"; "symmetry"; "admit" ]
+    "rewrite"; "aby"; "prove"; "witness"; "cases"; "reflexivity"; "symmetry"; "admit"; "at"; "by"; "with";
+    "Section"; "End"; "Definition"; "Theorem"; "Axiom"; "Parameter"; "set"; "prop" ]
 
 (* names declared by the target signature (constants) *)
 let sig_names : (string, unit) Hashtbl.t = Hashtbl.create 4096

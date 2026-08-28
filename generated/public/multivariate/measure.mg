@@ -1577,7 +1577,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:6739 / HAS_VECTOR_DERIVATIVE_INDEFINITE_INTEGRAL
 // Source hash: md5:15407db48de06250e2212d7e352f4b72
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem HAS_VECTOR_DERIVATIVE_INDEFINITE_INTEGRAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, integrable_on N 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists k c= R :^: idx 1, negligible 1 k /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: k -> has_vector_derivative N (fun x0:set => integral N 1 (closed_interval 1 (seq_cons (a,x0) seq_nil)) f) (f x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Theorem HAS_VECTOR_DERIVATIVE_INDEFINITE_INTEGRAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, integrable_on N 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists k c= R :^: idx 1, negligible 1 k /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: k -> has_vector_derivative N (fun x0:set => integral N 1 (closed_interval 1 (seq_cons (a,x0) seq_nil)) f) (f x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:6863 / ABSOLUTELY_INTEGRABLE_LEBESGUE_POINTS
@@ -1979,25 +1979,25 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:8850 / BABY_SARD
 // Source hash: md5:d18e6c0458e7f775a5f1eae6b69f9065
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem BABY_SARD : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M <= dimindex N /\ (forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at M x) s) /\ rank M N (matrix M N (f' x)) < dimindex N) -> negligible N {f x | x :e s}.
+Theorem BABY_SARD : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M <= dimindex N /\ (forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at_hl M x) s) /\ rank M N (matrix M N (f' x)) < dimindex N) -> negligible N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9168 / BABY_SARD_ALT
 // Source hash: md5:1acf07298c7645a5a0e36aac477432e2
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem BABY_SARD_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M <= dimindex N /\ (forall x :e R :^: idx M, x :e s -> exists f':set -> set, (forall x0 :e R :^: idx M, f' x0 :e R :^: idx N) /\ (has_derivative N M f f' (within (R :^: idx M) (at M x) s) /\ rank M N (matrix M N f') < dimindex N)) -> negligible N {f x | x :e s}.
+Theorem BABY_SARD_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M <= dimindex N /\ (forall x :e R :^: idx M, x :e s -> exists f':set -> set, (forall x0 :e R :^: idx M, f' x0 :e R :^: idx N) /\ (has_derivative N M f f' (within (R :^: idx M) (at_hl M x) s) /\ rank M N (matrix M N f') < dimindex N)) -> negligible N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9178 / NEGLIGIBLE_INFINITE_PREIMAGES_MOSTLY_DIFFERENTIABLE_GEN
 // Source hash: md5:d8681d0fdad9aae594f87f899a8ea9da
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_net)
-Theorem NEGLIGIBLE_INFINITE_PREIMAGES_MOSTLY_DIFFERENTIABLE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, (forall y :e R :^: idx N, compact N {x :e R :^: idx N | x :e s /\ f x = y}) /\ negligible N {f x | x :e {x :e R :^: idx N | x :e s /\ ~ differentiable N N f (within (R :^: idx N) (at N x) s)}} -> negligible N {y :e R :^: idx N | infinite {x :e R :^: idx N | x :e s /\ f x = y}}.
+Theorem NEGLIGIBLE_INFINITE_PREIMAGES_MOSTLY_DIFFERENTIABLE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, (forall y :e R :^: idx N, compact N {x :e R :^: idx N | x :e s /\ f x = y}) /\ negligible N {f x | x :e {x :e R :^: idx N | x :e s /\ ~ differentiable N N f (within (R :^: idx N) (at_hl N x) s)}} -> negligible N {y :e R :^: idx N | infinite {x :e R :^: idx N | x :e s /\ f x = y}}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9219 / NEGLIGIBLE_INFINITE_PREIMAGES_MOSTLY_DIFFERENTIABLE
 // Source hash: md5:ed8a80ce217aeb63c444ec9583f1376f
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_net)
-Theorem NEGLIGIBLE_INFINITE_PREIMAGES_MOSTLY_DIFFERENTIABLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, continuous_on_hl N N f s /\ (compact N s /\ negligible N {f x | x :e {x :e R :^: idx N | x :e s /\ ~ differentiable N N f (within (R :^: idx N) (at N x) s)}}) -> negligible N {y :e R :^: idx N | infinite {x :e R :^: idx N | x :e s /\ f x = y}}.
+Theorem NEGLIGIBLE_INFINITE_PREIMAGES_MOSTLY_DIFFERENTIABLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, continuous_on_hl N N f s /\ (compact N s /\ negligible N {f x | x :e {x :e R :^: idx N | x :e s /\ ~ differentiable N N f (within (R :^: idx N) (at_hl N x) s)}}) -> negligible N {y :e R :^: idx N | infinite {x :e R :^: idx N | x :e s /\ f x = y}}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9233 / NEGLIGIBLE_INFINITE_PREIMAGES_DIFFERENTIABLE
@@ -2969,55 +2969,55 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:12886 / LEBESGUE_DENSITY_THEOREM_INTEGRAL_NORM_CBALL
 // Source hash: md5:93c12028873f50fdc6857abdcf963c11
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_NORM_CBALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => vector_mul 1 (recip_SNo (measure M (cball M (x,drop e0)))) (integral 1 M (cball M (x,drop e0)) (fun y:set => lift (vector_norm N (vector_sub N (f y) (f x)))))) (vec 1 0) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
+Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_NORM_CBALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => vector_mul 1 (recip_SNo (measure M (cball M (x,drop e0)))) (integral 1 M (cball M (x,drop e0)) (fun y:set => lift (vector_norm N (vector_sub N (f y) (f x)))))) (vec 1 0) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:12986 / LEBESGUE_DENSITY_THEOREM_INTEGRAL_NORM_BALL
 // Source hash: md5:7c854c3443b277c26cadadfce25c6247
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_NORM_BALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => vector_mul 1 (recip_SNo (measure M (ball M (x,drop e0)))) (integral 1 M (ball M (x,drop e0)) (fun y:set => lift (vector_norm N (vector_sub N (f y) (f x)))))) (vec 1 0) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
+Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_NORM_BALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => vector_mul 1 (recip_SNo (measure M (ball M (x,drop e0)))) (integral 1 M (ball M (x,drop e0)) (fun y:set => lift (vector_norm N (vector_sub N (f y) (f x)))))) (vec 1 0) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13013 / LEBESGUE_DENSITY_THEOREM_INTEGRAL_CBALL
 // Source hash: md5:5377f9a7870acdf7a89aa20883b489c7
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_CBALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, absolutely_integrable_on N M f (s :/\: closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto N (R :^: idx 1) (fun e0:set => vector_mul N (recip_SNo (measure M (cball M (x,drop e0)))) (integral N M (s :/\: cball M (x,drop e0)) f)) (if x :e s then f x else vec N 0) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
+Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_CBALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, absolutely_integrable_on N M f (s :/\: closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto N (R :^: idx 1) (fun e0:set => vector_mul N (recip_SNo (measure M (cball M (x,drop e0)))) (integral N M (s :/\: cball M (x,drop e0)) f)) (if x :e s then f x else vec N 0) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13067 / LEBESGUE_DENSITY_THEOREM_INTEGRAL_BALL
 // Source hash: md5:678c9f6f06333e3de57461bcc40555ae
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_BALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, absolutely_integrable_on N M f (s :/\: closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto N (R :^: idx 1) (fun e0:set => vector_mul N (recip_SNo (measure M (ball M (x,drop e0)))) (integral N M (s :/\: ball M (x,drop e0)) f)) (if x :e s then f x else vec N 0) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
+Theorem LEBESGUE_DENSITY_THEOREM_INTEGRAL_BALL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, absolutely_integrable_on N M f (s :/\: closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, ~ x :e k -> tendsto N (R :^: idx 1) (fun e0:set => vector_mul N (recip_SNo (measure M (ball M (x,drop e0)))) (integral N M (s :/\: ball M (x,drop e0)) f)) (if x :e s then f x else vec N 0) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13093 / LEBESGUE_DENSITY_THEOREM_LIFT_CBALL
 // Source hash: md5:0e0e63b68e1e7baa85668b4744291cf0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LEBESGUE_DENSITY_THEOREM_LIFT_CBALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, lebesgue_measurable N s -> exists k c= R :^: idx N, negligible N k /\ forall x :e R :^: idx N, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure N (s :/\: cball N (x,drop e0)) :/: measure N (cball N (x,drop e0)))) (if x :e s then vec 1 1 else vec 1 0) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
+Theorem LEBESGUE_DENSITY_THEOREM_LIFT_CBALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, lebesgue_measurable N s -> exists k c= R :^: idx N, negligible N k /\ forall x :e R :^: idx N, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure N (s :/\: cball N (x,drop e0)) :/: measure N (cball N (x,drop e0)))) (if x :e s then vec 1 1 else vec 1 0) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13115 / LEBESGUE_DENSITY_THEOREM_LIFT_BALL
 // Source hash: md5:d312b9a9d85575a800f781d6a20bc9a0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LEBESGUE_DENSITY_THEOREM_LIFT_BALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, lebesgue_measurable N s -> exists k c= R :^: idx N, negligible N k /\ forall x :e R :^: idx N, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure N (s :/\: ball N (x,drop e0)) :/: measure N (ball N (x,drop e0)))) (if x :e s then vec 1 1 else vec 1 0) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
+Theorem LEBESGUE_DENSITY_THEOREM_LIFT_BALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, lebesgue_measurable N s -> exists k c= R :^: idx N, negligible N k /\ forall x :e R :^: idx N, ~ x :e k -> tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure N (s :/\: ball N (x,drop e0)) :/: measure N (ball N (x,drop e0)))) (if x :e s then vec 1 1 else vec 1 0) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13144 / DIFFERENTIAL_ZERO_MAXMIN_DENSITY
 // Source hash: md5:de53dc89a8b967dd030b513ef03bb613
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem DIFFERENTIAL_ZERO_MAXMIN_DENSITY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx 1) -> forall s c= R :^: idx N, forall a :e R :^: idx N, has_derivative 1 N f f' (within (R :^: idx N) (at N a) s) /\ ((eventually (R :^: idx N) {x :e R :^: idx N | drop (f a) <= drop (f x)} (within (R :^: idx N) (at N a) s) \/ eventually (R :^: idx N) {x :e R :^: idx N | drop (f x) <= drop (f a)} (within (R :^: idx N) (at N a) s)) /\ (lebesgue_measurable N s /\ tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure N (s :/\: ball N (a,drop e0)) :/: measure N (ball N (a,drop e0)))) (vec 1 1) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}))) -> forall v :e R :^: idx N, f' v = vec 1 0.
+Theorem DIFFERENTIAL_ZERO_MAXMIN_DENSITY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx 1) -> forall s c= R :^: idx N, forall a :e R :^: idx N, has_derivative 1 N f f' (within (R :^: idx N) (at_hl N a) s) /\ ((eventually (R :^: idx N) {x :e R :^: idx N | drop (f a) <= drop (f x)} (within (R :^: idx N) (at_hl N a) s) \/ eventually (R :^: idx N) {x :e R :^: idx N | drop (f x) <= drop (f a)} (within (R :^: idx N) (at_hl N a) s)) /\ (lebesgue_measurable N s /\ tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure N (s :/\: ball N (a,drop e0)) :/: measure N (ball N (a,drop e0)))) (vec 1 1) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}))) -> forall v :e R :^: idx N, f' v = vec 1 0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13321 / DIFFERENTIAL_ZERO_LEVELSET_DENSITY
 // Source hash: md5:afbb2e2766451f9beef13d7f993a3006
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem DIFFERENTIAL_ZERO_LEVELSET_DENSITY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall c :e R :^: idx N, has_derivative N M f f' (within (R :^: idx M) (at M a) s) /\ (eventually (R :^: idx M) {x :e R :^: idx M | f x = c} (within (R :^: idx M) (at M a) s) /\ (lebesgue_measurable M s /\ tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure M (s :/\: ball M (a,drop e0)) :/: measure M (ball M (a,drop e0)))) (vec 1 1) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}))) -> forall h :e R :^: idx M, f' h = vec N 0.
+Theorem DIFFERENTIAL_ZERO_LEVELSET_DENSITY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall c :e R :^: idx N, has_derivative N M f f' (within (R :^: idx M) (at_hl M a) s) /\ (eventually (R :^: idx M) {x :e R :^: idx M | f x = c} (within (R :^: idx M) (at_hl M a) s) /\ (lebesgue_measurable M s /\ tendsto 1 (R :^: idx 1) (fun e0:set => lift (measure M (s :/\: ball M (a,drop e0)) :/: measure M (ball M (a,drop e0)))) (vec 1 1) (within (R :^: idx 1) (at_hl 1 (vec 1 0)) {t :e R :^: idx 1 | 0 < drop t}))) -> forall h :e R :^: idx M, f' h = vec N 0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13351 / NEGLIGIBLE_POINTS_OF_AMBIGUOUS_DERIVATIVE
 // Source hash: md5:9633038204fddafd7df15a9d1685b582
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem NEGLIGIBLE_POINTS_OF_AMBIGUOUS_DERIVATIVE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> negligible M {x :e R :^: idx M | x :e s /\ exists y:set -> set, (forall x0 :e R :^: idx M, y x0 :e R :^: idx N) /\ exists z:set -> set, (forall x0 :e R :^: idx M, z x0 :e R :^: idx N) /\ (has_derivative N M f y (within (R :^: idx M) (at M x) s) /\ (has_derivative N M f z (within (R :^: idx M) (at M x) s) /\ ~ forall x0 :e R :^: idx M, y x0 = z x0))}.
+Theorem NEGLIGIBLE_POINTS_OF_AMBIGUOUS_DERIVATIVE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> negligible M {x :e R :^: idx M | x :e s /\ exists y:set -> set, (forall x0 :e R :^: idx M, y x0 :e R :^: idx N) /\ exists z:set -> set, (forall x0 :e R :^: idx M, z x0 :e R :^: idx N) /\ (has_derivative N M f y (within (R :^: idx M) (at_hl M x) s) /\ (has_derivative N M f z (within (R :^: idx M) (at_hl M x) s) /\ ~ forall x0 :e R :^: idx M, y x0 = z x0))}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:13392 / PAIRWISE_DISJOINT_LEBESGUE_MEASURABLE_IMP_COUNTABLE
@@ -3107,49 +3107,49 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:14174 / LEBESGUE_MEASURABLE_POINTS_OF_CONVERGENCE
 // Source hash: md5:a9715b3171342f7c06f2fbaa3b56ec50
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_MEASURABLE_POINTS_OF_CONVERGENCE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, f x y :e R :^: idx P) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s /\ ((forall y :e R :^: idx N, continuous_on_hl M P (fun x:set => f x y) s) /\ continuous_on_hl M N g s) -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ exists l :e R :^: idx P, tendsto P (R :^: idx N) (f x) l (at N (g x))}.
+Theorem LEBESGUE_MEASURABLE_POINTS_OF_CONVERGENCE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, f x y :e R :^: idx P) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s /\ ((forall y :e R :^: idx N, continuous_on_hl M P (fun x:set => f x y) s) /\ continuous_on_hl M N g s) -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ exists l :e R :^: idx P, tendsto P (R :^: idx N) (f x) l (at_hl N (g x))}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:14272 / BOREL_POINTS_OF_DIFFERENTIABILITY
 // Source hash: md5:1c4ba97545c206561ef5bb473c02efaf
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem BOREL_POINTS_OF_DIFFERENTIABILITY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> borel M {x :e R :^: idx M | differentiable N M f (at M x)}.
+Theorem BOREL_POINTS_OF_DIFFERENTIABILITY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> borel M {x :e R :^: idx M | differentiable N M f (at_hl M x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:14505 / LEBESGUE_MEASURABLE_POINTS_OF_DIFFERENTIABILITY_WITHIN
 // Source hash: md5:44b57a7ce6dd67b158289536c37724ce
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_MEASURABLE_POINTS_OF_DIFFERENTIABILITY_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ differentiable N M f (within (R :^: idx M) (at M x) s)}.
+Theorem LEBESGUE_MEASURABLE_POINTS_OF_DIFFERENTIABILITY_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ differentiable N M f (within (R :^: idx M) (at_hl M x) s)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:15044 / LEBESGUE_MEASURABLE_POINTS_OF_DIFFERENTIABILITY_AT
 // Source hash: md5:bce66d2e8c7571f0cfbc5fcce4feeca9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_MEASURABLE_POINTS_OF_DIFFERENTIABILITY_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> lebesgue_measurable M {x :e R :^: idx M | differentiable N M f (at M x)}.
+Theorem LEBESGUE_MEASURABLE_POINTS_OF_DIFFERENTIABILITY_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> lebesgue_measurable M {x :e R :^: idx M | differentiable N M f (at_hl M x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:15052 / MEASURABLE_ON_PARTIAL_DERIVATIVES
 // Source hash: md5:6d7ec198e991baccb0678a9c9fac9d44
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
-Theorem MEASURABLE_ON_PARTIAL_DERIVATIVES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, forall i j :e omega, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at M x) s)) /\ (1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex M)))) -> measurable_on M 1 (fun x:set => lift (matrix M N (f' x) i j)) s.
+Theorem MEASURABLE_ON_PARTIAL_DERIVATIVES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, forall i j :e omega, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at_hl M x) s)) /\ (1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex M)))) -> measurable_on M 1 (fun x:set => lift (matrix M N (f' x) i j)) s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:15726 / MEASURABLE_ON_VECTOR_DERIVATIVE_GEN
 // Source hash: md5:65375903d9887e910205d89ad877f675
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_ON_VECTOR_DERIVATIVE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, lebesgue_measurable 1 s /\ (forall x :e R :^: idx 1, x :e s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) s)) -> measurable_on 1 N f' s.
+Theorem MEASURABLE_ON_VECTOR_DERIVATIVE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, lebesgue_measurable 1 s /\ (forall x :e R :^: idx 1, x :e s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) s)) -> measurable_on 1 N f' s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:15747 / MEASURABLE_ON_VECTOR_DERIVATIVE
 // Source hash: md5:a82bfc968869764eb0f8ce0b747ceee0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_ON_VECTOR_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s k c= R :^: idx 1, negligible 1 k /\ (lebesgue_measurable 1 s /\ (forall x :e R :^: idx 1, x :e s :\: k -> has_vector_derivative N f (f' x) (at 1 x))) -> measurable_on 1 N f' s.
+Theorem MEASURABLE_ON_VECTOR_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s k c= R :^: idx 1, negligible 1 k /\ (lebesgue_measurable 1 s /\ (forall x :e R :^: idx 1, x :e s :\: k -> has_vector_derivative N f (f' x) (at_hl 1 x))) -> measurable_on 1 N f' s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:15763 / MEASURABLE_ON_DET_JACOBIAN
 // Source hash: md5:ec29a2c18ec77878fbac828eed57585c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_ON_DET_JACOBIAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) -> measurable_on N 1 (fun x:set => lift (det N (matrix N N (f' x)))) s.
+Theorem MEASURABLE_ON_DET_JACOBIAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) -> measurable_on N 1 (fun x:set => lift (det N (matrix N N (f' x)))) s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:15784 / LUZIN
@@ -3287,7 +3287,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:17114 / ABSOLUTELY_CONTINUOUS_MEASURE_DIFFERENTIABLE_IMAGE_GEN
 // Source hash: md5:f1f84031852b1edee676f7c61465b157
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem ABSOLUTELY_CONTINUOUS_MEASURE_DIFFERENTIABLE_IMAGE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (continuous_on_hl N N f s /\ negligible N {f x | x :e {x :e R :^: idx N | x :e s /\ ~ differentiable N N f (within (R :^: idx N) (at N x) s)}}) -> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall t c= R :^: idx N, t c= s /\ (measurable N t /\ measure N t < d) -> measurable N {f x | x :e t} /\ measure N {f x | x :e t} < e0.
+Theorem ABSOLUTELY_CONTINUOUS_MEASURE_DIFFERENTIABLE_IMAGE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (continuous_on_hl N N f s /\ negligible N {f x | x :e {x :e R :^: idx N | x :e s /\ ~ differentiable N N f (within (R :^: idx N) (at_hl N x) s)}}) -> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall t c= R :^: idx N, t c= s /\ (measurable N t /\ measure N t < d) -> measurable N {f x | x :e t} /\ measure N {f x | x :e t} < e0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:17151 / ABSOLUTELY_CONTINUOUS_MEASURE_DIFFERENTIABLE_IMAGE
@@ -3335,91 +3335,91 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:17756 / MEASURABLE_DIFFERENTIABLE_IMAGE
 // Source hash: md5:e11623bf631249a36303eb6482fecac1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s) -> measurable N {f x | x :e s}.
+Theorem MEASURABLE_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) /\ integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s) -> measurable N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:17756 / MEASURE_DIFFERENTIABLE_IMAGE
 // Source hash: md5:d7ad5377b48db748de5dcb1cafa4d073
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURE_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall b :e R, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s /\ drop (integral 1 N s (fun x:set => lift (abs_SNo (det N (matrix N N (f' x)))))) <= b)) -> measure N {f x | x :e s} <= b.
+Theorem MEASURE_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall b :e R, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) /\ (integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s /\ drop (integral 1 N s (fun x:set => lift (abs_SNo (det N (matrix N N (f' x)))))) <= b)) -> measure N {f x | x :e s} <= b.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:18042 / NEGLIGIBLE_DIFFERENTIABLE_PREIMAGE
 // Source hash: md5:2de6cceca1a521aeeee3c7ccc12fd98f
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem NEGLIGIBLE_DIFFERENTIABLE_PREIMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, dimindex M = dimindex N /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at M x) s) /\ rank M N (matrix M N (f' x)) = dimindex N) /\ negligible N t) -> negligible M {x :e R :^: idx M | x :e s /\ f x :e t}.
+Theorem NEGLIGIBLE_DIFFERENTIABLE_PREIMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, dimindex M = dimindex N /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at_hl M x) s) /\ rank M N (matrix M N (f' x)) = dimindex N) /\ negligible N t) -> negligible M {x :e R :^: idx M | x :e s /\ f x :e t}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:18149 / ABSOLUTELY_INTEGRABLE_ON_IMAGE
 // Source hash: md5:24fb3d5bf0133f3b2bff91c5914e86b4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_ON_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at M x) s)) /\ absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s -> absolutely_integrable_on N M f {g x | x :e s}.
+Theorem ABSOLUTELY_INTEGRABLE_ON_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at_hl M x) s)) /\ absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s -> absolutely_integrable_on N M f {g x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:18149 / INTEGRAL_ON_IMAGE_DROP_UBOUND_LE
 // Source hash: md5:3bc2238374b6ea7ba7b3b7215b911cd2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem INTEGRAL_ON_IMAGE_DROP_UBOUND_LE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall b :e R, (forall x :e R :^: idx N, x :e s -> 0 <= drop (f (g x))) /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N g (g' x) (within (R :^: idx N) (at N x) s)) /\ (integrable_on 1 N (fun x:set => vector_mul 1 (abs_SNo (det N (matrix N N (g' x)))) (f (g x))) s /\ drop (integral 1 N s (fun x:set => vector_mul 1 (abs_SNo (det N (matrix N N (g' x)))) (f (g x)))) <= b)) -> drop (integral 1 N {g x | x :e s} f) <= b.
+Theorem INTEGRAL_ON_IMAGE_DROP_UBOUND_LE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall b :e R, (forall x :e R :^: idx N, x :e s -> 0 <= drop (f (g x))) /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N g (g' x) (within (R :^: idx N) (at_hl N x) s)) /\ (integrable_on 1 N (fun x:set => vector_mul 1 (abs_SNo (det N (matrix N N (g' x)))) (f (g x))) s /\ drop (integral 1 N s (fun x:set => vector_mul 1 (abs_SNo (det N (matrix N N (g' x)))) (f (g x)))) <= b)) -> drop (integral 1 N {g x | x :e s} f) <= b.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:18699 / HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_INVERTIBLE
 // Source hash: md5:3659e4a7c8c6d5e2fee485a27dbfe6ac
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_INVERTIBLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, forall b :e R :^: idx N, (forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at M x) s)) /\ ((forall x :e R :^: idx M, x :e s -> h (g x) = x) /\ continuous_on_hl M M h {g x | x :e s}) -> (absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s /\ integral N M s (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) = b <-> absolutely_integrable_on N M f {g x | x :e s} /\ integral N M {g x | x :e s} f = b).
+Theorem HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_INVERTIBLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, forall b :e R :^: idx N, (forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at_hl M x) s)) /\ ((forall x :e R :^: idx M, x :e s -> h (g x) = x) /\ continuous_on_hl M M h {g x | x :e s}) -> (absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s /\ integral N M s (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) = b <-> absolutely_integrable_on N M f {g x | x :e s} /\ integral N M {g x | x :e s} f = b).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19113 / HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES
 // Source hash: md5:2aa009018a7087a16d32b10208fb55f4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, forall b :e R :^: idx N, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at M x) s)) /\ (forall x y :e R :^: idx M, x :e s /\ (y :e s /\ g x = g y) -> x = y)) -> (absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s /\ integral N M s (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) = b <-> absolutely_integrable_on N M f {g x | x :e s} /\ integral N M {g x | x :e s} f = b).
+Theorem HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, forall b :e R :^: idx N, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at_hl M x) s)) /\ (forall x y :e R :^: idx M, x :e s /\ (y :e s /\ g x = g y) -> x = y)) -> (absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s /\ integral N M s (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) = b <-> absolutely_integrable_on N M f {g x | x :e s} /\ integral N M {g x | x :e s} f = b).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19509 / ABSOLUTELY_INTEGRABLE_CHANGE_OF_VARIABLES
 // Source hash: md5:f7c455e1c511d9bd08665a1e06e7a653
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_CHANGE_OF_VARIABLES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at M x) s)) /\ (forall x y :e R :^: idx M, x :e s /\ (y :e s /\ g x = g y) -> x = y)) -> (absolutely_integrable_on N M f {g x | x :e s} <-> absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s).
+Theorem ABSOLUTELY_INTEGRABLE_CHANGE_OF_VARIABLES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at_hl M x) s)) /\ (forall x y :e R :^: idx M, x :e s /\ (y :e s /\ g x = g y) -> x = y)) -> (absolutely_integrable_on N M f {g x | x :e s} <-> absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19520 / INTEGRAL_CHANGE_OF_VARIABLES
 // Source hash: md5:585c8cff674767d385e0c23c581097a7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem INTEGRAL_CHANGE_OF_VARIABLES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at M x) s)) /\ ((forall x y :e R :^: idx M, x :e s /\ (y :e s /\ g x = g y) -> x = y) /\ (absolutely_integrable_on N M f {g x | x :e s} \/ absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s))) -> integral N M {g x | x :e s} f = integral N M s (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))).
+Theorem INTEGRAL_CHANGE_OF_VARIABLES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx M) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, lebesgue_measurable M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative M M g (g' x) (within (R :^: idx M) (at_hl M x) s)) /\ ((forall x y :e R :^: idx M, x :e s /\ (y :e s /\ g x = g y) -> x = y) /\ (absolutely_integrable_on N M f {g x | x :e s} \/ absolutely_integrable_on N M (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))) s))) -> integral N M {g x | x :e s} f = integral N M s (fun x:set => vector_mul N (abs_SNo (det M (matrix M M (g' x)))) (f (g x))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19535 / HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_1
 // Source hash: md5:fee66c83f853881ee47193a9fabe088e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R, g' x :e R) -> forall s c= R :^: idx 1, forall b :e R :^: idx N, lebesgue_measurable 1 s /\ ((forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ g x = g y) -> x = y) /\ (forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 g (lift (g' (drop x))) (within (R :^: idx 1) (at 1 x) s))) -> (absolutely_integrable_on N 1 (fun x:set => vector_mul N (abs_SNo (g' (drop x))) (f (g x))) s /\ integral N 1 s (fun x:set => vector_mul N (abs_SNo (g' (drop x))) (f (g x))) = b <-> absolutely_integrable_on N 1 f {g x | x :e s} /\ integral N 1 {g x | x :e s} f = b).
+Theorem HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R, g' x :e R) -> forall s c= R :^: idx 1, forall b :e R :^: idx N, lebesgue_measurable 1 s /\ ((forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ g x = g y) -> x = y) /\ (forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 g (lift (g' (drop x))) (within (R :^: idx 1) (at_hl 1 x) s))) -> (absolutely_integrable_on N 1 (fun x:set => vector_mul N (abs_SNo (g' (drop x))) (f (g x))) s /\ integral N 1 s (fun x:set => vector_mul N (abs_SNo (g' (drop x))) (f (g x))) = b <-> absolutely_integrable_on N 1 f {g x | x :e s} /\ integral N 1 {g x | x :e s} f = b).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19578 / ABSOLUTELY_INTEGRABLE_CHANGE_OF_VARIABLES_1
 // Source hash: md5:8ed9472079b149f96dc63e749431fe20
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_CHANGE_OF_VARIABLES_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R, g' x :e R) -> forall s c= R :^: idx 1, lebesgue_measurable 1 s /\ ((forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ g x = g y) -> x = y) /\ (forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 g (lift (g' (drop x))) (within (R :^: idx 1) (at 1 x) s))) -> (absolutely_integrable_on N 1 f {g x | x :e s} <-> absolutely_integrable_on N 1 (fun x:set => vector_mul N (abs_SNo (g' (drop x))) (f (g x))) s).
+Theorem ABSOLUTELY_INTEGRABLE_CHANGE_OF_VARIABLES_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R, g' x :e R) -> forall s c= R :^: idx 1, lebesgue_measurable 1 s /\ ((forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ g x = g y) -> x = y) /\ (forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 g (lift (g' (drop x))) (within (R :^: idx 1) (at_hl 1 x) s))) -> (absolutely_integrable_on N 1 f {g x | x :e s} <-> absolutely_integrable_on N 1 (fun x:set => vector_mul N (abs_SNo (g' (drop x))) (f (g x))) s).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19595 / HAS_MEASURE_DIFFERENTIABLE_IMAGE
 // Source hash: md5:bd5289269923bbb6c64add1972ec329c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem HAS_MEASURE_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall m :e R, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y)) -> (has_measure N {f x | x :e s} m <-> has_integral N 1 (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) (lift m) s).
+Theorem HAS_MEASURE_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall m :e R, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y)) -> (has_measure N {f x | x :e s} m <-> has_integral N 1 (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) (lift m) s).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19614 / MEASURABLE_DIFFERENTIABLE_IMAGE_EQ
 // Source hash: md5:dc8233c8ba0b0e41106c59db3c7cca64
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_DIFFERENTIABLE_IMAGE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y)) -> (measurable N {f x | x :e s} <-> integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s).
+Theorem MEASURABLE_DIFFERENTIABLE_IMAGE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y)) -> (measurable N {f x | x :e s} <-> integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19625 / MEASURABLE_DIFFERENTIABLE_IMAGE_ALT
 // Source hash: md5:bce80c098d6ebb7703b3edade7a1c74e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_DIFFERENTIABLE_IMAGE_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y)) -> (measurable N {f x | x :e s} <-> absolutely_integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s).
+Theorem MEASURABLE_DIFFERENTIABLE_IMAGE_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y)) -> (measurable N {f x | x :e s} <-> absolutely_integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19639 / MEASURE_DIFFERENTIABLE_IMAGE_EQ
 // Source hash: md5:b755cb5c3a2633a4e07fc0dcdafea7c2
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem MEASURE_DIFFERENTIABLE_IMAGE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ ((forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s)) -> measure N {f x | x :e s} = drop (integral 1 N s (fun x:set => lift (abs_SNo (det N (matrix N N (f' x)))))).
+Theorem MEASURE_DIFFERENTIABLE_IMAGE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, lebesgue_measurable N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s)) /\ ((forall x y :e R :^: idx N, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ integrable_on 1 N (fun x:set => lift (abs_SNo (det N (matrix N N (f' x))))) s)) -> measure N {f x | x :e s} = drop (integral 1 N s (fun x:set => lift (abs_SNo (det N (matrix N N (f' x)))))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19662 / HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_LINEAR
@@ -3455,13 +3455,13 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:20116 / CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_NORM
 // Source hash: md5:a072c9f91fcae97699e6be0fb3def480
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_NORM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> absolutely_integrable_on N M f (R :^: idx M) -> tendsto 1 (R :^: idx M) (fun a:set => integral 1 M (R :^: idx M) (fun x:set => lift (vector_norm N (vector_sub N (f (vector_add M a x)) (f x))))) (vec 1 0) (at M (vec M 0)).
+Theorem CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_NORM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> absolutely_integrable_on N M f (R :^: idx M) -> tendsto 1 (R :^: idx M) (fun a:set => integral 1 M (R :^: idx M) (fun x:set => lift (vector_norm N (vector_sub N (f (vector_add M a x)) (f x))))) (vec 1 0) (at_hl M (vec M 0)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:20355 / CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_NORM_GEN
 // Source hash: md5:c1d3e5e4c3e3a9a0abb95120845c1e40
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_NORM_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, absolutely_integrable_on N M f s /\ (lebesgue_measurable M t /\ t c= s) -> tendsto 1 (R :^: idx M) (fun a:set => integral 1 M t (fun x:set => lift (vector_norm N (vector_sub N (f (vector_add M a x)) (f x))))) (vec 1 0) (within (R :^: idx M) (at M (vec M 0)) {a :e R :^: idx M | {vector_add M a x | x :e t} c= s}).
+Theorem CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_NORM_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, absolutely_integrable_on N M f s /\ (lebesgue_measurable M t /\ t c= s) -> tendsto 1 (R :^: idx M) (fun a:set => integral 1 M t (fun x:set => lift (vector_norm N (vector_sub N (f (vector_add M a x)) (f x))))) (vec 1 0) (within (R :^: idx M) (at_hl M (vec M 0)) {a :e R :^: idx M | {vector_add M a x | x :e t} c= s}).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:20399 / CONTINUOUS_ON_ABSOLUTELY_INTEGRABLE_TRANSLATION_GEN
@@ -3479,13 +3479,13 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:20455 / CONTINUOUS_MEASURE_TRANSLATION_SYMDIFF
 // Source hash: md5:a1d718298527b08a62fb4bdb0d751239
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_MEASURE_TRANSLATION_SYMDIFF : forall N:set, N <> Empty -> forall s c= R :^: idx N, measurable N s -> tendsto 1 (R :^: idx N) (fun a:set => lift (measure N (({vector_add N a x | x :e s} :\: s) :\/: (s :\: {vector_add N a x | x :e s})))) (vec 1 0) (at N (vec N 0)).
+Theorem CONTINUOUS_MEASURE_TRANSLATION_SYMDIFF : forall N:set, N <> Empty -> forall s c= R :^: idx N, measurable N s -> tendsto 1 (R :^: idx N) (fun a:set => lift (measure N (({vector_add N a x | x :e s} :\: s) :\/: (s :\: {vector_add N a x | x :e s})))) (vec 1 0) (at_hl N (vec N 0)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:20480 / CONTINUOUS_MEASURE_TRANSLATION_DIFF
 // Source hash: md5:a1b51c65e7c4811c6e4600716b5f97d1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_MEASURE_TRANSLATION_DIFF : forall N:set, N <> Empty -> forall s c= R :^: idx N, measurable N s -> tendsto 1 (R :^: idx N) (fun a:set => lift (measure N ({vector_add N a x | x :e s} :\: s))) (vec 1 0) (at N (vec N 0)).
+Theorem CONTINUOUS_MEASURE_TRANSLATION_DIFF : forall N:set, N <> Empty -> forall s c= R :^: idx N, measurable N s -> tendsto 1 (R :^: idx N) (fun a:set => lift (measure N ({vector_add N a x | x :e s} :\: s))) (vec 1 0) (at_hl N (vec N 0)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:20496 / CONTINUOUS_MEASURE_DIFFERENTIABLE_IMAGE_TRANSLATION
@@ -3521,37 +3521,37 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:21318 / MEASURE_DIFFERENTIABLE_IMAGE_APPROX_GEN
 // Source hash: md5:1d5187a241451c2b6a2626ae32eddfb6
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem MEASURE_DIFFERENTIABLE_IMAGE_APPROX_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall c :e Power (R :^: idx N) :^: omega, forall a :e R :^: idx N, open N s /\ (differentiable_on_hl N N f s /\ ((forall v c= R :^: idx N, v c= s /\ open N v -> open N {f x | x :e v}) /\ (a :e s /\ (~ det N (jacobian N N f (at N a)) = 0 /\ (tendsto 1 omega (fun n:set => lift (diameter N (c n))) (vec 1 0) sequentially /\ ((forall n :e omega, a :e closure N (c n)) /\ (exists A c= R :^: idx N, convex N A /\ (bounded_hl N A /\ (~ interior N A = Empty /\ forall n :e omega, exists t :e R, exists z :e R :^: idx N, 0 < t /\ {vector_add N (vector_mul N t x) z | x :e A} = c n))))))))) -> eventually omega {n :e omega | measurable N {f x | x :e c n}} sequentially /\ tendsto 1 omega (fun n:set => lift (measure N {f x | x :e c n} :/: measure N (c n))) (lift (abs_SNo (det N (jacobian N N f (at N a))))) sequentially.
+Theorem MEASURE_DIFFERENTIABLE_IMAGE_APPROX_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall c :e Power (R :^: idx N) :^: omega, forall a :e R :^: idx N, open N s /\ (differentiable_on_hl N N f s /\ ((forall v c= R :^: idx N, v c= s /\ open N v -> open N {f x | x :e v}) /\ (a :e s /\ (~ det N (jacobian N N f (at_hl N a)) = 0 /\ (tendsto 1 omega (fun n:set => lift (diameter N (c n))) (vec 1 0) sequentially /\ ((forall n :e omega, a :e closure N (c n)) /\ (exists A c= R :^: idx N, convex N A /\ (bounded_hl N A /\ (~ interior N A = Empty /\ forall n :e omega, exists t :e R, exists z :e R :^: idx N, 0 < t /\ {vector_add N (vector_mul N t x) z | x :e A} = c n))))))))) -> eventually omega {n :e omega | measurable N {f x | x :e c n}} sequentially /\ tendsto 1 omega (fun n:set => lift (measure N {f x | x :e c n} :/: measure N (c n))) (lift (abs_SNo (det N (jacobian N N f (at_hl N a))))) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:21956 / MEASURE_DIFFERENTIABLE_IMAGE_APPROX
 // Source hash: md5:73d568690b1f63bb07c79a0d338488de
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem MEASURE_DIFFERENTIABLE_IMAGE_APPROX : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall c :e Power (R :^: idx N) :^: omega, forall a :e R :^: idx N, open N s /\ (a :e s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0) /\ (tendsto 1 omega (fun n:set => lift (diameter N (c n))) (vec 1 0) sequentially /\ ((forall n :e omega, a :e closure N (c n)) /\ (exists A c= R :^: idx N, convex N A /\ (bounded_hl N A /\ (~ interior N A = Empty /\ forall n :e omega, exists t :e R, exists z :e R :^: idx N, 0 < t /\ {vector_add N (vector_mul N t x) z | x :e A} = c n))))))) -> eventually omega {n :e omega | measurable N {f x | x :e c n}} sequentially /\ tendsto 1 omega (fun n:set => lift (measure N {f x | x :e c n} :/: measure N (c n))) (lift (abs_SNo (det N (matrix N N (f' a))))) sequentially.
+Theorem MEASURE_DIFFERENTIABLE_IMAGE_APPROX : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall c :e Power (R :^: idx N) :^: omega, forall a :e R :^: idx N, open N s /\ (a :e s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at_hl N x) /\ ~ det N (matrix N N (f' x)) = 0) /\ (tendsto 1 omega (fun n:set => lift (diameter N (c n))) (vec 1 0) sequentially /\ ((forall n :e omega, a :e closure N (c n)) /\ (exists A c= R :^: idx N, convex N A /\ (bounded_hl N A /\ (~ interior N A = Empty /\ forall n :e omega, exists t :e R, exists z :e R :^: idx N, 0 < t /\ {vector_add N (vector_mul N t x) z | x :e A} = c n))))))) -> eventually omega {n :e omega | measurable N {f x | x :e c n}} sequentially /\ tendsto 1 omega (fun n:set => lift (measure N {f x | x :e c n} :/: measure N (c n))) (lift (abs_SNo (det N (matrix N N (f' a))))) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:21983 / CONNECTED_JACOBIAN_RANGE
 // Source hash: md5:84bdc6e9194854bdcd1e54139252ce94
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONNECTED_JACOBIAN_RANGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (connected N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0)) -> connected 1 {lift (det N (matrix N N (f' x))) | x :e s}.
+Theorem CONNECTED_JACOBIAN_RANGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (connected N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at_hl N x) /\ ~ det N (matrix N N (f' x)) = 0)) -> connected 1 {lift (det N (matrix N N (f' x))) | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:22160 / CONNECTED_JACOBIAN_RANGE_ALT
 // Source hash: md5:77762c1a1d04267b39002fb77e4539cc
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONNECTED_JACOBIAN_RANGE_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s t c= R :^: idx N, forall a b :e R :^: idx N, open N s /\ (connected N s /\ (convex N t /\ (t c= s /\ (~ interior N t = Empty /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0) /\ (a :e t /\ b :e t)))))) -> open_segment 1 (lift (det N (matrix N N (f' a))),lift (det N (matrix N N (f' b)))) c= {lift (det N (matrix N N (f' x))) | x :e interior N t}.
+Theorem CONNECTED_JACOBIAN_RANGE_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s t c= R :^: idx N, forall a b :e R :^: idx N, open N s /\ (connected N s /\ (convex N t /\ (t c= s /\ (~ interior N t = Empty /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at_hl N x) /\ ~ det N (matrix N N (f' x)) = 0) /\ (a :e t /\ b :e t)))))) -> open_segment 1 (lift (det N (matrix N N (f' a))),lift (det N (matrix N N (f' b)))) c= {lift (det N (matrix N N (f' x))) | x :e interior N t}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:22417 / CONNECTED_JACOBIAN_RANGE_SUBSET
 // Source hash: md5:74ead90d0b62b3fa2c527e23bfa5439f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONNECTED_JACOBIAN_RANGE_SUBSET : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s t c= R :^: idx N, open N s /\ (connected N s /\ (convex N t /\ (t c= s /\ (~ interior N t = Empty /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0))))) -> connected 1 {lift (det N (matrix N N (f' x))) | x :e t}.
+Theorem CONNECTED_JACOBIAN_RANGE_SUBSET : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s t c= R :^: idx N, open N s /\ (connected N s /\ (convex N t /\ (t c= s /\ (~ interior N t = Empty /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at_hl N x) /\ ~ det N (matrix N N (f' x)) = 0))))) -> connected 1 {lift (det N (matrix N N (f' x))) | x :e t}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:22446 / CONNECTED_JACOBIAN_GRAPH
 // Source hash: md5:abf2337f32f0dd7800d587ba88265c68
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONNECTED_JACOBIAN_GRAPH : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (connected N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0)) -> connected (idx_n (dimindex N + 1)) {pastecart N 1 x (lift (det N (matrix N N (f' x)))) | x :e R :^: idx N, x :e s}.
+Theorem CONNECTED_JACOBIAN_GRAPH : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (connected N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at_hl N x) /\ ~ det N (matrix N N (f' x)) = 0)) -> connected (idx_n (dimindex N + 1)) {pastecart N 1 x (lift (det N (matrix N N (f' x)))) | x :e R :^: idx N, x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:22827 / ABSOLUTE_INTEGRATION_BY_PARTS
@@ -3617,37 +3617,37 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:23426 / LEBESGUE_DIFFERENTIATION_THEOREM_COMPACT
 // Source hash: md5:e06088548a991b377227bf6c94e6dbb7
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_DIFFERENTIATION_THEOREM_COMPACT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> negligible 1 {x :e R :^: idx 1 | x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ ~ differentiable N 1 f (at 1 x)}.
+Theorem LEBESGUE_DIFFERENTIATION_THEOREM_COMPACT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> negligible 1 {x :e R :^: idx 1 | x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ ~ differentiable N 1 f (at_hl 1 x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24634 / LEBESGUE_DIFFERENTIATION_THEOREM
 // Source hash: md5:a5daded4ec450511126796c39820ef8b
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_DIFFERENTIATION_THEOREM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ has_bounded_variation_on N f s -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable N 1 f (at 1 x)}.
+Theorem LEBESGUE_DIFFERENTIATION_THEOREM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ has_bounded_variation_on N f s -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable N 1 f (at_hl 1 x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24674 / LEBESGUE_DIFFERENTIATION_THEOREM_ALT
 // Source hash: md5:1a854a453a6191ada7c56fdcc710dc06
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_DIFFERENTIATION_THEOREM_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ has_bounded_variation_on N f s -> exists t c= R :^: idx 1, t c= s /\ (negligible 1 t /\ forall x :e R :^: idx 1, x :e s :\: t -> differentiable N 1 f (at 1 x)).
+Theorem LEBESGUE_DIFFERENTIATION_THEOREM_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ has_bounded_variation_on N f s -> exists t c= R :^: idx 1, t c= s /\ (negligible 1 t /\ forall x :e R :^: idx 1, x :e s :\: t -> differentiable N 1 f (at_hl 1 x)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24684 / LEBESGUE_DIFFERENTIATION_THEOREM_GEN
 // Source hash: md5:ae3666e1057fe01064f113d8e9608be3
 // Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_DIFFERENTIATION_THEOREM_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, countable (components 1 s) /\ has_bounded_variation_on N f s -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable N 1 f (at 1 x)}.
+Theorem LEBESGUE_DIFFERENTIATION_THEOREM_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, countable (components 1 s) /\ has_bounded_variation_on N f s -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable N 1 f (at_hl 1 x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24701 / LEBESGUE_DIFFERENTIATION_THEOREM_INCREASING
 // Source hash: md5:ec8359a943d5dda318ac5a9ab0fced76
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_DIFFERENTIATION_THEOREM_INCREASING : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y)) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable 1 1 f (at 1 x)}.
+Theorem LEBESGUE_DIFFERENTIATION_THEOREM_INCREASING : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y)) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable 1 1 f (at_hl 1 x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24728 / LEBESGUE_DIFFERENTIATION_THEOREM_DECREASING
 // Source hash: md5:0b087b08d846e493228cf91c7e0afa1f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem LEBESGUE_DIFFERENTIATION_THEOREM_DECREASING : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f y) <= drop (f x)) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable 1 1 f (at 1 x)}.
+Theorem LEBESGUE_DIFFERENTIATION_THEOREM_DECREASING : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f y) <= drop (f x)) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ differentiable 1 1 f (at_hl 1 x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24747 / ABSOLUTELY_CONTINUOUS_INTEGRAL
@@ -3677,7 +3677,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:24887 / FUNDAMENTAL_THEOREM_OF_CALCULUS_ABSOLUTELY_CONTINUOUS
 // Source hash: md5:3a6fc7f6bdb1933fcd0821149fc45b37
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS_ABSOLUTELY_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, negligible 1 s /\ (drop a <= drop b /\ (absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS_ABSOLUTELY_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, negligible 1 s /\ (drop a <= drop b /\ (absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24991 / ABSOLUTELY_INTEGRABLE_BOUNDED_VARIATION_EQ
@@ -3689,31 +3689,31 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:25012 / ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE
 // Source hash: md5:4fb32c71b33f474e2148ec4b5e3e2f00
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25051 / ABSOLUTE_INTEGRAL_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ
 // Source hash: md5:b7a9f1caaf222dcbf6e4c490419c5964
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTE_INTEGRAL_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_integral 1 N f' (vector_sub N (f x) (f a)) (closed_interval 1 (seq_cons (a,x) seq_nil))) <-> absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ exists s c= R :^: idx 1, negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Theorem ABSOLUTE_INTEGRAL_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_integral 1 N f' (vector_sub N (f x) (f a)) (closed_interval 1 (seq_cons (a,x) seq_nil))) <-> absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ exists s c= R :^: idx 1, negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25106 / ABSOLUTE_INTEGRAL_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ_ALT
 // Source hash: md5:9876ff36e3c2ba83178878274f7472ef
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTE_INTEGRAL_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_integral 1 N f' (vector_sub N (f x) (f a)) (closed_interval 1 (seq_cons (a,x) seq_nil))) <-> absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ exists s c= R :^: idx 1, negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at 1 x).
+Theorem ABSOLUTE_INTEGRAL_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_integral 1 N f' (vector_sub N (f x) (f a)) (closed_interval 1 (seq_cons (a,x) seq_nil))) <-> absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ exists s c= R :^: idx 1, negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at_hl 1 x).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25134 / ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ
 // Source hash: md5:613ad248276e46f3185723e49bd2a025
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ : forall N:set, N <> Empty -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> exists f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) /\ exists s c= R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))).
+Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ : forall N:set, N <> Empty -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> exists f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) /\ exists s c= R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25154 / ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ_ALT
 // Source hash: md5:c310a472a2539c8135271c85d1314199
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ_ALT : forall N:set, N <> Empty -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> exists f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) /\ exists s c= R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at 1 x)).
+Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_CONTINUOUS_DERIVATIVE_EQ_ALT : forall N:set, N <> Empty -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> exists f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) /\ exists s c= R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at_hl 1 x)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25180 / ABSOLUTE_INTEGRATION_BY_PARTS_SUM
@@ -3725,19 +3725,19 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:25210 / ABSOLUTELY_INTEGRABLE_INCREASING_DERIVATIVE
 // Source hash: md5:28cea90a9feacfd897ea1cc0f557db8d
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_INCREASING_DERIVATIVE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) -> exists s c= R :^: idx 1, exists f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x)) /\ (absolutely_integrable_on 1 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,x) seq_nil)) f') <= drop (f x) + - drop (f a)))).
+Theorem ABSOLUTELY_INTEGRABLE_INCREASING_DERIVATIVE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) -> exists s c= R :^: idx 1, exists f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x)) /\ (absolutely_integrable_on 1 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,x) seq_nil)) f') <= drop (f x) + - drop (f a)))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25445 / ABSOLUTELY_INTEGRABLE_INCREASING_DERIVATIVE_ALT
 // Source hash: md5:f82eea4a28ade3f1c97645bfeb027c91
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_INCREASING_DERIVATIVE_ALT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x))) -> absolutely_integrable_on 1 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,x) seq_nil)) f') <= drop (f x) + - drop (f a).
+Theorem ABSOLUTELY_INTEGRABLE_INCREASING_DERIVATIVE_ALT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x))) -> absolutely_integrable_on 1 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,x) seq_nil)) f') <= drop (f x) + - drop (f a).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25486 / ABSOLUTELY_INTEGRABLE_BOUNDED_VARIATION_DERIVATIVE
 // Source hash: md5:fcba854c1c07f879783666115d62b40f
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_BOUNDED_VARIATION_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) /\ exists s c= R :^: idx 1, negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at 1 x)) /\ absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Theorem ABSOLUTELY_INTEGRABLE_BOUNDED_VARIATION_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) /\ exists s c= R :^: idx 1, negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at_hl 1 x)) /\ absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25554 / ABSOLUTELY_CONTINUOUS_INDEFINITE_INTEGRAL_EQ
@@ -3749,19 +3749,19 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:25595 / ABSOLUTE_INTEGRAL_NORM_DERIVATIVE_LE_VARIATION
 // Source hash: md5:2218e90a6e866d141c84f2248b513754
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTE_INTEGRAL_NORM_DERIVATIVE_LE_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists s c= R :^: idx 1, exists f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at 1 x)) /\ (absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall c :e R :^: idx 1, c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,c) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))) <= vector_variation N (closed_interval 1 (seq_cons (a,c) seq_nil)) f))).
+Theorem ABSOLUTE_INTEGRAL_NORM_DERIVATIVE_LE_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists s c= R :^: idx 1, exists f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (at_hl 1 x)) /\ (absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall c :e R :^: idx 1, c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,c) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))) <= vector_variation N (closed_interval 1 (seq_cons (a,c) seq_nil)) f))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25720 / ABSOLUTE_INTEGRAL_NORM_DERIVATIVE_LE_VARIATION_ALT
 // Source hash: md5:11d53f15c2b55de14fbe7ec1b7d3fbf1
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTE_INTEGRAL_NORM_DERIVATIVE_LE_VARIATION_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall c :e R :^: idx 1, c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,c) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))) <= vector_variation N (closed_interval 1 (seq_cons (a,c) seq_nil)) f.
+Theorem ABSOLUTE_INTEGRAL_NORM_DERIVATIVE_LE_VARIATION_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ forall c :e R :^: idx 1, c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> drop (integral 1 1 (closed_interval 1 (seq_cons (a,c) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))) <= vector_variation N (closed_interval 1 (seq_cons (a,c) seq_nil)) f.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25769 / VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE_GEN
 // Source hash: md5:970392dd3c7cc012412ce2b8fab2e15b
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = drop (integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))).
+Theorem VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> absolutely_integrable_on N 1 f' (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = drop (integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25793 / ABSOLUTELY_CONTINUOUS_VECTOR_VARIATION
@@ -3773,13 +3773,13 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:25857 / INCREASING_FTC_AE_IMP_ABSOLUTELY_CONTINUOUS
 // Source hash: md5:6d6d3e8560af2bbf6023ee58e018e191
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem INCREASING_FTC_AE_IMP_ABSOLUTELY_CONTINUOUS : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x)) /\ integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) f' = vector_sub 1 (f b) (f a))) -> absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Theorem INCREASING_FTC_AE_IMP_ABSOLUTELY_CONTINUOUS : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x)) /\ integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) f' = vector_sub 1 (f b) (f a))) -> absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:25905 / VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE_REV
 // Source hash: md5:c692f6a0dda4c3618eb12ad37e107f9e
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE_REV : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = drop (integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))))) -> absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Theorem VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE_REV : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = drop (integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => lift (vector_norm N (f' x)))))) -> absolutely_continuous_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26266 / MEASURABLE_ABSOLUTELY_CONTINUOUS_IMAGE
@@ -3803,7 +3803,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:26469 / ABSOLUTELY_CONTINUOUS_DIFFERENTIABLE_BV_GEN
 // Source hash: md5:61f5bcd5c3594d9210ce473b61c87cf6
 // Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_CONTINUOUS_DIFFERENTIABLE_BV_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s t c= R :^: idx 1, is_interval 1 s /\ (bounded_hl 1 s /\ (continuous_on_hl 1 N f s /\ (has_bounded_variation_on N f s /\ (countable t /\ (forall x :e R :^: idx 1, x :e s :\: t -> differentiable N 1 f (within (R :^: idx 1) (at 1 x) s)))))) -> absolutely_continuous_on N f s.
+Theorem ABSOLUTELY_CONTINUOUS_DIFFERENTIABLE_BV_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s t c= R :^: idx 1, is_interval 1 s /\ (bounded_hl 1 s /\ (continuous_on_hl 1 N f s /\ (has_bounded_variation_on N f s /\ (countable t /\ (forall x :e R :^: idx 1, x :e s :\: t -> differentiable N 1 f (within (R :^: idx 1) (at_hl 1 x) s)))))) -> absolutely_continuous_on N f s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26506 / ABSOLUTELY_CONTINUOUS_DIFFERENTIABLE_BV
@@ -3821,37 +3821,37 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:26556 / CONVERSE_SARD
 // Source hash: md5:aef957fb69abc23da248429d7c99e3f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONVERSE_SARD : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M = dimindex N /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at M x) s)) /\ negligible N {f x | x :e s}) -> negligible M {x :e R :^: idx M | x :e s /\ rank M N (matrix M N (f' x)) = dimindex N}.
+Theorem CONVERSE_SARD : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M = dimindex N /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at_hl M x) s)) /\ negligible N {f x | x :e s}) -> negligible M {x :e R :^: idx M | x :e s /\ rank M N (matrix M N (f' x)) = dimindex N}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26575 / CONVERSE_SARD_1
 // Source hash: md5:1898453db7dedc6f226291041aa860c0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem CONVERSE_SARD_1 : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall s c= R :^: idx 1, (forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 f (f' x) (within (R :^: idx 1) (at 1 x) s)) /\ negligible 1 {f x | x :e s} -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ f' x = vec 1 0}.
+Theorem CONVERSE_SARD_1 : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall s c= R :^: idx 1, (forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 f (f' x) (within (R :^: idx 1) (at_hl 1 x) s)) /\ negligible 1 {f x | x :e s} -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ f' x = vec 1 0}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26590 / DIFF_CHAIN_WITHIN_EQUAL_AE
 // Source hash: md5:1fb47cc518f65897bc113e84bd2735d8
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem DIFF_CHAIN_WITHIN_EQUAL_AE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall h':set -> set, (forall x :e R :^: idx 1, h' x :e R :^: idx 1) -> forall s t u v w c= R :^: idx 1, {f x | x :e s} c= t /\ (negligible 1 u /\ (negligible 1 v /\ (negligible 1 w /\ ((forall n c= R :^: idx 1, n c= t /\ negligible 1 n -> negligible 1 {g x | x :e n}) /\ ((forall x :e R :^: idx 1, x :e s :\: u -> has_vector_derivative 1 f (f' x) (within (R :^: idx 1) (at 1 x) s)) /\ ((forall y :e R :^: idx 1, y :e t :\: v -> has_vector_derivative 1 g (g' y) (within (R :^: idx 1) (at 1 y) t)) /\ (forall x :e R :^: idx 1, x :e s :\: w -> has_vector_derivative 1 (fun x:set => g (f x)) (h' x) (within (R :^: idx 1) (at 1 x) s)))))))) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ h' x = vector_mul 1 (drop (f' x)) (g' (f x))}.
+Theorem DIFF_CHAIN_WITHIN_EQUAL_AE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall h':set -> set, (forall x :e R :^: idx 1, h' x :e R :^: idx 1) -> forall s t u v w c= R :^: idx 1, {f x | x :e s} c= t /\ (negligible 1 u /\ (negligible 1 v /\ (negligible 1 w /\ ((forall n c= R :^: idx 1, n c= t /\ negligible 1 n -> negligible 1 {g x | x :e n}) /\ ((forall x :e R :^: idx 1, x :e s :\: u -> has_vector_derivative 1 f (f' x) (within (R :^: idx 1) (at_hl 1 x) s)) /\ ((forall y :e R :^: idx 1, y :e t :\: v -> has_vector_derivative 1 g (g' y) (within (R :^: idx 1) (at_hl 1 y) t)) /\ (forall x :e R :^: idx 1, x :e s :\: w -> has_vector_derivative 1 (fun x:set => g (f x)) (h' x) (within (R :^: idx 1) (at_hl 1 x) s)))))))) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ h' x = vector_mul 1 (drop (f' x)) (g' (f x))}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26661 / DIFF_CHAIN_AT_EQUAL_AE
 // Source hash: md5:22b3937d4a85788e9a6c81f3fb0ab816
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem DIFF_CHAIN_AT_EQUAL_AE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall h':set -> set, (forall x :e R :^: idx 1, h' x :e R :^: idx 1) -> forall s t u v w c= R :^: idx 1, {f x | x :e s} c= t /\ (negligible 1 u /\ (negligible 1 v /\ (negligible 1 w /\ ((forall n c= R :^: idx 1, n c= t /\ negligible 1 n -> negligible 1 {g x | x :e n}) /\ ((forall x :e R :^: idx 1, x :e s :\: u -> has_vector_derivative 1 f (f' x) (at 1 x)) /\ ((forall y :e R :^: idx 1, y :e t :\: v -> has_vector_derivative 1 g (g' y) (at 1 y)) /\ (forall x :e R :^: idx 1, x :e s :\: w -> has_vector_derivative 1 (fun x:set => g (f x)) (h' x) (at 1 x)))))))) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ h' x = vector_mul 1 (drop (f' x)) (g' (f x))}.
+Theorem DIFF_CHAIN_AT_EQUAL_AE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall h':set -> set, (forall x :e R :^: idx 1, h' x :e R :^: idx 1) -> forall s t u v w c= R :^: idx 1, {f x | x :e s} c= t /\ (negligible 1 u /\ (negligible 1 v /\ (negligible 1 w /\ ((forall n c= R :^: idx 1, n c= t /\ negligible 1 n -> negligible 1 {g x | x :e n}) /\ ((forall x :e R :^: idx 1, x :e s :\: u -> has_vector_derivative 1 f (f' x) (at_hl 1 x)) /\ ((forall y :e R :^: idx 1, y :e t :\: v -> has_vector_derivative 1 g (g' y) (at_hl 1 y)) /\ (forall x :e R :^: idx 1, x :e s :\: w -> has_vector_derivative 1 (fun x:set => g (f x)) (h' x) (at_hl 1 x)))))))) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ h' x = vector_mul 1 (drop (f' x)) (g' (f x))}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26675 / DIFF_CHAIN_WITHIN_AE
 // Source hash: md5:9ac70036beea27c72ae68e9c4c46a9fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem DIFF_CHAIN_WITHIN_AE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall s t u v c= R :^: idx 1, {f x | x :e s} c= t /\ (negligible 1 u /\ (negligible 1 v /\ ((forall x :e R :^: idx 1, x :e s :\: u -> has_vector_derivative 1 f (f' x) (within (R :^: idx 1) (at 1 x) s)) /\ ((forall y :e R :^: idx 1, y :e t :\: v -> has_vector_derivative 1 g (g' y) (within (R :^: idx 1) (at 1 y) t)) /\ negligible 1 {x :e R :^: idx 1 | x :e s /\ f' x = vec 1 0})))) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ has_vector_derivative 1 (fun x:set => g (f x)) (vector_mul 1 (drop (f' x)) (g' (f x))) (within (R :^: idx 1) (at 1 x) s)}.
+Theorem DIFF_CHAIN_WITHIN_AE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall s t u v c= R :^: idx 1, {f x | x :e s} c= t /\ (negligible 1 u /\ (negligible 1 v /\ ((forall x :e R :^: idx 1, x :e s :\: u -> has_vector_derivative 1 f (f' x) (within (R :^: idx 1) (at_hl 1 x) s)) /\ ((forall y :e R :^: idx 1, y :e t :\: v -> has_vector_derivative 1 g (g' y) (within (R :^: idx 1) (at_hl 1 y) t)) /\ negligible 1 {x :e R :^: idx 1 | x :e s /\ f' x = vec 1 0})))) -> negligible 1 {x :e R :^: idx 1 | x :e s /\ ~ has_vector_derivative 1 (fun x:set => g (f x)) (vector_mul 1 (drop (f' x)) (g' (f x))) (within (R :^: idx 1) (at_hl 1 x) s)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26727 / ABSOLUTE_INTEGRAL_SUBSTITUTION
 // Source hash: md5:de10fd21a38036299ad6f6194797ee20
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTE_INTEGRAL_SUBSTITUTION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, drop a <= drop b /\ (absolutely_integrable_on N 1 f (closed_interval 1 (seq_cons (g a,g b) seq_nil)) /\ (absolutely_continuous_on 1 g (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 g (g' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) /\ (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (g x) <= drop (g y)))))) -> absolutely_integrable_on N 1 (fun x:set => vector_mul N (drop (g' x)) (f (g x))) (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ integral N 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => vector_mul N (drop (g' x)) (f (g x))) = integral N 1 (closed_interval 1 (seq_cons (g a,g b) seq_nil)) f.
+Theorem ABSOLUTE_INTEGRAL_SUBSTITUTION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, drop a <= drop b /\ (absolutely_integrable_on N 1 f (closed_interval 1 (seq_cons (g a,g b) seq_nil)) /\ (absolutely_continuous_on 1 g (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 g (g' x) (within (R :^: idx 1) (at_hl 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) /\ (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (g x) <= drop (g y)))))) -> absolutely_integrable_on N 1 (fun x:set => vector_mul N (drop (g' x)) (f (g x))) (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ integral N 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => vector_mul N (drop (g' x)) (f (g x))) = integral N 1 (closed_interval 1 (seq_cons (g a,g b) seq_nil)) f.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:26825 / NEGLIGIBLE_IMAGE_INDEFINITE_INTEGRAL
@@ -3863,43 +3863,43 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:27205 / POSITIVE_AE_DERIVATIVE_IMP_NONDECREASING
 // Source hash: md5:21c7503960e2d5f2365ace314a3db1fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem POSITIVE_AE_DERIVATIVE_IMP_NONDECREASING : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (interior 1 {f x | x :e s} = Empty /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x) /\ 0 < drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y).
+Theorem POSITIVE_AE_DERIVATIVE_IMP_NONDECREASING : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (interior 1 {f x | x :e s} = Empty /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x) /\ 0 < drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27309 / POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LT_GEN
 // Source hash: md5:08c3b39f0f3afe08628744b9503d5a35
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LT_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (interior 1 s = Empty /\ (interior 1 {f x | x :e s} = Empty /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x) /\ 0 < drop (f' x)))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x < drop y) -> drop (f x) < drop (f y).
+Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LT_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (interior 1 s = Empty /\ (interior 1 {f x | x :e s} = Empty /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x) /\ 0 < drop (f' x)))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x < drop y) -> drop (f x) < drop (f y).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27358 / POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LT
 // Source hash: md5:d9b370741a2a4b739567ad4344fab550
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x) /\ 0 < drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x < drop y) -> drop (f x) < drop (f y).
+Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x) /\ 0 < drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x < drop y) -> drop (f x) < drop (f y).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27379 / POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LE_GEN
 // Source hash: md5:a2250bbbfb9530350da8eaa7d37c804b
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LE_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 {f x | x :e s} /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x) /\ 0 <= drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y).
+Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LE_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 {f x | x :e s} /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x) /\ 0 <= drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27408 / POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LE
 // Source hash: md5:8e91a493c590b1de5ed767dbcfbd9bf7
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at 1 x) /\ 0 <= drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y).
+Theorem POSITIVE_AE_DERIVATIVE_IMP_INCREASING_LE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (f' x) (at_hl 1 x) /\ 0 <= drop (f' x))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27427 / ZERO_AE_DERIVATIVE_IMP_CONSTANT_GEN
 // Source hash: md5:79aea86371f9f01660ea1038d6097df7
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ZERO_AE_DERIVATIVE_IMP_CONSTANT_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 {f x | x :e s} /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (vec 1 0) (at 1 x))) -> forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> f x = f a.
+Theorem ZERO_AE_DERIVATIVE_IMP_CONSTANT_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 {f x | x :e s} /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (vec 1 0) (at_hl 1 x))) -> forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> f x = f a.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27453 / ZERO_AE_DERIVATIVE_IMP_CONSTANT
 // Source hash: md5:c04ea55f5c0934609f9ba8a60a47e91a
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ZERO_AE_DERIVATIVE_IMP_CONSTANT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (vec 1 0) (at 1 x))) -> forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> f x = f a.
+Theorem ZERO_AE_DERIVATIVE_IMP_CONSTANT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, forall s c= R :^: idx 1, absolutely_continuous_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (negligible 1 s /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative 1 f (vec 1 0) (at_hl 1 x))) -> forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> f x = f a.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27474 / CONVERGENCE_IN_MEASURE
@@ -3929,7 +3929,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:27628 / ABSOLUTELY_INTEGRABLE_VECTOR_DERIVATIVE_ABSOLUTELY_CONTINUOUS
 // Source hash: md5:822550ba63c37da975ae6f9f40f5a364
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem ABSOLUTELY_INTEGRABLE_VECTOR_DERIVATIVE_ABSOLUTELY_CONTINUOUS : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> absolutely_continuous_on N g (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> absolutely_integrable_on N 1 (fun t:set => vector_derivative N g (at 1 t)) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
+Theorem ABSOLUTELY_INTEGRABLE_VECTOR_DERIVATIVE_ABSOLUTELY_CONTINUOUS : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> absolutely_continuous_on N g (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> absolutely_integrable_on N 1 (fun t:set => vector_derivative N g (at_hl 1 t)) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27673 / ABSOLUTELY_CONTINUOUS_REVERSEPATH
@@ -4349,42 +4349,42 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:31273 / RADEMACHER_UNIV
 // Source hash: md5:46fab0ffa25ff0828704f8ca4d497a9a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem RADEMACHER_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (exists B :e R, forall x y :e R :^: idx M, vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | ~ differentiable N M f (at M x)}.
+Theorem RADEMACHER_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (exists B :e R, forall x y :e R :^: idx M, vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | ~ differentiable N M f (at_hl M x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:31740 / RADEMACHER
 // Source hash: md5:b355d6fe16db5607202c2122c70b2bd4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem RADEMACHER : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | x :e s /\ ~ differentiable N M f (within (R :^: idx M) (at M x) s)}.
+Theorem RADEMACHER : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | x :e s /\ ~ differentiable N M f (within (R :^: idx M) (at_hl M x) s)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:31759 / RADEMACHER_OPEN
 // Source hash: md5:b536f311a62c054946c4e71be7b68312
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem RADEMACHER_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, open M s /\ (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | x :e s /\ ~ differentiable N M f (at M x)}.
+Theorem RADEMACHER_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, open M s /\ (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | x :e s /\ ~ differentiable N M f (at_hl M x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:31772 / RADEMACHER_GEN
 // Source hash: md5:f91857817aba0b7b1fdbe1732c1fcbea
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem RADEMACHER_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, negligible M (frontier M s) /\ (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | x :e s /\ ~ differentiable N M f (at M x)}.
+Theorem RADEMACHER_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, negligible M (frontier M s) /\ (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> negligible M {x :e R :^: idx M | x :e s /\ ~ differentiable N M f (at_hl M x)}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:31792 / STEPANOV_GEN
 // Source hash: md5:70ea35763839f719b9462cce9d9c9a2c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem STEPANOV_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> negligible M {x :e R :^: idx M | x :e s /\ ((exists B :e R, eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f x) (f y)) :/: vector_norm M (vector_sub M x y) <= B} (within (R :^: idx M) (at M x) s)) /\ ~ differentiable N M f (within (R :^: idx M) (at M x) s))}.
+Theorem STEPANOV_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> negligible M {x :e R :^: idx M | x :e s /\ ((exists B :e R, eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f x) (f y)) :/: vector_norm M (vector_sub M x y) <= B} (within (R :^: idx M) (at_hl M x) s)) /\ ~ differentiable N M f (within (R :^: idx M) (at_hl M x) s))}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:32242 / STEPANOV
 // Source hash: md5:b822cade319dfd47ab77371429b27a58
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem STEPANOV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, open M s -> negligible M {x :e R :^: idx M | x :e s /\ ((exists B :e R, eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f x) (f y)) :/: vector_norm M (vector_sub M x y) <= B} (at M x)) /\ ~ differentiable N M f (at M x))}.
+Theorem STEPANOV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, open M s -> negligible M {x :e R :^: idx M | x :e s /\ ((exists B :e R, eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f x) (f y)) :/: vector_norm M (vector_sub M x y) <= B} (at_hl M x)) /\ ~ differentiable N M f (at_hl M x))}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:32258 / STEPANOV_UNIV
 // Source hash: md5:f43570a020540f46d0ffa9fa758d79fe
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem STEPANOV_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> negligible M {x :e R :^: idx M | (exists B :e R, eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f x) (f y)) :/: vector_norm M (vector_sub M x y) <= B} (at M x)) /\ ~ differentiable N M f (at M x)}.
+Theorem STEPANOV_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> negligible M {x :e R :^: idx M | (exists B :e R, eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f x) (f y)) :/: vector_norm M (vector_sub M x y) <= B} (at_hl M x)) /\ ~ differentiable N M f (at_hl M x)}.
 Admitted.
 

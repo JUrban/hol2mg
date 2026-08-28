@@ -72,6 +72,23 @@ apply (nat_inv i Hi').
   + assume H2: ordsucc x = n. rewrite <- H2. exact (ordsuccI2 x).
 Qed.
 
+
+// a finite sequence is the pair of its length and its function part
+Theorem seq_fun_in : forall A:set, forall l :e finseq A, l 1 :e A :^: seq_len l.
+let A l. assume Hl: l :e finseq A.
+claim L1: proj1 l :e A :^: proj0 l.
+{ exact (proj1_Sigma omega (fun n => A :^: n) l Hl). }
+prove l 1 :e A :^: l 0.
+rewrite <- (proj1_ap_1 l). rewrite <- (proj0_ap_0 l). exact L1.
+Qed.
+
+Theorem seq_eta : forall A:set, forall l :e finseq A, (seq_len l, fun i :e seq_len l => seq_nth l i) = l.
+let A l. assume Hl: l :e finseq A.
+prove (l 0, fun i :e l 0 => l 1 i) = l.
+rewrite (Pi_eta (l 0) (fun _ => A) (l 1) (seq_fun_in A l Hl)).
+exact (tuple_Sigma_eta omega (fun n => A :^: n) l Hl).
+Qed.
+
 // Closure, computation and induction (bridge obligations for HOL Light lists; to be proved).
 Theorem seq_nil_finseq : forall A:set, seq_nil :e finseq A.
 let A.
@@ -155,7 +172,29 @@ claim L5: seq_nth l (nat_pred (ordsucc i)) = seq_nth l i.
 exact (eq_trans ((ordsucc (seq_len l), F) 1 (ordsucc i)) (F (ordsucc i)) (seq_nth l i) L1 (eq_trans (F (ordsucc i)) (if ordsucc i = 0 then a else seq_nth l (nat_pred (ordsucc i))) (seq_nth l i) L2 (eq_trans (if ordsucc i = 0 then a else seq_nth l (nat_pred (ordsucc i))) (seq_nth l (nat_pred (ordsucc i))) (seq_nth l i) L3 L5))).
 Qed.
 Theorem seq_ext : forall A:set, forall l m :e finseq A, seq_len l = seq_len m -> (forall i :e seq_len l, seq_nth l i = seq_nth m i) -> l = m.
-Admitted.
+let A l. assume Hl: l :e finseq A. let m. assume Hm: m :e finseq A.
+assume H1: seq_len l = seq_len m. assume H2: forall i :e seq_len l, seq_nth l i = seq_nth m i.
+claim L0: l = (seq_len m, fun i :e seq_len m => seq_nth l i).
+{ rewrite <- H1. exact (eq_sym (seq_len l, fun i :e seq_len l => seq_nth l i) l (seq_eta A l Hl)). }
+claim HF: (fun i :e seq_len m => seq_nth l i) :e Pi_ y :e seq_len m, A.
+{ apply (lam_Pi (seq_len m) (fun _ => A) (fun i => seq_nth l i)).
+  let i. assume Hi2: i :e seq_len m.
+  claim Hi: i :e seq_len l. { rewrite H1. exact Hi2. }
+  exact (seq_nth_in A l Hl i Hi). }
+claim HG: (fun i :e seq_len m => seq_nth m i) :e Pi_ y :e seq_len m, A.
+{ apply (lam_Pi (seq_len m) (fun _ => A) (fun i => seq_nth m i)).
+  let i. assume Hi2: i :e seq_len m. exact (seq_nth_in A m Hm i Hi2). }
+claim L1: (fun i :e seq_len m => seq_nth l i) = (fun i :e seq_len m => seq_nth m i).
+{ apply (Pi_ext (seq_len m) (fun _ => A) (fun i :e seq_len m => seq_nth l i) HF (fun i :e seq_len m => seq_nth m i) HG).
+  let i. assume Hi2: i :e seq_len m.
+  claim Hi: i :e seq_len l. { rewrite H1. exact Hi2. }
+  rewrite (beta (seq_len m) (fun i => seq_nth l i) i Hi2).
+  rewrite (beta (seq_len m) (fun i => seq_nth m i) i Hi2).
+  exact (H2 i Hi). }
+claim L2: (seq_len m, fun i :e seq_len m => seq_nth l i) = (seq_len m, fun i :e seq_len m => seq_nth m i).
+{ rewrite L1. exact (fun q H => H). }
+exact (eq_trans l (seq_len m, fun i :e seq_len m => seq_nth l i) m L0 (eq_trans (seq_len m, fun i :e seq_len m => seq_nth l i) (seq_len m, fun i :e seq_len m => seq_nth m i) m L2 (seq_eta A m Hm))).
+Qed.
 Theorem seq_cases : forall A:set, forall l :e finseq A, l = seq_nil \/ exists a :e A, exists m :e finseq A, l = seq_cons a m.
 Admitted.
 Theorem seq_induct : forall A:set, forall P:set -> prop, P seq_nil -> (forall a :e A, forall l :e finseq A, P l -> P (seq_cons a l)) -> forall l :e finseq A, P l.

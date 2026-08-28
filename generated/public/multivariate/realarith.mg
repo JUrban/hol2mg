@@ -136,9 +136,9 @@ Admitted.
 
 // HOL Light: realarith.ml:116 / REAL_MUL_RID
 // Source hash: md5:008b00c859df3f26559ae3884ad35c57
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_MUL_RID : forall x :e R, x * 1 = x.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_RID : forall x :e R, x * 1 = x.
 
 // HOL Light: realarith.ml:120 / REAL_POW_2
 // Source hash: md5:6a96774983d9221fa9d194a897100854
@@ -160,9 +160,9 @@ Admitted.
 
 // HOL Light: realarith.ml:145 / REAL_POS
 // Source hash: md5:c44c7f782ae05e05f8bd631540fe8820
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_POS : forall n :e omega, 0 <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_POS : forall n :e omega, 0 <= n.
 
 // HOL Light: realarith.ml:149 / REAL_LT_NZ
 // Source hash: md5:a30a85766a8dbbc964242396cfce7cc1

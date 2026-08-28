@@ -16,9 +16,9 @@ Admitted.
 
 // HOL Light: cart.ml:22 / DIMINDEX_GE_1
 // Source hash: md5:6330d948a4ade390789c61f4944f6861
-// Status: transport_required (bridges: hol_dimindex, hol_num_omega, nat_le_SNoLe)
-Theorem DIMINDEX_GE_1 : forall A:set, A <> Empty -> 1 <= dimindex A.
-Admitted.
+// Status: native_reuse (bridges: hol_dimindex, hol_num_omega, nat_le_SNoLe)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem DIMINDEX_GE_1 : forall A:set, A <> Empty -> 1 <= dimindex A.
 
 // HOL Light: cart.ml:26 / DIMINDEX_UNIV
 // Source hash: md5:6d36efb94145933ec1aa58b078c73e98

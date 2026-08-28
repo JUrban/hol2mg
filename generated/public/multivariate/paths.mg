@@ -887,7 +887,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:2026 / CONTINUOUS_LINEPATH_AT
 // Source hash: md5:d58684582df45e4cbd0fdb774d0b0dde
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_LINEPATH_AT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, continuous A (R :^: idx 1) (fun x0:set => linepath A (a,b) x0) (at 1 x).
+Theorem CONTINUOUS_LINEPATH_AT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, continuous A (R :^: idx 1) (fun x0:set => linepath A (a,b) x0) (at_hl 1 x).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2035 / CONTINUOUS_ON_LINEPATH
@@ -1709,7 +1709,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:3947 / DARBOUX_AND_REGULATED_IMP_CONTINUOUS
 // Source hash: md5:f0390d70135a1437d781b12987d82be4
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem DARBOUX_AND_REGULATED_IMP_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ ((forall c c= R :^: idx 1, c c= s /\ connected 1 c -> connected N {f x | x :e c}) /\ (forall a :e R :^: idx 1, a :e s -> (exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) (s :/\: {x :e R :^: idx 1 | drop x <= drop a}))) /\ exists r :e R :^: idx N, tendsto N (R :^: idx 1) f r (within (R :^: idx 1) (at 1 a) (s :/\: {x :e R :^: idx 1 | drop a <= drop x})))) -> continuous_on_hl 1 N f s.
+Theorem DARBOUX_AND_REGULATED_IMP_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ ((forall c c= R :^: idx 1, c c= s /\ connected 1 c -> connected N {f x | x :e c}) /\ (forall a :e R :^: idx 1, a :e s -> (exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at_hl 1 a) (s :/\: {x :e R :^: idx 1 | drop x <= drop a}))) /\ exists r :e R :^: idx N, tendsto N (R :^: idx 1) f r (within (R :^: idx 1) (at_hl 1 a) (s :/\: {x :e R :^: idx 1 | drop a <= drop x})))) -> continuous_on_hl 1 N f s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4035 / LIPSCHITZ_ON_UNION
@@ -1727,13 +1727,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:4095 / LOCALLY_LIPSCHITZ_GEN
 // Source hash: md5:0e569c68bffff05e724f89ed9ca5417a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LOCALLY_LIPSCHITZ_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, forall c :e R, x :e s /\ b < c -> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= c * vector_norm M (vector_sub M y x)} (within (R :^: idx M) (at M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= b * vector_norm M (vector_sub M x y).
+Theorem LOCALLY_LIPSCHITZ_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, forall c :e R, x :e s /\ b < c -> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= c * vector_norm M (vector_sub M y x)} (within (R :^: idx M) (at_hl M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= b * vector_norm M (vector_sub M x y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4270 / LOCALLY_LIPSCHITZ
 // Source hash: md5:79e2c7c62e1fe3a070681713672c122c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LOCALLY_LIPSCHITZ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, x :e s -> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= b * vector_norm M (vector_sub M y x)} (within (R :^: idx M) (at M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= b * vector_norm M (vector_sub M x y).
+Theorem LOCALLY_LIPSCHITZ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, x :e s -> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= b * vector_norm M (vector_sub M y x)} (within (R :^: idx M) (at_hl M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= b * vector_norm M (vector_sub M x y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4290 / CARD_EQ_SEGMENT
@@ -2562,7 +2562,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:9434 / CONTINUOUS_WITHIN_SEQUENTIALLY_COMPACT_MAP
 // Source hash: md5:af566fb87bfd640ba315b3d9a8e8d773
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_COMPACT_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall x :e R :^: idx M, (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ x :e s -> (continuous N (R :^: idx M) f (within (R :^: idx M) (at M x) s) <-> forall p:set -> set, (forall x0 :e omega, p x0 :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, p n :e s) /\ (tendsto M omega p x sequentially /\ (forall n :e omega, f (p n) = y)) -> f x = y).
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_COMPACT_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall x :e R :^: idx M, (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ x :e s -> (continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M x) s) <-> forall p:set -> set, (forall x0 :e omega, p x0 :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, p n :e s) /\ (tendsto M omega p x sequentially /\ (forall n :e omega, f (p n) = y)) -> f x = y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:9551 / COMPACT_CLOSED_POINTIMAGES_IMP_CONTINUOUS_ON

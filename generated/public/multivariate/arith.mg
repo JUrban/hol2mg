@@ -94,15 +94,15 @@ Admitted.
 
 // HOL Light: arith.ml:113 / BIT0_THM
 // Source hash: md5:559c2f7303610dd8ed299cfea6532bed
-// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
-Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
-Admitted.
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
 
 // HOL Light: arith.ml:117 / BIT1_THM
 // Source hash: md5:5654419bb755d5c6a785a1195805b6b3
-// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
-Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
-Admitted.
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
 
 // HOL Light: arith.ml:125 / ONE
 // Source hash: md5:8296249074f69ba4d09cec1afc913c50
@@ -196,9 +196,9 @@ Admitted.
 
 // HOL Light: arith.ml:203 / MULT_2
 // Source hash: md5:aefb67ed10cad5150806e529a2aa3bae
-// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
-Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
-Admitted.
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
 
 // HOL Light: arith.ml:207 / MULT_EQ_1
 // Source hash: md5:97b70f4fd951132f2f6772a1745544f6
@@ -334,9 +334,9 @@ Admitted.
 
 // HOL Light: arith.ml:322 / LE_0
 // Source hash: md5:31dc48e876d64098aef66243629de91c
-// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
-Theorem LE_0 : forall n :e omega, 0 <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem LE_0 : forall n :e omega, 0 <= n.
 
 // HOL Light: arith.ml:326 / LT_0
 // Source hash: md5:8f8b430afef3f06700473ea3f3647503
@@ -346,9 +346,9 @@ Admitted.
 
 // HOL Light: arith.ml:334 / LE_REFL
 // Source hash: md5:1b16a90917428cf3f87995a218f16789
-// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
-Theorem LE_REFL : forall n :e omega, n <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem LE_REFL : forall n :e omega, n <= n.
 
 // HOL Light: arith.ml:338 / LT_REFL
 // Source hash: md5:7819f1e250c885a3217b6e30017a6c3a
@@ -898,9 +898,9 @@ Admitted.
 
 // HOL Light: arith.ml:935 / FACT_LT
 // Source hash: md5:050e25d4c8007df2182d34ae82e12b0a
-// Status: transport_required (bridges: hol_fact_factorial, hol_num_omega, nat_lt_SNoLt)
-Theorem FACT_LT : forall n :e omega, 0 < factorial n.
-Admitted.
+// Status: native_reuse (bridges: hol_fact_factorial, hol_num_omega, nat_lt_SNoLt)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem FACT_LT : forall n :e omega, 0 < factorial n.
 
 // HOL Light: arith.ml:940 / FACT_LE
 // Source hash: md5:40e5dd987e027bbd7af507ff199921ef

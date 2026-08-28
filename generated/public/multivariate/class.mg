@@ -46,9 +46,9 @@ Admitted.
 
 // HOL Light: class.ml:140 / EXCLUDED_MIDDLE
 // Source hash: md5:24badd25546afe87d42d86a1339bd39d
-// Status: exact_native
-Theorem EXCLUDED_MIDDLE : forall t:prop, t \/ ~ t.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem EXCLUDED_MIDDLE : forall t:prop, t \/ ~ t.
 
 // HOL Light: class.ml:154 / BOOL_CASES_AX
 // Source hash: md5:2d73cf3d9340a07496060ebb19e89f36

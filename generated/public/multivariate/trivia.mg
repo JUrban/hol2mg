@@ -10,15 +10,15 @@ Admitted.
 
 // HOL Light: trivia.ml:21 / I_DEF
 // Source hash: md5:98f75ab7f3aecd3890689464fdb13fda
-// Status: generalization_required (bridges: empty_case:A)
-Theorem I_DEF : forall A:set, forall x :e A, x = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem I_DEF : forall A:set, forall x :e A, x = x.
 
 // HOL Light: trivia.ml:24 / o_THM
 // Source hash: md5:5f35f2b84dbd2ff7d1a387066c77a57f
-// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C)
-Theorem o_THM : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
-Admitted.
+// Status: native_reuse (bridges: empty_case:A, empty_case:B, empty_case:C)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem o_THM : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
 
 // HOL Light: trivia.ml:30 / o_ASSOC
 // Source hash: md5:f22ad52a4382071def526afc8c38a995
@@ -28,9 +28,9 @@ Admitted.
 
 // HOL Light: trivia.ml:36 / I_THM
 // Source hash: md5:869bdf643ad8869e3e6c61189c7171c1
-// Status: generalization_required (bridges: empty_case:A)
-Theorem I_THM : forall A:set, forall x :e A, x = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem I_THM : forall A:set, forall x :e A, x = x.
 
 // HOL Light: trivia.ml:40 / I_O_ID
 // Source hash: md5:dc7aa55a625b9a78c1fd4104e409969c

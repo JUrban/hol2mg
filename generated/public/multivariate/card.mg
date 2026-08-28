@@ -1120,9 +1120,9 @@ Admitted.
 
 // HOL Light: Library/card.ml:1806 / COUNTABLE_CARD_MUL
 // Source hash: md5:4257c44432e5c4793f1829183c460540
-// Status: transport_required (bridges: hol_countable, hol_prod_setprod)
-Theorem COUNTABLE_CARD_MUL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, countable s /\ countable t -> countable (s :*: t).
-Admitted.
+// Status: native_reuse (bridges: hol_countable, hol_prod_setprod)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem COUNTABLE_CARD_MUL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, countable s /\ countable t -> countable (s :*: t).
 
 // HOL Light: Library/card.ml:1811 / COUNTABLE_CARD_MUL_EQ
 // Source hash: md5:b7ebab5afb0916a74c1e992f06ccba80
@@ -1162,9 +1162,9 @@ Admitted.
 
 // HOL Light: Library/card.ml:1861 / int_INFINITE
 // Source hash: md5:e4853864232e91a3ff47fe270a838df5
-// Status: transport_required (bridges: hol_finite_finite, hol_int_int)
-Theorem int_INFINITE : infinite int.
-Admitted.
+// Status: native_reuse (bridges: hol_finite_finite, hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem int_INFINITE : infinite int.
 
 // HOL Light: Library/card.ml:1866 / COUNTABLE_CART
 // Source hash: md5:8dbcf27e524a1c74051da35034e818ae
@@ -1390,9 +1390,9 @@ Admitted.
 
 // HOL Light: Library/card.ml:2392 / CARD_EQ_REAL
 // Source hash: md5:4dd3f262d0796ffde2377291bbc5b3f6
-// Status: transport_required (bridges: hol_eq_c_equip, hol_num_omega, hol_real_R)
-Theorem CARD_EQ_REAL : equip R (Power omega).
-Admitted.
+// Status: native_reuse (bridges: hol_eq_c_equip, hol_num_omega, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem CARD_EQ_REAL : equip R (Power omega).
 
 // HOL Light: Library/card.ml:2515 / UNCOUNTABLE_REAL
 // Source hash: md5:5f18c572bf9ce328c8dbf4de2a4d39bd

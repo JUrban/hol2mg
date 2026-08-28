@@ -233,13 +233,13 @@ Admitted.
 // HOL Light:  / CONTINUOUS_WITHIN_SEQUENTIALLY_ALT
 // Source hash: md5:4a13dbc5847d1e9786ca96fcdb2793c2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at M a) s) <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s :\: {a}) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M a) s) <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s :\: {a}) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
 Admitted.
 
 // HOL Light:  / CONTINUOUS_WITHIN_SEQUENTIALLY_INJ
 // Source hash: md5:cb1e660e38ee18415a478d281e5a792b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light:  / CONVERGENT_BOUNDED_INCREASING
@@ -1481,7 +1481,7 @@ Admitted.
 // HOL Light:  / MEASURABLE_BOUNDED_DIFFERENTIABLE_IMAGE
 // Source hash: md5:93712bf5ceaf8577f8482f424474a89a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem MEASURABLE_BOUNDED_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s) /\ abs_SNo (det N (matrix N N (f' x))) <= B) -> measurable N {f x | x :e s}.
+Theorem MEASURABLE_BOUNDED_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s) /\ abs_SNo (det N (matrix N N (f' x))) <= B) -> measurable N {f x | x :e s}.
 Admitted.
 
 // HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_BOREL
@@ -1613,7 +1613,7 @@ Admitted.
 // HOL Light:  / MEASURE_BOUNDED_DIFFERENTIABLE_IMAGE
 // Source hash: md5:c588b232dec6b529cfbd35328332c592
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem MEASURE_BOUNDED_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s) /\ abs_SNo (det N (matrix N N (f' x))) <= B) -> measure N {f x | x :e s} <= B * measure N s.
+Theorem MEASURE_BOUNDED_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at_hl N x) s) /\ abs_SNo (det N (matrix N N (f' x))) <= B) -> measure N {f x | x :e s} <= B * measure N s.
 Admitted.
 
 // HOL Light:  / METRIZABLE_SPACE_PRODUCT_TOPOLOGY

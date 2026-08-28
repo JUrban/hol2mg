@@ -2,108 +2,6 @@
 // Do not edit: regenerate from the exporter, mapping registry, or overrides.
 // Statements are admitted imports; none is a new axiom.
 
-// HOL Light: Multivariate/degree.ml:16 / brouwer_degree1
-// Source hash: md5:c08ebcbb0fac6a52a4184efafa521eae
-// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_int_int, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R, omega_Subq_int)
-Theorem brouwer_degree1_thm : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall n :e omega, brouwer_degree1 N n f = if 1 <= n /\ n <= dimindex N then brouwer_degree2 (minus_nat n 1) (fun x:set => fun x0 :e omega => if 1 <= x0 /\ x0 <= n then f (fun i :e idx N => if 1 <= i /\ i <= n then x i else 0) x0 else 0) else 1.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:25 / brouwer_degree
-// Source hash: md5:2b65ab3af81ed77de5fa60844ccf7aa6
-// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_int_int, hol_num_omega, hol_real_R)
-Theorem brouwer_degree_thm : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> brouwer_degree N f = brouwer_degree1 N (dimindex N) f.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:28 / BROUWER_DEGREE1_EQ
-// Source hash: md5:6a3c3f6089ffd39158a9fddae3c87911
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem BROUWER_DEGREE1_EQ : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (forall x :e R :^: idx N, x :e sphere N (vec N 0,1) :/\: span N {basis N x0 | x0 :e idx_n n} -> f x = g x) -> brouwer_degree1 N n f = brouwer_degree1 N n g.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:48 / BROUWER_DEGREE1_ID
-// Source hash: md5:e82b263382b6c81d77421a9f6d220904
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
-Theorem BROUWER_DEGREE1_ID : forall N:set, N <> Empty -> forall n :e omega, brouwer_degree1 N n (fun x:set => x) = 1.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:61 / BROUWER_DEGREE1_COMPOSE
-// Source hash: md5:5f98bca3cc31efa4e64e611e82285db8
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem BROUWER_DEGREE1_COMPOSE : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> continuous_on_hl N N f (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}) /\ (continuous_on_hl N N g (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}) /\ ({f x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} c= sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n} /\ {g x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} c= sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n})) -> brouwer_degree1 N n (fun x:set => g (f x)) = brouwer_degree1 N n g * brouwer_degree1 N n f.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:90 / BROUWER_DEGREE1_HOMOTOPIC
-// Source hash: md5:3096dea6521f24b03bc0d88c68fe04db
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem BROUWER_DEGREE1_HOMOTOPIC : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n})) f g -> brouwer_degree1 N n f = brouwer_degree1 N n g.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:109 / BROUWER_DEGREE1_CONST
-// Source hash: md5:425a51bf47ae87c28c7f64a43f783f1a
-// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_int_int, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_int)
-Theorem BROUWER_DEGREE1_CONST : forall N:set, N <> Empty -> forall n :e omega, forall a :e R :^: idx N, 1 <= n /\ n <= dimindex N -> brouwer_degree1 N n (fun x:set => a) = 0.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:115 / BROUWER_DEGREE1_REFLECT_ALONG
-// Source hash: md5:dda91a759003bbe4ddbe2cf59356e761
-// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_int_int, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_int)
-Theorem BROUWER_DEGREE1_REFLECT_ALONG : forall N:set, N <> Empty -> forall n :e omega, forall a :e R :^: idx N, 1 <= n /\ (n <= dimindex N /\ a :e span N {basis N x | x :e idx_n n} :\: {vec N 0}) -> brouwer_degree1 N n (fun x:set => reflect_along N a x) = - 1.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:150 / BROUWER_DEGREE1_NONSURJECTIVE
-// Source hash: md5:383088192dd440d1434d3e41688c0ddb
-// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, omega_Subq_R, omega_Subq_int)
-Theorem BROUWER_DEGREE1_NONSURJECTIVE : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> 1 <= n /\ (n <= dimindex N /\ (continuous_on_hl N N f (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}) /\ ({f x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} c= sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n} /\ {f x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} <> sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}))) -> brouwer_degree1 N n f = 0.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:177 / BROUWER_DEGREE_EQ
-// Source hash: md5:503c8bc982b97e14c6c104b065fd3cf2
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem BROUWER_DEGREE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (forall x :e R :^: idx N, x :e sphere N (vec N 0,1) -> f x = g x) -> brouwer_degree N f = brouwer_degree N g.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:186 / BROUWER_DEGREE_ID
-// Source hash: md5:3c4d2565d090b725cd9fb359818ada88
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
-Theorem BROUWER_DEGREE_ID : forall N:set, N <> Empty -> brouwer_degree N (fun x:set => x) = 1.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:190 / BROUWER_DEGREE_COMPOSE
-// Source hash: md5:0321885f49181dde520027fb3b95f82e
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem BROUWER_DEGREE_COMPOSE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> continuous_on_hl N N f (sphere N (vec N 0,1)) /\ (continuous_on_hl N N g (sphere N (vec N 0,1)) /\ ({f x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1) /\ {g x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1))) -> brouwer_degree N (fun x:set => g (f x)) = brouwer_degree N g * brouwer_degree N f.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:202 / BROUWER_DEGREE_HOMOTOPIC
-// Source hash: md5:2e761a1bb2616b2dc54518f40ee21afa
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem BROUWER_DEGREE_HOMOTOPIC : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) f g -> brouwer_degree N f = brouwer_degree N g.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:214 / BROUWER_DEGREE_CONST
-// Source hash: md5:10c670aab5bc536e0dc97350fd669d18
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
-Theorem BROUWER_DEGREE_CONST : forall N:set, N <> Empty -> forall a :e R :^: idx N, brouwer_degree N (fun x:set => a) = 0.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:220 / BROUWER_DEGREE_REFLECT_ALONG
-// Source hash: md5:38335ee9f39d464d87110dae8fdb5538
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
-Theorem BROUWER_DEGREE_REFLECT_ALONG : forall N:set, N <> Empty -> forall a :e R :^: idx N, ~ a = vec N 0 -> brouwer_degree N (fun x:set => reflect_along N a x) = - 1.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:228 / BROUWER_DEGREE_NONSURJECTIVE
-// Source hash: md5:e53ea6c05784fa58eaac624bd8470fc1
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R, omega_Subq_int)
-Theorem BROUWER_DEGREE_NONSURJECTIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> continuous_on_hl N N f (sphere N (vec N 0,1)) /\ ({f x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1) /\ {f x | x :e sphere N (vec N 0,1)} <> sphere N (vec N 0,1)) -> brouwer_degree N f = 0.
-Admitted.
-
-// HOL Light: Multivariate/degree.ml:238 / BROUWER_DEGREE_ORTHOGONAL_TRANSFORMATION
-// Source hash: md5:83b8ae95cc5ac91d934005a7d3c75ddb
-// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R, int_Subq_R)
-Theorem BROUWER_DEGREE_ORTHOGONAL_TRANSFORMATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> orthogonal_transformation N f -> brouwer_degree N f = det N (matrix N N f).
-Admitted.
-
 // HOL Light: Multivariate/degree.ml:264 / HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS
 // Source hash: md5:505dff85564730fe04e78215e735af7c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
@@ -2135,7 +2033,7 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:7916 / CONTINUOUS_INTERVAL_BIJ
 // Source hash: md5:497ccb94c84ffed443784a0eb19ff0ea
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_INTERVAL_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, continuous N (R :^: idx N) (fun x0:set => interval_bij N (a,b) (u,v) x0) (at N x).
+Theorem CONTINUOUS_INTERVAL_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, continuous N (R :^: idx N) (fun x0:set => interval_bij N (a,b) (u,v) x0) (at_hl N x).
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:7926 / CONTINUOUS_ON_INTERVAL_BIJ

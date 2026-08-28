@@ -10,9 +10,9 @@ Admitted.
 
 // HOL Light: calc_int.ml:72 / REAL_ADD_RINV
 // Source hash: md5:73346d8a152a33c6ab509f9a667fb540
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_ADD_RINV : forall x :e R, x + - x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ADD_RINV : forall x :e R, x + - x = 0.
 
 // HOL Light: calc_int.ml:76 / REAL_EQ_ADD_LCANCEL
 // Source hash: md5:86bc5f725d9ce64b845a1d50e047aeb4
@@ -28,15 +28,15 @@ Admitted.
 
 // HOL Light: calc_int.ml:86 / REAL_MUL_RZERO
 // Source hash: md5:7ea0eb7bbd0309ffcf17a00c946f188f
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_MUL_RZERO : forall x :e R, x * 0 = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_RZERO : forall x :e R, x * 0 = 0.
 
 // HOL Light: calc_int.ml:90 / REAL_MUL_LZERO
 // Source hash: md5:73fbc71a53aae64340fb9634fb267ed8
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_MUL_LZERO : forall x :e R, 0 * x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_LZERO : forall x :e R, 0 * x = 0.
 
 // HOL Light: calc_int.ml:94 / REAL_NEG_NEG
 // Source hash: md5:cb8faab7f2739dfbcdbfbe9981364aaa
@@ -52,27 +52,27 @@ Admitted.
 
 // HOL Light: calc_int.ml:104 / REAL_MUL_LNEG
 // Source hash: md5:93526b113fa809e8948f559a5fb2edbb
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_MUL_LNEG : forall x y :e R, (- x) * y = - x * y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_LNEG : forall x y :e R, (- x) * y = - x * y.
 
 // HOL Light: calc_int.ml:108 / REAL_NEG_ADD
 // Source hash: md5:93ee3274f878c0cf401e52a6c0e0e30c
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_NEG_ADD : forall x y :e R, - (x + y) = - x + - y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_NEG_ADD : forall x y :e R, - (x + y) = - x + - y.
 
 // HOL Light: calc_int.ml:116 / REAL_ADD_RID
 // Source hash: md5:d0c6ae778bf72860e2d9d9e713fa9d96
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_ADD_RID : forall x :e R, x + 0 = x.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ADD_RID : forall x :e R, x + 0 = x.
 
 // HOL Light: calc_int.ml:120 / REAL_NEG_0
 // Source hash: md5:09b549c26384798305571589b87f85bb
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_NEG_0 : - 0 = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_NEG_0 : - 0 = 0.
 
 // HOL Light: calc_int.ml:124 / REAL_LE_LNEG
 // Source hash: md5:7c5e5b4ed605155dae012148a5a99030
@@ -112,7 +112,7 @@ Admitted.
 
 // HOL Light: calc_int.ml:168 / REAL_ABS_NEG
 // Source hash: md5:d5f050a5931b9e3acf72455c03c199d3
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_NEG : forall x :e R, abs_SNo (- x) = abs_SNo x.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_NEG : forall x :e R, abs_SNo (- x) = abs_SNo x.
 

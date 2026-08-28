@@ -166,9 +166,9 @@ Admitted.
 
 // HOL Light: sets.ml:178 / IN_UNIV
 // Source hash: md5:eee80073ec9a8663b3ed94c2504d029b
-// Status: generalization_required (bridges: empty_case:A)
-Theorem IN_UNIV : forall A:set, forall x :e A, x :e A.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem IN_UNIV : forall A:set, forall x :e A, x :e A.
 
 // HOL Light: sets.ml:182 / IN_UNION
 // Source hash: md5:53bfd4012ecbf824436fdec1d98ef00d
@@ -322,9 +322,9 @@ Admitted.
 
 // HOL Light: sets.ml:351 / UNIV_1
 // Source hash: md5:f7a00ad14e0aa45d49558f4ae67d7f6c
-// Status: transport_required (bridges: hol_one_1)
-Theorem UNIV_1 : 1 = {0}.
-Admitted.
+// Status: native_reuse (bridges: hol_one_1)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem UNIV_1 : 1 = {0}.
 
 // HOL Light: sets.ml:359 / MEMBER_NOT_EMPTY
 // Source hash: md5:034de37a8d42754ce2996a70f9091391
@@ -1072,9 +1072,9 @@ Admitted.
 
 // HOL Light: sets.ml:968 / IMAGE_I
 // Source hash: md5:8eaf7e71839341a7ce6527d0469812cb
-// Status: generalization_required (bridges: empty_case:A)
-Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
 
 // HOL Light: sets.ml:972 / IMAGE_o
 // Source hash: md5:9666e7022fca9e70698bca3379b4251d
@@ -2386,9 +2386,9 @@ Admitted.
 
 // HOL Light: sets.ml:2968 / RESTRICTION_THM
 // Source hash: md5:77bb3eaf53f535793048ac122f3fae26
-// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
-Theorem RESTRICTION_THM : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun x:set => True).
-Admitted.
+// Status: native_reuse (bridges: choose_in_spec, empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem RESTRICTION_THM : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun x:set => True).
 
 // HOL Light: sets.ml:2972 / RESTRICTION_DEFINED
 // Source hash: md5:acd43b56eebe5ea59eeec9cb964a20c0
@@ -3622,9 +3622,9 @@ Admitted.
 
 // HOL Light: sets.ml:4801 / SUP_SING
 // Source hash: md5:3a9cb35b953582fc5909b65168df7703
-// Status: transport_required (bridges: hol_real_R)
-Theorem SUP_SING : forall a :e R, sup {a} = a.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUP_SING : forall a :e R, sup {a} = a.
 
 // HOL Light: sets.ml:4805 / SUP_INSERT_INSERT
 // Source hash: md5:db5a0106a36c762e7c82cb152ae005c5
@@ -3778,9 +3778,9 @@ Admitted.
 
 // HOL Light: sets.ml:4961 / INF_SING
 // Source hash: md5:9e9101e9e2f4d065a4ac7559ad6fbbca
-// Status: transport_required (bridges: hol_real_R)
-Theorem INF_SING : forall a :e R, inf {a} = a.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INF_SING : forall a :e R, inf {a} = a.
 
 // HOL Light: sets.ml:4965 / INF_INSERT_INSERT
 // Source hash: md5:f84b8571e923ec6087760074af6ffac8

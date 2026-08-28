@@ -502,9 +502,9 @@ Admitted.
 
 // HOL Light: Multivariate/vectors.ml:386 / FORALL_DIMINDEX_1
 // Source hash: md5:ee6c5e88a7de9952498955c733e3bfcf
-// Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, nat_le_SNoLe)
-Theorem FORALL_DIMINDEX_1 : forall P:set -> prop, (forall i :e omega, 1 <= i /\ i <= 1 -> P i) <-> P 1.
-Admitted.
+// Status: native_reuse (bridges: hol_dimindex, hol_num_omega, hol_one_1, nat_le_SNoLe)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem FORALL_DIMINDEX_1 : forall P:set -> prop, (forall i :e omega, 1 <= i /\ i <= 1 -> P i) <-> P 1.
 
 // HOL Light: Multivariate/vectors.ml:394 / VECTOR_ONE
 // Source hash: md5:ab4740a44e68b535dd577c31218a187a
@@ -1792,9 +1792,9 @@ Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2190 / LINEAR_I
 // Source hash: md5:2c6cc5822ebf6fab9a04537a0fc283b7
-// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LINEAR_I : forall A:set, A <> Empty -> linear A A (fun x:set => x).
-Admitted.
+// Status: native_reuse (bridges: hol_cart_setexp, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem LINEAR_I : forall A:set, A <> Empty -> linear A A (fun x:set => x).
 
 // HOL Light: Multivariate/vectors.ml:2194 / LINEAR_ZERO
 // Source hash: md5:3e85588f99c027419020a9c3bb2a2e92
@@ -2980,9 +2980,9 @@ Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3476 / MATRIX_I
 // Source hash: md5:a4ea51a75ecb25ca655440e80a13d14a
-// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem MATRIX_I : forall A:set, A <> Empty -> matrix A A (fun x:set => x) = mat A A 1.
-Admitted.
+// Status: native_reuse (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem MATRIX_I : forall A:set, A <> Empty -> matrix A A (fun x:set => x) = mat A A 1.
 
 // HOL Light: Multivariate/vectors.ml:3480 / LINEAR_EQ_MATRIX
 // Source hash: md5:b1cf82b0031abbf72bce4f750a9265b5
@@ -3160,9 +3160,9 @@ Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3720 / ONORM_I
 // Source hash: md5:c00041fcc65889d9855ba82e418b50d4
-// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ONORM_I : forall N:set, N <> Empty -> onorm N N (fun x:set => x) = 1.
-Admitted.
+// Status: native_reuse (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem ONORM_I : forall N:set, N <> Empty -> onorm N N (fun x:set => x) = 1.
 
 // HOL Light: Multivariate/vectors.ml:3724 / ONORM_INVERSE_FUNCTION_BOUND
 // Source hash: md5:4a0d578b53a4e076d4627e6c87159b36

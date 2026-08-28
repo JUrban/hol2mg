@@ -2459,7 +2459,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4105 / TOPSPACE_PRODUCT_TOPOLOGY
 // Source hash: md5:6c89b9dfe933356edcbe5e335d48fc8a
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_topology)
-Theorem TOPSPACE_PRODUCT_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall t c= K, topspace (A :^: K) (product_topology A K t tops) = {f :e A :^: K | (forall i :e t, f i :e {x0 :e A | {x0 :e A | x0 :e topspace A (tops i)} x0}) /\ forall i :e K, ~ i :e t -> f i = choose_in A (fun y:set => True)}.
+Theorem TOPSPACE_PRODUCT_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall t c= K, topspace (A :^: K) (product_topology A K t tops) = {f :e A :^: K | (forall i :e t, f i :e {x0 :e A | x0 :e topspace A (tops i)}) /\ forall i :e K, ~ i :e t -> f i = choose_in A (fun y:set => True)}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4111 / TOPSPACE_PRODUCT_TOPOLOGY_ALT
@@ -2639,13 +2639,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4925 / sum_topology
 // Source hash: md5:3d1b1da88428235cd1737805686f07ce
 // Status: generalization_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem sum_topology_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> sum_topology A K k top = {u :e Power (K :*: A) | u c= {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | {x0 :e A | x0 :e topspace A (top (p 0))} x0}} /\ forall i :e K, i :e k -> {x :e A | (i,x) :e u} :e top i}.
+Theorem sum_topology_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> sum_topology A K k top = {u :e Power (K :*: A) | u c= {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | x0 :e topspace A (top (p 0))}} /\ forall i :e K, i :e k -> {x :e A | (i,x) :e u} :e top i}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4930 / OPEN_IN_SUM_TOPOLOGY
 // Source hash: md5:f5c27e00a92c7eae7416125d2135ee6b
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem OPEN_IN_SUM_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> forall u c= K :*: A, u :e sum_topology A K k top <-> u c= {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | {x0 :e A | x0 :e topspace A (top (p 0))} x0}} /\ forall i :e K, i :e k -> {x :e A | (i,x) :e u} :e top i.
+Theorem OPEN_IN_SUM_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> forall u c= K :*: A, u :e sum_topology A K k top <-> u c= {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | x0 :e topspace A (top (p 0))}} /\ forall i :e K, i :e k -> {x :e A | (i,x) :e u} :e top i.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4952 / OPEN_IN_DISJOINT_UNION
@@ -2657,7 +2657,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4961 / TOPSPACE_SUM_TOPOLOGY
 // Source hash: md5:4d86e8143045004fdbea88cf6ed8a6e1
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem TOPSPACE_SUM_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> topspace (K :*: A) (sum_topology A K k top) = {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | {x0 :e A | x0 :e topspace A (top (p 0))} x0}}.
+Theorem TOPSPACE_SUM_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> topspace (K :*: A) (sum_topology A K k top) = {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | x0 :e topspace A (top (p 0))}}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4970 / OPEN_IN_SUM_TOPOLOGY_ALT
@@ -2681,7 +2681,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4996 / CLOSED_IN_SUM_TOPOLOGY
 // Source hash: md5:4b1c177f89c4dc4f94ab731130ad7e4f
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem CLOSED_IN_SUM_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> forall u c= K :*: A, closed_in (K :*: A) (sum_topology A K k top) u <-> u c= {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | {x0 :e A | x0 :e topspace A (top (p 0))} x0}} /\ forall i :e K, i :e k -> closed_in A (top i) {x :e A | (i,x) :e u}.
+Theorem CLOSED_IN_SUM_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall top:set -> set, (forall x :e K, top x :e topology A) -> forall u c= K :*: A, closed_in (K :*: A) (sum_topology A K k top) u <-> u c= {p :e K :*: A | p 0 :e k /\ p 1 :e {x0 :e A | x0 :e topspace A (top (p 0))}} /\ forall i :e K, i :e k -> closed_in A (top i) {x :e A | (i,x) :e u}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:5007 / CLOSED_IN_DISJOINT_UNION
@@ -14165,7 +14165,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:37561 / SUP_METRIC_CARTESIAN_PRODUCT
 // Source hash: md5:ba0a98efefcb477e640be67cc864d7ef
 // Status: generalization_required (bridges: empty_case:K, hol_fun_setexp, hol_prod_setprod, hol_real_R, hol_typedef_metric)
-Theorem SUP_METRIC_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> forall k c= K, forall m:set -> set, (forall x :e K, m x :e metric A) -> forall m' :e metric (A :^: K), ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | {x0 :e A | x0 :e mspace A (m i)} x0}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)},fun p :e A :^: K :*: A :^: K => sup {mdist A (m i) (p 0 i,p 1 i) | i :e K, i :e k}) = m' /\ (~ k = Empty /\ (exists c :e R, forall i :e K, forall x y :e A, i :e k /\ (x :e mspace A (m i) /\ y :e mspace A (m i)) -> mdist A (m i) (x,y) <= c)) -> mspace (A :^: K) m' = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | {x0 :e A | x0 :e mspace A (m i)} x0}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ ((forall x :e A :^: K :*: A :^: K, mdist (A :^: K) m' x = sup {mdist A (m i) (x 0 i,x 1 i) | i :e K, i :e k}) /\ forall x y :e A :^: K, forall b :e R, x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | {x1 :e A | x1 :e mspace A (m i)} x1}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ y :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | {x1 :e A | x1 :e mspace A (m i)} x1}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} -> (mdist (A :^: K) m' (x,y) <= b <-> forall i :e K, i :e k -> mdist A (m i) (x i,y i) <= b)).
+Theorem SUP_METRIC_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> forall k c= K, forall m:set -> set, (forall x :e K, m x :e metric A) -> forall m' :e metric (A :^: K), ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e mspace A (m i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)},fun p :e A :^: K :*: A :^: K => sup {mdist A (m i) (p 0 i,p 1 i) | i :e K, i :e k}) = m' /\ (~ k = Empty /\ (exists c :e R, forall i :e K, forall x y :e A, i :e k /\ (x :e mspace A (m i) /\ y :e mspace A (m i)) -> mdist A (m i) (x,y) <= c)) -> mspace (A :^: K) m' = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e mspace A (m i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ ((forall x :e A :^: K :*: A :^: K, mdist (A :^: K) m' x = sup {mdist A (m i) (x 0 i,x 1 i) | i :e K, i :e k}) /\ forall x y :e A :^: K, forall b :e R, x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e mspace A (m i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ y :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e mspace A (m i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} -> (mdist (A :^: K) m' (x,y) <= b <-> forall i :e K, i :e k -> mdist A (m i) (x i,y i) <= b)).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:37993 / EMBEDDING_INTO_METRIZABLE_IMP_METRIZABLE
