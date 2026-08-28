@@ -1,0 +1,18 @@
+{
+ "hol_light": {
+  "path": "repos/hol-light",
+  "commit": "433477862bb90b328a593e012e09390e99b2439b"
+ },
+ "megalodon": {
+  "path": "repos/Megalodon",
+  "commit": "e0fba57e1b7bcfb651536348ce962c3f47d33ec6"
+ },
+ "god1": {
+  "path": "repos/god1",
+  "commit": "acaff85eb5535008f3e8eb185051bc5216b8a6fd",
+  "library": "mglib/God1.mg"
+ },
+ "ocaml": "4.14.1",
+ "camlp5": "8.02.01",
+ "bignum": "num (bignum_num.ml; zarith unavailable)"
+}
