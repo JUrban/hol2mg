@@ -446,10 +446,412 @@ Admitted.
 Theorem COUNT_ROOTS_MODULO_COPRIME : forall a b k m n :e omega, gcd_int a b = 1 /\ (equip {x :e omega | x < a /\ exists q1 q2 :e omega, x ^ k + a * q1 = 1 + a * q2} m /\ equip {x :e omega | x < b /\ exists q1 q2 :e omega, x ^ k + b * q1 = 1 + b * q2} n) -> equip {x :e omega | x < a * b /\ exists q1 q2 :e omega, x ^ k + (a * b) * q1 = 1 + (a * b) * q2} (m * n).
 Admitted.
 
+// HOL Light: Library/pocklington.ml:695 / inverse_mod
+// Source hash: md5:de62fd66c0ff5498e18c38cd361412e3
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem inverse_mod_hl : forall x n :e omega, inverse_mod n x = if n <= 1 then 1 else choose_in omega (fun y:set => y < n /\ exists q1 q2 :e omega, x * y + n * q1 = gcd_int n x + n * q2).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:700 / INVERSE_MOD_BOUND
+// Source hash: md5:1e1c73984911cc14f58cf9fcbedc0e05
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem INVERSE_MOD_BOUND : forall n x :e omega, inverse_mod n x < n <-> 2 <= n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:700 / INVERSE_MOD_RMUL_GEN
+// Source hash: md5:12e5bfcac5377ac629faf9f3c849c96a
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_RMUL_GEN : forall n x :e omega, exists q1 q2 :e omega, x * inverse_mod n x + n * q1 = gcd_int n x + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:713 / INVERSE_MOD_LMUL_GEN
+// Source hash: md5:9c3ebd316ca0044dcfd0b9f788a580bb
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_LMUL_GEN : forall n x :e omega, exists q1 q2 :e omega, inverse_mod n x * x + n * q1 = gcd_int n x + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:717 / INVERSE_MOD_RMUL_EQ
+// Source hash: md5:8043b93abdc04ebea154d29b06adb3cc
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_RMUL_EQ : forall n x :e omega, (exists q1 q2 :e omega, x * inverse_mod n x + n * q1 = 1 + n * q2) <-> gcd_int n x = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:723 / INVERSE_MOD_LMUL_EQ
+// Source hash: md5:d53e49634a2f5f30ea4b4c299633b0c7
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_LMUL_EQ : forall n x :e omega, (exists q1 q2 :e omega, inverse_mod n x * x + n * q1 = 1 + n * q2) <-> gcd_int n x = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:727 / INVERSE_MOD_LMUL
+// Source hash: md5:9d6cc29263f66790b019942dd3b31503
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_LMUL : forall n x :e omega, gcd_int n x = 1 -> exists q1 q2 :e omega, inverse_mod n x * x + n * q1 = 1 + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:731 / INVERSE_MOD_RMUL
+// Source hash: md5:bdba7a936da45ad9579e198e2b32a1ee
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_RMUL : forall n x :e omega, gcd_int n x = 1 -> exists q1 q2 :e omega, x * inverse_mod n x + n * q1 = 1 + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:735 / INVERSE_MOD_UNIQUE
+// Source hash: md5:b99a7a30262261ff94cea8d9ab7507ec
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem INVERSE_MOD_UNIQUE : forall n a x :e omega, (exists q1 q2 :e omega, a * x + n * q1 = 1 + n * q2) /\ (x <= n /\ ~ (n = 1 /\ x = 0)) -> inverse_mod n a = x.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:757 / INVERSE_MOD_1
+// Source hash: md5:8cc99f513c364854491208cea1ca1c68
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INVERSE_MOD_1 : forall n :e omega, inverse_mod n 1 = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:764 / INVERSE_MOD_CONG
+// Source hash: md5:98d06f9abbdffd32b01d2506bd83c4f8
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INVERSE_MOD_CONG : forall n x y :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) -> inverse_mod n x = inverse_mod n y.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:772 / INVERSE_MOD_INVERSE_MOD_CONG
+// Source hash: md5:ff45573fc2bece297325c82fff5c033d
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem INVERSE_MOD_INVERSE_MOD_CONG : forall n x :e omega, gcd_int n x = 1 -> exists q1 q2 :e omega, inverse_mod n (inverse_mod n x) + n * q1 = x + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:784 / INVERSE_MOD_INVERSE_MOD
+// Source hash: md5:2e7161c3af0cf1c8c9e16bbb2f1b25c4
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, nat_le_SNoLe)
+Theorem INVERSE_MOD_INVERSE_MOD : forall n x :e omega, gcd_int n x = 1 /\ (1 <= x /\ x <= n) -> inverse_mod n (inverse_mod n x) = x.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:790 / INVERSE_MOD_NONZERO_ALT
+// Source hash: md5:8754fa5885824e1e904b00857046d94e
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INVERSE_MOD_NONZERO_ALT : forall n a :e omega, ~ divides_nat n a -> ~ inverse_mod n a = 0.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:797 / INVERSE_MOD_NONZERO
+// Source hash: md5:aa2adca935d59a66328f7ec732426159
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem INVERSE_MOD_NONZERO : forall n a :e omega, gcd_int n a = 1 -> ~ inverse_mod n a = 0.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:805 / INVERSE_MOD_BOUND_LE
+// Source hash: md5:5da9224d0f1969b17d0a69eb3f90cda6
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem INVERSE_MOD_BOUND_LE : forall n a :e omega, inverse_mod n a <= n <-> ~ n = 0.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:810 / INVERSE_MOD_INVERSION
+// Source hash: md5:3bc45133d7b6d3bb5a92f8c367df6bcd
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INVERSE_MOD_INVERSION : forall m n :e omega, gcd_int m n = 1 -> m * inverse_mod n m + n * inverse_mod m n = m * n + 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:877 / squarefree
+// Source hash: md5:2adc171740ca003c25044f1f1ba5fb6c
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem squarefree : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall m :e omega, divides_nat (m ^ 2) n -> m = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:880 / SQUAREFREE_0
+// Source hash: md5:e252e335007c9fd015533a5f3caf6215
+// Status: transport_required (bridges: hol_num_omega)
+Theorem SQUAREFREE_0 : ~ forall m :e omega, divides_nat (m ^ 2) 0 -> m = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:884 / SQUAREFREE_1
+// Source hash: md5:adc4b4418294eb62f4096083986f9950
+// Status: transport_required (bridges: hol_num_omega)
+Theorem SQUAREFREE_1 : forall m :e omega, divides_nat (m ^ 2) 1 -> m = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:888 / SQUAREFREE_IMP_NZ
+// Source hash: md5:d444cec39069199664f492c23e46c5b3
+// Status: transport_required (bridges: hol_num_omega)
+Theorem SQUAREFREE_IMP_NZ : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) -> ~ n = 0.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:892 / SQUAREFREE_PRIME
+// Source hash: md5:12dd5adc8d026bc1e9524d67b11c748d
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE_PRIME : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall p :e omega, prime_nat p -> ~ divides_nat (p ^ 2) n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:892 / SQUAREFREE_PRIME_DIVISOR
+// Source hash: md5:a9ae1afbe470f7ebcf142f75429857ce
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE_PRIME_DIVISOR : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall p :e omega, prime_nat p /\ divides_nat p n -> ~ divides_nat (p ^ 2) n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:909 / SQUAREFREE_INDEX
+// Source hash: md5:af70d54886ededb2e81f275473b6c067
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem SQUAREFREE_INDEX : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> ~ n = 0 /\ forall m :e omega, prime_index m n <= 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:920 / SQUAREFREE_PRIME_INDEX
+// Source hash: md5:963e3b1b1f51d1f9c5638eaa78e672a3
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem SQUAREFREE_PRIME_INDEX : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> ~ n = 0 /\ forall p :e omega, prime_nat p -> prime_index p n <= 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:929 / SQUAREFREE_COPRIME
+// Source hash: md5:4b183b13bffe93aa3806d68af7db1383
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem SQUAREFREE_COPRIME : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall a b :e omega, a * b = n -> gcd_int a b = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:929 / SQUAREFREE_COPRIME_DIVISORS
+// Source hash: md5:3fa079caf7281880280beac467fe2a5a
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem SQUAREFREE_COPRIME_DIVISORS : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall a b :e omega, divides_nat (a * b) n -> gcd_int a b = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:941 / SQUAREFREE_DIVISOR
+// Source hash: md5:8355e075d0b3e2c000638fb3ac832002
+// Status: transport_required (bridges: hol_num_omega)
+Theorem SQUAREFREE_DIVISOR : forall m n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) /\ divides_nat m n -> forall m0 :e omega, divides_nat (m0 ^ 2) m -> m0 = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:947 / PRIME_IMP_SQUAREFREE
+// Source hash: md5:685e4fc9136e3016421fdd658e9bc2f1
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PRIME_IMP_SQUAREFREE : forall p :e omega, prime_nat p -> forall m :e omega, divides_nat (m ^ 2) p -> m = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:956 / SQUAREFREE_MUL
+// Source hash: md5:2834a8b187f7b5dc8a7ad6eb05cba788
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem SQUAREFREE_MUL : forall m n :e omega, (forall m0 :e omega, divides_nat (m0 ^ 2) (m * n) -> m0 = 1) <-> gcd_int m n = 1 /\ ((forall m0 :e omega, divides_nat (m0 ^ 2) m -> m0 = 1) /\ forall m :e omega, divides_nat (m ^ 2) n -> m = 1).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:964 / SQUAREFREE_EXP
+// Source hash: md5:0c4f73506b7c97ab71887b156775d067
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE_EXP : forall n k :e omega, (forall m :e omega, divides_nat (m ^ 2) (n ^ k) -> m = 1) <-> n = 1 \/ (k = 0 \/ (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) /\ k = 1).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:974 / SQUAREFREE_DIVIDES
+// Source hash: md5:161e50a47da827a1c9d2ce32b232d043
+// Status: transport_required (bridges: hol_num_omega)
+Theorem SQUAREFREE_DIVIDES : forall q n :e omega, (forall m :e omega, divides_nat (m ^ 2) q -> m = 1) -> (divides_nat q n <-> forall p :e omega, prime_nat p /\ divides_nat p q -> divides_nat p n).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:987 / SQUAREFREE_DIVEXP
+// Source hash: md5:3f7e2f4fed623090712aeb01cebd553b
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE_DIVEXP : forall n q x :e omega, (forall m :e omega, divides_nat (m ^ 2) q -> m = 1) /\ divides_nat q (x ^ n) -> divides_nat q x.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:991 / SQUAREFREE_DIVEXP_EQ
+// Source hash: md5:9ba7128488783014f3cd4bf90bf68751
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE_DIVEXP_EQ : forall n q x :e omega, (forall m :e omega, divides_nat (m ^ 2) q -> m = 1) /\ ~ n = 0 -> (divides_nat q (x ^ n) <-> divides_nat q x).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:995 / SQUAREFREE
+// Source hash: md5:cb3ed8f384208821c150820c0477c5d2
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> ~ n = 0 /\ forall m k :e omega, divides_nat n (m ^ k) -> divides_nat n m.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:995 / SQUAREFREE_ALT
+// Source hash: md5:3621c0980c1ad9a6c2c1017952d54b8e
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem SQUAREFREE_ALT : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> ~ n = 0 /\ forall m :e omega, divides_nat n (m ^ 2) -> divides_nat n m.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1012 / SQUAREFREE_GCD
+// Source hash: md5:9dd017cbece978fc6ed1df92939d1b71
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem SQUAREFREE_GCD : forall m n :e omega, (forall m0 :e omega, divides_nat (m0 ^ 2) m -> m0 = 1) \/ (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) -> forall m0 :e omega, divides_nat (m0 ^ 2) (gcd_int m n) -> m0 = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1016 / SQUAREFREE_GCD_SQUARE
+// Source hash: md5:64f487a2386f9b6ed83fced9dd5150dd
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem SQUAREFREE_GCD_SQUARE : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall x :e omega, divides_nat (gcd_int (x ^ 2) n) x.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1031 / SQUAREFREE_NPRODUCT
+// Source hash: md5:642dd4ea840e6681751a6c115ab90813
+// Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, hol_prod_setprod)
+Theorem SQUAREFREE_NPRODUCT : forall s c= omega, finite s -> ((forall m :e omega, divides_nat (m ^ 2) (finprod s (fun n:set => n)) -> m = 1) <-> (forall x y :e s, x <> y -> gcd_int x y = 1) /\ forall n :e omega, n :e s -> forall m :e omega, divides_nat (m ^ 2) n -> m = 1).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1040 / SQUAREFREE_EXPAND
+// Source hash: md5:dce0adb9b3d074b1fe2c3d1b9069edde
+// Status: transport_required (bridges: hol_nproduct_finprod, hol_num_omega)
+Theorem SQUAREFREE_EXPAND : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) -> finprod {p :e omega | prime_nat p /\ divides_nat p n} (fun p:set => p) = n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1053 / SQUAREFREE_EXPAND_EQ
+// Source hash: md5:a1ba4cc455ad8d88b3ef61571119e03b
+// Status: transport_required (bridges: hol_nproduct_finprod, hol_num_omega)
+Theorem SQUAREFREE_EXPAND_EQ : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> ~ n = 0 /\ finprod {p :e omega | prime_nat p /\ divides_nat p n} (fun p:set => p) = n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1064 / SQUAREFREE_DECOMPOSITION
+// Source hash: md5:cb665c1dad3700b9ec8a42242445fd51
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
+Theorem SQUAREFREE_DECOMPOSITION : forall n :e omega, exists m r :e omega, (forall m0 :e omega, divides_nat (m0 ^ 2) m -> m0 = 1) /\ m * r ^ 2 = n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1083 / CONG_MOD_SQUAREFREE
+// Source hash: md5:473822a7dc818ac3abca24b8205e1d29
+// Status: transport_required (bridges: hol_num_omega)
+Theorem CONG_MOD_SQUAREFREE : forall n a b :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) /\ (forall p :e omega, prime_nat p /\ divides_nat p n -> exists q1 q2 :e omega, a + p * q1 = b + p * q2) -> exists q1 q2 :e omega, a + n * q1 = b + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1102 / CONG_MOD_SQUAREFREE_EQ
+// Source hash: md5:edccbf5f9e9d8513bfb5dd93eca3450a
+// Status: transport_required (bridges: hol_num_omega)
+Theorem CONG_MOD_SQUAREFREE_EQ : forall n a b :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) -> ((exists q1 q2 :e omega, a + n * q1 = b + n * q2) <-> forall p :e omega, prime_nat p /\ divides_nat p n -> exists q1 q2 :e omega, a + p * q1 = b + p * q2).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1113 / phi
+// Source hash: md5:0330c24d79433e775b122852219dc3a7
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega, hol_prod_setprod, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem phi : forall n :e omega, totient n = finite_cardinality {m :e omega | 0 < m /\ (m <= n /\ gcd_int m n = 1)}.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1116 / PHI_ALT
+// Source hash: md5:b7373052b7014033a5e1410794cf47a6
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
+Theorem PHI_ALT : forall n :e omega, totient n = finite_cardinality {m :e omega | gcd_int m n = 1 /\ m < n}.
+Admitted.
+
 // HOL Light: Library/pocklington.ml:1139 / PHI_FINITE_LEMMA
 // Source hash: md5:e0960fbdf7937ca7e1592339369f9c23
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
 Theorem PHI_FINITE_LEMMA : forall n :e omega, finite {m :e omega | gcd_int m n = 1 /\ m < n}.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1144 / PHI_ANOTHER
+// Source hash: md5:f320e153e2ca941dae5c92642fc1f255
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
+Theorem PHI_ANOTHER : forall n :e omega, ~ n = 1 -> totient n = finite_cardinality {m :e omega | 0 < m /\ (m < n /\ gcd_int m n = 1)}.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1150 / PHI_LIMIT
+// Source hash: md5:a19e67091db779f7d576976f108beb90
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem PHI_LIMIT : forall n :e omega, totient n <= n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1157 / PHI_LIMIT_STRONG
+// Source hash: md5:741d9613799b4684a51bac18ba2bfeff
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem PHI_LIMIT_STRONG : forall n :e omega, ~ n = 1 -> totient n <= minus_nat n 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1166 / PHI_0
+// Source hash: md5:d1506f78ff814f6d3f29b2d54b1fd2d4
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_0 : totient 0 = 0.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1170 / PHI_1
+// Source hash: md5:fa49a1da1c183e40619f526686ffde67
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_1 : totient 1 = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1174 / PHI_LOWERBOUND_1_STRONG
+// Source hash: md5:53746b6432f19f205d9a24b861b528be
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem PHI_LOWERBOUND_1_STRONG : forall n :e omega, 1 <= n -> 1 <= totient n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1187 / PHI_LOWERBOUND_1
+// Source hash: md5:996891bdb1f50253c6bfa64f221daf25
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem PHI_LOWERBOUND_1 : forall n :e omega, 2 <= n -> 1 <= totient n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1191 / PHI_LOWERBOUND_2
+// Source hash: md5:bfe779b9911a3af8b96b48f25fd5275d
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem PHI_LOWERBOUND_2 : forall n :e omega, 3 <= n -> 2 <= totient n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1212 / PHI_EQ_0
+// Source hash: md5:ac24fc8b781e303f55f084fa30d11019
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_EQ_0 : forall n :e omega, totient n = 0 <-> n = 0.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1221 / PHI_PRIME_EQ
+// Source hash: md5:10cecc0c03d7cff5f062fe06fccba774
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_PRIME_EQ : forall n :e omega, totient n = minus_nat n 1 /\ (~ n = 0 /\ ~ n = 1) <-> prime_nat n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1240 / PHI_PRIME
+// Source hash: md5:3a8de7750031d4d2cba973f5fd3a6d9b
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_PRIME : forall p :e omega, prime_nat p -> totient p = minus_nat p 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1244 / PHI_PRIMEPOW_SUC
+// Source hash: md5:8fe04f15561a18c56d6d4b6557725dc7
+// Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem PHI_PRIMEPOW_SUC : forall p k :e omega, prime_nat p -> totient (p ^ (k + 1)) = minus_nat (p ^ (k + 1)) (p ^ k).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1267 / PHI_PRIMEPOW
+// Source hash: md5:0c60d3497d50455ef4b51cf96e15f9fc
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem PHI_PRIMEPOW : forall p k :e omega, prime_nat p -> totient (p ^ k) = if k = 0 then 1 else minus_nat (p ^ k) (p ^ minus_nat k 1).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1274 / PHI_PRIMEPOW_ALT
+// Source hash: md5:e21f2e1b67f08906b423b1d0267b96ab
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
+Theorem PHI_PRIMEPOW_ALT : forall p k :e omega, prime_nat p -> totient (p ^ k) = if k = 0 then 1 else p ^ minus_nat k 1 * minus_nat p 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1282 / PHI_2
+// Source hash: md5:7491bd5ab2464fe2eb131e372efd0233
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_2 : totient 2 = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1290 / PHI_MULTIPLICATIVE
+// Source hash: md5:5c258d3daff19c8ec53e19e78b50ea9a
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem PHI_MULTIPLICATIVE : forall a b :e omega, gcd_int a b = 1 -> totient (a * b) = totient a * totient b.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1311 / EVEN_PHI
+// Source hash: md5:763006611e9e9f71df75aded5063a2be
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem EVEN_PHI : forall n :e omega, 3 <= n -> even_nat (totient n).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1322 / EVEN_PHI_EQ
+// Source hash: md5:e5d8d4232e4f8f8a612eae892f4232ee
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem EVEN_PHI_EQ : forall n :e omega, even_nat (totient n) <-> n = 0 \/ 3 <= n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1330 / ODD_PHI_EQ
+// Source hash: md5:cb0245d21ead7f4fb2db5eb25fe3c503
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ODD_PHI_EQ : forall n :e omega, odd_nat (totient n) <-> n = 1 \/ n = 2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1334 / PHI_EQ_PRIME
+// Source hash: md5:225e8252d914a17ad47717764dd842b4
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PHI_EQ_PRIME : forall p :e omega, totient p = minus_nat p 1 <-> p = 0 \/ prime_nat p.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1362 / PHI_LIMIT_COMPOSITE
+// Source hash: md5:3fb7cbf0a66ca120006b518938679090
+// Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
+Theorem PHI_LIMIT_COMPOSITE : forall n :e omega, ~ prime_nat n /\ (~ n = 0 /\ ~ n = 1) -> totient n < minus_nat n 1.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1370 / NPRODUCT_MOD
@@ -461,19 +863,25 @@ Admitted.
 // HOL Light: Library/pocklington.ml:1380 / NPRODUCT_CMUL
 // Source hash: md5:139602d85c857f231232a97623571375
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
-Theorem NPRODUCT_CMUL : forall T219550:set, T219550 <> Empty -> forall s c= T219550, forall a:set -> set, (forall x :e T219550, a x :e omega) -> forall c :e omega, finite s -> finprod s (fun m:set => c * a m) = c ^ finite_cardinality s * finprod s a.
+Theorem NPRODUCT_CMUL : forall A:set, A <> Empty -> forall s c= A, forall a:set -> set, (forall x :e A, a x :e omega) -> forall c :e omega, finite s -> finprod s (fun m:set => c * a m) = c ^ finite_cardinality s * finprod s a.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1390 / ITERATE_OVER_COPRIME
 // Source hash: md5:10432f4c2447e010ce253b6b8805286b
 // Status: transport_required (bridges: hol_iterate, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo, nat_lt_SNoLt)
-Theorem ITERATE_OVER_COPRIME : forall T219734:set, T219734 <> Empty -> forall op:set -> set -> set, (forall x y :e T219734, op x y :e T219734) -> forall f:set -> set, (forall x :e omega, f x :e T219734) -> forall n k :e omega, (forall x y :e T219734, op x y = op y x) /\ (forall x y z :e T219734, op x (op y z) = op (op x y) z) /\ (forall x :e T219734, op (neutral_of T219734 op) x = x) /\ (gcd_int k n = 1 /\ (forall x y :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) -> f x = f y)) -> iterate_op T219734 op {d :e omega | gcd_int d n = 1 /\ d < n} (fun m:set => f (k * m)) = iterate_op T219734 op {d :e omega | gcd_int d n = 1 /\ d < n} f.
+Theorem ITERATE_OVER_COPRIME : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall n k :e omega, (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) /\ (gcd_int k n = 1 /\ (forall x y :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) -> f x = f y)) -> iterate_op A op {d :e omega | gcd_int d n = 1 /\ d < n} (fun m:set => f (k * m)) = iterate_op A op {d :e omega | gcd_int d n = 1 /\ d < n} f.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1412 / ITERATE_ITERATE_DIVISORS
 // Source hash: md5:70a0e233291846b812a4f96b8e7ef1fa
 // Status: transport_required (bridges: hol_iterate, hol_num_omega, mul_nat_mul_SNo)
 Theorem ITERATE_ITERATE_DIVISORS : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> forall f:set -> set -> set, (forall x y :e omega, f x y :e A) -> forall x :e omega, (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) -> iterate_op A op (idx_n x) (fun n:set => iterate_op A op {d :e omega | divides_nat d n} (f n)) = iterate_op A op (idx_n x) (fun n:set => iterate_op A op (idx_n (div_nat x n)) (fun k:set => f (k * n) n)).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1441 / FERMAT_LITTLE
+// Source hash: md5:a12801caf3834288c27765182b62aff6
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem FERMAT_LITTLE : forall a n :e omega, gcd_int a n = 1 -> exists q1 q2 :e omega, a ^ totient n + n * q1 = 1 + n * q2.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1459 / FERMAT_LITTLE_PRIME
@@ -500,10 +908,226 @@ Admitted.
 Theorem LUCAS : forall a n :e omega, 2 <= n /\ ((exists q1 q2 :e omega, a ^ minus_nat n 1 + n * q1 = 1 + n * q2) /\ (forall p :e omega, prime_nat p /\ divides_nat p (minus_nat n 1) -> ~ exists q1 q2 :e omega, a ^ div_nat (minus_nat n 1) p + n * q1 = 1 + n * q2)) -> prime_nat n.
 Admitted.
 
+// HOL Light: Library/pocklington.ml:1576 / order
+// Source hash: md5:e258975d9739164b7fceccb1e89cb8df
+// Status: transport_required (bridges: choose_in_spec, exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem order : forall a n :e omega, mult_order n a = choose_in omega (fun d:set => forall k :e omega, (exists q1 q2 :e omega, a ^ k + n * q1 = 1 + n * q2) <-> divides_nat d k).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1579 / EXP_ITER
+// Source hash: md5:96c22e49541564554765344c5b2016df
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
+Theorem EXP_ITER : forall x n :e omega, x ^ n = iter_fun n (fun y:set => x * y) 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1583 / ORDER_DIVIDES
+// Source hash: md5:ad59ba6da0e7b28ba17819871cafc591
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem ORDER_DIVIDES : forall n a d :e omega, (exists q1 q2 :e omega, a ^ d + n * q1 = 1 + n * q2) <-> divides_nat (mult_order n a) d.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1591 / ORDER
+// Source hash: md5:98744509a30ff4e05aa2cc17ac7e8929
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem ORDER : forall n a :e omega, exists q1 q2 :e omega, a ^ mult_order n a + n * q1 = 1 + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1595 / ORDER_UNIQUE_ALT
+// Source hash: md5:a1f3b5ccdc5dae904476624e30db4cb3
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem ORDER_UNIQUE_ALT : forall n a d :e omega, mult_order n a = d <-> forall k :e omega, (exists q1 q2 :e omega, a ^ k + n * q1 = 1 + n * q2) <-> divides_nat d k.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1600 / ORDER_MINIMAL
+// Source hash: md5:2a9f8187077e135932c8073b45469462
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_lt_SNoLt)
+Theorem ORDER_MINIMAL : forall n a m :e omega, 0 < m /\ m < mult_order n a -> ~ exists q1 q2 :e omega, a ^ m + n * q1 = 1 + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1605 / ORDER_WORKS
+// Source hash: md5:fe5944264ed61e8d219503b116e3f430
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_lt_SNoLt)
+Theorem ORDER_WORKS : forall n a :e omega, (exists q1 q2 :e omega, a ^ mult_order n a + n * q1 = 1 + n * q2) /\ forall m :e omega, 0 < m /\ m < mult_order n a -> ~ exists q1 q2 :e omega, a ^ m + n * q1 = 1 + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1610 / ORDER_1
+// Source hash: md5:2e7b15e5ed65e0f41a661481be487c65
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ORDER_1 : forall n :e omega, mult_order n 1 = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1614 / ORDER_EQ_0
+// Source hash: md5:a18efaf2b25ab98bbdad9c07b1a612e6
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem ORDER_EQ_0 : forall n a :e omega, mult_order n a = 0 <-> ~ gcd_int n a = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1627 / ORDER_EQ_1
+// Source hash: md5:1b55347d176d418373d6003a12759d04
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ORDER_EQ_1 : forall n a :e omega, mult_order n a = 1 <-> exists q1 q2 :e omega, a + n * q1 = 1 + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1632 / ORDER_UNIQUE_PRIME
+// Source hash: md5:3287fd205c30daaaff59a50f14c2a7c9
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem ORDER_UNIQUE_PRIME : forall n a p :e omega, prime_nat p -> (mult_order n a = p <-> ~ (exists q1 q2 :e omega, a + n * q1 = 1 + n * q2) /\ exists q1 q2 :e omega, a ^ p + n * q1 = 1 + n * q2).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1640 / ORDER_CONG
+// Source hash: md5:3d3af17f97503a29564272d585949fff
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ORDER_CONG : forall n a b :e omega, (exists q1 q2 :e omega, a + n * q1 = b + n * q2) -> mult_order n a = mult_order n b.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1646 / ORDER_MOD
+// Source hash: md5:7e28f260f89972a4b3a28de40e1abe22
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ORDER_MOD : forall p n :e omega, mult_order p (mod_nat n p) = mult_order p n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1651 / COPRIME_ORDER
+// Source hash: md5:3917a8418cc83a7e69825d31b605efc1
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
+Theorem COPRIME_ORDER : forall n a :e omega, gcd_int n a = 1 -> 0 < mult_order n a /\ ((exists q1 q2 :e omega, a ^ mult_order n a + n * q1 = 1 + n * q2) /\ forall m :e omega, 0 < m /\ m < mult_order n a -> ~ exists q1 q2 :e omega, a ^ m + n * q1 = 1 + n * q2).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1659 / ORDER_DIVIDES_PHI
+// Source hash: md5:c9d590469eaff818ac861bed87414da6
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem ORDER_DIVIDES_PHI : forall a n :e omega, gcd_int n a = 1 -> divides_nat (mult_order n a) (totient n).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1663 / ORDER_LE_PHI
+// Source hash: md5:3153ab35df96b8758afb91570adfbf9f
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem ORDER_LE_PHI : forall a n :e omega, ~ n = 0 -> mult_order n a <= totient n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1671 / ORDER_DIVIDES_EXPDIFF
+// Source hash: md5:3d2f6dc2fde6ff36d681699acfe64a66
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem ORDER_DIVIDES_EXPDIFF : forall a n d e0 :e omega, gcd_int n a = 1 -> ((exists q1 q2 :e omega, a ^ d + n * q1 = a ^ e0 + n * q2) <-> exists q1 q2 :e omega, d + mult_order n a * q1 = e0 + mult_order n a * q2).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1688 / ORDER_UNIQUE
+// Source hash: md5:97fc3c1e75ce8158dc837c89e2782e58
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_lt_SNoLt)
+Theorem ORDER_UNIQUE : forall n a k :e omega, 0 < k /\ ((exists q1 q2 :e omega, a ^ k + n * q1 = 1 + n * q2) /\ (forall m :e omega, 0 < m /\ m < k -> ~ exists q1 q2 :e omega, a ^ m + n * q1 = 1 + n * q2)) -> mult_order n a = k.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1704 / ORDER_MUL_LCM
+// Source hash: md5:a51af7956056c2b94814aeac6dbaa8cc
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem ORDER_MUL_LCM : forall m n a :e omega, gcd_int m n = 1 -> mult_order (m * n) a = lcm_int (mult_order m a) (mult_order n a).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1713 / ORDER_EXP_GEN
+// Source hash: md5:79f8b61534c8197d3ef97afd9fabceb0
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem ORDER_EXP_GEN : forall p a k :e omega, mult_order p (a ^ k) = if k = 0 then 1 else div_nat (mult_order p a) (gcd_int (mult_order p a) k).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1731 / ORDER_EXP
+// Source hash: md5:5780f229c37c4f0234e3008e722458f5
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem ORDER_EXP : forall p a k :e omega, ~ k = 0 /\ divides_nat k (mult_order p a) -> mult_order p (a ^ k) = div_nat (mult_order p a) k.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1737 / ORDER_INVERSE_MOD
+// Source hash: md5:672eae568c3788b0efe51e90de579ce5
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem ORDER_INVERSE_MOD : forall n a :e omega, gcd_int n a = 1 -> mult_order n (inverse_mod n a) = mult_order n a.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1749 / ORDER_MUL_DIVIDES
+// Source hash: md5:d07440a2007dedd753ba9b03c7500cb2
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
+Theorem ORDER_MUL_DIVIDES : forall p a b :e omega, divides_nat (mult_order p (a * b)) (mult_order p a * mult_order p b).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1755 / ORDER_MUL_EQ
+// Source hash: md5:ef14b21e1a9d534d49897eadc05741ea
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem ORDER_MUL_EQ : forall p a b :e omega, gcd_int (mult_order p a) (mult_order p b) = 1 -> mult_order p (a * b) = mult_order p a * mult_order p b.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1778 / ORDER_LCM_EXISTS
+// Source hash: md5:a325d906ebffba4bd1349a93276ad519
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem ORDER_LCM_EXISTS : forall p a b :e omega, exists c :e omega, mult_order p c = lcm_int (mult_order p a) (mult_order p b).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1802 / ORDER_DIVIDES_MAXIMAL
+// Source hash: md5:fa8c6ae6353ce2a861409601eeb98c12
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem ORDER_DIVIDES_MAXIMAL : forall p :e omega, ~ p = 1 -> exists n :e omega, gcd_int p n = 1 /\ forall m :e omega, gcd_int p m = 1 -> divides_nat (mult_order p m) (mult_order p n).
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1831 / POWER_RESIDUE_MODULO_COPRIME
+// Source hash: md5:537460f3734ff261843f6c997d641505
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem POWER_RESIDUE_MODULO_COPRIME : forall n a k :e omega, gcd_int n a = 1 /\ gcd_int k (totient n) = 1 -> exists x q1 q2 :e omega, x ^ k + n * q1 = a + n * q2.
+Admitted.
+
 // HOL Light: Library/pocklington.ml:1843 / POWER_RESIDUE_MODULO_PRIME
 // Source hash: md5:f6a1e2b2735e56055e3a21203eefee5d
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
 Theorem POWER_RESIDUE_MODULO_PRIME : forall p a k :e omega, prime_nat p /\ (~ divides_nat p a /\ gcd_int k (minus_nat p 1) = 1) -> exists x q1 q2 :e omega, x ^ k + p * q1 = a + p * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1850 / INJECTIVE_EXP_MODULO
+// Source hash: md5:6ac67a3dcd36148f29137f9d6d25c2b8
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem INJECTIVE_EXP_MODULO : forall n a b k :e omega, gcd_int k (totient n) = 1 /\ (gcd_int n a = 1 /\ (gcd_int n b = 1 /\ (exists q1 q2 :e omega, a ^ k + n * q1 = b ^ k + n * q2))) -> exists q1 q2 :e omega, a + n * q1 = b + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1874 / PRIMITIVE_ROOT_IMP_COPRIME
+// Source hash: md5:e2bc0faabd123515213c8703275b4aa1
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem PRIMITIVE_ROOT_IMP_COPRIME : forall n g :e omega, mult_order n g = totient n -> n = 0 \/ gcd_int n g = 1.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1878 / PRIMITIVE_ROOT_IMP_PRIME
+// Source hash: md5:803edf76774f52ecdda3aca0c81f38ed
+// Status: transport_required (bridges: hol_num_omega)
+Theorem PRIMITIVE_ROOT_IMP_PRIME : forall p g :e omega, mult_order p g = minus_nat p 1 -> p = 0 \/ prime_nat p.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1888 / PRIMITIVE_ROOT_IMAGE
+// Source hash: md5:e59be620b338c98ecc3e0d5cf7aa9c5b
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
+Theorem PRIMITIVE_ROOT_IMAGE : forall n g :e omega, mult_order n g = totient n -> {mod_nat (g ^ i) n | i :e {i :e omega | i < totient n}} = {a :e omega | gcd_int a n = 1 /\ a < n}.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1915 / PRIMITIVE_ROOT_IMAGE_PRIME
+// Source hash: md5:50e32a2fcd4f327c515a4a038f4d5819
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_lt_SNoLt)
+Theorem PRIMITIVE_ROOT_IMAGE_PRIME : forall p g :e omega, mult_order p g = minus_nat p 1 -> {mod_nat (g ^ i) p | i :e {i :e omega | i < minus_nat p 1}} = {a :e omega | 0 < a /\ a < p}.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1933 / PRIMITIVE_ROOT_SURJECTIVE
+// Source hash: md5:b66bca9d7de7b29be7d039a50260d55e
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
+Theorem PRIMITIVE_ROOT_SURJECTIVE : forall n g a :e omega, ~ n = 0 /\ (mult_order n g = totient n /\ gcd_int a n = 1) -> exists m :e omega, m < totient n /\ exists q1 q2 :e omega, a + n * q1 = g ^ m + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1944 / PRIMITIVE_ROOT_SURJECTIVE_ALT
+// Source hash: md5:56aea888526c5fd3d9f5a9128f1f7875
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem PRIMITIVE_ROOT_SURJECTIVE_ALT : forall n g a :e omega, mult_order n g = totient n /\ gcd_int a n = 1 -> exists m q1 q2 :e omega, a + n * q1 = g ^ m + n * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1951 / PRIMITIVE_ROOT_SURJECTIVE_PRIME
+// Source hash: md5:fb215f1f3512f452930d6587f7cf4255
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod, nat_lt_SNoLt)
+Theorem PRIMITIVE_ROOT_SURJECTIVE_PRIME : forall p g a :e omega, ~ p = 0 /\ (mult_order p g = minus_nat p 1 /\ gcd_int a p = 1) -> exists m :e omega, m < minus_nat p 1 /\ exists q1 q2 :e omega, a + p * q1 = g ^ m + p * q2.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:1963 / PRIMITIVE_ROOT_SURJECTIVE_PRIME_ALT
+// Source hash: md5:2ed09b3939c10d37d3526adbd5990487
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod)
+Theorem PRIMITIVE_ROOT_SURJECTIVE_PRIME_ALT : forall p g a :e omega, mult_order p g = minus_nat p 1 /\ gcd_int a p = 1 -> exists m q1 q2 :e omega, a + p * q1 = g ^ m + p * q2.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1974 / PRIME_DIVISOR_SQRT
@@ -534,6 +1158,30 @@ Admitted.
 // Source hash: md5:16ec081923d3154b28bdeacde5d7b0ce
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo, nat_le_SNoLe)
 Theorem POCKLINGTON_ALT : forall a n q r :e omega, 2 <= n /\ (minus_nat n 1 = q * r /\ (n <= q ^ 2 /\ ((exists q1 q2 :e omega, a ^ minus_nat n 1 + n * q1 = 1 + n * q2) /\ (forall p :e omega, prime_nat p /\ divides_nat p q -> exists b :e omega, (exists q1 q2 :e omega, a ^ div_nat (minus_nat n 1) p + n * q1 = b + n * q2) /\ gcd_int (minus_nat b 1) n = 1)))) -> prime_nat n.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:2175 / primefact
+// Source hash: md5:8d1d234fe0ce07d33a5b1017bfc13c44
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, mul_nat_mul_SNo)
+Theorem primefact : forall n :e omega, forall ps :e finseq omega, seq_foldr (fun p:set => fun acc:set => p * acc) ps 1 = n /\ (forall p :e omega, seq_mem p ps -> prime_nat p) <-> seq_foldr (fun x:set => fun x0:set => x * x0) ps 1 = n /\ forall p :e omega, seq_mem p ps -> prime_nat p.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:2178 / PRIMEFACT
+// Source hash: md5:1e7b573abe2bd2ee509333c2fa2834a3
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
+Theorem PRIMEFACT : forall n :e omega, ~ n = 0 -> exists ps :e finseq omega, seq_foldr (fun p:set => fun acc:set => p * acc) ps 1 = n /\ forall p :e omega, seq_mem p ps -> prime_nat p.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:2203 / PRIMAFACT_CONTAINS
+// Source hash: md5:f5514c701cd42b0bf7e90ca7e302d51d
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
+Theorem PRIMAFACT_CONTAINS : forall ps :e finseq omega, forall n :e omega, seq_foldr (fun p:set => fun acc:set => p * acc) ps 1 = n /\ (forall p :e omega, seq_mem p ps -> prime_nat p) -> forall p :e omega, prime_nat p /\ divides_nat p n -> seq_mem p ps.
+Admitted.
+
+// HOL Light: Library/pocklington.ml:2216 / PRIMEFACT_VARIANT
+// Source hash: md5:f3b553946dbc0e841c52fca031ce01ba
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, mul_nat_mul_SNo)
+Theorem PRIMEFACT_VARIANT : forall ps :e finseq omega, forall n :e omega, seq_foldr (fun p:set => fun acc:set => p * acc) ps 1 = n /\ (forall p :e omega, seq_mem p ps -> prime_nat p) <-> seq_foldr (fun x:set => fun x0:set => x * x0) ps 1 = n /\ seq_all (fun x:set => prime_nat x) ps.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:2226 / LUCAS_PRIMEFACT

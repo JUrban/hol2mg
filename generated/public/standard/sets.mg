@@ -2182,8 +2182,8 @@ Admitted.
 
 // HOL Light: sets.ml:2759 / CROSS_EMPTY
 // Source hash: md5:b11167aedb59041230ffc717c50d6bc5
-// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:T98960, empty_case:T98973, hol_prod_setprod)
-Theorem CROSS_EMPTY : forall T98960 T98973 A B:set, (forall s c= A, s :*: Empty = Empty) /\ forall t c= B, Empty :*: t = Empty.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, empty_case:D, hol_prod_setprod)
+Theorem CROSS_EMPTY : forall C D A B:set, (forall s c= A, s :*: Empty = Empty) /\ forall t c= B, Empty :*: t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2763 / CROSS_SING
@@ -3498,6 +3498,12 @@ Admitted.
 // Source hash: md5:6247453d61456cf3817da38e628c8855
 // Status: transport_required (bridges: hol_le_c_atleastp)
 Theorem GE_C : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, atleastp t s <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall y :e B, y :e t -> exists x :e A, x :e s /\ y = f x.
+Admitted.
+
+// HOL Light: sets.ml:4694 / COUNTABLE
+// Source hash: md5:a4d2d220b45cd3826cf971a233740dac
+// Status: transport_required (bridges: hol_countable, hol_le_c_atleastp, hol_num_omega)
+Theorem COUNTABLE : forall A:set, A <> Empty -> forall t c= A, countable t <-> atleastp t omega.
 Admitted.
 
 // HOL Light: sets.ml:4701 / sup

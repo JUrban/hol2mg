@@ -4,7 +4,7 @@
 
 // HOL Light: define.ml:360 / WF_REC_TAIL_GENERAL'
 // Source hash: md5:5ed6b692c957ff3561515e546ff337b6
-// Status: generalization_required (bridges: empty_case:T141447)
-Theorem WF_REC_TAIL_GENERAL' : forall T141444 T141447:set, T141444 <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, G x y :e T141447) -> forall H:set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, H x y :e T141444) -> forall H':set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, H' x y :e T141444) -> (forall P c= T141447, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ ((forall f g :e T141444 :^: T141447, forall x :e T141447, (forall z :e T141447, lt z x -> f z = g z) -> (P f x <-> P g x) /\ (G f x = G g x /\ H' f x = H' g x)) /\ ((forall f :e T141444 :^: T141447, forall x y :e T141447, P f x /\ lt y (G f x) -> lt y x) /\ (forall f :e T141444 :^: T141447, forall x :e T141447, H f x = if P f x then f (G f x) else H' f x))) -> exists f :e T141444 :^: T141447, forall x :e T141447, f x = H f x.
+// Status: generalization_required (bridges: empty_case:B)
+Theorem WF_REC_TAIL_GENERAL' : forall A B:set, A <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e A :^: B, forall y :e B, G x y :e B) -> forall H:set -> set -> set, (forall x :e A :^: B, forall y :e B, H x y :e A) -> forall H':set -> set -> set, (forall x :e A :^: B, forall y :e B, H' x y :e A) -> (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ ((forall f g :e A :^: B, forall x :e B, (forall z :e B, lt z x -> f z = g z) -> (P f x <-> P g x) /\ (G f x = G g x /\ H' f x = H' g x)) /\ ((forall f :e A :^: B, forall x y :e B, P f x /\ lt y (G f x) -> lt y x) /\ (forall f :e A :^: B, forall x :e B, H f x = if P f x then f (G f x) else H' f x))) -> exists f :e A :^: B, forall x :e B, f x = H f x.
 Admitted.
 

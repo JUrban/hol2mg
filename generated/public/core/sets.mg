@@ -2182,8 +2182,8 @@ Admitted.
 
 // HOL Light: sets.ml:2759 / CROSS_EMPTY
 // Source hash: md5:b11167aedb59041230ffc717c50d6bc5
-// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:T98960, empty_case:T98973, hol_prod_setprod)
-Theorem CROSS_EMPTY : forall T98960 T98973 A B:set, (forall s c= A, s :*: Empty = Empty) /\ forall t c= B, Empty :*: t = Empty.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, empty_case:D, hol_prod_setprod)
+Theorem CROSS_EMPTY : forall C D A B:set, (forall s c= A, s :*: Empty = Empty) /\ forall t c= B, Empty :*: t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2763 / CROSS_SING

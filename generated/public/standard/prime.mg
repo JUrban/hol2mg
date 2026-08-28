@@ -227,7 +227,7 @@ Admitted.
 // HOL Light: Library/prime.ml:183 / DIVIDES_NSUM
 // Source hash: md5:e9dcef7e99dd5a436fa44c116408fb51
 // Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
-Theorem DIVIDES_NSUM : forall T144041:set, T144041 <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e T144041, f x :e omega) -> forall s c= T144041, finite s /\ (forall i :e T144041, i :e s -> divides_nat n (f i)) -> divides_nat n (finsum s f).
+Theorem DIVIDES_NSUM : forall A:set, A <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s /\ (forall i :e A, i :e s -> divides_nat n (f i)) -> divides_nat n (finsum s f).
 Admitted.
 
 // HOL Light: Library/prime.ml:194 / DIVIDES_GCD
@@ -587,7 +587,7 @@ Admitted.
 // HOL Light: Library/prime.ml:548 / COPRIME_NPRODUCT
 // Source hash: md5:05c2b90576e41db7cf316fc4e7f82894
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, hol_prod_setprod)
-Theorem COPRIME_NPRODUCT : forall T146961:set, T146961 <> Empty -> forall a:set -> set, (forall x :e T146961, a x :e omega) -> forall s c= T146961, forall n :e omega, finite s /\ (forall x :e T146961, x :e s -> gcd_int n (a x) = 1) -> gcd_int n (finprod s a) = 1.
+Theorem COPRIME_NPRODUCT : forall A:set, A <> Empty -> forall a:set -> set, (forall x :e A, a x :e omega) -> forall s c= A, forall n :e omega, finite s /\ (forall x :e A, x :e s -> gcd_int n (a x) = 1) -> gcd_int n (finprod s a) = 1.
 Admitted.
 
 // HOL Light: Library/prime.ml:553 / COPRIME_DIVISORS
@@ -1058,10 +1058,130 @@ Admitted.
 Theorem FINITE_INDICES : forall P:set -> prop, forall p n :e omega, 2 <= p /\ ~ n = 0 -> finite {j :e omega | P j /\ divides_nat (p ^ j) n}.
 Admitted.
 
+// HOL Light: Library/prime.ml:1241 / index_def
+// Source hash: md5:6bd37732135c5f62978cb78e7e809cbc
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_num_omega, nat_le_SNoLe)
+Theorem index_def : forall p n :e omega, prime_index p n = if p <= 1 \/ n = 0 then 0 else finite_cardinality {j :e omega | 1 <= j /\ divides_nat (p ^ j) n}.
+Admitted.
+
+// HOL Light: Library/prime.ml:1245 / INDEX_0
+// Source hash: md5:8458285aff94b6e0856e5107e77c3670
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INDEX_0 : forall p :e omega, prime_index p 0 = 0.
+Admitted.
+
+// HOL Light: Library/prime.ml:1249 / PRIMEPOW_DIVIDES_INDEX
+// Source hash: md5:b2f1fed15cecc4d94b26449a07b55b8b
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_le_SNoLe)
+Theorem PRIMEPOW_DIVIDES_INDEX : forall n p k :e omega, divides_nat (p ^ k) n <-> n = 0 \/ (p = 1 \/ k <= prime_index p n).
+Admitted.
+
+// HOL Light: Library/prime.ml:1268 / LE_INDEX
+// Source hash: md5:8c7b7c31c978f70110be3af719c88180
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_le_SNoLe)
+Theorem LE_INDEX : forall n p k :e omega, k <= prime_index p n <-> (n = 0 \/ p = 1 -> k = 0) /\ divides_nat (p ^ k) n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1276 / EXP_INDEX_DIVIDES
+// Source hash: md5:0a33898996306e5470b2f56545b07d90
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem EXP_INDEX_DIVIDES : forall p n :e omega, divides_nat (p ^ prime_index p n) n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1280 / INDEX_LT
+// Source hash: md5:c8c051505ae9313a7635d0c801daa7df
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_lt_SNoLt)
+Theorem INDEX_LT : forall n p k :e omega, (~ n = 0 \/ ~ k = 0) /\ n < p ^ k -> prime_index p n < k.
+Admitted.
+
+// HOL Light: Library/prime.ml:1288 / INDEX_1
+// Source hash: md5:faeaeb09a2c5a17189d66e6478f80652
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INDEX_1 : forall p :e omega, prime_index p 1 = 0.
+Admitted.
+
+// HOL Light: Library/prime.ml:1296 / INDEX_MUL
+// Source hash: md5:4bbe0dd31124881e7be28e9ab12bdc51
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
+Theorem INDEX_MUL : forall p m n :e omega, prime_nat p /\ (~ m = 0 /\ ~ n = 0) -> prime_index p (m * n) = prime_index p m + prime_index p n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1310 / INDEX_EXP
+// Source hash: md5:f486787020d51e9d2aea88817d484160
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
+Theorem INDEX_EXP : forall p n k :e omega, prime_nat p -> prime_index p (n ^ k) = k * prime_index p n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1320 / INDEX_FACT
+// Source hash: md5:5e8edbddd8716ec29ece74fbc8c1775f
+// Status: transport_required (bridges: hol_fact_factorial, hol_nsum_finsum, hol_num_omega)
+Theorem INDEX_FACT : forall p n :e omega, prime_nat p -> prime_index p (factorial n) = finsum (idx_n n) (fun m:set => prime_index p m).
+Admitted.
+
+// HOL Light: Library/prime.ml:1326 / INDEX_FACT_ALT
+// Source hash: md5:ace1de072996d32b56e26798ce997688
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_fact_factorial, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_FACT_ALT : forall p n :e omega, prime_nat p -> prime_index p (factorial n) = finsum {j :e omega | 1 <= j /\ p ^ j <= n} (fun j:set => div_nat n (p ^ j)).
+Admitted.
+
+// HOL Light: Library/prime.ml:1360 / INDEX_FACT_UNBOUNDED
+// Source hash: md5:d2d98716c76d68411d78bd064821001e
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_fact_factorial, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_FACT_UNBOUNDED : forall p n :e omega, prime_nat p -> prime_index p (factorial n) = finsum {j :e omega | 1 <= j} (fun j:set => div_nat n (p ^ j)).
+Admitted.
+
 // HOL Light: Library/prime.ml:1368 / PRIMEPOW_DIVIDES_FACT
 // Source hash: md5:8d3fe7c42f0b645b586e9d1a6fd11d42
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_fact_factorial, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
 Theorem PRIMEPOW_DIVIDES_FACT : forall p n k :e omega, prime_nat p -> (divides_nat (p ^ k) (factorial n) <-> k <= finsum {j :e omega | 1 <= j /\ p ^ j <= n} (fun j:set => div_nat n (p ^ j))).
+Admitted.
+
+// HOL Light: Library/prime.ml:1375 / INDEX_REFL
+// Source hash: md5:2f33e484821c5520effbad9e52493e20
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_REFL : forall n :e omega, prime_index n n = if n <= 1 then 0 else 1.
+Admitted.
+
+// HOL Light: Library/prime.ml:1383 / INDEX_EQ_0
+// Source hash: md5:0da1847923c47e95c7e4c5ea7be9b144
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INDEX_EQ_0 : forall p n :e omega, prime_index p n = 0 <-> n = 0 \/ (p = 1 \/ ~ divides_nat p n).
+Admitted.
+
+// HOL Light: Library/prime.ml:1389 / INDEX_ZERO
+// Source hash: md5:6a01886df791d47c0fc591d917ec2866
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INDEX_ZERO : forall p n :e omega, ~ divides_nat p n -> prime_index p n = 0.
+Admitted.
+
+// HOL Light: Library/prime.ml:1393 / INDEX_POW
+// Source hash: md5:9136795188a1f400201eaab1c084be4c
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem INDEX_POW : forall p n k :e omega, prime_index (p ^ k) n = div_nat (prime_index p n) k.
+Admitted.
+
+// HOL Light: Library/prime.ml:1402 / INDEX_PRIME
+// Source hash: md5:3d22deec7d913f6fd3f7002274ba12b4
+// Status: transport_required (bridges: hol_num_omega)
+Theorem INDEX_PRIME : forall p a :e omega, prime_nat p -> prime_index a p = if p = a then 1 else 0.
+Admitted.
+
+// HOL Light: Library/prime.ml:1409 / INDEX_TRIVIAL_BOUND
+// Source hash: md5:94c9517a9768c9f6f9ddc04e2a398c4a
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_TRIVIAL_BOUND : forall n p :e omega, prime_index p n <= n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1424 / INDEX_DECOMPOSITION
+// Source hash: md5:ad640e22a809fa1157f077084a10bec0
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
+Theorem INDEX_DECOMPOSITION : forall n p :e omega, exists m :e omega, p ^ prime_index p n * m = n /\ (n = 0 \/ (p = 1 \/ ~ divides_nat p m)).
+Admitted.
+
+// HOL Light: Library/prime.ml:1440 / INDEX_DECOMPOSITION_PRIME
+// Source hash: md5:cf72804d62dec999dd94335a79fa67ed
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem INDEX_DECOMPOSITION_PRIME : forall n p :e omega, prime_nat p -> exists m :e omega, p ^ prime_index p n * m = n /\ (n = 0 \/ gcd_int p m = 1).
 Admitted.
 
 // HOL Light: Library/prime.ml:1449 / INDEX_DECOMPOSITION_LE
@@ -1076,6 +1196,108 @@ Admitted.
 Theorem INDEX_DECOMPOSITION_UNIQUE : forall p e1 m1 e2 m2 :e omega, p ^ e1 * m1 = p ^ e2 * m2 /\ (~ p = 0 /\ (~ divides_nat p m1 /\ ~ divides_nat p m2)) -> e1 = e2.
 Admitted.
 
+// HOL Light: Library/prime.ml:1468 / INDEX_UNIQUE
+// Source hash: md5:36b170fef22d9b5277ebec90cefa78de
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
+Theorem INDEX_UNIQUE : forall p m n e0 :e omega, p ^ e0 * m = n /\ ((p = 0 -> e0 = 0) /\ ~ divides_nat p m) -> prime_index p n = e0.
+Admitted.
+
+// HOL Light: Library/prime.ml:1485 / INDEX_UNIQUE_EQ
+// Source hash: md5:a73443ec2f4834d9bce212af82430109
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_UNIQUE_EQ : forall n p k :e omega, prime_index p n = k <-> (p = 1 \/ n = 0 -> k = 0) /\ (~ (p = 1 \/ n = 0) -> forall j :e omega, divides_nat (p ^ j) n <-> j <= k).
+Admitted.
+
+// HOL Light: Library/prime.ml:1495 / INDEX_UNIQUE_ALT
+// Source hash: md5:10abf45142ea731b8a97fc7abcca17e8
+// Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_num_omega)
+Theorem INDEX_UNIQUE_ALT : forall n p k :e omega, prime_index p n = k <-> (p = 1 \/ n = 0 -> k = 0) /\ (~ (p = 1 \/ n = 0) -> divides_nat (p ^ k) n /\ ~ divides_nat (p ^ (k + 1)) n).
+Admitted.
+
+// HOL Light: Library/prime.ml:1509 / INDEX_ADD_MIN
+// Source hash: md5:b7c9b686332abad82b77ff1168451f0a
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_ADD_MIN : forall p m n :e omega, (if prime_index p m <= prime_index p n then prime_index p m else prime_index p n) <= prime_index p (m + n).
+Admitted.
+
+// HOL Light: Library/prime.ml:1520 / INDEX_SUB_MIN
+// Source hash: md5:d6509ede7edef102d57c3d7e05b84a5e
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem INDEX_SUB_MIN : forall p m n :e omega, n < m -> (if prime_index p m <= prime_index p n then prime_index p m else prime_index p n) <= prime_index p (minus_nat m n).
+Admitted.
+
+// HOL Light: Library/prime.ml:1532 / INDEX_ADD
+// Source hash: md5:56a1a5f9f4f72716998d0c64a5d18a68
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_lt_SNoLt)
+Theorem INDEX_ADD : forall p n m :e omega, ~ n = 0 /\ (~ m = 0 -> prime_index p n < prime_index p m) -> prime_index p (m + n) = prime_index p n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1546 / INDEX_MULT_BASE
+// Source hash: md5:7e19c9f793568875c41019982be1ebfc
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem INDEX_MULT_BASE : (forall p n :e omega, prime_index p (p * n) = if p <= 1 \/ n = 0 then 0 else prime_index p n + 1) /\ forall p n :e omega, prime_index p (n * p) = if p <= 1 \/ n = 0 then 0 else prime_index p n + 1.
+Admitted.
+
+// HOL Light: Library/prime.ml:1560 / INDEX_MULT_EXP
+// Source hash: md5:bcf89e56b1ed98336df217a8601a3a98
+// Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem INDEX_MULT_EXP : (forall p n k :e omega, prime_index p (p ^ k * n) = if p <= 1 \/ n = 0 then 0 else k + prime_index p n) /\ forall p n k :e omega, prime_index p (n * p ^ k) = if n = 0 \/ p <= 1 then 0 else prime_index p n + k.
+Admitted.
+
+// HOL Light: Library/prime.ml:1575 / INDEX_MULT_ADD
+// Source hash: md5:f804a8a470e85a8d438c81706161a00d
+// Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
+Theorem INDEX_MULT_ADD : (forall p m n k :e omega, ~ n = 0 /\ prime_index p n < k -> prime_index p (p ^ k * m + n) = prime_index p n) /\ ((forall p m n k :e omega, ~ n = 0 /\ prime_index p n < k -> prime_index p (m * p ^ k + n) = prime_index p n) /\ ((forall p m n k :e omega, ~ n = 0 /\ prime_index p n < k -> prime_index p (n + m * p ^ k) = prime_index p n) /\ forall p m n k :e omega, ~ n = 0 /\ prime_index p n < k -> prime_index p (n + p ^ k * m) = prime_index p n)).
+Admitted.
+
+// HOL Light: Library/prime.ml:1591 / INDEX_NSUM_LE
+// Source hash: md5:55346c8727457f2689e2b01ce4a849f4
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem INDEX_NSUM_LE : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall p n :e omega, forall k c= A, finite k /\ (~ k = Empty /\ (forall a :e A, a :e k -> n <= prime_index p (f a))) -> n <= prime_index p (finsum k f).
+Admitted.
+
+// HOL Light: Library/prime.ml:1601 / DIVIDES_INDEX
+// Source hash: md5:17cc3380d7badd8c7ac60df7cbfc709f
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
+Theorem DIVIDES_INDEX : forall m n :e omega, divides_nat m n <-> n = 0 \/ ~ m = 0 /\ forall p :e omega, prime_nat p -> prime_index p m <= prime_index p n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1613 / EQ_INDEX
+// Source hash: md5:8cc7668e40f4bb4c61c22bad324e30f6
+// Status: transport_required (bridges: hol_num_omega)
+Theorem EQ_INDEX : forall m n :e omega, m = n <-> (m = 0 <-> n = 0) /\ forall p :e omega, prime_nat p -> prime_index p m = prime_index p n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1620 / COPRIME_INDEX
+// Source hash: md5:a9a7342d19f2a207a74b3448c1905fd1
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem COPRIME_INDEX : forall m n :e omega, gcd_int m n = 1 <-> (m = 0 -> n = 1) /\ ((n = 0 -> m = 1) /\ forall p :e omega, prime_nat p -> prime_index p m = 0 \/ prime_index p n = 0).
+Admitted.
+
+// HOL Light: Library/prime.ml:1629 / INDEX_GCD
+// Source hash: md5:8514386bb045c8e9a113f367cfc5baad
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem INDEX_GCD : forall m n p :e omega, prime_nat p -> prime_index p (gcd_int m n) = if m = 0 then prime_index p n else if n = 0 then prime_index p m else if prime_index p m <= prime_index p n then prime_index p m else prime_index p n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1647 / FORALL_PRIME_INDEX
+// Source hash: md5:c31b6b94bf13396a4c5c09f8a12b079a
+// Status: transport_required (bridges: hol_num_omega)
+Theorem FORALL_PRIME_INDEX : (forall p :e omega, prime_nat p -> forall P:set -> prop, (forall x :e omega, P (prime_index p x)) <-> forall k :e omega, P k) /\ forall p :e omega, prime_nat p -> forall P:set -> prop, (forall x :e omega, ~ x = 0 -> P (prime_index p x)) <-> forall k :e omega, P k.
+Admitted.
+
+// HOL Light: Library/prime.ml:1656 / INDEX_FACT_PRIME_MULT
+// Source hash: md5:32dad8032ca835b4088003f0b36bdb63
+// Status: transport_required (bridges: add_nat_add_SNo, hol_fact_factorial, hol_num_omega, mul_nat_mul_SNo)
+Theorem INDEX_FACT_PRIME_MULT : forall p n :e omega, prime_nat p -> prime_index p (factorial (p * n)) = n + prime_index p (factorial n).
+Admitted.
+
+// HOL Light: Library/prime.ml:1678 / PRIME_FACTORIZATION_INDEX
+// Source hash: md5:3ad8b2203a481b7c8d6769961f7b2498
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega)
+Theorem PRIME_FACTORIZATION_INDEX : forall k:set -> set, (forall x :e omega, k x :e omega) -> finite {p :e omega | prime_nat p /\ ~ k p = 0} -> exists n :e omega, ~ n = 0 /\ forall p :e omega, prime_nat p -> prime_index p n = k p.
+Admitted.
+
 // HOL Light: Library/prime.ml:1707 / PRIME_POWER_EXISTS
 // Source hash: md5:d71248f382cd095abda4160594adc2c2
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
@@ -1086,6 +1308,18 @@ Admitted.
 // Source hash: md5:657a5d22d61e1485170198a4addde9d1
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
 Theorem PRIME_POWER_EXISTS_ALT : forall n p :e omega, prime_nat p -> ((exists i :e omega, n = p ^ i) <-> forall d :e omega, divides_nat d n -> d = 1 \/ divides_nat p d).
+Admitted.
+
+// HOL Light: Library/prime.ml:1740 / PRIME_FACTORIZATION_ALT
+// Source hash: md5:260a5413ab81b955ae45c5d0b201d311
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_nproduct_finprod, hol_num_omega)
+Theorem PRIME_FACTORIZATION_ALT : forall n :e omega, ~ n = 0 -> finprod {p :e omega | prime_nat p} (fun p:set => p ^ prime_index p n) = n.
+Admitted.
+
+// HOL Light: Library/prime.ml:1767 / PRIME_FACTORIZATION
+// Source hash: md5:62d3fbcc6fd5fbedeb96c767afcfa3ec
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_nproduct_finprod, hol_num_omega)
+Theorem PRIME_FACTORIZATION : forall n :e omega, ~ n = 0 -> finprod {p :e omega | prime_nat p /\ divides_nat p n} (fun p:set => p ^ prime_index p n) = n.
 Admitted.
 
 // HOL Light: Library/prime.ml:1782 / lcm
@@ -1158,6 +1392,12 @@ Admitted.
 // Source hash: md5:7802be9e3604398e1570b5189f096552
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
 Theorem LCM_ZERO : forall m n :e omega, lcm_int m n = 0 <-> m = 0 \/ n = 0.
+Admitted.
+
+// HOL Light: Library/prime.ml:1889 / INDEX_LCM
+// Source hash: md5:e1e65522f4a45a1abbb7470606f02f9c
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
+Theorem INDEX_LCM : forall m n p :e omega, prime_nat p -> prime_index p (lcm_int m n) = if m = 0 \/ n = 0 then 0 else if prime_index p m <= prime_index p n then prime_index p n else prime_index p m.
 Admitted.
 
 // HOL Light: Library/prime.ml:1905 / LCM_ASSOC

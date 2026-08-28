@@ -12,7 +12,7 @@ known=$dir/known_props.txt
 : > "$known.new"
 for s in "${shards[@]}"; do
   f=$tmp/$s.mg
-  cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$dir/$s.mg" > "$f"
+  cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" "$dir/$s.mg" > "$f"
   out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces -warnaboutreproven "$f" 2>&1)
   echo "$out" | sed -n 's/^WARNING: The proposition given in theorem \([A-Za-z_0-9'"'"']*\) is already known.*/\1/p' >> "$known.new"
   if echo "$out" | grep -q "Everything looks good"; then
@@ -20,7 +20,7 @@ for s in "${shards[@]}"; do
   else
     fail=1
     # translate line numbers (prelude offset)
-    off=$(cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" | wc -l)
+    off=$(cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" | wc -l)
     echo "FAIL $s: $(echo "$out" | grep -v '^$' | head -3 | sed "s/line \([0-9]*\)/line \1 (shard line \$((\1-$off)))/")"
   fi
 done

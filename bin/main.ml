@@ -66,7 +66,7 @@ let () =
       (* names declared by the native prelude modules are reserved too *)
       let natives = (match opt "--native" with
         | Some l -> String.split_on_char ',' l
-        | None -> List.filter Sys.file_exists [ "mglib/native/prelude.mg"; "mglib/native/finseq.mg" ]) in
+        | None -> List.filter Sys.file_exists [ "mglib/native/prelude.mg"; "mglib/native/finseq.mg"; "mglib/native/order.mg" ]) in
       List.iter Mg.load_signature_names natives;
       let ex = read_export export_file in
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in

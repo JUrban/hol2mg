@@ -1,0 +1,489 @@
+{
+ "version": 1,
+ "description": "HOL Light Library/: number theory, cardinal arithmetic, floor, relations and orders.",
+ "types": [],
+ "constants": [
+  {
+   "hol": "index",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "prime_index ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "inverse_mod",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "inverse_mod ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "squarefree",
+   "scheme": "num->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "forall m :e omega, divides_nat (m ^ 2) ?1 -> m = 1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "phi",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "totient ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "order",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "mult_order ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "primefact",
+   "scheme": "num list->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "seq_foldr (fun p acc => p * acc) ?1 1 = ?2 /\\ forall p :e omega, seq_mem p ?1 -> prime_nat p",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_list_finseq"
+  },
+  {
+   "hol": "int_prime",
+   "scheme": "int->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "1 < abs_SNo ?1 /\\ forall x :e int, divides_int x ?1 -> abs_SNo x = 1 \\/ abs_SNo x = abs_SNo ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "binom",
+   "scheme": "num#num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "binomial_coefficient (?1 0) (?1 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_binom_binomial_coefficient",
+   "notes": "God1 binomial_coefficient n p = number of p-subsets of n"
+  },
+  {
+   "hol": "rational",
+   "scheme": "real->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 :e rational",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "floor",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "floor_R ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "frac",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 + - floor_R ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "COUNTABLE",
+   "scheme": "(A->bool)->bool",
+   "args": [
+    "subset"
+   ],
+   "result": "prop",
+   "template": "countable ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_countable"
+  },
+  {
+   "hol": "+_c",
+   "scheme": "(A->bool)->(B->bool)->((A,B)sum->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :+: ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_sum_setsum",
+   "notes": "God1 setsum is literally {Inj0 x|x :e X} :\\/: {Inj1 y|y :e Y}"
+  },
+  {
+   "hol": "*_c",
+   "scheme": "(A->bool)->(B->bool)->(A#B->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :*: ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "^_c",
+   "scheme": "(A->bool)->(B->bool)->((B->A)->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "{f :e ?A :^: ?B | (forall x :e ?2, f x :e ?1) /\\ forall x :e ?B, ~ x :e ?2 -> f x = choose_in ?A (fun y => False)}",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_fun_setexp"
+  },
+  {
+   "hol": "RC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "RC_rel ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "SC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "SC_rel ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "TC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "TC_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg",
+   "notes": "impredicative characterisation of the inductive definition"
+  },
+  {
+   "hol": "RSC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "RC_rel (SC_rel ?1)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "RTC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "RC_rel (TC_on ?A ?1)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "STC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "TC_on ?A (SC_rel ?1)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "RSTC",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "RC_rel (TC_on ?A (SC_rel ?1))",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "INV",
+   "scheme": "(A->B->bool)->B->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "INV_rel ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "fld",
+   "scheme": "(A->A->bool)->(A->bool)",
+   "args": [
+    "metapred"
+   ],
+   "result": "subset",
+   "template": "fld_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "qoset",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "qoset_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "poset",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "poset_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "toset",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "toset_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "woset",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "woset_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "wqoset",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "wqoset_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "chain",
+   "scheme": "(A->A->bool)->(A->bool)->bool",
+   "args": [
+    "metapred",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "chain_on ?A ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "antichain",
+   "scheme": "(A->A->bool)->(A->bool)->bool",
+   "args": [
+    "metapred",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "antichain_on ?A ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "strictly",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "strictly_rel ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "properly",
+   "scheme": "(A->A->bool)->A->A->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "properly_rel ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "inseg",
+   "scheme": "(A->A->bool)->(A->A->bool)->bool",
+   "args": [
+    "metapred",
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "inseg_on ?A ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "linseg",
+   "scheme": "(A->A->bool)->A->A->A->bool",
+   "args": [
+    "metapred",
+    "set"
+   ],
+   "result": "metapred",
+   "template": "linseg_rel ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  },
+  {
+   "hol": "ordinal",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "ordinal_on ?A ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg",
+   "bridge": "choose_in_spec"
+  },
+  {
+   "hol": "ITER",
+   "scheme": "num->(A->A)->A->A",
+   "args": [
+    "set",
+    "metafun",
+    "set"
+   ],
+   "result": "set",
+   "template": "iter_fun ?1 ?2 ?3",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "notes": "iteration f^n x via God1 primitive recursion",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "RELPOW",
+   "scheme": "num->(A->A->bool)->A->A->bool",
+   "args": [
+    "set",
+    "metapred"
+   ],
+   "result": "metapred",
+   "template": "relpow_on ?A ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/order.mg"
+  }
+ ]
+}

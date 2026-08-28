@@ -4,8 +4,8 @@
 
 // HOL Light: Library/isum.ml:5 / ISUM_SUPPORT
 // Source hash: md5:81348180bd0e91b7ebfe0b37097950aa
-// Status: generalization_required (bridges: empty_case:T209303, hol_int_int, hol_sum_finsum)
-Theorem ISUM_SUPPORT : forall T209303:set, forall f:set -> set, (forall x :e T209303, f x :e int) -> forall s c= T209303, finsum {x :e s | f x <> neutral_of int (fun a:set => fun b:set => a + b)} f = finsum s f.
+// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_sum_finsum)
+Theorem ISUM_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finsum {x :e s | f x <> neutral_of int (fun a:set => fun b:set => a + b)} f = finsum s f.
 Admitted.
 
 // HOL Light: Library/isum.ml:9 / int_isum

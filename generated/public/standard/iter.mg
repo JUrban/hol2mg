@@ -2,9 +2,81 @@
 // Do not edit: regenerate from the exporter, mapping registry, or overrides.
 // Statements are admitted imports; none is a new axiom.
 
+// HOL Light: Library/iter.ml:7 / ITER
+// Source hash: md5:30ce3abffa9614d5c4f255ebb1c2919d
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem ITER : forall A:set, forall x :e A, (forall f:set -> set, (forall x0 :e A, f x0 :e A) -> iter_fun 0 f x = x) /\ forall f:set -> set, (forall x0 :e A, f x0 :e A) -> forall n :e omega, iter_fun (ordsucc n) f x = f (iter_fun n f x).
+Admitted.
+
+// HOL Light: Library/iter.ml:11 / ITER_POINTLESS
+// Source hash: md5:4fe82876406d5121dfa7a3e1ce704b98
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ITER_POINTLESS : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = f (iter_fun n f x).
+Admitted.
+
+// HOL Light: Library/iter.ml:16 / ITER_ALT
+// Source hash: md5:1b4c37c1983fb35a3e6b8f3a1520d595
+// Status: transport_required (bridges: hol_num_omega)
+Theorem ITER_ALT : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = iter_fun n f (f x).
+Admitted.
+
+// HOL Light: Library/iter.ml:22 / ITER_ALT_POINTLESS
+// Source hash: md5:d5ee64a5512f3ec7e9afc3ee04708358
+// Status: native_reuse (bridges: hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem ITER_ALT_POINTLESS : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = iter_fun n f (f x).
+
+// HOL Light: Library/iter.ml:27 / ITER_1
+// Source hash: md5:d6f9071e1b4c19f750500b0c446aa07e
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem ITER_1 : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 1 f x = f x.
+Admitted.
+
+// HOL Light: Library/iter.ml:31 / ITER_ADD
+// Source hash: md5:37cc4a53929351c9e01e8a694a2e4e14
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_num_omega)
+Theorem ITER_ADD : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall n m :e omega, forall x :e A, iter_fun n f (iter_fun m f x) = iter_fun (n + m) f x.
+Admitted.
+
+// HOL Light: Library/iter.ml:35 / ITER_ADD_POINTLESS
+// Source hash: md5:f2bd66d2da198c2f83b97aff4063ba84
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_num_omega)
+Theorem ITER_ADD_POINTLESS : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall m n :e omega, forall x :e A, iter_fun (m + n) f x = iter_fun m f (iter_fun n f x).
+Admitted.
+
+// HOL Light: Library/iter.ml:39 / ITER_MUL
+// Source hash: md5:c89dd868db562ec2a09949c5502138d7
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega, mul_nat_mul_SNo)
+Theorem ITER_MUL : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall n m :e omega, forall x :e A, iter_fun n (fun x0:set => iter_fun m f x0) x = iter_fun (n * m) f x.
+Admitted.
+
+// HOL Light: Library/iter.ml:44 / ITER_FIXPOINT
+// Source hash: md5:84390c02dcd2db334e23dc01a354835d
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem ITER_FIXPOINT : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall n :e omega, forall x :e A, f x = x -> iter_fun n f x = x.
+Admitted.
+
 // HOL Light: Library/iter.ml:52 / ORDER_EXISTENCE_GEN
 // Source hash: md5:18f40c25173f9c84b3afea41c5db67b9
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ORDER_EXISTENCE_GEN : forall A:set, A <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e omega, f x :e A) -> P (f 0) /\ (forall m n :e omega, P (f m) /\ ~ m = 0 -> (P (f (m + n)) <-> P (f n))) -> exists d :e omega, forall n :e omega, P (f n) <-> divides_nat d n.
+Admitted.
+
+// HOL Light: Library/iter.ml:75 / ORDER_EXISTENCE_ITER
+// Source hash: md5:ca24a6c945c59e82db8b3403fa801497
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem ORDER_EXISTENCE_ITER : forall A:set, forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, R0 z z /\ ((forall x y :e A, R0 x y -> R0 y x) /\ ((forall x y z0 :e A, R0 x y /\ R0 y z0 -> R0 x z0) /\ (forall x y :e A, R0 x y -> R0 (f x) (f y)))) -> exists d :e omega, forall n :e omega, R0 (iter_fun n f z) z <-> divides_nat d n.
+Admitted.
+
+// HOL Light: Library/iter.ml:97 / ORDER_EXISTENCE_CARD
+// Source hash: md5:df3a7d765bd87e090cdfa41aef70c409
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem ORDER_EXISTENCE_CARD : forall A:set, forall R0 :e Power A :^: A, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, forall k :e omega, finite {R0 (iter_fun n f z) | n :e omega, n :e omega} /\ (finite_cardinality {R0 (iter_fun n f z) | n :e omega, n :e omega} <= k /\ (R0 z z = 1 /\ ((forall x y :e A, R0 x y = 1 -> R0 y x = 1) /\ ((forall x y z0 :e A, R0 x y = 1 /\ R0 y z0 = 1 -> R0 x z0 = 1) /\ (forall x y :e A, R0 (f x) (f y) = 1 <-> R0 x y = 1))))) -> exists d :e omega, 0 < d /\ (d <= k /\ forall n :e omega, R0 (iter_fun n f z) z = 1 <-> divides_nat d n).
+Admitted.
+
+// HOL Light: Library/iter.ml:146 / ORDER_EXISTENCE_FINITE
+// Source hash: md5:476dd335351f1753fd4322f8dbfdb7c3
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem ORDER_EXISTENCE_FINITE : forall A:set, forall R0 :e Power A :^: A, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, finite {R0 (iter_fun n f z) | n :e omega, n :e omega} /\ (R0 z z = 1 /\ ((forall x y :e A, R0 x y = 1 -> R0 y x = 1) /\ ((forall x y z0 :e A, R0 x y = 1 /\ R0 y z0 = 1 -> R0 x z0 = 1) /\ (forall x y :e A, R0 (f x) (f y) = 1 <-> R0 x y = 1)))) -> exists d :e omega, 0 < d /\ forall n :e omega, R0 (iter_fun n f z) z = 1 <-> divides_nat d n.
 Admitted.
 

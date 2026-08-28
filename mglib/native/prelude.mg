@@ -120,3 +120,24 @@ Definition pastecart : set -> set -> set -> set -> set :=
   fun M N x y => fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M)).
 Definition fstcart : set -> set -> set := fun M z => fun i :e idx M => z i.
 Definition sndcart : set -> set -> set -> set := fun M N z => fun i :e idx N => z (i + dimindex M).
+
+// floor of a real number as the integer n with n <= x < n + 1
+Definition floor_R : set -> set := fun x => choose_in int (fun n => n <= x /\ x < n + 1).
+Theorem floor_R_int : forall x :e R, floor_R x :e int /\ floor_R x <= x /\ x < floor_R x + 1.
+Admitted.
+
+// iteration of a function (HOL Light ITER n f x = f^n x)
+Definition iter_fun : set -> (set -> set) -> set -> set := fun n f x => nat_primrec x (fun _ r => f r) n.
+
+// number theory (HOL Light Library/prime.ml, pocklington.ml)
+// multiplicity of p in n (0 when p <= 1 or n = 0)
+Definition prime_index : set -> set -> set :=
+  fun p n => if p <= 1 \/ n = 0 then 0 else finite_cardinality {j :e omega | 1 <= j /\ divides_nat (p ^ j) n}.
+// Euler's totient
+Definition totient : set -> set := fun n => finite_cardinality {m :e omega | 0 < m /\ m <= n /\ gcd_int m n = 1}.
+// modular inverse with the HOL Light conventions (1 when n <= 1)
+Definition inverse_mod : set -> set -> set :=
+  fun n x => if n <= 1 then 1 else choose_in omega (fun y => y < n /\ exists q1 q2 :e omega, x * y + n * q1 = gcd_int n x + n * q2).
+// multiplicative order of a modulo n: the d with (a^k = 1 mod n <-> d | k)
+Definition mult_order : set -> set -> set :=
+  fun n a => choose_in omega (fun d => forall k :e omega, (exists q1 q2 :e omega, a ^ k + n * q1 = 1 + n * q2) <-> divides_nat d k).

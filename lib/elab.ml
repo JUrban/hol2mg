@@ -507,17 +507,17 @@ and elab_const ctx (t : tm) (c : string) (cty : ty) (args : tm list) (hint : vie
       let uniq = mk_forall "y" ty (mk_imp py (mk_eq ty (Bound 0) (Bound 1))) in
       (elab_binder ctx `Ex x ty (mk_conj body uniq), VProp)
   | "@", [ Lam (x, ty, body) ] ->
+      (* the chosen object is a set value of the carrier; functions/predicates are chosen as data *)
       let n = fresh ctx x in
       let body' = open_with (Free (n, ty)) body in
-      let xview = choose_view ctx (n, ty) [ body' ] in
-      (match xview with
-       | VSet c ->
-           ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
-           let b = elab ctx body' VProp in
-           ctx.vars <- List.remove_assoc n ctx.vars; release ctx n;
-           use_class ctx "definitionally_exact" "choose_in_spec";
-           (Mg.App (Mg.App (Mg.Cst "choose_in", c), Mg.Lam (n, Mg.Set, b)), VSet c)
-       | _ -> unsupported "choice over a function/predicate type (%s)" (string_of_ty ty))
+      let xview = data_view ctx ty in
+      let c = (match xview with VSet c | VSubset c -> c | _ -> fail "@: data view") in
+      let c = (match xview with VSubset a -> Mg.App (Mg.Cst "Power", a) | _ -> c) in
+      ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
+      let b = elab ctx body' VProp in
+      ctx.vars <- List.remove_assoc n ctx.vars; release ctx n;
+      use_class ctx "definitionally_exact" "choose_in_spec";
+      (Mg.App (Mg.App (Mg.Cst "choose_in", c), Mg.Lam (n, Mg.Set, b)), xview)
   | "COND", p :: a :: b :: (_ :: _ as rest) ->
       (* over-applied conditional: push the arguments into the branches *)
       elab_const ctx t c cty [ p; List.fold_left (fun f x -> App (f, x)) a rest; List.fold_left (fun f x -> App (f, x)) b rest ] hint
@@ -722,7 +722,15 @@ let elab_sequent (reg : R.t) (seq : sequent) : result =
   let all = seq.concl :: seq.hyps in
   let tvs = uniq (List.concat_map tyvars_of_tm all) in
   let tvs = List.sort compare tvs in
-  let tv_names = List.map (fun a -> (a, sanitize_tyvar a)) tvs in
+  (* invented HOL type variables (?123) get the first free capital letters *)
+  let named = List.filter (fun a -> a = "" || a.[0] <> '?') tvs in
+  let letters = List.init 26 (fun i -> String.make 1 (Char.chr (65 + i))) in
+  let used = ref (List.map sanitize_tyvar named) in
+  let tv_names = List.map (fun a ->
+    if a <> "" && a.[0] = '?' then begin
+      let l = (match List.find_opt (fun l -> not (List.mem l !used)) letters with Some l -> l | None -> sanitize_tyvar a) in
+      used := l :: !used; (a, l)
+    end else (a, sanitize_tyvar a)) tvs in
   let ctx = { reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { classes = []; bridges = []; notes = [] } } in
   (* free variables in order of first occurrence *)
   let fvs = uniq (List.concat_map frees all) in

@@ -46,7 +46,7 @@
 
 | count | reason |
 |---|---|
-| 82 | internal construction type hreal |
+| 83 | internal construction type hreal |
 | 73 | internal construction type nadd |
 | 16 | internal constant admissible (HOL Light internal definition/datatype machinery) |
 | 11 | internal constant iterato (HOL Light internal definition/datatype machinery) |
@@ -74,7 +74,6 @@
 | 2 | internal constant dest_nadd (HOL Light internal construction) |
 | 2 | internal constant is_nadd (HOL Light internal construction) |
 | 2 | internal constant mk_num (HOL Light internal definition/datatype machinery) |
-| 1 | choice over a function/predicate type (bool) |
 | 1 | internal constant ABS_prod (HOL Light internal construction) |
 | 1 | internal constant FNIL (HOL Light internal definition/datatype machinery) |
 | 1 | internal constant GEQ (HOL Light internal definition/datatype machinery) |
@@ -123,7 +122,7 @@
 - hol_prod_setprod (135)
 - hol_sum_finsum (118)
 - hol_card_finite_cardinality (98)
-- empty_case:B (95)
+- empty_case:B (96)
 - hol_nsum_finsum (91)
 - choose_in_spec (70)
 - hol_cart_setexp (53)
@@ -137,22 +136,19 @@
 - hol_fun_setexp (20)
 - empty_case:K (18)
 - hol_tybit_idx (18)
-- empty_case:C (15)
+- empty_case:C (16)
 - hol_finite_image_idx (11)
 - hol_option_setsum (6)
 - hol_fact_factorial (5)
 - hol_itset (5)
 - hol_le_c_atleastp (5)
+- empty_case:D (4)
 - hol_finite_diff_idx (4)
 - hol_finite_prod_idx (4)
 - hol_product_finprod (4)
-- empty_case:D (3)
 - empty_case:N (3)
 - hol_eq_c_equip (3)
 - empty_case:M (2)
 - empty_case:Z (2)
 - hol_nproduct_finprod (2)
 - hol_sum_setsum (2)
-- empty_case:T141447 (1)
-- empty_case:T98960 (1)
-- empty_case:T98973 (1)

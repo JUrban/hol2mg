@@ -14,6 +14,24 @@ Admitted.
 Theorem PADIC_RATIONAL_APPROXIMATION_STRADDLE_POS_LE : forall p x e0 :e R, 0 < e0 /\ (1 < p /\ 0 <= x) -> exists n q r :e omega, q :/: p ^ n <= x /\ (x < r :/: p ^ n /\ abs_SNo (q :/: p ^ n + - r :/: p ^ n) < e0).
 Admitted.
 
+// HOL Light:  / POSET_ANTISYM
+// Source hash: md5:ba13202582f948e2591fea30c6186b30
+// Status: generalization_required (bridges: empty_case:A)
+Theorem POSET_ANTISYM : forall A:set, forall l:set -> set -> prop, poset_on A l -> forall x y :e A, l x y /\ l y x -> x = y.
+Admitted.
+
+// HOL Light:  / POSET_REFL
+// Source hash: md5:8dad76bdce58b79642205a8ab04ab9b6
+// Status: generalization_required (bridges: empty_case:A)
+Theorem POSET_REFL : forall A:set, forall l:set -> set -> prop, poset_on A l -> forall x :e A, x :e fld_on A l -> l x x.
+Admitted.
+
+// HOL Light:  / POSET_TRANS
+// Source hash: md5:b29c36449f93ca446a3c710c5b86b04d
+// Status: generalization_required (bridges: empty_case:A)
+Theorem POSET_TRANS : forall A:set, forall l:set -> set -> prop, poset_on A l -> forall x y z :e A, l x y /\ l y z -> l x z.
+Admitted.
+
 // HOL Light:  / REAL_ADD_ASSOC
 // Source hash: md5:74a76cf70ce019499736a9012b5e2bae
 // Status: native_reuse (bridges: hol_real_R)
@@ -132,5 +150,53 @@ Admitted.
 // Source hash: md5:5d6f0dca606a500bcdc82080ce708462
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, mul_nat_mul_SNo, omega_Subq_R)
 Theorem REAL_OF_NUM_MUL : forall m n :e omega, m * n = m * n.
+Admitted.
+
+// HOL Light:  / WOSET_ANTISYM
+// Source hash: md5:b7edb5ebaa5295a5ab47facef321cb1e
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WOSET_ANTISYM : forall A:set, forall l:set -> set -> prop, woset_on A l -> forall x y :e A, l x y /\ l y x -> x = y.
+Admitted.
+
+// HOL Light:  / WOSET_REFL
+// Source hash: md5:2657e9808b0eab43787cca78dd9d1087
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WOSET_REFL : forall A:set, forall l:set -> set -> prop, woset_on A l -> forall x :e A, x :e fld_on A l -> l x x.
+Admitted.
+
+// HOL Light:  / WOSET_TOTAL
+// Source hash: md5:e4e85261ff7babcf95145df8b9803d8e
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WOSET_TOTAL : forall A:set, forall l:set -> set -> prop, woset_on A l -> forall x y :e A, x :e fld_on A l /\ y :e fld_on A l -> l x y \/ l y x.
+Admitted.
+
+// HOL Light:  / WOSET_TRANS
+// Source hash: md5:2f6108c0be40e22372e36f256a09f219
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WOSET_TRANS : forall A:set, forall l:set -> set -> prop, woset_on A l -> forall x y z :e A, l x y /\ l y z -> l x z.
+Admitted.
+
+// HOL Light:  / WOSET_WELL
+// Source hash: md5:21ee058a10356d881f0fb0745d5a7181
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WOSET_WELL : forall A:set, forall l:set -> set -> prop, woset_on A l -> forall s:set -> prop, (forall x :e A, s x -> x :e fld_on A l) /\ (exists x :e A, s x) -> exists x :e A, s x /\ forall y :e A, s y -> l x y.
+Admitted.
+
+// HOL Light:  / WQOSET_ANTICHAIN
+// Source hash: md5:677ba4f78023c861e1bd1422705472f0
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem WQOSET_ANTICHAIN : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ ((forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ strictly_rel l y x) /\ forall s c= A, antichain_on A l s -> finite s).
+Admitted.
+
+// HOL Light:  / WQOSET_NOBAD
+// Source hash: md5:2335184538662ee9cce85cc928a9851d
+// Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
+Theorem WQOSET_NOBAD : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists i j :e omega, i < j /\ l (x i) (x j).
+Admitted.
+
+// HOL Light:  / WQOSET_NOBAD_SUBSEQ
+// Source hash: md5:50d5416656b450467dc4740b717acb55
+// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem WQOSET_NOBAD_SUBSEQ : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ forall i j :e omega, i <= j -> l (x (r i)) (x (r j))).
 Admitted.
 

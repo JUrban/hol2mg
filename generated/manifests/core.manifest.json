@@ -4045,13 +4045,13 @@
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
       "bridges": [
-        "empty_case:A", "empty_case:B", "empty_case:T98960",
-        "empty_case:T98973", "hol_prod_setprod"
+        "empty_case:A", "empty_case:B", "empty_case:C", "empty_case:D",
+        "hol_prod_setprod"
       ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall T98960 T98973 A B:set, (forall s c= A, s :*: Empty = Empty) /\\ forall t c= B, Empty :*: t = Empty"
+      "statement": "forall C D A B:set, (forall s c= A, s :*: Empty = Empty) /\\ forall t c= B, Empty :*: t = Empty"
     },
     {
       "name": "CROSS_EQ",
@@ -45678,11 +45678,11 @@
       "src_file": "define.ml",
       "src_line": 360,
       "classes": [ "definitionally_exact", "generalization" ],
-      "bridges": [ "empty_case:T141447" ],
+      "bridges": [ "empty_case:B" ],
       "notes": [],
-      "var_views": { "<<": "metapred(T141447,T141447)" },
+      "var_views": { "<<": "metapred(B,B)" },
       "error": "",
-      "statement": "forall T141444 T141447:set, T141444 <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, G x y :e T141447) -> forall H:set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, H x y :e T141444) -> forall H':set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, H' x y :e T141444) -> (forall P c= T141447, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\\ ((forall f g :e T141444 :^: T141447, forall x :e T141447, (forall z :e T141447, lt z x -> f z = g z) -> (P f x <-> P g x) /\\ (G f x = G g x /\\ H' f x = H' g x)) /\\ ((forall f :e T141444 :^: T141447, forall x y :e T141447, P f x /\\ lt y (G f x) -> lt y x) /\\ (forall f :e T141444 :^: T141447, forall x :e T141447, H f x = if P f x then f (G f x) else H' f x))) -> exists f :e T141444 :^: T141447, forall x :e T141447, f x = H f x"
+      "statement": "forall A B:set, A <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e A :^: B, forall y :e B, G x y :e B) -> forall H:set -> set -> set, (forall x :e A :^: B, forall y :e B, H x y :e A) -> forall H':set -> set -> set, (forall x :e A :^: B, forall y :e B, H' x y :e A) -> (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\\ ((forall f g :e A :^: B, forall x :e B, (forall z :e B, lt z x -> f z = g z) -> (P f x <-> P g x) /\\ (G f x = G g x /\\ H' f x = H' g x)) /\\ ((forall f :e A :^: B, forall x y :e B, P f x /\\ lt y (G f x) -> lt y x) /\\ (forall f :e A :^: B, forall x :e B, H f x = if P f x then f (G f x) else H' f x))) -> exists f :e A :^: B, forall x :e B, f x = H f x"
     },
     {
       "name": "WF_REC_WF",
@@ -48732,7 +48732,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "choice over a function/predicate type (bool)",
+      "error": "internal construction type hreal",
       "statement": ""
     },
     {
