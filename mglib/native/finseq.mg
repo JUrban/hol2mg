@@ -199,6 +199,22 @@ Theorem seq_cases : forall A:set, forall l :e finseq A, l = seq_nil \/ exists a 
 Admitted.
 Theorem seq_induct : forall A:set, forall P:set -> prop, P seq_nil -> (forall a :e A, forall l :e finseq A, P l -> P (seq_cons a l)) -> forall l :e finseq A, P l.
 Admitted.
+
+// computation rules for seq_map
+Theorem seq_len_map : forall f:set -> set, forall l:set, seq_len (seq_map f l) = seq_len l.
+let f l. exact (tuple_2_0_eq (seq_len l) (fun i :e seq_len l => f (seq_nth l i))).
+Qed.
+
+Theorem seq_nth_map : forall f:set -> set, forall l:set, forall i :e seq_len l, seq_nth (seq_map f l) i = f (seq_nth l i).
+let f l i. assume Hi: i :e seq_len l.
+set F := fun i :e seq_len l => f (seq_nth l i).
+claim L1: (seq_len l, F) 1 i = F i.
+{ rewrite (tuple_2_1_eq (seq_len l) F). exact (fun q H => H). }
+claim L2: F i = f (seq_nth l i).
+{ exact (beta (seq_len l) (fun i => f (seq_nth l i)) i Hi). }
+exact (eq_trans ((seq_len l, F) 1 i) (F i) (f (seq_nth l i)) L1 L2).
+Qed.
+
 Theorem seq_map_finseq : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_map f l :e finseq B.
 let A B f. assume Hf: forall x :e A, f x :e B. let l. assume Hl: l :e finseq A.
 prove (seq_len l, fun i :e seq_len l => f (seq_nth l i)) :e Sigma_ n :e omega, B :^: n.
@@ -215,7 +231,40 @@ rewrite (lam_0 (fun i => f (seq_nth seq_nil i))).
 exact (fun q H => H).
 Qed.
 Theorem seq_map_cons : forall A:set, forall f:set -> set, forall a :e A, forall l :e finseq A, seq_map f (seq_cons a l) = seq_cons (f a) (seq_map f l).
-Admitted.
+let A f a. assume Ha: a :e A. let l. assume Hl: l :e finseq A.
+set B := {f x | x :e A}.
+claim Hf: forall x :e A, f x :e B. { let x. assume Hx. exact (ReplI A f x Hx). }
+claim Ln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+claim Hcons: seq_cons a l :e finseq A. { exact (seq_cons_finseq A a Ha l Hl). }
+claim Hmap: seq_map f l :e finseq B. { exact (seq_map_finseq A B f Hf l Hl). }
+claim Hfa: f a :e B. { exact (Hf a Ha). }
+apply (seq_ext B (seq_map f (seq_cons a l)) (seq_map_finseq A B f Hf (seq_cons a l) Hcons) (seq_cons (f a) (seq_map f l)) (seq_cons_finseq B (f a) Hfa (seq_map f l) Hmap)).
+- rewrite (seq_len_map f (seq_cons a l)). rewrite (seq_len_cons A a Ha l Hl).
+  rewrite (seq_len_cons B (f a) Hfa (seq_map f l) Hmap). rewrite (seq_len_map f l). exact (fun q H => H).
+- let i. assume Hi: i :e seq_len (seq_map f (seq_cons a l)).
+  claim Hi1: i :e ordsucc (seq_len l).
+  { rewrite <- (seq_len_cons A a Ha l Hl). rewrite <- (seq_len_map f (seq_cons a l)). exact Hi. }
+  claim Hi0: i :e seq_len (seq_cons a l).
+  { rewrite <- (seq_len_map f (seq_cons a l)). exact Hi. }
+  rewrite (seq_nth_map f (seq_cons a l) i Hi0).
+  claim Hi': nat_p i. { exact (nat_p_trans (ordsucc (seq_len l)) (nat_ordsucc (seq_len l) Ln) i Hi1). }
+  apply (nat_inv i Hi').
+  + assume H0: i = 0. rewrite H0.
+    rewrite (seq_nth_cons_0 A a Ha l Hl). rewrite (seq_nth_cons_0 B (f a) Hfa (seq_map f l) Hmap). exact (fun q H => H).
+  + assume H1: exists x, nat_p x /\ i = ordsucc x.
+    apply (exandE_i nat_p (fun x => i = ordsucc x) H1).
+    let j. assume Hj: nat_p j. assume Hij: i = ordsucc j.
+    claim Hjl: j :e seq_len l.
+    { claim Hsj: ordsucc j :e ordsucc (seq_len l). { rewrite <- Hij. exact Hi1. }
+      apply (ordsuccE (seq_len l) (ordsucc j) Hsj).
+      * assume H2: ordsucc j :e seq_len l. exact (nat_trans (seq_len l) Ln (ordsucc j) H2 j (ordsuccI2 j)).
+      * assume H2: ordsucc j = seq_len l. rewrite <- H2. exact (ordsuccI2 j). }
+    claim Hjm: j :e seq_len (seq_map f l). { rewrite (seq_len_map f l). exact Hjl. }
+    rewrite Hij.
+    rewrite (seq_nth_cons_S A a Ha l Hl j Hjl).
+    rewrite (seq_nth_cons_S B (f a) Hfa (seq_map f l) Hmap j Hjm).
+    rewrite (seq_nth_map f l j Hjl). exact (fun q H => H).
+Qed.
 Theorem seq_append_finseq : forall A:set, forall l m :e finseq A, seq_append l m :e finseq A.
 Admitted.
 Theorem seq_append_nil : forall A:set, forall m :e finseq A, seq_append seq_nil m = m.
@@ -309,7 +358,28 @@ Qed.
 Theorem seq_foldr_cons : forall A:set, forall f:set -> set -> set, forall a :e A, forall l :e finseq A, forall b:set, seq_foldr f (seq_cons a l) b = f a (seq_foldr f l b).
 Admitted.
 Theorem finseq_Empty : finseq Empty = {seq_nil}.
-Admitted.
+apply set_ext.
+- let l. assume Hl: l :e finseq Empty.
+  claim Ln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega Empty l Hl)). }
+  claim Lf: l 1 :e Empty :^: l 0. { exact (seq_fun_in Empty l Hl). }
+  claim L0: l 0 = 0.
+  { apply (nat_inv (l 0) Ln).
+    + assume H: l 0 = 0. exact H.
+    + assume H: exists x, nat_p x /\ l 0 = ordsucc x.
+      apply (exandE_i nat_p (fun x => l 0 = ordsucc x) H).
+      let x. assume Hx: nat_p x. assume Hlx: l 0 = ordsucc x.
+      claim L00: 0 :e l 0. { rewrite Hlx. exact (nat_0_in_ordsucc x Hx). }
+      exact (FalseE (EmptyE (l 1 0) (ap_Pi (l 0) (fun _ => Empty) (l 1) 0 Lf L00)) (l 0 = 0)). }
+  claim L1: l 1 = Empty.
+  { claim Lf0: l 1 :e Empty :^: 0. { rewrite <- L0 at 3. exact Lf. }
+    rewrite <- (Pi_eta 0 (fun _ => Empty) (l 1) Lf0).
+    exact (lam_0 (fun x => l 1 x)). }
+  claim L2: l = seq_nil.
+  { rewrite <- (tuple_Sigma_eta omega (fun n => Empty :^: n) l Hl). rewrite L0. rewrite L1. exact (fun q H => H). }
+  rewrite L2. exact (SingI seq_nil).
+- let l. assume Hl: l :e {seq_nil}.
+  rewrite (SingE seq_nil l Hl). exact (seq_nil_finseq Empty).
+Qed.
 
 // an enumeration of a finite set as a sequence, and folds over finite sets (HOL Light ITSET)
 Definition seq_of_set : set -> set :=
