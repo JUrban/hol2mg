@@ -1040,25 +1040,39 @@ is correct, repeatable native statements.  `lib/literal.ml` is a stub.
 `finite`, `infinite`, `equip` (`HAS_SIZE`), `finite_cardinality` (`CARD`), `inj`, `bij`,
 `sup`, `inf`, `is_lub`, `is_glb`, `sqrt_SNo_nonneg`, `divides_int`, `divides_nat`, `factorial`.
 
-### 20.5 Status (2026-08-28, report 3)
+### 20.5 Status (2026-08-29, report 4)
 
-core 2684/2984, standard 4289/4590, mv_vectors (Multivariate/vectors.ml) 4783/5084 public; all
-remaining pending theorems concern quarantined internals.  All shards check; golden tests pass.
+core 2684/2984, standard 4290/4590, mv_vectors 4783/5084, multivariate (all of
+`Multivariate/make.ml`) ≈17.1K/17526 public; all shards check under Megalodon; golden tests and
+`make test` pass; the upstream-update workflow was validated on an older HOL Light commit.
+Native modules: `prelude.mg` (12 Qed / 12 Admitted), `finseq.mg` (34 / 3), `order.mg` (0 / 0).
 
 ### 20.6 Automatic definitions (extends §6.2 and §10)
 
 Unmapped constants and types are translated from their kernel definitions when no hand mapping
 exists: `new_definition` right-hand sides (arity = leading lambdas, carriers as leading set
-parameters, roles by type), `new_specification` constants as `choose_in carrier (fun c => spec c)`,
-and `new_type_definition` types as separations `{x :e [[tau]] | P x}` with identity `abs`/`rep`.
-They are generated in dependency order into `_definitions.mg`, marked `auto`, never override a
-hand mapping, and are listed with their failures in the manifest and report.  Recursive
-definitions made by `define` are still quarantined (their kernel form uses recursion machinery).
+parameters, roles by type, the result role/type from the elaborated term's natural view),
+`new_specification` constants as `choose_in carrier (fun c => spec c)`, and `new_type_definition`
+types as separations `{x :e [[tau]] | P x}` (type arguments = type variables of the predicate)
+with identity `abs`/`rep`.  They are generated in dependency order (a fixpoint) into
+`_definitions.mg`, marked `auto`, never override a hand mapping, and are listed with their failures
+in the manifest, report and review page.  Reviewed **definition overrides** (`override` field in a
+mapping entry) keep the constant's interface but replace the generated body.  Symbolic HOL names
+are given Megalodon names by the registry `names` map.  Recursive definitions made by `define`
+(quarantined recursion machinery) and `iterato`-based constants stay pending.
 
-### 20.7 Open items
+### 20.7 Elaboration rules added by the Multivariate corpus
+
+Template results of meta role are sized by the mapping scheme; meta functions whose values are
+set-functions are coerced to curried views by set application (both directions); bound
+function/boolean variables of lambdas get data views (`x :e B :^: A`, `b :e 2`); boolean-valued
+`metafun` slots are functions into `2` (entries wanting predicates say `metapred`); eta-reduction
+is restricted to meta arities; `at` and other keywords are reserved.
+
+### 20.8 Open items
 
 1. Megalodon-checked empty-case proofs to certify `generalization_required` statements.
-2. Proofs of the native prelude theorems (`prelude.mg`, `finseq.mg`, `order.mg`).
+2. Remaining admitted native theorems (`seq_foldr_cons`, `seq_filter_finseq`, `div_mod_nat`,
+   `idx_n_equip`, `finsum_*`, `floor_R_int`).
 3. Literal semantic layer (§9.2) before the proof-export project.
-4. Side-by-side HTML review page (§13.5).
-5. Hand overrides for auto definitions where readability matters (`vector_norm`, `distance`).
+4. Parallel shard checking (`tools/check_public_par.sh`) to cut the Multivariate update time.
