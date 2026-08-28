@@ -3,55 +3,55 @@
 // Statements are admitted imports; none is a new axiom.
 
 // HOL Light: Library/iter.ml:7 / ITER
-// Source hash: md5:30ce3abffa9614d5c4f255ebb1c2919d
+// Source hash: md5:3964f67cb302a3c00db547a3c5d6cfb8
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
 Theorem ITER : forall A:set, forall x :e A, (forall f:set -> set, (forall x0 :e A, f x0 :e A) -> iter_fun 0 f x = x) /\ forall f:set -> set, (forall x0 :e A, f x0 :e A) -> forall n :e omega, iter_fun (ordsucc n) f x = f (iter_fun n f x).
 Admitted.
 
 // HOL Light: Library/iter.ml:11 / ITER_POINTLESS
-// Source hash: md5:4fe82876406d5121dfa7a3e1ce704b98
+// Source hash: md5:87cd6cd80cdf992f58de0579df7527a4
 // Status: transport_required (bridges: hol_num_omega)
 Theorem ITER_POINTLESS : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = f (iter_fun n f x).
 Admitted.
 
 // HOL Light: Library/iter.ml:16 / ITER_ALT
-// Source hash: md5:1b4c37c1983fb35a3e6b8f3a1520d595
+// Source hash: md5:f44055ace7b3635e8c55d093cb1c1f35
 // Status: transport_required (bridges: hol_num_omega)
 Theorem ITER_ALT : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = iter_fun n f (f x).
 Admitted.
 
 // HOL Light: Library/iter.ml:22 / ITER_ALT_POINTLESS
-// Source hash: md5:d5ee64a5512f3ec7e9afc3ee04708358
+// Source hash: md5:29cc3e0f851d0c8a8485551c2f67e4f4
 // Status: native_reuse (bridges: hol_num_omega)
 // Reuse: this proposition is already a theorem of the target library.
 // Theorem ITER_ALT_POINTLESS : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = iter_fun n f (f x).
 
 // HOL Light: Library/iter.ml:27 / ITER_1
-// Source hash: md5:d6f9071e1b4c19f750500b0c446aa07e
+// Source hash: md5:12e971279c186ebdb3ca7a6c5188c384
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
 Theorem ITER_1 : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 1 f x = f x.
 Admitted.
 
 // HOL Light: Library/iter.ml:31 / ITER_ADD
-// Source hash: md5:37cc4a53929351c9e01e8a694a2e4e14
+// Source hash: md5:da469fedb64dd66ec337fc7ec9b21088
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_num_omega)
 Theorem ITER_ADD : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall n m :e omega, forall x :e A, iter_fun n f (iter_fun m f x) = iter_fun (n + m) f x.
 Admitted.
 
 // HOL Light: Library/iter.ml:35 / ITER_ADD_POINTLESS
-// Source hash: md5:f2bd66d2da198c2f83b97aff4063ba84
+// Source hash: md5:14f533aaf63196e46faa7929ed497b1a
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_num_omega)
 Theorem ITER_ADD_POINTLESS : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall m n :e omega, forall x :e A, iter_fun (m + n) f x = iter_fun m f (iter_fun n f x).
 Admitted.
 
 // HOL Light: Library/iter.ml:39 / ITER_MUL
-// Source hash: md5:c89dd868db562ec2a09949c5502138d7
+// Source hash: md5:88bdc611438cc86b7b237b315350b1f8
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, mul_nat_mul_SNo)
 Theorem ITER_MUL : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall n m :e omega, forall x :e A, iter_fun n (fun x0:set => iter_fun m f x0) x = iter_fun (n * m) f x.
 Admitted.
 
 // HOL Light: Library/iter.ml:44 / ITER_FIXPOINT
-// Source hash: md5:84390c02dcd2db334e23dc01a354835d
+// Source hash: md5:521a235c07f96841ceb86e01168f098a
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
 Theorem ITER_FIXPOINT : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall n :e omega, forall x :e A, f x = x -> iter_fun n f x = x.
 Admitted.

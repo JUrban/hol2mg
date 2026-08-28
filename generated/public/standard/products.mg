@@ -3,25 +3,25 @@
 // Statements are admitted imports; none is a new axiom.
 
 // HOL Light: Library/products.ml:11 / NPRODUCT_SUPPORT
-// Source hash: md5:7c259aa1161ae5b7d30a556d3e92083c
+// Source hash: md5:396d7eac32eca26694e4dd6242f13820
 // Status: generalization_required (bridges: empty_case:A, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
 Theorem NPRODUCT_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finprod {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a * b)} f = finprod s f.
 Admitted.
 
 // HOL Light: Library/products.ml:15 / NPRODUCT_UNION
-// Source hash: md5:c7cd63bcaf7560fd8c21647fea4d209f
+// Source hash: md5:b9a4c8e99fd81ca9e896e223bf403777
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
 Theorem NPRODUCT_UNION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finprod (s :\/: t) f = finprod s f * finprod t f.
 Admitted.
 
 // HOL Light: Library/products.ml:20 / NPRODUCT_IMAGE
-// Source hash: md5:f823cc8ded42c400b224bec601b34e52
+// Source hash: md5:643746c59e8d829cb7957b45ea036310
 // Status: transport_required (bridges: hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= B, (forall x y :e B, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finprod {f x | x :e s} g = finprod s (fun x:set => g (f x)).
 Admitted.
 
 // HOL Light: Library/products.ml:26 / NPRODUCT_INJECTION
-// Source hash: md5:58c777b08482581ef6f619cb6d705f11
+// Source hash: md5:1e19b78df6b510c0e800d7d9f54fa21a
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_INJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> finprod s (fun x:set => f (p x)) = finprod s f.
 Admitted.
@@ -33,7 +33,7 @@ Theorem NPRODUCT_ADD_SPLIT : forall f:set -> set, (forall x :e omega, f x :e ome
 Admitted.
 
 // HOL Light: Library/products.ml:41 / NPRODUCT_POS_LT
-// Source hash: md5:2e385f34014ef8cb2f36c55ea0fe7f6e
+// Source hash: md5:ffe3afeba66a68926e06a29167f5923f
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, nat_lt_SNoLt)
 Theorem NPRODUCT_POS_LT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 < f x) -> 0 < finprod s f.
 Admitted.
@@ -51,7 +51,7 @@ Theorem NPRODUCT_OFFSET : forall n :e omega, forall f:set -> set, (forall x :e o
 Admitted.
 
 // HOL Light: Library/products.ml:57 / NPRODUCT_SING
-// Source hash: md5:4bb04d8e7e79a374dde9eb1528cd9367
+// Source hash: md5:52a6fbf417cd373cffa74117b697c7f4
 // Status: generalization_required (bridges: empty_case:A, hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_SING : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall x :e A, finprod {x} f = f x.
 Admitted.
@@ -69,7 +69,7 @@ Theorem NPRODUCT_CLAUSES_NUMSEG : forall f:set -> set, (forall x :e omega, f x :
 Admitted.
 
 // HOL Light: Library/products.ml:74 / NPRODUCT_EQ
-// Source hash: md5:0e9778fae3afe9e7168bf2a941966511
+// Source hash: md5:d9f9896ccb6a02539b68674bc5e5d062
 // Status: transport_required (bridges: hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finprod s f = finprod s g.
 Admitted.
@@ -81,7 +81,7 @@ Theorem NPRODUCT_EQ_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e ome
 Admitted.
 
 // HOL Light: Library/products.ml:84 / NPRODUCT_EQ_0
-// Source hash: md5:688d1043951fc6594919b8a07e8e7337
+// Source hash: md5:306361a87f8123f4e88f7c2d1ac872bd
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_EQ_0 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> (finprod s f = 0 <-> exists x :e A, x :e s /\ f x = 0).
 Admitted.
@@ -93,7 +93,7 @@ Theorem NPRODUCT_EQ_0_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e o
 Admitted.
 
 // HOL Light: Library/products.ml:94 / NPRODUCT_RESTRICT
-// Source hash: md5:82a5a808e56f08ab113d7db7a989a21c
+// Source hash: md5:8c62fdcdef85b0d5311215c41b19c733
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_RESTRICT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finprod s (fun i:set => if i :e s then f i else 1) = finprod s f.
 Admitted.
@@ -105,7 +105,7 @@ Theorem NPRODUCT_RESTRICT_SET : forall A:set, A <> Empty -> forall P:set -> prop
 Admitted.
 
 // HOL Light: Library/products.ml:105 / NPRODUCT_LE
-// Source hash: md5:7976b02b4c63226d11a397041ae68578
+// Source hash: md5:754580d26dc6f4c0b655a3bec37f1b2d
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, nat_le_SNoLe)
 Theorem NPRODUCT_LE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x <= g x) -> finprod s f <= finprod s g.
 Admitted.
@@ -129,13 +129,13 @@ Theorem NPRODUCT_EQ_1_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e o
 Admitted.
 
 // HOL Light: Library/products.ml:127 / NPRODUCT_MUL_GEN
-// Source hash: md5:494f866aef01ed18440ce891d8732f02
+// Source hash: md5:bd32ea06133c1cfa69a94ba3e4f0caaf
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
 Theorem NPRODUCT_MUL_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite {x :e A | x :e s /\ ~ f x = 1} /\ finite {x :e A | x :e s /\ ~ g x = 1} -> finprod s (fun x:set => f x * g x) = finprod s f * finprod s g.
 Admitted.
 
 // HOL Light: Library/products.ml:134 / NPRODUCT_MUL
-// Source hash: md5:aa7e446896dc9532a28eee80d32c9a6f
+// Source hash: md5:55c9e4fb53021e38e4409ac8a5b4c4a8
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
 Theorem NPRODUCT_MUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s -> finprod s (fun x:set => f x * g x) = finprod s f * finprod s g.
 Admitted.
@@ -147,7 +147,7 @@ Theorem NPRODUCT_MUL_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e om
 Admitted.
 
 // HOL Light: Library/products.ml:145 / NPRODUCT_CONST
-// Source hash: md5:237bc9dad9a5f3ab49beeb537feff511
+// Source hash: md5:8cf7d2d10fe0f2ad24b83f8170538b47
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_finite_finite, hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_CONST : forall A:set, A <> Empty -> forall c :e omega, forall s c= A, finite s -> finprod s (fun x:set => c) = c ^ finite_cardinality s.
 Admitted.
@@ -165,7 +165,7 @@ Theorem NPRODUCT_CONST_NUMSEG_1 : forall c n :e omega, finprod (idx_n n) (fun x:
 Admitted.
 
 // HOL Light: Library/products.ml:158 / NPRODUCT_ONE
-// Source hash: md5:c94eb5ce57b1e53f65d7a4056c8ec975
+// Source hash: md5:35370285fccaa44350915b469094b32c
 // Status: transport_required (bridges: hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
 Admitted.
@@ -237,7 +237,7 @@ Theorem NPRODUCT_REFLECT : forall x:set -> set, (forall x :e omega, x x :e omega
 Admitted.
 
 // HOL Light: Library/products.ml:247 / NPRODUCT_DELETE
-// Source hash: md5:e6387cb4f97f875c9ecd4e854e9c67c0
+// Source hash: md5:e6f20df4fd69edfa09e038d4939d2b99
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
 Theorem NPRODUCT_DELETE : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, forall a :e A, finite s /\ a :e s -> f a * finprod (s :\: {a}) f = finprod s f.
 Admitted.
@@ -249,7 +249,7 @@ Theorem NPRODUCT_FACT : forall n :e omega, finprod (idx_n n) (fun m:set => m) = 
 Admitted.
 
 // HOL Light: Library/products.ml:257 / NPRODUCT_DELTA
-// Source hash: md5:316d1da8c9afc646a566848a991cc298
+// Source hash: md5:ef4295ace5437ef32c31007bcd9ea963
 // Status: generalization_required (bridges: empty_case:A, hol_nproduct_finprod, hol_num_omega)
 Theorem NPRODUCT_DELTA : forall A:set, forall b :e omega, forall s c= A, forall a :e A, finprod s (fun x:set => if x = a then b else 1) = if a :e s then b else 1.
 Admitted.
@@ -273,25 +273,25 @@ Theorem CARD_CART : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> 
 Admitted.
 
 // HOL Light: Library/products.ml:357 / IPRODUCT_SUPPORT
-// Source hash: md5:8851ae8a1ea6d9a5beaa0bb4fef3028a
+// Source hash: md5:d76e0cc6caeea52dff00968e68e78839
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finprod {x :e s | f x <> neutral_of int (fun a:set => fun b:set => a * b)} f = finprod s f.
 Admitted.
 
 // HOL Light: Library/products.ml:361 / IPRODUCT_UNION
-// Source hash: md5:51ef7cf6c5ce3ec3804363953f8a2c0f
+// Source hash: md5:5509a731ee7325c4b001d3a083c4fe2a
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_UNION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finprod (s :\/: t) f = finprod s f * finprod t f.
 Admitted.
 
 // HOL Light: Library/products.ml:366 / IPRODUCT_IMAGE
-// Source hash: md5:577bafcfb255fbeebbcdded8b28afd2d
+// Source hash: md5:d42c1bc8361166a745b672b903c6b260
 // Status: transport_required (bridges: hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e int) -> forall s c= B, (forall x y :e B, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finprod {f x | x :e s} g = finprod s (fun x:set => g (f x)).
 Admitted.
 
 // HOL Light: Library/products.ml:372 / IPRODUCT_INJECTION
-// Source hash: md5:724a85a38cd58648ead3f70434fdfdca
+// Source hash: md5:a03de52623a2408e276035250dcb9c56
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_INJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> finprod s (fun x:set => f (p x)) = finprod s f.
 Admitted.
@@ -303,7 +303,7 @@ Theorem IPRODUCT_ADD_SPLIT : forall f:set -> set, (forall x :e omega, f x :e int
 Admitted.
 
 // HOL Light: Library/products.ml:387 / IPRODUCT_POS_LE
-// Source hash: md5:1cd9777fc738b1fee7d5b1c51fec188b
+// Source hash: md5:3d674d8efd6f5e5ac7a8a8c11fe2f4cb
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_POS_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= f x) -> 0 <= finprod s f.
 Admitted.
@@ -315,7 +315,7 @@ Theorem IPRODUCT_POS_LE_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e
 Admitted.
 
 // HOL Light: Library/products.ml:397 / IPRODUCT_POS_LT
-// Source hash: md5:2d5181b56156c126da4e8ff0ff4b7f70
+// Source hash: md5:6f65afee359959e05d515759f39603e7
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_POS_LT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 < f x) -> 0 < finprod s f.
 Admitted.
@@ -333,7 +333,7 @@ Theorem IPRODUCT_OFFSET : forall n :e omega, forall f:set -> set, (forall x :e o
 Admitted.
 
 // HOL Light: Library/products.ml:413 / IPRODUCT_SING
-// Source hash: md5:ecb02283831a3d6bc0fb8f74e449019f
+// Source hash: md5:faf67d794ffaa6d0f6240f11dee2bbe0
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_SING : forall A:set, forall f:set -> set, (forall x :e A, f x :e int) -> forall x :e A, finprod {x} f = f x.
 Admitted.
@@ -351,7 +351,7 @@ Theorem IPRODUCT_CLAUSES_NUMSEG : forall f:set -> set, (forall x :e omega, f x :
 Admitted.
 
 // HOL Light: Library/products.ml:430 / IPRODUCT_EQ
-// Source hash: md5:9793aa2078e097d53bb50941442c34ef
+// Source hash: md5:4a453eba16a2ca3cc65f36067aa08b65
 // Status: transport_required (bridges: hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall g:set -> set, (forall x :e A, g x :e int) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finprod s f = finprod s g.
 Admitted.
@@ -363,7 +363,7 @@ Theorem IPRODUCT_EQ_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e int
 Admitted.
 
 // HOL Light: Library/products.ml:440 / IPRODUCT_EQ_0
-// Source hash: md5:a168eded5b9c8f180cf5a66653ce1498
+// Source hash: md5:49c6360ab44db020a0bd1fdd5de9537f
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_EQ_0 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s -> (finprod s f = 0 <-> exists x :e A, x :e s /\ f x = 0).
 Admitted.
@@ -375,7 +375,7 @@ Theorem IPRODUCT_EQ_0_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e i
 Admitted.
 
 // HOL Light: Library/products.ml:451 / IPRODUCT_RESTRICT
-// Source hash: md5:bf11e13f2ea1996f6968d9dc6a0c0419
+// Source hash: md5:8a240d93cb24a2763e59413d4c28ea39
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_RESTRICT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s -> finprod s (fun i:set => if i :e s then f i else 1) = finprod s f.
 Admitted.
@@ -387,7 +387,7 @@ Theorem IPRODUCT_RESTRICT_SET : forall A:set, A <> Empty -> forall P:set -> prop
 Admitted.
 
 // HOL Light: Library/products.ml:462 / IPRODUCT_LE
-// Source hash: md5:cc8de9071b4912e7a4add9d3964b1cdf
+// Source hash: md5:b5d0b3b67436010bad4b87bb124ac9df
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_LE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e A, g x :e int) -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= f x /\ f x <= g x) -> finprod s f <= finprod s g.
 Admitted.
@@ -411,13 +411,13 @@ Theorem IPRODUCT_EQ_1_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e i
 Admitted.
 
 // HOL Light: Library/products.ml:484 / IPRODUCT_MUL_GEN
-// Source hash: md5:3b272eee9cd6c4e89d77b6d4f5a62c5b
+// Source hash: md5:7a7d804e11f7b79751f16518e71db8c0
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_MUL_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall g:set -> set, (forall x :e A, g x :e int) -> forall s c= A, finite {x :e A | x :e s /\ ~ f x = 1} /\ finite {x :e A | x :e s /\ ~ g x = 1} -> finprod s (fun x:set => f x * g x) = finprod s f * finprod s g.
 Admitted.
 
 // HOL Light: Library/products.ml:491 / IPRODUCT_MUL
-// Source hash: md5:798b08b948b1b01a7eccac525a5098e0
+// Source hash: md5:2c0a7c4e1cee59dd460fc4acc3e6747c
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_MUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall g:set -> set, (forall x :e A, g x :e int) -> forall s c= A, finite s -> finprod s (fun x:set => f x * g x) = finprod s f * finprod s g.
 Admitted.
@@ -429,7 +429,7 @@ Theorem IPRODUCT_MUL_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e in
 Admitted.
 
 // HOL Light: Library/products.ml:502 / IPRODUCT_CONST
-// Source hash: md5:4e513c8e8d224306117195f9eb791c7a
+// Source hash: md5:3dc0ebc31b0366f4170222aa050c1617
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod)
 Theorem IPRODUCT_CONST : forall A:set, A <> Empty -> forall c :e int, forall s c= A, finite s -> finprod s (fun x:set => c) = c ^ finite_cardinality s.
 Admitted.
@@ -465,19 +465,19 @@ Theorem IPRODUCT_NEG_NUMSEG_1 : forall f:set -> set, (forall x :e omega, f x :e 
 Admitted.
 
 // HOL Light: Library/products.ml:531 / IPRODUCT_ONE
-// Source hash: md5:36ef15edf3b96eb8c904e8ddae4a51d0
+// Source hash: md5:2a8be89b859522e9b583262d7fa4a6d4
 // Status: native_reuse (bridges: hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 // Reuse: this proposition is already a theorem of the target library.
 // Theorem IPRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
 
 // HOL Light: Library/products.ml:535 / IPRODUCT_LE_1
-// Source hash: md5:988914ffb2610980e2a108d7926aafb2
+// Source hash: md5:703c6480a77286c55280a8a88cf9596b
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_LE_1 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= f x /\ f x <= 1) -> finprod s f <= 1.
 Admitted.
 
 // HOL Light: Library/products.ml:544 / IPRODUCT_ABS
-// Source hash: md5:4f215e85e0cc325b0da0e84b31cb73e9
+// Source hash: md5:0a3922cd56c1d3f6a14a87ceba1434b5
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_ABS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finite s -> finprod s (fun x:set => abs_SNo (f x)) = abs_SNo (finprod s f).
 Admitted.
@@ -549,13 +549,13 @@ Theorem IPRODUCT_REFLECT : forall x:set -> set, (forall x :e omega, x x :e int) 
 Admitted.
 
 // HOL Light: Library/products.ml:630 / IPRODUCT_DELETE
-// Source hash: md5:347546c44a19866e2ccd89899c0e6995
+// Source hash: md5:176e334b68dfaa64630ecf40567eb35b
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_int_int, hol_product_finprod)
 Theorem IPRODUCT_DELETE : forall A:set, forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, forall a :e A, finite s /\ a :e s -> f a * finprod (s :\: {a}) f = finprod s f.
 Admitted.
 
 // HOL Light: Library/products.ml:635 / IPRODUCT_DELTA
-// Source hash: md5:73b681fc1a37905ef0708f5e7114278f
+// Source hash: md5:09f7f3e82d8ed2abe41453bef53e05c0
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem IPRODUCT_DELTA : forall A:set, forall b :e int, forall s c= A, forall a :e A, finprod s (fun x:set => if x = a then b else 1) = if a :e s then b else 1.
 Admitted.
@@ -567,25 +567,25 @@ Theorem INT_POW_NSUM : forall A:set, A <> Empty -> forall x :e int, forall n:set
 Admitted.
 
 // HOL Light: Library/products.ml:664 / PRODUCT_SUPPORT
-// Source hash: md5:16d2fac197af7d88b24e51584148cea7
+// Source hash: md5:20495e97075bf7c44766b4c27f4de546
 // Status: generalization_required (bridges: empty_case:A, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finprod {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a * b)} f = finprod s f.
 Admitted.
 
 // HOL Light: Library/products.ml:668 / PRODUCT_UNION
-// Source hash: md5:97bd8b70aabaeb5da2bbfc7c065ecfd1
+// Source hash: md5:46562e5a9a802c17cf2749bb2cbb8604
 // Status: transport_required (bridges: hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_UNION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finprod (s :\/: t) f = finprod s f * finprod t f.
 Admitted.
 
 // HOL Light: Library/products.ml:673 / PRODUCT_IMAGE
-// Source hash: md5:646365e4c9d4523f00b00f37af74c0a8
+// Source hash: md5:5c12751fc191cf637b4b22b8e2232939
 // Status: transport_required (bridges: hol_product_finprod, hol_real_R)
 Theorem PRODUCT_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= B, (forall x y :e B, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finprod {f x | x :e s} g = finprod s (fun x:set => g (f x)).
 Admitted.
 
 // HOL Light: Library/products.ml:679 / PRODUCT_INJECTION
-// Source hash: md5:7e5e5850d8f9d367926008dd5a3c9494
+// Source hash: md5:101dc7bb6f72de80e2dcdc70cc65f962
 // Status: transport_required (bridges: hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_INJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> finprod s (fun x:set => f (p x)) = finprod s f.
 Admitted.
@@ -597,7 +597,7 @@ Theorem PRODUCT_ADD_SPLIT : forall f:set -> set, (forall x :e omega, f x :e R) -
 Admitted.
 
 // HOL Light: Library/products.ml:694 / PRODUCT_POS_LE
-// Source hash: md5:076fb00e38f5ffde2257a61b375e30ff
+// Source hash: md5:df4e9276927f7a21eae0031521b0ecaf
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_POS_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= f x) -> 0 <= finprod s f.
 Admitted.
@@ -609,7 +609,7 @@ Theorem PRODUCT_POS_LE_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e 
 Admitted.
 
 // HOL Light: Library/products.ml:704 / PRODUCT_POS_LT
-// Source hash: md5:207577b32d9382310adbb1f38c311352
+// Source hash: md5:3ac3ad517b083e9e24bfb3e1a9ec0f17
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_POS_LT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 < f x) -> 0 < finprod s f.
 Admitted.
@@ -627,7 +627,7 @@ Theorem PRODUCT_OFFSET : forall n :e omega, forall f:set -> set, (forall x :e om
 Admitted.
 
 // HOL Light: Library/products.ml:720 / PRODUCT_SING
-// Source hash: md5:e87cce60a7d934b60e29fd6a49ff4d40
+// Source hash: md5:579d8f93b3d140ad5f56d47f99252b8f
 // Status: generalization_required (bridges: empty_case:A, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_SING : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall x :e A, finprod {x} f = f x.
 Admitted.
@@ -645,7 +645,7 @@ Theorem PRODUCT_CLAUSES_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e
 Admitted.
 
 // HOL Light: Library/products.ml:737 / PRODUCT_EQ
-// Source hash: md5:a49944f59e58f105050b891187c4e828
+// Source hash: md5:367b84e09afc083f2d3272fbfb274902
 // Status: transport_required (bridges: hol_product_finprod, hol_real_R)
 Theorem PRODUCT_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finprod s f = finprod s g.
 Admitted.
@@ -657,7 +657,7 @@ Theorem PRODUCT_EQ_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -
 Admitted.
 
 // HOL Light: Library/products.ml:747 / PRODUCT_EQ_0
-// Source hash: md5:410371c254a52f5f579d7f7485893755
+// Source hash: md5:0bb2420dcbf76636f623c4f697c8afc7
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_EQ_0 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> (finprod s f = 0 <-> exists x :e A, x :e s /\ f x = 0).
 Admitted.
@@ -669,7 +669,7 @@ Theorem PRODUCT_EQ_0_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R)
 Admitted.
 
 // HOL Light: Library/products.ml:758 / PRODUCT_RESTRICT
-// Source hash: md5:ec21b658899491e4520a17def91f1337
+// Source hash: md5:1a7ca8c44ad54a6b249d644bb8e82f50
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_RESTRICT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> finprod s (fun i:set => if i :e s then f i else 1) = finprod s f.
 Admitted.
@@ -681,7 +681,7 @@ Theorem PRODUCT_RESTRICT_SET : forall A:set, A <> Empty -> forall P:set -> prop,
 Admitted.
 
 // HOL Light: Library/products.ml:769 / PRODUCT_LE
-// Source hash: md5:9337477c375fc930d625ba77adcb3f45
+// Source hash: md5:f3618ff994cd4617b35734da991ff16e
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_LE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e A, g x :e R) -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= f x /\ f x <= g x) -> finprod s f <= finprod s g.
 Admitted.
@@ -705,13 +705,13 @@ Theorem PRODUCT_EQ_1_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R)
 Admitted.
 
 // HOL Light: Library/products.ml:791 / PRODUCT_MUL_GEN
-// Source hash: md5:01e5d649c280795e0278e5bbd874e0be
+// Source hash: md5:605c96d5f1bff0021eedbf53b22c5572
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_MUL_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite {x :e A | x :e s /\ ~ f x = 1} /\ finite {x :e A | x :e s /\ ~ g x = 1} -> finprod s (fun x:set => f x * g x) = finprod s f * finprod s g.
 Admitted.
 
 // HOL Light: Library/products.ml:798 / PRODUCT_MUL
-// Source hash: md5:32fc26bcab49643f3f0e3a96ce29ee8a
+// Source hash: md5:a1949c11836bf41309ace29719f85ed0
 // Status: transport_required (bridges: hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_MUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finprod s (fun x:set => f x * g x) = finprod s f * finprod s g.
 Admitted.
@@ -723,7 +723,7 @@ Theorem PRODUCT_MUL_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) 
 Admitted.
 
 // HOL Light: Library/products.ml:808 / PRODUCT_CONST
-// Source hash: md5:30512df69a1a257d5fa732c261d11ef2
+// Source hash: md5:eae077be13139a453901495494f8d513
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_CONST : forall A:set, A <> Empty -> forall c :e R, forall s c= A, finite s -> finprod s (fun x:set => c) = c ^ finite_cardinality s.
 Admitted.
@@ -759,13 +759,13 @@ Theorem PRODUCT_NEG_NUMSEG_1 : forall f:set -> set, (forall x :e omega, f x :e R
 Admitted.
 
 // HOL Light: Library/products.ml:836 / PRODUCT_INV
-// Source hash: md5:d58b66c9f86d499d8b5b4b63e9720629
+// Source hash: md5:8a85695f774f98e08b7e89804f836eaf
 // Status: transport_required (bridges: hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_INV : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> finprod s (fun x:set => recip_SNo (f x)) = recip_SNo (finprod s f).
 Admitted.
 
 // HOL Light: Library/products.ml:841 / PRODUCT_DIV
-// Source hash: md5:d7ae31352dde95a8c3e544942a4061f5
+// Source hash: md5:b6b60788833f4a39f3aaa8ad0a25fca5
 // Status: transport_required (bridges: hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_DIV : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finprod s (fun x:set => f x :/: g x) = finprod s f :/: finprod s g.
 Admitted.
@@ -777,19 +777,19 @@ Theorem PRODUCT_DIV_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) 
 Admitted.
 
 // HOL Light: Library/products.ml:850 / PRODUCT_ONE
-// Source hash: md5:4ce9d207bfdc8136363c35a74283f780
+// Source hash: md5:aeaf34e450469a3ee4b125a997e01bfd
 // Status: native_reuse (bridges: hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 // Reuse: this proposition is already a theorem of the target library.
 // Theorem PRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
 
 // HOL Light: Library/products.ml:854 / PRODUCT_LE_1
-// Source hash: md5:4d48facdf301a88113e013405421f006
+// Source hash: md5:8d19684778ec0b02895b2dbd0baf4887
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_LE_1 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= f x /\ f x <= 1) -> finprod s f <= 1.
 Admitted.
 
 // HOL Light: Library/products.ml:863 / PRODUCT_ABS
-// Source hash: md5:bec14ad3f69aea1d99ea820b75c48f0d
+// Source hash: md5:b8c46a567ad97254dbcef9ba74931111
 // Status: transport_required (bridges: hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_ABS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> finprod s (fun x:set => abs_SNo (f x)) = abs_SNo (finprod s f).
 Admitted.
@@ -861,13 +861,13 @@ Theorem PRODUCT_REFLECT : forall x:set -> set, (forall x :e omega, x x :e R) -> 
 Admitted.
 
 // HOL Light: Library/products.ml:949 / PRODUCT_DELETE
-// Source hash: md5:15dde07e3d510e758fc4deff9c1ddc89
+// Source hash: md5:ebecbc4b835d5cd15ce27ad96c9e5f35
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_product_finprod, hol_real_R)
 Theorem PRODUCT_DELETE : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, forall a :e A, finite s /\ a :e s -> f a * finprod (s :\: {a}) f = finprod s f.
 Admitted.
 
 // HOL Light: Library/products.ml:953 / PRODUCT_DELTA
-// Source hash: md5:1b08d4d76d7865dd22906ba18bb49f3b
+// Source hash: md5:aab8c341e24027f844a232319d9d2757
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
 Theorem PRODUCT_DELTA : forall A:set, forall b :e R, forall s c= A, forall a :e A, finprod s (fun x:set => if x = a then b else 1) = if a :e s then b else 1.
 Admitted.

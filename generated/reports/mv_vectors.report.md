@@ -1,8 +1,8 @@
 # hol2mg statement translation report: profile `mv_vectors`
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
-- theorems: 5084 discovered, 4783 public
-- automatic definitions: 79 constants and 1 types generated, 5 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
+- theorems: 5084 discovered, 4784 public
+- automatic definitions: 79 constants and 1 types generated, 5 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: unmapped constant _22943 : bool->bool->bool->bool->bool->bool->bool->bool->char; _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
 - theorems using automatic definitions: 1422
 - mapping files: mappings/core.json, mappings/lists.json, mappings/library.json, mappings/multivariate.json
 
@@ -11,8 +11,8 @@
 | status | count |
 |---|---|
 | transport_required | 3535 |
-| generalization_required | 884 |
-| pending_mapping | 301 |
+| generalization_required | 885 |
+| pending_mapping | 300 |
 | exact_native | 282 |
 | native_reuse | 82 |
 
@@ -31,7 +31,7 @@
 | define | 1 | 36 | 0 |
 | floor | 100 | 0 | 0 |
 | ind_types | 17 | 32 | 0 |
-| int | 501 | 1 | 0 |
+| int | 502 | 0 | 0 |
 | iterate | 313 | 11 | 0 |
 | lists | 130 | 2 | 0 |
 | matroids | 159 | 0 | 0 |
@@ -100,7 +100,6 @@
 | 1 | internal constant hreal_le (HOL Light internal construction) |
 | 1 | internal constant nadd_le (HOL Light internal construction) |
 | 1 | internal constant treal_le (HOL Light internal construction) |
-| 1 | unmapped constant == : A->A->(A->A->bool)->bool |
 | 1 | unmapped constant @ : (((A->bool)->B)->bool)->(A->bool)->B |
 | 1 | unmapped constant @ : (((real,N)cart->(real,M)cart)->bool)->(real,N)cart->(real,M)cart |
 | 1 | unmapped constant GABS : (A->bool)->A |
@@ -113,7 +112,7 @@
 - hol_num_omega (2167)
 - hol_real_R (2059)
 - hol_cart_setexp (1256)
-- empty_case:A (777)
+- empty_case:A (778)
 - hol_finite_finite (569)
 - omega_Subq_R (564)
 - hol_int_int (493)

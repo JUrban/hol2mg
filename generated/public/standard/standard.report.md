@@ -1,7 +1,7 @@
 # hol2mg statement translation report: profile `standard`
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
-- theorems: 4590 discovered, 4289 public
+- theorems: 4590 discovered, 4290 public
 - automatic definitions: 4 constants and 0 types generated, 5 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
 - theorems using automatic definitions: 4
 - mapping files: mappings/core.json, mappings/lists.json, mappings/library.json
@@ -11,8 +11,8 @@
 | status | count |
 |---|---|
 | transport_required | 3014 |
-| generalization_required | 950 |
-| pending_mapping | 301 |
+| generalization_required | 951 |
+| pending_mapping | 300 |
 | exact_native | 237 |
 | native_reuse | 88 |
 
@@ -33,7 +33,7 @@
 | define | 1 | 36 | 0 |
 | floor | 100 | 0 | 0 |
 | ind_types | 17 | 32 | 0 |
-| int | 498 | 1 | 0 |
+| int | 499 | 0 | 0 |
 | integer | 214 | 0 | 0 |
 | isum | 92 | 1 | 0 |
 | iter | 12 | 0 | 0 |
@@ -107,7 +107,6 @@
 | 1 | internal constant hreal_le (HOL Light internal construction) |
 | 1 | internal constant nadd_le (HOL Light internal construction) |
 | 1 | internal constant treal_le (HOL Light internal construction) |
-| 1 | unmapped constant == : A->A->(A->A->bool)->bool |
 | 1 | unmapped constant @ : (((A->bool)->B)->bool)->(A->bool)->B |
 | 1 | unmapped constant GABS : (A->bool)->A |
 | 1 | unmapped constant GSPEC : (A->bool)->A->bool |
@@ -118,7 +117,7 @@
 
 - hol_num_omega (2228)
 - hol_real_R (858)
-- empty_case:A (854)
+- empty_case:A (855)
 - hol_int_int (850)
 - hol_finite_finite (554)
 - hol_prod_setprod (543)

@@ -40,7 +40,10 @@
   "auto_definition_failures": [
     [ "NUM_REP", "internal construction type ind" ],
     [ "_22943", "no carrier mapping for type constructor char (in char)" ],
-    [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
+    [
+      "ASCII",
+      "unmapped constant _22943 : bool->bool->bool->bool->bool->bool->bool->bool->char"
+    ],
     [
       "_100512",
       "unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0"

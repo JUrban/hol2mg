@@ -873,13 +873,13 @@ Theorem INT_CONG_ADD_LCANCEL : forall a n x y :e int, divides_int n ((a + x) + -
 Admitted.
 
 // HOL Light: Library/integer.ml:707 / INT_CONG_ADD_LCANCEL_EQ_0
-// Source hash: md5:6d103d9016a96fab6831e0e2eab83307
+// Source hash: md5:5890e244dcefceb32ae094acdc37564f
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_CONG_ADD_LCANCEL_EQ_0 : forall A:set, forall a n x :e int, forall y :e A, divides_int n ((a + x) + - a) <-> divides_int n (x + - 0).
 Admitted.
 
 // HOL Light: Library/integer.ml:711 / INT_CONG_ADD_RCANCEL_EQ_0
-// Source hash: md5:61a51297ad0626ec4bcf1291036a377d
+// Source hash: md5:ce18ed318faa61e36330d4970a40d7d4
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_CONG_ADD_RCANCEL_EQ_0 : forall A:set, forall a n x :e int, forall y :e A, divides_int n ((x + a) + - a) <-> divides_int n (x + - 0).
 Admitted.
@@ -921,7 +921,7 @@ Theorem INT_COPRIME_RREM : forall m n :e int, gcd_int m (rem_int n m) = 1 <-> gc
 Admitted.
 
 // HOL Light: Library/integer.ml:739 / INT_COPRIME_LREM
-// Source hash: md5:f09ccc142d3192a082ef8bae38f807ac
+// Source hash: md5:d4ba1781e86439a15a67338ecb149a44
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_prod_setprod)
 Theorem INT_COPRIME_LREM : forall A:set, forall n a :e int, forall b :e A, gcd_int (rem_int a n) n = 1 <-> gcd_int a n = 1.
 Admitted.

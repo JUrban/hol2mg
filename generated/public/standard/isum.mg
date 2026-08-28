@@ -3,7 +3,7 @@
 // Statements are admitted imports; none is a new axiom.
 
 // HOL Light: Library/isum.ml:5 / ISUM_SUPPORT
-// Source hash: md5:81348180bd0e91b7ebfe0b37097950aa
+// Source hash: md5:2be7b27ce535ea40368d9637f3dfb4b0
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_sum_finsum)
 Theorem ISUM_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finsum {x :e s | f x <> neutral_of int (fun a:set => fun b:set => a + b)} f = finsum s f.
 Admitted.

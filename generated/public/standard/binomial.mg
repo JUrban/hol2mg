@@ -75,7 +75,7 @@ Theorem HAS_SIZE_RESTRICTED_POWERSET : forall A:set, A <> Empty -> forall n m :e
 Admitted.
 
 // HOL Light: Library/binomial.ml:141 / CARD_RESTRICTED_POWERSET
-// Source hash: md5:1b40eb6ce98667d82e3eba9cdb0a70cf
+// Source hash: md5:34994c7f6a70401764baf2b7892b4d9a
 // Status: transport_required (bridges: hol_binom_binomial_coefficient, hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, hol_prod_setprod)
 Theorem CARD_RESTRICTED_POWERSET : forall A:set, A <> Empty -> forall s c= A, forall k :e omega, finite s -> finite_cardinality {t :e Power A | t c= s /\ equip t k} = binomial_coefficient (finite_cardinality s) k.
 Admitted.

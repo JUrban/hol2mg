@@ -225,7 +225,7 @@ Theorem MULTIPLES_EQ : forall m n :e omega, m = n <-> forall d :e omega, divides
 Admitted.
 
 // HOL Light: Library/prime.ml:183 / DIVIDES_NSUM
-// Source hash: md5:e9dcef7e99dd5a436fa44c116408fb51
+// Source hash: md5:d8420826e780e510a9b105e8f8f18ce2
 // Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
 Theorem DIVIDES_NSUM : forall A:set, A <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s /\ (forall i :e A, i :e s -> divides_nat n (f i)) -> divides_nat n (finsum s f).
 Admitted.
@@ -585,7 +585,7 @@ Theorem COPRIME_NPRODUCT_EQ : forall A:set, A <> Empty -> (forall f:set -> set, 
 Admitted.
 
 // HOL Light: Library/prime.ml:548 / COPRIME_NPRODUCT
-// Source hash: md5:05c2b90576e41db7cf316fc4e7f82894
+// Source hash: md5:86b1d17affd1113b6d2fbe6f3dc97c23
 // Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, hol_prod_setprod)
 Theorem COPRIME_NPRODUCT : forall A:set, A <> Empty -> forall a:set -> set, (forall x :e A, a x :e omega) -> forall s c= A, forall n :e omega, finite s /\ (forall x :e A, x :e s -> gcd_int n (a x) = 1) -> gcd_int n (finprod s a) = 1.
 Admitted.

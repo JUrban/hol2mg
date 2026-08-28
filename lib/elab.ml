@@ -637,13 +637,21 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
               @ List.map (fun (v, ty) -> (v, carrier ctx ty)) inst in
     let r = Mg.normalize (Mg.inst sub e.R.c_template) in
     let res_hol_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty (List.filteri (fun i _ -> i < n) args) in
+    let sres = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) e.R.c_scheme (List.filteri (fun i _ -> i < n) args) in
+    let meta_view k =
+      let idoms, ires = strip_fun_ty res_hol_ty in
+      let take m l = List.filteri (fun j _ -> j < m) l and drop m l = List.filteri (fun j _ -> j >= m) l in
+      let residual = List.fold_right (fun d acc -> fun_ty d acc) (drop k idoms) ires in
+      if k = 0 || List.length idoms < k then fail "registry: meta result role for non-function result of %s" c;
+      if residual = bool_ty then VMetaPred (List.map (carrier ctx) (take k idoms))
+      else VMetaFun (List.map (carrier ctx) (take k idoms), carrier ctx residual) in
     let res_view = (match e.R.c_result with
       | R.RSet -> VSet (carrier ctx res_hol_ty)
       | R.RProp -> VProp
       | R.RSubset -> (match res_hol_ty with TyApp ("fun", [ a; TyApp ("bool", []) ]) -> VSubset (carrier ctx a)
                       | _ -> fail "registry: subset result for %s" c)
-      | R.RMetaFun _ -> view_of_type ctx res_hol_ty
-      | R.RMetaPred _ -> view_of_type ctx res_hol_ty) in
+      | R.RMetaFun (Some k) | R.RMetaPred (Some k) -> meta_view k
+      | R.RMetaFun None | R.RMetaPred None -> meta_view (fun_arity sres)) in
     (* extra arguments *)
     let extra = List.filteri (fun i _ -> i >= n) args in
     if extra = [] then (r, res_view)
@@ -852,12 +860,23 @@ let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty)
     | _ -> (List.rev acc, t)
   in
   let args, body = open_all rhs 0 arg_names [] in
-  let result_view = view_of_role ctx result_role res in
-  let body' = elab ctx body result_view in
+  (* elaborate the body in its natural view; only data/prop conversions are forced *)
+  let body', bview = (match result_role with
+    | R.RSet -> let v = VSet (carrier ctx res) in (elab ctx body v, v)
+    | R.RProp -> (elab ctx body VProp, VProp)
+    | R.RSubset -> let v = view_of_role ctx R.RSubset res in (elab ctx body v, v)
+    | R.RMetaFun _ | R.RMetaPred _ ->
+        let r, v = elab_nat ctx body None in
+        (match v with
+         | VMetaFun _ | VMetaPred _ -> (r, v)
+         | _ -> let v' = view_of_role ctx result_role res in (coerce ctx r v v', v'))) in
+  let result_role = (match bview with
+    | VSet _ -> R.RSet | VProp -> R.RProp | VSubset _ -> R.RSubset
+    | VMetaFun (ds, _) -> R.RMetaFun (Some (List.length ds)) | VMetaPred ds -> R.RMetaPred (Some (List.length ds))) in
   let body', rewrites = Rewrite.run body' in
   List.iter (fun r -> note ctx ("rewrite:" ^ r)) rewrites;
   let mtys = List.map (fun (_, _, v) -> mty_of_view v) args in
-  let rty = mty_of_view result_view in
+  let rty = mty_of_view bview in
   let ty = List.fold_right (fun _ acc -> Mg.Arr (Mg.Set, acc)) tv_names (List.fold_right (fun m acc -> Mg.Arr (m, acc)) mtys rty) in
   let term = List.fold_right (fun (n, _, v) acc -> Mg.Lam (n, mty_of_view v, acc)) args body' in
   let term = List.fold_right (fun (_, n) acc -> Mg.Lam (n, Mg.Set, acc)) tv_names term in

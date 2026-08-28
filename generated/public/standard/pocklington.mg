@@ -861,13 +861,13 @@ Theorem NPRODUCT_MOD : forall A:set, A <> Empty -> forall s c= A, forall a:set -
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1380 / NPRODUCT_CMUL
-// Source hash: md5:139602d85c857f231232a97623571375
+// Source hash: md5:ff8fb736fb9e2588859105ca541afcb9
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
 Theorem NPRODUCT_CMUL : forall A:set, A <> Empty -> forall s c= A, forall a:set -> set, (forall x :e A, a x :e omega) -> forall c :e omega, finite s -> finprod s (fun m:set => c * a m) = c ^ finite_cardinality s * finprod s a.
 Admitted.
 
 // HOL Light: Library/pocklington.ml:1390 / ITERATE_OVER_COPRIME
-// Source hash: md5:10432f4c2447e010ce253b6b8805286b
+// Source hash: md5:7950b64e1ec1685f6fb94e98a1ee812e
 // Status: transport_required (bridges: hol_iterate, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem ITERATE_OVER_COPRIME : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall n k :e omega, (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) /\ (gcd_int k n = 1 /\ (forall x y :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) -> f x = f y)) -> iterate_op A op {d :e omega | gcd_int d n = 1 /\ d < n} (fun m:set => f (k * m)) = iterate_op A op {d :e omega | gcd_int d n = 1 /\ d < n} f.
 Admitted.

@@ -430,37 +430,37 @@ Theorem RTC_SYM : forall A:set, forall R0:set -> set -> prop, (forall x y :e A, 
 Admitted.
 
 // HOL Light: Library/rstc.ml:373 / RTC_STUTTER
-// Source hash: md5:06f8a1a62105e075104912050ce47635
+// Source hash: md5:ecfd4cbe60d251a88fcccafed2b2b3ac
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RTC_STUTTER : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (TC_on A R0) x x0 <-> RC_rel (TC_on A (fun x1:set => fun y:set => R0 x1 y /\ ~ x1 = y)) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:379 / TC_RTC_CASES_L
-// Source hash: md5:012687fbc166760de67ba97d165465db
+// Source hash: md5:51c1c50ddb5bb0a96bb868e43f52dd8e
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TC_RTC_CASES_L : forall A:set, forall R0:set -> set -> prop, forall x z :e A, TC_on A R0 x z <-> exists y :e A, RC_rel (TC_on A R0) x y /\ R0 y z.
 Admitted.
 
 // HOL Light: Library/rstc.ml:383 / TC_RTC_CASES_R
-// Source hash: md5:971aab33850a6cde0411f254c0c0ef41
+// Source hash: md5:b789b7083e29b9c085c9ce24b0f86dbc
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TC_RTC_CASES_R : forall A:set, forall R0:set -> set -> prop, forall x z :e A, TC_on A R0 x z <-> exists y :e A, R0 x y /\ RC_rel (TC_on A R0) y z.
 Admitted.
 
 // HOL Light: Library/rstc.ml:387 / TC_TC_RTC_CASES
-// Source hash: md5:ea0c9a7c395c80d43b286e3e8fa681e5
+// Source hash: md5:3afd2e1fde29c24eb5350774f5305760
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TC_TC_RTC_CASES : forall A:set, forall R0:set -> set -> prop, forall x z :e A, TC_on A R0 x z <-> exists y :e A, TC_on A R0 x y /\ RC_rel (TC_on A R0) y z.
 Admitted.
 
 // HOL Light: Library/rstc.ml:391 / TC_RTC_TC_CASES
-// Source hash: md5:7a7558def36eaa0f33dc105557ca2298
+// Source hash: md5:ea0fdde4342b836fd3567dece02fbbf7
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TC_RTC_TC_CASES : forall A:set, forall R0:set -> set -> prop, forall x z :e A, TC_on A R0 x z <-> exists y :e A, RC_rel (TC_on A R0) x y /\ TC_on A R0 y z.
 Admitted.
 
 // HOL Light: Library/rstc.ml:395 / RTC_NE_IMP_TC
-// Source hash: md5:da085a6262d52ecb04eb86cbd7e75b30
+// Source hash: md5:29c274b86698cde7d85169c3fdf77a36
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RTC_NE_IMP_TC : forall A:set, forall R0:set -> set -> prop, forall x y :e A, RC_rel (TC_on A R0) x y /\ ~ x = y -> TC_on A R0 x y.
 Admitted.
@@ -718,49 +718,49 @@ Theorem INV : forall A B:set, forall R0:set -> set -> prop, forall y :e B, foral
 Admitted.
 
 // HOL Light: Library/rstc.ml:617 / RC_INV
-// Source hash: md5:0976af2bb4952eb1116780571e3ac914
+// Source hash: md5:3df23af9c31f53bc87f2d86d65ba151a
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (INV_rel R0) x x0 <-> INV_rel (RC_rel R0) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:621 / SC_INV
-// Source hash: md5:1375ed94ee460afcd79895f048e43395
+// Source hash: md5:4e7312aba2372eba97aeeff0026bd787
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, SC_rel (INV_rel R0) x x0 <-> INV_rel (SC_rel R0) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:625 / SC_INV_STRONG
-// Source hash: md5:cac056dbe0ad0000db15c075126fd3c6
+// Source hash: md5:f55776e424127c2ed4b7586cb16b35cd
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SC_INV_STRONG : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, SC_rel (INV_rel R0) x x0 <-> SC_rel R0 x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:629 / TC_INV
-// Source hash: md5:c2a9ee923ab3013625d12c3fb230a15f
+// Source hash: md5:2cbd038ba96cd15b233d71de0b30f09d
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, TC_on A (INV_rel R0) x x0 <-> INV_rel (TC_on A R0) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:634 / RSC_INV
-// Source hash: md5:c4a7d199fffbcc00df89f11287f42f68
+// Source hash: md5:a5051330c091e021514beb03d8e3ffd3
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RSC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (SC_rel (INV_rel R0)) x x0 <-> INV_rel (RC_rel (SC_rel R0)) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:638 / RTC_INV
-// Source hash: md5:45468fc26e4130cb1f101a5f0ad1c0f3
+// Source hash: md5:773b22b5a3f0621aae72898f34160172
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RTC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (TC_on A (INV_rel R0)) x x0 <-> INV_rel (RC_rel (TC_on A R0)) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:642 / STC_INV
-// Source hash: md5:ef46492361d638ef665bad955c3349ae
+// Source hash: md5:634cc07e63cd17a3d9a7085db60facc1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem STC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, TC_on A (SC_rel (INV_rel R0)) x x0 <-> INV_rel (TC_on A (SC_rel R0)) x x0.
 Admitted.
 
 // HOL Light: Library/rstc.ml:646 / RSTC_INV
-// Source hash: md5:bcd054d128ccb0482ae270a99954fb0f
+// Source hash: md5:b80749f15d8bced6e727cf2ea5775189
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RSTC_INV : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (TC_on A (SC_rel (INV_rel R0))) x x0 <-> INV_rel (RC_rel (TC_on A (SC_rel R0))) x x0.
 Admitted.

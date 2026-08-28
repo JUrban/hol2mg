@@ -2090,6 +2090,12 @@ Admitted.
 Theorem INT_LT_REM_EQ : forall m n :e int, rem_int m n < n <-> 0 < n \/ n = 0 /\ m < 0.
 Admitted.
 
+// HOL Light: int.ml:1163 / cong
+// Source hash: md5:d0373dc2bc02e675cdb61c053cc647b6
+// Status: generalization_required (bridges: empty_case:A)
+Theorem cong : forall A:set, forall rel:set -> set -> prop, forall x y :e A, rel x y <-> rel x y.
+Admitted.
+
 // HOL Light: int.ml:1170 / real_mod
 // Source hash: md5:66e08ca96f3f09be49b9be03c590342a
 // Status: transport_required (bridges: hol_real_R, int_Subq_R)

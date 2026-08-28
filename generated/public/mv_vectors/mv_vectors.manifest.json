@@ -657,7 +657,10 @@
   "auto_definition_failures": [
     [ "NUM_REP", "internal construction type ind" ],
     [ "_22943", "no carrier mapping for type constructor char (in char)" ],
-    [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
+    [
+      "ASCII",
+      "unmapped constant _22943 : bool->bool->bool->bool->bool->bool->bool->bool->char"
+    ],
     [
       "_100512",
       "unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0"
@@ -668,7 +671,7 @@
     ]
   ],
   "mapping_files": [
-    [ "mappings/core.json", "d77603903b0b61cbddac65534b8050a4" ],
+    [ "mappings/core.json", "3103ffca6d4cc5827ee63ad4e8283557" ],
     [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ],
     [ "mappings/library.json", "bafb8c20dcb9d7fe5f6badb63103ccf2" ],
     [ "mappings/multivariate.json", "d9fd96bd9564ad6d56f6e40573f8bbb1" ]
@@ -81429,16 +81432,16 @@
       "source_name": "cong",
       "aliases": [ "cong" ],
       "hash": "d0373dc2bc02e675cdb61c053cc647b6",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "int",
       "src_file": "int.ml",
       "src_line": 1163,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant == : A->A->(A->A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall rel:set -> set -> prop, forall x y :e A, rel x y <-> rel x y"
     },
     {
       "name": "coprime",
