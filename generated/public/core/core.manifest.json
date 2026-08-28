@@ -3,7 +3,7 @@
   "profile": "core",
   "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
   "mapping_files": [
-    [ "mappings/core.json", "7376ea001b57253b302eb1ca7369dccb" ],
+    [ "mappings/core.json", "a1843a01b4e174c55449edd254a3711f" ],
     [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ]
   ],
   "signature": "God1.mgs",
@@ -297,7 +297,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?139161->?139160->bool)->((?139161->?139192)->P->bool)->(P->?139160)->((?139161->?139192)->P->?139217)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -313,7 +313,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?138824->?138823->bool)->((?138824->?138825)->?138826->bool)->(?138826->?138823)->((?138824->?138825)->?138826->?138827)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -329,7 +329,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?139684->?139683->bool)->((?139684->?139761)->P->bool)->(P->?139683)->((?139684->?139761)->P->bool)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -377,7 +377,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (A->?140101->bool)->((A->B)->P->bool)->(P->?140101)->((A->B)->P->?140110 list)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -393,7 +393,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?139259->?139258->bool)->((?139259->?139260)->P->bool)->(P->?139258)->((?139259->?139260)->P->?139292)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -409,7 +409,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?140174->?140173->bool)->((?140174->?140239)->P->bool)->(P->?140173)->((?140174->?140239)->P->?140263)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -441,7 +441,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (B->A->bool)->((B->C)->P->bool)->(P->A)->((B->C)->P->num)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -473,7 +473,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?139336->?139335->bool)->((?139336->?139398)->P->bool)->(P->?139335)->((?139336->?139398)->P->?139414->bool)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -489,7 +489,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (B->A->bool)->((B->C)->P->bool)->(P->A)->((B->C)->P->real)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -505,7 +505,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?139510->?139509->bool)->((?139510->?139557)->P->bool)->(P->?139509)->((?139510->?139557)->P->bool)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -640,80 +640,85 @@
       "source_name": "ALLPAIRS",
       "aliases": [ "ALLPAIRS" ],
       "hash": "1030dd49ef6d6f70cf8c8a98f2734b3d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 132,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool",
-      "statement": ""
+      "var_views": {
+        "f": "metapred(A,B)",
+        "l": "set(finseq B)",
+        "h": "set(A)",
+        "t": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set -> prop, forall l :e finseq B, forall h :e A, forall t :e finseq A, ((forall i :e seq_len seq_nil, forall j :e seq_len l, f (seq_nth seq_nil i) (seq_nth l j)) <-> True) /\\ ((forall i :e seq_len (seq_cons h t), forall j :e seq_len l, f (seq_nth (seq_cons h t) i) (seq_nth l j)) <-> seq_all (f h) l /\\ forall i :e seq_len t, forall j :e seq_len l, f (seq_nth t i) (seq_nth l j))"
     },
     {
       "name": "ALLPAIRS_EQ",
       "source_name": "ALLPAIRS_EQ",
       "aliases": [ "ALLPAIRS_EQ" ],
       "hash": "948fb2776481879cd9a3f3b4a954026e",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 458,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool",
-      "statement": ""
+      "var_views": { "R": "metapred(A,B)", "R'": "metapred(A,B)" },
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0 R':set -> set -> prop, forall l :e finseq A, forall m :e finseq B, forall P Q:set -> prop, seq_all P l /\\ (seq_all Q m /\\ (forall p :e A, forall q :e B, P p /\\ Q q -> (R0 p q <-> R' p q))) -> ((forall i :e seq_len l, forall j :e seq_len m, R0 (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len l, forall j :e seq_len m, R' (seq_nth l i) (seq_nth m j))"
     },
     {
       "name": "ALLPAIRS_MAP",
       "source_name": "ALLPAIRS_MAP",
       "aliases": [ "ALLPAIRS_MAP" ],
       "hash": "f23de829602d7775e0cee60dfd35774c",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 452,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant ALLPAIRS : (A->C->bool)->A list->C list->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e C, g x :e D) -> forall l :e finseq A, forall m :e finseq C, (forall i :e seq_len (seq_map f l), forall j :e seq_len (seq_map g m), P (seq_nth (seq_map f l) i) (seq_nth (seq_map g m) j)) <-> forall i :e seq_len l, forall j :e seq_len m, P (f (seq_nth l i)) (g (seq_nth m j))"
     },
     {
       "name": "ALLPAIRS_MEM",
       "source_name": "ALLPAIRS_MEM",
       "aliases": [ "ALLPAIRS_MEM" ],
       "hash": "ef9bf6d2f325f0fc0358e7051e150305",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 445,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall x :e A, forall y :e B, seq_mem x l /\\ seq_mem y m -> P x y) <-> forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)"
     },
     {
       "name": "ALLPAIRS_SYM",
       "source_name": "ALLPAIRS_SYM",
       "aliases": [ "ALLPAIRS_SYM" ],
       "hash": "808bb6d4c5cb3d40cbad02f407cc2372",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 439,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant ALLPAIRS : (B->A->bool)->B list->A list->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i)"
     },
     {
       "name": "ALL_APPEND",
@@ -3503,7 +3508,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant ABS_prod : (A->B->bool)->A#B",
+      "error": "internal constant ABS_prod (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -3543,16 +3548,16 @@
       "source_name": "COND_ABS",
       "aliases": [ "COND_ABS" ],
       "hash": "1ff110853c4fd6318c48220aea045eda",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "class",
       "src_file": "class.ml",
       "src_line": 359,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization" ],
+      "bridges": [ "empty_case:A", "empty_case:B" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant COND : bool->(A->B)->(A->B)->A->B",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, (if b then f x else g x) = if b then f x else g x"
     },
     {
       "name": "COND_CLAUSES",
@@ -3660,16 +3665,16 @@
       "source_name": "COND_RATOR",
       "aliases": [ "COND_RATOR" ],
       "hash": "daf8a0139729304ef354db21fe53723a",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "class",
       "src_file": "class.ml",
       "src_line": 355,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization" ],
+      "bridges": [ "empty_case:A", "empty_case:B" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant COND : bool->(A->B)->(A->B)->A->B",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x"
     },
     {
       "name": "COND_SWAP",
@@ -3988,7 +3993,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant >=_c : (num->bool)->(A->bool)->bool",
+      "error": "unmapped constant COUNTABLE : (A->bool)->bool",
       "statement": ""
     },
     {
@@ -4259,16 +4264,16 @@
       "source_name": "DECIMAL",
       "aliases": [ "DECIMAL" ],
       "hash": "fa6361200beb01135fbf6c305ca1bb33",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "calc_rat",
       "src_file": "calc_rat.ml",
       "src_line": 16,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_real_R", "omega_Subq_R" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant DECIMAL : num->num->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall x y :e omega, x :/: y = x :/: y"
     },
     {
       "name": "DECOMPOSITION",
@@ -5114,16 +5119,18 @@
       "source_name": "DISJOINT_PCROSS",
       "aliases": [ "DISJOINT_PCROSS" ],
       "hash": "99147df9e75446aca97f8965affc61d9",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 729,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t}) :/\\: (\\/_ x :e s', {pastecart M N x y | y :e t'}) = Empty <-> s :/\\: s' = Empty \\/ t :/\\: t' = Empty"
     },
     {
       "name": "DISJOINT_SING",
@@ -7424,16 +7431,22 @@
       "source_name": "EXISTS_IN_PCROSS",
       "aliases": [ "EXISTS_IN_PCROSS" ],
       "hash": "b9d75a090fc50040b27d19413f0c2df8",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 581,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
+      "notes": [ "rewrite:idx_idx_n" ],
+      "var_views": {
+        "s": "subset(A :^: idx M)",
+        "t": "subset(A :^: idx N)",
+        "P": "metapred(A :^: idx (idx_n (dimindex M + dimindex N)))"
+      },
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall P:set -> prop, (exists z :e A :^: idx_n (dimindex M + dimindex N), z :e (\\/_ x :e s, {pastecart M N x y | y :e t}) /\\ P z) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, x :e s /\\ (y :e t /\\ P (pastecart M N x y))"
     },
     {
       "name": "EXISTS_IN_UNION",
@@ -7643,7 +7656,7 @@
         "P": "metapred(A :^: idx (idx_n (dimindex M + dimindex N)))"
       },
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (exists p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, P (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M)))"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (exists p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, P (pastecart M N x y)"
     },
     {
       "name": "EXISTS_REFL",
@@ -8836,16 +8849,21 @@
       "source_name": "FINITE_DIFF_IMAGE",
       "aliases": [ "FINITE_DIFF_IMAGE" ],
       "hash": "d51e953337acbc3ea1493f1b4055c668",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 286,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "empty_case:A", "empty_case:B", "hol_dimindex",
+        "hol_finite_diff_idx", "hol_num_omega", "nat_lt_SNoLt"
+      ],
+      "notes": [ "rewrite:Repl_identity", "rewrite:idx_n_def" ],
       "var_views": {},
-      "error": "unmapped constant mk_finite_diff : num->(A,B)finite_diff",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1) = idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1)"
     },
     {
       "name": "FINITE_EMPTY",
@@ -9552,32 +9570,36 @@
       "source_name": "FINITE_PCROSS",
       "aliases": [ "FINITE_PCROSS" ],
       "hash": "6330f1a0852138ff0ef9250236a93770",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 639,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_finite_finite", "hol_finite_sum_idx"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, finite s /\\ finite t -> finite (\\/_ x :e s, {pastecart M N x y | y :e t})"
     },
     {
       "name": "FINITE_PCROSS_EQ",
       "source_name": "FINITE_PCROSS_EQ",
       "aliases": [ "FINITE_PCROSS_EQ" ],
       "hash": "5e0e0f2a85a22b1a0a2c43839d5d2131",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 644,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_finite_finite", "hol_finite_sum_idx"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, finite (\\/_ x :e s, {pastecart M N x y | y :e t}) <-> s = Empty \\/ (t = Empty \\/ finite s /\\ finite t)"
     },
     {
       "name": "FINITE_POWERSET",
@@ -9650,16 +9672,21 @@
       "source_name": "FINITE_PROD_IMAGE",
       "aliases": [ "FINITE_PROD_IMAGE" ],
       "hash": "a5ee3cdead3b443082a051624eb564f2",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 319,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "empty_case:A", "empty_case:B", "hol_dimindex",
+        "hol_finite_prod_idx", "hol_num_omega", "mul_nat_mul_SNo"
+      ],
+      "notes": [ "rewrite:Repl_identity", "rewrite:idx_n_def" ],
       "var_views": {},
-      "error": "unmapped constant mk_finite_prod : num->(A,B)finite_prod",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, idx_n (dimindex A * dimindex B) = idx_n (dimindex A * dimindex B)"
     },
     {
       "name": "FINITE_REAL_INTERVAL",
@@ -9964,16 +9991,21 @@
       "source_name": "FINITE_SUM_IMAGE",
       "aliases": [ "FINITE_SUM_IMAGE" ],
       "hash": "e0d0c0b3edf6d1958b0df8612704ce3f",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 193,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "add_nat_add_SNo", "empty_case:A", "empty_case:B", "hol_dimindex",
+        "hol_finite_sum_idx", "hol_num_omega"
+      ],
+      "notes": [ "rewrite:Repl_identity", "rewrite:idx_n_def" ],
       "var_views": {},
-      "error": "unmapped constant mk_finite_sum : num->(A,B)finite_sum",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, idx_n (dimindex A + dimindex B) = idx_n (dimindex A + dimindex B)"
     },
     {
       "name": "FINITE_SUPPORT",
@@ -10693,16 +10725,22 @@
       "source_name": "FORALL_IN_PCROSS",
       "aliases": [ "FORALL_IN_PCROSS" ],
       "hash": "5f6f894c5b71d64c9d7a1f98b79c6e60",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 576,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
+      "notes": [ "rewrite:idx_idx_n" ],
+      "var_views": {
+        "s": "subset(A :^: idx M)",
+        "t": "subset(A :^: idx N)",
+        "P": "metapred(A :^: idx (idx_n (dimindex M + dimindex N)))"
+      },
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall P:set -> prop, (forall z :e A :^: idx_n (dimindex M + dimindex N), z :e (\\/_ x :e s, {pastecart M N x y | y :e t}) -> P z) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, x :e s /\\ y :e t -> P (pastecart M N x y)"
     },
     {
       "name": "FORALL_IN_UNION",
@@ -10880,7 +10918,7 @@
         "P": "metapred(A :^: idx (idx_n (dimindex M + dimindex N)))"
       },
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (forall p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, P (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M)))"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (forall p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, P (pastecart M N x y)"
     },
     {
       "name": "FORALL_SIMP",
@@ -11153,7 +11191,7 @@
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\\ i <= dimindex M -> (fun i :e idx M => x i) i = x i"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\\ i <= dimindex M -> fstcart M x i = x i"
     },
     {
       "name": "FSTCART_PASTECART",
@@ -11169,7 +11207,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (fun i :e idx M => (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) i) = x"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, fstcart M (pastecart M N x y) = x"
     },
     {
       "name": "FST_DEF",
@@ -11372,16 +11410,16 @@
       "source_name": "GE_C",
       "aliases": [ "GE_C" ],
       "hash": "6247453d61456cf3817da38e628c8855",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4690,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_le_c_atleastp" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant >=_c : (A->bool)->(B->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, atleastp t s <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ forall y :e B, y :e t -> exists x :e A, x :e s /\\ y = f x"
     },
     {
       "name": "GSPEC",
@@ -11923,16 +11961,19 @@
       "source_name": "HAS_SIZE_PCROSS",
       "aliases": [ "HAS_SIZE_PCROSS" ],
       "hash": "bbbbede771da97bffddfd538aeb72bab",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 626,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_finite_sum_idx", "hol_has_size_equip",
+        "hol_num_omega", "mul_nat_mul_SNo"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall m n :e omega, equip s m /\\ equip t n -> equip (\\/_ x :e s, {pastecart M N x y | y :e t}) (m * n)"
     },
     {
       "name": "HAS_SIZE_POWERSET",
@@ -12745,7 +12786,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant hreal_le : hreal->hreal->bool",
+      "error": "internal constant hreal_le (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -12981,16 +13022,16 @@
       "source_name": "IMAGE_FSTCART_PCROSS",
       "aliases": [ "IMAGE_FSTCART_PCROSS" ],
       "hash": "b8867ec4ed95b15bde225c8621a0df81",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 658,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx", "hol_real_R" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((real,M)cart->bool)->((real,N)cart->bool)->(real,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, {fstcart M x | x :e \\/_ x :e s, {pastecart M N x y | y :e t}} = if t = Empty then Empty else s"
     },
     {
       "name": "IMAGE_FST_CROSS",
@@ -13248,16 +13289,16 @@
       "source_name": "IMAGE_PRODUCT_MAP",
       "aliases": [ "IMAGE_PRODUCT_MAP" ],
       "hash": "30510513348359e5bd1e182743211b03",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3249,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "choose_in_spec", "hol_fun_setexp" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant product_map : (K->bool)->(K->A->B)->(K->A)->K->B",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall s :e Power A :^: K, {(fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)) | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = {f0 :e B :^: K | (forall i :e k, f0 i :e {x0 :e B | x0 :e {f i x1 | x1 :e s i}}) /\\ forall i :e K, ~ i :e k -> f0 i = choose_in B (fun y:set => True)}"
     },
     {
       "name": "IMAGE_PROJECTION_CARTESIAN_PRODUCT",
@@ -13298,16 +13339,16 @@
       "source_name": "IMAGE_SNDCART_PCROSS",
       "aliases": [ "IMAGE_SNDCART_PCROSS" ],
       "hash": "8e879e01f0910ec0ad0c9e36ec8a72bf",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 666,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx", "hol_real_R" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((real,M)cart->bool)->((real,N)cart->bool)->(real,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, {sndcart M N x | x :e \\/_ x :e s, {pastecart M N x y | y :e t}} = if s = Empty then Empty else t"
     },
     {
       "name": "IMAGE_SND_CROSS",
@@ -15024,16 +15065,18 @@
       "source_name": "INTER_PCROSS",
       "aliases": [ "INTER_PCROSS" ],
       "hash": "006b27b152528c9897c1c1f338f459a2",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 698,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s s' c= A :^: idx M, forall t t' c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t}) :/\\: (\\/_ x :e s', {pastecart M N x y | y :e t'}) = \\/_ x :e s :/\\: s', {pastecart M N x y | y :e t :/\\: t'}"
     },
     {
       "name": "INTER_RESTRICT",
@@ -21670,7 +21713,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> set -> prop, forall a :e A :^: idx M, forall b :e A :^: idx N, (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then a i else b (minus_nat i (dimindex M))) :e (\\/_ x :e A :^: idx M, {(fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) | y :e A :^: idx N, P x y}) <-> P a b"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> set -> prop, forall a :e A :^: idx M, forall b :e A :^: idx N, pastecart M N a b :e (\\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N, P x y}) <-> P a b"
     },
     {
       "name": "IN_ELIM_QUAD_THM",
@@ -21992,96 +22035,107 @@
       "source_name": "IPRODUCT_CLAUSES",
       "aliases": [ "IPRODUCT_CLAUSES" ],
       "hash": "7a84ac9ba428d5078aedcd9bf6acf02d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
       "src_line": 1228,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_finite_finite", "hol_int_int", "hol_num_omega",
+        "hol_product_finprod", "omega_Subq_int"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant iproduct : (B->bool)->(B->int)->int",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e int) -> finprod Empty f = 1) /\\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e int) -> forall s c= B, finite s -> finprod (SetAdjoin s x) f = if x :e s then finprod s f else f x * finprod s f"
     },
     {
       "name": "ISO",
       "source_name": "ISO",
       "aliases": [ "ISO" ],
       "hash": "3ba2a1ebc7dc10f5cd16b4b8c40e2eb7",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 1061,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A", "empty_case:B" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant ISO : (A->B)->(B->A)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e B, f (g x) = x) /\\ (forall y :e A, g (f y) = y) <-> (forall x :e B, f (g x) = x) /\\ forall y :e A, g (f y) = y)"
     },
     {
       "name": "ISO_FUN",
       "source_name": "ISO_FUN",
       "aliases": [ "ISO_FUN" ],
       "hash": "a2a618441e3e25283a31bd76d0349c20",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 1068,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
       "notes": [],
-      "var_views": {},
-      "error": "unmapped constant ISO : ((A->B)->A'->B')->((A'->B')->A->B)->bool",
-      "statement": ""
+      "var_views": {
+        "f": "metafun(A -> A_)",
+        "f'": "metafun(A_ -> A)",
+        "g": "metafun(B -> B_)",
+        "g'": "metafun(B_ -> B)"
+      },
+      "error": "",
+      "statement": "forall A A_ B B_:set, A <> Empty -> A_ <> Empty -> B <> Empty -> B_ <> Empty -> forall f:set -> set, (forall x :e A, f x :e A_) -> forall f':set -> set, (forall x :e A_, f' x :e A) -> forall g:set -> set, (forall x :e B, g x :e B_) -> forall g':set -> set, (forall x :e B_, g' x :e B) -> (forall x :e A_, f (f' x) = x) /\\ (forall y :e A, f' (f y) = y) /\\ ((forall x :e B_, g (g' x) = x) /\\ (forall y :e B, g' (g y) = y)) -> (forall x :e B_ :^: A_, (fun h :e B :^: A => fun a' :e A_ => g (h (f' a'))) ((fun h :e B_ :^: A_ => fun a :e A => g' (h (f a))) x) = x) /\\ forall y :e B :^: A, (fun h :e B_ :^: A_ => fun a :e A => g' (h (f a))) ((fun h :e B :^: A => fun a' :e A_ => g (h (f' a'))) y) = y"
     },
     {
       "name": "ISO_REFL",
       "source_name": "ISO_REFL",
       "aliases": [ "ISO_REFL" ],
       "hash": "a011c509c7618efcc0a361277975e422",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 1064,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant ISO : (A->A)->(A->A)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, (forall x :e A, x = x) /\\ forall y :e A, y = y"
     },
     {
       "name": "ISO_USAGE",
       "source_name": "ISO_USAGE",
       "aliases": [ "ISO_USAGE" ],
       "hash": "ae77431c1897fb97fcc1009b505272ff",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 1073,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
       "notes": [],
-      "var_views": {},
-      "error": "unmapped constant ISO : (A->B)->(B->A)->bool",
-      "statement": ""
+      "var_views": { "f": "metafun(A -> B)", "g": "metafun(B -> A)" },
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> (forall x :e B, f (g x) = x) /\\ (forall y :e A, g (f y) = y) -> (forall P:set -> prop, (forall x :e A, P x) <-> forall x :e B, P (g x)) /\\ ((forall P:set -> prop, (exists x :e A, P x) <-> exists x :e B, P (g x)) /\\ forall a :e A, forall b :e B, a = g b <-> f a = b)"
     },
     {
       "name": "ISUM_CLAUSES",
       "source_name": "ISUM_CLAUSES",
       "aliases": [ "ISUM_CLAUSES" ],
       "hash": "1dde04b783c90d448930f9979cf21ae7",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
       "src_line": 1272,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_finite_finite", "hol_int_int", "hol_num_omega",
+        "hol_sum_finsum", "omega_Subq_int"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant isum : (B->bool)->(B->int)->int",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e int) -> finsum Empty f = 0) /\\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e int) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f"
     },
     {
       "name": "ITERATE_BIJECTION",
@@ -23976,16 +24030,16 @@
       "source_name": "LE_C",
       "aliases": [ "LE_C" ],
       "hash": "500c823b8f92c73c7ac141ebb43e9157",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4684,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_le_c_atleastp" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant <=_c : (B->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= B, forall t c= A, atleastp s t <-> exists g:set -> set, (forall x :e A, g x :e B) /\\ forall x :e B, x :e s -> exists y :e A, y :e t /\\ g y = x"
     },
     {
       "name": "LE_CASES",
@@ -25138,32 +25192,32 @@
       "source_name": "MEASURE",
       "aliases": [ "MEASURE" ],
       "hash": "abb01e8d84ce430691bf20436f40529b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "wf",
       "src_file": "wf.ml",
       "src_line": 257,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant MEASURE : (A->num)->A->A->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y"
     },
     {
       "name": "MEASURE_LE",
       "source_name": "MEASURE_LE",
       "aliases": [ "MEASURE_LE" ],
       "hash": "ee7af6db0480bfcd4772b3bb79427a82",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "wf",
       "src_file": "wf.ml",
       "src_line": 266,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_num_omega", "nat_le_SNoLe" ],
       "notes": [],
-      "var_views": {},
-      "error": "unmapped constant MEASURE : (A->num)->A->A->bool",
-      "statement": ""
+      "var_views": { "a": "set(A)", "b": "set(A)" },
+      "error": "",
+      "statement": "forall A:set, forall a b :e A, forall m:set -> set, (forall x :e A, m x :e omega) -> ((forall y :e A, m y < m a -> m y < m b) <-> m a <= m b)"
     },
     {
       "name": "MEM",
@@ -26958,7 +27012,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant nadd_eq : nadd->nadd->bool",
+      "error": "internal constant nadd_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -27550,7 +27604,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant dest_nadd : nadd->num->num",
+      "error": "internal constant dest_nadd (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -27566,7 +27620,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant nadd_eq : nadd->nadd->bool",
+      "error": "internal constant nadd_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -27582,7 +27636,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant nadd_eq : nadd->nadd->bool",
+      "error": "internal constant nadd_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -27598,7 +27652,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant nadd_le : nadd->nadd->bool",
+      "error": "internal constant nadd_le (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -27614,7 +27668,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant nadd_eq : nadd->nadd->bool",
+      "error": "internal constant nadd_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -27630,7 +27684,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant nadd_eq : nadd->nadd->bool",
+      "error": "internal constant nadd_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -29956,7 +30010,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant NUMRIGHT : num->num",
+      "error": "internal constant NUMRIGHT (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -30771,7 +30825,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant mk_pair : A->B->A->B->bool",
+      "error": "internal constant mk_pair (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -30825,7 +30879,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\\ i <= dimindex M -> (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then u i else v (minus_nat i (dimindex M))) i = u i) /\\ forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, dimindex M + 1 <= i /\\ i <= dimindex M + dimindex N -> (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then u i else v (minus_nat i (dimindex M))) i = v (minus_nat i (dimindex M))"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\\ i <= dimindex M -> pastecart M N u v i = u i) /\\ forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, dimindex M + 1 <= i /\\ i <= dimindex M + dimindex N -> pastecart M N u v i = v (minus_nat i (dimindex M))"
     },
     {
       "name": "PASTECART_EQ",
@@ -30841,7 +30895,7 @@
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x y :e A :^: idx_n (dimindex M + dimindex N), x = y <-> (fun i :e idx M => x i) = (fun i :e idx M => y i) /\\ (fun i :e idx N => x (i + dimindex M)) = fun i :e idx N => y (i + dimindex M)"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x y :e A :^: idx_n (dimindex M + dimindex N), x = y <-> fstcart M x = fstcart M y /\\ sndcart M N x = sndcart M N y"
     },
     {
       "name": "PASTECART_FST_SND",
@@ -30857,7 +30911,7 @@
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall z :e A :^: idx_n (dimindex M + dimindex N), (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then (fun i :e idx M => z i) i else (fun i :e idx N => z (i + dimindex M)) (minus_nat i (dimindex M))) = z"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall z :e A :^: idx_n (dimindex M + dimindex N), pastecart M N (fstcart M z) (sndcart M N z) = z"
     },
     {
       "name": "PASTECART_INJ",
@@ -30873,231 +30927,247 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, forall w :e A :^: idx M, forall z :e A :^: idx N, (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) = (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then w i else z (minus_nat i (dimindex M))) <-> x = w /\\ y = z"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, forall w :e A :^: idx M, forall z :e A :^: idx N, pastecart M N x y = pastecart M N w z <-> x = w /\\ y = z"
     },
     {
       "name": "PASTECART_IN_PCROSS",
       "source_name": "PASTECART_IN_PCROSS",
       "aliases": [ "PASTECART_IN_PCROSS" ],
       "hash": "5519d9a3f604fa1e01459dcf9f17cbb7",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 586,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall x :e A :^: idx M, forall y :e A :^: idx N, pastecart M N x y :e (\\/_ x :e s, {pastecart M N x y | y :e t}) <-> x :e s /\\ y :e t"
     },
     {
       "name": "PCROSS",
       "source_name": "PCROSS",
       "aliases": [ "PCROSS" ],
       "hash": "4c3ed6c9a2b5bd49814870b71a43923b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 573,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t}) = \\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N, x :e s /\\ y :e t}"
     },
     {
       "name": "PCROSS_DIFF",
       "source_name": "PCROSS_DIFF",
       "aliases": [ "PCROSS_DIFF" ],
       "hash": "0d8964837a044408993a3f0bfcea3da8",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 690,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t :\\: u}) = (\\/_ x :e s, {pastecart M N x y | y :e t}) :\\: \\/_ x :e s, {pastecart M N x y | y :e u}) /\\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\\/_ x :e s :\\: t, {pastecart M N x y | y :e u}) = (\\/_ x :e s, {pastecart M N x y | y :e u}) :\\: \\/_ x :e t, {pastecart M N x y | y :e u}"
     },
     {
       "name": "PCROSS_EMPTY",
       "source_name": "PCROSS_EMPTY",
       "aliases": [ "PCROSS_EMPTY" ],
       "hash": "9ac51b926d6b0e134aa418d49e786547",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 594,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, (\\/_ x :e s, {pastecart M N x y | y :e Empty}) = Empty) /\\ forall t c= A :^: idx N, (\\/_ x :e Empty, {pastecart M N x y | y :e t}) = Empty"
     },
     {
       "name": "PCROSS_EQ",
       "source_name": "PCROSS_EQ",
       "aliases": [ "PCROSS_EQ" ],
       "hash": "d8f76283edf69a808cce56f4dfd78496",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 616,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx", "hol_real_R" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((real,M)cart->bool)->((real,N)cart->bool)->(real,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall s s' c= R :^: idx M, forall t t' c= R :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t}) = (\\/_ x :e s', {pastecart M N x y | y :e t'}) <-> (s = Empty \\/ t = Empty) /\\ (s' = Empty \\/ t' = Empty) \\/ s = s' /\\ t = t'"
     },
     {
       "name": "PCROSS_EQ_EMPTY",
       "source_name": "PCROSS_EQ_EMPTY",
       "aliases": [ "PCROSS_EQ_EMPTY" ],
       "hash": "aec27866ecd08507b739be96df61dc0e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 590,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t}) = Empty <-> s = Empty \\/ t = Empty"
     },
     {
       "name": "PCROSS_INTER",
       "source_name": "PCROSS_INTER",
       "aliases": [ "PCROSS_INTER" ],
       "hash": "e18b66815ca8b5d95550d6d271cc2e0e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 674,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t :/\\: u}) = (\\/_ x :e s, {pastecart M N x y | y :e t}) :/\\: \\/_ x :e s, {pastecart M N x y | y :e u}) /\\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\\/_ x :e s :/\\: t, {pastecart M N x y | y :e u}) = (\\/_ x :e s, {pastecart M N x y | y :e u}) :/\\: \\/_ x :e t, {pastecart M N x y | y :e u}"
     },
     {
       "name": "PCROSS_INTERS",
       "source_name": "PCROSS_INTERS",
       "aliases": [ "PCROSS_INTERS" ],
       "hash": "51d0542065fcefba881368f887d66280",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 715,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx" ],
+      "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall f c= Power (A :^: idx N), (\\/_ x :e s, {pastecart M N x y | y :e {x :e A :^: idx N | forall Y :e f, x :e Y}}) = if f = Empty then \\/_ x :e s, {pastecart M N x y | y :e A :^: idx N} else {x :e A :^: idx_n (dimindex M + dimindex N) | forall Y :e {(\\/_ x :e s, {pastecart M N x y | y :e t}) | t :e Power (A :^: idx N), t :e f}, x :e Y}) /\\ forall f c= Power (A :^: idx M), forall t c= A :^: idx N, (\\/_ x :e {x :e A :^: idx M | forall Y :e f, x :e Y}, {pastecart M N x y | y :e t}) = if f = Empty then \\/_ x :e A :^: idx M, {pastecart M N x y | y :e t} else {x :e A :^: idx_n (dimindex M + dimindex N) | forall Y :e {(\\/_ x :e s, {pastecart M N x y | y :e t}) | s :e Power (A :^: idx M), s :e f}, x :e Y}"
     },
     {
       "name": "PCROSS_INTERS_INTERS",
       "source_name": "PCROSS_INTERS_INTERS",
       "aliases": [ "PCROSS_INTERS_INTERS" ],
       "hash": "26bb2ccb6eb42f3a862c424eb0825e69",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 715,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx" ],
+      "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall f c= Power (A :^: idx M), forall g c= Power (A :^: idx N), (\\/_ x :e {x :e A :^: idx M | forall Y :e f, x :e Y}, {pastecart M N x y | y :e {x :e A :^: idx N | forall Y :e g, x :e Y}}) = if f = Empty then {x :e A :^: idx_n (dimindex M + dimindex N) | forall Y :e {(\\/_ x :e A :^: idx M, {pastecart M N x y | y :e t}) | t :e Power (A :^: idx N), t :e g}, x :e Y} else if g = Empty then {x :e A :^: idx_n (dimindex M + dimindex N) | forall Y :e {(\\/_ x :e s, {pastecart M N x y | y :e A :^: idx N}) | s :e Power (A :^: idx M), s :e f}, x :e Y} else {x :e A :^: idx_n (dimindex M + dimindex N) | forall Y :e (\\/_ s :e Power (A :^: idx M), {(\\/_ x :e s, {pastecart M N x y | y :e t}) | t :e Power (A :^: idx N), s :e f /\\ t :e g}), x :e Y}"
     },
     {
       "name": "PCROSS_MONO",
       "source_name": "PCROSS_MONO",
       "aliases": [ "PCROSS_MONO" ],
       "hash": "26edf076c18f053a8eb2e451ae39276c",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 611,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, s c= s' /\\ t c= t' -> (\\/_ x :e s, {pastecart M N x y | y :e t}) c= \\/_ x :e s', {pastecart M N x y | y :e t'}"
     },
     {
       "name": "PCROSS_SING",
       "source_name": "PCROSS_SING",
       "aliases": [ "PCROSS_SING" ],
       "hash": "5a48e2461c22736e0c34cb481388dda6",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 599,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (\\/_ x0 :e {x}, {pastecart M N x0 y0 | y0 :e {y}}) = {pastecart M N x y}"
     },
     {
       "name": "PCROSS_UNION",
       "source_name": "PCROSS_UNION",
       "aliases": [ "PCROSS_UNION" ],
       "hash": "66504b072fc4aef85c50f35c8cfebe7c",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 682,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t :\\/: u}) = (\\/_ x :e s, {pastecart M N x y | y :e t}) :\\/: \\/_ x :e s, {pastecart M N x y | y :e u}) /\\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\\/_ x :e s :\\/: t, {pastecart M N x y | y :e u}) = (\\/_ x :e s, {pastecart M N x y | y :e u}) :\\/: \\/_ x :e t, {pastecart M N x y | y :e u}"
     },
     {
       "name": "PCROSS_UNIONS",
       "source_name": "PCROSS_UNIONS",
       "aliases": [ "PCROSS_UNIONS" ],
       "hash": "e38b6d6d9f0494aca5fa5f91befcde0d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 704,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall f c= Power (A :^: idx N), (\\/_ x :e s, {pastecart M N x y | y :e Union f}) = Union {(\\/_ x :e s, {pastecart M N x y | y :e t}) | t :e Power (A :^: idx N), t :e f}) /\\ forall f c= Power (A :^: idx M), forall t c= A :^: idx N, (\\/_ x :e Union f, {pastecart M N x y | y :e t}) = Union {(\\/_ x :e s, {pastecart M N x y | y :e t}) | s :e Power (A :^: idx M), s :e f}"
     },
     {
       "name": "PCROSS_UNIONS_UNIONS",
       "source_name": "PCROSS_UNIONS_UNIONS",
       "aliases": [ "PCROSS_UNIONS_UNIONS" ],
       "hash": "cd0df146256ca98fd8332f1daf3a41c2",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 704,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall f c= Power (A :^: idx M), forall g c= Power (A :^: idx N), (\\/_ x :e Union f, {pastecart M N x y | y :e Union g}) = Union (\\/_ s :e Power (A :^: idx M), {(\\/_ x :e s, {pastecart M N x y | y :e t}) | t :e Power (A :^: idx N), s :e f /\\ t :e g})"
     },
     {
       "name": "POLYNOMIAL_FUNCTION_ADD",
@@ -31459,16 +31529,16 @@
       "source_name": "PRODUCT_MAP_RESTRICTION",
       "aliases": [ "PRODUCT_MAP_RESTRICTION" ],
       "hash": "97d0d0213691a97fc9748f7a4a89c3fa",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3244,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "choose_in_spec", "empty_case:K" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant product_map : (K->bool)->(K->A->B)->(K->A)->K->B",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B K:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall x:set -> set, (forall x :e K, x x :e A) -> forall x0 :e K, (if x0 :e k then f x0 ((fun x1 :e K => if x1 :e k then x x1 else choose_in A (fun y:set => True)) x0) else choose_in B (fun y:set => True)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)"
     },
     {
       "name": "PROPERLY_DIVIDES_LE_IMP",
@@ -39099,7 +39169,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant mk_pair : A->B->A->B->bool",
+      "error": "internal constant mk_pair (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -39723,7 +39793,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant SETSPEC : A->bool->A->bool",
+      "error": "internal constant SETSPEC (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -40019,7 +40089,7 @@
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\\ i <= dimindex N -> (fun i :e idx N => x (i + dimindex M)) i = x (i + dimindex M)"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\\ i <= dimindex N -> sndcart M N x i = x (i + dimindex M)"
     },
     {
       "name": "SNDCART_PASTECART",
@@ -40035,7 +40105,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (fun i :e idx N => (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M))) (i + dimindex M)) = y"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, sndcart M N (pastecart M N x y) = y"
     },
     {
       "name": "SND_DEF",
@@ -40777,16 +40847,18 @@
       "source_name": "SUBSET_PCROSS",
       "aliases": [ "SUBSET_PCROSS" ],
       "hash": "7076fe873cf40994e6b8cf4f6e8fc324",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 604,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, (\\/_ x :e s, {pastecart M N x y | y :e t}) c= (\\/_ x :e s', {pastecart M N x y | y :e t'}) <-> s = Empty \\/ (t = Empty \\/ s c= s' /\\ t c= t')"
     },
     {
       "name": "SUBSET_PSUBSET_TRANS",
@@ -43929,7 +44001,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant treal_eq : hreal#hreal->hreal#hreal->bool",
+      "error": "internal constant treal_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -44201,7 +44273,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant treal_eq : hreal#hreal->hreal#hreal->bool",
+      "error": "internal constant treal_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -44217,7 +44289,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant treal_eq : hreal#hreal->hreal#hreal->bool",
+      "error": "internal constant treal_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -44233,7 +44305,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant treal_le : hreal#hreal->hreal#hreal->bool",
+      "error": "internal constant treal_le (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -44249,7 +44321,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant treal_eq : hreal#hreal->hreal#hreal->bool",
+      "error": "internal constant treal_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -44265,7 +44337,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant treal_eq : hreal#hreal->hreal#hreal->bool",
+      "error": "internal constant treal_eq (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -45144,16 +45216,18 @@
       "source_name": "UNIV_PCROSS_UNIV",
       "aliases": [ "UNIV_PCROSS_UNIV" ],
       "hash": "3441e60d806d8492ac377d9acc2edc65",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 622,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx" ],
+      "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
-      "error": "unmapped constant PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> (\\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N}) = A :^: idx_n (dimindex M + dimindex N)"
     },
     {
       "name": "UNIV_SUBSET",
@@ -45423,16 +45497,16 @@
       "source_name": "WF_MEASURE",
       "aliases": [ "WF_MEASURE" ],
       "hash": "5d1b43ae387330061cca4c569f00754a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "wf",
       "src_file": "wf.ml",
       "src_line": 260,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant MEASURE : (A->num)->A->A->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m:set -> set, (forall x :e A, m x :e omega) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ m y < m x"
     },
     {
       "name": "WF_MEASURE_GEN",
@@ -46098,7 +46172,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant admissible : (?138610->?138603->bool)->((?138610->?138606)->?138616->bool)->(?138616->?138603)->((?138610->?138606)->?138616->?138611)->bool",
+      "error": "internal constant admissible (HOL Light internal definition/datatype machinery)",
       "statement": ""
     },
     {
@@ -46327,32 +46401,37 @@
       "source_name": "eq_c",
       "aliases": [ "eq_c" ],
       "hash": "24389193fce9917da6041827a75a8142",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4673,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_eq_c_equip" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant =_c : (A->bool)->(B->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, equip s t <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, x :e s -> f x :e t) /\\ forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y /\\ forall y0 :e A, y0 :e s /\\ f y0 = y -> y0 = x)"
     },
     {
       "name": "finite_diff_tybij",
       "source_name": "finite_diff_tybij",
       "aliases": [ "finite_diff_tybij" ],
       "hash": "f4fb2b8e55ab73d15217e1479128f438",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 279,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "hol_dimindex", "hol_finite_diff_idx", "hol_num_omega",
+        "nat_lt_SNoLt"
+      ],
+      "notes": [ "rewrite:idx_n_def" ],
       "var_views": {},
-      "error": "unmapped constant dest_finite_diff : (A,B)finite_diff->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall a :e idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1), a = a) /\\ forall r :e omega, r :e idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1) <-> r = r"
     },
     {
       "name": "finite_image_tybij",
@@ -46396,35 +46475,45 @@
       "source_name": "finite_prod_tybij",
       "aliases": [ "finite_prod_tybij" ],
       "hash": "37559532491c95f065282e2b4bfd9bc7",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 312,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "hol_dimindex", "hol_finite_prod_idx", "hol_num_omega",
+        "mul_nat_mul_SNo"
+      ],
+      "notes": [ "rewrite:idx_n_def" ],
       "var_views": {},
-      "error": "unmapped constant dest_finite_prod : (A,B)finite_prod->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall a :e idx_n (dimindex A * dimindex B), a = a) /\\ forall r :e omega, r :e idx_n (dimindex A * dimindex B) <-> r = r"
     },
     {
       "name": "finite_sum_tybij",
       "source_name": "finite_sum_tybij",
       "aliases": [ "finite_sum_tybij" ],
       "hash": "6c76cb57384adacc9d787a28f7988e48",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 174,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "add_nat_add_SNo", "hol_dimindex", "hol_finite_sum_idx",
+        "hol_num_omega"
+      ],
+      "notes": [ "rewrite:idx_n_def" ],
       "var_views": {},
-      "error": "unmapped constant dest_finite_sum : (A,B)finite_sum->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall a :e idx_n (dimindex A + dimindex B), a = a) /\\ forall r :e omega, r :e idx_n (dimindex A + dimindex B) <-> r = r"
     },
     {
-      "name": "fstcart",
+      "name": "fstcart_hl",
       "source_name": "fstcart",
       "aliases": [ "fstcart" ],
       "hash": "076ed5c08efac66eaf24e72ed8087ff0",
@@ -46434,45 +46523,45 @@
       "src_line": 186,
       "classes": [ "generalization", "native_isomorphism" ],
       "bridges": [
-        "empty_case:A", "empty_case:M", "empty_case:N", "hol_cart_setexp",
-        "hol_finite_sum_idx", "hol_num_omega"
+        "empty_case:A", "hol_cart_setexp", "hol_finite_sum_idx",
+        "hol_num_omega"
       ],
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, forall f :e A :^: idx_n (dimindex M + dimindex N), (fun i :e idx M => f i) = fun i :e idx M => f i"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), fstcart M f = fun i :e idx M => f i"
     },
     {
       "name": "ge_c",
       "source_name": "ge_c",
       "aliases": [ "ge_c" ],
       "hash": "13b201093c3daa680d60d59f5b054c6f",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4678,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_le_c_atleastp" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant <=_c : (B->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, forall t c= B, forall s c= A, atleastp t s <-> atleastp t s"
     },
     {
       "name": "gt_c",
       "source_name": "gt_c",
       "aliases": [ "gt_c" ],
       "hash": "fc197b1dd7cc9085131c465c12792c6e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4681,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_eq_c_equip" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant <_c : (B->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, forall t c= B, forall s c= A, atleastp t s /\\ ~ equip t s <-> atleastp t s /\\ ~ equip t s"
     },
     {
       "name": "has_inf",
@@ -47271,16 +47360,16 @@
       "source_name": "iproduct",
       "aliases": [ "iproduct" ],
       "hash": "f09e83082e21af2da7cdd219527c8842",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
       "src_line": 1216,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_int_int", "hol_iterate", "hol_product_finprod" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant iproduct : (A->bool)->(A->int)->int",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e int) -> finprod x x0 = iterate_op int (fun a:set => fun b:set => a * b) x x0"
     },
     {
       "name": "is_int",
@@ -47313,7 +47402,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant is_nadd : (num->num)->bool",
+      "error": "internal constant is_nadd (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -47329,7 +47418,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant is_nadd : (num->num)->bool",
+      "error": "internal constant is_nadd (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -47337,16 +47426,16 @@
       "source_name": "isum",
       "aliases": [ "isum" ],
       "hash": "3e27a507cb41cfb3eed71f3bf6979736",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
       "src_line": 1260,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_int_int", "hol_iterate", "hol_sum_finsum" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant isum : (A->bool)->(A->int)->int",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e int) -> finsum x x0 = iterate_op int (fun a:set => fun b:set => a + b) x x0"
     },
     {
       "name": "iterate",
@@ -47404,16 +47493,16 @@
       "source_name": "le_c",
       "aliases": [ "le_c" ],
       "hash": "5a22470aa6e1e759d03b16e3350272e8",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4665,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_le_c_atleastp" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant <=_c : (A->bool)->(B->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, atleastp s t <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, x :e s -> f x :e t) /\\ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)"
     },
     {
       "name": "list_CASES",
@@ -47505,16 +47594,16 @@
       "source_name": "lt_c",
       "aliases": [ "lt_c" ],
       "hash": "188471cbb53394f2d532eee8e028f481",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4670,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_eq_c_equip", "hol_le_c_atleastp" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant <=_c : (B->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, atleastp s t /\\ ~ equip s t <-> atleastp s t /\\ ~ atleastp t s"
     },
     {
       "name": "minimal",
@@ -47545,7 +47634,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant mk_pair : A->B->A->B->bool",
+      "error": "internal constant mk_pair (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -47689,7 +47778,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant dest_nadd : nadd->num->num",
+      "error": "internal constant dest_nadd (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -48384,7 +48473,7 @@
       "statement": "forall A:set, forall s c= A, forall r:set -> set -> prop, (forall x y :e s, x <> y -> r x y) <-> forall x y :e A, x :e s /\\ (y :e s /\\ ~ x = y) -> r x y"
     },
     {
-      "name": "pastecart",
+      "name": "pastecart_hl",
       "source_name": "pastecart",
       "aliases": [ "pastecart" ],
       "hash": "970d4141355f6d6f39b68b7eb74facb6",
@@ -48396,13 +48485,13 @@
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
       "bridges": [
-        "empty_case:A", "empty_case:M", "empty_case:N", "hol_cart_setexp",
-        "hol_dimindex", "hol_finite_sum_idx", "hol_num_omega", "nat_le_SNoLe"
+        "empty_case:A", "hol_cart_setexp", "hol_dimindex",
+        "hol_finite_sum_idx", "hol_num_omega", "nat_le_SNoLe"
       ],
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, forall f :e A :^: idx M, forall g :e A :^: idx N, (fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M))) = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M))"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx M, forall g :e A :^: idx N, pastecart M N f g = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M))"
     },
     {
       "name": "polynomial_function_hl",
@@ -48449,7 +48538,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant REP_prod : A#B->A->B->bool",
+      "error": "internal constant REP_prod (HOL Light internal construction)",
       "statement": ""
     },
     {
@@ -48473,16 +48562,18 @@
       "source_name": "product_map",
       "aliases": [ "product_map" ],
       "hash": "bbe1fe6bdf1975199489e5740d8cb88e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3241,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [
+        "choose_in_spec", "empty_case:A", "empty_case:B", "empty_case:K"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant product_map : (K->bool)->(K->A->B)->(K->A)->K->B",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B K:set, forall k c= K, forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall x :e A :^: K, forall x0 :e K, (if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)"
     },
     {
       "name": "real_INFINITE",
@@ -48905,7 +48996,7 @@
       "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h"
     },
     {
-      "name": "sndcart",
+      "name": "sndcart_hl",
       "source_name": "sndcart",
       "aliases": [ "sndcart" ],
       "hash": "442acce9e11ba375a5854f0ad07e5d3d",
@@ -48917,14 +49008,13 @@
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
       "bridges": [
-        "add_nat_add_SNo", "empty_case:A", "empty_case:M", "empty_case:N",
-        "hol_cart_setexp", "hol_dimindex", "hol_finite_sum_idx",
-        "hol_num_omega"
+        "add_nat_add_SNo", "empty_case:A", "hol_cart_setexp", "hol_dimindex",
+        "hol_finite_sum_idx", "hol_num_omega"
       ],
       "notes": [ "rewrite:idx_idx_n" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A M N:set, forall f :e A :^: idx_n (dimindex M + dimindex N), (fun i :e idx N => f (i + dimindex M)) = fun i :e idx N => f (i + dimindex M)"
+      "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), sndcart M N f = fun i :e idx N => f (i + dimindex M)"
     },
     {
       "name": "sqrt",
@@ -49187,64 +49277,64 @@
       "source_name": "tybit0_INDUCT",
       "aliases": [ "tybit0_INDUCT" ],
       "hash": "78d927b0732f0cf2715fce6ad6aa283b",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 341,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_finite_sum_idx", "hol_tybit_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant mktybit0 : (A,A)finite_sum->A tybit0",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (forall a :e idx_n (dimindex A + dimindex A), P a) -> forall x :e idx_n (2 * dimindex A), P x"
     },
     {
       "name": "tybit0_RECURSION",
       "source_name": "tybit0_RECURSION",
       "aliases": [ "tybit0_RECURSION" ],
       "hash": "9fa6df9bc475b4aacb910c31a4a7e571",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 341,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_finite_sum_idx", "hol_tybit_idx" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant mktybit0 : (A,A)finite_sum->A tybit0",
-      "statement": ""
+      "error": "",
+      "statement": "forall A Z:set, A <> Empty -> Z <> Empty -> forall f:set -> set, (forall x :e idx_n (dimindex A + dimindex A), f x :e Z) -> exists fn:set -> set, (forall x :e idx_n (2 * dimindex A), fn x :e Z) /\\ forall a :e idx_n (dimindex A + dimindex A), fn a = f a"
     },
     {
       "name": "tybit1_INDUCT",
       "source_name": "tybit1_INDUCT",
       "aliases": [ "tybit1_INDUCT" ],
       "hash": "37e8ee45727d8dddc94744b2e20590cf",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 344,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_finite_sum_idx", "hol_one_1", "hol_tybit_idx" ],
+      "notes": [ "rewrite:dimindex_idx_n", "rewrite:dimindex_one" ],
       "var_views": {},
-      "error": "unmapped constant mktybit1 : ((A,A)finite_sum,1)finite_sum->A tybit1",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (forall a :e idx_n ((dimindex A + dimindex A) + 1), P a) -> forall x :e idx_n (2 * dimindex A + 1), P x"
     },
     {
       "name": "tybit1_RECURSION",
       "source_name": "tybit1_RECURSION",
       "aliases": [ "tybit1_RECURSION" ],
       "hash": "6ecdce784840dbafa08ce3b5f0f03ab6",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 344,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_finite_sum_idx", "hol_one_1", "hol_tybit_idx" ],
+      "notes": [ "rewrite:dimindex_idx_n", "rewrite:dimindex_one" ],
       "var_views": {},
-      "error": "unmapped constant mktybit1 : ((A,A)finite_sum,1)finite_sum->A tybit1",
-      "statement": ""
+      "error": "",
+      "statement": "forall A Z:set, A <> Empty -> Z <> Empty -> forall f:set -> set, (forall x :e idx_n ((dimindex A + dimindex A) + 1), f x :e Z) -> exists fn:set -> set, (forall x :e idx_n (2 * dimindex A + 1), fn x :e Z) /\\ forall a :e idx_n ((dimindex A + dimindex A) + 1), fn a = f a"
     },
     {
       "name": "vector",

@@ -198,7 +198,11 @@ let find_const reg name ty =
   | None -> None
   | Some entries ->
       let rec go = function
-        | [] -> None
+        | [] ->
+            (* internal (quarantined) constants match by name alone *)
+            (match List.find_opt (fun e -> e.c_status = "internal") entries with
+             | Some e -> Some (e, [])
+             | None -> None)
         | e :: r -> (match tymatch e.c_scheme ty [] with Some inst -> Some (e, inst) | None -> go r)
       in
       go entries

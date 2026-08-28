@@ -113,3 +113,10 @@ Theorem idx_idx_n : forall n :e omega, 1 <= n -> idx (idx_n n) = idx_n n.
 Admitted.
 Theorem dimindex_one : dimindex 1 = 1.
 Admitted.
+
+// Concatenation and splitting of vectors (HOL Light pastecart/fstcart/sndcart);
+// the index types are passed explicitly because the dimensions depend on them.
+Definition pastecart : set -> set -> set -> set -> set :=
+  fun M N x y => fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then x i else y (minus_nat i (dimindex M)).
+Definition fstcart : set -> set -> set := fun M z => fun i :e idx M => z i.
+Definition sndcart : set -> set -> set -> set := fun M N z => fun i :e idx N => z (i + dimindex M).

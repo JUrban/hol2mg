@@ -482,8 +482,9 @@ let tokenize s =
     else if String.contains sym_chars c then begin
       let j = ref !i in
       while !j < n && String.contains sym_chars s.[!j] do incr j done;
-      (* ":e" and "/:e" end with a letter *)
+      (* ":e" and "/:e" end with a letter; "\/_" (family union) ends with an underscore *)
       if !j < n && s.[!j] = 'e' && s.[!j - 1] = ':' && (!j + 1 >= n || not (is_name_char s.[!j + 1])) then incr j;
+      if !j < n && s.[!j] = '_' && String.sub s !i (!j - !i) = "\\/" && (!j + 1 >= n || not (is_name_char s.[!j + 1])) then incr j;
       let sym = String.sub s !i (!j - !i) in
       (* split "|" and ":" when they are structural *)
       if sym = "|" then toks := TBar :: !toks

@@ -1,0 +1,8 @@
+{
+  "name": "standard",
+  "description": "HOL Light core plus selected Library files (number theory, cardinals, well-orders, closures, sums/products)",
+  "roots": ["Library/prime.ml", "Library/binomial.ml", "Library/floor.ml", "Library/products.ml", "Library/integer.ml",
+            "Library/card.ml", "Library/wo.ml", "Library/rstc.ml", "Library/isum.ml", "Library/agm.ml", "Library/pocklington.ml"],
+  "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
+  "mappings": ["core.json", "lists.json"]
+}
