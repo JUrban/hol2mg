@@ -872,6 +872,12 @@ Admitted.
 Theorem SEPARATE_CLOSED_CONES : forall N:set, N <> Empty -> forall c d c= R :^: idx N, conic N c /\ (closed N c /\ (conic N d /\ (closed N d /\ c :/\: d c= {vec N 0}))) -> exists e0 :e R, 0 < e0 /\ forall x y :e R :^: idx N, x :e c /\ y :e d -> e0 * (if vector_norm N x <= vector_norm N y then vector_norm N y else vector_norm N x) <= distance N (x,y).
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:1561 / CONTINUOUS_ON_COMPACT_SURFACE_PROJECTION
+// Source hash: md5:68c6196337635bb4beb7caf4d292b47e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem CONTINUOUS_ON_COMPACT_SURFACE_PROJECTION : forall N:set, N <> Empty -> forall s v c= R :^: idx N, forall d:set -> set, (forall x :e R :^: idx N, d x :e R) -> compact N s /\ (s c= v :\: {vec N 0} /\ (conic N v /\ (forall x :e R :^: idx N, forall k :e R, x :e v :\: {vec N 0} -> (0 < k /\ vector_mul N k x :e s <-> d x = k)))) -> continuous_on_hl N N (fun x:set => vector_mul N (d x) x) (v :\: {vec N 0}).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:1616 / affine_dependent
 // Source hash: md5:00762d1d1731a7ed132553848ae29f92
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -1278,6 +1284,18 @@ Admitted.
 // Source hash: md5:b7ae3b8ae602486f1ae2c70ae6947d89
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem FRONTIER_OF_COMPONENTS_CLOSED_COMPLEMENT : forall N:set, N <> Empty -> forall s c c= R :^: idx N, closed N s /\ c :e components N ((R :^: idx N) :\: s) -> frontier N c c= s.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:2374 / CONTAINS_COMPONENT_OF_COMPACT_FRONTIER
+// Source hash: md5:2ee753e98cf47c758e45965fc4217d10
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONTAINS_COMPONENT_OF_COMPACT_FRONTIER : forall N:set, N <> Empty -> forall s c c= R :^: idx N, compact N s /\ c :e components N s -> exists d c= R :^: idx N, d :e components N (frontier N s) /\ d c= c.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:2404 / CARD_LE_COMPONENTS_FRONTIER
+// Source hash: md5:52f1118a40513cc649beba4567be19bc
+// Status: transport_required (bridges: hol_cart_setexp, hol_le_c_atleastp, hol_real_R)
+Theorem CARD_LE_COMPONENTS_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s -> atleastp (components N s) (components N (frontier N s)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:2418 / CONTAINS_COMPONENT_OF_CLOSURE_FRONTIER
@@ -2612,6 +2630,24 @@ Admitted.
 Theorem OPEN_CONVEX_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, open N s -> open N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s).
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:6471 / COMPACT_CONVEX_COMBINATIONS
+// Source hash: md5:56fc616bfe03135241d209f1a1c342fe
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem COMPACT_CONVEX_COMBINATIONS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ compact N t -> compact N (\/_ x :e R :^: idx N, \/_ u :e R, {vector_add N (vector_mul N (1 + - u) x) (vector_mul N u y) | y :e R :^: idx N, 0 <= u /\ (u <= 1 /\ (x :e s /\ y :e t))}).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:6504 / COMPACT_CONVEX_HULL
+// Source hash: md5:f3407ac72f243135f1f4edfc9bfaf2b0
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_CONVEX_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s -> compact N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:6598 / FINITE_IMP_COMPACT_CONVEX_HULL
+// Source hash: md5:bdffb5ed7b85822cd507e1b56f94a544
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem FINITE_IMP_COMPACT_CONVEX_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s -> compact N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:6602 / CONVEX_HULL_INTERIOR_SUBSET
 // Source hash: md5:8987dbad9a7a461772dc57e803f3c6e9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -2700,6 +2736,12 @@ Admitted.
 // Source hash: md5:640f6ef0c58caef5c2da59528f10e74c
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem CLOSEST_POINT_LIPSCHITZ : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x y :e R :^: idx N, convex N s /\ (closed N s /\ ~ s = Empty) -> distance N (closest_point N s x,closest_point N s y) <= distance N (x,y).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:6834 / CONTINUOUS_AT_CLOSEST_POINT
+// Source hash: md5:b01c182e0e33b17beb822982d5ba4683
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem CONTINUOUS_AT_CLOSEST_POINT : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous A (R :^: idx A) (fun x0:set => closest_point A s x0) (at A x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6840 / CONTINUOUS_ON_CLOSEST_POINT
@@ -2792,6 +2834,18 @@ Admitted.
 Theorem SEPARATING_HYPERPLANE_AFFINE_HULLS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ~ s = Empty /\ (~ t = Empty /\ hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} t = Empty) -> exists a :e R :^: idx N, exists b c :e R, ~ a = vec N 0 /\ (b < c /\ ((forall x :e R :^: idx N, x :e s -> dot N a x = b) /\ forall x :e R :^: idx N, x :e t -> dot N a x = c)).
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:7071 / SUPPORTING_HYPERPLANE_COMPACT_POINT_SUP
+// Source hash: md5:2573e4a92e70b04e70ae29009845924c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem SUPPORTING_HYPERPLANE_COMPACT_POINT_SUP : forall N:set, N <> Empty -> forall a c :e R :^: idx N, forall s c= R :^: idx N, compact N s /\ ~ s = Empty -> exists b :e R, exists y :e R :^: idx N, y :e s /\ (dot N a (vector_sub N y c) = b /\ forall x :e R :^: idx N, x :e s -> dot N a (vector_sub N x c) <= b).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:7087 / SUPPORTING_HYPERPLANE_COMPACT_POINT_INF
+// Source hash: md5:ebb5f2bfb92806ac6797f20c192890cd
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem SUPPORTING_HYPERPLANE_COMPACT_POINT_INF : forall N:set, N <> Empty -> forall a c :e R :^: idx N, forall s c= R :^: idx N, compact N s /\ ~ s = Empty -> exists b :e R, exists y :e R :^: idx N, y :e s /\ (dot N a (vector_sub N y c) = b /\ forall x :e R :^: idx N, x :e s -> b <= dot N a (vector_sub N x c)).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:7101 / SUPPORTING_HYPERPLANE_CLOSED_POINT
 // Source hash: md5:0c61de93afd3d1ad295ac6265ae66bee
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -2820,6 +2874,30 @@ Admitted.
 // Source hash: md5:04ce4a06a36d855712317bfe15525ad5
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem SEPARATING_HYPERPLANE_CLOSED_0 : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (closed N s /\ ~ vec N 0 :e s) -> exists a :e R :^: idx N, exists b :e R, ~ a = vec N 0 /\ (0 < b /\ forall x :e R :^: idx N, x :e s -> b < dot N a x).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:7195 / SEPARATING_HYPERPLANE_CLOSED_COMPACT
+// Source hash: md5:9fcd647da12b785f8a20fdf851482c5a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem SEPARATING_HYPERPLANE_CLOSED_COMPACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (closed N s /\ (convex N t /\ (compact N t /\ (~ t = Empty /\ s :/\: t = Empty)))) -> exists a :e R :^: idx N, exists b :e R, (forall x :e R :^: idx N, x :e s -> dot N a x < b) /\ forall x :e R :^: idx N, x :e t -> b < dot N a x.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:7248 / SEPARATING_HYPERPLANE_COMPACT_CLOSED
+// Source hash: md5:0c6c7a9f3c880c79427d2a0e194d234c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem SEPARATING_HYPERPLANE_COMPACT_CLOSED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (compact N s /\ (~ s = Empty /\ (convex N t /\ (closed N t /\ s :/\: t = Empty)))) -> exists a :e R :^: idx N, exists b :e R, (forall x :e R :^: idx N, x :e s -> dot N a x < b) /\ forall x :e R :^: idx N, x :e t -> b < dot N a x.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:7263 / SEPARATING_HYPERPLANE_COMPACT_CLOSED_NONZERO
+// Source hash: md5:24f9f47c432914799b3d2c411aeaf9b7
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
+Theorem SEPARATING_HYPERPLANE_COMPACT_CLOSED_NONZERO : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (compact N s /\ (~ s = Empty /\ (convex N t /\ (closed N t /\ s :/\: t = Empty)))) -> exists a :e R :^: idx N, exists b :e R, ~ a = vec N 0 /\ ((forall x :e R :^: idx N, x :e s -> dot N a x < b) /\ forall x :e R :^: idx N, x :e t -> b < dot N a x).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:7291 / SEPARATING_HYPERPLANE_COMPACT_COMPACT
+// Source hash: md5:50f6e1d001a3d31337c76b0ef58f3634
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
+Theorem SEPARATING_HYPERPLANE_COMPACT_COMPACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (compact N s /\ (convex N t /\ (compact N t /\ s :/\: t = Empty))) -> exists a :e R :^: idx N, exists b :e R, ~ a = vec N 0 /\ ((forall x :e R :^: idx N, x :e s -> dot N a x < b) /\ forall x :e R :^: idx N, x :e t -> b < dot N a x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:7320 / SEPARATING_HYPERPLANE_SET_0_INSPAN
@@ -3086,10 +3164,28 @@ Admitted.
 Theorem HELLY_CLOSED_ALT : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), (forall s c= R :^: idx N, s :e f -> convex N s /\ closed N s) /\ ((exists s c= R :^: idx N, s :e f /\ bounded_hl N s) /\ (forall t c= Power (R :^: idx N), t c= f /\ (finite t /\ finite_cardinality t <= dimindex N + 1) -> ~ {x :e R :^: idx N | forall Y :e t, x :e Y} = Empty)) -> ~ {x :e R :^: idx N | forall Y :e f, x :e Y} = Empty.
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:8226 / HELLY_COMPACT_ALT
+// Source hash: md5:e849f79ad89b37510c2eee360341df38
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem HELLY_COMPACT_ALT : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), (forall s c= R :^: idx N, s :e f -> convex N s /\ compact N s) /\ (forall t c= Power (R :^: idx N), t c= f /\ (finite t /\ finite_cardinality t <= dimindex N + 1) -> ~ {x :e R :^: idx N | forall Y :e t, x :e Y} = Empty) -> ~ {x :e R :^: idx N | forall Y :e f, x :e Y} = Empty.
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:8239 / HELLY_CLOSED
 // Source hash: md5:d88d92381d78387191044d1c897b058e
 // Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem HELLY_CLOSED : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), (finite f -> dimindex N + 1 <= finite_cardinality f) /\ ((forall s c= R :^: idx N, s :e f -> convex N s /\ closed N s) /\ ((exists s c= R :^: idx N, s :e f /\ bounded_hl N s) /\ (forall t c= Power (R :^: idx N), t c= f /\ (finite t /\ finite_cardinality t = dimindex N + 1) -> ~ {x :e R :^: idx N | forall Y :e t, x :e Y} = Empty))) -> ~ {x :e R :^: idx N | forall Y :e f, x :e Y} = Empty.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:8259 / HELLY_COMPACT
+// Source hash: md5:a3c9d798358dfc435c51e433aba50547
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem HELLY_COMPACT : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), (finite f -> dimindex N + 1 <= finite_cardinality f) /\ ((forall s c= R :^: idx N, s :e f -> convex N s /\ compact N s) /\ (forall t c= Power (R :^: idx N), t c= f /\ (finite t /\ finite_cardinality t = dimindex N + 1) -> ~ {x :e R :^: idx N | forall Y :e t, x :e Y} = Empty)) -> ~ {x :e R :^: idx N | forall Y :e f, x :e Y} = Empty.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:8277 / KIRCHBERGER
+// Source hash: md5:a9cb1aa5779c0f9d8a1753005e48c629
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem KIRCHBERGER : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (compact N t /\ (forall s' t' c= R :^: idx N, s' c= s /\ (t' c= t /\ (finite s' /\ (finite t' /\ finite_cardinality s' + finite_cardinality t' <= dimindex N + 2))) -> exists a :e R :^: idx N, exists b :e R, (forall x :e R :^: idx N, x :e s' -> dot N a x < b) /\ forall x :e R :^: idx N, x :e t' -> b < dot N a x)) -> exists a :e R :^: idx N, exists b :e R, ~ a = vec N 0 /\ ((forall x :e R :^: idx N, x :e s -> dot N a x < b) /\ forall x :e R :^: idx N, x :e t -> b < dot N a x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:8387 / CONVEX_HULL_LINEAR_IMAGE
@@ -3188,6 +3284,12 @@ Admitted.
 Theorem CONNECTED_CONVEX_1 : forall s c= R :^: idx 1, connected 1 s <-> convex 1 s.
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:8597 / CONNECTED_COMPACT_INTERVAL_1
+// Source hash: md5:564db39fa22c699368fddf4497419728
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem CONNECTED_COMPACT_INTERVAL_1 : forall s c= R :^: idx 1, connected 1 s /\ compact 1 s <-> exists a b :e R :^: idx 1, s = closed_interval 1 (seq_cons (a,b) seq_nil).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:8601 / CONVEX_CONNECTED_1_GEN
 // Source hash: md5:e37772c4226b598ecb039158228fc37d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R)
@@ -3198,6 +3300,18 @@ Admitted.
 // Source hash: md5:519bf0a982d1e1a8adac9969793a082e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R)
 Theorem CONNECTED_CONVEX_1_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, dimindex N = 1 -> (connected N s <-> convex N s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:8613 / COMPACT_CONVEX_COLLINEAR_SEGMENT_ALT
+// Source hash: md5:50afcb4402353ef3e3914dadf6058a86
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem COMPACT_CONVEX_COLLINEAR_SEGMENT_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, ~ s = Empty /\ (compact N s /\ (connected N s /\ collinear N s)) -> exists a b :e R :^: idx N, s = closed_segment N (seq_cons (a,b) seq_nil).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:8654 / COMPACT_CONVEX_COLLINEAR_SEGMENT
+// Source hash: md5:d6c4ebf208ef239206402d99ee4cfd41
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem COMPACT_CONVEX_COLLINEAR_SEGMENT : forall N:set, N <> Empty -> forall s c= R :^: idx N, ~ s = Empty /\ (compact N s /\ (convex N s /\ collinear N s)) -> exists a b :e R :^: idx N, s = closed_segment N (seq_cons (a,b) seq_nil).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:8661 / IN_CONVEX_HULL_INTERVAL_1
@@ -3560,10 +3674,22 @@ Admitted.
 Theorem IVT_INCREASING_COMPONENT_ON_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (f a k <= y /\ y <= f b k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:10304 / IVT_INCREASING_COMPONENT_1
+// Source hash: md5:1c0b9424c7a57905a6c003bc5dcff2db
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem IVT_INCREASING_COMPONENT_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> continuous N (R :^: idx 1) f (at 1 x)) /\ (f a k <= y /\ y <= f b k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:10313 / IVT_DECREASING_COMPONENT_ON_1
 // Source hash: md5:e52958e09affbf5cec9eacc29feec28e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, nat_le_SNoLe)
 Theorem IVT_DECREASING_COMPONENT_ON_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (f b k <= y /\ y <= f a k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:10324 / IVT_DECREASING_COMPONENT_1
+// Source hash: md5:3c34be3e648859739956ed10d8967e0b
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem IVT_DECREASING_COMPONENT_1 : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R, forall k :e omega, drop a <= drop b /\ (1 <= k /\ (k <= dimindex N /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> continuous N (R :^: idx 1) f (at 1 x)) /\ (f b k <= y /\ y <= f a k)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ f x k = y.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10337 / CONVEX_ON_CONVEX_HULL_BOUND
@@ -4268,6 +4394,24 @@ Admitted.
 Theorem AFFINE_HULL_RELATIVE_FRONTIER_BOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ ~ (exists a :e R :^: idx N, s = {a}) -> hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} (relative_frontier N s) = hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s.
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:12461 / KREIN_MILMAN_RELATIVE_FRONTIER
+// Source hash: md5:32a1f1f69df777d412c9bac2bdf7cfe1
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem KREIN_MILMAN_RELATIVE_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (compact N s /\ ~ (exists a :e R :^: idx N, s = {a})) -> s = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:12471 / KREIN_MILMAN_RELATIVE_BOUNDARY
+// Source hash: md5:16f408e1ef1af322b52343b0e21c7c42
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem KREIN_MILMAN_RELATIVE_BOUNDARY : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (compact N s /\ ~ (exists a :e R :^: idx N, s = {a})) -> s = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (s :\: relative_interior N s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:12479 / KREIN_MILMAN_FRONTIER
+// Source hash: md5:0a255bc0ad33e3fd3a6ab32848656737
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem KREIN_MILMAN_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ compact N s -> s = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (frontier N s).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:12488 / RELATIVE_FRONTIER_NOT_SING
 // Source hash: md5:10971f70ece14ba7523d5ea06a7afa81
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -4454,6 +4598,36 @@ Admitted.
 Theorem HAUSDIST_COMPLEMENTS_CONVEX_LE : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (bounded_hl N s /\ (convex N t /\ (bounded_hl N t /\ (~ s = Empty /\ ~ t = Empty)))) -> hausdist N ((R :^: idx N) :\: s,(R :^: idx N) :\: t) <= hausdist N (s,t).
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:13410 / CONVEX_HAUSDIST_LIMIT
+// Source hash: md5:dad2b2565d3ad6e139914ddab8a46d09
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem CONVEX_HAUSDIST_LIMIT : forall N:set, N <> Empty -> forall s :e Power (R :^: idx N) :^: omega, forall t c= R :^: idx N, eventually omega {n :e omega | bounded_hl N (s n) /\ (convex N (s n) /\ ~ s n = Empty)} sequentially /\ (compact N t /\ tendsto 1 omega (fun n:set => lift (hausdist N (s n,t))) (vec 1 0) sequentially) -> convex N t.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:13448 / COMPLETE_HAUSDIST_CONVEX
+// Source hash: md5:7d3a0f29e6de276b79ae993e744bec78
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem COMPLETE_HAUSDIST_CONVEX : forall N:set, N <> Empty -> forall f :e Power (R :^: idx N) :^: omega, forall c c= R :^: idx N, closed N c /\ ((forall n :e omega, bounded_hl N (f n) /\ (convex N (f n) /\ (~ f n = Empty /\ f n c= c))) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, N0 <= m /\ N0 <= n -> hausdist N (f m,f n) < e0)) -> exists s c= R :^: idx N, compact N s /\ (convex N s /\ (~ s = Empty /\ (s c= c /\ tendsto 1 omega (fun n:set => lift (hausdist N (f n,s))) (vec 1 0) sequentially))).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:13465 / COMPLETE_HAUSDIST_CONVEX_UNIV
+// Source hash: md5:f2260fb28b53acbc8983f1a54d4a0b30
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem COMPLETE_HAUSDIST_CONVEX_UNIV : forall N:set, N <> Empty -> forall f :e Power (R :^: idx N) :^: omega, (forall n :e omega, bounded_hl N (f n) /\ (convex N (f n) /\ ~ f n = Empty)) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, N0 <= m /\ N0 <= n -> hausdist N (f m,f n) < e0) -> exists s c= R :^: idx N, compact N s /\ (convex N s /\ (~ s = Empty /\ tendsto 1 omega (fun n:set => lift (hausdist N (f n,s))) (vec 1 0) sequentially)).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:13477 / BLASCHKE
+// Source hash: md5:84d9cdcd7ddd4f353cf7947bb280e148
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
+Theorem BLASCHKE : forall N:set, N <> Empty -> forall f :e Power (R :^: idx N) :^: omega, forall c c= R :^: idx N, compact N c /\ (forall n :e omega, convex N (f n) /\ (~ f n = Empty /\ f n c= c)) -> exists r:set -> set, (forall x :e omega, r x :e omega) /\ exists s c= R :^: idx N, (forall m n :e omega, m < n -> r m < r n) /\ (compact N s /\ (convex N s /\ (~ s = Empty /\ (s c= c /\ tendsto 1 omega (fun n:set => lift (hausdist N (f (r n),s))) (vec 1 0) sequentially)))).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:13495 / BLASCHKE_UNIV
+// Source hash: md5:f8ce83ac974a31aea7b5e5341ccea31d
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
+Theorem BLASCHKE_UNIV : forall N:set, N <> Empty -> forall f :e Power (R :^: idx N) :^: omega, forall c c= R :^: idx N, bounded_hl N c /\ (forall n :e omega, convex N (f n) /\ (~ f n = Empty /\ f n c= c)) -> exists r:set -> set, (forall x :e omega, r x :e omega) /\ exists s c= R :^: idx N, (forall m n :e omega, m < n -> r m < r n) /\ (compact N s /\ (convex N s /\ (~ s = Empty /\ tendsto 1 omega (fun n:set => lift (hausdist N (f (r n),s))) (vec 1 0) sequentially))).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:13512 / CONVEX_CLOSURE_INTERIOR
 // Source hash: md5:7732b2762c76b5af5b137f1a8c3ec234
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -4556,10 +4730,28 @@ Admitted.
 Theorem CLOSED_RELATIVE_BOUNDARY : forall A:set, A <> Empty -> forall s c= R :^: idx A, closed A s -> closed A (s :\: relative_interior A s).
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:13799 / COMPACT_RELATIVE_BOUNDARY
+// Source hash: md5:d410a192b86c0186d47214033c825714
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_RELATIVE_BOUNDARY : forall A:set, A <> Empty -> forall s c= R :^: idx A, compact A s -> compact A (s :\: relative_interior A s).
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:13804 / BOUNDED_RELATIVE_FRONTIER
 // Source hash: md5:c5a7cdba6bdffad64a03fcf775cc7722
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BOUNDED_RELATIVE_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> bounded_hl N (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:13809 / COMPACT_RELATIVE_FRONTIER_BOUNDED
+// Source hash: md5:de1eac62c42ebcf22bd3c0ddeb3102be
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_RELATIVE_FRONTIER_BOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> compact N (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:13814 / COMPACT_RELATIVE_FRONTIER
+// Source hash: md5:2a8b296eb100a0cbda2c14163ec3b430
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_RELATIVE_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s -> compact N (relative_frontier N s).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:13818 / CONVEX_SAME_RELATIVE_INTERIOR_CLOSURE
@@ -4692,6 +4884,12 @@ Admitted.
 // Source hash: md5:60f106b5eec7fee0e2ca7ef5c582ce48
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem CLOSED_SEGMENT : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, closed N (closed_segment N (seq_cons (a,b) seq_nil))) /\ forall a b :e R :^: idx N, closed N (open_segment N (a,b)) <-> a = b.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:14338 / COMPACT_SEGMENT
+// Source hash: md5:3f9607888306721572b40426065d7ecb
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem COMPACT_SEGMENT : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, compact N (closed_segment N (seq_cons (a,b) seq_nil))) /\ forall a b :e R :^: idx N, compact N (open_segment N (a,b)) <-> a = b.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:14343 / AFFINE_HULL_SEGMENT
@@ -4902,6 +5100,30 @@ Admitted.
 // Source hash: md5:ef4db395be3c65fcbe165e0d71044bfe
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
 Theorem DENSE_COMPLEMENT_CONVEX_CLOSED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, aff_dim N t < aff_dim N s /\ (convex N s /\ closed N s) -> closure N (s :\: t) = s.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:14997 / COMPACT_FRONTIER_LINE_LEMMA
+// Source hash: md5:fa98b5329fe9b3ce3f71a5cbf073b153
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem COMPACT_FRONTIER_LINE_LEMMA : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, compact N s /\ (vec N 0 :e s /\ ~ x = vec N 0) -> exists u :e R, 0 <= u /\ (vector_mul N u x :e frontier N s /\ forall v :e R, u < v -> ~ vector_mul N v x :e s).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:15071 / STARLIKE_COMPACT_PROJECTIVE
+// Source hash: md5:c4a3821acbc6092b0c07d53ca7ad5b99
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem STARLIKE_COMPACT_PROJECTIVE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, compact N s /\ (a :e relative_interior N s /\ (forall x :e R :^: idx N, x :e s -> open_segment N (a,x) c= relative_interior N s)) -> homeomorphic N N (s :\: relative_interior N s) (sphere N (a,1) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s) /\ (homeomorphic N N s (cball N (a,1) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s) /\ homeomorphic N N (relative_interior N s) (ball N (a,1) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s)).
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:15416 / HOMEOMORPHIC_CONVEX_COMPACT
+// Source hash: md5:7e4bba1e2838c49ec267b2858c495d96
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem HOMEOMORPHIC_CONVEX_COMPACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (compact N s /\ (~ interior N s = Empty /\ (convex N t /\ (compact N t /\ ~ interior N t = Empty)))) -> homeomorphic N N s t.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:15424 / HOMEOMORPHIC_CONVEX_COMPACT_CBALL
+// Source hash: md5:3a8496bbf3b196a9ccb4e698f9763c7c
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem HOMEOMORPHIC_CONVEX_COMPACT_CBALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall b :e R :^: idx N, forall e0 :e R, convex N s /\ (compact N s /\ (~ interior N s = Empty /\ 0 < e0)) -> homeomorphic N N s (cball N (b,e0)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:15432 / HOMEOMORPHIC_CLOSED_INTERVALS
@@ -5126,6 +5348,12 @@ Admitted.
 Theorem INTERIOR_CONVEX_HULL_3 : forall a b c :e R :^: idx_n 2, ~ collinear (idx_n 2) {a,b,c} -> interior (idx_n 2) (hull (R :^: idx_n 2) {x :e Power (R :^: idx_n 2) | convex (idx_n 2) x} {a,b,c}) = {v :e R :^: idx_n 2 | exists x y z :e R, 0 < x /\ (x < 1 /\ (0 < y /\ (y < 1 /\ (0 < z /\ (z < 1 /\ (x + y + z = 1 /\ vector_add (idx_n 2) (vector_mul (idx_n 2) x a) (vector_add (idx_n 2) (vector_mul (idx_n 2) y b) (vector_mul (idx_n 2) z c)) = v))))))}.
 Admitted.
 
+// HOL Light: Multivariate/convex.ml:17283 / CLOSURE_CONVEX_HULL
+// Source hash: md5:b731268bb95139aa3e8a2394f84f094b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CLOSURE_CONVEX_HULL : forall A:set, A <> Empty -> forall s c= R :^: idx A, compact A s -> closure A (hull (R :^: idx A) {x :e Power (R :^: idx A) | convex A x} s) = hull (R :^: idx A) {x :e Power (R :^: idx A) | convex A x} s.
+Admitted.
+
 // HOL Light: Multivariate/convex.ml:17287 / RELATIVE_FRONTIER_CONVEX_HULL_EXPLICIT
 // Source hash: md5:486a306c3aa46fcb0ad5e9588a969c79
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
@@ -5292,6 +5520,12 @@ Admitted.
 // Source hash: md5:49869533e1e93f80205439bd546e131a
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem CONVEX_ON_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, open N s /\ convex_on N f s -> continuous_on_hl N 1 (fun x:set => lift (f x)) s.
+Admitted.
+
+// HOL Light: Multivariate/convex.ml:18117 / CONVEX_IMP_LIPSCHITZ
+// Source hash: md5:090762ccadeb3e3deaa0c7aad66b1d8a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem CONVEX_IMP_LIPSCHITZ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s t c= R :^: idx N, convex_on N f t /\ (compact N s /\ s c= relative_interior N t) -> exists B :e R, 0 < B /\ forall x y :e R :^: idx N, x :e s /\ y :e s -> abs_SNo (f x + - f y) <= B * vector_norm N (vector_sub N x y).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:18212 / CONVEX_BOUNDS_LEMMA

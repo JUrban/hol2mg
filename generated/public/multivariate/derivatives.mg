@@ -2,9 +2,1251 @@
 // Do not edit: regenerate from the exporter, mapping registry, or overrides.
 // Statements are admitted imports; none is a new axiom.
 
+// HOL Light: Multivariate/derivatives.ml:18 / has_derivative
+// Source hash: md5:df81f1fee9417b946834fb8faf68f613
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem has_derivative_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall net0 :e net (R :^: idx B), has_derivative A B f f' net0 <-> linear B A f' /\ tendsto A (R :^: idx B) (fun y:set => vector_mul A (recip_SNo (vector_norm B (vector_sub B y (netlimit (R :^: idx B) net0)))) (vector_sub A (f y) (vector_add A (f (netlimit (R :^: idx B) net0)) (f' (vector_sub B y (netlimit (R :^: idx B) net0)))))) (vec A 0) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:29 / has_derivative_within
+// Source hash: md5:33236024836f5217e6b6f7835d8d2574
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem has_derivative_within : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, has_derivative N M f f' (within (R :^: idx M) (at M x) s) <-> linear M N f' /\ tendsto N (R :^: idx M) (fun y:set => vector_mul N (recip_SNo (vector_norm M (vector_sub M y x))) (vector_sub N (f y) (vector_add N (f x) (f' (vector_sub M y x))))) (vec N 0) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:39 / has_derivative_at
+// Source hash: md5:6c176423ae3b330e36a127ac006002a0
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem has_derivative_at : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) <-> linear M N f' /\ tendsto N (R :^: idx M) (fun y:set => vector_mul N (recip_SNo (vector_norm M (vector_sub M y x))) (vector_sub N (f y) (vector_add N (f x) (f' (vector_sub M y x))))) (vec N 0) (at M x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:52 / HAS_DERIVATIVE_WITHIN
+// Source hash: md5:d24749c772378d1fde6c84fa146397cf
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall f':set -> set, (forall x0 :e R :^: idx B, f' x0 :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, has_derivative A B f f' (within (R :^: idx B) (at B x) s) <-> linear B A f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, x' :e s /\ (0 < vector_norm B (vector_sub B x' x) /\ vector_norm B (vector_sub B x' x) < d) -> vector_norm A (vector_sub A (vector_sub A (f x') (f x)) (f' (vector_sub B x' x))) :/: vector_norm B (vector_sub B x' x) < e0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:66 / HAS_DERIVATIVE_AT
+// Source hash: md5:142a96245616205601990ee30109fb43
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_AT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall f':set -> set, (forall x0 :e R :^: idx B, f' x0 :e R :^: idx A) -> forall x :e R :^: idx B, has_derivative A B f f' (at B x) <-> linear B A f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, 0 < vector_norm B (vector_sub B x' x) /\ vector_norm B (vector_sub B x' x) < d -> vector_norm A (vector_sub A (vector_sub A (f x') (f x)) (f' (vector_sub B x' x))) :/: vector_norm B (vector_sub B x' x) < e0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:77 / HAS_DERIVATIVE_AT_WITHIN
+// Source hash: md5:e0b3b5e9305d8ac0b987d9298a1dd714
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_AT_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, has_derivative A B f f' (at B x) -> has_derivative A B f f' (within (R :^: idx B) (at B x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:82 / HAS_DERIVATIVE_WITHIN_OPEN
+// Source hash: md5:41a7992274d0124ee19e4622f899d095
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_WITHIN_OPEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall a :e R :^: idx B, forall s c= R :^: idx B, a :e s /\ open B s -> (has_derivative A B f f' (within (R :^: idx B) (at B a) s) <-> has_derivative A B f f' (at B a)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:89 / HAS_DERIVATIVE_WITHIN_OPEN_IN
+// Source hash: md5:d5d2895b801cfe8fe5de33097d8a80cb
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net, hol_typedef_topology)
+Theorem HAS_DERIVATIVE_WITHIN_OPEN_IN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall a :e R :^: idx M, forall s u c= R :^: idx M, a :e s /\ s :e subtopology (R :^: idx M) (euclidean M) u -> (has_derivative N M f f' (within (R :^: idx M) (at M a) s) <-> has_derivative N M f f' (within (R :^: idx M) (at M a) u)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:101 / HAS_DERIVATIVE_LINEAR
+// Source hash: md5:647c4533cef32b1d61a9c458ca52ed09
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_LINEAR : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), linear A B f -> has_derivative B A f f net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:108 / HAS_DERIVATIVE_ID
+// Source hash: md5:b1c6496c07264e5857995f02a51d6e7f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ID : forall A:set, A <> Empty -> forall net0 :e net (R :^: idx A), has_derivative A A (fun x:set => x) (fun h:set => h) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:112 / HAS_DERIVATIVE_CONST
+// Source hash: md5:7fbdeb9a273c3dabea1ef83c2af983d9
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_CONST : forall A B:set, A <> Empty -> B <> Empty -> forall c :e R :^: idx B, forall net0 :e net (R :^: idx A), has_derivative B A (fun x:set => c) (fun h:set => vec B 0) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:117 / HAS_DERIVATIVE_LIFT_COMPONENT
+// Source hash: md5:a42fc0b7a74ee1972df67e3728a2b82a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_LIFT_COMPONENT : forall N:set, N <> Empty -> forall i :e omega, forall net0 :e net (R :^: idx N), has_derivative 1 N (fun x:set => lift (x i)) (fun x:set => lift (x i)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:123 / HAS_DERIVATIVE_CMUL
+// Source hash: md5:86c461efde813e715029b26b43ccd85c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall f':set -> set, (forall x :e R :^: idx A, f' x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), forall c :e R, has_derivative B A f f' net0 -> has_derivative B A (fun x:set => vector_mul B c (f x)) (fun h:set => vector_mul B c (f' h)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:133 / HAS_DERIVATIVE_CMUL_EQ
+// Source hash: md5:997c363842a70ce4756dfa7b7ca245e5
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_CMUL_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall net0 :e net (R :^: idx B), forall c :e R, ~ c = 0 -> (has_derivative A B (fun x:set => vector_mul A c (f x)) (fun h:set => vector_mul A c (f' h)) net0 <-> has_derivative A B f f' net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:144 / HAS_DERIVATIVE_NEG
+// Source hash: md5:761c14a6d6c0822c97a815adac08cb48
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall f':set -> set, (forall x :e R :^: idx A, f' x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), has_derivative B A f f' net0 -> has_derivative B A (fun x:set => vector_neg B (f x)) (fun h:set => vector_neg B (f' h)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:150 / HAS_DERIVATIVE_NEG_EQ
+// Source hash: md5:12313960c895e0d18e48185e0175bfa4
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_NEG_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall f':set -> set, (forall x :e R :^: idx A, f' x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), has_derivative B A (fun x:set => vector_neg B (f x)) (fun h:set => vector_neg B (f' h)) net0 <-> has_derivative B A f f' net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:157 / HAS_DERIVATIVE_ADD
+// Source hash: md5:6eeca142f51b712815ff110ea5dd3281
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall f':set -> set, (forall x :e R :^: idx A, f' x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall g':set -> set, (forall x :e R :^: idx A, g' x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), has_derivative B A f f' net0 /\ has_derivative B A g g' net0 -> has_derivative B A (fun x:set => vector_add B (f x) (g x)) (fun h:set => vector_add B (f' h) (g' h)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:168 / HAS_DERIVATIVE_SUB
+// Source hash: md5:d97e54a0382a60d7cbbfe07b34d730d4
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall f':set -> set, (forall x :e R :^: idx A, f' x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall g':set -> set, (forall x :e R :^: idx A, g' x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), has_derivative B A f f' net0 /\ has_derivative B A g g' net0 -> has_derivative B A (fun x:set => vector_sub B (f x) (g x)) (fun h:set => vector_sub B (f' h) (g' h)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:174 / HAS_DERIVATIVE_VSUM
+// Source hash: md5:66446592711bcb078de1438c49de3fce
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f':set -> set -> set, (forall x :e C, forall y :e R :^: idx A, f' x y :e R :^: idx B) -> forall f:set -> set -> set, (forall x :e C, forall y :e R :^: idx A, f x y :e R :^: idx B) -> forall net0 :e net (R :^: idx A), forall s c= C, finite s /\ (forall a :e C, a :e s -> has_derivative B A (f a) (f' a) net0) -> has_derivative B A (fun x:set => vsum C B s (fun a:set => f a x)) (fun h:set => vsum C B s (fun a:set => f' a h)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:186 / HAS_DERIVATIVE_VSUM_NUMSEG
+// Source hash: md5:919d3fbfb997d9c0d272e97b14345778
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_DERIVATIVE_VSUM_NUMSEG : forall A B:set, A <> Empty -> B <> Empty -> forall f':set -> set -> set, (forall x :e omega, forall y :e R :^: idx A, f' x y :e R :^: idx B) -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx A, f x y :e R :^: idx B) -> forall net0 :e net (R :^: idx A), forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> has_derivative B A (f i) (f' i) net0) -> has_derivative B A (fun x:set => vsum omega B {i :e omega | m <= i /\ i <= n} (fun i:set => f i x)) (fun h:set => vsum omega B {i :e omega | m <= i /\ i <= n} (fun i:set => f' i h)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:194 / HAS_DERIVATIVE_COMPONENTWISE_WITHIN
+// Source hash: md5:ddbf4b4ff6f588d99616c183e07c3711
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_DERIVATIVE_COMPONENTWISE_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall a :e R :^: idx M, forall s c= R :^: idx M, has_derivative N M f f' (within (R :^: idx M) (at M a) s) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> has_derivative 1 M (fun x:set => lift (f x i)) (fun x:set => lift (f' x i)) (within (R :^: idx M) (at M a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:208 / HAS_DERIVATIVE_COMPONENTWISE_AT
+// Source hash: md5:5f78800e6185a538b365e0174ecf3d6c
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_DERIVATIVE_COMPONENTWISE_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall a :e R :^: idx M, has_derivative N M f f' (at M a) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> has_derivative 1 M (fun x:set => lift (f x i)) (fun x:set => lift (f' x i)) (at M a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:216 / HAS_DERIVATIVE_PASTECART_EQ
+// Source hash: md5:f691645a3610cb9366dea06e383d8f2c
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_PASTECART_EQ : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall net0 :e net (R :^: idx M), forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx P) -> (has_derivative (idx_n (dimindex N + dimindex P)) M (fun x:set => pastecart N P (f x) (g x)) (fun x:set => pastecart N P (f' x) (g' x)) net0 <-> has_derivative N M f f' net0 /\ has_derivative P M g g' net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:226 / HAS_DERIVATIVE_PASTECART
+// Source hash: md5:0846486b6a55a893c1edd1946ae84a62
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_PASTECART : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall net0 :e net (R :^: idx M), forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx P) -> has_derivative N M f f' net0 /\ has_derivative P M g g' net0 -> has_derivative (idx_n (dimindex N + dimindex P)) M (fun x:set => pastecart N P (f x) (g x)) (fun x:set => pastecart N P (f' x) (g' x)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:237 / HAS_DERIVATIVE_VMUL_COMPONENT
+// Source hash: md5:7230a76243e41091a84de8851e652cc9
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_DERIVATIVE_VMUL_COMPONENT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall net0 :e net (R :^: idx M), forall c:set -> set, (forall x :e R :^: idx M, c x :e R :^: idx N) -> forall c':set -> set, (forall x :e R :^: idx M, c' x :e R :^: idx N) -> forall k :e omega, forall v :e R :^: idx P, 1 <= k /\ (k <= dimindex N /\ has_derivative N M c c' net0) -> has_derivative P M (fun x:set => vector_mul P (c x k) v) (fun x:set => vector_mul P (c' x k) v) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:257 / HAS_DERIVATIVE_VMUL_DROP
+// Source hash: md5:8fc528ec9ba61ea345ec1181c9d1f8b1
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_VMUL_DROP : forall A B:set, A <> Empty -> B <> Empty -> forall net0 :e net (R :^: idx A), forall c:set -> set, (forall x :e R :^: idx A, c x :e R :^: idx 1) -> forall c':set -> set, (forall x :e R :^: idx A, c' x :e R :^: idx 1) -> forall v :e R :^: idx B, has_derivative 1 A c c' net0 -> has_derivative B A (fun x:set => vector_mul B (drop (c x)) v) (fun x:set => vector_mul B (drop (c' x)) v) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:262 / HAS_DERIVATIVE_LIFT_DOT
+// Source hash: md5:29406107ab6879ecf1a08dec9edc1f1e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_LIFT_DOT : forall M N:set, M <> Empty -> N <> Empty -> forall net0 :e net (R :^: idx M), forall v :e R :^: idx N, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> has_derivative N M f f' net0 -> has_derivative 1 M (fun x:set => lift (dot N v (f x))) (fun t:set => lift (dot N v (f' t))) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:280 / HAS_DERIVATIVE_TRANSFORM_WITHIN
+// Source hash: md5:9d5dba06847df83e2483691fe54dec34
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_TRANSFORM_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, forall d :e R, 0 < d /\ (x :e s /\ ((forall x' :e R :^: idx B, x' :e s /\ distance B (x',x) < d -> f x' = g x') /\ has_derivative A B f f' (within (R :^: idx B) (at B x) s))) -> has_derivative A B g f' (within (R :^: idx B) (at B x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:292 / HAS_DERIVATIVE_TRANSFORM_AT
+// Source hash: md5:1c7d88d6e912247282b32ec1b20fc35a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_TRANSFORM_AT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx A) -> forall x :e R :^: idx B, forall d :e R, 0 < d /\ ((forall x' :e R :^: idx B, distance B (x',x) < d -> f x' = g x') /\ has_derivative A B f f' (at B x)) -> has_derivative A B g f' (at B x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:300 / HAS_DERIVATIVE_TRANSFORM_WITHIN_OPEN
+// Source hash: md5:bf3f8f5f9e65777407ce5261b5e40982
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_TRANSFORM_WITHIN_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, forall x :e R :^: idx M, open M s /\ (x :e s /\ ((forall y :e R :^: idx M, y :e s -> f y = g y) /\ has_derivative N M f f' (at M x))) -> has_derivative N M g f' (at M x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:320 / differentiable
+// Source hash: md5:92c8c5b28b47382cc8030fd99f5483e2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem differentiable_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall net0 :e net (R :^: idx B), differentiable A B f net0 <-> exists f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) /\ has_derivative A B f f' net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:323 / differentiable_on
+// Source hash: md5:59b32ab026f8ab9f7dba64581a51fd47
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem differentiable_on_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, differentiable_on_hl A B f s <-> forall x :e R :^: idx B, x :e s -> differentiable A B f (within (R :^: idx B) (at B x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:326 / HAS_DERIVATIVE_IMP_DIFFERENTIABLE
+// Source hash: md5:964a868babf37d7aa5224aaf7365273d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_IMP_DIFFERENTIABLE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall net0 :e net (R :^: idx B), has_derivative A B f f' net0 -> differentiable A B f net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:330 / DIFFERENTIABLE_AT_WITHIN
+// Source hash: md5:115c72592e656ceb18996b1b11591600
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_AT_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall x :e R :^: idx B, differentiable A B f (at B x) -> differentiable A B f (within (R :^: idx B) (at B x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:335 / DIFFERENTIABLE_WITHIN_OPEN
+// Source hash: md5:53a19c0ad79211bae838b13fa6a9d7b3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_WITHIN_OPEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall a :e R :^: idx B, forall s c= R :^: idx B, a :e s /\ open B s -> (differentiable A B f (within (R :^: idx B) (at B a) s) <-> differentiable A B f (at B a)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:341 / DIFFERENTIABLE_AT_IMP_DIFFERENTIABLE_ON
+// Source hash: md5:94b41380a230ba26333b80143d8fb1da
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_AT_IMP_DIFFERENTIABLE_ON : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, (forall x :e R :^: idx B, x :e s -> differentiable A B f (at B x)) -> differentiable_on_hl A B f s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:345 / DIFFERENTIABLE_ON_EQ_DIFFERENTIABLE_AT
+// Source hash: md5:b1ee3978cce7aefb519f24fbc33a782b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_ON_EQ_DIFFERENTIABLE_AT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, open B s -> (differentiable_on_hl A B f s <-> forall x :e R :^: idx B, x :e s -> differentiable A B f (at B x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:350 / DIFFERENTIABLE_TRANSFORM_WITHIN
+// Source hash: md5:af400246747e5c0d82cb6460434bf6db
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_TRANSFORM_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, forall d :e R, 0 < d /\ (x :e s /\ ((forall x' :e R :^: idx B, x' :e s /\ distance B (x',x) < d -> f x' = g x') /\ differentiable A B f (within (R :^: idx B) (at B x) s))) -> differentiable A B g (within (R :^: idx B) (at B x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:359 / DIFFERENTIABLE_TRANSFORM_AT
+// Source hash: md5:d0a8a1af7c230075f86dd2426198ab28
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_TRANSFORM_AT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx A) -> forall x :e R :^: idx B, forall d :e R, 0 < d /\ ((forall x' :e R :^: idx B, distance B (x',x) < d -> f x' = g x') /\ differentiable A B f (at B x)) -> differentiable A B g (at B x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:368 / DIFFERENTIABLE_ON_EQ
+// Source hash: md5:605b300cfe6d5c17e30c28c28ed7029b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> f x = g x) /\ differentiable_on_hl N M f s -> differentiable_on_hl N M g s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:384 / FRECHET_DERIVATIVE_WORKS
+// Source hash: md5:8bb7a35738d3bd4f7eb078f6a11ebff2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem FRECHET_DERIVATIVE_WORKS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 <-> has_derivative B A f (frechet_derivative B A f net0) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:390 / LINEAR_FRECHET_DERIVATIVE
+// Source hash: md5:8bca4baaab7a7eef1a80e3f92343fb25
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem LINEAR_FRECHET_DERIVATIVE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall net0 :e net (R :^: idx B), differentiable A B f net0 -> linear B A (frechet_derivative A B f net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:394 / jacobian
+// Source hash: md5:6988cd33f65a45e47449a06e6ea70257
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem jacobian_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), jacobian A B f net0 = matrix A B (frechet_derivative B A f net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:397 / JACOBIAN_WORKS
+// Source hash: md5:142f57e74121ec0459882d62d9125b2d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem JACOBIAN_WORKS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 <-> has_derivative B A f (fun h:set => matrix_vector_mul B A (jacobian A B f net0) h) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:408 / LIM_MUL_NORM_WITHIN
+// Source hash: md5:551908ef4288397030a80c2b1d198a9b
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem LIM_MUL_NORM_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall a :e R :^: idx B, forall s c= R :^: idx B, tendsto A (R :^: idx B) f (vec A 0) (within (R :^: idx B) (at B a) s) -> tendsto A (R :^: idx B) (fun x:set => vector_mul A (vector_norm B (vector_sub B x a)) (f x)) (vec A 0) (within (R :^: idx B) (at B a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:420 / DIFFERENTIABLE_IMP_CONTINUOUS_WITHIN
+// Source hash: md5:3245928fe3bbc29fe14feedb798a0f22
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_IMP_CONTINUOUS_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall x :e R :^: idx M, forall f:set -> set, (forall x0 :e R :^: idx M, f x0 :e R :^: idx N) -> forall s c= R :^: idx M, differentiable N M f (within (R :^: idx M) (at M x) s) -> continuous N (R :^: idx M) f (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:444 / DIFFERENTIABLE_IMP_CONTINUOUS_AT
+// Source hash: md5:f90be277bbe6d927ff0be6bcc3bb3ea8
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_IMP_CONTINUOUS_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, differentiable N M f (at M x) -> continuous N (R :^: idx M) f (at M x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:449 / DIFFERENTIABLE_IMP_CONTINUOUS_ON
+// Source hash: md5:7f1426165cdb1324075ec83d7391c89c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, differentiable_on_hl N M f s -> continuous_on_hl M N f s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:454 / HAS_DERIVATIVE_WITHIN_SUBSET
+// Source hash: md5:d0dc5aa3b1d56278a94ecfa53e3d9ed3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_WITHIN_SUBSET : forall A B:set, A <> Empty -> B <> Empty -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s t c= R :^: idx B, forall x :e R :^: idx B, has_derivative A B f f' (within (R :^: idx B) (at B x) s) /\ t c= s -> has_derivative A B f f' (within (R :^: idx B) (at B x) t).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:459 / DIFFERENTIABLE_WITHIN_SUBSET
+// Source hash: md5:9f8d889598b40395f970a4ca6b072794
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_WITHIN_SUBSET : forall M N:set, M <> Empty -> N <> Empty -> forall x :e R :^: idx M, forall f:set -> set, (forall x0 :e R :^: idx M, f x0 :e R :^: idx N) -> forall s t c= R :^: idx M, differentiable N M f (within (R :^: idx M) (at M x) t) /\ s c= t -> differentiable N M f (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:465 / DIFFERENTIABLE_ON_SUBSET
+// Source hash: md5:208b1aaa4f313d682e351a49837359d1
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_SUBSET : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, differentiable_on_hl N M f t /\ s c= t -> differentiable_on_hl N M f s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:471 / DIFFERENTIABLE_ON_EMPTY
+// Source hash: md5:17a34de0b41bb6bbad65da312f6f8214
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> differentiable_on_hl A B f Empty.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:480 / HAS_DERIVATIVE_WITHIN_ALT
+// Source hash: md5:7732935e6c6e93de60aa338c6190dd0d
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_WITHIN_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall s c= R :^: idx M, forall x :e R :^: idx M, has_derivative N M f f' (within (R :^: idx M) (at M x) s) <-> linear M N f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall y :e R :^: idx M, y :e s /\ vector_norm M (vector_sub M y x) < d -> vector_norm N (vector_sub N (vector_sub N (f y) (f x)) (f' (vector_sub M y x))) <= e0 * vector_norm M (vector_sub M y x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:515 / HAS_DERIVATIVE_AT_ALT
+// Source hash: md5:37836bd08fcd598fa8ef9447e61ca9b1
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_AT_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) <-> linear M N f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall y :e R :^: idx M, vector_norm M (vector_sub M y x) < d -> vector_norm N (vector_sub N (vector_sub N (f y) (f x)) (f' (vector_sub M y x))) <= e0 * vector_norm M (vector_sub M y x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:530 / DIFF_CHAIN_WITHIN
+// Source hash: md5:8be48b1f9749482e8cbf5d4a083c3c0f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFF_CHAIN_WITHIN : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx P) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx P) -> forall x :e R :^: idx M, forall s c= R :^: idx M, has_derivative N M f f' (within (R :^: idx M) (at M x) s) /\ has_derivative P N g g' (within (R :^: idx N) (at N (f x)) {f x | x :e s}) -> has_derivative P M (fun x:set => g (f x)) (fun x:set => g' (f' x)) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:605 / DIFF_CHAIN_AT
+// Source hash: md5:f166d775ba9cc9add44a84d90f0edc9b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFF_CHAIN_AT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx P) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx P) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) /\ has_derivative P N g g' (at N (f x)) -> has_derivative P M (fun x:set => g (f x)) (fun x:set => g' (f' x)) (at M x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:614 / HAS_DERIVATIVE_WITHIN_REFLECT
+// Source hash: md5:1944a186648ccb6a5994bf36e06ed334
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_WITHIN_REFLECT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, has_derivative N M (fun x:set => f (vector_neg M x)) (fun x:set => f' (vector_neg M x)) (within (R :^: idx M) (at M (vector_neg M a)) {vector_neg M x | x :e s}) <-> has_derivative N M f f' (within (R :^: idx M) (at M a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:629 / HAS_DERIVATIVE_AT_REFLECT
+// Source hash: md5:e2566e60fb6cd27b1db5a652493cadc3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_AT_REFLECT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall a :e R :^: idx M, has_derivative N M (fun x:set => f (vector_neg M x)) (fun x:set => f' (vector_neg M x)) (at M (vector_neg M a)) <-> has_derivative N M f f' (at M a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:637 / DIFFERENTIABLE_ON_REFLECT
+// Source hash: md5:a636f67867efe0b46e2a68a23041b3a4
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_REFLECT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, differentiable_on_hl N M (fun x:set => f (vector_neg M x)) {vector_neg M x | x :e s} <-> differentiable_on_hl N M f s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:654 / DIFFERENTIABLE_LINEAR
+// Source hash: md5:de79ffdfe75bd443df61b306c0cd224c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_LINEAR : forall M N:set, M <> Empty -> N <> Empty -> forall net0 :e net (R :^: idx M), forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> linear M N f -> differentiable N M f net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:658 / DIFFERENTIABLE_CONST
+// Source hash: md5:bfbbbbe7a1e4cc61b148f0dba2b4e32d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_CONST : forall A B:set, A <> Empty -> B <> Empty -> forall c :e R :^: idx A, forall net0 :e net (R :^: idx B), differentiable A B (fun z:set => c) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:662 / DIFFERENTIABLE_ID
+// Source hash: md5:3ef37f185411b02149586c55e8cdb5d3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_ID : forall A:set, A <> Empty -> forall net0 :e net (R :^: idx A), differentiable A A (fun z:set => z) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:666 / DIFFERENTIABLE_LIFT_COMPONENT
+// Source hash: md5:33a2e5b180dad318b58d5c62b99ac480
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_LIFT_COMPONENT : forall N:set, N <> Empty -> forall i :e omega, forall net0 :e net (R :^: idx N), differentiable 1 N (fun x:set => lift (x i)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:670 / DIFFERENTIABLE_CMUL
+// Source hash: md5:79fef729e4a85e3b23327e9766bad437
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall net0 :e net (R :^: idx B), forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall c :e R, differentiable A B f net0 -> differentiable A B (fun x:set => vector_mul A c (f x)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:674 / DIFFERENTIABLE_NEG
+// Source hash: md5:c73400a6f8b24d3a36cfa35090dd8069
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 -> differentiable B A (fun z:set => vector_neg B (f z)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:678 / DIFFERENTIABLE_ADD
+// Source hash: md5:ae6fdc2a620303b5af60c50715bd3b56
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 /\ differentiable B A g net0 -> differentiable B A (fun z:set => vector_add B (f z) (g z)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:685 / DIFFERENTIABLE_SUB
+// Source hash: md5:4039e748b44b68b5eb230fe3c52d8f63
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 /\ differentiable B A g net0 -> differentiable B A (fun z:set => vector_sub B (f z) (g z)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:692 / DIFFERENTIABLE_VSUM
+// Source hash: md5:246643dbf47b825600fe0cca9d4e140e
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e C, forall y :e R :^: idx B, f x y :e R :^: idx A) -> forall net0 :e net (R :^: idx B), forall s c= C, finite s /\ (forall a :e C, a :e s -> differentiable A B (f a) net0) -> differentiable A B (fun x:set => vsum C A s (fun a:set => f a x)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:703 / DIFFERENTIABLE_VSUM_NUMSEG
+// Source hash: md5:d5fe504e938a4b1b93fbe0f1af99d707
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem DIFFERENTIABLE_VSUM_NUMSEG : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall s c= A, forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx C, f x y :e R :^: idx B) -> forall net0 :e net (R :^: idx C), forall m n :e omega, finite s /\ (forall i :e omega, m <= i /\ i <= n -> differentiable B C (f i) net0) -> differentiable B C (fun x:set => vsum omega B {i :e omega | m <= i /\ i <= n} (fun a:set => f a x)) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:710 / DIFFERENTIABLE_CHAIN_AT
+// Source hash: md5:3ecbdab5b628f7283b76e3ae3c0d4e81
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_CHAIN_AT : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx C, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall x :e R :^: idx C, differentiable A C f (at C x) /\ differentiable B A g (at A (f x)) -> differentiable B C (fun x:set => g (f x)) (at C x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:717 / DIFFERENTIABLE_CHAIN_WITHIN
+// Source hash: md5:4811bfc0dd5fd4faa3d6ad2e089cbd2f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_CHAIN_WITHIN : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx C, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall x :e R :^: idx C, forall s c= R :^: idx C, differentiable A C f (within (R :^: idx C) (at C x) s) /\ differentiable B A g (within (R :^: idx A) (at A (f x)) {f x | x :e s}) -> differentiable B C (fun x:set => g (f x)) (within (R :^: idx C) (at C x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:724 / DIFFERENTIABLE_COMPONENTWISE_WITHIN
+// Source hash: md5:a6f73fb18a128460dcd7148dfc9e40a2
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem DIFFERENTIABLE_COMPONENTWISE_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, forall s c= R :^: idx M, differentiable N M f (within (R :^: idx M) (at M a) s) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> differentiable 1 M (fun x:set => lift (f x i)) (within (R :^: idx M) (at M a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:740 / DIFFERENTIABLE_COMPONENTWISE_AT
+// Source hash: md5:6613b9493472d3a2d380977bd6308956
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem DIFFERENTIABLE_COMPONENTWISE_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, differentiable N M f (at M a) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> differentiable 1 M (fun x:set => lift (f x i)) (at M a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:752 / DIFFERENTIABLE_ON_LINEAR
+// Source hash: md5:b2b51bef2168ca9fdd9e23a1c8c5fd8b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_LINEAR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, linear M N f -> differentiable_on_hl N M f s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:756 / DIFFERENTIABLE_ON_CONST
+// Source hash: md5:7746644e4107d5ba3824af59e168e5cb
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_CONST : forall A B:set, A <> Empty -> B <> Empty -> forall s c= R :^: idx B, forall c :e R :^: idx A, differentiable_on_hl A B (fun z:set => c) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:760 / DIFFERENTIABLE_ON_ID
+// Source hash: md5:926e801d61c62b10ab0a7c40ec7cc149
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_ID : forall A:set, A <> Empty -> forall s c= R :^: idx A, differentiable_on_hl A A (fun z:set => z) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:764 / DIFFERENTIABLE_ON_COMPOSE
+// Source hash: md5:d9cf3a6cd5de0f34045c30a9723f518d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx C) -> forall s c= R :^: idx B, differentiable_on_hl A B f s /\ differentiable_on_hl C A g {f x | x :e s} -> differentiable_on_hl C B (fun x:set => g (f x)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:770 / DIFFERENTIABLE_ON_NEG
+// Source hash: md5:3f88e0292cd74d8277573057450f630a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall s c= R :^: idx A, differentiable_on_hl B A f s -> differentiable_on_hl B A (fun z:set => vector_neg B (f z)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:774 / DIFFERENTIABLE_ON_ADD
+// Source hash: md5:060dd9d04f12b7435c996242e04ccb07
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall s c= R :^: idx A, differentiable_on_hl B A f s /\ differentiable_on_hl B A g s -> differentiable_on_hl B A (fun z:set => vector_add B (f z) (g z)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:780 / DIFFERENTIABLE_ON_SUB
+// Source hash: md5:d14311d58633b4b09a9e7ca2fe56f985
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem DIFFERENTIABLE_ON_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> forall s c= R :^: idx A, differentiable_on_hl B A f s /\ differentiable_on_hl B A g s -> differentiable_on_hl B A (fun z:set => vector_sub B (f z) (g z)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:793 / FRECHET_DERIVATIVE_UNIQUE_WITHIN
+// Source hash: md5:1082cc736a48855ccfecfd4ef05eb1a7
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem FRECHET_DERIVATIVE_UNIQUE_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall f'':set -> set, (forall x :e R :^: idx M, f'' x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, has_derivative N M f f' (within (R :^: idx M) (at M x) s) /\ (has_derivative N M f f'' (within (R :^: idx M) (at M x) s) /\ (forall i :e omega, forall e0 :e R, 1 <= i /\ (i <= dimindex M /\ 0 < e0) -> exists d :e R, 0 < abs_SNo d /\ (abs_SNo d < e0 /\ vector_add M x (vector_mul M d (basis M i)) :e s))) -> forall x0 :e R :^: idx M, f' x0 = f'' x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:841 / FRECHET_DERIVATIVE_UNIQUE_AT
+// Source hash: md5:ebae4573372d80051a7be58e68714391
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem FRECHET_DERIVATIVE_UNIQUE_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall f'':set -> set, (forall x :e R :^: idx M, f'' x :e R :^: idx N) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) /\ has_derivative N M f f'' (at M x) -> forall x0 :e R :^: idx M, f' x0 = f'' x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:851 / HAS_FRECHET_DERIVATIVE_UNIQUE_AT
+// Source hash: md5:33cdf401c52f4c3905a02e7e9a6ccca0
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_FRECHET_DERIVATIVE_UNIQUE_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) -> forall x0 :e R :^: idx M, frechet_derivative N M f (at M x) x0 = f' x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:860 / FRECHET_DERIVATIVE_CONST_AT
+// Source hash: md5:ccc6fecc7983bf8ed876478c3e3c04d0
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem FRECHET_DERIVATIVE_CONST_AT : forall M N:set, M <> Empty -> N <> Empty -> forall c :e R :^: idx N, forall a h :e R :^: idx M, frechet_derivative N M (fun x:set => c) (at M a) h = vec N 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:865 / FRECHET_DERIVATIVE_UNIQUE_WITHIN_CLOSED_INTERVAL
+// Source hash: md5:44737626ec8711102c47ad305c1c01df
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem FRECHET_DERIVATIVE_UNIQUE_WITHIN_CLOSED_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall f'':set -> set, (forall x :e R :^: idx M, f'' x :e R :^: idx N) -> forall x a b :e R :^: idx M, (forall i :e omega, 1 <= i /\ i <= dimindex M -> a i < b i) /\ (x :e closed_interval M (seq_cons (a,b) seq_nil) /\ (has_derivative N M f f' (within (R :^: idx M) (at M x) (closed_interval M (seq_cons (a,b) seq_nil))) /\ has_derivative N M f f'' (within (R :^: idx M) (at M x) (closed_interval M (seq_cons (a,b) seq_nil))))) -> forall x0 :e R :^: idx M, f' x0 = f'' x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:898 / FRECHET_DERIVATIVE_UNIQUE_WITHIN_OPEN_INTERVAL
+// Source hash: md5:cff868899e604500fb096e6bc8799df4
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem FRECHET_DERIVATIVE_UNIQUE_WITHIN_OPEN_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall f'':set -> set, (forall x :e R :^: idx M, f'' x :e R :^: idx N) -> forall x a b :e R :^: idx M, x :e open_interval M (a,b) /\ (has_derivative N M f f' (within (R :^: idx M) (at M x) (open_interval M (a,b))) /\ has_derivative N M f f'' (within (R :^: idx M) (at M x) (open_interval M (a,b)))) -> forall x0 :e R :^: idx M, f' x0 = f'' x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:932 / FRECHET_DERIVATIVE_AT
+// Source hash: md5:55e305e7bbf935deab29a4e958eaab64
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem FRECHET_DERIVATIVE_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) -> forall x0 :e R :^: idx M, f' x0 = frechet_derivative N M f (at M x) x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:938 / FRECHET_DERIVATIVE_WITHIN_CLOSED_INTERVAL
+// Source hash: md5:7aa2607a24330a25a5fda836a821a2bc
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem FRECHET_DERIVATIVE_WITHIN_CLOSED_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x a b :e R :^: idx M, (forall i :e omega, 1 <= i /\ i <= dimindex M -> a i < b i) /\ (x :e closed_interval M (seq_cons (a,b) seq_nil) /\ has_derivative N M f f' (within (R :^: idx M) (at M x) (closed_interval M (seq_cons (a,b) seq_nil)))) -> forall x0 :e R :^: idx M, frechet_derivative N M f (within (R :^: idx M) (at M x) (closed_interval M (seq_cons (a,b) seq_nil))) x0 = f' x0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:953 / DIFFERENTIAL_COMPONENT_POS_AT_MINIMUM
+// Source hash: md5:986c1e841c62b73da72749534cd2be21
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem DIFFERENTIAL_COMPONENT_POS_AT_MINIMUM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, forall k :e omega, forall e0 :e R, 1 <= k /\ (k <= dimindex N /\ (x :e s /\ (convex M s /\ (has_derivative N M f f' (within (R :^: idx M) (at M x) s) /\ (0 < e0 /\ (forall w :e R :^: idx M, w :e s :/\: ball M (x,e0) -> f x k <= f w k)))))) -> forall y :e R :^: idx M, y :e s -> 0 <= f' (vector_sub M y x) k.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1013 / DIFFERENTIAL_COMPONENT_NEG_AT_MAXIMUM
+// Source hash: md5:cd20815ca054bb252b9665996aec0789
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem DIFFERENTIAL_COMPONENT_NEG_AT_MAXIMUM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, forall k :e omega, forall e0 :e R, 1 <= k /\ (k <= dimindex N /\ (x :e s /\ (convex M s /\ (has_derivative N M f f' (within (R :^: idx M) (at M x) s) /\ (0 < e0 /\ (forall w :e R :^: idx M, w :e s :/\: ball M (x,e0) -> f w k <= f x k)))))) -> forall y :e R :^: idx M, y :e s -> f' (vector_sub M y x) k <= 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1027 / DROP_DIFFERENTIAL_POS_AT_MINIMUM
+// Source hash: md5:9c02dd6db19f841903f589b3d87852a9
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DROP_DIFFERENTIAL_POS_AT_MINIMUM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx 1) -> forall x :e R :^: idx N, forall s c= R :^: idx N, forall e0 :e R, x :e s /\ (convex N s /\ (has_derivative 1 N f f' (within (R :^: idx N) (at N x) s) /\ (0 < e0 /\ (forall w :e R :^: idx N, w :e s :/\: ball N (x,e0) -> drop (f x) <= drop (f w))))) -> forall y :e R :^: idx N, y :e s -> 0 <= drop (f' (vector_sub N y x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1037 / DROP_DIFFERENTIAL_NEG_AT_MAXIMUM
+// Source hash: md5:afe597b7d7027e68e3dd20e5d2770e6a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DROP_DIFFERENTIAL_NEG_AT_MAXIMUM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx 1) -> forall x :e R :^: idx N, forall s c= R :^: idx N, forall e0 :e R, x :e s /\ (convex N s /\ (has_derivative 1 N f f' (within (R :^: idx N) (at N x) s) /\ (0 < e0 /\ (forall w :e R :^: idx N, w :e s :/\: ball N (x,e0) -> drop (f w) <= drop (f x))))) -> forall y :e R :^: idx N, y :e s -> drop (f' (vector_sub N y x)) <= 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1047 / DIFFERENTIAL_COMPONENT_ZERO_AT_MAXMIN
+// Source hash: md5:338d7f3b4325aff6b892068ab9ffe925
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem DIFFERENTIAL_COMPONENT_ZERO_AT_MAXMIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, forall k :e omega, 1 <= k /\ (k <= dimindex N /\ (x :e s /\ (open M s /\ (has_derivative N M f f' (at M x) /\ ((forall w :e R :^: idx M, w :e s -> f w k <= f x k) \/ (forall w :e R :^: idx M, w :e s -> f x k <= f w k)))))) -> forall h :e R :^: idx M, f' h k = 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1091 / DIFFERENTIAL_ZERO_MAXMIN_COMPONENT
+// Source hash: md5:8c117eef0bd262eab5751515fad53fb1
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem DIFFERENTIAL_ZERO_MAXMIN_COMPONENT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall e0 :e R, forall k :e omega, 1 <= k /\ (k <= dimindex N /\ (0 < e0 /\ (((forall y :e R :^: idx M, y :e ball M (x,e0) -> f y k <= f x k) \/ (forall y :e R :^: idx M, y :e ball M (x,e0) -> f x k <= f y k)) /\ differentiable N M f (at M x)))) -> jacobian M N f (at M x) k = vec M 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1106 / DIFFERENTIAL_ZERO_MAXMIN
+// Source hash: md5:e27027adb93cbf8671582ff0dfcbc34c
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIAL_ZERO_MAXMIN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx 1) -> forall x :e R :^: idx N, forall s c= R :^: idx N, x :e s /\ (open N s /\ (has_derivative 1 N f f' (at N x) /\ ((forall y :e R :^: idx N, y :e s -> drop (f y) <= drop (f x)) \/ (forall y :e R :^: idx N, y :e s -> drop (f x) <= drop (f y))))) -> forall v :e R :^: idx N, f' v = vec 1 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1123 / ROLLE
+// Source hash: md5:ec6f403dbedee8eea517b2d6ae083ab7
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem ROLLE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set -> set, (forall x y :e R :^: idx 1, f' x y :e R :^: idx 1) -> forall a b :e R :^: idx 1, drop a < drop b /\ (f a = f b /\ (continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e open_interval 1 (a,b) -> has_derivative 1 1 f (f' x) (at 1 x)))) -> exists x :e R :^: idx 1, x :e open_interval 1 (a,b) /\ forall v :e R :^: idx 1, f' x v = vec 1 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1143 / MVT
+// Source hash: md5:c8a85092a99726fac86f4758982856c4
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MVT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set -> set, (forall x y :e R :^: idx 1, f' x y :e R :^: idx 1) -> forall a b :e R :^: idx 1, drop a < drop b /\ (continuous_on_hl 1 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e open_interval 1 (a,b) -> has_derivative 1 1 f (f' x) (at 1 x))) -> exists x :e R :^: idx 1, x :e open_interval 1 (a,b) /\ vector_sub 1 (f b) (f a) = f' x (vector_sub 1 b a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1168 / MVT_SIMPLE
+// Source hash: md5:1082e5d7f6968707638512ec5b04503f
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MVT_SIMPLE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set -> set, (forall x y :e R :^: idx 1, f' x y :e R :^: idx 1) -> forall a b :e R :^: idx 1, drop a < drop b /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_derivative 1 1 f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> exists x :e R :^: idx 1, x :e open_interval 1 (a,b) /\ vector_sub 1 (f b) (f a) = f' x (vector_sub 1 b a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1184 / MVT_VERY_SIMPLE
+// Source hash: md5:e7b1916ca15761bc15271fca5d61ed32
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MVT_VERY_SIMPLE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f':set -> set -> set, (forall x y :e R :^: idx 1, f' x y :e R :^: idx 1) -> forall a b :e R :^: idx 1, drop a <= drop b /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_derivative 1 1 f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> exists x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ vector_sub 1 (f b) (f a) = f' x (vector_sub 1 b a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1200 / MVT_SEGMENT
+// Source hash: md5:3c2012aae1cca726e90aa3e265fe46ca
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MVT_SEGMENT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx 1) -> forall a b :e R :^: idx N, ~ a = b /\ (continuous_on_hl N 1 f (closed_segment N (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx N, x :e open_segment N (a,b) -> has_derivative 1 N f (f' x) (within (R :^: idx N) (at N x) (open_segment N (a,b))))) -> exists c :e R :^: idx N, c :e open_segment N (a,b) /\ vector_sub 1 (f b) (f a) = f' c (vector_sub N b a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1246 / MVT_SEGMENT_SIMPLE
+// Source hash: md5:8e771a30701f324909cfdc13e4bf225f
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MVT_SEGMENT_SIMPLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx 1) -> forall a b :e R :^: idx N, ~ a = b /\ (forall x :e R :^: idx N, x :e closed_segment N (seq_cons (a,b) seq_nil) -> has_derivative 1 N f (f' x) (within (R :^: idx N) (at N x) (open_segment N (a,b)))) -> exists c :e R :^: idx N, c :e open_segment N (a,b) /\ vector_sub 1 (f b) (f a) = f' c (vector_sub N b a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1277 / MVT_GENERAL
+// Source hash: md5:c2fafb4819859e80fd0e1f708418fd2d
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MVT_GENERAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx 1, f' x y :e R :^: idx N) -> forall a b :e R :^: idx 1, drop a < drop b /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e open_interval 1 (a,b) -> has_derivative N 1 f (f' x) (at 1 x))) -> exists x :e R :^: idx 1, x :e open_interval 1 (a,b) /\ vector_norm N (vector_sub N (f b) (f a)) <= vector_norm N (f' x (vector_sub 1 b a)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1308 / DIFFERENTIABLE_BOUND
+// Source hash: md5:c538d90bba19f3f1a86abf2d4da54efa
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, convex M s /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at M x) s)) /\ (forall x :e R :^: idx M, x :e s -> onorm M N (f' x) <= B)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1368 / ONORM_DERIVATIVES_LE
+// Source hash: md5:a70cd717ef35c82b313230035dbe8515
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem ONORM_DERIVATIVES_LE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx P) -> forall x :e R :^: idx M, has_derivative N M f f' (at M x) /\ (has_derivative P M g g' (at M x) /\ eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= vector_norm P (vector_sub P (g y) (g x))} (at M x)) -> onorm M N f' <= onorm M P g'.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1419 / HAS_DERIVATIVE_ZERO_CONSTANT
+// Source hash: md5:e360c7d424fb32c5e756bca0f9159768
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_CONSTANT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, convex M s /\ (forall x :e R :^: idx M, x :e s -> has_derivative N M f (fun h:set => vec N 0) (within (R :^: idx M) (at M x) s)) -> exists c :e R :^: idx N, forall x :e R :^: idx M, x :e s -> f x = c.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1430 / HAS_DERIVATIVE_ZERO_UNIQUE
+// Source hash: md5:7da08a57102284727112061766ed0ece
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_UNIQUE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall a :e R :^: idx B, forall c :e R :^: idx A, convex B s /\ (a :e s /\ (f a = c /\ (forall x :e R :^: idx B, x :e s -> has_derivative A B f (fun h:set => vec A 0) (within (R :^: idx B) (at B x) s)))) -> forall x :e R :^: idx B, x :e s -> f x = c.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1436 / HAS_DERIVATIVE_ZERO_CONNECTED_CONSTANT
+// Source hash: md5:50e86d04c3974ba91687a23495607171
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_CONNECTED_CONSTANT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, open M s /\ (connected M s /\ (forall x :e R :^: idx M, x :e s -> has_derivative N M f (fun h:set => vec N 0) (at M x))) -> exists c :e R :^: idx N, forall x :e R :^: idx M, x :e s -> f x = c.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1463 / HAS_DERIVATIVE_ZERO_CONNECTED_UNIQUE
+// Source hash: md5:c92f8660209f09d0893d239ea19fbb7e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_CONNECTED_UNIQUE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall a :e R :^: idx B, forall c :e R :^: idx A, open B s /\ (connected B s /\ (a :e s /\ (f a = c /\ (forall x :e R :^: idx B, x :e s -> has_derivative A B f (fun h:set => vec A 0) (at B x))))) -> forall x :e R :^: idx B, x :e s -> f x = c.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1473 / DIFFERENTIABLE_DISCRETE_PREIMAGES
+// Source hash: md5:660be10942a9143e299df8834a6dce22
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_DISCRETE_PREIMAGES : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall y :e R :^: idx N, (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x :e R :^: idx N, x :e s /\ f x = y -> ~ det N (matrix N N (f' x)) = 0) -> {l :e R :^: idx N | l :e s /\ limit_point_of N l {x :e R :^: idx N | x :e s /\ f x = y}} = Empty.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1522 / DIFFERENTIABLE_DISCRETE_PREIMAGES_CLOSED
+// Source hash: md5:0f332ca6cb41637d959ec54bfe4e4078
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_DISCRETE_PREIMAGES_CLOSED : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall y :e R :^: idx N, closed N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x :e R :^: idx N, x :e s /\ f x = y -> ~ det N (matrix N N (f' x)) = 0)) -> {l :e R :^: idx N | limit_point_of N l {x :e R :^: idx N | x :e s /\ f x = y}} = Empty.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1539 / DIFFERENTIABLE_COUNTABLE_PREIMAGES
+// Source hash: md5:a647d06df23596b7eebc308e9a803e69
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_COUNTABLE_PREIMAGES : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall y :e R :^: idx N, (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x :e R :^: idx N, x :e s /\ f x = y -> ~ det N (matrix N N (f' x)) = 0) -> countable {x :e R :^: idx N | x :e s /\ f x = y}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1550 / DIFFERENTIABLE_FINITE_PREIMAGES
+// Source hash: md5:76b62b28dabb113b9f572d2d08af55d8
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_FINITE_PREIMAGES : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall y :e R :^: idx N, compact N s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x :e R :^: idx N, x :e s /\ f x = y -> ~ det N (matrix N N (f' x)) = 0)) -> finite {x :e R :^: idx N | x :e s /\ f x = y}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1562 / DIFFERENTIABLE_FINITE_PREIMAGES_GEN
+// Source hash: md5:f35dd89379fe604d63917e6a7742ae3a
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_FINITE_PREIMAGES_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall y :e R :^: idx N, compact N {x :e R :^: idx N | x :e s /\ f x = y} /\ ((forall x :e R :^: idx N, x :e s /\ f x = y -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s)) /\ (forall x :e R :^: idx N, x :e s /\ f x = y -> ~ det N (matrix N N (f' x)) = 0)) -> finite {x :e R :^: idx N | x :e s /\ f x = y}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1581 / HAS_DERIVATIVE_INVERSE_WITHIN
+// Source hash: md5:5c364637a4bff8e56f9d2f65056ecdbe
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall s c= R :^: idx M, forall a :e R :^: idx M, a :e s /\ ((forall x :e R :^: idx M, x :e s -> g (f x) = x) /\ (has_derivative N M f f' (within (R :^: idx M) (at M a) s) /\ (linear N M g' /\ ((forall x :e R :^: idx M, g' (f' x) = x) /\ continuous M (R :^: idx N) g (within (R :^: idx N) (at N (f a)) {f x | x :e s}))))) -> has_derivative M N g g' (within (R :^: idx N) (at N (f a)) {f x | x :e s}).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1654 / HAS_DERIVATIVE_INVERSE_BASIC
+// Source hash: md5:a5a16227a1952732f8724440a66f199c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_BASIC : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall t c= R :^: idx N, forall y :e R :^: idx N, has_derivative N M f f' (at M (g y)) /\ (linear N M g' /\ ((forall x :e R :^: idx M, g' (f' x) = x) /\ (continuous M (R :^: idx N) g (at N y) /\ (open N t /\ (y :e t /\ (forall z :e R :^: idx N, z :e t -> f (g z) = z)))))) -> has_derivative M N g g' (at N y).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1745 / HAS_DERIVATIVE_INVERSE_BASIC_X
+// Source hash: md5:4e634a4aa61cfc3291aebd2a8726a95a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_BASIC_X : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall t c= R :^: idx N, forall x :e R :^: idx M, has_derivative N M f f' (at M x) /\ (linear N M g' /\ ((forall x0 :e R :^: idx M, g' (f' x0) = x0) /\ (continuous M (R :^: idx N) g (at N (f x)) /\ (g (f x) = x /\ (open N t /\ (f x :e t /\ (forall y :e R :^: idx N, y :e t -> f (g y) = y))))))) -> has_derivative M N g g' (at N (f x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1757 / HAS_DERIVATIVE_INVERSE_DIEUDONNE
+// Source hash: md5:dc6312ba8a6876a57803e18e7d73f1e4
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_DIEUDONNE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall s c= R :^: idx M, open M s /\ (open N {f x | x :e s} /\ (continuous_on_hl M N f s /\ (continuous_on_hl N M g {f x | x :e s} /\ (forall x :e R :^: idx M, x :e s -> g (f x) = x)))) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall x :e R :^: idx M, x :e s /\ (has_derivative N M f f' (at M x) /\ (linear N M g' /\ (forall x0 :e R :^: idx M, g' (f' x0) = x0))) -> has_derivative M N g g' (at N (f x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1774 / HAS_DERIVATIVE_INVERSE
+// Source hash: md5:b581f5f5913b22c4e3c9c038310ddcad
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall s c= R :^: idx M, forall x :e R :^: idx M, compact M s /\ (x :e s /\ (f x :e interior N {f x | x :e s} /\ (continuous_on_hl M N f s /\ ((forall x0 :e R :^: idx M, x0 :e s -> g (f x0) = x0) /\ (has_derivative N M f f' (at M x) /\ (linear N M g' /\ (forall x0 :e R :^: idx M, g' (f' x0) = x0))))))) -> has_derivative M N g g' (at N (f x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1791 / BROUWER_SURJECTIVE
+// Source hash: md5:86457240c33259edadb93ca909236ee3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem BROUWER_SURJECTIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s t c= R :^: idx N, compact N t /\ (convex N t /\ (~ t = Empty /\ (continuous_on_hl N N f t /\ (forall x y :e R :^: idx N, x :e s /\ y :e t -> vector_add N x (vector_sub N y (f y)) :e t)))) -> forall x :e R :^: idx N, x :e s -> exists y :e R :^: idx N, y :e t /\ f y = x.
+Admitted.
+
 // HOL Light: Multivariate/derivatives.ml:1802 / BROUWER_SURJECTIVE_CBALL
 // Source hash: md5:336b89737032b050fd88f9e3997bb462
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem BROUWER_SURJECTIVE_CBALL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall a :e R :^: idx N, forall e0 :e R, 0 < e0 /\ (continuous_on_hl N N f (cball N (a,e0)) /\ (forall x y :e R :^: idx N, x :e s /\ y :e cball N (a,e0) -> vector_add N x (vector_sub N y (f y)) :e cball N (a,e0))) -> forall x :e R :^: idx N, x :e s -> exists y :e R :^: idx N, y :e cball N (a,e0) /\ f y = x.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1816 / SUSSMANN_OPEN_MAPPING
+// Source hash: md5:85b710e93f9cf0e58040569f1253649a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem SUSSMANN_OPEN_MAPPING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall s c= R :^: idx M, forall x :e R :^: idx M, open M s /\ (continuous_on_hl M N f s /\ (x :e s /\ (has_derivative N M f f' (at M x) /\ (linear N M g' /\ (forall x0 :e R :^: idx N, f' (g' x0) = x0))))) -> forall t c= R :^: idx M, t c= s /\ x :e interior M t -> f x :e interior N {f x | x :e t}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1910 / DIFFERENTIABLE_IMP_OPEN_MAP_GEN
+// Source hash: md5:0d8ae016b9b877054845ca0c4438c912
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_IMP_OPEN_MAP_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall g':set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, g' x y :e R :^: idx M) -> forall s c= R :^: idx M, open M s /\ (forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (at M x) /\ (linear N M (g' x) /\ forall x0 :e R :^: idx N, f' x (g' x x0) = x0)) -> open N {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1931 / DIFFERENTIABLE_IMP_OPEN_MAP
+// Source hash: md5:7b08e1a67dac90a9839286ea4e2fc06c
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_IMP_OPEN_MAP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0) -> open N {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1942 / DIFFERENTIABLE_IMP_OPEN_MAP_ALT
+// Source hash: md5:22e5d6539266518a48e9709d9d46ad19
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem DIFFERENTIABLE_IMP_OPEN_MAP_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s t c= R :^: idx N, (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s) /\ ~ det N (matrix N N (f' x)) = 0) /\ (open N t /\ t c= s) -> open N {f x | x :e t}.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:1966 / HAS_DERIVATIVE_INVERSE_STRONG
+// Source hash: md5:0980dce7cc6eb33d1b3c69bb968f099f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_STRONG : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx N) -> forall s c= R :^: idx N, forall x :e R :^: idx N, open N s /\ (x :e s /\ (continuous_on_hl N N f s /\ ((forall x0 :e R :^: idx N, x0 :e s -> g (f x0) = x0) /\ (has_derivative N N f f' (at N x) /\ (forall x0 :e R :^: idx N, f' (g' x0) = x0))))) -> has_derivative N N g g' (at N (f x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2010 / HAS_DERIVATIVE_INVERSE_STRONG_X
+// Source hash: md5:04cc98bf73b4d4a7c6b2052835ac17ec
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_STRONG_X : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx N) -> forall s c= R :^: idx N, forall y :e R :^: idx N, open N s /\ (g y :e s /\ (continuous_on_hl N N f s /\ ((forall x :e R :^: idx N, x :e s -> g (f x) = x) /\ (has_derivative N N f f' (at N (g y)) /\ ((forall x :e R :^: idx N, f' (g' x) = x) /\ f (g y) = y))))) -> has_derivative N N g g' (at N y).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2027 / HAS_DERIVATIVE_INVERSE_ON
+// Source hash: md5:576bfc9d0c26ff33580c7ab3292fedc8
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_INVERSE_ON : forall N:set, N <> Empty -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ (g (f x) = x /\ forall x0 :e R :^: idx N, f' x (g' x x0) = x0)) -> forall x :e R :^: idx N, x :e s -> has_derivative N N g (g' x) (at N (f x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2043 / HAS_DERIVATIVE_SEQUENCE_LIPSCHITZ
+// Source hash: md5:4e1118a103ea39f094d93c25cc0d6d65
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem HAS_DERIVATIVE_SEQUENCE_LIPSCHITZ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall f':set -> set -> set -> set, (forall x :e omega, forall y z :e R :^: idx M, f' x y z :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx N) -> convex M s /\ ((forall n :e omega, forall x :e R :^: idx M, x :e s -> has_derivative N M (f n) (f' n x) (within (R :^: idx M) (at M x) s)) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x h :e R :^: idx M, N0 <= n /\ x :e s -> vector_norm N (vector_sub N (f' n x h) (g' x h)) <= e0 * vector_norm M h)) -> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, forall x y :e R :^: idx M, N0 <= m /\ (N0 <= n /\ (x :e s /\ y :e s)) -> vector_norm N (vector_sub N (vector_sub N (f m x) (f n x)) (vector_sub N (f m y) (f n y))) <= e0 * vector_norm M (vector_sub M x y).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2075 / HAS_DERIVATIVE_SEQUENCE
+// Source hash: md5:e2772b29aacf7de506b60adc85aadca4
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem HAS_DERIVATIVE_SEQUENCE : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall f':set -> set -> set -> set, (forall x :e omega, forall y z :e R :^: idx M, f' x y z :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx N) -> convex M s /\ ((forall n :e omega, forall x :e R :^: idx M, x :e s -> has_derivative N M (f n) (f' n x) (within (R :^: idx M) (at M x) s)) /\ ((forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x h :e R :^: idx M, N0 <= n /\ x :e s -> vector_norm N (vector_sub N (f' n x h) (g' x h)) <= e0 * vector_norm M h) /\ (exists x :e R :^: idx M, exists l :e R :^: idx N, x :e s /\ tendsto N omega (fun n:set => f n x) l sequentially))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ forall x :e R :^: idx M, x :e s -> tendsto N omega (fun n:set => f n x) (g x) sequentially /\ has_derivative N M g (g' x) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2218 / HAS_ANTIDERIVATIVE_SEQUENCE
+// Source hash: md5:d52e67f0e16fe78418f94cffff89753a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem HAS_ANTIDERIVATIVE_SEQUENCE : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall f':set -> set -> set -> set, (forall x :e omega, forall y z :e R :^: idx M, f' x y z :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx N) -> convex M s /\ ((forall n :e omega, forall x :e R :^: idx M, x :e s -> has_derivative N M (f n) (f' n x) (within (R :^: idx M) (at M x) s)) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x h :e R :^: idx M, N0 <= n /\ x :e s -> vector_norm N (vector_sub N (f' n x h) (g' x h)) <= e0 * vector_norm M h)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ forall x :e R :^: idx M, x :e s -> has_derivative N M g (g' x) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2247 / HAS_ANTIDERIVATIVE_LIMIT
+// Source hash: md5:6832f65746d3a3754bf99974122582fa
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_ANTIDERIVATIVE_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx N) -> convex M s /\ (forall e0 :e R, 0 < e0 -> exists f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) /\ exists f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) /\ forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (within (R :^: idx M) (at M x) s) /\ forall h :e R :^: idx M, vector_norm N (vector_sub N (f' x h) (g' x h)) <= e0 * vector_norm M h) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ forall x :e R :^: idx M, x :e s -> has_derivative N M g (g' x) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2282 / HAS_DERIVATIVE_SERIES
+// Source hash: md5:adb59276069e1ee8764300a645cae8d8
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem HAS_DERIVATIVE_SERIES : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall f':set -> set -> set -> set, (forall x :e omega, forall y z :e R :^: idx M, f' x y z :e R :^: idx N) -> forall g':set -> set -> set, (forall x y :e R :^: idx M, g' x y :e R :^: idx N) -> forall k c= omega, convex M s /\ ((forall n :e omega, forall x :e R :^: idx M, x :e s -> has_derivative N M (f n) (f' n x) (within (R :^: idx M) (at M x) s)) /\ ((forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x h :e R :^: idx M, N0 <= n /\ x :e s -> vector_norm N (vector_sub N (vsum omega N (k :/\: {i :e omega | 0 <= i /\ i <= n}) (fun i:set => f' i x h)) (g' x h)) <= e0 * vector_norm M h) /\ (exists x :e R :^: idx M, exists l :e R :^: idx N, x :e s /\ sums N (fun n:set => f n x) l k))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ forall x :e R :^: idx M, x :e s -> sums N (fun n:set => f n x) (g x) k /\ has_derivative N M g (g' x) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2303 / HAS_DERIVATIVE_BILINEAR_WITHIN
+// Source hash: md5:1c7449bd8ad2a242275ad10698315d28
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_BILINEAR_WITHIN : forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx Q, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx Q, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx Q, f' x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx Q, g' x :e R :^: idx N) -> forall x :e R :^: idx Q, forall s c= R :^: idx Q, has_derivative M Q f f' (within (R :^: idx Q) (at Q x) s) /\ (has_derivative N Q g g' (within (R :^: idx Q) (at Q x) s) /\ bilinear N P M h) -> has_derivative P Q (fun x0:set => h (f x0) (g x0)) (fun d:set => vector_add P (h (f x) (g' d)) (h (f' d) (g x))) (within (R :^: idx Q) (at Q x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2373 / HAS_DERIVATIVE_BILINEAR_AT
+// Source hash: md5:0cf7722e0e0f3f2a7bc61bb8cc7dd994
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_BILINEAR_AT : forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx Q, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx Q, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx Q, f' x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx Q, g' x :e R :^: idx N) -> forall x :e R :^: idx Q, has_derivative M Q f f' (at Q x) /\ (has_derivative N Q g g' (at Q x) /\ bilinear N P M h) -> has_derivative P Q (fun x0:set => h (f x0) (g x0)) (fun d:set => vector_add P (h (f x) (g' d)) (h (f' d) (g x))) (at Q x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2384 / BILINEAR_DIFFERENTIABLE_AT_COMPOSE
+// Source hash: md5:383818b075e1c6a83ee5f202cc31d336
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem BILINEAR_DIFFERENTIABLE_AT_COMPOSE : forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall h:set -> set -> set, (forall x :e R :^: idx N, forall y :e R :^: idx P, h x y :e R :^: idx Q) -> forall a :e R :^: idx M, differentiable N M f (at M a) /\ (differentiable P M g (at M a) /\ bilinear P Q N h) -> differentiable Q M (fun x:set => h (f x) (g x)) (at M a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2393 / BILINEAR_DIFFERENTIABLE_WITHIN_COMPOSE
+// Source hash: md5:9953c9f44d30d1315527c3fc2130ab37
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem BILINEAR_DIFFERENTIABLE_WITHIN_COMPOSE : forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall h:set -> set -> set, (forall x :e R :^: idx N, forall y :e R :^: idx P, h x y :e R :^: idx Q) -> forall x :e R :^: idx M, forall s c= R :^: idx M, differentiable N M f (within (R :^: idx M) (at M x) s) /\ (differentiable P M g (within (R :^: idx M) (at M x) s) /\ bilinear P Q N h) -> differentiable Q M (fun x0:set => h (f x0) (g x0)) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2403 / BILINEAR_DIFFERENTIABLE_ON_COMPOSE
+// Source hash: md5:d0d2a346c7d3abfe6b2502e02e66d481
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem BILINEAR_DIFFERENTIABLE_ON_COMPOSE : forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall h:set -> set -> set, (forall x :e R :^: idx N, forall y :e R :^: idx P, h x y :e R :^: idx Q) -> forall s c= R :^: idx M, differentiable_on_hl N M f s /\ (differentiable_on_hl P M g s /\ bilinear P Q N h) -> differentiable_on_hl Q M (fun x:set => h (f x) (g x)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2410 / DIFFERENTIABLE_AT_LIFT_DOT2
+// Source hash: md5:987e82970c5f0c33f3751fa66857ad86
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_AT_LIFT_DOT2 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall x :e R :^: idx M, differentiable N M f (at M x) /\ differentiable N M g (at M x) -> differentiable 1 M (fun x0:set => lift (dot N (f x0) (g x0))) (at M x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2418 / DIFFERENTIABLE_WITHIN_LIFT_DOT2
+// Source hash: md5:806e2cca007a719c0570b922554aaec5
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_WITHIN_LIFT_DOT2 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, differentiable N M f (within (R :^: idx M) (at M x) s) /\ differentiable N M g (within (R :^: idx M) (at M x) s) -> differentiable 1 M (fun x0:set => lift (dot N (f x0) (g x0))) (within (R :^: idx M) (at M x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2426 / DIFFERENTIABLE_ON_LIFT_DOT2
+// Source hash: md5:7a4864f4380f17bd560445d1ff9411b0
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem DIFFERENTIABLE_ON_LIFT_DOT2 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, differentiable_on_hl N M f s /\ differentiable_on_hl N M g s -> differentiable_on_hl 1 M (fun x:set => lift (dot N (f x) (g x))) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2434 / HAS_DERIVATIVE_MUL_WITHIN
+// Source hash: md5:378b696b05f438592063573530dc31c6
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_MUL_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx N) -> forall a :e R :^: idx M, forall s c= R :^: idx M, has_derivative 1 M (fun x:set => lift (f x)) (fun x:set => lift (f' x)) (within (R :^: idx M) (at M a) s) /\ has_derivative N M g g' (within (R :^: idx M) (at M a) s) -> has_derivative N M (fun x:set => vector_mul N (f x) (g x)) (fun h:set => vector_add N (vector_mul N (f a) (g' h)) (vector_mul N (f' h) (g a))) (within (R :^: idx M) (at M a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2445 / HAS_DERIVATIVE_MUL_AT
+// Source hash: md5:168b3d40471fcbf1122d2340b9e6d00b
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_MUL_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx N) -> forall a :e R :^: idx M, has_derivative 1 M (fun x:set => lift (f x)) (fun x:set => lift (f' x)) (at M a) /\ has_derivative N M g g' (at M a) -> has_derivative N M (fun x:set => vector_mul N (f x) (g x)) (fun h:set => vector_add N (vector_mul N (f a) (g' h)) (vector_mul N (f' h) (g a))) (at M a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2454 / HAS_DERIVATIVE_SQNORM_AT
+// Source hash: md5:64e6ff6e6d147bbb82c36116868c9882
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_SQNORM_AT : forall N:set, N <> Empty -> forall a :e R :^: idx N, has_derivative 1 N (fun x:set => lift (vector_norm N x ^ 2)) (fun x:set => vector_mul 1 2 (lift (dot N a x))) (at N a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2465 / DIFFERENTIABLE_MUL_WITHIN
+// Source hash: md5:24060eb2d639448fcccc7ddc2eed84ee
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_MUL_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall a :e R :^: idx M, forall s c= R :^: idx M, differentiable 1 M (fun x:set => lift (f x)) (within (R :^: idx M) (at M a) s) /\ differentiable N M g (within (R :^: idx M) (at M a) s) -> differentiable N M (fun x:set => vector_mul N (f x) (g x)) (within (R :^: idx M) (at M a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2475 / DIFFERENTIABLE_MUL_AT
+// Source hash: md5:c793cc9952d30ac520dbd5bf6276c209
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_MUL_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall a :e R :^: idx M, differentiable 1 M (fun x:set => lift (f x)) (at M a) /\ differentiable N M g (at M a) -> differentiable N M (fun x:set => vector_mul N (f x) (g x)) (at M a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2482 / DIFFERENTIABLE_SQNORM_AT
+// Source hash: md5:2d74e02392970391027bbf13930df11f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DIFFERENTIABLE_SQNORM_AT : forall N:set, N <> Empty -> forall a :e R :^: idx N, differentiable 1 N (fun x:set => lift (vector_norm N x ^ 2)) (at N a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2486 / DIFFERENTIABLE_ON_MUL
+// Source hash: md5:c6bfe0a255d5b9a89bc82ef978f4cc11
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem DIFFERENTIABLE_ON_MUL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, differentiable_on_hl 1 M (fun x:set => lift (f x)) s /\ differentiable_on_hl N M g s -> differentiable_on_hl N M (fun x:set => vector_mul N (f x) (g x)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2495 / DIFFERENTIABLE_ON_SQNORM
+// Source hash: md5:125d4da3e8119d8853b6f197c3334519
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
+Theorem DIFFERENTIABLE_ON_SQNORM : forall N:set, N <> Empty -> forall s c= R :^: idx N, differentiable_on_hl 1 N (fun x:set => lift (vector_norm N x ^ 2)) s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2504 / BAIRE1_PARTIAL_DERIVATIVES
+// Source hash: md5:f7f33b5e1156d41e035569d9fd9eabe0
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem BAIRE1_PARTIAL_DERIVATIVES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall s c= R :^: idx M, forall i j :e omega, (forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (at M x)) /\ (open M s /\ (1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex M)))) -> (fun x :e R :^: idx M => lift (matrix M N (f' x) i j)) :e baire M 1 1 s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2601 / BAIRE1_DET_JACOBIAN
+// Source hash: md5:eb2497e406b145a91e226b8046c341a0
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BAIRE1_DET_JACOBIAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x)) /\ open N s -> (fun x :e R :^: idx N => lift (det N (matrix N N (f' x)))) :e baire N 1 1 s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2621 / GATEAUX_DERIVATIVE_WITHIN
+// Source hash: md5:e97fe2864c04eb344c9d4d8ce18cb6f1
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem GATEAUX_DERIVATIVE_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall s c= R :^: idx M, forall x y :e R :^: idx M, has_derivative N M f f' (within (R :^: idx M) (at M x) s) -> tendsto N (R :^: idx 1) (fun t:set => vector_mul N (recip_SNo (drop t)) (vector_sub N (f (vector_add M x (vector_mul M (drop t) y))) (f x))) (f' y) (within (R :^: idx 1) (at 1 (vec 1 0)) {t :e R :^: idx 1 | vector_add M x (vector_mul M (drop t) y) :e s}).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2686 / GATEAUX_DERIVATIVE
+// Source hash: md5:c728cc29805370c8cd86ba20e6782136
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem GATEAUX_DERIVATIVE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x y :e R :^: idx M, has_derivative N M f f' (at M x) -> tendsto N (R :^: idx 1) (fun t:set => vector_mul N (recip_SNo (drop t)) (vector_sub N (f (vector_add M x (vector_mul M (drop t) y))) (f x))) (f' y) (at 1 (vec 1 0)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2695 / GATEAUX_DERIVATIVE_LIPSCHITZ
+// Source hash: md5:9af2c4d9fd8e7dd319bdf9990818f4e3
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem GATEAUX_DERIVATIVE_LIPSCHITZ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx M, f' x :e R :^: idx N) -> forall x :e R :^: idx M, forall s c= R :^: idx M, x :e s /\ (open M s /\ ((exists B :e R, forall u v :e R :^: idx M, u :e s /\ v :e s -> vector_norm N (vector_sub N (f u) (f v)) <= B * vector_norm M (vector_sub M u v)) /\ (linear M N f' /\ (forall y :e R :^: idx M, tendsto N (R :^: idx 1) (fun t:set => vector_mul N (recip_SNo (drop t)) (vector_sub N (f (vector_add M x (vector_mul M (drop t) y))) (f x))) (f' y) (at 1 (vec 1 0)))))) -> has_derivative N M f f' (at M x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:2798 / INVERSE_FUNCTION_THEOREM
+// Source hash: md5:2454a0406f638c5ddbf28e562c66e83f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem INVERSE_FUNCTION_THEOREM : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx N), forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall a :e R :^: idx N, forall s c= R :^: idx N, open N s /\ (a :e s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0)) -> exists t u c= R :^: idx N, exists g :e R :^: idx N :^: (R :^: idx N), exists g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) /\ (open N t /\ (a :e t /\ (t c= s /\ (open N u /\ (f a :e u /\ (homeomorphism N N (t,u) (f,g) /\ ((forall x :e R :^: idx N, x :e t -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x) /\ ((forall x0 :e R :^: idx N, f' x (g' (f x) x0) = x0) /\ forall x0 :e R :^: idx N, g' (f x) (f' x x0) = x0)) /\ forall y :e R :^: idx N, y :e u -> has_derivative N N (fun x:set => g x) (g' y) (at N y) /\ ((forall x :e R :^: idx N, f' (g y) (g' y x) = x) /\ forall x :e R :^: idx N, g' y (f' (g y) x) = x)))))))).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:3958 / JACOBIAN_SIGN_INVARIANCE
+// Source hash: md5:c016533f7476a7fa3539cd7974489d8a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem JACOBIAN_SIGN_INVARIANCE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, open N s /\ (connected N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0)) -> (forall x :e R :^: idx N, x :e s -> 0 < det N (matrix N N (f' x))) \/ forall x :e R :^: idx N, x :e s -> det N (matrix N N (f' x)) < 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:4434 / HAS_DERIVATIVE_LOCALLY_INJECTIVE
+// Source hash: md5:9d8be28984bc4ae1dfe12a3bd3f82e06
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_DERIVATIVE_LOCALLY_INJECTIVE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx M, f' x y :e R :^: idx N) -> forall g':set -> set, (forall x :e R :^: idx N, g' x :e R :^: idx M) -> forall s c= R :^: idx M, forall a :e R :^: idx M, a :e s /\ (open M s /\ (linear N M g' /\ ((forall x :e R :^: idx M, g' (f' a x) = x) /\ ((forall x :e R :^: idx M, x :e s -> has_derivative N M f (f' x) (at M x)) /\ (forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x :e R :^: idx M, distance M (a,x) < d -> onorm M N (fun v:set => vector_sub N (f' x v) (f' a v)) < e0))))) -> exists t c= R :^: idx M, a :e t /\ (open M t /\ forall x x' :e R :^: idx M, x :e t /\ (x' :e t /\ f x' = f x) -> x' = x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:4520 / INVERSE_FUNCTION_THEOREM_C1_POINTWISE
+// Source hash: md5:3a888084b06cda41148bffd8141ce2dc
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem INVERSE_FUNCTION_THEOREM_C1_POINTWISE : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx N), forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall a :e R :^: idx N, open N s /\ (a :e s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x)) /\ (~ det N (matrix N N (f' a)) = 0 /\ (forall h :e R :^: idx N, continuous N (R :^: idx N) (fun x:set => f' x h) (at N a))))) -> exists t u c= R :^: idx N, exists g :e R :^: idx N :^: (R :^: idx N), exists g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) /\ (open N t /\ (a :e t /\ (t c= s /\ (open N u /\ (f a :e u /\ (homeomorphism N N (t,u) (f,g) /\ ((forall x :e R :^: idx N, x :e t -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x) /\ ((forall x0 :e R :^: idx N, f' x (g' (f x) x0) = x0) /\ forall x0 :e R :^: idx N, g' (f x) (f' x x0) = x0)) /\ ((forall y :e R :^: idx N, y :e u -> has_derivative N N (fun x:set => g x) (g' y) (at N y) /\ ((forall x :e R :^: idx N, f' (g y) (g' y x) = x) /\ forall x :e R :^: idx N, g' y (f' (g y) x) = x)) /\ forall x :e R :^: idx N, x :e t /\ (forall h :e R :^: idx N, continuous N (R :^: idx N) (fun y:set => f' y h) (at N x)) -> forall h :e R :^: idx N, continuous N (R :^: idx N) (fun z:set => g' z h) (at N (f x)))))))))).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:4636 / INVERSE_FUNCTION_C1
+// Source hash: md5:f3469debe93360f82ae0f521c8991119
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem INVERSE_FUNCTION_C1 : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx N), forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall a :e R :^: idx N, open N s /\ (a :e s /\ ((forall x :e R :^: idx N, x :e s -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x) /\ forall h :e R :^: idx N, continuous N (R :^: idx N) (fun y:set => f' y h) (at N x)) /\ ~ det N (matrix N N (f' a)) = 0)) -> exists t u c= R :^: idx N, exists g :e R :^: idx N :^: (R :^: idx N), exists g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) /\ (open N t /\ (a :e t /\ (t c= s /\ (open N u /\ (f a :e u /\ (homeomorphism N N (t,u) (f,g) /\ ((forall x :e R :^: idx N, x :e t -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x) /\ ((forall x0 :e R :^: idx N, f' x (g' (f x) x0) = x0) /\ forall x0 :e R :^: idx N, g' (f x) (f' x x0) = x0)) /\ ((forall y :e R :^: idx N, y :e u -> has_derivative N N (fun x:set => g x) (g' y) (at N y) /\ ((forall x :e R :^: idx N, f' (g y) (g' y x) = x) /\ forall x :e R :^: idx N, g' y (f' (g y) x) = x)) /\ forall x :e R :^: idx N, x :e t -> forall h :e R :^: idx N, continuous N (R :^: idx N) (fun z:set => g' z h) (at N (f x)))))))))).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:4666 / INVERSE_FUNCTION_THEOREM_GLOBAL
+// Source hash: md5:f6c78ac9f1684c5098bb32f21de1027e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, hol_typedef_topology, omega_Subq_R)
+Theorem INVERSE_FUNCTION_THEOREM_GLOBAL : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx N), forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s t c= R :^: idx N, open N s /\ (connected N s /\ (simply_connected N t /\ ((s = Empty -> t = Empty) /\ ((forall c c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) c -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) t) {f x | x :e c}) /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N (fun x0:set => f x0) (f' x) (at N x) /\ ~ det N (matrix N N (f' x)) = 0))))) -> exists g :e R :^: idx N :^: (R :^: idx N), exists g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) /\ (homeomorphism N N (s,t) (f,g) /\ ((forall y :e R :^: idx N, y :e t -> has_derivative N N (fun x:set => g x) (g' y) (at N y) /\ ((forall x :e R :^: idx N, f' (g y) (g' y x) = x) /\ forall x :e R :^: idx N, g' y (f' (g y) x) = x)) /\ forall x :e R :^: idx N, x :e s -> (forall x0 :e R :^: idx N, f' x (g' (f x) x0) = x0) /\ forall x0 :e R :^: idx N, g' (f x) (f' x x0) = x0)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:4723 / INVERSE_FUNCTION_THEOREM_SUBSPACE
+// Source hash: md5:d602ce276712e16ce40860eb6f29c33a
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_net, hol_typedef_topology)
+Theorem INVERSE_FUNCTION_THEOREM_SUBSPACE : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx N), forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s p c= R :^: idx N, forall a :e R :^: idx N, subspace N p /\ (s :e subtopology (R :^: idx N) (euclidean N) p /\ ({f x | x :e s} c= p /\ (a :e s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N (fun x0:set => f x0) (f' x) (within (R :^: idx N) (at N x) p) /\ {f' x x0 | x0 :e p} = p)))) -> exists t u c= R :^: idx N, exists g :e R :^: idx N :^: (R :^: idx N), exists g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) /\ (t :e subtopology (R :^: idx N) (euclidean N) p /\ (a :e t /\ (t c= s /\ (u :e subtopology (R :^: idx N) (euclidean N) p /\ (f a :e u /\ (homeomorphism N N (t,u) (f,g) /\ ((forall x :e R :^: idx N, x :e t -> has_derivative N N (fun x0:set => f x0) (f' x) (within (R :^: idx N) (at N x) p) /\ forall h :e R :^: idx N, h :e p -> f' x (g' (f x) h) = h /\ g' (f x) (f' x h) = h) /\ forall y :e R :^: idx N, y :e u -> has_derivative N N (fun x:set => g x) (g' y) (within (R :^: idx N) (at N y) p) /\ forall h :e R :^: idx N, h :e p -> f' (g y) (g' y h) = h /\ g' y (f' (g y) h) = h))))))).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:4934 / INVERSE_FUNCTION_THEOREM_AFFINE
+// Source hash: md5:56580e8bcf02009cedefa2a9460bf430
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, hol_typedef_topology, omega_Subq_R)
+Theorem INVERSE_FUNCTION_THEOREM_AFFINE : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx N), forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s p c= R :^: idx N, forall a :e R :^: idx N, affine N p /\ (s :e subtopology (R :^: idx N) (euclidean N) p /\ ({f x | x :e s} c= p /\ (a :e s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N (fun x0:set => f x0) (f' x) (within (R :^: idx N) (at N x) p) /\ ~ det N (matrix N N (f' x)) = 0)))) -> exists t u c= R :^: idx N, exists g :e R :^: idx N :^: (R :^: idx N), exists g':set -> set -> set, (forall x y :e R :^: idx N, g' x y :e R :^: idx N) /\ (t :e subtopology (R :^: idx N) (euclidean N) p /\ (a :e t /\ (t c= s /\ (u :e subtopology (R :^: idx N) (euclidean N) p /\ (f a :e u /\ (homeomorphism N N (t,u) (f,g) /\ ((forall x :e R :^: idx N, x :e t -> has_derivative N N (fun x0:set => f x0) (f' x) (within (R :^: idx N) (at N x) p) /\ ((forall x0 :e R :^: idx N, f' x (g' (f x) x0) = x0) /\ forall x0 :e R :^: idx N, g' (f x) (f' x x0) = x0)) /\ forall y :e R :^: idx N, y :e u -> has_derivative N N (fun x:set => g x) (g' y) (within (R :^: idx N) (at N y) p) /\ ((forall x :e R :^: idx N, f' (g y) (g' y x) = x) /\ forall x :e R :^: idx N, g' y (f' (g y) x) = x)))))))).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5148 / has_vector_derivative
+// Source hash: md5:f33cace4a1a67558a08fb629feb6d73d
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem has_vector_derivative_thm : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A f f' net0 <-> has_derivative A 1 f (fun x:set => vector_mul A (drop x) f') net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5152 / vector_derivative
+// Source hash: md5:60616e379ba12becaa6aecac234ffff4
+// Status: transport_required (bridges: choose_in_spec, hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem vector_derivative_thm : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall net0 :e net (R :^: idx 1), vector_derivative N f net0 = choose_in (R :^: idx N) (fun f':set => has_vector_derivative N f f' net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5156 / VECTOR_DERIVATIVE_WORKS
+// Source hash: md5:cabc637e26e6f0a9c4f94919d3bd9a22
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_WORKS : forall N:set, N <> Empty -> forall net0 :e net (R :^: idx 1), forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> (differentiable N 1 f net0 <-> has_vector_derivative N f (vector_derivative N f net0) net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5170 / VECTOR_DIFFERENTIABLE
+// Source hash: md5:8706fbfc6c77e82f981ab301971825f0
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DIFFERENTIABLE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall net0 :e net (R :^: idx 1), differentiable A 1 f net0 <-> exists f' :e R :^: idx A, has_vector_derivative A f f' net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5174 / HAS_VECTOR_DERIVATIVE_IMP_DIFFERENTIABLE
+// Source hash: md5:ebf96db410d597eb4191e27c2f166a27
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_IMP_DIFFERENTIABLE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A f f' net0 -> differentiable A 1 f net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5178 / VECTOR_DERIVATIVE_UNIQUE_AT
+// Source hash: md5:11fba2af3ca27ad5066fff4020a64f94
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_UNIQUE_AT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall x :e R :^: idx 1, forall f' f'' :e R :^: idx N, has_vector_derivative N f f' (at 1 x) /\ has_vector_derivative N f f'' (at 1 x) -> f' = f''.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5191 / VECTOR_DERIVATIVE_AT
+// Source hash: md5:52c62b951a6eabc4468fd23feb1e88df
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_AT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall x :e R :^: idx 1, has_vector_derivative N f f' (at 1 x) -> vector_derivative N f (at 1 x) = f'.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5200 / HAS_VECTOR_DERIVATIVE_COMPONENTWISE_WITHIN
+// Source hash: md5:1ef6576176109813f80205869614c678
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_VECTOR_DERIVATIVE_COMPONENTWISE_WITHIN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall a :e R :^: idx 1, forall s c= R :^: idx 1, has_vector_derivative N f f' (within (R :^: idx 1) (at 1 a) s) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> has_vector_derivative 1 (fun x:set => lift (f x i)) (lift (f' i)) (within (R :^: idx 1) (at 1 a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5210 / HAS_VECTOR_DERIVATIVE_COMPONENTWISE_AT
+// Source hash: md5:db419a4ccaa6c6be93d385271dcbf9ac
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_VECTOR_DERIVATIVE_COMPONENTWISE_AT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall a :e R :^: idx 1, has_vector_derivative N f f' (at 1 a) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> has_vector_derivative 1 (fun x:set => lift (f x i)) (lift (f' i)) (at 1 a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5219 / HAS_VECTOR_DERIVATIVE_LIFT_COMPONENT_WITHIN
+// Source hash: md5:a84a4656f6b252a058f83ff1fd36cfa9
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_VECTOR_DERIVATIVE_LIFT_COMPONENT_WITHIN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall a :e R :^: idx 1, forall s c= R :^: idx 1, forall i :e omega, has_vector_derivative N f f' (within (R :^: idx 1) (at 1 a) s) /\ (1 <= i /\ i <= dimindex N) -> has_vector_derivative 1 (fun x:set => lift (f x i)) (lift (f' i)) (within (R :^: idx 1) (at 1 a) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5227 / HAS_VECTOR_DERIVATIVE_LIFT_COMPONENT_AT
+// Source hash: md5:057644456d6bde87b69e3ad49dcfcc6f
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
+Theorem HAS_VECTOR_DERIVATIVE_LIFT_COMPONENT_AT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall a :e R :^: idx 1, forall i :e omega, has_vector_derivative N f f' (at 1 a) /\ (1 <= i /\ i <= dimindex N) -> has_vector_derivative 1 (fun x:set => lift (f x i)) (lift (f' i)) (at 1 a).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5234 / HAS_VECTOR_DERIVATIVE_WITHIN_1D
+// Source hash: md5:cea5984654691f9f5d0c5637149b5f70
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_WITHIN_1D : forall N:set, N <> Empty -> forall f' :e R :^: idx N, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall x :e R :^: idx 1, has_vector_derivative N f f' (within (R :^: idx 1) (at 1 x) s) <-> tendsto N (R :^: idx 1) (fun y:set => vector_mul N (recip_SNo (drop (vector_sub 1 y x))) (vector_sub N (f y) (f x))) f' (within (R :^: idx 1) (at 1 x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5254 / HAS_VECTOR_DERIVATIVE_AT_1D
+// Source hash: md5:34163a2b2a33a594d6b1e6413b5b9526
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_AT_1D : forall N:set, N <> Empty -> forall f' :e R :^: idx N, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall x :e R :^: idx 1, has_vector_derivative N f f' (at 1 x) <-> tendsto N (R :^: idx 1) (fun y:set => vector_mul N (recip_SNo (drop (vector_sub 1 y x))) (vector_sub N (f y) (f x))) f' (at 1 x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5261 / VECTOR_DERIVATIVE_UNIQUE_WITHIN
+// Source hash: md5:0b0e3dc43891e454763cb5023acf8d50
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_UNIQUE_WITHIN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall x :e R :^: idx 1, forall s c= R :^: idx 1, forall f' f'' :e R :^: idx N, ~ trivial_limit (R :^: idx 1) (within (R :^: idx 1) (at 1 x) s) /\ (has_vector_derivative N f f' (within (R :^: idx 1) (at 1 x) s) /\ has_vector_derivative N f f'' (within (R :^: idx 1) (at 1 x) s)) -> f' = f''.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5269 / VECTOR_DERIVATIVE_UNIQUE_WITHIN_CLOSED_INTERVAL
+// Source hash: md5:54dc54d0155c8aa98601aa3d80618636
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_UNIQUE_WITHIN_CLOSED_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b x :e R :^: idx 1, forall f' f'' :e R :^: idx N, drop a < drop b /\ (x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (has_vector_derivative N f f' (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))) /\ has_vector_derivative N f f'' (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> f' = f''.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5283 / VECTOR_DERIVATIVE_WITHIN_CLOSED_INTERVAL
+// Source hash: md5:56efef0f3c03e06ded29d97252edc7f0
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_WITHIN_CLOSED_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall x a b :e R :^: idx 1, drop a < drop b /\ (x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ has_vector_derivative N f f' (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> vector_derivative N f (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))) = f'.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5291 / HAS_VECTOR_DERIVATIVE_WITHIN_SUBSET
+// Source hash: md5:a87066c836cf221cd0efe8d2c97de564
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_WITHIN_SUBSET : forall A:set, A <> Empty -> forall f' :e R :^: idx A, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall s t c= R :^: idx 1, forall x :e R :^: idx 1, has_vector_derivative A f f' (within (R :^: idx 1) (at 1 x) s) /\ t c= s -> has_vector_derivative A f f' (within (R :^: idx 1) (at 1 x) t).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5296 / HAS_VECTOR_DERIVATIVE_CONST
+// Source hash: md5:ee987a8a5e5ff80aa97e8ee509097700
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_CONST : forall A:set, A <> Empty -> forall c :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A (fun x:set => c) (vec A 0) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5301 / VECTOR_DERIVATIVE_CONST_AT
+// Source hash: md5:c9945a1ca2eb94de547dca39502ee425
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DERIVATIVE_CONST_AT : forall N:set, N <> Empty -> forall c :e R :^: idx N, forall a :e R :^: idx 1, vector_derivative N (fun x:set => c) (at 1 a) = vec N 0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5306 / HAS_VECTOR_DERIVATIVE_ID
+// Source hash: md5:45f51e5c3796a63014842c937000e45f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_ID : forall net0 :e net (R :^: idx 1), has_vector_derivative 1 (fun x:set => x) (vec 1 1) net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5314 / HAS_VECTOR_DERIVATIVE_CMUL
+// Source hash: md5:fad10160fcac24dd6509221acc1434dd
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_CMUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall net0 :e net (R :^: idx 1), forall c :e R, has_vector_derivative A f f' net0 -> has_vector_derivative A (fun x:set => vector_mul A c (f x)) (vector_mul A c f') net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5321 / HAS_VECTOR_DERIVATIVE_CMUL_EQ
+// Source hash: md5:b9ce11f629ccf371d293f95a0277cc65
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_VECTOR_DERIVATIVE_CMUL_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall net0 :e net (R :^: idx 1), forall c :e R, ~ c = 0 -> (has_vector_derivative A (fun x:set => vector_mul A c (f x)) (vector_mul A c f') net0 <-> has_vector_derivative A f f' net0).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5332 / HAS_VECTOR_DERIVATIVE_NEG
+// Source hash: md5:f13ba07258d5ef14c7145407898ba447
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_NEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A f f' net0 -> has_vector_derivative A (fun x:set => vector_neg A (f x)) (vector_neg A f') net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5337 / HAS_VECTOR_DERIVATIVE_NEG_EQ
+// Source hash: md5:04f0080198c3fb13beb485d77156a934
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_NEG_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A (fun x:set => vector_neg A (f x)) (vector_neg A f') net0 <-> has_vector_derivative A f f' net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5342 / HAS_VECTOR_DERIVATIVE_ADD
+// Source hash: md5:b8aa2d011bc95a9c8089c93b15b78873
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_ADD : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall g' :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A f f' net0 /\ has_vector_derivative A g g' net0 -> has_vector_derivative A (fun x:set => vector_add A (f x) (g x)) (vector_add A f' g') net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5348 / HAS_VECTOR_DERIVATIVE_SUB
+// Source hash: md5:f23c4daa14ea769dc6e2f5331ffef577
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_SUB : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall g' :e R :^: idx A, forall net0 :e net (R :^: idx 1), has_vector_derivative A f f' net0 /\ has_vector_derivative A g g' net0 -> has_vector_derivative A (fun x:set => vector_sub A (f x) (g x)) (vector_sub A f' g') net0.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5354 / HAS_VECTOR_DERIVATIVE_BILINEAR_WITHIN
+// Source hash: md5:d241653617754720c28b67ad688d774e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_BILINEAR_WITHIN : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f' :e R :^: idx M, forall g' :e R :^: idx N, forall x :e R :^: idx 1, forall s c= R :^: idx 1, has_vector_derivative M f f' (within (R :^: idx 1) (at 1 x) s) /\ (has_vector_derivative N g g' (within (R :^: idx 1) (at 1 x) s) /\ bilinear N P M h) -> has_vector_derivative P (fun x0:set => h (f x0) (g x0)) (vector_add P (h (f x) g') (h f' (g x))) (within (R :^: idx 1) (at 1 x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5367 / HAS_VECTOR_DERIVATIVE_BILINEAR_AT
+// Source hash: md5:5410ff17518149b1cf1be68e3fb3ae9a
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_BILINEAR_AT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f' :e R :^: idx M, forall g' :e R :^: idx N, forall x :e R :^: idx 1, has_vector_derivative M f f' (at 1 x) /\ (has_vector_derivative N g g' (at 1 x) /\ bilinear N P M h) -> has_vector_derivative P (fun x0:set => h (f x0) (g x0)) (vector_add P (h (f x) g') (h f' (g x))) (at 1 x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5380 / HAS_VECTOR_DERIVATIVE_AT_WITHIN
+// Source hash: md5:ed22ddf77dda53103e39250c5da79f76
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_AT_WITHIN : forall A:set, A <> Empty -> forall f' :e R :^: idx A, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall x :e R :^: idx 1, forall s c= R :^: idx 1, has_vector_derivative A f f' (at 1 x) -> has_vector_derivative A f f' (within (R :^: idx 1) (at 1 x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5385 / HAS_VECTOR_DERIVATIVE_TRANSFORM_WITHIN
+// Source hash: md5:ea09fe7179cd1cd85d24ed155d540c2c
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_VECTOR_DERIVATIVE_TRANSFORM_WITHIN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall x :e R :^: idx 1, forall s c= R :^: idx 1, forall d :e R, 0 < d /\ (x :e s /\ ((forall x' :e R :^: idx 1, x' :e s /\ distance 1 (x',x) < d -> f x' = g x') /\ has_vector_derivative A f f' (within (R :^: idx 1) (at 1 x) s))) -> has_vector_derivative A g f' (within (R :^: idx 1) (at 1 x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5393 / HAS_VECTOR_DERIVATIVE_TRANSFORM_AT
+// Source hash: md5:303cd61b3389d2124222ef4e1c06a119
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_VECTOR_DERIVATIVE_TRANSFORM_AT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall f' :e R :^: idx A, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall x :e R :^: idx 1, forall d :e R, 0 < d /\ ((forall x' :e R :^: idx 1, distance 1 (x',x) < d -> f x' = g x') /\ has_vector_derivative A f f' (at 1 x)) -> has_vector_derivative A g f' (at 1 x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5400 / HAS_VECTOR_DERIVATIVE_TRANSFORM_WITHIN_OPEN
+// Source hash: md5:af569e965021577713ede43439ae6985
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_VECTOR_DERIVATIVE_TRANSFORM_WITHIN_OPEN : forall A:set, A <> Empty -> forall f' :e R :^: idx A, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall s c= R :^: idx 1, forall x :e R :^: idx 1, open 1 s /\ (x :e s /\ ((forall y :e R :^: idx 1, y :e s -> f y = g y) /\ has_vector_derivative A f f' (at 1 x))) -> has_vector_derivative A g f' (at 1 x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5408 / VECTOR_DIFF_CHAIN_AT
+// Source hash: md5:0ee746a886a7d61c5a1b91da30ab0c28
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DIFF_CHAIN_AT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall f' :e R :^: idx 1, forall g' :e R :^: idx A, forall x :e R :^: idx 1, has_vector_derivative 1 f f' (at 1 x) /\ has_vector_derivative A g g' (at 1 (f x)) -> has_vector_derivative A (fun x:set => g (f x)) (vector_mul A (drop f') g') (at 1 x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5417 / VECTOR_DIFF_CHAIN_WITHIN
+// Source hash: md5:b871a8f5f424b74a9f29b2a129c9ece7
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DIFF_CHAIN_WITHIN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall f' :e R :^: idx 1, forall g' :e R :^: idx A, forall s c= R :^: idx 1, forall x :e R :^: idx 1, has_vector_derivative 1 f f' (within (R :^: idx 1) (at 1 x) s) /\ has_vector_derivative A g g' (within (R :^: idx 1) (at 1 (f x)) {f x | x :e s}) -> has_vector_derivative A (fun x:set => g (f x)) (vector_mul A (drop f') g') (within (R :^: idx 1) (at 1 x) s).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5426 / VECTOR_DIFFERENTIABLE_BOUND
+// Source hash: md5:f255a6d7c92b221a16e3766b463514a2
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem VECTOR_DIFFERENTIABLE_BOUND : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall B :e R, convex 1 s /\ ((forall x :e R :^: idx 1, x :e s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) s)) /\ (forall x :e R :^: idx 1, x :e s -> vector_norm N (f' x) <= B)) -> forall x y :e R :^: idx 1, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm 1 (vector_sub 1 x y).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5451 / HAS_BOUNDED_VECTOR_DERIVATIVE_IMP_LIPSCHITZ
+// Source hash: md5:c8505c5f314ef2fdaaaa695e3e8424ce
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_BOUNDED_VECTOR_DERIVATIVE_IMP_LIPSCHITZ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, (forall x :e R :^: idx 1, x :e s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) s)) /\ (convex 1 s /\ bounded_hl N {f' x | x :e s}) -> exists B :e R, 0 < B /\ forall x y :e R :^: idx 1, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm 1 (vector_sub 1 x y).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5463 / RESTRICTION_HAS_DERIVATIVE
+// Source hash: md5:939f3a0d88d9a2f7e7421d06065cf3f8
+// Status: transport_required (bridges: choose_in_spec, hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem RESTRICTION_HAS_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall s c= R :^: idx 1, forall x :e R :^: idx 1, x :e s -> (has_vector_derivative N (fun x:set => if x :e s then f x else choose_in (R :^: idx N) (fun y:set => True)) f' (within (R :^: idx 1) (at 1 x) s) <-> has_vector_derivative N f f' (within (R :^: idx 1) (at 1 x) s)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5480 / BAIRE1_VECTOR_DERIVATIVE
+// Source hash: md5:8a5c9dd35bc836c2181f4495bd06aa05
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BAIRE1_VECTOR_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N :^: (R :^: idx 1), forall s c= R :^: idx 1, (forall x :e R :^: idx 1, x :e s -> has_vector_derivative N f (f' x) (at 1 x)) /\ open 1 s -> f' :e baire 1 N 1 s.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5504 / VECTOR_DERIVATIVE_INCREASING_WITHIN
+// Source hash: md5:87cfbddc6d30c2e05b649487ea8c769f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem VECTOR_DERIVATIVE_INCREASING_WITHIN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall f' :e R :^: idx 1, forall s c= R :^: idx 1, forall a :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ (a :e s /\ (limit_point_of 1 a s /\ has_vector_derivative 1 f f' (within (R :^: idx 1) (at 1 a) s))) -> 0 <= drop f'.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5524 / NORM_VECTOR_DERIVATIVES_LE_WITHIN
+// Source hash: md5:7e1f07bf324840e8c4353c2586de8c5b
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem NORM_VECTOR_DERIVATIVES_LE_WITHIN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f' :e R :^: idx M, forall g' :e R :^: idx N, forall x :e R :^: idx 1, forall s c= R :^: idx 1, limit_point_of 1 x s /\ (has_vector_derivative M f f' (within (R :^: idx 1) (at 1 x) s) /\ (has_vector_derivative N g g' (within (R :^: idx 1) (at 1 x) s) /\ eventually (R :^: idx 1) {y :e R :^: idx 1 | vector_norm M (vector_sub M (f y) (f x)) <= vector_norm N (vector_sub N (g y) (g x))} (within (R :^: idx 1) (at 1 x) s))) -> vector_norm M f' <= vector_norm N g'.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5543 / NORM_VECTOR_DERIVATIVES_LE_AT
+// Source hash: md5:cea03a7f5ba23dbe018e594364183b9d
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem NORM_VECTOR_DERIVATIVES_LE_AT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f' :e R :^: idx M, forall g' :e R :^: idx N, forall x :e R :^: idx 1, has_vector_derivative M f f' (at 1 x) /\ (has_vector_derivative N g g' (at 1 x) /\ eventually (R :^: idx 1) {y :e R :^: idx 1 | vector_norm M (vector_sub M (f y) (f x)) <= vector_norm N (vector_sub N (g y) (g x))} (at 1 x)) -> vector_norm M f' <= vector_norm N g'.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5558 / CONVEX_ON_DERIVATIVE_SECANT_IMP
+// Source hash: md5:2781f9c24f802bfca740f1d383861ddb
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_DERIVATIVE_SECANT_IMP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R) -> forall s c= R :^: idx N, forall x y :e R :^: idx N, convex_on N f s /\ (closed_segment N (seq_cons (x,y) seq_nil) c= s /\ has_derivative 1 N (fun x:set => lift (f x)) (fun x:set => lift (f' x)) (within (R :^: idx N) (at N x) s)) -> f' (vector_sub N y x) <= f y + - f x.
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5622 / CONVEX_ON_SECANT_DERIVATIVE_IMP
+// Source hash: md5:a6f32f1ca596b1c971ca8ad707716dce
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_SECANT_DERIVATIVE_IMP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall f':set -> set, (forall x :e R :^: idx N, f' x :e R) -> forall s c= R :^: idx N, forall x y :e R :^: idx N, convex_on N f s /\ (closed_segment N (seq_cons (x,y) seq_nil) c= s /\ has_derivative 1 N (fun x:set => lift (f x)) (fun x:set => lift (f' x)) (within (R :^: idx N) (at N y) s)) -> f y + - f x <= f' (vector_sub N y x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5640 / CONVEX_ON_DERIVATIVES_IMP
+// Source hash: md5:51399223078ea6985d12e277f15476cc
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_DERIVATIVES_IMP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall f'x:set -> set, (forall x :e R :^: idx N, f'x x :e R) -> forall f'y:set -> set, (forall x :e R :^: idx N, f'y x :e R) -> forall s c= R :^: idx N, forall x y :e R :^: idx N, convex_on N f s /\ (closed_segment N (seq_cons (x,y) seq_nil) c= s /\ (has_derivative 1 N (fun x:set => lift (f x)) (fun x:set => lift (f'x x)) (within (R :^: idx N) (at N x) s) /\ has_derivative 1 N (fun x:set => lift (f x)) (fun x:set => lift (f'y x)) (within (R :^: idx N) (at N y) s))) -> f'x (vector_sub N y x) <= f'y (vector_sub N y x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5650 / CONVEX_ON_DERIVATIVES
+// Source hash: md5:7d2454571de9c6105191b73e9cc54262
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_DERIVATIVES : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R) -> forall s c= R :^: idx N, convex N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative 1 N (fun x:set => lift (f x)) (fun x0:set => lift (f' x x0)) (within (R :^: idx N) (at N x) s)) -> (convex_on N f s <-> forall x y :e R :^: idx N, x :e s /\ y :e s -> f' x (vector_sub N y x) <= f' y (vector_sub N y x)).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5650 / CONVEX_ON_DERIVATIVE_SECANT
+// Source hash: md5:dad5b7a0196a529dca0832a70d7a78df
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_DERIVATIVE_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R) -> forall s c= R :^: idx N, convex N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative 1 N (fun x:set => lift (f x)) (fun x0:set => lift (f' x x0)) (within (R :^: idx N) (at N x) s)) -> (convex_on N f s <-> forall x y :e R :^: idx N, x :e s /\ y :e s -> f' x (vector_sub N y x) <= f y + - f x).
+Admitted.
+
+// HOL Light: Multivariate/derivatives.ml:5774 / CONVEX_ON_SECANT_DERIVATIVE
+// Source hash: md5:5587e01b6f31d3643e73f9d868d74443
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_SECANT_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R) -> forall s c= R :^: idx N, convex N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative 1 N (fun x:set => lift (f x)) (fun x0:set => lift (f' x x0)) (within (R :^: idx N) (at N x) s)) -> (convex_on N f s <-> forall x y :e R :^: idx N, x :e s /\ y :e s -> f y + - f x <= f' y (vector_sub N y x)).
 Admitted.
 

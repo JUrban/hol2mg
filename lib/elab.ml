@@ -515,8 +515,10 @@ and elab_const ctx (t : tm) (c : string) (cty : ty) (args : tm list) (hint : vie
       use_class ctx "definitionally_exact" "choose_in_spec";
       (Mg.App (Mg.App (Mg.Cst "choose_in", c), Mg.Lam (n, Mg.Set, b)), xview)
   | "COND", p :: a :: b :: (_ :: _ as rest) ->
-      (* over-applied conditional: push the arguments into the branches *)
-      elab_const ctx t c cty [ p; List.fold_left (fun f x -> App (f, x)) a rest; List.fold_left (fun f x -> App (f, x)) b rest ] hint
+      (* over-applied conditional: push the arguments into the branches (and retype) *)
+      let a' = List.fold_left (fun f x -> App (f, x)) a rest and b' = List.fold_left (fun f x -> App (f, x)) b rest in
+      let ty' = type_of [] a' in
+      elab_const ctx t c (fun_ty bool_ty (fun_ty ty' (fun_ty ty' ty'))) [ p; a'; b' ] hint
   | "COND", [ p; a; b ] ->
       let res_ty = (match cty with TyApp ("fun", [ _; TyApp ("fun", [ r; _ ]) ]) -> r | _ -> fail "COND type") in
       let p' = elab ctx p VProp in

@@ -527,7 +527,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:416 / dist
 // Source hash: md5:e989261721bed57342d13a7c45e16d05
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem dist_thm : forall A:set, A <> Empty -> forall x y :e R :^: idx A, distance A (x,y) = vector_norm A (vector_sub A x y).
+Theorem dist : forall A:set, A <> Empty -> forall x y :e R :^: idx A, distance A (x,y) = vector_norm A (vector_sub A x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:419 / NORM_REAL

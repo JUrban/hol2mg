@@ -30,10 +30,6 @@ Definition OUTL : set -> set -> set :=
 Definition OUTR : set -> set -> set :=
   fun A:set => fun B:set => choose_in (B :^: (A :+: B)) (fun c:set => forall y :e B, c (Inj1 y) = y).
 
-// HOL Light: Multivariate/vectors.ml:416 / dist   (hash md5:ab1d76c167dd80a4a7d49ca2a444b448)
-Definition dist : set -> set -> set :=
-  fun N:set => fun p:set => vector_norm N (vector_sub N (p 0) (p 1)).
-
 // HOL Light: int.ml:1170 / real_mod   (hash md5:60a0f9b5b153ba67635b3c320a044279)
 Definition real_mod : set -> set -> set -> prop :=
   fun n:set => fun x:set => fun y:set => exists q :e R, q :e int /\ x + - y = q * n.
@@ -536,7 +532,7 @@ Definition vector_norm : set -> set -> set :=
 
 // HOL Light:  / distance   (hash md5:170f95745129ac4e55a5eb4f6e2893fd)
 Definition distance : set -> set -> set :=
-  fun A:set => fun x:set => vector_norm A (vector_sub A (x 0) (x 1)).
+  fun N:set => fun p:set => vector_norm N (vector_sub N (p 0) (p 1)).
 
 // HOL Light: Multivariate/vectors.ml:1227 / vsum   (hash md5:9d61c430be498afea6e5105a277dde93)
 Definition vsum : set -> set -> set -> (set -> set) -> set :=
@@ -822,6 +818,14 @@ Definition at_posinfinity : set :=
 Definition at_neginfinity : set :=
   ({{x :e R | x <= a} | a :e R, a :e R},Empty).
 
+// HOL Light:  / -->   (hash md5:b295da05cef9e959e333d222128ebeb6)
+Definition tendsto : set -> set -> (set -> set) -> set -> set -> prop :=
+  fun A:set => fun B:set => fun x:set -> set => fun y:set => fun z:set => forall e0 :e R, 0 < e0 -> eventually B {x0 :e B | distance A (x x0,y) < e0} z.
+
+// HOL Light: Multivariate/topology.ml:3281 / lim   (hash md5:9031c45d6519f64427128e4d1c35fabf)
+Definition lim : set -> set -> set -> (set -> set) -> set :=
+  fun A:set => fun B:set => fun net0:set => fun f:set -> set => choose_in (R :^: idx A) (fun l:set => tendsto A B f l net0).
+
 // HOL Light: Multivariate/topology.ml:3706 / condensation_point_of   (hash md5:3ff24dbf3bee21ffe57229e53ff8eea2)
 Definition condensation_point_of : set -> set -> set -> prop :=
   fun A:set => fun x:set => fun s:set => forall t c= R :^: idx A, x :e t /\ open A t -> ~ countable (s :/\: t).
@@ -830,9 +834,21 @@ Definition condensation_point_of : set -> set -> set -> prop :=
 Definition bounded_hl : set -> set -> prop :=
   fun N:set => fun s:set => exists a :e R, forall x :e R :^: idx N, x :e s -> vector_norm N x <= a.
 
+// HOL Light: Multivariate/topology.ml:5396 / compact   (hash md5:3f0d2b625f538af9f7727faa962c08d5)
+Definition compact : set -> set -> prop :=
+  fun N:set => fun s:set => forall f:set -> set, (forall x :e omega, f x :e R :^: idx N) -> (forall n :e omega, f n :e s) -> exists l :e R :^: idx N, exists r:set -> set, (forall x :e omega, r x :e omega) /\ (l :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x:set => f (r x)) l sequentially)).
+
 // HOL Light: Multivariate/topology.ml:5669 / cauchy   (hash md5:76017df1367c92109a90f53af02e85e9)
 Definition cauchy : set -> (set -> set) -> prop :=
   fun N:set => fun s:set -> set => forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, N0 <= m /\ N0 <= n -> distance N (s m,s n) < e0.
+
+// HOL Light: Multivariate/topology.ml:5677 / complete   (hash md5:f60e0fcd8e5e68990d05961ba9192b48)
+Definition complete : set -> set -> prop :=
+  fun N:set => fun s:set => forall f:set -> set, (forall x :e omega, f x :e R :^: idx N) -> (forall n :e omega, f n :e s) /\ cauchy N f -> exists l :e R :^: idx N, l :e s /\ tendsto N omega f l sequentially.
+
+// HOL Light: Multivariate/topology.ml:6470 / continuous   (hash md5:b9d5ac56f911ca5b05d9a94a324fa163)
+Definition continuous : set -> set -> (set -> set) -> set -> prop :=
+  fun A:set => fun B:set => fun f:set -> set => fun net0:set => tendsto A B f (f (netlimit B net0)) net0.
 
 // HOL Light: Multivariate/topology.ml:6631 / continuous_on   (hash md5:562aa1df322f5b35854a9aab2842a1dd)
 Definition continuous_on_hl : set -> set -> (set -> set) -> set -> prop :=
@@ -866,6 +882,18 @@ Definition homeomorphism : set -> set -> set -> set -> prop :=
 Definition homeomorphic : set -> set -> set -> set -> prop :=
   fun A:set => fun B:set => fun s:set => fun t:set => exists f :e R :^: idx A :^: (R :^: idx B), exists g :e R :^: idx B :^: (R :^: idx A), homeomorphism B A (s,t) (f,g).
 
+// HOL Light: Multivariate/topology.ml:21988 / sums   (hash md5:96349a08e80ff3dc60e953cd9335cd80)
+Definition sums : set -> (set -> set) -> set -> set -> prop :=
+  fun A:set => fun f:set -> set => fun l:set => fun s:set => tendsto A omega (fun n:set => vsum omega A (s :/\: {i :e omega | 0 <= i /\ i <= n}) f) l sequentially.
+
+// HOL Light: Multivariate/topology.ml:21991 / infsum   (hash md5:75b628d549c3e14c5116587a72ba0719)
+Definition infsum : set -> set -> (set -> set) -> set :=
+  fun A:set => fun s:set => fun f:set -> set => choose_in (R :^: idx A) (fun l:set => sums A f l s).
+
+// HOL Light: Multivariate/topology.ml:21994 / summable   (hash md5:00b557fb3529fc18850e799bc2ee3a0a)
+Definition summable : set -> set -> (set -> set) -> prop :=
+  fun A:set => fun s:set => fun f:set -> set => exists l :e R :^: idx A, sums A f l s.
+
 // HOL Light: Multivariate/topology.ml:24081 / closest_point   (hash md5:d7eee6531793a3a39383e5e4a1227acc)
 Definition closest_point : set -> set -> set -> set :=
   fun A:set => fun s:set => fun a:set => choose_in (R :^: idx A) (fun x:set => x :e s /\ forall y :e R :^: idx A, y :e s -> distance A (a,x) <= distance A (a,y)).
@@ -889,6 +917,18 @@ Definition fsigma : set -> set -> prop :=
 // HOL Light:  / borel   (hash md5:d92c9dc580506d3b9a9ca34a9899c908)
 Definition borel : set -> set -> prop :=
   fun N:set => fun a:set => forall borel':set -> prop, (forall a0 c= R :^: idx N, open N a0 \/ ((exists s c= R :^: idx N, a0 = (R :^: idx N) :\: s /\ borel' s) \/ (exists u c= Power (R :^: idx N), a0 = Union u /\ (countable u /\ forall s c= R :^: idx N, s :e u -> borel' s))) -> borel' a0) -> borel' a.
+
+// HOL Light: Multivariate/topology.ml:31345 / baire   (hash md5:82cd49e5e05f055ddbe190c5821d9360)
+Definition baire : set -> set -> set :=
+  fun M:set => fun N:set => choose_in (Power (R :^: idx N :^: (R :^: idx M)) :^: Power (R :^: idx M) :^: omega) (fun c:set => (forall s c= R :^: idx M, forall f :e R :^: idx N :^: (R :^: idx M), f :e c 0 s <-> continuous_on_hl M N (fun x:set => f x) s) /\ forall n :e omega, forall s c= R :^: idx M, forall f :e R :^: idx N :^: (R :^: idx M), f :e c (ordsucc n) s <-> exists g :e R :^: idx N :^: (R :^: idx M) :^: omega, (forall k :e omega, g k :e c n s) /\ forall x :e R :^: idx M, x :e s -> tendsto N omega (fun k:set => g k x) (f x) sequentially).
+
+// HOL Light:  / borel_measurable_on   (hash md5:a32d720687b6ce5178be0a6c8d11ca79)
+Definition borel_measurable_on : set -> set -> (set -> set) -> set -> prop :=
+  fun M:set => fun N:set => fun a0:set -> set => fun a1:set => forall borel_measurable_on':set -> set -> prop, (forall a00 :e R :^: idx N :^: (R :^: idx M), forall a10 c= R :^: idx M, continuous_on_hl M N (fun x:set => a00 x) a10 \/ (exists f :e R :^: idx N :^: (R :^: idx M) :^: omega, (forall n :e omega, borel_measurable_on' (f n) a10) /\ forall x :e R :^: idx M, x :e a10 -> tendsto N omega (fun n:set => f n x) (a00 x) sequentially) -> borel_measurable_on' a00 a10) -> borel_measurable_on' (fun x :e R :^: idx M => a0 x) a1.
+
+// HOL Light: Multivariate/topology.ml:35139 / analytic   (hash md5:d4a588ce6ebdcf5c9907738a6020627a)
+Definition analytic : set -> set -> prop :=
+  fun A:set => fun s:set => s :e suslin (R :^: idx A) {x :e Power (R :^: idx A) | compact A x}.
 
 // HOL Light: Multivariate/convex.ml:42 / affine   (hash md5:8fac036a3301180e278b09aa3d4217bc)
 Definition affine : set -> set -> prop :=
@@ -957,6 +997,10 @@ Definition path_image : set -> (set -> set) -> set :=
 // HOL Light: Multivariate/paths.ml:27 / reversepath   (hash md5:384553a3ecd00008a38f02ed4bed527d)
 Definition reversepath : set -> (set -> set) -> set -> set :=
   fun N:set => fun g:set -> set => fun x:set => g (vector_sub 1 (vec 1 1) x).
+
+// HOL Light:  / ++   (hash md5:b8a806287daa94ed842d772923acd168)
+Definition poly_add : set -> (set -> set) -> (set -> set) -> set -> set :=
+  fun A:set => fun x:set -> set => fun y:set -> set => fun x0:set => if drop x0 <= 1 :/: 2 then x (vector_mul 1 2 x0) else y (vector_sub 1 (vector_mul 1 2 x0) (vec 1 1)).
 
 // HOL Light: Multivariate/paths.ml:34 / simple_path   (hash md5:39f5e63d0b9d8f64f0d391d299c0c723)
 Definition simple_path : set -> (set -> set) -> prop :=
@@ -1054,6 +1098,30 @@ Definition ENR : set -> set -> prop :=
 Definition interval_bij : set -> set -> set -> set -> set :=
   fun N:set => fun x:set => fun y:set => fun z:set => fun i :e idx N => y 0 i + (z i + - x 0 i) :/: (x 1 i + - x 0 i) * (y 1 i + - y 0 i).
 
+// HOL Light: Multivariate/derivatives.ml:18 / has_derivative   (hash md5:13139cd665963ff3e5e01fecb01b9a92)
+Definition has_derivative : set -> set -> (set -> set) -> (set -> set) -> set -> prop :=
+  fun A:set => fun B:set => fun f:set -> set => fun f':set -> set => fun net0:set => linear B A f' /\ tendsto A (R :^: idx B) (fun y:set => vector_mul A (recip_SNo (vector_norm B (vector_sub B y (netlimit (R :^: idx B) net0)))) (vector_sub A (f y) (vector_add A (f (netlimit (R :^: idx B) net0)) (f' (vector_sub B y (netlimit (R :^: idx B) net0)))))) (vec A 0) net0.
+
+// HOL Light: Multivariate/derivatives.ml:320 / differentiable   (hash md5:d1bf2c306a837e1bf0395fc4c6b4adde)
+Definition differentiable : set -> set -> (set -> set) -> set -> prop :=
+  fun A:set => fun B:set => fun f:set -> set => fun net0:set => exists f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) /\ has_derivative A B f f' net0.
+
+// HOL Light: Multivariate/derivatives.ml:381 / frechet_derivative   (hash md5:e224fd7cced6403092c0cdc91378dfbb)
+Definition frechet_derivative : set -> set -> (set -> set) -> set -> set -> set :=
+  fun A:set => fun B:set => fun f:set -> set => fun net0:set => fun x:set => choose_in (R :^: idx A :^: (R :^: idx B)) (fun f':set => has_derivative A B f (fun x:set => f' x) net0) x.
+
+// HOL Light: Multivariate/derivatives.ml:394 / jacobian   (hash md5:18513def9c266e5f97b43bf505521a2b)
+Definition jacobian : set -> set -> (set -> set) -> set -> set :=
+  fun A:set => fun B:set => fun f:set -> set => fun net0:set => matrix A B (frechet_derivative B A f net0).
+
+// HOL Light: Multivariate/derivatives.ml:5148 / has_vector_derivative   (hash md5:dab255e1076f81633100e8a6247a05b5)
+Definition has_vector_derivative : set -> (set -> set) -> set -> set -> prop :=
+  fun A:set => fun f:set -> set => fun f':set => fun net0:set => has_derivative A 1 f (fun x:set => vector_mul A (drop x) f') net0.
+
+// HOL Light: Multivariate/derivatives.ml:5152 / vector_derivative   (hash md5:41490f8036ad8aa50f5e6f1f528e13de)
+Definition vector_derivative : set -> (set -> set) -> set -> set :=
+  fun N:set => fun f:set -> set => fun net0:set => choose_in (R :^: idx N) (fun f':set => has_vector_derivative N f f' net0).
+
 // HOL Light: Library/binary.ml:19 / bitset   (hash md5:caa8e1783a120a641b1fea4285172adb)
 Definition bitset : set -> set :=
   fun n:set => {i :e omega | odd_nat (div_nat n (2 ^ i))}.
@@ -1070,6 +1138,10 @@ Definition setcode : set -> set :=
 Definition codeset : set -> set :=
   fun n:set => {ordsucc x | x :e bitset (minus_nat n 1)}.
 
+// HOL Light:  / $$   (hash md5:95b5c58c54a925974301150e3fdfc31c)
+Definition multivector_index : set -> set -> set -> set :=
+  fun N:set => fun x:set => fun y:set => x (setcode y).
+
 // HOL Light: Multivariate/clifford.ml:163 / lambdas   (hash md5:468c89f31d937738498fe78952df99d0)
 Definition lambdas : set -> (set -> set) -> set :=
   fun N:set => fun g:set -> set => fun i :e idx (multivector N) => g (codeset i).
@@ -1082,9 +1154,41 @@ Definition mbasis : set -> set -> set :=
 Definition multivec : set -> set -> set :=
   fun N:set => fun x:set => vsum omega (multivector N) (idx N) (fun i:set => vector_mul (multivector N) (x i) (mbasis N {i})).
 
+// HOL Light: Multivariate/clifford.ml:335 / multivector   (hash md5:61cf094a11bd04baeaa73273c5a50eef)
+Definition multivector_hl : set -> set -> set -> prop :=
+  fun N:set => fun k:set => fun p:set => forall s c= omega, s c= idx N /\ ~ multivector_index N p s = 0 -> equip s k.
+
+// HOL Light: Multivariate/clifford.ml:345 / grade   (hash md5:a06300535b55c2552aab6b81fe8c59b3)
+Definition grade : set -> set -> set -> set :=
+  fun N:set => fun k:set => fun p:set => lambdas N (fun s:set => if equip s k then multivector_index N p s else 0).
+
+// HOL Light:  / Product   (hash md5:3b33144e9190ed40700428a8734a5299)
+Definition Product : set -> (set -> set -> set) -> (set -> set -> set -> prop) -> set -> set -> set :=
+  fun N:set => fun mult:set -> set -> set => fun op:set -> set -> set -> prop => fun x:set => fun y:set => vsum (Power omega) (multivector N) {s :e Power omega | s c= idx N} (fun s:set => vsum (Power omega) (multivector N) {s0 :e Power omega | s0 c= idx N} (fun t:set => vector_mul (multivector N) (multivector_index N x s * multivector_index N y t * mult s t) (mbasis N {x0 :e omega | op s t x0}))).
+
+// HOL Light: Multivariate/clifford.ml:446 / geom_mul   (hash md5:c448d5c935ab7adf06eee95154caf74c)
+Definition geom_mul : set -> set -> set -> set :=
+  fun N:set => fun x:set => fun y:set => Product N (fun s:set => fun t:set => (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun s:set => fun t:set => fun x0:set => x0 :e (s :\: t) :\/: (t :\: s)) x y.
+
+// HOL Light: Multivariate/clifford.ml:496 / outer   (hash md5:edb40649ec5be8010f3a965735843094)
+Definition outer : set -> set -> set -> set :=
+  fun N:set => fun x:set => fun y:set => Product N (fun s:set => fun t:set => if ~ s :/\: t = Empty then 0 else (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun s:set => fun t:set => fun x0:set => x0 :e (s :\: t) :\/: (t :\: s)) x y.
+
+// HOL Light: Multivariate/clifford.ml:559 / inner   (hash md5:a89c9b5087ccc3ce540b031ac3dacd8d)
+Definition inner : set -> set -> set -> set :=
+  fun N:set => fun x:set => fun y:set => Product N (fun s:set => fun t:set => if s = Empty \/ (t = Empty \/ ~ (s :\: t = Empty /\ ~ t :\: s = Empty)) then 0 else (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun s:set => fun t:set => fun x0:set => x0 :e (s :\: t) :\/: (t :\: s)) x y.
+
 // HOL Light: Multivariate/clifford.ml:895 / seqiterate   (hash md5:869f61e2e85f90bfcc782b8f18d65730)
 Definition seqiterate : set -> set :=
   fun A:set => choose_in (A :^: (A :^: omega) :^: Power omega :^: (A :^: A :^: A)) (fun c:set => forall op :e A :^: A :^: A, forall f :e A :^: omega, forall s c= omega, c op s f = if infinite s \/ s = Empty then neutral_of A (fun a:set => fun b:set => op a b) else if s = {choose_in omega (fun n:set => n :e s /\ forall m :e omega, m :e s -> n <= m)} then f (choose_in omega (fun n:set => n :e s /\ forall m :e omega, m :e s -> n <= m)) else op (f (choose_in omega (fun n:set => n :e s /\ forall m :e omega, m :e s -> n <= m))) (c op (s :\: {choose_in omega (fun n:set => n :e s /\ forall m :e omega, m :e s -> n <= m)}) f)).
+
+// HOL Light: Multivariate/clifford.ml:949 / outermorphism   (hash md5:08f6f9d052fe18f57025d565723fe604)
+Definition outermorphism : set -> set -> (set -> set) -> set -> set :=
+  fun N:set => fun P:set => fun f:set -> set => fun x:set => vsum (Power omega) (multivector P) {s :e Power omega | s c= idx N} (fun s:set => vector_mul (multivector P) (multivector_index N x s) (seqiterate (R :^: idx (multivector P)) (fun x0 :e R :^: idx (multivector P) => fun x1 :e R :^: idx (multivector P) => outer P x0 x1) s (fun x0 :e omega => multivec P (f (basis N x0))))).
+
+// HOL Light: Multivariate/clifford.ml:977 / reversion   (hash md5:114b8d51da5dffff0832232a56969c92)
+Definition reversion : set -> set -> set :=
+  fun N:set => fun x:set => lambdas N (fun s:set => (- 1) ^ div_nat (finite_cardinality s * minus_nat (finite_cardinality s) 1) 2 * multivector_index N x s).
 
 // HOL Light: Multivariate/integration.ml:151 / interval_upperbound   (hash md5:21a1a585a681520c94c4258353a93a1f)
 Definition interval_upperbound : set -> set -> set :=
@@ -1201,6 +1305,14 @@ Definition measurable : set -> set -> prop :=
 // HOL Light: Multivariate/measure.ml:27 / measure   (hash md5:6c706c6ec16ea298004d092a2413c9f8)
 Definition measure : set -> set -> set :=
   fun A:set => fun s:set => choose_in R (fun m:set => has_measure A s m).
+
+// HOL Light: Multivariate/measure.ml:6959 / measurable_on   (hash md5:c441fa0b60ed53cb9ccb9b0aecce9ed4)
+Definition measurable_on : set -> set -> (set -> set) -> set -> prop :=
+  fun M:set => fun N:set => fun f:set -> set => fun s:set => exists k c= R :^: idx M, exists g:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, g x y :e R :^: idx N) /\ (negligible M k /\ ((forall n :e omega, continuous_on_hl M N (g n) (R :^: idx M)) /\ forall x :e R :^: idx M, ~ x :e k -> tendsto N omega (fun n:set => g n x) (if x :e s then f x else vec N 0) sequentially)).
+
+// HOL Light: Multivariate/measure.ml:6976 / lebesgue_measurable   (hash md5:66f691227fe7372e73c47bfefc40c57e)
+Definition lebesgue_measurable : set -> set -> prop :=
+  fun N:set => fun s:set => measurable_on N 1 (fun x:set => indicator N s x) (R :^: idx N).
 
 // HOL Light type definition topology (abs topology, rep open_in) as a subtype of (A->bool)->bool
 Definition topology : set -> set :=
@@ -1502,6 +1614,26 @@ Definition totally_bounded_in : set -> set -> set -> prop :=
 Definition topcontinuous_at : set -> set -> set -> set -> (set -> set) -> set -> prop :=
   fun A:set => fun B:set => fun top:set => fun top':set => fun f:set -> set => fun x:set => x :e topspace A top /\ ((forall x0 :e A, x0 :e topspace A top -> f x0 :e topspace B top') /\ forall v c= B, v :e top' /\ f x :e v -> exists u c= A, u :e top /\ (x :e u /\ forall y :e A, y :e u -> f y :e v)).
 
+// HOL Light:  / --->   (hash md5:29cc8d66280b81b7b337f8eb92ee5e6e)
+Definition tendsto_real : set -> (set -> set) -> set -> set -> prop :=
+  fun A:set => fun x:set -> set => fun y:set => fun z:set => limit A R euclideanreal x y z.
+
+// HOL Light: Multivariate/metric.ml:21869 / reallim   (hash md5:376c1bfe6399b9a149ee240a6fb62217)
+Definition reallim : set -> set -> (set -> set) -> set :=
+  fun A:set => fun net0:set => fun f:set -> set => choose_in R (fun l:set => tendsto_real A f l net0).
+
+// HOL Light: Multivariate/metric.ml:21941 / real_sums   (hash md5:b2769cbdcffe988c71219cb34dd91cbd)
+Definition real_sums : (set -> set) -> set -> set -> prop :=
+  fun f:set -> set => fun l:set => fun s:set => tendsto_real omega (fun n:set => finsum (s :/\: {i :e omega | 0 <= i /\ i <= n}) f) l sequentially.
+
+// HOL Light: Multivariate/metric.ml:21945 / real_infsum   (hash md5:b1e3d7b73dbb9753dad5f6834c482eec)
+Definition real_infsum : set -> (set -> set) -> set :=
+  fun s:set => fun f:set -> set => choose_in R (fun l:set => real_sums f l s).
+
+// HOL Light: Multivariate/metric.ml:21948 / real_summable   (hash md5:3bf5d3f1dc38230b0cff327d01a5892f)
+Definition real_summable : set -> (set -> set) -> prop :=
+  fun s:set => fun f:set -> set => exists l :e R, real_sums f l s.
+
 // HOL Light: Multivariate/metric.ml:22038 / path_in   (hash md5:34eb210e6e99abc1ae536dee194f0ffb)
 Definition path_in : set -> set -> (set -> set) -> prop :=
   fun A:set => fun top:set => fun g:set -> set => continuous_map R A (subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil)),top) g.
@@ -1658,6 +1790,14 @@ Definition dimension_le : set -> set -> set -> prop :=
 Definition cantor_space : set :=
   product_topology 2 omega omega (fun n:set => discrete_topology 2 2).
 
+// HOL Light: Multivariate/metric.ml:44830 / cantor_map   (hash md5:189b6ba65cb41c8a48c14643eeb7dc75)
+Definition cantor_map : set -> set :=
+  fun a:set => real_infsum (from 0) (fun x:set => cantor_term a x).
+
+// HOL Light: Multivariate/metric.ml:44833 / cantor_set   (hash md5:5ff3c164434a0db505c5b3a94ff07b51)
+Definition cantor_set : set :=
+  {cantor_map x | x :e Power omega}.
+
 // HOL Light: Multivariate/homology.ml:180 / singular_simplex   (hash md5:9df8cef1f2013d05eb5054821cc22dac)
 Definition singular_simplex : set -> set -> (set -> set) -> prop :=
   fun A:set => fun f:set => fun y:set -> set => continuous_map (R :^: omega) A (subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex (f 0)),f 1) y /\ forall x :e R :^: omega, ~ x :e standard_simplex (f 0) -> y x = choose_in A (fun y0:set => True).
@@ -1670,6 +1810,18 @@ Definition singular_chain : set -> set -> set -> prop :=
 Definition mod_subset : set -> set -> set -> set -> prop :=
   fun A:set => fun c1:set => fun c2:set => fun z:set => singular_chain A (c1 0,c1 1) (frag_sub (A :^: (R :^: omega)) c2 z).
 
+// HOL Light: Multivariate/homology.ml:453 / singular_relcycle   (hash md5:70978d49b0a7b52c73e310e8d3e7e739)
+Definition singular_relcycle : set -> set -> set -> prop :=
+  fun A:set => fun c:set => fun y:set => singular_chain A (c 0,c 1 0) y /\ mod_subset A (minus_nat (c 0) 1,subtopology A (c 1 0) (c 1 1)) (chain_boundary A (c 0) y) (frag_0 (A :^: (R :^: omega))).
+
+// HOL Light: Multivariate/homology.ml:537 / singular_relboundary   (hash md5:2f94a549271b1afd3dc744648f472d61)
+Definition singular_relboundary : set -> set -> set -> prop :=
+  fun A:set => fun c:set => fun y:set => exists d :e frag (A :^: (R :^: omega)), singular_chain A (c 0 + 1,c 1 0) d /\ mod_subset A (c 0,subtopology A (c 1 0) (c 1 1)) (chain_boundary A (c 0 + 1) d) y.
+
+// HOL Light: Multivariate/homology.ml:653 / homologous_rel   (hash md5:8b9e3d315f6eba6ce6176241b2e54caa)
+Definition homologous_rel : set -> set -> set -> set -> prop :=
+  fun A:set => fun c1:set => fun c2:set => fun z:set => singular_relboundary A (c1 0,(c1 1 0,c1 1 1)) (frag_sub (A :^: (R :^: omega)) c2 z).
+
 // HOL Light: Multivariate/homology.ml:1274 / simplicial_simplex   (hash md5:4d032b604a4092aef53545c566b9a543)
 Definition simplicial_simplex : set -> (set -> set -> set) -> prop :=
   fun f:set => fun y:set -> set -> set => singular_simplex (R :^: omega) (f 0,subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (f 1)) (fun x:set => fun x0 :e omega => y x x0) /\ exists l:set -> set -> set, (forall x y0 :e omega, l x y0 :e R) /\ forall x :e R :^: omega, forall x0 :e omega, y x x0 = oriented_simplex (f 0) l x x0.
@@ -1681,6 +1833,38 @@ Definition simplicial_chain : set -> set -> prop :=
 // HOL Light: Multivariate/homology.ml:3972 / chain_group   (hash md5:3ac8c6bc4432ff1771ab40e299fe0233)
 Definition chain_group : set -> set -> set :=
   fun A:set => fun x:set => free_abelian_group (A :^: (R :^: omega)) {x0 :e A :^: (R :^: omega) | singular_simplex A (x 0,x 1) (fun x1:set => x0 x1)}.
+
+// HOL Light: Multivariate/homology.ml:3998 / relcycle_group   (hash md5:e29783fc37aa8e3bdceb15dfdea1fb31)
+Definition relcycle_group : set -> set -> set :=
+  fun A:set => fun x:set => subgroup_generated (frag (A :^: (R :^: omega))) (chain_group A (x 0,x 1 0)) {x0 :e frag (A :^: (R :^: omega)) | singular_relcycle A (x 0,(x 1 0,x 1 1)) x0}.
+
+// HOL Light: Multivariate/homology.ml:4023 / relative_homology_group   (hash md5:ef009336f93dc148bb9293932134bd2f)
+Definition relative_homology_group : set -> set -> set :=
+  fun A:set => fun x:set => if x 0 < 0 then singleton_group (Power (frag (A :^: (R :^: omega)))) (choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => True)) else quotient_group (frag (A :^: (R :^: omega))) (relcycle_group A (if x 0 :e omega then x 0 else 0,(x 1 0,x 1 1))) {x0 :e frag (A :^: (R :^: omega)) | singular_relboundary A (if x 0 :e omega then x 0 else 0,(x 1 0,x 1 1)) x0}.
+
+// HOL Light: Multivariate/homology.ml:4029 / homology_group   (hash md5:1ab77cdb89f56b5ed04eb8ce5d836d98)
+Definition homology_group : set -> set -> set :=
+  fun A:set => fun x:set => relative_homology_group A (x 0,(x 1,Empty)).
+
+// HOL Light:  / hom_boundary   (hash md5:cdb049da7a75141104ce8315f600fe68)
+Definition hom_boundary : set -> set :=
+  fun A:set => choose_in (Power (frag (A :^: (R :^: omega))) :^: Power (frag (A :^: (R :^: omega))) :^: (topology A :*: Power A) :^: int) (fun c:set => (forall p :e int, forall top :e topology A, forall s c= A, forall c0 c= frag (A :^: (R :^: omega)), ~ c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) -> c p (top,s) c0 = group_id (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s))) /\ ((forall p :e int, forall top :e topology A, forall s c= A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s)) (fun x:set => c p (top,s) x)) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall c0 :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c0 /\ 1 <= p -> forall x :e frag (A :^: (R :^: omega)), x :e c p (top,s) {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c0 x0} <-> homologous_rel A (minus_nat p 1,(subtopology A top s,Empty)) (chain_boundary A p c0) x) /\ ((forall p :e int, forall top :e topology A, forall s c= A, c p (top,s) = c p (top,topspace A top :/\: s)) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall c0 c= frag (A :^: (R :^: omega)), c p (top,s) c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s))) /\ forall p :e int, p <= 0 -> forall q :e topology A :*: Power A, forall r c= frag (A :^: (R :^: omega)), c p q r = choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => True)))))).
+
+// HOL Light:  / hom_induced   (hash md5:b8bc3133a307da2c46b3e1cad3328d28)
+Definition hom_induced : set -> set -> set :=
+  fun A:set => fun B:set => choose_in (Power (frag (B :^: (R :^: omega))) :^: Power (frag (A :^: (R :^: omega))) :^: (B :^: A) :^: (topology B :*: Power B) :^: (topology A :*: Power A) :^: int) (fun c:set => (forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c0 c= frag (A :^: (R :^: omega)), ~ (continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))))) -> c p (top,s) (top',t) f c0 = group_id (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t)))) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (fun x:set => c p (top,s) (top',t) f x)) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c0 :e frag (A :^: (R :^: omega)), continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ singular_relcycle A (p,(top,s)) c0) -> forall x :e frag (B :^: (R :^: omega)), x :e c p (top,s) (top',t) f {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c0 x0} <-> homologous_rel B (p,(top',t)) (chain_map A B p (fun x0:set => f x0) c0) x) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, c p (top,s) (top',t) = c p (top,topspace A top :/\: s) (top',topspace B top' :/\: t)) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall f :e B :^: A, forall t c= B, forall c0 c= frag (A :^: (R :^: omega)), c p (top,s) (top',t) f c0 :e group_carrier (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t)))) /\ forall p :e int, p < 0 -> forall q :e topology A :*: Power A, forall r :e topology B :*: Power B, forall s :e B :^: A, forall t c= frag (A :^: (R :^: omega)), c p q r s t = choose_in (Power (frag (B :^: (R :^: omega)))) (fun x:set => True)))))).
+
+// HOL Light: Multivariate/homology.ml:6189 / hom_relboundary   (hash md5:854a9ad0f00b9cac8debb34f697aa61f)
+Definition hom_relboundary : set -> set -> set -> set -> set -> prop :=
+  fun A:set => fun p:set => fun y:set => fun x:set => hom_induced A A (p + - 1) (subtopology A (y 0) (y 1 0),Empty) (subtopology A (y 0) (y 1 0),y 1 1) (fun x :e A => x) (hom_boundary A p (y 0,y 1 0) x).
+
+// HOL Light: Multivariate/homology.ml:6625 / reduced_homology_group   (hash md5:36e6264bf72892ace1e6828c23bf862e)
+Definition reduced_homology_group : set -> set -> set :=
+  fun A:set => fun x:set => subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (x 0,x 1)) (group_kernel (Power (frag (A :^: (R :^: omega)))) (Power (frag (1 :^: (R :^: omega)))) (homology_group A (x 0,x 1),homology_group 1 (x 0,discrete_topology 1 {0})) (fun x0:set => hom_induced A 1 (x 0) (x 1,Empty) (discrete_topology 1 {0},Empty) (fun x0 :e A => 0) x0)).
+
+// HOL Light: Multivariate/homology.ml:8340 / brouwer_degree2   (hash md5:de75a8b51343f68a3ac7a9d634dbff4a)
+Definition brouwer_degree2 : set -> (set -> set -> set) -> set :=
+  fun p:set => fun f:set -> set -> set => choose_in int (fun d:set => forall x c= frag (R :^: omega :^: (R :^: omega)), x :e group_carrier (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) -> hom_induced (R :^: omega) (R :^: omega) p (nsphere p,Empty) (nsphere p,Empty) (fun x0 :e R :^: omega => fun x1 :e omega => f x0 x1) x = group_zpow (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) x d).
 
 // HOL Light: Multivariate/topology.ml:22 / euclidean   (hash md5:20793706bae8591933d60ab9f2cf3c62)
 Definition euclidean : set -> set :=
@@ -1746,6 +1930,14 @@ Definition dimension : set -> set -> set :=
 Definition covering_space : set -> set -> set -> set -> prop :=
   fun M:set => fun N:set => fun s:set => fun y:set => continuous_on_hl M N (fun x:set => s 1 x) (s 0) /\ ({s 1 x | x :e s 0} = y /\ forall x :e R :^: idx N, x :e y -> exists t c= R :^: idx N, x :e t /\ (t :e subtopology (R :^: idx N) (euclidean N) y /\ exists v c= Power (R :^: idx M), Union v = {x0 :e R :^: idx M | x0 :e s 0 /\ s 1 x0 :e t} /\ ((forall u c= R :^: idx M, u :e v -> u :e subtopology (R :^: idx M) (euclidean M) (s 0)) /\ ((forall x y :e v, x <> y -> x :/\: y = Empty) /\ forall u c= R :^: idx M, u :e v -> exists q :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (u,t) (s 1,q))))).
 
+// HOL Light: Multivariate/degree.ml:16 / brouwer_degree1   (hash md5:a56f086075029b35e7a137866b20adda)
+Definition brouwer_degree1 : set -> set -> (set -> set) -> set :=
+  fun N:set => fun n:set => fun f:set -> set => if 1 <= n /\ n <= dimindex N then brouwer_degree2 (minus_nat n 1) (fun x:set => fun x0 :e omega => if 1 <= x0 /\ x0 <= n then f (fun i :e idx N => if 1 <= i /\ i <= n then x i else 0) x0 else 0) else 1.
+
+// HOL Light: Multivariate/degree.ml:25 / brouwer_degree   (hash md5:ffdef412b6475998a721927f2ce4f891)
+Definition brouwer_degree : set -> (set -> set) -> set :=
+  fun N:set => fun f:set -> set => brouwer_degree1 N (dimindex N) f.
+
 // HOL Light: Multivariate/degree.ml:2623 / AR   (hash md5:e2c6de6b182117ffe61d6cd9712263f7)
 Definition AR : set -> set -> prop :=
   fun N:set => fun s:set => forall u s' c= R :^: idx_n (dimindex N + 1), homeomorphic (idx_n (dimindex N + 1)) N s s' /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) s' -> retract_of (idx_n (dimindex N + 1)) s' u.
@@ -1753,4 +1945,8 @@ Definition AR : set -> set -> prop :=
 // HOL Light: Multivariate/degree.ml:2629 / ANR   (hash md5:5292c18e69245942c85042907ab67132)
 Definition ANR : set -> set -> prop :=
   fun N:set => fun s:set => forall u s' c= R :^: idx_n (dimindex N + 1), homeomorphic (idx_n (dimindex N + 1)) N s s' /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) s' -> exists t c= R :^: idx_n (dimindex N + 1), t :e subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u /\ retract_of (idx_n (dimindex N + 1)) s' t.
+
+// HOL Light: Multivariate/derivatives.ml:323 / differentiable_on   (hash md5:291db53a79d072adadf5f4434b384131)
+Definition differentiable_on_hl : set -> set -> (set -> set) -> set -> prop :=
+  fun A:set => fun B:set => fun f:set -> set => fun s:set => forall x :e R :^: idx B, x :e s -> differentiable A B f (within (R :^: idx B) (at B x) s).
 

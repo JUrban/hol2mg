@@ -458,6 +458,12 @@ Admitted.
 Theorem DIVISION_OF_REFLECT : forall N:set, N <> Empty -> forall d c= Power (R :^: idx N), forall s c= R :^: idx N, division_of N {{x0 :e R :^: idx N | x0 :e {vector_neg N x0 | x0 :e x}} | x :e d} {vector_neg N x | x :e s} <-> division_of N d s.
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:1287 / ELEMENTARY_COMPACT
+// Source hash: md5:0330c1c2314699264aef39a361df21b2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem ELEMENTARY_COMPACT : forall A:set, A <> Empty -> forall s c= R :^: idx A, (exists d c= Power (R :^: idx A), division_of A d s) -> compact A s.
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:1292 / OPEN_COUNTABLE_LIMIT_ELEMENTARY
 // Source hash: md5:99a4a35252098e355a1c8398c7aa5ff0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
@@ -1640,6 +1646,24 @@ Admitted.
 Theorem INTEGRABLE_ON_LITTLE_SUBINTERVALS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> exists d :e R, 0 < d /\ forall u v :e R :^: idx M, x :e closed_interval M (seq_cons (u,v) seq_nil) /\ (closed_interval M (seq_cons (u,v) seq_nil) c= ball M (x,d) /\ closed_interval M (seq_cons (u,v) seq_nil) c= closed_interval M (seq_cons (a,b) seq_nil)) -> integrable_on N M f (closed_interval M (seq_cons (u,v) seq_nil))) -> integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:5128 / INTEGRAL_HAS_VECTOR_DERIVATIVE_POINTWISE
+// Source hash: md5:ec4a6ca3450ead2be5af463b60915649
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INTEGRAL_HAS_VECTOR_DERIVATIVE_POINTWISE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b x :e R :^: idx 1, integrable_on N 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ continuous N (R :^: idx 1) f (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> has_vector_derivative N (fun u:set => integral N 1 (closed_interval 1 (seq_cons (a,u) seq_nil)) f) (f x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:5185 / INTEGRAL_HAS_VECTOR_DERIVATIVE
+// Source hash: md5:414af92ebb805b6e78f465b20bdfea5f
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INTEGRAL_HAS_VECTOR_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_vector_derivative N (fun u:set => integral N 1 (closed_interval 1 (seq_cons (a,u) seq_nil)) f) (f x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:5195 / ANTIDERIVATIVE_CONTINUOUS
+// Source hash: md5:c16ccef1fb6b6eba077b069670db8bbc
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem ANTIDERIVATIVE_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_vector_derivative N g (f x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:5207 / HAS_INTEGRAL_RESTRICT_OPEN_SUBINTERVAL
 // Source hash: md5:3272d379f6b915fd8998c2848e35a3ba
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
@@ -1794,6 +1818,18 @@ Admitted.
 // Source hash: md5:4b1b0606d5dbd3797adaf3d49c1ddca1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INTEGRABLE_CASES : forall M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, integrable_on N M f {x :e R :^: idx M | x :e s /\ P x} /\ integrable_on N M g {x :e R :^: idx M | x :e s /\ ~ P x} -> integrable_on N M (fun x:set => if P x then f x else g x) s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:5626 / HAS_INTEGRAL_TWIDDLE
+// Source hash: md5:d4e711f189476c022c89263e83fb27c3
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_INTEGRAL_TWIDDLE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx P) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx N, h x :e R :^: idx M) -> forall r :e R, forall i :e R :^: idx P, forall a b :e R :^: idx N, 0 < r /\ ((forall x :e R :^: idx M, h (g x) = x) /\ ((forall x :e R :^: idx N, g (h x) = x) /\ ((forall x :e R :^: idx M, continuous N (R :^: idx M) g (at M x)) /\ ((forall u v :e R :^: idx M, exists w z :e R :^: idx N, {g x | x :e closed_interval M (seq_cons (u,v) seq_nil)} = closed_interval N (seq_cons (w,z) seq_nil)) /\ ((forall u v :e R :^: idx N, exists w z :e R :^: idx M, {h x | x :e closed_interval N (seq_cons (u,v) seq_nil)} = closed_interval M (seq_cons (w,z) seq_nil)) /\ ((forall u v :e R :^: idx M, content N {g x | x :e closed_interval M (seq_cons (u,v) seq_nil)} = r * content M (closed_interval M (seq_cons (u,v) seq_nil))) /\ has_integral N P f i (closed_interval N (seq_cons (a,b) seq_nil)))))))) -> has_integral M P (fun x:set => f (g x)) (vector_mul P (recip_SNo r) i) {h x | x :e closed_interval N (seq_cons (a,b) seq_nil)}.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:5753 / HAS_INTEGRAL_TWIDDLE_GEN
+// Source hash: md5:51f39aa47edf06da0c4f5a5f604f63ce
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_INTEGRAL_TWIDDLE_GEN : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx P) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx N, h x :e R :^: idx M) -> forall r :e R, forall i :e R :^: idx P, forall s c= R :^: idx N, 0 < r /\ ((forall x :e R :^: idx M, h (g x) = x) /\ ((forall x :e R :^: idx N, g (h x) = x) /\ ((forall x :e R :^: idx M, continuous N (R :^: idx M) g (at M x)) /\ ((forall b :e R, 0 < b -> exists b' :e R, 0 < b' /\ ball N (vec N 0,b) c= {g x | x :e ball M (vec M 0,b')}) /\ ((forall u v :e R :^: idx M, exists w z :e R :^: idx N, {g x | x :e closed_interval M (seq_cons (u,v) seq_nil)} = closed_interval N (seq_cons (w,z) seq_nil)) /\ ((forall u v :e R :^: idx N, exists w z :e R :^: idx M, {h x | x :e closed_interval N (seq_cons (u,v) seq_nil)} = closed_interval M (seq_cons (w,z) seq_nil)) /\ ((forall u v :e R :^: idx M, content N {g x | x :e closed_interval M (seq_cons (u,v) seq_nil)} = r * content M (closed_interval M (seq_cons (u,v) seq_nil))) /\ has_integral N P f i s))))))) -> has_integral M P (fun x:set => f (g x)) (vector_mul P (recip_SNo r) i) {h x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:5798 / HAS_INTEGRAL_TWIZZLE_INTERVAL
@@ -2246,6 +2282,36 @@ Admitted.
 Theorem HENSTOCK_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> finsum p (fun p0:set => vector_norm N (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f))) < e0.
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:7793 / MONOTONE_CONVERGENCE_INTERVAL
+// Source hash: md5:5bb7b40513ec77f4f3d4f616bb13408f
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem MONOTONE_CONVERGENCE_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall a b :e R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) (closed_interval N (seq_cons (a,b) seq_nil))) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e closed_interval N (seq_cons (a,b) seq_nil) -> drop (f k x) <= drop (f (ordsucc k) x)) /\ ((forall x :e R :^: idx N, x :e closed_interval N (seq_cons (a,b) seq_nil) -> tendsto 1 omega (fun k:set => f k x) (g x) sequentially) /\ bounded_hl 1 {integral 1 N (closed_interval N (seq_cons (a,b) seq_nil)) (f k) | k :e omega, k :e omega})) -> integrable_on 1 N g (closed_interval N (seq_cons (a,b) seq_nil)) /\ tendsto 1 omega (fun k:set => integral 1 N (closed_interval N (seq_cons (a,b) seq_nil)) (f k)) (integral 1 N (closed_interval N (seq_cons (a,b) seq_nil)) g) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8023 / MONOTONE_CONVERGENCE_INCREASING
+// Source hash: md5:515c44de20b616b252b19e50187b5277
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem MONOTONE_CONVERGENCE_INCREASING : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s -> drop (f k x) <= drop (f (ordsucc k) x)) /\ ((forall x :e R :^: idx N, x :e s -> tendsto 1 omega (fun k:set => f k x) (g x) sequentially) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega})) -> integrable_on 1 N g s /\ tendsto 1 omega (fun k:set => integral 1 N s (f k)) (integral 1 N s g) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8205 / MONOTONE_CONVERGENCE_DECREASING
+// Source hash: md5:4316bfb93385496082a2bce67734f976
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem MONOTONE_CONVERGENCE_DECREASING : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s -> drop (f (ordsucc k) x) <= drop (f k x)) /\ ((forall x :e R :^: idx N, x :e s -> tendsto 1 omega (fun k:set => f k x) (g x) sequentially) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega})) -> integrable_on 1 N g s /\ tendsto 1 omega (fun k:set => integral 1 N s (f k)) (integral 1 N s g) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8248 / MONOTONE_CONVERGENCE_INCREASING_AE
+// Source hash: md5:7fa3e7afc71e1a6f9fb418e7a2a08d90
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem MONOTONE_CONVERGENCE_INCREASING_AE : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall s t c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ (negligible N t /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s :\: t -> drop (f k x) <= drop (f (ordsucc k) x)) /\ ((forall x :e R :^: idx N, x :e s :\: t -> tendsto 1 omega (fun k:set => f k x) (g x) sequentially) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}))) -> integrable_on 1 N g s /\ tendsto 1 omega (fun k:set => integral 1 N s (f k)) (integral 1 N s g) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8293 / MONOTONE_CONVERGENCE_DECREASING_AE
+// Source hash: md5:194daed89967f6251178befc3b24bd6e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem MONOTONE_CONVERGENCE_DECREASING_AE : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall s t c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ (negligible N t /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s :\: t -> drop (f (ordsucc k) x) <= drop (f k x)) /\ ((forall x :e R :^: idx N, x :e s :\: t -> tendsto 1 omega (fun k:set => f k x) (g x) sequentially) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}))) -> integrable_on 1 N g s /\ tendsto 1 omega (fun k:set => integral 1 N s (f k)) (integral 1 N s g) sequentially.
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:8342 / INTEGRAL_NORM_BOUND_INTEGRAL
 // Source hash: md5:0ff6fd13aff972ee3595ca723eee1f8d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -2268,6 +2334,24 @@ Admitted.
 // Source hash: md5:e904a9eceff7fbbf9907e1fd366e57d5
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem INTEGRABLE_ON_ALL_INTERVALS_INTEGRABLE_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ ((forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= drop (g x)) /\ integrable_on 1 M g s) -> integrable_on N M f s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8505 / HAS_INTEGRAL_LIM_AT_POSINFINITY
+// Source hash: md5:aa645ce53c5bd257be4ac293275a07a8
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_INTEGRAL_LIM_AT_POSINFINITY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall l :e R :^: idx N, has_integral 1 N f l {t :e R :^: idx 1 | 0 <= drop t} <-> (forall a :e R :^: idx 1, integrable_on N 1 f (closed_interval 1 (seq_cons (vec 1 0,a) seq_nil))) /\ tendsto N R (fun a:set => integral N 1 (closed_interval 1 (seq_cons (vec 1 0,lift a) seq_nil)) f) l at_posinfinity.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8560 / HAS_INTEGRAL_LIM_AT_POSINFINITY_GEN
+// Source hash: md5:336d20d0fbf00b1bbd7c6228474a7bb2
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_INTEGRAL_LIM_AT_POSINFINITY_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a :e R, forall l :e R :^: idx N, has_integral 1 N f l {t :e R :^: idx 1 | a <= drop t} <-> (forall b :e R, integrable_on N 1 f (closed_interval 1 (seq_cons (lift a,lift b) seq_nil))) /\ tendsto N R (fun b:set => integral N 1 (closed_interval 1 (seq_cons (lift a,lift b) seq_nil)) f) l at_posinfinity.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:8591 / HAS_INTEGRAL_LIM_SEQUENTIALLY
+// Source hash: md5:ca005651d6ba4635f0fe217021472542
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem HAS_INTEGRAL_LIM_SEQUENTIALLY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall l :e R :^: idx N, tendsto N R (fun x:set => f (lift x)) (vec N 0) at_posinfinity /\ ((forall n :e omega, integrable_on N 1 f (closed_interval 1 (seq_cons (vec 1 0,vec 1 n) seq_nil))) /\ tendsto N omega (fun n:set => integral N 1 (closed_interval 1 (seq_cons (vec 1 0,vec 1 n) seq_nil)) f) l sequentially) -> has_integral 1 N f l {t :e R :^: idx 1 | 0 <= drop t}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8660 / set_variation
@@ -3032,6 +3116,36 @@ Admitted.
 Theorem ABSOLUTELY_INTEGRABLE_LIFT_COMPONENT : forall M N:set, M <> Empty -> N <> Empty -> forall i :e omega, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s /\ (1 <= i /\ i <= dimindex N) -> absolutely_integrable_on 1 M (fun x:set => lift (f x i)) s.
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:11333 / DOMINATED_CONVERGENCE
+// Source hash: md5:b3cfff83e298e1d4d97a665b332adf4a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DOMINATED_CONVERGENCE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall k :e omega, integrable_on N M (f k) s) /\ (integrable_on 1 M h s /\ ((forall k :e omega, forall x :e R :^: idx M, x :e s -> vector_norm N (f k x) <= drop (h x)) /\ (forall x :e R :^: idx M, x :e s -> tendsto N omega (fun k:set => f k x) (g x) sequentially))) -> integrable_on N M g s /\ tendsto N omega (fun k:set => integral N M s (f k)) (integral N M s g) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:11691 / DOMINATED_CONVERGENCE_INTEGRABLE
+// Source hash: md5:978da6054dada6d640f4659dbf784949
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DOMINATED_CONVERGENCE_INTEGRABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall k :e omega, absolutely_integrable_on N M (f k) s) /\ (integrable_on 1 M h s /\ ((forall x :e R :^: idx M, x :e s -> vector_norm N (g x) <= drop (h x)) /\ (forall x :e R :^: idx M, x :e s -> tendsto N omega (fun k:set => f k x) (g x) sequentially))) -> integrable_on N M g s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:11755 / DOMINATED_CONVERGENCE_ABSOLUTELY_INTEGRABLE
+// Source hash: md5:2dd5a3de8f6b538291491269d2953f92
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DOMINATED_CONVERGENCE_ABSOLUTELY_INTEGRABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall k :e omega, absolutely_integrable_on N M (f k) s) /\ (integrable_on 1 M h s /\ ((forall x :e R :^: idx M, x :e s -> vector_norm N (g x) <= drop (h x)) /\ (forall x :e R :^: idx M, x :e s -> tendsto N omega (fun k:set => f k x) (g x) sequentially))) -> absolutely_integrable_on N M g s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:11769 / DOMINATED_CONVERGENCE_AE
+// Source hash: md5:8ed5463bb2a00da536a14fbc3b70d9b5
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DOMINATED_CONVERGENCE_AE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx 1) -> forall s t c= R :^: idx M, (forall k :e omega, integrable_on N M (f k) s) /\ (integrable_on 1 M h s /\ (negligible M t /\ ((forall k :e omega, forall x :e R :^: idx M, x :e s :\: t -> vector_norm N (f k x) <= drop (h x)) /\ (forall x :e R :^: idx M, x :e s :\: t -> tendsto N omega (fun k:set => f k x) (g x) sequentially)))) -> integrable_on N M g s /\ tendsto N omega (fun k:set => integral N M s (f k)) (integral N M s g) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:11792 / INTEGRAL_COUNTABLE_UNIONS
+// Source hash: md5:2f13a2e9bae49370bf97b002b9dca27e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem INTEGRAL_COUNTABLE_UNIONS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s :e Power (R :^: idx M) :^: omega, (forall n :e omega, integrable_on N M f (s n)) /\ ((forall x y :e omega, x <> y -> negligible M (s x :/\: s y)) /\ absolutely_integrable_on N M f (Union {s n | n :e omega, n :e omega})) -> tendsto N omega (fun n:set => vsum omega N {i :e omega | 0 <= i /\ i <= n} (fun i:set => integral N M (s i) f)) (integral N M (Union {s n | n :e omega, n :e omega}) f) sequentially.
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:11843 / NEGLIGIBLE_ON_UNIV
 // Source hash: md5:cff1dac843069ec1e19a38d2a2996789
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
@@ -3098,10 +3212,136 @@ Admitted.
 Theorem INTEGRAL_NORM_BOUND_INTEGRAL_AE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s t c= R :^: idx M, integrable_on N M f s /\ (integrable_on 1 M g s /\ (negligible M t /\ (forall x :e R :^: idx M, x :e s :\: t -> vector_norm N (f x) <= drop (g x)))) -> vector_norm N (integral N M s f) <= drop (integral 1 M s g).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:12156 / BEPPO_LEVI_INCREASING
+// Source hash: md5:8c4dedd9f16b81eebe019661e3f26007
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BEPPO_LEVI_INCREASING : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s -> drop (f k x) <= drop (f (ordsucc k) x)) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists k c= R :^: idx N, negligible N k /\ forall x :e R :^: idx N, x :e s :\: k -> tendsto 1 omega (fun k0:set => f k0 x) (g x) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12447 / BEPPO_LEVI_DECREASING
+// Source hash: md5:a5ba1fed3966eb4437df39212bd90160
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BEPPO_LEVI_DECREASING : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s -> drop (f (ordsucc k) x) <= drop (f k x)) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists k c= R :^: idx N, negligible N k /\ forall x :e R :^: idx N, x :e s :\: k -> tendsto 1 omega (fun k0:set => f k0 x) (g x) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12472 / BEPPO_LEVI_MONOTONE_CONVERGENCE_INCREASING
+// Source hash: md5:213b3a31eeaccbae2b827de4e26f88be
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BEPPO_LEVI_MONOTONE_CONVERGENCE_INCREASING : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s -> drop (f k x) <= drop (f (ordsucc k) x)) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists k c= R :^: idx N, negligible N k /\ ((forall x :e R :^: idx N, x :e s :\: k -> tendsto 1 omega (fun k0:set => f k0 x) (g x) sequentially) /\ (integrable_on 1 N g s /\ tendsto 1 omega (fun k0:set => integral 1 N s (f k0)) (integral 1 N s g) sequentially)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12506 / BEPPO_LEVI_MONOTONE_CONVERGENCE_DECREASING
+// Source hash: md5:4f1c00daa218a2ca2fcf1a26e83f91c7
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BEPPO_LEVI_MONOTONE_CONVERGENCE_DECREASING : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, forall x :e R :^: idx N, x :e s -> drop (f (ordsucc k) x) <= drop (f k x)) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists k c= R :^: idx N, negligible N k /\ ((forall x :e R :^: idx N, x :e s :\: k -> tendsto 1 omega (fun k0:set => f k0 x) (g x) sequentially) /\ (integrable_on 1 N g s /\ tendsto 1 omega (fun k0:set => integral 1 N s (f k0)) (integral 1 N s g) sequentially)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12540 / BEPPO_LEVI_MONOTONE_CONVERGENCE_INCREASING_AE
+// Source hash: md5:a628729305366ca79c358e6732f1eb40
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BEPPO_LEVI_MONOTONE_CONVERGENCE_INCREASING_AE : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, exists t c= R :^: idx N, negligible N t /\ forall x :e R :^: idx N, x :e s :\: t -> drop (f k x) <= drop (f (ordsucc k) x)) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists k c= R :^: idx N, negligible N k /\ ((forall x :e R :^: idx N, x :e s :\: k -> tendsto 1 omega (fun k0:set => f k0 x) (g x) sequentially) /\ (integrable_on 1 N g s /\ tendsto 1 omega (fun k0:set => integral 1 N s (f k0)) (integral 1 N s g) sequentially)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12596 / BEPPO_LEVI_MONOTONE_CONVERGENCE_DECREASING_AE
+// Source hash: md5:bb449ece89c24e750ead6813be05789e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem BEPPO_LEVI_MONOTONE_CONVERGENCE_DECREASING_AE : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall s c= R :^: idx N, (forall k :e omega, integrable_on 1 N (f k) s) /\ ((forall k :e omega, exists t c= R :^: idx N, negligible N t /\ forall x :e R :^: idx N, x :e s :\: t -> drop (f (ordsucc k) x) <= drop (f k x)) /\ bounded_hl 1 {integral 1 N s (f k) | k :e omega, k :e omega}) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists k c= R :^: idx N, negligible N k /\ ((forall x :e R :^: idx N, x :e s :\: k -> tendsto 1 omega (fun k0:set => f k0 x) (g x) sequentially) /\ (integrable_on 1 N g s /\ tendsto 1 omega (fun k0:set => integral 1 N s (f k0)) (integral 1 N s g) sequentially)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12656 / FATOU
+// Source hash: md5:317a22e842d07f3a3f920f5c906b8bbb
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem FATOU : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall s t c= R :^: idx N, forall B :e R, negligible N t /\ ((forall n :e omega, integrable_on 1 N (f n) s) /\ ((forall n :e omega, forall x :e R :^: idx N, x :e s :\: t -> 0 <= drop (f n x)) /\ ((forall x :e R :^: idx N, x :e s :\: t -> tendsto 1 omega (fun n:set => f n x) (g x) sequentially) /\ (forall n :e omega, drop (integral 1 N s (f n)) <= B)))) -> integrable_on 1 N g s /\ (0 <= drop (integral 1 N s g) /\ drop (integral 1 N s g) <= B).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12832 / LIEB
+// Source hash: md5:57ddb7d4419fa9280112d5b58dcfd570
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem LIEB : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s t c= R :^: idx M, (forall n :e omega, absolutely_integrable_on N M (f n) s) /\ (absolutely_integrable_on N M g s /\ (negligible M t /\ (forall x :e R :^: idx M, x :e s :\: t -> tendsto N omega (fun n:set => f n x) (g x) sequentially))) -> tendsto 1 omega (fun n:set => vector_sub 1 (integral 1 M s (fun x:set => lift (vector_norm N (vector_sub N (f n x) (g x))))) (vector_sub 1 (integral 1 M s (fun x:set => lift (vector_norm N (f n x)))) (integral 1 M s (fun x:set => lift (vector_norm N (g x)))))) (vec 1 0) sequentially.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12861 / FATOU_STRONG
+// Source hash: md5:ece0bd6b52b36c99b7be130daf14e91e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem FATOU_STRONG : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx N, f x y :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) -> forall s t c= R :^: idx N, forall B :e R, negligible N t /\ ((forall x :e R :^: idx N, x :e s :\: t -> tendsto 1 omega (fun n:set => f n x) (g x) sequentially) /\ (eventually omega {n :e omega | integrable_on 1 N (f n) s} sequentially /\ (eventually omega {n :e omega | forall x :e R :^: idx N, x :e s :\: t -> 0 <= drop (f n x)} sequentially /\ eventually omega {n :e omega | drop (integral 1 N s (f n)) <= B} sequentially))) -> absolutely_integrable_on 1 N g s /\ (0 <= drop (integral 1 N s g) /\ drop (integral 1 N s g) <= B).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:12903 / FUNDAMENTAL_THEOREM_OF_CALCULUS_BARTLE
+// Source hash: md5:e32bedef9a7cd5b6ff5f3ed01b8f7a97
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS_BARTLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, negligible 1 s /\ (drop a <= drop b /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) /\ (forall e0 :e R, 0 < e0 -> exists g:set -> set -> prop, gauge 1 g /\ forall p c= R :^: idx 1 :*: Power (R :^: idx 1), tagged_partial_division_of 1 p (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (fine (R :^: idx 1) (R :^: idx 1) g p /\ {x 0 | x :e p} c= s) -> vector_norm N (vsum (R :^: idx 1 :*: Power (R :^: idx 1)) N p (fun p0:set => vector_sub N (f (interval_upperbound 1 (p0 1))) (f (interval_lowerbound 1 (p0 1))))) < e0))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13079 / FUNDAMENTAL_THEOREM_OF_CALCULUS_STRONG
+// Source hash: md5:53f8bb46d41f66ab01e08a51a5bde29d
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS_STRONG : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, countable s /\ (drop a <= drop b /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13286 / FUNDAMENTAL_THEOREM_OF_CALCULUS_INTERIOR_STRONG
+// Source hash: md5:18e04bedd2fe30c0d0993ac7ce05e235
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS_INTERIOR_STRONG : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, countable s /\ (drop a <= drop b /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e open_interval 1 (a,b) :\: s -> has_vector_derivative N f (f' x) (at 1 x)))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13303 / FUNDAMENTAL_THEOREM_OF_CALCULUS
+// Source hash: md5:2359d376b47cac884b04d647e7d3d6b0
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, drop a <= drop b /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13317 / FUNDAMENTAL_THEOREM_OF_CALCULUS_INTERIOR
+// Source hash: md5:aa89a4c15acea01188e1aa998cc5ebde
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem FUNDAMENTAL_THEOREM_OF_CALCULUS_INTERIOR : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall a b :e R :^: idx 1, drop a <= drop b /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e open_interval 1 (a,b) -> has_vector_derivative N f (f' x) (at 1 x))) -> has_integral 1 N f' (vector_sub N (f b) (f a)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:13328 / ANTIDERIVATIVE_INTEGRAL_CONTINUOUS
 // Source hash: md5:17e7df417d281418e4dc3a5c9506433a
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem ANTIDERIVATIVE_INTEGRAL_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ forall u v :e R :^: idx 1, u :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (v :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop u <= drop v) -> has_integral 1 N f (vector_sub N (g v) (g u)) (closed_interval 1 (seq_cons (u,v) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13348 / HAS_DERIVATIVE_ZERO_UNIQUE_STRONG_INTERVAL
+// Source hash: md5:ea04dc83efbc81dc632737559af4b95c
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_UNIQUE_STRONG_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall k c= R :^: idx 1, forall y :e R :^: idx N, countable k /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (f a = y /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: k -> has_derivative N 1 f (fun h:set => vec N 0) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))))) -> forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> f x = y.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13385 / HAS_DERIVATIVE_ZERO_UNIQUE_STRONG_CONVEX
+// Source hash: md5:e5436b3b007ecae00ccdcfc10678f624
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_UNIQUE_STRONG_CONVEX : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s k c= R :^: idx M, forall c :e R :^: idx M, forall y :e R :^: idx N, convex M s /\ (countable k /\ (continuous_on_hl M N f s /\ (c :e s /\ (f c = y /\ (forall x :e R :^: idx M, x :e s :\: k -> has_derivative N M f (fun h:set => vec N 0) (within (R :^: idx M) (at M x) s)))))) -> forall x :e R :^: idx M, x :e s -> f x = y.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13450 / HAS_DERIVATIVE_ZERO_UNIQUE_STRONG_CONNECTED
+// Source hash: md5:46b10f09866d9abd74db829ee7b2801b
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem HAS_DERIVATIVE_ZERO_UNIQUE_STRONG_CONNECTED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s k c= R :^: idx M, forall c :e R :^: idx M, forall y :e R :^: idx N, connected M s /\ (open M s /\ (countable k /\ (continuous_on_hl M N f s /\ (c :e s /\ (f c = y /\ (forall x :e R :^: idx M, x :e s :\: k -> has_derivative N M f (fun h:set => vec N 0) (within (R :^: idx M) (at M x) s))))))) -> forall x :e R :^: idx M, x :e s -> f x = y.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13482 / INTEGRATION_BY_PARTS
+// Source hash: md5:93a504ca78f2e528b67e83b7e5ad7b67
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INTEGRATION_BY_PARTS : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall c c= R :^: idx 1, forall y :e R :^: idx P, bilinear N P M bop /\ (drop a <= drop b /\ (countable c /\ (continuous_on_hl 1 P (fun x:set => bop (f x) (g x)) (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ ((forall x :e R :^: idx 1, x :e open_interval 1 (a,b) :\: c -> has_vector_derivative M f (f' x) (at 1 x) /\ has_vector_derivative N g (g' x) (at 1 x)) /\ has_integral 1 P (fun x:set => bop (f x) (g' x)) (vector_sub P (vector_sub P (bop (f b) (g b)) (bop (f a) (g a))) y) (closed_interval 1 (seq_cons (a,b) seq_nil)))))) -> has_integral 1 P (fun x:set => bop (f' x) (g x)) y (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13504 / INTEGRATION_BY_PARTS_SIMPLE
+// Source hash: md5:4a3608fe11e8fd674754634e0fe29953
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INTEGRATION_BY_PARTS_SIMPLE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall y :e R :^: idx P, bilinear N P M bop /\ (drop a <= drop b /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> has_vector_derivative M f (f' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))) /\ has_vector_derivative N g (g' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))) /\ has_integral 1 P (fun x:set => bop (f x) (g' x)) (vector_sub P (vector_sub P (bop (f b) (g b)) (bop (f a) (g a))) y) (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> has_integral 1 P (fun x:set => bop (f' x) (g x)) y (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13525 / INTEGRABLE_BY_PARTS
+// Source hash: md5:cc05d5523d16507d22ad781e6379a5a4
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INTEGRABLE_BY_PARTS : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall c c= R :^: idx 1, bilinear N P M bop /\ (countable c /\ (continuous_on_hl 1 P (fun x:set => bop (f x) (g x)) (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ ((forall x :e R :^: idx 1, x :e open_interval 1 (a,b) :\: c -> has_vector_derivative M f (f' x) (at 1 x) /\ has_vector_derivative N g (g' x) (at 1 x)) /\ integrable_on P 1 (fun x:set => bop (f x) (g' x)) (closed_interval 1 (seq_cons (a,b) seq_nil))))) -> integrable_on P 1 (fun x:set => bop (f' x) (g x)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13547 / INTEGRABLE_BY_PARTS_EQ
+// Source hash: md5:5a539a5b22d1eef036a569d2c6ce6437
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INTEGRABLE_BY_PARTS_EQ : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx M) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall c c= R :^: idx 1, bilinear N P M bop /\ (countable c /\ (continuous_on_hl 1 P (fun x:set => bop (f x) (g x)) (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e open_interval 1 (a,b) :\: c -> has_vector_derivative M f (f' x) (at 1 x) /\ has_vector_derivative N g (g' x) (at 1 x)))) -> (integrable_on P 1 (fun x:set => bop (f x) (g' x)) (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> integrable_on P 1 (fun x:set => bop (f' x) (g x)) (closed_interval 1 (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:13572 / equiintegrable_on
@@ -3132,6 +3372,12 @@ Admitted.
 // Source hash: md5:45e8775edfac6926b1eafcf640de0ea0
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem EQUIINTEGRABLE_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall d c= Power (R :^: idx M), forall a b :e R :^: idx M, division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> (equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) <-> forall i c= R :^: idx M, i :e d -> equiintegrable_on M N fs i).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:13848 / EQUIINTEGRABLE_LIMIT
+// Source hash: md5:4b15b00dddd17f16d742a96ed563056a
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem EQUIINTEGRABLE_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M) :^: omega, forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall a b :e R :^: idx M, equiintegrable_on M N {f n | n :e omega, n :e omega} (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> tendsto N omega (fun n:set => f n x) (g x) sequentially) -> integrable_on N M g (closed_interval M (seq_cons (a,b) seq_nil)) /\ tendsto N omega (fun n:set => integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => f n x)) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) g) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:13938 / EQUIINTEGRABLE_SUBSET
@@ -3276,6 +3522,12 @@ Admitted.
 // Source hash: md5:df951037c5e246a729d6aeabccb7d175
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem BOUNDED_INTEGRALS_OVER_SUBINTERVALS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> bounded_hl N (\/_ c :e R :^: idx M, {integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f | d :e R :^: idx M, closed_interval M (seq_cons (c,d) seq_nil) c= closed_interval M (seq_cons (a,b) seq_nil)}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:15827 / HAS_INTEGRAL_SUBSTITUTION_STRONG
+// Source hash: md5:2594f7e623e4a4e9ac8111bfec1e621e
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_INTEGRAL_SUBSTITUTION_STRONG : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) -> forall g':set -> set, (forall x :e R :^: idx 1, g' x :e R :^: idx 1) -> forall a b c d :e R :^: idx 1, forall k c= R :^: idx 1, countable k /\ (integrable_on N 1 f (closed_interval 1 (seq_cons (c,d) seq_nil)) /\ (continuous_on_hl 1 1 g (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ ({g x | x :e closed_interval 1 (seq_cons (a,b) seq_nil)} c= closed_interval 1 (seq_cons (c,d) seq_nil) /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: k -> has_vector_derivative 1 g (g' x) (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))) /\ continuous N (R :^: idx 1) f (within (R :^: idx 1) (at 1 (g x)) (closed_interval 1 (seq_cons (c,d) seq_nil)))) /\ (drop a <= drop b /\ (drop c <= drop d /\ drop (g a) <= drop (g b))))))) -> has_integral 1 N (fun x:set => vector_mul N (drop (g' x)) (f (g x))) (integral N 1 (closed_interval 1 (seq_cons (g a,g b) seq_nil)) f) (closed_interval 1 (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15891 / SECOND_MEAN_VALUE_THEOREM_FULL
@@ -4094,6 +4346,12 @@ Admitted.
 Theorem LIPSCHITZ_VECTOR_VARIATION : forall N:set, N <> Empty -> forall B :e R, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> abs_SNo (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f + - vector_variation N (closed_interval 1 (seq_cons (a,y) seq_nil)) f) <= B * vector_norm 1 (vector_sub 1 x y)) <-> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm 1 (vector_sub 1 x y)).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:19102 / HAS_BOUNDED_VECTOR_DERIVATIVE_IMP_HAS_BOUNDED_VARIATION_ON
+// Source hash: md5:28048c3182ee39116c8ce198bc3c8c89
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VECTOR_DERIVATIVE_IMP_HAS_BOUNDED_VARIATION_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f':set -> set, (forall x :e R :^: idx 1, f' x :e R :^: idx N) -> forall s c= R :^: idx 1, (forall x :e R :^: idx 1, x :e s -> has_vector_derivative N f (f' x) (within (R :^: idx 1) (at 1 x) s)) /\ (convex 1 s /\ (bounded_hl 1 s /\ bounded_hl N {f' x | x :e s})) -> has_bounded_variation_on N f s.
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:19113 / HAS_BOUNDED_VARIATION_ON_LINEAR_IMAGE
 // Source hash: md5:5b048e8bda323137872fe25c21b21c06
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
@@ -4130,10 +4388,148 @@ Admitted.
 Theorem CONVEX_HAS_BOUNDED_VARIATION : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall a b :e R :^: idx 1, convex_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> has_bounded_variation_on 1 (fun x:set => lift (f x)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:19572 / HAS_BOUNDED_VECTOR_VARIATION_UNIFORM_LIM
+// Source hash: md5:87e22db7d1ec25479a3f381c6c2380f5
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VECTOR_VARIATION_UNIFORM_LIM : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx 1, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx 1, forall b :e R, (forall n :e omega, has_bounded_variation_on N (f n) s) /\ ((forall n :e omega, vector_variation N s (f n) <= b) /\ (forall x :e R :^: idx 1, x :e s -> tendsto N omega (fun n:set => f n x) (g x) sequentially)) -> has_bounded_variation_on N g s /\ vector_variation N s g <= b.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19650 / INCREASING_LEFT_LIMIT_1
+// Source hash: md5:e6ba74c2518779a570d59e623aedb6b2
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INCREASING_LEFT_LIMIT_1 : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b c :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,c) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19692 / DECREASING_LEFT_LIMIT_1
+// Source hash: md5:524b7edf016ad6629fca1b629bf346c1
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem DECREASING_LEFT_LIMIT_1 : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b c :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f y) <= drop (f x)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,c) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19706 / INCREASING_RIGHT_LIMIT_1
+// Source hash: md5:6ad3c51a306c32f10d9ba8f3d519f292
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem INCREASING_RIGHT_LIMIT_1 : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b c :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f x) <= drop (f y)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (c,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19727 / DECREASING_RIGHT_LIMIT_1
+// Source hash: md5:64a0d55252a134e8a864d56d5e0b7b81
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem DECREASING_RIGHT_LIMIT_1 : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b c :e R :^: idx 1, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (f y) <= drop (f x)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (c,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19741 / HAS_BOUNDED_VECTOR_VARIATION_LEFT_LIMIT
+// Source hash: md5:337e3c89168351e18a10af61729f890b
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VECTOR_VARIATION_LEFT_LIMIT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,c) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19767 / HAS_BOUNDED_VECTOR_VARIATION_RIGHT_LIMIT
+// Source hash: md5:1c52e1e300ffc10f57c9d7030df796c4
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VECTOR_VARIATION_RIGHT_LIMIT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (c,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19793 / HAS_BOUNDED_VARIATION_RIGHT_LIMIT_GEN
+// Source hash: md5:bb7f59c5904cbeb43b51ada4897612b4
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VARIATION_RIGHT_LIMIT_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, has_bounded_variation_on N f s /\ is_interval 1 s -> exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | x :e s /\ drop a <= drop x}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19836 / HAS_BOUNDED_VARIATION_LEFT_LIMIT_GEN
+// Source hash: md5:c353ad5f3b0398b2d3da5d298935cb57
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VARIATION_LEFT_LIMIT_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, has_bounded_variation_on N f s /\ is_interval 1 s -> exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | x :e s /\ drop x <= drop a}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19878 / INCREASING_LEFT_LIMIT_1_GEN
+// Source hash: md5:5a15fd8cd4508dba6436942eb1089838
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem INCREASING_LEFT_LIMIT_1_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, forall B :e R, is_interval 1 s /\ ((forall x :e R :^: idx 1, x :e s -> drop (f x) <= B) /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y))) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | x :e s /\ drop x <= drop a}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19914 / DECREASING_LEFT_LIMIT_1_GEN
+// Source hash: md5:b5eec4d0e721b3305fb8e6ee3ae29779
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DECREASING_LEFT_LIMIT_1_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, forall B :e R, is_interval 1 s /\ ((forall x :e R :^: idx 1, x :e s -> B <= drop (f x)) /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f y) <= drop (f x))) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | x :e s /\ drop x <= drop a}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19928 / INCREASING_RIGHT_LIMIT_1_GEN
+// Source hash: md5:dc37c0bca66ef59d109a82d0865c0fc5
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem INCREASING_RIGHT_LIMIT_1_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, forall B :e R, is_interval 1 s /\ ((forall x :e R :^: idx 1, x :e s -> B <= drop (f x)) /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y))) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | x :e s /\ drop a <= drop x}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19950 / DECREASING_RIGHT_LIMIT_1_GEN
+// Source hash: md5:923a9559f3f14cfaedb3a83cfd105709
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DECREASING_RIGHT_LIMIT_1_GEN : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, forall B :e R, is_interval 1 s /\ ((forall x :e R :^: idx 1, x :e s -> drop (f x) <= B) /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f y) <= drop (f x))) -> exists l :e R :^: idx 1, tendsto 1 (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | x :e s /\ drop a <= drop x}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:19964 / VECTOR_VARIATION_CONTINUOUS_LEFT
+// Source hash: md5:df8dc5597047d9167dc454e358133e84
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem VECTOR_VARIATION_CONTINUOUS_LEFT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> (continuous 1 (R :^: idx 1) (fun x:set => lift (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f)) (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,c) seq_nil))) <-> continuous N (R :^: idx 1) f (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,c) seq_nil)))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20248 / VECTOR_VARIATION_CONTINUOUS_RIGHT
+// Source hash: md5:2c99e9cace08489a063081398cbc8d71
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem VECTOR_VARIATION_CONTINUOUS_RIGHT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> (continuous 1 (R :^: idx 1) (fun x:set => lift (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f)) (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (c,b) seq_nil))) <-> continuous N (R :^: idx 1) f (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (c,b) seq_nil)))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20532 / VECTOR_VARIATION_CONTINUOUS
+// Source hash: md5:74e2386aad51c1a6508e0104e37c4262
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem VECTOR_VARIATION_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ c :e closed_interval 1 (seq_cons (a,b) seq_nil) -> (continuous 1 (R :^: idx 1) (fun x:set => lift (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f)) (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,b) seq_nil))) <-> continuous N (R :^: idx 1) f (within (R :^: idx 1) (at 1 c) (closed_interval 1 (seq_cons (a,b) seq_nil)))).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:20557 / CONTINUOUS_ON_VECTOR_VARIATION
 // Source hash: md5:8048d21f98e267c80ae5beef4ab1c673
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem CONTINUOUS_ON_VECTOR_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> continuous_on_hl 1 1 (fun x:set => lift (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f)) (closed_interval 1 (seq_cons (a,b) seq_nil)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20565 / HAS_BOUNDED_VARIATION_DARBOUX_STRONG
+// Source hash: md5:91640f66cf8c4e4590ac8ef49d34319c
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VARIATION_DARBOUX_STRONG : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall a b :e R :^: idx 1, has_bounded_variation_on 1 f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) /\ exists h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx 1) /\ ((forall x :e R :^: idx 1, f x = vector_sub 1 (g x) (h x)) /\ ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (g x) <= drop (g y)) /\ ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x <= drop y) -> drop (h x) <= drop (h y)) /\ ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x < drop y) -> drop (g x) < drop (g y)) /\ ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ (y :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ drop x < drop y) -> drop (h x) < drop (h y)) /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ continuous 1 (R :^: idx 1) f (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,x) seq_nil))) -> continuous 1 (R :^: idx 1) g (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,x) seq_nil))) /\ continuous 1 (R :^: idx 1) h (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,x) seq_nil)))) /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ continuous 1 (R :^: idx 1) f (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (x,b) seq_nil))) -> continuous 1 (R :^: idx 1) g (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (x,b) seq_nil))) /\ continuous 1 (R :^: idx 1) h (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (x,b) seq_nil)))) /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ continuous 1 (R :^: idx 1) f (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))) -> continuous 1 (R :^: idx 1) g (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil))) /\ continuous 1 (R :^: idx 1) h (within (R :^: idx 1) (at 1 x) (closed_interval 1 (seq_cons (a,b) seq_nil)))))))))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20656 / INCREASING_COUNTABLE_DISCONTINUITIES
+// Source hash: md5:73f18f4afb292304875dc5cea111717e
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem INCREASING_COUNTABLE_DISCONTINUITIES : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y)) -> countable {x :e R :^: idx 1 | x :e s /\ ~ continuous 1 (R :^: idx 1) f (at 1 x)}.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20830 / DECREASING_COUNTABLE_DISCONTINUITIES
+// Source hash: md5:34ed0fc23fc0752978c830ab70e87295
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DECREASING_COUNTABLE_DISCONTINUITIES : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx 1) -> forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f y) <= drop (f x)) -> countable {x :e R :^: idx 1 | x :e s /\ ~ continuous 1 (R :^: idx 1) f (at 1 x)}.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20845 / HAS_BOUNDED_VARIATION_COUNTABLE_DISCONTINUITIES
+// Source hash: md5:75ae068ff57e08430622b6136a2a4829
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VARIATION_COUNTABLE_DISCONTINUITIES : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s /\ is_interval 1 s -> countable {x :e R :^: idx 1 | x :e s /\ ~ continuous N (R :^: idx 1) f (at 1 x)}.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20885 / HAS_BOUNDED_VARIATION_ABSOLUTELY_INTEGRABLE_DERIVATIVE
+// Source hash: md5:132e23d4ad0c951b782fe6991420026e
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VARIATION_ABSOLUTELY_INTEGRABLE_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, countable s /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> differentiable N 1 f (at 1 x))) -> (has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> absolutely_integrable_on N 1 (fun x:set => vector_derivative N f (at 1 x)) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20924 / HAS_BOUNDED_VARIATION_INTEGRABLE_NORM_DERIVATIVE
+// Source hash: md5:2dd0fc9e7c65f7737e4b975648c14ecb
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem HAS_BOUNDED_VARIATION_INTEGRABLE_NORM_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, countable s /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> differentiable N 1 f (at 1 x))) -> (has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> integrable_on 1 1 (fun x:set => lift (vector_norm N (vector_derivative N f (at 1 x)))) (closed_interval 1 (seq_cons (a,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:20947 / VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE
+// Source hash: md5:446b80c580c332ea9992a1d0f7cbf878
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem VECTOR_VARIATION_INTEGRAL_NORM_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, countable s /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) :\: s -> differentiable N 1 f (at 1 x)) /\ has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)))) -> vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = drop (integral 1 1 (closed_interval 1 (seq_cons (a,b) seq_nil)) (fun x:set => lift (vector_norm N (vector_derivative N f (at 1 x))))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:20972 / INTEGRABLE_BOUNDED_VARIATION_PRODUCT
@@ -4202,6 +4598,24 @@ Admitted.
 Theorem VECTOR_VARIATION_ON_CLOSURE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ (has_bounded_variation_on N f s /\ continuous_on_hl 1 N f (closure 1 s)) -> vector_variation N (closure 1 s) f = vector_variation N s f.
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:21439 / HAS_BOUNDED_VARIATION_IMP_BAIRE1
+// Source hash: md5:8900172713df51c12d9aea22bea34949
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
+Theorem HAS_BOUNDED_VARIATION_IMP_BAIRE1 : forall N:set, N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx 1), forall s c= R :^: idx 1, has_bounded_variation_on N (fun x:set => f x) s /\ is_interval 1 s -> f :e baire 1 N 1 s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:21451 / INCREASING_IMP_BAIRE1
+// Source hash: md5:6610f3649792249d58aecc84525e1736
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
+Theorem INCREASING_IMP_BAIRE1 : forall f :e R :^: idx 1 :^: (R :^: idx 1), forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f x) <= drop (f y)) -> f :e baire 1 1 1 s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:21464 / DECREASING_IMP_BAIRE1
+// Source hash: md5:9849b784d4173747f458d84e8b80312f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
+Theorem DECREASING_IMP_BAIRE1 : forall f :e R :^: idx 1 :^: (R :^: idx 1), forall s c= R :^: idx 1, is_interval 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f y) <= drop (f x)) -> f :e baire 1 1 1 s.
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:21483 / FACTOR_THROUGH_VARIATION
 // Source hash: md5:20c698e19831c3dfe8403953f9c097d8
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
@@ -4212,6 +4626,48 @@ Admitted.
 // Source hash: md5:6f5d19ddce9a1d1c4fc1f13f0f8a5fde
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem FACTOR_CONTINUOUS_THROUGH_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b l :e R :^: idx 1, drop a <= drop b /\ (continuous_on_hl 1 N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ (has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = drop l)) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ ((forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) -> f x = g (lift (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f))) /\ (continuous_on_hl 1 N g (closed_interval 1 (seq_cons (vec 1 0,l) seq_nil)) /\ ((forall u v :e R :^: idx 1, u :e closed_interval 1 (seq_cons (vec 1 0,l) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,l) seq_nil) -> distance N (g u,g v) <= distance 1 (u,v)) /\ (has_bounded_variation_on N g (closed_interval 1 (seq_cons (vec 1 0,l) seq_nil)) /\ ({lift (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f) | x :e closed_interval 1 (seq_cons (a,b) seq_nil)} = closed_interval 1 (seq_cons (vec 1 0,l) seq_nil) /\ ({g x | x :e closed_interval 1 (seq_cons (vec 1 0,l) seq_nil)} = {f x | x :e closed_interval 1 (seq_cons (a,b) seq_nil)} /\ forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,l) seq_nil) -> vector_variation N (closed_interval 1 (seq_cons (vec 1 0,x) seq_nil)) g = drop x)))))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:21665 / HELLY_SELECTION_INCREASING
+// Source hash: md5:dd3383e36811afd62efd4c0e4c0e6770
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
+Theorem HELLY_SELECTION_INCREASING : forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx 1, f x y :e R :^: idx 1) -> forall s c= R :^: idx 1, forall k :e R, is_interval 1 s /\ ((forall n :e omega, forall x :e R :^: idx 1, x :e s -> vector_norm 1 (f n x) <= k) /\ (forall n :e omega, forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (f n x) <= drop (f n y))) -> exists r:set -> set, (forall x :e omega, r x :e omega) /\ exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx 1) /\ ((forall m n :e omega, m < n -> r m < r n) /\ ((forall x :e R :^: idx 1, x :e s -> tendsto 1 omega (fun n:set => f (r n) x) (g x) sequentially) /\ ((forall x :e R :^: idx 1, x :e s -> vector_norm 1 (g x) <= k) /\ forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x <= drop y) -> drop (g x) <= drop (g y)))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:21863 / HELLY_SELECTION_THEOREM
+// Source hash: md5:c899dc9d8a628853430f98c488c9f3ec
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
+Theorem HELLY_SELECTION_THEOREM : forall N:set, N <> Empty -> forall f:set -> set -> set, (forall x :e omega, forall y :e R :^: idx 1, f x y :e R :^: idx N) -> forall s c= R :^: idx 1, forall c d :e R, is_interval 1 s /\ ((forall n :e omega, has_bounded_variation_on N (f n) s) /\ ((forall n :e omega, vector_variation N s (f n) <= c) /\ (forall n :e omega, forall x :e R :^: idx 1, x :e s -> vector_norm N (f n x) <= d))) -> exists r:set -> set, (forall x :e omega, r x :e omega) /\ exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ ((forall m n :e omega, m < n -> r m < r n) /\ ((forall x :e R :^: idx 1, x :e s -> tendsto N omega (fun n:set => f (r n) x) (g x) sequentially) /\ (has_bounded_variation_on N g s /\ vector_variation N s g <= c))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:22017 / CONVEX_ON_RIGHT_DIFFERENTIABLE
+// Source hash: md5:9deea7c45c8c3ebe9d92c777e4475316
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_RIGHT_DIFFERENTIABLE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, convex_on 1 f s /\ a :e interior 1 s -> differentiable 1 1 (fun x:set => lift (f x)) (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | drop a <= drop x}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:22067 / CONVEX_ON_LEFT_DIFFERENTIABLE
+// Source hash: md5:a3152347b224463221f153a464830f50
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_LEFT_DIFFERENTIABLE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, convex_on 1 f s /\ a :e interior 1 s -> differentiable 1 1 (fun x:set => lift (f x)) (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | drop x <= drop a}).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:22120 / CONVEX_ON_DIRECTIONAL_DERIVATIVES
+// Source hash: md5:33d984031391da1319bf0f2ef3e80cf2
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_DIRECTIONAL_DERIVATIVES : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, forall a :e R :^: idx 1, convex_on 1 f s /\ a :e interior 1 s -> exists l r :e R :^: idx 1, has_vector_derivative 1 (fun x:set => lift (f x)) l (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | drop x <= drop a}) /\ (has_vector_derivative 1 (fun x:set => lift (f x)) r (within (R :^: idx 1) (at 1 a) {x :e R :^: idx 1 | drop a <= drop x}) /\ drop l <= drop r).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:22176 / CONVEX_ON_DIRECTIONAL_DERIVATIVE_FUNCTIONS
+// Source hash: md5:b4a42ba9a26690e050fa9ea5e67d83a3
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_DIRECTIONAL_DERIVATIVE_FUNCTIONS : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, convex_on 1 f s /\ (is_interval 1 s /\ open 1 s) -> exists l:set -> set, (forall x :e R :^: idx 1, l x :e R :^: idx 1) /\ exists r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx 1) /\ ((forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 (fun x:set => lift (f x)) (l x) (within (R :^: idx 1) (at 1 x) {t :e R :^: idx 1 | drop t <= drop x})) /\ ((forall x :e R :^: idx 1, x :e s -> has_vector_derivative 1 (fun x:set => lift (f x)) (r x) (within (R :^: idx 1) (at 1 x) {t :e R :^: idx 1 | drop x <= drop t})) /\ ((forall x :e R :^: idx 1, x :e s -> drop (l x) <= drop (r x)) /\ forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x < drop y) -> drop (r x) <= drop (l y)))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:22238 / CONVEX_ON_COUNTABLE_NONDIFFERENTIABLE
+// Source hash: md5:39527a4f87e2a79fbc4a0001a33cbc85
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem CONVEX_ON_COUNTABLE_NONDIFFERENTIABLE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, convex_on 1 f s /\ countable (components 1 s) -> countable {x :e R :^: idx 1 | x :e s /\ ~ differentiable 1 1 (fun x:set => lift (f x)) (at 1 x)}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22319 / CONVEX_ON_INDEFINITE_INTEGRAL_INCREASING
@@ -4700,6 +5156,30 @@ Admitted.
 Theorem RECTIFIABLE_PATH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> rectifiable_path N (fun x:set => subpath (R :^: idx N) u v g x).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:24013 / RECTIFIABLE_PATH_JOIN
+// Source hash: md5:83539000ce6256fc2fa9dca9f1cba45c
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem RECTIFIABLE_PATH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (rectifiable_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> rectifiable_path N g1 /\ rectifiable_path N g2).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:24056 / RECTIFIABLE_PATH_JOIN_IMP
+// Source hash: md5:63b97a06e739d39c7a0e51de13df1260
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem RECTIFIABLE_PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ (rectifiable_path N g2 /\ pathfinish N g1 = pathstart N g2) -> rectifiable_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:24063 / RECTIFIABLE_PATH_JOIN_EQ
+// Source hash: md5:1b39fa4c4f734ccbce7774699a8da55f
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem RECTIFIABLE_PATH_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ rectifiable_path N g2 -> (rectifiable_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> pathfinish N g1 = pathstart N g2).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:24072 / RECTIFIABLE_PATH_SYM
+// Source hash: md5:f6de80b084133a8ff3db60abfc5fc7fd
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem RECTIFIABLE_PATH_SYM : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N p -> (rectifiable_path N (fun x:set => poly_add (R :^: idx N) p q x) <-> rectifiable_path N (fun x:set => poly_add (R :^: idx N) q p x)).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:24078 / RECTIFIABLE_PATH_SHIFTPATH
 // Source hash: md5:710b8d7a977f1a60679a9c4c677258c3
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
@@ -4728,6 +5208,12 @@ Admitted.
 // Source hash: md5:8bf9aeb8246a92d76fe68fd10277464e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
 Theorem SIMPLE_PATH_LENGTH_POS_LT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ simple_path N g -> 0 < path_length N g.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:24185 / PATH_LENGTH_JOIN
+// Source hash: md5:34052419ef56bb002b8ea4dba8ba17f3
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_LENGTH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ (rectifiable_path N g2 /\ pathfinish N g1 = pathstart N g2) -> path_length N (fun x:set => poly_add (R :^: idx N) g1 g2 x) = path_length N g1 + path_length N g2.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24225 / PATH_LENGTH_COMBINE
@@ -4832,6 +5318,18 @@ Admitted.
 Theorem SHORTEST_PATH_EXISTS_GEN : forall N:set, N <> Empty -> forall P:set -> set -> set -> prop, (forall h:set -> set -> set, (forall x :e omega, forall y :e R :^: idx 1, h x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (forall n :e omega, rectifiable_path N (h n) /\ P (path_image N (h n)) (pathstart N (h n)) (pathfinish N (h n))) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e R :^: idx 1, N0 <= n /\ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> vector_norm N (vector_sub N (h n x) (g x)) < e0) -> P (path_image N g) (pathstart N g) (pathfinish N g)) /\ ((exists t c= R :^: idx N, bounded_hl N t /\ forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ P (path_image N g) (pathstart N g) (pathfinish N g) -> ~ t :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (path_image N g) = Empty) /\ (exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ P (path_image N g) (pathstart N g) (pathfinish N g)))) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (P (path_image N g) (pathstart N g) (pathfinish N g) /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> rectifiable_path N h /\ P (path_image N h) (pathstart N h) (pathfinish N h) -> path_length N g <= path_length N h)).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:24774 / SHORTEST_PATH_EXISTS_STRADDLE
+// Source hash: md5:28b828537bd254760021fb14f8682657
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SHORTEST_PATH_EXISTS_STRADDLE : forall N:set, N <> Empty -> forall s t a b c= R :^: idx N, closed N s /\ (compact N a /\ (compact N b /\ (exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (t c= path_image N g /\ (path_image N g c= s /\ (pathstart N g :e a /\ pathfinish N g :e b))))))) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (t c= path_image N g /\ (path_image N g c= s /\ (pathstart N g :e a /\ (pathfinish N g :e b /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> rectifiable_path N h /\ (t c= path_image N h /\ (path_image N h c= s /\ (pathstart N h :e a /\ pathfinish N h :e b))) -> path_length N g <= path_length N h))))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:24871 / SHORTEST_PATH_EXISTS
+// Source hash: md5:26c46c3cdc9c86e47cbcbd2896002aac
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SHORTEST_PATH_EXISTS : forall N:set, N <> Empty -> forall s a b c= R :^: idx N, closed N s /\ (compact N a /\ (compact N b /\ (exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (path_image N g c= s /\ (pathstart N g :e a /\ pathfinish N g :e b)))))) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (path_image N g c= s /\ (pathstart N g :e a /\ (pathfinish N g :e b /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> rectifiable_path N h /\ (path_image N h c= s /\ (pathstart N h :e a /\ pathfinish N h :e b)) -> path_length N g <= path_length N h)))).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:24885 / SHORTEST_ARC_EXISTS
 // Source hash: md5:e7cbd093d7fc9c7c968582e6194af3e6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -4854,5 +5352,23 @@ Admitted.
 // Source hash: md5:245a4626c5152bf4a38da41371ed1ca6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem SIMPLE_PATH_LENGTH_UNIQUE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> rectifiable_path N g /\ (simple_path N g /\ (rectifiable_path N h /\ (simple_path N h /\ path_image N g = path_image N h))) -> path_length N g = path_length N h.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:25726 / RECTIFIABLE_PATH_DIFFERENTIABLE
+// Source hash: md5:d2b63a9fe9d03af01ce171e9f90e12d0
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem RECTIFIABLE_PATH_DIFFERENTIABLE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx 1, countable s /\ (path N g /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) :\: s -> differentiable N 1 g (at 1 t))) -> (rectifiable_path N g <-> absolutely_integrable_on N 1 (fun t:set => vector_derivative N g (at 1 t)) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:25738 / PATH_LENGTH_DIFFERENTIABLE
+// Source hash: md5:0abc12730dabec9c8669315018e33537
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem PATH_LENGTH_DIFFERENTIABLE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx 1, countable s /\ (rectifiable_path N g /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) :\: s -> differentiable N 1 g (at 1 t))) -> path_length N g = drop (integral 1 1 (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) (fun t:set => lift (vector_norm N (vector_derivative N g (at 1 t))))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:25753 / PICARD_LINDELOF_RIGHT
+// Source hash: md5:76aabbcbf8c22d2ddd828a24263c0367
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem PICARD_LINDELOF_RIGHT : forall N:set, N <> Empty -> forall s c= R :^: idx_n (1 + dimindex N), forall f:set -> set, (forall x :e R :^: idx_n (1 + dimindex N), f x :e R :^: idx N) -> forall t0 :e R :^: idx 1, forall u0 :e R :^: idx N, forall r0 r1 B c :e R, open (idx_n (1 + dimindex N)) s /\ (continuous_on_hl (idx_n (1 + dimindex N)) N f s /\ (0 < r0 /\ (0 < r1 /\ (B * r0 < r1 /\ (c * r0 < 1 /\ ((\/_ x :e closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil), {pastecart 1 N x y | y :e cball N (u0,r1)}) c= s /\ ((forall x :e R :^: idx_n (1 + dimindex N), x :e s -> vector_norm N (f x) <= B) /\ (forall t :e R :^: idx 1, forall v w :e R :^: idx N, t :e closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil) /\ (v :e cball N (u0,r1) /\ w :e cball N (u0,r1)) -> vector_norm N (vector_sub N (f (pastecart 1 N t v)) (f (pastecart 1 N t w))) <= c * vector_norm N (vector_sub N v w))))))))) -> exists u:set -> set, (forall x :e R :^: idx 1, u x :e R :^: idx N) /\ (u t0 = u0 /\ ((forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil) -> has_vector_derivative N u (f (pastecart 1 N t (u t))) (within (R :^: idx 1) (at 1 t) (closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil)))) /\ forall v:set -> set, (forall x :e R :^: idx 1, v x :e R :^: idx N) -> (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil) -> pastecart 1 N t (v t) :e s) /\ (v t0 = u0 /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil) -> has_vector_derivative N v (f (pastecart 1 N t (v t))) (within (R :^: idx 1) (at 1 t) (closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil))))) -> forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (t0,vector_add 1 t0 (lift r0)) seq_nil) -> v t = u t)).
 Admitted.
 

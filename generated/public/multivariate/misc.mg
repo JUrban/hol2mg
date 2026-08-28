@@ -8,10 +8,22 @@
 Theorem ABSOLUTELY_CONTINUOUS_IMP_BANACH_SPROPERTY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall e0 :e R, absolutely_continuous_on N f s /\ (is_interval 1 s /\ 0 < e0) -> exists d :e R, 0 < d /\ forall t c= R :^: idx 1, t c= s /\ (measurable 1 t /\ measure 1 t < d) -> measurable N {f x | x :e t} /\ measure N {f x | x :e t} < e0.
 Admitted.
 
+// HOL Light:  / ABSOLUTELY_INTEGRABLE_BOUNDED_MEASURABLE_PRODUCT_EQ
+// Source hash: md5:35845629d478941daef9a0cc869d011a
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem ABSOLUTELY_INTEGRABLE_BOUNDED_MEASURABLE_PRODUCT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s <-> measurable_on M N f s /\ forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> measurable_on M 1 g s /\ bounded_hl 1 {g x | x :e s} -> integrable_on N M (fun x:set => vector_mul N (drop (g x)) (f x)) s.
+Admitted.
+
 // HOL Light:  / ABSOLUTELY_INTEGRABLE_CONVOLUTION_AE
 // Source hash: md5:79bfb419edaffa147b5e9cb90eb82b81
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ABSOLUTELY_INTEGRABLE_CONVOLUTION_AE : forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx N, forall y :e R :^: idx P, bop x y :e R :^: idx Q) -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> bilinear P Q N bop /\ (absolutely_integrable_on N M f (R :^: idx M) /\ absolutely_integrable_on P M g (R :^: idx M)) -> exists t c= R :^: idx M, negligible M t /\ forall x :e R :^: idx M, ~ x :e t -> absolutely_integrable_on Q M (fun y:set => bop (f (vector_sub M x y)) (g y)) (R :^: idx M).
+Admitted.
+
+// HOL Light:  / ABSOLUTELY_INTEGRABLE_ON_LEBESGUE_MEASURABLE_SUBSET_EQ
+// Source hash: md5:7e8eded75fa17a6831986fdabfb9953d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem ABSOLUTELY_INTEGRABLE_ON_LEBESGUE_MEASURABLE_SUBSET_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s <-> measurable_on M N f s /\ forall t c= R :^: idx M, t c= s /\ lebesgue_measurable M t -> integrable_on N M f t.
 Admitted.
 
 // HOL Light:  / ABSOLUTELY_INTEGRABLE_PASTECART_SYM_UNIV
@@ -78,6 +90,18 @@ Admitted.
 // Source hash: md5:84c482e05baa2e759d6c50fb53e8d1cd
 // Status: transport_required (bridges: hol_countable, hol_finite_finite, hol_prod_setprod)
 Theorem BACK_AND_FORTH_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall s c= A, forall t c= B, countable s /\ (countable t /\ (forall R0 c= A :*: B, finite R0 /\ (R0 c= s :*: t /\ (forall x y :e R0, x <> y -> P x y)) -> (forall x :e A, x :e s -> exists y :e B, y :e t /\ forall x0 y0 :e SetAdjoin R0 (x,y), x0 <> y0 -> P x0 y0) /\ forall y :e B, y :e t -> exists x :e A, x :e s /\ forall x0 y0 :e SetAdjoin R0 (x,y), x0 <> y0 -> P x0 y0)) -> exists R0 c= A :*: B, R0 c= s :*: t /\ ((forall x y :e R0, x <> y -> P x y) /\ ((forall x :e A, x :e s -> exists y :e B, y :e t /\ (x,y) :e R0) /\ forall y :e B, y :e t -> exists x :e A, x :e s /\ (x,y) :e R0)).
+Admitted.
+
+// HOL Light:  / BAIRE_INDICATOR_DELTA
+// Source hash: md5:26ca4aa0bf193256836631cc0c5005b3
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_one_1, hol_real_R)
+Theorem BAIRE_INDICATOR_DELTA : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall n :e omega, (exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, (fun x00 :e R :^: idx N => indicator N x x00) :e baire N 1 n (R :^: idx N)) /\ Union u = s) /\ (exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, (fun x00 :e R :^: idx N => indicator N x x00) :e baire N 1 n (R :^: idx N)) /\ {x :e R :^: idx N | forall Y :e u, x :e Y} = s) <-> (fun x :e R :^: idx N => indicator N s x) :e baire N 1 n (R :^: idx N).
+Admitted.
+
+// HOL Light:  / BAIRE_INDICATOR_SUC
+// Source hash: md5:052ca8d2bb087b35bf87515aab6bd4d4
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_countable, hol_num_omega, hol_one_1, hol_real_R, nat_le_SNoLe)
+Theorem BAIRE_INDICATOR_SUC : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall n :e omega, 1 <= n -> ((exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, exists u c= Power (R :^: idx N), countable u /\ (forall x1 :e u, (fun x10 :e R :^: idx N => indicator N x1 x10) :e baire N 1 n (R :^: idx N)) /\ {x00 :e R :^: idx N | forall Y :e u, x00 :e Y} = x) /\ Union u = s) /\ (exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, exists u c= Power (R :^: idx N), countable u /\ (forall x1 :e u, (fun x10 :e R :^: idx N => indicator N x1 x10) :e baire N 1 n (R :^: idx N)) /\ Union u = x) /\ {x :e R :^: idx N | forall Y :e u, x :e Y} = s) <-> (fun x :e R :^: idx N => indicator N s x) :e baire N 1 (n + 1) (R :^: idx N)).
 Admitted.
 
 // HOL Light:  / CARD_EQ_INTEGER
@@ -204,6 +228,18 @@ Admitted.
 // Source hash: md5:9ea11d163816ce63d5ce3816087aa1a4
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
 Theorem CONTINUOUS_MAP_EQ_INTERIOR_PREIMAGE_SUBSET_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall top' :e topology B, forall f:set -> set, (forall x :e A, f x :e B) -> (continuous_map A B (top,top') f <-> {f x | x :e topspace A top} c= topspace B top' /\ forall t c= B, t c= topspace B top' -> {x :e A | x :e topspace A top /\ f x :e interior_of B top' t} c= interior_of A top {x :e A | x :e topspace A top /\ f x :e t}).
+Admitted.
+
+// HOL Light:  / CONTINUOUS_WITHIN_SEQUENTIALLY_ALT
+// Source hash: md5:4a13dbc5847d1e9786ca96fcdb2793c2
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at M a) s) <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s :\: {a}) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
+Admitted.
+
+// HOL Light:  / CONTINUOUS_WITHIN_SEQUENTIALLY_INJ
+// Source hash: md5:cb1e660e38ee18415a478d281e5a792b
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light:  / CONVERGENT_BOUNDED_INCREASING
@@ -404,6 +440,12 @@ Admitted.
 Theorem EXISTS_VECTORIZE : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> exists x :e A :^: idx C :^: idx B, P (vectorize A B C x).
 Admitted.
 
+// HOL Light:  / FGSIGMA_BAIRE_PREIMAGE_OPEN_ALT
+// Source hash: md5:d19a902fe42f2d3792616ea31ac65367
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_countable, hol_num_omega, hol_one_1, hol_real_R, nat_le_SNoLe)
+Theorem FGSIGMA_BAIRE_PREIMAGE_OPEN_ALT : forall N:set, N <> Empty -> forall f :e R :^: idx 1 :^: (R :^: idx N), forall u c= R :^: idx 1, forall n :e omega, 1 <= n /\ (f :e baire N 1 (n + 1) (R :^: idx N) /\ open 1 u) -> exists u0 c= Power (R :^: idx N), countable u0 /\ (forall x :e u0, exists u c= Power (R :^: idx N), countable u /\ (forall x1 :e u, (fun x10 :e R :^: idx N => indicator N x1 x10) :e baire N 1 n (R :^: idx N)) /\ {x00 :e R :^: idx N | forall Y :e u, x00 :e Y} = x) /\ Union u0 = {x :e R :^: idx N | f x :e u}.
+Admitted.
+
 // HOL Light:  / FINITE_CYCLIC_SUBGROUP
 // Source hash: md5:7ccb7e7f950ae87dda0054de3273d039
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_typedef_group)
@@ -548,6 +590,18 @@ Admitted.
 Theorem FROM_NONEMPTY : forall n :e omega, ~ from n = Empty.
 Admitted.
 
+// HOL Light:  / FSIGMA_REDUCTION_GEN
+// Source hash: md5:7b379f7c1eb0633b9b2b94c3ce9f7d2e
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_one_1, hol_real_R)
+Theorem FSIGMA_REDUCTION_GEN : forall N:set, N <> Empty -> forall s :e Power (R :^: idx N) :^: omega, forall k :e omega, (forall n :e omega, exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, (fun x00 :e R :^: idx N => indicator N x x00) :e baire N 1 k (R :^: idx N)) /\ Union u = s n) /\ Union {s n | n :e omega, n :e omega} = R :^: idx N -> exists t :e Power (R :^: idx N) :^: omega, (forall n :e omega, (fun x :e R :^: idx N => indicator N (t n) x) :e baire N 1 k (R :^: idx N)) /\ ((forall n :e omega, t n c= s n) /\ ((forall x y :e omega, x <> y -> t x :/\: t y = Empty) /\ Union {t n | n :e omega, n :e omega} = R :^: idx N)).
+Admitted.
+
+// HOL Light:  / GDELTA_SEPARATION_GEN
+// Source hash: md5:829414dff8cb9825a07327df2f46d71a
+// Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_one_1, hol_real_R)
+Theorem GDELTA_SEPARATION_GEN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, forall k :e omega, (exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, (fun x00 :e R :^: idx N => indicator N x x00) :e baire N 1 k (R :^: idx N)) /\ {x :e R :^: idx N | forall Y :e u, x :e Y} = s) /\ ((exists u c= Power (R :^: idx N), countable u /\ (forall x :e u, (fun x00 :e R :^: idx N => indicator N x x00) :e baire N 1 k (R :^: idx N)) /\ {x :e R :^: idx N | forall Y :e u, x :e Y} = t) /\ s :/\: t = Empty) -> exists u c= R :^: idx N, (fun x :e R :^: idx N => indicator N u x) :e baire N 1 k (R :^: idx N) /\ (s c= u /\ u :/\: t = Empty).
+Admitted.
+
 // HOL Light:  / GENERAL_REDUCTION_THEOREM
 // Source hash: md5:21453985dbd27d3c1579c5d73e0a1dbb
 // Status: transport_required (bridges: hol_countable, hol_num_omega)
@@ -576,6 +630,18 @@ Admitted.
 // Source hash: md5:60428dd9ce9d2eedb5a3f99292c5b918
 // Status: transport_required (bridges: hol_int_int, hol_typedef_group)
 Theorem GROUP_ENDOMORPHISM_INTEGER_GROUP_EQ_ALT : forall f:set -> set, (forall x :e int, f x :e int) -> (group_endomorphism int integer_group f <-> exists c :e int, (forall x :e int, f x = c * x) /\ forall y :e int, (forall x :e int, f x = y * x) -> y = c).
+Admitted.
+
+// HOL Light:  / GROUP_HOMOMORPHISM_HOM_BOUNDARY
+// Source hash: md5:047e9fd9827695f9c3a97153b598d7bc
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_group, hol_typedef_topology, omega_Subq_int)
+Theorem GROUP_HOMOMORPHISM_HOM_BOUNDARY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s)) (fun x:set => hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light:  / GROUP_HOMOMORPHISM_HOM_INDUCED
+// Source hash: md5:f88468d50ce6e0a267a982cde24f652e
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_group, hol_typedef_topology)
+Theorem GROUP_HOMOMORPHISM_HOM_INDUCED : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (fun x:set => hom_induced A B p (top,s) (top',t) f x).
 Admitted.
 
 // HOL Light:  / GROUP_ID
@@ -692,6 +758,12 @@ Admitted.
 Theorem HOMEOMORPHIC_CBALLS : forall N:set, N <> Empty -> forall a b :e R :^: idx N, forall d e0 :e R, 0 < d /\ 0 < e0 -> homeomorphic N N (cball N (a,d)) (cball N (b,e0)).
 Admitted.
 
+// HOL Light:  / HOMEOMORPHIC_CONVEX_COMPACT_SETS
+// Source hash: md5:ca049e3f104603adba2deed331d1fd14
+// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
+Theorem HOMEOMORPHIC_CONVEX_COMPACT_SETS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (compact M s /\ (convex N t /\ (compact N t /\ aff_dim M s = aff_dim N t))) -> homeomorphic N M s t.
+Admitted.
+
 // HOL Light:  / HOMEOMORPHIC_DIMENSION
 // Source hash: md5:3fa9232c1aeecfa6713cbc30d46f7913
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
@@ -702,6 +774,12 @@ Admitted.
 // Source hash: md5:7d94acda86388affd86a2e04ae096126
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
 Theorem HOMEOMORPHIC_RELATIVE_FRONTIERS_CONVEX_BOUNDED_SETS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (bounded_hl M s /\ (convex N t /\ (bounded_hl N t /\ aff_dim M s = aff_dim N t))) -> homeomorphic N M (relative_frontier M s) (relative_frontier N t).
+Admitted.
+
+// HOL Light:  / HOMEOMORPHIC_RELATIVE_INTERIORS_CONVEX_COMPACT_SETS
+// Source hash: md5:4afd3048987d8de777db8ec04f20452c
+// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
+Theorem HOMEOMORPHIC_RELATIVE_INTERIORS_CONVEX_COMPACT_SETS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (compact M s /\ (convex N t /\ (compact N t /\ aff_dim M s = aff_dim N t))) -> homeomorphic N M (relative_interior M s) (relative_interior N t).
 Admitted.
 
 // HOL Light:  / HOMEOMORPHIC_SPHERES
@@ -720,6 +798,66 @@ Admitted.
 // Source hash: md5:936b1d8093bf9b93a4acd8ffc2db5264
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem HOMOTOPIC_PATHS_NEARBY_EXPLICIT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N g /\ (path N h /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (forall t :e R :^: idx 1, forall x :e R :^: idx N, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x :e s -> vector_norm N (vector_sub N (h t) (g t)) < vector_norm N (vector_sub N (g t) x))))) -> homotopic_paths N s g h.
+Admitted.
+
+// HOL Light:  / HOM_BOUNDARY
+// Source hash: md5:ffcfdf5cbcdd26d7371ab1dfd939f437
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_group, hol_typedef_topology, omega_Subq_int)
+Theorem HOM_BOUNDARY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall c c= frag (A :^: (R :^: omega)), hom_boundary A p (top,s) c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s)).
+Admitted.
+
+// HOL Light:  / HOM_BOUNDARY_CHAIN_BOUNDARY
+// Source hash: md5:5afb5a8db1a8cd24f0dc04a21b714a56
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology, nat_le_SNoLe, omega_Subq_int)
+Theorem HOM_BOUNDARY_CHAIN_BOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c /\ 1 <= p -> forall x :e frag (A :^: (R :^: omega)), x :e hom_boundary A p (top,s) {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c x0} <-> homologous_rel A (minus_nat p 1,(subtopology A top s,Empty)) (chain_boundary A p c) x.
+Admitted.
+
+// HOL Light:  / HOM_BOUNDARY_DEFAULT
+// Source hash: md5:841147b3b8e542d0232bcda8c90da853
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_group, hol_typedef_topology, omega_Subq_int)
+Theorem HOM_BOUNDARY_DEFAULT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall c c= frag (A :^: (R :^: omega)), ~ c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) -> hom_boundary A p (top,s) c = group_id (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s)).
+Admitted.
+
+// HOL Light:  / HOM_BOUNDARY_RESTRICT
+// Source hash: md5:62a8148849543bf0abdb8515515a20e4
+// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology)
+Theorem HOM_BOUNDARY_RESTRICT : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, hom_boundary A p (top,s) = hom_boundary A p (top,topspace A top :/\: s).
+Admitted.
+
+// HOL Light:  / HOM_BOUNDARY_TRIVIAL
+// Source hash: md5:d2635e3bb5622fe8f116b1e103927993
+// Status: transport_required (bridges: choose_in_spec, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology, omega_Subq_int)
+Theorem HOM_BOUNDARY_TRIVIAL : forall A:set, A <> Empty -> forall p :e int, p <= 0 -> forall q :e topology A :*: Power A, forall r c= frag (A :^: (R :^: omega)), hom_boundary A p q r = choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => True).
+Admitted.
+
+// HOL Light:  / HOM_INDUCED
+// Source hash: md5:0392f272930630c5ef3a8e0c3e964d15
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_group, hol_typedef_topology)
+Theorem HOM_INDUCED : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall f :e B :^: A, forall t c= B, forall c c= frag (A :^: (R :^: omega)), hom_induced A B p (top,s) (top',t) f c :e group_carrier (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t))).
+Admitted.
+
+// HOL Light:  / HOM_INDUCED_CHAIN_MAP_GEN
+// Source hash: md5:95b5f4d8de2304e4fabecbee8cfbf4e8
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology, omega_Subq_int)
+Theorem HOM_INDUCED_CHAIN_MAP_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c :e frag (A :^: (R :^: omega)), continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ singular_relcycle A (p,(top,s)) c) -> forall x :e frag (B :^: (R :^: omega)), x :e hom_induced A B p (top,s) (top',t) f {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c x0} <-> homologous_rel B (p,(top',t)) (chain_map A B p (fun x0:set => f x0) c) x.
+Admitted.
+
+// HOL Light:  / HOM_INDUCED_DEFAULT
+// Source hash: md5:e8b55919a6da4e10a4a26b3936287dbf
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_group, hol_typedef_topology)
+Theorem HOM_INDUCED_DEFAULT : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c c= frag (A :^: (R :^: omega)), ~ (continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))))) -> hom_induced A B p (top,s) (top',t) f c = group_id (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t))).
+Admitted.
+
+// HOL Light:  / HOM_INDUCED_RESTRICT
+// Source hash: md5:f7d40d11a57fd0f125b768b6579f4f9c
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology)
+Theorem HOM_INDUCED_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, hom_induced A B p (top,s) (top',t) = hom_induced A B p (top,topspace A top :/\: s) (top',topspace B top' :/\: t).
+Admitted.
+
+// HOL Light:  / HOM_INDUCED_TRIVIAL
+// Source hash: md5:063a5b6d5d7cce0c77e7a5dda58f74df
+// Status: transport_required (bridges: choose_in_spec, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology, omega_Subq_int)
+Theorem HOM_INDUCED_TRIVIAL : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, p < 0 -> forall q :e topology A :*: Power A, forall r :e topology B :*: Power B, forall s :e B :^: A, forall t c= frag (A :^: (R :^: omega)), hom_induced A B p q r s t = choose_in (Power (frag (B :^: (R :^: omega)))) (fun x:set => True).
 Admitted.
 
 // HOL Light:  / HULLS_EQ
@@ -1052,6 +1190,36 @@ Admitted.
 Theorem LAMBDA_SKOLEM : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> set -> prop, (forall i :e omega, 1 <= i /\ i <= dimindex N -> exists x :e A, P i x) <-> exists x :e A :^: idx N, forall i :e omega, 1 <= i /\ i <= dimindex N -> P i (x i).
 Admitted.
 
+// HOL Light:  / LEBESGUE_MEASURABLE_ABSOLUTELY_CONTINUOUS_IMAGE
+// Source hash: md5:3fe9eb7e42905816579558e4240d2198
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem LEBESGUE_MEASURABLE_ABSOLUTELY_CONTINUOUS_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s t c= R :^: idx 1, absolutely_continuous_on N f s /\ (is_interval 1 s /\ (lebesgue_measurable 1 t /\ t c= s)) -> lebesgue_measurable N {f x | x :e t}.
+Admitted.
+
+// HOL Light:  / LEBESGUE_MEASURABLE_FUNCTION_ORDINATE_SET_LE_EQ
+// Source hash: md5:5a9f35fb59b1bd88d975b4c4b1f8e43d
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem LEBESGUE_MEASURABLE_FUNCTION_ORDINATE_SET_LE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable (idx_n (dimindex M + dimindex N)) (\/_ x :e R :^: idx M, {pastecart M N x y | y :e R :^: idx N, y k <= f x k})).
+Admitted.
+
+// HOL Light:  / LEBESGUE_MEASURABLE_FUNCTION_ORDINATE_SET_LT_EQ
+// Source hash: md5:c4f8a58298a2a5b32d87529896fee2b6
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem LEBESGUE_MEASURABLE_FUNCTION_ORDINATE_SET_LT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable (idx_n (dimindex M + dimindex N)) (\/_ x :e R :^: idx M, {pastecart M N x y | y :e R :^: idx N, y k < f x k})).
+Admitted.
+
+// HOL Light:  / LEBESGUE_MEASURABLE_FUNCTION_ORTHANT_SET_LE_EQ
+// Source hash: md5:56769b78d64fdc9641c213a87fb76bcb
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem LEBESGUE_MEASURABLE_FUNCTION_ORTHANT_SET_LE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> lebesgue_measurable (idx_n (dimindex M + dimindex N)) (\/_ x :e R :^: idx M, {pastecart M N x y | y :e R :^: idx N, forall k :e omega, 1 <= k /\ k <= dimindex N -> y k <= f x k})).
+Admitted.
+
+// HOL Light:  / LEBESGUE_MEASURABLE_FUNCTION_ORTHANT_SET_LT_EQ
+// Source hash: md5:560e9cffaaaefe8c02e0b005e32ab232
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem LEBESGUE_MEASURABLE_FUNCTION_ORTHANT_SET_LT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> lebesgue_measurable (idx_n (dimindex M + dimindex N)) (\/_ x :e R :^: idx M, {pastecart M N x y | y :e R :^: idx N, forall k :e omega, 1 <= k /\ k <= dimindex N -> y k < f x k})).
+Admitted.
+
 // HOL Light:  / LEBESGUE_NUMBER
 // Source hash: md5:7a19b2c2e7865794d077fdb4f53a28cd
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_topology, omega_Subq_R)
@@ -1076,6 +1244,24 @@ Admitted.
 Theorem LIMPT_INFINITE_OPEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, limit_point_of N x s <-> forall t c= R :^: idx N, x :e t /\ open N t -> infinite (s :/\: t).
 Admitted.
 
+// HOL Light:  / LIMPT_SEQUENTIAL
+// Source hash: md5:34b2609e87f84b4b04b8648b1aab7694
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem LIMPT_SEQUENTIAL : forall N:set, N <> Empty -> forall x :e R :^: idx N, forall s c= R :^: idx N, limit_point_of N x s <-> exists f:set -> set, (forall x0 :e omega, f x0 :e R :^: idx N) /\ ((forall n :e omega, f n :e s :\: {x}) /\ tendsto N omega f x sequentially).
+Admitted.
+
+// HOL Light:  / LIMPT_SEQUENTIAL_DECREASING
+// Source hash: md5:2c13f05a332b6515c78883eb93007692
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
+Theorem LIMPT_SEQUENTIAL_DECREASING : forall N:set, N <> Empty -> forall x :e R :^: idx N, forall s c= R :^: idx N, limit_point_of N x s <-> exists f:set -> set, (forall x0 :e omega, f x0 :e R :^: idx N) /\ ((forall n :e omega, f n :e s :\: {x}) /\ ((forall m n :e omega, m < n -> distance N (f n,x) < distance N (f m,x)) /\ tendsto N omega f x sequentially)).
+Admitted.
+
+// HOL Light:  / LIMPT_SEQUENTIAL_INJ
+// Source hash: md5:dcfc0fc6b72280b2eace2bd41b77db44
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem LIMPT_SEQUENTIAL_INJ : forall N:set, N <> Empty -> forall x :e R :^: idx N, forall s c= R :^: idx N, limit_point_of N x s <-> exists f:set -> set, (forall x0 :e omega, f x0 :e R :^: idx N) /\ ((forall n :e omega, f n :e s :\: {x}) /\ ((forall m n :e omega, f m = f n <-> m = n) /\ tendsto N omega f x sequentially)).
+Admitted.
+
 // HOL Light:  / LINEAR_EQUATIONS_1_EQ
 // Source hash: md5:8d1369219ab3cca9ad6f66d234972bde
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
@@ -1086,6 +1272,24 @@ Admitted.
 // Source hash: md5:219c800549e1ab087d3be1d8b184b3fa
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem LINEAR_EQUATIONS_2_EQ : forall a b c d u v :e R, (exists x y :e R, a * x + b * y = u /\ c * x + d * y = v) <-> (a * d = b * c -> d * u = b * v /\ c * u = a * v) /\ (a = 0 /\ (b = 0 /\ (c = 0 /\ d = 0)) -> u = 0 /\ v = 0).
+Admitted.
+
+// HOL Light:  / LOCALLY_BAIRE
+// Source hash: md5:7c471fbd1a2870a9db87b3e84fc2c899
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
+Theorem LOCALLY_BAIRE : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall k :e omega, locally M {u :e Power (R :^: idx M) | f :e baire M N k u} s <-> f :e baire M N k s.
+Admitted.
+
+// HOL Light:  / LOCALLY_BAIRE_ALT
+// Source hash: md5:4551dec0cfea50e6eefb018f3a3c8f21
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_topology)
+Theorem LOCALLY_BAIRE_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall k :e omega, f :e baire M N k s <-> forall x :e R :^: idx M, x :e s -> exists u v c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) s /\ (x :e u /\ (u c= v /\ f :e baire M N k v)).
+Admitted.
+
+// HOL Light:  / LOCALLY_BAIRE_EXPLICIT
+// Source hash: md5:023f7d315ccda99a3e53c8bd2d6fe169
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_topology)
+Theorem LOCALLY_BAIRE_EXPLICIT : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall k :e omega, f :e baire M N k s <-> forall x :e R :^: idx M, x :e s -> exists u c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) s /\ (x :e u /\ f :e baire M N k u).
 Admitted.
 
 // HOL Light:  / LOCALLY_COMPACT_HAUSDORFF_IMP_REGULAR_SPACE
@@ -1272,6 +1476,144 @@ Admitted.
 // Source hash: md5:bc130fbf082066a0cf4565e19f9af143
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod, hol_real_R, hol_typedef_metric)
 Theorem MDIST_TRIANGLE : forall A:set, forall m :e metric A, forall x y z :e A, x :e mspace A m /\ (y :e mspace A m /\ z :e mspace A m) -> mdist A m (x,z) <= mdist A m (x,y) + mdist A m (y,z).
+Admitted.
+
+// HOL Light:  / MEASURABLE_BOUNDED_DIFFERENTIABLE_IMAGE
+// Source hash: md5:93712bf5ceaf8577f8482f424474a89a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem MEASURABLE_BOUNDED_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s) /\ abs_SNo (det N (matrix N N (f' x))) <= B) -> measurable N {f x | x :e s}.
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_BOREL
+// Source hash: md5:7fcc7dd6a1dee742b8893aa26edf8983
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_BOREL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall t c= R :^: idx N, borel N t -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x :e t}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_CLOSED
+// Source hash: md5:6494c4dd38172ce081e588614160504d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_CLOSED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall t c= R :^: idx N, closed N t -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x :e t}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_CLOSED_INTERVAL
+// Source hash: md5:d3259df3dc46d9e4132cf3ae34d1ba19
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_CLOSED_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall a b :e R :^: idx N, lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x :e closed_interval N (seq_cons (a,b) seq_nil)}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GE
+// Source hash: md5:bc6a72788022c96b1ebf4b1131939951
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ a <= f x k}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GT
+// Source hash: md5:03a01d26c80bc3cf55919ea8cd6006ec
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ a < f x k}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LE
+// Source hash: md5:6f51c3932711d45e257108ba0e295b2a
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x k <= a}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LT
+// Source hash: md5:b7b3e6095e2f0fb23a995552b3824619
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x k < a}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_OPEN
+// Source hash: md5:9f0a11b8526c35e701bbda430ecdc824
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall t c= R :^: idx N, open N t -> lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x :e t}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_OPEN_INTERVAL
+// Source hash: md5:7ddebf6cb1ebb5bdda28750f7c2c9b38
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
+Theorem MEASURABLE_ON_LEBESGUE_MEASURABLE_PREIMAGE_OPEN_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, lebesgue_measurable M s -> (measurable_on M N f s <-> forall a b :e R :^: idx N, lebesgue_measurable M {x :e R :^: idx M | x :e s /\ f x :e open_interval N (a,b)}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_CLOSED
+// Source hash: md5:65ce8fcbb6e68a7a825152929ba8ccfe
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_CLOSED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall t c= R :^: idx N, closed N t -> measurable M {x :e R :^: idx M | x :e s /\ f x :e t}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_CLOSED_INTERVAL
+// Source hash: md5:26036be63304dfe1f4a84e591981710c
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_CLOSED_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall a b :e R :^: idx N, measurable M {x :e R :^: idx M | x :e s /\ f x :e closed_interval N (seq_cons (a,b) seq_nil)}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GE
+// Source hash: md5:853fa9423eaa4487599bbc1d47e0768d
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> measurable M {x :e R :^: idx M | x :e s /\ a <= f x k}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GT
+// Source hash: md5:828bd5a132a0ad29523cabfedb8b7e6b
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_GT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> measurable M {x :e R :^: idx M | x :e s /\ a < f x k}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LE
+// Source hash: md5:c0e111732f39b103e465d48c7c9e5ecc
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> measurable M {x :e R :^: idx M | x :e s /\ f x k <= a}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LT
+// Source hash: md5:e1d0d9ee630798559ad7f17cc015079f
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_HALFSPACE_COMPONENT_LT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> measurable M {x :e R :^: idx M | x :e s /\ f x k < a}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_OPEN
+// Source hash: md5:0f44b4d071a7f24eb10096ad7f7bff14
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall t c= R :^: idx N, open N t -> measurable M {x :e R :^: idx M | x :e s /\ f x :e t}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_MEASURABLE_PREIMAGE_OPEN_INTERVAL
+// Source hash: md5:9ebeb76f279f94b13e4814d5e09bc08c
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
+Theorem MEASURABLE_ON_MEASURABLE_PREIMAGE_OPEN_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, measurable M s -> (measurable_on M N f s <-> forall a b :e R :^: idx N, measurable M {x :e R :^: idx M | x :e s /\ f x :e open_interval N (a,b)}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_PREIMAGE_HALFSPACE_COMPONENT_LT
+// Source hash: md5:66cc9c4764a2724539d4fc000f41c157
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem MEASURABLE_ON_PREIMAGE_HALFSPACE_COMPONENT_LT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> forall a :e R, forall k :e omega, 1 <= k /\ k <= dimindex N -> lebesgue_measurable M {x :e R :^: idx M | f x k < a}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_PREIMAGE_OPEN
+// Source hash: md5:6705a42baad6f8c7406220ad52ab8c88
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MEASURABLE_ON_PREIMAGE_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> forall t c= R :^: idx N, open N t -> lebesgue_measurable M {x :e R :^: idx M | f x :e t}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_PREIMAGE_OPEN_INTERVAL
+// Source hash: md5:e68f05f3b93dcd9aa408e3338e96ade7
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
+Theorem MEASURABLE_ON_PREIMAGE_OPEN_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> forall a b :e R :^: idx N, lebesgue_measurable M {x :e R :^: idx M | f x :e open_interval N (a,b)}).
+Admitted.
+
+// HOL Light:  / MEASURABLE_ON_SIMPLE_FUNCTION_LIMIT
+// Source hash: md5:ac51e25b7880cea36f62c0ce5c31bd15
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem MEASURABLE_ON_SIMPLE_FUNCTION_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (measurable_on M N f (R :^: idx M) <-> exists g:set -> set -> set, (forall x :e omega, forall y :e R :^: idx M, g x y :e R :^: idx N) /\ ((forall n :e omega, measurable_on M N (g n) (R :^: idx M)) /\ ((forall n :e omega, finite {g n x | x :e R :^: idx M}) /\ forall x :e R :^: idx M, tendsto N omega (fun n:set => g n x) (f x) sequentially))).
+Admitted.
+
+// HOL Light:  / MEASURE_BOUNDED_DIFFERENTIABLE_IMAGE
+// Source hash: md5:c588b232dec6b529cfbd35328332c592
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
+Theorem MEASURE_BOUNDED_DIFFERENTIABLE_IMAGE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall f':set -> set -> set, (forall x y :e R :^: idx N, f' x y :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, measurable N s /\ (forall x :e R :^: idx N, x :e s -> has_derivative N N f (f' x) (within (R :^: idx N) (at N x) s) /\ abs_SNo (det N (matrix N N (f' x))) <= B) -> measure N {f x | x :e s} <= B * measure N s.
 Admitted.
 
 // HOL Light:  / METRIZABLE_SPACE_PRODUCT_TOPOLOGY
@@ -1908,6 +2250,18 @@ Admitted.
 // Source hash: md5:e793140ee0be01d1463ba40de4ba1630
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_net, hol_typedef_topology, omega_Subq_R)
 Theorem UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall m1 :e metric A, forall m2 :e metric B, forall f:set -> set, (forall x :e A, f x :e B) -> (uniformly_continuous_map B A (m1,m2) f <-> {f x | x :e mspace A m1} c= mspace B m2 /\ forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e A) -> 0 < e0 /\ ((forall n :e omega, x n :e mspace A m1) /\ ((forall n :e omega, y n :e mspace A m1) /\ limit omega R euclideanreal (fun n:set => mdist A m1 (x n,y n)) 0 sequentially)) -> exists n :e omega, mdist B m2 (f (x n),f (y n)) < e0).
+Admitted.
+
+// HOL Light:  / UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY
+// Source hash: md5:4026f6470c798d877396fe3cb0503112
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx M) -> (forall n :e omega, x n :e s) /\ ((forall n :e omega, y n :e s) /\ tendsto M omega (fun n:set => vector_sub M (x n) (y n)) (vec M 0) sequentially) -> tendsto N omega (fun n:set => vector_sub N (f (x n)) (f (y n))) (vec N 0) sequentially.
+Admitted.
+
+// HOL Light:  / UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY_ALT
+// Source hash: md5:33372305f98e0eb3205db0b5b92a8b0f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s) /\ ((forall n :e omega, y n :e s) /\ tendsto M omega (fun n:set => vector_sub M (x n) (y n)) (vec M 0) sequentially)) -> exists n :e omega, distance N (f (x n),f (y n)) < e0.
 Admitted.
 
 // HOL Light:  / UPPER_BOUND_FINITE_SET

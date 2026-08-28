@@ -7358,6 +7358,12 @@ Admitted.
 Theorem CLOSED_IN_CONNECTED_COMPONENT_OF_SUBTOPOLOGY : forall A:set, A <> Empty -> forall s c= A, forall top :e topology A, forall c c= A, c :e connected_components_of A (subtopology A top s) /\ closure_of A top c c= s -> closed_in A top c.
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:14913 / CONNECTED_COMPONENT_OF_DISCRETE_TOPOLOGY
+// Source hash: md5:d8c0deed8c621ad05a7d06c7d8781999
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_topology)
+Theorem CONNECTED_COMPONENT_OF_DISCRETE_TOPOLOGY : forall A:set, forall u c= A, forall x x0 :e A, connected_component_of A (discrete_topology A u) x x0 <-> (x :e u -> x0 :e SetAdjoin Empty x) /\ (~ x :e u -> x0 :e Empty).
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:14923 / CONNECTED_COMPONENTS_OF_DISCRETE_TOPOLOGY
 // Source hash: md5:7044b9b1397d07a4a7684752b076ae0d
 // Status: transport_required (bridges: hol_typedef_topology)
@@ -7404,6 +7410,12 @@ Admitted.
 // Source hash: md5:56b29817021bc2d837359e12268407dd
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
 Theorem CONNECTED_COMPONENTS_OF_PROD_TOPOLOGY : forall A B:set, A <> Empty -> B <> Empty -> forall top1 :e topology A, forall top2 :e topology B, connected_components_of (A :*: B) (prod_topology A B top1 top2) = \/_ c1 :e Power A, {c1 :*: c2 | c2 :e Power B, c1 :e connected_components_of A top1 /\ c2 :e connected_components_of B top2}.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:15132 / CONNECTED_COMPONENT_OF_PRODUCT_TOPOLOGY
+// Source hash: md5:7fa07f615939b8b0b8e14d6b28c81f69
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp, hol_typedef_topology)
+Theorem CONNECTED_COMPONENT_OF_PRODUCT_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall x x0 :e A :^: K, connected_component_of (A :^: K) (product_topology A K k tops) x x0 <-> ((forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => True)) -> x0 :e {f :e A :^: K | (forall i :e k, f i :e {x2 :e A | connected_component_of A (tops i) (x i) x2}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}) /\ (~ (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => True)) -> x0 :e Empty).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15165 / CONNECTED_COMPONENTS_OF_PRODUCT_TOPOLOGY
@@ -9956,6 +9968,114 @@ Admitted.
 Theorem CONTINUOUS_MAP_CASES_LT : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall top' :e topology B, forall p:set -> set, (forall x :e A, p x :e R) -> forall q:set -> set, (forall x :e A, q x :e R) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> continuous_map A R (top,euclideanreal) p /\ (continuous_map A R (top,euclideanreal) q /\ (continuous_map A B (subtopology A top {x :e A | x :e topspace A top /\ p x <= q x},top') f /\ (continuous_map A B (subtopology A top {x :e A | x :e topspace A top /\ q x <= p x},top') g /\ (forall x :e A, x :e topspace A top /\ p x = q x -> f x = g x)))) -> continuous_map A B (top,top') (fun x:set => if p x < q x then f x else g x).
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:21866 / tendsto_real_def
+// Source hash: md5:5bc7eba35e02d8030dd29e1cd14bf249
+// Status: transport_required (bridges: hol_real_R, hol_typedef_net, hol_typedef_topology)
+Theorem tendsto_real_def : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall l :e R, forall net0 :e net A, tendsto_real A f l net0 <-> limit A R euclideanreal f l net0.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21869 / reallim
+// Source hash: md5:49e4de5458b788a0f80487725dd8757c
+// Status: transport_required (bridges: choose_in_spec, hol_real_R, hol_typedef_net)
+Theorem reallim_thm : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall net0 :e net A, reallim A net0 f = choose_in R (fun l:set => tendsto_real A f l net0).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21874 / TENDSTO_REAL_EPS_DELTA
+// Source hash: md5:3b1421a7dfcef95aa8bcbb8f02c63f1e
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
+Theorem TENDSTO_REAL_EPS_DELTA : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall l :e R, forall net0 :e net A, tendsto_real A f l net0 <-> forall e0 :e R, 0 < e0 -> eventually A {x :e A | abs_SNo (f x + - l) < e0} net0.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21883 / REALLIM_CONST
+// Source hash: md5:8e124b747b636cfd04b2aa7dbe2b03d3
+// Status: transport_required (bridges: hol_real_R, hol_typedef_net)
+Theorem REALLIM_CONST : forall A:set, A <> Empty -> forall net0 :e net A, forall a :e R, tendsto_real A (fun x:set => a) a net0.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21887 / REALLIM_SUB
+// Source hash: md5:fcd63c7f90f68e9776b7b7694917275c
+// Status: transport_required (bridges: hol_real_R, hol_typedef_net)
+Theorem REALLIM_SUB : forall A:set, A <> Empty -> forall net0 :e net A, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall l m :e R, tendsto_real A f l net0 /\ tendsto_real A g m net0 -> tendsto_real A (fun x:set => f x + - g x) (l + - m) net0.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21893 / REALLIM_UBOUND
+// Source hash: md5:41456f2ce4e274f38ae86a79bd3eed58
+// Status: transport_required (bridges: hol_real_R, hol_typedef_net)
+Theorem REALLIM_UBOUND : forall A:set, A <> Empty -> forall net0 :e net A, forall f:set -> set, (forall x :e A, f x :e R) -> forall l b :e R, tendsto_real A f l net0 /\ (~ trivial_limit A net0 /\ eventually A {x :e A | f x <= b} net0) -> l <= b.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21904 / REALLIM_LBOUND
+// Source hash: md5:d980249050fa5e56b3c9f6765d428430
+// Status: transport_required (bridges: hol_real_R, hol_typedef_net)
+Theorem REALLIM_LBOUND : forall A:set, A <> Empty -> forall net0 :e net A, forall f:set -> set, (forall x :e A, f x :e R) -> forall l b :e R, tendsto_real A f l net0 /\ (~ trivial_limit A net0 /\ eventually A {x :e A | b <= f x} net0) -> b <= l.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21916 / REALLIM_LE
+// Source hash: md5:97c8dac784cd30f45c851985435011bb
+// Status: transport_required (bridges: hol_real_R, hol_typedef_net)
+Theorem REALLIM_LE : forall A:set, A <> Empty -> forall net0 :e net A, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall l m :e R, tendsto_real A f l net0 /\ (tendsto_real A g m net0 /\ (~ trivial_limit A net0 /\ eventually A {x :e A | f x <= g x} net0)) -> l <= m.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21929 / REALLIM_SEQUENTIALLY
+// Source hash: md5:7f66f68198f2f06ed4016a5c552ee771
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_typedef_net, nat_le_SNoLe, omega_Subq_R)
+Theorem REALLIM_SEQUENTIALLY : forall f:set -> set, (forall x :e omega, f x :e R) -> forall l :e R, tendsto_real omega f l sequentially <-> forall e0 :e R, 0 < e0 -> exists N :e omega, forall n :e omega, N <= n -> abs_SNo (f n + - l) < e0.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21941 / real_sums
+// Source hash: md5:d821ba20f3e5b28c95a06ab7cc1bf585
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, hol_typedef_net)
+Theorem real_sums_thm : forall s c= omega, forall f:set -> set, (forall x :e omega, f x :e R) -> forall l :e R, real_sums f l s <-> tendsto_real omega (fun n:set => finsum (s :/\: {i :e omega | 0 <= i /\ i <= n}) f) l sequentially.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21945 / real_infsum
+// Source hash: md5:ab9f65af301e4c045cb2148ef163ca7a
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, hol_real_R)
+Theorem real_infsum_thm : forall f:set -> set, (forall x :e omega, f x :e R) -> forall s c= omega, real_infsum s f = choose_in R (fun l:set => real_sums f l s).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21948 / real_summable
+// Source hash: md5:b309165bbdad47f73e47d8fbf0204a5d
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem real_summable_thm : forall f:set -> set, (forall x :e omega, f x :e R) -> forall s c= omega, real_summable s f <-> exists l :e R, real_sums f l s.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21951 / REAL_SUMS_SUMMABLE
+// Source hash: md5:0c5da452b36f1992914b1cba094af399
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem REAL_SUMS_SUMMABLE : forall f:set -> set, (forall x :e omega, f x :e R) -> forall l :e R, forall s c= omega, real_sums f l s -> real_summable s f.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21955 / REAL_SUMS_INFSUM
+// Source hash: md5:119d4f212c6ed5a42792b44d2ad090b4
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem REAL_SUMS_INFSUM : forall f:set -> set, (forall x :e omega, f x :e R) -> forall s c= omega, real_sums f (real_infsum s f) s <-> real_summable s f.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21959 / REAL_SERIES_FROM
+// Source hash: md5:04de8ec6fd4eaf1e88efe6fc85d91dff
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, hol_typedef_net)
+Theorem REAL_SERIES_FROM : forall f:set -> set, (forall x :e omega, f x :e R) -> forall l :e R, forall k :e omega, real_sums f l (from k) <-> tendsto_real omega (fun n:set => finsum {i :e omega | k <= i /\ i <= n} f) l sequentially.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:21965 / REAL_SUMMABLE_CAUCHY
+// Source hash: md5:a4e33cd535f0eae7e613244d68e8af9c
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem REAL_SUMMABLE_CAUCHY : forall f:set -> set, (forall x :e omega, f x :e R) -> forall s c= omega, real_summable s f <-> forall e0 :e R, 0 < e0 -> exists N :e omega, forall m n :e omega, N <= m -> abs_SNo (finsum (s :/\: {i :e omega | m <= i /\ i <= n}) f) < e0.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:22000 / REAL_SUMMABLE_COMPARISON
+// Source hash: md5:24a503db0562211d56882919c0a334d6
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem REAL_SUMMABLE_COMPARISON : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall s c= omega, real_summable s g /\ (exists N :e omega, forall n :e omega, N <= n /\ n :e s -> abs_SNo (f n) <= g n) -> real_summable s f.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:22019 / REAL_SERIES_LE
+// Source hash: md5:3c5203cfa74826f2a8508778102a1653
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem REAL_SERIES_LE : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall s c= omega, forall y z :e R, real_sums f y s /\ (real_sums g z s /\ (forall i :e omega, i :e s -> f i <= g i)) -> y <= z.
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:22038 / path_in
 // Source hash: md5:debcaa2bee7c9725b526ec00d0e75c1b
 // Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
@@ -10484,6 +10604,12 @@ Admitted.
 Theorem PATH_COMPONENT_OF_UNIQUE : forall A:set, forall top :e topology A, forall c c= A, forall x :e A, x :e c /\ (path_connected_in A top c /\ (forall c' c= A, x :e c' /\ path_connected_in A top c' -> c' c= c)) -> forall x0 :e A, path_component_of A top x x0 <-> x0 :e c.
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:22920 / PATH_COMPONENT_OF_DISCRETE_TOPOLOGY
+// Source hash: md5:31b1d53227b98472339f6b1ac836022e
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_topology)
+Theorem PATH_COMPONENT_OF_DISCRETE_TOPOLOGY : forall A:set, forall u c= A, forall x x0 :e A, path_component_of A (discrete_topology A u) x x0 <-> (x :e u -> x0 :e SetAdjoin Empty x) /\ (~ x :e u -> x0 :e Empty).
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:22931 / PATH_COMPONENTS_OF_DISCRETE_TOPOLOGY
 // Source hash: md5:a39bd1724c1f708796e2750dcfa52d79
 // Status: transport_required (bridges: hol_typedef_topology)
@@ -10518,6 +10644,12 @@ Admitted.
 // Source hash: md5:c190a57fb2ed4b17876c11f3562c000f
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
 Theorem PATH_COMPONENTS_OF_PROD_TOPOLOGY : forall A B:set, A <> Empty -> B <> Empty -> forall top1 :e topology A, forall top2 :e topology B, path_components_of (A :*: B) (prod_topology A B top1 top2) = \/_ c1 :e Power A, {c1 :*: c2 | c2 :e Power B, c1 :e path_components_of A top1 /\ c2 :e path_components_of B top2}.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:23014 / PATH_COMPONENT_OF_PRODUCT_TOPOLOGY
+// Source hash: md5:8da4f03c1342b1198463529127cf8c55
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp, hol_typedef_topology)
+Theorem PATH_COMPONENT_OF_PRODUCT_TOPOLOGY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall x x0 :e A :^: K, path_component_of (A :^: K) (product_topology A K k tops) x x0 <-> ((forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => True)) -> x0 :e {f :e A :^: K | (forall i :e k, f i :e {x2 :e A | path_component_of A (tops i) (x i) x2}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}) /\ (~ (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => True)) -> x0 :e Empty).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:23047 / PATH_COMPONENTS_OF_PRODUCT_TOPOLOGY
@@ -11288,6 +11420,12 @@ Admitted.
 Theorem QUASI_COMPONENT_OF_ALT : forall A:set, forall top :e topology A, forall x y :e A, quasi_component_of A top x y <-> x :e topspace A top /\ (y :e topspace A top /\ ~ exists u v c= A, u :e top /\ (v :e top /\ (u :\/: v = topspace A top /\ (u :/\: v = Empty /\ (x :e u /\ y :e v))))).
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:26274 / QUASI_COMPONENT_OF_SET
+// Source hash: md5:e3041848005f9ba021be2066d81f6559
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_topology)
+Theorem QUASI_COMPONENT_OF_SET : forall A:set, forall top :e topology A, forall x x0 :e A, quasi_component_of A top x x0 <-> (x :e topspace A top -> x0 :e {x0 :e A | forall Y :e {t :e Power A | closed_in A top t /\ (t :e top /\ x :e t)}, x0 :e Y}) /\ (~ x :e topspace A top -> x0 :e Empty).
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:26286 / QUASI_COMPONENT_OF_SEPARATED
 // Source hash: md5:2d401a2498d05840998a590d057384ea
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_topology)
@@ -11610,6 +11748,12 @@ Admitted.
 // Source hash: md5:730da14d414960bb7143cb9a9ca71c00
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod, hol_typedef_topology)
 Theorem QUASI_COMPONENT_OF_CONTINUOUS_IMAGE : forall A B:set, B <> Empty -> forall top :e topology A, forall top' :e topology B, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, continuous_map A B (top,top') f /\ quasi_component_of A top x y -> quasi_component_of B top' (f x) (f y).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:26825 / QUASI_COMPONENT_OF_DISCRETE_TOPOLOGY
+// Source hash: md5:c57ca94c9e3362778a59221bdd7da2fd
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_topology)
+Theorem QUASI_COMPONENT_OF_DISCRETE_TOPOLOGY : forall A:set, forall u c= A, forall x x0 :e A, quasi_component_of A (discrete_topology A u) x x0 <-> (x :e u -> x0 :e SetAdjoin Empty x) /\ (~ x :e u -> x0 :e Empty).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:26837 / QUASI_COMPONENTS_OF_DISCRETE_TOPOLOGY
@@ -14900,6 +15044,18 @@ Admitted.
 Theorem cantor_term_thm : forall a c= omega, forall k :e omega, cantor_term a k = (if k :e a then 2 else 0) :/: 3 ^ (k + 1).
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:44830 / cantor_map
+// Source hash: md5:710ded79fbd592bf488939e90afb2c10
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem cantor_map_thm : forall a c= omega, cantor_map a = real_infsum (from 0) (fun x:set => cantor_term a x).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:44833 / cantor_set
+// Source hash: md5:5ff3c164434a0db505c5b3a94ff07b51
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem cantor_set_thm : cantor_set = {cantor_map x | x :e Power omega}.
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:44836 / TOPSPACE_CANTOR_SPACE
 // Source hash: md5:167e7f33913abbfe9ea7811a09f21ceb
 // Status: transport_required (bridges: hol_num_omega, hol_typedef_topology)
@@ -14972,16 +15128,130 @@ Admitted.
 Theorem SUM_TWOTHIRDS : forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun k:set => 2 :/: 3 ^ (k + 1)) = 1 + - (1 :/: 3) ^ (n + 1).
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:44954 / TWOTHIRDS_SUMS
+// Source hash: md5:cf2ecb0322b4479f8c692fe5c474005d
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem TWOTHIRDS_SUMS : real_sums (fun k:set => 2 :/: 3 ^ (k + 1)) 1 (from 0).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:44971 / CANTOR_MAP_SUMMABLE
+// Source hash: md5:a1bc1125b3ef1e32f861f98f646e7408
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem CANTOR_MAP_SUMMABLE : forall a c= omega, real_summable (from 0) (fun x:set => cantor_term a x).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:44982 / CANTOR_MAP_SUMS
+// Source hash: md5:a14ca76dc929df1f7716006b09a3231c
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem CANTOR_MAP_SUMS : forall a c= omega, real_sums (fun x:set => cantor_term a x) (cantor_map a) (from 0).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:44988 / CANTOR_MAP_LE_ONE
+// Source hash: md5:d3d4bb5c11778dc542dd9f0d874c716b
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem CANTOR_MAP_LE_ONE : forall a c= omega, cantor_map a <= 1.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:44997 / CANTOR_MAP_GE_PARTIAL_SUM
+// Source hash: md5:ec15bd1c367805835a48f05782465baa
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem CANTOR_MAP_GE_PARTIAL_SUM : forall a c= omega, forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun x:set => cantor_term a x) <= cantor_map a.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45010 / CANTOR_MAP_PARTIAL_SUM_BOUND
+// Source hash: md5:5c6218b5d7d8504d5f91b0756e69e54b
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem CANTOR_MAP_PARTIAL_SUM_BOUND : forall a c= omega, forall n :e omega, cantor_map a + - finsum {i :e omega | 0 <= i /\ i <= n} (fun x:set => cantor_term a x) <= (1 :/: 3) ^ (n + 1).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45035 / CANTOR_MAP_POS
+// Source hash: md5:949e2ff63ee825d4aceeaea78f0d0a64
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem CANTOR_MAP_POS : forall a c= omega, 0 <= cantor_map a.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45042 / CANTOR_MAP_RANGE
+// Source hash: md5:28883c5c7e7fe22d2a80815787391a5a
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem CANTOR_MAP_RANGE : forall a c= omega, cantor_map a :e closed_real_interval (seq_cons (0,1) seq_nil).
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:45048 / CANTOR_TERM_CONTINUOUS
 // Source hash: md5:0eac3be1b4ee5a40755749a61af0a9ba
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
 Theorem CANTOR_TERM_CONTINUOUS : forall k :e omega, continuous_map (Power omega) R (cantor_space,euclideanreal) (fun a:set => cantor_term a k).
 Admitted.
 
+// HOL Light: Multivariate/metric.ml:45063 / CANTOR_MAP_CONTINUOUS
+// Source hash: md5:e29a9ae70053c084c07ae079eb513445
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem CANTOR_MAP_CONTINUOUS : continuous_map (Power omega) R (cantor_space,euclideanreal) (fun x:set => cantor_map x).
+Admitted.
+
 // HOL Light: Multivariate/metric.ml:45093 / CANTOR_PARTIAL_SUM_DIFF_AT_K
 // Source hash: md5:e3ea59d69c03d12748f6a1b67cede10e
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_lt_SNoLt, omega_Subq_R)
 Theorem CANTOR_PARTIAL_SUM_DIFF_AT_K : forall a b c= omega, forall k :e omega, (forall j :e omega, j < k -> (j :e a <-> j :e b)) /\ (k :e a /\ ~ k :e b) -> finsum {i :e omega | 0 <= i /\ i <= k} (fun x:set => cantor_term a x) = finsum {i :e omega | 0 <= i /\ i <= k} (fun x:set => cantor_term b x) + 2 :/: 3 ^ (k + 1).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45115 / CANTOR_MAP_STRICT_LT
+// Source hash: md5:24b71284ea96f012f0ce468dcb44acfe
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, nat_lt_SNoLt)
+Theorem CANTOR_MAP_STRICT_LT : forall a b c= omega, forall k :e omega, (forall j :e omega, j < k -> (j :e a <-> j :e b)) /\ (k :e a /\ ~ k :e b) -> cantor_map b < cantor_map a.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45131 / CANTOR_MAP_INJECTIVE
+// Source hash: md5:9fb0a06a8f67e904dec1a53c3f6380bd
+// Status: transport_required (bridges: hol_num_omega, hol_real_R)
+Theorem CANTOR_MAP_INJECTIVE : forall a b c= omega, cantor_map a = cantor_map b <-> a = b.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45143 / CANTOR_MAP_EMBEDDING
+// Source hash: md5:0e58966f27d83485e9410fe0a8f69c6c
+// Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem CANTOR_MAP_EMBEDDING : embedding_map (Power omega) R (cantor_space,euclideanreal) (fun x:set => cantor_map x).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45150 / CANTOR_MAP_CLOSED_IMAGE
+// Source hash: md5:2103534ab67b24f53227a310fc4017f6
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_typedef_topology)
+Theorem CANTOR_MAP_CLOSED_IMAGE : closed_in R euclideanreal {cantor_map x | x :e Power omega}.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45156 / CANTOR_MAP_IMAGE_SUBSET_INTERVAL
+// Source hash: md5:d7d15f0057255dce3667aad9d3c94416
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem CANTOR_MAP_IMAGE_SUBSET_INTERVAL : {cantor_map x | x :e Power omega} c= closed_real_interval (seq_cons (0,1) seq_nil).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45160 / CANTOR_MAP_CLOSED_IN_INTERVAL
+// Source hash: md5:975430b22b2d831128a93bb628fd1a35
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
+Theorem CANTOR_MAP_CLOSED_IN_INTERVAL : closed_in R (subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil))) {cantor_map x | x :e Power omega}.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45166 / CANTOR_SET_SUBSET_INTERVAL
+// Source hash: md5:52d5c1ae6feddde4c12ce6bc96c49ac7
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem CANTOR_SET_SUBSET_INTERVAL : cantor_set c= closed_real_interval (seq_cons (0,1) seq_nil).
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45170 / CLOSED_IN_CANTOR_SET
+// Source hash: md5:ec6d89662b9ef8ab9141bc791c42047a
+// Status: transport_required (bridges: hol_real_R, hol_typedef_topology)
+Theorem CLOSED_IN_CANTOR_SET : closed_in R euclideanreal cantor_set.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45174 / CLOSED_IN_CANTOR_SET_INTERVAL
+// Source hash: md5:985c524553d6e6dc053199972c409075
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
+Theorem CLOSED_IN_CANTOR_SET_INTERVAL : closed_in R (subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil))) cantor_set.
+Admitted.
+
+// HOL Light: Multivariate/metric.ml:45178 / CANTOR_SPACE_HOMEOMORPHIC_CANTOR_SET
+// Source hash: md5:3ea9366f7899d3b6c59d4523a6e6ea83
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_typedef_topology)
+Theorem CANTOR_SPACE_HOMEOMORPHIC_CANTOR_SET : homeomorphic_space (Power omega) R cantor_space (subtopology R euclideanreal cantor_set).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:45192 / LOCALLY_CONSTANT_REFINEMENT

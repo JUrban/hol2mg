@@ -110,16 +110,82 @@ Admitted.
 Theorem SETCODE_BOUNDS : forall s c= omega, forall n :e omega, s c= idx_n n -> setcode s :e idx_n (2 ^ n).
 Admitted.
 
+// HOL Light: Multivariate/clifford.ml:158 / sindex
+// Source hash: md5:b740f3d969d961b32196ad270bcf6824
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem sindex : forall N:set, N <> Empty -> forall x :e R :^: idx (multivector N), forall s c= omega, multivector_index N x s = x (setcode s).
+Admitted.
+
 // HOL Light: Multivariate/clifford.ml:163 / lambdas
 // Source hash: md5:2d89793d0fb65b7c34cf6bf47463dfdd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
 Theorem lambdas_thm : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e Power omega, g x :e R) -> lambdas N g = fun i :e idx (multivector N) => g (codeset i).
 Admitted.
 
+// HOL Light: Multivariate/clifford.ml:171 / MULTIVECTOR_EQ
+// Source hash: md5:a50807de0492c9f2aa9347ca3f772b02
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_EQ : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), x = y <-> forall s c= omega, s c= idx N -> multivector_index N x s = multivector_index N y s.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:177 / MULTIVECTOR_BETA
+// Source hash: md5:ed0f3263016fad959d786205cdca2d7c
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_BETA : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e Power omega, g x :e R) -> forall s c= omega, s c= idx N -> multivector_index N (lambdas N g) s = g s.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:184 / MULTIVECTOR_UNIQUE
+// Source hash: md5:00e5a59b51b05a0db333ca3883cdf02c
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_UNIQUE : forall N:set, N <> Empty -> forall m :e R :^: idx (multivector N), forall g:set -> set, (forall x :e Power omega, g x :e R) -> (forall s c= omega, s c= idx N -> multivector_index N m s = g s) -> lambdas N g = m.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:190 / MULTIVECTOR_ETA
+// Source hash: md5:d7380bfc0ecd9a8839f4c67bc9e31364
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_ETA : forall A:set, A <> Empty -> forall m :e R :^: idx (multivector A), lambdas A (fun s:set => multivector_index A m s) = m.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:198 / MULTIVECTOR_ADD_COMPONENT
+// Source hash: md5:0633a0660c9141b540f56a08f53a1a63
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_ADD_COMPONENT : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), forall s c= omega, s c= idx N -> multivector_index N (vector_add (multivector N) x y) s = multivector_index N x s + multivector_index N y s.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:204 / MULTIVECTOR_MUL_COMPONENT
+// Source hash: md5:4c3eff2489dd5f67cdde6224de27ce82
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_MUL_COMPONENT : forall N:set, N <> Empty -> forall c :e R, forall x :e R :^: idx (multivector N), forall s c= omega, s c= idx N -> multivector_index N (vector_mul (multivector N) c x) s = c * multivector_index N x s.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:210 / MULTIVECTOR_VEC_COMPONENT
+// Source hash: md5:04994e67c67060bdaf20c1f5c6a9621c
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector, omega_Subq_R)
+Theorem MULTIVECTOR_VEC_COMPONENT : forall N:set, N <> Empty -> forall k :e omega, forall s c= omega, s c= idx N -> multivector_index N (vec (multivector N) k) s = k.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:215 / MULTIVECTOR_VSUM_COMPONENT
+// Source hash: md5:d7dc5763a6e83797ce52631d90a658de
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_sum_finsum, hol_typedef_multivector)
+Theorem MULTIVECTOR_VSUM_COMPONENT : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx (multivector N)) -> forall t c= A, forall s c= omega, s c= idx N -> multivector_index N (vsum A (multivector N) t f) s = finsum t (fun x:set => multivector_index N (f x) s).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:222 / MULTIVECTOR_VSUM
+// Source hash: md5:4a603e0066ba4e6046405aed4858f3cd
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, hol_typedef_multivector)
+Theorem MULTIVECTOR_VSUM : forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall f:set -> set, (forall x :e B, f x :e R :^: idx (multivector A)) -> vsum B (multivector A) t f = lambdas A (fun s:set => finsum t (fun x:set => multivector_index A (f x) s)).
+Admitted.
+
 // HOL Light: Multivariate/clifford.ml:230 / mbasis
 // Source hash: md5:58a6942fd78c9cbecb4d608cd3f1504e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector, omega_Subq_R)
 Theorem mbasis_thm : forall A:set, A <> Empty -> forall i c= omega, mbasis A i = lambdas A (fun s:set => if i = s then 1 else 0).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:233 / MBASIS_COMPONENT
+// Source hash: md5:e9b371445b034d6346d7786dc740f68a
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector, omega_Subq_R)
+Theorem MBASIS_COMPONENT : forall N:set, N <> Empty -> forall s t c= omega, s c= idx N -> multivector_index N (mbasis N t) s = if s = t then 1 else 0.
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:238 / MBASIS_EQ_0
@@ -132,6 +198,12 @@ Admitted.
 // Source hash: md5:26e4c8632e1337b4b1393a289544369d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
 Theorem MBASIS_NONZERO : forall N:set, N <> Empty -> forall s c= omega, s c= idx N -> ~ mbasis N s = vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:248 / MBASIS_EXPANSION
+// Source hash: md5:1bf8559f7f134b6d33cf00dd4d102128
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MBASIS_EXPANSION : forall N:set, N <> Empty -> forall x :e R :^: idx (multivector N), vsum (Power omega) (multivector N) {s :e Power omega | s c= idx N} (fun s:set => vector_mul (multivector N) (multivector_index N x s) (mbasis N s)) = x.
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:258 / SPAN_MBASIS
@@ -170,6 +242,372 @@ Admitted.
 Theorem multivec_thm : forall N:set, N <> Empty -> forall x :e R :^: idx N, multivec N x = vsum omega (multivector N) (idx N) (fun i:set => vector_mul (multivector N) (x i) (mbasis N {i})).
 Admitted.
 
+// HOL Light: Multivariate/clifford.ml:335 / multivector
+// Source hash: md5:e6f6134fb809bb5973153f428a15c815
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_has_size_equip, hol_num_omega, hol_real_R, hol_typedef_multivector, omega_Subq_R)
+Theorem multivector_thm : forall N:set, N <> Empty -> forall p :e R :^: idx (multivector N), forall k :e omega, multivector_hl N k p <-> forall s c= omega, s c= idx N /\ ~ multivector_index N p s = 0 -> equip s k.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:345 / grade
+// Source hash: md5:d916380bee857368d49b4bff3dbd1b24
+// Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_num_omega, hol_real_R, hol_typedef_multivector, omega_Subq_R)
+Theorem grade_thm : forall N:set, N <> Empty -> forall k :e omega, forall p :e R :^: idx (multivector N), grade N k p = lambdas N (fun s:set => if equip s k then multivector_index N p s else 0).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:349 / MULTIVECTOR_GRADE
+// Source hash: md5:f640cae90b3dc64ceba186da31ecd936
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem MULTIVECTOR_GRADE : forall A:set, A <> Empty -> forall k :e omega, forall x :e R :^: idx (multivector A), multivector_hl A k (grade A k x).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:354 / GRADE_ADD
+// Source hash: md5:b05a64b61212479fa57041e5e1553207
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem GRADE_ADD : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), forall k :e omega, grade A k (vector_add (multivector A) x y) = vector_add (multivector A) (grade A k x) (grade A k y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:360 / GRADE_CMUL
+// Source hash: md5:6bad0772558faaf79b12d0923be9e491
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem GRADE_CMUL : forall A:set, A <> Empty -> forall c :e R, forall x :e R :^: idx (multivector A), forall k :e omega, grade A k (vector_mul (multivector A) c x) = vector_mul (multivector A) c (grade A k x).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:370 / Product_DEF
+// Source hash: md5:25ecbd1c8ea7e2c5ffdfbadf3ef540b5
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem Product_DEF : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), forall mult:set -> set -> set, (forall x0 y0 :e Power omega, mult x0 y0 :e R) -> forall op :e Power omega :^: Power omega :^: Power omega, Product N mult (fun x0:set => fun x1:set => fun x2:set => x2 :e op x0 x1) x y = vsum (Power omega) (multivector N) {s :e Power omega | s c= idx N} (fun s:set => vsum (Power omega) (multivector N) {s0 :e Power omega | s0 c= idx N} (fun t:set => vector_mul (multivector N) (multivector_index N x s * multivector_index N y t * mult s t) (mbasis N (op s t)))).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:381 / BILINEAR_PRODUCT
+// Source hash: md5:5ec7836c6e381f41cc6aeee34d8ddd78
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem BILINEAR_PRODUCT : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => Product A mult op x x0).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:392 / PRODUCT_LADD
+// Source hash: md5:b890d9c4e095a2ec7397ed4edcb15f27
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_LADD : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall x y z :e R :^: idx (multivector A), Product A mult op (vector_add (multivector A) x y) z = vector_add (multivector A) (Product A mult op x z) (Product A mult op y z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:393 / PRODUCT_RADD
+// Source hash: md5:081b4c9b04326cf3291846821f5433f0
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_RADD : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall x y z :e R :^: idx (multivector A), Product A mult op x (vector_add (multivector A) y z) = vector_add (multivector A) (Product A mult op x y) (Product A mult op x z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:394 / PRODUCT_LMUL
+// Source hash: md5:fe96a78946a93bccf56016057fbdefc9
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_LMUL : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall c :e R, forall x y :e R :^: idx (multivector A), Product A mult op (vector_mul (multivector A) c x) y = vector_mul (multivector A) c (Product A mult op x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:395 / PRODUCT_RMUL
+// Source hash: md5:1cd9905eea1806e7e7772e97629949b4
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_RMUL : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall c :e R, forall x y :e R :^: idx (multivector A), Product A mult op x (vector_mul (multivector A) c y) = vector_mul (multivector A) c (Product A mult op x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:396 / PRODUCT_LNEG
+// Source hash: md5:3d1117de7edc154578467516f9dc0350
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_LNEG : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall x y :e R :^: idx (multivector A), Product A mult op (vector_neg (multivector A) x) y = vector_neg (multivector A) (Product A mult op x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:397 / PRODUCT_RNEG
+// Source hash: md5:70a76f3d16b0869448b0ee14068f59ef
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_RNEG : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall x y :e R :^: idx (multivector A), Product A mult op x (vector_neg (multivector A) y) = vector_neg (multivector A) (Product A mult op x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:398 / PRODUCT_LZERO
+// Source hash: md5:350c4487ba83da0b5818a03726b4b40d
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_LZERO : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall x :e R :^: idx (multivector A), Product A mult op (vec (multivector A) 0) x = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:399 / PRODUCT_RZERO
+// Source hash: md5:6348e57b9bd36cab070c7fefd7dbcb54
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_RZERO : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, forall x :e R :^: idx (multivector A), Product A mult op x (vec (multivector A) 0) = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:405 / PRODUCT_ASSOCIATIVE
+// Source hash: md5:7487fdc21cd66482f57f3e61ef307f83
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_ASSOCIATIVE : forall N:set, N <> Empty -> forall op :e Power omega :^: Power omega :^: Power omega, forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> (forall s t c= omega, s c= idx N /\ t c= idx N -> op s t c= idx N) /\ ((forall s t u c= omega, op s (op t u) = op (op s t) u) /\ (forall s t u c= omega, mult t u * mult s (op t u) = mult s t * mult (op s t) u)) -> forall x y z :e R :^: idx (multivector N), Product N mult (fun x0:set => fun x1:set => fun x2:set => x2 :e op x0 x1) x (Product N mult (fun x0:set => fun x1:set => fun x2:set => x2 :e op x0 x1) y z) = Product N mult (fun x0:set => fun x1:set => fun x2:set => x2 :e op x0 x1) (Product N mult (fun x0:set => fun x1:set => fun x2:set => x2 :e op x0 x1) x y) z.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:446 / geom_mul
+// Source hash: md5:72400e4951bb21b93f2aef6b71bf6fff
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem geom_mul_thm : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), geom_mul N x y = Product N (fun s:set => fun t:set => (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun s:set => fun t:set => fun x0:set => x0 :e (s :\: t) :\/: (t :\: s)) x y.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:454 / BILINEAR_GEOM
+// Source hash: md5:9ac498c9e5e767ac49e54d4012f06fea
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem BILINEAR_GEOM : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => geom_mul A x x0).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:459 / GEOM_LADD
+// Source hash: md5:ce2ca520f9d9a8a02a60f8190f7bae3a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_LADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx (multivector A), geom_mul A (vector_add (multivector A) x y) z = vector_add (multivector A) (geom_mul A x z) (geom_mul A y z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:460 / GEOM_RADD
+// Source hash: md5:d6c071dbdf37d3428dfa79745fb53f05
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_RADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx (multivector A), geom_mul A x (vector_add (multivector A) y z) = vector_add (multivector A) (geom_mul A x y) (geom_mul A x z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:461 / GEOM_LMUL
+// Source hash: md5:db9691bb608e7feecffa493bfb54a800
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_LMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx (multivector A), geom_mul A (vector_mul (multivector A) c x) y = vector_mul (multivector A) c (geom_mul A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:462 / GEOM_RMUL
+// Source hash: md5:7600619acc31ce64e3be1f2e718c80a5
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_RMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx (multivector A), geom_mul A x (vector_mul (multivector A) c y) = vector_mul (multivector A) c (geom_mul A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:463 / GEOM_LNEG
+// Source hash: md5:72bd83a1a297ab1cc7b5c19cd4d6fe20
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_LNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), geom_mul A (vector_neg (multivector A) x) y = vector_neg (multivector A) (geom_mul A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:464 / GEOM_RNEG
+// Source hash: md5:420a91c28f1a1085fc9f67de379aeb2b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_RNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), geom_mul A x (vector_neg (multivector A) y) = vector_neg (multivector A) (geom_mul A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:465 / GEOM_LZERO
+// Source hash: md5:cb358383db7e6b38702b483732025abb
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_LZERO : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), geom_mul A (vec (multivector A) 0) x = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:466 / GEOM_RZERO
+// Source hash: md5:06b50c90f212718eb2f96091adf498d4
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_RZERO : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), geom_mul A x (vec (multivector A) 0) = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:468 / GEOM_ASSOC
+// Source hash: md5:c1f258afa7d56dc2ab2d74a1fc657bf0
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem GEOM_ASSOC : forall N:set, N <> Empty -> forall x y z :e R :^: idx (multivector N), geom_mul N x (geom_mul N y z) = geom_mul N (geom_mul N x y) z.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:496 / outer
+// Source hash: md5:916206e0a86448e7669b1bca1c7ef633
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem outer_thm : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), outer N x y = Product N (fun s:set => fun t:set => if ~ s :/\: t = Empty then 0 else (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun s:set => fun t:set => fun x0:set => x0 :e (s :\: t) :\/: (t :\: s)) x y.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:506 / OUTER
+// Source hash: md5:cdb6724bb43c22bae5e9cd562febc315
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem OUTER : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), outer N x y = Product N (fun s:set => fun t:set => if ~ s :/\: t = Empty then 0 else (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun x0:set => fun x1:set => fun x2:set => x2 :e x0 :\/: x1) x y.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:522 / BILINEAR_OUTER
+// Source hash: md5:73ca55502a78ce1ea9a8021a7d26cc6b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem BILINEAR_OUTER : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => outer A x x0).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:527 / OUTER_LADD
+// Source hash: md5:1c383e9463bb15434483ef5b591bba9d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_LADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx (multivector A), outer A (vector_add (multivector A) x y) z = vector_add (multivector A) (outer A x z) (outer A y z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:528 / OUTER_RADD
+// Source hash: md5:5a821e1b2fcef1f605ebbaf7a7dff273
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_RADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx (multivector A), outer A x (vector_add (multivector A) y z) = vector_add (multivector A) (outer A x y) (outer A x z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:529 / OUTER_LMUL
+// Source hash: md5:c182c06ea13569f4ac9e6d26b3b6a0d7
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_LMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx (multivector A), outer A (vector_mul (multivector A) c x) y = vector_mul (multivector A) c (outer A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:530 / OUTER_RMUL
+// Source hash: md5:bcf2a354537604adf8ea15e267c4b43e
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_RMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx (multivector A), outer A x (vector_mul (multivector A) c y) = vector_mul (multivector A) c (outer A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:531 / OUTER_LNEG
+// Source hash: md5:c7b5e81ed4b1bb342db7946121875274
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_LNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), outer A (vector_neg (multivector A) x) y = vector_neg (multivector A) (outer A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:532 / OUTER_RNEG
+// Source hash: md5:a67df1eaf9101169fe0766c93f87ccff
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_RNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), outer A x (vector_neg (multivector A) y) = vector_neg (multivector A) (outer A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:533 / OUTER_LZERO
+// Source hash: md5:771feadf598ca53f3cf7061c088649df
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_LZERO : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), outer A (vec (multivector A) 0) x = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:534 / OUTER_RZERO
+// Source hash: md5:d9020a338ebb6d7dca451eb405e01b76
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_RZERO : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), outer A x (vec (multivector A) 0) = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:536 / OUTER_ASSOC
+// Source hash: md5:959cef8c3cb240edb8a20ad393f4721a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_ASSOC : forall N:set, N <> Empty -> forall x y z :e R :^: idx (multivector N), outer N x (outer N y z) = outer N (outer N x y) z.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:559 / inner
+// Source hash: md5:963cbcba37411bf1ee709115885a8f9b
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem inner_thm : forall N:set, N <> Empty -> forall x y :e R :^: idx (multivector N), inner N x y = Product N (fun s:set => fun t:set => if s = Empty \/ (t = Empty \/ ~ (s :\: t = Empty /\ ~ t :\: s = Empty)) then 0 else (- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e idx N /\ (j :e idx N /\ (i :e s /\ (j :e t /\ j < i)))})) (fun s:set => fun t:set => fun x0:set => x0 :e (s :\: t) :\/: (t :\: s)) x y.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:571 / BILINEAR_INNER
+// Source hash: md5:d3765e69474c0802bbbb3a9e84aee2be
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem BILINEAR_INNER : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => inner A x x0).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:576 / INNER_LADD
+// Source hash: md5:6f275813c43785ea835f6cfeb7e43d94
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem INNER_LADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx (multivector A), inner A (vector_add (multivector A) x y) z = vector_add (multivector A) (inner A x z) (inner A y z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:577 / INNER_RADD
+// Source hash: md5:603be3b9303bcffc7b0fa36cb96de2c9
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem INNER_RADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx (multivector A), inner A x (vector_add (multivector A) y z) = vector_add (multivector A) (inner A x y) (inner A x z).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:578 / INNER_LMUL
+// Source hash: md5:6f1049882892e8ae5f05c7ca11cf4739
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem INNER_LMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx (multivector A), inner A (vector_mul (multivector A) c x) y = vector_mul (multivector A) c (inner A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:579 / INNER_RMUL
+// Source hash: md5:20a3d9e61b106991639b051074d81db8
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem INNER_RMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx (multivector A), inner A x (vector_mul (multivector A) c y) = vector_mul (multivector A) c (inner A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:580 / INNER_LNEG
+// Source hash: md5:2db2dccc1ca22aa13006e23c8c35ff13
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem INNER_LNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), inner A (vector_neg (multivector A) x) y = vector_neg (multivector A) (inner A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:581 / INNER_RNEG
+// Source hash: md5:4ca0748520e73d7c375111d3887806c3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
+Theorem INNER_RNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx (multivector A), inner A x (vector_neg (multivector A) y) = vector_neg (multivector A) (inner A x y).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:582 / INNER_LZERO
+// Source hash: md5:ab2a4d4c38e085e5adc4a0666b088f4f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem INNER_LZERO : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), inner A (vec (multivector A) 0) x = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:583 / INNER_RZERO
+// Source hash: md5:45bdc143b63b916eb375dbcd4c8c17d3
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem INNER_RZERO : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), inner A x (vec (multivector A) 0) = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:589 / PRODUCT_MBASIS
+// Source hash: md5:8c539e3f9353c25423c439915b9f2d12
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_MBASIS : forall N:set, N <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op :e Power omega :^: Power omega :^: Power omega, forall s t c= omega, Product N mult (fun x:set => fun x0:set => fun x1:set => x1 :e op x x0) (mbasis N s) (mbasis N t) = if s c= idx N /\ t c= idx N then vector_mul (multivector N) (mult s t) (mbasis N (op s t)) else vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:605 / PRODUCT_MBASIS_SING
+// Source hash: md5:fc011ce4ed0a26005a1995343e119f23
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem PRODUCT_MBASIS_SING : forall N:set, N <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op :e Power omega :^: Power omega :^: Power omega, forall i j :e omega, Product N mult (fun x:set => fun x0:set => fun x1:set => x1 :e op x x0) (mbasis N {i}) (mbasis N {j}) = if i :e idx N /\ j :e idx N then vector_mul (multivector N) (mult {i} {j}) (mbasis N (op {i} {j})) else vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:612 / GEOM_MBASIS
+// Source hash: md5:b2a3e8615763ef2e69333d9092af7e33
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem GEOM_MBASIS : forall N:set, N <> Empty -> forall s t c= omega, geom_mul N (mbasis N s) (mbasis N t) = if s c= idx N /\ t c= idx N then vector_mul (multivector N) ((- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e s /\ (j :e t /\ j < i)})) (mbasis N ((s :\: t) :\/: (t :\: s))) else vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:624 / GEOM_MBASIS_SING
+// Source hash: md5:8478cb572696ed15e2a35fa55b7562e7
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt)
+Theorem GEOM_MBASIS_SING : forall N:set, N <> Empty -> forall i j :e omega, geom_mul N (mbasis N {i}) (mbasis N {j}) = if i :e idx N /\ j :e idx N then if i = j then mbasis N Empty else if i < j then mbasis N {i,j} else vector_neg (multivector N) (mbasis N {i,j}) else vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:658 / OUTER_MBASIS
+// Source hash: md5:6f1b1cff45dbff72fbcf96622f9537d0
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem OUTER_MBASIS : forall N:set, N <> Empty -> forall s t c= omega, outer N (mbasis N s) (mbasis N t) = if s c= idx N /\ (t c= idx N /\ s :/\: t = Empty) then vector_mul (multivector N) ((- 1) ^ finite_cardinality (\/_ i :e omega, {(i,j) | j :e omega, i :e s /\ (j :e t /\ j < i)})) (mbasis N (s :\/: t)) else vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:673 / OUTER_MBASIS_SING
+// Source hash: md5:831f80136beb59a7129f888052f9ea52
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt)
+Theorem OUTER_MBASIS_SING : forall N:set, N <> Empty -> forall i j :e omega, outer N (mbasis N {i}) (mbasis N {j}) = if i :e idx N /\ (j :e idx N /\ ~ i = j) then if i < j then mbasis N {i,j} else vector_neg (multivector N) (mbasis N {i,j}) else vec (multivector N) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:707 / OUTER_MBASIS_SKEWSYM
+// Source hash: md5:5548ac408de354a9bde0412360871f6c
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_MBASIS_SKEWSYM : forall A:set, A <> Empty -> forall i j :e omega, outer A (mbasis A {i}) (mbasis A {j}) = vector_neg (multivector A) (outer A (mbasis A {j}) (mbasis A {i})).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:717 / OUTER_MBASIS_REFL
+// Source hash: md5:d9dcc16d0790e1f3724d99b44ca2bad1
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_MBASIS_REFL : forall A:set, A <> Empty -> forall i :e omega, outer A (mbasis A {i}) (mbasis A {i}) = vec (multivector A) 0.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:723 / OUTER_MBASIS_LSCALAR
+// Source hash: md5:9657d94ff4190027c987cc9ed2da8e08
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_MBASIS_LSCALAR : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), outer A (mbasis A Empty) x = x.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:730 / OUTER_MBASIS_RSCALAR
+// Source hash: md5:a7fbebf70015a3508266eec55623f433
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTER_MBASIS_RSCALAR : forall A:set, A <> Empty -> forall x :e R :^: idx (multivector A), outer A x (mbasis A Empty) = x.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:737 / MBASIS_SPLIT
+// Source hash: md5:009617fd4e3017753b02e971d1377839
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt)
+Theorem MBASIS_SPLIT : forall A:set, A <> Empty -> forall a :e omega, forall s c= omega, (forall x :e omega, x :e s -> a < x) -> mbasis A (SetAdjoin s a) = outer A (mbasis A {a}) (mbasis A s).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:803 / OUTER_ACI
+// Source hash: md5:dd99407fe87b098e772a6e314573f3be
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector, nat_lt_SNoLt, omega_Subq_R)
+Theorem OUTER_ACI : forall A B C D E F G:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> F <> Empty -> G <> Empty -> (forall x y z :e R :^: idx (multivector A), outer A (outer A x y) z = outer A x (outer A y z)) /\ ((forall i j :e omega, j < i -> outer B (mbasis B {i}) (mbasis B {j}) = vector_mul (multivector B) (- 1) (outer B (mbasis B {j}) (mbasis B {i}))) /\ ((forall i j :e omega, forall x :e R :^: idx (multivector C), j < i -> outer C (mbasis C {i}) (outer C (mbasis C {j}) x) = vector_mul (multivector C) (- 1) (outer C (mbasis C {j}) (outer C (mbasis C {i}) x))) /\ ((forall i :e omega, outer D (mbasis D {i}) (mbasis D {i}) = vec (multivector D) 0) /\ ((forall i :e omega, forall x :e R :^: idx (multivector E), outer E (mbasis E {i}) (outer E (mbasis E {i}) x) = vec (multivector E) 0) /\ ((forall x :e R :^: idx (multivector F), outer F (mbasis F Empty) x = x) /\ forall x :e R :^: idx (multivector G), outer G x (mbasis G Empty) = x))))).
+Admitted.
+
 // HOL Light: Multivariate/clifford.ml:872 / seqiterate_EXISTS
 // Source hash: md5:6b4bf781ca36b3522e4fee25da635e60
 // Status: transport_required (bridges: choose_in_spec, hol_finite_finite, hol_num_omega)
@@ -204,5 +642,35 @@ Admitted.
 // Source hash: md5:936937dc18a4a6ba3f814cac0ce3d571
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_iterate, hol_num_omega)
 Theorem SEQITERATE_ITERATE : forall A:set, forall op :e A :^: A :^: A, forall f :e A :^: omega, forall s c= omega, (forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x) /\ finite s -> seqiterate A op s f = iterate_op A (fun a:set => fun b:set => op a b) s (fun x:set => f x).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:949 / outermorphism
+// Source hash: md5:2bb008aaa3a1bb3d717c3f1c1af2a688
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem outermorphism_thm : forall N P:set, N <> Empty -> P <> Empty -> forall x :e R :^: idx (multivector N), forall f:set -> set, (forall x0 :e R :^: idx N, f x0 :e R :^: idx P) -> outermorphism N P f x = vsum (Power omega) (multivector P) {s :e Power omega | s c= idx N} (fun s:set => vector_mul (multivector P) (multivector_index N x s) (seqiterate (R :^: idx (multivector P)) (fun x0 :e R :^: idx (multivector P) => fun x1 :e R :^: idx (multivector P) => outer P x0 x1) s (fun x0 :e omega => multivec P (f (basis N x0))))).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:954 / NEUTRAL_OUTER
+// Source hash: md5:4e7e7b88cdfa5e6af5b0e72dc7a3a719
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem NEUTRAL_OUTER : forall A:set, A <> Empty -> neutral_of (R :^: idx (multivector A)) (fun a:set => fun b:set => outer A a b) = mbasis A Empty.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:959 / OUTERMORPHISM_MBASIS
+// Source hash: md5:cdf8bdbc3a2ddf9cad556bb732fc16e5
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTERMORPHISM_MBASIS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= omega, s c= idx M -> outermorphism M N f (mbasis M s) = seqiterate (R :^: idx (multivector N)) (fun x :e R :^: idx (multivector N) => fun x0 :e R :^: idx (multivector N) => outer N x x0) s (fun x :e omega => multivec N (f (basis M x))).
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:968 / OUTERMORPHISM_MBASIS_EMPTY
+// Source hash: md5:7b82156a06ecfb07117382c5fa291586
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
+Theorem OUTERMORPHISM_MBASIS_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> outermorphism A B f (mbasis A Empty) = mbasis B Empty.
+Admitted.
+
+// HOL Light: Multivariate/clifford.ml:977 / reversion
+// Source hash: md5:a951254465b6584eb875416fb7ebd9c1
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector, mul_nat_mul_SNo, omega_Subq_R)
+Theorem reversion_thm : forall N:set, N <> Empty -> forall x :e R :^: idx (multivector N), reversion N x = lambdas N (fun s:set => (- 1) ^ div_nat (finite_cardinality s * minus_nat (finite_cardinality s) 1) 2 * multivector_index N x s).
 Admitted.
 

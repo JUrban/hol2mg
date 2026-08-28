@@ -2936,6 +2936,12 @@ Admitted.
 Theorem IN_GROUP_ORBIT : forall A X:set, A <> Empty -> forall G :e group_hl A, forall s c= X, forall a:set -> set -> set, (forall x :e A, forall y :e X, a x y :e X) -> forall x y :e X, y :e {x0 :e X | group_orbit A X G s a x x0} <-> x :e s /\ (y :e s /\ exists g :e A, g :e group_carrier A G /\ a g x = y).
 Admitted.
 
+// HOL Light: Library/grouptheory.ml:5346 / GROUP_ORBIT
+// Source hash: md5:3906b4212b03442d8bd1c716b84da331
+// Status: generalization_required (bridges: empty_case:X, hol_typedef_group)
+Theorem GROUP_ORBIT : forall A X:set, A <> Empty -> forall G :e group_hl A, forall s c= X, forall a:set -> set -> set, (forall x :e A, forall y :e X, a x y :e X) -> forall x :e X, group_action_hl A X G s a -> forall x0 :e X, group_orbit A X G s a x x0 <-> (x :e s -> x0 :e {a g x | g :e A, g :e group_carrier A G}) /\ (~ x :e s -> x0 :e Empty).
+Admitted.
+
 // HOL Light: Library/grouptheory.ml:5356 / GROUP_ORBIT_SUBSET
 // Source hash: md5:f157202f5c827cba196e76483b9859d2
 // Status: generalization_required (bridges: empty_case:X, hol_typedef_group)
@@ -4206,6 +4212,18 @@ Admitted.
 // Source hash: md5:118a79625c008edfca562f1407631274
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
 Theorem GROUP_STABILIZER_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_stabilizer A A G (fun x:set => fun x0:set => group_conjugation A G x x0) a = group_centralizer A G {a}.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7533 / GROUP_ORBIT_CONJUGATION_GEN
+// Source hash: md5:602c6409d5442b5718eb2bb37623fb53
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
+Theorem GROUP_ORBIT_CONJUGATION_GEN : forall A:set, forall G :e group_hl A, forall s c= A, forall x :e A, s c= group_carrier A G -> forall x0 :e A, group_orbit A A G s (fun x1:set => fun x2:set => group_conjugation A G x1 x2) x x0 <-> (x :e s -> x0 :e {y :e A | y :e s /\ group_conjugate A G {x} {y}}) /\ (~ x :e s -> x0 :e Empty).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7544 / GROUP_ORBIT_CONJUGATION
+// Source hash: md5:aef4b42efc653c4c5b39526fb97268b7
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
+Theorem GROUP_ORBIT_CONJUGATION : forall A:set, forall G :e group_hl A, forall x x0 :e A, group_orbit A A G (group_carrier A G) (fun x1:set => fun x2:set => group_conjugation A G x1 x2) x x0 <-> (x :e group_carrier A G -> x0 :e {y :e A | y :e group_carrier A G /\ group_conjugate A G {x} {y}}) /\ (~ x :e group_carrier A G -> x0 :e Empty).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7552 / GROUP_ACTION_IMAGE_CONJUGATION

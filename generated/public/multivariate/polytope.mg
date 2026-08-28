@@ -134,6 +134,12 @@ Admitted.
 Theorem FACE_OF_IMP_CLOSED : forall A:set, A <> Empty -> forall s t c= R :^: idx A, convex A s /\ (closed A s /\ face_of A t s) -> closed A t.
 Admitted.
 
+// HOL Light: Multivariate/polytope.ml:242 / FACE_OF_IMP_COMPACT
+// Source hash: md5:ea87dd49dc65c217114e01c5d62566e5
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem FACE_OF_IMP_COMPACT : forall A:set, A <> Empty -> forall s t c= R :^: idx A, convex A s /\ (compact A s /\ face_of A t s) -> compact A t.
+Admitted.
+
 // HOL Light: Multivariate/polytope.ml:247 / FACE_OF_INTER_SUBFACE
 // Source hash: md5:3f2246df263d2d95457ea2cd2ef74455
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -674,6 +680,18 @@ Admitted.
 Theorem EXTREME_POINT_OF_CBALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, forall x :e R :^: idx N, extreme_point_of N x (cball N (a,r)) <-> x :e sphere N (a,r).
 Admitted.
 
+// HOL Light: Multivariate/polytope.ml:1964 / CLOSED_IN_CONIC_HULL
+// Source hash: md5:2ceebb463ee48a05e8fd57838e46d272
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_topology)
+Theorem CLOSED_IN_CONIC_HULL : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N t /\ (~ vec N 0 :e t /\ t c= s) -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (hull (R :^: idx N) {x :e Power (R :^: idx N) | conic N x} s)) (hull (R :^: idx N) {x :e Power (R :^: idx N) | conic N x} t).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:2012 / CLOSED_CONIC_HULL
+// Source hash: md5:73432a9394ff2619ebaadc8fca119594
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
+Theorem CLOSED_CONIC_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, vec N 0 :e relative_interior N s \/ compact N s /\ ~ vec N 0 :e s -> closed N (hull (R :^: idx N) {x :e Power (R :^: idx N) | conic N x} s).
+Admitted.
+
 // HOL Light: Multivariate/polytope.ml:2022 / CONIC_CLOSURE
 // Source hash: md5:7c49da8580e5d1ab6aaac4dc6cf72b09
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -908,10 +926,52 @@ Admitted.
 Theorem EDGE_OF_IMP_SUBSET : forall A:set, A <> Empty -> forall s t c= R :^: idx A, edge_of A s t -> s c= t.
 Admitted.
 
+// HOL Light: Multivariate/polytope.ml:2873 / EXTREME_POINT_EXISTS_CONVEX
+// Source hash: md5:abbb45f95c51b4620e141b2c92b933e9
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem EXTREME_POINT_EXISTS_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ (convex N s /\ ~ s = Empty) -> exists x :e R :^: idx N, extreme_point_of N x s.
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:2908 / KREIN_MILMAN
+// Source hash: md5:edf8f6bce5a1ba62b8533cb96486d941
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem KREIN_MILMAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ compact N s -> s = closure N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} {x :e R :^: idx N | extreme_point_of N x s}).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:2968 / KREIN_MILMAN_MINKOWSKI
+// Source hash: md5:757e1f475e0bc09230b71db4c28ccc4b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem KREIN_MILMAN_MINKOWSKI : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ compact N s -> s = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} {x :e R :^: idx N | extreme_point_of N x s}.
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3037 / KREIN_MILMAN_EQ
+// Source hash: md5:e0e3a974bc1a72dcf1e61f1a3990619d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem KREIN_MILMAN_EQ : forall N:set, N <> Empty -> forall s e0 c= R :^: idx N, compact N s /\ convex N s -> (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} e0 = s <-> e0 c= s /\ {x :e R :^: idx N | extreme_point_of N x s} c= e0).
+Admitted.
+
 // HOL Light: Multivariate/polytope.ml:3056 / KREIN_MILMAN_POLYTOPE
 // Source hash: md5:55c1f3fa9cd75588548dcb7a315363b8
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem KREIN_MILMAN_POLYTOPE : forall A:set, A <> Empty -> forall s c= R :^: idx A, finite s -> hull (R :^: idx A) {x :e Power (R :^: idx A) | convex A x} s = hull (R :^: idx A) {x :e Power (R :^: idx A) | convex A x} {x :e R :^: idx A | extreme_point_of A x (hull (R :^: idx A) {x0 :e Power (R :^: idx A) | convex A x0} s)}.
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3063 / EXTREME_POINTS_OF_CONVEX_HULL_EQ
+// Source hash: md5:05358aac9c81dd1998b12a280feb3a87
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem EXTREME_POINTS_OF_CONVEX_HULL_EQ : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ (forall t c= R :^: idx N, t c= s /\ t <> s -> ~ hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} t = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s) -> {x :e R :^: idx N | extreme_point_of N x (hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s)} = s.
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3076 / EXTREME_POINT_OF_CONVEX_HULL_EQ
+// Source hash: md5:fe8852b283ac73b4be37a5ac3acbe9e6
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem EXTREME_POINT_OF_CONVEX_HULL_EQ : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, compact N s /\ (forall t c= R :^: idx N, t c= s /\ t <> s -> ~ hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} t = hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s) -> (extreme_point_of N x (hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s) <-> x :e s).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3085 / EXTREME_POINT_OF_CONVEX_HULL_CONVEX_INDEPENDENT
+// Source hash: md5:f7c520e771ddbb584ea90e2a642eaa6d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem EXTREME_POINT_OF_CONVEX_HULL_CONVEX_INDEPENDENT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, compact N s /\ (forall a :e R :^: idx N, a :e s -> ~ a :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} (s :\: {a})) -> (extreme_point_of N x (hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s) <-> x :e s).
 Admitted.
 
 // HOL Light: Multivariate/polytope.ml:3102 / EXTREME_POINT_OF_CONVEX_HULL_AFFINE_INDEPENDENT
@@ -942,6 +1002,12 @@ Admitted.
 // Source hash: md5:a92c5162a2f2ab99e07a77c24bd495ca
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem EXTREME_POINT_OF_SEGMENT : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, extreme_point_of N x (closed_segment N (seq_cons (a,b) seq_nil)) <-> x = a \/ x = b.
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3135 / FACE_OF_CONVEX_HULL_SUBSET
+// Source hash: md5:0592727d548efc6b715d797dbb9f1840
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem FACE_OF_CONVEX_HULL_SUBSET : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ face_of N t (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s) -> exists s' c= R :^: idx N, s' c= s /\ t = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s'.
 Admitted.
 
 // HOL Light: Multivariate/polytope.ml:3148 / FACE_OF_CONVEX_HULL_AFFINE_INDEPENDENT
@@ -984,6 +1050,18 @@ Admitted.
 // Source hash: md5:fadb19765016a11ed143ecc4cfc25bc6
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem FACE_OF_CONVEX_HULL_INSERT_EQ : forall N:set, N <> Empty -> forall f s c= R :^: idx N, forall a :e R :^: idx N, finite s /\ ~ a :e hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s -> (face_of N f (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (SetAdjoin s a)) <-> face_of N f (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s) \/ exists f' c= R :^: idx N, face_of N f' (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s) /\ f = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (SetAdjoin f' a)).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3470 / CONVEX_HULL_REDUNDANT_SUBSET_GEN
+// Source hash: md5:c3b1a5af128575681fbd19a64367274d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONVEX_HULL_REDUNDANT_SUBSET_GEN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (t c= s /\ (s :\: t) :/\: {x :e R :^: idx N | extreme_point_of N x (hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s)} = Empty) -> hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} t.
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:3491 / CONVEX_HULL_REDUNDANT_SUBSET
+// Source hash: md5:04f2ea17da035af10605768b011264e2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONVEX_HULL_REDUNDANT_SUBSET : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (t c= s /\ s :\: t c= interior N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s)) -> hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s = hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} t.
 Admitted.
 
 // HOL Light: Multivariate/polytope.ml:3501 / CONVEX_HULL_REDUNDANT_SUBSET_REV
@@ -1182,6 +1260,12 @@ Admitted.
 // Source hash: md5:c6965b46abf0b08e9d82c8e5387d9f29
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem POLYTOPE_SUMS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, polytope N s /\ polytope N t -> polytope N (\/_ x :e R :^: idx N, {vector_add N x y | y :e R :^: idx N, x :e s /\ y :e t}).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:4181 / POLYTOPE_IMP_COMPACT
+// Source hash: md5:1b9ab7fbc1f63c58c3cb366fedf156b7
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem POLYTOPE_IMP_COMPACT : forall A:set, A <> Empty -> forall s c= R :^: idx A, polytope A s -> compact A s.
 Admitted.
 
 // HOL Light: Multivariate/polytope.ml:4186 / POLYTOPE_IMP_CONVEX
@@ -1586,6 +1670,18 @@ Admitted.
 Theorem POLYHEDRON_CONIC_HULL_POLYTOPE : forall N:set, N <> Empty -> forall s c= R :^: idx N, polytope N s -> polyhedron N (hull (R :^: idx N) {x :e Power (R :^: idx N) | conic N x} s).
 Admitted.
 
+// HOL Light: Multivariate/polytope.ml:6115 / CLOSED_CONIC_HULL_STRONG
+// Source hash: md5:d19b5442d6b521dfbe61bbf66d07f159
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
+Theorem CLOSED_CONIC_HULL_STRONG : forall N:set, N <> Empty -> forall s c= R :^: idx N, vec N 0 :e relative_interior N s \/ (polytope N s \/ compact N s /\ ~ vec N 0 :e s) -> closed N (hull (R :^: idx N) {x :e Power (R :^: idx N) | conic N x} s).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:6123 / CLOSED_CONVEX_CONE_HULL_STRONG
+// Source hash: md5:609640dc3f12dc22dbaf5cd9fb314213
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
+Theorem CLOSED_CONVEX_CONE_HULL_STRONG : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s \/ (polytope N s \/ (vec N 0 :e relative_interior N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s) \/ compact N s /\ ~ vec N 0 :e hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s)) -> closed N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex_cone N x} s).
+Admitted.
+
 // HOL Light: Multivariate/polytope.ml:6143 / FINITELY_GENERATED_CONIC_POLYHEDRON
 // Source hash: md5:caecc3490c4b44bb8346cf0c568f9ef2
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
@@ -1748,6 +1844,12 @@ Admitted.
 Theorem SIMPLEX_IMP_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall n :e int, simplex N n s -> convex N s.
 Admitted.
 
+// HOL Light: Multivariate/polytope.ml:7427 / SIMPLEX_IMP_COMPACT
+// Source hash: md5:3029f233c3451ebd5cac29f7bed3759d
+// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
+Theorem SIMPLEX_IMP_COMPACT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall n :e int, simplex N n s -> compact N s.
+Admitted.
+
 // HOL Light: Multivariate/polytope.ml:7431 / SIMPLEX_IMP_CLOSED
 // Source hash: md5:c348b9c00a7b42779940a7d11bd45180
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
@@ -1890,6 +1992,24 @@ Admitted.
 // Source hash: md5:2ddfbc02662bdb307b14d33e25ea9af4
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
 Theorem SIMPLEX_INSERT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, (exists n :e int, simplex N n s) /\ ~ a :e hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s -> exists n :e int, simplex N n (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (SetAdjoin s a)).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:7712 / SIMPLEX_ALT
+// Source hash: md5:de45237aff4d866085777b412057d307
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem SIMPLEX_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall i :e int, simplex N i s <-> convex N s /\ (compact N s /\ (finite {v :e R :^: idx N | extreme_point_of N v s} /\ (finite_cardinality {v :e R :^: idx N | extreme_point_of N v s} = i + 1 /\ ~ affine_dependent N {v :e R :^: idx N | extreme_point_of N v s}))).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:7725 / SIMPLEX_ALT1
+// Source hash: md5:4583474b79e75db11029fb7b033c617a
+// Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem SIMPLEX_ALT1 : forall N:set, N <> Empty -> forall n :e omega, forall s c= R :^: idx N, simplex N (n + - 1) s <-> convex N s /\ (compact N s /\ (equip {v :e R :^: idx N | extreme_point_of N v s} n /\ ~ affine_dependent N {v :e R :^: idx N | extreme_point_of N v s})).
+Admitted.
+
+// HOL Light: Multivariate/polytope.ml:7734 / SIMPLEX_0_NOT_IN_AFFINE_HULL
+// Source hash: md5:9deefe54f35909340f3c41a30185665e
+// Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem SIMPLEX_0_NOT_IN_AFFINE_HULL : forall N:set, N <> Empty -> forall n :e omega, forall s c= R :^: idx N, simplex N (n + - 1) s /\ ~ vec N 0 :e hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s <-> convex N s /\ (compact N s /\ (equip {v :e R :^: idx N | extreme_point_of N v s} n /\ independent N {v :e R :^: idx N | extreme_point_of N v s})).
 Admitted.
 
 // HOL Light: Multivariate/polytope.ml:7746 / SIMPLEX_EXTREME_POINTS_NONEMPTY

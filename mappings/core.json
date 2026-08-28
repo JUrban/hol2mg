@@ -3015,6 +3015,20 @@
    "class": "native_isomorphism",
    "status": "reviewed",
    "bridge": "hol_countable"
+  },
+  {
+   "hol": "==",
+   "scheme": "A->A->(A->A->bool)->bool",
+   "args": [
+    "set",
+    "set",
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "?3 ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "(x == y) r is r x y (generic)"
   }
  ],
  "rewrite_rules": [
@@ -3053,6 +3067,12 @@
  "names": {
   "%": "vector_mul",
   "**": "matrix_mul",
-  "%%": "matrix_cmul"
+  "%%": "matrix_cmul",
+  "-->": "tendsto",
+  "--->": "tendsto_real",
+  "++": "poly_add",
+  "$$": "multivector_index",
+  "<<=": "ordle",
+  "===": "homotopic_eq"
  }
 }

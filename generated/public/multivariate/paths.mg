@@ -32,6 +32,12 @@ Admitted.
 Theorem reversepath_thm : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall x :e R :^: idx 1, reversepath N g x = g (vector_sub 1 (vec 1 1) x).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:30 / joinpaths
+// Source hash: md5:6c24f16b1ab64b13b12edf075e77c00e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
+Theorem joinpaths : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e A) -> forall x :e R :^: idx 1, poly_add A g1 g2 x = if drop x <= 1 :/: 2 then g1 (vector_mul 1 2 x) else g2 (vector_sub 1 (vector_mul 1 2 x) (vec 1 1)).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:34 / simple_path
 // Source hash: md5:9d622dbe43f160d5f520faf5829ba651
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
@@ -132,6 +138,18 @@ Admitted.
 // Source hash: md5:281e0fb0604ee3a541e5dbbb7ff78cc1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem REVERSEPATH_LINEAR_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx B) -> linear B A f -> forall x :e R :^: idx 1, reversepath A (fun x:set => f (g x)) x = f (reversepath B g x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:180 / JOINPATHS_TRANSLATION
+// Source hash: md5:c4a25f19d86b4aec0bd94de73e9639a9
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem JOINPATHS_TRANSLATION : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> forall x :e R :^: idx 1, poly_add (R :^: idx N) (fun x:set => vector_add N a (g1 x)) (fun x:set => vector_add N a (g2 x)) x = vector_add N a (poly_add (R :^: idx N) g1 g2 x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:188 / JOINPATHS_LINEAR_IMAGE
+// Source hash: md5:5e2bf71423a91b24ed689fa93ece6287
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem JOINPATHS_LINEAR_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> linear A B f -> forall x :e R :^: idx 1, poly_add (R :^: idx B) (fun x:set => f (g1 x)) (fun x:set => f (g2 x)) x = f (poly_add (R :^: idx A) g1 g2 x).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:195 / SIMPLE_PATH_TRANSLATION_EQ
@@ -242,6 +260,12 @@ Admitted.
 Theorem CONNECTED_PATH_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> path A g -> connected A (path_image A g).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:320 / COMPACT_PATH_IMAGE
+// Source hash: md5:5d548c39f227642d205c9ce9d0da7a18
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem COMPACT_PATH_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> path A g -> compact A (path_image A g).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:326 / BOUNDED_PATH_IMAGE
 // Source hash: md5:4047b9c333afa6cae6ed2a17d0fb41fe
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -260,6 +284,12 @@ Admitted.
 Theorem CONNECTED_SIMPLE_PATH_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> simple_path A g -> connected A (path_image A g).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:338 / COMPACT_SIMPLE_PATH_IMAGE
+// Source hash: md5:7a27352ca58973911fb580db0a59d658
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem COMPACT_SIMPLE_PATH_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> simple_path A g -> compact A (path_image A g).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:342 / BOUNDED_SIMPLE_PATH_IMAGE
 // Source hash: md5:2f0e551d32cac975cf2b8effae0e729f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -276,6 +306,12 @@ Admitted.
 // Source hash: md5:1f461b2f7b736dba2b7b433acfe35af3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem CONNECTED_ARC_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g -> connected A (path_image A g).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:354 / COMPACT_ARC_IMAGE
+// Source hash: md5:8c2fd0dd722b709b516a03a3fae91158
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem COMPACT_ARC_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g -> compact A (path_image A g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:358 / BOUNDED_ARC_IMAGE
@@ -308,10 +344,22 @@ Admitted.
 Theorem PATH_IMAGE_COMPOSE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx B) -> path_image A (fun x:set => f (p x)) = {f x | x :e path_image B p}.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:378 / PATH_COMPOSE_JOIN
+// Source hash: md5:b39abc0f41cf55e9d72289a288a7db5b
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_COMPOSE_JOIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e A) -> forall x :e R :^: idx 1, f (poly_add A p q x) = poly_add B (fun x:set => f (p x)) (fun x:set => f (q x)) x.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:382 / PATH_COMPOSE_REVERSEPATH
 // Source hash: md5:7c89c0e4a0ab6cdd6660caca1201f8f3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem PATH_COMPOSE_REVERSEPATH : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall x :e R :^: idx 1, f (reversepath A p x) = reversepath B (fun x:set => f (p x)) x.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:386 / JOIN_PATHS_EQ
+// Source hash: md5:d29faddc945cfa3b408b12065bcfb0a2
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem JOIN_PATHS_EQ : forall N:set, N <> Empty -> forall p':set -> set, (forall x :e R :^: idx 1, p' x :e R :^: idx N) -> forall q':set -> set, (forall x :e R :^: idx 1, q' x :e R :^: idx N) -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> p t = p' t) /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> q t = q' t) -> forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> poly_add (R :^: idx N) p q t = poly_add (R :^: idx N) p' q' t.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:396 / CARD_EQ_SIMPLE_PATH_IMAGE
@@ -338,6 +386,12 @@ Admitted.
 Theorem INFINITE_ARC_IMAGE : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g -> infinite (path_image A g).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:425 / JOINPATHS
+// Source hash: md5:a011db2061464378879d173cd52b2ad9
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
+Theorem JOINPATHS : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> forall x :e R :^: idx 1, poly_add (R :^: idx A) g1 g2 x = if drop x < 1 :/: 2 then g1 (vector_mul 1 2 x) else g2 (vector_sub 1 (vector_mul 1 2 x) (vec 1 1)).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:439 / REVERSEPATH_REVERSEPATH
 // Source hash: md5:0a9574f4267f46600c2a2b9d194bbad9
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -356,6 +410,18 @@ Admitted.
 Theorem PATHFINISH_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A (fun x:set => reversepath A g x) = pathstart A g.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:452 / PATHSTART_JOIN
+// Source hash: md5:94759bf6ea532cecac87514dd871fcbb
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATHSTART_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathstart A (fun x:set => poly_add (R :^: idx A) g1 g2 x) = pathstart A g1.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:457 / PATHFINISH_JOIN
+// Source hash: md5:975b58e2249aba9a76400368532bb4c0
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATHFINISH_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A (fun x:set => poly_add (R :^: idx A) g1 g2 x) = pathfinish A g2.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:462 / PATH_IMAGE_REVERSEPATH
 // Source hash: md5:9a5c072266ce6dcfd9b413e0a3c70a83
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -366,6 +432,42 @@ Admitted.
 // Source hash: md5:a6f4f0799b8c33791410e13cd8f449ec
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem PATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (path N (fun x:set => reversepath N g x) <-> path N g).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:486 / PATH_JOIN
+// Source hash: md5:b606de5085cff9edcb34525a9d48e601
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> path N g1 /\ path N g2).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:581 / PATH_JOIN_IMP
+// Source hash: md5:b5f8ed6e2c70a1542d4250ee58d2191e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g1 /\ (path N g2 /\ pathfinish N g1 = pathstart N g2) -> path N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:587 / PATH_IMAGE_JOIN_SUBSET
+// Source hash: md5:bdb8b9372589b724fdce6cb2cf50d0af
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_IMAGE_JOIN_SUBSET : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path_image N (fun x:set => poly_add (R :^: idx N) g1 g2 x) c= path_image N g1 :\/: path_image N g2.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:599 / SUBSET_PATH_IMAGE_JOIN
+// Source hash: md5:be6bda1cd16890186a94368246f2540c
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SUBSET_PATH_IMAGE_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> forall s c= R :^: idx N, path_image N g1 c= s /\ path_image N g2 c= s -> path_image N (fun x:set => poly_add (R :^: idx N) g1 g2 x) c= s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:607 / PATH_IMAGE_JOIN
+// Source hash: md5:f3c38524ee4eb1c29012c510071e14c4
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_IMAGE_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> path_image A (fun x:set => poly_add (R :^: idx A) g1 g2 x) = path_image A g1 :\/: path_image A g2.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:632 / NOT_IN_PATH_IMAGE_JOIN
+// Source hash: md5:e96017f1705f210d51cb0f8f7cb2e9ef
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem NOT_IN_PATH_IMAGE_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> forall x :e R :^: idx A, ~ x :e path_image A g1 /\ ~ x :e path_image A g2 -> ~ x :e path_image A (fun x0:set => poly_add (R :^: idx A) g1 g2 x0).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:637 / ARC_REVERSEPATH
@@ -390,6 +492,102 @@ Admitted.
 // Source hash: md5:ee472574a15435bddfb3e5898668a40f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem SIMPLE_PATH_REVERSEPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (simple_path N (fun x:set => reversepath N g x) <-> simple_path N g).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:665 / SIMPLE_PATH_JOIN_LOOP
+// Source hash: md5:f3bf92ff67afe1c26a5cbe60a2e416e0
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SIMPLE_PATH_JOIN_LOOP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> arc N g1 /\ (arc N g2 /\ (pathfinish N g1 = pathstart N g2 /\ (pathfinish N g2 = pathstart N g1 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2}))) -> simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:737 / ARC_JOIN
+// Source hash: md5:c6a6d5c3127c47b3674446289b11625e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem ARC_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> arc N g1 /\ (arc N g2 /\ (pathfinish N g1 = pathstart N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g2})) -> arc N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:793 / REVERSEPATH_JOINPATHS
+// Source hash: md5:5bf725a71f03f916f603d17ed4c79f5e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem REVERSEPATH_JOINPATHS : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> forall x :e R :^: idx 1, reversepath A (fun x0:set => poly_add (R :^: idx A) g1 g2 x0) x = poly_add (R :^: idx A) (fun x0:set => reversepath A g2 x0) (fun x0:set => reversepath A g1 x0) x.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:816 / PATH_JOIN_PATH_ENDS
+// Source hash: md5:75feafa657c921bfa4cc47577d05057b
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_JOIN_PATH_ENDS : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g2 /\ path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) -> pathfinish N g1 = pathstart N g2.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:850 / PATH_JOIN_EQ
+// Source hash: md5:07d5da1d298024442455deccc135186e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g1 /\ path N g2 -> (path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> pathfinish N g1 = pathstart N g2).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:856 / SIMPLE_PATH_JOIN_IMP
+// Source hash: md5:166900da1f0c52817167fe8f1697fbed
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SIMPLE_PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) /\ pathfinish N g1 = pathstart N g2 -> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:911 / SIMPLE_PATH_JOIN_LOOP_EQ
+// Source hash: md5:c57974832946c6876a5e0d604ac264ac
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SIMPLE_PATH_JOIN_LOOP_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g2 = pathstart N g1 /\ pathfinish N g1 = pathstart N g2 -> (simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2})).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:921 / SIMPLE_PATH_JOIN_LOOP_EQ_ALT
+// Source hash: md5:27096eaff4cf73693a385fce156c786c
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SIMPLE_PATH_JOIN_LOOP_EQ_ALT : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g2 = pathstart N g1 /\ pathfinish N g1 = pathstart N g2 -> (simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 = {pathstart N g1,pathstart N g2})).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:935 / ARC_JOIN_EQ
+// Source hash: md5:621339be14765812305ba59f184e97be
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem ARC_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (arc N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g2})).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:975 / ARC_JOIN_EQ_ALT
+// Source hash: md5:c4d99d7936958827810cd6ee9d098829
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem ARC_JOIN_EQ_ALT : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (arc N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 = {pathstart N g2})).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:990 / PATH_ASSOC
+// Source hash: md5:0d456b50f5464b38688043bd05b6d159
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (path N (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) <-> path N (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:996 / SIMPLE_PATH_ASSOC
+// Source hash: md5:88033d1a9d4930c7c2c99b1d05ebb15f
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SIMPLE_PATH_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (simple_path N (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) <-> simple_path N (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:1017 / ARC_ASSOC
+// Source hash: md5:b7f872d3ba1001d8d1a12769c1702662
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem ARC_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (arc N (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) <-> arc N (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:1028 / PATH_SYM
+// Source hash: md5:aced1f474045fd06a3aa0211663decc9
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> (path A (fun x:set => poly_add (R :^: idx A) p q x) <-> path A (fun x:set => poly_add (R :^: idx A) q p x)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:1033 / SIMPLE_PATH_SYM
+// Source hash: md5:f9659c65b58ce4efd132845d81ce051b
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem SIMPLE_PATH_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> (simple_path A (fun x:set => poly_add (R :^: idx A) p q x) <-> simple_path A (fun x:set => poly_add (R :^: idx A) q p x)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:1038 / PATH_IMAGE_SYM
+// Source hash: md5:a8d51534087fabba4cd06c7631b0053f
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem PATH_IMAGE_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> path_image A (fun x:set => poly_add (R :^: idx A) p q x) = path_image A (fun x:set => poly_add (R :^: idx A) q p x).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1047 / shiftpath
@@ -578,6 +776,12 @@ Admitted.
 Theorem PATH_IMAGE_SUBPATH_SUBSET : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_image N (fun x:set => subpath (R :^: idx N) u v g x) c= path_image N g.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:1391 / JOIN_SUBPATHS_MIDDLE
+// Source hash: md5:7fabf6a0dff3f88bcca8055856ca2c4f
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
+Theorem JOIN_SUBPATHS_MIDDLE : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall x :e R :^: idx 1, poly_add (R :^: idx N) (fun x0:set => subpath (R :^: idx N) (vec 1 0) (lift (1 :/: 2)) p x0) (fun x0:set => subpath (R :^: idx N) (lift (1 :/: 2)) (vec 1 1) p x0) x = p x.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:1404 / EXISTS_SUBPATH_OF_PATH
 // Source hash: md5:5d3344f16d92d92071069f70885f3f13
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -678,6 +882,12 @@ Admitted.
 // Source hash: md5:e5872b09c22356ab3687d69110f583de
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem PATHFINISH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, pathfinish A (fun x:set => linepath A (a,b) x) = b.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:2026 / CONTINUOUS_LINEPATH_AT
+// Source hash: md5:d58684582df45e4cbd0fdb774d0b0dde
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
+Theorem CONTINUOUS_LINEPATH_AT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, continuous A (R :^: idx 1) (fun x0:set => linepath A (a,b) x0) (at 1 x).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2035 / CONTINUOUS_ON_LINEPATH
@@ -1496,6 +1706,12 @@ Admitted.
 Theorem CONVEXITY_PRESERVING_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall c c= R :^: idx M, c c= s /\ convex M c -> convex N {f x | x :e c}) <-> forall a b :e R :^: idx M, closed_segment M (seq_cons (a,b) seq_nil) c= s -> closed_segment N (seq_cons (f a,f b) seq_nil) c= {f x | x :e closed_segment M (seq_cons (a,b) seq_nil)}.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:3947 / DARBOUX_AND_REGULATED_IMP_CONTINUOUS
+// Source hash: md5:f0390d70135a1437d781b12987d82be4
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
+Theorem DARBOUX_AND_REGULATED_IMP_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, is_interval 1 s /\ ((forall c c= R :^: idx 1, c c= s /\ connected 1 c -> connected N {f x | x :e c}) /\ (forall a :e R :^: idx 1, a :e s -> (exists l :e R :^: idx N, tendsto N (R :^: idx 1) f l (within (R :^: idx 1) (at 1 a) (s :/\: {x :e R :^: idx 1 | drop x <= drop a}))) /\ exists r :e R :^: idx N, tendsto N (R :^: idx 1) f r (within (R :^: idx 1) (at 1 a) (s :/\: {x :e R :^: idx 1 | drop a <= drop x})))) -> continuous_on_hl 1 N f s.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:4035 / LIPSCHITZ_ON_UNION
 // Source hash: md5:60a127079a5c32fbd62b745eddbc1bef
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
@@ -1844,6 +2060,31 @@ Admitted.
 Theorem OPEN_IN_CONNECTED_COMPONENTS : forall N:set, N <> Empty -> forall s c c= R :^: idx N, finite (components N s) /\ c :e components N s -> c :e subtopology (R :^: idx N) (euclidean N) s.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:6712 / FINITE_COMPONENTS_MEETING_COMPACT_SUBSET
+// Source hash: md5:90bbeb09c33a34090fafd8f2c7d1c281
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem FINITE_COMPONENTS_MEETING_COMPACT_SUBSET : forall N:set, N <> Empty -> forall k s c= R :^: idx N, compact N k /\ (locally N {x :e Power (R :^: idx N) | connected N x} s /\ k c= s) -> finite {c :e Power (R :^: idx N) | c :e components N s /\ ~ c :/\: k = Empty}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:6758 / FINITE_COMPONENTS
+// Aliases: FINITE_COMPONENTS FINITE_CONNECTED_COMPONENTS_COMPACT_LOCALLY_CONNECTED_EUCLIDEAN
+// Source hash: md5:fc0f1f9c91573ef7a5938dc6db6733cf
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem FINITE_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> finite (components N s).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:6770 / FINITE_LOCALLY_CONNECTED_CONNECTED_COMPONENTS
+// Source hash: md5:a6273b959789f2d465ee84e7e2fc6b5d
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem FINITE_LOCALLY_CONNECTED_CONNECTED_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> finite {{x0 :e R :^: idx N | connected_component N s x x0} | x :e R :^: idx N, x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:6776 / FINITE_LOCALLY_PATH_CONNECTED_PATH_COMPONENTS
+// Source hash: md5:b2b5c7881a24d6b181baff7d194f98e7
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem FINITE_LOCALLY_PATH_CONNECTED_PATH_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | path_connected N x} s -> finite {{x0 :e R :^: idx N | path_component N s x x0} | x :e R :^: idx N, x :e s}.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:6801 / CONVEX_IMP_LOCALLY_CONNECTED
 // Source hash: md5:dd37f8b6e3755a394f8f4b9164ddb503
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -1908,6 +2149,18 @@ Admitted.
 // Source hash: md5:bd11b53b9ac3e92ee161f57e1030deaa
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
 Theorem LOCALLY_PATH_CONNECTED_QUOTIENT_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall t c= R :^: idx N, t c= {f x | x :e s} -> ({x :e R :^: idx M | x :e s /\ f x :e t} :e subtopology (R :^: idx M) (euclidean M) s <-> t :e subtopology (R :^: idx N) (euclidean N) {f x | x :e s})) /\ locally M {x :e Power (R :^: idx M) | path_connected M x} s -> locally N {x :e Power (R :^: idx N) | path_connected N x} {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:6902 / LOCALLY_CONNECTED_CONTINUOUS_IMAGE_COMPACT
+// Source hash: md5:f89cba848309bd1ea1a622d8640c672d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_CONNECTED_CONTINUOUS_IMAGE_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, locally M {x :e Power (R :^: idx M) | connected M x} s /\ (compact M s /\ continuous_on_hl M N f s) -> locally N {x :e Power (R :^: idx N) | connected N x} {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:6913 / LOCALLY_PATH_CONNECTED_CONTINUOUS_IMAGE_COMPACT
+// Source hash: md5:a38f9cee536b5541e457c0caa6d72cfe
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_PATH_CONNECTED_CONTINUOUS_IMAGE_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, locally M {x :e Power (R :^: idx M) | path_connected M x} s /\ (compact M s /\ continuous_on_hl M N f s) -> locally N {x :e Power (R :^: idx N) | path_connected N x} {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:6924 / LOCALLY_PATH_CONNECTED_PATH_IMAGE
@@ -2096,16 +2349,34 @@ Admitted.
 Theorem CONNECTED_IN_SUBTOPOLOGY_EUCLIDEAN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, connected_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) t <-> t c= s /\ connected N t.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:7892 / COMPACT_IN_SUBTOPOLOGY_EUCLIDEAN
+// Source hash: md5:8848d3490d226645c3c0c7a58ddac301
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem COMPACT_IN_SUBTOPOLOGY_EUCLIDEAN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) t <-> t c= s /\ compact N t.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:7897 / CONNECTED_IN_SUBMETRIC_EUCLIDEAN
 // Source hash: md5:96a9d70d88aeda5c3e42c7fe482a5253
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_metric, hol_typedef_topology)
 Theorem CONNECTED_IN_SUBMETRIC_EUCLIDEAN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, connected_in (R :^: idx N) (mtopology (R :^: idx N) (submetric (R :^: idx N) (euclidean_metric N) s)) t <-> t c= s /\ connected N t.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:7905 / COMPACT_IN_SUBMETRIC_EUCLIDEAN_MSPACE
+// Source hash: md5:6835e3a0b072bc7a216d5fd1842b5248
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_metric, hol_typedef_topology)
+Theorem COMPACT_IN_SUBMETRIC_EUCLIDEAN_MSPACE : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact_in (R :^: idx N) (mtopology (R :^: idx N) (submetric (R :^: idx N) (euclidean_metric N) s)) s <-> compact N s.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:7911 / LOCALLY_CONNECTED_SPACE_SUBMETRIC_EUCLIDEAN
 // Source hash: md5:2086c2db6b38a1e93a8de22a07584832
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_metric, hol_typedef_topology)
 Theorem LOCALLY_CONNECTED_SPACE_SUBMETRIC_EUCLIDEAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally_connected_space (R :^: idx N) (mtopology (R :^: idx N) (submetric (R :^: idx N) (euclidean_metric N) s)) <-> locally N {x :e Power (R :^: idx N) | connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:7918 / LOCALLY_COMPACT_SPACE_SUBMETRIC_EUCLIDEAN
+// Source hash: md5:00d7114e16adeb46e57b6ad441666863
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_metric, hol_typedef_topology)
+Theorem LOCALLY_COMPACT_SPACE_SUBMETRIC_EUCLIDEAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally_compact_space (R :^: idx N) (mtopology (R :^: idx N) (submetric (R :^: idx N) (euclidean_metric N) s)) <-> locally N {x :e Power (R :^: idx N) | compact N x} s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:7925 / CONNECTED_IN_SUBMETRIC_EUCLIDEAN_MSPACE
@@ -2150,16 +2421,94 @@ Admitted.
 Theorem FCCOVERABLE_INTERMEDIATE_CLOSURE : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s c= t /\ (t c= closure N s /\ (forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = s /\ forall t0 c= R :^: idx N, t0 :e c -> connected N t0 /\ (bounded_hl N t0 /\ diameter N t0 <= e0)))) -> forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = t /\ forall t0 c= R :^: idx N, t0 :e c -> connected N t0 /\ (bounded_hl N t0 /\ diameter N t0 <= e0)).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:8032 / COMPACT_LOCALLY_CONNECTED_IMP_ULC
+// Source hash: md5:0e83b0f81fab8b60731890d1b8ec1d8e
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem COMPACT_LOCALLY_CONNECTED_IMP_ULC : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x y :e R :^: idx N, x :e s /\ (y :e s /\ distance N (x,y) < d) -> exists c c= R :^: idx N, x :e c /\ (y :e c /\ (c c= s /\ (connected N c /\ (bounded_hl N c /\ diameter N c <= e0)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:8051 / COMPACT_LOCALLY_CONNECTED_IMP_ULC_ALT
+// Source hash: md5:6bb5b97b5bab959b2597f653de04b20d
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem COMPACT_LOCALLY_CONNECTED_IMP_ULC_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ (d < e0 /\ forall x y :e R :^: idx N, x :e s /\ (y :e s /\ distance N (x,y) < d) -> exists c c= R :^: idx N, connected N c /\ (x :e c /\ (y :e c /\ c c= s :/\: (ball N (x,e0) :/\: ball N (y,e0))))).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:8078 / BOUNDED_ULC_IMP_FCCOVERABLE
 // Source hash: md5:950980715de07a886cf5d0c1fd5d9b90
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem BOUNDED_ULC_IMP_FCCOVERABLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ (forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x y :e R :^: idx N, x :e s /\ (y :e s /\ distance N (x,y) < d) -> exists c c= R :^: idx N, x :e c /\ (y :e c /\ (c c= s /\ (connected N c /\ (bounded_hl N c /\ diameter N c <= e0))))) -> forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = s /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (bounded_hl N t /\ diameter N t <= e0)).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:8104 / COMPACT_LOCALLY_CONNECTED_IMP_FCCOVERABLE
+// Source hash: md5:0ed475a6d83d77e667d06c9df366c6a3
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem COMPACT_LOCALLY_CONNECTED_IMP_FCCOVERABLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = s /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (bounded_hl N t /\ diameter N t <= e0)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:8119 / COMPACT_LOCALLY_CONNECTED_EQ_FCCCOVERABLE
+// Source hash: md5:60b7b9611b626acf65e2d565bf8eda75
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem COMPACT_LOCALLY_CONNECTED_EQ_FCCCOVERABLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s <-> forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = s /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (compact N t /\ diameter N t <= e0)).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:8145 / LOCALLY_FCCOVERABLE
 // Source hash: md5:9e85d443b1975a8cb6abd02b04c43a50
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_topology, omega_Subq_R)
 Theorem LOCALLY_FCCOVERABLE : forall N:set, N <> Empty -> forall s u c= R :^: idx N, forall a :e R :^: idx N, (forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = s /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (bounded_hl N t /\ diameter N t <= e0))) /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ a :e u) -> exists v c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ (connected N v /\ (a :e v /\ (v c= u /\ forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = v /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (bounded_hl N t /\ diameter N t <= e0))))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:8592 / LOCALLY_FCCOVERABLE_ALT
+// Source hash: md5:5cf80b5e085dca1ebd38a9747c52e7e8
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_topology, omega_Subq_R)
+Theorem LOCALLY_FCCOVERABLE_ALT : forall N:set, N <> Empty -> forall s u c= R :^: idx N, forall a :e R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (locally N {x :e Power (R :^: idx N) | connected N x} s /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ a :e u)) -> exists v c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ (connected N v /\ (a :e v /\ (v c= u /\ forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = v /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (bounded_hl N t /\ diameter N t <= e0))))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9080 / LOCALLY_CONNECTED_CONTINUUM
+// Source hash: md5:48b25e858b59ef7ea9e87ee39d1782ed
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_CONNECTED_CONTINUUM : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {c :e Power (R :^: idx N) | compact N c /\ (connected N c /\ locally N {x :e Power (R :^: idx N) | connected N x} c)} s <-> locally N {x :e Power (R :^: idx N) | compact N x} s /\ locally N {x :e Power (R :^: idx N) | connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9113 / COMPACT_LOCALLY_CONNECTED_EQ_FCCCOVERABLE_ALT
+// Source hash: md5:51ddfe52bb92bfee2ebbb338a59f5597
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem COMPACT_LOCALLY_CONNECTED_EQ_FCCCOVERABLE_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s <-> forall e0 :e R, 0 < e0 -> exists c c= Power (R :^: idx N), finite c /\ (Union c = s /\ forall t c= R :^: idx N, t :e c -> connected N t /\ (compact N t /\ (locally N {x :e Power (R :^: idx N) | connected N x} t /\ diameter N t <= e0))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9136 / SEMI_LOCALLY_CONNECTED
+// Source hash: md5:a4c462c262c2f6c426af9de3436e4f87
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_topology)
+Theorem SEMI_LOCALLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, connected N s /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ locally N {x :e Power (R :^: idx N) | connected N x} s) -> forall x :e R :^: idx N, forall v c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ x :e v -> exists u c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (x :e u /\ (u c= v /\ finite (components N (s :\: u)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9155 / SEMI_LOCALLY_CONNECTED_GEN
+// Source hash: md5:9c0d8095485b9963797ccf1cdc6a6f49
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_topology)
+Theorem SEMI_LOCALLY_CONNECTED_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite (components N s) /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ locally N {x :e Power (R :^: idx N) | connected N x} s) -> forall x :e R :^: idx N, forall v c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ x :e v -> exists u c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (x :e u /\ (u c= v /\ finite (components N (s :\: u)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9174 / SEMI_LOCALLY_CONNECTED_COMPACT
+// Source hash: md5:8bf1530ad308fd2c15ee450a7c5f8cfb
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_topology)
+Theorem SEMI_LOCALLY_CONNECTED_COMPACT : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> forall x :e R :^: idx N, forall v c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ x :e v -> exists u c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (x :e u /\ (u c= v /\ finite (components N (s :\: u)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9212 / COMPACT_CONNECTED_LOCALLY_CONNECTED_IMP_PATH_CONNECTED_EUCLIDEAN
+// Source hash: md5:57dda941642f13a4007d207394608b23
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_CONNECTED_LOCALLY_CONNECTED_IMP_PATH_CONNECTED_EUCLIDEAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ (connected N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s) -> path_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9229 / LOCALLY_COMPACT_CONNECTED_IMP_PATH_CONNECTED_EUCLIDEAN
+// Source hash: md5:42f5de761b3664ec118050ea16f68f97
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_COMPACT_CONNECTED_IMP_PATH_CONNECTED_EUCLIDEAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (connected N s /\ locally N {x :e Power (R :^: idx N) | connected N x} s) -> path_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9286 / MCOMPLETE_IMP_LOCALLY_COMPACT_EUCLIDEAN
+// Source hash: md5:5f6a3d9bdbf76961895a63dc34513b0f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_metric)
+Theorem MCOMPLETE_IMP_LOCALLY_COMPACT_EUCLIDEAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, mcomplete (R :^: idx N) (submetric (R :^: idx N) (euclidean_metric N) s) -> locally N {x :e Power (R :^: idx N) | compact N x} s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:9298 / MCOMPLETE_CONNECTED_LOCALLY_CONNECTED_IMP_PATH_CONNECTED_EUCLIDEAN
@@ -2204,6 +2553,48 @@ Admitted.
 Theorem LOCALLY_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | convex N x} s <-> forall x :e R :^: idx N, x :e s -> exists u v c= R :^: idx N, x :e u /\ (u c= v /\ (v c= s /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ convex N v))).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:9417 / PROPER_MAP_TO_COMPACT
+// Source hash: md5:fee9f9772d501a98b529bc7b74621aa0
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem PROPER_MAP_TO_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, (forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) /\ (compact N t /\ {f x | x :e s} c= t) -> continuous_on_hl M N f s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9434 / CONTINUOUS_WITHIN_SEQUENTIALLY_COMPACT_MAP
+// Source hash: md5:af566fb87bfd640ba315b3d9a8e8d773
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_COMPACT_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall x :e R :^: idx M, (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ x :e s -> (continuous N (R :^: idx M) f (within (R :^: idx M) (at M x) s) <-> forall p:set -> set, (forall x0 :e omega, p x0 :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, p n :e s) /\ (tendsto M omega p x sequentially /\ (forall n :e omega, f (p n) = y)) -> f x = y).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9551 / COMPACT_CLOSED_POINTIMAGES_IMP_CONTINUOUS_ON
+// Source hash: md5:f2d6f9f6aa147ef145674b0288807b82
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem COMPACT_CLOSED_POINTIMAGES_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ (forall y :e R :^: idx N, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) {x :e R :^: idx M | x :e s /\ f x = y}) -> continuous_on_hl M N f s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9572 / COMPACT_CONTINUOUS_IMAGE_EQ
+// Source hash: md5:cb5d649ca440a943e668f0f7ec511ff5
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_CONTINUOUS_IMAGE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x y :e R :^: idx M, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (continuous_on_hl M N f s <-> forall t c= R :^: idx M, compact M t /\ t c= s -> compact N {f x | x :e t}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9589 / CONTINUOUS_EQ_COMPACT_CONNECTED_PRESERVING_GEN
+// Source hash: md5:e7aba24c6121477d5ca25601406c9f95
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONTINUOUS_EQ_COMPACT_CONNECTED_PRESERVING_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall P c= Power (R :^: idx M), forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, locally M P s /\ (forall c c= R :^: idx M, c :e P -> connected M c) -> (continuous_on_hl M N f s <-> (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ forall c c= R :^: idx M, c c= s /\ c :e P -> connected N {f x | x :e c}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9673 / CONTINUOUS_EQ_COMPACT_CONNECTED_PRESERVING
+// Source hash: md5:34ec31efca44fc8f9ef72d632a2762e8
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONTINUOUS_EQ_COMPACT_CONNECTED_PRESERVING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, locally M {x :e Power (R :^: idx M) | connected M x} s -> (continuous_on_hl M N f s <-> (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ forall c c= R :^: idx M, c c= s /\ connected M c -> connected N {f x | x :e c}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9683 / CONTINUOUS_EQ_COMPACT_PATH_CONNECTED_PRESERVING
+// Source hash: md5:30ef86b081fe74b9927f3e8d2efc5a70
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONTINUOUS_EQ_COMPACT_PATH_CONNECTED_PRESERVING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, locally M {x :e Power (R :^: idx M) | path_connected M x} s -> (continuous_on_hl M N f s <-> (forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ forall c c= R :^: idx M, c c= s /\ path_connected M c -> path_connected N {f x | x :e c}).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:9697 / CONNECTED_CLOSED_POINTIMAGES_IMP_CONTINUOUS_ON
 // Source hash: md5:a71c0f9cfaa396c0d42bacc235dc84ad
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_topology)
@@ -2220,6 +2611,24 @@ Admitted.
 // Source hash: md5:ed3ad00d00d3cfc09f4bd26f50dc2e97
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem CONNECTED_CONNECTED_POINTIMAGES_IMP_CONTINUOUS_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall s c= R :^: idx N, forall t c= R :^: idx 1, {f x | x :e s} c= t /\ (locally N {x :e Power (R :^: idx N) | connected N x} s /\ ((forall c c= R :^: idx N, c c= s /\ connected N c -> connected 1 {f x | x :e c}) /\ (forall y :e R :^: idx 1, connected N {x :e R :^: idx N | x :e s /\ f x = y}))) -> continuous_on_hl N 1 f s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9768 / CLOSED_CLOSED_PREIMAGES_IMP_CONTINUOUS_ON
+// Source hash: md5:b047e0158a3c4149e0ef21c4a132af65
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem CLOSED_CLOSED_PREIMAGES_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, compact N t /\ ((forall y :e R :^: idx N, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) {x :e R :^: idx M | x :e s /\ f x = y}) /\ (forall c c= R :^: idx M, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) c -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) t) {f x | x :e c})) -> continuous_on_hl M N f s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9783 / CLOSED_CONNECTED_PREIMAGES_IMP_CONTINUOUS_ON
+// Source hash: md5:b2fc6b335f3a9d9af3c83b204d8532b2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem CLOSED_CONNECTED_PREIMAGES_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, compact N t /\ ((forall y :e R :^: idx N, connected M {x :e R :^: idx M | x :e s /\ f x = y}) /\ ((forall c c= R :^: idx M, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) c -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) t) {f x | x :e c}) /\ (forall c c= R :^: idx M, c c= s /\ connected M c -> connected N {f x | x :e c}))) -> continuous_on_hl M N f s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:9797 / BICONNECTED_IMP_CONTINUOUS_ON
+// Source hash: md5:803d6a2548c6c8f0dd76ba584aeb41fe
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem BICONNECTED_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, finite (components N t) /\ (locally N {x :e Power (R :^: idx N) | compact N x} t /\ (locally N {x :e Power (R :^: idx N) | connected N x} t /\ ({f x | x :e s} = t /\ ((forall c c= R :^: idx M, c c= s /\ connected M c -> connected N {f x | x :e c}) /\ (forall c c= R :^: idx N, c c= t /\ connected N c -> connected M {x :e R :^: idx M | x :e s /\ f x :e c}))))) -> continuous_on_hl M N f s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:9891 / MONOTONE_TOPOLOGICALLY_IMP
@@ -2268,6 +2677,72 @@ Admitted.
 // Source hash: md5:f4a3ff552957425b51879892c56003d1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem MONOTONE_IMP_HOMEOMORPHISM_1D : forall f :e R :^: idx 1 :^: (R :^: idx 1), forall s t c= R :^: idx 1, is_interval 1 s /\ (is_interval 1 t /\ ({f x | x :e s} = t /\ ((forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x < drop y) -> drop (f x) < drop (f y)) \/ (forall x y :e R :^: idx 1, x :e s /\ (y :e s /\ drop x < drop y) -> drop (f x) < drop (f y))))) -> exists g :e R :^: idx 1 :^: (R :^: idx 1), homeomorphism 1 1 (s,t) (f,g).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10031 / MONOTONE_CONNECTED_PREIMAGES_IMP_PROPER_MAP
+// Source hash: md5:8f6292b52289028bd47220ae91664abb
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MONOTONE_CONNECTED_PREIMAGES_IMP_PROPER_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, {f x | x :e s} = t /\ (locally M {x :e Power (R :^: idx M) | compact M x} s /\ (locally N {x :e Power (R :^: idx N) | connected N x} t /\ (continuous_on_hl M N f s /\ ((forall y :e R :^: idx N, compact M {x :e R :^: idx M | x :e s /\ f x = y}) /\ (forall c c= R :^: idx N, c c= t /\ connected N c -> connected M {x :e R :^: idx M | x :e s /\ f x :e c}))))) -> forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10111 / MONOTONE_INTO_1D_IMP_PROPER_MAP
+// Source hash: md5:54fe69bda3e7301542cbc6210385cb37
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem MONOTONE_INTO_1D_IMP_PROPER_MAP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall s c= R :^: idx N, forall t c= R :^: idx 1, connected N s /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ (continuous_on_hl N 1 f s /\ ({f x | x :e s} = t /\ ((forall y :e R :^: idx 1, compact N {x :e R :^: idx N | x :e s /\ f x = y}) /\ (forall y :e R :^: idx 1, connected N {x :e R :^: idx N | x :e s /\ f x = y}))))) -> forall k c= R :^: idx 1, k c= t /\ compact 1 k -> compact N {x :e R :^: idx N | x :e s /\ f x :e k}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10126 / MONOTONE_CONNECTED_PREIMAGES_IMP_PROPER_MAP_GEN
+// Source hash: md5:2a3b01e4ff331cba5d32ea610aab6236
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem MONOTONE_CONNECTED_PREIMAGES_IMP_PROPER_MAP_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, {f x | x :e s} = t /\ (locally M {x :e Power (R :^: idx M) | compact M x} s /\ (locally N {x :e Power (R :^: idx N) | connected N x} t /\ ((forall c c= R :^: idx M, c c= s /\ compact M c -> compact N {f x | x :e c}) /\ ((forall y :e R :^: idx N, compact M {x :e R :^: idx M | x :e s /\ f x = y}) /\ (forall c c= R :^: idx N, c c= t /\ connected N c -> connected M {x :e R :^: idx M | x :e s /\ f x :e c}))))) -> forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10146 / SURA_BURA_COMPACT
+// Source hash: md5:08f81921b7ceec59e07b0516079af0be
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem SURA_BURA_COMPACT : forall N:set, N <> Empty -> forall s c c= R :^: idx N, compact N s /\ c :e components N s -> c = {x :e R :^: idx N | forall Y :e {t :e Power (R :^: idx N) | c c= t /\ (t :e subtopology (R :^: idx N) (euclidean N) s /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) t)}, x :e Y}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10165 / SURA_BURA_CLOPEN_SUBSET
+// Source hash: md5:4845de0846e8e0c9151afa1f09e9dde2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem SURA_BURA_CLOPEN_SUBSET : forall N:set, N <> Empty -> forall s c u c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (c :e components N s /\ (compact N c /\ (open N u /\ c c= u))) -> exists k c= R :^: idx N, k :e subtopology (R :^: idx N) (euclidean N) s /\ (compact N k /\ (c c= k /\ k c= u)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10223 / SURA_BURA_CLOPEN_SUBSET_ALT
+// Source hash: md5:954889012078cbdbd4a45b08f9c89eac
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem SURA_BURA_CLOPEN_SUBSET_ALT : forall N:set, N <> Empty -> forall s c u c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (c :e components N s /\ (compact N c /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ c c= u))) -> exists k c= R :^: idx N, k :e subtopology (R :^: idx N) (euclidean N) s /\ (compact N k /\ (c c= k /\ k c= u)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10240 / SURA_BURA
+// Source hash: md5:94d634aaed9f844f9ddc0c5039d601ce
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem SURA_BURA : forall N:set, N <> Empty -> forall s c c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (c :e components N s /\ compact N c) -> c = {x :e R :^: idx N | forall Y :e {k :e Power (R :^: idx N) | c c= k /\ (compact N k /\ k :e subtopology (R :^: idx N) (euclidean N) s)}, x :e Y}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10259 / COMPONENT_CLOPEN_HAUSDIST_EXPLICIT
+// Source hash: md5:fb2834fb5a213bba1f2059cd6c5e1343
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
+Theorem COMPONENT_CLOPEN_HAUSDIST_EXPLICIT : forall N:set, N <> Empty -> forall s c c= R :^: idx N, forall e0 :e R, 0 < e0 /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ (c :e components N s /\ compact N c)) -> exists k c= R :^: idx N, k :e subtopology (R :^: idx N) (euclidean N) s /\ (compact N k /\ (c c= k /\ k c= \/_ x :e R :^: idx N, {vector_add N x d | d :e R :^: idx N, x :e c /\ d :e ball N (vec N 0,e0)})).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10275 / COMPONENT_CLOPEN_HAUSDIST
+// Source hash: md5:a77952554770a5913d40f800144409ec
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
+Theorem COMPONENT_CLOPEN_HAUSDIST : forall N:set, N <> Empty -> forall s c c= R :^: idx N, forall e0 :e R, 0 < e0 /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ (c :e components N s /\ compact N c)) -> exists k c= R :^: idx N, k :e subtopology (R :^: idx N) (euclidean N) s /\ (compact N k /\ (c c= k /\ hausdist N (c,k) < e0)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10305 / COMPONENT_INTERMEDIATE_CLOPEN
+// Source hash: md5:44eb3e50fba68181f397eb7fce835bbc
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_topology)
+Theorem COMPONENT_INTERMEDIATE_CLOPEN : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, t :e components N s /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ (t c= u /\ (dimindex N = 1 \/ ((exists r c= R :^: idx 1, homeomorphic 1 N s r) \/ (locally N {x :e Power (R :^: idx N) | connected N x} s \/ locally N {x :e Power (R :^: idx N) | compact N x} s /\ compact N t))))) -> exists c c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) c /\ (c :e subtopology (R :^: idx N) (euclidean N) s /\ (t c= c /\ c c= u)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:10558 / COMPONENTS_SUBSETS_CLOPEN_PARTITION
+// Source hash: md5:74f01eda45fc42801827351f917776fd
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_typedef_topology)
+Theorem COMPONENTS_SUBSETS_CLOPEN_PARTITION : forall N:set, N <> Empty -> forall u c= Power (R :^: idx N), forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (finite u /\ (~ u = Empty /\ (u c= components N s /\ (forall c c= R :^: idx N, c :e u -> compact N c)))) -> exists f :e Power (R :^: idx N) :^: Power (R :^: idx N), (forall c c= R :^: idx N, c :e u -> f c :e subtopology (R :^: idx N) (euclidean N) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) (f c) /\ c c= f c)) /\ ((forall x y :e u, x <> y -> ~ f x = f y) /\ ((forall x y :e u, x <> y -> f x :/\: f y = Empty) /\ Union {f x | x :e u} = s)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:10680 / OPEN_CONNECTED_COMPONENT
@@ -2444,6 +2919,96 @@ Admitted.
 Theorem FRONTIER_MINIMAL_SEPARATING_CLOSED_POINTWISE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, closed N s /\ (~ a :e s /\ (~ connected_component N ((R :^: idx N) :\: s) a b /\ (forall t c= R :^: idx N, closed N t /\ (t c= s /\ t <> s) -> connected_component N ((R :^: idx N) :\: t) a b))) -> frontier N {x :e R :^: idx N | connected_component N ((R :^: idx N) :\: s) a x} = s.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:11072 / CONNECTED_COMPONENT_DIFF_NONSEPARATED
+// Source hash: md5:a34c284c0fa25f4bc119b8e2defeca47
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_COMPONENT_DIFF_NONSEPARATED : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, compact N s /\ (connected N s /\ (t c= s /\ (~ t = Empty /\ c :e components N (s :\: t)))) -> ~ closure N c :/\: closure N t = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11167 / CONNECTED_COMPONENT_DIFF_NONSEPARATED_ALT
+// Source hash: md5:f9b9f3890aa8328f8ca329eeccdc70fc
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_COMPONENT_DIFF_NONSEPARATED_ALT : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, compact N s /\ (connected N s /\ (t c= s /\ t <> s /\ c :e components N t)) -> ~ closure N c :/\: closure N (s :\: t) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11177 / CONNECTED_COMPONENT_DIFF_CLOSED_NONSEPARATED
+// Source hash: md5:c9f65c22ee279532238b988eedaefca7
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_COMPONENT_DIFF_CLOSED_NONSEPARATED : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, compact N s /\ (connected N s /\ (closed N t /\ (t c= s /\ (~ t = Empty /\ c :e components N (s :\: t))))) -> ~ closure N c :/\: t = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11184 / NONSEPARATED_CLOSED_COMPLEMENT_COMPONENT
+// Source hash: md5:94b4a7ac2d309c34db893c91e2c7bd68
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem NONSEPARATED_CLOSED_COMPLEMENT_COMPONENT : forall N:set, N <> Empty -> forall u s c c= R :^: idx N, (compact N u \/ locally N {x :e Power (R :^: idx N) | connected N x} u) /\ (connected N u /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s /\ (~ s = Empty /\ c :e components N (u :\: s)))) -> ~ s :/\: closure N c = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11203 / CONNECTED_EQ_NONSEPARATED_CLOSED_COMPLEMENT_COMPONENT
+// Source hash: md5:99fd7c7fcab4afcfcf93245a5fc2366a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem CONNECTED_EQ_NONSEPARATED_CLOSED_COMPLEMENT_COMPONENT : forall N:set, N <> Empty -> forall u s c= R :^: idx N, (compact N u \/ locally N {x :e Power (R :^: idx N) | connected N x} u) /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s /\ (connected N s /\ ~ s = Empty)) -> (connected N u <-> forall c c= R :^: idx N, c :e components N (u :\: s) -> ~ s :/\: closure N c = Empty).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11235 / CONNECTED_EQ_COMPONENT_DIFF_CLOSED_NONSEPARATED
+// Source hash: md5:d3cf3513fc585e9cbff181d233225c2d
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_EQ_COMPONENT_DIFF_CLOSED_NONSEPARATED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (closed N t /\ (connected N t /\ (t c= s /\ ~ t = Empty))) -> (connected N s <-> forall c c= R :^: idx N, c :e components N (s :\: t) -> ~ closure N c :/\: t = Empty).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11244 / CONNECTED_EQ_COMPONENT_DELETE_NONSEPARATED
+// Source hash: md5:0332df6679c3c8091ce26df0ca473e26
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
+Theorem CONNECTED_EQ_COMPONENT_DELETE_NONSEPARATED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, (compact N s \/ (locally N {x :e Power (R :^: idx N) | connected N x} s \/ finite (components N (s :\: {a})))) /\ a :e s -> (connected N s <-> forall c c= R :^: idx N, c :e components N (s :\: {a}) -> a :e closure N c).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11293 / CONNECTED_INSERT_COMPACT
+// Source hash: md5:c9933561cc718a3f7aaa443d1dfdc5c8
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_INSERT_COMPACT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, compact N (SetAdjoin s a) -> (connected N (SetAdjoin s a) <-> forall c c= R :^: idx N, c :e components N s -> a :e closure N c).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11318 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN
+// Source hash: md5:30ebc5dda2e976f8350fe3fc602ae416
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, compact N s /\ (connected N s /\ (t c= s /\ t <> s /\ c :e components N t)) -> ~ closure N c :/\: (closure N t :/\: closure N (s :\: t)) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11329 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_CLOSED
+// Source hash: md5:c7af535d514da8fe1709d6a02f938468
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_CLOSED : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, compact N s /\ (connected N s /\ (closed N t /\ (t c= s /\ t <> s /\ c :e components N t))) -> ~ c :/\: (closure N t :/\: closure N (s :\: t)) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11340 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_ALT
+// Source hash: md5:dc875d65a91d617156bab3a46a139dbb
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_ALT : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, compact N s /\ (connected N s /\ (t :e subtopology (R :^: idx N) (euclidean N) s /\ (t c= s /\ t <> s /\ c :e components N (closure N t)))) -> ~ c :/\: (s :\: t) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11371 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_OPEN
+// Source hash: md5:2595b7f98ff0f38682c4a8654be40a69
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_OPEN : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, (compact N s \/ locally N {x :e Power (R :^: idx N) | connected N x} s) /\ (connected N s /\ (t :e subtopology (R :^: idx N) (euclidean N) s /\ (t c= s /\ t <> s /\ c :e components N t))) -> ~ closure N c :/\: (s :\: t) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11388 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_OPEN_ALT
+// Source hash: md5:d665104389802209ab9b036a19d4507b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_OPEN_ALT : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, (compact N s \/ locally N {x :e Power (R :^: idx N) | connected N x} s) /\ (connected N s /\ (t :e subtopology (R :^: idx N) (euclidean N) s /\ (t c= s /\ t <> s /\ c :e components N t))) -> ~ closure N c :/\: (closure N t :\: t) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11401 / CONTINUUM_UNION_COMPONENTS_INTERMEDIATE_COMPLEMENT
+// Source hash: md5:cd5639d958c41f23dabb154e581ad860
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONTINUUM_UNION_COMPONENTS_INTERMEDIATE_COMPLEMENT : forall N:set, N <> Empty -> forall s t u c c= R :^: idx N, compact N s /\ (connected N s /\ (compact N t /\ (s c= t /\ (compact N u /\ (connected N u /\ (t c= u /\ (c :e components N (u :\: t) /\ closure N c :\: c c= s))))))) -> compact N (c :\/: s) /\ connected N (c :\/: s).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11432 / CONTINUUM_UNION_COMPONENTS_COMPLEMENT
+// Source hash: md5:f8afdd268498d48d4de2bde96cf3cfad
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONTINUUM_UNION_COMPONENTS_COMPLEMENT : forall N:set, N <> Empty -> forall s u c c= R :^: idx N, compact N s /\ (connected N s /\ (compact N u /\ (connected N u /\ (s c= u /\ (c :e components N (u :\: s) /\ closure N c :\: c c= s))))) -> compact N (c :\/: s) /\ connected N (c :\/: s).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:11446 / WELLCHAINED_ELEMENTS_EUCLIDEAN
 // Source hash: md5:f6520bdf0f781b1ce8e8066b147b392c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, nat_lt_SNoLt)
@@ -2466,6 +3031,93 @@ Admitted.
 // Source hash: md5:c1aa786352fbebebcdd5ae90b426c787
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, nat_lt_SNoLt, omega_Subq_R)
 Theorem CONNECTED_COMPONENT_IMP_WELLCHAINED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, forall e0 :e R, 0 < e0 /\ connected_component N s a b -> exists p:set -> set, (forall x :e omega, p x :e R :^: idx N) /\ exists n :e omega, p 0 = a /\ (p n = b /\ ((forall i :e omega, i <= n -> p i :e s) /\ forall i :e omega, i < n -> distance N (p i,p (ordsucc i)) < e0)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11494 / CONNECTED_EQ_WELLCHAINED
+// Source hash: md5:9be87bfc16fc504a2866160b5f66ebc2
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, nat_lt_SNoLt, omega_Subq_R)
+Theorem CONNECTED_EQ_WELLCHAINED : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s -> (connected N s <-> forall e0 :e R, 0 < e0 -> forall a b :e R :^: idx N, a :e s /\ b :e s -> exists p:set -> set, (forall x :e omega, p x :e R :^: idx N) /\ exists n :e omega, p 0 = a /\ (p n = b /\ ((forall i :e omega, i <= n -> p i :e s) /\ forall i :e omega, i < n -> distance N (p i,p (ordsucc i)) < e0))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11509 / CONNECTED_COMPONENT_EQ_WELLCHAINED
+// Source hash: md5:6ef2dab9c2b69f0f0dc3f07c8fe3879a
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, nat_lt_SNoLt, omega_Subq_R)
+Theorem CONNECTED_COMPONENT_EQ_WELLCHAINED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, compact N s -> (connected_component N s a b <-> a :e s /\ (b :e s /\ forall e0 :e R, 0 < e0 -> exists p:set -> set, (forall x :e omega, p x :e R :^: idx N) /\ exists n :e omega, p 0 = a /\ (p n = b /\ ((forall i :e omega, i <= n -> p i :e s) /\ forall i :e omega, i < n -> distance N (p i,p (ordsucc i)) < e0)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11525 / WELLCHAINED_INTERS_EUCLIDEAN
+// Source hash: md5:b9019fc2d1b100030fed8d4146fcb9e1
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem WELLCHAINED_INTERS_EUCLIDEAN : forall N:set, N <> Empty -> forall s :e Power (R :^: idx N) :^: omega, forall d e0 :e R, d < e0 /\ ((forall m :e omega, compact N (s m)) /\ ((forall m :e omega, s (ordsucc m) c= s m) /\ (forall m :e omega, forall a b :e R :^: idx N, a :e s m /\ b :e s m -> exists p:set -> set, (forall x :e omega, p x :e R :^: idx N) /\ exists n :e omega, p 0 = a /\ (p n = b /\ ((forall i :e omega, i <= n -> p i :e s m) /\ forall i :e omega, i < n -> distance N (p i,p (ordsucc i)) < d))))) -> forall a b :e R :^: idx N, a :e {x :e R :^: idx N | forall Y :e {s m | m :e omega, m :e omega}, x :e Y} /\ b :e {x :e R :^: idx N | forall Y :e {s m | m :e omega, m :e omega}, x :e Y} -> exists p:set -> set, (forall x :e omega, p x :e R :^: idx N) /\ exists n :e omega, p 0 = a /\ (p n = b /\ ((forall i :e omega, i <= n -> p i :e {x :e R :^: idx N | forall Y :e {s m | m :e omega, m :e omega}, x :e Y}) /\ forall i :e omega, i < n -> distance N (p i,p (ordsucc i)) < e0)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11547 / COMPACT_PARTITION_CONTAINING_CLOSED
+// Source hash: md5:6d677fff96e4298075c887d3cf92ff4f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_PARTITION_CONTAINING_CLOSED : forall N:set, N <> Empty -> forall s t t' c= R :^: idx N, compact N s /\ (closed N t /\ (closed N t' /\ (t c= s /\ (t' c= s /\ (forall c c= R :^: idx N, c :e components N s -> c :/\: t = Empty \/ c :/\: t' = Empty))))) -> exists k k' c= R :^: idx N, compact N k /\ (compact N k' /\ (t c= k /\ (t' c= k' /\ (k :/\: k' = Empty /\ k :\/: k' = s)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11673 / COMPACT_PARTITION_CONTAINING_POINTS
+// Source hash: md5:5f5508853dbad6e3488d45d0c7c6c3e5
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_PARTITION_CONTAINING_POINTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, compact N s /\ (a :e s /\ (b :e s /\ ~ connected_component N s a b)) -> exists k k' c= R :^: idx N, compact N k /\ (compact N k' /\ (a :e k /\ (b :e k' /\ (k :/\: k' = Empty /\ k :\/: k' = s)))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11689 / CONNECTED_COMPONENT_LIMIT
+// Source hash: md5:faed00947485a64bbb3e0959bb082558
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
+Theorem CONNECTED_COMPONENT_LIMIT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall a b :e R :^: idx N, compact N s /\ (tendsto N omega x a sequentially /\ (tendsto N omega y b sequentially /\ eventually omega {n :e omega | connected_component N s (x n) (y n)} sequentially)) -> connected_component N s a b.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11733 / CLOSED_UNIONS_COMPONENTS_MEETING_CLOSED
+// Source hash: md5:ad804d18b762e8b4e55ef4fc5edbff8a
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CLOSED_UNIONS_COMPONENTS_MEETING_CLOSED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ closed N t -> closed N (Union {c :e Power (R :^: idx N) | c :e components N s /\ ~ c :/\: t = Empty}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11779 / ARBITRARILY_SMALL_CONTINUUM
+// Source hash: md5:37a6433ba0d90af000973bdc84de6065
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem ARBITRARILY_SMALL_CONTINUUM : forall N:set, N <> Empty -> forall s u c= R :^: idx N, forall a :e R :^: idx N, connected N s /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ (open N u /\ ({a} c= s /\ {a} <> s /\ a :e u))) -> exists c c= R :^: idx N, {a} c= c /\ {a} <> c /\ (c c= s /\ (c c= u /\ (compact N c /\ connected N c))).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11830 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_INTER
+// Source hash: md5:c2650b5c1c8072787e6630adaec2a0fb
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_INTER : forall N:set, N <> Empty -> forall s u c c= R :^: idx N, connected N s /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ (open N u /\ (~ s c= u /\ (compact N (s :/\: closure N u) /\ c :e components N (s :/\: closure N u))))) -> ~ c :/\: frontier N u = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11884 / BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_INTER_ALT
+// Source hash: md5:7dfa2d76d6cf0c3e6afe4e5dae4c612c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem BOUNDARY_BUMPING_THEOREM_EUCLIDEAN_INTER_ALT : forall N:set, N <> Empty -> forall s u c c= R :^: idx N, connected N s /\ (locally N {x :e Power (R :^: idx N) | compact N x} s /\ (open N u /\ (~ s :/\: u = Empty /\ (~ s c= u /\ (compact N (s :/\: closure N u) /\ c :e components N (s :/\: u)))))) -> exists x :e R :^: idx N, x :e frontier N u /\ limit_point_of N x c.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11958 / LOCALLY_COMPACT_CONNECTED_IMP_PATH_CONNECTED
+// Source hash: md5:e6b85b8c8be1a2b809e8664bd6f7d893
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_COMPACT_CONNECTED_IMP_PATH_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ (locally N {x :e Power (R :^: idx N) | connected N x} s /\ connected N s) -> path_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11973 / LOCALLY_COMPACT_PATH_CONNECTED_EQ_CONNECTED
+// Aliases: LOCALLY_COMPACT_PATH_CONNECTED_EQ_CONNECTED LOCALLY_COMPACT_PATH_CONNECTED_EQ_CONNECTED_EUCLIDEAN
+// Source hash: md5:7f1710d1270c4cfbb2ad2ae04f24a663
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_COMPACT_PATH_CONNECTED_EQ_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> (path_connected N s <-> connected N s).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11980 / LOCALLY_COMPACT_LOCALLY_CONNECTED_IMP_LOCALLY_PATH_CONNECTED
+// Aliases: LOCALLY_COMPACT_LOCALLY_CONNECTED_IMP_LOCALLY_PATH_CONNECTED LOCALLY_COMPACT_LOCALLY_CONNECTED_IMP_LOCALLY_PATH_CONNECTED_EUCLIDEAN
+// Source hash: md5:262ff4fea0e5da7562ddc0b3287c80b5
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_COMPACT_LOCALLY_CONNECTED_IMP_LOCALLY_PATH_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ locally N {x :e Power (R :^: idx N) | connected N x} s -> locally N {x :e Power (R :^: idx N) | path_connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:11998 / LOCALLY_COMPACT_LOCALLY_PATH_CONNECTED_EQ_LOCALLY_CONNECTED
+// Aliases: LOCALLY_COMPACT_LOCALLY_PATH_CONNECTED_EQ_LOCALLY_CONNECTED LOCALLY_COMPACT_LOCALLY_PATH_CONNECTED_EQ_LOCALLY_CONNECTED_EUCLIDEAN
+// Source hash: md5:b92be18c58d4194aa3141dadddc0591b
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem LOCALLY_COMPACT_LOCALLY_PATH_CONNECTED_EQ_LOCALLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s -> (locally N {x :e Power (R :^: idx N) | path_connected N x} s <-> locally N {x :e Power (R :^: idx N) | connected N x} s).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:12004 / LOCALLY_PATH_CONNECTED_CLOSURE_FROM_FRONTIER
@@ -3170,6 +3822,18 @@ Admitted.
 Theorem OUTSIDE_SAME_COMPONENT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x y :e R :^: idx N, connected_component N ((R :^: idx N) :\: s) x y /\ x :e outside N s -> y :e outside N s.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:15684 / CONNECTED_COMPONENT_INSIDE
+// Source hash: md5:fc0b145b41e239609e0e8ba175e42e37
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_COMPONENT_INSIDE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a x :e R :^: idx N, connected_component N (inside N s) a x <-> (a :e inside N s -> connected_component N ((R :^: idx N) :\: s) a x) /\ (~ a :e inside N s -> x :e Empty).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:15698 / CONNECTED_COMPONENT_OUTSIDE
+// Source hash: md5:8bca0d6cc41fd2f3d4c429067b9d0f8c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem CONNECTED_COMPONENT_OUTSIDE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a x :e R :^: idx N, connected_component N (outside N s) a x <-> (a :e outside N s -> connected_component N ((R :^: idx N) :\: s) a x) /\ (~ a :e outside N s -> x :e Empty).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:15712 / BOUNDED_COMPONENTS_INSIDE
 // Source hash: md5:4d4c9926b3a2c0e27f294ab1d82828ca
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -3332,6 +3996,12 @@ Admitted.
 Theorem BOUNDED_WITH_INSIDE : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> bounded_hl N (s :\/: inside N s).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:15977 / COMPACT_WITH_INSIDE
+// Source hash: md5:40f084d0c829a306618471e983eb5915
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem COMPACT_WITH_INSIDE : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s -> compact N (s :\/: inside N s).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:15982 / INSIDE_COMPLEMENT_UNBOUNDED_CONNECTED_EMPTY
 // Source hash: md5:f217294fe2ba02e3a0f858d7b34a71a7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
@@ -3366,6 +4036,30 @@ Admitted.
 // Source hash: md5:86cef4f307ff9b89ffbb3d4008c1bd19
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem OUTSIDE_BOUNDED_NONEMPTY : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> ~ outside N s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:16053 / OUTSIDE_COMPACT_IN_OPEN
+// Source hash: md5:133a06ce718520f6c11182d891625b15
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem OUTSIDE_COMPACT_IN_OPEN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (open N t /\ (s c= t /\ ~ t = Empty)) -> ~ outside N s :/\: t = Empty.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:16117 / INSIDE_INSIDE_COMPACT_CONNECTED
+// Source hash: md5:972ce55420a2e627a1f5d3087c711eb3
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INSIDE_INSIDE_COMPACT_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (compact N t /\ (s c= inside N t /\ connected N t)) -> inside N s c= inside N t.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:16158 / INSIDE_SELF_OUTSIDE_COMPACT_CONNECTED
+// Source hash: md5:21f365ac23a22cc2505de8d66f87dc68
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INSIDE_SELF_OUTSIDE_COMPACT_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (compact N t /\ (s c= inside N t /\ connected N t)) -> t :\/: outside N t c= outside N s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:16166 / INSIDE_OUTSIDE_COMPACT_CONNECTED
+// Source hash: md5:a3c11d5b27c185f11c3aceefe811501c
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INSIDE_OUTSIDE_COMPACT_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (compact N t /\ (s c= inside N t /\ connected N t)) -> t c= outside N s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:16174 / CONNECTED_WITH_INSIDE
@@ -3632,16 +4326,82 @@ Admitted.
 Theorem HOMOTOPIC_PATHS_SUBSET : forall A:set, A <> Empty -> forall t s c= R :^: idx A, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> homotopic_paths A s p q /\ s c= t -> homotopic_paths A t p q.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:17558 / HOMOTOPIC_JOIN_LEMMA
+// Source hash: md5:d9ad621e26bd3123196b8b75f990e5ab
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_JOIN_LEMMA : forall N:set, N <> Empty -> forall p:set -> set -> set, (forall x y :e R :^: idx 1, p x y :e R :^: idx N) -> forall q:set -> set -> set, (forall x y :e R :^: idx 1, q x y :e R :^: idx N) -> continuous_on_hl (idx_n 2) N (fun y:set => p (fstcart 1 y) (sndcart 1 1 y)) (\/_ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil), {pastecart 1 1 x y | y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)}) /\ (continuous_on_hl (idx_n 2) N (fun y:set => q (fstcart 1 y) (sndcart 1 1 y)) (\/_ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil), {pastecart 1 1 x y | y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)}) /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> pathfinish N (p t) = pathstart N (q t))) -> continuous_on_hl (idx_n 2) N (fun y:set => poly_add (R :^: idx N) (p (fstcart 1 y)) (q (fstcart 1 y)) (sndcart 1 1 y)) (\/_ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil), {pastecart 1 1 x y | y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)}).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:17602 / HOMOTOPIC_PATHS_REVERSEPATH
 // Source hash: md5:e383a0d46bbed0e8b1cde74bd55899a1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem HOMOTOPIC_PATHS_REVERSEPATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> (homotopic_paths N s (fun x:set => reversepath N p x) (fun x:set => reversepath N q x) <-> homotopic_paths N s p q).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:17641 / HOMOTOPIC_PATHS_JOIN
+// Source hash: md5:4980d825e95f0bbd722c598d4b96388e
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_PATHS_JOIN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall p':set -> set, (forall x :e R :^: idx 1, p' x :e R :^: idx N) -> forall q':set -> set, (forall x :e R :^: idx 1, q' x :e R :^: idx N) -> homotopic_paths N s p p' /\ (homotopic_paths N s q q' /\ pathfinish N p = pathstart N q) -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) p' q' x).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:17675 / HOMOTOPIC_PATHS_CONTINUOUS_IMAGE
 // Source hash: md5:c2191f25f9f47e18dd44ac5cfab3f0d5
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem HOMOTOPIC_PATHS_CONTINUOUS_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, homotopic_paths M s f g /\ (continuous_on_hl M N h s /\ {h x | x :e s} c= t) -> homotopic_paths N t (fun x:set => h (f x)) (fun x:set => h (g x)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17692 / HOMOTOPIC_PATHS_RID
+// Source hash: md5:30778bf6c64c44f05c1c43e290e5444c
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_PATHS_RID : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> path A p /\ path_image A p c= s -> homotopic_paths A s (fun x:set => poly_add (R :^: idx A) p (fun x0:set => linepath A (pathfinish A p,pathfinish A p) x0) x) p.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17719 / HOMOTOPIC_PATHS_LID
+// Source hash: md5:57ae2c50e2f0f7aa6ea857abdd0c9d2a
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_PATHS_LID : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) (fun x0:set => linepath N (pathstart N p,pathstart N p) x0) p x) p.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17734 / HOMOTOPIC_PATHS_ASSOC
+// Source hash: md5:6417b820658c87a5239245346ffdbcae
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_PATHS_ASSOC : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ (path N q /\ (path_image N q c= s /\ (path N r /\ (path_image N r c= s /\ (pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r)))))) -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17783 / HOMOTOPIC_PATHS_RINV
+// Source hash: md5:fb7b0319dc99d2f02d11bee00d97ea64
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_PATHS_RINV : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => reversepath N p x0) x) (fun x:set => linepath N (pathstart N p,pathstart N p) x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17865 / HOMOTOPIC_PATHS_LINV
+// Source hash: md5:31a1b0783fcef04387e26b9333cfa7f1
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_PATHS_LINV : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) (fun x0:set => reversepath N p x0) p x) (fun x:set => linepath N (pathfinish N p,pathfinish N p) x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17877 / HOMOTOPIC_PATHS_LCANCEL
+// Source hash: md5:a763e21a16d2709f6bff7df9b9b13e2a
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_PATHS_LCANCEL : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) p r x) /\ (pathstart N q = pathfinish N p /\ pathstart N r = pathfinish N p) -> homotopic_paths N s q r.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17914 / HOMOTOPIC_PATHS_LCANCEL_EQ
+// Source hash: md5:a3eee9b799a86bf10cdaa1c70abb4c60
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_PATHS_LCANCEL_EQ : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, pathstart N q = pathfinish N p /\ pathstart N r = pathfinish N p -> (homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) p r x) <-> path N p /\ (path_image N p c= s /\ homotopic_paths N s q r)).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17927 / HOMOTOPIC_PATHS_RCANCEL
+// Source hash: md5:eb2bfc82e125f391f3326d10691ec20b
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_PATHS_RCANCEL : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p r x) (fun x:set => poly_add (R :^: idx N) q r x) /\ (pathfinish N p = pathstart N r /\ pathfinish N q = pathstart N r) -> homotopic_paths N s p q.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:17965 / HOMOTOPIC_PATHS_RCANCEL_EQ
+// Source hash: md5:4c61c8efefa29ad3ccd2a101534c8465
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_PATHS_RCANCEL_EQ : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, pathfinish N p = pathstart N r /\ pathfinish N q = pathstart N r -> (homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p r x) (fun x:set => poly_add (R :^: idx N) q r x) <-> homotopic_paths N s p q /\ (path N r /\ path_image N r c= s)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17982 / homotopic_loops
@@ -3726,6 +4486,12 @@ Admitted.
 // Source hash: md5:5a955ad0e45eb188bca0645509f97cfc
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem HOMOTOPIC_LOOPS_IMP_HOMOTOPIC_PATHS_NULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall a :e R :^: idx N, homotopic_loops N s p (fun x:set => linepath N (a,a) x) -> homotopic_paths N s p (fun x:set => linepath N (pathstart N p,pathstart N p) x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:18299 / HOMOTOPIC_LOOPS_CONJUGATE
+// Source hash: md5:846771b96180bdbd2dbcfa96e3e4783f
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_LOOPS_CONJUGATE : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall s c= R :^: idx N, path N p /\ (path_image N p c= s /\ (path N q /\ (path_image N q c= s /\ (pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N q)))) -> homotopic_loops N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q (fun x1:set => reversepath N p x1) x0) x) q.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18397 / PATH_COMPONENT_IMP_HOMOTOPIC_POINTS
@@ -3818,10 +4584,28 @@ Admitted.
 Theorem COHOMOTOPICALLY_TRIVIAL_RETRACTION_NULL_GEN : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall P0 c= R :^: idx P :^: (R :^: idx M), forall Q c= R :^: idx P :^: (R :^: idx N), forall s c= R :^: idx M, forall t c= R :^: idx N, forall u c= R :^: idx P, forall h:set -> set, (forall x :e R :^: idx M, h x :e R :^: idx N) -> forall k:set -> set, (forall x :e R :^: idx N, k x :e R :^: idx M) -> continuous_on_hl M N h s /\ ({h x | x :e s} = t /\ (continuous_on_hl N M k t /\ ({k x | x :e t} c= s /\ ((forall y :e R :^: idx N, y :e t -> h (k y) = y) /\ ((forall f :e R :^: idx P :^: (R :^: idx N), continuous_on_hl N P (fun x:set => f x) t /\ ({f x | x :e t} c= u /\ f :e Q) -> (fun x :e R :^: idx M => f (h x)) :e P0) /\ ((forall f :e R :^: idx P :^: (R :^: idx M), continuous_on_hl M P (fun x:set => f x) s /\ ({f x | x :e s} c= u /\ f :e P0) -> (fun x :e R :^: idx N => f (k x)) :e Q) /\ (forall h0 k0 :e R :^: idx P :^: (R :^: idx N), (forall x :e R :^: idx N, x :e t -> h0 x = k0 x) -> (h0 :e Q <-> k0 :e Q)))))))) /\ (forall f :e R :^: idx P :^: (R :^: idx M), continuous_on_hl M P (fun x:set => f x) s /\ ({f x | x :e s} c= u /\ f :e P0) -> exists c :e R :^: idx P, homotopic_with (R :^: idx P) (R :^: idx M) P0 (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx P) (euclidean P) u) (fun x:set => f x) (fun x:set => c)) -> forall f :e R :^: idx P :^: (R :^: idx N), continuous_on_hl N P (fun x:set => f x) t /\ ({f x | x :e t} c= u /\ f :e Q) -> exists c :e R :^: idx P, homotopic_with (R :^: idx P) (R :^: idx N) Q (subtopology (R :^: idx N) (euclidean N) t,subtopology (R :^: idx P) (euclidean P) u) (fun x:set => f x) (fun x:set => c).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:18845 / HOMOTOPIC_JOIN_SUBPATHS
+// Source hash: md5:5aec29f3efa4035bb7d75c9239ca13a4
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_JOIN_SUBPATHS : forall N:set, N <> Empty -> forall u v w :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (path_image N g c= s /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ w :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)))) -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) (fun x0:set => subpath (R :^: idx N) u v g x0) (fun x0:set => subpath (R :^: idx N) v w g x0) x) (fun x:set => subpath (R :^: idx N) u w g x).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:18992 / HOMOTOPIC_LOOPS_SHIFTPATH
 // Source hash: md5:b97d0a6f9196150ea3ea1bd378448ca0
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
 Theorem HOMOTOPIC_LOOPS_SHIFTPATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall u :e R :^: idx 1, homotopic_loops N s p q /\ u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> homotopic_loops N s (fun x:set => shiftpath N u p x) (fun x:set => shiftpath N u q x).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:19054 / HOMOTOPIC_PATHS_LOOP_PARTS
+// Source hash: md5:c336059f8c013a3e5849ff282bae4eee
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
+Theorem HOMOTOPIC_PATHS_LOOP_PARTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall a :e R :^: idx N, homotopic_loops N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => reversepath N q x0) x) (fun x:set => linepath N (a,a) x) /\ path N q -> homotopic_paths N s p q.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:19102 / HOMOTOPIC_LOOPS_ADD_SYM
+// Source hash: md5:3bce84cb59d5619999f3373368af2c89
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem HOMOTOPIC_LOOPS_ADD_SYM : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ (path N q /\ (path_image N q c= s /\ (pathfinish N q = pathstart N q /\ pathstart N q = pathstart N p))))) -> homotopic_loops N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) q p x).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19142 / simply_connected
@@ -4484,6 +5268,12 @@ Admitted.
 Theorem HOMEOMORPHIC_CLOSED_IN_CONVEX : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, aff_dim M s < dimindex N -> exists u t c= R :^: idx N, convex N u /\ (~ u = Empty /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) t /\ homeomorphic N M s t)).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:21746 / LOCALLY_COMPACT_HOMEOMORPHIC_CLOSED
+// Source hash: md5:4841e57552bfa92c04594d757ae8872c
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_lt_SNoLt)
+Theorem LOCALLY_COMPACT_HOMEOMORPHIC_CLOSED : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, locally M {x :e Power (R :^: idx M) | compact M x} s /\ dimindex M < dimindex N -> exists t c= R :^: idx N, closed N t /\ homeomorphic N M s t.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:21795 / SIMPLY_CONNECTED_UNION
 // Source hash: md5:82f6248003fdfa6f7a9e80edf8af2ed5
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_topology)
@@ -4802,6 +5592,12 @@ Admitted.
 Theorem LARGE_INDUCTIVE_DIMENSION : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall n :e int, dimension N s <= n <-> (s = Empty -> - 1 <= n) /\ (~ s = Empty -> forall c d c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) c /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) d /\ c :/\: d = Empty) -> exists b c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) b /\ (dimension N b <= n + - 1 /\ exists u v c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (v :e subtopology (R :^: idx N) (euclidean N) s /\ (u :/\: v = Empty /\ (u :\/: v = s :\: b /\ (c c= u /\ d c= v)))))).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:23748 / TINY_INDUCTIVE_DIMENSION
+// Source hash: md5:a1b57f0928d458d91e9bb6b5076f2390
+// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_real_R, hol_typedef_topology, omega_Subq_int)
+Theorem TINY_INDUCTIVE_DIMENSION : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall n :e int, locally N {x :e Power (R :^: idx N) | compact N x} s -> (dimension N s <= n <-> (s = Empty -> - 1 <= n) /\ (~ s = Empty -> 0 <= n /\ forall x y :e R :^: idx N, x :e s /\ (y :e s /\ ~ x = y) -> exists b c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) b /\ (dimension N b <= n + - 1 /\ exists u v c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (v :e subtopology (R :^: idx N) (euclidean N) s /\ (u :/\: v = Empty /\ (u :\/: v = s :\: b /\ (x :e u /\ y :e v))))))).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:23907 / DIMENSION_LE_RATIONAL_COORDINATES
 // Source hash: md5:1d541aa2d169c09cf0e5f792039f0eed
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_has_size_equip, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
@@ -4898,6 +5694,12 @@ Admitted.
 Theorem COVERING_SPACE_LOCALLY_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall P c= Power (R :^: idx M), forall Q c= Power (R :^: idx N), forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s /\ ((forall t c= R :^: idx M, t c= c /\ t :e P -> {p x | x :e t} :e Q) /\ (forall q:set -> set, (forall x :e R :^: idx N, q x :e R :^: idx M) -> forall u c= R :^: idx N, u c= s /\ (continuous_on_hl N M q u /\ u :e Q) -> {q x | x :e u} :e P)) -> (locally N Q s <-> locally M P c).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:24299 / COVERING_SPACE_LOCALLY_COMPACT_EQ
+// Source hash: md5:d7ffe82d6b364b16969cbc50dd8f459d
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
+Theorem COVERING_SPACE_LOCALLY_COMPACT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s -> (locally N {x :e Power (R :^: idx N) | compact N x} s <-> locally M {x :e Power (R :^: idx M) | compact M x} c).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:24308 / COVERING_SPACE_LOCALLY_CONNECTED_EQ
 // Source hash: md5:3045b81ef30ee9291abb8b56085907dc
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
@@ -4908,6 +5710,12 @@ Admitted.
 // Source hash: md5:c50e3bde6f78a698509a1bafa12c8fc6
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem COVERING_SPACE_LOCALLY_PATH_CONNECTED_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s -> (locally N {x :e Power (R :^: idx N) | path_connected N x} s <-> locally M {x :e Power (R :^: idx M) | path_connected M x} c).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:24326 / COVERING_SPACE_LOCALLY_COMPACT
+// Source hash: md5:40af38c14528118acbc7dbc557264df9
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
+Theorem COVERING_SPACE_LOCALLY_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s /\ locally M {x :e Power (R :^: idx M) | compact M x} c -> locally N {x :e Power (R :^: idx N) | compact N x} s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:24332 / COVERING_SPACE_LOCALLY_CONNECTED
@@ -5072,6 +5880,12 @@ Admitted.
 Theorem COVERING_SPACE_COUNTABLE_SHEETS : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall b :e R :^: idx N, covering_space M N (c,p) s -> countable {x :e R :^: idx M | x :e c /\ p x = b}.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:25893 / COVERING_SPACE_FINITE_EQ_COMPACT_FIBRE
+// Source hash: md5:fe5b884424e36192fd854d9e8f2cee5d
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R)
+Theorem COVERING_SPACE_FINITE_EQ_COMPACT_FIBRE : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall b :e R :^: idx N, covering_space M N (c,p) s -> (finite {x :e R :^: idx M | x :e c /\ p x = b} <-> compact M {x :e R :^: idx M | x :e c /\ p x = b}).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:25915 / COVERING_SPACE_CLOSED_MAP
 // Source hash: md5:18e4620b944704f3a2e987514e41cddf
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R, hol_typedef_topology)
@@ -5090,16 +5904,70 @@ Admitted.
 Theorem COVERING_SPACE_FINITE_SHEETS_EQ_CLOSED_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s /\ (connected N s /\ ~ (exists a :e R :^: idx N, s = {a})) -> ((forall b :e R :^: idx N, b :e s -> finite {x :e R :^: idx M | x :e c /\ p x = b}) <-> forall t c= R :^: idx M, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) c) t -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) {p x | x :e t}).
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:26111 / COVERING_SPACE_FINITE_SHEETS_EQ_PROPER_MAP
+// Source hash: md5:f292407c60647f6de73f0e7571379e3f
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R)
+Theorem COVERING_SPACE_FINITE_SHEETS_EQ_PROPER_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s -> ((forall b :e R :^: idx N, b :e s -> finite {x :e R :^: idx M | x :e c /\ p x = b}) <-> forall k c= R :^: idx N, k c= s /\ compact N k -> compact M {x :e R :^: idx M | x :e c /\ p x :e k}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26130 / COVERING_SPACE_FINITE_SHEETS
+// Source hash: md5:67f13f3d9a10109a0255d486de95ad8b
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R)
+Theorem COVERING_SPACE_FINITE_SHEETS : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall b :e R :^: idx N, covering_space M N (c,p) s /\ compact M c -> finite {x :e R :^: idx M | x :e c /\ p x = b}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26137 / COVERING_SPACE_COMPACT
+// Source hash: md5:001e5097d77a8a5c0389ddc5c667e90b
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R)
+Theorem COVERING_SPACE_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, covering_space M N (c,p) s -> (compact M c <-> compact N s /\ forall b :e R :^: idx N, b :e s -> finite {x :e R :^: idx M | x :e c /\ p x = b}).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26156 / PROPER_LOCAL_HOMEOMORPHISM_IMP_COVERING_MAP
+// Source hash: md5:9c7f9b12282ec91bf817097cbe98ee44
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem PROPER_LOCAL_HOMEOMORPHISM_IMP_COVERING_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, {p x | x :e c} = s /\ ((forall k c= R :^: idx N, k c= s /\ compact N k -> compact M {x :e R :^: idx M | x :e c /\ p x :e k}) /\ (forall x :e R :^: idx M, x :e c -> exists t c= R :^: idx M, exists u c= R :^: idx N, exists q :e R :^: idx M :^: (R :^: idx N), x :e t /\ (t :e subtopology (R :^: idx M) (euclidean M) c /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ homeomorphism M N (t,u) (p,q))))) -> covering_space M N (c,p) s.
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:26461 / CLOSED_LOCAL_HOMEOMORPHISM_IMP_COVERING_MAP
 // Source hash: md5:cc91992a5c366ac64415d7c4e60947a3
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
 Theorem CLOSED_LOCAL_HOMEOMORPHISM_IMP_COVERING_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, (forall x :e R :^: idx M, (forall x0 :e R :^: idx M, connected_component M c x x0 <-> x0 :e SetAdjoin Empty x) -> c = {x}) /\ ({p x | x :e c} = s /\ ((forall k c= R :^: idx M, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) c) k -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) {p x | x :e k}) /\ (forall x :e R :^: idx M, x :e c -> exists t c= R :^: idx M, exists u c= R :^: idx N, exists q :e R :^: idx M :^: (R :^: idx N), x :e t /\ (t :e subtopology (R :^: idx M) (euclidean M) c /\ (u :e subtopology (R :^: idx N) (euclidean N) s /\ homeomorphism M N (t,u) (p,q)))))) -> covering_space M N (c,p) s.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:26479 / PROPER_LOCAL_HOMEOMORPHISM_GLOBAL
+// Source hash: md5:6467d7fc2579e9ec4c9dcb00ee55f7ca
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem PROPER_LOCAL_HOMEOMORPHISM_GLOBAL : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall t c= R :^: idx N, path_connected M s /\ (simply_connected N t /\ ((s = Empty -> t = Empty) /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) /\ (forall x :e R :^: idx M, x :e s -> exists u c= R :^: idx M, exists v c= R :^: idx N, exists q :e R :^: idx M :^: (R :^: idx N), x :e u /\ (u :e subtopology (R :^: idx M) (euclidean M) s /\ (v :e subtopology (R :^: idx N) (euclidean N) t /\ homeomorphism M N (u,v) (f,q))))))) -> exists g :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (s,t) (f,g).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:26511 / CLOSED_LOCAL_HOMEOMORPHISM_GLOBAL
 // Source hash: md5:aa518ba9f336da1e62270d73a0b4aa0d
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
 Theorem CLOSED_LOCAL_HOMEOMORPHISM_GLOBAL : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall t c= R :^: idx N, path_connected M s /\ (simply_connected N t /\ ((s = Empty -> t = Empty) /\ ((forall c c= R :^: idx M, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) c -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) t) {f x | x :e c}) /\ (forall x :e R :^: idx M, x :e s -> exists u c= R :^: idx M, exists v c= R :^: idx N, exists g :e R :^: idx M :^: (R :^: idx N), x :e u /\ (u :e subtopology (R :^: idx M) (euclidean M) s /\ (v :e subtopology (R :^: idx N) (euclidean N) t /\ homeomorphism M N (u,v) (f,g))))))) -> exists g :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (s,t) (f,g).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26544 / PROPER_LOCALLY_INJECTIVE_OPEN_IMP_COVERING_MAP
+// Source hash: md5:1c48cb74c0ee269df830ad7a009a0b7c
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem PROPER_LOCALLY_INJECTIVE_OPEN_IMP_COVERING_MAP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, continuous_on_hl M N (fun x:set => p x) c /\ ({p x | x :e c} = s /\ ((forall k c= R :^: idx N, k c= s /\ compact N k -> compact M {x :e R :^: idx M | x :e c /\ p x :e k}) /\ ((forall u c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) c -> {p x | x :e u} :e subtopology (R :^: idx N) (euclidean N) s) /\ (forall x :e R :^: idx M, x :e c -> exists t c= R :^: idx M, x :e t /\ (t :e subtopology (R :^: idx M) (euclidean M) c /\ forall y z :e R :^: idx M, y :e t /\ (z :e t /\ p y = p z) -> y = z))))) -> covering_space M N (c,p) s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26573 / PROPER_LOCALLY_INJECTIVE_OPEN_IMP_COVERING_MAP_GEN
+// Source hash: md5:8436c3290bce1b784ddf5873da958b59
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem PROPER_LOCALLY_INJECTIVE_OPEN_IMP_COVERING_MAP_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, continuous_on_hl M N (fun x:set => p x) c /\ ({p x | x :e c} = s /\ ((forall k c= R :^: idx N, k c= s /\ compact N k -> compact M {x :e R :^: idx M | x :e c /\ p x :e k}) /\ ((forall u c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) c -> {x :e R :^: idx M | x :e c /\ p x :e {p x0 | x0 :e u}} :e subtopology (R :^: idx M) (euclidean M) c) /\ (forall x :e R :^: idx M, x :e c -> exists t c= R :^: idx M, x :e t /\ (t :e subtopology (R :^: idx M) (euclidean M) c /\ forall y z :e R :^: idx M, y :e t /\ (z :e t /\ p y = p z) -> y = z))))) -> covering_space M N (c,p) s.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26590 / PROPER_LOCALLY_INJECTIVE_OPEN_IMP_HOMEOMORPHISM
+// Source hash: md5:7f43adff2f393beea717a635e77d3aee
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem PROPER_LOCALLY_INJECTIVE_OPEN_IMP_HOMEOMORPHISM : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall t c= R :^: idx N, path_connected M s /\ (simply_connected N t /\ (continuous_on_hl M N (fun x:set => f x) s /\ ({f x | x :e s} = t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) /\ ((forall u c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) s -> {f x | x :e u} :e subtopology (R :^: idx N) (euclidean N) t) /\ (forall x :e R :^: idx M, x :e s -> exists u c= R :^: idx M, x :e u /\ (u :e subtopology (R :^: idx M) (euclidean M) s /\ forall y z :e R :^: idx M, y :e u /\ (z :e u /\ f y = f z) -> y = z))))))) -> exists g :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (s,t) (f,g).
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:26606 / PROPER_LOCALLY_INJECTIVE_OPEN_IMP_HOMEOMORPHISM_GEN
+// Source hash: md5:cc8fae3d37fb19a31e53b009e27da9e5
+// Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
+Theorem PROPER_LOCALLY_INJECTIVE_OPEN_IMP_HOMEOMORPHISM_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx M, forall t c= R :^: idx N, path_connected M s /\ (simply_connected N t /\ (continuous_on_hl M N (fun x:set => f x) s /\ ({f x | x :e s} = t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) /\ ((forall u c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) s -> {x :e R :^: idx M | x :e s /\ f x :e {f x0 | x0 :e u}} :e subtopology (R :^: idx M) (euclidean M) s) /\ (forall x :e R :^: idx M, x :e s -> exists u c= R :^: idx M, x :e u /\ (u :e subtopology (R :^: idx M) (euclidean M) s /\ forall y z :e R :^: idx M, y :e u /\ (z :e u /\ f y = f z) -> y = z))))))) -> exists g :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (s,t) (f,g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:26627 / UNIVERSAL_COVERING_SPACE
@@ -5210,6 +6078,12 @@ Admitted.
 Theorem HOMEOMORPHIC_CONVEX_SETS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (convex N t /\ homeomorphic N M s t) -> aff_dim M s = aff_dim N t.
 Admitted.
 
+// HOL Light: Multivariate/paths.ml:27487 / HOMEOMORPHIC_CONVEX_COMPACT_SETS_EQ
+// Source hash: md5:4c558d459262d5c80c74fb957b9e61eb
+// Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_real_R)
+Theorem HOMEOMORPHIC_CONVEX_COMPACT_SETS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (compact M s /\ (convex N t /\ compact N t)) -> (homeomorphic N M s t <-> aff_dim M s = aff_dim N t).
+Admitted.
+
 // HOL Light: Multivariate/paths.ml:27493 / INVARIANCE_OF_DOMAIN_GEN
 // Source hash: md5:beb3c786cba34c605afc7ad8f7056703
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
@@ -5226,6 +6100,12 @@ Admitted.
 // Source hash: md5:9f0c9619b9fedd28ca5c5e3f2cef0414
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem CONTINUOUS_ON_INVERSE_OPEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall s c= R :^: idx M, dimindex N <= dimindex M /\ (continuous_on_hl M N f s /\ (open M s /\ (forall x :e R :^: idx M, x :e s -> g (f x) = x))) -> continuous_on_hl N M g {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/paths.ml:27532 / CONTINUOUS_ON_INVERSE_INTO_1D
+// Source hash: md5:a11c8cc5e1d7b37c65ed6f2fc0d7a299
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem CONTINUOUS_ON_INVERSE_INTO_1D : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, forall t c= R :^: idx 1, continuous_on_hl N 1 f s /\ ((path_connected N s \/ (connected N s /\ (locally N {x :e Power (R :^: idx N) | compact N x} s \/ locally N {x :e Power (R :^: idx N) | connected N x} s) \/ (compact N s \/ open N s))) /\ ({f x | x :e s} = t /\ (forall x :e R :^: idx N, x :e s -> g (f x) = x))) -> continuous_on_hl 1 N g t.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:27684 / INVARIANCE_OF_DOMAIN_HOMEOMORPHISM

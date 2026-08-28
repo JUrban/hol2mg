@@ -51,7 +51,7 @@
     ]
   ],
   "mapping_files": [
-    [ "mappings/core.json", "d77603903b0b61cbddac65534b8050a4" ],
+    [ "mappings/core.json", "3103ffca6d4cc5827ee63ad4e8283557" ],
     [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ]
   ],
   "signature": "God1.mgs",
@@ -46333,16 +46333,16 @@
       "source_name": "cong",
       "aliases": [ "cong" ],
       "hash": "d0373dc2bc02e675cdb61c053cc647b6",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "int",
       "src_file": "int.ml",
       "src_line": 1163,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant == : A->A->(A->A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall rel:set -> set -> prop, forall x y :e A, rel x y <-> rel x y"
     },
     {
       "name": "coprime",
