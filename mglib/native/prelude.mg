@@ -51,9 +51,36 @@ Definition even_nat : set -> prop := fun n => exists k :e omega, n = 2 * k.
 Definition odd_nat : set -> prop := fun n => exists k :e omega, n = 2 * k + 1.
 
 
+
+// nonnegative integers are natural numbers
+Theorem int_nonneg_omega : forall x :e int, 0 <= x -> x :e omega.
+let x. assume Hx: x :e int. assume H0: 0 <= x.
+apply (int_3_cases x Hx (x :e omega)).
+- let m. assume Hm: m :e omega. assume Hxm: x = - ordsucc m.
+  claim L1: 0 < ordsucc m.
+  { exact (ordinal_In_SNoLt (ordsucc m) (nat_p_ordinal (ordsucc m) (nat_ordsucc m (omega_nat_p m Hm))) 0 (nat_0_in_ordsucc m (omega_nat_p m Hm))). }
+  claim L3: - ordsucc m < - 0.
+  { exact (minus_SNo_Lt_contra 0 (ordsucc m) SNo_0 (omega_SNo (ordsucc m) (omega_ordsucc m Hm)) L1). }
+  claim L2: - ordsucc m < 0.
+  { rewrite <- minus_SNo_0 at 1. exact L3. }
+  claim L4: x < 0. { rewrite Hxm. exact L2. }
+  exact (FalseE (SNoLt_irref 0 (SNoLeLt_tra 0 x 0 SNo_0 (int_SNo x Hx) SNo_0 H0 L4)) (x :e omega)).
+- assume H: x = 0. rewrite H. exact (nat_p_omega 0 nat_0).
+- let m. assume Hm: m :e omega. assume H: x = ordsucc m. rewrite H. exact (omega_ordsucc m Hm).
+Qed.
+
 // closure facts (to be proved)
 Theorem minus_nat_omega : forall m n :e omega, minus_nat m n :e omega.
-Admitted.
+let m. assume Hm: m :e omega. let n. assume Hn: n :e omega.
+prove (if n <= m then m + - n else 0) :e omega.
+apply (xm (n <= m)).
+- assume H: n <= m. rewrite (If_i_1 (n <= m) (m + - n) 0 H).
+  apply (int_nonneg_omega (m + - n)).
+  + exact (int_add_SNo m (Subq_omega_int m Hm) (- n) (int_minus_SNo_omega n Hn)).
+  + claim L: 0 + n <= m. { rewrite (add_SNo_0L n (omega_SNo n Hn)). exact H. }
+    exact (add_SNo_minus_Le2b m n 0 (omega_SNo m Hm) (omega_SNo n Hn) SNo_0 L).
+- assume H: ~ (n <= m). rewrite (If_i_0 (n <= m) (m + - n) 0 H). exact (nat_p_omega 0 nat_0).
+Qed.
 Theorem nat_pred_omega : forall n :e omega, nat_pred n :e omega.
 let n. assume Hn: n :e omega.
 apply (nat_inv n (omega_nat_p n Hn)).
