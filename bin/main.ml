@@ -77,11 +77,7 @@ let () =
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
       Emptycase.rules := List.map (fun (l, r, _) -> (l, r)) reg.Registry.empty_rules;
       Rewrite.rules := reg.Registry.rewrite_rules;
-      Hashtbl.iter (fun _ es -> List.iter (fun (e : Registry.const_entry) ->
-        match e.Registry.c_result, e.Registry.c_template with
-        | (Registry.RMetaFun _ | Registry.RMetaPred _), t ->
-            (match Mg.strip_app t [] with (Mg.Cst c, _) -> Hashtbl.replace Rewrite.meta_consts c () | _ -> ())
-        | _ -> ()) es) reg.Registry.consts;
+      (* hand-mapped constants have unknown Megalodon arities: no eta through them *)
       let srcindex = read_srcindex (opt "--srcindex") in
       (* names of theorems whose proposition Megalodon reported as already known (two-pass reuse) *)
       let known = Hashtbl.create 64 in
@@ -159,9 +155,7 @@ let () =
                      (match with_alarm gen with
                       | Ok ad ->
                           if not (has_override c) then Elab.register_auto reg ad;
-                          (match ad.Elab.ad_result with
-                           | Registry.RMetaFun _ | Registry.RMetaPred _ -> Hashtbl.replace Rewrite.meta_consts ad.Elab.ad_target ()
-                           | _ -> ());
+                          Hashtbl.replace Rewrite.meta_consts ad.Elab.ad_target (Rewrite.arity_of_mty ad.Elab.ad_type);
                           Hashtbl.replace Mg.sig_names tg ();
                           auto_defs := (ad, d) :: !auto_defs; order := `D ad :: !order; progress := true; false
                       | Error m -> Hashtbl.replace last_err c m; true)

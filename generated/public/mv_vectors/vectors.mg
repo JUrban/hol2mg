@@ -965,13 +965,13 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:1216 / NEUTRAL_VECTOR_ADD
 // Source hash: md5:7780604b5d4931db54f5a0936fdb618f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem NEUTRAL_VECTOR_ADD : forall N:set, N <> Empty -> neutral_of (R :^: idx N) (fun a:set => fun b:set => vector_add N a b) = vec N 0.
+Theorem NEUTRAL_VECTOR_ADD : forall N:set, N <> Empty -> neutral_of (R :^: idx N) (vector_add N) = vec N 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1222 / MONOIDAL_VECTOR_ADD
 // Source hash: md5:8c41d8534583d876fa0983cf0279eb76
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem MONOIDAL_VECTOR_ADD : forall N:set, N <> Empty -> (forall x y :e R :^: idx N, vector_add N x y = vector_add N y x) /\ (forall x y z :e R :^: idx N, vector_add N x (vector_add N y z) = vector_add N (vector_add N x y) z) /\ forall x :e R :^: idx N, vector_add N (neutral_of (R :^: idx N) (fun a:set => fun b:set => vector_add N a b)) x = x.
+Theorem MONOIDAL_VECTOR_ADD : forall N:set, N <> Empty -> (forall x y :e R :^: idx N, vector_add N x y = vector_add N y x) /\ (forall x y z :e R :^: idx N, vector_add N x (vector_add N y z) = vector_add N (vector_add N x y) z) /\ forall x :e R :^: idx N, vector_add N (neutral_of (R :^: idx N) (vector_add N)) x = x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1227 / vsum
@@ -989,7 +989,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:1239 / VSUM
 // Source hash: md5:077f0c3d8fba88f08ad22949fce322fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_iterate, hol_real_R)
-Theorem VSUM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s f = iterate_op (R :^: idx B) (fun a:set => fun b:set => vector_add B a b) s f.
+Theorem VSUM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s f = iterate_op (R :^: idx B) (vector_add B) s f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1245 / VSUM_EQ_0
@@ -1097,7 +1097,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:1329 / VSUM_UNIV
 // Source hash: md5:0c3df713505fcfa5fa350ce7b529ec97
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_real_R)
-Theorem VSUM_UNIV : forall A N:set, N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx N) -> forall s c= A, {x :e A | f x <> neutral_of (R :^: idx N) (fun a:set => fun b:set => vector_add N a b)} c= s -> vsum A N s f = vsum A N A f.
+Theorem VSUM_UNIV : forall A N:set, N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx N) -> forall s c= A, {x :e A | f x <> neutral_of (R :^: idx N) (vector_add N)} c= s -> vsum A N s f = vsum A N A f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1336 / VSUM_EQ_SUPERSET
@@ -1805,7 +1805,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:2198 / LINEAR_NEGATION
 // Source hash: md5:55c0379c34824a8dde094e27cf754430
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LINEAR_NEGATION : forall A:set, A <> Empty -> linear A A (fun x:set => vector_neg A x).
+Theorem LINEAR_NEGATION : forall A:set, A <> Empty -> linear A A (vector_neg A).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2202 / LINEAR_COMPOSE_VSUM
@@ -2915,7 +2915,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:3408 / MATRIX_VECTOR_MUL_LINEAR
 // Source hash: md5:80b1d65811fdd0d1422057f25d607077
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem MATRIX_VECTOR_MUL_LINEAR : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, linear N M (fun x:set => matrix_vector_mul M N A x).
+Theorem MATRIX_VECTOR_MUL_LINEAR : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, linear N M (matrix_vector_mul M N A).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3416 / MATRIX_WORKS
@@ -2933,7 +2933,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:3428 / MATRIX_OF_MATRIX_VECTOR_MUL
 // Source hash: md5:ad70384934155ccdf8234fbf2af812d9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem MATRIX_OF_MATRIX_VECTOR_MUL : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, matrix N M (fun x:set => matrix_vector_mul M N A x) = A.
+Theorem MATRIX_OF_MATRIX_VECTOR_MUL : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, matrix N M (matrix_vector_mul M N A) = A.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3432 / MATRIX_COMPOSE
@@ -2963,7 +2963,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:3457 / ADJOINT_MATRIX
 // Source hash: md5:91e6f8c712c396171e3b58280d279639
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ADJOINT_MATRIX : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall x :e R :^: idx M, adjoint N M (fun x0:set => matrix_vector_mul M N A x0) x = matrix_vector_mul N M (transp M N A) x.
+Theorem ADJOINT_MATRIX : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall x :e R :^: idx M, adjoint N M (matrix_vector_mul M N A) x = matrix_vector_mul N M (transp M N A) x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3465 / MATRIX_ADJOINT
@@ -3035,7 +3035,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:3535 / SYMMETRIC_MATRIX
 // Source hash: md5:f7273426ca77db4e6bf0491c5883503b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem SYMMETRIC_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, symmetric_matrix_hl N A <-> forall x :e R :^: idx N, adjoint N N (fun x0:set => matrix_vector_mul N N A x0) x = matrix_vector_mul N N A x.
+Theorem SYMMETRIC_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, symmetric_matrix_hl N A <-> forall x :e R :^: idx N, adjoint N N (matrix_vector_mul N N A) x = matrix_vector_mul N N A x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3540 / DOT_MATRIX_TRANSP_LMUL
@@ -3191,19 +3191,19 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:3762 / ONORM_TRANSP
 // Source hash: md5:16c3236ff9277f07eed2c4ac2bca781b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ONORM_TRANSP : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (transp N N A) x) = onorm N N (fun x:set => matrix_vector_mul N N A x).
+Theorem ONORM_TRANSP : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (transp N N A)) = onorm N N (matrix_vector_mul N N A).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3767 / ONORM_COVARIANCE
 // Source hash: md5:7bf340624258fdf5fdeaf3d622308043
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem ONORM_COVARIANCE : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (matrix_mul N N N (transp N N A) A) x) = onorm N N (fun x:set => matrix_vector_mul N N A x) ^ 2.
+Theorem ONORM_COVARIANCE : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (matrix_mul N N N (transp N N A) A)) = onorm N N (matrix_vector_mul N N A) ^ 2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3775 / ONORM_COVARIANCE_ALT
 // Source hash: md5:8960053b62cb2b2c3b1a8eab926744a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem ONORM_COVARIANCE_ALT : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (matrix_mul N N N A (transp N N A)) x) = onorm N N (fun x:set => matrix_vector_mul N N A x) ^ 2.
+Theorem ONORM_COVARIANCE_ALT : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (matrix_mul N N N A (transp N N A))) = onorm N N (matrix_vector_mul N N A) ^ 2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3783 / ONORM_LE_EQ_2
@@ -3587,7 +3587,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:4097 / BILINEAR_DROP_MUL
 // Source hash: md5:b221c56dfa9f5b25c607a864fd2c1c85
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem BILINEAR_DROP_MUL : forall N:set, N <> Empty -> bilinear N N 1 (fun x:set => fun y:set => vector_mul N (drop x) y).
+Theorem BILINEAR_DROP_MUL : forall N:set, N <> Empty -> bilinear N N 1 (fun x:set => vector_mul N (drop x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4102 / BILINEAR_MUL_DROP
@@ -3713,7 +3713,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:4210 / BILINEAR_MATRIX_VECTOR_MUL
 // Source hash: md5:451c39199e4b598f8573fea0f2e8540e
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem BILINEAR_MATRIX_VECTOR_MUL : forall M N:set, M <> Empty -> N <> Empty -> bilinear N M (idx_n (dimindex M * dimindex N)) (fun m:set => fun x:set => matrix_vector_mul M N (matrify R M N m) x).
+Theorem BILINEAR_MATRIX_VECTOR_MUL : forall M N:set, M <> Empty -> N <> Empty -> bilinear N M (idx_n (dimindex M * dimindex N)) (fun m:set => matrix_vector_mul M N (matrify R M N m)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4217 / BILINEAR_MATRIX_MUL
@@ -4031,13 +4031,13 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:4590 / LINEAR_DROPOUT
 // Source hash: md5:70a5d9d40a6c9f7b19a4e892a9df0b5c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem LINEAR_DROPOUT : forall M N:set, M <> Empty -> N <> Empty -> forall k :e omega, linear N M (fun x:set => dropout N M k x).
+Theorem LINEAR_DROPOUT : forall M N:set, M <> Empty -> N <> Empty -> forall k :e omega, linear N M (dropout N M k).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4594 / LINEAR_PUSHIN
 // Source hash: md5:a11c39c3491b90a792e0b9f6e101696d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem LINEAR_PUSHIN : forall A B:set, A <> Empty -> B <> Empty -> forall k :e omega, linear A B (fun x:set => pushin B R A k 0 x).
+Theorem LINEAR_PUSHIN : forall A B:set, A <> Empty -> B <> Empty -> forall k :e omega, linear A B (pushin B R A k 0).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4604 / subspace
@@ -5531,13 +5531,13 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:6999 / NORM_COLUMN_LE_ONORM
 // Source hash: md5:9a8dd7e2824d8d85de54c51b73f28fef
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem NORM_COLUMN_LE_ONORM : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i :e omega, vector_norm M (column M N i A) <= onorm N M (fun x:set => matrix_vector_mul M N A x).
+Theorem NORM_COLUMN_LE_ONORM : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i :e omega, vector_norm M (column M N i A) <= onorm N M (matrix_vector_mul M N A).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:7009 / MATRIX_COMPONENT_LE_ONORM
 // Source hash: md5:7a977f8aa31e702fe28ba46e30479ef7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem MATRIX_COMPONENT_LE_ONORM : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i j :e omega, abs_SNo (A i j) <= onorm N M (fun x:set => matrix_vector_mul M N A x).
+Theorem MATRIX_COMPONENT_LE_ONORM : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i j :e omega, abs_SNo (A i j) <= onorm N M (matrix_vector_mul M N A).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:7025 / COMPONENT_LE_ONORM
@@ -5549,19 +5549,19 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:7032 / ONORM_LE_MATRIX_COMPONENT_SUM
 // Source hash: md5:6535d72813e0db56920a4be6900bbfbd
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem ONORM_LE_MATRIX_COMPONENT_SUM : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, onorm N M (fun x:set => matrix_vector_mul M N A x) <= finsum (idx M) (fun i:set => finsum (idx N) (fun j:set => abs_SNo (A i j))).
+Theorem ONORM_LE_MATRIX_COMPONENT_SUM : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, onorm N M (matrix_vector_mul M N A) <= finsum (idx M) (fun i:set => finsum (idx N) (fun j:set => abs_SNo (A i j))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:7050 / ONORM_LE_MATRIX_COMPONENT
 // Source hash: md5:7aeb7c43f0fbd3a80eaff357388e1ee5
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ONORM_LE_MATRIX_COMPONENT : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall B :e R, (forall i j :e omega, 1 <= i /\ (i <= dimindex M /\ (1 <= j /\ j <= dimindex N)) -> abs_SNo (A i j) <= B) -> onorm N M (fun x:set => matrix_vector_mul M N A x) <= dimindex M * dimindex N * B.
+Theorem ONORM_LE_MATRIX_COMPONENT : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall B :e R, (forall i j :e omega, 1 <= i /\ (i <= dimindex M /\ (1 <= j /\ j <= dimindex N)) -> abs_SNo (A i j) <= B) -> onorm N M (matrix_vector_mul M N A) <= dimindex M * dimindex N * B.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:7078 / MATRIX_RATIONAL_APPROXIMATION
 // Source hash: md5:f855bcb4825cda77e84eb80f0d92bd82
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem MATRIX_RATIONAL_APPROXIMATION : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall e0 :e R, 0 < e0 -> exists B :e R :^: idx N :^: idx M, (forall i j :e omega, 1 <= i /\ (i <= dimindex M /\ (1 <= j /\ j <= dimindex N)) -> B i j :e rational) /\ onorm N M (fun x:set => matrix_vector_mul M N (matrix_sub M N A B) x) < e0.
+Theorem MATRIX_RATIONAL_APPROXIMATION : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall e0 :e R, 0 < e0 -> exists B :e R :^: idx N :^: idx M, (forall i j :e omega, 1 <= i /\ (i <= dimindex M /\ (1 <= j /\ j <= dimindex N)) -> B i j :e rational) /\ onorm N M (matrix_vector_mul M N (matrix_sub M N A B)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:7113 / HYPERPLANE_EQ_EMPTY
@@ -7091,7 +7091,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:10382 / LINEAR_SCALING
 // Source hash: md5:f18009a0d96e4727aed99a1dd1404d7f
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LINEAR_SCALING : forall N:set, N <> Empty -> forall c :e R, linear N N (fun x:set => vector_mul N c x).
+Theorem LINEAR_SCALING : forall N:set, N <> Empty -> forall c :e R, linear N N (vector_mul N c).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10386 / INJECTIVE_SCALING
@@ -7163,7 +7163,7 @@ Admitted.
 // HOL Light: Multivariate/vectors.ml:10623 / MEM_TRANSLATION
 // Source hash: md5:dafa218920d78a45ccd5d419e86155fc
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_real_R)
-Theorem MEM_TRANSLATION : forall N:set, N <> Empty -> forall a x :e R :^: idx N, forall l :e finseq (R :^: idx N), seq_mem (vector_add N a x) (seq_map (fun x0:set => vector_add N a x0) l) <-> seq_mem x l.
+Theorem MEM_TRANSLATION : forall N:set, N <> Empty -> forall a x :e R :^: idx N, forall l :e finseq (R :^: idx N), seq_mem (vector_add N a x) (seq_map (vector_add N a) l) <-> seq_mem x l.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10630 / MEM_LINEAR_IMAGE

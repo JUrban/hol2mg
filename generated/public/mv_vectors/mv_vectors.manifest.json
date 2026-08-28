@@ -1109,10 +1109,13 @@
       "src_line": 3457,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:adjoint", "auto:matrix_vector_mul", "auto:transp" ],
+      "notes": [
+        "auto:adjoint", "auto:matrix_vector_mul", "auto:transp",
+        "rewrite:eta"
+      ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall x :e R :^: idx M, adjoint N M (fun x0:set => matrix_vector_mul M N A x0) x = matrix_vector_mul N M (transp M N A) x"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall x :e R :^: idx M, adjoint N M (matrix_vector_mul M N A) x = matrix_vector_mul N M (transp M N A) x"
     },
     {
       "name": "ADJOINT_SURJECTIVE",
@@ -3496,10 +3499,10 @@
       "src_line": 4097,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_one_1", "hol_real_R" ],
-      "notes": [ "auto:%", "auto:bilinear", "auto:drop" ],
+      "notes": [ "auto:%", "auto:bilinear", "auto:drop", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> bilinear N N 1 (fun x:set => fun y:set => vector_mul N (drop x) y)"
+      "statement": "forall N:set, N <> Empty -> bilinear N N 1 (fun x:set => vector_mul N (drop x))"
     },
     {
       "name": "BILINEAR_EQ",
@@ -3677,10 +3680,13 @@
       "src_line": 4210,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_finite_prod_idx", "hol_real_R" ],
-      "notes": [ "auto:bilinear", "auto:matrify", "auto:matrix_vector_mul" ],
+      "notes": [
+        "auto:bilinear", "auto:matrify", "auto:matrix_vector_mul",
+        "rewrite:eta"
+      ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> bilinear N M (idx_n (dimindex M * dimindex N)) (fun m:set => fun x:set => matrix_vector_mul M N (matrify R M N m) x)"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> bilinear N M (idx_n (dimindex M * dimindex N)) (fun m:set => matrix_vector_mul M N (matrify R M N m))"
     },
     {
       "name": "BILINEAR_MUL_DROP",
@@ -40266,10 +40272,10 @@
       "src_line": 4590,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_num_omega", "hol_real_R" ],
-      "notes": [ "auto:dropout", "auto:linear" ],
+      "notes": [ "auto:dropout", "auto:linear", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall k :e omega, linear N M (fun x:set => dropout N M k x)"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall k :e omega, linear N M (dropout N M k)"
     },
     {
       "name": "LINEAR_EQ",
@@ -40866,10 +40872,10 @@
       "src_line": 2198,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:linear", "auto:vector_neg" ],
+      "notes": [ "auto:linear", "auto:vector_neg", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> linear A A (fun x:set => vector_neg A x)"
+      "statement": "forall A:set, A <> Empty -> linear A A (vector_neg A)"
     },
     {
       "name": "LINEAR_PASTECART",
@@ -40916,10 +40922,10 @@
       "bridges": [
         "hol_cart_setexp", "hol_num_omega", "hol_real_R", "omega_Subq_R"
       ],
-      "notes": [ "auto:linear", "auto:pushin" ],
+      "notes": [ "auto:linear", "auto:pushin", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall k :e omega, linear A B (fun x:set => pushin B R A k 0 x)"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall k :e omega, linear A B (pushin B R A k 0)"
     },
     {
       "name": "LINEAR_SCALING",
@@ -40932,10 +40938,10 @@
       "src_line": 10382,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:%", "auto:linear" ],
+      "notes": [ "auto:%", "auto:linear", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> forall c :e R, linear N N (fun x:set => vector_mul N c x)"
+      "statement": "forall N:set, N <> Empty -> forall c :e R, linear N N (vector_mul N c)"
     },
     {
       "name": "LINEAR_SINGULAR_IMAGE_HYPERPLANE",
@@ -43056,10 +43062,10 @@
       "src_line": 7009,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_num_omega", "hol_real_R" ],
-      "notes": [ "auto:matrix_vector_mul", "auto:onorm" ],
+      "notes": [ "auto:matrix_vector_mul", "auto:onorm", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i j :e omega, abs_SNo (A i j) <= onorm N M (fun x:set => matrix_vector_mul M N A x)"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i j :e omega, abs_SNo (A i j) <= onorm N M (matrix_vector_mul M N A)"
     },
     {
       "name": "MATRIX_COMPOSE",
@@ -44293,10 +44299,10 @@
       "src_line": 3428,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:matrix", "auto:matrix_vector_mul" ],
+      "notes": [ "auto:matrix", "auto:matrix_vector_mul", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, matrix N M (fun x:set => matrix_vector_mul M N A x) = A"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, matrix N M (matrix_vector_mul M N A) = A"
     },
     {
       "name": "MATRIX_RATIONAL_APPROXIMATION",
@@ -44312,10 +44318,13 @@
         "hol_cart_setexp", "hol_dimindex", "hol_num_omega", "hol_real_R",
         "nat_le_SNoLe", "omega_Subq_R"
       ],
-      "notes": [ "auto:matrix_sub", "auto:matrix_vector_mul", "auto:onorm" ],
+      "notes": [
+        "auto:matrix_sub", "auto:matrix_vector_mul", "auto:onorm",
+        "rewrite:eta"
+      ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall e0 :e R, 0 < e0 -> exists B :e R :^: idx N :^: idx M, (forall i j :e omega, 1 <= i /\\ (i <= dimindex M /\\ (1 <= j /\\ j <= dimindex N)) -> B i j :e rational) /\\ onorm N M (fun x:set => matrix_vector_mul M N (matrix_sub M N A B) x) < e0"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall e0 :e R, 0 < e0 -> exists B :e R :^: idx N :^: idx M, (forall i j :e omega, 1 <= i /\\ (i <= dimindex M /\\ (1 <= j /\\ j <= dimindex N)) -> B i j :e rational) /\\ onorm N M (matrix_vector_mul M N (matrix_sub M N A B)) < e0"
     },
     {
       "name": "MATRIX_RIGHT_INVERTIBLE",
@@ -44888,10 +44897,10 @@
       "src_line": 3408,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:linear", "auto:matrix_vector_mul" ],
+      "notes": [ "auto:linear", "auto:matrix_vector_mul", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, linear N M (fun x:set => matrix_vector_mul M N A x)"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, linear N M (matrix_vector_mul M N A)"
     },
     {
       "name": "MATRIX_VECTOR_MUL_LNEG",
@@ -48190,10 +48199,10 @@
       "src_line": 10623,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_list_finseq", "hol_real_R" ],
-      "notes": [ "auto:vector_add" ],
+      "notes": [ "auto:vector_add", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> forall a x :e R :^: idx N, forall l :e finseq (R :^: idx N), seq_mem (vector_add N a x) (seq_map (fun x0:set => vector_add N a x0) l) <-> seq_mem x l"
+      "statement": "forall N:set, N <> Empty -> forall a x :e R :^: idx N, forall l :e finseq (R :^: idx N), seq_mem (vector_add N a x) (seq_map (vector_add N a) l) <-> seq_mem x l"
     },
     {
       "name": "MIDPOINT_BETWEEN",
@@ -49158,10 +49167,10 @@
       "src_line": 1222,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:vector_add" ],
+      "notes": [ "auto:vector_add", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> (forall x y :e R :^: idx N, vector_add N x y = vector_add N y x) /\\ (forall x y z :e R :^: idx N, vector_add N x (vector_add N y z) = vector_add N (vector_add N x y) z) /\\ forall x :e R :^: idx N, vector_add N (neutral_of (R :^: idx N) (fun a:set => fun b:set => vector_add N a b)) x = x"
+      "statement": "forall N:set, N <> Empty -> (forall x y :e R :^: idx N, vector_add N x y = vector_add N y x) /\\ (forall x y z :e R :^: idx N, vector_add N x (vector_add N y z) = vector_add N (vector_add N x y) z) /\\ forall x :e R :^: idx N, vector_add N (neutral_of (R :^: idx N) (vector_add N)) x = x"
     },
     {
       "name": "MONOTONE_BIGGER",
@@ -50821,10 +50830,10 @@
       "src_line": 1216,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_num_omega", "hol_real_R" ],
-      "notes": [ "auto:vec", "auto:vector_add" ],
+      "notes": [ "auto:vec", "auto:vector_add", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> neutral_of (R :^: idx N) (fun a:set => fun b:set => vector_add N a b) = vec N 0"
+      "statement": "forall N:set, N <> Empty -> neutral_of (R :^: idx N) (vector_add N) = vec N 0"
     },
     {
       "name": "NONEMPTY_SPAN",
@@ -51258,10 +51267,12 @@
       "src_line": 6999,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_num_omega", "hol_real_R" ],
-      "notes": [ "auto:column", "auto:matrix_vector_mul", "auto:onorm" ],
+      "notes": [
+        "auto:column", "auto:matrix_vector_mul", "auto:onorm", "rewrite:eta"
+      ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i :e omega, vector_norm M (column M N i A) <= onorm N M (fun x:set => matrix_vector_mul M N A x)"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall i :e omega, vector_norm M (column M N i A) <= onorm N M (matrix_vector_mul M N A)"
     },
     {
       "name": "NORM_CROSS_MULTIPLY",
@@ -54757,11 +54768,11 @@
       "bridges": [ "hol_cart_setexp", "hol_num_omega", "hol_real_R" ],
       "notes": [
         "auto:matrix_mul", "auto:matrix_vector_mul", "auto:onorm",
-        "auto:transp"
+        "auto:transp", "rewrite:eta"
       ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (matrix_mul N N N (transp N N A) A) x) = onorm N N (fun x:set => matrix_vector_mul N N A x) ^ 2"
+      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (matrix_mul N N N (transp N N A) A)) = onorm N N (matrix_vector_mul N N A) ^ 2"
     },
     {
       "name": "ONORM_COVARIANCE_ALT",
@@ -54776,11 +54787,11 @@
       "bridges": [ "hol_cart_setexp", "hol_num_omega", "hol_real_R" ],
       "notes": [
         "auto:matrix_mul", "auto:matrix_vector_mul", "auto:onorm",
-        "auto:transp"
+        "auto:transp", "rewrite:eta"
       ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (matrix_mul N N N A (transp N N A)) x) = onorm N N (fun x:set => matrix_vector_mul N N A x) ^ 2"
+      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (matrix_mul N N N A (transp N N A))) = onorm N N (matrix_vector_mul N N A) ^ 2"
     },
     {
       "name": "ONORM_DOT",
@@ -54934,10 +54945,10 @@
         "hol_cart_setexp", "hol_dimindex", "hol_num_omega", "hol_real_R",
         "nat_le_SNoLe", "omega_Subq_R"
       ],
-      "notes": [ "auto:matrix_vector_mul", "auto:onorm" ],
+      "notes": [ "auto:matrix_vector_mul", "auto:onorm", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall B :e R, (forall i j :e omega, 1 <= i /\\ (i <= dimindex M /\\ (1 <= j /\\ j <= dimindex N)) -> abs_SNo (A i j) <= B) -> onorm N M (fun x:set => matrix_vector_mul M N A x) <= dimindex M * dimindex N * B"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall B :e R, (forall i j :e omega, 1 <= i /\\ (i <= dimindex M /\\ (1 <= j /\\ j <= dimindex N)) -> abs_SNo (A i j) <= B) -> onorm N M (matrix_vector_mul M N A) <= dimindex M * dimindex N * B"
     },
     {
       "name": "ONORM_LE_MATRIX_COMPONENT_SUM",
@@ -54954,12 +54965,12 @@
         "hol_sum_finsum"
       ],
       "notes": [
-        "auto:matrix_vector_mul", "auto:onorm", "rewrite:idx_def",
-        "rewrite:idx_n_def"
+        "auto:matrix_vector_mul", "auto:onorm", "rewrite:eta",
+        "rewrite:idx_def", "rewrite:idx_n_def"
       ],
       "var_views": {},
       "error": "",
-      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, onorm N M (fun x:set => matrix_vector_mul M N A x) <= finsum (idx M) (fun i:set => finsum (idx N) (fun j:set => abs_SNo (A i j)))"
+      "statement": "forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, onorm N M (matrix_vector_mul M N A) <= finsum (idx M) (fun i:set => finsum (idx N) (fun j:set => abs_SNo (A i j)))"
     },
     {
       "name": "ONORM_NEG",
@@ -55024,10 +55035,12 @@
       "src_line": 3762,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:matrix_vector_mul", "auto:onorm", "auto:transp" ],
+      "notes": [
+        "auto:matrix_vector_mul", "auto:onorm", "auto:transp", "rewrite:eta"
+      ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (transp N N A) x) = onorm N N (fun x:set => matrix_vector_mul N N A x)"
+      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (transp N N A)) = onorm N N (matrix_vector_mul N N A)"
     },
     {
       "name": "ONORM_TRIANGLE",
@@ -74283,11 +74296,12 @@
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_cart_setexp", "hol_real_R" ],
       "notes": [
-        "auto:adjoint", "auto:matrix_vector_mul", "auto:symmetric_matrix"
+        "auto:adjoint", "auto:matrix_vector_mul", "auto:symmetric_matrix",
+        "rewrite:eta"
       ],
       "var_views": {},
       "error": "",
-      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, symmetric_matrix_hl N A <-> forall x :e R :^: idx N, adjoint N N (fun x0:set => matrix_vector_mul N N A x0) x = matrix_vector_mul N N A x"
+      "statement": "forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, symmetric_matrix_hl N A <-> forall x :e R :^: idx N, adjoint N N (matrix_vector_mul N N A) x = matrix_vector_mul N N A x"
     },
     {
       "name": "SYMMETRIC_MATRIX_ADD",
@@ -78007,10 +78021,10 @@
       "bridges": [
         "hol_cart_setexp", "hol_finite_finite", "hol_iterate", "hol_real_R"
       ],
-      "notes": [ "auto:vector_add", "auto:vsum" ],
+      "notes": [ "auto:vector_add", "auto:vsum", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s f = iterate_op (R :^: idx B) (fun a:set => fun b:set => vector_add B a b) s f"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s f = iterate_op (R :^: idx B) (vector_add B) s f"
     },
     {
       "name": "VSUM_0",
@@ -79336,10 +79350,10 @@
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
       "bridges": [ "empty_case:A", "hol_cart_setexp", "hol_real_R" ],
-      "notes": [ "auto:vector_add", "auto:vsum" ],
+      "notes": [ "auto:vector_add", "auto:vsum", "rewrite:eta" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A N:set, N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx N) -> forall s c= A, {x :e A | f x <> neutral_of (R :^: idx N) (fun a:set => fun b:set => vector_add N a b)} c= s -> vsum A N s f = vsum A N A f"
+      "statement": "forall A N:set, N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx N) -> forall s c= A, {x :e A | f x <> neutral_of (R :^: idx N) (vector_add N)} c= s -> vsum A N s f = vsum A N A f"
     },
     {
       "name": "VSUM_VMUL",

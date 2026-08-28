@@ -69,10 +69,10 @@ let try_rules t =
   in
   go !rules
 
-(* names of variables with meta (function/predicate) types in scope, for eta *)
-let meta_vars : string list ref = ref []
-(* constants whose (fully applied by carriers/args) result is a meta function/predicate *)
-let meta_consts : (string, unit) Hashtbl.t = Hashtbl.create 64
+(* meta arities (number of meta-level arguments) of bound variables and of auto-defined
+   constants, for a sound eta rule: fun x => f a1..an x  ==>  f a1..an  only if n+1 <= arity *)
+let meta_vars : (string * int) list ref = ref []
+let meta_consts : (string, int) Hashtbl.t = Hashtbl.create 64
 
 let note s = if not (List.mem s !applied) then applied := s :: !applied
 
@@ -84,7 +84,7 @@ let rec builtin t =
   | App (App (Cst "add_SNo", Num a), Num b) -> note "arith"; Num (a + b)
   | App (App (Cst "mul_SNo", Num a), Num b) -> note "arith"; Num (a * b)
   | App (Cst "ordsucc", Num a) -> note "arith"; Num (a + 1)
-  | Lam (x, _, App (f, Var y)) when x = y && not (List.mem x (free_vars f)) && is_meta_head f -> note "eta"; f
+  | Lam (x, _, App (f, Var y)) when x = y && not (List.mem x (free_vars f)) && meta_app_ok f -> note "eta"; f
   (* vacuous binders over inhabited domains *)
   | AllSub (x, _, b) when not (List.mem x (free_vars b)) -> note "vacuous_forall"; b
   | All (x, _, b) when not (List.mem x (free_vars b)) -> note "vacuous_forall"; b
@@ -94,12 +94,14 @@ let rec builtin t =
   | ExIn (x, a, b) when not (List.mem x (free_vars b)) && nonempty a -> note "vacuous_exists"; b
   | _ -> t
 
-and is_meta_head f =
-  match f with
-  | Var v -> List.mem v !meta_vars
-  | Cst c -> Hashtbl.mem meta_consts c
-  | App (g, _) -> is_meta_head g
-  | Lam _ -> true
+(* f applied to one more argument is still a meta-level application *)
+and meta_app_ok f =
+  let h, args = strip_app f [] in
+  let n = List.length args + 1 in
+  match h with
+  | Var v -> (match List.assoc_opt v !meta_vars with Some a -> n <= a | None -> false)
+  | Cst c -> (match Hashtbl.find_opt meta_consts c with Some a -> n <= a | None -> false)
+  | Lam _ -> args = []
   | _ -> false
 
 let rec normalize t =
@@ -133,10 +135,12 @@ and map_children f t =
   | If (a, b, c) -> If (f a, f b, f c)
 
 (* collect meta-typed bound/free variable names of a statement *)
+let rec arity_of_mty = function Arr (_, b) -> 1 + arity_of_mty b | _ -> 0
+
 let rec collect_meta t =
   match t with
   | All (x, ty, b) | Ex (x, ty, b) | Lam (x, ty, b) ->
-      (match ty with Arr _ -> x :: collect_meta b | _ -> collect_meta b)
+      (match ty with Arr _ -> (x, arity_of_mty ty) :: collect_meta b | _ -> collect_meta b)
   | _ -> List.concat_map collect_meta (children t)
 
 and children t =

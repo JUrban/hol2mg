@@ -349,9 +349,11 @@ and elab_nat ctx (t : tm) (hint : view option) : Mg.tm * view =
            let fv = Free (n, ty) in
            let body' = open_with fv body in
            (* the argument of a meta lambda is always a set value: a bound function/predicate
-              variable gets the data view (applicative uses print identically) *)
+              variable gets the data view (applicative uses print identically); a bound boolean
+              is a member of the carrier 2 *)
            let xview = (match choose_view ctx (n, ty) [ body' ] with
              | VMetaFun _ | VMetaPred _ -> data_view ctx ty
+             | VProp -> VSet (Mg.Num 2)
              | v -> v) in
            ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
            begin
@@ -382,6 +384,7 @@ and elab_lam_data ctx (t : tm) (full_ty : ty) : Mg.tm =
       (* the bound variable of a set lambda / separation is a member of the carrier: data view *)
       let xview = (match choose_view ctx (n, ty) [ body' ] with
         | VMetaFun _ | VMetaPred _ -> data_view ctx ty
+        | VProp -> VSet (Mg.Num 2)
         | v -> v) in
       ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
       let res_ty = type_of [ ty ] body in
