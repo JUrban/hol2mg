@@ -18,4 +18,5 @@ run
 tools/check_public.sh "$out"
 cp "$out/$prof.report.md" generated/reports/$prof.report.md
 cp "$out/$prof.manifest.json" generated/manifests/$prof.manifest.json
+python3 tools/review_page.py "$prof" >/dev/null && echo "review page: generated/reports/$prof.review.html"
 echo "update of profile $prof complete"
