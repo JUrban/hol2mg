@@ -238,6 +238,39 @@ Definition dimindex : set -> set := fun N => if finite N then finite_cardinality
 Definition idx_n : set -> set := fun n => {i :e omega | 1 <= i /\ i <= n}.
 Definition idx : set -> set := fun N => idx_n (dimindex N).
 
+// predecessor of a nonzero member of a successor ordinal (arithmetic bridge; to be proved)
+Theorem nat_pred_in : forall n:set, nat_p n -> forall i :e ordsucc n, i <> 0 -> nat_pred i :e n.
+let n. assume Hn: nat_p n. let i. assume Hi: i :e ordsucc n. assume H0: i <> 0.
+claim Hi': nat_p i.
+{ exact (nat_p_trans (ordsucc n) (nat_ordsucc n Hn) i Hi). }
+apply (nat_inv i Hi').
+- assume H1: i = 0. exact (FalseE (H0 H1) (nat_pred i :e n)).
+- assume H1: exists x, nat_p x /\ i = ordsucc x.
+  apply (exandE_i nat_p (fun x => i = ordsucc x) H1).
+  let x. assume Hx: nat_p x. assume Hix: i = ordsucc x.
+  claim L2: ordsucc x :e ordsucc n.
+  { rewrite <- Hix. exact Hi. }
+  claim L1: ordsucc x + - 1 = x.
+  { rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1.
+    exact (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). }
+  rewrite Hix.
+  prove (if ordsucc x = 0 then 0 else ordsucc x + - 1) :e n.
+  rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
+  rewrite L1.
+  apply (ordsuccE n (ordsucc x) L2).
+  + assume H2: ordsucc x :e n. exact (nat_trans n Hn (ordsucc x) H2 x (ordsuccI2 x)).
+  + assume H2: ordsucc x = n. rewrite <- H2. exact (ordsuccI2 x).
+Qed.
+
+Theorem omega_1_le_ordsucc : forall m :e omega, 1 <= ordsucc m.
+let m. assume Hm: m :e omega.
+claim L: 0 + 1 <= m + 1.
+{ exact (add_SNo_Le1 0 1 m SNo_0 SNo_1 (omega_SNo m Hm) (omega_nonneg m Hm)). }
+rewrite <- (add_SNo_1_ordsucc m Hm).
+rewrite <- (add_SNo_0L 1 SNo_1) at 1.
+exact L.
+Qed.
+
 Theorem dimindex_omega : forall N:set, dimindex N :e omega.
 let N.
 prove (if finite N then finite_cardinality N else 1) :e omega.
@@ -250,13 +283,89 @@ apply (xm (finite N)).
   exact (nat_p_omega 1 nat_1).
 Qed.
 Theorem dimindex_ge_1 : forall N:set, N <> Empty -> 1 <= dimindex N.
-Admitted.
+let N. assume HN: N <> Empty.
+prove 1 <= (if finite N then finite_cardinality N else 1).
+apply (xm (finite N)).
+- assume H: finite N. rewrite (If_i_1 (finite N) (finite_cardinality N) 1 H).
+  claim Hc: finite_cardinality N :e omega /\ equip N (finite_cardinality N). { exact (god1_finite_cardinality_specification N H). }
+  claim Hco: finite_cardinality N :e omega. { exact (andEL (finite_cardinality N :e omega) (equip N (finite_cardinality N)) Hc). }
+  apply (nat_inv (finite_cardinality N) (omega_nat_p (finite_cardinality N) Hco)).
+  + assume H0: finite_cardinality N = 0.
+    claim HN0: equip N 0. { rewrite <- H0. exact (andER (finite_cardinality N :e omega) (equip N (finite_cardinality N)) Hc). }
+    exact (FalseE (HN (equip_0_Empty N HN0)) (1 <= finite_cardinality N)).
+  + assume H1: exists x, nat_p x /\ finite_cardinality N = ordsucc x.
+    apply (exandE_i nat_p (fun x => finite_cardinality N = ordsucc x) H1).
+    let x. assume Hx: nat_p x. assume Hcx: finite_cardinality N = ordsucc x.
+    rewrite Hcx. exact (omega_1_le_ordsucc x (nat_p_omega x Hx)).
+- assume H: ~ finite N. rewrite (If_i_0 (finite N) (finite_cardinality N) 1 H). exact (SNoLe_ref 1).
+Qed.
+
+
 Theorem idx_n_equip : forall n :e omega, equip (idx_n n) n.
-Admitted.
+let n. assume Hn: n :e omega.
+prove exists f:set -> set, bij (idx_n n) n f.
+witness (fun j => nat_pred j).
+apply (bijI (idx_n n) n (fun j => nat_pred j)).
+- let j. assume Hj: j :e idx_n n.
+  claim Hj1: j :e omega. { exact (SepE1 omega (fun i => 1 <= i /\ i <= n) j Hj). }
+  claim Hj2: 1 <= j /\ j <= n. { exact (SepE2 omega (fun i => 1 <= i /\ i <= n) j Hj). }
+  claim Hjn: j :e ordsucc n. { exact (omega_Le_imp_mem_ordsucc j Hj1 n Hn (andER (1 <= j) (j <= n) Hj2)). }
+  claim Hj0: j <> 0. { exact (omega_ge_1_ne0 j Hj1 (andEL (1 <= j) (j <= n) Hj2)). }
+  exact (nat_pred_in n (omega_nat_p n Hn) j Hjn Hj0).
+- let j. assume Hj: j :e idx_n n. let k. assume Hk: k :e idx_n n. assume Hjk: nat_pred j = nat_pred k.
+  claim Hj1: j :e omega. { exact (SepE1 omega (fun i => 1 <= i /\ i <= n) j Hj). }
+  claim Hk1: k :e omega. { exact (SepE1 omega (fun i => 1 <= i /\ i <= n) k Hk). }
+  claim Hj0: j <> 0. { exact (omega_ge_1_ne0 j Hj1 (andEL (1 <= j) (j <= n) (SepE2 omega (fun i => 1 <= i /\ i <= n) j Hj))). }
+  claim Hk0: k <> 0. { exact (omega_ge_1_ne0 k Hk1 (andEL (1 <= k) (k <= n) (SepE2 omega (fun i => 1 <= i /\ i <= n) k Hk))). }
+  claim Lj: ordsucc (nat_pred j) = j.
+  { apply (nat_inv j (omega_nat_p j Hj1)).
+    + assume H: j = 0. exact (FalseE (Hj0 H) (ordsucc (nat_pred j) = j)).
+    + assume H: exists x, nat_p x /\ j = ordsucc x.
+      apply (exandE_i nat_p (fun x => j = ordsucc x) H).
+      let x. assume Hx: nat_p x. assume Hjx: j = ordsucc x. rewrite Hjx.
+      prove ordsucc (if ordsucc x = 0 then 0 else ordsucc x + - 1) = ordsucc x.
+      rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
+      rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1.
+      rewrite (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). exact (fun q H => H). }
+  claim Lk: ordsucc (nat_pred k) = k.
+  { apply (nat_inv k (omega_nat_p k Hk1)).
+    + assume H: k = 0. exact (FalseE (Hk0 H) (ordsucc (nat_pred k) = k)).
+    + assume H: exists x, nat_p x /\ k = ordsucc x.
+      apply (exandE_i nat_p (fun x => k = ordsucc x) H).
+      let x. assume Hx: nat_p x. assume Hkx: k = ordsucc x. rewrite Hkx.
+      prove ordsucc (if ordsucc x = 0 then 0 else ordsucc x + - 1) = ordsucc x.
+      rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
+      rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1.
+      rewrite (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). exact (fun q H => H). }
+  rewrite <- Lj. rewrite <- Lk. rewrite Hjk. exact (fun q H => H).
+- let m. assume Hm: m :e n.
+  witness (ordsucc m). apply andI.
+  + claim Hm1: m :e omega. { exact (nat_p_omega m (nat_p_trans n (omega_nat_p n Hn) m Hm)). }
+    prove ordsucc m :e {i :e omega | 1 <= i /\ i <= n}.
+    apply (SepI omega (fun i => 1 <= i /\ i <= n) (ordsucc m) (omega_ordsucc m Hm1)).
+    apply andI.
+    * exact (omega_1_le_ordsucc m Hm1).
+    * exact (omega_Subq_SNoLe (ordsucc m) (omega_ordsucc m Hm1) n Hn (nat_ordsucc_trans n (omega_nat_p n Hn) (ordsucc m) (nat_ordsucc_in_ordsucc n (omega_nat_p n Hn) m Hm))).
+  + claim Hm1: m :e omega. { exact (nat_p_omega m (nat_p_trans n (omega_nat_p n Hn) m Hm)). }
+    prove (if ordsucc m = 0 then 0 else ordsucc m + - 1) = m.
+    rewrite (If_i_0 (ordsucc m = 0) 0 (ordsucc m + - 1) (neq_ordsucc_0 m)).
+    rewrite <- (add_SNo_1_ordsucc m Hm1) at 1.
+    exact (add_SNo_minus_R2 m 1 (omega_SNo m Hm1) SNo_1).
+Qed.
 Theorem dimindex_idx_n : forall n :e omega, dimindex (idx_n n) = n.
-Admitted.
+let n. assume Hn: n :e omega.
+claim Hfin: finite (idx_n n).
+{ prove exists m :e omega, equip (idx_n n) m. witness n. apply andI. - exact Hn. - exact (idx_n_equip n Hn). }
+prove (if finite (idx_n n) then finite_cardinality (idx_n n) else 1) = n.
+rewrite (If_i_1 (finite (idx_n n)) (finite_cardinality (idx_n n)) 1 Hfin).
+rewrite (god1_finite_cardinality_equip_eq (idx_n n) n Hfin (nat_finite n (omega_nat_p n Hn)) (idx_n_equip n Hn)).
+exact (god1_finite_cardinality_natural n Hn).
+Qed.
 Theorem idx_idx_n : forall n :e omega, idx (idx_n n) = idx_n n.
-Admitted.
+let n. assume Hn: n :e omega.
+prove idx_n (dimindex (idx_n n)) = idx_n n.
+rewrite (dimindex_idx_n n Hn). exact (fun q H => H).
+Qed.
 Theorem dimindex_one : dimindex 1 = 1.
 prove (if finite 1 then finite_cardinality 1 else 1) = 1.
 rewrite (If_i_1 (finite 1) (finite_cardinality 1) 1 (nat_finite 1 nat_1)).

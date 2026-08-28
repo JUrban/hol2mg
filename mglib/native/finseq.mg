@@ -48,29 +48,7 @@ apply (exandE_i (fun i => i :e 0) (fun i => exists y :e F i, z = setsum i y) (la
 let i. assume Hi: i :e 0. assume _. exact (EmptyE i Hi).
 Qed.
 
-// predecessor of a nonzero member of a successor ordinal (arithmetic bridge; to be proved)
-Theorem nat_pred_in : forall n:set, nat_p n -> forall i :e ordsucc n, i <> 0 -> nat_pred i :e n.
-let n. assume Hn: nat_p n. let i. assume Hi: i :e ordsucc n. assume H0: i <> 0.
-claim Hi': nat_p i.
-{ exact (nat_p_trans (ordsucc n) (nat_ordsucc n Hn) i Hi). }
-apply (nat_inv i Hi').
-- assume H1: i = 0. exact (FalseE (H0 H1) (nat_pred i :e n)).
-- assume H1: exists x, nat_p x /\ i = ordsucc x.
-  apply (exandE_i nat_p (fun x => i = ordsucc x) H1).
-  let x. assume Hx: nat_p x. assume Hix: i = ordsucc x.
-  claim L2: ordsucc x :e ordsucc n.
-  { rewrite <- Hix. exact Hi. }
-  claim L1: ordsucc x + - 1 = x.
-  { rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1.
-    exact (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). }
-  rewrite Hix.
-  prove (if ordsucc x = 0 then 0 else ordsucc x + - 1) :e n.
-  rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
-  rewrite L1.
-  apply (ordsuccE n (ordsucc x) L2).
-  + assume H2: ordsucc x :e n. exact (nat_trans n Hn (ordsucc x) H2 x (ordsuccI2 x)).
-  + assume H2: ordsucc x = n. rewrite <- H2. exact (ordsuccI2 x).
-Qed.
+
 
 
 // a finite sequence is the pair of its length and its function part
