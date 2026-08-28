@@ -991,3 +991,57 @@ This design is based on:
 - Megalodon `100thms_12.mg`, including native `Sigma`, bounded lambda/application, `Pi`, `setexp`, and representative proof scripts: <https://raw.githubusercontent.com/mgwiki/mgw_test/refs/heads/main/mglib/100thms_12.mg>
 
 The older topology formalization is intentionally not a design basis for this proposal.
+
+## 20. Implementation status and decision log (maintained by the worker)
+
+This section records how the implementation in this repository (`/project/hol2mg`) instantiates
+the design above and where it deliberately deviates.  Interim reports live in `docs/reports/`.
+
+### 20.1 Ordering
+
+The native statement layer (Milestones 0, 1, 3, 4) was built first; the literal semantic layer
+(Milestone 2) is deferred until native statements are stable, because the user's stated priority
+is correct, repeatable native statements.  `lib/literal.ml` is a stub.
+
+### 20.2 Toolchain facts (pinned in `profiles/lock.json`)
+
+- HOL Light `4334778`, OCaml 4.14.1, camlp5 8.02.01, no zarith: `bignum_num.ml` is used and the
+  `ocaml-hol` toplevel plus `hol.sh` are built by hand (the Makefile insists on zarith for 4.14).
+  `hol.ml` does **not** load `update_database.ml`; the exporter loads it explicitly.
+- Megalodon `e0fba57`, built from `repos/Megalodon` with `makeopt`.  A full check of God1.mg
+  takes ~60 s; generated modules are checked in 3–4 s against a signature file produced by
+  `megalodon -s` (`mglib/God1.mgs`) and an index regenerated with `-indout` (the index shipped in
+  the god1 repository is stale and rejects newer definitions).
+- Megalodon syntax facts verified by experiment: `->` is a right-associative infix at level 800;
+  binders, `fun`, `if` extend as far right as possible; `forall x y :e A,` and `forall s c= A,`
+  are accepted; `Theorem N : S.` followed by `Admitted.` is the admitted-import form; notations
+  declared inside a `Section` do not survive `End` but are not reliably restored either, so the
+  final notation table is determined empirically (`tools/probe_notations.py`).
+
+### 20.3 Registry and elaboration
+
+- Registry: JSON, templates in Megalodon syntax (`mappings/core.json`).  Roles
+  `set | prop | subset | metafun[/k] | metapred[/k]`; the arity of a meta slot defaults to the
+  scheme's arity and can be pinned (`metafun/1` for `K -> A -> bool` used as a set-valued family).
+- Views by usage analysis (design §5.1 rule 2 realised as: meta unless a data occurrence exists).
+- Built-ins: connectives, `=` (iff / pointwise / set), `!`, `?`, `?!` (desugared), `@`
+  (`choose_in`), `COND`, `NUMERAL`, `GSPEC`/`SETSPEC` comprehensions, `INSERT … EMPTY`
+  enumerations, HOL beta-redexes (approved rewrite, noted).
+- Inhabitedness: premise emitted per type variable, dropped only when `lib/emptycase.ml`
+  syntactically proves the `A := Empty` instance; recorded as bridge `empty_case:A`.
+- Reuse: theorems whose proposition Megalodon reports as already known are emitted as comments
+  (`native_reuse`).
+
+### 20.4 Native infrastructure
+
+`mglib/native/prelude.mg` (hand-written, checked, theorems currently `Admitted`): `choose_in`,
+`minus_nat`, `nat_pred`, `div_nat`, `mod_nat`, `even_nat`, `odd_nat`, `div_int`, `rem_int`,
+`neutral_of`, `iterate_op`, `finsum`, `finprod`.  Reused from God1 instead of redefining:
+`finite`, `infinite`, `equip` (`HAS_SIZE`), `finite_cardinality` (`CARD`), `inj`, `bij`,
+`sup`, `inf`, `is_lub`, `is_glb`, `sqrt_SNo_nonneg`, `divides_int`, `divides_nat`, `factorial`.
+
+### 20.5 Status (2026-08-28)
+
+Core profile: 2984 theorems; 2235 public (157 exact, 1560 transport, 451 generalization,
+67 reuse), 749 pending, 0 errors; all shards check; byte-deterministic.  Biggest pending slices:
+lists (finite sequences), Cartesian types, internal construction types (quarantined by design).
