@@ -1040,18 +1040,25 @@ is correct, repeatable native statements.  `lib/literal.ml` is a stub.
 `finite`, `infinite`, `equip` (`HAS_SIZE`), `finite_cardinality` (`CARD`), `inj`, `bij`,
 `sup`, `inf`, `is_lub`, `is_glb`, `sqrt_SNo_nonneg`, `divides_int`, `divides_nat`, `factorial`.
 
-### 20.5 Status (2026-08-28, report 2)
+### 20.5 Status (2026-08-28, report 3)
 
-Core profile: 2984 theorems; 2677 public, 307 pending (all quarantined internals or unclassified
-type definitions).  Standard profile (core + 11 Library files): 4590 theorems; 4283 public.  All
-shards check under Megalodon; runs are byte-deterministic; golden tests pass.  Native modules:
-`prelude.mg`, `finseq.mg`, `order.mg`.  Mapping slices: `core.json`, `lists.json`, `library.json`.
+core 2684/2984, standard 4289/4590, mv_vectors (Multivariate/vectors.ml) 4783/5084 public; all
+remaining pending theorems concern quarantined internals.  All shards check; golden tests pass.
 
-### 20.6 Decisions still open / next milestones
+### 20.6 Automatic definitions (extends §6.2 and §10)
 
-1. Automatic native definitions for `new_definition` constants (see report 2) — extends §6.2 to
-   constants; auto definitions are marked `auto_definition` and are overridable by hand mappings.
-2. Megalodon-checked empty-case proofs to certify `generalization_required` statements.
-3. Proofs of the native prelude theorems.
-4. Literal semantic layer (§9.2) before the proof-export project.
-5. Side-by-side HTML review page (§13.5).
+Unmapped constants and types are translated from their kernel definitions when no hand mapping
+exists: `new_definition` right-hand sides (arity = leading lambdas, carriers as leading set
+parameters, roles by type), `new_specification` constants as `choose_in carrier (fun c => spec c)`,
+and `new_type_definition` types as separations `{x :e [[tau]] | P x}` with identity `abs`/`rep`.
+They are generated in dependency order into `_definitions.mg`, marked `auto`, never override a
+hand mapping, and are listed with their failures in the manifest and report.  Recursive
+definitions made by `define` are still quarantined (their kernel form uses recursion machinery).
+
+### 20.7 Open items
+
+1. Megalodon-checked empty-case proofs to certify `generalization_required` statements.
+2. Proofs of the native prelude theorems (`prelude.mg`, `finseq.mg`, `order.mg`).
+3. Literal semantic layer (§9.2) before the proof-export project.
+4. Side-by-side HTML review page (§13.5).
+5. Hand overrides for auto definitions where readability matters (`vector_norm`, `distance`).
