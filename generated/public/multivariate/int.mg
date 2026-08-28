@@ -862,9 +862,9 @@ Admitted.
 
 // HOL Light: int.ml:431 / INT_LT_01
 // Source hash: md5:497d72e7729d5c4ea49d37b04827d1ac
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_LT_01 : 0 < 1.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_LT_01 : 0 < 1.
 
 // HOL Light: int.ml:432 / INT_LT_ADD
 // Source hash: md5:8b6456d2cf8006f621132d9047ca2a89
@@ -1090,9 +1090,9 @@ Admitted.
 
 // HOL Light: int.ml:469 / INT_LT_SUB_RADD
 // Source hash: md5:e376eddf451fdfae4516e2191eb8e455
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_LT_SUB_RADD : forall x y z :e int, x + - y < z <-> x < z + y.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_LT_SUB_RADD : forall x y z :e int, x + - y < z <-> x < z + y.
 
 // HOL Light: int.ml:470 / INT_LT_TOTAL
 // Source hash: md5:2592f9f6afccf104f6c39dd0da684bd6
@@ -1264,9 +1264,9 @@ Admitted.
 
 // HOL Light: int.ml:498 / INT_NEG_0
 // Source hash: md5:f1f5d00aebedc3af1018837c82fce628
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_NEG_0 : - 0 = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_NEG_0 : - 0 = 0.
 
 // HOL Light: int.ml:499 / INT_NEG_ADD
 // Source hash: md5:ef8377f1d35cc5e057e02d00cc42e6c2
@@ -1450,15 +1450,15 @@ Admitted.
 
 // HOL Light: int.ml:529 / INT_OF_NUM_SUC
 // Source hash: md5:97ae1d2133bd1e3fcb96eec95c1f37cd
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
 
 // HOL Light: int.ml:530 / INT_POS
 // Source hash: md5:98964a3ff0f5b863a58d239a4e1da89c
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_POS : forall n :e omega, 0 <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_POS : forall n :e omega, 0 <= n.
 
 // HOL Light: int.ml:531 / INT_POS_EQ_SQUARE
 // Source hash: md5:a4fa86348e52a1273f3f397cd8b9229b
@@ -1690,9 +1690,9 @@ Admitted.
 
 // HOL Light: int.ml:569 / INT_SGN
 // Source hash: md5:8125c06f3f21f21d1fb3f75026ee7511
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
 
 // HOL Light: int.ml:570 / INT_SGNS_EQ
 // Source hash: md5:acbb6321282e6b76ec56d3bc7fae24f5
@@ -1852,9 +1852,9 @@ Admitted.
 
 // HOL Light: int.ml:596 / INT_SUB_REFL
 // Source hash: md5:2af58559b3615d8c421715d986619866
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_SUB_REFL : forall x :e int, x + - x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_SUB_REFL : forall x :e int, x + - x = 0.
 
 // HOL Light: int.ml:597 / INT_SUB_RNEG
 // Source hash: md5:bedfa50186ef274208e8e8425619de57
@@ -1942,15 +1942,15 @@ Admitted.
 
 // HOL Light: int.ml:658 / INT_GE
 // Source hash: md5:21fd94d6d5bf4ed5f82206866508dece
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
 
 // HOL Light: int.ml:662 / INT_GT
 // Source hash: md5:210f1a8f40f04907eb1ff4ede4ade97e
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_GT : forall x y :e int, y < x <-> y < x.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_GT : forall x y :e int, y < x <-> y < x.
 
 // HOL Light: int.ml:666 / INT_LT
 // Source hash: md5:68a146ef016b6b7b0ba14603c5c22c4a
@@ -1960,21 +1960,21 @@ Admitted.
 
 // HOL Light: int.ml:715 / INT_SUB
 // Source hash: md5:84797b55cfb18771c7a0b0f6b45861de
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
 
 // HOL Light: int.ml:717 / INT_MAX
 // Source hash: md5:137b46cca035b261ad44244bcfc009b7
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
 
 // HOL Light: int.ml:719 / INT_MIN
 // Source hash: md5:f418eb61bef787b420491a2976be0304
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
 
 // HOL Light: int.ml:725 / INT_OF_NUM_EXISTS
 // Source hash: md5:2649dc915583d6fad07e349593bf781a

@@ -592,9 +592,9 @@ Admitted.
 
 // HOL Light: lists.ml:523 / MAP_I
 // Source hash: md5:7308c5409ad7fe485ea20ab13aadeb1b
-// Status: transport_required (bridges: hol_list_finseq)
-Theorem MAP_I : forall A:set, A <> Empty -> forall x :e finseq A, seq_map (fun x:set => x) x = x.
-Admitted.
+// Status: native_reuse (bridges: hol_list_finseq)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem MAP_I : forall A:set, A <> Empty -> forall x :e finseq A, seq_map (fun x:set => x) x = x.
 
 // HOL Light: lists.ml:527 / BUTLAST_CLAUSES
 // Source hash: md5:2669bd204e0a6c6c199749e98d4535d4

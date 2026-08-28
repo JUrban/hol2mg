@@ -77,6 +77,28 @@ Admitted.
 Theorem div_mod_nat : forall m n :e omega, n <> 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
 Admitted.
 
+
+// members of the predecessor lift to the successor
+Theorem nat_pred_succ_in : forall n:set, nat_p n -> forall i :e nat_pred n, ordsucc i :e n.
+let n. assume Hn: nat_p n.
+apply (nat_inv n Hn).
+- assume H0: n = 0. rewrite H0.
+  prove forall i :e nat_pred 0, ordsucc i :e 0.
+  prove forall i :e (if 0 = 0 then 0 else 0 + - 1), ordsucc i :e 0.
+  rewrite (If_i_1 (0 = 0) 0 (0 + - 1) (fun q H => H)).
+  let i. assume Hi: i :e 0. exact (FalseE (EmptyE i Hi) (ordsucc i :e 0)).
+- assume H1: exists x, nat_p x /\ n = ordsucc x.
+  apply (exandE_i nat_p (fun x => n = ordsucc x) H1).
+  let x. assume Hx: nat_p x. assume Hnx: n = ordsucc x.
+  rewrite Hnx.
+  prove forall i :e (if ordsucc x = 0 then 0 else ordsucc x + - 1), ordsucc i :e ordsucc x.
+  rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
+  claim L1: ordsucc x + - 1 = x.
+  { rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1. exact (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). }
+  rewrite L1.
+  let i. assume Hi: i :e x. exact (nat_ordsucc_in_ordsucc x Hx i Hi).
+Qed.
+
 // Integer division and remainder with HOL Light's conventions:
 // x div y rounds toward negative infinity, rem is nonnegative for y <> 0,
 // and both are 0 when y = 0.

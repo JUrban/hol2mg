@@ -2776,15 +2776,15 @@ Admitted.
 
 // HOL Light: Multivariate/metric.ml:5164 / HOMEOMORPHIC_MAPS_I
 // Source hash: md5:5acce1b7fa0d570746d98b7bfaf182a5
-// Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem HOMEOMORPHIC_MAPS_I : forall A:set, A <> Empty -> forall top top' :e topology A, homeomorphic_maps A A (top,top') (fun x :e A => x,fun x :e A => x) <-> top' = top.
-Admitted.
+// Status: native_reuse (bridges: hol_prod_setprod, hol_typedef_topology)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem HOMEOMORPHIC_MAPS_I : forall A:set, A <> Empty -> forall top top' :e topology A, homeomorphic_maps A A (top,top') (fun x :e A => x,fun x :e A => x) <-> top' = top.
 
 // HOL Light: Multivariate/metric.ml:5169 / HOMEOMORPHIC_MAP_I
 // Source hash: md5:909d977b031bff9752103a379bc557f9
-// Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem HOMEOMORPHIC_MAP_I : forall A:set, A <> Empty -> forall top top' :e topology A, homeomorphic_map A A (top,top') (fun x:set => x) <-> top' = top.
-Admitted.
+// Status: native_reuse (bridges: hol_prod_setprod, hol_typedef_topology)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem HOMEOMORPHIC_MAP_I : forall A:set, A <> Empty -> forall top top' :e topology A, homeomorphic_map A A (top,top') (fun x:set => x) <-> top' = top.
 
 // HOL Light: Multivariate/metric.ml:5173 / HOMEOMORPHIC_MAP_COMPOSE
 // Source hash: md5:df8f2d3e792344bc41e283f8a2c5fb4c
@@ -8698,9 +8698,9 @@ Admitted.
 
 // HOL Light: Multivariate/metric.ml:18193 / REAL_COMPACT_INTERVAL
 // Source hash: md5:bc9e5439e0f9cf7aff1e085aeec4b036
-// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem REAL_COMPACT_INTERVAL : forall a b :e R, real_compact (closed_real_interval (seq_cons (a,b) seq_nil)).
-Admitted.
+// Status: native_reuse (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_COMPACT_INTERVAL : forall a b :e R, real_compact (closed_real_interval (seq_cons (a,b) seq_nil)).
 
 // HOL Light: Multivariate/metric.ml:18197 / REAL_COMPACT_UNION
 // Source hash: md5:38d04cbaa7dfe0e8ba628ef694f13afd
@@ -15232,21 +15232,21 @@ Admitted.
 
 // HOL Light: Multivariate/metric.ml:45166 / CANTOR_SET_SUBSET_INTERVAL
 // Source hash: md5:52d5c1ae6feddde4c12ce6bc96c49ac7
-// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem CANTOR_SET_SUBSET_INTERVAL : cantor_set c= closed_real_interval (seq_cons (0,1) seq_nil).
-Admitted.
+// Status: native_reuse (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem CANTOR_SET_SUBSET_INTERVAL : cantor_set c= closed_real_interval (seq_cons (0,1) seq_nil).
 
 // HOL Light: Multivariate/metric.ml:45170 / CLOSED_IN_CANTOR_SET
 // Source hash: md5:ec6d89662b9ef8ab9141bc791c42047a
-// Status: transport_required (bridges: hol_real_R, hol_typedef_topology)
-Theorem CLOSED_IN_CANTOR_SET : closed_in R euclideanreal cantor_set.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R, hol_typedef_topology)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem CLOSED_IN_CANTOR_SET : closed_in R euclideanreal cantor_set.
 
 // HOL Light: Multivariate/metric.ml:45174 / CLOSED_IN_CANTOR_SET_INTERVAL
 // Source hash: md5:985c524553d6e6dc053199972c409075
-// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem CLOSED_IN_CANTOR_SET_INTERVAL : closed_in R (subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil))) cantor_set.
-Admitted.
+// Status: native_reuse (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem CLOSED_IN_CANTOR_SET_INTERVAL : closed_in R (subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil))) cantor_set.
 
 // HOL Light: Multivariate/metric.ml:45178 / CANTOR_SPACE_HOMEOMORPHIC_CANTOR_SET
 // Source hash: md5:3ea9366f7899d3b6c59d4523a6e6ea83

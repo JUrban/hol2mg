@@ -664,9 +664,9 @@ Admitted.
 
 // HOL Light: Library/prime.ml:629 / PRIME_2
 // Source hash: md5:3311bf3bf5c3e24fa3f86e5a45d54da8
-// Status: transport_required (bridges: hol_num_omega)
-Theorem PRIME_2 : prime_nat 2.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem PRIME_2 : prime_nat 2.
 
 // HOL Light: Library/prime.ml:633 / PRIME_COPRIME_STRONG
 // Source hash: md5:b91050ef9679258329dfcdb4f9aab6df
@@ -1012,9 +1012,9 @@ Admitted.
 
 // HOL Light: Library/prime.ml:1100 / PRIMES_INFINITE
 // Source hash: md5:62436f57679277a848b43f1e1c614f68
-// Status: transport_required (bridges: hol_finite_finite, hol_num_omega)
-Theorem PRIMES_INFINITE : infinite {p :e omega | prime_nat p}.
-Admitted.
+// Status: native_reuse (bridges: hol_finite_finite, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem PRIMES_INFINITE : infinite {p :e omega | prime_nat p}.
 
 // HOL Light: Library/prime.ml:1105 / FACTORIZATION_INDEX
 // Source hash: md5:91fc3a3555e5fdee320d51e0944b4cb0

@@ -106,9 +106,9 @@ Admitted.
 
 // HOL Light: iterate.ml:102 / HAS_SIZE_NUMSEG_1
 // Source hash: md5:3964f0d6d7c3ae686e7c3f3bfad59e22
-// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_NUMSEG_1 : forall n :e omega, equip (idx_n n) n.
-Admitted.
+// Status: native_reuse (bridges: hol_has_size_equip, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem HAS_SIZE_NUMSEG_1 : forall n :e omega, equip (idx_n n) n.
 
 // HOL Light: iterate.ml:106 / NUMSEG_CLAUSES
 // Source hash: md5:aaec3d7bc1b903fbed446dba31debe52
@@ -1204,9 +1204,9 @@ Admitted.
 
 // HOL Light: iterate.ml:2048 / SUM_0
 // Source hash: md5:1c9627d57c17c4075448d905a78bd0e7
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem SUM_0 : forall A:set, A <> Empty -> forall s c= A, finsum s (fun n:set => 0) = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUM_0 : forall A:set, A <> Empty -> forall s c= A, finsum s (fun n:set => 0) = 0.
 
 // HOL Light: iterate.ml:2052 / SUM_LMUL
 // Source hash: md5:39ee86a2da20af0edfeadb04886f3a85
@@ -1438,21 +1438,21 @@ Admitted.
 
 // HOL Light: iterate.ml:2321 / CARD_EQ_SUM
 // Source hash: md5:3545e1cdd43a5b9cca47c000e7931ca3
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem CARD_EQ_SUM : forall A:set, A <> Empty -> forall s c= A, finite s -> finite_cardinality s = finsum s (fun x:set => 1).
-Admitted.
+// Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem CARD_EQ_SUM : forall A:set, A <> Empty -> forall s c= A, finite s -> finite_cardinality s = finsum s (fun x:set => 1).
 
 // HOL Light: iterate.ml:2325 / SUM_MULTICOUNT_GEN
 // Source hash: md5:4f21d5476c4f49949cc34b0c3fe4f38d
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem SUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t k.
-Admitted.
+// Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t k.
 
 // HOL Light: iterate.ml:2344 / SUM_MULTICOUNT
 // Source hash: md5:e60ec96027855390e454c72b8e469a51
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, mul_nat_mul_SNo, omega_Subq_R)
-Theorem SUM_MULTICOUNT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = k * finite_cardinality t.
-Admitted.
+// Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, mul_nat_mul_SNo, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUM_MULTICOUNT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = k * finite_cardinality t.
 
 // HOL Light: iterate.ml:2354 / SUM_IMAGE_GEN
 // Source hash: md5:68df2ab834c3fdc35aaabce52f7500b5
@@ -1846,9 +1846,9 @@ Admitted.
 
 // HOL Light: iterate.ml:2981 / POLYNOMIAL_FUNCTION_I
 // Source hash: md5:0586efeec066f40d33919a16849fbddb
-// Status: transport_required (bridges: hol_real_R)
-Theorem POLYNOMIAL_FUNCTION_I : polynomial_function_R (fun x:set => x).
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem POLYNOMIAL_FUNCTION_I : polynomial_function_R (fun x:set => x).
 
 // HOL Light: iterate.ml:2985 / POLYNOMIAL_FUNCTION_ADD
 // Source hash: md5:5ecad3f3e5d693ee11065d465825c7a6

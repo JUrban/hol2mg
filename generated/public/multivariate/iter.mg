@@ -22,9 +22,9 @@ Admitted.
 
 // HOL Light: Library/iter.ml:22 / ITER_ALT_POINTLESS
 // Source hash: md5:29cc3e0f851d0c8a8485551c2f67e4f4
-// Status: transport_required (bridges: hol_num_omega)
-Theorem ITER_ALT_POINTLESS : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = iter_fun n f (f x).
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem ITER_ALT_POINTLESS : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e A) -> forall x :e A, iter_fun 0 f x = x) /\ forall f:set -> set, (forall x :e B, f x :e B) -> forall n :e omega, forall x :e B, iter_fun (ordsucc n) f x = iter_fun n f (f x).
 
 // HOL Light: Library/iter.ml:27 / ITER_1
 // Source hash: md5:12e971279c186ebdb3ca7a6c5188c384

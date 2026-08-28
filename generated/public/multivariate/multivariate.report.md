@@ -10,11 +10,11 @@
 
 | status | count |
 |---|---|
-| transport_required | 14660 |
-| generalization_required | 2001 |
+| transport_required | 14616 |
+| generalization_required | 1995 |
 | pending_mapping | 458 |
-| exact_native | 316 |
-| native_reuse | 53 |
+| exact_native | 315 |
+| native_reuse | 104 |
 | error | 38 |
 
 ## Public statements per shard
@@ -35,28 +35,28 @@
 | define | 1 | 36 | 0 |
 | degree | 371 | 16 | 1 |
 | derivatives | 208 | 1 | 0 |
-| determinants | 317 | 0 | 0 |
+| determinants | 315 | 0 | 0 |
 | floor | 100 | 0 | 0 |
-| frag | 47 | 0 | 0 |
+| frag | 45 | 0 | 0 |
 | grouptheory | 1132 | 87 | 19 |
 | homology | 287 | 44 | 18 |
 | ind_types | 17 | 32 | 0 |
-| int | 514 | 0 | 0 |
-| integration | 895 | 10 | 0 |
-| iter | 13 | 0 | 0 |
-| iterate | 319 | 11 | 0 |
-| lists | 131 | 2 | 0 |
+| int | 502 | 0 | 0 |
+| integration | 894 | 10 | 0 |
+| iter | 12 | 0 | 0 |
+| iterate | 313 | 11 | 0 |
+| lists | 130 | 2 | 0 |
 | matroids | 159 | 0 | 0 |
 | measure | 731 | 0 | 0 |
-| metric | 2567 | 0 | 0 |
-| misc | 408 | 25 | 0 |
+| metric | 2561 | 0 | 0 |
+| misc | 398 | 25 | 0 |
 | nums | 11 | 10 | 0 |
-| pair | 37 | 13 | 0 |
+| pair | 36 | 13 | 0 |
 | paths | 1055 | 0 | 0 |
-| permutations | 148 | 0 | 0 |
+| permutations | 144 | 0 | 0 |
 | polytope | 362 | 0 | 0 |
-| prime | 279 | 0 | 0 |
-| products | 147 | 0 | 0 |
+| prime | 277 | 0 | 0 |
+| products | 144 | 0 | 0 |
 | real | 315 | 0 | 0 |
 | realarith | 27 | 0 | 0 |
 | realax | 30 | 158 | 0 |

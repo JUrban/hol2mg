@@ -1402,9 +1402,9 @@ Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2957 / ORTHOGONAL_TRANSFORMATION_I
 // Source hash: md5:60234103decd6440b77135fff1f6ad08
-// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_I : forall A:set, A <> Empty -> orthogonal_transformation A (fun x:set => x).
-Admitted.
+// Status: native_reuse (bridges: hol_cart_setexp, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem ORTHOGONAL_TRANSFORMATION_I : forall A:set, A <> Empty -> orthogonal_transformation A (fun x:set => x).
 
 // HOL Light: Multivariate/determinants.ml:2961 / ORTHOGONAL_TRANSFORMATION_NEGATION
 // Source hash: md5:5702432210f0ee4f09e239c124cf79cf
@@ -1516,9 +1516,9 @@ Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3275 / ORTHOGONAL_TRANSFORMATION_INVERSE
 // Source hash: md5:dff1f2c12a535277befeb46e9865b5b9
-// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_INVERSE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> orthogonal_transformation N f -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) /\ (orthogonal_transformation N g /\ ((forall x :e R :^: idx N, g (f x) = x) /\ forall y :e R :^: idx N, f (g y) = y)).
-Admitted.
+// Status: native_reuse (bridges: hol_cart_setexp, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem ORTHOGONAL_TRANSFORMATION_INVERSE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> orthogonal_transformation N f -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) /\ (orthogonal_transformation N g /\ ((forall x :e R :^: idx N, g (f x) = x) /\ forall y :e R :^: idx N, f (g y) = y)).
 
 // HOL Light: Multivariate/determinants.ml:3284 / ONORM_COMPOSE_ORTHOGONAL_TRANSFORMATION_LEFT
 // Source hash: md5:a618a3bfe56371ffe233e7c91c95391b

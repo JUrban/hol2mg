@@ -466,9 +466,9 @@ Admitted.
 
 // HOL Light: Library/products.ml:531 / IPRODUCT_ONE
 // Source hash: md5:2a8be89b859522e9b583262d7fa4a6d4
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
-Theorem IPRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, hol_product_finprod, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem IPRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
 
 // HOL Light: Library/products.ml:535 / IPRODUCT_LE_1
 // Source hash: md5:703c6480a77286c55280a8a88cf9596b
@@ -778,9 +778,9 @@ Admitted.
 
 // HOL Light: Library/products.ml:850 / PRODUCT_ONE
 // Source hash: md5:aeaf34e450469a3ee4b125a997e01bfd
-// Status: transport_required (bridges: hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
-Theorem PRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem PRODUCT_ONE : forall A:set, A <> Empty -> forall s c= A, finprod s (fun n:set => 1) = 1.
 
 // HOL Light: Library/products.ml:854 / PRODUCT_LE_1
 // Source hash: md5:8d19684778ec0b02895b2dbd0baf4887
@@ -832,9 +832,9 @@ Admitted.
 
 // HOL Light: Library/products.ml:919 / REAL_OF_NUM_NPRODUCT
 // Source hash: md5:7af83aae8ca258670ee9a8d1a4e3d3c0
-// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nproduct_finprod, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
-Theorem REAL_OF_NUM_NPRODUCT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finprod s f = finprod s f.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A, hol_finite_finite, hol_nproduct_finprod, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_OF_NUM_NPRODUCT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finprod s f = finprod s f.
 
 // HOL Light: Library/products.ml:924 / PRODUCT_SUPERSET
 // Source hash: md5:5661cdebe54d5f589960012b354a3c89

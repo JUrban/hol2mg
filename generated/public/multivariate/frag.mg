@@ -58,15 +58,15 @@ Admitted.
 
 // HOL Light: Library/frag.ml:37 / DEST_FRAG_0
 // Source hash: md5:7647a644a73a2f6c0914602be1358d41
-// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_typedef_frag, omega_Subq_int)
-Theorem DEST_FRAG_0 : forall A:set, forall x :e A, frag_0 A x = 0.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_typedef_frag, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem DEST_FRAG_0 : forall A:set, forall x :e A, frag_0 A x = 0.
 
 // HOL Light: Library/frag.ml:42 / DEST_FRAG_OF
 // Source hash: md5:5d05f4c2f34f56ca8adec79c7b490d6d
-// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_typedef_frag, omega_Subq_int)
-Theorem DEST_FRAG_OF : forall A:set, forall c a :e A, frag_of A c a = if a = c then 1 else 0.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_typedef_frag, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem DEST_FRAG_OF : forall A:set, forall c a :e A, frag_of A c a = if a = c then 1 else 0.
 
 // HOL Light: Library/frag.ml:50 / DEST_FRAG_NEG
 // Source hash: md5:32acf233a18b32692fe2829746bff710

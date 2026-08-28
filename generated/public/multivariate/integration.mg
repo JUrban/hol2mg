@@ -4360,9 +4360,9 @@ Admitted.
 
 // HOL Light: Multivariate/integration.ml:19142 / HAS_BOUNDED_VARIATION_ON_COMBINE_GEN
 // Source hash: md5:f9104be65b96b49abf2418f419401a14
-// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HAS_BOUNDED_VARIATION_ON_COMBINE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a :e R, is_interval 1 s -> (has_bounded_variation_on N f s <-> has_bounded_variation_on N f {x :e R :^: idx 1 | x :e s /\ drop x <= a} /\ has_bounded_variation_on N f {x :e R :^: idx 1 | x :e s /\ a <= drop x}).
-Admitted.
+// Status: native_reuse (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem HAS_BOUNDED_VARIATION_ON_COMBINE_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a :e R, is_interval 1 s -> (has_bounded_variation_on N f s <-> has_bounded_variation_on N f {x :e R :^: idx 1 | x :e s /\ drop x <= a} /\ has_bounded_variation_on N f {x :e R :^: idx 1 | x :e s /\ a <= drop x}).
 
 // HOL Light: Multivariate/integration.ml:19259 / HAS_BOUNDED_VARIATION_ON_INTERIOR
 // Source hash: md5:850bed1d1906b9b7f2eb3325e3922148

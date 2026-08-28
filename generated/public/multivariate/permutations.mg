@@ -34,9 +34,9 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:29 / INJECTIVE_INVERSE_o
 // Source hash: md5:0c055f809179483998b03b4370d963dd
-// Status: generalization_required (bridges: empty_case:B)
-Theorem INJECTIVE_INVERSE_o : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e B, f x :e A) -> ((forall x x' :e B, f x = f x' -> x = x') <-> forall x :e B, inverse A B f (f x) = x).
-Admitted.
+// Status: native_reuse (bridges: empty_case:B)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INJECTIVE_INVERSE_o : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e B, f x :e A) -> ((forall x x' :e B, f x = f x' -> x = x') <-> forall x :e B, inverse A B f (f x) = x).
 
 // HOL Light: Library/permutations.ml:33 / INVERSE_UNIQUE_o
 // Source hash: md5:d38629d5f526dc14954b375169bfc28a
@@ -166,9 +166,9 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:162 / PERMUTES_INVERSES
 // Source hash: md5:e614f7d2a5db98755a0caf0a4f02913d
-// Status: generalization_required (bridges: empty_case:A)
-Theorem PERMUTES_INVERSES : forall A:set, forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, permutes A p s -> (forall x :e A, p (inverse A A p x) = x) /\ forall x :e A, inverse A A p (p x) = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem PERMUTES_INVERSES : forall A:set, forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, permutes A p s -> (forall x :e A, p (inverse A A p x) = x) /\ forall x :e A, inverse A A p (p x) = x.
 
 // HOL Light: Library/permutations.ml:168 / PERMUTES_SUBSET
 // Source hash: md5:a5c119709523b1d4bf20b631905b5442
@@ -274,9 +274,9 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:316 / PERMUTES_I
 // Source hash: md5:7ec7c62c85da7a961852fe406655ae50
-// Status: exact_native
-Theorem PERMUTES_I : forall A:set, A <> Empty -> forall s c= A, permutes A (fun x:set => x) s.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem PERMUTES_I : forall A:set, A <> Empty -> forall s c= A, permutes A (fun x:set => x) s.
 
 // HOL Light: Library/permutations.ml:320 / PERMUTES_COMPOSE
 // Source hash: md5:e8940ea512c879edeceed3b6757fa561
@@ -700,9 +700,9 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:1047 / SIGN_ID
 // Source hash: md5:025435aea6a845a01b7b05621f03adbb
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem SIGN_ID : forall A:set, A <> Empty -> sign A (fun x:set => x) = 1.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SIGN_ID : forall A:set, A <> Empty -> sign A (fun x:set => x) = 1.
 
 // HOL Light: Library/permutations.ml:1051 / SIGN_INVERSE
 // Source hash: md5:52aa97ed7622a7451e405b023db7aff9
