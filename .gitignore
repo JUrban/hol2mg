@@ -1,0 +1,10 @@
+*.cmo
+*.cmi
+*.cmx
+*.o
+*.cma
+*.cmxa
+_build/
+build/
+/bin/
+*.log
