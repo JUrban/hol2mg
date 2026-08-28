@@ -32,8 +32,6 @@ Definition mod_nat : set -> set -> set := fun m n => if n = 0 then m else m + - 
 Definition even_nat : set -> prop := fun n => exists k :e omega, n = 2 * k.
 Definition odd_nat : set -> prop := fun n => exists k :e omega, n = 2 * k + 1.
 
-// cardinality of a finite set as a natural number (arbitrary on infinite sets)
-Definition card : set -> set := fun X => Eps_i (fun n => n :e omega /\ equip X n).
 
 // closure facts (to be proved)
 Theorem minus_nat_omega : forall m n :e omega, minus_nat m n :e omega.
@@ -46,5 +44,42 @@ Theorem mod_nat_omega : forall m n :e omega, mod_nat m n :e omega.
 Admitted.
 Theorem div_mod_nat : forall m n :e omega, n <> 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
 Admitted.
-Theorem card_equip : forall X:set, finite X -> equip X (card X) /\ card X :e omega.
+
+// Integer division and remainder with HOL Light's conventions:
+// x div y rounds toward negative infinity, rem is nonnegative for y <> 0,
+// and both are 0 when y = 0.
+Definition div_int : set -> set -> set :=
+  fun x y => if y = 0 then 0 else Eps_i (fun q => q :e int /\ exists r :e int, 0 <= r /\ r < abs_SNo y /\ x = q * y + r).
+Definition rem_int : set -> set -> set := fun x y => if y = 0 then 0 else x + - div_int x y * y.
+
+// The neutral element of a binary operation on a carrier (HOL Light neutral).
+Definition neutral_of : set -> (set -> set -> set) -> set :=
+  fun A op => choose_in A (fun e => forall x :e A, op e x = x /\ op x e = x).
+
+// Support-based finite iteration (HOL Light iterate): fold op over the
+// elements of s at which f differs from the neutral element, if finitely
+// many; otherwise the neutral element.
+Definition iterate_op : set -> (set -> set -> set) -> set -> (set -> set) -> set :=
+  fun A op s f =>
+    if finite {x :e s | f x <> neutral_of A op}
+    then group_word_product A op (fun i => f (finite_enumeration {x :e s | f x <> neutral_of A op} i))
+           (finite_cardinality {x :e s | f x <> neutral_of A op})
+    else neutral_of A op.
+
+// Finite sums and products of surreal numbers (HOL Light sum/nsum/product/nproduct).
+Definition finsum : set -> (set -> set) -> set :=
+  fun s f => if finite {x :e s | f x <> 0}
+             then ring_finite_sum R add_SNo {x :e s | f x <> 0} f else 0.
+Definition finprod : set -> (set -> set) -> set :=
+  fun s f => if finite {x :e s | f x <> 1}
+             then group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i))
+                    (finite_cardinality {x :e s | f x <> 1}) else 1.
+
+Theorem finsum_R : forall s:set, forall f:set -> set, (forall x :e s, f x :e R) -> finsum s f :e R.
+Admitted.
+Theorem finsum_omega : forall s:set, forall f:set -> set, (forall x :e s, f x :e omega) -> finsum s f :e omega.
+Admitted.
+Theorem finprod_R : forall s:set, forall f:set -> set, (forall x :e s, f x :e R) -> finprod s f :e R.
+Admitted.
+Theorem finprod_omega : forall s:set, forall f:set -> set, (forall x :e s, f x :e omega) -> finprod s f :e omega.
 Admitted.

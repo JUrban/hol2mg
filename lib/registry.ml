@@ -2,7 +2,7 @@
 
 open Hol
 
-type role_spec = RSet | RProp | RMetaFun | RMetaPred | RSubset
+type role_spec = RSet | RProp | RMetaFun of int option | RMetaPred of int option | RSubset
 
 type type_entry = {
   t_hol : string;                 (* type constructor name *)
@@ -112,12 +112,17 @@ let parse_scheme (s : string) : ty =
   if !i <> n then raise (Registry_error ("scheme: trailing text in " ^ s));
   t
 
-let role_of_string = function
-  | "set" -> RSet | "prop" -> RProp | "metafun" -> RMetaFun | "metapred" -> RMetaPred | "subset" -> RSubset
-  | s -> raise (Registry_error ("unknown role " ^ s))
+(* "metafun" / "metafun/2": optional explicit arity for schemes with nested arrows *)
+let role_of_string s =
+  let base, ar = (match String.index_opt s '/' with
+    | Some i -> (String.sub s 0 i, Some (int_of_string (String.sub s (i + 1) (String.length s - i - 1))))
+    | None -> (s, None)) in
+  match base with
+  | "set" -> RSet | "prop" -> RProp | "metafun" -> RMetaFun ar | "metapred" -> RMetaPred ar | "subset" -> RSubset
+  | _ -> raise (Registry_error ("unknown role " ^ s))
 
 let string_of_role = function
-  | RSet -> "set" | RProp -> "prop" | RMetaFun -> "metafun" | RMetaPred -> "metapred" | RSubset -> "subset"
+  | RSet -> "set" | RProp -> "prop" | RMetaFun _ -> "metafun" | RMetaPred _ -> "metapred" | RSubset -> "subset"
 
 let str k j = match Yojson.Safe.Util.member k j with `String s -> s | `Null -> "" | _ -> raise (Registry_error ("field " ^ k ^ " must be a string"))
 let strd k d j = match Yojson.Safe.Util.member k j with `String s -> s | _ -> d

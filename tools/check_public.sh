@@ -8,10 +8,13 @@ shards=("$@")
 if [ ${#shards[@]} -eq 0 ]; then shards=($(cd "$dir" && ls *.mg 2>/dev/null | sed 's/\.mg$//')); fi
 fail=0
 tmp=$(mktemp -d)
+known=$dir/known_props.txt
+: > "$known.new"
 for s in "${shards[@]}"; do
   f=$tmp/$s.mg
   cat "$HERE/mglib/native/prelude.mg" "$dir/$s.mg" > "$f"
   out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces -warnaboutreproven "$f" 2>&1)
+  echo "$out" | sed -n 's/^WARNING: The proposition given in theorem \([A-Za-z_0-9'"'"']*\) is already known.*/\1/p' >> "$known.new"
   if echo "$out" | grep -q "Everything looks good"; then
     echo "OK   $s ($(grep -c '^Theorem' "$dir/$s.mg") theorems)"
   else
@@ -22,4 +25,12 @@ for s in "${shards[@]}"; do
   fi
 done
 rm -rf "$tmp"
+sort -u "$known.new" > "$known.sorted"; rm -f "$known.new"
+if [ -s "$known.sorted" ]; then
+  if ! cmp -s "$known.sorted" "$known" 2>/dev/null; then
+    cat "$known.sorted" >> "$known"; sort -u -o "$known" "$known"
+    echo "NOTE: $(wc -l < "$known.sorted") already-known propositions recorded in $known; regenerate with --known-props to emit them as reuse comments"
+  fi
+fi
+rm -f "$known.sorted"
 exit $fail

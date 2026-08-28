@@ -69,6 +69,38 @@
    "class": "native_isomorphism",
    "status": "pending",
    "bridge": "hol_option_setsum"
+  },
+  {
+   "hol": "hreal",
+   "arity": 0,
+   "carrier": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light construction of the reals (positive reals as Dedekind cuts); not part of the public library."
+  },
+  {
+   "hol": "nadd",
+   "arity": 0,
+   "carrier": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light construction of the reals (nearly-additive sequences)."
+  },
+  {
+   "hol": "recspace",
+   "arity": 1,
+   "carrier": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light datatype construction space."
+  },
+  {
+   "hol": "ind",
+   "arity": 0,
+   "carrier": "Empty",
+   "class": "opaque",
+   "status": "internal",
+   "notes": "HOL Light type of individuals (only used to construct num)."
   }
  ],
  "constants": [
@@ -441,11 +473,11 @@
     "subset"
    ],
    "result": "set",
-   "template": "card ?1",
+   "template": "finite_cardinality ?1",
    "class": "native_isomorphism",
    "status": "reviewed",
-   "bridge": "hol_card",
-   "module": "native/prelude.mg"
+   "bridge": "hol_card_finite_cardinality",
+   "notes": "God1 finite_cardinality is also arbitrary on infinite sets"
   },
   {
    "hol": "CHOICE",
@@ -1285,6 +1317,284 @@
    "template": "?1 ?2",
    "class": "definitionally_exact",
    "status": "reviewed"
+  },
+  {
+   "hol": "sum",
+   "scheme": "(A->bool)->(A->real)->real",
+   "args": [
+    "subset",
+    "metafun"
+   ],
+   "result": "set",
+   "template": "finsum ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_sum_finsum",
+   "module": "native/prelude.mg",
+   "notes": "support-based like HOL Light iterate"
+  },
+  {
+   "hol": "nsum",
+   "scheme": "(A->bool)->(A->num)->num",
+   "args": [
+    "subset",
+    "metafun"
+   ],
+   "result": "set",
+   "template": "finsum ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_nsum_finsum",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "product",
+   "scheme": "(A->bool)->(A->real)->real",
+   "args": [
+    "subset",
+    "metafun"
+   ],
+   "result": "set",
+   "template": "finprod ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_product_finprod",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "nproduct",
+   "scheme": "(A->bool)->(A->num)->num",
+   "args": [
+    "subset",
+    "metafun"
+   ],
+   "result": "set",
+   "template": "finprod ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_nproduct_finprod",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "support",
+   "scheme": "(B->B->B)->(A->B)->(A->bool)->(A->bool)",
+   "args": [
+    "metafun",
+    "metafun",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "{x :e ?3 | ?2 x <> neutral_of ?B (fun a b => ?1 a b)}",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "neutral",
+   "scheme": "(A->A->A)->A",
+   "args": [
+    "metafun"
+   ],
+   "result": "set",
+   "template": "neutral_of ?A (fun a b => ?1 a b)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "iterate",
+   "scheme": "(B->B->B)->(A->bool)->(A->B)->B",
+   "args": [
+    "metafun",
+    "subset",
+    "metafun"
+   ],
+   "result": "set",
+   "template": "iterate_op ?B (fun a b => ?1 a b) ?2 ?3",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_iterate",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "int_of_real",
+   "scheme": "real->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 :e int then ?1 else 0",
+   "class": "generalization",
+   "status": "reviewed",
+   "notes": "HOL Light int_of_real is unspecified off the integers; 0 chosen (recorded as generalization)"
+  },
+  {
+   "hol": "num_of_int",
+   "scheme": "int->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 :e omega then ?1 else 0",
+   "class": "generalization",
+   "status": "reviewed",
+   "notes": "HOL Light num_of_int x = @n. &n = x, unspecified for negative x"
+  },
+  {
+   "hol": "WF",
+   "scheme": "(A->A->bool)->bool",
+   "args": [
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "forall P c= ?A, P <> Empty -> exists x :e P, forall y :e P, ~ ?1 y x",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "minimal",
+   "scheme": "(num->bool)->num",
+   "args": [
+    "metapred"
+   ],
+   "result": "set",
+   "template": "choose_in omega (fun n => ?1 n /\\ forall m :e omega, ?1 m -> n <= m)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "bridge": "choose_in_spec"
+  },
+  {
+   "hol": "ARBITRARY",
+   "scheme": "((A->bool)->bool)->bool",
+   "args": [
+    "subset"
+   ],
+   "result": "prop",
+   "template": "True",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "HOL Light ARBITRARY s = T"
+  },
+  {
+   "hol": "RESTRICTION",
+   "scheme": "(A->bool)->(A->B)->A->B",
+   "args": [
+    "subset",
+    "metafun"
+   ],
+   "result": "metafun",
+   "template": "fun x:set => if x :e ?1 then ?2 x else choose_in ?B (fun y => True)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "bridge": "choose_in_spec",
+   "notes": "ARB outside the domain"
+  },
+  {
+   "hol": "EXTENSIONAL",
+   "scheme": "(A->bool)->(A->B)->bool",
+   "args": [
+    "subset",
+    "metafun"
+   ],
+   "result": "prop",
+   "template": "forall x :e ?A, ~ x :e ?1 -> ?2 x = choose_in ?B (fun y => True)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "bridge": "choose_in_spec"
+  },
+  {
+   "hol": "cartesian_product",
+   "scheme": "(K->bool)->(K->A->bool)->(K->A)->bool",
+   "args": [
+    "subset",
+    "metafun/1"
+   ],
+   "result": "subset",
+   "template": "{f :e ?A :^: ?K | (forall i :e ?1, f i :e ?2 i) /\\ forall i :e ?K, ~ i :e ?1 -> f i = choose_in ?A (fun y => True)}",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_fun_setexp"
+  },
+  {
+   "hol": "has_sup",
+   "scheme": "(real->bool)->real->bool",
+   "args": [
+    "subset",
+    "set"
+   ],
+   "result": "prop",
+   "template": "is_lub ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "has_inf",
+   "scheme": "(real->bool)->real->bool",
+   "args": [
+    "subset",
+    "set"
+   ],
+   "result": "prop",
+   "template": "is_glb ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_zpow",
+   "scheme": "real->int->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if 0 <= ?2 then ?1 ^ ?2 else recip_SNo (?1 ^ (- ?2))",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "rem",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "rem_int ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "div",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "div_int ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "==",
+   "scheme": "int->int->(int->int->bool)->bool",
+   "args": [
+    "set",
+    "set",
+    "metapred"
+   ],
+   "result": "prop",
+   "template": "?3 ?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "(x == y) r  is  r x y"
   }
  ]
 }

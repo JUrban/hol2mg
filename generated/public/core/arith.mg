@@ -310,9 +310,9 @@ Admitted.
 
 // HOL Light: arith.ml:322 / LE_0
 // Source hash: md5:31dc48e876d64098aef66243629de91c
-// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
-Theorem LE_0 : forall n :e omega, 0 <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem LE_0 : forall n :e omega, 0 <= n.
 
 // HOL Light: arith.ml:326 / LT_0
 // Source hash: md5:8f8b430afef3f06700473ea3f3647503
@@ -322,9 +322,9 @@ Admitted.
 
 // HOL Light: arith.ml:334 / LE_REFL
 // Source hash: md5:1b16a90917428cf3f87995a218f16789
-// Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
-Theorem LE_REFL : forall n :e omega, n <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem LE_REFL : forall n :e omega, n <= n.
 
 // HOL Light: arith.ml:338 / LT_REFL
 // Source hash: md5:7819f1e250c885a3217b6e30017a6c3a
@@ -874,9 +874,9 @@ Admitted.
 
 // HOL Light: arith.ml:935 / FACT_LT
 // Source hash: md5:050e25d4c8007df2182d34ae82e12b0a
-// Status: transport_required (bridges: hol_fact_factorial, hol_num_omega, nat_lt_SNoLt)
-Theorem FACT_LT : forall n :e omega, 0 < factorial n.
-Admitted.
+// Status: native_reuse (bridges: hol_fact_factorial, hol_num_omega, nat_lt_SNoLt)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem FACT_LT : forall n :e omega, 0 < factorial n.
 
 // HOL Light: arith.ml:940 / FACT_LE
 // Source hash: md5:40e5dd987e027bbd7af507ff199921ef
@@ -1484,6 +1484,54 @@ Admitted.
 Theorem DIVMOD_ELIM_THM' : forall P:set -> set -> prop, forall m n :e omega, P (div_nat m n) (mod_nat m n) <-> exists q r :e omega, (n = 0 /\ (q = 0 /\ r = m) \/ m = q * n + r /\ r < n) /\ P q r.
 Admitted.
 
+// HOL Light: arith.ml:1772 / minimal
+// Source hash: md5:39b7c042a9dafffe68ba4e3c451eb36e
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_lt_SNoLt)
+Theorem minimal : forall P:set -> prop, choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) = choose_in omega (fun n:set => P n /\ forall m :e omega, m < n -> ~ P m).
+Admitted.
+
+// HOL Light: arith.ml:1775 / MINIMAL
+// Source hash: md5:443e384aa0f6d3a39950416d1cd74f27
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_lt_SNoLt)
+Theorem MINIMAL : forall P:set -> prop, (exists n :e omega, P n) <-> P (choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m)) /\ forall m :e omega, m < choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) -> ~ P m.
+Admitted.
+
+// HOL Light: arith.ml:1780 / MINIMAL_UNIQUE
+// Source hash: md5:4cba49bcdc66400e324e8d06ff4b57ba
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_lt_SNoLt)
+Theorem MINIMAL_UNIQUE : forall P:set -> prop, forall n :e omega, P n /\ (forall m :e omega, m < n -> ~ P m) -> choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) = n.
+Admitted.
+
+// HOL Light: arith.ml:1785 / LE_MINIMAL
+// Source hash: md5:857592873447dcd95d14c0a7dc63810f
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_le_SNoLe)
+Theorem LE_MINIMAL : forall P:set -> prop, forall n :e omega, (exists r :e omega, P r) -> (n <= choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) <-> forall i :e omega, P i -> n <= i).
+Admitted.
+
+// HOL Light: arith.ml:1791 / MINIMAL_LE
+// Source hash: md5:bc581b8fea242f2f051eba5656f3e2a1
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_le_SNoLe)
+Theorem MINIMAL_LE : forall P:set -> prop, forall n :e omega, (exists r :e omega, P r) -> (choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) <= n <-> exists i :e omega, i <= n /\ P i).
+Admitted.
+
+// HOL Light: arith.ml:1796 / MINIMAL_UBOUND
+// Source hash: md5:fd602fc9c1759ce80d1e23ef3e1f694e
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_le_SNoLe)
+Theorem MINIMAL_UBOUND : forall P:set -> prop, forall n :e omega, P n -> choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) <= n.
+Admitted.
+
+// HOL Light: arith.ml:1800 / MINIMAL_LBOUND
+// Source hash: md5:b66754f9ef0fa0f22da8e7a6eea20c17
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem MINIMAL_LBOUND : forall P:set -> prop, forall n :e omega, (exists r :e omega, P r) /\ (forall m :e omega, m < n -> ~ P m) -> n <= choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m).
+Admitted.
+
+// HOL Light: arith.ml:1804 / MINIMAL_MONO
+// Source hash: md5:37a4d003aaeb8261b9bba67682d91af2
+// Status: transport_required (bridges: choose_in_spec, hol_num_omega, nat_le_SNoLe)
+Theorem MINIMAL_MONO : forall P Q:set -> prop, (exists n :e omega, P n) /\ (forall n :e omega, P n -> Q n) -> choose_in omega (fun n:set => Q n /\ forall m :e omega, Q m -> n <= m) <= choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m).
+Admitted.
+
 // HOL Light: arith.ml:1816 / TRANSITIVE_STEPWISE_LT_EQ
 // Source hash: md5:ded2819246b8c6833d275d1c7a7b0ca9
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
@@ -1510,13 +1558,13 @@ Admitted.
 
 // HOL Light: arith.ml:1854 / DEPENDENT_CHOICE_FIXED
 // Source hash: md5:57a7a1455b081281c9fda7ee7dc71191
-// Status: transport_required (bridges: hol_num_omega)
-Theorem DEPENDENT_CHOICE_FIXED : forall A:set, A <> Empty -> forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, forall a :e A, P 0 a /\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (f 0 = a /\ ((forall n :e omega, P n (f n)) /\ forall n :e omega, R0 n (f n) (f (ordsucc n)))).
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem DEPENDENT_CHOICE_FIXED : forall A:set, forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, forall a :e A, P 0 a /\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (f 0 = a /\ ((forall n :e omega, P n (f n)) /\ forall n :e omega, R0 n (f n) (f (ordsucc n)))).
 Admitted.
 
 // HOL Light: arith.ml:1866 / DEPENDENT_CHOICE
 // Source hash: md5:fe491beb38266f87210359427a13584f
-// Status: transport_required (bridges: hol_num_omega)
-Theorem DEPENDENT_CHOICE : forall A:set, A <> Empty -> forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, (exists a :e A, P 0 a) /\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall n :e omega, P n (f n)) /\ forall n :e omega, R0 n (f n) (f (ordsucc n))).
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem DEPENDENT_CHOICE : forall A:set, forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, (exists a :e A, P 0 a) /\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall n :e omega, P n (f n)) /\ forall n :e omega, R0 n (f n) (f (ordsucc n))).
 Admitted.
 

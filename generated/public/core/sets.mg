@@ -4,38 +4,38 @@
 
 // HOL Light: sets.ml:38 / IN
 // Source hash: md5:3bfe2ada95e5a21aec33d25662746d45
-// Status: exact_native
-Theorem IN : forall A:set, A <> Empty -> forall P c= A, forall x :e A, x :e P <-> x :e P.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN : forall A:set, forall P c= A, forall x :e A, x :e P <-> x :e P.
 Admitted.
 
 // HOL Light: sets.ml:45 / EXTENSION
 // Source hash: md5:f7141c939edd744d7d6f135168a24813
-// Status: exact_native
-Theorem EXTENSION : forall A:set, A <> Empty -> forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXTENSION : forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t.
 Admitted.
 
 // HOL Light: sets.ml:77 / EMPTY
 // Source hash: md5:1989ccecebe524300c28d988fa7a6bf4
-// Status: exact_native
-Theorem EMPTY : forall A:set, A <> Empty -> forall x :e A, x :e Empty <-> False.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EMPTY : forall A:set, forall x :e A, x :e Empty <-> False.
 Admitted.
 
 // HOL Light: sets.ml:80 / INSERT_DEF
 // Source hash: md5:bc4aedb68c8fa7e24483a802d7b666f8
-// Status: exact_native
-Theorem INSERT_DEF : forall A:set, A <> Empty -> forall s c= A, forall x y :e A, y :e SetAdjoin s x <-> y :e s \/ y = x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_DEF : forall A:set, forall s c= A, forall x y :e A, y :e SetAdjoin s x <-> y :e s \/ y = x.
 Admitted.
 
 // HOL Light: sets.ml:87 / UNIV
 // Source hash: md5:9b0de6b0d242dd9a3fabf6a8c72fe02c
-// Status: exact_native
-Theorem UNIV : forall A:set, A <> Empty -> forall x :e A, x :e A <-> True.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIV : forall A:set, forall x :e A, x :e A <-> True.
 Admitted.
 
 // HOL Light: sets.ml:90 / UNION
 // Source hash: md5:eebb0c8c259b85ac701c2e562f874397
-// Status: exact_native
-Theorem UNION : forall A:set, A <> Empty -> forall s t c= A, s :\/: t = {x :e A | x :e s \/ x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION : forall A:set, forall s t c= A, s :\/: t = {x :e A | x :e s \/ x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:93 / UNIONS
@@ -46,38 +46,38 @@ Admitted.
 
 // HOL Light: sets.ml:96 / INTER
 // Source hash: md5:18dc8c954674f5d67dfab9abc64007f3
-// Status: exact_native
-Theorem INTER : forall A:set, A <> Empty -> forall s t c= A, s :/\: t = {x :e A | x :e s /\ x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER : forall A:set, forall s t c= A, s :/\: t = {x :e A | x :e s /\ x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:99 / INTERS
 // Source hash: md5:34458dd4d8abc78d9e447bc0cb321a51
-// Status: exact_native
-Theorem INTERS : forall A:set, A <> Empty -> forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = {x :e A | forall u c= A, u :e s -> x :e u}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS : forall A:set, forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = {x :e A | forall u c= A, u :e s -> x :e u}.
 Admitted.
 
 // HOL Light: sets.ml:102 / DIFF
 // Source hash: md5:2ccfb5b0e79eb389ed764d3582c271bb
-// Status: exact_native
-Theorem DIFF : forall A:set, A <> Empty -> forall s t c= A, s :\: t = {x :e A | x :e s /\ ~ x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF : forall A:set, forall s t c= A, s :\: t = {x :e A | x :e s /\ ~ x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:105 / INSERT
 // Source hash: md5:f9ad530f26a69054b867be5fb530e000
-// Status: exact_native
-Theorem INSERT : forall A:set, A <> Empty -> forall x :e A, forall s c= A, SetAdjoin s x = {y :e A | y :e s \/ y = x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT : forall A:set, forall x :e A, forall s c= A, SetAdjoin s x = {y :e A | y :e s \/ y = x}.
 Admitted.
 
 // HOL Light: sets.ml:109 / DELETE
 // Source hash: md5:6cceb30a7fe2c086008d4dff1a7846b2
-// Status: exact_native
-Theorem DELETE : forall A:set, A <> Empty -> forall s c= A, forall x :e A, s :\: {x} = {y :e A | y :e s /\ ~ y = x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE : forall A:set, forall s c= A, forall x :e A, s :\: {x} = {y :e A | y :e s /\ ~ y = x}.
 Admitted.
 
 // HOL Light: sets.ml:116 / SUBSET
 // Source hash: md5:9a8f6bea2c60548a8c3b62e968bfc54c
-// Status: exact_native
-Theorem SUBSET : forall A:set, A <> Empty -> forall s t c= A, s c= t <-> forall x :e A, x :e s -> x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET : forall A:set, forall s t c= A, s c= t <-> forall x :e A, x :e s -> x :e t.
 Admitted.
 
 // HOL Light: sets.ml:119 / PSUBSET
@@ -88,14 +88,14 @@ Admitted.
 
 // HOL Light: sets.ml:122 / DISJOINT
 // Source hash: md5:06faad16c446a9a1f851e720b49c06e3
-// Status: exact_native
-Theorem DISJOINT : forall A:set, A <> Empty -> forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT : forall A:set, forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:125 / SING
 // Source hash: md5:01a566d782ab2c62a0090eeb3600d3f4
-// Status: exact_native
-Theorem SING : forall A:set, A <> Empty -> forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, s = {x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SING : forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, s = {x}.
 Admitted.
 
 // HOL Light: sets.ml:132 / FINITE_CASES
@@ -124,8 +124,8 @@ Admitted.
 
 // HOL Light: sets.ml:144 / IMAGE
 // Source hash: md5:b5ff447c72025d91b7483f808ad8627a
-// Status: exact_native
-Theorem IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> {f x | x :e s} = {y :e B | exists x :e A, x :e s /\ y = f x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> {f x | x :e s} = {y :e B | exists x :e A, x :e s /\ y = f x}.
 Admitted.
 
 // HOL Light: sets.ml:147 / INJ
@@ -154,158 +154,158 @@ Admitted.
 
 // HOL Light: sets.ml:167 / REST
 // Source hash: md5:e0f633a0788602734c7ec5f0f8e48f26
-// Status: exact_native (bridges: choose_in_spec)
-Theorem REST : forall A:set, A <> Empty -> forall s c= A, s :\: {choose_in A (fun x:set => x :e s)} = s :\: {choose_in A (fun x:set => x :e s)}.
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem REST : forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :e s)} = s :\: {choose_in A (fun x:set => x :e s)}.
 Admitted.
 
 // HOL Light: sets.ml:174 / NOT_IN_EMPTY
 // Source hash: md5:ebe8471d5c357b956cf0f5e515fe3511
-// Status: exact_native
-Theorem NOT_IN_EMPTY : forall A:set, A <> Empty -> forall x :e A, ~ x :e Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem NOT_IN_EMPTY : forall A:set, forall x :e A, ~ x :e Empty.
 Admitted.
 
 // HOL Light: sets.ml:178 / IN_UNIV
 // Source hash: md5:eee80073ec9a8663b3ed94c2504d029b
-// Status: exact_native
-Theorem IN_UNIV : forall A:set, A <> Empty -> forall x :e A, x :e A.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem IN_UNIV : forall A:set, forall x :e A, x :e A.
 
 // HOL Light: sets.ml:182 / IN_UNION
 // Source hash: md5:53bfd4012ecbf824436fdec1d98ef00d
-// Status: exact_native
-Theorem IN_UNION : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, x :e s :\/: t <-> x :e s \/ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_UNION : forall A:set, forall s t c= A, forall x :e A, x :e s :\/: t <-> x :e s \/ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:186 / IN_UNIONS
 // Source hash: md5:c4eb1df88efda5987e140438f90f45d8
-// Status: exact_native
-Theorem IN_UNIONS : forall A:set, A <> Empty -> forall s c= Power A, forall x :e A, x :e Union s <-> exists t c= A, t :e s /\ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_UNIONS : forall A:set, forall s c= Power A, forall x :e A, x :e Union s <-> exists t c= A, t :e s /\ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:190 / IN_INTER
 // Source hash: md5:2ac4b17df4e14a7c514df10344e203a5
-// Status: exact_native
-Theorem IN_INTER : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, x :e s :/\: t <-> x :e s /\ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_INTER : forall A:set, forall s t c= A, forall x :e A, x :e s :/\: t <-> x :e s /\ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:194 / IN_INTERS
 // Source hash: md5:90f987e51ed1bea30a7181c0682ececf
-// Status: exact_native
-Theorem IN_INTERS : forall A:set, A <> Empty -> forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_INTERS : forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t.
 Admitted.
 
 // HOL Light: sets.ml:198 / IN_DIFF
 // Source hash: md5:b5cd0dac99fd349231cf6297ee30479a
-// Status: exact_native
-Theorem IN_DIFF : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, x :e s :\: t <-> x :e s /\ ~ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_DIFF : forall A:set, forall s t c= A, forall x :e A, x :e s :\: t <-> x :e s /\ ~ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:202 / IN_INSERT
 // Source hash: md5:62243c550f1aaf57081e91ad62c42ada
-// Status: exact_native
-Theorem IN_INSERT : forall A:set, A <> Empty -> forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_INSERT : forall A:set, forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s.
 Admitted.
 
 // HOL Light: sets.ml:206 / IN_DELETE
 // Source hash: md5:9a7c37f71f31bb294187bc2cad212525
-// Status: exact_native
-Theorem IN_DELETE : forall A:set, A <> Empty -> forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_DELETE : forall A:set, forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y.
 Admitted.
 
 // HOL Light: sets.ml:210 / IN_SING
 // Source hash: md5:b97ed3ab033d2c95facb352ed3526c31
-// Status: exact_native
-Theorem IN_SING : forall A:set, A <> Empty -> forall x y :e A, x :e {y} <-> x = y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_SING : forall A:set, forall x y :e A, x :e {y} <-> x = y.
 Admitted.
 
 // HOL Light: sets.ml:214 / IN_IMAGE
 // Source hash: md5:c1c230701c50cc179850f00e47d436dd
-// Status: exact_native
-Theorem IN_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall y :e B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (y :e {f x | x :e s} <-> exists x :e A, y = f x /\ x :e s).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem IN_IMAGE : forall A B:set, forall y :e B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (y :e {f x | x :e s} <-> exists x :e A, y = f x /\ x :e s).
 Admitted.
 
 // HOL Light: sets.ml:218 / IN_REST
 // Source hash: md5:8acc20d54c9fe9f5b14c8874304165a8
-// Status: exact_native (bridges: choose_in_spec)
-Theorem IN_REST : forall A:set, A <> Empty -> forall x :e A, forall s c= A, x :e s :\: {choose_in A (fun x:set => x :e s)} <-> x :e s /\ ~ x = choose_in A (fun x:set => x :e s).
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem IN_REST : forall A:set, forall x :e A, forall s c= A, x :e s :\: {choose_in A (fun x:set => x :e s)} <-> x :e s /\ ~ x = choose_in A (fun x:set => x :e s).
 Admitted.
 
 // HOL Light: sets.ml:222 / FORALL_IN_INSERT
 // Source hash: md5:41425e040abb9d9e3c7494571128938c
-// Status: exact_native
-Theorem FORALL_IN_INSERT : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_IN_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
 Admitted.
 
 // HOL Light: sets.ml:226 / EXISTS_IN_INSERT
 // Source hash: md5:9700f13ce4d7831725775ef791c7ebd1
-// Status: exact_native
-Theorem EXISTS_IN_INSERT : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_IN_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
 Admitted.
 
 // HOL Light: sets.ml:230 / FORALL_IN_UNION
 // Source hash: md5:eb1e2d3608d968c21bd6d06de108a222
-// Status: exact_native
-Theorem FORALL_IN_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (forall x :e A, x :e s :\/: t -> P x) <-> (forall x :e A, x :e s -> P x) /\ forall x :e A, x :e t -> P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_IN_UNION : forall A:set, forall P:set -> prop, forall s t c= A, (forall x :e A, x :e s :\/: t -> P x) <-> (forall x :e A, x :e s -> P x) /\ forall x :e A, x :e t -> P x.
 Admitted.
 
 // HOL Light: sets.ml:236 / EXISTS_IN_UNION
 // Source hash: md5:c955b971a917ef3dad6a5a8bb569427d
-// Status: exact_native
-Theorem EXISTS_IN_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists x :e A, x :e s :\/: t /\ P x) <-> (exists x :e A, x :e s /\ P x) \/ exists x :e A, x :e t /\ P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_IN_UNION : forall A:set, forall P:set -> prop, forall s t c= A, (exists x :e A, x :e s :\/: t /\ P x) <-> (exists x :e A, x :e s /\ P x) \/ exists x :e A, x :e t /\ P x.
 Admitted.
 
 // HOL Light: sets.ml:242 / FORALL_IN_IMAGE
 // Source hash: md5:c7978b7e04133ab1326ae6b13e51b939
-// Status: exact_native
-Theorem FORALL_IN_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall y :e B, y :e {f x | x :e s} -> P y) <-> forall x :e A, x :e s -> P (f x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_IN_IMAGE : forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall y :e B, y :e {f x | x :e s} -> P y) <-> forall x :e A, x :e s -> P (f x).
 Admitted.
 
 // HOL Light: sets.ml:246 / EXISTS_IN_IMAGE
 // Source hash: md5:cd7cd97a0be65f5818632a8e0c9aa220
-// Status: exact_native
-Theorem EXISTS_IN_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (exists y :e B, y :e {f x | x :e s} /\ P y) <-> exists x :e A, x :e s /\ P (f x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_IN_IMAGE : forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (exists y :e B, y :e {f x | x :e s} /\ P y) <-> exists x :e A, x :e s /\ P (f x).
 Admitted.
 
 // HOL Light: sets.ml:276 / UNIONS_IMAGE
 // Source hash: md5:094772d578113d9007fd82c976970c31
-// Status: exact_native
-Theorem UNIONS_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f :e Power B :^: A, forall s c= A, Union {(fun x0:set => f x x0) | x :e s} = {y :e B | exists x :e A, x :e s /\ y :e f x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIONS_IMAGE : forall A B:set, B <> Empty -> forall f :e Power B :^: A, forall s c= A, Union {f x | x :e s} = {y :e B | exists x :e A, x :e s /\ y :e f x}.
 Admitted.
 
 // HOL Light: sets.ml:281 / INTERS_IMAGE
 // Source hash: md5:286eea14e8d801fa49fcfda84bd5c0fd
-// Status: exact_native
-Theorem INTERS_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f :e Power B :^: A, forall s c= A, {x :e B | forall Y :e {(fun x0:set => f x x0) | x :e s}, x :e Y} = {y :e B | forall x :e A, x :e s -> y :e f x}.
+// Status: generalization_required (bridges: empty_case:B)
+Theorem INTERS_IMAGE : forall A B:set, A <> Empty -> forall f :e Power B :^: A, forall s c= A, {x :e B | forall Y :e {f x | x :e s}, x :e Y} = {y :e B | forall x :e A, x :e s -> y :e f x}.
 Admitted.
 
 // HOL Light: sets.ml:312 / CHOICE_DEF
 // Source hash: md5:0b240c7b9a6613faa869add5bbe7dfb6
-// Status: exact_native (bridges: choose_in_spec)
-Theorem CHOICE_DEF : forall A:set, A <> Empty -> forall s c= A, ~ s = Empty -> choose_in A (fun x:set => x :e s) :e s.
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem CHOICE_DEF : forall A:set, forall s c= A, ~ s = Empty -> choose_in A (fun x:set => x :e s) :e s.
 Admitted.
 
 // HOL Light: sets.ml:341 / NOT_EQUAL_SETS
 // Source hash: md5:6354bb263f0fdabb3b111698af3765d6
-// Status: exact_native
-Theorem NOT_EQUAL_SETS : forall A:set, A <> Empty -> forall s t c= A, ~ s = t <-> exists x :e A, x :e t <-> ~ x :e s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem NOT_EQUAL_SETS : forall A:set, forall s t c= A, ~ s = t <-> exists x :e A, x :e t <-> ~ x :e s.
 Admitted.
 
 // HOL Light: sets.ml:345 / INSERT_RESTRICT
 // Source hash: md5:f32421687ea4dac1a4957f2b50c523ac
-// Status: exact_native
-Theorem INSERT_RESTRICT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, forall a :e A, {x :e A | x :e SetAdjoin s a /\ P x} = if P a then SetAdjoin {x :e A | x :e s /\ P x} a else {x :e A | x :e s /\ P x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_RESTRICT : forall A:set, forall P:set -> prop, forall s c= A, forall a :e A, {x :e A | x :e SetAdjoin s a /\ P x} = if P a then SetAdjoin {x :e A | x :e s /\ P x} a else {x :e A | x :e s /\ P x}.
 Admitted.
 
 // HOL Light: sets.ml:351 / UNIV_1
 // Source hash: md5:f7a00ad14e0aa45d49558f4ae67d7f6c
-// Status: transport_required (bridges: hol_one_1)
-Theorem UNIV_1 : 1 = {0}.
-Admitted.
+// Status: native_reuse (bridges: hol_one_1)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem UNIV_1 : 1 = {0}.
 
 // HOL Light: sets.ml:359 / MEMBER_NOT_EMPTY
 // Source hash: md5:034de37a8d42754ce2996a70f9091391
-// Status: exact_native
-Theorem MEMBER_NOT_EMPTY : forall A:set, A <> Empty -> forall s c= A, (exists x :e A, x :e s) <-> ~ s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem MEMBER_NOT_EMPTY : forall A:set, forall s c= A, (exists x :e A, x :e s) <-> ~ s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:367 / UNIV_NOT_EMPTY
@@ -322,68 +322,68 @@ Admitted.
 
 // HOL Light: sets.ml:375 / EQ_UNIV
 // Source hash: md5:33fbef6b665c4e7157d202eeb19c3aea
-// Status: exact_native
-Theorem EQ_UNIV : forall A:set, A <> Empty -> forall s c= A, (forall x :e A, x :e s) <-> s = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EQ_UNIV : forall A:set, forall s c= A, (forall x :e A, x :e s) <-> s = A.
 Admitted.
 
 // HOL Light: sets.ml:383 / SUBSET_TRANS
 // Source hash: md5:018f8b838b2251133932e492a7b563c9
-// Status: exact_native
-Theorem SUBSET_TRANS : forall A:set, A <> Empty -> forall s t u c= A, s c= t /\ t c= u -> s c= u.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_TRANS : forall A:set, forall s t u c= A, s c= t /\ t c= u -> s c= u.
 Admitted.
 
 // HOL Light: sets.ml:387 / SUBSET_REFL
 // Source hash: md5:1d4e87cbcf892b81bf857e48dffdfb47
-// Status: exact_native
-Theorem SUBSET_REFL : forall A:set, A <> Empty -> forall s c= A, s c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_REFL : forall A:set, forall s c= A, s c= s.
 Admitted.
 
 // HOL Light: sets.ml:391 / SUBSET_ANTISYM
 // Source hash: md5:66de716356ea282ff6b32df51c0f0aeb
-// Status: exact_native
-Theorem SUBSET_ANTISYM : forall A:set, A <> Empty -> forall s t c= A, s c= t /\ t c= s -> s = t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_ANTISYM : forall A:set, forall s t c= A, s c= t /\ t c= s -> s = t.
 Admitted.
 
 // HOL Light: sets.ml:395 / SUBSET_ANTISYM_EQ
 // Source hash: md5:d9309a654d96d9922b997772e0050c46
-// Status: exact_native
-Theorem SUBSET_ANTISYM_EQ : forall A:set, A <> Empty -> forall s t c= A, s c= t /\ t c= s <-> s = t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_ANTISYM_EQ : forall A:set, forall s t c= A, s c= t /\ t c= s <-> s = t.
 Admitted.
 
 // HOL Light: sets.ml:399 / EMPTY_SUBSET
 // Source hash: md5:ac5fdc02e4441a076caae461078fbdcc
-// Status: exact_native
-Theorem EMPTY_SUBSET : forall A:set, A <> Empty -> forall s c= A, Empty c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EMPTY_SUBSET : forall A:set, forall s c= A, Empty c= s.
 Admitted.
 
 // HOL Light: sets.ml:403 / SUBSET_EMPTY
 // Source hash: md5:493907018ceb1d85891186aae6223bef
-// Status: exact_native
-Theorem SUBSET_EMPTY : forall A:set, A <> Empty -> forall s c= A, s c= Empty <-> s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_EMPTY : forall A:set, forall s c= A, s c= Empty <-> s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:407 / SUBSET_UNIV
 // Source hash: md5:c0ebb156bc6d1a31bb01d11b4818cecc
-// Status: exact_native
-Theorem SUBSET_UNIV : forall A:set, A <> Empty -> forall s c= A, s c= A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_UNIV : forall A:set, forall s c= A, s c= A.
 Admitted.
 
 // HOL Light: sets.ml:411 / UNIV_SUBSET
 // Source hash: md5:b3d14bc364eb0f572d7bf080c2756639
-// Status: exact_native
-Theorem UNIV_SUBSET : forall A:set, A <> Empty -> forall s c= A, A c= s <-> s = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIV_SUBSET : forall A:set, forall s c= A, A c= s <-> s = A.
 Admitted.
 
 // HOL Light: sets.ml:415 / SING_SUBSET
 // Source hash: md5:a4c53a78289631b6fae60c0b033e2b45
-// Status: exact_native
-Theorem SING_SUBSET : forall A:set, A <> Empty -> forall s c= A, forall x :e A, {x} c= s <-> x :e s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SING_SUBSET : forall A:set, forall s c= A, forall x :e A, {x} c= s <-> x :e s.
 Admitted.
 
 // HOL Light: sets.ml:419 / SUBSET_RESTRICT
 // Source hash: md5:df35c1478a03ffaa607c7f8190d95da4
-// Status: exact_native
-Theorem SUBSET_RESTRICT : forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, {x :e A | x :e s /\ P x} c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_RESTRICT : forall A:set, forall s c= A, forall P:set -> prop, {x :e A | x :e s /\ P x} c= s.
 Admitted.
 
 // HOL Light: sets.ml:427 / PSUBSET_TRANS
@@ -436,404 +436,404 @@ Admitted.
 
 // HOL Light: sets.ml:463 / UNION_ASSOC
 // Source hash: md5:aa336f9b95ae5977100218daf025a609
-// Status: exact_native
-Theorem UNION_ASSOC : forall A:set, A <> Empty -> forall s t u c= A, s :\/: t :\/: u = s :\/: (t :\/: u).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_ASSOC : forall A:set, forall s t u c= A, s :\/: t :\/: u = s :\/: (t :\/: u).
 Admitted.
 
 // HOL Light: sets.ml:467 / UNION_IDEMPOT
 // Source hash: md5:0085175b54e0b1349ab31b13ae74c6c1
-// Status: exact_native
-Theorem UNION_IDEMPOT : forall A:set, A <> Empty -> forall s c= A, s :\/: s = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_IDEMPOT : forall A:set, forall s c= A, s :\/: s = s.
 Admitted.
 
 // HOL Light: sets.ml:471 / UNION_COMM
 // Source hash: md5:513c44490f5ecc974c0be73e92dfb65d
-// Status: exact_native
-Theorem UNION_COMM : forall A:set, A <> Empty -> forall s t c= A, s :\/: t = t :\/: s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_COMM : forall A:set, forall s t c= A, s :\/: t = t :\/: s.
 Admitted.
 
 // HOL Light: sets.ml:475 / SUBSET_UNION
 // Source hash: md5:b101d72fdfd1097efc1ae74be0cc5033
-// Status: exact_native
-Theorem SUBSET_UNION : forall A:set, A <> Empty -> (forall s t c= A, s c= s :\/: t) /\ forall s t c= A, s c= t :\/: s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_UNION : forall A:set, (forall s t c= A, s c= s :\/: t) /\ forall s t c= A, s c= t :\/: s.
 Admitted.
 
 // HOL Light: sets.ml:480 / SUBSET_UNION_ABSORPTION
 // Source hash: md5:9ca220a9daa7e40aa3ee81dd82f75b93
-// Status: exact_native
-Theorem SUBSET_UNION_ABSORPTION : forall A:set, A <> Empty -> forall s t c= A, s c= t <-> s :\/: t = t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_UNION_ABSORPTION : forall A:set, forall s t c= A, s c= t <-> s :\/: t = t.
 Admitted.
 
 // HOL Light: sets.ml:484 / UNION_EMPTY
 // Source hash: md5:ec993fcaff0982e1d8addb344b5a71fd
-// Status: exact_native
-Theorem UNION_EMPTY : forall A:set, A <> Empty -> (forall s c= A, Empty :\/: s = s) /\ forall s c= A, s :\/: Empty = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_EMPTY : forall A:set, (forall s c= A, Empty :\/: s = s) /\ forall s c= A, s :\/: Empty = s.
 Admitted.
 
 // HOL Light: sets.ml:489 / UNION_UNIV
 // Source hash: md5:759e4ed1aec02b2a8d70ae9ae05aa90f
-// Status: exact_native
-Theorem UNION_UNIV : forall A:set, A <> Empty -> (forall s c= A, A :\/: s = A) /\ forall s c= A, s :\/: A = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_UNIV : forall A:set, (forall s c= A, A :\/: s = A) /\ forall s c= A, s :\/: A = A.
 Admitted.
 
 // HOL Light: sets.ml:494 / EMPTY_UNION
 // Source hash: md5:9006ef350692b8d1311ee37c8d9e1f76
-// Status: exact_native
-Theorem EMPTY_UNION : forall A:set, A <> Empty -> forall s t c= A, s :\/: t = Empty <-> s = Empty /\ t = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EMPTY_UNION : forall A:set, forall s t c= A, s :\/: t = Empty <-> s = Empty /\ t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:498 / UNION_SUBSET
 // Source hash: md5:a86a321c91bc434ed83b94a17431589e
-// Status: exact_native
-Theorem UNION_SUBSET : forall A:set, A <> Empty -> forall s t u c= A, s :\/: t c= u <-> s c= u /\ t c= u.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_SUBSET : forall A:set, forall s t u c= A, s :\/: t c= u <-> s c= u /\ t c= u.
 Admitted.
 
 // HOL Light: sets.ml:502 / UNION_RESTRICT
 // Source hash: md5:5937596bc899d688c962b799870ee078
-// Status: exact_native
-Theorem UNION_RESTRICT : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\/: t /\ P x} = {x :e A | x :e s /\ P x} :\/: {x :e A | x :e t /\ P x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_RESTRICT : forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\/: t /\ P x} = {x :e A | x :e s /\ P x} :\/: {x :e A | x :e t /\ P x}.
 Admitted.
 
 // HOL Light: sets.ml:508 / FORALL_SUBSET_UNION
 // Source hash: md5:ddd78ea921bcc6991dd4b7ce6a2c9838
-// Status: exact_native
-Theorem FORALL_SUBSET_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall t u c= A, (forall s c= A, s c= t :\/: u -> P s) <-> forall t' u' c= A, t' c= t /\ u' c= u -> P (t' :\/: u').
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_SUBSET_UNION : forall A:set, forall P:set -> prop, forall t u c= A, (forall s c= A, s c= t :\/: u -> P s) <-> forall t' u' c= A, t' c= t /\ u' c= u -> P (t' :\/: u').
 Admitted.
 
 // HOL Light: sets.ml:519 / EXISTS_SUBSET_UNION
 // Source hash: md5:d1aaadf7ee1e0107f4dd6ade79936e25
-// Status: exact_native
-Theorem EXISTS_SUBSET_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall t u c= A, (exists s c= A, s c= t :\/: u /\ P s) <-> exists t' u' c= A, t' c= t /\ (u' c= u /\ P (t' :\/: u')).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_SUBSET_UNION : forall A:set, forall P:set -> prop, forall t u c= A, (exists s c= A, s c= t :\/: u /\ P s) <-> exists t' u' c= A, t' c= t /\ (u' c= u /\ P (t' :\/: u')).
 Admitted.
 
 // HOL Light: sets.ml:526 / FORALL_SUBSET_INSERT
 // Source hash: md5:172a1166c27f0ecf8f3aeca66c467883
-// Status: exact_native
-Theorem FORALL_SUBSET_INSERT : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, forall t c= A, (forall s c= A, s c= SetAdjoin t a -> P s) <-> forall s c= A, s c= t -> P s /\ P (SetAdjoin s a).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_SUBSET_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall t c= A, (forall s c= A, s c= SetAdjoin t a -> P s) <-> forall s c= A, s c= t -> P s /\ P (SetAdjoin s a).
 Admitted.
 
 // HOL Light: sets.ml:535 / EXISTS_SUBSET_INSERT
 // Source hash: md5:c414850e085cad5f68db70cb6a3a9ea3
-// Status: exact_native
-Theorem EXISTS_SUBSET_INSERT : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, forall t c= A, (exists s c= A, s c= SetAdjoin t a /\ P s) <-> exists s c= A, s c= t /\ (P s \/ P (SetAdjoin s a)).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_SUBSET_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall t c= A, (exists s c= A, s c= SetAdjoin t a /\ P s) <-> exists s c= A, s c= t /\ (P s \/ P (SetAdjoin s a)).
 Admitted.
 
 // HOL Light: sets.ml:545 / INTER_ASSOC
 // Source hash: md5:50bc2783945bae00b437494f376586bb
-// Status: exact_native
-Theorem INTER_ASSOC : forall A:set, A <> Empty -> forall s t u c= A, s :/\: t :/\: u = s :/\: (t :/\: u).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_ASSOC : forall A:set, forall s t u c= A, s :/\: t :/\: u = s :/\: (t :/\: u).
 Admitted.
 
 // HOL Light: sets.ml:549 / INTER_IDEMPOT
 // Source hash: md5:2e0df6f801ef9018c4ef29f06e93d2c1
-// Status: exact_native
-Theorem INTER_IDEMPOT : forall A:set, A <> Empty -> forall s c= A, s :/\: s = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_IDEMPOT : forall A:set, forall s c= A, s :/\: s = s.
 Admitted.
 
 // HOL Light: sets.ml:553 / INTER_COMM
 // Source hash: md5:416b3e50951abe130a0a3a5b260cec6d
-// Status: exact_native
-Theorem INTER_COMM : forall A:set, A <> Empty -> forall s t c= A, s :/\: t = t :/\: s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_COMM : forall A:set, forall s t c= A, s :/\: t = t :/\: s.
 Admitted.
 
 // HOL Light: sets.ml:557 / INTER_SUBSET
 // Source hash: md5:0319db392cc3a10b0e526cde60a20818
-// Status: exact_native
-Theorem INTER_SUBSET : forall A:set, A <> Empty -> (forall s t c= A, s :/\: t c= s) /\ forall s t c= A, t :/\: s c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_SUBSET : forall A:set, (forall s t c= A, s :/\: t c= s) /\ forall s t c= A, t :/\: s c= s.
 Admitted.
 
 // HOL Light: sets.ml:562 / SUBSET_INTER_ABSORPTION
 // Source hash: md5:b0771921756489d9fd12fc57aa73953a
-// Status: exact_native
-Theorem SUBSET_INTER_ABSORPTION : forall A:set, A <> Empty -> forall s t c= A, s c= t <-> s :/\: t = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_INTER_ABSORPTION : forall A:set, forall s t c= A, s c= t <-> s :/\: t = s.
 Admitted.
 
 // HOL Light: sets.ml:566 / INTER_EMPTY
 // Source hash: md5:a368e04158e4fc209fae1e662960520b
-// Status: exact_native
-Theorem INTER_EMPTY : forall A:set, A <> Empty -> (forall s c= A, Empty :/\: s = Empty) /\ forall s c= A, s :/\: Empty = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_EMPTY : forall A:set, (forall s c= A, Empty :/\: s = Empty) /\ forall s c= A, s :/\: Empty = Empty.
 Admitted.
 
 // HOL Light: sets.ml:571 / INTER_UNIV
 // Source hash: md5:e65272f672b7c7fb7ed6ff0a33c850ab
-// Status: exact_native
-Theorem INTER_UNIV : forall A:set, A <> Empty -> (forall s c= A, A :/\: s = s) /\ forall s c= A, s :/\: A = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_UNIV : forall A:set, (forall s c= A, A :/\: s = s) /\ forall s c= A, s :/\: A = s.
 Admitted.
 
 // HOL Light: sets.ml:576 / SUBSET_INTER
 // Source hash: md5:87a2a36adf360582bf1c9bb829ce4cc6
-// Status: exact_native
-Theorem SUBSET_INTER : forall A:set, A <> Empty -> forall s t u c= A, s c= t :/\: u <-> s c= t /\ s c= u.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_INTER : forall A:set, forall s t u c= A, s c= t :/\: u <-> s c= t /\ s c= u.
 Admitted.
 
 // HOL Light: sets.ml:580 / INTER_RESTRICT
 // Source hash: md5:f4bc6b2879f769bc7fa8389726973390
-// Status: exact_native
-Theorem INTER_RESTRICT : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, {x :e A | x :e s :/\: t /\ P x} = {x :e A | x :e s /\ P x} :/\: {x :e A | x :e t /\ P x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_RESTRICT : forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :/\: t /\ P x} = {x :e A | x :e s /\ P x} :/\: {x :e A | x :e t /\ P x}.
 Admitted.
 
 // HOL Light: sets.ml:590 / UNION_OVER_INTER
 // Source hash: md5:e1c8c9c420828bc180e6677aee9b68a1
-// Status: exact_native
-Theorem UNION_OVER_INTER : forall A:set, A <> Empty -> forall s t u c= A, s :/\: (t :\/: u) = s :/\: t :\/: s :/\: u.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_OVER_INTER : forall A:set, forall s t u c= A, s :/\: (t :\/: u) = s :/\: t :\/: s :/\: u.
 Admitted.
 
 // HOL Light: sets.ml:594 / INTER_OVER_UNION
 // Source hash: md5:98be514320f3d0c8c4d2515fd2c8126d
-// Status: exact_native
-Theorem INTER_OVER_UNION : forall A:set, A <> Empty -> forall s t u c= A, s :\/: t :/\: u = (s :\/: t) :/\: (s :\/: u).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_OVER_UNION : forall A:set, forall s t u c= A, s :\/: t :/\: u = (s :\/: t) :/\: (s :\/: u).
 Admitted.
 
 // HOL Light: sets.ml:602 / IN_DISJOINT
 // Source hash: md5:e80e1b5356d37eabe40348815c115b94
-// Status: exact_native
-Theorem IN_DISJOINT : forall A:set, A <> Empty -> forall s t c= A, s :/\: t = Empty <-> ~ exists x :e A, x :e s /\ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_DISJOINT : forall A:set, forall s t c= A, s :/\: t = Empty <-> ~ exists x :e A, x :e s /\ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:606 / DISJOINT_SYM
 // Source hash: md5:1085f25cd461c6e326b39221496104b5
-// Status: exact_native
-Theorem DISJOINT_SYM : forall A:set, A <> Empty -> forall s t c= A, s :/\: t = Empty <-> t :/\: s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_SYM : forall A:set, forall s t c= A, s :/\: t = Empty <-> t :/\: s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:610 / DISJOINT_EMPTY
 // Source hash: md5:99bba4253192eb19f3c4941d92f01c4b
-// Status: exact_native
-Theorem DISJOINT_EMPTY : forall A:set, A <> Empty -> forall s c= A, Empty :/\: s = Empty /\ s :/\: Empty = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_EMPTY : forall A:set, forall s c= A, Empty :/\: s = Empty /\ s :/\: Empty = Empty.
 Admitted.
 
 // HOL Light: sets.ml:614 / DISJOINT_EMPTY_REFL
 // Source hash: md5:fbfa1763f28e63e0f3658065877cffb6
-// Status: exact_native
-Theorem DISJOINT_EMPTY_REFL : forall A:set, A <> Empty -> forall s c= A, s = Empty <-> s :/\: s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_EMPTY_REFL : forall A:set, forall s c= A, s = Empty <-> s :/\: s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:618 / DISJOINT_UNION
 // Source hash: md5:3356fa969b76da166022b8f3328d2730
-// Status: exact_native
-Theorem DISJOINT_UNION : forall A:set, A <> Empty -> forall s t u c= A, (s :\/: t) :/\: u = Empty <-> s :/\: u = Empty /\ t :/\: u = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_UNION : forall A:set, forall s t u c= A, (s :\/: t) :/\: u = Empty <-> s :/\: u = Empty /\ t :/\: u = Empty.
 Admitted.
 
 // HOL Light: sets.ml:622 / DISJOINT_SING
 // Source hash: md5:88d37dfb31d4c032074a211deb4af883
-// Status: exact_native
-Theorem DISJOINT_SING : forall A:set, A <> Empty -> (forall s c= A, forall a :e A, s :/\: {a} = Empty <-> ~ a :e s) /\ forall s c= A, forall a :e A, {a} :/\: s = Empty <-> ~ a :e s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_SING : forall A:set, (forall s c= A, forall a :e A, s :/\: {a} = Empty <-> ~ a :e s) /\ forall s c= A, forall a :e A, {a} :/\: s = Empty <-> ~ a :e s.
 Admitted.
 
 // HOL Light: sets.ml:631 / DIFF_EMPTY
 // Source hash: md5:b5e5e5858b7fee878ce9b37b99ebfbca
-// Status: exact_native
-Theorem DIFF_EMPTY : forall A:set, A <> Empty -> forall s c= A, s :\: Empty = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_EMPTY : forall A:set, forall s c= A, s :\: Empty = s.
 Admitted.
 
 // HOL Light: sets.ml:635 / EMPTY_DIFF
 // Source hash: md5:7906091f27d7e317ac1408ff4d9d9f4c
-// Status: exact_native
-Theorem EMPTY_DIFF : forall A:set, A <> Empty -> forall s c= A, Empty :\: s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EMPTY_DIFF : forall A:set, forall s c= A, Empty :\: s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:639 / DIFF_UNIV
 // Source hash: md5:7b2bb4d821dacafa70d64b592be4ed0c
-// Status: exact_native
-Theorem DIFF_UNIV : forall A:set, A <> Empty -> forall s c= A, s :\: A = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_UNIV : forall A:set, forall s c= A, s :\: A = Empty.
 Admitted.
 
 // HOL Light: sets.ml:643 / DIFF_DIFF
 // Source hash: md5:bfb1a9c784278520a24c0dd41d35a022
-// Status: exact_native
-Theorem DIFF_DIFF : forall A:set, A <> Empty -> forall s t c= A, (s :\: t) :\: t = s :\: t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_DIFF : forall A:set, forall s t c= A, (s :\: t) :\: t = s :\: t.
 Admitted.
 
 // HOL Light: sets.ml:647 / DIFF_EQ_EMPTY
 // Source hash: md5:7052563cbccc60da11568414ffbd034f
-// Status: exact_native
-Theorem DIFF_EQ_EMPTY : forall A:set, A <> Empty -> forall s c= A, s :\: s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_EQ_EMPTY : forall A:set, forall s c= A, s :\: s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:651 / SUBSET_DIFF
 // Source hash: md5:4d18a77fc13a927b4410774aa0392690
-// Status: exact_native
-Theorem SUBSET_DIFF : forall A:set, A <> Empty -> forall s t c= A, s :\: t c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_DIFF : forall A:set, forall s t c= A, s :\: t c= s.
 Admitted.
 
 // HOL Light: sets.ml:655 / COMPL_COMPL
 // Source hash: md5:1d3f35fe5eb14e6d041372a69393a5a7
-// Status: exact_native
-Theorem COMPL_COMPL : forall A:set, A <> Empty -> forall s c= A, A :\: (A :\: s) = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COMPL_COMPL : forall A:set, forall s c= A, A :\: (A :\: s) = s.
 Admitted.
 
 // HOL Light: sets.ml:659 / DIFF_RESTRICT
 // Source hash: md5:b4d387abe4d661544cbddc8eccbdbbff
-// Status: exact_native
-Theorem DIFF_RESTRICT : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\: t /\ P x} = {x :e A | x :e s /\ P x} :\: {x :e A | x :e t /\ P x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_RESTRICT : forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\: t /\ P x} = {x :e A | x :e s /\ P x} :\: {x :e A | x :e t /\ P x}.
 Admitted.
 
 // HOL Light: sets.ml:669 / COMPONENT
 // Source hash: md5:d352e4050e23691455489b429f32dab1
-// Status: exact_native
-Theorem COMPONENT : forall A:set, A <> Empty -> forall x :e A, forall s c= A, x :e SetAdjoin s x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COMPONENT : forall A:set, forall x :e A, forall s c= A, x :e SetAdjoin s x.
 Admitted.
 
 // HOL Light: sets.ml:673 / DECOMPOSITION
 // Source hash: md5:d6cc4952ea5ce419eabb0276af7b40bb
-// Status: exact_native
-Theorem DECOMPOSITION : forall A:set, A <> Empty -> forall s c= A, forall x :e A, x :e s <-> exists t c= A, s = SetAdjoin t x /\ ~ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DECOMPOSITION : forall A:set, forall s c= A, forall x :e A, x :e s <-> exists t c= A, s = SetAdjoin t x /\ ~ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:679 / SET_CASES
 // Source hash: md5:f4450f0eb6fe066a264020064dcfe7f1
-// Status: exact_native
-Theorem SET_CASES : forall A:set, A <> Empty -> forall s:set -> prop, (forall x :e A, s x <-> x :e Empty) \/ exists x :e A, exists t c= A, (forall x0 :e A, s x0 <-> x0 :e SetAdjoin t x) /\ ~ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SET_CASES : forall A:set, forall s:set -> prop, (forall x :e A, s x <-> x :e Empty) \/ exists x :e A, exists t c= A, (forall x0 :e A, s x0 <-> x0 :e SetAdjoin t x) /\ ~ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:683 / ABSORPTION
 // Source hash: md5:7e1805220f639a9ed40747c603aadeeb
-// Status: exact_native
-Theorem ABSORPTION : forall A:set, A <> Empty -> forall x :e A, forall s c= A, x :e s <-> SetAdjoin s x = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem ABSORPTION : forall A:set, forall x :e A, forall s c= A, x :e s <-> SetAdjoin s x = s.
 Admitted.
 
 // HOL Light: sets.ml:687 / INSERT_INSERT
 // Source hash: md5:d6a755328494b114411ea0c4d25d0295
-// Status: exact_native
-Theorem INSERT_INSERT : forall A:set, A <> Empty -> forall x :e A, forall s c= A, SetAdjoin (SetAdjoin s x) x = SetAdjoin s x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_INSERT : forall A:set, forall x :e A, forall s c= A, SetAdjoin (SetAdjoin s x) x = SetAdjoin s x.
 Admitted.
 
 // HOL Light: sets.ml:691 / INSERT_COMM
 // Source hash: md5:10490181a7105a3529f7b21be98cf238
-// Status: exact_native
-Theorem INSERT_COMM : forall A:set, A <> Empty -> forall x y :e A, forall s c= A, SetAdjoin (SetAdjoin s y) x = SetAdjoin (SetAdjoin s x) y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_COMM : forall A:set, forall x y :e A, forall s c= A, SetAdjoin (SetAdjoin s y) x = SetAdjoin (SetAdjoin s x) y.
 Admitted.
 
 // HOL Light: sets.ml:695 / INSERT_UNIV
 // Source hash: md5:b2d8f694f6c072f6c682389e6b1dab4a
-// Status: exact_native
-Theorem INSERT_UNIV : forall A:set, A <> Empty -> forall x :e A, SetAdjoin A x = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_UNIV : forall A:set, forall x :e A, SetAdjoin A x = A.
 Admitted.
 
 // HOL Light: sets.ml:699 / NOT_INSERT_EMPTY
 // Source hash: md5:a0b2fd03acbc96d24728ff87276caabc
-// Status: exact_native
-Theorem NOT_INSERT_EMPTY : forall A:set, A <> Empty -> forall x :e A, forall s c= A, ~ SetAdjoin s x = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem NOT_INSERT_EMPTY : forall A:set, forall x :e A, forall s c= A, ~ SetAdjoin s x = Empty.
 Admitted.
 
 // HOL Light: sets.ml:703 / NOT_EMPTY_INSERT
 // Source hash: md5:dd0518ca5154c71eeb5a44f56dd08beb
-// Status: exact_native
-Theorem NOT_EMPTY_INSERT : forall A:set, A <> Empty -> forall x :e A, forall s c= A, ~ Empty = SetAdjoin s x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem NOT_EMPTY_INSERT : forall A:set, forall x :e A, forall s c= A, ~ Empty = SetAdjoin s x.
 Admitted.
 
 // HOL Light: sets.ml:707 / INSERT_UNION
 // Source hash: md5:1a7dadb6ffa9a0743c19242f05fff676
-// Status: exact_native
-Theorem INSERT_UNION : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, SetAdjoin s x :\/: t = if x :e t then s :\/: t else SetAdjoin (s :\/: t) x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_UNION : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\/: t = if x :e t then s :\/: t else SetAdjoin (s :\/: t) x.
 Admitted.
 
 // HOL Light: sets.ml:713 / INSERT_UNION_EQ
 // Source hash: md5:908e574a47a4f828a5c73cac0e622a21
-// Status: exact_native
-Theorem INSERT_UNION_EQ : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, SetAdjoin s x :\/: t = SetAdjoin (s :\/: t) x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_UNION_EQ : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\/: t = SetAdjoin (s :\/: t) x.
 Admitted.
 
 // HOL Light: sets.ml:717 / INSERT_INTER
 // Source hash: md5:09b20f8e778ba32a8e8f878a4b714919
-// Status: exact_native
-Theorem INSERT_INTER : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, SetAdjoin s x :/\: t = if x :e t then SetAdjoin (s :/\: t) x else s :/\: t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_INTER : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :/\: t = if x :e t then SetAdjoin (s :/\: t) x else s :/\: t.
 Admitted.
 
 // HOL Light: sets.ml:723 / DISJOINT_INSERT
 // Source hash: md5:487f0ff498a48f9963f07e54fb39af6b
-// Status: exact_native
-Theorem DISJOINT_INSERT : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, SetAdjoin s x :/\: t = Empty <-> s :/\: t = Empty /\ ~ x :e t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_INSERT : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :/\: t = Empty <-> s :/\: t = Empty /\ ~ x :e t.
 Admitted.
 
 // HOL Light: sets.ml:727 / INSERT_SUBSET
 // Source hash: md5:5a05c6364a30b639bab502c24188f136
-// Status: exact_native
-Theorem INSERT_SUBSET : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_SUBSET : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t.
 Admitted.
 
 // HOL Light: sets.ml:731 / SUBSET_INSERT
 // Source hash: md5:eb0caccfd3d3a545ef7bf11f463b4198
-// Status: exact_native
-Theorem SUBSET_INSERT : forall A:set, A <> Empty -> forall x :e A, forall s c= A, ~ x :e s -> forall t c= A, s c= SetAdjoin t x <-> s c= t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_INSERT : forall A:set, forall x :e A, forall s c= A, ~ x :e s -> forall t c= A, s c= SetAdjoin t x <-> s c= t.
 Admitted.
 
 // HOL Light: sets.ml:735 / INSERT_DIFF
 // Source hash: md5:4473458d1a62a31b4dd745f33a2f58fe
-// Status: exact_native
-Theorem INSERT_DIFF : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, SetAdjoin s x :\: t = if x :e t then s :\: t else SetAdjoin (s :\: t) x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_DIFF : forall A:set, forall s t c= A, forall x :e A, SetAdjoin s x :\: t = if x :e t then s :\: t else SetAdjoin (s :\: t) x.
 Admitted.
 
 // HOL Light: sets.ml:741 / INSERT_AC
 // Source hash: md5:b22559e509e9b17a33a64e6365edf630
-// Status: exact_native
-Theorem INSERT_AC : forall A:set, A <> Empty -> forall x y :e A, forall s c= A, SetAdjoin (SetAdjoin s y) x = SetAdjoin (SetAdjoin s x) y /\ SetAdjoin (SetAdjoin s x) x = SetAdjoin s x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_AC : forall A:set, forall x y :e A, forall s c= A, SetAdjoin (SetAdjoin s y) x = SetAdjoin (SetAdjoin s x) y /\ SetAdjoin (SetAdjoin s x) x = SetAdjoin s x.
 Admitted.
 
 // HOL Light: sets.ml:746 / INTER_ACI
 // Source hash: md5:92b6c6a7b0ef992d524399e97cae5886
-// Status: exact_native
-Theorem INTER_ACI : forall A:set, A <> Empty -> forall p q r c= A, p :/\: q = q :/\: p /\ (p :/\: q :/\: r = p :/\: (q :/\: r) /\ (p :/\: (q :/\: r) = q :/\: (p :/\: r) /\ (p :/\: p = p /\ p :/\: (p :/\: q) = p :/\: q))).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTER_ACI : forall A:set, forall p q r c= A, p :/\: q = q :/\: p /\ (p :/\: q :/\: r = p :/\: (q :/\: r) /\ (p :/\: (q :/\: r) = q :/\: (p :/\: r) /\ (p :/\: p = p /\ p :/\: (p :/\: q) = p :/\: q))).
 Admitted.
 
 // HOL Light: sets.ml:754 / UNION_ACI
 // Source hash: md5:07377596f3694561ea113c5efaff1cef
-// Status: exact_native
-Theorem UNION_ACI : forall A:set, A <> Empty -> forall p q r c= A, p :\/: q = q :\/: p /\ (p :\/: q :\/: r = p :\/: (q :\/: r) /\ (p :\/: (q :\/: r) = q :\/: (p :\/: r) /\ (p :\/: p = p /\ p :\/: (p :\/: q) = p :\/: q))).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNION_ACI : forall A:set, forall p q r c= A, p :\/: q = q :\/: p /\ (p :\/: q :\/: r = p :\/: (q :\/: r) /\ (p :\/: (q :\/: r) = q :\/: (p :\/: r) /\ (p :\/: p = p /\ p :\/: (p :\/: q) = p :\/: q))).
 Admitted.
 
 // HOL Light: sets.ml:762 / DELETE_NON_ELEMENT
 // Source hash: md5:0dcda2fe35e137ee19784d94f95dcd4a
-// Status: exact_native
-Theorem DELETE_NON_ELEMENT : forall A:set, A <> Empty -> forall x :e A, forall s c= A, ~ x :e s <-> s :\: {x} = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE_NON_ELEMENT : forall A:set, forall x :e A, forall s c= A, ~ x :e s <-> s :\: {x} = s.
 Admitted.
 
 // HOL Light: sets.ml:766 / IN_DELETE_EQ
 // Source hash: md5:4a10e6e04b108d2f62a9668be6163506
-// Status: exact_native
-Theorem IN_DELETE_EQ : forall A:set, A <> Empty -> forall s c= A, forall x x' :e A, (x :e s <-> x' :e s) <-> (x :e s :\: {x'} <-> x' :e s :\: {x}).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_DELETE_EQ : forall A:set, forall s c= A, forall x x' :e A, (x :e s <-> x' :e s) <-> (x :e s :\: {x'} <-> x' :e s :\: {x}).
 Admitted.
 
 // HOL Light: sets.ml:771 / EMPTY_DELETE
 // Source hash: md5:a816ba184a6e97f3a6d74dbcf7d143cb
-// Status: exact_native
-Theorem EMPTY_DELETE : forall A:set, A <> Empty -> forall x :e A, Empty :\: {x} = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EMPTY_DELETE : forall A:set, forall x :e A, Empty :\: {x} = Empty.
 Admitted.
 
 // HOL Light: sets.ml:775 / DELETE_DELETE
 // Source hash: md5:dd03b55506d92979a9e8afe8ef8d4cca
-// Status: exact_native
-Theorem DELETE_DELETE : forall A:set, A <> Empty -> forall x :e A, forall s c= A, (s :\: {x}) :\: {x} = s :\: {x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE_DELETE : forall A:set, forall x :e A, forall s c= A, (s :\: {x}) :\: {x} = s :\: {x}.
 Admitted.
 
 // HOL Light: sets.ml:779 / DELETE_COMM
 // Source hash: md5:0d526cc0fd7079f4b3881a69cd0649f9
-// Status: exact_native
-Theorem DELETE_COMM : forall A:set, A <> Empty -> forall x y :e A, forall s c= A, (s :\: {x}) :\: {y} = (s :\: {y}) :\: {x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE_COMM : forall A:set, forall x y :e A, forall s c= A, (s :\: {x}) :\: {y} = (s :\: {y}) :\: {x}.
 Admitted.
 
 // HOL Light: sets.ml:783 / DELETE_SUBSET
 // Source hash: md5:078bc9b56a7bf03d3e7ce9ddd1af63bb
-// Status: exact_native
-Theorem DELETE_SUBSET : forall A:set, A <> Empty -> forall x :e A, forall s c= A, s :\: {x} c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE_SUBSET : forall A:set, forall x :e A, forall s c= A, s :\: {x} c= s.
 Admitted.
 
 // HOL Light: sets.ml:787 / SUBSET_DELETE
 // Source hash: md5:4e7ca52ea617a097832c436b867126ea
-// Status: exact_native
-Theorem SUBSET_DELETE : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, s c= t :\: {x} <-> ~ x :e s /\ s c= t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_DELETE : forall A:set, forall x :e A, forall s t c= A, s c= t :\: {x} <-> ~ x :e s /\ s c= t.
 Admitted.
 
 // HOL Light: sets.ml:791 / SUBSET_INSERT_DELETE
 // Source hash: md5:8b4bddc31c0fedf0ad4cc162f876bbce
-// Status: exact_native
-Theorem SUBSET_INSERT_DELETE : forall A:set, A <> Empty -> forall x :e A, forall s t c= A, s c= SetAdjoin t x <-> s :\: {x} c= t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_INSERT_DELETE : forall A:set, forall x :e A, forall s t c= A, s c= SetAdjoin t x <-> s :\: {x} c= t.
 Admitted.
 
 // HOL Light: sets.ml:795 / DIFF_INSERT
 // Source hash: md5:860cebd324928909d3091b1cf9720555
-// Status: exact_native
-Theorem DIFF_INSERT : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, s :\: SetAdjoin t x = (s :\: {x}) :\: t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_INSERT : forall A:set, forall s t c= A, forall x :e A, s :\: SetAdjoin t x = (s :\: {x}) :\: t.
 Admitted.
 
 // HOL Light: sets.ml:799 / PSUBSET_INSERT_SUBSET
@@ -844,32 +844,32 @@ Admitted.
 
 // HOL Light: sets.ml:803 / DELETE_INSERT
 // Source hash: md5:1189cefe6e65ac793f83e648e9159f01
-// Status: exact_native
-Theorem DELETE_INSERT : forall A:set, A <> Empty -> forall x y :e A, forall s c= A, SetAdjoin s x :\: {y} = if x = y then s :\: {y} else SetAdjoin (s :\: {y}) x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE_INSERT : forall A:set, forall x y :e A, forall s c= A, SetAdjoin s x :\: {y} = if x = y then s :\: {y} else SetAdjoin (s :\: {y}) x.
 Admitted.
 
 // HOL Light: sets.ml:810 / INSERT_DELETE
 // Source hash: md5:70ccac3a5621998e241f9f6944a6c4ab
-// Status: exact_native
-Theorem INSERT_DELETE : forall A:set, A <> Empty -> forall x :e A, forall s c= A, x :e s -> SetAdjoin (s :\: {x}) x = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INSERT_DELETE : forall A:set, forall x :e A, forall s c= A, x :e s -> SetAdjoin (s :\: {x}) x = s.
 Admitted.
 
 // HOL Light: sets.ml:814 / DELETE_INTER
 // Source hash: md5:83869d90747049f22e1b3d1b8f0fbf4f
-// Status: exact_native
-Theorem DELETE_INTER : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, (s :\: {x}) :/\: t = s :/\: t :\: {x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DELETE_INTER : forall A:set, forall s t c= A, forall x :e A, (s :\: {x}) :/\: t = s :/\: t :\: {x}.
 Admitted.
 
 // HOL Light: sets.ml:818 / DISJOINT_DELETE_SYM
 // Source hash: md5:2ad853455d2a68dd10a80c06f3c54763
-// Status: exact_native
-Theorem DISJOINT_DELETE_SYM : forall A:set, A <> Empty -> forall s t c= A, forall x :e A, (s :\: {x}) :/\: t = Empty <-> (t :\: {x}) :/\: s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DISJOINT_DELETE_SYM : forall A:set, forall s t c= A, forall x :e A, (s :\: {x}) :/\: t = Empty <-> (t :\: {x}) :/\: s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:826 / UNIONS_0
 // Source hash: md5:4755ffa5a5126b386b54c0e903355e25
-// Status: exact_native
-Theorem UNIONS_0 : forall A:set, A <> Empty -> Union Empty = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIONS_0 : forall A:set, Union Empty = Empty.
 Admitted.
 
 // HOL Light: sets.ml:830 / UNIONS_1
@@ -892,14 +892,14 @@ Admitted.
 
 // HOL Light: sets.ml:842 / FORALL_IN_UNIONS
 // Source hash: md5:f70844cc1e1a186ecf03b3eae98115fd
-// Status: exact_native
-Theorem FORALL_IN_UNIONS : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= Power A, (forall x :e A, x :e Union s -> P x) <-> forall t c= A, forall x :e A, t :e s /\ x :e t -> P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_IN_UNIONS : forall A:set, forall P:set -> prop, forall s c= Power A, (forall x :e A, x :e Union s -> P x) <-> forall t c= A, forall x :e A, t :e s /\ x :e t -> P x.
 Admitted.
 
 // HOL Light: sets.ml:846 / EXISTS_IN_UNIONS
 // Source hash: md5:64f7facc93b37fb8773110b2e9e97b01
-// Status: exact_native
-Theorem EXISTS_IN_UNIONS : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= Power A, (exists x :e A, x :e Union s /\ P x) <-> exists t c= A, exists x :e A, t :e s /\ (x :e t /\ P x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_IN_UNIONS : forall A:set, forall P:set -> prop, forall s c= Power A, (exists x :e A, x :e Union s /\ P x) <-> exists t c= A, exists x :e A, t :e s /\ (x :e t /\ P x).
 Admitted.
 
 // HOL Light: sets.ml:850 / EMPTY_UNIONS
@@ -934,8 +934,8 @@ Admitted.
 
 // HOL Light: sets.ml:873 / INTERS_UNION
 // Source hash: md5:06dc38c9ec99183a5351fff7b1745301
-// Status: exact_native
-Theorem INTERS_UNION : forall A:set, A <> Empty -> forall s t c= Power A, {x :e A | forall Y :e s :\/: t, x :e Y} = {x :e A | forall Y :e s, x :e Y} :/\: {x :e A | forall Y :e t, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_UNION : forall A:set, forall s t c= Power A, {x :e A | forall Y :e s :\/: t, x :e Y} = {x :e A | forall Y :e s, x :e Y} :/\: {x :e A | forall Y :e t, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:877 / UNIONS_MONO
@@ -946,8 +946,8 @@ Admitted.
 
 // HOL Light: sets.ml:882 / UNIONS_MONO_IMAGE
 // Source hash: md5:4326d9fcf06d4a50a28015552bc25709
-// Status: exact_native
-Theorem UNIONS_MONO_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f g :e Power B :^: A, forall s c= A, (forall x :e A, x :e s -> f x c= g x) -> Union {(fun x0:set => f x x0) | x :e s} c= Union {(fun x0:set => g x x0) | x :e s}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIONS_MONO_IMAGE : forall A B:set, B <> Empty -> forall f g :e Power B :^: A, forall s c= A, (forall x :e A, x :e s -> f x c= g x) -> Union {f x | x :e s} c= Union {g x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:888 / UNIONS_UNIV
@@ -970,170 +970,170 @@ Admitted.
 
 // HOL Light: sets.ml:907 / INTERS_0
 // Source hash: md5:d34a743f9691d419efa1202d969b261f
-// Status: exact_native
-Theorem INTERS_0 : forall A:set, A <> Empty -> {x :e A | forall Y :e Empty, x :e Y} = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_0 : forall A:set, {x :e A | forall Y :e Empty, x :e Y} = A.
 Admitted.
 
 // HOL Light: sets.ml:911 / INTERS_1
 // Source hash: md5:88c36b569fecd932c1ce47c3a509a047
-// Status: exact_native
-Theorem INTERS_1 : forall A:set, A <> Empty -> forall s c= A, {x :e A | forall Y :e {s}, x :e Y} = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_1 : forall A:set, forall s c= A, {x :e A | forall Y :e {s}, x :e Y} = s.
 Admitted.
 
 // HOL Light: sets.ml:915 / INTERS_2
 // Source hash: md5:178b3543e4c98666f7c91d0a5e0af465
-// Status: exact_native
-Theorem INTERS_2 : forall A:set, A <> Empty -> forall s t c= A, {x :e A | forall Y :e {s,t}, x :e Y} = s :/\: t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_2 : forall A:set, forall s t c= A, {x :e A | forall Y :e {s,t}, x :e Y} = s :/\: t.
 Admitted.
 
 // HOL Light: sets.ml:919 / INTERS_INSERT
 // Source hash: md5:aa86287310a3119611b5759a859e7fa2
-// Status: exact_native
-Theorem INTERS_INSERT : forall A:set, A <> Empty -> forall s c= A, forall u c= Power A, {x :e A | forall Y :e SetAdjoin u s, x :e Y} = s :/\: {x :e A | forall Y :e u, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_INSERT : forall A:set, forall s c= A, forall u c= Power A, {x :e A | forall Y :e SetAdjoin u s, x :e Y} = s :/\: {x :e A | forall Y :e u, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:923 / SUBSET_INTERS
 // Source hash: md5:50b113008661d1193db3e5bf73d7941c
-// Status: exact_native
-Theorem SUBSET_INTERS : forall A:set, A <> Empty -> forall s c= A, forall f c= Power A, s c= {x :e A | forall Y :e f, x :e Y} <-> forall t c= A, t :e f -> s c= t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_INTERS : forall A:set, forall s c= A, forall f c= Power A, s c= {x :e A | forall Y :e f, x :e Y} <-> forall t c= A, t :e f -> s c= t.
 Admitted.
 
 // HOL Light: sets.ml:927 / INTERS_SUBSET
 // Source hash: md5:6b20848498083bd60a4495e41eb92468
-// Status: exact_native
-Theorem INTERS_SUBSET : forall A:set, A <> Empty -> forall u c= Power A, forall s c= A, ~ u = Empty /\ (forall t c= A, t :e u -> t c= s) -> {x :e A | forall Y :e u, x :e Y} c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_SUBSET : forall A:set, forall u c= Power A, forall s c= A, ~ u = Empty /\ (forall t c= A, t :e u -> t c= s) -> {x :e A | forall Y :e u, x :e Y} c= s.
 Admitted.
 
 // HOL Light: sets.ml:932 / INTERS_SUBSET_STRONG
 // Source hash: md5:567e785f99581f3d3229069f6c3034ef
-// Status: exact_native
-Theorem INTERS_SUBSET_STRONG : forall A:set, A <> Empty -> forall u c= Power A, forall s c= A, (exists t c= A, t :e u /\ t c= s) -> {x :e A | forall Y :e u, x :e Y} c= s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_SUBSET_STRONG : forall A:set, forall u c= Power A, forall s c= A, (exists t c= A, t :e u /\ t c= s) -> {x :e A | forall Y :e u, x :e Y} c= s.
 Admitted.
 
 // HOL Light: sets.ml:936 / INTERS_ANTIMONO
 // Source hash: md5:e80c13090dfba7d2417f50cae231fd7f
-// Status: exact_native
-Theorem INTERS_ANTIMONO : forall A:set, A <> Empty -> forall f g c= Power A, g c= f -> {x :e A | forall Y :e f, x :e Y} c= {x :e A | forall Y :e g, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_ANTIMONO : forall A:set, forall f g c= Power A, g c= f -> {x :e A | forall Y :e f, x :e Y} c= {x :e A | forall Y :e g, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:940 / INTERS_EQ_UNIV
 // Source hash: md5:6c18caf24efaac96e3a04f2d79fae594
-// Status: exact_native
-Theorem INTERS_EQ_UNIV : forall A:set, A <> Empty -> forall f c= Power A, {x :e A | forall Y :e f, x :e Y} = A <-> forall s c= A, s :e f -> s = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_EQ_UNIV : forall A:set, forall f c= Power A, {x :e A | forall Y :e f, x :e Y} = A <-> forall s c= A, s :e f -> s = A.
 Admitted.
 
 // HOL Light: sets.ml:944 / INTERS_ANTIMONO_GEN
 // Source hash: md5:aa4c09fe699036da2052e077aa91b698
-// Status: exact_native
-Theorem INTERS_ANTIMONO_GEN : forall A:set, A <> Empty -> forall s t c= Power A, (forall y c= A, y :e t -> exists x c= A, x :e s /\ x c= y) -> {x :e A | forall Y :e s, x :e Y} c= {x :e A | forall Y :e t, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_ANTIMONO_GEN : forall A:set, forall s t c= Power A, (forall y c= A, y :e t -> exists x c= A, x :e s /\ x c= y) -> {x :e A | forall Y :e s, x :e Y} c= {x :e A | forall Y :e t, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:954 / IMAGE_CLAUSES
 // Source hash: md5:d971eba44eb36baa8624acc2c96acb14
-// Status: exact_native
-Theorem IMAGE_CLAUSES : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e A, f x0 :e B) -> forall x :e A, forall s c= A, {f x | x :e Empty} = Empty /\ {f x | x :e SetAdjoin s x} = SetAdjoin {f x | x :e s} (f x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_CLAUSES : forall A B:set, B <> Empty -> forall f:set -> set, (forall x0 :e A, f x0 :e B) -> forall x :e A, forall s c= A, {f x | x :e Empty} = Empty /\ {f x0 | x0 :e SetAdjoin s x} = SetAdjoin {f x | x :e s} (f x).
 Admitted.
 
 // HOL Light: sets.ml:960 / IMAGE_UNION
 // Source hash: md5:7899e64c5c00ccaa56868de1770758e9
-// Status: exact_native
-Theorem IMAGE_UNION : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {f x | x :e s :\/: t} = {f x | x :e s} :\/: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_UNION : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {f x | x :e s :\/: t} = {f x | x :e s} :\/: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:964 / IMAGE_ID
 // Source hash: md5:01b246c997525053fc5b3cc2cf50bc5d
-// Status: exact_native
-Theorem IMAGE_ID : forall A:set, A <> Empty -> forall s c= A, {x | x :e s} = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_ID : forall A:set, forall s c= A, {x | x :e s} = s.
 Admitted.
 
 // HOL Light: sets.ml:968 / IMAGE_I
 // Source hash: md5:8eaf7e71839341a7ce6527d0469812cb
-// Status: exact_native
-Theorem IMAGE_I : forall A:set, A <> Empty -> forall s c= A, {x | x :e s} = s.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem IMAGE_I : forall A:set, forall s c= A, {x | x :e s} = s.
 
 // HOL Light: sets.ml:972 / IMAGE_o
 // Source hash: md5:9666e7022fca9e70698bca3379b4251d
-// Status: exact_native
-Theorem IMAGE_o : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_o : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}.
 Admitted.
 
 // HOL Light: sets.ml:976 / IMAGE_SUBSET
 // Source hash: md5:febade15ac821ca773e389b3ecdc7591
-// Status: exact_native
-Theorem IMAGE_SUBSET : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, s c= t -> {f x | x :e s} c= {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_SUBSET : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, s c= t -> {f x | x :e s} c= {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:980 / IMAGE_INTER_INJ
 // Source hash: md5:00b3dc89ee9a5fee5a55e3a613178a8e
-// Status: exact_native
-Theorem IMAGE_INTER_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, f x = f y -> x = y) -> {f x | x :e s :/\: t} = {f x | x :e s} :/\: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_INTER_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, f x = f y -> x = y) -> {f x | x :e s :/\: t} = {f x | x :e s} :/\: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:986 / IMAGE_DIFF_INJ
 // Source hash: md5:fbfa071c4f10b33a4ea36f33f883c70f
-// Status: exact_native
-Theorem IMAGE_DIFF_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, x :e s /\ (y :e t /\ f x = f y) -> x = y) -> {f x | x :e s :\: t} = {f x | x :e s} :\: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_DIFF_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, x :e s /\ (y :e t /\ f x = f y) -> x = y) -> {f x | x :e s :\: t} = {f x | x :e s} :\: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:992 / IMAGE_DIFF_INJ_ALT
 // Source hash: md5:703226f3a051e27ab6d2061309be8632
-// Status: exact_native
-Theorem IMAGE_DIFF_INJ_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ t c= s -> {f x | x :e s :\: t} = {f x | x :e s} :\: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_DIFF_INJ_ALT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ t c= s -> {f x | x :e s :\: t} = {f x | x :e s} :\: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:998 / IMAGE_DELETE_INJ
 // Source hash: md5:7a85d1f382099d8eef17b8ad41fe0148
-// Status: exact_native
-Theorem IMAGE_DELETE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, (forall x :e A, x :e s /\ f x = f a -> x = a) -> {f x | x :e s :\: {a}} = {f x | x :e s} :\: {f a}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_DELETE_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, (forall x :e A, x :e s /\ f x = f a -> x = a) -> {f x | x :e s :\: {a}} = {f x | x :e s} :\: {f a}.
 Admitted.
 
 // HOL Light: sets.ml:1004 / IMAGE_DELETE_INJ_ALT
 // Source hash: md5:3d1e77bc8ffec4beaeff58d70502b88f
-// Status: exact_native
-Theorem IMAGE_DELETE_INJ_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ a :e s -> {f x | x :e s :\: {a}} = {f x | x :e s} :\: {f a}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_DELETE_INJ_ALT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ a :e s -> {f x | x :e s :\: {a}} = {f x | x :e s} :\: {f a}.
 Admitted.
 
 // HOL Light: sets.ml:1010 / IMAGE_EQ_EMPTY
 // Source hash: md5:2f9ec18777abac6f7292991839d512dd
-// Status: exact_native
-Theorem IMAGE_EQ_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {f x | x :e s} = Empty <-> s = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_EQ_EMPTY : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {f x | x :e s} = Empty <-> s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:1014 / FORALL_IN_IMAGE_2
 // Source hash: md5:7f377986da40325ad9d8f38b07fce960
-// Status: exact_native
-Theorem FORALL_IN_IMAGE_2 : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall P:set -> set -> prop, forall s c= A, (forall x y :e B, x :e {f x | x :e s} /\ y :e {f x | x :e s} -> P x y) <-> forall x y :e A, x :e s /\ y :e s -> P (f x) (f y).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_IN_IMAGE_2 : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall P:set -> set -> prop, forall s c= A, (forall x y :e B, x :e {f x | x :e s} /\ y :e {f x | x :e s} -> P x y) <-> forall x y :e A, x :e s /\ y :e s -> P (f x) (f y).
 Admitted.
 
 // HOL Light: sets.ml:1019 / IMAGE_CONST
 // Source hash: md5:5bd033ca0cefa6e81dcee950bc92e648
-// Status: exact_native
-Theorem IMAGE_CONST : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall c :e B, {c | x :e s} = if s = Empty then Empty else {c}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem IMAGE_CONST : forall A B:set, forall s c= A, forall c :e B, {c | x :e s} = if s = Empty then Empty else {c}.
 Admitted.
 
 // HOL Light: sets.ml:1026 / SIMPLE_IMAGE
 // Source hash: md5:474c46a77fa474ddb854096d0f174af3
-// Status: exact_native
-Theorem SIMPLE_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {f x | x :e A, x :e s} = {f x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SIMPLE_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {f x | x :e A, x :e s} = {f x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:1030 / SIMPLE_IMAGE_GEN
 // Source hash: md5:80cb34ae0f8ad145188f7aacf09a506d
-// Status: exact_native
-Theorem SIMPLE_IMAGE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall P:set -> prop, {f x | x :e A, P x} = {f x | x :e {x :e A | P x}}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SIMPLE_IMAGE_GEN : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall P:set -> prop, {f x | x :e A, P x} = {f x | x :e {x :e A | P x}}.
 Admitted.
 
 // HOL Light: sets.ml:1034 / IMAGE_UNIONS
 // Source hash: md5:6c5953895892bfb979f2907890243739
 // Status: exact_native
-Theorem IMAGE_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= Power A, {f x | x :e Union s} = Union {(fun x0:set => if x0 :e {f x | x :e x} then 1 else 0) | x :e s}.
+Theorem IMAGE_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= Power A, {f x | x :e Union s} = Union {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:1042 / FUN_IN_IMAGE
 // Source hash: md5:01dcdb4ccc6836c3c4f14f3f189c2af8
-// Status: exact_native
-Theorem FUN_IN_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall x :e A, x :e s -> f x :e {f x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FUN_IN_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall x :e A, x :e s -> f x :e {f x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:1046 / SURJECTIVE_IMAGE_EQ
@@ -1144,50 +1144,50 @@ Admitted.
 
 // HOL Light: sets.ml:1052 / IMAGE_EQ
 // Source hash: md5:a3535927145e7c716764d351f650fe3d
-// Status: exact_native
-Theorem IMAGE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> {f x | x :e s} = {g x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> {f x | x :e s} = {g x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:1060 / EMPTY_GSPEC
 // Source hash: md5:2ed1d6bb1a68368f8a68975d3784bf02
-// Status: exact_native
-Theorem EMPTY_GSPEC : forall A:set, A <> Empty -> {x :e A | False} = Empty.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EMPTY_GSPEC : forall A:set, {x :e A | False} = Empty.
 Admitted.
 
 // HOL Light: sets.ml:1064 / UNIV_GSPEC
 // Source hash: md5:0539fd35817a901f982ff7c3a597321a
-// Status: exact_native
-Theorem UNIV_GSPEC : forall A:set, A <> Empty -> {x :e A | True} = A.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIV_GSPEC : forall A:set, {x :e A | True} = A.
 Admitted.
 
 // HOL Light: sets.ml:1068 / SING_GSPEC
 // Source hash: md5:22e0842e55f614b290e24d69b10da5cd
-// Status: exact_native
-Theorem SING_GSPEC : forall A:set, A <> Empty -> (forall a :e A, {x :e A | x = a} = {a}) /\ forall a :e A, {x :e A | a = x} = {a}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SING_GSPEC : forall A:set, (forall a :e A, {x :e A | x = a} = {a}) /\ forall a :e A, {x :e A | a = x} = {a}.
 Admitted.
 
 // HOL Light: sets.ml:1073 / SING_ALT
 // Source hash: md5:3b330cce0e0d138ed8a0a7e8f3f38d30
-// Status: exact_native
-Theorem SING_ALT : forall A:set, A <> Empty -> forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, x :e s /\ forall y :e A, x :e s -> y = x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SING_ALT : forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, x :e s /\ forall y :e A, y :e s -> y = x.
 Admitted.
 
 // HOL Light: sets.ml:1077 / IN_GSPEC
 // Source hash: md5:2e7cc3389411741b5981be931137e072
-// Status: exact_native
-Theorem IN_GSPEC : forall A:set, A <> Empty -> forall s c= A, {x :e A | x :e s} = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_GSPEC : forall A:set, forall s c= A, {x :e A | x :e s} = s.
 Admitted.
 
 // HOL Light: sets.ml:1081 / IN_ELIM_PAIR_THM
 // Source hash: md5:b0c826c6c5ab3d857a1f3d88effce79f
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem IN_ELIM_PAIR_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall a :e A, forall b :e B, (a,b) :e (\/_ x :e A, {(x,y) | y :e B, P x y}) <-> P a b.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem IN_ELIM_PAIR_THM : forall A B:set, forall P:set -> set -> prop, forall a :e A, forall b :e B, (a,b) :e (\/_ x :e A, {(x,y) | y :e B, P x y}) <-> P a b.
 Admitted.
 
 // HOL Light: sets.ml:1099 / SET_PAIR_THM
 // Source hash: md5:b6a126417100e7fb01822c6609f50044
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem SET_PAIR_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, {p :e A * B | P p} = \/_ a :e A, {(a,b) | b :e B, P (a,b)}.
+// Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
+Theorem SET_PAIR_THM : forall A B:set, B <> Empty -> forall P:set -> prop, {p :e A :*: B | P p} = \/_ a :e A, {(a,b) | b :e B, P (a,b)}.
 Admitted.
 
 // HOL Light: sets.ml:1103 / SET_PROVE_CASES
@@ -1198,20 +1198,20 @@ Admitted.
 
 // HOL Light: sets.ml:1109 / UNIONS_SINGS_GEN
 // Source hash: md5:7bc0239890f9ad4975b2899e65a6baa9
-// Status: exact_native
-Theorem UNIONS_SINGS_GEN : forall A:set, A <> Empty -> forall P:set -> prop, Union {{x} | x :e A, P x} = {x :e A | P x}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIONS_SINGS_GEN : forall A:set, forall P:set -> prop, Union {{x} | x :e A, P x} = {x :e A | P x}.
 Admitted.
 
 // HOL Light: sets.ml:1113 / UNIONS_SINGS
 // Source hash: md5:1b2efa012ef3df19c35f483ad4ac349a
-// Status: exact_native
-Theorem UNIONS_SINGS : forall A:set, A <> Empty -> forall s c= A, Union {{x} | x :e A, x :e s} = s.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIONS_SINGS : forall A:set, forall s c= A, Union {{x} | x :e A, x :e s} = s.
 Admitted.
 
 // HOL Light: sets.ml:1117 / IMAGE_INTERS
 // Source hash: md5:88415c2ae5c425a5a88b718074cfabfb
 // Status: exact_native
-Theorem IMAGE_INTERS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= Power A, ~ s = Empty /\ (forall x y :e A, x :e Union s /\ (y :e Union s /\ f x = f y) -> x = y) -> {f x | x :e {x :e A | forall Y :e s, x :e Y}} = {x :e B | forall Y :e {(fun x0:set => if x0 :e {f x | x :e x} then 1 else 0) | x :e s}, x :e Y}.
+Theorem IMAGE_INTERS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= Power A, ~ s = Empty /\ (forall x y :e A, x :e Union s /\ (y :e Union s /\ f x = f y) -> x = y) -> {f x | x :e {x :e A | forall Y :e s, x :e Y}} = {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e s}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1124 / DIFF_INTERS
@@ -1222,8 +1222,8 @@ Admitted.
 
 // HOL Light: sets.ml:1128 / INTERS_UNIONS
 // Source hash: md5:bcf1ee77aebb105cb94a64ab89650f78
-// Status: exact_native
-Theorem INTERS_UNIONS : forall A:set, A <> Empty -> forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = A :\: Union {A :\: t | t :e Power A, t :e s}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INTERS_UNIONS : forall A:set, forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = A :\: Union {A :\: t | t :e Power A, t :e s}.
 Admitted.
 
 // HOL Light: sets.ml:1132 / UNIONS_INTERS
@@ -1240,14 +1240,14 @@ Admitted.
 
 // HOL Light: sets.ml:1142 / DIFF_UNIONS
 // Source hash: md5:b33b9d9272dfa5a4334061e6d3f37bce
-// Status: exact_native
-Theorem DIFF_UNIONS : forall A:set, A <> Empty -> forall u c= A, forall s c= Power A, u :\: Union s = u :/\: {x :e A | forall Y :e {u :\: t | t :e Power A, t :e s}, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_UNIONS : forall A:set, forall u c= A, forall s c= Power A, u :\: Union s = u :/\: {x :e A | forall Y :e {u :\: t | t :e Power A, t :e s}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1146 / DIFF_UNIONS_NONEMPTY
 // Source hash: md5:d45650d2375bf668fabb1e4eca1a34b8
-// Status: exact_native
-Theorem DIFF_UNIONS_NONEMPTY : forall A:set, A <> Empty -> forall u c= A, forall s c= Power A, ~ s = Empty -> u :\: Union s = {x :e A | forall Y :e {u :\: t | t :e Power A, t :e s}, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem DIFF_UNIONS_NONEMPTY : forall A:set, forall u c= A, forall s c= Power A, ~ s = Empty -> u :\: Union s = {x :e A | forall Y :e {u :\: t | t :e Power A, t :e s}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1150 / INTERS_OVER_UNIONS
@@ -1265,7 +1265,7 @@ Admitted.
 // HOL Light: sets.ml:1171 / UNIONS_OVER_INTERS
 // Source hash: md5:d2f3cf119ce82229bdad4cfa17039121
 // Status: exact_native
-Theorem UNIONS_OVER_INTERS : forall A B:set, A <> Empty -> B <> Empty -> forall f :e Power (Power B) :^: A, forall s c= A, Union {{x :e B | forall Y :e f x, x :e Y} | x :e A, x :e s} = {x :e B | forall Y :e {Union {g x | x :e A, x :e s} | g :e Power B :^: A, forall x :e A, x :e s -> g x :e f x}, x :e Y}.
+Theorem UNIONS_OVER_INTERS : forall A B:set, A <> Empty -> B <> Empty -> forall f :e Power (Power B) :^: A, forall s c= A, Union {{x0 :e B | forall Y :e f x, x0 :e Y} | x :e A, x :e s} = {x :e B | forall Y :e {Union {g x | x :e A, x :e s} | g :e Power B :^: A, forall x :e A, x :e s -> g x :e f x}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1182 / UNIONS_EQ_INTERS
@@ -1277,43 +1277,43 @@ Admitted.
 // HOL Light: sets.ml:1188 / EXISTS_UNIQUE_UNIONS_INTERS
 // Source hash: md5:46af7a769cd97265067d44e0ec6c13f5
 // Status: exact_native
-Theorem EXISTS_UNIQUE_UNIONS_INTERS : forall A:set, A <> Empty -> forall P:set -> prop, (exists s c= A, P s /\ forall y:set -> prop, P s -> forall x :e A, y x <-> x :e s) <-> Union {s :e Power A | P s} = {x :e A | forall Y :e {s :e Power A | P s}, x :e Y}.
+Theorem EXISTS_UNIQUE_UNIONS_INTERS : forall A:set, A <> Empty -> forall P:set -> prop, (exists s c= A, P s /\ forall y c= A, P y -> y = s) <-> Union {s :e Power A | P s} = {x :e A | forall Y :e {s :e Power A | P s}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1192 / IMAGE_INTERS_SUBSET
 // Source hash: md5:17884b20f590e4546f3f54068df4105c
-// Status: exact_native
-Theorem IMAGE_INTERS_SUBSET : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, {f x | x :e {x :e A | forall Y :e g, x :e Y}} c= {x :e B | forall Y :e {(fun x0:set => if x0 :e {f x | x :e x} then 1 else 0) | x :e g}, x :e Y}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_INTERS_SUBSET : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, {f x | x :e {x :e A | forall Y :e g, x :e Y}} c= {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e g}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1196 / IMAGE_INTER_SUBSET
 // Source hash: md5:75e7ca0a61d476eeec450bed02be37aa
-// Status: exact_native
-Theorem IMAGE_INTER_SUBSET : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {f x | x :e s :/\: t} c= {f x | x :e s} :/\: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_INTER_SUBSET : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {f x | x :e s :/\: t} c= {f x | x :e s} :/\: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:1200 / IMAGE_INTER_SATURATED_GEN
 // Source hash: md5:fd09484f3ef01e2ea6740c8d1fa4fb03
-// Status: exact_native
-Theorem IMAGE_INTER_SATURATED_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t u c= A, {x :e A | x :e u /\ f x :e {f x | x :e s}} c= s /\ t c= u \/ {x :e A | x :e u /\ f x :e {f x | x :e t}} c= t /\ s c= u -> {f x | x :e s :/\: t} = {f x | x :e s} :/\: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_INTER_SATURATED_GEN : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t u c= A, {x :e A | x :e u /\ f x :e {f x | x :e s}} c= s /\ t c= u \/ {x :e A | x :e u /\ f x :e {f x | x :e t}} c= t /\ s c= u -> {f x | x :e s :/\: t} = {f x | x :e s} :/\: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:1207 / IMAGE_INTERS_SATURATED_GEN
 // Source hash: md5:84c1a5bee05f104c13d911ef953aeb03
 // Status: exact_native
-Theorem IMAGE_INTERS_SATURATED_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, forall s u c= A, ~ g = Empty /\ ((forall t c= A, t :e g -> t c= u) /\ (forall t c= A, t :e g :\: {s} -> {x :e A | x :e u /\ f x :e {f x | x :e t}} c= t)) -> {f x | x :e {x :e A | forall Y :e g, x :e Y}} = {x :e B | forall Y :e {(fun x0:set => if x0 :e {f x | x :e x} then 1 else 0) | x :e g}, x :e Y}.
+Theorem IMAGE_INTERS_SATURATED_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, forall s u c= A, ~ g = Empty /\ ((forall t c= A, t :e g -> t c= u) /\ (forall t c= A, t :e g :\: {s} -> {x :e A | x :e u /\ f x :e {f x | x :e t}} c= t)) -> {f x | x :e {x :e A | forall Y :e g, x :e Y}} = {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e g}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1241 / IMAGE_INTER_SATURATED
 // Source hash: md5:52aec42c366733156dbd4a4138f2617c
-// Status: exact_native
-Theorem IMAGE_INTER_SATURATED : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {x :e A | f x :e {f x | x :e s}} c= s \/ {x :e A | f x :e {f x | x :e t}} c= t -> {f x | x :e s :/\: t} = {f x | x :e s} :/\: {f x | x :e t}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_INTER_SATURATED : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {x :e A | f x :e {f x | x :e s}} c= s \/ {x :e A | f x :e {f x | x :e t}} c= t -> {f x | x :e s :/\: t} = {f x | x :e s} :/\: {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:1247 / IMAGE_INTERS_SATURATED
 // Source hash: md5:f4f89283438add8754edd987ff12a556
 // Status: exact_native
-Theorem IMAGE_INTERS_SATURATED : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, forall s c= A, ~ g = Empty /\ (forall t c= A, t :e g :\: {s} -> {x :e A | f x :e {f x | x :e t}} c= t) -> {f x | x :e {x :e A | forall Y :e g, x :e Y}} = {x :e B | forall Y :e {(fun x0:set => if x0 :e {f x | x :e x} then 1 else 0) | x :e g}, x :e Y}.
+Theorem IMAGE_INTERS_SATURATED : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, forall s c= A, ~ g = Empty /\ (forall t c= A, t :e g :\: {s} -> {x :e A | f x :e {f x | x :e t}} c= t) -> {f x | x :e {x :e A | forall Y :e g, x :e Y}} = {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e g}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:1259 / FINITE_INDUCT_STRONG
@@ -1324,20 +1324,20 @@ Admitted.
 
 // HOL Light: sets.ml:1276 / INJECTIVE_ON_ALT
 // Source hash: md5:5aee535e3e22536e337c3681ed0346dc
-// Status: exact_native
-Theorem INJECTIVE_ON_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, P x /\ (P y /\ f x = f y) -> x = y) <-> forall x y :e A, P x /\ P y -> (f x = f y <-> x = y)).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INJECTIVE_ON_ALT : forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, P x /\ (P y /\ f x = f y) -> x = y) <-> forall x y :e A, P x /\ P y -> (f x = f y <-> x = y)).
 Admitted.
 
 // HOL Light: sets.ml:1282 / INJECTIVE_ALT
 // Source hash: md5:ebd3888b66e3605c8fe2ff868e0465f1
-// Status: exact_native
-Theorem INJECTIVE_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x y :e A, f x = f y <-> x = y).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INJECTIVE_ALT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x y :e A, f x = f y <-> x = y).
 Admitted.
 
 // HOL Light: sets.ml:1286 / SURJECTIVE_ON_RIGHT_INVERSE
 // Source hash: md5:f53ec7165bd583fe34bb981fc48bcde2
-// Status: exact_native
-Theorem SURJECTIVE_ON_RIGHT_INVERSE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, (forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\ forall y :e B, y :e t -> g y :e s /\ f (g y) = y.
+// Status: generalization_required (bridges: empty_case:B)
+Theorem SURJECTIVE_ON_RIGHT_INVERSE : forall A B:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, (forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\ forall y :e B, y :e t -> g y :e s /\ f (g y) = y.
 Admitted.
 
 // HOL Light: sets.ml:1292 / INJECTIVE_ON_LEFT_INVERSE
@@ -1354,8 +1354,8 @@ Admitted.
 
 // HOL Light: sets.ml:1313 / SURJECTIVE_RIGHT_INVERSE
 // Source hash: md5:3aed1380dff8c0a2f0f7cb251b03ff86
-// Status: exact_native
-Theorem SURJECTIVE_RIGHT_INVERSE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\ forall y :e B, f (g y) = y).
+// Status: generalization_required (bridges: empty_case:B)
+Theorem SURJECTIVE_RIGHT_INVERSE : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\ forall y :e B, f (g y) = y).
 Admitted.
 
 // HOL Light: sets.ml:1317 / INJECTIVE_LEFT_INVERSE
@@ -1384,14 +1384,14 @@ Admitted.
 
 // HOL Light: sets.ml:1344 / FUNCTION_FACTORS_RIGHT_GEN
 // Source hash: md5:a1079b686af4b2b16a774553675a6691
-// Status: exact_native
-Theorem FUNCTION_FACTORS_RIGHT_GEN : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> ((forall x :e A, P x -> exists y :e B, g y = f x) <-> exists h:set -> set, (forall x :e A, h x :e B) /\ forall x :e A, P x -> f x = g (h x)).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FUNCTION_FACTORS_RIGHT_GEN : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> ((forall x :e A, P x -> exists y :e B, g y = f x) <-> exists h:set -> set, (forall x :e A, h x :e B) /\ forall x :e A, P x -> f x = g (h x)).
 Admitted.
 
 // HOL Light: sets.ml:1350 / FUNCTION_FACTORS_RIGHT
 // Source hash: md5:5dd20c9a4eb636bddb42a7bc909153d1
-// Status: exact_native
-Theorem FUNCTION_FACTORS_RIGHT : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> ((forall x :e A, exists y :e B, g y = f x) <-> exists h:set -> set, (forall x :e A, h x :e B) /\ forall x :e A, f x = g (h x)).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FUNCTION_FACTORS_RIGHT : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> ((forall x :e A, exists y :e B, g y = f x) <-> exists h:set -> set, (forall x :e A, h x :e B) /\ forall x :e A, f x = g (h x)).
 Admitted.
 
 // HOL Light: sets.ml:1354 / SURJECTIVE_FORALL_THM
@@ -1414,8 +1414,8 @@ Admitted.
 
 // HOL Light: sets.ml:1370 / IMAGE_INJECTIVE_IMAGE_OF_SUBSET
 // Source hash: md5:389062738112fe42ecc2a3e479a67267
-// Status: exact_native
-Theorem IMAGE_INJECTIVE_IMAGE_OF_SUBSET : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, exists t c= A, t c= s /\ ({f x | x :e s} = {f x | x :e t} /\ forall x y :e A, x :e t /\ (y :e t /\ f x = f y) -> x = y).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IMAGE_INJECTIVE_IMAGE_OF_SUBSET : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, exists t c= A, t c= s /\ ({f x | x :e s} = {f x | x :e t} /\ forall x y :e A, x :e t /\ (y :e t /\ f x = f y) -> x = y).
 Admitted.
 
 // HOL Light: sets.ml:1386 / FINITE_EMPTY
@@ -1456,26 +1456,26 @@ Admitted.
 
 // HOL Light: sets.ml:1433 / FINITE_INSERT
 // Source hash: md5:936b2d542477a68bb0155b28c77dca7d
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INSERT : forall A:set, A <> Empty -> forall s c= A, forall x :e A, finite (SetAdjoin s x) <-> finite s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_INSERT : forall A:set, forall s c= A, forall x :e A, finite (SetAdjoin s x) <-> finite s.
 Admitted.
 
 // HOL Light: sets.ml:1441 / FINITE_SING
 // Source hash: md5:86da3e711c1c06602cfb347c929bf44d
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_SING : forall A:set, A <> Empty -> forall a :e A, finite {a}.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_SING : forall A:set, forall a :e A, finite {a}.
 Admitted.
 
 // HOL Light: sets.ml:1445 / FINITE_DELETE_IMP
 // Source hash: md5:a3b4af670068cb1c8bd0f6f3ac79ed80
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_DELETE_IMP : forall A:set, A <> Empty -> forall s c= A, forall x :e A, finite s -> finite (s :\: {x}).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_DELETE_IMP : forall A:set, forall s c= A, forall x :e A, finite s -> finite (s :\: {x}).
 Admitted.
 
 // HOL Light: sets.ml:1450 / FINITE_DELETE
 // Source hash: md5:f701e4d40b73274ab127e21eedc78558
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_DELETE : forall A:set, A <> Empty -> forall s c= A, forall x :e A, finite (s :\: {x}) <-> finite s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_DELETE : forall A:set, forall s c= A, forall x :e A, finite (s :\: {x}) <-> finite s.
 Admitted.
 
 // HOL Light: sets.ml:1460 / FINITE_FINITE_UNIONS
@@ -1516,8 +1516,8 @@ Admitted.
 
 // HOL Light: sets.ml:1517 / FINITE_IMAGE_INJ_EQ
 // Source hash: md5:810cf0fb22286ff35b384ab0471e5652
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_IMAGE_INJ_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (finite {f x | x :e s} <-> finite s).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_IMAGE_INJ_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (finite {f x | x :e s} <-> finite s).
 Admitted.
 
 // HOL Light: sets.ml:1526 / FINITE_IMAGE_INJ
@@ -1558,14 +1558,14 @@ Admitted.
 
 // HOL Light: sets.ml:1573 / SUBSET_IMAGE_INJ
 // Source hash: md5:9fb28f67c197884e156cf16999d0d9a3
-// Status: exact_native
-Theorem SUBSET_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, s c= {f x | x :e t} <-> exists u c= A, u c= t /\ ((forall x y :e A, x :e u /\ y :e u -> (f x = f y <-> x = y)) /\ s = {f x | x :e u}).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_IMAGE_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, s c= {f x | x :e t} <-> exists u c= A, u c= t /\ ((forall x y :e A, x :e u /\ y :e u -> (f x = f y <-> x = y)) /\ s = {f x | x :e u}).
 Admitted.
 
 // HOL Light: sets.ml:1586 / SUBSET_IMAGE
 // Source hash: md5:fe9cec82d0f00e618f72688c8ed73b2b
-// Status: exact_native
-Theorem SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, s c= {f x | x :e t} <-> exists u c= A, u c= t /\ s = {f x | x :e u}.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUBSET_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, s c= {f x | x :e t} <-> exists u c= A, u c= t /\ s = {f x | x :e u}.
 Admitted.
 
 // HOL Light: sets.ml:1591 / EXISTS_SUBSET_IMAGE
@@ -1630,14 +1630,14 @@ Admitted.
 
 // HOL Light: sets.ml:1671 / FINITE_IMAGE_EQ
 // Source hash: md5:b89c8d62e41060546fa852531a29cd53
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_IMAGE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite {f x | x :e s} <-> exists t c= A, finite t /\ (t c= s /\ {f x | x :e s} = {f x | x :e t}).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_IMAGE_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite {f x | x :e s} <-> exists t c= A, finite t /\ (t c= s /\ {f x | x :e s} = {f x | x :e t}).
 Admitted.
 
 // HOL Light: sets.ml:1676 / FINITE_IMAGE_EQ_INJ
 // Source hash: md5:7464bed3bbe55f4e02009c8a19bd3a9a
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_IMAGE_EQ_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite {f x | x :e s} <-> exists t c= A, finite t /\ (t c= s /\ ({f x | x :e s} = {f x | x :e t} /\ forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y))).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_IMAGE_EQ_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite {f x | x :e s} <-> exists t c= A, finite t /\ (t c= s /\ ({f x | x :e s} = {f x | x :e t} /\ forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y))).
 Admitted.
 
 // HOL Light: sets.ml:1687 / FINITE_DIFF
@@ -1654,8 +1654,8 @@ Admitted.
 
 // HOL Light: sets.ml:1695 / FINITE_TRANSITIVITY_CHAIN
 // Source hash: md5:fd68bb03625e9a6aed331ea88140aa39
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_TRANSITIVITY_CHAIN : forall A:set, A <> Empty -> forall R0:set -> set -> prop, forall s c= A, finite s /\ ((forall x :e A, ~ R0 x x) /\ ((forall x y z :e A, R0 x y /\ R0 y z -> R0 x z) /\ (forall x :e A, x :e s -> exists y :e A, y :e s /\ R0 x y))) -> s = Empty.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_TRANSITIVITY_CHAIN : forall A:set, forall R0:set -> set -> prop, forall s c= A, finite s /\ ((forall x :e A, ~ R0 x x) /\ ((forall x y z :e A, R0 x y /\ R0 y z -> R0 x z) /\ (forall x :e A, x :e s -> exists y :e A, y :e s /\ R0 x y))) -> s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:1706 / UNIONS_MAXIMAL_SETS
@@ -1702,80 +1702,80 @@ Admitted.
 
 // HOL Light: sets.ml:1869 / FINREC_FUN_LEMMA
 // Source hash: md5:8fa4074cd8c357e0186104cb076daccb
-// Status: exact_native
-Theorem FINREC_FUN_LEMMA : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, forall R0:set -> set -> set -> prop, (forall s :e A, P s -> exists a :e B, exists n :e C, R0 s a n) /\ (forall n1 n2 :e C, forall s :e A, forall a1 a2 :e B, R0 s a1 n1 /\ R0 s a2 n2 -> a1 = a2 /\ n1 = n2) -> exists f:set -> set, (forall x :e A, f x :e B) /\ forall s :e A, forall a :e B, P s -> ((exists n :e C, R0 s a n) <-> f s = a).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FINREC_FUN_LEMMA : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, forall R0:set -> set -> set -> prop, (forall s :e A, P s -> exists a :e B, exists n :e C, R0 s a n) /\ (forall n1 n2 :e C, forall s :e A, forall a1 a2 :e B, R0 s a1 n1 /\ R0 s a2 n2 -> a1 = a2 /\ n1 = n2) -> exists f:set -> set, (forall x :e A, f x :e B) /\ forall s :e A, forall a :e B, P s -> ((exists n :e C, R0 s a n) <-> f s = a).
 Admitted.
 
 // HOL Light: sets.ml:1880 / FINREC_FUN
 // Source hash: md5:13aa8060e0179cfe57bf3ebbeb6cbb4e
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINREC_FUN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\ (g Empty = b /\ forall s c= A, forall x :e A, finite s /\ x :e s -> g s = f x (g (s :\: {x}))).
+// Status: generalization_required (bridges: empty_case:B, hol_finite_finite)
+Theorem FINREC_FUN : forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\ (g Empty = b /\ forall s c= A, forall x :e A, finite s /\ x :e s -> g s = f x (g (s :\: {x}))).
 Admitted.
 
 // HOL Light: sets.ml:1917 / SET_RECURSION_LEMMA
 // Source hash: md5:f68d0055bb484007b14f9f9aa92bfafc
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem SET_RECURSION_LEMMA : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\ (g Empty = b /\ forall x :e A, forall s c= A, finite s -> g (SetAdjoin s x) = if x :e s then g s else f x (g s)).
+// Status: generalization_required (bridges: empty_case:B, hol_finite_finite)
+Theorem SET_RECURSION_LEMMA : forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\ (g Empty = b /\ forall x :e A, forall s c= A, finite s -> g (SetAdjoin s x) = if x :e s then g s else f x (g s)).
 Admitted.
 
 // HOL Light: sets.ml:1995 / CARD_CLAUSES
 // Source hash: md5:b98042a9307e6eb5805ab458d8192980
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_CLAUSES : forall A:set, A <> Empty -> card Empty = 0 /\ forall x :e A, forall s c= A, finite s -> card (SetAdjoin s x) = if x :e s then card s else ordsucc (card s).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_CLAUSES : forall A:set, A <> Empty -> finite_cardinality Empty = 0 /\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s).
 Admitted.
 
 // HOL Light: sets.ml:2003 / CARD_UNION
 // Source hash: md5:dec93797888a7880b4682d0323169b96
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION : forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> card (s :\/: t) = card s + card t.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION : forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2029 / CARD_DELETE
 // Source hash: md5:5d90e52e98cf466fb041e9213dda453a
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_DELETE : forall A:set, A <> Empty -> forall x :e A, forall s c= A, finite s -> card (s :\: {x}) = if x :e s then minus_nat (card s) 1 else card s.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_DELETE : forall A:set, forall x :e A, forall s c= A, finite s -> finite_cardinality (s :\: {x}) = if x :e s then minus_nat (finite_cardinality s) 1 else finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:2039 / CARD_UNION_EQ
 // Source hash: md5:f11091f2efcd011c5160b24c75d16853
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION_EQ : forall A:set, A <> Empty -> forall s t u c= A, finite u /\ (s :/\: t = Empty /\ s :\/: t = u) -> card s + card t = card u.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION_EQ : forall A:set, A <> Empty -> forall s t u c= A, finite u /\ (s :/\: t = Empty /\ s :\/: t = u) -> finite_cardinality s + finite_cardinality t = finite_cardinality u.
 Admitted.
 
 // HOL Light: sets.ml:2045 / CARD_DIFF
 // Source hash: md5:e21ff818fc024a6fec3f64a99e1466c0
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_DIFF : forall A:set, A <> Empty -> forall s t c= A, finite s /\ t c= s -> card (s :\: t) = minus_nat (card s) (card t).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_DIFF : forall A:set, A <> Empty -> forall s t c= A, finite s /\ t c= s -> finite_cardinality (s :\: t) = minus_nat (finite_cardinality s) (finite_cardinality t).
 Admitted.
 
 // HOL Light: sets.ml:2051 / CARD_EQ_0
 // Source hash: md5:e552414b14dd33cbb2da9b752e0f5159
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_EQ_0 : forall A:set, A <> Empty -> forall s c= A, finite s -> (card s = 0 <-> s = Empty).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_EQ_0 : forall A:set, A <> Empty -> forall s c= A, finite s -> (finite_cardinality s = 0 <-> s = Empty).
 Admitted.
 
 // HOL Light: sets.ml:2056 / CARD_SING
 // Source hash: md5:259b143e1a21f1771ebf782d2550b61e
-// Status: transport_required (bridges: hol_card, hol_num_omega)
-Theorem CARD_SING : forall A:set, A <> Empty -> forall a :e A, card {a} = 1.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_num_omega)
+Theorem CARD_SING : forall A:set, forall a :e A, finite_cardinality {a} = 1.
 Admitted.
 
 // HOL Light: sets.ml:2060 / CARD_LE_2
 // Source hash: md5:0c0bd3b9f9caab2c9f0b4a184c61ad4a
-// Status: transport_required (bridges: hol_card, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_LE_2 : forall A:set, A <> Empty -> forall a b :e A, card {a,b} <= 2.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_LE_2 : forall A:set, forall a b :e A, finite_cardinality {a,b} <= 2.
 Admitted.
 
 // HOL Light: sets.ml:2066 / CARD_LE_3
 // Source hash: md5:99cd4c753bf0062e0eadd8c1d21a537f
-// Status: transport_required (bridges: hol_card, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_LE_3 : forall A:set, A <> Empty -> forall a b c :e A, card {a,b,c} <= 3.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_LE_3 : forall A:set, forall a b c :e A, finite_cardinality {a,b,c} <= 3.
 Admitted.
 
 // HOL Light: sets.ml:2072 / CARD_LE_4
 // Source hash: md5:da137bcac532c359dd58a31a7edb749a
-// Status: transport_required (bridges: hol_card, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_LE_4 : forall A:set, A <> Empty -> forall a b c d :e A, card {a,b,c,d} <= 4.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_LE_4 : forall A:set, forall a b c d :e A, finite_cardinality {a,b,c,d} <= 4.
 Admitted.
 
 // HOL Light: sets.ml:2082 / FINITE_INDUCT_DELETE
@@ -1786,14 +1786,14 @@ Admitted.
 
 // HOL Light: sets.ml:2100 / HAS_SIZE
 // Source hash: md5:d40bb36d555c16b9e0d80663db5ee75c
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE : forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n <-> finite s /\ card s = n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE : forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n <-> finite s /\ finite_cardinality s = n.
 Admitted.
 
 // HOL Light: sets.ml:2103 / HAS_SIZE_CARD
 // Source hash: md5:0619efdcad0cf1e73377a88ebd9d8276
-// Status: transport_required (bridges: hol_card, hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_CARD : forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n -> card s = n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_CARD : forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n -> finite_cardinality s = n.
 Admitted.
 
 // HOL Light: sets.ml:2107 / HAS_SIZE_0
@@ -1828,8 +1828,8 @@ Admitted.
 
 // HOL Light: sets.ml:2184 / FINITE_HAS_SIZE
 // Source hash: md5:b03e1bd1f91f455b7aacfd4eab13743f
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega)
-Theorem FINITE_HAS_SIZE : forall A:set, A <> Empty -> forall s c= A, finite s <-> equip s (card s).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega)
+Theorem FINITE_HAS_SIZE : forall A:set, A <> Empty -> forall s c= A, finite s <-> equip s (finite_cardinality s).
 Admitted.
 
 // HOL Light: sets.ml:2192 / HAS_SIZE_CLAUSES
@@ -1840,92 +1840,92 @@ Admitted.
 
 // HOL Light: sets.ml:2247 / CARD_SUBSET_EQ
 // Source hash: md5:388d54bdc8ac028eab4c048fa5cc8aec
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_SUBSET_EQ : forall A:set, A <> Empty -> forall a b c= A, finite b /\ (a c= b /\ card a = card b) -> a = b.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_SUBSET_EQ : forall A:set, forall a b c= A, finite b /\ (a c= b /\ finite_cardinality a = finite_cardinality b) -> a = b.
 Admitted.
 
 // HOL Light: sets.ml:2268 / CARD_SUBSET
 // Source hash: md5:7cea7af217cad47358d0dc993c0a5150
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_SUBSET : forall A:set, A <> Empty -> forall a b c= A, a c= b /\ finite b -> card a <= card b.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_SUBSET : forall A:set, A <> Empty -> forall a b c= A, a c= b /\ finite b -> finite_cardinality a <= finite_cardinality b.
 Admitted.
 
 // HOL Light: sets.ml:2284 / CARD_SUBSET_LE
 // Source hash: md5:93a04abd907f8e55affa0c20ae58d743
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_SUBSET_LE : forall A:set, A <> Empty -> forall a b c= A, finite b /\ (a c= b /\ card b <= card a) -> a = b.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_SUBSET_LE : forall A:set, forall a b c= A, finite b /\ (a c= b /\ finite_cardinality b <= finite_cardinality a) -> a = b.
 Admitted.
 
 // HOL Light: sets.ml:2288 / SUBSET_CARD_EQ
 // Source hash: md5:37ef9db8483d4c310c635dfa6e0b3c8c
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem SUBSET_CARD_EQ : forall A:set, A <> Empty -> forall s t c= A, finite t /\ s c= t -> (card s = card t <-> s = t).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem SUBSET_CARD_EQ : forall A:set, forall s t c= A, finite t /\ s c= t -> (finite_cardinality s = finite_cardinality t <-> s = t).
 Admitted.
 
 // HOL Light: sets.ml:2292 / FINITE_CARD_LE_SUBSET
 // Source hash: md5:0294240cabc21a126587730c8ec4a493
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem FINITE_CARD_LE_SUBSET : forall A:set, A <> Empty -> forall s t c= A, forall n :e omega, s c= t /\ (finite t /\ card t <= n) -> finite s /\ card s <= n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_CARD_LE_SUBSET : forall A:set, A <> Empty -> forall s t c= A, forall n :e omega, s c= t /\ (finite t /\ finite_cardinality t <= n) -> finite s /\ finite_cardinality s <= n.
 Admitted.
 
 // HOL Light: sets.ml:2298 / CARD_PSUBSET
 // Source hash: md5:112df868e45f3ec2e5b4942423a9a7f2
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem CARD_PSUBSET : forall A:set, A <> Empty -> forall a b c= A, a c= b /\ a <> b /\ finite b -> card a < card b.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem CARD_PSUBSET : forall A:set, A <> Empty -> forall a b c= A, a c= b /\ a <> b /\ finite b -> finite_cardinality a < finite_cardinality b.
 Admitted.
 
 // HOL Light: sets.ml:2309 / CARD_PSUBSET_IMP
 // Source hash: md5:eccb64de3a1afb1f04cd785ae2b351df
-// Status: transport_required (bridges: hol_card, hol_num_omega)
-Theorem CARD_PSUBSET_IMP : forall A:set, A <> Empty -> forall a b c= A, a c= b /\ ~ card a = card b -> a c= b /\ a <> b.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_num_omega)
+Theorem CARD_PSUBSET_IMP : forall A:set, forall a b c= A, a c= b /\ ~ finite_cardinality a = finite_cardinality b -> a c= b /\ a <> b.
 Admitted.
 
 // HOL Light: sets.ml:2313 / CARD_PSUBSET_EQ
 // Source hash: md5:c485f9330fdd7e25f487bfcc2e78dfa6
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem CARD_PSUBSET_EQ : forall A:set, A <> Empty -> forall a b c= A, finite b /\ a c= b -> (a c= b /\ a <> b <-> card a < card b).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem CARD_PSUBSET_EQ : forall A:set, A <> Empty -> forall a b c= A, finite b /\ a c= b -> (a c= b /\ a <> b <-> finite_cardinality a < finite_cardinality b).
 Admitted.
 
 // HOL Light: sets.ml:2317 / CARD_UNION_LE
 // Source hash: md5:107cc5a68e3867d8c14aa218160638ad
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_UNION_LE : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> card (s :\/: t) <= card s + card t.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_UNION_LE : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> finite_cardinality (s :\/: t) <= finite_cardinality s + finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2327 / FINITE_CARD_LE_UNION
 // Source hash: md5:14fd9429be059ab4b8b23bef36b2d6cb
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem FINITE_CARD_LE_UNION : forall A:set, A <> Empty -> forall s t c= A, forall m n :e omega, finite s /\ card s <= m /\ (finite t /\ card t <= n) -> finite (s :\/: t) /\ card (s :\/: t) <= m + n.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_CARD_LE_UNION : forall A:set, A <> Empty -> forall s t c= A, forall m n :e omega, finite s /\ finite_cardinality s <= m /\ (finite t /\ finite_cardinality t <= n) -> finite (s :\/: t) /\ finite_cardinality (s :\/: t) <= m + n.
 Admitted.
 
 // HOL Light: sets.ml:2334 / CARD_UNIONS_LE
 // Source hash: md5:64944bcfff2033a36b3a54ab89febf0a
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
-Theorem CARD_UNIONS_LE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\ (forall x :e A, x :e s -> finite (t x) /\ card (t x) <= n) -> card (Union {t x | x :e A, x :e s}) <= m * n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem CARD_UNIONS_LE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\ (forall x :e A, x :e s -> finite (t x) /\ finite_cardinality (t x) <= n) -> finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n.
 Admitted.
 
 // HOL Light: sets.ml:2358 / CARD_UNION_GEN
 // Source hash: md5:f8c8357b5e7234334ef261501bbf6bf8
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION_GEN : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> card (s :\/: t) = minus_nat (card s + card t) (card (s :/\: t)).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION_GEN : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> finite_cardinality (s :\/: t) = minus_nat (finite_cardinality s + finite_cardinality t) (finite_cardinality (s :/\: t)).
 Admitted.
 
 // HOL Light: sets.ml:2369 / CARD_UNION_OVERLAP_EQ
 // Source hash: md5:8d4e6ce44b1578ccdcbd520382d59ca1
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION_OVERLAP_EQ : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> (card (s :\/: t) = card s + card t <-> s :/\: t = Empty).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION_OVERLAP_EQ : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> (finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t <-> s :/\: t = Empty).
 Admitted.
 
 // HOL Light: sets.ml:2378 / CARD_UNION_OVERLAP
 // Source hash: md5:f037066e94018aea161c1e679e79b4de
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem CARD_UNION_OVERLAP : forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ card (s :\/: t) < card s + card t) -> ~ s :/\: t = Empty.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem CARD_UNION_OVERLAP : forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ finite_cardinality (s :\/: t) < finite_cardinality s + finite_cardinality t) -> ~ s :/\: t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2388 / CARD_IMAGE_INJ
 // Source hash: md5:f399386eea1d58d0a78436c2e48d108e
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite s -> card {f x | x :e s} = card s.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_IMAGE_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite s -> finite_cardinality {f x | x :e s} = finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:2399 / HAS_SIZE_IMAGE_INJ
@@ -1936,122 +1936,122 @@ Admitted.
 
 // HOL Light: sets.ml:2405 / CARD_IMAGE_LE
 // Source hash: md5:f6bc77e8dcc60ec0ccb1436757e287b1
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_IMAGE_LE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> card {f x | x :e s} <= card s.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_IMAGE_LE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite_cardinality {f x | x :e s} <= finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:2412 / FINITE_CARD_LE_IMAGE
 // Source hash: md5:bd1998a48f8353a9c0d83ddd5263ca2b
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem FINITE_CARD_LE_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, finite s /\ card s <= n -> finite {f x | x :e s} /\ card {f x | x :e s} <= n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_CARD_LE_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, finite s /\ finite_cardinality s <= n -> finite {f x | x :e s} /\ finite_cardinality {f x | x :e s} <= n.
 Admitted.
 
 // HOL Light: sets.ml:2417 / CARD_IMAGE_INJ_EQ
 // Source hash: md5:2c512ede01d049018afe95bbedd929b2
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_IMAGE_INJ_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite s /\ ((forall x :e A, x :e s -> f x :e t) /\ (forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y /\ forall y0 :e A, x :e s /\ f x = y -> y0 = x)) -> card t = card s.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_IMAGE_INJ_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite s /\ ((forall x :e A, x :e s -> f x :e t) /\ (forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y /\ forall y0 :e A, y0 :e s /\ f y0 = y -> y0 = x)) -> finite_cardinality t = finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:2428 / CARD_SUBSET_IMAGE
 // Source hash: md5:ed98380b71f54234da209e720cb6da7c
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, finite t /\ s c= {f x | x :e t} -> card s <= card t.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, finite t /\ s c= {f x | x :e t} -> finite_cardinality s <= finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2432 / HAS_SIZE_IMAGE_INJ_EQ
 // Source hash: md5:8ea8a0e1cdf1accaee0b661590d72cd9
-// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_IMAGE_INJ_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (equip {f x | x :e s} n <-> equip s n).
+// Status: generalization_required (bridges: empty_case:A, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_IMAGE_INJ_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (equip {f x | x :e s} n <-> equip s n).
 Admitted.
 
 // HOL Light: sets.ml:2445 / CARD_IMAGE_EQ_INJ
 // Source hash: md5:e4e62fe4cc7a667b0d79c4ede72c67cf
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_IMAGE_EQ_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> (card {f x | x :e s} = card s <-> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_IMAGE_EQ_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> (finite_cardinality {f x | x :e s} = finite_cardinality s <-> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
 Admitted.
 
 // HOL Light: sets.ml:2464 / EXISTS_SMALL_SUBSET_IMAGE_INJ
 // Source hash: md5:14e4ad143227cdf373924d2b5c8d0013
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem EXISTS_SMALL_SUBSET_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\ (card t < n /\ (t c= {f x | x :e s} /\ P t))) <-> exists t c= A, finite t /\ (card t < n /\ (t c= s /\ ((forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y)) /\ P {f x | x :e t}))).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem EXISTS_SMALL_SUBSET_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\ (finite_cardinality t < n /\ (t c= {f x | x :e s} /\ P t))) <-> exists t c= A, finite t /\ (finite_cardinality t < n /\ (t c= s /\ ((forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y)) /\ P {f x | x :e t}))).
 Admitted.
 
 // HOL Light: sets.ml:2478 / FORALL_SMALL_SUBSET_IMAGE_INJ
 // Source hash: md5:01e2d6902a11cac4fee464217eda04ad
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem FORALL_SMALL_SUBSET_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\ (card t < n /\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\ (card t < n /\ (t c= s /\ (forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y)))) -> P {f x | x :e t}.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem FORALL_SMALL_SUBSET_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\ (finite_cardinality t < n /\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\ (finite_cardinality t < n /\ (t c= s /\ (forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y)))) -> P {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:2488 / EXISTS_SMALL_SUBSET_IMAGE
 // Source hash: md5:30c7f533404f78c470d1b7706d4ac302
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem EXISTS_SMALL_SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\ (card t < n /\ (t c= {f x | x :e s} /\ P t))) <-> exists t c= A, finite t /\ (card t < n /\ (t c= s /\ P {f x | x :e t})).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem EXISTS_SMALL_SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\ (finite_cardinality t < n /\ (t c= {f x | x :e s} /\ P t))) <-> exists t c= A, finite t /\ (finite_cardinality t < n /\ (t c= s /\ P {f x | x :e t})).
 Admitted.
 
 // HOL Light: sets.ml:2497 / FORALL_SMALL_SUBSET_IMAGE
 // Source hash: md5:e1c7fe5c8fde8110007d3ab4b9bfcc51
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem FORALL_SMALL_SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\ (card t < n /\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\ (card t < n /\ t c= s) -> P {f x | x :e t}.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem FORALL_SMALL_SUBSET_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\ (finite_cardinality t < n /\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\ (finite_cardinality t < n /\ t c= s) -> P {f x | x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:2505 / CARD_IMAGE_LE2
 // Source hash: md5:f2aed9bb1bf3f6f35526e736852691c9
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_IMAGE_LE2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ g x = g y) -> f x = f y) -> card {f x | x :e s} <= card {g x | x :e s}.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_IMAGE_LE2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ g x = g y) -> f x = f y) -> finite_cardinality {f x | x :e s} <= finite_cardinality {g x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:2516 / CARD_IMAGE_LT2
 // Source hash: md5:3094f1b80e2d97bc4eabc12d7da8d6a2
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem CARD_IMAGE_LT2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\ ((forall x y :e A, x :e s /\ (y :e s /\ g x = g y) -> f x = f y) /\ ~ (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> g x = g y)) -> card {f x | x :e s} < card {g x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem CARD_IMAGE_LT2 : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\ ((forall x y :e A, x :e s /\ (y :e s /\ g x = g y) -> f x = f y) /\ ~ (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> g x = g y)) -> finite_cardinality {f x | x :e s} < finite_cardinality {g x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:2533 / CHOOSE_SUBSET_STRONG
 // Source hash: md5:2726c58e4e50b8350a67336d3f9f792a
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
-Theorem CHOOSE_SUBSET_STRONG : forall A:set, A <> Empty -> forall n :e omega, forall s c= A, (finite s -> n <= card s) -> exists t c= A, t c= s /\ equip t n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
+Theorem CHOOSE_SUBSET_STRONG : forall A:set, A <> Empty -> forall n :e omega, forall s c= A, (finite s -> n <= finite_cardinality s) -> exists t c= A, t c= s /\ equip t n.
 Admitted.
 
 // HOL Light: sets.ml:2552 / CHOOSE_SUBSET_EQ
 // Source hash: md5:f6618b0e108fe69df64971fb45babe2f
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
-Theorem CHOOSE_SUBSET_EQ : forall A:set, A <> Empty -> forall n :e omega, forall s c= A, finite s -> n <= card s <-> exists t c= A, t c= s /\ equip t n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
+Theorem CHOOSE_SUBSET_EQ : forall A:set, A <> Empty -> forall n :e omega, forall s c= A, finite s -> n <= finite_cardinality s <-> exists t c= A, t c= s /\ equip t n.
 Admitted.
 
 // HOL Light: sets.ml:2560 / CHOOSE_SUBSET
 // Source hash: md5:9b04d21fa309b94d5a3b961dc67f2757
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
-Theorem CHOOSE_SUBSET : forall A:set, A <> Empty -> forall s c= A, finite s -> forall n :e omega, n <= card s -> exists t c= A, t c= s /\ equip t n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
+Theorem CHOOSE_SUBSET : forall A:set, A <> Empty -> forall s c= A, finite s -> forall n :e omega, n <= finite_cardinality s -> exists t c= A, t c= s /\ equip t n.
 Admitted.
 
 // HOL Light: sets.ml:2564 / CHOOSE_SUBSET_BETWEEN
 // Source hash: md5:454d0e0e950231e8eaa865aac6ff4693
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
-Theorem CHOOSE_SUBSET_BETWEEN : forall A:set, A <> Empty -> forall n :e omega, forall s u c= A, s c= u /\ (finite s /\ (card s <= n /\ (finite u -> n <= card u))) -> exists t c= A, s c= t /\ (t c= u /\ equip t n).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, nat_le_SNoLe)
+Theorem CHOOSE_SUBSET_BETWEEN : forall A:set, A <> Empty -> forall n :e omega, forall s u c= A, s c= u /\ (finite s /\ (finite_cardinality s <= n /\ (finite u -> n <= finite_cardinality u))) -> exists t c= A, s c= t /\ (t c= u /\ equip t n).
 Admitted.
 
 // HOL Light: sets.ml:2585 / CARD_LE_UNIONS_CHAIN
 // Source hash: md5:1ff01a0a3021ec44584e0f17318b8d1c
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_LE_UNIONS_CHAIN : forall A:set, A <> Empty -> forall f c= Power A, forall n :e omega, (forall t u c= A, t :e f /\ u :e f -> t c= u \/ u c= t) /\ (forall t c= A, t :e f -> finite t /\ card t <= n) -> finite (Union f) /\ card (Union f) <= n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_LE_UNIONS_CHAIN : forall A:set, A <> Empty -> forall f c= Power A, forall n :e omega, (forall t u c= A, t :e f /\ u :e f -> t c= u \/ u c= t) /\ (forall t c= A, t :e f -> finite t /\ finite_cardinality t <= n) -> finite (Union f) /\ finite_cardinality (Union f) <= n.
 Admitted.
 
 // HOL Light: sets.ml:2603 / CARD_LE_1
 // Source hash: md5:8f4004a312862e873bb90b5822064eb7
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_LE_1 : forall A:set, A <> Empty -> forall s c= A, finite s /\ card s <= 1 <-> exists a :e A, s c= {a}.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_LE_1 : forall A:set, A <> Empty -> forall s c= A, finite s /\ finite_cardinality s <= 1 <-> exists a :e A, s c= {a}.
 Admitted.
 
 // HOL Light: sets.ml:2613 / INVOLUTION_EVEN_NOFIXPOINTS
 // Source hash: md5:c2cd1fb652ab670df4727dac2f028ea5
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem INVOLUTION_EVEN_NOFIXPOINTS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x :e s /\ (~ f x = x /\ f (f x) = x)) -> even_nat (card s).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem INVOLUTION_EVEN_NOFIXPOINTS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x :e s /\ (~ f x = x /\ f (f x) = x)) -> even_nat (finite_cardinality s).
 Admitted.
 
 // HOL Light: sets.ml:2638 / INVOLUTION_EVEN_FIXPOINTS
 // Source hash: md5:872a8bbb513864fc59d0b0044715e117
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem INVOLUTION_EVEN_FIXPOINTS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x :e s /\ f (f x) = x) -> (even_nat (card {x :e A | x :e s /\ f x = x}) <-> even_nat (card s)).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem INVOLUTION_EVEN_FIXPOINTS : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x :e s /\ f (f x) = x) -> (even_nat (finite_cardinality {x :e A | x :e s /\ f x = x}) <-> even_nat (finite_cardinality s)).
 Admitted.
 
 // HOL Light: sets.ml:2656 / HAS_SIZE_PRODUCT_DEPENDENT
@@ -2074,8 +2074,8 @@ Admitted.
 
 // HOL Light: sets.ml:2715 / CARD_PRODUCT
 // Source hash: md5:10dc63cd85bccd331d309f56459a2304
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
-Theorem CARD_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> card (\/_ x :e A, {(x,y) | y :e B, x :e s /\ y :e t}) = card s * card t.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem CARD_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite_cardinality (\/_ x :e A, {(x,y) | y :e B, x :e s /\ y :e t}) = finite_cardinality s * finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2723 / HAS_SIZE_PRODUCT
@@ -2086,188 +2086,188 @@ Admitted.
 
 // HOL Light: sets.ml:2734 / CROSS
 // Source hash: md5:6e1aaac25a432e2f19b7b62c63c787fa
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, s * t = \/_ x :e A, {(x,y) | y :e B, x :e s /\ y :e t}.
+// Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
+Theorem CROSS : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, s :*: t = \/_ x :e A, {(x,y) | y :e B, x :e s /\ y :e t}.
 Admitted.
 
 // HOL Light: sets.ml:2737 / IN_CROSS
 // Source hash: md5:ed960ab7f490ac67ee857ac89ae420d6
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem IN_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s * t <-> x :e s /\ y :e t.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem IN_CROSS : forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t.
 Admitted.
 
 // HOL Light: sets.ml:2741 / HAS_SIZE_CROSS
 // Source hash: md5:2c2012206b71d9a004233f611110f73f
 // Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
-Theorem HAS_SIZE_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall m n :e omega, equip s m /\ equip t n -> equip (s * t) (m * n).
+Theorem HAS_SIZE_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall m n :e omega, equip s m /\ equip t n -> equip (s :*: t) (m * n).
 Admitted.
 
 // HOL Light: sets.ml:2746 / FINITE_CROSS
 // Source hash: md5:12892b449bb0cf81d2a595538cee5069
 // Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite (s * t).
+Theorem FINITE_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t).
 Admitted.
 
 // HOL Light: sets.ml:2750 / CARD_CROSS
 // Source hash: md5:e98f492c84401357c81713e687de88e9
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
-Theorem CARD_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> card (s * t) = card s * card t.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo)
+Theorem CARD_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite_cardinality (s :*: t) = finite_cardinality s * finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2754 / CROSS_EQ_EMPTY
 // Source hash: md5:e19eaa4d015694c4c71679f6498d7ae5
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_EQ_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, s * t = Empty <-> s = Empty \/ t = Empty.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_EQ_EMPTY : forall A B:set, forall s c= A, forall t c= B, s :*: t = Empty <-> s = Empty \/ t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2759 / CROSS_EMPTY
 // Source hash: md5:b11167aedb59041230ffc717c50d6bc5
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_EMPTY : forall T98960 T98973 A B:set, T98960 <> Empty -> T98973 <> Empty -> A <> Empty -> B <> Empty -> (forall s c= A, s * Empty = Empty) /\ forall t c= B, Empty * t = Empty.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:T98960, empty_case:T98973, hol_prod_setprod)
+Theorem CROSS_EMPTY : forall T98960 T98973 A B:set, (forall s c= A, s :*: Empty = Empty) /\ forall t c= B, Empty :*: t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2763 / CROSS_SING
 // Source hash: md5:7f0e5be044927d4da922ad2ea91a2fa3
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_SING : forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, {x} * {y} = {(x,y)}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_SING : forall A B:set, forall x :e A, forall y :e B, {x} :*: {y} = {(x,y)}.
 Admitted.
 
 // HOL Light: sets.ml:2767 / CROSS_UNIV
 // Source hash: md5:16a8e64b599f4aab9ff422318e793382
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_UNIV : forall A B:set, A <> Empty -> B <> Empty -> A * B = A * B.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_UNIV : forall A B:set, A :*: B = A :*: B.
 Admitted.
 
 // HOL Light: sets.ml:2771 / FINITE_CROSS_EQ
 // Source hash: md5:12a659d68de9aa50de346ff179cd4a23
 // Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_CROSS_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite (s * t) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
+Theorem FINITE_CROSS_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite (s :*: t) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
 Admitted.
 
 // HOL Light: sets.ml:2786 / INFINITE_CROSS_EQ
 // Source hash: md5:f61159fa2e491710bae2d49d3f4daa9e
 // Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem INFINITE_CROSS_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, infinite (s * t) <-> ~ s = Empty /\ infinite t \/ infinite s /\ ~ t = Empty.
+Theorem INFINITE_CROSS_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, infinite (s :*: t) <-> ~ s = Empty /\ infinite t \/ infinite s /\ ~ t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2792 / FINITE_CROSS_UNIV
 // Source hash: md5:59f8545fd543d6fedc4db7333f02ee5d
 // Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_CROSS_UNIV : forall A B:set, A <> Empty -> B <> Empty -> (finite (A * B) <-> finite A /\ finite B).
+Theorem FINITE_CROSS_UNIV : forall A B:set, A <> Empty -> B <> Empty -> (finite (A :*: B) <-> finite A /\ finite B).
 Admitted.
 
 // HOL Light: sets.ml:2796 / INFINITE_CROSS_UNIV
 // Source hash: md5:a5fc7251e0b641fbd96c2d29bb415bd7
 // Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem INFINITE_CROSS_UNIV : forall A B:set, A <> Empty -> B <> Empty -> (infinite (A * B) <-> infinite A \/ infinite B).
+Theorem INFINITE_CROSS_UNIV : forall A B:set, A <> Empty -> B <> Empty -> (infinite (A :*: B) <-> infinite A \/ infinite B).
 Admitted.
 
 // HOL Light: sets.ml:2801 / FINITE_UNIV_PAIR
 // Source hash: md5:5efae67a277a797d022a7ff22791b5ad
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_UNIV_PAIR : forall A:set, A <> Empty -> (finite (A * A) <-> finite A).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_prod_setprod)
+Theorem FINITE_UNIV_PAIR : forall A:set, finite (A :*: A) <-> finite A.
 Admitted.
 
 // HOL Light: sets.ml:2805 / INFINITE_UNIV_PAIR
 // Source hash: md5:cf52b0c106b37d8bd09fd497eb9ea909
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem INFINITE_UNIV_PAIR : forall A:set, A <> Empty -> (infinite (A * A) <-> infinite A).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_prod_setprod)
+Theorem INFINITE_UNIV_PAIR : forall A:set, infinite (A :*: A) <-> infinite A.
 Admitted.
 
 // HOL Light: sets.ml:2809 / FORALL_IN_CROSS
 // Source hash: md5:7ad704a95f89ec3cd2fa6c71f7bad875
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem FORALL_IN_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall s c= A, forall t c= B, (forall z :e A * B, z :e s * t -> P z) <-> forall x :e A, forall y :e B, x :e s /\ y :e t -> P (x,y).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem FORALL_IN_CROSS : forall A B:set, forall P:set -> prop, forall s c= A, forall t c= B, (forall z :e A :*: B, z :e s :*: t -> P z) <-> forall x :e A, forall y :e B, x :e s /\ y :e t -> P (x,y).
 Admitted.
 
 // HOL Light: sets.ml:2814 / EXISTS_IN_CROSS
 // Source hash: md5:6dd92af281bd53c5d860f8f073b83b4c
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem EXISTS_IN_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall s c= A, forall t c= B, (exists z :e A * B, z :e s * t /\ P z) <-> exists x :e A, exists y :e B, x :e s /\ (y :e t /\ P (x,y)).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem EXISTS_IN_CROSS : forall A B:set, forall P:set -> prop, forall s c= A, forall t c= B, (exists z :e A :*: B, z :e s :*: t /\ P z) <-> exists x :e A, exists y :e B, x :e s /\ (y :e t /\ P (x,y)).
 Admitted.
 
 // HOL Light: sets.ml:2819 / SUBSET_CROSS
 // Source hash: md5:cbbb8e149c5e43737fd7f26ee385f35d
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem SUBSET_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, s * t c= s' * t' <-> s = Empty \/ (t = Empty \/ s c= s' /\ t c= t').
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem SUBSET_CROSS : forall A B:set, forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, s :*: t c= s' :*: t' <-> s = Empty \/ (t = Empty \/ s c= s' /\ t c= t').
 Admitted.
 
 // HOL Light: sets.ml:2826 / CROSS_MONO
 // Source hash: md5:03e087b429b093bfca312b65b321d831
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_MONO : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, s c= s' /\ t c= t' -> s * t c= s' * t'.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_MONO : forall A B:set, forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, s c= s' /\ t c= t' -> s :*: t c= s' :*: t'.
 Admitted.
 
 // HOL Light: sets.ml:2830 / CROSS_EQ
 // Source hash: md5:b1e1fa1ea21013af576ae86b834f6a90
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s s' c= A, forall t t' c= B, s * t = s' * t' <-> (s = Empty \/ t = Empty) /\ (s' = Empty \/ t' = Empty) \/ s = s' /\ t = t'.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_EQ : forall A B:set, forall s s' c= A, forall t t' c= B, s :*: t = s' :*: t' <-> (s = Empty \/ t = Empty) /\ (s' = Empty \/ t' = Empty) \/ s = s' /\ t = t'.
 Admitted.
 
 // HOL Light: sets.ml:2836 / IMAGE_FST_CROSS
 // Source hash: md5:ff17513908d72f5496747e8878a74074
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem IMAGE_FST_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, {x 0 | x :e s * t} = if t = Empty then Empty else s.
+// Status: generalization_required (bridges: empty_case:B, hol_prod_setprod)
+Theorem IMAGE_FST_CROSS : forall A B:set, A <> Empty -> forall s c= A, forall t c= B, {x 0 | x :e s :*: t} = if t = Empty then Empty else s.
 Admitted.
 
 // HOL Light: sets.ml:2844 / IMAGE_SND_CROSS
 // Source hash: md5:3ff9aa130550c3e8fdd039a71a207439
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem IMAGE_SND_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, {x 1 | x :e s * t} = if s = Empty then Empty else t.
+// Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
+Theorem IMAGE_SND_CROSS : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, {x 1 | x :e s :*: t} = if s = Empty then Empty else t.
 Admitted.
 
 // HOL Light: sets.ml:2859 / CROSS_INTER
 // Source hash: md5:6afde28c2c5c1f14ab6371d87dedf163
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_INTER : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall t u c= B, s * t :/\: u = (s * t) :/\: (s * u)) /\ forall s t c= A, forall u c= B, s :/\: t * u = (s * u) :/\: (t * u).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_INTER : forall A B:set, (forall s c= A, forall t u c= B, s :*: t :/\: u = (s :*: t) :/\: (s :*: u)) /\ forall s t c= A, forall u c= B, s :/\: t :*: u = (s :*: u) :/\: (t :*: u).
 Admitted.
 
 // HOL Light: sets.ml:2867 / CROSS_UNION
 // Source hash: md5:daec6f8879e6856d64238d7ff6f589d9
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_UNION : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall t u c= B, s * t :\/: u = (s * t) :\/: (s * u)) /\ forall s t c= A, forall u c= B, s :\/: t * u = (s * u) :\/: (t * u).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_UNION : forall A B:set, (forall s c= A, forall t u c= B, s :*: t :\/: u = (s :*: t) :\/: (s :*: u)) /\ forall s t c= A, forall u c= B, s :\/: t :*: u = (s :*: u) :\/: (t :*: u).
 Admitted.
 
 // HOL Light: sets.ml:2875 / CROSS_DIFF
 // Source hash: md5:6e1f4f9a1ac13638e124e40adffb2c90
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_DIFF : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall t u c= B, s * t :\: u = (s * t) :\: (s * u)) /\ forall s t c= A, forall u c= B, s :\: t * u = (s * u) :\: (t * u).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem CROSS_DIFF : forall A B:set, (forall s c= A, forall t u c= B, s :*: t :\: u = (s :*: t) :\: (s :*: u)) /\ forall s t c= A, forall u c= B, s :\: t :*: u = (s :*: u) :\: (t :*: u).
 Admitted.
 
 // HOL Light: sets.ml:2883 / INTER_CROSS
 // Source hash: md5:93e3c74ac038b5c1693829ed1508d22e
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem INTER_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s s' c= A, forall t t' c= B, (s * t) :/\: (s' * t') = s :/\: s' * t :/\: t'.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem INTER_CROSS : forall A B:set, forall s s' c= A, forall t t' c= B, (s :*: t) :/\: (s' :*: t') = s :/\: s' :*: t :/\: t'.
 Admitted.
 
 // HOL Light: sets.ml:2889 / CROSS_UNIONS
 // Source hash: md5:1d316d3abb10c2f642cc43d99c0f2640
 // Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s * Union f = Union {s * t | t :e Power A, t :e f}) /\ forall f c= Power A, forall t c= B, Union f * t = Union {s * t | s :e Power A, s :e f}.
+Theorem CROSS_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s :*: Union f = Union {s :*: t | t :e Power A, t :e f}) /\ forall f c= Power A, forall t c= B, Union f :*: t = Union {s :*: t | s :e Power A, s :e f}.
 Admitted.
 
 // HOL Light: sets.ml:2889 / CROSS_UNIONS_UNIONS
 // Source hash: md5:4d0bb1a973507a44d59c5bb5d94f6d1f
 // Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_UNIONS_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> forall f c= Power A, forall g c= Power B, Union f * Union g = Union (\/_ s :e Power A, {s * t | t :e Power B, s :e f /\ t :e g}).
+Theorem CROSS_UNIONS_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> forall f c= Power A, forall g c= Power B, Union f :*: Union g = Union (\/_ s :e Power A, {s :*: t | t :e Power B, s :e f /\ t :e g}).
 Admitted.
 
 // HOL Light: sets.ml:2901 / CROSS_INTERS
 // Source hash: md5:520e67d4c78ae1a1efb95f33bc2350d8
 // Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_INTERS : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s * {x :e A | forall Y :e f, x :e Y} = if f = Empty then s * A else {x :e A * A | forall Y :e {s * t | t :e Power A, t :e f}, x :e Y}) /\ forall f c= Power A, forall t c= B, {x :e A | forall Y :e f, x :e Y} * t = if f = Empty then A * t else {x :e A * B | forall Y :e {s * t | s :e Power A, s :e f}, x :e Y}.
+Theorem CROSS_INTERS : forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s :*: {x :e A | forall Y :e f, x :e Y} = if f = Empty then s :*: A else {x :e A :*: A | forall Y :e {s :*: t | t :e Power A, t :e f}, x :e Y}) /\ forall f c= Power A, forall t c= B, {x :e A | forall Y :e f, x :e Y} :*: t = if f = Empty then A :*: t else {x :e A :*: B | forall Y :e {s :*: t | s :e Power A, s :e f}, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:2901 / CROSS_INTERS_INTERS
 // Source hash: md5:14340a296ce17de620b81bc3819fd8d1
 // Status: transport_required (bridges: hol_prod_setprod)
-Theorem CROSS_INTERS_INTERS : forall A B:set, A <> Empty -> B <> Empty -> forall f c= Power A, forall g c= Power B, {x :e A | forall Y :e f, x :e Y} * {x :e B | forall Y :e g, x :e Y} = if f = Empty then {x :e A * B | forall Y :e {A * t | t :e Power B, t :e g}, x :e Y} else if g = Empty then {x :e A * B | forall Y :e {s * B | s :e Power A, s :e f}, x :e Y} else {x :e A * B | forall Y :e (\/_ s :e Power A, {s * t | t :e Power B, s :e f /\ t :e g}), x :e Y}.
+Theorem CROSS_INTERS_INTERS : forall A B:set, A <> Empty -> B <> Empty -> forall f c= Power A, forall g c= Power B, {x :e A | forall Y :e f, x :e Y} :*: {x :e B | forall Y :e g, x :e Y} = if f = Empty then {x :e A :*: B | forall Y :e {A :*: t | t :e Power B, t :e g}, x :e Y} else if g = Empty then {x :e A :*: B | forall Y :e {s :*: B | s :e Power A, s :e f}, x :e Y} else {x :e A :*: B | forall Y :e (\/_ s :e Power A, {s :*: t | t :e Power B, s :e f /\ t :e g}), x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:2918 / DISJOINT_CROSS
 // Source hash: md5:701f182d1d45eff8659254f868c5177e
-// Status: transport_required (bridges: hol_prod_setprod)
-Theorem DISJOINT_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, (s * t) :/\: (s' * t') = Empty <-> s :/\: s' = Empty \/ t :/\: t' = Empty.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
+Theorem DISJOINT_CROSS : forall A B:set, forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, (s :*: t) :/\: (s' :*: t') = Empty <-> s :/\: s' = Empty \/ t :/\: t' = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2930 / ARB
@@ -2276,22 +2276,268 @@ Admitted.
 Theorem ARB : forall A:set, A <> Empty -> choose_in A (fun x:set => True) = choose_in A (fun x:set => False).
 Admitted.
 
+// HOL Light: sets.ml:2936 / IN_EXTENSIONAL
+// Source hash: md5:1281e60a81a928da3c2aa7f8780a8486
+// Status: exact_native (bridges: choose_in_spec)
+Theorem IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => True).
+Admitted.
+
+// HOL Light: sets.ml:2940 / IN_EXTENSIONAL_UNDEFINED
+// Source hash: md5:472505a56a2a4b7d06a83bb229c409b0
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem IN_EXTENSIONAL_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x x = choose_in B (fun y:set => True)} /\ ~ x :e s -> f x = choose_in B (fun x:set => True).
+Admitted.
+
+// HOL Light: sets.ml:2944 / EXTENSIONAL_EMPTY
+// Source hash: md5:a0a42c58948cc1b730a2b77104679357
+// Status: exact_native (bridges: choose_in_spec)
+Theorem EXTENSIONAL_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall x :e B :^: A, (forall x0 :e A, ~ x0 :e Empty -> x x0 = choose_in B (fun y:set => True)) <-> x :e SetAdjoin Empty (fun x0 :e A => choose_in B (fun x:set => True)).
+Admitted.
+
+// HOL Light: sets.ml:2949 / EXTENSIONAL_UNIV
+// Source hash: md5:e2852671891d25590d389c532b1b3cf4
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem EXTENSIONAL_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e A -> f x = choose_in B (fun y:set => True).
+Admitted.
+
+// HOL Light: sets.ml:2953 / EXTENSIONAL_EQ
+// Source hash: md5:d8e1dcae4fc83112898d0f3e3f784bf2
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem EXTENSIONAL_EQ : forall A B:set, B <> Empty -> forall s c= A, forall f g :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\ (g :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\ (forall x :e A, x :e s -> f x = g x)) -> f = g.
+Admitted.
+
+// HOL Light: sets.ml:2965 / RESTRICTION
+// Source hash: md5:f0033796213e90fb39a4782262cc367f
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun x:set => True).
+Admitted.
+
+// HOL Light: sets.ml:2968 / RESTRICTION_THM
+// Source hash: md5:77bb3eaf53f535793048ac122f3fae26
+// Status: native_reuse (bridges: choose_in_spec, empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem RESTRICTION_THM : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun x:set => True).
+
+// HOL Light: sets.ml:2972 / RESTRICTION_DEFINED
+// Source hash: md5:acd43b56eebe5ea59eeec9cb964a20c0
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_DEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, x :e s -> (if x :e s then f x else choose_in B (fun y:set => True)) = f x.
+Admitted.
+
+// HOL Light: sets.ml:2976 / RESTRICTION_UNDEFINED
+// Source hash: md5:90dd98b7049b1877dcc901afa13c4757
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e s -> (if x :e s then f x else choose_in B (fun y:set => True)) = choose_in B (fun x:set => True).
+Admitted.
+
+// HOL Light: sets.ml:2980 / RESTRICTION_EQ
+// Source hash: md5:b98d44a91318565adc80432231067c3c
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A, empty_case:B)
+Theorem RESTRICTION_EQ : forall A B:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall y :e B, x :e s /\ f x = y -> (if x :e s then f x else choose_in B (fun y:set => True)) = y.
+Admitted.
+
+// HOL Light: sets.ml:2984 / RESTRICTION_IN_EXTENSIONAL
+// Source hash: md5:d5712d4726595006dd2f72834f5583f1
+// Status: exact_native (bridges: choose_in_spec)
+Theorem RESTRICTION_IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (fun x :e A => if x :e s then f x else choose_in B (fun y:set => True)) :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}.
+Admitted.
+
+// HOL Light: sets.ml:2988 / RESTRICTION_EXTENSION
+// Source hash: md5:0e3cc26a78113f7c488fa36ef738cf5c
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_EXTENSION : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then g x else choose_in B (fun y:set => True)) <-> forall x :e A, x :e s -> f x = g x).
+Admitted.
+
+// HOL Light: sets.ml:2993 / RESTRICTION_FIXPOINT
+// Source hash: md5:08adc1c671e27c196301e2886c563e32
+// Status: exact_native (bridges: choose_in_spec)
+Theorem RESTRICTION_FIXPOINT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, (forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = f x) <-> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}.
+Admitted.
+
+// HOL Light: sets.ml:2997 / RESTRICTION_UNIV
+// Source hash: md5:0a774ea29febeded6bb4d7772c6b2414
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e A then f x else choose_in B (fun y:set => True)) = f x.
+Admitted.
+
+// HOL Light: sets.ml:3001 / RESTRICTION_RESTRICTION
+// Source hash: md5:6fed62274557a83f6f0a7a552cdf5ec0
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_RESTRICTION : forall A B:set, B <> Empty -> forall s t c= A, forall f:set -> set, (forall x :e A, f x :e B) -> s c= t -> forall x :e A, (if x :e s then if x :e t then f x else choose_in B (fun y:set => True) else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun y:set => True).
+Admitted.
+
+// HOL Light: sets.ml:3006 / RESTRICTION_IDEMP
+// Source hash: md5:381ced48d85ac3c8f289acb78aeb6def
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_IDEMP : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then if x :e s then f x else choose_in B (fun y:set => True) else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun y:set => True).
+Admitted.
+
+// HOL Light: sets.ml:3010 / IMAGE_RESTRICTION
+// Source hash: md5:d3d352503417f7e5ce21f7bb39630d1c
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem IMAGE_RESTRICTION : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, s c= t -> {(if x :e t then f x else choose_in B (fun y:set => True)) | x :e s} = {f x | x :e s}.
+Admitted.
+
+// HOL Light: sets.ml:3014 / RESTRICTION_COMPOSE_RIGHT
+// Source hash: md5:fb36d87d7590a9c8c7f6278a2fc857a2
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_COMPOSE_RIGHT : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall x :e A, (if x :e s then g (if x :e s then f x else choose_in B (fun y:set => True)) else choose_in C (fun y:set => True)) = if x :e s then g (f x) else choose_in C (fun y:set => True).
+Admitted.
+
+// HOL Light: sets.ml:3021 / RESTRICTION_COMPOSE_LEFT
+// Source hash: md5:2874b333ae2aee379d3a64c11da896d0
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_COMPOSE_LEFT : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t -> forall x :e A, (if x :e s then if f x :e t then g (f x) else choose_in C (fun y:set => True) else choose_in C (fun y:set => True)) = if x :e s then g (f x) else choose_in C (fun y:set => True).
+Admitted.
+
+// HOL Light: sets.ml:3029 / RESTRICTION_COMPOSE
+// Source hash: md5:94189f1596169be889fc72a227f8d36e
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_COMPOSE : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t -> forall x :e A, (if x :e s then if (if x :e s then f x else choose_in B (fun y:set => True)) :e t then g (if x :e s then f x else choose_in B (fun y:set => True)) else choose_in C (fun y:set => True) else choose_in C (fun y:set => True)) = if x :e s then g (f x) else choose_in C (fun y:set => True).
+Admitted.
+
+// HOL Light: sets.ml:3036 / RESTRICTION_UNIQUE
+// Source hash: md5:c918f328ccbe2555ed5ca3c112f78c2b
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_UNIQUE : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = g x) <-> (forall x :e A, ~ x :e s -> g x = choose_in B (fun y:set => True)) /\ forall x :e A, x :e s -> f x = g x).
+Admitted.
+
+// HOL Light: sets.ml:3042 / RESTRICTION_UNIQUE_ALT
+// Source hash: md5:0e4ce0394d1fb1588eb845b6a076d71b
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem RESTRICTION_UNIQUE_ALT : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = if x :e s then g x else choose_in B (fun y:set => True)) <-> (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => True)) /\ forall x :e A, x :e s -> f x = g x).
+Admitted.
+
+// HOL Light: sets.ml:3052 / cartesian_product
+// Source hash: md5:961ce6dcd9481a6ebfc6c3ae434cf55f
+// Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_fun_setexp)
+Theorem cartesian_product : forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | (forall x :e K, ~ x :e k -> f x = choose_in A (fun y:set => True)) /\ forall i :e K, i :e k -> f i :e s i}.
+Admitted.
+
+// HOL Light: sets.ml:3056 / IN_CARTESIAN_PRODUCT
+// Source hash: md5:190d7922d0a6417b9a7ba3988a2c183c
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp)
+Theorem IN_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, forall x :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} <-> (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => True)) /\ forall i :e K, i :e k -> x i :e s i.
+Admitted.
+
+// HOL Light: sets.ml:3062 / CARTESIAN_PRODUCT
+// Source hash: md5:078eec4a3012e2327e86a9035bb6d1c0
+// Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | forall i :e K, f i :e if i :e k then s i else {choose_in A (fun x:set => True)}}.
+Admitted.
+
+// HOL Light: sets.ml:3069 / RESTRICTION_IN_CARTESIAN_PRODUCT
+// Source hash: md5:a5e9dcb0e7ef34934a4fa6fb6a6fbfa6
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp)
+Theorem RESTRICTION_IN_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, forall f:set -> set, (forall x :e K, f x :e A) -> ((fun x :e K => if x :e k then f x else choose_in A (fun y:set => True)) :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} <-> forall i :e K, i :e k -> f i :e s i).
+Admitted.
+
+// HOL Light: sets.ml:3076 / CARTESIAN_PRODUCT_AS_RESTRICTIONS
+// Source hash: md5:b28d41711369d1a96071876fe8328a02
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_AS_RESTRICTIONS : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {(fun x :e K => if x :e k then f x else choose_in A (fun y:set => True)) | f :e A :^: K, forall i :e K, i :e k -> f i :e s i}.
+Admitted.
+
+// HOL Light: sets.ml:3088 / CARTESIAN_PRODUCT_EQ_EMPTY
+// Source hash: md5:593fdb2663a466c343063ef9b272397d
+// Status: transport_required (bridges: hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_EQ_EMPTY : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty <-> exists i :e K, i :e k /\ s i = Empty.
+Admitted.
+
+// HOL Light: sets.ml:3100 / CARTESIAN_PRODUCT_EMPTY
+// Source hash: md5:85c42a6c9225e2fc017c477fda64cc42
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_EMPTY : forall A K:set, A <> Empty -> K <> Empty -> forall s:set -> set -> prop, {f :e A :^: K | (forall i :e Empty, f i :e {x0 :e A | s i x0}) /\ forall i :e K, ~ i :e Empty -> f i = choose_in A (fun y:set => True)} = {fun i :e K => choose_in A (fun x:set => True)}.
+Admitted.
+
+// HOL Light: sets.ml:3105 / CARTESIAN_PRODUCT_EQ_MEMBERS
+// Source hash: md5:7c10996f163efad5b8dd80f5203f7025
+// Status: generalization_required (bridges: empty_case:K, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_EQ_MEMBERS : forall A K:set, A <> Empty -> forall k c= K, forall s:set -> set -> prop, forall x y :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | s i x1}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ (y :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | s i x1}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ (forall i :e K, i :e k -> x i = y i)) -> x = y.
+Admitted.
+
+// HOL Light: sets.ml:3114 / CARTESIAN_PRODUCT_EQ_MEMBERS_EQ
+// Source hash: md5:8c52c57644aa45875ed9661405c67005
+// Status: generalization_required (bridges: empty_case:K, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_EQ_MEMBERS_EQ : forall A K:set, A <> Empty -> forall k c= K, forall s:set -> set -> prop, forall x y :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | s i x1}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ y :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | s i x1}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} -> (x = y <-> forall i :e K, i :e k -> x i = y i).
+Admitted.
+
+// HOL Light: sets.ml:3121 / SUBSET_CARTESIAN_PRODUCT
+// Source hash: md5:d013ce253951a33990abf1908067f853
+// Status: transport_required (bridges: hol_fun_setexp)
+Theorem SUBSET_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} c= {f :e A :^: K | (forall i :e k, f i :e t i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty \/ forall i :e K, i :e k -> s i c= t i.
+Admitted.
+
+// HOL Light: sets.ml:3141 / CARTESIAN_PRODUCT_EQ
+// Source hash: md5:869b813bcad731bc05374c414b108b70
+// Status: generalization_required (bridges: empty_case:K, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_EQ : forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | (forall i :e k, f i :e t i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty /\ {f :e A :^: K | (forall i :e k, f i :e t i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty \/ forall i :e K, i :e k -> s i = t i.
+Admitted.
+
+// HOL Light: sets.ml:3157 / INTER_CARTESIAN_PRODUCT
+// Source hash: md5:59a5d3d65635d8a56b3d3eadeede0583
+// Status: transport_required (bridges: hol_fun_setexp)
+Theorem INTER_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} :/\: {f :e A :^: K | (forall i :e k, f i :e t i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e s i :/\: t i}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}.
+Admitted.
+
+// HOL Light: sets.ml:3164 / CARTESIAN_PRODUCT_UNIV
+// Source hash: md5:98c7d510ad6a73a6cfce0e45b5e05f07
+// Status: transport_required (bridges: hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_UNIV : forall A K:set, A <> Empty -> K <> Empty -> {f :e A :^: K | (forall i :e K, f i :e {x0 :e A | x0 :e A}) /\ forall i :e K, ~ i :e K -> f i = choose_in A (fun y:set => True)} = A :^: K.
+Admitted.
+
+// HOL Light: sets.ml:3169 / CARTESIAN_PRODUCT_SINGS
+// Source hash: md5:e8f021d2793f92b64f54266c6a87db65
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_SINGS : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x :e A :^: K, (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => True)) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {x}.
+Admitted.
+
+// HOL Light: sets.ml:3175 / CARTESIAN_PRODUCT_SINGS_GEN
+// Source hash: md5:a6ace1fa44c7a74ba22f96ca3dd717a4
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp)
+Theorem CARTESIAN_PRODUCT_SINGS_GEN : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x :e K, x x :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => True)}.
+Admitted.
+
+// HOL Light: sets.ml:3181 / IMAGE_PROJECTION_CARTESIAN_PRODUCT
+// Source hash: md5:526fc84464225062ad0d6c6d6c98b5e1
+// Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_fun_setexp)
+Theorem IMAGE_PROJECTION_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {(fun x :e A :^: K => i i) x | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}.
+Admitted.
+
+// HOL Light: sets.ml:3202 / FORALL_CARTESIAN_PRODUCT_ELEMENTS
+// Source hash: md5:82662ecf83e301c1b354b0a437a8993c
+// Status: generalization_required (bridges: empty_case:K, hol_fun_setexp)
+Theorem FORALL_CARTESIAN_PRODUCT_ELEMENTS : forall A K:set, A <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, (forall z :e A :^: K, forall i :e K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ i :e k -> P i (z i)) <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty \/ forall i :e K, forall x :e A, i :e k /\ x :e s i -> P i x.
+Admitted.
+
+// HOL Light: sets.ml:3222 / FORALL_CARTESIAN_PRODUCT_ELEMENTS_EQ
+// Source hash: md5:352212a37077f8c9812359b0dd3520a7
+// Status: generalization_required (bridges: empty_case:K, hol_fun_setexp)
+Theorem FORALL_CARTESIAN_PRODUCT_ELEMENTS_EQ : forall A K:set, A <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, ~ {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty -> ((forall i :e K, forall x :e A, i :e k /\ x :e s i -> P i x) <-> forall z :e A :^: K, forall i :e K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ i :e k -> P i (z i)).
+Admitted.
+
+// HOL Light: sets.ml:3229 / EXISTS_CARTESIAN_PRODUCT_ELEMENT
+// Source hash: md5:7501aa39bc428aec7fb1f94a3439d486
+// Status: transport_required (bridges: hol_fun_setexp)
+Theorem EXISTS_CARTESIAN_PRODUCT_ELEMENT : forall A K:set, A <> Empty -> K <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, (exists z :e A :^: K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ forall i :e K, i :e k -> P i (z i)) <-> forall i :e K, i :e k -> exists x :e A, x :e s i /\ P i x.
+Admitted.
+
 // HOL Light: sets.ml:3328 / HAS_SIZE_FUNSPACE
 // Source hash: md5:917ceee4dff4b7b5b914c7d46d6d5403
-// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_FUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall d :e B, forall n :e omega, forall t c= B, forall m :e omega, forall s c= A, equip s m /\ equip t n -> equip {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\ forall x :e A, ~ x :e s -> f x = d} (n ^ m).
+// Status: generalization_required (bridges: empty_case:B, exp_nat_exp_SNo_nat, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_FUNSPACE : forall A B:set, A <> Empty -> forall d :e B, forall n :e omega, forall t c= B, forall m :e omega, forall s c= A, equip s m /\ equip t n -> equip {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\ forall x :e A, ~ x :e s -> f x = d} (n ^ m).
 Admitted.
 
 // HOL Light: sets.ml:3372 / CARD_FUNSPACE
 // Source hash: md5:a1b52a134e916d6b55be7f92fe165b78
-// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_FUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall d :e B, forall s c= A, forall t c= B, finite s /\ finite t -> card {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\ forall x :e A, ~ x :e s -> f x = d} = card t ^ card s.
+// Status: generalization_required (bridges: empty_case:B, exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_FUNSPACE : forall A B:set, A <> Empty -> forall d :e B, forall s c= A, forall t c= B, finite s /\ finite t -> finite_cardinality {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\ forall x :e A, ~ x :e s -> f x = d} = finite_cardinality t ^ finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:3379 / FINITE_FUNSPACE
 // Source hash: md5:419be979dbaee0c753e9b9615239e67e
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_FUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall d :e B, forall s c= A, forall t c= B, finite s /\ finite t -> finite {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\ forall x :e A, ~ x :e s -> f x = d}.
+// Status: generalization_required (bridges: empty_case:B, hol_finite_finite)
+Theorem FINITE_FUNSPACE : forall A B:set, A <> Empty -> forall d :e B, forall s c= A, forall t c= B, finite s /\ finite t -> finite {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\ forall x :e A, ~ x :e s -> f x = d}.
 Admitted.
 
 // HOL Light: sets.ml:3385 / HAS_SIZE_FUNSPACE_UNIV
@@ -2302,8 +2548,8 @@ Admitted.
 
 // HOL Light: sets.ml:3391 / CARD_FUNSPACE_UNIV
 // Source hash: md5:ac28cba8bc8b35c7ec14b956b9a4273d
-// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_FUNSPACE_UNIV : forall A B:set, A <> Empty -> B <> Empty -> finite A /\ finite B -> card (B :^: A) = card B ^ card A.
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_FUNSPACE_UNIV : forall A B:set, A <> Empty -> B <> Empty -> finite A /\ finite B -> finite_cardinality (B :^: A) = finite_cardinality B ^ finite_cardinality A.
 Admitted.
 
 // HOL Light: sets.ml:3395 / FINITE_FUNSPACE_UNIV
@@ -2320,8 +2566,8 @@ Admitted.
 
 // HOL Light: sets.ml:3410 / CARD_BOOL
 // Source hash: md5:c4cd7a460b87c7efc892df7277597bc5
-// Status: transport_required (bridges: hol_card, hol_num_omega)
-Theorem CARD_BOOL : card 2 = 2.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega)
+Theorem CARD_BOOL : finite_cardinality 2 = 2.
 Admitted.
 
 // HOL Light: sets.ml:3414 / FINITE_BOOL
@@ -2338,8 +2584,8 @@ Admitted.
 
 // HOL Light: sets.ml:3434 / CARD_POWERSET
 // Source hash: md5:6063af4dcfac09535acfa411eac34341
-// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_POWERSET : forall A:set, A <> Empty -> forall s c= A, finite s -> card {t :e Power A | t c= s} = 2 ^ card s.
+// Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_POWERSET : forall A:set, A <> Empty -> forall s c= A, finite s -> finite_cardinality {t :e Power A | t c= s} = 2 ^ finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:3438 / FINITE_POWERSET
@@ -2368,14 +2614,14 @@ Admitted.
 
 // HOL Light: sets.ml:3467 / FINITE_CARD_LE_UNIONS
 // Source hash: md5:93e50fa259c57e838e21294f821448c0
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
-Theorem FINITE_CARD_LE_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, (forall x :e A, x :e s -> finite (t x) /\ card (t x) <= n) /\ (finite s /\ card s <= m) -> finite (Union {t x | x :e A, x :e s}) /\ card (Union {t x | x :e A, x :e s}) <= m * n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem FINITE_CARD_LE_UNIONS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, (forall x :e A, x :e s -> finite (t x) /\ finite_cardinality (t x) <= n) /\ (finite s /\ finite_cardinality s <= m) -> finite (Union {t x | x :e A, x :e s}) /\ finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n.
 Admitted.
 
 // HOL Light: sets.ml:3479 / POWERSET_CLAUSES
 // Source hash: md5:70a8a2d45d230cb1a42aaf9faab99fd3
 // Status: exact_native
-Theorem POWERSET_CLAUSES : forall A:set, A <> Empty -> {s :e Power A | s c= Empty} = {Empty} /\ forall a :e A, forall t c= A, {s :e Power A | s c= SetAdjoin t a} = {s :e Power A | s c= t} :\/: {(fun x0:set => if x0 :e SetAdjoin x a then 1 else 0) | x :e {s :e Power A | s c= t}}.
+Theorem POWERSET_CLAUSES : forall A:set, A <> Empty -> {s :e Power A | s c= Empty} = {Empty} /\ forall a :e A, forall t c= A, {s :e Power A | s c= SetAdjoin t a} = {s :e Power A | s c= t} :\/: {{x0 :e A | x0 :e SetAdjoin x a} | x :e {s :e Power A | s c= t}}.
 Admitted.
 
 // HOL Light: sets.ml:3495 / FINITE_IMAGE_INFINITE
@@ -2410,8 +2656,8 @@ Admitted.
 
 // HOL Light: sets.ml:3568 / CARD_NUMSEG_LT
 // Source hash: md5:782da97d4a89c568fb7f473c924961da
-// Status: transport_required (bridges: hol_card, hol_num_omega, nat_lt_SNoLt)
-Theorem CARD_NUMSEG_LT : forall n :e omega, card {m :e omega | m < n} = n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega, nat_lt_SNoLt)
+Theorem CARD_NUMSEG_LT : forall n :e omega, finite_cardinality {m :e omega | m < n} = n.
 Admitted.
 
 // HOL Light: sets.ml:3572 / FINITE_NUMSEG_LT
@@ -2440,8 +2686,8 @@ Admitted.
 
 // HOL Light: sets.ml:3589 / CARD_NUMSEG_LE
 // Source hash: md5:f5428de42536ac0a89a40bab06c85285
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_NUMSEG_LE : forall n :e omega, card {m :e omega | m <= n} = n + 1.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_NUMSEG_LE : forall n :e omega, finite_cardinality {m :e omega | m <= n} = n + 1.
 Admitted.
 
 // HOL Light: sets.ml:3593 / num_FINITE
@@ -2483,7 +2729,7 @@ Admitted.
 // HOL Light: sets.ml:3700 / HAS_SIZE_INDEX
 // Source hash: md5:7471a6144c4e96e37f24d156f109f23b
 // Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, nat_lt_SNoLt)
-Theorem HAS_SIZE_INDEX : forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall m :e omega, m < n -> f m :e s) /\ forall x :e A, x :e s -> exists m :e omega, m < n /\ f m = x /\ forall y :e omega, m < n /\ f m = x -> y = m).
+Theorem HAS_SIZE_INDEX : forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall m :e omega, m < n -> f m :e s) /\ forall x :e A, x :e s -> exists m :e omega, m < n /\ f m = x /\ forall y :e omega, y < n /\ f y = x -> y = m).
 Admitted.
 
 // HOL Light: sets.ml:3722 / INFINITE_ENUMERATE
@@ -2506,62 +2752,62 @@ Admitted.
 
 // HOL Light: sets.ml:3894 / pairwise
 // Source hash: md5:f591b58ad9838277f3fd24b4deccb546
-// Status: exact_native
-Theorem pairwise : forall A:set, A <> Empty -> forall s c= A, forall r:set -> set -> prop, (forall x y :e s, x <> y -> r x y) <-> forall x y :e A, x :e s /\ (y :e s /\ ~ x = y) -> r x y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem pairwise : forall A:set, forall s c= A, forall r:set -> set -> prop, (forall x y :e s, x <> y -> r x y) <-> forall x y :e A, x :e s /\ (y :e s /\ ~ x = y) -> r x y.
 Admitted.
 
 // HOL Light: sets.ml:3897 / PAIRWISE_EMPTY
 // Source hash: md5:2e05512263770e402cde83a5757d60b2
-// Status: exact_native
-Theorem PAIRWISE_EMPTY : forall A:set, A <> Empty -> forall r:set -> set -> prop, (forall x y :e Empty, x <> y -> r x y) <-> True.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_EMPTY : forall A:set, forall r:set -> set -> prop, (forall x y :e Empty, x <> y -> r x y) <-> True.
 Admitted.
 
 // HOL Light: sets.ml:3901 / PAIRWISE_SING
 // Source hash: md5:0276e64753da57534c56a2ad177ca991
-// Status: exact_native
-Theorem PAIRWISE_SING : forall A:set, A <> Empty -> forall r:set -> set -> prop, forall x :e A, (forall x y :e {x}, x <> y -> r x y) <-> True.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_SING : forall A:set, forall r:set -> set -> prop, forall x :e A, (forall x0 y :e {x}, x0 <> y -> r x0 y) <-> True.
 Admitted.
 
 // HOL Light: sets.ml:3905 / PAIRWISE_IMP
 // Source hash: md5:1a5ec442af15f04e4e6248a9e1f80e37
-// Status: exact_native
-Theorem PAIRWISE_IMP : forall A:set, A <> Empty -> forall P Q:set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> P x y) /\ (forall x y :e A, x :e s /\ (y :e s /\ (P x y /\ ~ x = y)) -> Q x y) -> forall x y :e s, x <> y -> Q x y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_IMP : forall A:set, forall P Q:set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> P x y) /\ (forall x y :e A, x :e s /\ (y :e s /\ (P x y /\ ~ x = y)) -> Q x y) -> forall x y :e s, x <> y -> Q x y.
 Admitted.
 
 // HOL Light: sets.ml:3912 / PAIRWISE_MONO
 // Source hash: md5:7435153190af43f717a585882cf89016
-// Status: exact_native
-Theorem PAIRWISE_MONO : forall A:set, A <> Empty -> forall r:set -> set -> prop, forall s t c= A, (forall x y :e s, x <> y -> r x y) /\ t c= s -> forall x y :e t, x <> y -> r x y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_MONO : forall A:set, forall r:set -> set -> prop, forall s t c= A, (forall x y :e s, x <> y -> r x y) /\ t c= s -> forall x y :e t, x <> y -> r x y.
 Admitted.
 
 // HOL Light: sets.ml:3916 / PAIRWISE_AND
 // Source hash: md5:67023d03a94a293bcd04f67c7b99dbf1
-// Status: exact_native
-Theorem PAIRWISE_AND : forall A:set, A <> Empty -> forall R0 R':set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> R0 x y) /\ (forall x y :e s, x <> y -> R' x y) <-> forall x y :e s, x <> y -> R0 x y /\ R' x y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_AND : forall A:set, forall R0 R':set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> R0 x y) /\ (forall x y :e s, x <> y -> R' x y) <-> forall x y :e s, x <> y -> R0 x y /\ R' x y.
 Admitted.
 
 // HOL Light: sets.ml:3921 / PAIRWISE_INSERT
 // Source hash: md5:bdcf223e063494cab1c69de3864505f3
-// Status: exact_native
-Theorem PAIRWISE_INSERT : forall A:set, A <> Empty -> forall r:set -> set -> prop, forall x :e A, forall s c= A, (forall x y :e SetAdjoin s x, x <> y -> r x y) <-> (forall y :e A, y :e s /\ ~ y = x -> r x y /\ r y x) /\ forall x y :e s, x <> y -> r x y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_INSERT : forall A:set, forall r:set -> set -> prop, forall x :e A, forall s c= A, (forall x0 y :e SetAdjoin s x, x0 <> y -> r x0 y) <-> (forall y :e A, y :e s /\ ~ y = x -> r x y /\ r y x) /\ forall x y :e s, x <> y -> r x y.
 Admitted.
 
 // HOL Light: sets.ml:3928 / PAIRWISE_INSERT_SYMMETRIC
 // Source hash: md5:71016cc21d495fdf0c656aa4a54e2ac8
-// Status: exact_native
-Theorem PAIRWISE_INSERT_SYMMETRIC : forall A:set, A <> Empty -> forall r:set -> set -> prop, forall x :e A, forall s c= A, (forall y :e A, y :e s -> (r x y <-> r y x)) -> ((forall x y :e SetAdjoin s x, x <> y -> r x y) <-> (forall y :e A, y :e s /\ ~ y = x -> r x y) /\ forall x y :e s, x <> y -> r x y).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_INSERT_SYMMETRIC : forall A:set, forall r:set -> set -> prop, forall x :e A, forall s c= A, (forall y :e A, y :e s -> (r x y <-> r y x)) -> ((forall x0 y :e SetAdjoin s x, x0 <> y -> r x0 y) <-> (forall y :e A, y :e s /\ ~ y = x -> r x y) /\ forall x y :e s, x <> y -> r x y).
 Admitted.
 
 // HOL Light: sets.ml:3935 / PAIRWISE_IMAGE
 // Source hash: md5:2174cffdeee47a3ddcd9f90d0e336c8f
-// Status: exact_native
-Theorem PAIRWISE_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall r:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e {f x | x :e s}, x <> y -> r x y) <-> forall x y :e s, x <> y -> ~ f x = f y -> r (f x) (f y)).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_IMAGE : forall A B:set, B <> Empty -> forall s c= A, forall r:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e {f x | x :e s}, x <> y -> r x y) <-> forall x y :e s, x <> y -> ~ f x = f y -> r (f x) (f y)).
 Admitted.
 
 // HOL Light: sets.ml:3941 / PAIRWISE_UNION
 // Source hash: md5:a3516632abbe4c7ddd7cfd1687e8f636
-// Status: exact_native
-Theorem PAIRWISE_UNION : forall A:set, A <> Empty -> forall R0:set -> set -> prop, forall s t c= A, (forall x y :e s :\/: t, x <> y -> R0 x y) <-> (forall x y :e s, x <> y -> R0 x y) /\ ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem PAIRWISE_UNION : forall A:set, forall R0:set -> set -> prop, forall s t c= A, (forall x y :e s :\/: t, x <> y -> R0 x y) <-> (forall x y :e s, x <> y -> R0 x y) /\ ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x).
 Admitted.
 
 // HOL Light: sets.ml:3947 / PAIRWISE_CHAIN_UNIONS
@@ -2591,217 +2837,325 @@ Admitted.
 // HOL Light: sets.ml:4004 / UNION_OF
 // Source hash: md5:25d82b5cb03a9eaf3382011c3d5d47f2
 // Status: exact_native
-Theorem UNION_OF : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, (exists u c= Power A, P u /\ forall c :e u, Q c) /\ Union u = s <-> exists u c= Power A, P u /\ ((forall c c= A, c :e u -> Q c) /\ Union u = s).
+Theorem UNION_OF : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, (exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = s) <-> exists u c= Power A, P u /\ ((forall c c= A, c :e u -> Q c) /\ Union u = s).
 Admitted.
 
 // HOL Light: sets.ml:4008 / INTERSECTION_OF
 // Source hash: md5:6f5c0dd6e56e08069e581d23c1506ecc
 // Status: exact_native
-Theorem INTERSECTION_OF : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, (exists u c= Power A, P u /\ forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s <-> exists u c= Power A, P u /\ ((forall c c= A, c :e u -> Q c) /\ {x :e A | forall Y :e u, x :e Y} = s).
+Theorem INTERSECTION_OF : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, (exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s) <-> exists u c= Power A, P u /\ ((forall c c= A, c :e u -> Q c) /\ {x :e A | forall Y :e u, x :e Y} = s).
 Admitted.
 
 // HOL Light: sets.ml:4012 / UNION_OF_INC
 // Source hash: md5:2be0ff7cc25c5917d88dcf6c578f4f62
 // Status: exact_native
-Theorem UNION_OF_INC : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, P {s} /\ Q s -> (exists u c= Power A, P u /\ forall c :e u, Q c) /\ Union u = s.
+Theorem UNION_OF_INC : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, P {s} /\ Q s -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = s.
 Admitted.
 
 // HOL Light: sets.ml:4017 / INTERSECTION_OF_INC
 // Source hash: md5:b471d5ab89033a2b0a4d1c9663e632fe
 // Status: exact_native
-Theorem INTERSECTION_OF_INC : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, P {s} /\ Q s -> (exists u c= Power A, P u /\ forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s.
+Theorem INTERSECTION_OF_INC : forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, P {s} /\ Q s -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s.
 Admitted.
 
 // HOL Light: sets.ml:4022 / UNION_OF_MONO
 // Source hash: md5:addc85395ab48571a4dc665f2ed63939
 // Status: exact_native
-Theorem UNION_OF_MONO : forall A:set, A <> Empty -> forall P Q Q':set -> prop, forall s c= A, (exists u c= Power A, P u /\ forall c :e u, Q c) /\ Union u = s /\ (forall x c= A, Q x -> Q' x) -> (exists u c= Power A, P u /\ forall c :e u, Q' c) /\ Union u = s.
+Theorem UNION_OF_MONO : forall A:set, A <> Empty -> forall P Q Q':set -> prop, forall s c= A, (exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = s) /\ (forall x c= A, Q x -> Q' x) -> exists u c= Power A, P u /\ (forall c :e u, Q' c) /\ Union u = s.
 Admitted.
 
 // HOL Light: sets.ml:4027 / INTERSECTION_OF_MONO
 // Source hash: md5:6e89c4ae029aad2bad67e259a9ebb8f0
 // Status: exact_native
-Theorem INTERSECTION_OF_MONO : forall A:set, A <> Empty -> forall P Q Q':set -> prop, forall s c= A, (exists u c= Power A, P u /\ forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s /\ (forall x c= A, Q x -> Q' x) -> (exists u c= Power A, P u /\ forall c :e u, Q' c) /\ {x :e A | forall Y :e u, x :e Y} = s.
+Theorem INTERSECTION_OF_MONO : forall A:set, A <> Empty -> forall P Q Q':set -> prop, forall s c= A, (exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (forall x c= A, Q x -> Q' x) -> exists u c= Power A, P u /\ (forall c :e u, Q' c) /\ {x :e A | forall Y :e u, x :e Y} = s.
 Admitted.
 
 // HOL Light: sets.ml:4033 / FORALL_UNION_OF
 // Source hash: md5:6e4a560db3da630cb86211a42920596f
 // Status: exact_native
-Theorem FORALL_UNION_OF : forall A:set, A <> Empty -> forall P Q R0:set -> prop, (forall s c= A, (exists u c= Power A, P u /\ forall c :e u, Q c) /\ Union u = s -> R0 s) <-> forall t c= Power A, P t /\ (forall c c= A, c :e t -> Q c) -> R0 (Union t).
+Theorem FORALL_UNION_OF : forall A:set, A <> Empty -> forall P Q R0:set -> prop, (forall s c= A, (exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = s) -> R0 s) <-> forall t c= Power A, P t /\ (forall c c= A, c :e t -> Q c) -> R0 (Union t).
 Admitted.
 
 // HOL Light: sets.ml:4038 / FORALL_INTERSECTION_OF
 // Source hash: md5:5f79e4d483a15775ccd0711a61d64cf7
 // Status: exact_native
-Theorem FORALL_INTERSECTION_OF : forall A:set, A <> Empty -> forall P Q R0:set -> prop, (forall s c= A, (exists u c= Power A, P u /\ forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s -> R0 s) <-> forall t c= Power A, P t /\ (forall c c= A, c :e t -> Q c) -> R0 {x :e A | forall Y :e t, x :e Y}.
+Theorem FORALL_INTERSECTION_OF : forall A:set, A <> Empty -> forall P Q R0:set -> prop, (forall s c= A, (exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = s) -> R0 s) <-> forall t c= Power A, P t /\ (forall c c= A, c :e t -> Q c) -> R0 {x :e A | forall Y :e t, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:4043 / UNION_OF_EMPTY
 // Source hash: md5:1392cadcd430d06336ba3bbb701bac2a
 // Status: exact_native
-Theorem UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> (exists u c= Power A, P u /\ forall c :e u, Q c) /\ Union u = Empty.
+Theorem UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = Empty.
 Admitted.
 
 // HOL Light: sets.ml:4049 / INTERSECTION_OF_EMPTY
 // Source hash: md5:00b95ce7f141ca720ae6975e5372e059
 // Status: exact_native
-Theorem INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> (exists u c= Power A, P u /\ forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+Theorem INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+Admitted.
+
+// HOL Light: sets.ml:4059 / ARBITRARY
+// Source hash: md5:ebb3dfc9269b12bd3ecf47beb3fe4538
+// Status: generalization_required (bridges: empty_case:A)
+Theorem ARBITRARY : forall A:set, forall s c= Power A, True <-> True.
+Admitted.
+
+// HOL Light: sets.ml:4062 / ARBITRARY_UNION_OF_ALT
+// Source hash: md5:92f9114949a5cf745172023efdca6c9c
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_ALT : forall A:set, A <> Empty -> forall B c= Power A, forall s c= A, (exists u c= Power A, True /\ (forall x :e u, x :e B) /\ Union u = s) <-> forall x :e A, x :e s -> exists u c= A, u :e B /\ (x :e u /\ u c= s).
+Admitted.
+
+// HOL Light: sets.ml:4074 / ARBITRARY_UNION_OF_EMPTY
+// Source hash: md5:5443bcaab3d01a3f3fca8e84c71ba4b5
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = Empty.
+Admitted.
+
+// HOL Light: sets.ml:4078 / ARBITRARY_INTERSECTION_OF_EMPTY
+// Source hash: md5:e705eea73b7053ab4d0937253d6aaf73
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+Admitted.
+
+// HOL Light: sets.ml:4082 / ARBITRARY_UNION_OF_INC
+// Source hash: md5:6f9b16005ff8cc7117c57a11a5b7cd29
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_INC : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P s -> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s.
+Admitted.
+
+// HOL Light: sets.ml:4086 / ARBITRARY_INTERSECTION_OF_INC
+// Source hash: md5:a3083b32f50f2d40e3ac5ce8874c3d36
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_INC : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P s -> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s.
+Admitted.
+
+// HOL Light: sets.ml:4090 / ARBITRARY_UNION_OF_COMPLEMENT
+// Source hash: md5:9e3906f5addbf22964328b7dcfc5cb84
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_COMPLEMENT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s) <-> exists u c= Power A, True /\ (forall s0 :e u, P (A :\: s0)) /\ {x :e A | forall Y :e u, x :e Y} = A :\: s.
+Admitted.
+
+// HOL Light: sets.ml:4102 / ARBITRARY_INTERSECTION_OF_COMPLEMENT
+// Source hash: md5:c142ad7421ca738f64bef2d316a0b1a2
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_COMPLEMENT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) <-> exists u c= Power A, True /\ (forall s0 :e u, P (A :\: s0)) /\ Union u = A :\: s.
+Admitted.
+
+// HOL Light: sets.ml:4108 / ARBITRARY_UNION_OF_IDEMPOT
+// Source hash: md5:6eaf056df1352fc4230bfd06e6381b09
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_IDEMPOT : forall A:set, A <> Empty -> forall P:set -> prop, forall x c= A, (exists u c= Power A, True /\ (forall x0 :e u, exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = x0) /\ Union u = x) <-> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = x.
+Admitted.
+
+// HOL Light: sets.ml:4127 / ARBITRARY_INTERSECTION_OF_IDEMPOT
+// Source hash: md5:d28bada1c47c9c2cf6827795cc3114df
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_IDEMPOT : forall A:set, A <> Empty -> forall P:set -> prop, forall x c= A, (exists u c= Power A, True /\ (forall x0 :e u, exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = x0) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x) <-> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x.
+Admitted.
+
+// HOL Light: sets.ml:4135 / ARBITRARY_UNION_OF_UNIONS
+// Source hash: md5:999249a4ba21d71e28ab06d6ca277a1b
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_UNIONS : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= Power A, (forall s c= A, s :e u -> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s) -> exists u0 c= Power A, True /\ (forall c :e u0, P c) /\ Union u0 = Union u.
+Admitted.
+
+// HOL Light: sets.ml:4143 / ARBITRARY_UNION_OF_UNION
+// Source hash: md5:0cb196b28925ba2f992a0071a903994f
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = t) -> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s :\/: t.
+Admitted.
+
+// HOL Light: sets.ml:4152 / ARBITRARY_INTERSECTION_OF_INTERS
+// Source hash: md5:4ca4c107594bbd75b4c2d972e4f22d70
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_INTERS : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= Power A, (forall s c= A, s :e u -> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) -> exists u0 c= Power A, True /\ (forall c :e u0, P c) /\ {x :e A | forall Y :e u0, x :e Y} = {x :e A | forall Y :e u, x :e Y}.
+Admitted.
+
+// HOL Light: sets.ml:4161 / ARBITRARY_INTERSECTION_OF_INTER
+// Source hash: md5:ae0458e2781a54f03957ac8d06784819
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_INTER : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :/\: t.
+Admitted.
+
+// HOL Light: sets.ml:4170 / ARBITRARY_UNION_OF_INTER_EQ
+// Source hash: md5:a862a0522fa186e418eed15308ca2be0
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_INTER_EQ : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = t) -> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s :/\: t) <-> forall s t c= A, P s /\ P t -> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s :/\: t.
+Admitted.
+
+// HOL Light: sets.ml:4186 / ARBITRARY_UNION_OF_INTER
+// Source hash: md5:7dd30e2c5c757901ad6804c6299695cd
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_INTER : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, P s /\ P t -> P (s :/\: t)) -> forall s t c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = t) -> exists u c= Power A, True /\ (forall c :e u, P c) /\ Union u = s :/\: t.
+Admitted.
+
+// HOL Light: sets.ml:4194 / ARBITRARY_INTERSECTION_OF_UNION_EQ
+// Source hash: md5:81eaa609fcd0702fb377ed06dc483a48
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_UNION_EQ : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t) <-> forall s t c= A, P s /\ P t -> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t.
+Admitted.
+
+// HOL Light: sets.ml:4210 / ARBITRARY_INTERSECTION_OF_UNION
+// Source hash: md5:43f27ec422c4c1c6861a9a009128d994
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_UNION : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, P s /\ P t -> P (s :\/: t)) -> forall s t c= A, (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> exists u c= Power A, True /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t.
 Admitted.
 
 // HOL Light: sets.ml:4219 / FINITE_UNION_OF_EMPTY
 // Source hash: md5:ab7a993d4740468c3c3658460e4af2e6
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = Empty.
+Theorem FINITE_UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = Empty.
 Admitted.
 
 // HOL Light: sets.ml:4223 / FINITE_INTERSECTION_OF_EMPTY
 // Source hash: md5:5f96c69d92f715c098e9a445167dcbbc
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+Theorem FINITE_INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = A.
 Admitted.
 
 // HOL Light: sets.ml:4227 / FINITE_UNION_OF_INC
 // Source hash: md5:995382e9ae1f4040e8830222bd4b0ac7
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_INC : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P s -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s.
+Theorem FINITE_UNION_OF_INC : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P s -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s.
 Admitted.
 
 // HOL Light: sets.ml:4231 / FINITE_INTERSECTION_OF_INC
 // Source hash: md5:81fb3b5cdd44004f52b5949cd7ce2f56
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_INC : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P s -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s.
+Theorem FINITE_INTERSECTION_OF_INC : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P s -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s.
 Admitted.
 
 // HOL Light: sets.ml:4235 / FINITE_UNION_OF_COMPLEMENT
 // Source hash: md5:28b8de3cb73ee729dbad085540345b71
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_COMPLEMENT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s <-> (exists u c= Power A, finite u /\ forall s0 :e u, P (A :\: s0)) /\ {x :e A | forall Y :e u, x :e Y} = A :\: s.
+Theorem FINITE_UNION_OF_COMPLEMENT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s) <-> exists u c= Power A, finite u /\ (forall s0 :e u, P (A :\: s0)) /\ {x :e A | forall Y :e u, x :e Y} = A :\: s.
 Admitted.
 
 // HOL Light: sets.ml:4247 / FINITE_INTERSECTION_OF_COMPLEMENT
 // Source hash: md5:5526f97c0cb8a915e4f74a3878aa30bc
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_COMPLEMENT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s <-> (exists u c= Power A, finite u /\ forall s0 :e u, P (A :\: s0)) /\ Union u = A :\: s.
+Theorem FINITE_INTERSECTION_OF_COMPLEMENT : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) <-> exists u c= Power A, finite u /\ (forall s0 :e u, P (A :\: s0)) /\ Union u = A :\: s.
 Admitted.
 
 // HOL Light: sets.ml:4253 / FINITE_UNION_OF_IDEMPOT
 // Source hash: md5:782948909848c38b0a5eec5fa29ea32c
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_IDEMPOT : forall A:set, A <> Empty -> forall P:set -> prop, forall x c= A, (exists u c= Power A, finite u /\ forall x0 :e u, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = x0) /\ Union u = x <-> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = x.
+Theorem FINITE_UNION_OF_IDEMPOT : forall A:set, A <> Empty -> forall P:set -> prop, forall x c= A, (exists u c= Power A, finite u /\ (forall x0 :e u, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = x0) /\ Union u = x) <-> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = x.
 Admitted.
 
 // HOL Light: sets.ml:4272 / FINITE_INTERSECTION_OF_IDEMPOT
 // Source hash: md5:fdc2ca0515d8521ef2238ef9015363d9
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_IDEMPOT : forall A:set, A <> Empty -> forall P:set -> prop, forall x c= A, (exists u c= Power A, finite u /\ forall x0 :e u, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = x0) /\ {x :e A | forall Y :e u, x :e Y} = x <-> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = x.
+Theorem FINITE_INTERSECTION_OF_IDEMPOT : forall A:set, A <> Empty -> forall P:set -> prop, forall x c= A, (exists u c= Power A, finite u /\ (forall x0 :e u, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = x0) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x) <-> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x.
 Admitted.
 
 // HOL Light: sets.ml:4280 / FINITE_UNION_OF_UNIONS
 // Source hash: md5:760b7e0cd7eded2fc30b017c0c7db8e1
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_UNIONS : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= Power A, finite u /\ (forall s c= A, s :e u -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = Union u.
+Theorem FINITE_UNION_OF_UNIONS : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= Power A, finite u /\ (forall s c= A, s :e u -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s) -> exists u0 c= Power A, finite u0 /\ (forall c :e u0, P c) /\ Union u0 = Union u.
 Admitted.
 
 // HOL Light: sets.ml:4288 / FINITE_UNION_OF_UNION
 // Source hash: md5:d3c9fc3a26879f258b4cb9034ae085a0
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s /\ ((exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = t) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s :\/: t.
+Theorem FINITE_UNION_OF_UNION : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = t) -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s :\/: t.
 Admitted.
 
 // HOL Light: sets.ml:4297 / FINITE_INTERSECTION_OF_INTERS
 // Source hash: md5:b74bc7504be2867dfa3d0f08df3475ca
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_INTERS : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= Power A, finite u /\ (forall s c= A, s :e u -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = {x :e A | forall Y :e u, x :e Y}.
+Theorem FINITE_INTERSECTION_OF_INTERS : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= Power A, finite u /\ (forall s c= A, s :e u -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) -> exists u0 c= Power A, finite u0 /\ (forall c :e u0, P c) /\ {x :e A | forall Y :e u0, x :e Y} = {x :e A | forall Y :e u, x :e Y}.
 Admitted.
 
 // HOL Light: sets.ml:4306 / FINITE_INTERSECTION_OF_INTER
 // Source hash: md5:da583880e82d07d5dd6049b54a3fc22b
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_INTER : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s /\ ((exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :/\: t.
+Theorem FINITE_INTERSECTION_OF_INTER : forall A:set, A <> Empty -> forall P:set -> prop, forall s t c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :/\: t.
 Admitted.
 
 // HOL Light: sets.ml:4315 / FINITE_UNION_OF_INTER_EQ
 // Source hash: md5:4efccce7ee7947502ebd147cca05a291
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_INTER_EQ : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s /\ ((exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = t) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s :/\: t) <-> forall s t c= A, P s /\ P t -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s :/\: t.
+Theorem FINITE_UNION_OF_INTER_EQ : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = t) -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s :/\: t) <-> forall s t c= A, P s /\ P t -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s :/\: t.
 Admitted.
 
 // HOL Light: sets.ml:4331 / FINITE_UNION_OF_INTER
 // Source hash: md5:62b69fbb00325cdbc63dbd778aedde46
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_OF_INTER : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, P s /\ P t -> P (s :/\: t)) -> forall s t c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s /\ ((exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = t) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ Union u = s :/\: t.
+Theorem FINITE_UNION_OF_INTER : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, P s /\ P t -> P (s :/\: t)) -> forall s t c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = t) -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = s :/\: t.
 Admitted.
 
 // HOL Light: sets.ml:4339 / FINITE_INTERSECTION_OF_UNION_EQ
 // Source hash: md5:99357c770c7be387f61a06b19e603909
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_UNION_EQ : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s /\ ((exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t) <-> forall s t c= A, P s /\ P t -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t.
+Theorem FINITE_INTERSECTION_OF_UNION_EQ : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t) <-> forall s t c= A, P s /\ P t -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t.
 Admitted.
 
 // HOL Light: sets.ml:4355 / FINITE_INTERSECTION_OF_UNION
 // Source hash: md5:5069470f353cfbfd33b5bb5476186e4e
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTERSECTION_OF_UNION : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, P s /\ P t -> P (s :\/: t)) -> forall s t c= A, (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s /\ ((exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> (exists u c= Power A, finite u /\ forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t.
+Theorem FINITE_INTERSECTION_OF_UNION : forall A:set, A <> Empty -> forall P:set -> prop, (forall s t c= A, P s /\ P t -> P (s :\/: t)) -> forall s t c= A, (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = t) -> exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s :\/: t.
 Admitted.
 
 // HOL Light: sets.ml:4386 / SURJECTIVE_IFF_INJECTIVE_GEN
 // Source hash: md5:435b9b8b9a84b06920605371905e8612
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem SURJECTIVE_IFF_INJECTIVE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\ (finite t /\ (card s = card t /\ {f x | x :e s} c= t)) -> ((forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y) <-> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem SURJECTIVE_IFF_INJECTIVE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\ (finite t /\ (finite_cardinality s = finite_cardinality t /\ {f x | x :e s} c= t)) -> ((forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y) <-> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
 Admitted.
 
 // HOL Light: sets.ml:4406 / SURJECTIVE_IFF_INJECTIVE
 // Source hash: md5:a9da3106997a7401d967998dffabf9c4
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem SURJECTIVE_IFF_INJECTIVE : forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> finite s /\ {f x | x :e s} c= s -> ((forall y :e A, y :e s -> exists x :e A, x :e s /\ f x = y) <-> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem SURJECTIVE_IFF_INJECTIVE : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> finite s /\ {f x | x :e s} c= s -> ((forall y :e A, y :e s -> exists x :e A, x :e s /\ f x = y) <-> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
 Admitted.
 
 // HOL Light: sets.ml:4413 / IMAGE_IMP_INJECTIVE_GEN
 // Source hash: md5:12c785baaef4a619610b79e68cb256fa
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem IMAGE_IMP_INJECTIVE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\ (card s = card t /\ {f x | x :e s} = t) -> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem IMAGE_IMP_INJECTIVE_GEN : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\ (finite_cardinality s = finite_cardinality t /\ {f x | x :e s} = t) -> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y.
 Admitted.
 
 // HOL Light: sets.ml:4423 / IMAGE_IMP_INJECTIVE
 // Source hash: md5:0bc4a78db893abffe92f9bf55d108e1e
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem IMAGE_IMP_INJECTIVE : forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> finite s /\ {f x | x :e s} = s -> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem IMAGE_IMP_INJECTIVE : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> finite s /\ {f x | x :e s} = s -> forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y.
 Admitted.
 
 // HOL Light: sets.ml:4429 / HAS_SIZE_IMAGE_INJ_RESTRICT
 // Source hash: md5:4b359cf0ae45afeae7a49a16408f0eeb
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_IMAGE_INJ_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, forall P:set -> prop, forall n :e omega, finite s /\ (finite t /\ (card s = card t /\ ({f x | x :e s} c= t /\ ((forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ equip {x :e A | x :e s /\ P (f x)} n)))) -> equip {x :e B | x :e t /\ P x} n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_IMAGE_INJ_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, forall P:set -> prop, forall n :e omega, finite s /\ (finite t /\ (finite_cardinality s = finite_cardinality t /\ ({f x | x :e s} c= t /\ ((forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ equip {x :e A | x :e s /\ P (f x)} n)))) -> equip {x :e B | x :e t /\ P x} n.
 Admitted.
 
 // HOL Light: sets.ml:4450 / CARD_LE_INJ
 // Source hash: md5:b55031a5fed584f116e24490865ab03b
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_LE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ (finite t /\ card s <= card t) -> exists f:set -> set, (forall x :e A, f x :e B) /\ ({f x | x :e s} c= t /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_LE_INJ : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, finite s /\ (finite t /\ finite_cardinality s <= finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\ ({f x | x :e s} c= t /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y).
 Admitted.
 
 // HOL Light: sets.ml:4475 / FORALL_IN_CLAUSES
 // Source hash: md5:c707a7044e9e7098b7e5a5ad0ed9c3ca
-// Status: exact_native
-Theorem FORALL_IN_CLAUSES : forall A:set, A <> Empty -> (forall P:set -> prop, (forall x :e A, x :e Empty -> P x) <-> True) /\ forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_IN_CLAUSES : forall A:set, (forall P:set -> prop, (forall x :e A, x :e Empty -> P x) <-> True) /\ forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
 Admitted.
 
 // HOL Light: sets.ml:4480 / EXISTS_IN_CLAUSES
 // Source hash: md5:254995967a069e2c0c3e67b72a21d698
-// Status: exact_native
-Theorem EXISTS_IN_CLAUSES : forall A:set, A <> Empty -> (forall P:set -> prop, (exists x :e A, x :e Empty /\ P x) <-> False) /\ forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_IN_CLAUSES : forall A:set, (forall P:set -> prop, (exists x :e A, x :e Empty /\ P x) <-> False) /\ forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
 Admitted.
 
 // HOL Light: sets.ml:4489 / INJECTIVE_ON_IMAGE
 // Source hash: md5:a3957f03c3b22a6228c5cc636a067262
-// Status: exact_native
-Theorem INJECTIVE_ON_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall u c= A, (forall s t c= A, s c= u /\ (t c= u /\ {f x | x :e s} = {f x | x :e t}) -> s = t) <-> forall x y :e A, x :e u /\ (y :e u /\ f x = f y) -> x = y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INJECTIVE_ON_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall u c= A, (forall s t c= A, s c= u /\ (t c= u /\ {f x | x :e s} = {f x | x :e t}) -> s = t) <-> forall x y :e A, x :e u /\ (y :e u /\ f x = f y) -> x = y.
 Admitted.
 
 // HOL Light: sets.ml:4498 / INJECTIVE_IMAGE
 // Source hash: md5:ca0080a855adb7b71bdc1375bc296bb6
-// Status: exact_native
-Theorem INJECTIVE_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall s t c= A, {f x | x :e s} = {f x | x :e t} -> s = t) <-> forall x y :e A, f x = f y -> x = y).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem INJECTIVE_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall s t c= A, {f x | x :e s} = {f x | x :e t} -> s = t) <-> forall x y :e A, f x = f y -> x = y).
 Admitted.
 
 // HOL Light: sets.ml:4504 / SURJECTIVE_ON_IMAGE
@@ -2818,8 +3172,8 @@ Admitted.
 
 // HOL Light: sets.ml:4520 / INJECTIVE_ON_PREIMAGE
 // Source hash: md5:1c74e2e87440f11e6565060bd359e30c
-// Status: exact_native
-Theorem INJECTIVE_ON_PREIMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall u c= B, (forall t t' c= B, t c= u /\ (t' c= u /\ {x :e A | x :e s /\ f x :e t} = {x :e A | x :e s /\ f x :e t'}) -> t = t') <-> u c= {f x | x :e s}.
+// Status: generalization_required (bridges: empty_case:B)
+Theorem INJECTIVE_ON_PREIMAGE : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall u c= B, (forall t t' c= B, t c= u /\ (t' c= u /\ {x :e A | x :e s /\ f x :e t} = {x :e A | x :e s /\ f x :e t'}) -> t = t') <-> u c= {f x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:4530 / SURJECTIVE_ON_PREIMAGE
@@ -2836,20 +3190,20 @@ Admitted.
 
 // HOL Light: sets.ml:4565 / CARD_EQ_BIJECTION
 // Source hash: md5:469ff9ccf8bb5c899ad58d4f8a8d7997
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_EQ_BIJECTION : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ (finite t /\ card s = card t) -> exists f:set -> set, (forall x :e A, f x :e B) /\ ((forall x :e A, x :e s -> f x :e t) /\ ((forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y) /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y)).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_EQ_BIJECTION : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ (finite t /\ finite_cardinality s = finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\ ((forall x :e A, x :e s -> f x :e t) /\ ((forall y :e B, y :e t -> exists x :e A, x :e s /\ f x = y) /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y)).
 Admitted.
 
 // HOL Light: sets.ml:4576 / CARD_EQ_BIJECTIONS
 // Source hash: md5:c6ca64fe79147712a42190986240c239
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_EQ_BIJECTIONS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ (finite t /\ card s = card t) -> exists f:set -> set, (forall x :e A, f x :e B) /\ exists g:set -> set, (forall x :e B, g x :e A) /\ ((forall x :e A, x :e s -> f x :e t /\ g (f x) = x) /\ forall y :e B, y :e t -> g y :e s /\ f (g y) = y).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_EQ_BIJECTIONS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ (finite t /\ finite_cardinality s = finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\ exists g:set -> set, (forall x :e B, g x :e A) /\ ((forall x :e A, x :e s -> f x :e t /\ g (f x) = x) /\ forall y :e B, y :e t -> g y :e s /\ f (g y) = y).
 Admitted.
 
 // HOL Light: sets.ml:4585 / CARD_EQ_BIJECTIONS_SPECIAL
 // Source hash: md5:59b0e4b857342432d44da2a02ba6327b
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem CARD_EQ_BIJECTIONS_SPECIAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall a :e A, forall b :e B, finite s /\ (finite t /\ (card s = card t /\ (a :e s /\ b :e t))) -> exists f:set -> set, (forall x :e A, f x :e B) /\ exists g:set -> set, (forall x :e B, g x :e A) /\ (f a = b /\ (g b = a /\ ((forall x :e A, x :e s -> f x :e t /\ g (f x) = x) /\ forall y :e B, y :e t -> g y :e s /\ f (g y) = y))).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_EQ_BIJECTIONS_SPECIAL : forall A B:set, forall s c= A, forall t c= B, forall a :e A, forall b :e B, finite s /\ (finite t /\ (finite_cardinality s = finite_cardinality t /\ (a :e s /\ b :e t))) -> exists f:set -> set, (forall x :e A, f x :e B) /\ exists g:set -> set, (forall x :e B, g x :e A) /\ (f a = b /\ (g b = a /\ ((forall x :e A, x :e s -> f x :e t /\ g (f x) = x) /\ forall y :e B, y :e t -> g y :e s /\ f (g y) = y))).
 Admitted.
 
 // HOL Light: sets.ml:4600 / BIJECTIONS_HAS_SIZE
@@ -2866,8 +3220,20 @@ Admitted.
 
 // HOL Light: sets.ml:4622 / BIJECTIONS_CARD_EQ
 // Source hash: md5:a2c4d30d4c9a31d5faa4ed344a68b515
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem BIJECTIONS_CARD_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> (finite s \/ finite t) /\ ((forall x :e A, x :e s -> f x :e t /\ g (f x) = x) /\ (forall y :e B, y :e t -> g y :e s /\ f (g y) = y)) -> card s = card t.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem BIJECTIONS_CARD_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> (finite s \/ finite t) /\ ((forall x :e A, x :e s -> f x :e t /\ g (f x) = x) /\ (forall y :e B, y :e t -> g y :e s /\ f (g y) = y)) -> finite_cardinality s = finite_cardinality t.
+Admitted.
+
+// HOL Light: sets.ml:4636 / WF_FINITE
+// Source hash: md5:4aeef32e8a078032478db475333e60d7
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem WF_FINITE : forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall x :e A, ~ lt x x) /\ ((forall x y z :e A, lt x y /\ lt y z -> lt x z) /\ (forall x :e A, finite {y :e A | lt y x})) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x.
+Admitted.
+
+// HOL Light: sets.ml:4654 / WF_PSUBSET
+// Source hash: md5:9f23fb0be26d0ccacb5c972b313ae592
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem WF_PSUBSET : forall A:set, A <> Empty -> forall s c= A, finite s -> forall P c= Power A, P <> Empty -> exists x :e P, forall y :e P, ~ (y c= x /\ y <> x /\ x c= s).
 Admitted.
 
 // HOL Light: sets.ml:4701 / sup
@@ -2974,9 +3340,9 @@ Admitted.
 
 // HOL Light: sets.ml:4801 / SUP_SING
 // Source hash: md5:3a9cb35b953582fc5909b65168df7703
-// Status: transport_required (bridges: hol_real_R)
-Theorem SUP_SING : forall a :e R, sup {a} = a.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUP_SING : forall a :e R, sup {a} = a.
 
 // HOL Light: sets.ml:4805 / SUP_INSERT_INSERT
 // Source hash: md5:db5a0106a36c762e7c82cb152ae005c5
@@ -3130,9 +3496,9 @@ Admitted.
 
 // HOL Light: sets.ml:4961 / INF_SING
 // Source hash: md5:9e9101e9e2f4d065a4ac7559ad6fbbca
-// Status: transport_required (bridges: hol_real_R)
-Theorem INF_SING : forall a :e R, inf {a} = a.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INF_SING : forall a :e R, inf {a} = a.
 
 // HOL Light: sets.ml:4965 / INF_INSERT_INSERT
 // Source hash: md5:f84b8571e923ec6087760074af6ffac8
@@ -3186,5 +3552,89 @@ Admitted.
 // Source hash: md5:368ecdd89c374a6669d966adfb89650d
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MIN_INF : forall x y :e R, (if x <= y then x else y) = inf {x,y}.
+Admitted.
+
+// HOL Light: sets.ml:5033 / has_inf
+// Source hash: md5:68d83551dfae810d4147394a0c56b070
+// Status: transport_required (bridges: hol_real_R)
+Theorem has_inf : forall s c= R, forall b :e R, is_glb s b <-> forall c :e R, (forall x :e R, x :e s -> c <= x) <-> c <= b.
+Admitted.
+
+// HOL Light: sets.ml:5036 / has_sup
+// Source hash: md5:bc2f3d7fe3f392adb52e953e810405f7
+// Status: transport_required (bridges: hol_real_R)
+Theorem has_sup : forall s c= R, forall b :e R, is_lub s b <-> forall c :e R, (forall x :e R, x :e s -> x <= c) <-> b <= c.
+Admitted.
+
+// HOL Light: sets.ml:5039 / HAS_INF_LBOUND
+// Source hash: md5:1081abf8b09009eeacd37cc777b0eeb9
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_INF_LBOUND : forall s c= R, forall b x :e R, is_glb s b /\ x :e s -> b <= x.
+Admitted.
+
+// HOL Light: sets.ml:5043 / HAS_SUP_UBOUND
+// Source hash: md5:d438ac14503aef868eba9703a2579b74
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_SUP_UBOUND : forall s c= R, forall b x :e R, is_lub s b /\ x :e s -> x <= b.
+Admitted.
+
+// HOL Light: sets.ml:5047 / HAS_INF_INF
+// Source hash: md5:1c64642388ebba4504d456217e907070
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_INF_INF : forall s c= R, forall l :e R, is_glb s l <-> ~ s = Empty /\ ((exists b :e R, forall x :e R, x :e s -> b <= x) /\ inf s = l).
+Admitted.
+
+// HOL Light: sets.ml:5068 / HAS_SUP_SUP
+// Source hash: md5:459b6f6f577bc3b9fe83a23ffbe9d2e8
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_SUP_SUP : forall s c= R, forall l :e R, is_lub s l <-> ~ s = Empty /\ ((exists b :e R, forall x :e R, x :e s -> x <= b) /\ sup s = l).
+Admitted.
+
+// HOL Light: sets.ml:5090 / INF_EXISTS
+// Source hash: md5:bd7bd3e9bb12afb55e90be0fc108e813
+// Status: transport_required (bridges: hol_real_R)
+Theorem INF_EXISTS : forall s c= R, (exists l :e R, is_glb s l) <-> ~ s = Empty /\ exists b :e R, forall x :e R, x :e s -> b <= x.
+Admitted.
+
+// HOL Light: sets.ml:5094 / SUP_EXISTS
+// Source hash: md5:f3174497b528f74abb3887fe2dbbad3f
+// Status: transport_required (bridges: hol_real_R)
+Theorem SUP_EXISTS : forall s c= R, (exists l :e R, is_lub s l) <-> ~ s = Empty /\ exists b :e R, forall x :e R, x :e s -> x <= b.
+Admitted.
+
+// HOL Light: sets.ml:5098 / HAS_INF_APPROACH
+// Source hash: md5:14fefa5986aa8d45c692dc5e924c8ce7
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_INF_APPROACH : forall s c= R, forall l c :e R, is_glb s l /\ l < c -> exists x :e R, x :e s /\ x < c.
+Admitted.
+
+// HOL Light: sets.ml:5102 / HAS_SUP_APPROACH
+// Source hash: md5:955af142bb6cfde88e2454e3da699c72
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_SUP_APPROACH : forall s c= R, forall l c :e R, is_lub s l /\ c < l -> exists x :e R, x :e s /\ c < x.
+Admitted.
+
+// HOL Light: sets.ml:5106 / HAS_INF
+// Source hash: md5:2967fd2a3d5b6d3144a3cf2eabbc0d57
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_INF : forall s c= R, forall l :e R, is_glb s l <-> ~ s = Empty /\ ((forall x :e R, x :e s -> l <= x) /\ forall c :e R, l < c -> exists x :e R, x :e s /\ x < c).
+Admitted.
+
+// HOL Light: sets.ml:5127 / HAS_SUP
+// Source hash: md5:fa9a2c21d8a4116d91083a98dd7b9cbc
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_SUP : forall s c= R, forall l :e R, is_lub s l <-> ~ s = Empty /\ ((forall x :e R, x :e s -> x <= l) /\ forall c :e R, c < l -> exists x :e R, x :e s /\ c < x).
+Admitted.
+
+// HOL Light: sets.ml:5148 / HAS_INF_LE
+// Source hash: md5:475c11761ab3ef01af887ece716ce7e7
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_INF_LE : forall s t c= R, forall l m :e R, is_glb s l /\ (is_glb t m /\ (forall y :e R, y :e t -> exists x :e R, x :e s /\ x <= y)) -> l <= m.
+Admitted.
+
+// HOL Light: sets.ml:5165 / HAS_SUP_LE
+// Source hash: md5:a12f7df8a161719c75525819880d865e
+// Status: transport_required (bridges: hol_real_R)
+Theorem HAS_SUP_LE : forall s t c= R, forall l m :e R, is_lub s l /\ (is_lub t m /\ (forall y :e R, y :e t -> exists x :e R, x :e s /\ y <= x)) -> m <= l.
 Admitted.
 

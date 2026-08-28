@@ -10,9 +10,9 @@ Admitted.
 
 // HOL Light: bool.ml:79 / TRUTH
 // Source hash: md5:e09aad94aa2e20c97a7a0ada09e7924e
-// Status: exact_native
-Theorem TRUTH : True.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem TRUTH : True.
 
 // HOL Light: bool.ml:97 / AND_DEF
 // Source hash: md5:1e545f23ac30b03a6b3d65a9471dee0b
@@ -28,14 +28,14 @@ Admitted.
 
 // HOL Light: bool.ml:243 / FORALL_DEF
 // Source hash: md5:29d652bfd2edf45c3b3120e4323bcaae
-// Status: exact_native
-Theorem FORALL_DEF : forall A:set, A <> Empty -> forall P c= A, (forall x :e A, x :e P) <-> forall x :e A, x :e P <-> True.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_DEF : forall A:set, forall P:set -> prop, (forall x :e A, P x) <-> forall x :e A, P x <-> True.
 Admitted.
 
 // HOL Light: bool.ml:313 / EXISTS_DEF
 // Source hash: md5:029809946a273ac40abebea56d822664
 // Status: exact_native
-Theorem EXISTS_DEF : forall A:set, A <> Empty -> forall P c= A, (exists x :e A, x :e P) <-> forall q:prop, (forall x :e A, x :e P -> q) -> q.
+Theorem EXISTS_DEF : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> forall q:prop, (forall x :e A, P x -> q) -> q.
 Admitted.
 
 // HOL Light: bool.ml:360 / OR_DEF
@@ -58,7 +58,7 @@ Admitted.
 
 // HOL Light: bool.ml:469 / EXISTS_UNIQUE_DEF
 // Source hash: md5:f70acb0782b4d00ef544e0b446ba3d20
-// Status: exact_native
-Theorem EXISTS_UNIQUE_DEF : forall A:set, A <> Empty -> forall P c= A, (exists x :e A, x :e P /\ forall y :e A, x :e P -> y = x) <-> (exists x :e A, x :e P) /\ forall x y :e A, x :e P /\ y :e P -> x = y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_UNIQUE_DEF : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x y :e A, P x /\ P y -> x = y.
 Admitted.
 

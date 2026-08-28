@@ -4,51 +4,51 @@
 
 // HOL Light: class.ml:16 / ETA_AX
 // Source hash: md5:e20b11b91c226ce7c7fa8169d22798c6
-// Status: exact_native
-Theorem ETA_AX : forall A B:set, A <> Empty -> B <> Empty -> forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem ETA_AX : forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x.
 Admitted.
 
 // HOL Light: class.ml:30 / EQ_EXT
 // Source hash: md5:74f6b9b467171dc186a2df9978244b58
-// Status: exact_native
-Theorem EQ_EXT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EQ_EXT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
 Admitted.
 
 // HOL Light: class.ml:35 / FUN_EQ_THM
 // Source hash: md5:f5a914b29ff3ffb2975dadfdab697414
-// Status: exact_native
-Theorem FUN_EQ_THM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem FUN_EQ_THM : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x).
 Admitted.
 
 // HOL Light: class.ml:53 / SELECT_AX
 // Source hash: md5:4e877f34f5dc642b1b50fc1ef7367fcd
-// Status: exact_native (bridges: choose_in_spec)
-Theorem SELECT_AX : forall A:set, A <> Empty -> forall P c= A, forall x :e A, x :e P -> choose_in A (fun x0:set => x0 :e P) :e P.
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem SELECT_AX : forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A (fun x0:set => P x0)).
 Admitted.
 
 // HOL Light: class.ml:60 / EXISTS_THM
 // Source hash: md5:a89cb4aa5c0e6a37ab368e12856a3e84
 // Status: exact_native (bridges: choose_in_spec)
-Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P c= A, (exists x :e A, x :e P) <-> choose_in A (fun x:set => x :e P) :e P.
+Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A (fun x:set => P x)).
 Admitted.
 
 // HOL Light: class.ml:102 / SELECT_REFL
 // Source hash: md5:5d89ddfdd48e07285ef4152ba2f87957
-// Status: exact_native (bridges: choose_in_spec)
-Theorem SELECT_REFL : forall A:set, A <> Empty -> forall x :e A, choose_in A (fun y:set => y = x) = x.
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem SELECT_REFL : forall A:set, forall x :e A, choose_in A (fun y:set => y = x) = x.
 Admitted.
 
 // HOL Light: class.ml:107 / SELECT_UNIQUE
 // Source hash: md5:a3ab62395ef165d333cfc84d6aa0b583
-// Status: exact_native (bridges: choose_in_spec)
-Theorem SELECT_UNIQUE : forall A:set, A <> Empty -> forall P c= A, forall x :e A, (forall y :e A, y :e P <-> y = x) -> choose_in A (fun x0:set => x0 :e P) = x.
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem SELECT_UNIQUE : forall A:set, forall P:set -> prop, forall x :e A, (forall y :e A, P y <-> y = x) -> choose_in A (fun x0:set => P x0) = x.
 Admitted.
 
 // HOL Light: class.ml:140 / EXCLUDED_MIDDLE
 // Source hash: md5:24badd25546afe87d42d86a1339bd39d
-// Status: exact_native
-Theorem EXCLUDED_MIDDLE : forall t:prop, t \/ ~ t.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem EXCLUDED_MIDDLE : forall t:prop, t \/ ~ t.
 
 // HOL Light: class.ml:154 / BOOL_CASES_AX
 // Source hash: md5:2d73cf3d9340a07496060ebb19e89f36
@@ -82,26 +82,26 @@ Admitted.
 
 // HOL Light: class.ml:233 / NOT_EXISTS_THM
 // Source hash: md5:bd9e48e90e3a55c73b430ea13ad14537
-// Status: exact_native
-Theorem NOT_EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, ~ (exists x :e A, P x) <-> forall x :e A, ~ P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem NOT_EXISTS_THM : forall A:set, forall P:set -> prop, ~ (exists x :e A, P x) <-> forall x :e A, ~ P x.
 Admitted.
 
 // HOL Light: class.ml:240 / EXISTS_NOT_THM
 // Source hash: md5:6cc8add8ef8d6ef2111d93d16002aab6
-// Status: exact_native
-Theorem EXISTS_NOT_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, ~ P x) <-> ~ forall x :e A, P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_NOT_THM : forall A:set, forall P:set -> prop, (exists x :e A, ~ P x) <-> ~ forall x :e A, P x.
 Admitted.
 
 // HOL Light: class.ml:245 / NOT_FORALL_THM
 // Source hash: md5:2ea21d2081aa28f6bd8bb8c2f039cb31
-// Status: exact_native
-Theorem NOT_FORALL_THM : forall A:set, A <> Empty -> forall P:set -> prop, ~ (forall x :e A, P x) <-> exists x :e A, ~ P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem NOT_FORALL_THM : forall A:set, forall P:set -> prop, ~ (forall x :e A, P x) <-> exists x :e A, ~ P x.
 Admitted.
 
 // HOL Light: class.ml:249 / FORALL_NOT_THM
 // Source hash: md5:46d579bbfb2d94977204d7499747c02c
-// Status: exact_native
-Theorem FORALL_NOT_THM : forall A:set, A <> Empty -> forall P:set -> prop, (forall x :e A, ~ P x) <-> ~ exists x :e A, P x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_NOT_THM : forall A:set, forall P:set -> prop, (forall x :e A, ~ P x) <-> ~ exists x :e A, P x.
 Admitted.
 
 // HOL Light: class.ml:257 / FORALL_BOOL_THM
@@ -118,26 +118,26 @@ Admitted.
 
 // HOL Light: class.ml:271 / LEFT_FORALL_OR_THM
 // Source hash: md5:361ce6f536bbd2a6777e5631d7f4d876
-// Status: exact_native
-Theorem LEFT_FORALL_OR_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (forall x :e A, P x \/ Q) <-> (forall x :e A, P x) \/ Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem LEFT_FORALL_OR_THM : forall A:set, forall P:set -> prop, forall Q:prop, (forall x :e A, P x \/ Q) <-> (forall x :e A, P x) \/ Q.
 Admitted.
 
 // HOL Light: class.ml:276 / RIGHT_FORALL_OR_THM
 // Source hash: md5:a34c284d93a460be6f13fd44e1786f1d
-// Status: exact_native
-Theorem RIGHT_FORALL_OR_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, (forall x :e A, P \/ Q x) <-> P \/ forall x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RIGHT_FORALL_OR_THM : forall A:set, forall P:prop, forall Q:set -> prop, (forall x :e A, P \/ Q x) <-> P \/ forall x :e A, Q x.
 Admitted.
 
 // HOL Light: class.ml:281 / LEFT_OR_FORALL_THM
 // Source hash: md5:0e9f71044e0d8bff7a2cdc76ae4f2ec0
-// Status: exact_native
-Theorem LEFT_OR_FORALL_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (forall x :e A, P x) \/ Q <-> forall x :e A, P x \/ Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem LEFT_OR_FORALL_THM : forall A:set, forall P:set -> prop, forall Q:prop, (forall x :e A, P x) \/ Q <-> forall x :e A, P x \/ Q.
 Admitted.
 
 // HOL Light: class.ml:285 / RIGHT_OR_FORALL_THM
 // Source hash: md5:36d26a3e66649cdb26b042df825aeb45
-// Status: exact_native
-Theorem RIGHT_OR_FORALL_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P \/ (forall x :e A, Q x) <-> forall x :e A, P \/ Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RIGHT_OR_FORALL_THM : forall A:set, forall P:prop, forall Q:set -> prop, P \/ (forall x :e A, Q x) <-> forall x :e A, P \/ Q x.
 Admitted.
 
 // HOL Light: class.ml:293 / LEFT_IMP_FORALL_THM
@@ -166,14 +166,14 @@ Admitted.
 
 // HOL Light: class.ml:315 / COND_DEF
 // Source hash: md5:4b7321c4b0ce36e9d6ae573b04198d8e
-// Status: exact_native (bridges: choose_in_spec)
-Theorem COND_DEF : forall A:set, A <> Empty -> forall t:prop, forall t1 t2 :e A, (if t then t1 else t2) = choose_in A (fun x:set => ((t <-> True) -> x = t1) /\ ((t <-> False) -> x = t2)).
+// Status: generalization_required (bridges: choose_in_spec, empty_case:A)
+Theorem COND_DEF : forall A:set, forall t:prop, forall t1 t2 :e A, (if t then t1 else t2) = choose_in A (fun x:set => ((t <-> True) -> x = t1) /\ ((t <-> False) -> x = t2)).
 Admitted.
 
 // HOL Light: class.ml:319 / COND_CLAUSES
 // Source hash: md5:0917c6f97e746313156fb948ae4a0a66
-// Status: exact_native
-Theorem COND_CLAUSES : forall A:set, A <> Empty -> forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COND_CLAUSES : forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2.
 Admitted.
 
 // HOL Light: class.ml:342 / COND_EXPAND
@@ -184,20 +184,20 @@ Admitted.
 
 // HOL Light: class.ml:347 / COND_ID
 // Source hash: md5:6cd454b7a60ebc592010064af1887257
-// Status: exact_native
-Theorem COND_ID : forall A:set, A <> Empty -> forall b:prop, forall t :e A, (if b then t else t) = t.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COND_ID : forall A:set, forall b:prop, forall t :e A, (if b then t else t) = t.
 Admitted.
 
 // HOL Light: class.ml:351 / COND_RAND
 // Source hash: md5:abd733d2ca6bac4ed355d508eb6d38ff
-// Status: exact_native
-Theorem COND_RAND : forall A B:set, A <> Empty -> B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COND_RAND : forall A B:set, B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y.
 Admitted.
 
 // HOL Light: class.ml:363 / COND_SWAP
 // Source hash: md5:517d4149a3b1212d2fd976fea9192f45
-// Status: exact_native
-Theorem COND_SWAP : forall A:set, A <> Empty -> forall p:prop, forall x y :e A, (if ~ p then x else y) = if p then y else x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COND_SWAP : forall A:set, forall p:prop, forall x y :e A, (if ~ p then x else y) = if p then y else x.
 Admitted.
 
 // HOL Light: class.ml:388 / MONO_COND
@@ -208,32 +208,32 @@ Admitted.
 
 // HOL Light: class.ml:399 / COND_ELIM_THM
 // Source hash: md5:a175440e00beddf5149a7ff13668add1
-// Status: exact_native
-Theorem COND_ELIM_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall c:prop, forall x y :e A, P (if c then x else y) <-> (c -> P x) /\ (~ c -> P y).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem COND_ELIM_THM : forall A:set, forall P:set -> prop, forall c:prop, forall x y :e A, P (if c then x else y) <-> (c -> P x) /\ (~ c -> P y).
 Admitted.
 
 // HOL Light: class.ml:418 / SKOLEM_THM
 // Source hash: md5:7032340324a1a8ad7909cb040961f738
-// Status: exact_native
-Theorem SKOLEM_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SKOLEM_THM : forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x).
 Admitted.
 
 // HOL Light: class.ml:426 / SKOLEM_THM_GEN
 // Source hash: md5:5565ee13d340ccbd045d169fd93d59bc
-// Status: exact_native
-Theorem SKOLEM_THM_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall R0:set -> set -> prop, (forall x :e A, P x -> exists y :e B, R0 x y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, P x -> R0 x (f x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SKOLEM_THM_GEN : forall A B:set, B <> Empty -> forall P:set -> prop, forall R0:set -> set -> prop, (forall x :e A, P x -> exists y :e B, R0 x y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, P x -> R0 x (f x).
 Admitted.
 
 // HOL Light: class.ml:434 / UNIQUE_SKOLEM_ALT
 // Source hash: md5:a0be667b32ad906a5f23194afc353c19
-// Status: exact_native
-Theorem UNIQUE_SKOLEM_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIQUE_SKOLEM_ALT : forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y.
 Admitted.
 
 // HOL Light: class.ml:442 / UNIQUE_SKOLEM_THM
 // Source hash: md5:e8db4e1e4a06d49a8fc6b9eaee700c91
-// Status: exact_native
-Theorem UNIQUE_SKOLEM_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ ((forall x :e A, P x (f x)) /\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (f x)) -> forall x :e A, y x = f x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNIQUE_SKOLEM_THM : forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ ((forall x :e A, P x (f x)) /\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (y x)) -> forall x :e A, y x = f x).
 Admitted.
 
 // HOL Light: class.ml:479 / bool_INDUCT
@@ -244,7 +244,7 @@ Admitted.
 
 // HOL Light: class.ml:484 / bool_RECURSION
 // Source hash: md5:69823fe554102974b1cd27dcd768bccf
-// Status: exact_native
-Theorem bool_RECURSION : forall A:set, A <> Empty -> forall a b :e A, exists f:set -> set, (forall x :e 2, f x :e A) /\ (f (if False then 1 else 0) = a /\ f (if True then 1 else 0) = b).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem bool_RECURSION : forall A:set, forall a b :e A, exists f:set -> set, (forall x :e 2, f x :e A) /\ (f (if False then 1 else 0) = a /\ f (if True then 1 else 0) = b).
 Admitted.
 

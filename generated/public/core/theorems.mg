@@ -4,44 +4,44 @@
 
 // HOL Light: theorems.ml:17 / EQ_REFL
 // Source hash: md5:5fb3b368ada0da55fa9425fc34443cce
-// Status: exact_native
-Theorem EQ_REFL : forall A:set, A <> Empty -> forall x :e A, x = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem EQ_REFL : forall A:set, forall x :e A, x = x.
 
 // HOL Light: theorems.ml:21 / REFL_CLAUSE
 // Source hash: md5:2ce4c3adc3cbc009644ca0f1da20bfcf
-// Status: exact_native
-Theorem REFL_CLAUSE : forall A:set, A <> Empty -> forall x :e A, x = x <-> True.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem REFL_CLAUSE : forall A:set, forall x :e A, x = x <-> True.
 Admitted.
 
 // HOL Light: theorems.ml:25 / EQ_SYM
 // Source hash: md5:b9d6fe477bd3d7fa5366b65298ff2a45
-// Status: exact_native
-Theorem EQ_SYM : forall A:set, A <> Empty -> forall x y :e A, x = y -> y = x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EQ_SYM : forall A:set, forall x y :e A, x = y -> y = x.
 Admitted.
 
 // HOL Light: theorems.ml:29 / EQ_SYM_EQ
 // Source hash: md5:2232c266541db65541247b04739eb1ad
-// Status: exact_native
-Theorem EQ_SYM_EQ : forall A:set, A <> Empty -> forall x y :e A, x = y <-> y = x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EQ_SYM_EQ : forall A:set, forall x y :e A, x = y <-> y = x.
 Admitted.
 
 // HOL Light: theorems.ml:33 / EQ_TRANS
 // Source hash: md5:a433f46488d631f19c0671432eca45a2
-// Status: exact_native
-Theorem EQ_TRANS : forall A:set, A <> Empty -> forall x y z :e A, x = y /\ y = z -> x = z.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EQ_TRANS : forall A:set, forall x y z :e A, x = y /\ y = z -> x = z.
 Admitted.
 
 // HOL Light: theorems.ml:47 / BETA_THM
 // Source hash: md5:014410de6c67ffec5a76c8993197b426
-// Status: exact_native
-Theorem BETA_THM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem BETA_THM : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y.
 Admitted.
 
 // HOL Light: theorems.ml:51 / ABS_SIMP
 // Source hash: md5:60035b0f6aaa54e21e40375b2cfc2b87
-// Status: exact_native
-Theorem ABS_SIMP : forall A B:set, A <> Empty -> B <> Empty -> forall t1 :e A, forall t2 :e B, t1 = t1.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem ABS_SIMP : forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1.
 Admitted.
 
 // HOL Light: theorems.ml:59 / CONJ_ASSOC
@@ -124,9 +124,9 @@ Admitted.
 
 // HOL Light: theorems.ml:129 / EQ_IMP
 // Source hash: md5:889b227d11bb9b8ec4e1b0134eb5b325
-// Status: exact_native
-Theorem EQ_IMP : forall a b:prop, (a <-> b) -> a -> b.
-Admitted.
+// Status: native_reuse
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem EQ_IMP : forall a b:prop, (a <-> b) -> a -> b.
 
 // HOL Light: theorems.ml:135 / EQ_CLAUSES
 // Source hash: md5:a45d7c9d85285642cfa3024e621fd5c5
@@ -160,68 +160,68 @@ Admitted.
 
 // HOL Light: theorems.ml:181 / EXISTS_UNIQUE_THM
 // Source hash: md5:60b7bbfee72d562d12f567ea88549b0b
-// Status: exact_native
-Theorem EXISTS_UNIQUE_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P x -> y = x) <-> (exists x :e A, P x) /\ forall x x' :e A, P x /\ P x' -> x = x'.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_UNIQUE_THM : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x x' :e A, P x /\ P x' -> x = x'.
 Admitted.
 
 // HOL Light: theorems.ml:189 / EXISTS_REFL
 // Source hash: md5:e372b30f99349efa111d83e2f360fb61
-// Status: exact_native
-Theorem EXISTS_REFL : forall A:set, A <> Empty -> forall a :e A, exists x :e A, x = a.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_REFL : forall A:set, forall a :e A, exists x :e A, x = a.
 Admitted.
 
 // HOL Light: theorems.ml:193 / EXISTS_UNIQUE_REFL
 // Source hash: md5:073206835fb258ce74d7a2600f421fc2
-// Status: exact_native
-Theorem EXISTS_UNIQUE_REFL : forall A:set, A <> Empty -> forall a :e A, exists x :e A, x = a /\ forall y :e A, x = a -> y = x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_UNIQUE_REFL : forall A:set, forall a :e A, exists x :e A, x = a /\ forall y :e A, y = a -> y = x.
 Admitted.
 
 // HOL Light: theorems.ml:204 / UNWIND_THM1
 // Source hash: md5:e252b2b585ba192019ab0a47e91cd9f2
-// Status: exact_native
-Theorem UNWIND_THM1 : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, (exists x :e A, a = x /\ P x) <-> P a.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNWIND_THM1 : forall A:set, forall P:set -> prop, forall a :e A, (exists x :e A, a = x /\ P x) <-> P a.
 Admitted.
 
 // HOL Light: theorems.ml:212 / UNWIND_THM2
 // Source hash: md5:e8d8e93a8219ea0d4c61e00ac998b7dd
-// Status: exact_native
-Theorem UNWIND_THM2 : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, (exists x :e A, x = a /\ P x) <-> P a.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem UNWIND_THM2 : forall A:set, forall P:set -> prop, forall a :e A, (exists x :e A, x = a /\ P x) <-> P a.
 Admitted.
 
 // HOL Light: theorems.ml:217 / FORALL_UNWIND_THM2
 // Source hash: md5:7d11942b1403e24a33afde7223638f39
-// Status: exact_native
-Theorem FORALL_UNWIND_THM2 : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, (forall x :e A, x = a -> P x) <-> P a.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_UNWIND_THM2 : forall A:set, forall P:set -> prop, forall a :e A, (forall x :e A, x = a -> P x) <-> P a.
 Admitted.
 
 // HOL Light: theorems.ml:224 / FORALL_UNWIND_THM1
 // Source hash: md5:c29e48c57e6988d9b8de51887e94c310
-// Status: exact_native
-Theorem FORALL_UNWIND_THM1 : forall A:set, A <> Empty -> forall P:set -> prop, forall a :e A, (forall x :e A, a = x -> P x) <-> P a.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_UNWIND_THM1 : forall A:set, forall P:set -> prop, forall a :e A, (forall x :e A, a = x -> P x) <-> P a.
 Admitted.
 
 // HOL Light: theorems.ml:233 / SWAP_FORALL_THM
 // Source hash: md5:df4989caae04c5ecc3e98a343479c369
-// Status: exact_native
-Theorem SWAP_FORALL_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, forall y :e B, P x y) <-> forall y :e B, forall x :e A, P x y.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem SWAP_FORALL_THM : forall A B:set, forall P:set -> set -> prop, (forall x :e A, forall y :e B, P x y) <-> forall y :e B, forall x :e A, P x y.
 Admitted.
 
 // HOL Light: theorems.ml:237 / SWAP_EXISTS_THM
 // Source hash: md5:68425fa12a3aa533a8d863f53ba19aa1
-// Status: exact_native
-Theorem SWAP_EXISTS_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (exists x :e A, exists y :e B, P x y) <-> exists y :e B, exists x :e A, P x y.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem SWAP_EXISTS_THM : forall A B:set, forall P:set -> set -> prop, (exists x :e A, exists y :e B, P x y) <-> exists y :e B, exists x :e A, P x y.
 Admitted.
 
 // HOL Light: theorems.ml:245 / FORALL_AND_THM
 // Source hash: md5:75e6b56a5e3738f48b8fb06a01e01c5c
-// Status: exact_native
-Theorem FORALL_AND_THM : forall A:set, A <> Empty -> forall P Q:set -> prop, (forall x :e A, P x /\ Q x) <-> (forall x :e A, P x) /\ forall x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FORALL_AND_THM : forall A:set, forall P Q:set -> prop, (forall x :e A, P x /\ Q x) <-> (forall x :e A, P x) /\ forall x :e A, Q x.
 Admitted.
 
 // HOL Light: theorems.ml:249 / AND_FORALL_THM
 // Source hash: md5:73a7c7f99a6c5d4a0d18f7ea8c96f6ac
-// Status: exact_native
-Theorem AND_FORALL_THM : forall A:set, A <> Empty -> forall P Q:set -> prop, (forall x :e A, P x) /\ (forall x :e A, Q x) <-> forall x :e A, P x /\ Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem AND_FORALL_THM : forall A:set, forall P Q:set -> prop, (forall x :e A, P x) /\ (forall x :e A, Q x) <-> forall x :e A, P x /\ Q x.
 Admitted.
 
 // HOL Light: theorems.ml:253 / LEFT_AND_FORALL_THM
@@ -238,14 +238,14 @@ Admitted.
 
 // HOL Light: theorems.ml:265 / EXISTS_OR_THM
 // Source hash: md5:4d21283ecdaa6cc6acfad8726c3265d6
-// Status: exact_native
-Theorem EXISTS_OR_THM : forall A:set, A <> Empty -> forall P Q:set -> prop, (exists x :e A, P x \/ Q x) <-> (exists x :e A, P x) \/ exists x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_OR_THM : forall A:set, forall P Q:set -> prop, (exists x :e A, P x \/ Q x) <-> (exists x :e A, P x) \/ exists x :e A, Q x.
 Admitted.
 
 // HOL Light: theorems.ml:269 / OR_EXISTS_THM
 // Source hash: md5:90eb72cc8cdc71781fd4760c248ec42c
-// Status: exact_native
-Theorem OR_EXISTS_THM : forall A:set, A <> Empty -> forall P Q:set -> prop, (exists x :e A, P x) \/ (exists x :e A, Q x) <-> exists x :e A, P x \/ Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem OR_EXISTS_THM : forall A:set, forall P Q:set -> prop, (exists x :e A, P x) \/ (exists x :e A, Q x) <-> exists x :e A, P x \/ Q x.
 Admitted.
 
 // HOL Light: theorems.ml:273 / LEFT_OR_EXISTS_THM
@@ -262,86 +262,86 @@ Admitted.
 
 // HOL Light: theorems.ml:285 / LEFT_EXISTS_AND_THM
 // Source hash: md5:174d261bd6d0c9a4df5fae53976158d3
-// Status: exact_native
-Theorem LEFT_EXISTS_AND_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (exists x :e A, P x /\ Q) <-> (exists x :e A, P x) /\ Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem LEFT_EXISTS_AND_THM : forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x /\ Q) <-> (exists x :e A, P x) /\ Q.
 Admitted.
 
 // HOL Light: theorems.ml:289 / RIGHT_EXISTS_AND_THM
 // Source hash: md5:5b92102c260f0a6d245defde7c3af61f
-// Status: exact_native
-Theorem RIGHT_EXISTS_AND_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, (exists x :e A, P /\ Q x) <-> P /\ exists x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RIGHT_EXISTS_AND_THM : forall A:set, forall P:prop, forall Q:set -> prop, (exists x :e A, P /\ Q x) <-> P /\ exists x :e A, Q x.
 Admitted.
 
 // HOL Light: theorems.ml:293 / TRIV_EXISTS_AND_THM
 // Source hash: md5:0de49eaf0c1adf3904ba0ac67ea7bcbf
-// Status: exact_native
-Theorem TRIV_EXISTS_AND_THM : forall A:set, A <> Empty -> forall P Q:prop, (exists x :e A, P /\ Q) <-> (exists x :e A, P) /\ exists x :e A, Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem TRIV_EXISTS_AND_THM : forall A:set, forall P Q:prop, (exists x :e A, P /\ Q) <-> (exists x :e A, P) /\ exists x :e A, Q.
 Admitted.
 
 // HOL Light: theorems.ml:297 / LEFT_AND_EXISTS_THM
 // Source hash: md5:65f7ae7917946d1349165a2813d15f15
-// Status: exact_native
-Theorem LEFT_AND_EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (exists x :e A, P x) /\ Q <-> exists x :e A, P x /\ Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem LEFT_AND_EXISTS_THM : forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x) /\ Q <-> exists x :e A, P x /\ Q.
 Admitted.
 
 // HOL Light: theorems.ml:301 / RIGHT_AND_EXISTS_THM
 // Source hash: md5:8e95ec474ffede053f33ad8095d8a09f
-// Status: exact_native
-Theorem RIGHT_AND_EXISTS_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P /\ (exists x :e A, Q x) <-> exists x :e A, P /\ Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RIGHT_AND_EXISTS_THM : forall A:set, forall P:prop, forall Q:set -> prop, P /\ (exists x :e A, Q x) <-> exists x :e A, P /\ Q x.
 Admitted.
 
 // HOL Light: theorems.ml:305 / TRIV_AND_EXISTS_THM
 // Source hash: md5:d98a270e9b300e2cbf422699a6457f7d
-// Status: exact_native
-Theorem TRIV_AND_EXISTS_THM : forall A:set, A <> Empty -> forall P Q:prop, (exists x :e A, P) /\ (exists x :e A, Q) <-> exists x :e A, P /\ Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem TRIV_AND_EXISTS_THM : forall A:set, forall P Q:prop, (exists x :e A, P) /\ (exists x :e A, Q) <-> exists x :e A, P /\ Q.
 Admitted.
 
 // HOL Light: theorems.ml:313 / TRIV_FORALL_OR_THM
 // Source hash: md5:ef955ba74e738b664b318652bd77aa21
-// Status: exact_native
-Theorem TRIV_FORALL_OR_THM : forall A:set, A <> Empty -> forall P Q:prop, (forall x :e A, P \/ Q) <-> (forall x :e A, P) \/ forall x :e A, Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem TRIV_FORALL_OR_THM : forall A:set, forall P Q:prop, (forall x :e A, P \/ Q) <-> (forall x :e A, P) \/ forall x :e A, Q.
 Admitted.
 
 // HOL Light: theorems.ml:317 / TRIV_OR_FORALL_THM
 // Source hash: md5:3b71a04d9989b858b5236191c75db2c4
-// Status: exact_native
-Theorem TRIV_OR_FORALL_THM : forall A:set, A <> Empty -> forall P Q:prop, (forall x :e A, P) \/ (forall x :e A, Q) <-> forall x :e A, P \/ Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem TRIV_OR_FORALL_THM : forall A:set, forall P Q:prop, (forall x :e A, P) \/ (forall x :e A, Q) <-> forall x :e A, P \/ Q.
 Admitted.
 
 // HOL Light: theorems.ml:325 / RIGHT_IMP_FORALL_THM
 // Source hash: md5:c00ea28ad44fb8f262759a876ced5e51
-// Status: exact_native
-Theorem RIGHT_IMP_FORALL_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P -> (forall x :e A, Q x) <-> forall x :e A, P -> Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RIGHT_IMP_FORALL_THM : forall A:set, forall P:prop, forall Q:set -> prop, P -> (forall x :e A, Q x) <-> forall x :e A, P -> Q x.
 Admitted.
 
 // HOL Light: theorems.ml:329 / RIGHT_FORALL_IMP_THM
 // Source hash: md5:49dae7a1bd9dbbdf2c18e68591909be9
-// Status: exact_native
-Theorem RIGHT_FORALL_IMP_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, (forall x :e A, P -> Q x) <-> P -> forall x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RIGHT_FORALL_IMP_THM : forall A:set, forall P:prop, forall Q:set -> prop, (forall x :e A, P -> Q x) <-> P -> forall x :e A, Q x.
 Admitted.
 
 // HOL Light: theorems.ml:333 / LEFT_IMP_EXISTS_THM
 // Source hash: md5:d793fa8a6744565ded8518fb3f09de3c
-// Status: exact_native
-Theorem LEFT_IMP_EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (exists x :e A, P x) -> Q <-> forall x :e A, P x -> Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem LEFT_IMP_EXISTS_THM : forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x) -> Q <-> forall x :e A, P x -> Q.
 Admitted.
 
 // HOL Light: theorems.ml:337 / LEFT_FORALL_IMP_THM
 // Source hash: md5:50f8d6e255e3aec22a07150b97dda695
-// Status: exact_native
-Theorem LEFT_FORALL_IMP_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (forall x :e A, P x -> Q) <-> (exists x :e A, P x) -> Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem LEFT_FORALL_IMP_THM : forall A:set, forall P:set -> prop, forall Q:prop, (forall x :e A, P x -> Q) <-> (exists x :e A, P x) -> Q.
 Admitted.
 
 // HOL Light: theorems.ml:341 / TRIV_FORALL_IMP_THM
 // Source hash: md5:fc1e6c9b012c86ee3eb169faba899404
-// Status: exact_native
-Theorem TRIV_FORALL_IMP_THM : forall A:set, A <> Empty -> forall P Q:prop, (forall x :e A, P -> Q) <-> (exists x :e A, P) -> forall x :e A, Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem TRIV_FORALL_IMP_THM : forall A:set, forall P Q:prop, (forall x :e A, P -> Q) <-> (exists x :e A, P) -> forall x :e A, Q.
 Admitted.
 
 // HOL Light: theorems.ml:345 / TRIV_EXISTS_IMP_THM
 // Source hash: md5:128909a27b6a7b16d3f5ab2d4dc057f3
-// Status: exact_native
-Theorem TRIV_EXISTS_IMP_THM : forall A:set, A <> Empty -> forall P Q:prop, (exists x :e A, P -> Q) <-> (forall x :e A, P) -> exists x :e A, Q.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem TRIV_EXISTS_IMP_THM : forall A:set, forall P Q:prop, (exists x :e A, P -> Q) <-> (forall x :e A, P) -> exists x :e A, Q.
 Admitted.
 
 // HOL Light: theorems.ml:353 / MONO_AND
@@ -370,31 +370,31 @@ Admitted.
 
 // HOL Light: theorems.ml:361 / MONO_FORALL
 // Source hash: md5:32c8690ef1e35ecb9a776a51c3db2049
-// Status: exact_native
-Theorem MONO_FORALL : forall A:set, A <> Empty -> forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (forall x :e A, P x) -> forall x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem MONO_FORALL : forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (forall x :e A, P x) -> forall x :e A, Q x.
 Admitted.
 
 // HOL Light: theorems.ml:366 / MONO_EXISTS
 // Source hash: md5:4025fabd3eb4e3c1e0e82ec526e01240
-// Status: exact_native
-Theorem MONO_EXISTS : forall A:set, A <> Empty -> forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (exists x :e A, P x) -> exists x :e A, Q x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem MONO_EXISTS : forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (exists x :e A, P x) -> exists x :e A, Q x.
 Admitted.
 
 // HOL Light: theorems.ml:376 / WLOG_RELATION
 // Source hash: md5:3b7f91a78da7595edabc7bbf2d9ddc5e
-// Status: exact_native
-Theorem WLOG_RELATION : forall A:set, A <> Empty -> forall R0 P:set -> set -> prop, (forall x y :e A, P x y -> P y x) /\ ((forall x y :e A, R0 x y \/ R0 y x) /\ (forall x y :e A, R0 x y -> P x y)) -> forall x y :e A, P x y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WLOG_RELATION : forall A:set, forall R0 P:set -> set -> prop, (forall x y :e A, P x y -> P y x) /\ ((forall x y :e A, R0 x y \/ R0 y x) /\ (forall x y :e A, R0 x y -> P x y)) -> forall x y :e A, P x y.
 Admitted.
 
 // HOL Light: theorems.ml:390 / EXISTS_UNIQUE_ALT
 // Source hash: md5:63f42046bcacdb879337e6049d3196a9
-// Status: exact_native
-Theorem EXISTS_UNIQUE_ALT : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P x -> y = x) <-> exists x :e A, forall y :e A, P y <-> x = y.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_UNIQUE_ALT : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> exists x :e A, forall y :e A, P y <-> x = y.
 Admitted.
 
 // HOL Light: theorems.ml:401 / EXISTS_UNIQUE
 // Source hash: md5:ad104165c45f1735d28d0c6950611def
-// Status: exact_native
-Theorem EXISTS_UNIQUE : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P x -> y = x) <-> exists x :e A, P x /\ forall y :e A, P y -> y = x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EXISTS_UNIQUE : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> exists x :e A, P x /\ forall y :e A, P y -> y = x.
 Admitted.
 

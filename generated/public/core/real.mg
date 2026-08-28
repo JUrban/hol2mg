@@ -34,9 +34,9 @@ Admitted.
 
 // HOL Light: real.ml:37 / REAL_OF_NUM_SUC
 // Source hash: md5:54dc57e66aeb4c39062a5b0df2ff68d2
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
 
 // HOL Light: real.ml:41 / REAL_OF_NUM_SUB
 // Source hash: md5:5b5ff38e684439b10f02add17633150b
@@ -208,9 +208,9 @@ Admitted.
 
 // HOL Light: real.ml:196 / REAL_LT_01
 // Source hash: md5:c6778a8fda619be4b6b9f533e4978591
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_LT_01 : 0 < 1.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_LT_01 : 0 < 1.
 
 // HOL Light: real.ml:200 / REAL_LE_LADD
 // Source hash: md5:09e23f78214806a82299b2693d267f41
@@ -280,9 +280,9 @@ Admitted.
 
 // HOL Light: real.ml:244 / REAL_SUB_REFL
 // Source hash: md5:954229b87a301bbd4ac5123d74fb55de
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_SUB_REFL : forall x :e R, x + - x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_SUB_REFL : forall x :e R, x + - x = 0.
 
 // HOL Light: real.ml:248 / REAL_LE_DOUBLE
 // Source hash: md5:805d9db4299549df7cdd656241c9300c
@@ -370,9 +370,9 @@ Admitted.
 
 // HOL Light: real.ml:304 / REAL_LT_SUB_RADD
 // Source hash: md5:9a28a8add7e180ad9f098028b5115e19
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_LT_SUB_RADD : forall x y z :e R, x + - y < z <-> x < z + y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_LT_SUB_RADD : forall x y z :e R, x + - y < z <-> x < z + y.
 
 // HOL Light: real.ml:308 / REAL_LT_SUB_LADD
 // Source hash: md5:e5d5a21780233fdfa373d2f067864a19
@@ -460,9 +460,9 @@ Admitted.
 
 // HOL Light: real.ml:364 / REAL_SUB_SUB2
 // Source hash: md5:87d04f9a508924766a7ad2f419eba944
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_SUB_SUB2 : forall x y :e R, x + - (x + - y) = y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_SUB_SUB2 : forall x y :e R, x + - (x + - y) = y.
 
 // HOL Light: real.ml:368 / REAL_ADD_SUB2
 // Source hash: md5:41b420614815a3478c2b473254f28dfc
@@ -514,9 +514,9 @@ Admitted.
 
 // HOL Light: real.ml:404 / REAL_ABS_ZERO
 // Source hash: md5:149b54bb3af318721cce5f4d1802e361
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_ABS_ZERO : forall x :e R, abs_SNo x = 0 <-> x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_ZERO : forall x :e R, abs_SNo x = 0 <-> x = 0.
 
 // HOL Light: real.ml:408 / REAL_ABS_0
 // Source hash: md5:fd763b63100b4a2a6a1f597344f4d350
@@ -532,9 +532,9 @@ Admitted.
 
 // HOL Light: real.ml:416 / REAL_ABS_TRIANGLE
 // Source hash: md5:8a6e90a0968c0c940616841569612a35
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_TRIANGLE : forall x y :e R, abs_SNo (x + y) <= abs_SNo x + abs_SNo y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_TRIANGLE : forall x y :e R, abs_SNo (x + y) <= abs_SNo x + abs_SNo y.
 
 // HOL Light: real.ml:420 / REAL_ABS_TRIANGLE_LE
 // Source hash: md5:8482c5de81185779529f28fe50b59ab8
@@ -550,9 +550,9 @@ Admitted.
 
 // HOL Light: real.ml:428 / REAL_ABS_POS
 // Source hash: md5:e8a555b35bac915447922d0b3b8edb07
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_ABS_POS : forall x :e R, 0 <= abs_SNo x.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_POS : forall x :e R, 0 <= abs_SNo x.
 
 // HOL Light: real.ml:432 / REAL_ABS_SUB
 // Source hash: md5:c515ed4a9e538c45de0eed109a3d2228
@@ -640,9 +640,9 @@ Admitted.
 
 // HOL Light: real.ml:488 / REAL_ABS_SUB_ABS
 // Source hash: md5:b9676b39c033a29eeeebd9654a11a2fd
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_SUB_ABS : forall x y :e R, abs_SNo (abs_SNo x + - abs_SNo y) <= abs_SNo (x + - y).
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_SUB_ABS : forall x y :e R, abs_SNo (abs_SNo x + - abs_SNo y) <= abs_SNo (x + - y).
 
 // HOL Light: real.ml:492 / REAL_ABS_BETWEEN2
 // Source hash: md5:94235e953504e4e1fdec345e8e68feb0
@@ -652,9 +652,9 @@ Admitted.
 
 // HOL Light: real.ml:498 / REAL_ABS_BOUNDS
 // Source hash: md5:608933eaaa92371ed257256cd256cc62
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_BOUNDS : forall x k :e R, abs_SNo x <= k <-> - k <= x /\ x <= k.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_BOUNDS : forall x k :e R, abs_SNo x <= k <-> - k <= x /\ x <= k.
 
 // HOL Light: real.ml:502 / REAL_BOUNDS_LE
 // Source hash: md5:8486669a813b656ff0f9d647d08094c3
@@ -778,9 +778,9 @@ Admitted.
 
 // HOL Light: real.ml:610 / REAL_ABS_MUL
 // Source hash: md5:3bf3da5595c942035ade1c5f8abc27cc
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_MUL : forall x y :e R, abs_SNo (x * y) = abs_SNo x * abs_SNo y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_MUL : forall x y :e R, abs_SNo (x * y) = abs_SNo x * abs_SNo y.
 
 // HOL Light: real.ml:627 / REAL_POW_LE
 // Source hash: md5:5a8ecf718eb89350fd202db7c08ab26a
@@ -796,9 +796,9 @@ Admitted.
 
 // HOL Light: real.ml:639 / REAL_ABS_POW
 // Source hash: md5:620d354328ae656b67c7a60027c48ead
-// Status: transport_required (bridges: hol_num_omega, hol_real_R)
-Theorem REAL_ABS_POW : forall x :e R, forall n :e omega, abs_SNo (x ^ n) = abs_SNo x ^ n.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_POW : forall x :e R, forall n :e omega, abs_SNo (x ^ n) = abs_SNo x ^ n.
 
 // HOL Light: real.ml:644 / REAL_LE_LMUL
 // Source hash: md5:b2c6dbbde384bc8c9b07ff9b1fd67a50
@@ -946,15 +946,15 @@ Admitted.
 
 // HOL Light: real.ml:782 / REAL_ABS_INV
 // Source hash: md5:083c2d04ab52ae2cb44ea18261b5456b
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_INV : forall x :e R, abs_SNo (recip_SNo x) = recip_SNo (abs_SNo x).
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_INV : forall x :e R, abs_SNo (recip_SNo x) = recip_SNo (abs_SNo x).
 
 // HOL Light: real.ml:791 / REAL_ABS_DIV
 // Source hash: md5:8687e1a4ab5698822994d6adc964de39
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ABS_DIV : forall x y :e R, abs_SNo (x :/: y) = abs_SNo x :/: abs_SNo y.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ABS_DIV : forall x y :e R, abs_SNo (x :/: y) = abs_SNo x :/: abs_SNo y.
 
 // HOL Light: real.ml:795 / REAL_INV_MUL
 // Source hash: md5:34406e27d1d6775fc902c8ae9b8f6720
@@ -1138,9 +1138,9 @@ Admitted.
 
 // HOL Light: real.ml:964 / REAL_MUL_2
 // Source hash: md5:ab950f9f35f803d5edb71032a25fc47c
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_MUL_2 : forall x :e R, 2 * x = x + x.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_2 : forall x :e R, 2 * x = x + x.
 
 // HOL Light: real.ml:968 / REAL_POW_EQ_0
 // Source hash: md5:a58912d4285a1871bc4ef6043d16cfe4

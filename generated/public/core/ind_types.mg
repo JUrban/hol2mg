@@ -11,12 +11,12 @@ Admitted.
 // HOL Light: ind_types.ml:768 / sum_INDUCT
 // Source hash: md5:de2725f07074fc50f47627403a63ffd9
 // Status: transport_required (bridges: hol_sum_setsum)
-Theorem sum_INDUCT : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, (forall a :e A, P (Inj0 a)) /\ (forall a :e B, P (Inj1 a)) -> forall x :e A + B, P x.
+Theorem sum_INDUCT : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, (forall a :e A, P (Inj0 a)) /\ (forall a :e B, P (Inj1 a)) -> forall x :e A :+: B, P x.
 Admitted.
 
 // HOL Light: ind_types.ml:768 / sum_RECURSION
 // Source hash: md5:a693dd783d6aeace677183d17ed78fbe
 // Status: transport_required (bridges: hol_sum_setsum)
-Theorem sum_RECURSION : forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A + B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a).
+Theorem sum_RECURSION : forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a).
 Admitted.
 

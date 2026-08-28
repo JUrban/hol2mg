@@ -57,6 +57,7 @@ let rec carrier ctx (ty : ty) : carrier =
   | TyApp (c, args) ->
       (match Hashtbl.find_opt ctx.reg.R.types c with
        | None -> unsupported "no carrier mapping for type constructor %s (in %s)" c (string_of_ty ty)
+       | Some e when e.R.t_status = "internal" -> unsupported "internal construction type %s" c
        | Some e ->
            use_class ctx e.R.t_class e.R.t_bridge;
            if e.R.t_status = "pending" then unsupported "type mapping for %s is pending" c;
@@ -87,8 +88,10 @@ let is_meta = function VMetaFun _ | VMetaPred _ -> true | _ -> false
 let sanitize_var s =
   let b = Buffer.create (String.length s) in
   String.iter (fun c -> if Mg.is_name_char c then Buffer.add_char b c else Buffer.add_char b '_') s;
-  let s = Buffer.contents b in
-  if s = "" || (s.[0] >= '0' && s.[0] <= '9') then "v" ^ s else s
+  let s' = Buffer.contents b in
+  let alnum = String.exists (fun c -> c <> '_' && c <> '\'') s' in
+  if not alnum then (match s with "<<" | "<<<" | "<" | "<=" | "<<=" -> "lt" | "op" -> "op" | "+" | "*" -> "op" | _ -> "rel")
+  else if s'.[0] >= '0' && s'.[0] <= '9' then "v" ^ s' else s'
 
 let fresh ctx base =
   let base = sanitize_var base in
@@ -120,12 +123,19 @@ let all_occurrences_meta ctx (v : string * ty) (arity : int) (t : tm) : bool =
      | Const ("COND", TyApp ("fun", [ _; TyApp ("fun", [ ty; _ ]) ])) when is_fun_ty ty && List.length args = 3 ->
          walk ctxd (List.hd args);
          List.iter (fun a -> match a with Free (s, ty') when (s, ty') = v -> () | _ -> walk ctxd a) (List.tl args)
+     | Const (("!" | "?" | "?!" | "@"), _) ->
+         List.iter (fun a -> match a with Free (s, ty') when (s, ty') = v -> () | _ -> walk ctxd a) args
      | Const (c, cty) ->
-         let roles = (match R.find_const ctx.reg c cty with Some (e, _) -> e.R.c_args | None -> []) in
+         let entry = R.find_const ctx.reg c cty in
+         let roles = (match entry with Some (e, _) -> e.R.c_args | None -> []) in
+         let sdoms = (match entry with Some (e, _) -> fst (strip_fun_ty e.R.c_scheme) | None -> []) in
          List.iteri (fun i a ->
            let role = (try List.nth roles i with _ -> R.RSet) in
+           let slot_arity = (match role with
+             | R.RMetaFun (Some k) | R.RMetaPred (Some k) -> k
+             | _ -> (try fun_arity (List.nth sdoms i) with _ -> 0)) in
            match role, a with
-           | (R.RMetaFun | R.RMetaPred), Free (s, ty') when (s, ty') = v -> ()
+           | (R.RMetaFun _ | R.RMetaPred _), Free (s, ty') when (s, ty') = v && slot_arity <= arity -> ()
            | _ -> walk ctxd a) args
      | Lam (_, _, b) -> List.iter (walk ctxd) args; walk ctxd b
      | App _ -> fail "walk: application head")
@@ -228,6 +238,14 @@ let coerce ctx (t : Mg.tm) (from : view) (target : view) : Mg.tm =
       (* a function into the boolean carrier used as a predicate *)
       let xs = List.map (fun _ -> fresh ctx "x") ds in
       let body = mg_eq (List.fold_left (fun acc x -> Mg.App (acc, Mg.Var x)) t xs) (Mg.Num 1) in
+      List.iter (release ctx) xs;
+      List.fold_right (fun x acc -> Mg.Lam (x, Mg.Set, acc)) xs body
+  | VMetaPred ds, VMetaFun (ds', _) when List.length ds > List.length ds' ->
+      let k = List.length ds' in
+      let xs = List.map (fun _ -> fresh ctx "x") ds' in
+      let applied = List.fold_left (fun acc x -> Mg.App (acc, Mg.Var x)) t xs in
+      let tail = List.filteri (fun i _ -> i >= k) ds in
+      let body = reify ctx applied (VMetaPred tail) in
       List.iter (release ctx) xs;
       List.fold_right (fun x acc -> Mg.Lam (x, Mg.Set, acc)) xs body
   | VMetaPred ds, VMetaFun (ds', _) when List.length ds = List.length ds' ->
@@ -401,7 +419,7 @@ and elab_eq ctx (ty : ty) (a : tm) (b : tm) : Mg.tm =
            | Const (c, cty) ->
                (match R.find_const ctx.reg c cty with
                 | Some (e, _) when List.length args >= List.length e.R.c_args ->
-                    (match e.R.c_result with R.RMetaFun | R.RMetaPred -> true | _ -> false)
+                    (match e.R.c_result with R.RMetaFun _ | R.RMetaPred _ -> true | _ -> false)
                 | Some _ -> true   (* partial application of a mapped constant: meta *)
                 | None -> false)
            | Free (s, _) ->
@@ -481,7 +499,7 @@ and elab_const ctx (t : tm) (c : string) (cty : ty) (args : tm list) (hint : vie
       elab_const ctx t c cty [ eta_expand "x" p pty ] hint
   | "?!", [ Lam (x, ty, body) ] ->
       (* ?!x. P x  ==>  ?x. P x /\ !y. P y ==> y = x *)
-      let py = subst_bound 0 (Bound 1) (lift 1 1 body) in   (* P y with y = Bound 0, x = Bound 1 *)
+      let py = lift 1 1 body in   (* P y: y = Bound 0, x = Bound 1 *)
       let uniq = mk_forall "y" ty (mk_imp py (mk_eq ty (Bound 0) (Bound 1))) in
       (elab_binder ctx `Ex x ty (mk_conj body uniq), VProp)
   | "@", [ Lam (x, ty, body) ] ->
@@ -548,19 +566,26 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
     elab_nat ctx (eta_expand "x" t ty) hint
   end else begin
     let doms, _ = strip_fun_ty cty in
+    let sdoms, _ = strip_fun_ty e.R.c_scheme in
     let arg_views = List.mapi (fun i role ->
       let aty = List.nth doms i in
+      (* the slot arity is fixed by the scheme; the instance may have a larger arity *)
+      let k = (match role with R.RMetaFun (Some k) | R.RMetaPred (Some k) -> k | _ -> fun_arity (List.nth sdoms i)) in
+      let idoms, ires = strip_fun_ty aty in
+      let take n l = List.filteri (fun j _ -> j < n) l and drop n l = List.filteri (fun j _ -> j >= n) l in
+      let residual = List.fold_right (fun d acc -> fun_ty d acc) (drop k idoms) ires in
       match role with
       | R.RSet -> VSet (carrier ctx aty)
       | R.RProp -> VProp
       | R.RSubset -> (match aty with TyApp ("fun", [ a; TyApp ("bool", []) ]) -> VSubset (carrier ctx a)
                       | _ -> fail "registry: subset role for non-predicate argument of %s" c)
-      | R.RMetaFun -> (match view_of_type ctx aty with
-                       | VMetaFun _ as v -> v
-                       | VMetaPred ds -> VMetaFun (ds, Mg.Num 2)   (* boolean-valued function as data *)
-                       | _ -> fail "registry: metafun role for non-function argument of %s" c)
-      | R.RMetaPred -> (match view_of_type ctx aty with VMetaPred _ as v -> v
-                        | _ -> fail "registry: metapred role for non-predicate argument of %s" c)) e.R.c_args in
+      | R.RMetaFun _ ->
+          if k = 0 || List.length idoms < k then fail "registry: metafun role for non-function argument of %s" c;
+          if residual = bool_ty then VMetaFun (List.map (carrier ctx) (take k idoms), Mg.Num 2)
+          else VMetaFun (List.map (carrier ctx) (take k idoms), carrier ctx residual)
+      | R.RMetaPred _ ->
+          if k = 0 || List.length idoms < k || residual <> bool_ty then fail "registry: metapred role for non-predicate argument of %s" c;
+          VMetaPred (List.map (carrier ctx) (take k idoms))) e.R.c_args in
     let args' = List.mapi (fun i a -> elab ctx a (List.nth arg_views i)) (List.filteri (fun i _ -> i < n) args) in
     let sub = List.mapi (fun i a -> (string_of_int (i + 1), a)) args'
               @ List.map (fun (v, ty) -> (v, carrier ctx ty)) inst in
@@ -571,8 +596,8 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
       | R.RProp -> VProp
       | R.RSubset -> (match res_hol_ty with TyApp ("fun", [ a; TyApp ("bool", []) ]) -> VSubset (carrier ctx a)
                       | _ -> fail "registry: subset result for %s" c)
-      | R.RMetaFun -> view_of_type ctx res_hol_ty
-      | R.RMetaPred -> view_of_type ctx res_hol_ty) in
+      | R.RMetaFun _ -> view_of_type ctx res_hol_ty
+      | R.RMetaPred _ -> view_of_type ctx res_hol_ty) in
     (* extra arguments *)
     let extra = List.filteri (fun i _ -> i >= n) args in
     if extra = [] then (r, res_view)
@@ -677,5 +702,7 @@ let elab_sequent (reg : R.t) (seq : sequent) : result =
         Mg.All (n, mty_of_view v, Mg.Imp (cl, acc))) decls body in
   let body = List.fold_right (fun (_, n) acc -> Mg.Imp (mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) tv_names body in
   let body = List.fold_right (fun (_, n) acc -> Mg.All (n, Mg.Set, acc)) tv_names body in
+  let body, dropped = Emptycase.generalize body (List.map snd tv_names) in
+  List.iter (fun p -> use_class ctx "generalization" ("empty_case:" ^ p)) dropped;
   { statement = body; tyvar_params = List.map snd tv_names; classes = ctx.st.classes; bridges = ctx.st.bridges;
     notes = ctx.st.notes; var_views = List.map (fun (s, _, v, _) -> (s, string_of_view v)) decls }

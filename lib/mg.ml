@@ -69,6 +69,10 @@ let declare_notation cst n =
   | Postfix (s, p) -> Hashtbl.replace postfix_syms s (cst, p)
 
 let builtin_notations () =
+  declare_notation "eq" (Infix ("=", 502, NoneA));
+  declare_notation "neq" (Infix ("<>", 502, NoneA));
+  declare_notation "In" (Infix (":e", 500, NoneA));
+  declare_notation "Subq" (Infix ("c=", 500, NoneA));
   Hashtbl.replace infix_syms "->" ("->", 800, RightA);
   Hashtbl.replace infix_syms ":e" (":e", 500, NoneA);
   Hashtbl.replace infix_syms "c=" ("c=", 500, NoneA)
@@ -102,6 +106,26 @@ let load_signature file =
    with End_of_file -> ());
   close_in ic
 
+(* Override the textual notation scan with an empirically resolved table
+   (tools/probe_notations.py), if present next to the signature. *)
+let load_notation_table file =
+  let j = Yojson.Safe.from_file file in
+  let open Yojson.Safe.Util in
+  Hashtbl.reset notations; Hashtbl.reset infix_syms; Hashtbl.reset prefix_syms; Hashtbl.reset postfix_syms;
+  builtin_notations ();
+  let assoc_of = function "left" -> LeftA | "right" -> RightA | _ -> NoneA in
+  (match member "infix" j with
+   | `Assoc l -> List.iter (fun (sym, v) -> match v with
+       | `List [ `String c; `Int p; `String a ] -> declare_notation c (Infix (sym, p, assoc_of a))
+       | _ -> ()) l
+   | _ -> ());
+  (match member "prefix" j with
+   | `Assoc l -> List.iter (fun (sym, v) -> match v with `List [ `String c; `Int p ] -> declare_notation c (Prefix (sym, p)) | _ -> ()) l
+   | _ -> ());
+  (match member "postfix" j with
+   | `Assoc l -> List.iter (fun (sym, v) -> match v with `List [ `String c; `Int p ] -> declare_notation c (Postfix (sym, p)) | _ -> ()) l
+   | _ -> ())
+
 let is_reserved s = List.mem s reserved_words || Hashtbl.mem sig_names s
 
 (* ------------------------------------------------------------------------ *)
@@ -132,14 +156,20 @@ let rec pr q trailing t =
   | App _ ->
       let h, args = strip_app t [] in
       (match h, args with
-       | Cst c, [ a; b ] when (match Hashtbl.find_opt notations c with Some (Infix _) -> true | _ -> false) ->
+       | Cst c, [ a; b ] when (match Hashtbl.find_opt notations c with
+                                | Some (Infix (sym, _, _)) -> (match Hashtbl.find_opt infix_syms sym with Some (c', _, _) -> c' = c | None -> false)
+                                | _ -> false) ->
            let (Infix (sym, p, assoc)) = Hashtbl.find notations c [@@warning "-8"] in
            pr_infix q trailing sym p assoc a b
-       | Cst c, [ a ] when (match Hashtbl.find_opt notations c with Some (Prefix _) -> true | _ -> false) ->
+       | Cst c, [ a ] when (match Hashtbl.find_opt notations c with
+                             | Some (Prefix (sym, _)) -> (match Hashtbl.find_opt prefix_syms sym with Some (c', _) -> c' = c | None -> false)
+                             | _ -> false) ->
            let (Prefix (sym, p)) = Hashtbl.find notations c [@@warning "-8"] in
            let s = sym ^ " " ^ pr_operand (p + 1) trailing a in
            if q <= p then paren s else s
-       | Cst c, [ a ] when (match Hashtbl.find_opt notations c with Some (Postfix _) -> true | _ -> false) ->
+       | Cst c, [ a ] when (match Hashtbl.find_opt notations c with
+                             | Some (Postfix (sym, _)) -> (match Hashtbl.find_opt postfix_syms sym with Some (c', _) -> c' = c | None -> false)
+                             | _ -> false) ->
            let (Postfix (sym, p)) = Hashtbl.find notations c [@@warning "-8"] in
            let s = pr_operand (p + 1) false a ^ " " ^ sym in
            if q <= p then paren s else s
@@ -269,30 +299,65 @@ let rec subst (sub : (string * tm) list) t =
   | Tuple ts -> Tuple (List.map (subst sub) ts)
   | If (a, b, c) -> If (subst sub a, subst sub b, subst sub c)
 
-(* instantiate template placeholders *)
+(* rename binders of t whose names occur in `avoid` (capture avoidance for inst) *)
+let rec rename_binders avoid t =
+  let rb x body_f =
+    if List.mem x avoid then
+      let x' = fresh_name x (avoid @ free_vars t) in
+      (x', fun b -> rename_binders avoid (subst [ (x, Var x') ] (body_f b)))
+    else (x, fun b -> rename_binders avoid (body_f b))
+  in
+  match t with
+  | Var _ | Cst _ | Meta _ | Num _ -> t
+  | App (a, b) -> App (rename_binders avoid a, rename_binders avoid b)
+  | Imp (a, b) -> Imp (rename_binders avoid a, rename_binders avoid b)
+  | Lam (x, ty, b) -> let x', f = rb x (fun b -> b) in Lam (x', ty, f b)
+  | All (x, ty, b) -> let x', f = rb x (fun b -> b) in All (x', ty, f b)
+  | Ex (x, ty, b) -> let x', f = rb x (fun b -> b) in Ex (x', ty, f b)
+  | LamIn (x, a, b) -> let x', f = rb x (fun b -> b) in LamIn (x', rename_binders avoid a, f b)
+  | AllIn (x, a, b) -> let x', f = rb x (fun b -> b) in AllIn (x', rename_binders avoid a, f b)
+  | AllSub (x, a, b) -> let x', f = rb x (fun b -> b) in AllSub (x', rename_binders avoid a, f b)
+  | ExIn (x, a, b) -> let x', f = rb x (fun b -> b) in ExIn (x', rename_binders avoid a, f b)
+  | ExSub (x, a, b) -> let x', f = rb x (fun b -> b) in ExSub (x', rename_binders avoid a, f b)
+  | Sep (x, a, p) -> let x', f = rb x (fun b -> b) in Sep (x', rename_binders avoid a, f p)
+  | Repl (x, a, b) -> let x', f = rb x (fun b -> b) in Repl (x', rename_binders avoid a, f b)
+  | ReplSep (x, a, p, b) -> let x', f = rb x (fun b -> b) in ReplSep (x', rename_binders avoid a, f p, f b)
+  | SigmaIn (x, a, b) -> let x', f = rb x (fun b -> b) in SigmaIn (x', rename_binders avoid a, f b)
+  | PiIn (x, a, b) -> let x', f = rb x (fun b -> b) in PiIn (x', rename_binders avoid a, f b)
+  | FamUnion (x, a, b) -> let x', f = rb x (fun b -> b) in FamUnion (x', rename_binders avoid a, f b)
+  | SetEnum ts -> SetEnum (List.map (rename_binders avoid) ts)
+  | Tuple ts -> Tuple (List.map (rename_binders avoid) ts)
+  | If (a, b, c) -> If (rename_binders avoid a, rename_binders avoid b, rename_binders avoid c)
+
+(* instantiate template placeholders (capture-avoiding) *)
 let rec inst (sub : (string * tm) list) t =
+  let avoid = List.concat_map (fun (_, v) -> free_vars v) sub in
+  let t = if avoid = [] then t else rename_binders avoid t in
+  inst_raw sub t
+
+and inst_raw (sub : (string * tm) list) t =
   match t with
   | Meta s -> (try List.assoc s sub with Not_found -> t)
   | Var _ | Cst _ | Num _ -> t
-  | App (a, b) -> App (inst sub a, inst sub b)
-  | Imp (a, b) -> Imp (inst sub a, inst sub b)
-  | Lam (x, ty, b) -> Lam (x, ty, inst sub b)
-  | All (x, ty, b) -> All (x, ty, inst sub b)
-  | Ex (x, ty, b) -> Ex (x, ty, inst sub b)
-  | LamIn (x, a, b) -> LamIn (x, inst sub a, inst sub b)
-  | AllIn (x, a, b) -> AllIn (x, inst sub a, inst sub b)
-  | AllSub (x, a, b) -> AllSub (x, inst sub a, inst sub b)
-  | ExIn (x, a, b) -> ExIn (x, inst sub a, inst sub b)
-  | ExSub (x, a, b) -> ExSub (x, inst sub a, inst sub b)
-  | Sep (x, a, p) -> Sep (x, inst sub a, inst sub p)
-  | Repl (x, a, b) -> Repl (x, inst sub a, inst sub b)
-  | ReplSep (x, a, p, b) -> ReplSep (x, inst sub a, inst sub p, inst sub b)
-  | SigmaIn (x, a, b) -> SigmaIn (x, inst sub a, inst sub b)
-  | PiIn (x, a, b) -> PiIn (x, inst sub a, inst sub b)
-  | FamUnion (x, a, b) -> FamUnion (x, inst sub a, inst sub b)
-  | SetEnum ts -> SetEnum (List.map (inst sub) ts)
-  | Tuple ts -> Tuple (List.map (inst sub) ts)
-  | If (a, b, c) -> If (inst sub a, inst sub b, inst sub c)
+  | App (a, b) -> App (inst_raw sub a, inst_raw sub b)
+  | Imp (a, b) -> Imp (inst_raw sub a, inst_raw sub b)
+  | Lam (x, ty, b) -> Lam (x, ty, inst_raw sub b)
+  | All (x, ty, b) -> All (x, ty, inst_raw sub b)
+  | Ex (x, ty, b) -> Ex (x, ty, inst_raw sub b)
+  | LamIn (x, a, b) -> LamIn (x, inst_raw sub a, inst_raw sub b)
+  | AllIn (x, a, b) -> AllIn (x, inst_raw sub a, inst_raw sub b)
+  | AllSub (x, a, b) -> AllSub (x, inst_raw sub a, inst_raw sub b)
+  | ExIn (x, a, b) -> ExIn (x, inst_raw sub a, inst_raw sub b)
+  | ExSub (x, a, b) -> ExSub (x, inst_raw sub a, inst_raw sub b)
+  | Sep (x, a, p) -> Sep (x, inst_raw sub a, inst_raw sub p)
+  | Repl (x, a, b) -> Repl (x, inst_raw sub a, inst_raw sub b)
+  | ReplSep (x, a, p, b) -> ReplSep (x, inst_raw sub a, inst_raw sub p, inst_raw sub b)
+  | SigmaIn (x, a, b) -> SigmaIn (x, inst_raw sub a, inst_raw sub b)
+  | PiIn (x, a, b) -> PiIn (x, inst_raw sub a, inst_raw sub b)
+  | FamUnion (x, a, b) -> FamUnion (x, inst_raw sub a, inst_raw sub b)
+  | SetEnum ts -> SetEnum (List.map (inst_raw sub) ts)
+  | Tuple ts -> Tuple (List.map (inst_raw sub) ts)
+  | If (a, b, c) -> If (inst_raw sub a, inst_raw sub b, inst_raw sub c)
 
 (* Beta-normalise meta-level redexes (fun x:T => b) a, with the binder-name
    preference: a template binder applied as the sole argument of a lambda
@@ -490,11 +555,16 @@ let parse_template (s : string) : tm =
         else begin
           ignore (next ());
           let rq = (match assoc with RightA -> p + 1 | _ -> p) in
+          (* Megalodon: a binder-like right operand extends to the end (unless parenthesised) *)
+          let starts_binder = (match !toks with
+            | TName ("forall" | "exists" | "fun" | "Sigma_" | "Pi_" | "if") :: _ | TSym "\\/_" :: _ -> true
+            | TSym sym :: TName ("forall" | "exists" | "fun" | "Sigma_" | "Pi_" | "if") :: _ when Hashtbl.mem prefix_syms sym -> true
+            | _ -> false) in
           let rhs = expr rq in
           let t = (match cst with
             | "->" -> Imp (lhs, rhs)
             | _ -> App (App (Cst cst, lhs), rhs)) in
-          if is_binderish rhs then t else infix_loop q t
+          if starts_binder then t else infix_loop q t
         end
     | TSym sym when Hashtbl.mem postfix_syms sym ->
         let cst, p = Hashtbl.find postfix_syms sym in

@@ -14,6 +14,24 @@ Admitted.
 Theorem is_int : forall x :e R, x :e int <-> exists n :e omega, x = n \/ x = - n.
 Admitted.
 
+// HOL Light: int.ml:31 / int_tybij
+// Source hash: md5:3046e4c5f8eb4701b59127b6d816a01b
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_tybij : (forall a :e int, (if a :e int then a else 0) = a) /\ forall r :e R, r :e int <-> (if r :e int then r else 0) = r.
+Admitted.
+
+// HOL Light: int.ml:36 / int_abstr
+// Source hash: md5:5e62030b8cb4e642efde5ca482a7495d
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_abstr : forall a :e int, (if a :e int then a else 0) = a.
+Admitted.
+
+// HOL Light: int.ml:36 / int_rep
+// Source hash: md5:6de190fa190911804f434ec111c53f52
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_rep : forall r :e R, r :e int <-> (if r :e int then r else 0) = r.
+Admitted.
+
 // HOL Light: int.ml:39 / dest_int_rep
 // Source hash: md5:4f116cb419758b02da7fe41cdd1c38af
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, int_Subq_R, omega_Subq_R)
@@ -56,10 +74,22 @@ Admitted.
 Theorem int_gt : forall x y :e int, y < x <-> y < x.
 Admitted.
 
+// HOL Light: int.ml:88 / int_of_num
+// Source hash: md5:988ee0a1ee8fbc1cc8ee2a39e110cf83
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R, omega_Subq_int)
+Theorem int_of_num : forall n :e omega, n = if n :e int then n else 0.
+Admitted.
+
 // HOL Light: int.ml:91 / int_of_num_th
 // Source hash: md5:35261390244301170f26ee50449b494b
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, int_Subq_R, omega_Subq_R, omega_Subq_int)
 Theorem int_of_num_th : forall n :e omega, n = n.
+Admitted.
+
+// HOL Light: int.ml:96 / int_neg
+// Source hash: md5:10fd991057cc4493daa239eac7a378c7
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_neg : forall i :e int, - i = if - i :e int then - i else 0.
 Admitted.
 
 // HOL Light: int.ml:99 / int_neg_th
@@ -68,10 +98,22 @@ Admitted.
 Theorem int_neg_th : forall x :e int, - x = - x.
 Admitted.
 
+// HOL Light: int.ml:106 / int_add
+// Source hash: md5:452ea8afad01dc3e00abecf4bfb405b7
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_add : forall x y :e int, x + y = if x + y :e int then x + y else 0.
+Admitted.
+
 // HOL Light: int.ml:109 / int_add_th
 // Source hash: md5:dd9f80506f6d99ceaf3f0d9bb1319597
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_add_th : forall x y :e int, x + y = x + y.
+Admitted.
+
+// HOL Light: int.ml:123 / int_sub
+// Source hash: md5:da9658dcf1adb65471b3df2d7a5508a8
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_sub : forall x y :e int, x + - y = if x + - y :e int then x + - y else 0.
 Admitted.
 
 // HOL Light: int.ml:126 / int_sub_th
@@ -80,10 +122,22 @@ Admitted.
 Theorem int_sub_th : forall x y :e int, x + - y = x + - y.
 Admitted.
 
+// HOL Light: int.ml:131 / int_mul
+// Source hash: md5:0ee164d776cf3bfe7b2c2fb604061cc9
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_mul : forall x y :e int, x * y = if x * y :e int then x * y else 0.
+Admitted.
+
 // HOL Light: int.ml:134 / int_mul_th
 // Source hash: md5:b83b17b818c1f7162261a657aaa93495
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_mul_th : forall x y :e int, x * y = x * y.
+Admitted.
+
+// HOL Light: int.ml:143 / int_abs
+// Source hash: md5:71eaa84cc4df60cef62cde4868205e2e
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_abs : forall x :e int, abs_SNo x = if abs_SNo x :e int then abs_SNo x else 0.
 Admitted.
 
 // HOL Light: int.ml:146 / int_abs_th
@@ -92,10 +146,22 @@ Admitted.
 Theorem int_abs_th : forall x :e int, abs_SNo x = abs_SNo x.
 Admitted.
 
+// HOL Light: int.ml:151 / int_sgn
+// Source hash: md5:e8703bd63d689c63e0255e2e03bba69c
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_sgn : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if (if 0 < x then 1 else if x < 0 then - 1 else 0) :e int then if 0 < x then 1 else if x < 0 then - 1 else 0 else 0.
+Admitted.
+
 // HOL Light: int.ml:154 / int_sgn_th
 // Source hash: md5:b6c4c1d56066eb2f173bcd00597562bf
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_sgn_th : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
+Admitted.
+
+// HOL Light: int.ml:160 / int_max
+// Source hash: md5:27b81a3591ba69db6f036db60e5e9b3a
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_max : forall x y :e int, (if x <= y then y else x) = if (if x <= y then y else x) :e int then if x <= y then y else x else 0.
 Admitted.
 
 // HOL Light: int.ml:163 / int_max_th
@@ -104,10 +170,22 @@ Admitted.
 Theorem int_max_th : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
 Admitted.
 
+// HOL Light: int.ml:168 / int_min
+// Source hash: md5:1f287113561b3b6b2727a82204d4c51b
+// Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
+Theorem int_min : forall x y :e int, (if x <= y then x else y) = if (if x <= y then x else y) :e int then if x <= y then x else y else 0.
+Admitted.
+
 // HOL Light: int.ml:171 / int_min_th
 // Source hash: md5:32a75428ddb4e7a53b604c2d95cb3a3b
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_min_th : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
+Admitted.
+
+// HOL Light: int.ml:176 / int_pow
+// Source hash: md5:9a1afde4bd0a4bfd52629c819bd94038
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, hol_real_R, int_Subq_R)
+Theorem int_pow : forall x :e int, forall n :e omega, x ^ n = if x ^ n :e int then x ^ n else 0.
 Admitted.
 
 // HOL Light: int.ml:179 / int_pow_th
@@ -784,9 +862,9 @@ Admitted.
 
 // HOL Light: int.ml:431 / INT_LT_01
 // Source hash: md5:497d72e7729d5c4ea49d37b04827d1ac
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_LT_01 : 0 < 1.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_LT_01 : 0 < 1.
 
 // HOL Light: int.ml:432 / INT_LT_ADD
 // Source hash: md5:8b6456d2cf8006f621132d9047ca2a89
@@ -1012,9 +1090,9 @@ Admitted.
 
 // HOL Light: int.ml:469 / INT_LT_SUB_RADD
 // Source hash: md5:e376eddf451fdfae4516e2191eb8e455
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_LT_SUB_RADD : forall x y z :e int, x + - y < z <-> x < z + y.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_LT_SUB_RADD : forall x y z :e int, x + - y < z <-> x < z + y.
 
 // HOL Light: int.ml:470 / INT_LT_TOTAL
 // Source hash: md5:2592f9f6afccf104f6c39dd0da684bd6
@@ -1186,9 +1264,9 @@ Admitted.
 
 // HOL Light: int.ml:498 / INT_NEG_0
 // Source hash: md5:f1f5d00aebedc3af1018837c82fce628
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_NEG_0 : - 0 = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_NEG_0 : - 0 = 0.
 
 // HOL Light: int.ml:499 / INT_NEG_ADD
 // Source hash: md5:ef8377f1d35cc5e057e02d00cc42e6c2
@@ -1372,15 +1450,15 @@ Admitted.
 
 // HOL Light: int.ml:529 / INT_OF_NUM_SUC
 // Source hash: md5:97ae1d2133bd1e3fcb96eec95c1f37cd
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
 
 // HOL Light: int.ml:530 / INT_POS
 // Source hash: md5:98964a3ff0f5b863a58d239a4e1da89c
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_POS : forall n :e omega, 0 <= n.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_POS : forall n :e omega, 0 <= n.
 
 // HOL Light: int.ml:531 / INT_POS_EQ_SQUARE
 // Source hash: md5:a4fa86348e52a1273f3f397cd8b9229b
@@ -1612,9 +1690,9 @@ Admitted.
 
 // HOL Light: int.ml:569 / INT_SGN
 // Source hash: md5:8125c06f3f21f21d1fb3f75026ee7511
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
 
 // HOL Light: int.ml:570 / INT_SGNS_EQ
 // Source hash: md5:acbb6321282e6b76ec56d3bc7fae24f5
@@ -1774,9 +1852,9 @@ Admitted.
 
 // HOL Light: int.ml:596 / INT_SUB_REFL
 // Source hash: md5:2af58559b3615d8c421715d986619866
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem INT_SUB_REFL : forall x :e int, x + - x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_SUB_REFL : forall x :e int, x + - x = 0.
 
 // HOL Light: int.ml:597 / INT_SUB_RNEG
 // Source hash: md5:bedfa50186ef274208e8e8425619de57
@@ -1864,15 +1942,15 @@ Admitted.
 
 // HOL Light: int.ml:658 / INT_GE
 // Source hash: md5:21fd94d6d5bf4ed5f82206866508dece
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
 
 // HOL Light: int.ml:662 / INT_GT
 // Source hash: md5:210f1a8f40f04907eb1ff4ede4ade97e
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_GT : forall x y :e int, y < x <-> y < x.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_GT : forall x y :e int, y < x <-> y < x.
 
 // HOL Light: int.ml:666 / INT_LT
 // Source hash: md5:68a146ef016b6b7b0ba14603c5c22c4a
@@ -1882,21 +1960,21 @@ Admitted.
 
 // HOL Light: int.ml:715 / INT_SUB
 // Source hash: md5:84797b55cfb18771c7a0b0f6b45861de
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
 
 // HOL Light: int.ml:717 / INT_MAX
 // Source hash: md5:137b46cca035b261ad44244bcfc009b7
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
 
 // HOL Light: int.ml:719 / INT_MIN
 // Source hash: md5:f418eb61bef787b420491a2976be0304
-// Status: transport_required (bridges: hol_int_int)
-Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
-Admitted.
+// Status: native_reuse (bridges: hol_int_int)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
 
 // HOL Light: int.ml:725 / INT_OF_NUM_EXISTS
 // Source hash: md5:2649dc915583d6fad07e349593bf781a
@@ -1952,6 +2030,66 @@ Admitted.
 Theorem INT_DIVMOD_EXIST_0 : forall m n :e int, exists q r :e int, (n = 0 -> q = 0 /\ r = m) /\ (~ n = 0 -> 0 <= r /\ (r < abs_SNo n /\ m = q * n + r)).
 Admitted.
 
+// HOL Light: int.ml:819 / INT_DIVISION_0
+// Source hash: md5:20f62b21b9620245e3c52e17fc922d1a
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIVISION_0 : forall m n :e int, (n = 0 -> div_int m n = 0 /\ rem_int m n = m) /\ (~ n = 0 -> 0 <= rem_int m n /\ (rem_int m n < abs_SNo n /\ m = div_int m n * n + rem_int m n)).
+Admitted.
+
+// HOL Light: int.ml:822 / INT_DIVISION
+// Source hash: md5:f0a1be36963cfff364e042a398f6c10d
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIVISION : forall m n :e int, ~ n = 0 -> m = div_int m n * n + rem_int m n /\ (0 <= rem_int m n /\ rem_int m n < abs_SNo n).
+Admitted.
+
+// HOL Light: int.ml:827 / INT_DIVISION_SIMP
+// Source hash: md5:2907755fc49a1ef830240acdaa828cb6
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_DIVISION_SIMP : forall m n :e int, div_int m n * n + rem_int m n = m.
+Admitted.
+
+// HOL Light: int.ml:832 / INT_REM_POS
+// Source hash: md5:ca0bdca0c7540e132afbbcdcde4a0d2e
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_POS : forall a b :e int, ~ b = 0 -> 0 <= rem_int a b.
+Admitted.
+
+// HOL Light: int.ml:836 / INT_DIV_0
+// Source hash: md5:e7676c12bcd0a6695ab1271c6fd9506e
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_0 : forall m :e int, div_int m 0 = 0.
+Admitted.
+
+// HOL Light: int.ml:840 / INT_REM_0
+// Source hash: md5:6007d2bec008f4b39abee744d1b874c6
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_0 : forall m :e int, rem_int m 0 = m.
+Admitted.
+
+// HOL Light: int.ml:844 / INT_REM_POS_EQ
+// Source hash: md5:2afd302660436ad0198572f1efb9f742
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_POS_EQ : forall m n :e int, 0 <= rem_int m n <-> n = 0 -> 0 <= m.
+Admitted.
+
+// HOL Light: int.ml:849 / INT_REM_DIV
+// Source hash: md5:8e3001d790de22a18a198653b20bb00e
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_DIV : forall m n :e int, rem_int m n = m + - div_int m n * n.
+Admitted.
+
+// HOL Light: int.ml:854 / INT_LT_REM
+// Source hash: md5:3e6105385a2f9aebf5d5d5d23daadfe5
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_LT_REM : forall x n :e int, 0 < n -> rem_int x n < n.
+Admitted.
+
+// HOL Light: int.ml:858 / INT_LT_REM_EQ
+// Source hash: md5:5a7e29166cdcf04818d68ffdcc671eb4
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_LT_REM_EQ : forall m n :e int, rem_int m n < n <-> 0 < n \/ n = 0 /\ m < 0.
+Admitted.
+
 // HOL Light: int.ml:1182 / int_divides
 // Source hash: md5:0dff4dff15f6e11d7fe6ecc0cf30f0ed
 // Status: transport_required (bridges: hol_int_int)
@@ -1962,6 +2100,354 @@ Admitted.
 // Source hash: md5:de0fd0f15bc993b761f13a9e7d21fa95
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_DIVIDES_LE : forall x y :e int, divides_int x y -> abs_SNo x <= abs_SNo y \/ y = 0.
+Admitted.
+
+// HOL Light: int.ml:1331 / INT_DIVMOD_UNIQ
+// Source hash: md5:a59cba60f1a515ec1b3002d354da584b
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIVMOD_UNIQ : forall m n q r :e int, m = q * n + r /\ (0 <= r /\ r < abs_SNo n) -> div_int m n = q /\ rem_int m n = r.
+Admitted.
+
+// HOL Light: int.ml:1349 / INT_DIV_UNIQ
+// Source hash: md5:27677f9841fd4194adfa11871248b1ed
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_UNIQ : forall m n q r :e int, m = q * n + r /\ (0 <= r /\ r < abs_SNo n) -> div_int m n = q.
+Admitted.
+
+// HOL Light: int.ml:1354 / INT_REM_UNIQ
+// Source hash: md5:0c02ed0e179175da9b2126fcf329b8a4
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_UNIQ : forall m n q r :e int, m = q * n + r /\ (0 <= r /\ r < abs_SNo n) -> rem_int m n = r.
+Admitted.
+
+// HOL Light: int.ml:1359 / INT_DIV_LT
+// Source hash: md5:8641e56fb5630c2347753d980e042c1b
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_LT : forall m n :e int, (~ n = 0 -> 0 <= m) /\ m < n -> div_int m n = 0.
+Admitted.
+
+// HOL Light: int.ml:1359 / INT_REM_LT
+// Source hash: md5:1684b54143f1a079e05d65fc46b67aef
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_LT : forall m n :e int, (~ n = 0 -> 0 <= m) /\ m < n -> rem_int m n = m.
+Admitted.
+
+// HOL Light: int.ml:1367 / INT_DIV_RNEG
+// Source hash: md5:d60bc29aff2a3072cb5e31936a0afc08
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_DIV_RNEG : forall m n :e int, div_int m (- n) = - div_int m n.
+Admitted.
+
+// HOL Light: int.ml:1367 / INT_REM_RNEG
+// Source hash: md5:09372e3eca0330a88d4da16515801cc1
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_RNEG : forall m n :e int, rem_int m (- n) = rem_int m n.
+Admitted.
+
+// HOL Light: int.ml:1377 / INT_REM_RABS
+// Source hash: md5:8e1e5d23a4047fa4aa74a9b2531f673f
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_RABS : forall x y :e int, rem_int x (abs_SNo y) = rem_int x y.
+Admitted.
+
+// HOL Light: int.ml:1381 / INT_REM_REM
+// Source hash: md5:e4ccfc29234ffbe798136cc15dddb818
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_REM : forall m n :e int, rem_int (rem_int m n) n = rem_int m n.
+Admitted.
+
+// HOL Light: int.ml:1405 / INT_DIV_ZERO
+// Source hash: md5:3864521e3676525ec6cc992cf167648e
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_ZERO : forall n :e int, div_int 0 n = 0.
+Admitted.
+
+// HOL Light: int.ml:1405 / INT_REM_ZERO
+// Source hash: md5:97bc8cd09df1bc6a20b100eac99ff886
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_ZERO : forall n :e int, rem_int 0 n = 0.
+Admitted.
+
+// HOL Light: int.ml:1412 / INT_REM_EQ_0
+// Source hash: md5:9b94813f64bd28755d2bd0f534d48fa6
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_EQ_0 : forall m n :e int, rem_int m n = 0 <-> divides_int n m.
+Admitted.
+
+// HOL Light: int.ml:1418 / INT_MUL_DIV_EQ
+// Source hash: md5:2b9ba78f64813cb2bc27b5f57a85d39f
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_MUL_DIV_EQ : (forall m n :e int, n * div_int m n = m <-> divides_int n m) /\ forall m n :e int, div_int m n * n = m <-> divides_int n m.
+Admitted.
+
+// HOL Light: int.ml:1437 / INT_REM_REM_MUL
+// Source hash: md5:71c463e3ec501efb1c84d7f9bf28620a
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_REM_MUL : (forall m n p :e int, rem_int (rem_int m (n * p)) n = rem_int m n) /\ forall m n p :e int, rem_int (rem_int m (n * p)) p = rem_int m p.
+Admitted.
+
+// HOL Light: int.ml:1449 / INT_NEG_REM
+// Source hash: md5:e350590210d641328c5453eff00d0cb0
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_NEG_REM : forall n p :e int, rem_int (- rem_int n p) p = rem_int (- n) p.
+Admitted.
+
+// HOL Light: int.ml:1456 / INT_ADD_REM
+// Source hash: md5:4ef3b9739eda9f3309ada6d4dd54f238
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_ADD_REM : forall m n p :e int, rem_int (rem_int m p + rem_int n p) p = rem_int (m + n) p.
+Admitted.
+
+// HOL Light: int.ml:1463 / INT_SUB_REM
+// Source hash: md5:292a73186f7a19c8f9241d6fde6be6ee
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_SUB_REM : forall m n p :e int, rem_int (rem_int m p + - rem_int n p) p = rem_int (m + - n) p.
+Admitted.
+
+// HOL Light: int.ml:1470 / INT_MUL_REM
+// Source hash: md5:691aa7123918a993a6bdda397a3b3982
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_MUL_REM : forall m n p :e int, rem_int (rem_int m p * rem_int n p) p = rem_int (m * n) p.
+Admitted.
+
+// HOL Light: int.ml:1477 / INT_POW_REM
+// Source hash: md5:e51a06d3768e5a5309b42f64151b026d
+// Status: transport_required (bridges: hol_int_int, hol_num_omega)
+Theorem INT_POW_REM : forall m :e int, forall n :e omega, forall p :e int, rem_int (rem_int m p ^ n) p = rem_int (m ^ n) p.
+Admitted.
+
+// HOL Light: int.ml:1484 / INT_OF_NUM_DIV
+// Source hash: md5:afa6dbafc0c61c3727218dc9251317d1
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_OF_NUM_DIV : forall m n :e omega, div_int m n = div_nat m n.
+Admitted.
+
+// HOL Light: int.ml:1484 / INT_OF_NUM_REM
+// Source hash: md5:981dbd704bfc4d0258da127edf6411fc
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_OF_NUM_REM : forall m n :e omega, rem_int m n = mod_nat m n.
+Admitted.
+
+// HOL Light: int.ml:1495 / INT_DIV_REFL
+// Source hash: md5:82c9b61ea00f3e93ce31851260f82eb4
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_REFL : forall n :e int, div_int n n = if n = 0 then 0 else 1.
+Admitted.
+
+// HOL Light: int.ml:1495 / INT_REM_REFL
+// Source hash: md5:7bf82da492866bcfef49b0a07c5e3458
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_REFL : forall n :e int, rem_int n n = 0.
+Admitted.
+
+// HOL Light: int.ml:1502 / INT_DIV_LNEG
+// Source hash: md5:ad915497b635e216ebcd59fb4b8e90b1
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_LNEG : forall m n :e int, div_int (- m) n = if rem_int m n = 0 then - div_int m n else - div_int m n + - if 0 < n then 1 else if n < 0 then - 1 else 0.
+Admitted.
+
+// HOL Light: int.ml:1502 / INT_REM_LNEG
+// Source hash: md5:2114a4bcff605e46b7943d2179866478
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_LNEG : forall m n :e int, rem_int (- m) n = if rem_int m n = 0 then 0 else abs_SNo n + - rem_int m n.
+Admitted.
+
+// HOL Light: int.ml:1517 / INT_DIV_NEG2
+// Source hash: md5:a018f12df59758683b06ef2284a74a96
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_NEG2 : forall m n :e int, div_int (- m) (- n) = if rem_int m n = 0 then div_int m n else div_int m n + if 0 < n then 1 else if n < 0 then - 1 else 0.
+Admitted.
+
+// HOL Light: int.ml:1522 / INT_REM_NEG2
+// Source hash: md5:43433abe146b5b596861acae872064eb
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_NEG2 : forall m n :e int, rem_int (- m) (- n) = if rem_int m n = 0 then 0 else abs_SNo n + - rem_int m n.
+Admitted.
+
+// HOL Light: int.ml:1526 / INT_DIV_1
+// Source hash: md5:851fa91594fac6cde2e5f73e087cd095
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_1 : forall n :e int, div_int n 1 = n.
+Admitted.
+
+// HOL Light: int.ml:1526 / INT_REM_1
+// Source hash: md5:894d10d5ef5637822488d5baa19cec22
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_1 : forall n :e int, rem_int n 1 = 0.
+Admitted.
+
+// HOL Light: int.ml:1532 / INT_DIV_MUL
+// Source hash: md5:6ecab7333ab666c3beb5beb18a3c78f6
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_MUL : (forall m n :e int, ~ n = 0 -> div_int (m * n) n = m) /\ forall m n :e int, ~ m = 0 -> div_int (m * n) m = n.
+Admitted.
+
+// HOL Light: int.ml:1532 / INT_REM_MUL
+// Source hash: md5:31bd60c34ce2e33a35e0e5d1a8875453
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_MUL : (forall m n :e int, rem_int (m * n) n = 0) /\ forall m n :e int, rem_int (m * n) m = 0.
+Admitted.
+
+// HOL Light: int.ml:1544 / INT_DIV_LT_EQ
+// Source hash: md5:91f728624e2a5879d8e2f054801bd237
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_LT_EQ : forall a b c :e int, 0 < a -> (div_int b a < c <-> b < a * c).
+Admitted.
+
+// HOL Light: int.ml:1571 / INT_LE_DIV_EQ
+// Source hash: md5:813cd818f91bf818a8f908452834bdbf
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_LE_DIV_EQ : forall a b c :e int, 0 < a -> (c <= div_int b a <-> a * c <= b).
+Admitted.
+
+// HOL Light: int.ml:1575 / INT_DIV_LE_EQ
+// Source hash: md5:4524af45cc1bfad38923817afd6cece3
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_LE_EQ : forall a b c :e int, 0 < a -> (div_int b a <= c <-> b < a * (c + 1)).
+Admitted.
+
+// HOL Light: int.ml:1579 / INT_LT_DIV_EQ
+// Source hash: md5:50d91c5e09b1ba9c172c4a8a2777e808
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_LT_DIV_EQ : forall a b c :e int, 0 < a -> (c < div_int b a <-> a * (c + 1) <= b).
+Admitted.
+
+// HOL Light: int.ml:1583 / INT_DIV_LE
+// Source hash: md5:ba2fa2f05bbae4aab8cf45fbdc40881d
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_DIV_LE : forall m n :e int, abs_SNo (div_int m n) <= abs_SNo m.
+Admitted.
+
+// HOL Light: int.ml:1599 / INT_DIV_DIV
+// Source hash: md5:2886d711d133d111904ce73a8db00c4c
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_DIV : forall m n p :e int, 0 <= n -> div_int (div_int m n) p = div_int m (n * p).
+Admitted.
+
+// HOL Light: int.ml:1599 / INT_REM_MUL_REM
+// Source hash: md5:5d390ae94358f559d1bc6858d4c3db03
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_MUL_REM : forall m n p :e int, 0 <= n -> rem_int m (n * p) = n * rem_int (div_int m n) p + rem_int m n.
+Admitted.
+
+// HOL Light: int.ml:1621 / INT_DIV_EQ_0
+// Source hash: md5:fdb1ad44fd082c2b3330f2d0b4258dc4
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_EQ_0 : forall m n :e int, div_int m n = 0 <-> n = 0 \/ 0 <= m /\ m < abs_SNo n.
+Admitted.
+
+// HOL Light: int.ml:1630 / INT_REM_EQ_SELF
+// Source hash: md5:da5776074fdebe761a0549f20df678c1
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_EQ_SELF : forall m n :e int, rem_int m n = m <-> n = 0 \/ 0 <= m /\ m < abs_SNo n.
+Admitted.
+
+// HOL Light: int.ml:1646 / INT_DIV_REM
+// Source hash: md5:62a02b240b8bdb126f0fd1ca92b69d5b
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_REM : forall m n p :e int, 0 <= n -> rem_int (div_int m n) p = div_int (rem_int m (n * p)) n.
+Admitted.
+
+// HOL Light: int.ml:1655 / INT_REM_REM_LE
+// Source hash: md5:cc9d8bf2ce7b0d778a084b3d3527fb88
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_REM_LE : forall m n p :e int, ~ n = 0 /\ abs_SNo n <= abs_SNo p -> rem_int (rem_int m n) p = rem_int m n.
+Admitted.
+
+// HOL Light: int.ml:1661 / INT_LE_DIV
+// Source hash: md5:403c0b9b52dade41d1547151e2817013
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_LE_DIV : forall m n :e int, 0 <= m /\ 0 <= n -> 0 <= div_int m n.
+Admitted.
+
+// HOL Light: int.ml:1666 / INT_LT_DIV
+// Source hash: md5:500d03ca4542b368dbd4a0071fd7b28f
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_LT_DIV : forall m n :e int, 0 < n /\ n <= m -> 0 < div_int m n.
+Admitted.
+
+// HOL Light: int.ml:1674 / INT_REM_LE_EQ
+// Source hash: md5:d719498c202ec89b7e31fa6cdfde899e
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_LE_EQ : forall m n :e int, rem_int m n <= m <-> n = 0 \/ 0 <= m.
+Admitted.
+
+// HOL Light: int.ml:1684 / INT_REM_LE
+// Source hash: md5:12663155a8d717f667bd3f1c21b3040e
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_LE : forall m n p :e int, (n = 0 \/ 0 <= m) /\ m <= p -> rem_int m n <= p.
+Admitted.
+
+// HOL Light: int.ml:1688 / INT_REM_MUL_ADD
+// Source hash: md5:e95d1d0d687f384504c894a137f7f0a6
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_REM_MUL_ADD : (forall m n p :e int, rem_int (m * n + p) n = rem_int p n) /\ ((forall m n p :e int, rem_int (n * m + p) n = rem_int p n) /\ ((forall m n p :e int, rem_int (p + m * n) n = rem_int p n) /\ forall m n p :e int, rem_int (p + n * m) n = rem_int p n)).
+Admitted.
+
+// HOL Light: int.ml:1696 / INT_DIV_MUL_ADD
+// Source hash: md5:4d226f5a369b381b3bce5547ee9a5753
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_MUL_ADD : (forall m n p :e int, ~ n = 0 -> div_int (m * n + p) n = m + div_int p n) /\ ((forall m n p :e int, ~ n = 0 -> div_int (n * m + p) n = m + div_int p n) /\ ((forall m n p :e int, ~ n = 0 -> div_int (p + m * n) n = div_int p n + m) /\ forall m n p :e int, ~ n = 0 -> div_int (p + n * m) n = div_int p n + m)).
+Admitted.
+
+// HOL Light: int.ml:1715 / INT_REM_2_CASES
+// Source hash: md5:9d6abd76fa38a1c6fc83562134ee3c13
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_2_CASES : forall n :e int, rem_int n 2 = 0 \/ rem_int n 2 = 1.
+Admitted.
+
+// HOL Light: int.ml:1720 / NOT_INT_REM_2
+// Source hash: md5:bfe6d500e500cc7248439387eab427ab
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NOT_INT_REM_2 : (forall n :e int, ~ rem_int n 2 = 0 <-> rem_int n 2 = 1) /\ forall n :e int, ~ rem_int n 2 = 1 <-> rem_int n 2 = 0.
+Admitted.
+
+// HOL Light: int.ml:1726 / INT_REM_2_DIVIDES
+// Source hash: md5:e759679501e1cb3fb211beb780b81fdd
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_2_DIVIDES : (forall n :e int, rem_int n 2 = 0 <-> divides_int 2 n) /\ forall n :e int, rem_int n 2 = 1 <-> ~ divides_int 2 n.
+Admitted.
+
+// HOL Light: int.ml:1732 / INT_REM_2_EXPAND
+// Source hash: md5:227c3d95485932c2595b4f53245bfce6
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_2_EXPAND : forall x :e int, rem_int x 2 = if divides_int 2 x then 0 else 1.
+Admitted.
+
+// HOL Light: int.ml:1736 / INT_REM_2_NEG
+// Source hash: md5:fa00a12450829633716f50cc538bdbca
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_REM_2_NEG : forall x :e int, rem_int (- x) 2 = rem_int x 2.
+Admitted.
+
+// HOL Light: int.ml:1741 / INT_DIVIDES_DIV_SELF
+// Source hash: md5:d55e37d50a990d58983cc418805a9d9f
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_DIVIDES_DIV_SELF : forall n d :e int, divides_int d n -> divides_int (div_int n d) n.
+Admitted.
+
+// HOL Light: int.ml:1745 / INT_DIV_BY_DIV
+// Source hash: md5:d77906779dfd8b5fca0f3e0872c98470
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIV_BY_DIV : forall m n :e int, ~ n = 0 /\ divides_int m n -> div_int n (div_int n m) = m.
+Admitted.
+
+// HOL Light: int.ml:1750 / INT_DIVIDES_DIV_DIVIDES
+// Source hash: md5:63b24f702f44d4f45ac6e86d5c7e5906
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_DIVIDES_DIV_DIVIDES : forall n d e0 :e int, divides_int d n /\ (n = 0 -> e0 = 0) -> (divides_int (div_int n d) e0 <-> divides_int n (d * e0)).
+Admitted.
+
+// HOL Light: int.ml:1757 / INT_DIVIDES_DIVIDES_DIV
+// Source hash: md5:824ef3be36b74a2558e14a554cd0d1d2
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_DIVIDES_DIVIDES_DIV : forall n d e0 :e int, divides_int d n -> (divides_int e0 (div_int n d) <-> divides_int (d * e0) n).
+Admitted.
+
+// HOL Light: int.ml:1764 / INT_DIVIDES_DIVIDES_DIV_EQ
+// Source hash: md5:287a94b357c7685843c3bd2bd9613fee
+// Status: transport_required (bridges: hol_int_int)
+Theorem INT_DIVIDES_DIVIDES_DIV_EQ : forall n d e0 :e int, divides_int d n /\ divides_int e0 (div_int n d) <-> divides_int (d * e0) n.
 Admitted.
 
 // HOL Light: int.ml:1845 / INT_2_DIVIDES_ADD
@@ -1990,14 +2476,14 @@ Admitted.
 
 // HOL Light: int.ml:1932 / WF_INT_MEASURE
 // Source hash: md5:d175c8a507c83d306dca6b28aa2ef3bc
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem WF_INT_MEASURE : forall A:set, A <> Empty -> forall P:set -> prop, forall m:set -> set, (forall x :e A, m x :e int) -> (forall x :e A, 0 <= m x) /\ (forall x :e A, (forall y :e A, m y < m x -> P y) -> P x) -> forall x :e A, P x.
+// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem WF_INT_MEASURE : forall A:set, forall P:set -> prop, forall m:set -> set, (forall x :e A, m x :e int) -> (forall x :e A, 0 <= m x) /\ (forall x :e A, (forall y :e A, m y < m x -> P y) -> P x) -> forall x :e A, P x.
 Admitted.
 
 // HOL Light: int.ml:1939 / WF_INT_MEASURE_2
 // Source hash: md5:fae54c5bd47e76c11b3c61f389ee17d4
-// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem WF_INT_MEASURE_2 : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall m:set -> set -> set, (forall x :e A, forall x0 :e B, m x x0 :e int) -> (forall x :e A, forall y :e B, 0 <= m x y) /\ (forall x :e A, forall y :e B, (forall x' :e A, forall y' :e B, m x' y' < m x y -> P x' y') -> P x y) -> forall x :e A, forall y :e B, P x y.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem WF_INT_MEASURE_2 : forall A B:set, forall P:set -> set -> prop, forall m:set -> set -> set, (forall x :e A, forall x0 :e B, m x x0 :e int) -> (forall x :e A, forall y :e B, 0 <= m x y) /\ (forall x :e A, forall y :e B, (forall x' :e A, forall y' :e B, m x' y' < m x y -> P x' y') -> P x y) -> forall x :e A, forall y :e B, P x y.
 Admitted.
 
 // HOL Light: int.ml:1945 / INT_GCD_EXISTS
@@ -2030,6 +2516,48 @@ Admitted.
 Theorem INT_DIVIDES_ABS : (forall d n :e int, divides_int (abs_SNo d) n <-> divides_int d n) /\ forall d n :e int, divides_int d (abs_SNo n) <-> divides_int d n.
 Admitted.
 
+// HOL Light: int.ml:2071 / num_of_int
+// Source hash: md5:050bca84fac48047cdafe51481d3708c
+// Status: generalization_required (bridges: choose_in_spec, hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem num_of_int : forall x :e int, (if x :e omega then x else 0) = choose_in omega (fun n:set => n = x).
+Admitted.
+
+// HOL Light: int.ml:2074 / NUM_OF_INT_OF_NUM
+// Source hash: md5:c009afb9d7386914218b003872a341e8
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NUM_OF_INT_OF_NUM : forall n :e omega, (if n :e omega then n else 0) = n.
+Admitted.
+
+// HOL Light: int.ml:2078 / INT_OF_NUM_OF_INT
+// Source hash: md5:9dd43ce894f2017692e90eededc92bb8
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem INT_OF_NUM_OF_INT : forall x :e int, 0 <= x -> (if x :e omega then x else 0) = x.
+Admitted.
+
+// HOL Light: int.ml:2083 / NUM_OF_INT
+// Source hash: md5:695dcc6218781ccdc6c65fb7edfe5eff
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NUM_OF_INT : forall x :e int, 0 <= x <-> (if x :e omega then x else 0) = x.
+Admitted.
+
+// HOL Light: int.ml:2087 / NUM_OF_INT_ADD
+// Source hash: md5:ebd21729756b5f5b6a17dd9d6e14e1d8
+// Status: generalization_required (bridges: add_nat_add_SNo, hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NUM_OF_INT_ADD : forall x y :e int, 0 <= x /\ 0 <= y -> (if x + y :e omega then x + y else 0) = (if x :e omega then x else 0) + if y :e omega then y else 0.
+Admitted.
+
+// HOL Light: int.ml:2093 / NUM_OF_INT_MUL
+// Source hash: md5:9502893ed777cd8ae23a877d105cb100
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, mul_nat_mul_SNo, omega_Subq_int)
+Theorem NUM_OF_INT_MUL : forall x y :e int, 0 <= x /\ 0 <= y -> (if x * y :e omega then x * y else 0) = (if x :e omega then x else 0) * if y :e omega then y else 0.
+Admitted.
+
+// HOL Light: int.ml:2099 / NUM_OF_INT_POW
+// Source hash: md5:64a0561c1f8b4c6dbd9af7310d8f5a74
+// Status: generalization_required (bridges: exp_nat_exp_SNo_nat, hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NUM_OF_INT_POW : forall x :e int, forall n :e omega, 0 <= x -> (if x ^ n :e omega then x ^ n else 0) = (if x :e omega then x else 0) ^ n.
+Admitted.
+
 // HOL Light: int.ml:2114 / num_divides
 // Source hash: md5:c56d7381d5153af98b96af09f7a0ea7c
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
@@ -2052,6 +2580,12 @@ Admitted.
 // Source hash: md5:e78ae369138c3b7c17c51f610c71c228
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem num_WF_DOWN : forall P:set -> prop, forall m :e omega, (forall n :e omega, m <= n -> P n) /\ (forall n :e omega, n < m /\ (forall p :e omega, n < p -> P p) -> P n) -> forall n :e omega, P n.
+Admitted.
+
+// HOL Light: int.ml:2357 / INT_REM_REM_POW_MIN
+// Source hash: md5:d334b8fa849849d2b4d889aa9fe0c20c
+// Status: transport_required (bridges: hol_int_int, hol_num_omega)
+Theorem INT_REM_REM_POW_MIN : forall x p :e int, forall m n :e omega, rem_int (rem_int x (p ^ m)) (p ^ n) = rem_int x (p ^ if m <= n then m else n).
 Admitted.
 
 // HOL Light: int.ml:2403 / divides
@@ -2154,5 +2688,143 @@ Admitted.
 // Source hash: md5:601fc17ada0ecb6f5c2f5a82f26fd3e9
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_DIV : (forall m n p :e omega, divides_nat p m -> div_nat (m * n) p = div_nat m p * n) /\ forall m n p :e omega, divides_nat p n -> div_nat (m * n) p = m * div_nat n p.
+Admitted.
+
+// HOL Light: int.ml:2638 / real_zpow
+// Source hash: md5:b33faf5f4bcbc728505e85cf918c12a8
+// Status: generalization_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem real_zpow : forall z :e R, forall i :e int, (if 0 <= i then z ^ i else recip_SNo (z ^ (- i))) = if 0 <= i then z ^ if i :e omega then i else 0 else recip_SNo (z ^ if - i :e omega then - i else 0).
+Admitted.
+
+// HOL Light: int.ml:2642 / REAL_POW_ZPOW
+// Source hash: md5:2c8d138e360d550e693ef1f3cf1b679d
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem REAL_POW_ZPOW : forall x :e R, forall n :e omega, x ^ n = if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2646 / REAL_ZPOW_NUM
+// Source hash: md5:2fde84e34605fdc86b0dbc1168d69d93
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem REAL_ZPOW_NUM : forall x :e R, forall n :e omega, (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = x ^ n.
+Admitted.
+
+// HOL Light: int.ml:2650 / REAL_ZPOW_0
+// Source hash: md5:90483bad4d23245d9f65f0717469c8bf
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R, omega_Subq_int)
+Theorem REAL_ZPOW_0 : forall x :e R, (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ (- 0))) = 1.
+Admitted.
+
+// HOL Light: int.ml:2654 / REAL_ZPOW_1
+// Source hash: md5:6531b16427f4a368c486dd84f34f5963
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem REAL_ZPOW_1 : forall x :e R, (if 0 <= 1 then x ^ 1 else recip_SNo (x ^ (- 1))) = x.
+Admitted.
+
+// HOL Light: int.ml:2658 / REAL_ZPOW_2
+// Source hash: md5:fa7808b41ff4729b71b1d78701bd3234
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem REAL_ZPOW_2 : forall x :e R, (if 0 <= 2 then x ^ 2 else recip_SNo (x ^ (- 2))) = x * x.
+Admitted.
+
+// HOL Light: int.ml:2662 / REAL_ZPOW_ONE
+// Source hash: md5:df344ae95bbc42daa0d5d9c707117d11
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem REAL_ZPOW_ONE : forall n :e int, (if 0 <= n then 1 ^ n else recip_SNo (1 ^ (- n))) = 1.
+Admitted.
+
+// HOL Light: int.ml:2666 / REAL_ZPOW_NEG
+// Source hash: md5:4def477b5d813b22fe71b03d1821bd6e
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_ZPOW_NEG : forall x :e R, forall n :e int, (if 0 <= - n then x ^ (- n) else recip_SNo (x ^ (- - n))) = recip_SNo (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))).
+Admitted.
+
+// HOL Light: int.ml:2674 / REAL_ZPOW_MINUS1
+// Source hash: md5:c765a3fe26460ea177cb5d45f866cd81
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem REAL_ZPOW_MINUS1 : forall x :e R, (if 0 <= - 1 then x ^ (- 1) else recip_SNo (x ^ (- - 1))) = recip_SNo x.
+Admitted.
+
+// HOL Light: int.ml:2678 / REAL_ZPOW_ZERO
+// Source hash: md5:36618778d7600bd5a69c83d027989040
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R, omega_Subq_int)
+Theorem REAL_ZPOW_ZERO : forall n :e int, (if 0 <= n then 0 ^ n else recip_SNo (0 ^ (- n))) = if n = 0 then 1 else 0.
+Admitted.
+
+// HOL Light: int.ml:2684 / REAL_ZPOW_POW
+// Source hash: md5:889568b4f1ecc0d8f349de8cd44955ad
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
+Theorem REAL_ZPOW_POW : (forall x :e R, forall n :e omega, (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = x ^ n) /\ forall x :e R, forall n :e omega, (if 0 <= - n then x ^ (- n) else recip_SNo (x ^ (- - n))) = recip_SNo (x ^ n).
+Admitted.
+
+// HOL Light: int.ml:2689 / REAL_INV_ZPOW
+// Source hash: md5:1da55970f152af7a41cbf73e5b7800e1
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_INV_ZPOW : forall x :e R, forall n :e int, recip_SNo (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = if 0 <= n then recip_SNo x ^ n else recip_SNo (recip_SNo x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2694 / REAL_ZPOW_INV
+// Source hash: md5:ca3c204f9dd61c984732d2d066c97782
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_ZPOW_INV : forall x :e R, forall n :e int, (if 0 <= n then recip_SNo x ^ n else recip_SNo (recip_SNo x ^ (- n))) = recip_SNo (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))).
+Admitted.
+
+// HOL Light: int.ml:2698 / REAL_ZPOW_ZPOW
+// Source hash: md5:2b88b701320e2ee8201a3329bff38ee0
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_ZPOW_ZPOW : forall x :e R, forall m n :e int, (if 0 <= n then (if 0 <= m then x ^ m else recip_SNo (x ^ (- m))) ^ n else recip_SNo ((if 0 <= m then x ^ m else recip_SNo (x ^ (- m))) ^ (- n))) = if 0 <= m * n then x ^ (m * n) else recip_SNo (x ^ (- m * n)).
+Admitted.
+
+// HOL Light: int.ml:2704 / REAL_ZPOW_MUL
+// Source hash: md5:c2181ede698e970d3ad450de52443d15
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_ZPOW_MUL : forall x y :e R, forall n :e int, (if 0 <= n then (x * y) ^ n else recip_SNo ((x * y) ^ (- n))) = (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) * if 0 <= n then y ^ n else recip_SNo (y ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2708 / REAL_ZPOW_DIV
+// Source hash: md5:030b0b8fb50defaad67a963cf972b8a3
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_ZPOW_DIV : forall x y :e R, forall n :e int, (if 0 <= n then (x :/: y) ^ n else recip_SNo ((x :/: y) ^ (- n))) = (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) :/: if 0 <= n then y ^ n else recip_SNo (y ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2712 / REAL_ZPOW_ADD
+// Source hash: md5:807036becae3adb5c8411741bf45d2ba
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem REAL_ZPOW_ADD : forall x :e R, forall m n :e int, ~ x = 0 -> (if 0 <= m + n then x ^ (m + n) else recip_SNo (x ^ (- (m + n)))) = (if 0 <= m then x ^ m else recip_SNo (x ^ (- m))) * if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2733 / REAL_ZPOW_SUB
+// Source hash: md5:65438ed4571260051c64b0635e680b52
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem REAL_ZPOW_SUB : forall x :e R, forall m n :e int, ~ x = 0 -> (if 0 <= m + - n then x ^ (m + - n) else recip_SNo (x ^ (- (m + - n)))) = (if 0 <= m then x ^ m else recip_SNo (x ^ (- m))) :/: if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2738 / REAL_ZPOW_LE
+// Source hash: md5:e5222c5aa208984c1a66bfea888d3582
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem REAL_ZPOW_LE : forall x :e R, forall n :e int, 0 <= x -> 0 <= if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2742 / REAL_ZPOW_LT
+// Source hash: md5:3063aacc9e676ae1ce3ca1eb33f07e44
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem REAL_ZPOW_LT : forall x :e R, forall n :e int, 0 < x -> 0 < if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2746 / REAL_ZPOW_EQ_0
+// Source hash: md5:cf900b043db93b9db4a01b5dff2ba557
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R, omega_Subq_int)
+Theorem REAL_ZPOW_EQ_0 : forall x :e R, forall n :e int, (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = 0 <-> x = 0 /\ ~ n = 0.
+Admitted.
+
+// HOL Light: int.ml:2751 / REAL_ABS_ZPOW
+// Source hash: md5:ca5a1da96d961f15d24f9cf6dc27539e
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_ABS_ZPOW : forall x :e R, forall n :e int, abs_SNo (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = if 0 <= n then abs_SNo x ^ n else recip_SNo (abs_SNo x ^ (- n)).
+Admitted.
+
+// HOL Light: int.ml:2755 / REAL_SGN_ZPOW
+// Source hash: md5:1600598a3fb9852e14a7edbc546a9162
+// Status: transport_required (bridges: hol_int_int, hol_real_R)
+Theorem REAL_SGN_ZPOW : forall x :e R, forall n :e int, (if 0 < if 0 <= n then x ^ n else recip_SNo (x ^ (- n)) then 1 else if (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) < 0 then - 1 else 0) = if 0 <= n then (if 0 < x then 1 else if x < 0 then - 1 else 0) ^ n else recip_SNo ((if 0 < x then 1 else if x < 0 then - 1 else 0) ^ (- n)).
 Admitted.
 

@@ -1,0 +1,95 @@
+{
+ "infix": {
+  "*": [
+   "mul_SNo",
+   355,
+   "right"
+  ],
+  "+": [
+   "add_SNo",
+   360,
+   "right"
+  ],
+  "/:e": [
+   "nIn",
+   502,
+   "none"
+  ],
+  "/\\": [
+   "and",
+   780,
+   "left"
+  ],
+  ":*:": [
+   "setprod",
+   440,
+   "left"
+  ],
+  ":+:": [
+   "setsum",
+   450,
+   "left"
+  ],
+  ":/:": [
+   "div_SNo",
+   353,
+   "none"
+  ],
+  ":/\\:": [
+   "binintersect",
+   340,
+   "left"
+  ],
+  ":\\/:": [
+   "binunion",
+   345,
+   "left"
+  ],
+  ":\\:": [
+   "setminus",
+   350,
+   "none"
+  ],
+  ":^:": [
+   "setexp",
+   430,
+   "left"
+  ],
+  "<": [
+   "SNoLt",
+   490,
+   "none"
+  ],
+  "<->": [
+   "iff",
+   805,
+   "none"
+  ],
+  "<=": [
+   "SNoLe",
+   490,
+   "none"
+  ],
+  "\\/": [
+   "or",
+   785,
+   "left"
+  ],
+  "^": [
+   "exp_SNo_nat",
+   342,
+   "right"
+  ]
+ },
+ "postfix": {},
+ "prefix": {
+  "-": [
+   "minus_SNo",
+   358
+  ],
+  "~": [
+   "not",
+   700
+  ]
+ }
+}

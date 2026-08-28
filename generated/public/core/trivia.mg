@@ -4,38 +4,38 @@
 
 // HOL Light: trivia.ml:18 / o_DEF
 // Source hash: md5:7072af01086ae1b09b3e67863fac76ac
-// Status: exact_native
-Theorem o_DEF : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C)
+Theorem o_DEF : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
 Admitted.
 
 // HOL Light: trivia.ml:21 / I_DEF
 // Source hash: md5:98f75ab7f3aecd3890689464fdb13fda
-// Status: exact_native
-Theorem I_DEF : forall A:set, A <> Empty -> forall x :e A, x = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem I_DEF : forall A:set, forall x :e A, x = x.
 
 // HOL Light: trivia.ml:24 / o_THM
 // Source hash: md5:5f35f2b84dbd2ff7d1a387066c77a57f
-// Status: exact_native
-Theorem o_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
-Admitted.
+// Status: native_reuse (bridges: empty_case:A, empty_case:B, empty_case:C)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem o_THM : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
 
 // HOL Light: trivia.ml:30 / o_ASSOC
 // Source hash: md5:f22ad52a4382071def526afc8c38a995
-// Status: exact_native
-Theorem o_ASSOC : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x)).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, empty_case:D)
+Theorem o_ASSOC : forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x)).
 Admitted.
 
 // HOL Light: trivia.ml:36 / I_THM
 // Source hash: md5:869bdf643ad8869e3e6c61189c7171c1
-// Status: exact_native
-Theorem I_THM : forall A:set, A <> Empty -> forall x :e A, x = x.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem I_THM : forall A:set, forall x :e A, x = x.
 
 // HOL Light: trivia.ml:40 / I_O_ID
 // Source hash: md5:dc7aa55a625b9a78c1fd4104e409969c
-// Status: exact_native
-Theorem I_O_ID : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem I_O_ID : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x.
 Admitted.
 
 // HOL Light: trivia.ml:49 / EXISTS_ONE_REP
@@ -58,8 +58,8 @@ Admitted.
 
 // HOL Light: trivia.ml:67 / one_axiom
 // Source hash: md5:1d5dc2e3ae749e7020d13e448211d911
-// Status: transport_required (bridges: hol_one_1)
-Theorem one_axiom : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x.
+// Status: generalization_required (bridges: empty_case:A, hol_one_1)
+Theorem one_axiom : forall A:set, forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x.
 Admitted.
 
 // HOL Light: trivia.ml:72 / one_INDUCT
@@ -70,14 +70,14 @@ Admitted.
 
 // HOL Light: trivia.ml:76 / one_RECURSION
 // Source hash: md5:eacc0c8048865239c11b49bfd682565d
-// Status: transport_required (bridges: hol_one_1)
-Theorem one_RECURSION : forall A:set, A <> Empty -> forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0.
+// Status: generalization_required (bridges: empty_case:A, hol_one_1)
+Theorem one_RECURSION : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0.
 Admitted.
 
 // HOL Light: trivia.ml:80 / one_Axiom
 // Source hash: md5:ed14c7f387dfc73cd6603c753781f4bf
-// Status: transport_required (bridges: hol_one_1)
-Theorem one_Axiom : forall A:set, A <> Empty -> forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> fn 0 = e0 -> forall x :e 1, y x = fn x).
+// Status: generalization_required (bridges: empty_case:A, hol_one_1)
+Theorem one_Axiom : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x).
 Admitted.
 
 // HOL Light: trivia.ml:86 / FORALL_ONE_THM

@@ -82,14 +82,14 @@ Admitted.
 
 // HOL Light: iterate.ml:78 / CARD_NUMSEG_LEMMA
 // Source hash: md5:daad90cf2df16142591122d20a555b20
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_num_omega)
-Theorem CARD_NUMSEG_LEMMA : forall m d :e omega, card {i :e omega | m <= i /\ i <= m + d} = d + 1.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_num_omega)
+Theorem CARD_NUMSEG_LEMMA : forall m d :e omega, finite_cardinality {i :e omega | m <= i /\ i <= m + d} = d + 1.
 Admitted.
 
 // HOL Light: iterate.ml:85 / CARD_NUMSEG
 // Source hash: md5:603fc98d20552313cb229eb8c9fd1ab3
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card, hol_num_omega)
-Theorem CARD_NUMSEG : forall m n :e omega, card {i :e omega | m <= i /\ i <= n} = minus_nat (n + 1) m.
+// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_num_omega)
+Theorem CARD_NUMSEG : forall m n :e omega, finite_cardinality {i :e omega | m <= i /\ i <= n} = minus_nat (n + 1) m.
 Admitted.
 
 // HOL Light: iterate.ml:94 / HAS_SIZE_NUMSEG
@@ -100,8 +100,8 @@ Admitted.
 
 // HOL Light: iterate.ml:98 / CARD_NUMSEG_1
 // Source hash: md5:f4c3410d70e7ea14dc745c69c12edd65
-// Status: transport_required (bridges: hol_card, hol_num_omega)
-Theorem CARD_NUMSEG_1 : forall n :e omega, card {i :e omega | 1 <= i /\ i <= n} = n.
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_num_omega)
+Theorem CARD_NUMSEG_1 : forall n :e omega, finite_cardinality {i :e omega | 1 <= i /\ i <= n} = n.
 Admitted.
 
 // HOL Light: iterate.ml:102 / HAS_SIZE_NUMSEG_1
@@ -118,8 +118,8 @@ Admitted.
 
 // HOL Light: iterate.ml:114 / FINITE_INDEX_NUMSEG
 // Source hash: md5:f020cb633155270e9224a2aec88a616b
-// Status: transport_required (bridges: hol_card, hol_finite_finite, hol_num_omega)
-Theorem FINITE_INDEX_NUMSEG : forall A:set, A <> Empty -> forall s c= A, finite s <-> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall i j :e omega, i :e {i :e omega | 1 <= i /\ i <= card s} /\ (j :e {i :e omega | 1 <= i /\ i <= card s} /\ f i = f j) -> i = j) /\ s = {f x | x :e {i :e omega | 1 <= i /\ i <= card s}}).
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem FINITE_INDEX_NUMSEG : forall A:set, A <> Empty -> forall s c= A, finite s <-> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall i j :e omega, i :e {i :e omega | 1 <= i /\ i <= finite_cardinality s} /\ (j :e {i :e omega | 1 <= i /\ i <= finite_cardinality s} /\ f i = f j) -> i = j) /\ s = {f x | x :e {i :e omega | 1 <= i /\ i <= finite_cardinality s}}).
 Admitted.
 
 // HOL Light: iterate.ml:126 / FINITE_INDEX_NUMBERS
@@ -173,12 +173,1338 @@ Admitted.
 // HOL Light: iterate.ml:196 / TOPOLOGICAL_SORT
 // Source hash: md5:725afed5148a9d6dab323e806db0e1da
 // Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, nat_lt_SNoLt)
-Theorem TOPOLOGICAL_SORT : forall A:set, A <> Empty -> forall __:set -> set -> prop, (forall x y :e A, __ x y /\ __ y x -> x = y) /\ (forall x y z :e A, __ x y /\ __ y z -> __ x z) -> forall n :e omega, forall s c= A, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (s = {f x | x :e {i :e omega | 1 <= i /\ i <= n}} /\ forall j k :e omega, j :e {i :e omega | 1 <= i /\ i <= n} /\ (k :e {i :e omega | 1 <= i /\ i <= n} /\ j < k) -> ~ __ (f k) (f j)).
+Theorem TOPOLOGICAL_SORT : forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall x y :e A, lt x y /\ lt y x -> x = y) /\ (forall x y z :e A, lt x y /\ lt y z -> lt x z) -> forall n :e omega, forall s c= A, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (s = {f x | x :e {i :e omega | 1 <= i /\ i <= n}} /\ forall j k :e omega, j :e {i :e omega | 1 <= i /\ i <= n} /\ (k :e {i :e omega | 1 <= i /\ i <= n} /\ j < k) -> ~ lt (f k) (f j)).
 Admitted.
 
 // HOL Light: iterate.ml:256 / FINITE_INT_SEG
 // Source hash: md5:df3608b948bd2c8c55e6000d6f26380e
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int)
 Theorem FINITE_INT_SEG : (forall l r :e int, finite {x :e int | l <= x /\ x <= r}) /\ ((forall l r :e int, finite {x :e int | l <= x /\ x < r}) /\ ((forall l r :e int, finite {x :e int | l < x /\ x <= r}) /\ forall l r :e int, finite {x :e int | l < x /\ x < r})).
+Admitted.
+
+// HOL Light: iterate.ml:281 / neutral
+// Source hash: md5:a8873aaeb854cfc680774eff00267039
+// Status: exact_native (bridges: choose_in_spec)
+Theorem neutral : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x x0 :e A, op x x0 :e A) -> neutral_of A (fun a:set => fun b:set => op a b) = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y).
+Admitted.
+
+// HOL Light: iterate.ml:298 / support
+// Source hash: md5:db57a04db49d84b327ec80e8d4024bb4
+// Status: generalization_required (bridges: empty_case:A)
+Theorem support : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e A | x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)}.
+Admitted.
+
+// HOL Light: iterate.ml:307 / IN_SUPPORT
+// Source hash: md5:328b596b59f06cf91f1dc806c30ccf3e
+// Status: generalization_required (bridges: empty_case:A)
+Theorem IN_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} <-> x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b).
+Admitted.
+
+// HOL Light: iterate.ml:311 / SUPPORT_SUPPORT
+// Source hash: md5:0aedb34b9d6661fba4a5b10ecedffecd
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
+Admitted.
+
+// HOL Light: iterate.ml:315 / SUPPORT_EMPTY
+// Source hash: md5:51a15a0f30064f51df84243d65184a37
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUPPORT_EMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b)) <-> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty.
+Admitted.
+
+// HOL Light: iterate.ml:320 / SUPPORT_SUBSET
+// Source hash: md5:1cb492d6d2a10235f4796e2e45535a55
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUPPORT_SUBSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s.
+Admitted.
+
+// HOL Light: iterate.ml:324 / FINITE_SUPPORT
+// Source hash: md5:5f2e5868802d786d3586b28b029dac08
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem FINITE_SUPPORT : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
+Admitted.
+
+// HOL Light: iterate.ml:328 / SUPPORT_CLAUSES
+// Source hash: md5:ef461f246ce98a923ee8cada2ec1fb49
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUPPORT_CLAUSES : forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x x0 :e C, op x x0 :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = Empty) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = if f x = neutral_of C (fun a:set => fun b:set => op a b) then {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} else SetAdjoin {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} x) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\: {x} | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\/: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\/: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :/\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C (fun a:set => fun b:set => op a b)} = {f x | x :e {x :e s | g (f x) <> neutral_of C (fun a:set => fun b:set => op a b)}}))))).
+Admitted.
+
+// HOL Light: iterate.ml:346 / SUPPORT_DELTA
+// Source hash: md5:a35d42478622c94fd25393261650c43a
+// Status: generalization_required (bridges: empty_case:A)
+Theorem SUPPORT_DELTA : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)} = if a :e s then {x :e {a} | f x <> neutral_of B (fun a0:set => fun b:set => op a0 b)} else Empty.
+Admitted.
+
+// HOL Light: iterate.ml:354 / FINITE_SUPPORT_DELTA
+// Source hash: md5:4c8a32d285f23d97bdfdf46d3535970f
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_SUPPORT_DELTA : forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)}.
+Admitted.
+
+// HOL Light: iterate.ml:364 / ITERATE_SUPPORT
+// Source hash: md5:7bbe016893acf7b63a38b08b1ad8c353
+// Status: generalization_required (bridges: empty_case:A, hol_iterate)
+Theorem ITERATE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f = iterate_op B (fun a:set => fun b:set => op a b) s f.
+Admitted.
+
+// HOL Light: iterate.ml:368 / ITERATE_EXPAND_CASES
+// Source hash: md5:ab2f925a2f6da5a2ba0afd8fe42aa902
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_EXPAND_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) s f = if finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} then iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f else neutral_of B (fun a:set => fun b:set => op a b).
+Admitted.
+
+// HOL Light: iterate.ml:1194 / nproduct
+// Source hash: md5:fb9f9e11f1871a90aa4028a977ebca69
+// Status: transport_required (bridges: hol_iterate, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
+Theorem nproduct : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e omega) -> finprod x x0 = iterate_op omega (fun a:set => fun b:set => a * b) x x0.
+Admitted.
+
+// HOL Light: iterate.ml:1197 / NEUTRAL_MUL
+// Source hash: md5:810748ee9f5255bf9d8c183d3d4d0a1c
+// Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
+Theorem NEUTRAL_MUL : neutral_of omega (fun a:set => fun b:set => a * b) = 1.
+Admitted.
+
+// HOL Light: iterate.ml:1206 / NPRODUCT_CLAUSES
+// Source hash: md5:f1fa1970dcb71c0ea266b2d511ff08c9
+// Status: transport_required (bridges: hol_finite_finite, hol_nproduct_finprod, hol_num_omega, mul_nat_mul_SNo)
+Theorem NPRODUCT_CLAUSES : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e omega) -> finprod Empty f = 1) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e omega) -> forall s c= B, finite s -> finprod (SetAdjoin s x) f = if x :e s then finprod s f else f x * finprod s f.
+Admitted.
+
+// HOL Light: iterate.ml:1219 / NEUTRAL_INT_MUL
+// Source hash: md5:61f7c53ce7ec94316ac2a1a6b59a71ac
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NEUTRAL_INT_MUL : neutral_of int (fun a:set => fun b:set => a * b) = 1.
+Admitted.
+
+// HOL Light: iterate.ml:1238 / product
+// Source hash: md5:23a3ae537eb42392ca74eb07bc9f531a
+// Status: transport_required (bridges: hol_iterate, hol_product_finprod, hol_real_R)
+Theorem product : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e R) -> finprod x x0 = iterate_op R (fun a:set => fun b:set => a * b) x x0.
+Admitted.
+
+// HOL Light: iterate.ml:1241 / NEUTRAL_REAL_MUL
+// Source hash: md5:35a5b388fe177bf7ad7f7ac5dfb7e915
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem NEUTRAL_REAL_MUL : neutral_of R (fun a:set => fun b:set => a * b) = 1.
+Admitted.
+
+// HOL Light: iterate.ml:1250 / PRODUCT_CLAUSES
+// Source hash: md5:464ca9b59ba521206c4856747fb68cbe
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
+Theorem PRODUCT_CLAUSES : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R) -> finprod Empty f = 1) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e R) -> forall s c= B, finite s -> finprod (SetAdjoin s x) f = if x :e s then finprod s f else f x * finprod s f.
+Admitted.
+
+// HOL Light: iterate.ml:1263 / NEUTRAL_INT_ADD
+// Source hash: md5:0ccfd02cd45039656e3be405510c78c1
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
+Theorem NEUTRAL_INT_ADD : neutral_of int (fun a:set => fun b:set => a + b) = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1288 / nsum
+// Source hash: md5:b14e7702a17fe114bd811d49913540c0
+// Status: transport_required (bridges: add_nat_add_SNo, hol_iterate, hol_nsum_finsum, hol_num_omega)
+Theorem nsum : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e omega) -> finsum x x0 = iterate_op omega (fun a:set => fun b:set => a + b) x x0.
+Admitted.
+
+// HOL Light: iterate.ml:1291 / NEUTRAL_ADD
+// Source hash: md5:06c9ed2e4a3b17c780a3883291e889fb
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
+Theorem NEUTRAL_ADD : neutral_of omega (fun a:set => fun b:set => a + b) = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1300 / NSUM_DEGENERATE
+// Source hash: md5:c1df488542489eef5bbd5fb998960ec3
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_DEGENERATE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, ~ finite {x :e A | x :e s /\ ~ f x = 0} -> finsum s f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1305 / NSUM_CLAUSES
+// Source hash: md5:ea406f8293ce1f3be12e9bc950e8d8d6
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_CLAUSES : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e omega) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e omega) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1315 / NSUM_UNION
+// Source hash: md5:254da9a0342a265c00884ab83c6b0037
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finsum (s :\/: t) f = finsum s f + finsum t f.
+Admitted.
+
+// HOL Light: iterate.ml:1321 / NSUM_DIFF
+// Source hash: md5:b3ca8865ceff71fcf407e53454c7a758
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_DIFF : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ t c= s -> finsum (s :\: t) f = minus_nat (finsum s f) (finsum t f).
+Admitted.
+
+// HOL Light: iterate.ml:1329 / NSUM_INCL_EXCL
+// Source hash: md5:a2bd7284e601409196a89118b812c8e9
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_INCL_EXCL : forall A:set, forall s t c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> finite s /\ finite t -> finsum s f + finsum t f = finsum (s :\/: t) f + finsum (s :/\: t) f.
+Admitted.
+
+// HOL Light: iterate.ml:1336 / NSUM_SUPPORT
+// Source hash: md5:878f2fcb54b45c8f479a08840e977d87
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1340 / NSUM_ADD
+// Source hash: md5:7d4456c4f64050e05c81b0253a214728
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_ADD : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1345 / NSUM_ADD_GEN
+// Source hash: md5:af071b628c8570856cae7c1702a13a72
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_ADD_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite {x :e A | x :e s /\ ~ f x = 0} /\ finite {x :e A | x :e s /\ ~ g x = 0} -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1352 / NSUM_EQ_0
+// Source hash: md5:f1a6700a66d8a3487158eb5dd5583393
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_EQ_0 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x = 0) -> finsum s f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1357 / NSUM_0
+// Source hash: md5:993862fbecd917d2afa429ecfe1db3ba
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_0 : forall A:set, A <> Empty -> forall s c= A, finsum s (fun n:set => 0) = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1361 / NSUM_LMUL
+// Source hash: md5:545f4b56962e1e028de4577cea568bd1
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo)
+Theorem NSUM_LMUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall c :e omega, forall s c= A, finsum s (fun x:set => c * f x) = c * finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1374 / NSUM_RMUL
+// Source hash: md5:ce83bdd11edfed9a987479b7bb2ce4c6
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo)
+Theorem NSUM_RMUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall c :e omega, forall s c= A, finsum s (fun x:set => f x * c) = finsum s f * c.
+Admitted.
+
+// HOL Light: iterate.ml:1378 / NSUM_LE
+// Source hash: md5:3fe9c3cd47532109956a2317e65aafc3
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x <= g x) -> finsum s f <= finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1386 / NSUM_LT
+// Source hash: md5:1165e5e95f5c3c94d9e5642d0535237d
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem NSUM_LT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> f x <= g x) /\ (exists x :e A, x :e s /\ f x < g x)) -> finsum s f < finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1399 / NSUM_LT_ALL
+// Source hash: md5:4cc2338c5c194519308a6bb54ca9c003
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_LT_ALL : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x < g x)) -> finsum s f < finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1405 / NSUM_EQ
+// Source hash: md5:7b56acbfdcba2de9bb221054d9ae675c
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finsum s f = finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1410 / NSUM_CONST
+// Source hash: md5:3627e10a75f787d52cd1e237ab6bf64e
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo)
+Theorem NSUM_CONST : forall A:set, A <> Empty -> forall c :e omega, forall s c= A, finite s -> finsum s (fun n:set => c) = finite_cardinality s * c.
+Admitted.
+
+// HOL Light: iterate.ml:1416 / NSUM_POS_BOUND
+// Source hash: md5:e73b93c9e252fab4127a589673ed0171
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_POS_BOUND : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, forall s c= A, finite s /\ finsum s f <= b -> forall x :e A, x :e s -> f x <= b.
+Admitted.
+
+// HOL Light: iterate.ml:1424 / NSUM_EQ_0_IFF
+// Source hash: md5:3f2564a32f33cbfca4f3a3975e6bcea4
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_EQ_0_IFF : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> (finsum s f = 0 <-> forall x :e A, x :e s -> f x = 0).
+Admitted.
+
+// HOL Light: iterate.ml:1429 / NSUM_POS_LT
+// Source hash: md5:f97e20cedfaddbae31c53f337d19e4c1
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_POS_LT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s /\ (exists x :e A, x :e s /\ 0 < f x) -> 0 < finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1435 / NSUM_POS_LT_ALL
+// Source hash: md5:724e68b503fa15ef164b2c374aafd3ff
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_POS_LT_ALL : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> finite s /\ (~ s = Empty /\ (forall i :e A, i :e s -> 0 < f i)) -> 0 < finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1441 / NSUM_DELETE
+// Source hash: md5:573a55b2359edb69c1ba7ab1cd88580d
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_DELETE : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, forall a :e A, finite s /\ a :e s -> f a + finsum (s :\: {a}) f = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1445 / NSUM_SING
+// Source hash: md5:ac2360492e0196f4108855de3f6639f9
+// Status: generalization_required (bridges: empty_case:A, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_SING : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall x :e A, finsum {x} f = f x.
+Admitted.
+
+// HOL Light: iterate.ml:1449 / NSUM_DELTA
+// Source hash: md5:aef13638e5823a68dd8d88505629ddca
+// Status: generalization_required (bridges: empty_case:A, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_DELTA : forall A:set, forall b :e omega, forall s c= A, forall a :e A, finsum s (fun x:set => if x = a then b else 0) = if a :e s then b else 0.
+Admitted.
+
+// HOL Light: iterate.ml:1454 / NSUM_SWAP
+// Source hash: md5:bbf82ad215a6fe69a4be7b58478ff5fb
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_SWAP : forall A B:set, A <> Empty -> B <> Empty -> forall f :e omega :^: B :^: A, forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun i:set => finsum t (fun x:set => f i x)) = finsum t (fun j:set => finsum s (fun i:set => f i j)).
+Admitted.
+
+// HOL Light: iterate.ml:1462 / NSUM_IMAGE
+// Source hash: md5:ef243858263d36ef360c0182220f4c57
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x)).
+Admitted.
+
+// HOL Light: iterate.ml:1469 / NSUM_SUPERSET
+// Source hash: md5:a12483697f2aeb8568f0f1938cb4eee7
+// Status: generalization_required (bridges: empty_case:A, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_SUPERSET : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall u v c= A, u c= v /\ (forall x :e A, x :e v /\ ~ x :e u -> f x = 0) -> finsum v f = finsum u f.
+Admitted.
+
+// HOL Light: iterate.ml:1475 / NSUM_UNIV
+// Source hash: md5:35925a523b9ef709bfeed127741691c2
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNIV : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f.
+Admitted.
+
+// HOL Light: iterate.ml:1480 / NSUM_UNION_RZERO
+// Source hash: md5:0fee949aaa70b39ee07feb0a7c1d807d
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNION_RZERO : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall u v c= A, finite u /\ (forall x :e A, x :e v /\ ~ x :e u -> f x = 0) -> finsum (u :\/: v) f = finsum u f.
+Admitted.
+
+// HOL Light: iterate.ml:1488 / NSUM_UNION_LZERO
+// Source hash: md5:d2ef1eef37f7ed51a4c90b4878ce0a90
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNION_LZERO : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall u v c= A, finite v /\ (forall x :e A, x :e u /\ ~ x :e v -> f x = 0) -> finsum (u :\/: v) f = finsum v f.
+Admitted.
+
+// HOL Light: iterate.ml:1494 / NSUM_RESTRICT
+// Source hash: md5:7356f000597afddcdc5b234fdcd9ff96
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_RESTRICT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s (fun x:set => if x :e s then f x else 0) = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1499 / NSUM_BOUND
+// Source hash: md5:822f18b79cadf3f9e39fe32c88d6727e
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem NSUM_BOUND : forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (forall x :e A, x :e s -> f x <= b) -> finsum s f <= finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:1504 / NSUM_BOUND_GEN
+// Source hash: md5:28777469ffa6b2d9c547f0b8c6d812db
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_BOUND_GEN : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x <= div_nat b (finite_cardinality s))) -> finsum s f <= b.
+Admitted.
+
+// HOL Light: iterate.ml:1512 / NSUM_BOUND_LT
+// Source hash: md5:f5f782aa5a499070bc3264aed6281f0d
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem NSUM_BOUND_LT : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ ((forall x :e A, x :e s -> f x <= b) /\ (exists x :e A, x :e s /\ f x < b)) -> finsum s f < finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:1520 / NSUM_BOUND_LT_ALL
+// Source hash: md5:893f0fc7359c673dbfae250680279866
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
+Theorem NSUM_BOUND_LT_ALL : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x < b)) -> finsum s f < finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:1525 / NSUM_BOUND_LT_GEN
+// Source hash: md5:c7d7a90a9a68e5c60db69ce439704ec2
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_BOUND_LT_GEN : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x < div_nat b (finite_cardinality s))) -> finsum s f < b.
+Admitted.
+
+// HOL Light: iterate.ml:1534 / NSUM_UNION_EQ
+// Source hash: md5:be3d8c006c3ae1c42afb601d2cdf6488
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNION_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t u c= A, finite u /\ (s :/\: t = Empty /\ s :\/: t = u) -> finsum s f + finsum t f = finsum u f.
+Admitted.
+
+// HOL Light: iterate.ml:1540 / NSUM_EQ_SUPERSET
+// Source hash: md5:5bb56756b89883ef5969d5f9cddb313c
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_EQ_SUPERSET : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite t /\ (t c= s /\ ((forall x :e A, x :e t -> f x = g x) /\ (forall x :e A, x :e s /\ ~ x :e t -> f x = 0))) -> finsum s f = finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:1548 / NSUM_RESTRICT_SET
+// Source hash: md5:8f89e5cbf0b353d65a09c497c609bf37
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_RESTRICT_SET : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> finsum {x :e A | x :e s /\ P x} f = finsum s (fun x:set => if P x then f x else 0).
+Admitted.
+
+// HOL Light: iterate.ml:1553 / NSUM_NSUM_RESTRICT
+// Source hash: md5:8d963f584931e2f667cb58fbc9a5193f
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_NSUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e omega) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
+Admitted.
+
+// HOL Light: iterate.ml:1561 / CARD_EQ_NSUM
+// Source hash: md5:9d0847285acbf1c694ea3c62ab4ad637
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem CARD_EQ_NSUM : forall A:set, A <> Empty -> forall s c= A, finite s -> finite_cardinality s = finsum s (fun x:set => 1).
+Admitted.
+
+// HOL Light: iterate.ml:1565 / NSUM_MULTICOUNT_GEN
+// Source hash: md5:34e59d62c7c5ad4aaf8db8e4670aab51
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t (fun i:set => k i).
+Admitted.
+
+// HOL Light: iterate.ml:1582 / NSUM_MULTICOUNT
+// Source hash: md5:526d70492bc0595d11f46c20af0ec9c9
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo)
+Theorem NSUM_MULTICOUNT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = k * finite_cardinality t.
+Admitted.
+
+// HOL Light: iterate.ml:1592 / NSUM_IMAGE_GEN
+// Source hash: md5:89ed33008ba65912e9d5d47861259f5a
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_IMAGE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s -> finsum s g = finsum {f x | x :e s} (fun y:set => finsum {x :e A | x :e s /\ f x = y} g).
+Admitted.
+
+// HOL Light: iterate.ml:1600 / NSUM_GROUP
+// Source hash: md5:d0ce5a493ba32703060f62fc3eaa2609
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_GROUP : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, forall t c= B, finite s /\ {f x | x :e s} c= t -> finsum t (fun y:set => finsum {x :e A | x :e s /\ f x = y} g) = finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1610 / NSUM_GROUP_RELATION
+// Source hash: md5:6d32ec75a374d92d2e8fb7aa0e6b6131
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_GROUP_RELATION : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, forall t c= B, finite s /\ (forall x :e A, x :e s -> exists y :e B, y :e t /\ R0 x y /\ forall y0 :e B, y0 :e t /\ R0 x y0 -> y0 = y) -> finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} g) = finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1624 / NSUM_SUBSET
+// Source hash: md5:d5f3cd8f601d14ca536223624bbba208
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_SUBSET : forall A:set, A <> Empty -> forall u v c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> finite u /\ (finite v /\ (forall x :e A, x :e u :\: v -> f x = 0)) -> finsum u f <= finsum v f.
+Admitted.
+
+// HOL Light: iterate.ml:1637 / NSUM_SUBSET_SIMPLE
+// Source hash: md5:22f6815df34c1dd38e7753b6506972e5
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_SUBSET_SIMPLE : forall A:set, A <> Empty -> forall u v c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> finite v /\ u c= v -> finsum u f <= finsum v f.
+Admitted.
+
+// HOL Light: iterate.ml:1642 / NSUM_LE_GEN
+// Source hash: md5:8ab740739d55111b337dc1fad26c98c1
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_LE_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x <= g x) /\ finite {x :e A | x :e s /\ ~ g x = 0} -> finsum s f <= finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:1657 / NSUM_MUL_BOUND
+// Source hash: md5:8ff9270b5beac2b8ced0d644f46a10cf
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem NSUM_MUL_BOUND : forall A:set, A <> Empty -> forall a:set -> set, (forall x :e A, a x :e omega) -> forall b:set -> set, (forall x :e A, b x :e omega) -> forall s c= A, finite s -> finsum s (fun i:set => a i * b i) <= finsum s a * finsum s b.
+Admitted.
+
+// HOL Light: iterate.ml:1668 / NSUM_IMAGE_NONZERO
+// Source hash: md5:f50e0d035831a31cd46daa97acae62ab
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_IMAGE_NONZERO : forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set, (forall x :e B, d x :e omega) -> forall i:set -> set, (forall x :e A, i x :e B) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ (~ x = y /\ i x = i y)) -> d (i x) = 0) -> finsum {i x | x :e s} d = finsum s (fun x:set => d (i x)).
+Admitted.
+
+// HOL Light: iterate.ml:1676 / NSUM_BIJECTION
+// Source hash: md5:d983fb9375871ca0b52967d75e8028f4
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_BIJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\ (forall y :e A, y :e s -> exists x :e A, x :e s /\ p x = y /\ forall y0 :e A, y0 :e s /\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x)).
+Admitted.
+
+// HOL Light: iterate.ml:1692 / NSUM_EQ_GENERAL
+// Source hash: md5:05dbb148062159457a32f59f89f7a69b
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_EQ_GENERAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\ h x = y /\ forall y0 :e A, y0 :e s /\ h y0 = y -> y0 = x) /\ (forall x :e A, x :e s -> h x :e t /\ g (h x) = f x) -> finsum s f = finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:1700 / NSUM_EQ_GENERAL_INVERSES
+// Source hash: md5:2465c337eed9302eccf3f7d9b1b2800e
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_EQ_GENERAL_INVERSES : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall k:set -> set, (forall x :e B, k x :e A) -> (forall y :e B, y :e t -> k y :e s /\ h (k y) = y) /\ (forall x :e A, x :e s -> h x :e t /\ (k (h x) = x /\ g (h x) = f x)) -> finsum s f = finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:1708 / NSUM_INJECTION
+// Source hash: md5:efd80603e4abda4f64c0199c6e872d9f
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_INJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> finsum s (fun x:set => f (p x)) = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:1717 / NSUM_UNION_NONZERO
+// Source hash: md5:1960072c334edef4eec0a4cbf51c1c00
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNION_NONZERO : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ (finite t /\ (forall x :e A, x :e s :/\: t -> f x = 0)) -> finsum (s :\/: t) f = finsum s f + finsum t f.
+Admitted.
+
+// HOL Light: iterate.ml:1724 / NSUM_UNIONS_NONZERO
+// Source hash: md5:715ae7c1301441b3968b4f67ba787c76
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_UNIONS_NONZERO : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= Power A, finite s /\ ((forall t c= A, t :e s -> finite t) /\ (forall t1 t2 c= A, forall x :e A, t1 :e s /\ (t2 :e s /\ (~ t1 = t2 /\ (x :e t1 /\ x :e t2))) -> f x = 0)) -> finsum (Union s) f = finsum s (fun t:set => finsum t f).
+Admitted.
+
+// HOL Light: iterate.ml:1739 / NSUM_CASES
+// Source hash: md5:a05dba05fa03cf311ac8cb0fbc178675
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_CASES : forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> finite s -> finsum s (fun x:set => if P x then f x else g x) = finsum {x :e A | x :e s /\ P x} f + finsum {x :e A | x :e s /\ ~ P x} g.
+Admitted.
+
+// HOL Light: iterate.ml:1746 / NSUM_CLOSED
+// Source hash: md5:6733f4121fac077967e398b8476aa7a8
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_CLOSED : forall A:set, A <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, P 0 /\ ((forall x y :e omega, P x /\ P y -> P (x + y)) /\ (forall a :e A, a :e s -> P (f a))) -> P (finsum s f).
+Admitted.
+
+// HOL Light: iterate.ml:1754 / NSUM_RELATED
+// Source hash: md5:cdfcc78c756c4dc99c017b098ce218c9
+// Status: transport_required (bridges: add_nat_add_SNo, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_RELATED : forall A:set, A <> Empty -> forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, R0 0 0 /\ ((forall m n m' n' :e omega, R0 m n /\ R0 m' n' -> R0 (m + m') (n + n')) /\ (finite s /\ (forall x :e A, x :e s -> R0 (f x) (g x)))) -> R0 (finsum s f) (finsum s g).
+Admitted.
+
+// HOL Light: iterate.ml:1766 / NSUM_CLOSED_NONEMPTY
+// Source hash: md5:bf91ac3ae087e0e8bbbc048ac1f06a3a
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_CLOSED_NONEMPTY : forall A:set, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s /\ (~ s = Empty /\ ((forall x y :e omega, P x /\ P y -> P (x + y)) /\ (forall a :e A, a :e s -> P (f a)))) -> P (finsum s f).
+Admitted.
+
+// HOL Light: iterate.ml:1776 / NSUM_RELATED_NONEMPTY
+// Source hash: md5:5b9bb521d6c4ada93dc422dac802c642
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_RELATED_NONEMPTY : forall A:set, forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall m n m' n' :e omega, R0 m n /\ R0 m' n' -> R0 (m + m') (n + n')) /\ (finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> R0 (f x) (g x)))) -> R0 (finsum s f) (finsum s g).
+Admitted.
+
+// HOL Light: iterate.ml:1787 / NSUM_ADD_NUMSEG
+// Source hash: md5:a55b9828c8a7c0b32333c41ca18266d7
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_ADD_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall g:set -> set, (forall x :e omega, g x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f i + g i) = finsum {i :e omega | m <= i /\ i <= n} f + finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:1791 / NSUM_LE_NUMSEG
+// Source hash: md5:56029be47bd352afd9cd53f2c3adf9e1
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_LE_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall g:set -> set, (forall x :e omega, g x :e omega) -> forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> f i <= g i) -> finsum {i :e omega | m <= i /\ i <= n} f <= finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:1796 / NSUM_EQ_NUMSEG
+// Source hash: md5:4eca1bee34a99af74a1182e3e459a129
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_EQ_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall g:set -> set, (forall x :e omega, g x :e omega) -> forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> f i = g i) -> finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:1801 / NSUM_CONST_NUMSEG
+// Source hash: md5:029dda167c24ca13b4ececb2b1815376
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo)
+Theorem NSUM_CONST_NUMSEG : forall c m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun n0:set => c) = minus_nat (n + 1) m * c.
+Admitted.
+
+// HOL Light: iterate.ml:1805 / NSUM_EQ_0_NUMSEG
+// Source hash: md5:4d22eaae921e3d169513e4ef14ce6d6f
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_EQ_0_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> f i = 0) -> finsum {i :e omega | m <= i /\ i <= n} f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1809 / NSUM_EQ_0_IFF_NUMSEG
+// Source hash: md5:4c4d2ad99348caf6b36ebbf4d88f30f7
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_EQ_0_IFF_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} f = 0 <-> forall i :e omega, m <= i /\ i <= n -> f i = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1813 / NSUM_TRIV_NUMSEG
+// Source hash: md5:2849809ec3ae57f0578c0e52b74ff0c8
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_TRIV_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, n < m -> finsum {i :e omega | m <= i /\ i <= n} f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1817 / NSUM_SING_NUMSEG
+// Source hash: md5:3b2aa5bc7206f1f097e1e1431bdef1c3
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_SING_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall n :e omega, finsum {i :e omega | n <= i /\ i <= n} f = f n.
+Admitted.
+
+// HOL Light: iterate.ml:1821 / NSUM_CLAUSES_NUMSEG
+// Source hash: md5:8f56b2d7e84fde4b0c7cdd4d2a6bc514
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_CLAUSES_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> (forall m :e omega, finsum {i :e omega | m <= i /\ i <= 0} f = if m = 0 then f 0 else 0) /\ forall m n :e omega, finsum {i :e omega | m <= i /\ i <= ordsucc n} f = if m <= ordsucc n then finsum {i :e omega | m <= i /\ i <= n} f + f (ordsucc n) else finsum {i :e omega | m <= i /\ i <= n} f.
+Admitted.
+
+// HOL Light: iterate.ml:1828 / NSUM_CLAUSES_NUMSEG_LT
+// Source hash: md5:826188118a7f4607566ae824186bc52a
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_CLAUSES_NUMSEG_LT : forall f:set -> set, (forall x :e omega, f x :e omega) -> finsum {i :e omega | i < 0} f = 0 /\ forall k :e omega, finsum {i :e omega | i < ordsucc k} f = finsum {i :e omega | i < k} f + f k.
+Admitted.
+
+// HOL Light: iterate.ml:1834 / NSUM_CLAUSES_NUMSEG_LE
+// Source hash: md5:d25bf365d744139dc5aa88b3350b68bf
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_CLAUSES_NUMSEG_LE : forall f:set -> set, (forall x :e omega, f x :e omega) -> finsum {i :e omega | i <= 0} f = f 0 /\ forall k :e omega, finsum {i :e omega | i <= ordsucc k} f = finsum {i :e omega | i <= k} f + f (ordsucc k).
+Admitted.
+
+// HOL Light: iterate.ml:1840 / NSUM_SWAP_NUMSEG
+// Source hash: md5:92168ed13fd8c7a32b73f4290a116ae0
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_SWAP_NUMSEG : forall a b c d :e omega, forall f :e omega :^: omega :^: omega, finsum {i :e omega | a <= i /\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\ i <= d} (fun x:set => f i x)) = finsum {i :e omega | c <= i /\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
+Admitted.
+
+// HOL Light: iterate.ml:1846 / NSUM_ADD_SPLIT
+// Source hash: md5:d29d60b28675d6e3d2296953c3035d15
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_ADD_SPLIT : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n p :e omega, m <= n + 1 -> finsum {i :e omega | m <= i /\ i <= n + p} f = finsum {i :e omega | m <= i /\ i <= n} f + finsum {i :e omega | n + 1 <= i /\ i <= n + p} f.
+Admitted.
+
+// HOL Light: iterate.ml:1852 / NSUM_OFFSET
+// Source hash: md5:f5c432302f5cab438911f27eb17e7655
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_OFFSET : forall p :e omega, forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m + p <= i /\ i <= n + p} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f (i + p)).
+Admitted.
+
+// HOL Light: iterate.ml:1857 / NSUM_OFFSET_0
+// Source hash: md5:44309fb952465264a9681df86e23d463
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_OFFSET_0 : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, m <= n -> finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => f (i + m)).
+Admitted.
+
+// HOL Light: iterate.ml:1861 / NSUM_CLAUSES_LEFT
+// Source hash: md5:6d92e7535e8754709276c037b5098d69
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe)
+Theorem NSUM_CLAUSES_LEFT : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, m <= n -> finsum {i :e omega | m <= i /\ i <= n} f = f m + finsum {i :e omega | m + 1 <= i /\ i <= n} f.
+Admitted.
+
+// HOL Light: iterate.ml:1866 / NSUM_CLAUSES_RIGHT
+// Source hash: md5:205790b9928237e3eacee6ae64166891
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem NSUM_CLAUSES_RIGHT : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, 0 < n /\ m <= n -> finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= minus_nat n 1} f + f n.
+Admitted.
+
+// HOL Light: iterate.ml:1871 / NSUM_PAIR
+// Source hash: md5:aa53bb4cc0807186ac74bcecbdac339f
+// Status: transport_required (bridges: add_nat_add_SNo, hol_nsum_finsum, hol_num_omega, mul_nat_mul_SNo)
+Theorem NSUM_PAIR : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | 2 * m <= i /\ i <= 2 * n + 1} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f (2 * i) + f (2 * i + 1)).
+Admitted.
+
+// HOL Light: iterate.ml:1876 / NSUM_REFLECT
+// Source hash: md5:64551ebd98c10b5b065ce19f1d3e6e9f
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, nat_lt_SNoLt)
+Theorem NSUM_REFLECT : forall x:set -> set, (forall x :e omega, x x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} x = if n < m then 0 else finsum {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
+Admitted.
+
+// HOL Light: iterate.ml:1882 / MOD_NSUM_MOD
+// Source hash: md5:4f42d4c566f89f5c49847f1d1e226e31
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem MOD_NSUM_MOD : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall n :e omega, forall s c= A, finite s -> mod_nat (finsum s f) n = mod_nat (finsum s (fun i:set => mod_nat (f i) n)) n.
+Admitted.
+
+// HOL Light: iterate.ml:1892 / MOD_NSUM_MOD_NUMSEG
+// Source hash: md5:6a55a41118aa479f84a57f8f0cb9c9ab
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega)
+Theorem MOD_NSUM_MOD_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall a b n :e omega, mod_nat (finsum {i :e omega | a <= i /\ i <= b} f) n = mod_nat (finsum {i :e omega | a <= i /\ i <= b} (fun i:set => mod_nat (f i) n)) n.
+Admitted.
+
+// HOL Light: iterate.ml:1923 / CARD_UNIONS_IMAGE
+// Source hash: md5:5d430c768ca9536456e51355c5591b70
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem CARD_UNIONS_IMAGE : forall A K:set, A <> Empty -> K <> Empty -> forall f :e Power A :^: K, forall s c= K, finite s /\ ((forall t :e K, t :e s -> finite (f t)) /\ (forall t u :e K, t :e s /\ (u :e s /\ ~ t = u) -> f t :/\: f u = Empty)) -> finite_cardinality (Union {f x | x :e s}) = finsum s (fun i:set => finite_cardinality (f i)).
+Admitted.
+
+// HOL Light: iterate.ml:1939 / CARD_UNIONS
+// Source hash: md5:b4da9d18c124538b8ac870ad0cddaa2a
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem CARD_UNIONS : forall A:set, A <> Empty -> forall s c= Power A, finite s /\ ((forall t c= A, t :e s -> finite t) /\ (forall t u c= A, t :e s /\ (u :e s /\ ~ t = u) -> t :/\: u = Empty)) -> finite_cardinality (Union s) = finsum s (fun x:set => finite_cardinality x).
+Admitted.
+
+// HOL Light: iterate.ml:1984 / sum
+// Source hash: md5:0d4e918739420e483788a227f7a5b020
+// Status: transport_required (bridges: hol_iterate, hol_real_R, hol_sum_finsum)
+Theorem sum : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e R) -> finsum x x0 = iterate_op R (fun a:set => fun b:set => a + b) x x0.
+Admitted.
+
+// HOL Light: iterate.ml:1987 / NEUTRAL_REAL_ADD
+// Source hash: md5:1e3accec9aefb529760ca0411db5fa95
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem NEUTRAL_REAL_ADD : neutral_of R (fun a:set => fun b:set => a + b) = 0.
+Admitted.
+
+// HOL Light: iterate.ml:1996 / SUM_DEGENERATE
+// Source hash: md5:cf2bc0c49dfb27c1270078e50a73d766
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_DEGENERATE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, ~ finite {x :e A | x :e s /\ ~ f x = 0} -> finsum s f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2001 / SUM_CLAUSES
+// Source hash: md5:203f6a0710932fdee70420e4b7f58758
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_CLAUSES : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e R) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2011 / SUM_UNION
+// Source hash: md5:99cf8e67c562be8735bd4e8149e3b218
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_UNION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finsum (s :\/: t) f = finsum s f + finsum t f.
+Admitted.
+
+// HOL Light: iterate.ml:2017 / SUM_DIFF
+// Source hash: md5:0f8998912661f8263d3bf700d2ca72de
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_DIFF : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s t c= A, finite s /\ t c= s -> finsum (s :\: t) f = finsum s f + - finsum t f.
+Admitted.
+
+// HOL Light: iterate.ml:2021 / SUM_INCL_EXCL
+// Source hash: md5:28f1f5e523be405c4849e42f5973225c
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_INCL_EXCL : forall A:set, forall s t c= A, forall f:set -> set, (forall x :e A, f x :e R) -> finite s /\ finite t -> finsum s f + finsum t f = finsum (s :\/: t) f + finsum (s :/\: t) f.
+Admitted.
+
+// HOL Light: iterate.ml:2028 / SUM_SUPPORT
+// Source hash: md5:57b0be054e27b9f99a4b2ab72a68ad82
+// Status: generalization_required (bridges: empty_case:A, hol_real_R, hol_sum_finsum)
+Theorem SUM_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2032 / SUM_ADD
+// Source hash: md5:7b4b78190b429e4506561b3032353a91
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_ADD : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2036 / SUM_ADD_GEN
+// Source hash: md5:2a8f1f189d4ef574f5fc61d3c4420c16
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_ADD_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite {x :e A | x :e s /\ ~ f x = 0} /\ finite {x :e A | x :e s /\ ~ g x = 0} -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2043 / SUM_EQ_0
+// Source hash: md5:5181a97f1d05a55742f2aff158ddcfb6
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_EQ_0 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, (forall x :e A, x :e s -> f x = 0) -> finsum s f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2048 / SUM_0
+// Source hash: md5:1c9627d57c17c4075448d905a78bd0e7
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUM_0 : forall A:set, A <> Empty -> forall s c= A, finsum s (fun n:set => 0) = 0.
+
+// HOL Light: iterate.ml:2052 / SUM_LMUL
+// Source hash: md5:39ee86a2da20af0edfeadb04886f3a85
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_LMUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall c :e R, forall s c= A, finsum s (fun x:set => c * f x) = c * finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2066 / SUM_RMUL
+// Source hash: md5:7d81c59e395541283794b8d3324d177e
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_RMUL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall c :e R, forall s c= A, finsum s (fun x:set => f x * c) = finsum s f * c.
+Admitted.
+
+// HOL Light: iterate.ml:2070 / SUM_NEG
+// Source hash: md5:c03ccc256bdf03eb6450da886a9af396
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_NEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum s (fun x:set => - f x) = - finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2075 / SUM_SUB
+// Source hash: md5:3478c87b609f0744e3e37e895a8a9952
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_SUB : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + - g x) = finsum s f + - finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2079 / SUM_LE
+// Source hash: md5:0e0105c0d9f40aea5912f0ccbd2a9e37
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> f x <= g x) -> finsum s f <= finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2086 / SUM_LT
+// Source hash: md5:e5659f550c2b9f7233cf8432953dde8a
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_LT : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> f x <= g x) /\ (exists x :e A, x :e s /\ f x < g x)) -> finsum s f < finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2099 / SUM_LT_ALL
+// Source hash: md5:34fc7a3d70eca3beae011b3113f2043f
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_LT_ALL : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x < g x)) -> finsum s f < finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2105 / SUM_POS_LT
+// Source hash: md5:d437d8641afb4163691134cb08bd9df2
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_POS_LT : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> 0 <= f x) /\ (exists x :e A, x :e s /\ 0 < f x)) -> 0 < finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2117 / SUM_POS_LT_ALL
+// Source hash: md5:0c7facda2cf3c1dd46872dce3db836d4
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_POS_LT_ALL : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> finite s /\ (~ s = Empty /\ (forall i :e A, i :e s -> 0 < f i)) -> 0 < finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2123 / SUM_EQ
+// Source hash: md5:ee61b6a5d29103b6346f6c0cc83813d3
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finsum s f = finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2128 / SUM_ABS
+// Source hash: md5:eccb7a34284816ae4d7412b50285dca7
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_ABS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> abs_SNo (finsum s f) <= finsum s (fun x:set => abs_SNo (f x)).
+Admitted.
+
+// HOL Light: iterate.ml:2134 / SUM_ABS_LE
+// Source hash: md5:5c58cf2a603e72c55aef96b24d8e2016
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_ABS_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> abs_SNo (f x) <= g x) -> abs_SNo (finsum s f) <= finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2143 / SUM_CONST
+// Source hash: md5:b9746343aba09f7fa0dd26b5574e0265
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_CONST : forall A:set, A <> Empty -> forall c :e R, forall s c= A, finite s -> finsum s (fun n:set => c) = finite_cardinality s * c.
+Admitted.
+
+// HOL Light: iterate.ml:2149 / SUM_POS_LE
+// Source hash: md5:b8a3d3ce2f3a1fcfe0d976d6b131485e
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_POS_LE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, (forall x :e A, x :e s -> 0 <= f x) -> 0 <= finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2160 / SUM_POS_BOUND
+// Source hash: md5:69c42378ab519bed5017861dcd28751f
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_POS_BOUND : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, forall s c= A, finite s /\ ((forall x :e A, x :e s -> 0 <= f x) /\ finsum s f <= b) -> forall x :e A, x :e s -> f x <= b.
+Admitted.
+
+// HOL Light: iterate.ml:2170 / SUM_POS_EQ_0
+// Source hash: md5:11557ada894c285c3a3fc1ceceda82d5
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_POS_EQ_0 : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> 0 <= f x) /\ finsum s f = 0) -> forall x :e A, x :e s -> f x = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2177 / SUM_ZERO_EXISTS
+// Source hash: md5:b9b7a323b3aa5f5aa00ff870949d6383
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_ZERO_EXISTS : forall A:set, forall u:set -> set, (forall x :e A, u x :e R) -> forall s c= A, finite s /\ finsum s u = 0 -> (forall i :e A, i :e s -> u i = 0) \/ exists j k :e A, j :e s /\ (u j < 0 /\ (k :e s /\ 0 < u k)).
+Admitted.
+
+// HOL Light: iterate.ml:2190 / SUM_DELETE
+// Source hash: md5:9115ff457a0bbc09a6f883efc9265e6b
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_DELETE : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, forall a :e A, finite s /\ a :e s -> finsum (s :\: {a}) f = finsum s f + - f a.
+Admitted.
+
+// HOL Light: iterate.ml:2195 / SUM_DELETE_CASES
+// Source hash: md5:002ac372707ee732655de7ee0657600a
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_DELETE_CASES : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, forall a :e A, finite s -> finsum (s :\: {a}) f = if a :e s then finsum s f + - f a else finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2202 / SUM_SING
+// Source hash: md5:dbf2c5eb44671fdd1484486c9cfb2ed3
+// Status: generalization_required (bridges: empty_case:A, hol_real_R, hol_sum_finsum)
+Theorem SUM_SING : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall x :e A, finsum {x} f = f x.
+Admitted.
+
+// HOL Light: iterate.ml:2206 / SUM_DELTA
+// Source hash: md5:aa414c33d7c431d140dff6eb4e03549d
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_DELTA : forall A:set, forall b :e R, forall s c= A, forall a :e A, finsum s (fun x:set => if x = a then b else 0) = if a :e s then b else 0.
+Admitted.
+
+// HOL Light: iterate.ml:2211 / SUM_SWAP
+// Source hash: md5:58e7fe89643cd6e38e505037691016e4
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_SWAP : forall A B:set, A <> Empty -> B <> Empty -> forall f :e R :^: B :^: A, forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun i:set => finsum t (fun x:set => f i x)) = finsum t (fun j:set => finsum s (fun i:set => f i j)).
+Admitted.
+
+// HOL Light: iterate.ml:2219 / SUM_IMAGE
+// Source hash: md5:ad177bf18ca1c44876fd0f53adc1ddbc
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x)).
+Admitted.
+
+// HOL Light: iterate.ml:2226 / SUM_SUPERSET
+// Source hash: md5:60167fceb19f58f5d607c04bc4f12312
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_SUPERSET : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall u v c= A, u c= v /\ (forall x :e A, x :e v /\ ~ x :e u -> f x = 0) -> finsum v f = finsum u f.
+Admitted.
+
+// HOL Light: iterate.ml:2232 / SUM_UNIV
+// Source hash: md5:44fb035f34f7ec4e8b74faf1dc401597
+// Status: generalization_required (bridges: empty_case:A, hol_real_R, hol_sum_finsum)
+Theorem SUM_UNIV : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f.
+Admitted.
+
+// HOL Light: iterate.ml:2237 / SUM_UNION_RZERO
+// Source hash: md5:ec172d9a16f0b8604b74e1941603a05e
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_UNION_RZERO : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall u v c= A, finite u /\ (forall x :e A, x :e v /\ ~ x :e u -> f x = 0) -> finsum (u :\/: v) f = finsum u f.
+Admitted.
+
+// HOL Light: iterate.ml:2246 / SUM_UNION_LZERO
+// Source hash: md5:1838cb0dd3728d9cecd748dfcfd694d3
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_UNION_LZERO : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall u v c= A, finite v /\ (forall x :e A, x :e u /\ ~ x :e v -> f x = 0) -> finsum (u :\/: v) f = finsum v f.
+Admitted.
+
+// HOL Light: iterate.ml:2252 / SUM_RESTRICT
+// Source hash: md5:466f7eb37166fb435670509f4e1c913f
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_RESTRICT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => if x :e s then f x else 0) = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2257 / SUM_BOUND
+// Source hash: md5:66290aa4e3a38499cb4b519d4b4ff7e5
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_BOUND : forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\ (forall x :e A, x :e s -> f x <= b) -> finsum s f <= finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:2262 / SUM_BOUND_GEN
+// Source hash: md5:ca404ead08668a21c1f24695606b91e3
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_BOUND_GEN : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x <= b :/: finite_cardinality s)) -> finsum s f <= b.
+Admitted.
+
+// HOL Light: iterate.ml:2268 / SUM_ABS_BOUND
+// Source hash: md5:251fdbb8b3aa8134ec647e5b86e2627d
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_ABS_BOUND : forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\ (forall x :e A, x :e s -> abs_SNo (f x) <= b) -> abs_SNo (finsum s f) <= finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:2275 / SUM_BOUND_LT
+// Source hash: md5:62601977e9a7dad52a365ec8419857a6
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_BOUND_LT : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\ ((forall x :e A, x :e s -> f x <= b) /\ (exists x :e A, x :e s /\ f x < b)) -> finsum s f < finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:2283 / SUM_BOUND_LT_ALL
+// Source hash: md5:e1d2b584d13f31cb32528a71db221122
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_BOUND_LT_ALL : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x < b)) -> finsum s f < finite_cardinality s * b.
+Admitted.
+
+// HOL Light: iterate.ml:2288 / SUM_BOUND_LT_GEN
+// Source hash: md5:1b2c90997554c4bad3398e0d0f69aabe
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_BOUND_LT_GEN : forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> f x < b :/: finite_cardinality s)) -> finsum s f < b.
+Admitted.
+
+// HOL Light: iterate.ml:2294 / SUM_UNION_EQ
+// Source hash: md5:fc18bdad25464fe5626ab24a84391a73
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_UNION_EQ : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s t u c= A, finite u /\ (s :/\: t = Empty /\ s :\/: t = u) -> finsum s f + finsum t f = finsum u f.
+Admitted.
+
+// HOL Light: iterate.ml:2300 / SUM_EQ_SUPERSET
+// Source hash: md5:0cc6c8aa386d9bb00cb239385514e157
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_EQ_SUPERSET : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e A, g x :e R) -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s t c= A, finite t /\ (t c= s /\ ((forall x :e A, x :e t -> f x = g x) /\ (forall x :e A, x :e s /\ ~ x :e t -> f x = 0))) -> finsum s f = finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:2308 / SUM_RESTRICT_SET
+// Source hash: md5:f8dbd0f079957084cd00b0d2c6f3b4af
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_RESTRICT_SET : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> finsum {x :e A | x :e s /\ P x} f = finsum s (fun x:set => if P x then f x else 0).
+Admitted.
+
+// HOL Light: iterate.ml:2313 / SUM_SUM_RESTRICT
+// Source hash: md5:5945aa04459515a934d2e536a5f547d5
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_SUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e R) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
+Admitted.
+
+// HOL Light: iterate.ml:2321 / CARD_EQ_SUM
+// Source hash: md5:3545e1cdd43a5b9cca47c000e7931ca3
+// Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem CARD_EQ_SUM : forall A:set, A <> Empty -> forall s c= A, finite s -> finite_cardinality s = finsum s (fun x:set => 1).
+
+// HOL Light: iterate.ml:2325 / SUM_MULTICOUNT_GEN
+// Source hash: md5:4f21d5476c4f49949cc34b0c3fe4f38d
+// Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUM_MULTICOUNT_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = finsum t (fun i:set => k i).
+
+// HOL Light: iterate.ml:2344 / SUM_MULTICOUNT
+// Source hash: md5:e60ec96027855390e454c72b8e469a51
+// Status: native_reuse (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, mul_nat_mul_SNo, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem SUM_MULTICOUNT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\ (finite t /\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\ R0 i j}) = k * finite_cardinality t.
+
+// HOL Light: iterate.ml:2354 / SUM_IMAGE_GEN
+// Source hash: md5:68df2ab834c3fdc35aaabce52f7500b5
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_IMAGE_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s g = finsum {f x | x :e s} (fun y:set => finsum {x :e A | x :e s /\ f x = y} g).
+Admitted.
+
+// HOL Light: iterate.ml:2362 / SUM_GROUP
+// Source hash: md5:455c6429cb2cb0bb8bb52cea2b6b9b86
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_GROUP : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, forall t c= B, finite s /\ {f x | x :e s} c= t -> finsum t (fun y:set => finsum {x :e A | x :e s /\ f x = y} g) = finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2372 / SUM_GROUP_RELATION
+// Source hash: md5:24a38dbcad8c4d824c9ad51111cd6310
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_GROUP_RELATION : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, forall t c= B, finite s /\ (forall x :e A, x :e s -> exists y :e B, y :e t /\ R0 x y /\ forall y0 :e B, y0 :e t /\ R0 x y0 -> y0 = y) -> finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} g) = finsum s g.
+Admitted.
+
+// HOL Light: iterate.ml:2386 / REAL_OF_NUM_SUM
+// Source hash: md5:5ddff68d965fb2efd936b7d447eefa06
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_OF_NUM_SUM : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s f = finsum s (fun x:set => f x).
+Admitted.
+
+// HOL Light: iterate.ml:2391 / SUM_SUBSET
+// Source hash: md5:9fbe449a414156cf9fc147c1e841e0e1
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_SUBSET : forall A:set, A <> Empty -> forall u v c= A, forall f:set -> set, (forall x :e A, f x :e R) -> finite u /\ (finite v /\ ((forall x :e A, x :e u :\: v -> f x <= 0) /\ (forall x :e A, x :e v :\: u -> 0 <= f x))) -> finsum u f <= finsum v f.
+Admitted.
+
+// HOL Light: iterate.ml:2409 / SUM_SUBSET_SIMPLE
+// Source hash: md5:94d90fab1c9061f9950d6847565174e9
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_SUBSET_SIMPLE : forall A:set, A <> Empty -> forall u v c= A, forall f:set -> set, (forall x :e A, f x :e R) -> finite v /\ (u c= v /\ (forall x :e A, x :e v :\: u -> 0 <= f x)) -> finsum u f <= finsum v f.
+Admitted.
+
+// HOL Light: iterate.ml:2416 / SUM_MUL_BOUND
+// Source hash: md5:bf61fc192814a23db119d1c84dfbe5fa
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_MUL_BOUND : forall A:set, A <> Empty -> forall a:set -> set, (forall x :e A, a x :e R) -> forall b:set -> set, (forall x :e A, b x :e R) -> forall s c= A, finite s /\ (forall i :e A, i :e s -> 0 <= a i /\ 0 <= b i) -> finsum s (fun i:set => a i * b i) <= finsum s a * finsum s b.
+Admitted.
+
+// HOL Light: iterate.ml:2427 / SUM_IMAGE_NONZERO
+// Source hash: md5:707bd4dd1466ec983dbfc112fb5c3c71
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_IMAGE_NONZERO : forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set, (forall x :e B, d x :e R) -> forall i:set -> set, (forall x :e A, i x :e B) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ (~ x = y /\ i x = i y)) -> d (i x) = 0) -> finsum {i x | x :e s} d = finsum s (fun x:set => d (i x)).
+Admitted.
+
+// HOL Light: iterate.ml:2435 / SUM_BIJECTION
+// Source hash: md5:89065b05278b69f0971846666b2aa165
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_BIJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\ (forall y :e A, y :e s -> exists x :e A, x :e s /\ p x = y /\ forall y0 :e A, y0 :e s /\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x)).
+Admitted.
+
+// HOL Light: iterate.ml:2451 / SUM_EQ_GENERAL
+// Source hash: md5:df5ba265a7a1dbcd2466ee8aee4466a6
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_EQ_GENERAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\ h x = y /\ forall y0 :e A, y0 :e s /\ h y0 = y -> y0 = x) /\ (forall x :e A, x :e s -> h x :e t /\ g (h x) = f x) -> finsum s f = finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:2459 / SUM_EQ_GENERAL_INVERSES
+// Source hash: md5:6023e1a0cc56764726cb9b4023c99ed5
+// Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
+Theorem SUM_EQ_GENERAL_INVERSES : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall k:set -> set, (forall x :e B, k x :e A) -> (forall y :e B, y :e t -> k y :e s /\ h (k y) = y) /\ (forall x :e A, x :e s -> h x :e t /\ (k (h x) = x /\ g (h x) = f x)) -> finsum s f = finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:2467 / SUM_INJECTION
+// Source hash: md5:28ff3c08efe38892a30c209b55e5d219
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_INJECTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> finsum s (fun x:set => f (p x)) = finsum s f.
+Admitted.
+
+// HOL Light: iterate.ml:2476 / SUM_UNION_NONZERO
+// Source hash: md5:84f6dd2026ace33b52dd9f0a45b345dd
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_UNION_NONZERO : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s t c= A, finite s /\ (finite t /\ (forall x :e A, x :e s :/\: t -> f x = 0)) -> finsum (s :\/: t) f = finsum s f + finsum t f.
+Admitted.
+
+// HOL Light: iterate.ml:2483 / SUM_UNIONS_NONZERO
+// Source hash: md5:b54c2b4dc62e3ede0db963b081420d6d
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_UNIONS_NONZERO : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= Power A, finite s /\ ((forall t c= A, t :e s -> finite t) /\ (forall t1 t2 c= A, forall x :e A, t1 :e s /\ (t2 :e s /\ (~ t1 = t2 /\ (x :e t1 /\ x :e t2))) -> f x = 0)) -> finsum (Union s) f = finsum s (fun t:set => finsum t f).
+Admitted.
+
+// HOL Light: iterate.ml:2498 / SUM_CASES
+// Source hash: md5:6c78670d1a595e06eec450ceab3bf430
+// Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_CASES : forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> finite s -> finsum s (fun x:set => if P x then f x else g x) = finsum {x :e A | x :e s /\ P x} f + finsum {x :e A | x :e s /\ ~ P x} g.
+Admitted.
+
+// HOL Light: iterate.ml:2505 / SUM_CASES_1
+// Source hash: md5:85382b31a011e76817af78ef3a3ac305
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_CASES_1 : forall A:set, forall y :e R, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, forall a :e A, finite s /\ a :e s -> finsum s (fun x:set => if x = a then y else f x) = finsum s f + y + - f a.
+Admitted.
+
+// HOL Light: iterate.ml:2513 / SUM_LE_INCLUDED
+// Source hash: md5:ab36681ba3c1b6c0e01820654542b893
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_LE_INCLUDED : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, forall t c= B, forall i:set -> set, (forall x :e B, i x :e A) -> finite s /\ (finite t /\ ((forall y :e B, y :e t -> 0 <= g y) /\ (forall x :e A, x :e s -> exists y :e B, y :e t /\ (i y = x /\ f x <= g y)))) -> finsum s f <= finsum t g.
+Admitted.
+
+// HOL Light: iterate.ml:2539 / SUM_IMAGE_LE
+// Source hash: md5:9d96d8a1b295964a9112cd1e88774ad4
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_IMAGE_LE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, finite s /\ (forall x :e A, x :e s -> 0 <= g (f x)) -> finsum {f x | x :e s} g <= finsum s (fun x:set => g (f x)).
+Admitted.
+
+// HOL Light: iterate.ml:2549 / SUM_CLOSED
+// Source hash: md5:e742371a98baddccfae53fa9cecceba7
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_CLOSED : forall A:set, A <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, P 0 /\ ((forall x y :e R, P x /\ P y -> P (x + y)) /\ (forall a :e A, a :e s -> P (f a))) -> P (finsum s f).
+Admitted.
+
+// HOL Light: iterate.ml:2557 / SUM_RELATED
+// Source hash: md5:5b6ed235aff4ef771e394801213623b8
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_RELATED : forall A:set, A <> Empty -> forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, R0 0 0 /\ ((forall m n m' n' :e R, R0 m n /\ R0 m' n' -> R0 (m + m') (n + n')) /\ (finite s /\ (forall x :e A, x :e s -> R0 (f x) (g x)))) -> R0 (finsum s f) (finsum s g).
+Admitted.
+
+// HOL Light: iterate.ml:2569 / SUM_CLOSED_NONEMPTY
+// Source hash: md5:70bf9e4f03f903da84587382743f730f
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_CLOSED_NONEMPTY : forall A:set, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s /\ (~ s = Empty /\ ((forall x y :e R, P x /\ P y -> P (x + y)) /\ (forall a :e A, a :e s -> P (f a)))) -> P (finsum s f).
+Admitted.
+
+// HOL Light: iterate.ml:2579 / SUM_RELATED_NONEMPTY
+// Source hash: md5:853bf007cea4a6f5ae8f884655f49407
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_real_R, hol_sum_finsum)
+Theorem SUM_RELATED_NONEMPTY : forall A:set, forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, (forall m n m' n' :e R, R0 m n /\ R0 m' n' -> R0 (m + m') (n + n')) /\ (finite s /\ (~ s = Empty /\ (forall x :e A, x :e s -> R0 (f x) (g x)))) -> R0 (finsum s f) (finsum s g).
+Admitted.
+
+// HOL Light: iterate.ml:2590 / REAL_OF_NUM_SUM_GEN
+// Source hash: md5:d008569d378fafe41bdfabdf038831bf
+// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_OF_NUM_SUM_GEN : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite {i :e A | i :e s /\ ~ f i = 0} -> finsum s f = finsum s (fun x:set => f x).
+Admitted.
+
+// HOL Light: iterate.ml:2602 / SUM_ADD_NUMSEG
+// Source hash: md5:6b1d66a883efc7487986daea754a220e
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem SUM_ADD_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f i + g i) = finsum {i :e omega | m <= i /\ i <= n} f + finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:2606 / SUM_SUB_NUMSEG
+// Source hash: md5:076f683ce6e699dc8e0a8f473da5d285
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem SUM_SUB_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f i + - g i) = finsum {i :e omega | m <= i /\ i <= n} f + - finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:2610 / SUM_LE_NUMSEG
+// Source hash: md5:7aa54b85b19760e8816baf46c9d7f6c8
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_LE_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> f i <= g i) -> finsum {i :e omega | m <= i /\ i <= n} f <= finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:2615 / SUM_EQ_NUMSEG
+// Source hash: md5:f250543a1974cdb718b8542cbfe458e3
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_EQ_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> f i = g i) -> finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} g.
+Admitted.
+
+// HOL Light: iterate.ml:2620 / SUM_ABS_NUMSEG
+// Source hash: md5:7a5d22992a1baee56b59562070d38145
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem SUM_ABS_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, abs_SNo (finsum {i :e omega | m <= i /\ i <= n} f) <= finsum {i :e omega | m <= i /\ i <= n} (fun i:set => abs_SNo (f i)).
+Admitted.
+
+// HOL Light: iterate.ml:2624 / SUM_CONST_NUMSEG
+// Source hash: md5:7482e5f404b3f372e3111c3ed0e461fd
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_CONST_NUMSEG : forall c :e R, forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun n0:set => c) = minus_nat (n + 1) m * c.
+Admitted.
+
+// HOL Light: iterate.ml:2628 / SUM_EQ_0_NUMSEG
+// Source hash: md5:e9e610ec5129eeac64fcf12c6e240fb3
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_EQ_0_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, (forall i :e omega, m <= i /\ i <= n -> f i = 0) -> finsum {i :e omega | m <= i /\ i <= n} f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2632 / SUM_TRIV_NUMSEG
+// Source hash: md5:16bb5378463e0be404a26f1bd50c7d21
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_lt_SNoLt, omega_Subq_R)
+Theorem SUM_TRIV_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, n < m -> finsum {i :e omega | m <= i /\ i <= n} f = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2636 / SUM_POS_LE_NUMSEG
+// Source hash: md5:ef38f87b7f578bc88f665628e3794fcc
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_POS_LE_NUMSEG : forall m n :e omega, forall f:set -> set, (forall x :e omega, f x :e R) -> (forall p :e omega, m <= p /\ p <= n -> 0 <= f p) -> 0 <= finsum {i :e omega | m <= i /\ i <= n} f.
+Admitted.
+
+// HOL Light: iterate.ml:2640 / SUM_POS_EQ_0_NUMSEG
+// Source hash: md5:4a66b0e5fb62ff41d2cb2f2d2483fd51
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_POS_EQ_0_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, (forall p :e omega, m <= p /\ p <= n -> 0 <= f p) /\ finsum {i :e omega | m <= i /\ i <= n} f = 0 -> forall p :e omega, m <= p /\ p <= n -> f p = 0.
+Admitted.
+
+// HOL Light: iterate.ml:2645 / SUM_SING_NUMSEG
+// Source hash: md5:3591c39f9fceb3d9f9b8086a8be92370
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem SUM_SING_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> forall n :e omega, finsum {i :e omega | n <= i /\ i <= n} f = f n.
+Admitted.
+
+// HOL Light: iterate.ml:2649 / SUM_CLAUSES_NUMSEG
+// Source hash: md5:8d92351c710e979e519b92755d569d9e
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_CLAUSES_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e R) -> (forall m :e omega, finsum {i :e omega | m <= i /\ i <= 0} f = if m = 0 then f 0 else 0) /\ forall m n :e omega, finsum {i :e omega | m <= i /\ i <= ordsucc n} f = if m <= ordsucc n then finsum {i :e omega | m <= i /\ i <= n} f + f (ordsucc n) else finsum {i :e omega | m <= i /\ i <= n} f.
+Admitted.
+
+// HOL Light: iterate.ml:2656 / SUM_CLAUSES_NUMSEG_LT
+// Source hash: md5:941ac86619552069d02a038f6cad10ae
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_lt_SNoLt, omega_Subq_R)
+Theorem SUM_CLAUSES_NUMSEG_LT : forall f:set -> set, (forall x :e omega, f x :e R) -> finsum {i :e omega | i < 0} f = 0 /\ forall k :e omega, finsum {i :e omega | i < ordsucc k} f = finsum {i :e omega | i < k} f + f k.
+Admitted.
+
+// HOL Light: iterate.ml:2662 / SUM_CLAUSES_NUMSEG_LE
+// Source hash: md5:c581cd744e6f05945d3653f042d8e690
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_CLAUSES_NUMSEG_LE : forall f:set -> set, (forall x :e omega, f x :e R) -> finsum {i :e omega | i <= 0} f = f 0 /\ forall k :e omega, finsum {i :e omega | i <= ordsucc k} f = finsum {i :e omega | i <= k} f + f (ordsucc k).
+Admitted.
+
+// HOL Light: iterate.ml:2668 / SUM_SWAP_NUMSEG
+// Source hash: md5:f9c18b31fb82cd14605cf6938636517d
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem SUM_SWAP_NUMSEG : forall a b c d :e omega, forall f :e R :^: omega :^: omega, finsum {i :e omega | a <= i /\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\ i <= d} (fun x:set => f i x)) = finsum {i :e omega | c <= i /\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
+Admitted.
+
+// HOL Light: iterate.ml:2674 / SUM_ADD_SPLIT
+// Source hash: md5:b49886ab11366701526cd6eac4d9dbf5
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_ADD_SPLIT : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n p :e omega, m <= n + 1 -> finsum {i :e omega | m <= i /\ i <= n + p} f = finsum {i :e omega | m <= i /\ i <= n} f + finsum {i :e omega | n + 1 <= i /\ i <= n + p} f.
+Admitted.
+
+// HOL Light: iterate.ml:2680 / SUM_OFFSET
+// Source hash: md5:712666eefad9a2a3f18bd5372f16a7a8
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum)
+Theorem SUM_OFFSET : forall p :e omega, forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | m + p <= i /\ i <= n + p} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f (i + p)).
+Admitted.
+
+// HOL Light: iterate.ml:2686 / SUM_OFFSET_0
+// Source hash: md5:1382d35b14dbb02b6e3127ff767532c0
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_OFFSET_0 : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, m <= n -> finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => f (i + m)).
+Admitted.
+
+// HOL Light: iterate.ml:2690 / SUM_CLAUSES_LEFT
+// Source hash: md5:44cadc6940bef4057d21ac8c916dab79
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_CLAUSES_LEFT : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, m <= n -> finsum {i :e omega | m <= i /\ i <= n} f = f m + finsum {i :e omega | m + 1 <= i /\ i <= n} f.
+Admitted.
+
+// HOL Light: iterate.ml:2695 / SUM_CLAUSES_RIGHT
+// Source hash: md5:6efb6db7dd0e66dd3d526e0bfb704fa8
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem SUM_CLAUSES_RIGHT : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, 0 < n /\ m <= n -> finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= minus_nat n 1} f + f n.
+Admitted.
+
+// HOL Light: iterate.ml:2700 / SUM_PAIR
+// Source hash: md5:0c9e6d3b250530d6534a03a28b1d4c9e
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, mul_nat_mul_SNo)
+Theorem SUM_PAIR : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | 2 * m <= i /\ i <= 2 * n + 1} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f (2 * i) + f (2 * i + 1)).
+Admitted.
+
+// HOL Light: iterate.ml:2705 / SUM_REFLECT
+// Source hash: md5:016a1d67556409a379bcb9b85c4cb628
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_lt_SNoLt, omega_Subq_R)
+Theorem SUM_REFLECT : forall x:set -> set, (forall x :e omega, x x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} x = if n < m then 0 else finsum {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
+Admitted.
+
+// HOL Light: iterate.ml:2711 / REAL_OF_NUM_SUM_NUMSEG
+// Source hash: md5:925d3afdfe70576ecfc0d85ec647f7e1
+// Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_OF_NUM_SUM_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => f i).
+Admitted.
+
+// HOL Light: iterate.ml:2719 / SUM_PARTIAL_SUC
+// Source hash: md5:e6f366048c2242915ce80ddd23d6be94
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_PARTIAL_SUC : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun k:set => f k * (g (k + 1) + - g k)) = if m <= n then (f (n + 1) * g (n + 1) + - f m * g m) + - finsum {i :e omega | m <= i /\ i <= n} (fun k:set => g (k + 1) * (f (k + 1) + - f k)) else 0.
+Admitted.
+
+// HOL Light: iterate.ml:2735 / SUM_PARTIAL_PRE
+// Source hash: md5:7338a41bb1bb861e6ebe05ad7593ab82
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_PARTIAL_PRE : forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun k:set => f k * (g k + - g (minus_nat k 1))) = if m <= n then (f (n + 1) * g n + - f m * g (minus_nat m 1)) + - finsum {i :e omega | m <= i /\ i <= n} (fun k:set => g k * (f (k + 1) + - f k)) else 0.
+Admitted.
+
+// HOL Light: iterate.ml:2747 / SUM_DIFFS
+// Source hash: md5:c39ff7f327403cde6da445d221b6b390
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_DIFFS : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun k:set => f k + - f (k + 1)) = if m <= n then f m + - f (n + 1) else 0.
+Admitted.
+
+// HOL Light: iterate.ml:2755 / SUM_DIFFS_ALT
+// Source hash: md5:e5b9986a3b3fb0de007ccc30cdf11b3f
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem SUM_DIFFS_ALT : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} (fun k:set => f (k + 1) + - f k) = if m <= n then f (n + 1) + - f m else 0.
+Admitted.
+
+// HOL Light: iterate.ml:2762 / SUM_COMBINE_R
+// Source hash: md5:bfc99397d56482466eddd5e2ef086524
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem SUM_COMBINE_R : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n p :e omega, m <= n + 1 /\ n <= p -> finsum {i :e omega | m <= i /\ i <= n} f + finsum {i :e omega | n + 1 <= i /\ i <= p} f = finsum {i :e omega | m <= i /\ i <= p} f.
+Admitted.
+
+// HOL Light: iterate.ml:2770 / SUM_COMBINE_L
+// Source hash: md5:8ccee2e1bad2168c856392b2267a4cd1
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, nat_lt_SNoLt)
+Theorem SUM_COMBINE_L : forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n p :e omega, 0 < n /\ (m <= n /\ n <= p + 1) -> finsum {i :e omega | m <= i /\ i <= minus_nat n 1} f + finsum {i :e omega | n <= i /\ i <= p} f = finsum {i :e omega | m <= i /\ i <= p} f.
+Admitted.
+
+// HOL Light: iterate.ml:2830 / REAL_SUB_POW
+// Source hash: md5:7e70492e78617c2ebcfdef9f3e641bae
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem REAL_SUB_POW : forall x y :e R, forall n :e omega, 1 <= n -> x ^ n + - y ^ n = (x + - y) * finsum {i :e omega | 0 <= i /\ i <= minus_nat n 1} (fun i:set => x ^ i * y ^ minus_nat (minus_nat n 1) i).
+Admitted.
+
+// HOL Light: iterate.ml:2843 / REAL_SUB_POW_R1
+// Source hash: md5:da1ca0e4760a07a04662fe4e62199fab
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem REAL_SUB_POW_R1 : forall x :e R, forall n :e omega, 1 <= n -> x ^ n + - 1 = (x + - 1) * finsum {i :e omega | 0 <= i /\ i <= minus_nat n 1} (fun i:set => x ^ i).
+Admitted.
+
+// HOL Light: iterate.ml:2849 / REAL_SUB_POW_L1
+// Source hash: md5:88bee02ffe05b6e99518933c12c5b025
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem REAL_SUB_POW_L1 : forall x :e R, forall n :e omega, 1 <= n -> 1 + - x ^ n = (1 + - x) * finsum {i :e omega | 0 <= i /\ i <= minus_nat n 1} (fun i:set => x ^ i).
+Admitted.
+
+// HOL Light: iterate.ml:2858 / REAL_SUB_POLYFUN
+// Source hash: md5:cfa85831342dafe8ed699b98a1559944
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem REAL_SUB_POLYFUN : forall a:set -> set, (forall x :e omega, a x :e R) -> forall x y :e R, forall n :e omega, 1 <= n -> finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => a i * x ^ i) + - finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => a i * y ^ i) = (x + - y) * finsum {i :e omega | 0 <= i /\ i <= minus_nat n 1} (fun j:set => finsum {i :e omega | j + 1 <= i /\ i <= n} (fun i:set => a i * y ^ minus_nat (minus_nat i j) 1) * x ^ j).
+Admitted.
+
+// HOL Light: iterate.ml:2878 / REAL_SUB_POLYFUN_ALT
+// Source hash: md5:9665e6b3d519cbd5873add74184e3b2b
+// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
+Theorem REAL_SUB_POLYFUN_ALT : forall a:set -> set, (forall x :e omega, a x :e R) -> forall x y :e R, forall n :e omega, 1 <= n -> finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => a i * x ^ i) + - finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => a i * y ^ i) = (x + - y) * finsum {i :e omega | 0 <= i /\ i <= minus_nat n 1} (fun j:set => finsum {i :e omega | 0 <= i /\ i <= minus_nat (minus_nat n j) 1} (fun k:set => a (j + k + 1) * y ^ k) * x ^ j).
+Admitted.
+
+// HOL Light: iterate.ml:2893 / REAL_POLYFUN_ROOTBOUND
+// Source hash: md5:9da5a611bbb739a23cb53f8f463e31d3
+// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
+Theorem REAL_POLYFUN_ROOTBOUND : forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> ~ (forall i :e omega, i :e {i :e omega | 0 <= i /\ i <= n} -> c i = 0) -> finite {x :e R | finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = 0} /\ finite_cardinality {x :e R | finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = 0} <= n.
+Admitted.
+
+// HOL Light: iterate.ml:2925 / REAL_POLYFUN_FINITE_ROOTS
+// Source hash: md5:52e97a2fb1f0625d0422b04974860bdc
+// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_POLYFUN_FINITE_ROOTS : forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> (finite {x :e R | finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = 0} <-> exists i :e omega, i :e {i :e omega | 0 <= i /\ i <= n} /\ ~ c i = 0).
+Admitted.
+
+// HOL Light: iterate.ml:2935 / REAL_POLYFUN_EQ_0
+// Source hash: md5:de836d145e877f27e82a6d7edf3575d1
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_POLYFUN_EQ_0 : forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> ((forall x :e R, finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = 0) <-> forall i :e omega, i :e {i :e omega | 0 <= i /\ i <= n} -> c i = 0).
+Admitted.
+
+// HOL Light: iterate.ml:2945 / REAL_POLYFUN_EQ_CONST
+// Source hash: md5:adce8ab0ff84629d62ab9c58eb45425e
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem REAL_POLYFUN_EQ_CONST : forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> forall k :e R, (forall x :e R, finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => c i * x ^ i) = k) <-> c 0 = k /\ forall i :e omega, i :e {i :e omega | 1 <= i /\ i <= n} -> c i = 0.
 Admitted.
 

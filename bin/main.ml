@@ -56,11 +56,24 @@ let () =
       and out_dir = req "--out" and profile = req "--profile" in
       let only = (match opt "--only" with Some s -> String.split_on_char ',' s | None -> []) in
       Mg.load_signature sig_file;
+      (match opt "--notations" with
+       | Some f -> Mg.load_notation_table f
+       | None ->
+           let f = (try Filename.chop_extension sig_file with _ -> sig_file) ^ ".notations.json" in
+           if Sys.file_exists f then Mg.load_notation_table f);
       Mg.declare_notation "In" (Mg.Infix (":e", 500, Mg.NoneA));
       Mg.declare_notation "Subq" (Mg.Infix ("c=", 500, Mg.NoneA));
       let ex = read_export export_file in
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
       let srcindex = read_srcindex (opt "--srcindex") in
+      (* names of theorems whose proposition Megalodon reported as already known (two-pass reuse) *)
+      let known = Hashtbl.create 64 in
+      (match opt "--known-props" with
+       | Some f when Sys.file_exists f ->
+           let ic = open_in f in
+           (try while true do let l = String.trim (input_line ic) in if l <> "" then Hashtbl.replace known l () done with End_of_file -> ());
+           close_in ic
+       | _ -> ());
       let items = ref [] in
       let thms = if only = [] then ex.theorems else List.filter (fun t -> List.mem t.name only || List.exists (fun a -> List.mem a only) t.aliases) ex.theorems in
       List.iter (fun (th : thm_record) ->
@@ -77,7 +90,8 @@ let () =
              ignore (Unix.alarm (match opt "--timeout" with Some s -> int_of_string s | None -> 10));
              let r = Elab.elab_sequent reg th.seq in
              ignore (Unix.alarm 0);
-             { base with Manifest.status = status_of_classes r.Elab.classes; classes = r.Elab.classes;
+             let st = if Hashtbl.mem known base.Manifest.name then "native_reuse" else status_of_classes r.Elab.classes in
+             { base with Manifest.status = st; classes = r.Elab.classes;
                bridges = r.Elab.bridges; notes = r.Elab.notes; var_views = r.Elab.var_views;
                statement = Mg.to_string r.Elab.statement }
            with
@@ -100,7 +114,7 @@ let () =
       let shards = List.sort_uniq compare (List.map (fun i -> i.Manifest.shard) items) in
       let meta = ex.meta in
       let hol_commit = (match Yojson.Safe.Util.member "hol_light_commit" meta with `String s -> s | _ -> "?") in
-      let public i = (match i.Manifest.status with "exact_native" | "transport_required" | "generalization_required" -> true | _ -> false) in
+      let public i = (match i.Manifest.status with "exact_native" | "transport_required" | "generalization_required" | "native_reuse" -> true | _ -> false) in
       List.iter (fun s ->
         let l = List.filter (fun i -> i.Manifest.shard = s && public i) items in
         let l = List.sort (fun a b -> compare (a.Manifest.src_line, a.Manifest.name) (b.Manifest.src_line, b.Manifest.name)) l in
@@ -114,7 +128,9 @@ let () =
             if List.length i.Manifest.aliases > 1 then Printf.fprintf oc "// Aliases: %s\n" (String.concat " " i.Manifest.aliases);
             Printf.fprintf oc "// Source hash: md5:%s\n// Status: %s%s\n" i.Manifest.hash i.Manifest.status
               (if i.Manifest.bridges <> [] then " (bridges: " ^ String.concat ", " (List.sort compare i.Manifest.bridges) ^ ")" else "");
-            Printf.fprintf oc "Theorem %s : %s.\nAdmitted.\n\n" i.Manifest.name i.Manifest.statement) l;
+            if i.Manifest.status = "native_reuse" then
+              Printf.fprintf oc "// Reuse: this proposition is already a theorem of the target library.\n// Theorem %s : %s.\n\n" i.Manifest.name i.Manifest.statement
+            else Printf.fprintf oc "Theorem %s : %s.\nAdmitted.\n\n" i.Manifest.name i.Manifest.statement) l;
           close_out oc
         end) shards;
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in

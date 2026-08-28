@@ -4,9 +4,9 @@
 
 // HOL Light:  / REAL_ADD_ASSOC
 // Source hash: md5:74a76cf70ce019499736a9012b5e2bae
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ADD_ASSOC : forall x y z :e R, x + y + z = (x + y) + z.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ADD_ASSOC : forall x y z :e R, x + y + z = (x + y) + z.
 
 // HOL Light:  / REAL_ADD_LDISTRIB
 // Source hash: md5:9504058edead67a0aafeb005184604d1
@@ -16,27 +16,27 @@ Admitted.
 
 // HOL Light:  / REAL_ADD_LID
 // Source hash: md5:bc28e0af8830dd84eb7843fab3060c61
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_ADD_LID : forall x :e R, 0 + x = x.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ADD_LID : forall x :e R, 0 + x = x.
 
 // HOL Light:  / REAL_ADD_LINV
 // Source hash: md5:69b62ed94b5a39a5cb6b939e9fd25fcf
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_ADD_LINV : forall x :e R, - x + x = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ADD_LINV : forall x :e R, - x + x = 0.
 
 // HOL Light:  / REAL_ADD_SYM
 // Source hash: md5:69f4343bec6bd235a399ba23a38d19cf
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_ADD_SYM : forall x y :e R, x + y = y + x.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_ADD_SYM : forall x y :e R, x + y = y + x.
 
 // HOL Light:  / REAL_INV_0
 // Source hash: md5:58bc73bd1864f8ac755987a82d6740f3
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_INV_0 : recip_SNo 0 = 0.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_INV_0 : recip_SNo 0 = 0.
 
 // HOL Light:  / REAL_LE_ANTISYM
 // Source hash: md5:2a36fae7a764e7b6f8d1470ecbd9d3be
@@ -58,9 +58,9 @@ Admitted.
 
 // HOL Light:  / REAL_LE_REFL
 // Source hash: md5:597f574f403c13d75887c264bf98d7ab
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_LE_REFL : forall x :e R, x <= x.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_LE_REFL : forall x :e R, x <= x.
 
 // HOL Light:  / REAL_LE_TOTAL
 // Source hash: md5:f100ea3864b4736d03f4488873b9fdf2
@@ -76,15 +76,15 @@ Admitted.
 
 // HOL Light:  / REAL_MUL_ASSOC
 // Source hash: md5:9ea7c36e21183fa79ec8bfdc791ec8c6
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_MUL_ASSOC : forall x y z :e R, x * y * z = (x * y) * z.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_ASSOC : forall x y z :e R, x * y * z = (x * y) * z.
 
 // HOL Light:  / REAL_MUL_LID
 // Source hash: md5:fa6266f855ff7b740d82e448c2b4c45d
-// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem REAL_MUL_LID : forall x :e R, 1 * x = x.
-Admitted.
+// Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_LID : forall x :e R, 1 * x = x.
 
 // HOL Light:  / REAL_MUL_LINV
 // Source hash: md5:a9878dfb3f8f4e0493a76e9de2ddf29c
@@ -94,9 +94,9 @@ Admitted.
 
 // HOL Light:  / REAL_MUL_SYM
 // Source hash: md5:863e7ca45d4101c0041b89d44ea64c52
-// Status: transport_required (bridges: hol_real_R)
-Theorem REAL_MUL_SYM : forall x y :e R, x * y = y * x.
-Admitted.
+// Status: native_reuse (bridges: hol_real_R)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem REAL_MUL_SYM : forall x y :e R, x * y = y * x.
 
 // HOL Light:  / REAL_OF_NUM_ADD
 // Source hash: md5:783dde967a79844cda42d3f3e75c41ad

@@ -4,14 +4,14 @@
 
 // HOL Light: nums.ml:22 / ONE_ONE
 // Source hash: md5:288a0d40e8446caae45da4ca6cd746c2
-// Status: exact_native
-Theorem ONE_ONE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x1 x2 :e A, f x1 = f x2 -> x1 = x2).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem ONE_ONE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x1 x2 :e A, f x1 = f x2 -> x1 = x2).
 Admitted.
 
 // HOL Light: nums.ml:25 / ONTO
 // Source hash: md5:069712bfe0b0449845d319d1a7497175
-// Status: exact_native
-Theorem ONTO : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> forall y :e B, exists x :e A, y = f x).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem ONTO : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> forall y :e B, exists x :e A, y = f x).
 Admitted.
 
 // HOL Light: nums.ml:75 / NOT_SUC
@@ -34,14 +34,14 @@ Admitted.
 
 // HOL Light: nums.ml:116 / num_Axiom
 // Source hash: md5:22351265077b01108064d138b673a797
-// Status: transport_required (bridges: hol_num_omega)
-Theorem num_Axiom : forall A:set, A <> Empty -> forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) -> forall x :e omega, y x = fn x).
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem num_Axiom : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x).
 Admitted.
 
 // HOL Light: nums.ml:169 / num_RECURSION
 // Source hash: md5:b287304fbed4be3d30468df5802532bb
-// Status: transport_required (bridges: hol_num_omega)
-Theorem num_RECURSION : forall A:set, A <> Empty -> forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n).
+// Status: generalization_required (bridges: empty_case:A, hol_num_omega)
+Theorem num_RECURSION : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n).
 Admitted.
 
 // HOL Light: nums.ml:177 / num_CASES
