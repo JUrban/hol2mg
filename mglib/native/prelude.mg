@@ -69,6 +69,62 @@ apply (int_3_cases x Hx (x :e omega)).
 - let m. assume Hm: m :e omega. assume H: x = ordsucc m. rewrite H. exact (omega_ordsucc m Hm).
 Qed.
 
+
+// on omega, membership and the surreal order agree
+Theorem omega_In_SNoLt : forall n :e omega, forall i :e n, i < n.
+let n. assume Hn: n :e omega. let i. assume Hi: i :e n.
+exact (ordinal_In_SNoLt n (nat_p_ordinal n (omega_nat_p n Hn)) i Hi).
+Qed.
+
+Theorem omega_SNoLt_In : forall n i :e omega, i < n -> i :e n.
+let n. assume Hn: n :e omega. let i. assume Hi: i :e omega. assume H: i < n.
+exact (ordinal_SNoLt_In i n (nat_p_ordinal i (omega_nat_p i Hi)) (nat_p_ordinal n (omega_nat_p n Hn)) H).
+Qed.
+
+// n - (i+1) is a member of n whenever i is
+Theorem minus_nat_in : forall n :e omega, forall i :e n, n + - ordsucc i :e n.
+let n. assume Hn: n :e omega. let i. assume Hi: i :e n.
+claim Hi': i :e omega. { exact (nat_p_omega i (nat_p_trans n (omega_nat_p n Hn) i Hi)). }
+claim Hsi: ordsucc i :e omega. { exact (omega_ordsucc i Hi'). }
+claim Hle: ordsucc i <= n.
+{ apply (omega_Subq_SNoLe (ordsucc i) Hsi n Hn).
+  exact (nat_ordsucc_trans n (omega_nat_p n Hn) (ordsucc i) (nat_ordsucc_in_ordsucc n (omega_nat_p n Hn) i Hi)). }
+claim Hom: n + - ordsucc i :e omega.
+{ apply (int_nonneg_omega (n + - ordsucc i)).
+  - exact (int_add_SNo n (Subq_omega_int n Hn) (- ordsucc i) (int_minus_SNo_omega (ordsucc i) Hsi)).
+  - claim L: 0 + ordsucc i <= n. { rewrite (add_SNo_0L (ordsucc i) (omega_SNo (ordsucc i) Hsi)). exact Hle. }
+    exact (add_SNo_minus_Le2b n (ordsucc i) 0 (omega_SNo n Hn) (omega_SNo (ordsucc i) Hsi) SNo_0 L). }
+apply (omega_SNoLt_In n Hn (n + - ordsucc i) Hom).
+prove n + - ordsucc i < n.
+apply (add_SNo_minus_Lt1b n (ordsucc i) n (omega_SNo n Hn) (omega_SNo (ordsucc i) Hsi) (omega_SNo n Hn)).
+prove n < n + ordsucc i.
+claim L0: 0 < ordsucc i. { exact (omega_In_SNoLt (ordsucc i) Hsi 0 (nat_0_in_ordsucc i (omega_nat_p i Hi'))). }
+claim L1: n + 0 < n + ordsucc i. { exact (add_SNo_Lt2 n 0 (ordsucc i) (omega_SNo n Hn) SNo_0 (omega_SNo (ordsucc i) Hsi) L0). }
+rewrite <- (add_SNo_0R n (omega_SNo n Hn)) at 1.
+exact L1.
+Qed.
+
+// i - a is a member of b when i is in a + b but not in a
+Theorem minus_shift_in : forall a b :e omega, forall i :e a + b, i /:e a -> i + - a :e b.
+let a. assume Ha: a :e omega. let b. assume Hb: b :e omega. let i. assume Hi: i :e a + b. assume Hia: i /:e a.
+claim Hab: a + b :e omega. { exact (add_SNo_In_omega a Ha b Hb). }
+claim Hi': i :e omega. { exact (nat_p_omega i (nat_p_trans (a + b) (omega_nat_p (a + b) Hab) i Hi)). }
+claim Hai: a <= i.
+{ apply (SNoLtLe_or i a (omega_SNo i Hi') (omega_SNo a Ha)).
+  - assume H: i < a. exact (FalseE (Hia (omega_SNoLt_In a Ha i Hi' H)) (a <= i)).
+  - assume H: a <= i. exact H. }
+claim Hom: i + - a :e omega.
+{ apply (int_nonneg_omega (i + - a)).
+  - exact (int_add_SNo i (Subq_omega_int i Hi') (- a) (int_minus_SNo_omega a Ha)).
+  - claim L: 0 + a <= i. { rewrite (add_SNo_0L a (omega_SNo a Ha)). exact Hai. }
+    exact (add_SNo_minus_Le2b i a 0 (omega_SNo i Hi') (omega_SNo a Ha) SNo_0 L). }
+apply (omega_SNoLt_In b Hb (i + - a) Hom).
+apply (add_SNo_minus_Lt1b i a b (omega_SNo i Hi') (omega_SNo a Ha) (omega_SNo b Hb)).
+prove i < b + a.
+rewrite (add_SNo_com b a (omega_SNo b Hb) (omega_SNo a Ha)).
+exact (omega_In_SNoLt (a + b) Hab i Hi).
+Qed.
+
 // closure facts (to be proved)
 Theorem minus_nat_omega : forall m n :e omega, minus_nat m n :e omega.
 let m. assume Hm: m :e omega. let n. assume Hn: n :e omega.
