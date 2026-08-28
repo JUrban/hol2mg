@@ -3003,6 +3003,18 @@
    "class": "native_isomorphism",
    "status": "reviewed",
    "bridge": "hol_tybit_idx"
+  },
+  {
+   "hol": "COUNTABLE",
+   "scheme": "(A->bool)->bool",
+   "args": [
+    "subset"
+   ],
+   "result": "prop",
+   "template": "countable ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_countable"
   }
  ],
  "rewrite_rules": [

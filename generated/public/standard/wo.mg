@@ -557,7 +557,7 @@ Admitted.
 // HOL Light: Library/wo.ml:762 / ordinal
 // Source hash: md5:fa7a75be6559963b12c05c747e618056
 // Status: exact_native (bridges: choose_in_spec)
-Theorem ordinal_hl : forall A:set, A <> Empty -> forall l:set -> set -> prop, ordinal_on A l <-> woset_on A l /\ forall x :e A, x :e fld_on A l -> x = choose_in A (fun y:set => ~ properly_rel l y x).
+Theorem ordinal_thm : forall A:set, A <> Empty -> forall l:set -> set -> prop, ordinal_on A l <-> woset_on A l /\ forall x :e A, x :e fld_on A l -> x = choose_in A (fun y:set => ~ properly_rel l y x).
 Admitted.
 
 // HOL Light: Library/wo.ml:774 / POSET_FLDEQ

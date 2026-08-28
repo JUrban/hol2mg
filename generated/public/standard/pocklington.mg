@@ -449,7 +449,7 @@ Admitted.
 // HOL Light: Library/pocklington.ml:695 / inverse_mod
 // Source hash: md5:de62fd66c0ff5498e18c38cd361412e3
 // Status: transport_required (bridges: choose_in_spec, hol_num_omega, hol_prod_setprod, mul_nat_mul_SNo, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem inverse_mod_hl : forall x n :e omega, inverse_mod n x = if n <= 1 then 1 else choose_in omega (fun y:set => y < n /\ exists q1 q2 :e omega, x * y + n * q1 = gcd_int n x + n * q2).
+Theorem inverse_mod_thm : forall x n :e omega, inverse_mod n x = if n <= 1 then 1 else choose_in omega (fun y:set => y < n /\ exists q1 q2 :e omega, x * y + n * q1 = gcd_int n x + n * q2).
 Admitted.
 
 // HOL Light: Library/pocklington.ml:700 / INVERSE_MOD_BOUND

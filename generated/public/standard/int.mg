@@ -2090,6 +2090,12 @@ Admitted.
 Theorem INT_LT_REM_EQ : forall m n :e int, rem_int m n < n <-> 0 < n \/ n = 0 /\ m < 0.
 Admitted.
 
+// HOL Light: int.ml:1170 / real_mod
+// Source hash: md5:66e08ca96f3f09be49b9be03c590342a
+// Status: transport_required (bridges: hol_real_R, int_Subq_R)
+Theorem real_mod_thm : forall x y n :e R, real_mod n x y <-> exists q :e R, q :e int /\ x + - y = q * n.
+Admitted.
+
 // HOL Light: int.ml:1182 / int_divides
 // Source hash: md5:0dff4dff15f6e11d7fe6ecc0cf30f0ed
 // Status: transport_required (bridges: hol_int_int)

@@ -2,8 +2,41 @@
   "schema": 1,
   "profile": "core",
   "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
+  "auto_definitions": [
+    {
+      "hol": "real_mod",
+      "target": "real_mod",
+      "hash": "60a0f9b5b153ba67635b3c320a044279",
+      "type": "set -> set -> set -> prop",
+      "definition": "fun n:set => fun x:set => fun y:set => exists q :e R, q :e int /\\ x + - y = q * n",
+      "notes": []
+    },
+    {
+      "hol": "vector",
+      "target": "vector",
+      "hash": "5675df1d26f519b179adda391efe08d3",
+      "type": "set -> set -> set -> set",
+      "definition": "fun A:set => fun N:set => fun l:set => fun i :e idx N => seq_nth l (minus_nat i 1)",
+      "notes": []
+    }
+  ],
+  "auto_definition_failures": [
+    [ "NUM_REP", "internal construction type ind" ],
+    [ "OUTL", "specification-style definition (choice)" ],
+    [ "OUTR", "specification-style definition (choice)" ],
+    [ "_22943", "no carrier mapping for type constructor char (in char)" ],
+    [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
+    [
+      "_100512",
+      "unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0"
+    ],
+    [
+      "_100531",
+      "unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1"
+    ]
+  ],
   "mapping_files": [
-    [ "mappings/core.json", "a1843a01b4e174c55449edd254a3711f" ],
+    [ "mappings/core.json", "9b818c9dd60ee97b615e8ff6344e0728" ],
     [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ]
   ],
   "signature": "God1.mgs",
@@ -3985,16 +4018,16 @@
       "source_name": "COUNTABLE",
       "aliases": [ "COUNTABLE" ],
       "hash": "a4d2d220b45cd3826cf971a233740dac",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4694,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_countable", "hol_le_c_atleastp", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant COUNTABLE : (A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall t c= A, countable t <-> atleastp t omega"
     },
     {
       "name": "CROSS",
@@ -8290,16 +8323,16 @@
       "source_name": "EXTENSIONAL",
       "aliases": [ "EXTENSIONAL" ],
       "hash": "808c8312c2dcfe2200f0e3a3f1f627e0",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 2933,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact" ],
+      "bridges": [ "choose_in_spec" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant GSPEC : ((A->B)->bool)->(A->B)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall x :e B :^: A, (forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)) <-> x :e {f :e B :^: A | forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => True)}"
     },
     {
       "name": "EXTENSIONAL_EMPTY",
@@ -21749,7 +21782,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant GSPEC : (A->bool)->A->bool",
+      "error": "GSPEC not in set-comprehension form",
       "statement": ""
     },
     {
@@ -43625,16 +43658,16 @@
       "source_name": "SURJECTIVE_PREIMAGE",
       "aliases": [ "SURJECTIVE_PREIMAGE" ],
       "hash": "f1e1fc129998a2f80a3dd7ca228201f2",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4554,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant GSPEC : (A->bool)->A->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall k:set -> prop, exists t c= B, forall x :e A, x :e {x0 :e A | f x0 :e t} <-> k x) <-> forall x y :e A, f x = f y -> x = y)"
     },
     {
       "name": "SURJECTIVE_RIGHT_INVERSE",
@@ -46328,7 +46361,7 @@
       "statement": "forall i :e int, exists n :e omega, i = n \\/ i = - n"
     },
     {
-      "name": "dimindex_hl",
+      "name": "dimindex_thm",
       "source_name": "dimindex",
       "aliases": [ "dimindex" ],
       "hash": "ddb3842890aa45dff1fd71f34edb013d",
@@ -46513,7 +46546,7 @@
       "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall a :e idx_n (dimindex A + dimindex B), a = a) /\\ forall r :e omega, r :e idx_n (dimindex A + dimindex B) <-> r = r"
     },
     {
-      "name": "fstcart_hl",
+      "name": "fstcart_thm",
       "source_name": "fstcart",
       "aliases": [ "fstcart" ],
       "hash": "076ed5c08efac66eaf24e72ed8087ff0",
@@ -46756,7 +46789,7 @@
       "statement": ""
     },
     {
-      "name": "inf_hl",
+      "name": "inf_thm",
       "source_name": "inf",
       "aliases": [ "inf" ],
       "hash": "b6e4351d5c7f0c88c6789029373b4145",
@@ -48473,7 +48506,7 @@
       "statement": "forall A:set, forall s c= A, forall r:set -> set -> prop, (forall x y :e s, x <> y -> r x y) <-> forall x y :e A, x :e s /\\ (y :e s /\\ ~ x = y) -> r x y"
     },
     {
-      "name": "pastecart_hl",
+      "name": "pastecart_thm",
       "source_name": "pastecart",
       "aliases": [ "pastecart" ],
       "hash": "970d4141355f6d6f39b68b7eb74facb6",
@@ -48494,7 +48527,7 @@
       "statement": "forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx M, forall g :e A :^: idx N, pastecart M N f g = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M))"
     },
     {
-      "name": "polynomial_function_hl",
+      "name": "polynomial_function_thm",
       "source_name": "polynomial_function",
       "aliases": [ "polynomial_function" ],
       "hash": "bd7d18621ee78d35059d0c031542e3b4",
@@ -48800,20 +48833,20 @@
       "statement": "forall m n :e R, (if m <= n then m else n) = if m <= n then m else n"
     },
     {
-      "name": "real_mod",
+      "name": "real_mod_thm",
       "source_name": "real_mod",
       "aliases": [ "real_mod" ],
       "hash": "66e08ca96f3f09be49b9be03c590342a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "int",
       "src_file": "int.ml",
       "src_line": 1170,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_real_R", "int_Subq_R" ],
+      "notes": [ "auto:real_mod" ],
       "var_views": {},
-      "error": "unmapped constant real_mod : real->real->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall x y n :e R, real_mod n x y <-> exists q :e R, q :e int /\\ x + - y = q * n"
     },
     {
       "name": "real_mul",
@@ -48996,7 +49029,7 @@
       "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h"
     },
     {
-      "name": "sndcart_hl",
+      "name": "sndcart_thm",
       "source_name": "sndcart",
       "aliases": [ "sndcart" ],
       "hash": "442acce9e11ba375a5854f0ad07e5d3d",
@@ -49097,7 +49130,7 @@
       "statement": "forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\\ ((forall a :e A, fn (Inj0 a) = INL' a) /\\ forall a :e B, fn (Inj1 a) = INR' a)"
     },
     {
-      "name": "sup_hl",
+      "name": "sup_thm",
       "source_name": "sup",
       "aliases": [ "sup" ],
       "hash": "d2ca7306f413307a8e8aeedfc82e46bd",
@@ -49337,20 +49370,22 @@
       "statement": "forall A Z:set, A <> Empty -> Z <> Empty -> forall f:set -> set, (forall x :e idx_n ((dimindex A + dimindex A) + 1), f x :e Z) -> exists fn:set -> set, (forall x :e idx_n (2 * dimindex A + 1), fn x :e Z) /\\ forall a :e idx_n ((dimindex A + dimindex A) + 1), fn a = f a"
     },
     {
-      "name": "vector",
+      "name": "vector_thm",
       "source_name": "vector",
       "aliases": [ "vector" ],
       "hash": "56827346d192eb3c809c21ecac00effb",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 554,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "hol_cart_setexp", "hol_list_finseq", "hol_num_omega" ],
+      "notes": [ "auto:vector" ],
       "var_views": {},
-      "error": "unmapped constant vector : A list->(A,N)cart",
-      "statement": ""
+      "error": "",
+      "statement": "forall A N:set, A <> Empty -> N <> Empty -> forall l :e finseq A, vector A N l = fun i :e idx N => seq_nth l (minus_nat i 1)"
     }
   ]
 }

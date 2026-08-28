@@ -1829,7 +1829,7 @@ Admitted.
 // HOL Light: iterate.ml:2966 / polynomial_function
 // Source hash: md5:bd7d18621ee78d35059d0c031542e3b4
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem polynomial_function_hl : forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R p <-> exists m :e omega, exists c:set -> set, (forall x :e omega, c x :e R) /\ forall x :e R, p x = finsum {i :e omega | 0 <= i /\ i <= m} (fun i:set => c i * x ^ i)).
+Theorem polynomial_function_thm : forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R p <-> exists m :e omega, exists c:set -> set, (forall x :e omega, c x :e R) /\ forall x :e R, p x = finsum {i :e omega | 0 <= i /\ i <= m} (fun i:set => c i * x ^ i)).
 Admitted.
 
 // HOL Light: iterate.ml:2969 / POLYNOMIAL_FUNCTION_CONST

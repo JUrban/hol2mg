@@ -1,17 +1,19 @@
 # hol2mg statement translation report: profile `standard`
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
-- theorems: 4590 discovered, 4283 public
+- theorems: 4590 discovered, 4287 public
+- automatic definitions: 2 generated, 7 not generated (NUM_REP: internal construction type ind; OUTL: specification-style definition (choice); OUTR: specification-style definition (choice); _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
+- theorems using automatic definitions: 2
 - mapping files: mappings/core.json, mappings/lists.json, mappings/library.json
 
 ## Status counts
 
 | status | count |
 |---|---|
-| transport_required | 3014 |
-| generalization_required | 947 |
-| pending_mapping | 307 |
-| exact_native | 235 |
+| transport_required | 3015 |
+| generalization_required | 948 |
+| pending_mapping | 303 |
+| exact_native | 237 |
 | native_reuse | 87 |
 
 ## Public statements per shard
@@ -26,12 +28,12 @@
 | calc_num | 18 | 0 | 0 |
 | calc_rat | 17 | 0 | 0 |
 | card | 229 | 0 | 0 |
-| cart | 102 | 1 | 0 |
+| cart | 103 | 0 | 0 |
 | class | 42 | 0 | 0 |
 | define | 1 | 36 | 0 |
 | floor | 100 | 0 | 0 |
 | ind_types | 15 | 34 | 0 |
-| int | 497 | 2 | 0 |
+| int | 498 | 1 | 0 |
 | integer | 214 | 0 | 0 |
 | isum | 92 | 1 | 0 |
 | iter | 12 | 0 | 0 |
@@ -47,7 +49,7 @@
 | realarith | 27 | 0 | 0 |
 | realax | 36 | 158 | 0 |
 | rstc | 133 | 0 | 0 |
-| sets | 645 | 12 | 0 |
+| sets | 647 | 10 | 0 |
 | tactics | 0 | 1 | 0 |
 | theorems | 64 | 0 | 0 |
 | trivia | 13 | 1 | 0 |
@@ -77,7 +79,6 @@
 | 3 | internal constant NUMPAIR (HOL Light internal definition/datatype machinery) |
 | 3 | internal constant mk_pair (HOL Light internal construction) |
 | 3 | no carrier mapping for type constructor char (in char) |
-| 3 | unmapped constant GSPEC : (A->bool)->A->bool |
 | 2 | internal constant FCONS (HOL Light internal definition/datatype machinery) |
 | 2 | internal constant INJA (HOL Light internal definition/datatype machinery) |
 | 2 | internal constant INJN (HOL Light internal definition/datatype machinery) |
@@ -86,6 +87,7 @@
 | 2 | internal constant dest_nadd (HOL Light internal construction) |
 | 2 | internal constant is_nadd (HOL Light internal construction) |
 | 2 | internal constant mk_num (HOL Light internal definition/datatype machinery) |
+| 1 | GSPEC not in set-comprehension form |
 | 1 | internal constant ABS_prod (HOL Light internal construction) |
 | 1 | internal constant FNIL (HOL Light internal definition/datatype machinery) |
 | 1 | internal constant GEQ (HOL Light internal definition/datatype machinery) |
@@ -108,18 +110,16 @@
 | 1 | unmapped constant == : A->A->(A->A->bool)->bool |
 | 1 | unmapped constant @ : (((A->bool)->B)->bool)->(A->bool)->B |
 | 1 | unmapped constant GABS : (A->bool)->A |
-| 1 | unmapped constant GSPEC : ((A->B)->bool)->(A->B)->bool |
+| 1 | unmapped constant GSPEC : (A->bool)->A->bool |
 | 1 | unmapped constant OUTL : (A,B)sum->A |
 | 1 | unmapped constant OUTR : (A,B)sum->B |
 | 1 | unmapped constant PASSOC : ((A#B)#C->D)->A#B#C->D |
 | 1 | unmapped constant one_REP : 1->bool |
-| 1 | unmapped constant real_mod : real->real->real->bool |
-| 1 | unmapped constant vector : A list->(A,N)cart |
 
 ## Bridges referenced
 
-- hol_num_omega (2227)
-- hol_real_R (857)
+- hol_num_omega (2228)
+- hol_real_R (858)
 - empty_case:A (853)
 - hol_int_int (850)
 - hol_finite_finite (554)
@@ -132,19 +132,19 @@
 - nat_lt_SNoLt (236)
 - hol_sum_finsum (216)
 - exp_nat_exp_SNo_nat (176)
-- hol_list_finseq (156)
+- hol_list_finseq (157)
 - hol_card_finite_cardinality (129)
 - hol_product_finprod (108)
 - empty_case:B (107)
 - hol_nsum_finsum (103)
-- int_Subq_R (96)
+- int_Subq_R (97)
 - hol_eq_c_equip (95)
-- choose_in_spec (87)
+- choose_in_spec (88)
 - hol_le_c_atleastp (80)
 - hol_countable (77)
 - hol_iterate (66)
+- hol_cart_setexp (61)
 - hol_has_size_equip (61)
-- hol_cart_setexp (60)
 - hol_nproduct_finprod (58)
 - hol_dimindex (53)
 - hol_finite_sum_idx (50)

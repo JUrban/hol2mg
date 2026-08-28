@@ -577,6 +577,11 @@ and elab_const ctx (t : tm) (c : string) (cty : ty) (args : tm list) (hint : vie
       (match dest_gspec t with
        | Some (v, xs, p, body) -> (elab_gspec ctx v xs p body, VSubset (carrier ctx (fst (dest_fun_ty cty))))
        | None -> unsupported "GSPEC not in set-comprehension form")
+  | "GSPEC", [ (Lam _ as g); x ] ->
+      (* comprehension applied to an element: membership *)
+      let ety = fst (dest_fun_ty cty) in
+      let s, _ = elab_const ctx (App (Const (c, cty), g)) c cty [ g ] (Some (VSubset (carrier ctx ety))) in
+      (mg_in (elab ctx x (VSet (carrier ctx ety))) s, VProp)
   | "INSERT", [ _; _ ] when dest_set_enum t [] <> None ->
       let elems = Option.get (dest_set_enum t []) in
       let ety = (match cty with TyApp ("fun", [ a; _ ]) -> a | _ -> fail "INSERT type") in
@@ -594,6 +599,7 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
   let nargs = List.length args in
   if e.R.c_status = "pending" then unsupported "mapping for %s is pending" c;
   if e.R.c_status = "internal" then unsupported "internal constant %s (%s)" c e.R.c_notes;
+  if e.R.c_status = "auto" then note ctx ("auto:" ^ c);
   use_class ctx e.R.c_class e.R.c_bridge;
   if nargs < n then begin
     (* partial application: eta-expand at the HOL level *)
@@ -761,3 +767,112 @@ let elab_sequent (reg : R.t) (seq : sequent) : result =
   List.iter (fun p -> use_class ctx "generalization" ("empty_case:" ^ p)) dropped;
   { statement = body; tyvar_params = List.map snd tv_names; classes = ctx.st.classes; bridges = ctx.st.bridges;
     notes = ctx.st.notes; var_views = List.map (fun (s, _, v, _) -> (s, string_of_view v)) decls }
+
+(* ------------------------------------------------------------------------ *)
+(* Automatic native definitions for constants defined by new_definition.   *)
+(* ------------------------------------------------------------------------ *)
+
+type auto_def = {
+  ad_hol : string;                 (* HOL constant *)
+  ad_target : string;              (* Megalodon name *)
+  ad_type : Mg.mty;                (* Megalodon type of the definition *)
+  ad_body : Mg.tm;                 (* fun A .. x .. => body *)
+  ad_scheme : ty;
+  ad_roles : R.role_spec list;
+  ad_result : R.role_spec;
+  ad_params : string list;         (* carrier parameter names, in scheme tyvar order *)
+  ad_notes : string list;
+}
+
+exception Not_definitional of string
+
+let rec mty_of_role_ty ctx role (aty : ty) : Mg.mty =
+  match role with
+  | R.RSet | R.RSubset -> Mg.Set
+  | R.RProp -> Mg.Prop
+  | R.RMetaFun _ | R.RMetaPred _ -> mty_of_view (view_of_type ctx aty)
+
+(* default roles for an argument / result type *)
+let role_of_type (t : ty) : R.role_spec =
+  match t with
+  | TyApp ("bool", []) -> R.RProp
+  | TyApp ("fun", [ _; TyApp ("bool", []) ]) -> R.RSubset
+  | TyApp ("fun", _) ->
+      let _, res = strip_fun_ty t in
+      if res = bool_ty then R.RMetaPred None else R.RMetaFun None
+  | _ -> R.RSet
+
+let view_of_role ctx role (aty : ty) : view =
+  match role with
+  | R.RSet -> VSet (carrier ctx aty)
+  | R.RProp -> VProp
+  | R.RSubset -> (match aty with TyApp ("fun", [ a; TyApp ("bool", []) ]) -> VSubset (carrier ctx a) | _ -> VSet (carrier ctx aty))
+  | R.RMetaFun _ | R.RMetaPred _ -> view_of_type ctx aty
+
+let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty) (rhs : tm) (arg_names : string list) : auto_def =
+  let tvs = List.sort compare (uniq (tyvars_of_ty scheme)) in
+  let letters = List.init 26 (fun i -> String.make 1 (Char.chr (65 + i))) in
+  let used = ref (List.map sanitize_tyvar (List.filter (fun a -> a = "" || a.[0] <> '?') tvs)) in
+  let tv_names = List.map (fun a ->
+    if a <> "" && a.[0] = '?' then begin
+      let l = (match List.find_opt (fun l -> not (List.mem l !used)) letters with Some l -> l | None -> sanitize_tyvar a) in
+      used := l :: !used; (a, l)
+    end else (a, sanitize_tyvar a)) tvs in
+  let ctx = { reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { classes = []; bridges = []; notes = [] } } in
+  (* the arity of the definition follows the leading lambdas of the right-hand side;
+     the remaining (possibly functional) type determines the result role *)
+  let rec leading_lams t acc = (match t with Lam (x, ty, b) -> leading_lams b ((x, ty) :: acc) | _ -> (List.rev acc, t)) in
+  let lams, core = leading_lams rhs [] in
+  let k = List.length lams in
+  (match head_and_args core with
+   | Const ("@", _), _ -> raise (Not_definitional "specification-style definition (choice)")
+   | _ -> ());
+  let all_doms, _ = strip_fun_ty scheme in
+  if List.length all_doms < k then raise (Not_definitional "more lambdas than arguments");
+  let doms = List.filteri (fun i _ -> i < k) all_doms in
+  let res = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) scheme doms in
+  let roles = List.map role_of_type doms in
+  let result_role = role_of_type res in
+  (* open the binders with named free variables and forced views *)
+  let rec open_all t i names acc =
+    match t with
+    | Lam (x, ty, b) when i < k ->
+        let hint = (match names with n :: _ when n <> "" && n.[0] <> '_' -> n | _ -> if x <> "" && x.[0] <> '_' then x else "x") in
+        let n = fresh ctx hint in
+        let v = view_of_role ctx (List.nth roles i) ty in
+        ctx.vars <- (n, (ty, v, n)) :: ctx.vars;
+        open_all (open_with (Free (n, ty)) b) (i + 1) (match names with _ :: r -> r | [] -> []) ((n, ty, v) :: acc)
+    | _ -> (List.rev acc, t)
+  in
+  let args, body = open_all rhs 0 arg_names [] in
+  let result_view = view_of_role ctx result_role res in
+  let body' = elab ctx body result_view in
+  let body', rewrites = Rewrite.run body' in
+  List.iter (fun r -> note ctx ("rewrite:" ^ r)) rewrites;
+  let mtys = List.map (fun (_, _, v) -> mty_of_view v) args in
+  let rty = mty_of_view result_view in
+  let ty = List.fold_right (fun _ acc -> Mg.Arr (Mg.Set, acc)) tv_names (List.fold_right (fun m acc -> Mg.Arr (m, acc)) mtys rty) in
+  let term = List.fold_right (fun (n, _, v) acc -> Mg.Lam (n, mty_of_view v, acc)) args body' in
+  let term = List.fold_right (fun (_, n) acc -> Mg.Lam (n, Mg.Set, acc)) tv_names term in
+  { ad_hol = cname; ad_target = target; ad_type = ty; ad_body = term; ad_scheme = scheme; ad_roles = roles;
+    ad_result = result_role; ad_params = List.map snd tv_names; ad_notes = ctx.st.notes }
+
+(* registry entry for an auto definition: template  target ?A ?B ?1 ?2 ... *)
+let register_auto (reg : R.t) (d : auto_def) =
+  let t = Mg.apps (Mg.Cst d.ad_target) (List.map (fun p -> Mg.Meta p) d.ad_params @ List.mapi (fun i _ -> Mg.Meta (string_of_int (i + 1))) d.ad_roles) in
+  let e = { R.c_hol = d.ad_hol; c_scheme = d.ad_scheme; c_args = d.ad_roles; c_result = d.ad_result; c_template = t;
+            c_class = "definitionally_exact"; c_status = "auto"; c_bridge = ""; c_notes = "auto definition"; c_source = "auto" } in
+  let prev = (try Hashtbl.find reg.R.consts d.ad_hol with Not_found -> []) in
+  Hashtbl.replace reg.R.consts d.ad_hol (prev @ [ e ])
+
+(* binder names from a definitional theorem  !v1..vk. c v1..vk = rhs  /  c = \v1..vk. rhs *)
+let arg_names_of_theorem (t : tm) : string list =
+  let rec foralls t acc = (match t with App (Const ("!", _), Lam (x, _, b)) -> foralls b (x :: acc) | _ -> (List.rev acc, t)) in
+  let names, body = foralls t [] in
+  match dest_eq body with
+  | Some (_, lhs, rhs) ->
+      let _, args = head_and_args lhs in
+      let from_lhs = List.filter_map (fun a -> match a with Bound i -> (try Some (List.nth (List.rev names) i) with _ -> None) | Free (s, _) -> Some s | _ -> None) args in
+      let rec lams t acc = (match t with Lam (x, _, b) -> lams b (x :: acc) | _ -> List.rev acc) in
+      from_lhs @ lams rhs []
+  | None -> []

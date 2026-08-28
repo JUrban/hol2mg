@@ -5,7 +5,7 @@
 // HOL Light: cart.ml:14 / dimindex
 // Source hash: md5:ddb3842890aa45dff1fd71f34edb013d
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_dimindex, hol_finite_finite, hol_num_omega)
-Theorem dimindex_hl : forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1.
+Theorem dimindex_thm : forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1.
 Admitted.
 
 // HOL Light: cart.ml:17 / DIMINDEX_NONZERO
@@ -179,19 +179,19 @@ Admitted.
 // HOL Light: cart.ml:181 / pastecart
 // Source hash: md5:970d4141355f6d6f39b68b7eb74facb6
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
-Theorem pastecart_hl : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx M, forall g :e A :^: idx N, pastecart M N f g = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M)).
+Theorem pastecart_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx M, forall g :e A :^: idx N, pastecart M N f g = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M)).
 Admitted.
 
 // HOL Light: cart.ml:186 / fstcart
 // Source hash: md5:076ed5c08efac66eaf24e72ed8087ff0
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx, hol_num_omega)
-Theorem fstcart_hl : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), fstcart M f = fun i :e idx M => f i.
+Theorem fstcart_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), fstcart M f = fun i :e idx M => f i.
 Admitted.
 
 // HOL Light: cart.ml:189 / sndcart
 // Source hash: md5:442acce9e11ba375a5854f0ad07e5d3d
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
-Theorem sndcart_hl : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), sndcart M N f = fun i :e idx N => f (i + dimindex M).
+Theorem sndcart_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), sndcart M N f = fun i :e idx N => f (i + dimindex M).
 Admitted.
 
 // HOL Light: cart.ml:193 / FINITE_SUM_IMAGE
@@ -456,6 +456,12 @@ Admitted.
 // Source hash: md5:dcf8ffbb9fadf298b171451ec20ea6dc
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite)
 Theorem FINITE_CART_UNIV : forall A N:set, N <> Empty -> finite A -> finite (A :^: idx N).
+Admitted.
+
+// HOL Light: cart.ml:554 / vector
+// Source hash: md5:56827346d192eb3c809c21ecac00effb
+// Status: generalization_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega)
+Theorem vector_thm : forall A N:set, A <> Empty -> N <> Empty -> forall l :e finseq A, vector A N l = fun i :e idx N => seq_nth l (minus_nat i 1).
 Admitted.
 
 // HOL Light: cart.ml:561 / IN_ELIM_PASTECART_THM

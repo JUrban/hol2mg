@@ -5,14 +5,16 @@ HERE=$(cd "$(dirname "$0")/.." && pwd)
 MG=${MEGALODON:-$HERE/../repos/Megalodon/bin/megalodon}
 dir=$1; shift
 shards=("$@")
-if [ ${#shards[@]} -eq 0 ]; then shards=($(cd "$dir" && ls *.mg 2>/dev/null | sed 's/\.mg$//')); fi
+if [ ${#shards[@]} -eq 0 ]; then shards=($(cd "$dir" && ls *.mg 2>/dev/null | sed 's/\.mg$//' | sort)); fi
 fail=0
 tmp=$(mktemp -d)
 known=$dir/known_props.txt
 : > "$known.new"
 for s in "${shards[@]}"; do
   f=$tmp/$s.mg
-  cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" "$dir/$s.mg" > "$f"
+  cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" > "$f"
+  [ -s "$dir/_definitions.mg" ] && [ "$s" != "_definitions" ] && cat "$dir/_definitions.mg" >> "$f"
+  cat "$dir/$s.mg" >> "$f"
   out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces -warnaboutreproven "$f" 2>&1)
   echo "$out" | sed -n 's/^WARNING: The proposition given in theorem \([A-Za-z_0-9'"'"']*\) is already known.*/\1/p' >> "$known.new"
   if echo "$out" | grep -q "Everything looks good"; then

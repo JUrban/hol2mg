@@ -147,18 +147,6 @@
    "module": "native/prelude.mg"
   },
   {
-   "hol": "COUNTABLE",
-   "scheme": "(A->bool)->bool",
-   "args": [
-    "subset"
-   ],
-   "result": "prop",
-   "template": "countable ?1",
-   "class": "native_isomorphism",
-   "status": "reviewed",
-   "bridge": "hol_countable"
-  },
-  {
    "hol": "+_c",
    "scheme": "(A->bool)->(B->bool)->((A,B)sum->bool)",
    "args": [

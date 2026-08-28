@@ -155,7 +155,7 @@ Admitted.
 // HOL Light: Library/floor.ml:168 / rational
 // Source hash: md5:2ce3901d40c1fae22ef974e0cda82d37
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, int_Subq_R, omega_Subq_R)
-Theorem rational_hl : forall x :e R, x :e rational <-> exists m n :e R, m :e int /\ (n :e int /\ (~ n = 0 /\ x = m :/: n)).
+Theorem rational_thm : forall x :e R, x :e rational <-> exists m n :e R, m :e int /\ (n :e int /\ (~ n = 0 /\ x = m :/: n)).
 Admitted.
 
 // HOL Light: Library/floor.ml:171 / RATIONAL_INTEGER

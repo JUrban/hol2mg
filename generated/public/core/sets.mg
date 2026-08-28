@@ -2342,6 +2342,12 @@ Admitted.
 Theorem ARB : forall A:set, A <> Empty -> choose_in A (fun x:set => True) = choose_in A (fun x:set => False).
 Admitted.
 
+// HOL Light: sets.ml:2933 / EXTENSIONAL
+// Source hash: md5:808c8312c2dcfe2200f0e3a3f1f627e0
+// Status: exact_native (bridges: choose_in_spec)
+Theorem EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall x :e B :^: A, (forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)) <-> x :e {f :e B :^: A | forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => True)}.
+Admitted.
+
 // HOL Light: sets.ml:2936 / IN_EXTENSIONAL
 // Source hash: md5:1281e60a81a928da3c2aa7f8780a8486
 // Status: exact_native (bridges: choose_in_spec)
@@ -3410,6 +3416,12 @@ Admitted.
 Theorem INJECTIVE_PREIMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall t t' c= B, {x :e A | f x :e t} = {x :e A | f x :e t'} -> t = t') <-> {f x | x :e A} = B).
 Admitted.
 
+// HOL Light: sets.ml:4554 / SURJECTIVE_PREIMAGE
+// Source hash: md5:f1e1fc129998a2f80a3dd7ca228201f2
+// Status: exact_native
+Theorem SURJECTIVE_PREIMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall k:set -> prop, exists t c= B, forall x :e A, x :e {x0 :e A | f x0 :e t} <-> k x) <-> forall x y :e A, f x = f y -> x = y).
+Admitted.
+
 // HOL Light: sets.ml:4565 / CARD_EQ_BIJECTION
 // Source hash: md5:469ff9ccf8bb5c899ad58d4f8a8d7997
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
@@ -3500,10 +3512,16 @@ Admitted.
 Theorem GE_C : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, atleastp t s <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall y :e B, y :e t -> exists x :e A, x :e s /\ y = f x.
 Admitted.
 
+// HOL Light: sets.ml:4694 / COUNTABLE
+// Source hash: md5:a4d2d220b45cd3826cf971a233740dac
+// Status: transport_required (bridges: hol_countable, hol_le_c_atleastp, hol_num_omega)
+Theorem COUNTABLE : forall A:set, A <> Empty -> forall t c= A, countable t <-> atleastp t omega.
+Admitted.
+
 // HOL Light: sets.ml:4701 / sup
 // Source hash: md5:d2ca7306f413307a8e8aeedfc82e46bd
 // Status: transport_required (bridges: choose_in_spec, hol_real_R)
-Theorem sup_hl : forall s c= R, sup s = choose_in R (fun a:set => (forall x :e R, x :e s -> x <= a) /\ forall b :e R, (forall x :e R, x :e s -> x <= b) -> a <= b).
+Theorem sup_thm : forall s c= R, sup s = choose_in R (fun a:set => (forall x :e R, x :e s -> x <= a) /\ forall b :e R, (forall x :e R, x :e s -> x <= b) -> a <= b).
 Admitted.
 
 // HOL Light: sets.ml:4705 / SUP_EQ
@@ -3659,7 +3677,7 @@ Admitted.
 // HOL Light: sets.ml:4855 / inf
 // Source hash: md5:b6e4351d5c7f0c88c6789029373b4145
 // Status: transport_required (bridges: choose_in_spec, hol_real_R)
-Theorem inf_hl : forall s c= R, inf s = choose_in R (fun a:set => (forall x :e R, x :e s -> a <= x) /\ forall b :e R, (forall x :e R, x :e s -> b <= x) -> b <= a).
+Theorem inf_thm : forall s c= R, inf s = choose_in R (fun a:set => (forall x :e R, x :e s -> a <= x) /\ forall b :e R, (forall x :e R, x :e s -> b <= x) -> b <= a).
 Admitted.
 
 // HOL Light: sets.ml:4859 / INF_EQ
