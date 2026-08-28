@@ -67,9 +67,19 @@ let rec json_of_term env tm =
 
 (* Canonical (alpha-invariant) string for hashing. *)
 
+(* invented type variables (?123) are numbered per sequent in order of first occurrence so that
+   sequent hashes are stable across HOL Light sessions *)
+let canon_tyvars : (string, int) Hashtbl.t = Hashtbl.create 16;;
+let canon_tyvar_name s =
+  if String.length s > 0 && s.[0] = '?' then
+    (match (try Some (Hashtbl.find canon_tyvars s) with Not_found -> None) with
+     | Some i -> "?" ^ string_of_int i
+     | None -> let i = Hashtbl.length canon_tyvars in Hashtbl.add canon_tyvars s i; "?" ^ string_of_int i)
+  else s;;
+
 let rec canon_type b ty =
   match ty with
-  | Tyvar s -> Buffer.add_char b '\''; Buffer.add_string b s
+  | Tyvar s -> Buffer.add_char b '\''; Buffer.add_string b (canon_tyvar_name s)
   | Tyapp(s,args) ->
       Buffer.add_string b s;
       if args <> [] then begin
@@ -99,8 +109,10 @@ let canon_string_of_term tm =
   let b = Buffer.create 256 in canon_term b [] tm; Buffer.contents b;;
 
 let canon_string_of_sequent (asl,c) =
+  Hashtbl.reset canon_tyvars;
+  let cs = canon_string_of_term c in
   let hs = sort (<) (map canon_string_of_term asl) in
-  String.concat " ; " hs ^ " |- " ^ canon_string_of_term c;;
+  String.concat " ; " hs ^ " |- " ^ cs;;
 
 let hash_of_sequent seq = Digest.to_hex (Digest.string (canon_string_of_sequent seq));;
 

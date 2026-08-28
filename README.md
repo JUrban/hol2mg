@@ -31,6 +31,11 @@ tools/check_public.sh generated/public/core          # Megalodon-check all shard
 tools/diff_manifests.py old.json generated/manifests/core.manifest.json
 ```
 
+Upstream update workflow (design §16.4): build the new HOL Light revision (a separate git worktree
+works: set `HOL_LIGHT_DIR`), create/adjust a profile pinning the commit, run `tools/update.sh <profile> --export`,
+then `tools/diff_manifests.py` between the previous and the new manifest gives the change report
+(new / removed / renamed / changed statements); unchanged shards stay byte-identical.
+
 Every generated theorem is `Admitted` (never an axiom), carries its HOL source, hash and
 status (`exact_native`, `transport_required`, `generalization_required`, `native_reuse`,
 `pending_mapping`), and all shards must print `Everything looks good.` under Megalodon.

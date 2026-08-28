@@ -1,0 +1,14915 @@
+{
+"files": [
+"load_camlp5_topfind.ml",
+"system.ml",
+"lib.ml",
+"fusion.ml",
+"basics.ml",
+"nets.ml",
+"printer.ml",
+"preterm.ml",
+"parser.ml",
+"equal.ml",
+"bool.ml",
+"drule.ml",
+"tactics.ml",
+"itab.ml",
+"simp.ml",
+"theorems.ml",
+"ind_defs.ml",
+"class.ml",
+"trivia.ml",
+"canon.ml",
+"meson.ml",
+"firstorder.ml",
+"metis.ml",
+"thecops.ml",
+"quot.ml",
+"impconv.ml",
+"pair.ml",
+"compute.ml",
+"nums.ml",
+"recursion.ml",
+"arith.ml",
+"wf.ml",
+"calc_num.ml",
+"normalizer.ml",
+"grobner.ml",
+"ind_types.ml",
+"lists.ml",
+"realax.ml",
+"calc_int.ml",
+"realarith.ml",
+"real.ml",
+"calc_rat.ml",
+"int.ml",
+"sets.ml",
+"iterate.ml",
+"cart.ml",
+"define.ml",
+"hol_lib.ml",
+"help.ml",
+"database.ml",
+"update_database.ml",
+"export.ml"
+],
+"index": {
+"ABSORPTION": [
+"sets.ml",
+683
+],
+"ABS_SIMP": [
+"theorems.ml",
+51
+],
+"ADD": [
+"arith.ml",
+48
+],
+"ADD1": [
+"arith.ml",
+137
+],
+"ADD_0": [
+"arith.ml",
+52
+],
+"ADD_AC": [
+"arith.ml",
+75
+],
+"ADD_ASSOC": [
+"arith.ml",
+71
+],
+"ADD_CLAUSES": [
+"arith.ml",
+60
+],
+"ADD_EQ_0": [
+"arith.ml",
+81
+],
+"ADD_SUB": [
+"arith.ml",
+861
+],
+"ADD_SUB2": [
+"arith.ml",
+865
+],
+"ADD_SUBR": [
+"arith.ml",
+878
+],
+"ADD_SUBR2": [
+"arith.ml",
+874
+],
+"ADD_SUC": [
+"arith.ml",
+56
+],
+"ADD_SYM": [
+"arith.ml",
+67
+],
+"ADMISSIBLE_BASE": [
+"define.ml",
+86
+],
+"ADMISSIBLE_COMB": [
+"define.ml",
+92
+],
+"ADMISSIBLE_COND": [
+"define.ml",
+117
+],
+"ADMISSIBLE_CONST": [
+"define.ml",
+82
+],
+"ADMISSIBLE_GUARDED_PATTERN": [
+"define.ml",
+162
+],
+"ADMISSIBLE_IMP_SUPERADMISSIBLE": [
+"define.ml",
+233
+],
+"ADMISSIBLE_LAMBDA": [
+"define.ml",
+104
+],
+"ADMISSIBLE_MAP": [
+"define.ml",
+198
+],
+"ADMISSIBLE_MATCH": [
+"define.ml",
+129
+],
+"ADMISSIBLE_MATCH_SEQPATTERN": [
+"define.ml",
+211
+],
+"ADMISSIBLE_NEST": [
+"define.ml",
+110
+],
+"ADMISSIBLE_NSUM": [
+"define.ml",
+182
+],
+"ADMISSIBLE_RAND": [
+"define.ml",
+98
+],
+"ADMISSIBLE_SEQPATTERN": [
+"define.ml",
+136
+],
+"ADMISSIBLE_SUM": [
+"define.ml",
+190
+],
+"ADMISSIBLE_UNGUARDED_PATTERN": [
+"define.ml",
+146
+],
+"ALL": [
+"lists.ml",
+65
+],
+"ALL2": [
+"lists.ml",
+87
+],
+"ALL2_ALL": [
+"lists.ml",
+464
+],
+"ALL2_AND_RIGHT": [
+"lists.ml",
+283
+],
+"ALL2_DEF": [
+"lists.ml",
+81
+],
+"ALL2_MAP": [
+"lists.ml",
+272
+],
+"ALL2_MAP2": [
+"lists.ml",
+426
+],
+"ALLPAIRS": [
+"lists.ml",
+132
+],
+"ALLPAIRS_EQ": [
+"lists.ml",
+458
+],
+"ALLPAIRS_MAP": [
+"lists.ml",
+452
+],
+"ALLPAIRS_MEM": [
+"lists.ml",
+445
+],
+"ALLPAIRS_SYM": [
+"lists.ml",
+439
+],
+"ALL_APPEND": [
+"lists.ml",
+405
+],
+"ALL_EL": [
+"lists.ml",
+422
+],
+"ALL_EQ": [
+"lists.ml",
+255
+],
+"ALL_FILTER": [
+"lists.ml",
+604
+],
+"ALL_IMP": [
+"lists.ml",
+235
+],
+"ALL_IMPCONV": [
+"impconv.ml",
+757
+],
+"ALL_MAP": [
+"lists.ml",
+250
+],
+"ALL_MEM": [
+"lists.ml",
+314
+],
+"ALL_MP": [
+"lists.ml",
+299
+],
+"ALL_T": [
+"lists.ml",
+262
+],
+"AND_ALL": [
+"lists.ml",
+304
+],
+"AND_ALL2": [
+"lists.ml",
+432
+],
+"AND_CLAUSES": [
+"theorems.ml",
+144
+],
+"AND_DEF": [
+"bool.ml",
+97
+],
+"AND_FORALL_THM": [
+"theorems.ml",
+249
+],
+"ANTS_TAC": [
+"tactics.ml",
+753
+],
+"APPEND": [
+"lists.ml",
+34
+],
+"APPEND_ASSOC": [
+"lists.ml",
+161
+],
+"APPEND_BUTLAST_LAST": [
+"lists.ml",
+540
+],
+"APPEND_EQ_NIL": [
+"lists.ml",
+469
+],
+"APPEND_LCANCEL": [
+"lists.ml",
+473
+],
+"APPEND_NIL": [
+"lists.ml",
+157
+],
+"APPEND_RCANCEL": [
+"lists.ml",
+477
+],
+"APPEND_SING": [
+"lists.ml",
+610
+],
+"ARB": [
+"sets.ml",
+2930
+],
+"ARBITRARY": [
+"sets.ml",
+4059
+],
+"ARBITRARY_INTERSECTION_OF_COMPLEMENT": [
+"sets.ml",
+4102
+],
+"ARBITRARY_INTERSECTION_OF_EMPTY": [
+"sets.ml",
+4078
+],
+"ARBITRARY_INTERSECTION_OF_IDEMPOT": [
+"sets.ml",
+4127
+],
+"ARBITRARY_INTERSECTION_OF_INC": [
+"sets.ml",
+4086
+],
+"ARBITRARY_INTERSECTION_OF_INTER": [
+"sets.ml",
+4161
+],
+"ARBITRARY_INTERSECTION_OF_INTERS": [
+"sets.ml",
+4152
+],
+"ARBITRARY_INTERSECTION_OF_UNION": [
+"sets.ml",
+4210
+],
+"ARBITRARY_INTERSECTION_OF_UNION_EQ": [
+"sets.ml",
+4194
+],
+"ARBITRARY_UNION_OF_ALT": [
+"sets.ml",
+4062
+],
+"ARBITRARY_UNION_OF_COMPLEMENT": [
+"sets.ml",
+4090
+],
+"ARBITRARY_UNION_OF_EMPTY": [
+"sets.ml",
+4074
+],
+"ARBITRARY_UNION_OF_IDEMPOT": [
+"sets.ml",
+4108
+],
+"ARBITRARY_UNION_OF_INC": [
+"sets.ml",
+4082
+],
+"ARBITRARY_UNION_OF_INTER": [
+"sets.ml",
+4186
+],
+"ARBITRARY_UNION_OF_INTER_EQ": [
+"sets.ml",
+4170
+],
+"ARBITRARY_UNION_OF_UNION": [
+"sets.ml",
+4143
+],
+"ARBITRARY_UNION_OF_UNIONS": [
+"sets.ml",
+4135
+],
+"ARITH": [
+"calc_num.ml",
+196
+],
+"ARITH_ADD": [
+"calc_num.ml",
+55
+],
+"ARITH_EQ": [
+"calc_num.ml",
+161
+],
+"ARITH_EVEN": [
+"calc_num.ml",
+101
+],
+"ARITH_EXP": [
+"calc_num.ml",
+84
+],
+"ARITH_GE": [
+"calc_num.ml",
+157
+],
+"ARITH_GT": [
+"calc_num.ml",
+159
+],
+"ARITH_LE": [
+"calc_num.ml",
+115
+],
+"ARITH_LT": [
+"calc_num.ml",
+143
+],
+"ARITH_MULT": [
+"calc_num.ml",
+69
+],
+"ARITH_ODD": [
+"calc_num.ml",
+108
+],
+"ARITH_PRE": [
+"calc_num.ml",
+46
+],
+"ARITH_RULE": [
+"int.ml",
+2153
+],
+"ARITH_SUB": [
+"calc_num.ml",
+175
+],
+"ARITH_SUC": [
+"calc_num.ml",
+39
+],
+"ARITH_TAC": [
+"int.ml",
+2183
+],
+"ARITH_ZERO": [
+"calc_num.ml",
+26
+],
+"ASM_ARITH_TAC": [
+"int.ml",
+2185
+],
+"ASM_FOL_TAC": [
+"canon.ml",
+664
+],
+"ASM_IMP_REWRITE_TAC": [
+"impconv.ml",
+1408
+],
+"ASM_INT_ARITH_TAC": [
+"int.ml",
+2319
+],
+"ASM_MESON_TAC": [
+"meson.ml",
+839
+],
+"ASM_METIS_TAC": [
+"metis.ml",
+10090
+],
+"ASM_REAL_ARITH_TAC": [
+"calc_rat.ml",
+555
+],
+"ASM_SIMP_TAC": [
+"simp.ml",
+532
+],
+"ASSOC": [
+"lists.ml",
+111
+],
+"ASSUME_TAC": [
+"tactics.ml",
+248
+],
+"A_": [
+"impconv.ml",
+68
+],
+"BETA_RULE": [
+"equal.ml",
+322
+],
+"BETA_TAC": [
+"tactics.ml",
+409
+],
+"BETA_THM": [
+"theorems.ml",
+47
+],
+"BIJ": [
+"sets.ml",
+157
+],
+"BIJECTIONS_CARD_EQ": [
+"sets.ml",
+4622
+],
+"BIJECTIONS_HAS_SIZE": [
+"sets.ml",
+4600
+],
+"BIJECTIONS_HAS_SIZE_EQ": [
+"sets.ml",
+4610
+],
+"BIJECTIVE_LEFT_RIGHT_INVERSE": [
+"sets.ml",
+1323
+],
+"BIJECTIVE_ON_LEFT_RIGHT_INVERSE": [
+"sets.ml",
+1300
+],
+"BINARY_INDUCT": [
+"int.ml",
+2327
+],
+"BIT0": [
+"arith.ml",
+105
+],
+"BIT0_0": [
+"calc_num.ml",
+31
+],
+"BIT0_DEF": [
+"nums.ml",
+192
+],
+"BIT0_THM": [
+"arith.ml",
+113
+],
+"BIT1": [
+"arith.ml",
+109
+],
+"BIT1_0": [
+"calc_num.ml",
+35
+],
+"BIT1_DEF": [
+"nums.ml",
+200
+],
+"BIT1_THM": [
+"arith.ml",
+117
+],
+"BITS_ELIM_CONV": [
+"arith.ml",
+1877
+],
+"BOOL_CASES_AX": [
+"class.ml",
+154
+],
+"BOTTOM": [
+"ind_types.ml",
+165
+],
+"BOUNDS_DIVIDED": [
+"realax.ml",
+193
+],
+"BOUNDS_IGNORE": [
+"realax.ml",
+227
+],
+"BOUNDS_LINEAR": [
+"realax.ml",
+176
+],
+"BOUNDS_LINEAR_0": [
+"realax.ml",
+188
+],
+"BOUNDS_NOTZERO": [
+"realax.ml",
+216
+],
+"BUTLAST": [
+"lists.ml",
+53
+],
+"BUTLAST_APPEND": [
+"lists.ml",
+533
+],
+"BUTLAST_CLAUSES": [
+"lists.ml",
+527
+],
+"CACHE_CONV": [
+"equal.ml",
+332
+],
+"CARD": [
+"sets.ml",
+1992
+],
+"CARD_BOOL": [
+"sets.ml",
+3410
+],
+"CARD_CART_UNIV": [
+"cart.ml",
+542
+],
+"CARD_CLAUSES": [
+"sets.ml",
+1995
+],
+"CARD_CROSS": [
+"sets.ml",
+2750
+],
+"CARD_DELETE": [
+"sets.ml",
+2029
+],
+"CARD_DIFF": [
+"sets.ml",
+2045
+],
+"CARD_EQ_0": [
+"sets.ml",
+2051
+],
+"CARD_EQ_BIJECTION": [
+"sets.ml",
+4565
+],
+"CARD_EQ_BIJECTIONS": [
+"sets.ml",
+4576
+],
+"CARD_EQ_BIJECTIONS_SPECIAL": [
+"sets.ml",
+4585
+],
+"CARD_EQ_NSUM": [
+"iterate.ml",
+1561
+],
+"CARD_EQ_SUM": [
+"iterate.ml",
+2314
+],
+"CARD_FINITE_IMAGE": [
+"cart.ml",
+76
+],
+"CARD_FUNSPACE": [
+"sets.ml",
+3372
+],
+"CARD_FUNSPACE_UNIV": [
+"sets.ml",
+3391
+],
+"CARD_IMAGE_EQ_INJ": [
+"sets.ml",
+2445
+],
+"CARD_IMAGE_INJ": [
+"sets.ml",
+2388
+],
+"CARD_IMAGE_INJ_EQ": [
+"sets.ml",
+2417
+],
+"CARD_IMAGE_LE": [
+"sets.ml",
+2405
+],
+"CARD_IMAGE_LE2": [
+"sets.ml",
+2505
+],
+"CARD_IMAGE_LT2": [
+"sets.ml",
+2516
+],
+"CARD_LE_1": [
+"sets.ml",
+2603
+],
+"CARD_LE_2": [
+"sets.ml",
+2060
+],
+"CARD_LE_3": [
+"sets.ml",
+2066
+],
+"CARD_LE_4": [
+"sets.ml",
+2072
+],
+"CARD_LE_INJ": [
+"sets.ml",
+4450
+],
+"CARD_LE_UNIONS_CHAIN": [
+"sets.ml",
+2585
+],
+"CARD_NUMSEG": [
+"iterate.ml",
+85
+],
+"CARD_NUMSEG_1": [
+"iterate.ml",
+98
+],
+"CARD_NUMSEG_LE": [
+"sets.ml",
+3589
+],
+"CARD_NUMSEG_LEMMA": [
+"iterate.ml",
+78
+],
+"CARD_NUMSEG_LT": [
+"sets.ml",
+3568
+],
+"CARD_POWERSET": [
+"sets.ml",
+3434
+],
+"CARD_PRODUCT": [
+"sets.ml",
+2715
+],
+"CARD_PSUBSET": [
+"sets.ml",
+2298
+],
+"CARD_PSUBSET_EQ": [
+"sets.ml",
+2313
+],
+"CARD_PSUBSET_IMP": [
+"sets.ml",
+2309
+],
+"CARD_SET_OF_LIST_LE": [
+"sets.ml",
+4368
+],
+"CARD_SING": [
+"sets.ml",
+2056
+],
+"CARD_SUBSET": [
+"sets.ml",
+2268
+],
+"CARD_SUBSET_EQ": [
+"sets.ml",
+2247
+],
+"CARD_SUBSET_IMAGE": [
+"sets.ml",
+2428
+],
+"CARD_SUBSET_LE": [
+"sets.ml",
+2284
+],
+"CARD_UNION": [
+"sets.ml",
+2003
+],
+"CARD_UNIONS": [
+"iterate.ml",
+1923
+],
+"CARD_UNIONS_LE": [
+"sets.ml",
+2334
+],
+"CARD_UNION_EQ": [
+"sets.ml",
+2039
+],
+"CARD_UNION_GEN": [
+"sets.ml",
+2358
+],
+"CARD_UNION_LE": [
+"sets.ml",
+2317
+],
+"CARD_UNION_OVERLAP": [
+"sets.ml",
+2378
+],
+"CARD_UNION_OVERLAP_EQ": [
+"sets.ml",
+2369
+],
+"CARTESIAN_PRODUCT": [
+"sets.ml",
+3062
+],
+"CARTESIAN_PRODUCT_AS_RESTRICTIONS": [
+"sets.ml",
+3076
+],
+"CARTESIAN_PRODUCT_EMPTY": [
+"sets.ml",
+3100
+],
+"CARTESIAN_PRODUCT_EQ": [
+"sets.ml",
+3141
+],
+"CARTESIAN_PRODUCT_EQ_EMPTY": [
+"sets.ml",
+3088
+],
+"CARTESIAN_PRODUCT_EQ_MEMBERS": [
+"sets.ml",
+3105
+],
+"CARTESIAN_PRODUCT_EQ_MEMBERS_EQ": [
+"sets.ml",
+3114
+],
+"CARTESIAN_PRODUCT_SINGS": [
+"sets.ml",
+3169
+],
+"CARTESIAN_PRODUCT_SINGS_GEN": [
+"sets.ml",
+3175
+],
+"CARTESIAN_PRODUCT_UNIV": [
+"sets.ml",
+3164
+],
+"CART_EQ": [
+"cart.ml",
+120
+],
+"CART_EQ_FULL": [
+"cart.ml",
+166
+],
+"CASEWISE": [
+"define.ml",
+19
+],
+"CASEWISE_CASES": [
+"define.ml",
+29
+],
+"CASEWISE_DEF": [
+"define.ml",
+13
+],
+"CASEWISE_WORKS": [
+"define.ml",
+39
+],
+"CASE_REWRITE_CTXIMPCONV": [
+"impconv.ml",
+1432
+],
+"CASE_REWRITE_TAC": [
+"impconv.ml",
+1436
+],
+"CASE_REWR_IMPCONV_OF_CONV": [
+"impconv.ml",
+1416
+],
+"CCONTR": [
+"class.ml",
+201
+],
+"CHAR_EQ_CONV": [
+"lists.ml",
+886
+],
+"CHOICE": [
+"sets.ml",
+164
+],
+"CHOICE_DEF": [
+"sets.ml",
+312
+],
+"CHOICE_PAIRED_THM": [
+"pair.ml",
+417
+],
+"CHOICE_UNPAIR_THM": [
+"pair.ml",
+413
+],
+"CHOOSE": [
+"bool.ml",
+336
+],
+"CHOOSE_SUBSET": [
+"sets.ml",
+2560
+],
+"CHOOSE_SUBSET_BETWEEN": [
+"sets.ml",
+2564
+],
+"CHOOSE_SUBSET_EQ": [
+"sets.ml",
+2552
+],
+"CHOOSE_SUBSET_STRONG": [
+"sets.ml",
+2533
+],
+"CNF_CONV": [
+"canon.ml",
+434
+],
+"COMB_CONV": [
+"equal.ml",
+153
+],
+"COMMA_DEF": [
+"pair.ml",
+64
+],
+"COMPL_COMPL": [
+"sets.ml",
+655
+],
+"COMPONENT": [
+"sets.ml",
+669
+],
+"CONDS_CELIM_CONV": [
+"canon.ml",
+606
+],
+"CONDS_ELIM_CONV": [
+"canon.ml",
+606
+],
+"COND_ABS": [
+"class.ml",
+359
+],
+"COND_CLAUSES": [
+"class.ml",
+319
+],
+"COND_CONG": [
+"class.ml",
+463
+],
+"COND_DEF": [
+"class.ml",
+315
+],
+"COND_ELIM_CONV": [
+"class.ml",
+403
+],
+"COND_ELIM_THM": [
+"class.ml",
+399
+],
+"COND_EQ_CLAUSE": [
+"class.ml",
+470
+],
+"COND_EXPAND": [
+"class.ml",
+342
+],
+"COND_ID": [
+"class.ml",
+347
+],
+"COND_RAND": [
+"class.ml",
+351
+],
+"COND_RATOR": [
+"class.ml",
+355
+],
+"COND_SWAP": [
+"class.ml",
+363
+],
+"CONG": [
+"int.ml",
+2387
+],
+"CONG_DIV2": [
+"int.ml",
+2399
+],
+"CONG_LMOD": [
+"int.ml",
+2391
+],
+"CONG_NSUM": [
+"iterate.ml",
+1897
+],
+"CONG_RMOD": [
+"int.ml",
+2395
+],
+"CONJ": [
+"bool.ml",
+103
+],
+"CONJUNCT1": [
+"bool.ml",
+124
+],
+"CONJUNCT2": [
+"bool.ml",
+136
+],
+"CONJUNCTS": [
+"bool.ml",
+152
+],
+"CONJ_ACI": [
+"theorems.ml",
+67
+],
+"CONJ_ACI_RULE": [
+"canon.ml",
+28
+],
+"CONJ_ASSOC": [
+"theorems.ml",
+59
+],
+"CONJ_SYM": [
+"theorems.ml",
+63
+],
+"CONSTR": [
+"ind_types.ml",
+168
+],
+"CONSTR_BOT": [
+"ind_types.ml",
+195
+],
+"CONSTR_IND": [
+"ind_types.ml",
+217
+],
+"CONSTR_INJ": [
+"ind_types.ml",
+203
+],
+"CONSTR_REC": [
+"ind_types.ml",
+244
+],
+"CONS_11": [
+"lists.ml",
+178
+],
+"CONS_HD_TL": [
+"lists.ml",
+590
+],
+"CONTR": [
+"bool.ml",
+458
+],
+"CONTRAPOS_CONV": [
+"class.ml",
+209
+],
+"CONTRAPOS_THM": [
+"class.ml",
+193
+],
+"COPRIME_LMOD": [
+"int.ml",
+2529
+],
+"COPRIME_RMOD": [
+"int.ml",
+2534
+],
+"COUNTABLE": [
+"sets.ml",
+4694
+],
+"CROSS": [
+"sets.ml",
+2734
+],
+"CROSS_DIFF": [
+"sets.ml",
+2875
+],
+"CROSS_EMPTY": [
+"sets.ml",
+2759
+],
+"CROSS_EQ": [
+"sets.ml",
+2830
+],
+"CROSS_EQ_EMPTY": [
+"sets.ml",
+2754
+],
+"CROSS_INTER": [
+"sets.ml",
+2859
+],
+"CROSS_INTERS": [
+"sets.ml",
+2901
+],
+"CROSS_INTERS_INTERS": [
+"sets.ml",
+2901
+],
+"CROSS_MONO": [
+"sets.ml",
+2826
+],
+"CROSS_SING": [
+"sets.ml",
+2763
+],
+"CROSS_UNION": [
+"sets.ml",
+2867
+],
+"CROSS_UNIONS": [
+"sets.ml",
+2889
+],
+"CROSS_UNIONS_UNIONS": [
+"sets.ml",
+2889
+],
+"CROSS_UNIV": [
+"sets.ml",
+2767
+],
+"CURRY_DEF": [
+"pair.ml",
+187
+],
+"DECIMAL": [
+"calc_rat.ml",
+16
+],
+"DECOMPOSITION": [
+"sets.ml",
+673
+],
+"DEEP_IMP_REWR_MCONV": [
+"impconv.ml",
+1657
+],
+"DELETE": [
+"sets.ml",
+109
+],
+"DELETE_COMM": [
+"sets.ml",
+779
+],
+"DELETE_DELETE": [
+"sets.ml",
+775
+],
+"DELETE_INSERT": [
+"sets.ml",
+803
+],
+"DELETE_INTER": [
+"sets.ml",
+814
+],
+"DELETE_NON_ELEMENT": [
+"sets.ml",
+762
+],
+"DELETE_SUBSET": [
+"sets.ml",
+783
+],
+"DENUMERAL": [
+"calc_num.ml",
+17
+],
+"DEPENDENT_CHOICE": [
+"arith.ml",
+1866
+],
+"DEPENDENT_CHOICE_FIXED": [
+"arith.ml",
+1854
+],
+"DEPTH_CTXIMPCONV": [
+"impconv.ml",
+1079
+],
+"DESTRUCT_TAC": [
+"theorems.ml",
+418
+],
+"DEST_REC_INJ": [
+"ind_types.ml",
+184
+],
+"DE_MORGAN_THM": [
+"class.ml",
+185
+],
+"DIFF": [
+"sets.ml",
+102
+],
+"DIFF_DIFF": [
+"sets.ml",
+643
+],
+"DIFF_EMPTY": [
+"sets.ml",
+631
+],
+"DIFF_EQ_EMPTY": [
+"sets.ml",
+647
+],
+"DIFF_INSERT": [
+"sets.ml",
+795
+],
+"DIFF_INTERS": [
+"sets.ml",
+1124
+],
+"DIFF_RESTRICT": [
+"sets.ml",
+659
+],
+"DIFF_UNIONS": [
+"sets.ml",
+1142
+],
+"DIFF_UNIONS_NONEMPTY": [
+"sets.ml",
+1146
+],
+"DIFF_UNIONS_PAIRWISE_DISJOINT": [
+"sets.ml",
+3954
+],
+"DIFF_UNIV": [
+"sets.ml",
+639
+],
+"DIMINDEX_1": [
+"cart.ml",
+48
+],
+"DIMINDEX_2": [
+"cart.ml",
+463
+],
+"DIMINDEX_3": [
+"cart.ml",
+467
+],
+"DIMINDEX_4": [
+"cart.ml",
+471
+],
+"DIMINDEX_CLAUSES": [
+"cart.ml",
+381
+],
+"DIMINDEX_CONV": [
+"cart.ml",
+409
+],
+"DIMINDEX_FINITE_DIFF": [
+"cart.ml",
+302
+],
+"DIMINDEX_FINITE_IMAGE": [
+"cart.ml",
+84
+],
+"DIMINDEX_FINITE_PROD": [
+"cart.ml",
+332
+],
+"DIMINDEX_FINITE_SUM": [
+"cart.ml",
+206
+],
+"DIMINDEX_GE_1": [
+"cart.ml",
+22
+],
+"DIMINDEX_HAS_SIZE_FINITE_DIFF": [
+"cart.ml",
+294
+],
+"DIMINDEX_HAS_SIZE_FINITE_PROD": [
+"cart.ml",
+325
+],
+"DIMINDEX_HAS_SIZE_FINITE_SUM": [
+"cart.ml",
+199
+],
+"DIMINDEX_NONZERO": [
+"cart.ml",
+17
+],
+"DIMINDEX_TAC": [
+"cart.ml",
+456
+],
+"DIMINDEX_TYBIT0": [
+"cart.ml",
+373
+],
+"DIMINDEX_TYBIT1": [
+"cart.ml",
+377
+],
+"DIMINDEX_UNIQUE": [
+"cart.ml",
+30
+],
+"DIMINDEX_UNIV": [
+"cart.ml",
+26
+],
+"DISCH": [
+"bool.ml",
+181
+],
+"DISCH_DISJ": [
+"metis.ml",
+9730
+],
+"DISCH_IMP_IMP": [
+"impconv.ml",
+98
+],
+"DISJ1": [
+"bool.ml",
+366
+],
+"DISJ2": [
+"bool.ml",
+378
+],
+"DISJOINT": [
+"sets.ml",
+122
+],
+"DISJOINT_CROSS": [
+"sets.ml",
+2918
+],
+"DISJOINT_DELETE_SYM": [
+"sets.ml",
+818
+],
+"DISJOINT_DISJOINT_UNION": [
+"sets.ml",
+3317
+],
+"DISJOINT_EMPTY": [
+"sets.ml",
+610
+],
+"DISJOINT_EMPTY_REFL": [
+"sets.ml",
+614
+],
+"DISJOINT_INSERT": [
+"sets.ml",
+723
+],
+"DISJOINT_NUMSEG": [
+"iterate.ml",
+137
+],
+"DISJOINT_PCROSS": [
+"cart.ml",
+729
+],
+"DISJOINT_SING": [
+"sets.ml",
+622
+],
+"DISJOINT_SYM": [
+"sets.ml",
+606
+],
+"DISJOINT_UNION": [
+"sets.ml",
+618
+],
+"DISJOINT_UNION_EQ": [
+"sets.ml",
+3276
+],
+"DISJOINT_UNION_EQ_EMPTY": [
+"sets.ml",
+3310
+],
+"DISJ_ACI": [
+"theorems.ml",
+83
+],
+"DISJ_ACI_RULE": [
+"canon.ml",
+46
+],
+"DISJ_ASSOC": [
+"theorems.ml",
+75
+],
+"DISJ_CASES": [
+"bool.ml",
+390
+],
+"DISJ_SYM": [
+"theorems.ml",
+79
+],
+"DIST_ADD2": [
+"realax.ml",
+125
+],
+"DIST_ADD2_REV": [
+"realax.ml",
+125
+],
+"DIST_ADDBOUND": [
+"realax.ml",
+125
+],
+"DIST_ELIM_THM": [
+"realax.ml",
+109
+],
+"DIST_EQ_0": [
+"realax.ml",
+101
+],
+"DIST_LADD": [
+"realax.ml",
+77
+],
+"DIST_LADD_0": [
+"realax.ml",
+85
+],
+"DIST_LE_CASES": [
+"realax.ml",
+125
+],
+"DIST_LMUL": [
+"realax.ml",
+93
+],
+"DIST_LZERO": [
+"realax.ml",
+65
+],
+"DIST_RADD": [
+"realax.ml",
+81
+],
+"DIST_RADD_0": [
+"realax.ml",
+89
+],
+"DIST_REFL": [
+"realax.ml",
+61
+],
+"DIST_RMUL": [
+"realax.ml",
+97
+],
+"DIST_RZERO": [
+"realax.ml",
+69
+],
+"DIST_SYM": [
+"realax.ml",
+73
+],
+"DIST_TRIANGLE": [
+"realax.ml",
+125
+],
+"DIST_TRIANGLES_LE": [
+"realax.ml",
+161
+],
+"DIST_TRIANGLE_LE": [
+"realax.ml",
+156
+],
+"DIVIDES_ANTISYM": [
+"int.ml",
+2438
+],
+"DIVIDES_DIVIDES_DIV": [
+"int.ml",
+2481
+],
+"DIVIDES_DIVIDES_DIV_EQ": [
+"int.ml",
+2486
+],
+"DIVIDES_DIVIDES_DIV_IMP": [
+"int.ml",
+2491
+],
+"DIVIDES_DIV_DIVIDES": [
+"int.ml",
+2471
+],
+"DIVIDES_DIV_MULT": [
+"int.ml",
+2461
+],
+"DIVIDES_DIV_SELF": [
+"int.ml",
+2477
+],
+"DIVIDES_LE": [
+"int.ml",
+2413
+],
+"DIVIDES_LE_IMP": [
+"int.ml",
+2427
+],
+"DIVIDES_LE_STRONG": [
+"int.ml",
+2421
+],
+"DIVIDES_MOD": [
+"int.ml",
+2457
+],
+"DIVIDES_ONE": [
+"int.ml",
+2445
+],
+"DIVISION": [
+"arith.ml",
+1094
+],
+"DIVISION_0": [
+"arith.ml",
+1091
+],
+"DIVISION_SIMP": [
+"arith.ml",
+1106
+],
+"DIVMOD_ELIM_THM": [
+"arith.ml",
+1696
+],
+"DIVMOD_ELIM_THM'": [
+"arith.ml",
+1703
+],
+"DIVMOD_EXIST": [
+"arith.ml",
+1065
+],
+"DIVMOD_EXIST_0": [
+"arith.ml",
+1085
+],
+"DIVMOD_UNIQ": [
+"arith.ml",
+1149
+],
+"DIVMOD_UNIQ_LEMMA": [
+"arith.ml",
+1125
+],
+"DIV_0": [
+"arith.ml",
+1168
+],
+"DIV_1": [
+"arith.ml",
+1253
+],
+"DIV_ADD": [
+"int.ml",
+2449
+],
+"DIV_ADD_EQ": [
+"arith.ml",
+1521
+],
+"DIV_ADD_EQ_EQ": [
+"arith.ml",
+1516
+],
+"DIV_ADD_MOD": [
+"arith.ml",
+1495
+],
+"DIV_BY_DIV": [
+"int.ml",
+2466
+],
+"DIV_DIV": [
+"arith.ml",
+1581
+],
+"DIV_EQ_0": [
+"arith.ml",
+1365
+],
+"DIV_EQ_EXCLUSION": [
+"arith.ml",
+1563
+],
+"DIV_EQ_SELF": [
+"arith.ml",
+1388
+],
+"DIV_EXP": [
+"arith.ml",
+1637
+],
+"DIV_LE": [
+"arith.ml",
+1220
+],
+"DIV_LE_EXCLUSION": [
+"arith.ml",
+1551
+],
+"DIV_LT": [
+"arith.ml",
+1258
+],
+"DIV_MOD": [
+"arith.ml",
+1591
+],
+"DIV_MONO": [
+"arith.ml",
+1351
+],
+"DIV_MONO2": [
+"arith.ml",
+1544
+],
+"DIV_MONO_LT": [
+"arith.ml",
+1358
+],
+"DIV_MULT": [
+"arith.ml",
+1175
+],
+"DIV_MULT2": [
+"arith.ml",
+1290
+],
+"DIV_MULT_ADD": [
+"arith.ml",
+1475
+],
+"DIV_MUL_LE": [
+"arith.ml",
+1228
+],
+"DIV_REFL": [
+"arith.ml",
+1529
+],
+"DIV_UNIQ": [
+"arith.ml",
+1163
+],
+"DIV_ZERO": [
+"arith.ml",
+1098
+],
+"DNF_CONV": [
+"canon.ml",
+392
+],
+"DOUBLE_HALF": [
+"arith.ml",
+1432
+],
+"EL": [
+"lists.ml",
+103
+],
+"ELEMENT_LE_SUP": [
+"sets.ml",
+4834
+],
+"EL_APPEND": [
+"lists.ml",
+563
+],
+"EL_CONS": [
+"lists.ml",
+576
+],
+"EL_CONV": [
+"lists.ml",
+780
+],
+"EL_LIST_OF_SEQ": [
+"lists.ml",
+665
+],
+"EL_MAP": [
+"lists.ml",
+594
+],
+"EL_MAP2": [
+"lists.ml",
+488
+],
+"EL_TL": [
+"lists.ml",
+572
+],
+"EMPTY": [
+"sets.ml",
+77
+],
+"EMPTY_DELETE": [
+"sets.ml",
+771
+],
+"EMPTY_DIFF": [
+"sets.ml",
+635
+],
+"EMPTY_GSPEC": [
+"sets.ml",
+1060
+],
+"EMPTY_NOT_UNIV": [
+"sets.ml",
+371
+],
+"EMPTY_NUMSEG": [
+"iterate.ml",
+64
+],
+"EMPTY_SUBSET": [
+"sets.ml",
+399
+],
+"EMPTY_UNION": [
+"sets.ml",
+494
+],
+"EMPTY_UNIONS": [
+"sets.ml",
+850
+],
+"EQF_ELIM": [
+"bool.ml",
+448
+],
+"EQF_INTRO": [
+"bool.ml",
+438
+],
+"EQT_INTRO": [
+"bool.ml",
+85
+],
+"EQ_ADD_LCANCEL": [
+"arith.ml",
+85
+],
+"EQ_ADD_LCANCEL_0": [
+"arith.ml",
+93
+],
+"EQ_ADD_RCANCEL": [
+"arith.ml",
+89
+],
+"EQ_ADD_RCANCEL_0": [
+"arith.ml",
+97
+],
+"EQ_CLAUSES": [
+"theorems.ml",
+135
+],
+"EQ_DIVMOD": [
+"arith.ml",
+1113
+],
+"EQ_EXP": [
+"arith.ml",
+1025
+],
+"EQ_EXT": [
+"class.ml",
+30
+],
+"EQ_IMP": [
+"theorems.ml",
+129
+],
+"EQ_IMP_LE": [
+"arith.ml",
+451
+],
+"EQ_IMP_RULE": [
+"bool.ml",
+219
+],
+"EQ_MULT_LCANCEL": [
+"arith.ml",
+192
+],
+"EQ_MULT_RCANCEL": [
+"arith.ml",
+199
+],
+"EQ_REFL": [
+"theorems.ml",
+17
+],
+"EQ_SYM": [
+"theorems.ml",
+25
+],
+"EQ_SYM_EQ": [
+"theorems.ml",
+29
+],
+"EQ_TRANS": [
+"theorems.ml",
+33
+],
+"EQ_UNIV": [
+"sets.ml",
+375
+],
+"ETA_AX": [
+"class.ml",
+16
+],
+"ETA_CONV": [
+"class.ml",
+19
+],
+"ETA_ONE": [
+"trivia.ml",
+95
+],
+"EVAL_CONV": [
+"compute.ml",
+794
+],
+"EVAL_RULE": [
+"compute.ml",
+795
+],
+"EVAL_TAC": [
+"compute.ml",
+796
+],
+"EVEN": [
+"arith.ml",
+716
+],
+"EVEN_ADD": [
+"arith.ml",
+741
+],
+"EVEN_AND_ODD": [
+"arith.ml",
+737
+],
+"EVEN_DOUBLE": [
+"arith.ml",
+781
+],
+"EVEN_EXISTS": [
+"arith.ml",
+801
+],
+"EVEN_EXISTS_LEMMA": [
+"arith.ml",
+790
+],
+"EVEN_EXP": [
+"arith.ml",
+759
+],
+"EVEN_MOD": [
+"arith.ml",
+1402
+],
+"EVEN_MOD_EVEN": [
+"arith.ml",
+1418
+],
+"EVEN_MULT": [
+"arith.ml",
+750
+],
+"EVEN_ODD_DECOMPOSITION": [
+"arith.ml",
+814
+],
+"EVEN_OR_ODD": [
+"arith.ml",
+732
+],
+"EVEN_SUB": [
+"arith.ml",
+914
+],
+"EX": [
+"lists.ml",
+69
+],
+"EXCLUDED_MIDDLE": [
+"class.ml",
+140
+],
+"EXISTENCE": [
+"bool.ml",
+474
+],
+"EXISTS": [
+"bool.ml",
+319
+],
+"EXISTS_BOOL_THM": [
+"class.ml",
+262
+],
+"EXISTS_CARTESIAN_PRODUCT_ELEMENT": [
+"sets.ml",
+3229
+],
+"EXISTS_CTXIMPCONV": [
+"impconv.ml",
+1751
+],
+"EXISTS_CTXIMPMCONV": [
+"impconv.ml",
+1568
+],
+"EXISTS_CURRY": [
+"pair.ml",
+337
+],
+"EXISTS_DEF": [
+"bool.ml",
+313
+],
+"EXISTS_EQUATION": [
+"ind_defs.ml",
+36
+],
+"EXISTS_EX": [
+"lists.ml",
+333
+],
+"EXISTS_FINITE_SUBSET_IMAGE": [
+"sets.ml",
+1640
+],
+"EXISTS_FINITE_SUBSET_IMAGE_INJ": [
+"sets.ml",
+1620
+],
+"EXISTS_INT_CASES": [
+"int.ml",
+231
+],
+"EXISTS_IN_CLAUSES": [
+"sets.ml",
+4480
+],
+"EXISTS_IN_CROSS": [
+"sets.ml",
+2814
+],
+"EXISTS_IN_GSPEC": [
+"sets.ml",
+263
+],
+"EXISTS_IN_IMAGE": [
+"sets.ml",
+246
+],
+"EXISTS_IN_INSERT": [
+"sets.ml",
+226
+],
+"EXISTS_IN_PCROSS": [
+"cart.ml",
+581
+],
+"EXISTS_IN_UNION": [
+"sets.ml",
+236
+],
+"EXISTS_IN_UNIONS": [
+"sets.ml",
+846
+],
+"EXISTS_LT_MOD_THM": [
+"arith.ml",
+1663
+],
+"EXISTS_MOD_THM": [
+"arith.ml",
+1667
+],
+"EXISTS_NOT_THM": [
+"class.ml",
+240
+],
+"EXISTS_ONE_REP": [
+"trivia.ml",
+49
+],
+"EXISTS_ONE_THM": [
+"trivia.ml",
+90
+],
+"EXISTS_OPTION_THM": [
+"ind_types.ml",
+893
+],
+"EXISTS_OR_THM": [
+"theorems.ml",
+265
+],
+"EXISTS_PAIRED_THM": [
+"pair.ml",
+390
+],
+"EXISTS_PAIR_FUN_THM": [
+"pair.ml",
+359
+],
+"EXISTS_PAIR_THM": [
+"pair.ml",
+299
+],
+"EXISTS_PASTECART": [
+"cart.ml",
+245
+],
+"EXISTS_REFL": [
+"theorems.ml",
+189
+],
+"EXISTS_SIMP": [
+"theorems.ml",
+121
+],
+"EXISTS_SMALL_SUBSET_IMAGE": [
+"sets.ml",
+2488
+],
+"EXISTS_SMALL_SUBSET_IMAGE_INJ": [
+"sets.ml",
+2464
+],
+"EXISTS_SUBSET_IMAGE": [
+"sets.ml",
+1591
+],
+"EXISTS_SUBSET_IMAGE_INJ": [
+"sets.ml",
+1602
+],
+"EXISTS_SUBSET_INSERT": [
+"sets.ml",
+535
+],
+"EXISTS_SUBSET_UNION": [
+"sets.ml",
+519
+],
+"EXISTS_SWAP_FUN_THM": [
+"pair.ml",
+372
+],
+"EXISTS_THM": [
+"class.ml",
+60
+],
+"EXISTS_TRIPLED_THM": [
+"pair.ml",
+404
+],
+"EXISTS_UNCURRY": [
+"pair.ml",
+332
+],
+"EXISTS_UNIQUE": [
+"theorems.ml",
+401
+],
+"EXISTS_UNIQUE_ALT": [
+"theorems.ml",
+390
+],
+"EXISTS_UNIQUE_DEF": [
+"bool.ml",
+469
+],
+"EXISTS_UNIQUE_REFL": [
+"theorems.ml",
+193
+],
+"EXISTS_UNIQUE_THM": [
+"theorems.ml",
+181
+],
+"EXISTS_UNIQUE_UNIONS_INTERS": [
+"sets.ml",
+1188
+],
+"EXISTS_UNPAIR_FUN_THM": [
+"pair.ml",
+368
+],
+"EXISTS_UNPAIR_THM": [
+"pair.ml",
+349
+],
+"EXP": [
+"arith.ml",
+218
+],
+"EXPAND_CASES_CONV": [
+"calc_num.ml",
+1511
+],
+"EXPAND_NSUM_CONV": [
+"iterate.ml",
+1944
+],
+"EXPAND_SUM_CONV": [
+"iterate.ml",
+2792
+],
+"EXP_1": [
+"arith.ml",
+245
+],
+"EXP_2": [
+"arith.ml",
+249
+],
+"EXP_2_NE_0": [
+"calc_num.ml",
+203
+],
+"EXP_ADD": [
+"arith.ml",
+236
+],
+"EXP_EQ_0": [
+"arith.ml",
+222
+],
+"EXP_EQ_1": [
+"arith.ml",
+227
+],
+"EXP_EXP": [
+"arith.ml",
+265
+],
+"EXP_LT_0": [
+"arith.ml",
+965
+],
+"EXP_MOD_CONV": [
+"calc_num.ml",
+1530
+],
+"EXP_MONO_EQ": [
+"arith.ml",
+1057
+],
+"EXP_MONO_LE": [
+"arith.ml",
+1047
+],
+"EXP_MONO_LE_IMP": [
+"arith.ml",
+1033
+],
+"EXP_MONO_LT": [
+"arith.ml",
+1053
+],
+"EXP_MONO_LT_IMP": [
+"arith.ml",
+1039
+],
+"EXP_MULT": [
+"arith.ml",
+257
+],
+"EXP_ONE": [
+"arith.ml",
+241
+],
+"EXP_ZERO": [
+"arith.ml",
+232
+],
+"EXTENSION": [
+"sets.ml",
+45
+],
+"EXTENSIONAL": [
+"sets.ml",
+2933
+],
+"EXTENSIONAL_EMPTY": [
+"sets.ml",
+2944
+],
+"EXTENSIONAL_EQ": [
+"sets.ml",
+2953
+],
+"EXTENSIONAL_UNIV": [
+"sets.ml",
+2949
+],
+"EX_IMP": [
+"lists.ml",
+309
+],
+"EX_MAP": [
+"lists.ml",
+328
+],
+"EX_MEM": [
+"lists.ml",
+376
+],
+"FACT": [
+"arith.ml",
+931
+],
+"FACT_LE": [
+"arith.ml",
+940
+],
+"FACT_LT": [
+"arith.ml",
+935
+],
+"FACT_MONO": [
+"arith.ml",
+948
+],
+"FACT_NZ": [
+"arith.ml",
+944
+],
+"FCONS": [
+"ind_types.ml",
+285
+],
+"FCONS_UNDO": [
+"ind_types.ml",
+289
+],
+"FILTER": [
+"lists.ml",
+107
+],
+"FILTER_APPEND": [
+"lists.ml",
+352
+],
+"FILTER_MAP": [
+"lists.ml",
+358
+],
+"FINITE_1": [
+"cart.ml",
+389
+],
+"FINITE_BOOL": [
+"sets.ml",
+3414
+],
+"FINITE_CARD_LE_IMAGE": [
+"sets.ml",
+2412
+],
+"FINITE_CARD_LE_SUBSET": [
+"sets.ml",
+2292
+],
+"FINITE_CARD_LE_UNION": [
+"sets.ml",
+2327
+],
+"FINITE_CARD_LE_UNIONS": [
+"sets.ml",
+3467
+],
+"FINITE_CART": [
+"cart.ml",
+483
+],
+"FINITE_CART_UNIV": [
+"cart.ml",
+546
+],
+"FINITE_CASES": [
+"sets.ml",
+132
+],
+"FINITE_CLAUSES": [
+"cart.ml",
+401
+],
+"FINITE_CROSS": [
+"sets.ml",
+2746
+],
+"FINITE_CROSS_EQ": [
+"sets.ml",
+2771
+],
+"FINITE_CROSS_UNIV": [
+"sets.ml",
+2792
+],
+"FINITE_DELETE": [
+"sets.ml",
+1450
+],
+"FINITE_DELETE_IMP": [
+"sets.ml",
+1445
+],
+"FINITE_DIFF": [
+"sets.ml",
+1687
+],
+"FINITE_DIFF_IMAGE": [
+"cart.ml",
+286
+],
+"FINITE_EMPTY": [
+"sets.ml",
+1386
+],
+"FINITE_FINITE_IMAGE": [
+"cart.ml",
+80
+],
+"FINITE_FINITE_PREIMAGE": [
+"sets.ml",
+1508
+],
+"FINITE_FINITE_PREIMAGE_GENERAL": [
+"sets.ml",
+1494
+],
+"FINITE_FINITE_UNIONS": [
+"sets.ml",
+1460
+],
+"FINITE_FUNSPACE": [
+"sets.ml",
+3379
+],
+"FINITE_FUNSPACE_UNIV": [
+"sets.ml",
+3395
+],
+"FINITE_HAS_SIZE": [
+"sets.ml",
+2184
+],
+"FINITE_IMAGE": [
+"sets.ml",
+1479
+],
+"FINITE_IMAGE_EQ": [
+"sets.ml",
+1671
+],
+"FINITE_IMAGE_EQ_INJ": [
+"sets.ml",
+1676
+],
+"FINITE_IMAGE_EXPAND": [
+"sets.ml",
+1467
+],
+"FINITE_IMAGE_GEN": [
+"sets.ml",
+1534
+],
+"FINITE_IMAGE_IMAGE": [
+"cart.ml",
+60
+],
+"FINITE_IMAGE_INFINITE": [
+"sets.ml",
+3495
+],
+"FINITE_IMAGE_INJ": [
+"sets.ml",
+1526
+],
+"FINITE_IMAGE_INJ_EQ": [
+"sets.ml",
+1517
+],
+"FINITE_IMAGE_INJ_GENERAL": [
+"sets.ml",
+1483
+],
+"FINITE_INDEX_INJ": [
+"cart.ml",
+95
+],
+"FINITE_INDEX_INRANGE": [
+"cart.ml",
+157
+],
+"FINITE_INDEX_INRANGE_2": [
+"cart.ml",
+161
+],
+"FINITE_INDEX_NUMBERS": [
+"iterate.ml",
+126
+],
+"FINITE_INDEX_NUMSEG": [
+"iterate.ml",
+114
+],
+"FINITE_INDEX_WORKS": [
+"cart.ml",
+90
+],
+"FINITE_INDUCT": [
+"sets.ml",
+132
+],
+"FINITE_INDUCT_DELETE": [
+"sets.ml",
+2082
+],
+"FINITE_INDUCT_STRONG": [
+"sets.ml",
+1259
+],
+"FINITE_INSERT": [
+"sets.ml",
+1433
+],
+"FINITE_INTER": [
+"sets.ml",
+1429
+],
+"FINITE_INTERSECTION_OF_COMPLEMENT": [
+"sets.ml",
+4247
+],
+"FINITE_INTERSECTION_OF_EMPTY": [
+"sets.ml",
+4223
+],
+"FINITE_INTERSECTION_OF_IDEMPOT": [
+"sets.ml",
+4272
+],
+"FINITE_INTERSECTION_OF_INC": [
+"sets.ml",
+4231
+],
+"FINITE_INTERSECTION_OF_INTER": [
+"sets.ml",
+4306
+],
+"FINITE_INTERSECTION_OF_INTERS": [
+"sets.ml",
+4297
+],
+"FINITE_INTERSECTION_OF_UNION": [
+"sets.ml",
+4355
+],
+"FINITE_INTERSECTION_OF_UNION_EQ": [
+"sets.ml",
+4339
+],
+"FINITE_INT_SEG": [
+"iterate.ml",
+256
+],
+"FINITE_NUMSEG": [
+"iterate.ml",
+21
+],
+"FINITE_NUMSEG_LE": [
+"sets.ml",
+3585
+],
+"FINITE_NUMSEG_LT": [
+"sets.ml",
+3572
+],
+"FINITE_PCROSS": [
+"cart.ml",
+639
+],
+"FINITE_PCROSS_EQ": [
+"cart.ml",
+644
+],
+"FINITE_POWERSET": [
+"sets.ml",
+3438
+],
+"FINITE_POWERSET_EQ": [
+"sets.ml",
+3442
+],
+"FINITE_PRODUCT": [
+"sets.ml",
+2711
+],
+"FINITE_PRODUCT_DEPENDENT": [
+"sets.ml",
+2684
+],
+"FINITE_PROD_IMAGE": [
+"cart.ml",
+319
+],
+"FINITE_REAL_INTERVAL": [
+"sets.ml",
+3631
+],
+"FINITE_RECURSION": [
+"sets.ml",
+1943
+],
+"FINITE_RECURSION_DELETE": [
+"sets.ml",
+1955
+],
+"FINITE_RESTRICT": [
+"sets.ml",
+1409
+],
+"FINITE_RESTRICTED_FUNSPACE": [
+"sets.ml",
+3531
+],
+"FINITE_RESTRICTED_POWERSET": [
+"sets.ml",
+3507
+],
+"FINITE_RESTRICTED_SUBSETS": [
+"sets.ml",
+3452
+],
+"FINITE_RULES": [
+"sets.ml",
+132
+],
+"FINITE_SET_OF_LIST": [
+"sets.ml",
+3828
+],
+"FINITE_SING": [
+"sets.ml",
+1441
+],
+"FINITE_SUBSET": [
+"sets.ml",
+1390
+],
+"FINITE_SUBSET_IMAGE": [
+"sets.ml",
+1656
+],
+"FINITE_SUBSET_IMAGE_IMP": [
+"sets.ml",
+1665
+],
+"FINITE_SUBSET_NUMSEG": [
+"iterate.ml",
+68
+],
+"FINITE_SUBSET_UNIONS": [
+"sets.ml",
+1720
+],
+"FINITE_SUBSET_UNIONS_CHAIN": [
+"sets.ml",
+1789
+],
+"FINITE_SUBSET_UNIONS_CHAIN_EQ": [
+"sets.ml",
+1780
+],
+"FINITE_SUBSET_UNIONS_DIRECTED_EQ": [
+"sets.ml",
+1769
+],
+"FINITE_SUM_IMAGE": [
+"cart.ml",
+193
+],
+"FINITE_SUPPORT": [
+"iterate.ml",
+324
+],
+"FINITE_SUPPORT_DELTA": [
+"iterate.ml",
+354
+],
+"FINITE_TRANSITIVITY_CHAIN": [
+"sets.ml",
+1695
+],
+"FINITE_TYBIT0": [
+"cart.ml",
+393
+],
+"FINITE_TYBIT1": [
+"cart.ml",
+397
+],
+"FINITE_UNION": [
+"sets.ml",
+1422
+],
+"FINITE_UNIONS": [
+"sets.ml",
+3458
+],
+"FINITE_UNION_IMP": [
+"sets.ml",
+1413
+],
+"FINITE_UNION_OF_COMPLEMENT": [
+"sets.ml",
+4235
+],
+"FINITE_UNION_OF_EMPTY": [
+"sets.ml",
+4219
+],
+"FINITE_UNION_OF_IDEMPOT": [
+"sets.ml",
+4253
+],
+"FINITE_UNION_OF_INC": [
+"sets.ml",
+4227
+],
+"FINITE_UNION_OF_INTER": [
+"sets.ml",
+4331
+],
+"FINITE_UNION_OF_INTER_EQ": [
+"sets.ml",
+4315
+],
+"FINITE_UNION_OF_UNION": [
+"sets.ml",
+4288
+],
+"FINITE_UNION_OF_UNIONS": [
+"sets.ml",
+4280
+],
+"FINITE_UNIV_PAIR": [
+"sets.ml",
+2801
+],
+"FINREC": [
+"sets.ml",
+1800
+],
+"FINREC_1_LEMMA": [
+"sets.ml",
+1807
+],
+"FINREC_EXISTS_LEMMA": [
+"sets.ml",
+1859
+],
+"FINREC_FUN": [
+"sets.ml",
+1880
+],
+"FINREC_FUN_LEMMA": [
+"sets.ml",
+1869
+],
+"FINREC_SUC_LEMMA": [
+"sets.ml",
+1812
+],
+"FINREC_UNIQUE_LEMMA": [
+"sets.ml",
+1843
+],
+"FIX_TAC": [
+"theorems.ml",
+418
+],
+"FNIL": [
+"ind_types.ml",
+294
+],
+"FORALL_ALL": [
+"lists.ml",
+338
+],
+"FORALL_AND_THM": [
+"theorems.ml",
+245
+],
+"FORALL_BOOL_THM": [
+"class.ml",
+257
+],
+"FORALL_CARTESIAN_PRODUCT_ELEMENTS": [
+"sets.ml",
+3202
+],
+"FORALL_CARTESIAN_PRODUCT_ELEMENTS_EQ": [
+"sets.ml",
+3222
+],
+"FORALL_CTXIMPCONV": [
+"impconv.ml",
+964
+],
+"FORALL_CTXIMPMCONV": [
+"impconv.ml",
+1559
+],
+"FORALL_CURRY": [
+"pair.ml",
+341
+],
+"FORALL_DEF": [
+"bool.ml",
+243
+],
+"FORALL_FINITE_INDEX": [
+"cart.ml",
+102
+],
+"FORALL_FINITE_SUBSET_IMAGE": [
+"sets.ml",
+1648
+],
+"FORALL_FINITE_SUBSET_IMAGE_INJ": [
+"sets.ml",
+1630
+],
+"FORALL_INTERSECTION_OF": [
+"sets.ml",
+4038
+],
+"FORALL_INT_CASES": [
+"int.ml",
+227
+],
+"FORALL_IN_CLAUSES": [
+"sets.ml",
+4475
+],
+"FORALL_IN_CROSS": [
+"sets.ml",
+2809
+],
+"FORALL_IN_GSPEC": [
+"sets.ml",
+250
+],
+"FORALL_IN_IMAGE": [
+"sets.ml",
+242
+],
+"FORALL_IN_IMAGE_2": [
+"sets.ml",
+1014
+],
+"FORALL_IN_INSERT": [
+"sets.ml",
+222
+],
+"FORALL_IN_PCROSS": [
+"cart.ml",
+576
+],
+"FORALL_IN_UNION": [
+"sets.ml",
+230
+],
+"FORALL_IN_UNIONS": [
+"sets.ml",
+842
+],
+"FORALL_LT_MOD_THM": [
+"arith.ml",
+1655
+],
+"FORALL_MOD_THM": [
+"arith.ml",
+1659
+],
+"FORALL_NOT_THM": [
+"class.ml",
+249
+],
+"FORALL_ONE_THM": [
+"trivia.ml",
+86
+],
+"FORALL_OPTION_THM": [
+"ind_types.ml",
+889
+],
+"FORALL_PAIRED_THM": [
+"pair.ml",
+385
+],
+"FORALL_PAIR_FUN_THM": [
+"pair.ml",
+353
+],
+"FORALL_PAIR_THM": [
+"pair.ml",
+295
+],
+"FORALL_PASTECART": [
+"cart.ml",
+241
+],
+"FORALL_SIMP": [
+"theorems.ml",
+117
+],
+"FORALL_SMALL_SUBSET_IMAGE": [
+"sets.ml",
+2497
+],
+"FORALL_SMALL_SUBSET_IMAGE_INJ": [
+"sets.ml",
+2478
+],
+"FORALL_SUBSET_IMAGE": [
+"sets.ml",
+1596
+],
+"FORALL_SUBSET_IMAGE_INJ": [
+"sets.ml",
+1610
+],
+"FORALL_SUBSET_INSERT": [
+"sets.ml",
+526
+],
+"FORALL_SUBSET_UNION": [
+"sets.ml",
+508
+],
+"FORALL_TRIPLED_THM": [
+"pair.ml",
+399
+],
+"FORALL_UNCURRY": [
+"pair.ml",
+326
+],
+"FORALL_UNION_OF": [
+"sets.ml",
+4033
+],
+"FORALL_UNPAIR_FUN_THM": [
+"pair.ml",
+364
+],
+"FORALL_UNPAIR_THM": [
+"pair.ml",
+345
+],
+"FORALL_UNWIND_CONV": [
+"ind_types.ml",
+1540
+],
+"FORALL_UNWIND_THM1": [
+"theorems.ml",
+224
+],
+"FORALL_UNWIND_THM2": [
+"theorems.ml",
+217
+],
+"FST": [
+"pair.ml",
+92
+],
+"FSTCART_COMPONENT": [
+"cart.ml",
+253
+],
+"FSTCART_PASTECART": [
+"cart.ml",
+211
+],
+"FST_DEF": [
+"pair.ml",
+67
+],
+"FUNCTION_FACTORS_LEFT": [
+"sets.ml",
+1339
+],
+"FUNCTION_FACTORS_LEFT_GEN": [
+"sets.ml",
+1331
+],
+"FUNCTION_FACTORS_RIGHT": [
+"sets.ml",
+1350
+],
+"FUNCTION_FACTORS_RIGHT_GEN": [
+"sets.ml",
+1344
+],
+"FUN_EQ_THM": [
+"class.ml",
+35
+],
+"FUN_IN_IMAGE": [
+"sets.ml",
+1042
+],
+"F_DEF": [
+"bool.ml",
+413
+],
+"GABS_DEF": [
+"pair.ml",
+23
+],
+"GCD": [
+"int.ml",
+2557
+],
+"GE": [
+"arith.ml",
+281
+],
+"GEN": [
+"bool.ml",
+290
+],
+"GENL": [
+"bool.ml",
+302
+],
+"GEN_BETA_CONV": [
+"pair.ml",
+211
+],
+"GEN_MAP_CONCLUSION": [
+"impconv.ml",
+130
+],
+"GEN_PART_MATCH": [
+"drule.ml",
+441
+],
+"GEN_PART_MATCH_ALL": [
+"impconv.ml",
+371
+],
+"GEN_REAL_ARITH": [
+"realarith.ml",
+517
+],
+"GEQ_DEF": [
+"pair.ml",
+26
+],
+"GE_C": [
+"sets.ml",
+4690
+],
+"GMATCH_MP": [
+"impconv.ml",
+166
+],
+"GSPEC": [
+"sets.ml",
+53
+],
+"GSYM": [
+"equal.ml",
+324
+],
+"GT": [
+"arith.ml",
+284
+],
+"HALF_DOUBLE": [
+"arith.ml",
+1427
+],
+"HAS_INF": [
+"sets.ml",
+5106
+],
+"HAS_INF_APPROACH": [
+"sets.ml",
+5098
+],
+"HAS_INF_INF": [
+"sets.ml",
+5047
+],
+"HAS_INF_LBOUND": [
+"sets.ml",
+5039
+],
+"HAS_INF_LE": [
+"sets.ml",
+5148
+],
+"HAS_SIZE": [
+"sets.ml",
+2100
+],
+"HAS_SIZE_0": [
+"sets.ml",
+2107
+],
+"HAS_SIZE_1": [
+"cart.ml",
+38
+],
+"HAS_SIZE_2": [
+"cart.ml",
+475
+],
+"HAS_SIZE_3": [
+"cart.ml",
+476
+],
+"HAS_SIZE_4": [
+"cart.ml",
+477
+],
+"HAS_SIZE_BOOL": [
+"sets.ml",
+3403
+],
+"HAS_SIZE_CARD": [
+"sets.ml",
+2103
+],
+"HAS_SIZE_CART_UNIV": [
+"cart.ml",
+528
+],
+"HAS_SIZE_CLAUSES": [
+"sets.ml",
+2192
+],
+"HAS_SIZE_CONV": [
+"sets.ml",
+2206
+],
+"HAS_SIZE_CROSS": [
+"sets.ml",
+2741
+],
+"HAS_SIZE_DIFF": [
+"sets.ml",
+2150
+],
+"HAS_SIZE_DIMINDEX_RULE": [
+"cart.ml",
+442
+],
+"HAS_SIZE_FINITE_IMAGE": [
+"cart.ml",
+69
+],
+"HAS_SIZE_FUNSPACE": [
+"sets.ml",
+3328
+],
+"HAS_SIZE_FUNSPACE_UNIV": [
+"sets.ml",
+3385
+],
+"HAS_SIZE_IMAGE_INJ": [
+"sets.ml",
+2399
+],
+"HAS_SIZE_IMAGE_INJ_EQ": [
+"sets.ml",
+2432
+],
+"HAS_SIZE_IMAGE_INJ_RESTRICT": [
+"sets.ml",
+4429
+],
+"HAS_SIZE_INDEX": [
+"sets.ml",
+3700
+],
+"HAS_SIZE_NUMSEG": [
+"iterate.ml",
+94
+],
+"HAS_SIZE_NUMSEG_1": [
+"iterate.ml",
+102
+],
+"HAS_SIZE_NUMSEG_LE": [
+"sets.ml",
+3581
+],
+"HAS_SIZE_NUMSEG_LT": [
+"sets.ml",
+3562
+],
+"HAS_SIZE_PCROSS": [
+"cart.ml",
+626
+],
+"HAS_SIZE_POWERSET": [
+"sets.ml",
+3422
+],
+"HAS_SIZE_PRODUCT": [
+"sets.ml",
+2723
+],
+"HAS_SIZE_PRODUCT_DEPENDENT": [
+"sets.ml",
+2656
+],
+"HAS_SIZE_SET_OF_LIST": [
+"sets.ml",
+4374
+],
+"HAS_SIZE_SUC": [
+"sets.ml",
+2121
+],
+"HAS_SIZE_TYBIT0": [
+"cart.ml",
+347
+],
+"HAS_SIZE_TYBIT1": [
+"cart.ml",
+360
+],
+"HAS_SIZE_UNION": [
+"sets.ml",
+2144
+],
+"HAS_SIZE_UNIONS": [
+"sets.ml",
+2156
+],
+"HAS_SUP": [
+"sets.ml",
+5127
+],
+"HAS_SUP_APPROACH": [
+"sets.ml",
+5102
+],
+"HAS_SUP_LE": [
+"sets.ml",
+5165
+],
+"HAS_SUP_SUP": [
+"sets.ml",
+5068
+],
+"HAS_SUP_UBOUND": [
+"sets.ml",
+5043
+],
+"HD": [
+"lists.ml",
+28
+],
+"HD_APPEND": [
+"lists.ml",
+586
+],
+"HD_REVERSE": [
+"lists.ml",
+559
+],
+"HIGHER_REWRITE_CONV": [
+"drule.ml",
+512
+],
+"HINT_EXISTS_TAC": [
+"impconv.ml",
+1854
+],
+"HREAL_ADD_AC": [
+"realax.ml",
+1361
+],
+"HREAL_ADD_RDISTRIB": [
+"realax.ml",
+1345
+],
+"HREAL_ADD_RID": [
+"realax.ml",
+1341
+],
+"HREAL_COMPLETE": [
+"realax.ml",
+1289
+],
+"HREAL_EQ_ADD_LCANCEL": [
+"realax.ml",
+1323
+],
+"HREAL_EQ_ADD_RCANCEL": [
+"realax.ml",
+1328
+],
+"HREAL_LE_ADD2": [
+"realax.ml",
+1368
+],
+"HREAL_LE_ADD_LCANCEL": [
+"realax.ml",
+1332
+],
+"HREAL_LE_ADD_RCANCEL": [
+"realax.ml",
+1337
+],
+"HREAL_LE_EXISTS_DEF": [
+"realax.ml",
+1318
+],
+"HREAL_LE_MUL_RCANCEL_IMP": [
+"realax.ml",
+1375
+],
+"HREAL_MUL_LZERO": [
+"realax.ml",
+1349
+],
+"HREAL_MUL_RZERO": [
+"realax.ml",
+1357
+],
+"HYP": [
+"tactics.ml",
+321
+],
+"HYP_TAC": [
+"theorems.ml",
+418
+],
+"I": [
+"impconv.ml",
+21
+],
+"IMAGE": [
+"sets.ml",
+144
+],
+"IMAGE_CLAUSES": [
+"sets.ml",
+954
+],
+"IMAGE_CONST": [
+"sets.ml",
+1019
+],
+"IMAGE_DELETE_INJ": [
+"sets.ml",
+998
+],
+"IMAGE_DELETE_INJ_ALT": [
+"sets.ml",
+1004
+],
+"IMAGE_DIFF_INJ": [
+"sets.ml",
+986
+],
+"IMAGE_DIFF_INJ_ALT": [
+"sets.ml",
+992
+],
+"IMAGE_EQ": [
+"sets.ml",
+1052
+],
+"IMAGE_EQ_EMPTY": [
+"sets.ml",
+1010
+],
+"IMAGE_FSTCART_PCROSS": [
+"cart.ml",
+658
+],
+"IMAGE_FST_CROSS": [
+"sets.ml",
+2836
+],
+"IMAGE_I": [
+"sets.ml",
+968
+],
+"IMAGE_ID": [
+"sets.ml",
+964
+],
+"IMAGE_IMP_INJECTIVE": [
+"sets.ml",
+4423
+],
+"IMAGE_IMP_INJECTIVE_GEN": [
+"sets.ml",
+4413
+],
+"IMAGE_INJECTIVE_IMAGE_OF_SUBSET": [
+"sets.ml",
+1370
+],
+"IMAGE_INTERS": [
+"sets.ml",
+1117
+],
+"IMAGE_INTERS_SATURATED": [
+"sets.ml",
+1247
+],
+"IMAGE_INTERS_SATURATED_GEN": [
+"sets.ml",
+1207
+],
+"IMAGE_INTERS_SUBSET": [
+"sets.ml",
+1192
+],
+"IMAGE_INTER_INJ": [
+"sets.ml",
+980
+],
+"IMAGE_INTER_SATURATED": [
+"sets.ml",
+1241
+],
+"IMAGE_INTER_SATURATED_GEN": [
+"sets.ml",
+1200
+],
+"IMAGE_INTER_SUBSET": [
+"sets.ml",
+1196
+],
+"IMAGE_PAIRED_CROSS": [
+"sets.ml",
+2852
+],
+"IMAGE_PRODUCT_MAP": [
+"sets.ml",
+3249
+],
+"IMAGE_PROJECTION_CARTESIAN_PRODUCT": [
+"sets.ml",
+3181
+],
+"IMAGE_RESTRICTION": [
+"sets.ml",
+3010
+],
+"IMAGE_SNDCART_PCROSS": [
+"cart.ml",
+666
+],
+"IMAGE_SND_CROSS": [
+"sets.ml",
+2844
+],
+"IMAGE_SUBSET": [
+"sets.ml",
+976
+],
+"IMAGE_UNION": [
+"sets.ml",
+960
+],
+"IMAGE_UNIONS": [
+"sets.ml",
+1034
+],
+"IMAGE_o": [
+"sets.ml",
+972
+],
+"IMPCONV_RULE": [
+"impconv.ml",
+794
+],
+"IMPCONV_TAC": [
+"impconv.ml",
+800
+],
+"IMPLY_AND": [
+"impconv.ml",
+139
+],
+"IMPREWR_CONV": [
+"impconv.ml",
+1189
+],
+"IMPREWR_CTXCONV": [
+"impconv.ml",
+1267
+],
+"IMP_ANTISYM_RULE": [
+"bool.ml",
+204
+],
+"IMP_CLAUSES": [
+"theorems.ml",
+154
+],
+"IMP_CONJ": [
+"theorems.ml",
+91
+],
+"IMP_CONJ_ALT": [
+"theorems.ml",
+97
+],
+"IMP_DEF": [
+"bool.ml",
+158
+],
+"IMP_IMP": [
+"theorems.ml",
+95
+],
+"IMP_REFL": [
+"impconv.ml",
+72
+],
+"IMP_REWR_CONV": [
+"simp.ml",
+24
+],
+"IMP_TRANS": [
+"bool.ml",
+227
+],
+"IN": [
+"sets.ml",
+38
+],
+"IND_SUC_0": [
+"nums.ml",
+50
+],
+"IND_SUC_0_EXISTS": [
+"nums.ml",
+35
+],
+"IND_SUC_INJ": [
+"nums.ml",
+50
+],
+"IND_SUC_SPEC": [
+"nums.ml",
+40
+],
+"INF": [
+"sets.ml",
+4864
+],
+"INFINITE": [
+"sets.ml",
+137
+],
+"INFINITE_CROSS_EQ": [
+"sets.ml",
+2786
+],
+"INFINITE_CROSS_UNIV": [
+"sets.ml",
+2796
+],
+"INFINITE_DIFF_FINITE": [
+"sets.ml",
+1564
+],
+"INFINITE_ENUMERATE": [
+"sets.ml",
+3722
+],
+"INFINITE_ENUMERATE_EQ": [
+"sets.ml",
+3758
+],
+"INFINITE_ENUMERATE_SUBSET": [
+"sets.ml",
+3767
+],
+"INFINITE_IMAGE": [
+"sets.ml",
+1545
+],
+"INFINITE_IMAGE_INJ": [
+"sets.ml",
+1555
+],
+"INFINITE_NONEMPTY": [
+"sets.ml",
+1560
+],
+"INFINITE_SUPERSET": [
+"sets.ml",
+1691
+],
+"INFINITE_UNIV_PAIR": [
+"sets.ml",
+2805
+],
+"INFINITY_AX": [
+"nums.ml",
+28
+],
+"INF_APPROACH": [
+"sets.ml",
+5009
+],
+"INF_EQ": [
+"sets.ml",
+4859
+],
+"INF_EXISTS": [
+"sets.ml",
+5090
+],
+"INF_FINITE": [
+"sets.ml",
+4886
+],
+"INF_FINITE_LEMMA": [
+"sets.ml",
+4878
+],
+"INF_INSERT_FINITE": [
+"sets.ml",
+4951
+],
+"INF_INSERT_INSERT": [
+"sets.ml",
+4965
+],
+"INF_LE_ELEMENT": [
+"sets.ml",
+5005
+],
+"INF_SING": [
+"sets.ml",
+4961
+],
+"INF_UNION": [
+"sets.ml",
+4997
+],
+"INF_UNIQUE": [
+"sets.ml",
+4992
+],
+"INF_UNIQUE_FINITE": [
+"sets.ml",
+4944
+],
+"INJ": [
+"sets.ml",
+147
+],
+"INJA": [
+"ind_types.ml",
+90
+],
+"INJA_INJ": [
+"ind_types.ml",
+93
+],
+"INJECTIVE_ALT": [
+"sets.ml",
+1282
+],
+"INJECTIVE_IMAGE": [
+"sets.ml",
+4498
+],
+"INJECTIVE_LEFT_INVERSE": [
+"sets.ml",
+1317
+],
+"INJECTIVE_MAP": [
+"lists.ml",
+500
+],
+"INJECTIVE_ON_ALT": [
+"sets.ml",
+1276
+],
+"INJECTIVE_ON_IMAGE": [
+"sets.ml",
+4489
+],
+"INJECTIVE_ON_LEFT_INVERSE": [
+"sets.ml",
+1292
+],
+"INJECTIVE_ON_PREIMAGE": [
+"sets.ml",
+4520
+],
+"INJECTIVE_PREIMAGE": [
+"sets.ml",
+4545
+],
+"INJF": [
+"ind_types.ml",
+103
+],
+"INJF_INJ": [
+"ind_types.ml",
+106
+],
+"INJN": [
+"ind_types.ml",
+77
+],
+"INJN_INJ": [
+"ind_types.ml",
+80
+],
+"INJP": [
+"ind_types.ml",
+119
+],
+"INJP_INJ": [
+"ind_types.ml",
+123
+],
+"INJ_INVERSE2": [
+"ind_types.ml",
+16
+],
+"INSERT": [
+"sets.ml",
+105
+],
+"INSERT_AC": [
+"sets.ml",
+741
+],
+"INSERT_COMM": [
+"sets.ml",
+691
+],
+"INSERT_DEF": [
+"sets.ml",
+80
+],
+"INSERT_DELETE": [
+"sets.ml",
+810
+],
+"INSERT_DIFF": [
+"sets.ml",
+735
+],
+"INSERT_INSERT": [
+"sets.ml",
+687
+],
+"INSERT_INTER": [
+"sets.ml",
+717
+],
+"INSERT_RESTRICT": [
+"sets.ml",
+345
+],
+"INSERT_SUBSET": [
+"sets.ml",
+727
+],
+"INSERT_UNION": [
+"sets.ml",
+707
+],
+"INSERT_UNION_EQ": [
+"sets.ml",
+713
+],
+"INSERT_UNIV": [
+"sets.ml",
+695
+],
+"INTEGER_REAL_OF_INT": [
+"int.ml",
+43
+],
+"INTEGER_TAC": [
+"int.ml",
+2045
+],
+"INTER": [
+"sets.ml",
+96
+],
+"INTERS": [
+"sets.ml",
+99
+],
+"INTERSECTION_OF": [
+"sets.ml",
+4008
+],
+"INTERSECTION_OF_EMPTY": [
+"sets.ml",
+4049
+],
+"INTERSECTION_OF_INC": [
+"sets.ml",
+4017
+],
+"INTERSECTION_OF_MONO": [
+"sets.ml",
+4027
+],
+"INTERS_0": [
+"sets.ml",
+907
+],
+"INTERS_1": [
+"sets.ml",
+911
+],
+"INTERS_2": [
+"sets.ml",
+915
+],
+"INTERS_ANTIMONO": [
+"sets.ml",
+936
+],
+"INTERS_ANTIMONO_GEN": [
+"sets.ml",
+944
+],
+"INTERS_EQ_UNIV": [
+"sets.ml",
+940
+],
+"INTERS_GSPEC": [
+"sets.ml",
+297
+],
+"INTERS_IMAGE": [
+"sets.ml",
+281
+],
+"INTERS_INSERT": [
+"sets.ml",
+919
+],
+"INTERS_IN_CHAIN": [
+"sets.ml",
+1751
+],
+"INTERS_OVER_UNIONS": [
+"sets.ml",
+1150
+],
+"INTERS_SUBSET": [
+"sets.ml",
+927
+],
+"INTERS_SUBSET_STRONG": [
+"sets.ml",
+932
+],
+"INTERS_UNION": [
+"sets.ml",
+873
+],
+"INTERS_UNIONS": [
+"sets.ml",
+1128
+],
+"INTER_ACI": [
+"sets.ml",
+746
+],
+"INTER_ASSOC": [
+"sets.ml",
+545
+],
+"INTER_CARTESIAN_PRODUCT": [
+"sets.ml",
+3157
+],
+"INTER_COMM": [
+"sets.ml",
+553
+],
+"INTER_CROSS": [
+"sets.ml",
+2883
+],
+"INTER_DISJOINT_UNION": [
+"sets.ml",
+3294
+],
+"INTER_EMPTY": [
+"sets.ml",
+566
+],
+"INTER_IDEMPOT": [
+"sets.ml",
+549
+],
+"INTER_INTERS": [
+"sets.ml",
+1160
+],
+"INTER_NUMSEG": [
+"iterate.ml",
+133
+],
+"INTER_OVER_UNION": [
+"sets.ml",
+594
+],
+"INTER_PCROSS": [
+"cart.ml",
+698
+],
+"INTER_RESTRICT": [
+"sets.ml",
+580
+],
+"INTER_SUBSET": [
+"sets.ml",
+557
+],
+"INTER_UNIONS": [
+"sets.ml",
+854
+],
+"INTER_UNIONS_PAIRWISE_DISJOINT": [
+"sets.ml",
+3968
+],
+"INTER_UNIV": [
+"sets.ml",
+571
+],
+"INTRO_TAC": [
+"theorems.ml",
+418
+],
+"INT_2_DIVIDES_ADD": [
+"int.ml",
+1845
+],
+"INT_2_DIVIDES_MUL": [
+"int.ml",
+1861
+],
+"INT_2_DIVIDES_POW": [
+"int.ml",
+1869
+],
+"INT_2_DIVIDES_SUB": [
+"int.ml",
+1853
+],
+"INT_ABS": [
+"int.ml",
+653
+],
+"INT_ABS_0": [
+"int.ml",
+326
+],
+"INT_ABS_1": [
+"int.ml",
+327
+],
+"INT_ABS_ABS": [
+"int.ml",
+328
+],
+"INT_ABS_BETWEEN": [
+"int.ml",
+329
+],
+"INT_ABS_BETWEEN1": [
+"int.ml",
+330
+],
+"INT_ABS_BETWEEN2": [
+"int.ml",
+331
+],
+"INT_ABS_BOUND": [
+"int.ml",
+332
+],
+"INT_ABS_BOUNDS": [
+"int.ml",
+333
+],
+"INT_ABS_CASES": [
+"int.ml",
+334
+],
+"INT_ABS_CIRCLE": [
+"int.ml",
+335
+],
+"INT_ABS_CONV": [
+"int.ml",
+1062
+],
+"INT_ABS_LE": [
+"int.ml",
+336
+],
+"INT_ABS_MUL": [
+"int.ml",
+337
+],
+"INT_ABS_MUL_1": [
+"int.ml",
+754
+],
+"INT_ABS_NEG": [
+"int.ml",
+338
+],
+"INT_ABS_NUM": [
+"int.ml",
+339
+],
+"INT_ABS_NZ": [
+"int.ml",
+340
+],
+"INT_ABS_POS": [
+"int.ml",
+341
+],
+"INT_ABS_POW": [
+"int.ml",
+342
+],
+"INT_ABS_REFL": [
+"int.ml",
+343
+],
+"INT_ABS_SGN": [
+"int.ml",
+344
+],
+"INT_ABS_SIGN": [
+"int.ml",
+345
+],
+"INT_ABS_SIGN2": [
+"int.ml",
+346
+],
+"INT_ABS_STILLNZ": [
+"int.ml",
+347
+],
+"INT_ABS_SUB": [
+"int.ml",
+348
+],
+"INT_ABS_SUB_ABS": [
+"int.ml",
+349
+],
+"INT_ABS_TRIANGLE": [
+"int.ml",
+350
+],
+"INT_ABS_ZERO": [
+"int.ml",
+351
+],
+"INT_ADD2_SUB2": [
+"int.ml",
+352
+],
+"INT_ADD_AC": [
+"int.ml",
+353
+],
+"INT_ADD_ASSOC": [
+"int.ml",
+354
+],
+"INT_ADD_CONV": [
+"int.ml",
+967
+],
+"INT_ADD_LDISTRIB": [
+"int.ml",
+355
+],
+"INT_ADD_LID": [
+"int.ml",
+356
+],
+"INT_ADD_LINV": [
+"int.ml",
+357
+],
+"INT_ADD_RDISTRIB": [
+"int.ml",
+358
+],
+"INT_ADD_REM": [
+"int.ml",
+1456
+],
+"INT_ADD_RID": [
+"int.ml",
+359
+],
+"INT_ADD_RINV": [
+"int.ml",
+360
+],
+"INT_ADD_SUB": [
+"int.ml",
+361
+],
+"INT_ADD_SUB2": [
+"int.ml",
+362
+],
+"INT_ADD_SYM": [
+"int.ml",
+363
+],
+"INT_ARCH": [
+"int.ml",
+773
+],
+"INT_ARITH": [
+"int.ml",
+2193
+],
+"INT_ARITH_TAC": [
+"int.ml",
+2317
+],
+"INT_BOUNDS_LE": [
+"int.ml",
+364
+],
+"INT_BOUNDS_LT": [
+"int.ml",
+365
+],
+"INT_COMPUTE_CONV": [
+"int.ml",
+1835
+],
+"INT_CONG_DIV2": [
+"int.ml",
+1706
+],
+"INT_CONG_IMP_EQ": [
+"int.ml",
+1206
+],
+"INT_CONG_LREM": [
+"int.ml",
+1425
+],
+"INT_CONG_NUM_EXISTS": [
+"int.ml",
+2539
+],
+"INT_CONG_RREM": [
+"int.ml",
+1429
+],
+"INT_CONG_SOLVE_BOUNDS": [
+"int.ml",
+1445
+],
+"INT_DIFFSQ": [
+"int.ml",
+366
+],
+"INT_DIVIDES_ABS": [
+"int.ml",
+1990
+],
+"INT_DIVIDES_DIVIDES_DIV": [
+"int.ml",
+1757
+],
+"INT_DIVIDES_DIVIDES_DIV_EQ": [
+"int.ml",
+1764
+],
+"INT_DIVIDES_DIV_DIVIDES": [
+"int.ml",
+1750
+],
+"INT_DIVIDES_DIV_SELF": [
+"int.ml",
+1741
+],
+"INT_DIVIDES_LABS": [
+"int.ml",
+1982
+],
+"INT_DIVIDES_LCM_GCD": [
+"int.ml",
+2012
+],
+"INT_DIVIDES_LE": [
+"int.ml",
+1185
+],
+"INT_DIVIDES_RABS": [
+"int.ml",
+1986
+],
+"INT_DIVISION": [
+"int.ml",
+822
+],
+"INT_DIVISION_0": [
+"int.ml",
+819
+],
+"INT_DIVISION_SIMP": [
+"int.ml",
+827
+],
+"INT_DIVMOD_EXIST_0": [
+"int.ml",
+796
+],
+"INT_DIVMOD_UNIQ": [
+"int.ml",
+1331
+],
+"INT_DIV_0": [
+"int.ml",
+836
+],
+"INT_DIV_1": [
+"int.ml",
+1526
+],
+"INT_DIV_BY_DIV": [
+"int.ml",
+1745
+],
+"INT_DIV_CONV": [
+"int.ml",
+1774
+],
+"INT_DIV_DIV": [
+"int.ml",
+1599
+],
+"INT_DIV_EQ_0": [
+"int.ml",
+1621
+],
+"INT_DIV_LE": [
+"int.ml",
+1583
+],
+"INT_DIV_LE_EQ": [
+"int.ml",
+1575
+],
+"INT_DIV_LNEG": [
+"int.ml",
+1502
+],
+"INT_DIV_LT": [
+"int.ml",
+1359
+],
+"INT_DIV_LT_EQ": [
+"int.ml",
+1544
+],
+"INT_DIV_MUL": [
+"int.ml",
+1532
+],
+"INT_DIV_MUL_ADD": [
+"int.ml",
+1696
+],
+"INT_DIV_NEG2": [
+"int.ml",
+1517
+],
+"INT_DIV_REFL": [
+"int.ml",
+1495
+],
+"INT_DIV_REM": [
+"int.ml",
+1646
+],
+"INT_DIV_RNEG": [
+"int.ml",
+1367
+],
+"INT_DIV_UNIQ": [
+"int.ml",
+1349
+],
+"INT_DIV_ZERO": [
+"int.ml",
+1405
+],
+"INT_ENTIRE": [
+"int.ml",
+367
+],
+"INT_EQ_ADD_LCANCEL": [
+"int.ml",
+368
+],
+"INT_EQ_ADD_LCANCEL_0": [
+"int.ml",
+369
+],
+"INT_EQ_ADD_RCANCEL": [
+"int.ml",
+370
+],
+"INT_EQ_ADD_RCANCEL_0": [
+"int.ml",
+371
+],
+"INT_EQ_CONV": [
+"int.ml",
+871
+],
+"INT_EQ_IMP_LE": [
+"int.ml",
+372
+],
+"INT_EQ_LCANCEL_IMP": [
+"int.ml",
+373
+],
+"INT_EQ_MUL_LCANCEL": [
+"int.ml",
+374
+],
+"INT_EQ_MUL_RCANCEL": [
+"int.ml",
+375
+],
+"INT_EQ_NEG2": [
+"int.ml",
+376
+],
+"INT_EQ_RCANCEL_IMP": [
+"int.ml",
+377
+],
+"INT_EQ_SGN_ABS": [
+"int.ml",
+378
+],
+"INT_EQ_SQUARE_ABS": [
+"int.ml",
+379
+],
+"INT_EQ_SUB_LADD": [
+"int.ml",
+380
+],
+"INT_EQ_SUB_RADD": [
+"int.ml",
+381
+],
+"INT_EVENPOW_ABS": [
+"int.ml",
+382
+],
+"INT_EXISTS_ABS": [
+"int.ml",
+639
+],
+"INT_EXISTS_POS": [
+"int.ml",
+630
+],
+"INT_FORALL_ABS": [
+"int.ml",
+635
+],
+"INT_FORALL_POS": [
+"int.ml",
+622
+],
+"INT_GCD_EXISTS": [
+"int.ml",
+1945
+],
+"INT_GCD_EXISTS_POS": [
+"int.ml",
+1960
+],
+"INT_GE": [
+"int.ml",
+658
+],
+"INT_GE_CONV": [
+"int.ml",
+871
+],
+"INT_GT": [
+"int.ml",
+662
+],
+"INT_GT_CONV": [
+"int.ml",
+871
+],
+"INT_GT_DISCRETE": [
+"int.ml",
+254
+],
+"INT_IMAGE": [
+"int.ml",
+217
+],
+"INT_LCM": [
+"int.ml",
+2033
+],
+"INT_LCM_DIVIDES": [
+"int.ml",
+2022
+],
+"INT_LCM_POS": [
+"int.ml",
+1995
+],
+"INT_LET_ADD": [
+"int.ml",
+383
+],
+"INT_LET_ADD2": [
+"int.ml",
+384
+],
+"INT_LET_ANTISYM": [
+"int.ml",
+385
+],
+"INT_LET_TOTAL": [
+"int.ml",
+386
+],
+"INT_LET_TRANS": [
+"int.ml",
+387
+],
+"INT_LE_01": [
+"int.ml",
+388
+],
+"INT_LE_ADD": [
+"int.ml",
+389
+],
+"INT_LE_ADD2": [
+"int.ml",
+390
+],
+"INT_LE_ADDL": [
+"int.ml",
+391
+],
+"INT_LE_ADDR": [
+"int.ml",
+392
+],
+"INT_LE_ANTISYM": [
+"int.ml",
+393
+],
+"INT_LE_CONV": [
+"int.ml",
+871
+],
+"INT_LE_DISCRETE": [
+"int.ml",
+732
+],
+"INT_LE_DIV": [
+"int.ml",
+1661
+],
+"INT_LE_DIV_EQ": [
+"int.ml",
+1571
+],
+"INT_LE_DOUBLE": [
+"int.ml",
+394
+],
+"INT_LE_LADD": [
+"int.ml",
+395
+],
+"INT_LE_LADD_IMP": [
+"int.ml",
+396
+],
+"INT_LE_LCANCEL_IMP": [
+"int.ml",
+397
+],
+"INT_LE_LMUL": [
+"int.ml",
+398
+],
+"INT_LE_LMUL_EQ": [
+"int.ml",
+399
+],
+"INT_LE_LNEG": [
+"int.ml",
+400
+],
+"INT_LE_LT": [
+"int.ml",
+401
+],
+"INT_LE_MAX": [
+"int.ml",
+402
+],
+"INT_LE_MIN": [
+"int.ml",
+403
+],
+"INT_LE_MUL": [
+"int.ml",
+404
+],
+"INT_LE_MUL2": [
+"int.ml",
+405
+],
+"INT_LE_MUL_EQ": [
+"int.ml",
+406
+],
+"INT_LE_NEG2": [
+"int.ml",
+407
+],
+"INT_LE_NEGL": [
+"int.ml",
+408
+],
+"INT_LE_NEGR": [
+"int.ml",
+409
+],
+"INT_LE_NEGTOTAL": [
+"int.ml",
+410
+],
+"INT_LE_POW2": [
+"int.ml",
+411
+],
+"INT_LE_POW_2": [
+"int.ml",
+412
+],
+"INT_LE_RADD": [
+"int.ml",
+413
+],
+"INT_LE_RCANCEL_IMP": [
+"int.ml",
+414
+],
+"INT_LE_REFL": [
+"int.ml",
+415
+],
+"INT_LE_RMUL": [
+"int.ml",
+416
+],
+"INT_LE_RMUL_EQ": [
+"int.ml",
+417
+],
+"INT_LE_RNEG": [
+"int.ml",
+418
+],
+"INT_LE_SQUARE": [
+"int.ml",
+419
+],
+"INT_LE_SQUARE_ABS": [
+"int.ml",
+420
+],
+"INT_LE_SUB_LADD": [
+"int.ml",
+421
+],
+"INT_LE_SUB_RADD": [
+"int.ml",
+422
+],
+"INT_LE_TOTAL": [
+"int.ml",
+423
+],
+"INT_LE_TRANS": [
+"int.ml",
+424
+],
+"INT_LE_TRANS_LE": [
+"int.ml",
+734
+],
+"INT_LE_TRANS_LT": [
+"int.ml",
+738
+],
+"INT_LNEG_UNIQ": [
+"int.ml",
+425
+],
+"INT_LT": [
+"int.ml",
+666
+],
+"INT_LTE_ADD": [
+"int.ml",
+426
+],
+"INT_LTE_ADD2": [
+"int.ml",
+427
+],
+"INT_LTE_ANTISYM": [
+"int.ml",
+428
+],
+"INT_LTE_TOTAL": [
+"int.ml",
+429
+],
+"INT_LTE_TRANS": [
+"int.ml",
+430
+],
+"INT_LT_01": [
+"int.ml",
+431
+],
+"INT_LT_ADD": [
+"int.ml",
+432
+],
+"INT_LT_ADD1": [
+"int.ml",
+433
+],
+"INT_LT_ADD2": [
+"int.ml",
+434
+],
+"INT_LT_ADDL": [
+"int.ml",
+435
+],
+"INT_LT_ADDNEG": [
+"int.ml",
+436
+],
+"INT_LT_ADDNEG2": [
+"int.ml",
+437
+],
+"INT_LT_ADDR": [
+"int.ml",
+438
+],
+"INT_LT_ADD_SUB": [
+"int.ml",
+439
+],
+"INT_LT_ANTISYM": [
+"int.ml",
+440
+],
+"INT_LT_CONV": [
+"int.ml",
+871
+],
+"INT_LT_DISCRETE": [
+"int.ml",
+235
+],
+"INT_LT_DIV": [
+"int.ml",
+1666
+],
+"INT_LT_DIV_EQ": [
+"int.ml",
+1579
+],
+"INT_LT_GT": [
+"int.ml",
+441
+],
+"INT_LT_IMP_LE": [
+"int.ml",
+442
+],
+"INT_LT_IMP_NE": [
+"int.ml",
+443
+],
+"INT_LT_LADD": [
+"int.ml",
+444
+],
+"INT_LT_LADD_IMP": [
+"int.ml",
+445
+],
+"INT_LT_LCANCEL_IMP": [
+"int.ml",
+446
+],
+"INT_LT_LE": [
+"int.ml",
+447
+],
+"INT_LT_LMUL": [
+"int.ml",
+448
+],
+"INT_LT_LMUL_EQ": [
+"int.ml",
+449
+],
+"INT_LT_LNEG": [
+"int.ml",
+450
+],
+"INT_LT_MAX": [
+"int.ml",
+451
+],
+"INT_LT_MIN": [
+"int.ml",
+452
+],
+"INT_LT_MUL": [
+"int.ml",
+453
+],
+"INT_LT_MUL2": [
+"int.ml",
+454
+],
+"INT_LT_MUL_EQ": [
+"int.ml",
+455
+],
+"INT_LT_NEG2": [
+"int.ml",
+456
+],
+"INT_LT_NEGTOTAL": [
+"int.ml",
+457
+],
+"INT_LT_POW2": [
+"int.ml",
+458
+],
+"INT_LT_POW_2": [
+"int.ml",
+459
+],
+"INT_LT_RADD": [
+"int.ml",
+460
+],
+"INT_LT_RCANCEL_IMP": [
+"int.ml",
+461
+],
+"INT_LT_REFL": [
+"int.ml",
+462
+],
+"INT_LT_REM": [
+"int.ml",
+854
+],
+"INT_LT_REM_EQ": [
+"int.ml",
+858
+],
+"INT_LT_RMUL": [
+"int.ml",
+463
+],
+"INT_LT_RMUL_EQ": [
+"int.ml",
+464
+],
+"INT_LT_RNEG": [
+"int.ml",
+465
+],
+"INT_LT_SQUARE": [
+"int.ml",
+466
+],
+"INT_LT_SQUARE_ABS": [
+"int.ml",
+467
+],
+"INT_LT_SUB_LADD": [
+"int.ml",
+468
+],
+"INT_LT_SUB_RADD": [
+"int.ml",
+469
+],
+"INT_LT_TOTAL": [
+"int.ml",
+470
+],
+"INT_LT_TRANS": [
+"int.ml",
+471
+],
+"INT_MAX": [
+"int.ml",
+717
+],
+"INT_MAX_ACI": [
+"int.ml",
+472
+],
+"INT_MAX_ASSOC": [
+"int.ml",
+473
+],
+"INT_MAX_CONV": [
+"int.ml",
+1069
+],
+"INT_MAX_LE": [
+"int.ml",
+474
+],
+"INT_MAX_LT": [
+"int.ml",
+475
+],
+"INT_MAX_MAX": [
+"int.ml",
+476
+],
+"INT_MAX_MIN": [
+"int.ml",
+477
+],
+"INT_MAX_SYM": [
+"int.ml",
+478
+],
+"INT_MIN": [
+"int.ml",
+719
+],
+"INT_MIN_ACI": [
+"int.ml",
+479
+],
+"INT_MIN_ASSOC": [
+"int.ml",
+480
+],
+"INT_MIN_CONV": [
+"int.ml",
+1074
+],
+"INT_MIN_LE": [
+"int.ml",
+481
+],
+"INT_MIN_LT": [
+"int.ml",
+482
+],
+"INT_MIN_MAX": [
+"int.ml",
+483
+],
+"INT_MIN_MIN": [
+"int.ml",
+484
+],
+"INT_MIN_SYM": [
+"int.ml",
+485
+],
+"INT_MUL_2": [
+"int.ml",
+486
+],
+"INT_MUL_AC": [
+"int.ml",
+487
+],
+"INT_MUL_ASSOC": [
+"int.ml",
+488
+],
+"INT_MUL_CONV": [
+"int.ml",
+948
+],
+"INT_MUL_DIV_EQ": [
+"int.ml",
+1418
+],
+"INT_MUL_EQ_1": [
+"int.ml",
+743
+],
+"INT_MUL_GCD_LCM": [
+"int.ml",
+2000
+],
+"INT_MUL_LCM_GCD": [
+"int.ml",
+2008
+],
+"INT_MUL_LID": [
+"int.ml",
+489
+],
+"INT_MUL_LNEG": [
+"int.ml",
+490
+],
+"INT_MUL_LZERO": [
+"int.ml",
+491
+],
+"INT_MUL_POS_LE": [
+"int.ml",
+492
+],
+"INT_MUL_POS_LT": [
+"int.ml",
+493
+],
+"INT_MUL_REM": [
+"int.ml",
+1470
+],
+"INT_MUL_RID": [
+"int.ml",
+494
+],
+"INT_MUL_RNEG": [
+"int.ml",
+495
+],
+"INT_MUL_RZERO": [
+"int.ml",
+496
+],
+"INT_MUL_SYM": [
+"int.ml",
+497
+],
+"INT_NEG_0": [
+"int.ml",
+498
+],
+"INT_NEG_ADD": [
+"int.ml",
+499
+],
+"INT_NEG_CONV": [
+"int.ml",
+941
+],
+"INT_NEG_EQ": [
+"int.ml",
+500
+],
+"INT_NEG_EQ_0": [
+"int.ml",
+501
+],
+"INT_NEG_GE0": [
+"int.ml",
+502
+],
+"INT_NEG_GT0": [
+"int.ml",
+503
+],
+"INT_NEG_LE0": [
+"int.ml",
+504
+],
+"INT_NEG_LMUL": [
+"int.ml",
+505
+],
+"INT_NEG_LT0": [
+"int.ml",
+506
+],
+"INT_NEG_MINUS1": [
+"int.ml",
+507
+],
+"INT_NEG_MUL2": [
+"int.ml",
+508
+],
+"INT_NEG_NEG": [
+"int.ml",
+509
+],
+"INT_NEG_REM": [
+"int.ml",
+1449
+],
+"INT_NEG_RMUL": [
+"int.ml",
+510
+],
+"INT_NEG_SUB": [
+"int.ml",
+511
+],
+"INT_NOT_EQ": [
+"int.ml",
+512
+],
+"INT_NOT_LE": [
+"int.ml",
+513
+],
+"INT_NOT_LT": [
+"int.ml",
+514
+],
+"INT_OF_NUM_ADD": [
+"int.ml",
+515
+],
+"INT_OF_NUM_CLAUSES": [
+"int.ml",
+516
+],
+"INT_OF_NUM_DIV": [
+"int.ml",
+1484
+],
+"INT_OF_NUM_EQ": [
+"int.ml",
+517
+],
+"INT_OF_NUM_EXISTS": [
+"int.ml",
+725
+],
+"INT_OF_NUM_GE": [
+"int.ml",
+518
+],
+"INT_OF_NUM_GT": [
+"int.ml",
+519
+],
+"INT_OF_NUM_LE": [
+"int.ml",
+520
+],
+"INT_OF_NUM_LT": [
+"int.ml",
+521
+],
+"INT_OF_NUM_MAX": [
+"int.ml",
+522
+],
+"INT_OF_NUM_MIN": [
+"int.ml",
+523
+],
+"INT_OF_NUM_MOD": [
+"int.ml",
+524
+],
+"INT_OF_NUM_MUL": [
+"int.ml",
+525
+],
+"INT_OF_NUM_OF_INT": [
+"int.ml",
+2078
+],
+"INT_OF_NUM_POW": [
+"int.ml",
+526
+],
+"INT_OF_NUM_REM": [
+"int.ml",
+1484
+],
+"INT_OF_NUM_SUB": [
+"int.ml",
+527
+],
+"INT_OF_NUM_SUB_CASES": [
+"int.ml",
+528
+],
+"INT_OF_NUM_SUC": [
+"int.ml",
+529
+],
+"INT_OF_REAL_THM": [
+"int.ml",
+290
+],
+"INT_POLY_CONV": [
+"int.ml",
+1091
+],
+"INT_POS": [
+"int.ml",
+530
+],
+"INT_POS_EQ_SQUARE": [
+"int.ml",
+531
+],
+"INT_POS_NZ": [
+"int.ml",
+532
+],
+"INT_POW": [
+"int.ml",
+648
+],
+"INT_POW2_ABS": [
+"int.ml",
+533
+],
+"INT_POW_1": [
+"int.ml",
+534
+],
+"INT_POW_1_LE": [
+"int.ml",
+535
+],
+"INT_POW_1_LT": [
+"int.ml",
+536
+],
+"INT_POW_2": [
+"int.ml",
+537
+],
+"INT_POW_ADD": [
+"int.ml",
+538
+],
+"INT_POW_CONV": [
+"int.ml",
+1046
+],
+"INT_POW_EQ": [
+"int.ml",
+539
+],
+"INT_POW_EQ_0": [
+"int.ml",
+540
+],
+"INT_POW_EQ_1": [
+"int.ml",
+541
+],
+"INT_POW_EQ_1_IMP": [
+"int.ml",
+542
+],
+"INT_POW_EQ_ABS": [
+"int.ml",
+543
+],
+"INT_POW_EQ_EQ": [
+"int.ml",
+544
+],
+"INT_POW_EQ_ODD": [
+"int.ml",
+545
+],
+"INT_POW_EQ_ODD_EQ": [
+"int.ml",
+546
+],
+"INT_POW_LBOUND": [
+"int.ml",
+547
+],
+"INT_POW_LE": [
+"int.ml",
+548
+],
+"INT_POW_LE2": [
+"int.ml",
+549
+],
+"INT_POW_LE2_ODD": [
+"int.ml",
+550
+],
+"INT_POW_LE2_ODD_EQ": [
+"int.ml",
+551
+],
+"INT_POW_LE2_REV": [
+"int.ml",
+552
+],
+"INT_POW_LE_1": [
+"int.ml",
+553
+],
+"INT_POW_LT": [
+"int.ml",
+554
+],
+"INT_POW_LT2": [
+"int.ml",
+555
+],
+"INT_POW_LT2_ODD": [
+"int.ml",
+556
+],
+"INT_POW_LT2_ODD_EQ": [
+"int.ml",
+557
+],
+"INT_POW_LT2_REV": [
+"int.ml",
+558
+],
+"INT_POW_LT_1": [
+"int.ml",
+559
+],
+"INT_POW_MONO": [
+"int.ml",
+560
+],
+"INT_POW_MONO_LT": [
+"int.ml",
+561
+],
+"INT_POW_MUL": [
+"int.ml",
+562
+],
+"INT_POW_NEG": [
+"int.ml",
+563
+],
+"INT_POW_NZ": [
+"int.ml",
+564
+],
+"INT_POW_ONE": [
+"int.ml",
+565
+],
+"INT_POW_POW": [
+"int.ml",
+566
+],
+"INT_POW_REM": [
+"int.ml",
+1477
+],
+"INT_POW_REM_CONV": [
+"int.ml",
+1900
+],
+"INT_POW_ZERO": [
+"int.ml",
+567
+],
+"INT_REDUCE_CONV": [
+"int.ml",
+1826
+],
+"INT_RED_CONV": [
+"int.ml",
+1821
+],
+"INT_REM_0": [
+"int.ml",
+840
+],
+"INT_REM_1": [
+"int.ml",
+1526
+],
+"INT_REM_2_CASES": [
+"int.ml",
+1715
+],
+"INT_REM_2_DIVIDES": [
+"int.ml",
+1726
+],
+"INT_REM_2_EXPAND": [
+"int.ml",
+1732
+],
+"INT_REM_2_NEG": [
+"int.ml",
+1736
+],
+"INT_REM_CONV": [
+"int.ml",
+1774
+],
+"INT_REM_DIV": [
+"int.ml",
+849
+],
+"INT_REM_DOWN_CONV": [
+"int.ml",
+1881
+],
+"INT_REM_EQ": [
+"int.ml",
+1389
+],
+"INT_REM_EQ_0": [
+"int.ml",
+1412
+],
+"INT_REM_EQ_SELF": [
+"int.ml",
+1630
+],
+"INT_REM_LE": [
+"int.ml",
+1684
+],
+"INT_REM_LE_EQ": [
+"int.ml",
+1674
+],
+"INT_REM_LNEG": [
+"int.ml",
+1502
+],
+"INT_REM_LT": [
+"int.ml",
+1359
+],
+"INT_REM_MOD_SELF": [
+"int.ml",
+1433
+],
+"INT_REM_MUL": [
+"int.ml",
+1532
+],
+"INT_REM_MUL_ADD": [
+"int.ml",
+1688
+],
+"INT_REM_MUL_REM": [
+"int.ml",
+1599
+],
+"INT_REM_NEG2": [
+"int.ml",
+1522
+],
+"INT_REM_POS": [
+"int.ml",
+832
+],
+"INT_REM_POS_EQ": [
+"int.ml",
+844
+],
+"INT_REM_RABS": [
+"int.ml",
+1377
+],
+"INT_REM_REFL": [
+"int.ml",
+1495
+],
+"INT_REM_REM": [
+"int.ml",
+1381
+],
+"INT_REM_REM_LE": [
+"int.ml",
+1655
+],
+"INT_REM_REM_MUL": [
+"int.ml",
+1437
+],
+"INT_REM_REM_POW_MIN": [
+"int.ml",
+2357
+],
+"INT_REM_RNEG": [
+"int.ml",
+1367
+],
+"INT_REM_UNIQ": [
+"int.ml",
+1354
+],
+"INT_REM_UNIQUE": [
+"int.ml",
+1635
+],
+"INT_REM_ZERO": [
+"int.ml",
+1405
+],
+"INT_RING": [
+"int.ml",
+1123
+],
+"INT_RNEG_UNIQ": [
+"int.ml",
+568
+],
+"INT_SGN": [
+"int.ml",
+569
+],
+"INT_SGNS_EQ": [
+"int.ml",
+570
+],
+"INT_SGNS_EQ_ALT": [
+"int.ml",
+571
+],
+"INT_SGN_0": [
+"int.ml",
+572
+],
+"INT_SGN_ABS": [
+"int.ml",
+573
+],
+"INT_SGN_ABS_ALT": [
+"int.ml",
+574
+],
+"INT_SGN_CASES": [
+"int.ml",
+575
+],
+"INT_SGN_CONV": [
+"int.ml",
+1079
+],
+"INT_SGN_EQ": [
+"int.ml",
+576
+],
+"INT_SGN_EQ_INEQ": [
+"int.ml",
+577
+],
+"INT_SGN_INEQS": [
+"int.ml",
+578
+],
+"INT_SGN_INT_SGN": [
+"int.ml",
+579
+],
+"INT_SGN_MUL": [
+"int.ml",
+580
+],
+"INT_SGN_NEG": [
+"int.ml",
+581
+],
+"INT_SGN_POW": [
+"int.ml",
+582
+],
+"INT_SGN_POW_2": [
+"int.ml",
+583
+],
+"INT_SOS_EQ_0": [
+"int.ml",
+584
+],
+"INT_SUB": [
+"int.ml",
+715
+],
+"INT_SUB_0": [
+"int.ml",
+585
+],
+"INT_SUB_ABS": [
+"int.ml",
+586
+],
+"INT_SUB_ADD": [
+"int.ml",
+587
+],
+"INT_SUB_ADD2": [
+"int.ml",
+588
+],
+"INT_SUB_CONV": [
+"int.ml",
+1041
+],
+"INT_SUB_LDISTRIB": [
+"int.ml",
+589
+],
+"INT_SUB_LE": [
+"int.ml",
+590
+],
+"INT_SUB_LNEG": [
+"int.ml",
+591
+],
+"INT_SUB_LT": [
+"int.ml",
+592
+],
+"INT_SUB_LZERO": [
+"int.ml",
+593
+],
+"INT_SUB_NEG2": [
+"int.ml",
+594
+],
+"INT_SUB_RDISTRIB": [
+"int.ml",
+595
+],
+"INT_SUB_REFL": [
+"int.ml",
+596
+],
+"INT_SUB_REM": [
+"int.ml",
+1463
+],
+"INT_SUB_RNEG": [
+"int.ml",
+597
+],
+"INT_SUB_RZERO": [
+"int.ml",
+598
+],
+"INT_SUB_SUB": [
+"int.ml",
+599
+],
+"INT_SUB_SUB2": [
+"int.ml",
+600
+],
+"INT_SUB_TRIANGLE": [
+"int.ml",
+601
+],
+"INT_WLOG_LE": [
+"int.ml",
+603
+],
+"INT_WLOG_LE_3": [
+"int.ml",
+612
+],
+"INT_WLOG_LT": [
+"int.ml",
+607
+],
+"INT_WOP": [
+"int.ml",
+761
+],
+"INVOLUTION_EVEN_FIXPOINTS": [
+"sets.ml",
+2638
+],
+"INVOLUTION_EVEN_NOFIXPOINTS": [
+"sets.ml",
+2613
+],
+"IN_CARTESIAN_PRODUCT": [
+"sets.ml",
+3056
+],
+"IN_CROSS": [
+"sets.ml",
+2737
+],
+"IN_DELETE": [
+"sets.ml",
+206
+],
+"IN_DELETE_EQ": [
+"sets.ml",
+766
+],
+"IN_DIFF": [
+"sets.ml",
+198
+],
+"IN_DISJOINT": [
+"sets.ml",
+602
+],
+"IN_ELIM_PAIR_THM": [
+"sets.ml",
+1081
+],
+"IN_ELIM_PASTECART_THM": [
+"cart.ml",
+561
+],
+"IN_ELIM_QUAD_THM": [
+"sets.ml",
+1090
+],
+"IN_ELIM_THM": [
+"sets.ml",
+63
+],
+"IN_ELIM_TRIPLE_THM": [
+"sets.ml",
+1085
+],
+"IN_EXTENSIONAL": [
+"sets.ml",
+2936
+],
+"IN_EXTENSIONAL_UNDEFINED": [
+"sets.ml",
+2940
+],
+"IN_GSPEC": [
+"sets.ml",
+1077
+],
+"IN_IMAGE": [
+"sets.ml",
+214
+],
+"IN_INSERT": [
+"sets.ml",
+202
+],
+"IN_INTER": [
+"sets.ml",
+190
+],
+"IN_INTERS": [
+"sets.ml",
+194
+],
+"IN_NUMSEG": [
+"iterate.ml",
+47
+],
+"IN_NUMSEG_0": [
+"iterate.ml",
+51
+],
+"IN_REST": [
+"sets.ml",
+218
+],
+"IN_SET_OF_LIST": [
+"sets.ml",
+3832
+],
+"IN_SING": [
+"sets.ml",
+210
+],
+"IN_SUPPORT": [
+"iterate.ml",
+307
+],
+"IN_UNION": [
+"sets.ml",
+182
+],
+"IN_UNIONS": [
+"sets.ml",
+186
+],
+"IN_UNIV": [
+"sets.ml",
+178
+],
+"IPRODUCT_CLAUSES": [
+"iterate.ml",
+1228
+],
+"ISO": [
+"ind_types.ml",
+1061
+],
+"ISO_FUN": [
+"ind_types.ml",
+1068
+],
+"ISO_REFL": [
+"ind_types.ml",
+1064
+],
+"ISO_USAGE": [
+"ind_types.ml",
+1073
+],
+"ISUM_CLAUSES": [
+"iterate.ml",
+1272
+],
+"ITAUT_TAC": [
+"itab.ml",
+59
+],
+"ITERATE_BIJECTION": [
+"iterate.ml",
+578
+],
+"ITERATE_CASES": [
+"iterate.ml",
+783
+],
+"ITERATE_CLAUSES": [
+"iterate.ml",
+394
+],
+"ITERATE_CLAUSES_GEN": [
+"iterate.ml",
+375
+],
+"ITERATE_CLAUSES_NUMSEG": [
+"iterate.ml",
+819
+],
+"ITERATE_CLAUSES_NUMSEG_LE": [
+"iterate.ml",
+839
+],
+"ITERATE_CLAUSES_NUMSEG_LT": [
+"iterate.ml",
+831
+],
+"ITERATE_CLOSED": [
+"iterate.ml",
+471
+],
+"ITERATE_CLOSED_NONEMPTY": [
+"iterate.ml",
+510
+],
+"ITERATE_DELETE": [
+"iterate.ml",
+539
+],
+"ITERATE_DELTA": [
+"iterate.ml",
+546
+],
+"ITERATE_DIFF": [
+"iterate.ml",
+430
+],
+"ITERATE_DIFF_GEN": [
+"iterate.ml",
+441
+],
+"ITERATE_EQ": [
+"iterate.ml",
+624
+],
+"ITERATE_EQ_GENERAL": [
+"iterate.ml",
+652
+],
+"ITERATE_EQ_GENERAL_INVERSES": [
+"iterate.ml",
+668
+],
+"ITERATE_EQ_NEUTRAL": [
+"iterate.ml",
+496
+],
+"ITERATE_EXPAND_CASES": [
+"iterate.ml",
+368
+],
+"ITERATE_IMAGE": [
+"iterate.ml",
+556
+],
+"ITERATE_IMAGE_GEN": [
+"iterate.ml",
+763
+],
+"ITERATE_IMAGE_NONZERO": [
+"iterate.ml",
+744
+],
+"ITERATE_INCL_EXCL": [
+"iterate.ml",
+450
+],
+"ITERATE_INJECTION": [
+"iterate.ml",
+678
+],
+"ITERATE_ITERATE_PRODUCT": [
+"iterate.ml",
+591
+],
+"ITERATE_OP": [
+"iterate.ml",
+703
+],
+"ITERATE_OP_GEN": [
+"iterate.ml",
+802
+],
+"ITERATE_PAIR": [
+"iterate.ml",
+849
+],
+"ITERATE_REFLECT": [
+"iterate.ml",
+867
+],
+"ITERATE_RELATED": [
+"iterate.ml",
+483
+],
+"ITERATE_RELATED_NONEMPTY": [
+"iterate.ml",
+523
+],
+"ITERATE_RESTRICT_SET": [
+"iterate.ml",
+640
+],
+"ITERATE_SING": [
+"iterate.ml",
+505
+],
+"ITERATE_SUPERSET": [
+"iterate.ml",
+713
+],
+"ITERATE_SUPPORT": [
+"iterate.ml",
+364
+],
+"ITERATE_SWAP": [
+"iterate.ml",
+732
+],
+"ITERATE_UNION": [
+"iterate.ml",
+404
+],
+"ITERATE_UNION_GEN": [
+"iterate.ml",
+421
+],
+"ITERATE_UNION_NONZERO": [
+"iterate.ml",
+690
+],
+"ITERATE_UNIV": [
+"iterate.ml",
+723
+],
+"ITERATO_CLAUSES": [
+"iterate.ml",
+1004
+],
+"ITERATO_CLAUSES_EXISTS": [
+"iterate.ml",
+1017
+],
+"ITERATO_CLAUSES_GEN": [
+"iterate.ml",
+955
+],
+"ITERATO_CLAUSES_NUMSEG_LEFT": [
+"iterate.ml",
+1167
+],
+"ITERATO_CLOSED": [
+"iterate.ml",
+1119
+],
+"ITERATO_EQ": [
+"iterate.ml",
+1039
+],
+"ITERATO_EXPAND_CASES": [
+"iterate.ml",
+945
+],
+"ITERATO_INDUCT": [
+"iterate.ml",
+1078
+],
+"ITERATO_ITERATE": [
+"iterate.ml",
+1127
+],
+"ITERATO_SUPPORT": [
+"iterate.ml",
+933
+],
+"ITLIST": [
+"lists.ml",
+73
+],
+"ITLIST2": [
+"lists.ml",
+118
+],
+"ITLIST2_DEF": [
+"lists.ml",
+114
+],
+"ITLIST_APPEND": [
+"lists.ml",
+289
+],
+"ITLIST_EXTRA": [
+"lists.ml",
+295
+],
+"ITSET": [
+"sets.ml",
+1936
+],
+"ITSET_EQ": [
+"sets.ml",
+1974
+],
+"I_DEF": [
+"trivia.ml",
+21
+],
+"I_O_ID": [
+"trivia.ml",
+40
+],
+"I_THM": [
+"trivia.ml",
+36
+],
+"LAMBDA_BETA": [
+"cart.ml",
+132
+],
+"LAMBDA_ELIM_CONV": [
+"canon.ml",
+555
+],
+"LAMBDA_ETA": [
+"cart.ml",
+149
+],
+"LAMBDA_PAIR": [
+"pair.ml",
+307
+],
+"LAMBDA_PAIR_THM": [
+"pair.ml",
+303
+],
+"LAMBDA_TRIPLE": [
+"pair.ml",
+315
+],
+"LAMBDA_TRIPLE_THM": [
+"pair.ml",
+311
+],
+"LAMBDA_UNIQUE": [
+"cart.ml",
+143
+],
+"LAND_CONV": [
+"equal.ml",
+145
+],
+"LAST": [
+"lists.ml",
+50
+],
+"LAST_APPEND": [
+"lists.ml",
+545
+],
+"LAST_CLAUSES": [
+"lists.ml",
+152
+],
+"LAST_EL": [
+"lists.ml",
+580
+],
+"LAST_REVERSE": [
+"lists.ml",
+554
+],
+"LDIV_LT_EQ": [
+"arith.ml",
+1342
+],
+"LE": [
+"arith.ml",
+273
+],
+"LEANCOP": [
+"thecops.ml",
+1487
+],
+"LEANCOP_TAC": [
+"thecops.ml",
+1485
+],
+"LEFT_ADD_DISTRIB": [
+"arith.ml",
+170
+],
+"LEFT_AND_EXISTS_THM": [
+"theorems.ml",
+297
+],
+"LEFT_AND_FORALL_THM": [
+"theorems.ml",
+253
+],
+"LEFT_EXISTS_AND_THM": [
+"theorems.ml",
+285
+],
+"LEFT_EXISTS_IMP_THM": [
+"class.ml",
+298
+],
+"LEFT_FORALL_IMP_THM": [
+"theorems.ml",
+337
+],
+"LEFT_FORALL_OR_THM": [
+"class.ml",
+271
+],
+"LEFT_IMP_EXISTS_THM": [
+"theorems.ml",
+333
+],
+"LEFT_IMP_FORALL_THM": [
+"class.ml",
+293
+],
+"LEFT_OR_DISTRIB": [
+"theorems.ml",
+105
+],
+"LEFT_OR_EXISTS_THM": [
+"theorems.ml",
+273
+],
+"LEFT_OR_FORALL_THM": [
+"class.ml",
+281
+],
+"LEFT_SUB_DISTRIB": [
+"arith.ml",
+896
+],
+"LENGTH": [
+"lists.ml",
+42
+],
+"LENGTH_APPEND": [
+"lists.ml",
+198
+],
+"LENGTH_CONV": [
+"lists.ml",
+751
+],
+"LENGTH_EQ_CONS": [
+"lists.ml",
+214
+],
+"LENGTH_EQ_LIST_OF_SEQ": [
+"lists.ml",
+680
+],
+"LENGTH_EQ_NIL": [
+"lists.ml",
+210
+],
+"LENGTH_FILTER": [
+"lists.ml",
+370
+],
+"LENGTH_LIST_OF_SEQ": [
+"lists.ml",
+660
+],
+"LENGTH_LIST_OF_SET": [
+"sets.ml",
+3815
+],
+"LENGTH_MAP": [
+"lists.ml",
+206
+],
+"LENGTH_MAP2": [
+"lists.ml",
+483
+],
+"LENGTH_REPLICATE": [
+"lists.ml",
+319
+],
+"LENGTH_REVERSE": [
+"lists.ml",
+219
+],
+"LENGTH_TL": [
+"lists.ml",
+550
+],
+"LENGTH_ZIP": [
+"lists.ml",
+393
+],
+"LET_ADD2": [
+"arith.ml",
+549
+],
+"LET_ANTISYM": [
+"arith.ml",
+359
+],
+"LET_CASES": [
+"arith.ml",
+407
+],
+"LET_DEF": [
+"pair.ml",
+17
+],
+"LET_END_DEF": [
+"pair.ml",
+20
+],
+"LET_TRANS": [
+"arith.ml",
+382
+],
+"LE_0": [
+"arith.ml",
+322
+],
+"LE_1": [
+"arith.ml",
+464
+],
+"LE_ADD": [
+"arith.ml",
+509
+],
+"LE_ADD2": [
+"arith.ml",
+542
+],
+"LE_ADDR": [
+"arith.ml",
+514
+],
+"LE_ADD_LCANCEL": [
+"arith.ml",
+526
+],
+"LE_ADD_RCANCEL": [
+"arith.ml",
+530
+],
+"LE_ANTISYM": [
+"arith.ml",
+350
+],
+"LE_C": [
+"sets.ml",
+4684
+],
+"LE_CASES": [
+"arith.ml",
+396
+],
+"LE_EXISTS": [
+"arith.ml",
+477
+],
+"LE_EXP": [
+"arith.ml",
+1017
+],
+"LE_IMP": [
+"arith.ml",
+1762
+],
+"LE_INDUCT": [
+"arith.ml",
+690
+],
+"LE_LDIV": [
+"arith.ml",
+1346
+],
+"LE_LDIV_EQ": [
+"arith.ml",
+1336
+],
+"LE_LT": [
+"arith.ml",
+419
+],
+"LE_MINIMAL": [
+"arith.ml",
+1785
+],
+"LE_MULT2": [
+"arith.ml",
+575
+],
+"LE_MULT_LCANCEL": [
+"arith.ml",
+590
+],
+"LE_MULT_RCANCEL": [
+"arith.ml",
+598
+],
+"LE_RDIV_EQ": [
+"arith.ml",
+1320
+],
+"LE_REFL": [
+"arith.ml",
+334
+],
+"LE_SQUARE_REFL": [
+"arith.ml",
+623
+],
+"LE_SUC": [
+"arith.ml",
+310
+],
+"LE_SUC_LT": [
+"arith.ml",
+301
+],
+"LE_TRANS": [
+"arith.ml",
+372
+],
+"LIST_EQ": [
+"lists.ml",
+187
+],
+"LIST_INDUCT_TAC": [
+"lists.ml",
+17
+],
+"LIST_OF_SEQ": [
+"lists.ml",
+689
+],
+"LIST_OF_SEQ_CONV": [
+"lists.ml",
+836
+],
+"LIST_OF_SEQ_EQ_NIL": [
+"lists.ml",
+672
+],
+"LIST_OF_SEQ_EQ_SELF": [
+"lists.ml",
+676
+],
+"LIST_OF_SET_EMPTY": [
+"sets.ml",
+3853
+],
+"LIST_OF_SET_PROPERTIES": [
+"sets.ml",
+3797
+],
+"LIST_OF_SET_SING": [
+"sets.ml",
+3858
+],
+"LT": [
+"arith.ml",
+277
+],
+"LTE_ADD2": [
+"arith.ml",
+556
+],
+"LTE_ANTISYM": [
+"arith.ml",
+364
+],
+"LTE_CASES": [
+"arith.ml",
+411
+],
+"LTE_TRANS": [
+"arith.ml",
+387
+],
+"LT_0": [
+"arith.ml",
+326
+],
+"LT_ADD": [
+"arith.ml",
+518
+],
+"LT_ADD2": [
+"arith.ml",
+561
+],
+"LT_ADDR": [
+"arith.ml",
+522
+],
+"LT_ADD_LCANCEL": [
+"arith.ml",
+534
+],
+"LT_ADD_RCANCEL": [
+"arith.ml",
+538
+],
+"LT_ANTISYM": [
+"arith.ml",
+355
+],
+"LT_CASES": [
+"arith.ml",
+400
+],
+"LT_EXISTS": [
+"arith.ml",
+492
+],
+"LT_EXP": [
+"arith.ml",
+969
+],
+"LT_IMP_LE": [
+"arith.ml",
+447
+],
+"LT_IMP_NE": [
+"arith.ml",
+342
+],
+"LT_LE": [
+"arith.ml",
+425
+],
+"LT_LMULT": [
+"arith.ml",
+584
+],
+"LT_MULT": [
+"arith.ml",
+571
+],
+"LT_MULT2": [
+"arith.ml",
+616
+],
+"LT_MULT_LCANCEL": [
+"arith.ml",
+603
+],
+"LT_MULT_RCANCEL": [
+"arith.ml",
+611
+],
+"LT_NZ": [
+"arith.ml",
+459
+],
+"LT_POW2_REFL": [
+"arith.ml",
+627
+],
+"LT_REFL": [
+"arith.ml",
+338
+],
+"LT_SUC": [
+"arith.ml",
+314
+],
+"LT_SUC_LE": [
+"arith.ml",
+305
+],
+"LT_TRANS": [
+"arith.ml",
+377
+],
+"MAP": [
+"lists.ml",
+46
+],
+"MAP2": [
+"lists.ml",
+98
+],
+"MAP2_DEF": [
+"lists.ml",
+94
+],
+"MAP_APPEND": [
+"lists.ml",
+202
+],
+"MAP_EQ": [
+"lists.ml",
+230
+],
+"MAP_EQ_ALL2": [
+"lists.ml",
+266
+],
+"MAP_EQ_DEGEN": [
+"lists.ml",
+277
+],
+"MAP_EQ_NIL": [
+"lists.ml",
+496
+],
+"MAP_FST_ZIP": [
+"lists.ml",
+381
+],
+"MAP_I": [
+"lists.ml",
+523
+],
+"MAP_ID": [
+"lists.ml",
+519
+],
+"MAP_LIST_OF_SEQ": [
+"lists.ml",
+684
+],
+"MAP_REVERSE": [
+"lists.ml",
+599
+],
+"MAP_SND_ZIP": [
+"lists.ml",
+387
+],
+"MAP_o": [
+"lists.ml",
+225
+],
+"MARK_ASSUMS": [
+"thecops.ml",
+43
+],
+"MATCH_CONV": [
+"ind_types.ml",
+1421
+],
+"MATCH_MP_IMPCONV": [
+"impconv.ml",
+781
+],
+"MATCH_SEQPATTERN": [
+"define.ml",
+73
+],
+"MAX": [
+"arith.ml",
+291
+],
+"MEASURE": [
+"wf.ml",
+257
+],
+"MEASURE_LE": [
+"wf.ml",
+266
+],
+"MEM": [
+"lists.ml",
+77
+],
+"MEMBER_NOT_EMPTY": [
+"sets.ml",
+359
+],
+"MEM_APPEND": [
+"lists.ml",
+343
+],
+"MEM_APPEND_DECOMPOSE": [
+"lists.ml",
+622
+],
+"MEM_APPEND_DECOMPOSE_LEFT": [
+"lists.ml",
+614
+],
+"MEM_ASSOC": [
+"lists.ml",
+399
+],
+"MEM_EL": [
+"lists.ml",
+410
+],
+"MEM_EXISTS_EL": [
+"lists.ml",
+415
+],
+"MEM_FILTER": [
+"lists.ml",
+364
+],
+"MEM_LIST_OF_SET": [
+"sets.ml",
+3819
+],
+"MEM_MAP": [
+"lists.ml",
+347
+],
+"MEM_REPLICATE": [
+"lists.ml",
+323
+],
+"MIN": [
+"arith.ml",
+294
+],
+"MINIMAL": [
+"arith.ml",
+1775
+],
+"MINIMAL_BAD_SEQUENCE": [
+"wf.ml",
+298
+],
+"MINIMAL_LBOUND": [
+"arith.ml",
+1800
+],
+"MINIMAL_LE": [
+"arith.ml",
+1791
+],
+"MINIMAL_MONO": [
+"arith.ml",
+1804
+],
+"MINIMAL_UBOUND": [
+"arith.ml",
+1796
+],
+"MINIMAL_UNIQUE": [
+"arith.ml",
+1780
+],
+"MKIMPL_CONJ": [
+"impconv.ml",
+593
+],
+"MKIMPL_CONJ_CO2_CTXT": [
+"impconv.ml",
+723
+],
+"MKIMPL_CONJ_CONTRA_CTXT": [
+"impconv.ml",
+696
+],
+"MKIMPL_CONJ_CO_CTXT": [
+"impconv.ml",
+717
+],
+"MKIMPL_CONTRA_IFF": [
+"impconv.ml",
+536
+],
+"MKIMPL_CO_IFF": [
+"impconv.ml",
+561
+],
+"MKIMPL_DISJ": [
+"impconv.ml",
+598
+],
+"MKIMPL_IMP": [
+"impconv.ml",
+603
+],
+"MKIMPR_CONJ": [
+"impconv.ml",
+618
+],
+"MKIMPR_CONJ_CONTRA_CTXT": [
+"impconv.ml",
+703
+],
+"MKIMPR_CONJ_CO_CTXT": [
+"impconv.ml",
+730
+],
+"MKIMPR_CONTRA_IFF": [
+"impconv.ml",
+543
+],
+"MKIMPR_CO_IFF": [
+"impconv.ml",
+570
+],
+"MKIMPR_DISJ": [
+"impconv.ml",
+623
+],
+"MKIMPR_IMP": [
+"impconv.ml",
+628
+],
+"MKIMPR_IMP_CTXT": [
+"impconv.ml",
+677
+],
+"MKIMP_CONJ": [
+"impconv.ml",
+503
+],
+"MKIMP_CONJ_CONTRA_CTXT": [
+"impconv.ml",
+688
+],
+"MKIMP_CONJ_CO_CTXT": [
+"impconv.ml",
+710
+],
+"MKIMP_CONTRA_IFF": [
+"impconv.ml",
+527
+],
+"MKIMP_CO_IFF": [
+"impconv.ml",
+552
+],
+"MKIMP_DISJ": [
+"impconv.ml",
+511
+],
+"MKIMP_EXISTS": [
+"impconv.ml",
+650
+],
+"MKIMP_FORALL": [
+"impconv.ml",
+646
+],
+"MKIMP_IFF": [
+"impconv.ml",
+513
+],
+"MKIMP_IMP_CONTRA_CTXT": [
+"impconv.ml",
+657
+],
+"MKIMP_IMP_CO_CTXT": [
+"impconv.ml",
+665
+],
+"MK_CONJ": [
+"drule.ml",
+32
+],
+"MK_DISJ": [
+"drule.ml",
+36
+],
+"MK_EXISTS": [
+"drule.ml",
+44
+],
+"MK_FORALL": [
+"drule.ml",
+40
+],
+"MK_REC_INJ": [
+"ind_types.ml",
+176
+],
+"MOD_0": [
+"arith.ml",
+1168
+],
+"MOD_1": [
+"arith.ml",
+1253
+],
+"MOD_2_CASES": [
+"arith.ml",
+1414
+],
+"MOD_ADD_CASES": [
+"arith.ml",
+1200
+],
+"MOD_ADD_EQ": [
+"arith.ml",
+1525
+],
+"MOD_ADD_EQ_EQ": [
+"arith.ml",
+1511
+],
+"MOD_ADD_MOD": [
+"arith.ml",
+1486
+],
+"MOD_CASES": [
+"arith.ml",
+1192
+],
+"MOD_DIV_EQ_0": [
+"arith.ml",
+1373
+],
+"MOD_DOWN_CONV": [
+"arith.ml",
+1713
+],
+"MOD_EQ": [
+"arith.ml",
+1207
+],
+"MOD_EQ_0": [
+"arith.ml",
+1378
+],
+"MOD_EQ_SELF": [
+"arith.ml",
+1188
+],
+"MOD_EVEN_2": [
+"arith.ml",
+1286
+],
+"MOD_EXISTS": [
+"arith.ml",
+1311
+],
+"MOD_EXP": [
+"arith.ml",
+1637
+],
+"MOD_EXP_MOD": [
+"arith.ml",
+1454
+],
+"MOD_LE": [
+"arith.ml",
+1536
+],
+"MOD_LE_TWICE": [
+"arith.ml",
+1236
+],
+"MOD_LT": [
+"arith.ml",
+1183
+],
+"MOD_LT_EQ": [
+"arith.ml",
+1117
+],
+"MOD_LT_EQ_LT": [
+"arith.ml",
+1121
+],
+"MOD_MOD": [
+"arith.ml",
+1263
+],
+"MOD_MOD_EXP_MIN": [
+"arith.ml",
+1620
+],
+"MOD_MOD_LE": [
+"arith.ml",
+1281
+],
+"MOD_MOD_REFL": [
+"arith.ml",
+1274
+],
+"MOD_MULT": [
+"arith.ml",
+1175
+],
+"MOD_MULT2": [
+"arith.ml",
+1300
+],
+"MOD_MULT_ADD": [
+"arith.ml",
+1464
+],
+"MOD_MULT_LMOD": [
+"arith.ml",
+1446
+],
+"MOD_MULT_MOD": [
+"arith.ml",
+1605
+],
+"MOD_MULT_MOD2": [
+"arith.ml",
+1450
+],
+"MOD_MULT_RMOD": [
+"arith.ml",
+1438
+],
+"MOD_NSUM_MOD": [
+"iterate.ml",
+1882
+],
+"MOD_NSUM_MOD_NUMSEG": [
+"iterate.ml",
+1892
+],
+"MOD_REFL": [
+"arith.ml",
+1398
+],
+"MOD_UNIQ": [
+"arith.ml",
+1158
+],
+"MOD_ZERO": [
+"arith.ml",
+1102
+],
+"MONOIDAL_AC": [
+"iterate.ml",
+289
+],
+"MONOIDAL_ADD": [
+"iterate.ml",
+1296
+],
+"MONOIDAL_INT_ADD": [
+"iterate.ml",
+1268
+],
+"MONOIDAL_INT_MUL": [
+"iterate.ml",
+1224
+],
+"MONOIDAL_MUL": [
+"iterate.ml",
+1202
+],
+"MONOIDAL_REAL_ADD": [
+"iterate.ml",
+1985
+],
+"MONOIDAL_REAL_MUL": [
+"iterate.ml",
+1246
+],
+"MONO_ALL": [
+"lists.ml",
+722
+],
+"MONO_ALL2": [
+"lists.ml",
+727
+],
+"MONO_AND": [
+"theorems.ml",
+353
+],
+"MONO_COND": [
+"class.ml",
+388
+],
+"MONO_EXISTS": [
+"theorems.ml",
+366
+],
+"MONO_FORALL": [
+"theorems.ml",
+361
+],
+"MONO_IMP": [
+"theorems.ml",
+357
+],
+"MONO_NOT": [
+"theorems.ml",
+359
+],
+"MONO_OR": [
+"theorems.ml",
+355
+],
+"MONO_TAC": [
+"ind_defs.ml",
+255
+],
+"MP": [
+"bool.ml",
+163
+],
+"MULT": [
+"arith.ml",
+145
+],
+"MULT_0": [
+"arith.ml",
+149
+],
+"MULT_2": [
+"arith.ml",
+203
+],
+"MULT_AC": [
+"arith.ml",
+182
+],
+"MULT_ASSOC": [
+"arith.ml",
+178
+],
+"MULT_CLAUSES": [
+"arith.ml",
+157
+],
+"MULT_DIV": [
+"int.ml",
+2495
+],
+"MULT_DIV_LE": [
+"arith.ml",
+1571
+],
+"MULT_EQ_0": [
+"arith.ml",
+188
+],
+"MULT_EQ_1": [
+"arith.ml",
+207
+],
+"MULT_EXP": [
+"arith.ml",
+253
+],
+"MULT_SUC": [
+"arith.ml",
+153
+],
+"MULT_SYM": [
+"arith.ml",
+166
+],
+"NADD_ADD": [
+"realax.ml",
+520
+],
+"NADD_ADDITIVE": [
+"realax.ml",
+302
+],
+"NADD_ADD_ASSOC": [
+"realax.ml",
+550
+],
+"NADD_ADD_LCANCEL": [
+"realax.ml",
+560
+],
+"NADD_ADD_LID": [
+"realax.ml",
+555
+],
+"NADD_ADD_SYM": [
+"realax.ml",
+544
+],
+"NADD_ADD_WELLDEF": [
+"realax.ml",
+531
+],
+"NADD_ALTMUL": [
+"realax.ml",
+351
+],
+"NADD_ARCH": [
+"realax.ml",
+502
+],
+"NADD_ARCH_LEMMA": [
+"realax.ml",
+803
+],
+"NADD_ARCH_MULT": [
+"realax.ml",
+756
+],
+"NADD_ARCH_ZERO": [
+"realax.ml",
+777
+],
+"NADD_BOUND": [
+"realax.ml",
+274
+],
+"NADD_CAUCHY": [
+"realax.ml",
+270
+],
+"NADD_COMPLETE": [
+"realax.ml",
+824
+],
+"NADD_DIST": [
+"realax.ml",
+342
+],
+"NADD_DIST_LEMMA": [
+"realax.ml",
+331
+],
+"NADD_EQ_IMP_LE": [
+"realax.ml",
+709
+],
+"NADD_EQ_REFL": [
+"realax.ml",
+372
+],
+"NADD_EQ_SYM": [
+"realax.ml",
+376
+],
+"NADD_EQ_TRANS": [
+"realax.ml",
+381
+],
+"NADD_INV": [
+"realax.ml",
+1188
+],
+"NADD_INV_0": [
+"realax.ml",
+1220
+],
+"NADD_INV_WELLDEF": [
+"realax.ml",
+1229
+],
+"NADD_LBOUND": [
+"realax.ml",
+955
+],
+"NADD_LDISTRIB": [
+"realax.ml",
+668
+],
+"NADD_LE_0": [
+"realax.ml",
+704
+],
+"NADD_LE_ADD": [
+"realax.ml",
+564
+],
+"NADD_LE_ANTISYM": [
+"realax.ml",
+458
+],
+"NADD_LE_EXISTS": [
+"realax.ml",
+569
+],
+"NADD_LE_LADD": [
+"realax.ml",
+743
+],
+"NADD_LE_LMUL": [
+"realax.ml",
+716
+],
+"NADD_LE_RADD": [
+"realax.ml",
+734
+],
+"NADD_LE_REFL": [
+"realax.ml",
+445
+],
+"NADD_LE_RMUL": [
+"realax.ml",
+730
+],
+"NADD_LE_TOTAL": [
+"realax.ml",
+480
+],
+"NADD_LE_TOTAL_LEMMA": [
+"realax.ml",
+470
+],
+"NADD_LE_TRANS": [
+"realax.ml",
+449
+],
+"NADD_LE_WELLDEF": [
+"realax.ml",
+436
+],
+"NADD_LE_WELLDEF_LEMMA": [
+"realax.ml",
+424
+],
+"NADD_MUL": [
+"realax.ml",
+611
+],
+"NADD_MULTIPLICATIVE": [
+"realax.ml",
+284
+],
+"NADD_MUL_ASSOC": [
+"realax.ml",
+658
+],
+"NADD_MUL_LID": [
+"realax.ml",
+663
+],
+"NADD_MUL_LINV": [
+"realax.ml",
+1195
+],
+"NADD_MUL_LINV_LEMMA0": [
+"realax.ml",
+979
+],
+"NADD_MUL_LINV_LEMMA1": [
+"realax.ml",
+1002
+],
+"NADD_MUL_LINV_LEMMA2": [
+"realax.ml",
+1011
+],
+"NADD_MUL_LINV_LEMMA3": [
+"realax.ml",
+1019
+],
+"NADD_MUL_LINV_LEMMA4": [
+"realax.ml",
+1029
+],
+"NADD_MUL_LINV_LEMMA5": [
+"realax.ml",
+1042
+],
+"NADD_MUL_LINV_LEMMA6": [
+"realax.ml",
+1073
+],
+"NADD_MUL_LINV_LEMMA7": [
+"realax.ml",
+1097
+],
+"NADD_MUL_LINV_LEMMA7a": [
+"realax.ml",
+1119
+],
+"NADD_MUL_LINV_LEMMA8": [
+"realax.ml",
+1149
+],
+"NADD_MUL_SYM": [
+"realax.ml",
+641
+],
+"NADD_MUL_WELLDEF": [
+"realax.ml",
+685
+],
+"NADD_MUL_WELLDEF_LEMMA": [
+"realax.ml",
+675
+],
+"NADD_NONZERO": [
+"realax.ml",
+944
+],
+"NADD_OF_NUM": [
+"realax.ml",
+399
+],
+"NADD_OF_NUM_ADD": [
+"realax.ml",
+597
+],
+"NADD_OF_NUM_EQ": [
+"realax.ml",
+409
+],
+"NADD_OF_NUM_LE": [
+"realax.ml",
+506
+],
+"NADD_OF_NUM_MUL": [
+"realax.ml",
+695
+],
+"NADD_OF_NUM_WELLDEF": [
+"realax.ml",
+404
+],
+"NADD_RDISTRIB": [
+"realax.ml",
+747
+],
+"NADD_SUC": [
+"realax.ml",
+322
+],
+"NADD_UBOUND": [
+"realax.ml",
+933
+],
+"NAME_ASSUMS_TAC": [
+"tactics.ml",
+298
+],
+"NANOCOP": [
+"thecops.ml",
+1491
+],
+"NANOCOP_TAC": [
+"thecops.ml",
+1489
+],
+"NEUTRAL_ADD": [
+"iterate.ml",
+1291
+],
+"NEUTRAL_INT_ADD": [
+"iterate.ml",
+1263
+],
+"NEUTRAL_INT_MUL": [
+"iterate.ml",
+1219
+],
+"NEUTRAL_MUL": [
+"iterate.ml",
+1197
+],
+"NEUTRAL_REAL_ADD": [
+"iterate.ml",
+1980
+],
+"NEUTRAL_REAL_MUL": [
+"iterate.ml",
+1241
+],
+"NNFC_CONV": [
+"canon.ml",
+351
+],
+"NNF_CONV": [
+"canon.ml",
+348
+],
+"NOT_ALL": [
+"lists.ml",
+245
+],
+"NOT_CLAUSES": [
+"class.ml",
+188
+],
+"NOT_CLAUSES_WEAK": [
+"theorems.ml",
+140
+],
+"NOT_CONS_NIL": [
+"lists.ml",
+148
+],
+"NOT_DEF": [
+"bool.ml",
+416
+],
+"NOT_ELIM": [
+"bool.ml",
+424
+],
+"NOT_EMPTY_INSERT": [
+"sets.ml",
+703
+],
+"NOT_EQUAL_SETS": [
+"sets.ml",
+341
+],
+"NOT_EVEN": [
+"arith.ml",
+724
+],
+"NOT_EX": [
+"lists.ml",
+240
+],
+"NOT_EXISTS_THM": [
+"class.ml",
+233
+],
+"NOT_FORALL_THM": [
+"class.ml",
+245
+],
+"NOT_IMP": [
+"class.ml",
+191
+],
+"NOT_INSERT_EMPTY": [
+"sets.ml",
+699
+],
+"NOT_INTRO": [
+"bool.ml",
+431
+],
+"NOT_INT_REM_2": [
+"int.ml",
+1720
+],
+"NOT_IN_EMPTY": [
+"sets.ml",
+174
+],
+"NOT_LE": [
+"arith.ml",
+433
+],
+"NOT_LT": [
+"arith.ml",
+440
+],
+"NOT_ODD": [
+"arith.ml",
+728
+],
+"NOT_PSUBSET_EMPTY": [
+"sets.ml",
+443
+],
+"NOT_SUC": [
+"nums.ml",
+75
+],
+"NOT_UNIV_PSUBSET": [
+"sets.ml",
+447
+],
+"NO_IMPCONV": [
+"impconv.ml",
+760
+],
+"NPRODUCT_CLAUSES": [
+"iterate.ml",
+1206
+],
+"NSUM_0": [
+"iterate.ml",
+1357
+],
+"NSUM_ADD": [
+"iterate.ml",
+1340
+],
+"NSUM_ADD_GEN": [
+"iterate.ml",
+1345
+],
+"NSUM_ADD_NUMSEG": [
+"iterate.ml",
+1787
+],
+"NSUM_ADD_SPLIT": [
+"iterate.ml",
+1846
+],
+"NSUM_BIJECTION": [
+"iterate.ml",
+1676
+],
+"NSUM_BOUND": [
+"iterate.ml",
+1499
+],
+"NSUM_BOUND_GEN": [
+"iterate.ml",
+1504
+],
+"NSUM_BOUND_LT": [
+"iterate.ml",
+1512
+],
+"NSUM_BOUND_LT_ALL": [
+"iterate.ml",
+1520
+],
+"NSUM_BOUND_LT_GEN": [
+"iterate.ml",
+1525
+],
+"NSUM_CASES": [
+"iterate.ml",
+1739
+],
+"NSUM_CLAUSES": [
+"iterate.ml",
+1305
+],
+"NSUM_CLAUSES_LEFT": [
+"iterate.ml",
+1861
+],
+"NSUM_CLAUSES_NUMSEG": [
+"iterate.ml",
+1821
+],
+"NSUM_CLAUSES_NUMSEG_LE": [
+"iterate.ml",
+1834
+],
+"NSUM_CLAUSES_NUMSEG_LT": [
+"iterate.ml",
+1828
+],
+"NSUM_CLAUSES_RIGHT": [
+"iterate.ml",
+1866
+],
+"NSUM_CLOSED": [
+"iterate.ml",
+1746
+],
+"NSUM_CLOSED_NONEMPTY": [
+"iterate.ml",
+1766
+],
+"NSUM_CONST": [
+"iterate.ml",
+1410
+],
+"NSUM_CONST_NUMSEG": [
+"iterate.ml",
+1801
+],
+"NSUM_DEGENERATE": [
+"iterate.ml",
+1300
+],
+"NSUM_DELETE": [
+"iterate.ml",
+1441
+],
+"NSUM_DELTA": [
+"iterate.ml",
+1449
+],
+"NSUM_DIFF": [
+"iterate.ml",
+1321
+],
+"NSUM_EQ": [
+"iterate.ml",
+1405
+],
+"NSUM_EQ_0": [
+"iterate.ml",
+1352
+],
+"NSUM_EQ_0_IFF": [
+"iterate.ml",
+1424
+],
+"NSUM_EQ_0_IFF_NUMSEG": [
+"iterate.ml",
+1809
+],
+"NSUM_EQ_0_NUMSEG": [
+"iterate.ml",
+1805
+],
+"NSUM_EQ_GENERAL": [
+"iterate.ml",
+1692
+],
+"NSUM_EQ_GENERAL_INVERSES": [
+"iterate.ml",
+1700
+],
+"NSUM_EQ_NUMSEG": [
+"iterate.ml",
+1796
+],
+"NSUM_EQ_SUPERSET": [
+"iterate.ml",
+1540
+],
+"NSUM_GROUP": [
+"iterate.ml",
+1600
+],
+"NSUM_GROUP_RELATION": [
+"iterate.ml",
+1610
+],
+"NSUM_IMAGE": [
+"iterate.ml",
+1462
+],
+"NSUM_IMAGE_GEN": [
+"iterate.ml",
+1592
+],
+"NSUM_IMAGE_NONZERO": [
+"iterate.ml",
+1668
+],
+"NSUM_INCL_EXCL": [
+"iterate.ml",
+1329
+],
+"NSUM_INJECTION": [
+"iterate.ml",
+1708
+],
+"NSUM_LE": [
+"iterate.ml",
+1378
+],
+"NSUM_LE_GEN": [
+"iterate.ml",
+1642
+],
+"NSUM_LE_NUMSEG": [
+"iterate.ml",
+1791
+],
+"NSUM_LMUL": [
+"iterate.ml",
+1361
+],
+"NSUM_LT": [
+"iterate.ml",
+1386
+],
+"NSUM_LT_ALL": [
+"iterate.ml",
+1399
+],
+"NSUM_MULTICOUNT": [
+"iterate.ml",
+1582
+],
+"NSUM_MULTICOUNT_GEN": [
+"iterate.ml",
+1565
+],
+"NSUM_MUL_BOUND": [
+"iterate.ml",
+1657
+],
+"NSUM_NSUM_PRODUCT": [
+"iterate.ml",
+1684
+],
+"NSUM_NSUM_RESTRICT": [
+"iterate.ml",
+1553
+],
+"NSUM_OFFSET": [
+"iterate.ml",
+1852
+],
+"NSUM_OFFSET_0": [
+"iterate.ml",
+1857
+],
+"NSUM_PAIR": [
+"iterate.ml",
+1871
+],
+"NSUM_POS_BOUND": [
+"iterate.ml",
+1416
+],
+"NSUM_POS_LT": [
+"iterate.ml",
+1429
+],
+"NSUM_POS_LT_ALL": [
+"iterate.ml",
+1435
+],
+"NSUM_REFLECT": [
+"iterate.ml",
+1876
+],
+"NSUM_RELATED": [
+"iterate.ml",
+1754
+],
+"NSUM_RELATED_NONEMPTY": [
+"iterate.ml",
+1776
+],
+"NSUM_RESTRICT": [
+"iterate.ml",
+1494
+],
+"NSUM_RESTRICT_SET": [
+"iterate.ml",
+1548
+],
+"NSUM_RMUL": [
+"iterate.ml",
+1374
+],
+"NSUM_SING": [
+"iterate.ml",
+1445
+],
+"NSUM_SING_NUMSEG": [
+"iterate.ml",
+1817
+],
+"NSUM_SUBSET": [
+"iterate.ml",
+1624
+],
+"NSUM_SUBSET_SIMPLE": [
+"iterate.ml",
+1637
+],
+"NSUM_SUPERSET": [
+"iterate.ml",
+1469
+],
+"NSUM_SUPPORT": [
+"iterate.ml",
+1336
+],
+"NSUM_SWAP": [
+"iterate.ml",
+1454
+],
+"NSUM_SWAP_NUMSEG": [
+"iterate.ml",
+1840
+],
+"NSUM_TRIV_NUMSEG": [
+"iterate.ml",
+1813
+],
+"NSUM_UNION": [
+"iterate.ml",
+1315
+],
+"NSUM_UNIONS_NONZERO": [
+"iterate.ml",
+1724
+],
+"NSUM_UNION_EQ": [
+"iterate.ml",
+1534
+],
+"NSUM_UNION_LZERO": [
+"iterate.ml",
+1488
+],
+"NSUM_UNION_NONZERO": [
+"iterate.ml",
+1717
+],
+"NSUM_UNION_RZERO": [
+"iterate.ml",
+1480
+],
+"NSUM_UNIV": [
+"iterate.ml",
+1475
+],
+"NULL": [
+"lists.ml",
+61
+],
+"NUMBER_TAC": [
+"int.ml",
+2503
+],
+"NUMERAL": [
+"nums.ml",
+149
+],
+"NUMPAIR": [
+"ind_types.ml",
+32
+],
+"NUMPAIR_DEST": [
+"ind_types.ml",
+50
+],
+"NUMPAIR_INJ": [
+"ind_types.ml",
+43
+],
+"NUMPAIR_INJ_LEMMA": [
+"ind_types.ml",
+35
+],
+"NUMSEG_ADD_SPLIT": [
+"iterate.ml",
+141
+],
+"NUMSEG_CLAUSES": [
+"iterate.ml",
+106
+],
+"NUMSEG_CLAUSES_LE": [
+"sets.ml",
+3576
+],
+"NUMSEG_CLAUSES_LT": [
+"sets.ml",
+3557
+],
+"NUMSEG_COMBINE_L": [
+"iterate.ml",
+31
+],
+"NUMSEG_COMBINE_R": [
+"iterate.ml",
+27
+],
+"NUMSEG_CONV": [
+"iterate.ml",
+175
+],
+"NUMSEG_EMPTY": [
+"iterate.ml",
+59
+],
+"NUMSEG_LE": [
+"iterate.ml",
+161
+],
+"NUMSEG_LREC": [
+"iterate.ml",
+35
+],
+"NUMSEG_LT": [
+"iterate.ml",
+165
+],
+"NUMSEG_LT_DIMINDEX": [
+"cart.ml",
+44
+],
+"NUMSEG_OFFSET_IMAGE": [
+"iterate.ml",
+145
+],
+"NUMSEG_REC": [
+"iterate.ml",
+43
+],
+"NUMSEG_RREC": [
+"iterate.ml",
+39
+],
+"NUMSEG_SING": [
+"iterate.ml",
+55
+],
+"NUMSUM": [
+"ind_types.ml",
+58
+],
+"NUMSUM_DEST": [
+"ind_types.ml",
+69
+],
+"NUMSUM_INJ": [
+"ind_types.ml",
+61
+],
+"NUM_CANCEL_CONV": [
+"arith.ml",
+1732
+],
+"NUM_CASES_BINARY": [
+"int.ml",
+2334
+],
+"NUM_COMPUTE_CONV": [
+"calc_num.ml",
+1487
+],
+"NUM_DIV_CONV": [
+"calc_num.ml",
+1370
+],
+"NUM_EVEN_CONV": [
+"calc_num.ml",
+211
+],
+"NUM_FACT_CONV": [
+"calc_num.ml",
+1397
+],
+"NUM_GCD": [
+"int.ml",
+2379
+],
+"NUM_GE_CONV": [
+"calc_num.ml",
+1322
+],
+"NUM_GT_CONV": [
+"calc_num.ml",
+1320
+],
+"NUM_LCM": [
+"int.ml",
+2383
+],
+"NUM_MAX_CONV": [
+"calc_num.ml",
+1429
+],
+"NUM_MIN_CONV": [
+"calc_num.ml",
+1434
+],
+"NUM_MOD_CONV": [
+"calc_num.ml",
+1370
+],
+"NUM_NORMALIZE_CONV": [
+"normalizer.ml",
+541
+],
+"NUM_ODD_CONV": [
+"calc_num.ml",
+215
+],
+"NUM_OF_INT": [
+"int.ml",
+2083
+],
+"NUM_OF_INT_ADD": [
+"int.ml",
+2087
+],
+"NUM_OF_INT_MUL": [
+"int.ml",
+2093
+],
+"NUM_OF_INT_OF_NUM": [
+"int.ml",
+2074
+],
+"NUM_OF_INT_POW": [
+"int.ml",
+2099
+],
+"NUM_PRE_CONV": [
+"calc_num.ml",
+1324
+],
+"NUM_REDUCE_CONV": [
+"calc_num.ml",
+1478
+],
+"NUM_REDUCE_TAC": [
+"calc_num.ml",
+1493
+],
+"NUM_RED_CONV": [
+"calc_num.ml",
+1473
+],
+"NUM_REL_CONV": [
+"calc_num.ml",
+1443
+],
+"NUM_REP_CASES": [
+"nums.ml",
+56
+],
+"NUM_REP_INDUCT": [
+"nums.ml",
+56
+],
+"NUM_REP_RULES": [
+"nums.ml",
+56
+],
+"NUM_RING": [
+"grobner.ml",
+707
+],
+"NUM_SIMPLIFY_CONV": [
+"grobner.ml",
+627
+],
+"NUM_SUB_CONV": [
+"calc_num.ml",
+1343
+],
+"NUM_TO_INT_CONV": [
+"int.ml",
+2138
+],
+"ODD": [
+"arith.ml",
+720
+],
+"ODD_ADD": [
+"arith.ml",
+765
+],
+"ODD_DOUBLE": [
+"arith.ml",
+786
+],
+"ODD_EXISTS": [
+"arith.ml",
+807
+],
+"ODD_EXP": [
+"arith.ml",
+775
+],
+"ODD_MOD": [
+"arith.ml",
+1406
+],
+"ODD_MOD_EVEN": [
+"arith.ml",
+1423
+],
+"ODD_MULT": [
+"arith.ml",
+770
+],
+"ODD_SUB": [
+"arith.ml",
+922
+],
+"ONCE_ASM_SIMP_TAC": [
+"simp.ml",
+536
+],
+"ONCE_DEPTH_CTXIMPCONV": [
+"impconv.ml",
+1115
+],
+"ONE": [
+"arith.ml",
+125
+],
+"ONE_ONE": [
+"nums.ml",
+22
+],
+"ONE_OR_PRIME": [
+"int.ml",
+2575
+],
+"ONE_OR_PRIME_DIVIDES_OR_COPRIME": [
+"int.ml",
+2580
+],
+"ONTO": [
+"nums.ml",
+25
+],
+"OR": [
+"compute.ml",
+800
+],
+"OR_CLAUSES": [
+"theorems.ml",
+149
+],
+"OR_DEF": [
+"bool.ml",
+360
+],
+"OR_EXISTS_THM": [
+"theorems.ml",
+269
+],
+"OUTL": [
+"ind_types.ml",
+771
+],
+"OUTR": [
+"ind_types.ml",
+774
+],
+"PAIR": [
+"pair.ml",
+108
+],
+"PAIRED_ETA_THM": [
+"pair.ml",
+320
+],
+"PAIRWISE": [
+"lists.ml",
+136
+],
+"PAIRWISE_AND": [
+"sets.ml",
+3916
+],
+"PAIRWISE_APPEND": [
+"lists.ml",
+628
+],
+"PAIRWISE_CHAIN_UNIONS": [
+"sets.ml",
+3947
+],
+"PAIRWISE_EMPTY": [
+"sets.ml",
+3897
+],
+"PAIRWISE_IMAGE": [
+"sets.ml",
+3935
+],
+"PAIRWISE_IMP": [
+"sets.ml",
+3905
+],
+"PAIRWISE_IMPLIES": [
+"lists.ml",
+642
+],
+"PAIRWISE_INSERT": [
+"sets.ml",
+3921
+],
+"PAIRWISE_INSERT_SYMMETRIC": [
+"sets.ml",
+3928
+],
+"PAIRWISE_MAP": [
+"lists.ml",
+636
+],
+"PAIRWISE_MONO": [
+"sets.ml",
+3912
+],
+"PAIRWISE_SING": [
+"sets.ml",
+3901
+],
+"PAIRWISE_TRANSITIVE": [
+"lists.ml",
+649
+],
+"PAIRWISE_UNION": [
+"sets.ml",
+3941
+],
+"PAIR_EQ": [
+"pair.ml",
+73
+],
+"PAIR_EXISTS_THM": [
+"pair.ml",
+51
+],
+"PAIR_SURJECTIVE": [
+"pair.ml",
+82
+],
+"PART_MATCH": [
+"drule.ml",
+441
+],
+"PASSOC_DEF": [
+"pair.ml",
+193
+],
+"PASTECART_COMPONENT": [
+"cart.ml",
+263
+],
+"PASTECART_EQ": [
+"cart.ml",
+236
+],
+"PASTECART_FST_SND": [
+"cart.ml",
+227
+],
+"PASTECART_INJ": [
+"cart.ml",
+249
+],
+"PASTECART_IN_PCROSS": [
+"cart.ml",
+586
+],
+"PATH_CONV": [
+"equal.ml",
+261
+],
+"PAT_CONV": [
+"equal.ml",
+274
+],
+"PCROSS": [
+"cart.ml",
+573
+],
+"PCROSS_DIFF": [
+"cart.ml",
+690
+],
+"PCROSS_EMPTY": [
+"cart.ml",
+594
+],
+"PCROSS_EQ": [
+"cart.ml",
+616
+],
+"PCROSS_EQ_EMPTY": [
+"cart.ml",
+590
+],
+"PCROSS_INTER": [
+"cart.ml",
+674
+],
+"PCROSS_INTERS": [
+"cart.ml",
+715
+],
+"PCROSS_INTERS_INTERS": [
+"cart.ml",
+715
+],
+"PCROSS_MONO": [
+"cart.ml",
+611
+],
+"PCROSS_SING": [
+"cart.ml",
+599
+],
+"PCROSS_UNION": [
+"cart.ml",
+682
+],
+"PCROSS_UNIONS": [
+"cart.ml",
+704
+],
+"PCROSS_UNIONS_UNIONS": [
+"cart.ml",
+704
+],
+"POLYNOMIAL_FUNCTION_ADD": [
+"iterate.ml",
+2978
+],
+"POLYNOMIAL_FUNCTION_CONST": [
+"iterate.ml",
+2962
+],
+"POLYNOMIAL_FUNCTION_FINITE_ROOTS": [
+"iterate.ml",
+3086
+],
+"POLYNOMIAL_FUNCTION_I": [
+"iterate.ml",
+2974
+],
+"POLYNOMIAL_FUNCTION_ID": [
+"iterate.ml",
+2968
+],
+"POLYNOMIAL_FUNCTION_INDUCT": [
+"iterate.ml",
+3060
+],
+"POLYNOMIAL_FUNCTION_LMUL": [
+"iterate.ml",
+2993
+],
+"POLYNOMIAL_FUNCTION_MUL": [
+"iterate.ml",
+3016
+],
+"POLYNOMIAL_FUNCTION_NEG": [
+"iterate.ml",
+3005
+],
+"POLYNOMIAL_FUNCTION_POW": [
+"iterate.ml",
+3054
+],
+"POLYNOMIAL_FUNCTION_RMUL": [
+"iterate.ml",
+3001
+],
+"POLYNOMIAL_FUNCTION_SUB": [
+"iterate.ml",
+3011
+],
+"POLYNOMIAL_FUNCTION_SUM": [
+"iterate.ml",
+3045
+],
+"POLYNOMIAL_FUNCTION_o": [
+"iterate.ml",
+3077
+],
+"POWERSET_CLAUSES": [
+"sets.ml",
+3479
+],
+"POW_2_SQRT": [
+"real.ml",
+1677
+],
+"POW_2_SQRT_ABS": [
+"real.ml",
+1689
+],
+"PRE": [
+"arith.ml",
+40
+],
+"PRENEX_CONV": [
+"canon.ml",
+375
+],
+"PRESIMP_CONV": [
+"canon.ml",
+16
+],
+"PRE_ELIM_THM": [
+"arith.ml",
+1676
+],
+"PRE_ELIM_THM'": [
+"arith.ml",
+1681
+],
+"PRIME_COPRIME_EQ_NONDIVISIBLE": [
+"int.ml",
+2590
+],
+"PRINT_COLORED_GOAL_TAC": [
+"tactics.ml",
+835
+],
+"PRINT_GOAL_TAC": [
+"tactics.ml",
+834
+],
+"PRODUCT_CLAUSES": [
+"iterate.ml",
+1250
+],
+"PRODUCT_MAP_RESTRICTION": [
+"sets.ml",
+3244
+],
+"PROPERLY_DIVIDES_LE_IMP": [
+"int.ml",
+2431
+],
+"PSUBSET": [
+"sets.ml",
+119
+],
+"PSUBSET_ALT": [
+"sets.ml",
+455
+],
+"PSUBSET_INSERT_SUBSET": [
+"sets.ml",
+799
+],
+"PSUBSET_IRREFL": [
+"sets.ml",
+439
+],
+"PSUBSET_SUBSET_TRANS": [
+"sets.ml",
+431
+],
+"PSUBSET_TRANS": [
+"sets.ml",
+427
+],
+"PSUBSET_UNIONS_PAIRWISE_DISJOINT": [
+"sets.ml",
+3983
+],
+"PSUBSET_UNIV": [
+"sets.ml",
+451
+],
+"PURE_ASM_SIMP_TAC": [
+"simp.ml",
+534
+],
+"RAT_LEMMA1": [
+"calc_rat.ml",
+23
+],
+"RAT_LEMMA2": [
+"calc_rat.ml",
+35
+],
+"RAT_LEMMA3": [
+"calc_rat.ml",
+43
+],
+"RAT_LEMMA4": [
+"calc_rat.ml",
+50
+],
+"RAT_LEMMA5": [
+"calc_rat.ml",
+74
+],
+"RDIV_LT_EQ": [
+"arith.ml",
+1332
+],
+"REAL_ABS_0": [
+"real.ml",
+408
+],
+"REAL_ABS_1": [
+"real.ml",
+412
+],
+"REAL_ABS_ABS": [
+"real.ml",
+440
+],
+"REAL_ABS_BETWEEN": [
+"real.ml",
+452
+],
+"REAL_ABS_BETWEEN1": [
+"real.ml",
+468
+],
+"REAL_ABS_BETWEEN2": [
+"real.ml",
+492
+],
+"REAL_ABS_BOUND": [
+"real.ml",
+456
+],
+"REAL_ABS_BOUNDS": [
+"real.ml",
+498
+],
+"REAL_ABS_CASES": [
+"real.ml",
+464
+],
+"REAL_ABS_CIRCLE": [
+"real.ml",
+480
+],
+"REAL_ABS_DIV": [
+"real.ml",
+791
+],
+"REAL_ABS_INF_LE": [
+"sets.ml",
+4934
+],
+"REAL_ABS_INV": [
+"real.ml",
+782
+],
+"REAL_ABS_LE": [
+"real.ml",
+444
+],
+"REAL_ABS_LE_SQRT": [
+"real.ml",
+1967
+],
+"REAL_ABS_LE_SQRT_POS": [
+"real.ml",
+1953
+],
+"REAL_ABS_MUL": [
+"real.ml",
+610
+],
+"REAL_ABS_NEG": [
+"calc_int.ml",
+168
+],
+"REAL_ABS_NUM": [
+"calc_int.ml",
+164
+],
+"REAL_ABS_NZ": [
+"real.ml",
+436
+],
+"REAL_ABS_POS": [
+"real.ml",
+428
+],
+"REAL_ABS_POW": [
+"real.ml",
+639
+],
+"REAL_ABS_REFL": [
+"real.ml",
+448
+],
+"REAL_ABS_SGN": [
+"real.ml",
+1545
+],
+"REAL_ABS_SIGN": [
+"real.ml",
+472
+],
+"REAL_ABS_SIGN2": [
+"real.ml",
+476
+],
+"REAL_ABS_SQRT": [
+"real.ml",
+1868
+],
+"REAL_ABS_STILLNZ": [
+"real.ml",
+460
+],
+"REAL_ABS_SUB": [
+"real.ml",
+432
+],
+"REAL_ABS_SUB_ABS": [
+"real.ml",
+488
+],
+"REAL_ABS_SUP_LE": [
+"sets.ml",
+4774
+],
+"REAL_ABS_TRIANGLE": [
+"real.ml",
+416
+],
+"REAL_ABS_TRIANGLE_LE": [
+"real.ml",
+420
+],
+"REAL_ABS_TRIANGLE_LT": [
+"real.ml",
+424
+],
+"REAL_ABS_ZERO": [
+"real.ml",
+404
+],
+"REAL_ABS_ZPOW": [
+"int.ml",
+2751
+],
+"REAL_ADD2_SUB2": [
+"real.ml",
+320
+],
+"REAL_ADD_AC": [
+"calc_int.ml",
+66
+],
+"REAL_ADD_RDISTRIB": [
+"real.ml",
+83
+],
+"REAL_ADD_RID": [
+"calc_int.ml",
+116
+],
+"REAL_ADD_RINV": [
+"calc_int.ml",
+72
+],
+"REAL_ADD_SUB": [
+"real.ml",
+264
+],
+"REAL_ADD_SUB2": [
+"real.ml",
+368
+],
+"REAL_ARCH": [
+"real.ml",
+1468
+],
+"REAL_ARCH_INV": [
+"real.ml",
+1472
+],
+"REAL_ARCH_LT": [
+"real.ml",
+1463
+],
+"REAL_ARCH_POW": [
+"real.ml",
+1491
+],
+"REAL_ARCH_POW2": [
+"real.ml",
+1502
+],
+"REAL_ARCH_POW_INV": [
+"real.ml",
+1506
+],
+"REAL_ARCH_SIMPLE": [
+"real.ml",
+1456
+],
+"REAL_ARITH": [
+"calc_rat.ml",
+544
+],
+"REAL_ARITH_TAC": [
+"calc_rat.ml",
+553
+],
+"REAL_BOUNDS_LE": [
+"real.ml",
+502
+],
+"REAL_BOUNDS_LT": [
+"real.ml",
+506
+],
+"REAL_COMPLETE": [
+"realax.ml",
+1908
+],
+"REAL_COMPLETE_SOMEPOS": [
+"realax.ml",
+1862
+],
+"REAL_CONVEX_BOUND2_LE": [
+"real.ml",
+1403
+],
+"REAL_CONVEX_BOUND2_LT": [
+"real.ml",
+1393
+],
+"REAL_CONVEX_BOUNDS_LE": [
+"real.ml",
+1436
+],
+"REAL_CONVEX_BOUNDS_LT": [
+"real.ml",
+1444
+],
+"REAL_CONVEX_BOUND_GE": [
+"real.ml",
+1429
+],
+"REAL_CONVEX_BOUND_GT": [
+"real.ml",
+1422
+],
+"REAL_CONVEX_BOUND_LE": [
+"real.ml",
+1416
+],
+"REAL_CONVEX_BOUND_LT": [
+"real.ml",
+1410
+],
+"REAL_DIFFSQ": [
+"real.ml",
+380
+],
+"REAL_DIV_1": [
+"real.ml",
+756
+],
+"REAL_DIV_EQ_0": [
+"real.ml",
+828
+],
+"REAL_DIV_EQ_1": [
+"real.ml",
+772
+],
+"REAL_DIV_LMUL": [
+"real.ml",
+768
+],
+"REAL_DIV_POW2": [
+"real.ml",
+1201
+],
+"REAL_DIV_POW2_ALT": [
+"real.ml",
+1213
+],
+"REAL_DIV_REFL": [
+"real.ml",
+760
+],
+"REAL_DIV_RMUL": [
+"real.ml",
+764
+],
+"REAL_DIV_SQRT": [
+"real.ml",
+1934
+],
+"REAL_DOWN": [
+"real.ml",
+1086
+],
+"REAL_DOWN2": [
+"real.ml",
+1095
+],
+"REAL_ENTIRE": [
+"realarith.ml",
+96
+],
+"REAL_EQ_ADD_LCANCEL": [
+"calc_int.ml",
+76
+],
+"REAL_EQ_ADD_LCANCEL_0": [
+"real.ml",
+112
+],
+"REAL_EQ_ADD_RCANCEL": [
+"calc_int.ml",
+82
+],
+"REAL_EQ_ADD_RCANCEL_0": [
+"real.ml",
+116
+],
+"REAL_EQ_IMP_LE": [
+"real.ml",
+372
+],
+"REAL_EQ_INV2": [
+"real.ml",
+696
+],
+"REAL_EQ_LCANCEL_IMP": [
+"real.ml",
+1189
+],
+"REAL_EQ_LDIV_EQ": [
+"real.ml",
+951
+],
+"REAL_EQ_MUL_LCANCEL": [
+"real.ml",
+662
+],
+"REAL_EQ_MUL_RCANCEL": [
+"real.ml",
+668
+],
+"REAL_EQ_NEG2": [
+"real.ml",
+384
+],
+"REAL_EQ_RCANCEL_IMP": [
+"real.ml",
+1183
+],
+"REAL_EQ_RDIV_EQ": [
+"real.ml",
+946
+],
+"REAL_EQ_SGN_ABS": [
+"real.ml",
+1541
+],
+"REAL_EQ_SQUARE_ABS": [
+"real.ml",
+1249
+],
+"REAL_EQ_SUB_LADD": [
+"real.ml",
+356
+],
+"REAL_EQ_SUB_RADD": [
+"real.ml",
+360
+],
+"REAL_EVENPOW_ABS": [
+"real.ml",
+1370
+],
+"REAL_FIELD": [
+"calc_rat.ml",
+581
+],
+"REAL_GROW_SHRINK": [
+"calc_rat.ml",
+677
+],
+"REAL_HREAL_LEMMA1": [
+"realax.ml",
+1814
+],
+"REAL_HREAL_LEMMA2": [
+"realax.ml",
+1847
+],
+"REAL_IDEAL_CONV": [
+"calc_rat.ml",
+524
+],
+"REAL_INF_ASCLOSE": [
+"sets.ml",
+4938
+],
+"REAL_INF_BOUNDS": [
+"sets.ml",
+4925
+],
+"REAL_INF_LE": [
+"sets.ml",
+4983
+],
+"REAL_INF_LE_FINITE": [
+"sets.ml",
+4896
+],
+"REAL_INF_LT_FINITE": [
+"sets.ml",
+4904
+],
+"REAL_INF_UNIQUE": [
+"sets.ml",
+4908
+],
+"REAL_INT_ABS_CONV": [
+"calc_int.ml",
+369
+],
+"REAL_INT_ADD_CONV": [
+"calc_int.ml",
+274
+],
+"REAL_INT_COMPUTE_CONV": [
+"calc_int.ml",
+403
+],
+"REAL_INT_MUL_CONV": [
+"calc_int.ml",
+255
+],
+"REAL_INT_NEG_CONV": [
+"calc_int.ml",
+248
+],
+"REAL_INT_POW_CONV": [
+"calc_int.ml",
+353
+],
+"REAL_INT_RAT_CONV": [
+"calc_rat.ml",
+84
+],
+"REAL_INT_REDUCE_CONV": [
+"calc_int.ml",
+394
+],
+"REAL_INT_RED_CONV": [
+"calc_int.ml",
+389
+],
+"REAL_INT_SUB_CONV": [
+"calc_int.ml",
+348
+],
+"REAL_INV_1": [
+"real.ml",
+747
+],
+"REAL_INV_1_LE": [
+"real.ml",
+1064
+],
+"REAL_INV_1_LT": [
+"real.ml",
+1074
+],
+"REAL_INV_DIV": [
+"real.ml",
+805
+],
+"REAL_INV_EQ_0": [
+"real.ml",
+700
+],
+"REAL_INV_EQ_1": [
+"real.ml",
+752
+],
+"REAL_INV_INV": [
+"real.ml",
+688
+],
+"REAL_INV_LE_1": [
+"real.ml",
+1059
+],
+"REAL_INV_LT_1": [
+"real.ml",
+1069
+],
+"REAL_INV_MUL": [
+"real.ml",
+795
+],
+"REAL_INV_NEG": [
+"real.ml",
+725
+],
+"REAL_INV_POW": [
+"real.ml",
+820
+],
+"REAL_INV_SGN": [
+"real.ml",
+1612
+],
+"REAL_INV_ZPOW": [
+"int.ml",
+2689
+],
+"REAL_LET_ADD": [
+"realarith.ml",
+88
+],
+"REAL_LET_ADD2": [
+"real.ml",
+332
+],
+"REAL_LET_ANTISYM": [
+"real.ml",
+164
+],
+"REAL_LET_IMP": [
+"real.ml",
+602
+],
+"REAL_LET_TOTAL": [
+"realarith.ml",
+20
+],
+"REAL_LET_TRANS": [
+"realarith.ml",
+32
+],
+"REAL_LE_01": [
+"real.ml",
+192
+],
+"REAL_LE_ADD": [
+"realarith.ml",
+40
+],
+"REAL_LE_ADD2": [
+"real.ml",
+212
+],
+"REAL_LE_ADDL": [
+"real.ml",
+284
+],
+"REAL_LE_ADDR": [
+"real.ml",
+280
+],
+"REAL_LE_DIV": [
+"real.ml",
+1197
+],
+"REAL_LE_DIV2_EQ": [
+"real.ml",
+960
+],
+"REAL_LE_DOUBLE": [
+"real.ml",
+248
+],
+"REAL_LE_IMP": [
+"real.ml",
+598
+],
+"REAL_LE_INF": [
+"sets.ml",
+4915
+],
+"REAL_LE_INF_EQ": [
+"sets.ml",
+4987
+],
+"REAL_LE_INF_FINITE": [
+"sets.ml",
+4892
+],
+"REAL_LE_INF_SUBSET": [
+"sets.ml",
+4919
+],
+"REAL_LE_INV": [
+"real.ml",
+738
+],
+"REAL_LE_INV2": [
+"real.ml",
+1024
+],
+"REAL_LE_INV_EQ": [
+"real.ml",
+733
+],
+"REAL_LE_LADD": [
+"real.ml",
+200
+],
+"REAL_LE_LCANCEL_IMP": [
+"real.ml",
+869
+],
+"REAL_LE_LDIV_EQ": [
+"real.ml",
+930
+],
+"REAL_LE_LINV": [
+"real.ml",
+1045
+],
+"REAL_LE_LMUL": [
+"real.ml",
+644
+],
+"REAL_LE_LMUL_EQ": [
+"real.ml",
+885
+],
+"REAL_LE_LNEG": [
+"calc_int.ml",
+124
+],
+"REAL_LE_LSQRT": [
+"real.ml",
+1910
+],
+"REAL_LE_LT": [
+"realarith.ml",
+57
+],
+"REAL_LE_MAX": [
+"real.ml",
+538
+],
+"REAL_LE_MIN": [
+"real.ml",
+542
+],
+"REAL_LE_MUL2": [
+"real.ml",
+975
+],
+"REAL_LE_MUL_EQ": [
+"real.ml",
+897
+],
+"REAL_LE_NEG2": [
+"calc_int.ml",
+134
+],
+"REAL_LE_NEGL": [
+"real.ml",
+252
+],
+"REAL_LE_NEGR": [
+"real.ml",
+256
+],
+"REAL_LE_NEGTOTAL": [
+"realarith.ml",
+106
+],
+"REAL_LE_POW2": [
+"real.ml",
+1228
+],
+"REAL_LE_POW_2": [
+"real.ml",
+1253
+],
+"REAL_LE_RADD": [
+"real.ml",
+204
+],
+"REAL_LE_RCANCEL_IMP": [
+"real.ml",
+877
+],
+"REAL_LE_RDIV_EQ": [
+"real.ml",
+922
+],
+"REAL_LE_RINV": [
+"real.ml",
+1052
+],
+"REAL_LE_RMUL": [
+"real.ml",
+649
+],
+"REAL_LE_RMUL_EQ": [
+"real.ml",
+881
+],
+"REAL_LE_RNEG": [
+"calc_int.ml",
+141
+],
+"REAL_LE_RSQRT": [
+"real.ml",
+1914
+],
+"REAL_LE_SQUARE": [
+"realarith.ml",
+110
+],
+"REAL_LE_SQUARE_ABS": [
+"real.ml",
+1239
+],
+"REAL_LE_SUB_LADD": [
+"real.ml",
+312
+],
+"REAL_LE_SUB_RADD": [
+"real.ml",
+316
+],
+"REAL_LE_SUP": [
+"sets.ml",
+4812
+],
+"REAL_LE_SUP_FINITE": [
+"sets.ml",
+4732
+],
+"REAL_LE_TRANS_LE": [
+"calc_rat.ml",
+563
+],
+"REAL_LE_TRANS_LT": [
+"calc_rat.ml",
+572
+],
+"REAL_LE_TRANS_LTE": [
+"calc_rat.ml",
+567
+],
+"REAL_LINEAR_PROVER": [
+"realarith.ml",
+385
+],
+"REAL_LNEG_UNIQ": [
+"real.ml",
+120
+],
+"REAL_LSQRT_LE": [
+"real.ml",
+1945
+],
+"REAL_LTE_ADD": [
+"realarith.ml",
+84
+],
+"REAL_LTE_ADD2": [
+"real.ml",
+336
+],
+"REAL_LTE_ANTISYM": [
+"realarith.ml",
+44
+],
+"REAL_LTE_TOTAL": [
+"realarith.ml",
+16
+],
+"REAL_LTE_TRANS": [
+"realarith.ml",
+28
+],
+"REAL_LT_01": [
+"real.ml",
+196
+],
+"REAL_LT_ADD": [
+"realarith.ml",
+92
+],
+"REAL_LT_ADD1": [
+"real.ml",
+232
+],
+"REAL_LT_ADD2": [
+"real.ml",
+208
+],
+"REAL_LT_ADDL": [
+"real.ml",
+292
+],
+"REAL_LT_ADDNEG": [
+"real.ml",
+224
+],
+"REAL_LT_ADDNEG2": [
+"real.ml",
+228
+],
+"REAL_LT_ADDR": [
+"real.ml",
+288
+],
+"REAL_LT_ADD_SUB": [
+"real.ml",
+300
+],
+"REAL_LT_ANTISYM": [
+"real.ml",
+148
+],
+"REAL_LT_DIV": [
+"real.ml",
+1193
+],
+"REAL_LT_DIV2_EQ": [
+"real.ml",
+956
+],
+"REAL_LT_GT": [
+"real.ml",
+152
+],
+"REAL_LT_IMP_LE": [
+"realarith.ml",
+24
+],
+"REAL_LT_IMP_NE": [
+"real.ml",
+276
+],
+"REAL_LT_IMP_NZ": [
+"real.ml",
+376
+],
+"REAL_LT_INF_FINITE": [
+"sets.ml",
+4900
+],
+"REAL_LT_INV": [
+"real.ml",
+705
+],
+"REAL_LT_INV2": [
+"real.ml",
+1011
+],
+"REAL_LT_INV_EQ": [
+"real.ml",
+719
+],
+"REAL_LT_LADD": [
+"real.ml",
+140
+],
+"REAL_LT_LADD_IMP": [
+"real.ml",
+87
+],
+"REAL_LT_LCANCEL_IMP": [
+"real.ml",
+856
+],
+"REAL_LT_LDIV_EQ": [
+"real.ml",
+942
+],
+"REAL_LT_LE": [
+"realarith.ml",
+76
+],
+"REAL_LT_LINV": [
+"real.ml",
+1031
+],
+"REAL_LT_LMUL": [
+"real.ml",
+653
+],
+"REAL_LT_LMUL_EQ": [
+"real.ml",
+893
+],
+"REAL_LT_LNEG": [
+"real.ml",
+216
+],
+"REAL_LT_LSQRT": [
+"real.ml",
+1919
+],
+"REAL_LT_MAX": [
+"real.ml",
+546
+],
+"REAL_LT_MIN": [
+"real.ml",
+550
+],
+"REAL_LT_MUL": [
+"real.ml",
+95
+],
+"REAL_LT_MUL2": [
+"real.ml",
+985
+],
+"REAL_LT_MUL_EQ": [
+"real.ml",
+902
+],
+"REAL_LT_NEG2": [
+"real.ml",
+388
+],
+"REAL_LT_NEGTOTAL": [
+"real.ml",
+188
+],
+"REAL_LT_NZ": [
+"realarith.ml",
+149
+],
+"REAL_LT_POW2": [
+"real.ml",
+1224
+],
+"REAL_LT_POW_2": [
+"real.ml",
+1257
+],
+"REAL_LT_RADD": [
+"real.ml",
+144
+],
+"REAL_LT_RCANCEL_IMP": [
+"real.ml",
+865
+],
+"REAL_LT_RDIV_EQ": [
+"real.ml",
+938
+],
+"REAL_LT_REFL": [
+"realarith.ml",
+80
+],
+"REAL_LT_RINV": [
+"real.ml",
+1038
+],
+"REAL_LT_RMUL": [
+"real.ml",
+658
+],
+"REAL_LT_RMUL_EQ": [
+"real.ml",
+889
+],
+"REAL_LT_RNEG": [
+"real.ml",
+220
+],
+"REAL_LT_RSQRT": [
+"real.ml",
+1923
+],
+"REAL_LT_SQUARE": [
+"real.ml",
+996
+],
+"REAL_LT_SQUARE_ABS": [
+"real.ml",
+1245
+],
+"REAL_LT_SUB_LADD": [
+"real.ml",
+308
+],
+"REAL_LT_SUB_RADD": [
+"real.ml",
+304
+],
+"REAL_LT_SUP_FINITE": [
+"sets.ml",
+4740
+],
+"REAL_LT_TOTAL": [
+"real.ml",
+184
+],
+"REAL_LT_TRANS": [
+"realarith.ml",
+36
+],
+"REAL_MAX_ACI": [
+"real.ml",
+578
+],
+"REAL_MAX_ASSOC": [
+"real.ml",
+570
+],
+"REAL_MAX_LE": [
+"real.ml",
+554
+],
+"REAL_MAX_LT": [
+"real.ml",
+562
+],
+"REAL_MAX_MAX": [
+"real.ml",
+522
+],
+"REAL_MAX_MIN": [
+"real.ml",
+518
+],
+"REAL_MAX_SUP": [
+"sets.ml",
+4849
+],
+"REAL_MAX_SYM": [
+"real.ml",
+530
+],
+"REAL_MIN_ACI": [
+"real.ml",
+586
+],
+"REAL_MIN_ASSOC": [
+"real.ml",
+574
+],
+"REAL_MIN_INF": [
+"sets.ml",
+5020
+],
+"REAL_MIN_LE": [
+"real.ml",
+558
+],
+"REAL_MIN_LT": [
+"real.ml",
+566
+],
+"REAL_MIN_MAX": [
+"real.ml",
+514
+],
+"REAL_MIN_MIN": [
+"real.ml",
+526
+],
+"REAL_MIN_SYM": [
+"real.ml",
+534
+],
+"REAL_MUL_2": [
+"real.ml",
+964
+],
+"REAL_MUL_AC": [
+"real.ml",
+76
+],
+"REAL_MUL_LINV_UNIQ": [
+"real.ml",
+674
+],
+"REAL_MUL_LNEG": [
+"calc_int.ml",
+104
+],
+"REAL_MUL_LZERO": [
+"calc_int.ml",
+90
+],
+"REAL_MUL_POS_LE": [
+"real.ml",
+916
+],
+"REAL_MUL_POS_LT": [
+"real.ml",
+907
+],
+"REAL_MUL_RID": [
+"realarith.ml",
+116
+],
+"REAL_MUL_RINV": [
+"real.ml",
+742
+],
+"REAL_MUL_RINV_UNIQ": [
+"real.ml",
+683
+],
+"REAL_MUL_RNEG": [
+"calc_int.ml",
+99
+],
+"REAL_MUL_RZERO": [
+"calc_int.ml",
+86
+],
+"REAL_NEG_0": [
+"calc_int.ml",
+120
+],
+"REAL_NEG_ADD": [
+"calc_int.ml",
+108
+],
+"REAL_NEG_EQ": [
+"real.ml",
+268
+],
+"REAL_NEG_EQ_0": [
+"real.ml",
+260
+],
+"REAL_NEG_GE0": [
+"real.ml",
+180
+],
+"REAL_NEG_GT0": [
+"real.ml",
+172
+],
+"REAL_NEG_LE0": [
+"real.ml",
+176
+],
+"REAL_NEG_LMUL": [
+"real.ml",
+128
+],
+"REAL_NEG_LT0": [
+"real.ml",
+168
+],
+"REAL_NEG_MINUS1": [
+"real.ml",
+272
+],
+"REAL_NEG_MUL2": [
+"real.ml",
+136
+],
+"REAL_NEG_NEG": [
+"calc_int.ml",
+94
+],
+"REAL_NEG_RMUL": [
+"real.ml",
+132
+],
+"REAL_NEG_SUB": [
+"realarith.ml",
+52
+],
+"REAL_NOT_EQ": [
+"real.ml",
+156
+],
+"REAL_NOT_LE": [
+"real.ml",
+160
+],
+"REAL_NOT_LT": [
+"realarith.ml",
+66
+],
+"REAL_OF_INT_CLAUSES": [
+"int.ml",
+191
+],
+"REAL_OF_NUM_CLAUSES": [
+"real.ml",
+56
+],
+"REAL_OF_NUM_DIV": [
+"real.ml",
+1380
+],
+"REAL_OF_NUM_GE": [
+"real.ml",
+21
+],
+"REAL_OF_NUM_GT": [
+"real.ml",
+25
+],
+"REAL_OF_NUM_LT": [
+"real.ml",
+17
+],
+"REAL_OF_NUM_MAX": [
+"real.ml",
+29
+],
+"REAL_OF_NUM_MIN": [
+"real.ml",
+33
+],
+"REAL_OF_NUM_MOD": [
+"real.ml",
+1374
+],
+"REAL_OF_NUM_POW": [
+"calc_int.ml",
+152
+],
+"REAL_OF_NUM_SUB": [
+"real.ml",
+41
+],
+"REAL_OF_NUM_SUB_CASES": [
+"real.ml",
+50
+],
+"REAL_OF_NUM_SUC": [
+"real.ml",
+37
+],
+"REAL_OF_NUM_SUM": [
+"iterate.ml",
+2379
+],
+"REAL_OF_NUM_SUM_GEN": [
+"iterate.ml",
+2583
+],
+"REAL_OF_NUM_SUM_NUMSEG": [
+"iterate.ml",
+2704
+],
+"REAL_POLYFUN_EQ_0": [
+"iterate.ml",
+2928
+],
+"REAL_POLYFUN_EQ_CONST": [
+"iterate.ml",
+2938
+],
+"REAL_POLYFUN_FINITE_ROOTS": [
+"iterate.ml",
+2918
+],
+"REAL_POLYFUN_ROOTBOUND": [
+"iterate.ml",
+2886
+],
+"REAL_POLY_CLAUSES": [
+"realarith.ml",
+125
+],
+"REAL_POLY_CONV": [
+"calc_rat.ml",
+443
+],
+"REAL_POLY_NEG_CLAUSES": [
+"realarith.ml",
+140
+],
+"REAL_POS": [
+"realarith.ml",
+145
+],
+"REAL_POS_EQ_SQUARE": [
+"real.ml",
+1825
+],
+"REAL_POS_LT": [
+"realarith.ml",
+156
+],
+"REAL_POW2_ABS": [
+"real.ml",
+1234
+],
+"REAL_POW_1": [
+"real.ml",
+1002
+],
+"REAL_POW_1_LE": [
+"real.ml",
+1121
+],
+"REAL_POW_1_LT": [
+"real.ml",
+1154
+],
+"REAL_POW_2": [
+"realarith.ml",
+120
+],
+"REAL_POW_ADD": [
+"real.ml",
+832
+],
+"REAL_POW_DIV": [
+"real.ml",
+824
+],
+"REAL_POW_EQ": [
+"real.ml",
+1296
+],
+"REAL_POW_EQ_0": [
+"real.ml",
+968
+],
+"REAL_POW_EQ_1": [
+"real.ml",
+1311
+],
+"REAL_POW_EQ_1_IMP": [
+"real.ml",
+1305
+],
+"REAL_POW_EQ_ABS": [
+"real.ml",
+1300
+],
+"REAL_POW_EQ_EQ": [
+"real.ml",
+1359
+],
+"REAL_POW_EQ_ODD": [
+"real.ml",
+1355
+],
+"REAL_POW_EQ_ODD_EQ": [
+"real.ml",
+1351
+],
+"REAL_POW_INV": [
+"real.ml",
+815
+],
+"REAL_POW_LBOUND": [
+"real.ml",
+1480
+],
+"REAL_POW_LE": [
+"real.ml",
+627
+],
+"REAL_POW_LE2": [
+"real.ml",
+1107
+],
+"REAL_POW_LE2_ODD": [
+"real.ml",
+1338
+],
+"REAL_POW_LE2_ODD_EQ": [
+"real.ml",
+1347
+],
+"REAL_POW_LE2_REV": [
+"real.ml",
+1288
+],
+"REAL_POW_LE_1": [
+"real.ml",
+1115
+],
+"REAL_POW_LT": [
+"real.ml",
+633
+],
+"REAL_POW_LT2": [
+"real.ml",
+1140
+],
+"REAL_POW_LT2_ODD": [
+"real.ml",
+1323
+],
+"REAL_POW_LT2_ODD_EQ": [
+"real.ml",
+1343
+],
+"REAL_POW_LT2_REV": [
+"real.ml",
+1292
+],
+"REAL_POW_LT_1": [
+"real.ml",
+1148
+],
+"REAL_POW_MONO": [
+"real.ml",
+1127
+],
+"REAL_POW_MONO_INV": [
+"real.ml",
+1274
+],
+"REAL_POW_MONO_LT": [
+"real.ml",
+1160
+],
+"REAL_POW_MUL": [
+"real.ml",
+810
+],
+"REAL_POW_NEG": [
+"calc_int.ml",
+157
+],
+"REAL_POW_NZ": [
+"real.ml",
+837
+],
+"REAL_POW_ONE": [
+"real.ml",
+1007
+],
+"REAL_POW_POW": [
+"real.ml",
+1178
+],
+"REAL_POW_SUB": [
+"real.ml",
+843
+],
+"REAL_POW_ZERO": [
+"real.ml",
+1270
+],
+"REAL_POW_ZPOW": [
+"int.ml",
+2642
+],
+"REAL_RAT_ABS_CONV": [
+"calc_rat.ml",
+194
+],
+"REAL_RAT_ADD_CONV": [
+"calc_rat.ml",
+233
+],
+"REAL_RAT_COMPUTE_CONV": [
+"calc_rat.ml",
+421
+],
+"REAL_RAT_DIV_CONV": [
+"calc_rat.ml",
+351
+],
+"REAL_RAT_EQ_CONV": [
+"calc_rat.ml",
+144
+],
+"REAL_RAT_GE_CONV": [
+"calc_rat.ml",
+138
+],
+"REAL_RAT_GT_CONV": [
+"calc_rat.ml",
+141
+],
+"REAL_RAT_INV_CONV": [
+"calc_rat.ml",
+205
+],
+"REAL_RAT_LE_CONV": [
+"calc_rat.ml",
+98
+],
+"REAL_RAT_LT_CONV": [
+"calc_rat.ml",
+117
+],
+"REAL_RAT_MAX_CONV": [
+"calc_rat.ml",
+375
+],
+"REAL_RAT_MIN_CONV": [
+"calc_rat.ml",
+380
+],
+"REAL_RAT_MUL_CONV": [
+"calc_rat.ml",
+290
+],
+"REAL_RAT_NEG_CONV": [
+"calc_rat.ml",
+175
+],
+"REAL_RAT_POW_CONV": [
+"calc_rat.ml",
+362
+],
+"REAL_RAT_REDUCE_CONV": [
+"calc_rat.ml",
+412
+],
+"REAL_RAT_RED_CONV": [
+"calc_rat.ml",
+407
+],
+"REAL_RAT_SGN_CONV": [
+"calc_rat.ml",
+163
+],
+"REAL_RAT_SUB_CONV": [
+"calc_rat.ml",
+279
+],
+"REAL_RING": [
+"calc_rat.ml",
+490
+],
+"REAL_RNEG_UNIQ": [
+"real.ml",
+124
+],
+"REAL_RSQRT_LE": [
+"real.ml",
+1941
+],
+"REAL_SGN": [
+"real.ml",
+1549
+],
+"REAL_SGNS_EQ": [
+"real.ml",
+1623
+],
+"REAL_SGNS_EQ_ALT": [
+"real.ml",
+1630
+],
+"REAL_SGN_0": [
+"real.ml",
+1525
+],
+"REAL_SGN_ABS": [
+"real.ml",
+1533
+],
+"REAL_SGN_ABS_ALT": [
+"real.ml",
+1537
+],
+"REAL_SGN_CASES": [
+"real.ml",
+1579
+],
+"REAL_SGN_DIV": [
+"real.ml",
+1567
+],
+"REAL_SGN_EQ": [
+"real.ml",
+1573
+],
+"REAL_SGN_EQ_INEQ": [
+"real.ml",
+1618
+],
+"REAL_SGN_INEQS": [
+"real.ml",
+1583
+],
+"REAL_SGN_INV": [
+"real.ml",
+1562
+],
+"REAL_SGN_MUL": [
+"real.ml",
+1557
+],
+"REAL_SGN_NEG": [
+"real.ml",
+1529
+],
+"REAL_SGN_POW": [
+"real.ml",
+1596
+],
+"REAL_SGN_POW_2": [
+"real.ml",
+1601
+],
+"REAL_SGN_REAL_SGN": [
+"real.ml",
+1608
+],
+"REAL_SGN_SQRT": [
+"real.ml",
+1816
+],
+"REAL_SGN_ZPOW": [
+"int.ml",
+2755
+],
+"REAL_SHRINK_EQ": [
+"calc_rat.ml",
+661
+],
+"REAL_SHRINK_GALOIS": [
+"calc_rat.ml",
+665
+],
+"REAL_SHRINK_GROW": [
+"calc_rat.ml",
+685
+],
+"REAL_SHRINK_GROW_EQ": [
+"calc_rat.ml",
+681
+],
+"REAL_SHRINK_LE": [
+"calc_rat.ml",
+657
+],
+"REAL_SHRINK_LT": [
+"calc_rat.ml",
+641
+],
+"REAL_SHRINK_RANGE": [
+"calc_rat.ml",
+634
+],
+"REAL_SOS_EQ_0": [
+"real.ml",
+1262
+],
+"REAL_SQRT_POW_2": [
+"real.ml",
+1949
+],
+"REAL_SUB_0": [
+"realarith.ml",
+70
+],
+"REAL_SUB_ABS": [
+"real.ml",
+484
+],
+"REAL_SUB_ADD": [
+"real.ml",
+236
+],
+"REAL_SUB_ADD2": [
+"real.ml",
+240
+],
+"REAL_SUB_INV": [
+"real.ml",
+1079
+],
+"REAL_SUB_LDISTRIB": [
+"real.ml",
+392
+],
+"REAL_SUB_LE": [
+"realarith.ml",
+48
+],
+"REAL_SUB_LNEG": [
+"real.ml",
+340
+],
+"REAL_SUB_LT": [
+"realarith.ml",
+61
+],
+"REAL_SUB_LZERO": [
+"real.ml",
+324
+],
+"REAL_SUB_NEG2": [
+"real.ml",
+348
+],
+"REAL_SUB_POLYFUN": [
+"iterate.ml",
+2851
+],
+"REAL_SUB_POLYFUN_ALT": [
+"iterate.ml",
+2871
+],
+"REAL_SUB_POW": [
+"iterate.ml",
+2823
+],
+"REAL_SUB_POW_L1": [
+"iterate.ml",
+2842
+],
+"REAL_SUB_POW_R1": [
+"iterate.ml",
+2836
+],
+"REAL_SUB_RDISTRIB": [
+"real.ml",
+396
+],
+"REAL_SUB_REFL": [
+"real.ml",
+244
+],
+"REAL_SUB_RNEG": [
+"real.ml",
+344
+],
+"REAL_SUB_RZERO": [
+"real.ml",
+328
+],
+"REAL_SUB_SUB": [
+"real.ml",
+296
+],
+"REAL_SUB_SUB2": [
+"real.ml",
+364
+],
+"REAL_SUB_TRIANGLE": [
+"real.ml",
+352
+],
+"REAL_SUP_ASCLOSE": [
+"sets.ml",
+4778
+],
+"REAL_SUP_BOUNDS": [
+"sets.ml",
+4765
+],
+"REAL_SUP_EQ_INF": [
+"sets.ml",
+4972
+],
+"REAL_SUP_LE": [
+"sets.ml",
+4755
+],
+"REAL_SUP_LE_EQ": [
+"sets.ml",
+4816
+],
+"REAL_SUP_LE_FINITE": [
+"sets.ml",
+4736
+],
+"REAL_SUP_LE_SUBSET": [
+"sets.ml",
+4759
+],
+"REAL_SUP_LT_FINITE": [
+"sets.ml",
+4744
+],
+"REAL_SUP_UNIQUE": [
+"sets.ml",
+4748
+],
+"REAL_WLOG_LE": [
+"real.ml",
+1641
+],
+"REAL_WLOG_LE_3": [
+"real.ml",
+1650
+],
+"REAL_WLOG_LT": [
+"real.ml",
+1645
+],
+"REAL_ZPOW_0": [
+"int.ml",
+2650
+],
+"REAL_ZPOW_1": [
+"int.ml",
+2654
+],
+"REAL_ZPOW_2": [
+"int.ml",
+2658
+],
+"REAL_ZPOW_ADD": [
+"int.ml",
+2712
+],
+"REAL_ZPOW_DIV": [
+"int.ml",
+2708
+],
+"REAL_ZPOW_EQ_0": [
+"int.ml",
+2746
+],
+"REAL_ZPOW_INV": [
+"int.ml",
+2694
+],
+"REAL_ZPOW_LE": [
+"int.ml",
+2738
+],
+"REAL_ZPOW_LT": [
+"int.ml",
+2742
+],
+"REAL_ZPOW_MINUS1": [
+"int.ml",
+2674
+],
+"REAL_ZPOW_MUL": [
+"int.ml",
+2704
+],
+"REAL_ZPOW_NEG": [
+"int.ml",
+2666
+],
+"REAL_ZPOW_NUM": [
+"int.ml",
+2646
+],
+"REAL_ZPOW_ONE": [
+"int.ml",
+2662
+],
+"REAL_ZPOW_POW": [
+"int.ml",
+2684
+],
+"REAL_ZPOW_SUB": [
+"int.ml",
+2733
+],
+"REAL_ZPOW_ZERO": [
+"int.ml",
+2678
+],
+"REAL_ZPOW_ZPOW": [
+"int.ml",
+2698
+],
+"RECURSION_CASEWISE": [
+"define.ml",
+419
+],
+"RECURSION_CASEWISE_PAIRWISE": [
+"define.ml",
+432
+],
+"RECURSION_SUPERADMISSIBLE": [
+"define.ml",
+460
+],
+"REFL_CLAUSE": [
+"theorems.ml",
+21
+],
+"REFUTE_THEN": [
+"class.ml",
+221
+],
+"REPEATC": [
+"equal.ml",
+116
+],
+"REPEAT_UNCHANGED_CTXIMPCONV": [
+"impconv.ml",
+1054
+],
+"REPLICATE": [
+"lists.ml",
+57
+],
+"REP_ABS_PAIR": [
+"pair.ml",
+58
+],
+"RESOLVE_N": [
+"metis.ml",
+9705
+],
+"REST": [
+"sets.ml",
+167
+],
+"RESTRICTION": [
+"sets.ml",
+2965
+],
+"RESTRICTION_COMPOSE": [
+"sets.ml",
+3029
+],
+"RESTRICTION_COMPOSE_LEFT": [
+"sets.ml",
+3021
+],
+"RESTRICTION_COMPOSE_RIGHT": [
+"sets.ml",
+3014
+],
+"RESTRICTION_DEFINED": [
+"sets.ml",
+2972
+],
+"RESTRICTION_EQ": [
+"sets.ml",
+2980
+],
+"RESTRICTION_EXTENSION": [
+"sets.ml",
+2988
+],
+"RESTRICTION_FIXPOINT": [
+"sets.ml",
+2993
+],
+"RESTRICTION_IDEMP": [
+"sets.ml",
+3006
+],
+"RESTRICTION_IN_CARTESIAN_PRODUCT": [
+"sets.ml",
+3069
+],
+"RESTRICTION_IN_EXTENSIONAL": [
+"sets.ml",
+2984
+],
+"RESTRICTION_RESTRICTION": [
+"sets.ml",
+3001
+],
+"RESTRICTION_THM": [
+"sets.ml",
+2968
+],
+"RESTRICTION_UNDEFINED": [
+"sets.ml",
+2976
+],
+"RESTRICTION_UNIQUE": [
+"sets.ml",
+3036
+],
+"RESTRICTION_UNIQUE_ALT": [
+"sets.ml",
+3042
+],
+"RESTRICTION_UNIV": [
+"sets.ml",
+2997
+],
+"RESTR_EVAL_RULE": [
+"compute.ml",
+809
+],
+"RESTR_EVAL_TAC": [
+"compute.ml",
+808
+],
+"REVERSE": [
+"lists.ml",
+38
+],
+"REVERSE_APPEND": [
+"lists.ml",
+165
+],
+"REVERSE_CONV": [
+"lists.ml",
+809
+],
+"REVERSE_EQ_EMPTY": [
+"lists.ml",
+174
+],
+"REVERSE_REVERSE": [
+"lists.ml",
+170
+],
+"REWRITE_CTXIMPCONV": [
+"impconv.ml",
+1379
+],
+"REWR_CONV": [
+"simp.ml",
+22
+],
+"REWR_IMPCONV_OF_CONV": [
+"impconv.ml",
+1345
+],
+"REWR_IMPMCONV_OF_MCONV": [
+"impconv.ml",
+1715
+],
+"REWR_RULE": [
+"impconv.ml",
+93
+],
+"RIGHT_ADD_DISTRIB": [
+"arith.ml",
+174
+],
+"RIGHT_AND_EXISTS_THM": [
+"theorems.ml",
+301
+],
+"RIGHT_AND_FORALL_THM": [
+"theorems.ml",
+257
+],
+"RIGHT_BETAS": [
+"ind_defs.ml",
+27
+],
+"RIGHT_EXISTS_AND_THM": [
+"theorems.ml",
+289
+],
+"RIGHT_EXISTS_IMP_THM": [
+"class.ml",
+307
+],
+"RIGHT_FORALL_IMP_THM": [
+"theorems.ml",
+329
+],
+"RIGHT_FORALL_OR_THM": [
+"class.ml",
+276
+],
+"RIGHT_IMP_EXISTS_THM": [
+"class.ml",
+302
+],
+"RIGHT_IMP_FORALL_THM": [
+"theorems.ml",
+325
+],
+"RIGHT_OR_DISTRIB": [
+"theorems.ml",
+109
+],
+"RIGHT_OR_EXISTS_THM": [
+"theorems.ml",
+277
+],
+"RIGHT_OR_FORALL_THM": [
+"class.ml",
+285
+],
+"RIGHT_SUB_DISTRIB": [
+"arith.ml",
+906
+],
+"RING_AND_IDEAL_CONV": [
+"grobner.ml",
+28
+],
+"SELECT_AX": [
+"class.ml",
+53
+],
+"SELECT_CONV": [
+"class.ml",
+83
+],
+"SELECT_ELIM_TAC": [
+"canon.ml",
+502
+],
+"SELECT_REFL": [
+"class.ml",
+102
+],
+"SELECT_RULE": [
+"class.ml",
+72
+],
+"SELECT_UNIQUE": [
+"class.ml",
+107
+],
+"SEMIRING_NORMALIZERS_CONV": [
+"normalizer.ml",
+9
+],
+"SETSPEC": [
+"sets.ml",
+56
+],
+"SET_CASES": [
+"sets.ml",
+679
+],
+"SET_OF_LIST_APPEND": [
+"sets.ml",
+3838
+],
+"SET_OF_LIST_EQ_EMPTY": [
+"sets.ml",
+3848
+],
+"SET_OF_LIST_MAP": [
+"sets.ml",
+3843
+],
+"SET_OF_LIST_OF_SET": [
+"sets.ml",
+3811
+],
+"SET_PAIR_THM": [
+"sets.ml",
+1099
+],
+"SET_PROVE_CASES": [
+"sets.ml",
+1103
+],
+"SET_RECURSION_LEMMA": [
+"sets.ml",
+1917
+],
+"SET_TAC": [
+"sets.ml",
+320
+],
+"SIMPLE_IMAGE": [
+"sets.ml",
+1026
+],
+"SIMPLE_IMAGE_GEN": [
+"sets.ml",
+1030
+],
+"SING": [
+"sets.ml",
+125
+],
+"SING_ALT": [
+"sets.ml",
+1073
+],
+"SING_GSPEC": [
+"sets.ml",
+1068
+],
+"SING_SUBSET": [
+"sets.ml",
+415
+],
+"SKOLEM_CONV": [
+"canon.ml",
+358
+],
+"SKOLEM_THM": [
+"class.ml",
+418
+],
+"SKOLEM_THM_GEN": [
+"class.ml",
+426
+],
+"SND": [
+"pair.ml",
+100
+],
+"SNDCART_COMPONENT": [
+"cart.ml",
+258
+],
+"SNDCART_PASTECART": [
+"cart.ml",
+216
+],
+"SND_DEF": [
+"pair.ml",
+70
+],
+"SPEC": [
+"bool.ml",
+249
+],
+"SQRT_0": [
+"real.ml",
+1681
+],
+"SQRT_1": [
+"real.ml",
+1685
+],
+"SQRT_DIV": [
+"real.ml",
+1851
+],
+"SQRT_EQ_0": [
+"real.ml",
+1859
+],
+"SQRT_EQ_1": [
+"real.ml",
+1902
+],
+"SQRT_EVEN_POW2": [
+"real.ml",
+1929
+],
+"SQRT_INJ": [
+"real.ml",
+1898
+],
+"SQRT_INV": [
+"real.ml",
+1846
+],
+"SQRT_LE_0": [
+"real.ml",
+1863
+],
+"SQRT_LT_0": [
+"real.ml",
+1855
+],
+"SQRT_MONO_LE": [
+"real.ml",
+1886
+],
+"SQRT_MONO_LE_EQ": [
+"real.ml",
+1894
+],
+"SQRT_MONO_LT": [
+"real.ml",
+1873
+],
+"SQRT_MONO_LT_EQ": [
+"real.ml",
+1890
+],
+"SQRT_MUL": [
+"real.ml",
+1841
+],
+"SQRT_NEG": [
+"real.ml",
+1810
+],
+"SQRT_POS_LE": [
+"real.ml",
+1829
+],
+"SQRT_POS_LT": [
+"real.ml",
+1906
+],
+"SQRT_POW2": [
+"real.ml",
+1837
+],
+"SQRT_POW_2": [
+"real.ml",
+1833
+],
+"SQRT_UNIQUE": [
+"real.ml",
+1666
+],
+"SQRT_UNIQUE_GEN": [
+"real.ml",
+1800
+],
+"SQRT_WORKS": [
+"real.ml",
+1820
+],
+"SQRT_WORKS_GEN": [
+"real.ml",
+1695
+],
+"STRING_EQ_CONV": [
+"lists.ml",
+886
+],
+"STRIP_ASSUME_TAC": [
+"tactics.ml",
+662
+],
+"STRIP_THM_THEN": [
+"tactics.ml",
+643
+],
+"STRUCT_CASES_TAC": [
+"tactics.ml",
+674
+],
+"SUB": [
+"arith.ml",
+841
+],
+"SUBSET": [
+"sets.ml",
+116
+],
+"SUBSET_ANTISYM": [
+"sets.ml",
+391
+],
+"SUBSET_ANTISYM_EQ": [
+"sets.ml",
+395
+],
+"SUBSET_CARD_EQ": [
+"sets.ml",
+2288
+],
+"SUBSET_CARTESIAN_PRODUCT": [
+"sets.ml",
+3121
+],
+"SUBSET_CROSS": [
+"sets.ml",
+2819
+],
+"SUBSET_DELETE": [
+"sets.ml",
+787
+],
+"SUBSET_DIFF": [
+"sets.ml",
+651
+],
+"SUBSET_DISJOINT_UNION": [
+"sets.ml",
+3269
+],
+"SUBSET_DISJOINT_UNION_EXISTS": [
+"sets.ml",
+3283
+],
+"SUBSET_EMPTY": [
+"sets.ml",
+403
+],
+"SUBSET_IMAGE": [
+"sets.ml",
+1586
+],
+"SUBSET_IMAGE_INJ": [
+"sets.ml",
+1573
+],
+"SUBSET_INSERT": [
+"sets.ml",
+731
+],
+"SUBSET_INSERT_DELETE": [
+"sets.ml",
+791
+],
+"SUBSET_INTER": [
+"sets.ml",
+576
+],
+"SUBSET_INTERS": [
+"sets.ml",
+923
+],
+"SUBSET_INTER_ABSORPTION": [
+"sets.ml",
+562
+],
+"SUBSET_NUMSEG": [
+"iterate.ml",
+152
+],
+"SUBSET_PCROSS": [
+"cart.ml",
+604
+],
+"SUBSET_PSUBSET_TRANS": [
+"sets.ml",
+435
+],
+"SUBSET_REFL": [
+"sets.ml",
+387
+],
+"SUBSET_RESTRICT": [
+"sets.ml",
+419
+],
+"SUBSET_TRANS": [
+"sets.ml",
+383
+],
+"SUBSET_UNION": [
+"sets.ml",
+475
+],
+"SUBSET_UNIONS": [
+"sets.ml",
+865
+],
+"SUBSET_UNION_ABSORPTION": [
+"sets.ml",
+480
+],
+"SUBSET_UNIV": [
+"sets.ml",
+407
+],
+"SUB_0": [
+"arith.ml",
+845
+],
+"SUB_ADD": [
+"arith.ml",
+882
+],
+"SUB_ADD_LCANCEL": [
+"arith.ml",
+888
+],
+"SUB_ADD_RCANCEL": [
+"arith.ml",
+892
+],
+"SUB_CTXIMPCONV": [
+"impconv.ml",
+975
+],
+"SUB_CTXIMPMCONV": [
+"impconv.ml",
+1573
+],
+"SUB_ELIM_THM": [
+"arith.ml",
+1685
+],
+"SUB_ELIM_THM'": [
+"arith.ml",
+1692
+],
+"SUB_EQ_0": [
+"arith.ml",
+869
+],
+"SUB_PRESUC": [
+"arith.ml",
+849
+],
+"SUB_REFL": [
+"arith.ml",
+857
+],
+"SUB_SUC": [
+"arith.ml",
+853
+],
+"SUC_DEF": [
+"nums.ml",
+68
+],
+"SUC_INJ": [
+"nums.ml",
+80
+],
+"SUC_SUB1": [
+"arith.ml",
+910
+],
+"SUM_0": [
+"iterate.ml",
+2041
+],
+"SUM_ABS": [
+"iterate.ml",
+2121
+],
+"SUM_ABS_BOUND": [
+"iterate.ml",
+2261
+],
+"SUM_ABS_LE": [
+"iterate.ml",
+2127
+],
+"SUM_ABS_NUMSEG": [
+"iterate.ml",
+2613
+],
+"SUM_ADD": [
+"iterate.ml",
+2025
+],
+"SUM_ADD_GEN": [
+"iterate.ml",
+2029
+],
+"SUM_ADD_NUMSEG": [
+"iterate.ml",
+2595
+],
+"SUM_ADD_SPLIT": [
+"iterate.ml",
+2667
+],
+"SUM_BIJECTION": [
+"iterate.ml",
+2428
+],
+"SUM_BOUND": [
+"iterate.ml",
+2250
+],
+"SUM_BOUND_GEN": [
+"iterate.ml",
+2255
+],
+"SUM_BOUND_LT": [
+"iterate.ml",
+2268
+],
+"SUM_BOUND_LT_ALL": [
+"iterate.ml",
+2276
+],
+"SUM_BOUND_LT_GEN": [
+"iterate.ml",
+2281
+],
+"SUM_CASES": [
+"iterate.ml",
+2491
+],
+"SUM_CASES_1": [
+"iterate.ml",
+2498
+],
+"SUM_CLAUSES": [
+"iterate.ml",
+1994
+],
+"SUM_CLAUSES_LEFT": [
+"iterate.ml",
+2683
+],
+"SUM_CLAUSES_NUMSEG": [
+"iterate.ml",
+2642
+],
+"SUM_CLAUSES_NUMSEG_LE": [
+"iterate.ml",
+2655
+],
+"SUM_CLAUSES_NUMSEG_LT": [
+"iterate.ml",
+2649
+],
+"SUM_CLAUSES_RIGHT": [
+"iterate.ml",
+2688
+],
+"SUM_CLOSED": [
+"iterate.ml",
+2542
+],
+"SUM_CLOSED_NONEMPTY": [
+"iterate.ml",
+2562
+],
+"SUM_COMBINE_L": [
+"iterate.ml",
+2763
+],
+"SUM_COMBINE_R": [
+"iterate.ml",
+2755
+],
+"SUM_CONST": [
+"iterate.ml",
+2136
+],
+"SUM_CONST_NUMSEG": [
+"iterate.ml",
+2617
+],
+"SUM_DEGENERATE": [
+"iterate.ml",
+1989
+],
+"SUM_DELETE": [
+"iterate.ml",
+2183
+],
+"SUM_DELETE_CASES": [
+"iterate.ml",
+2188
+],
+"SUM_DELTA": [
+"iterate.ml",
+2199
+],
+"SUM_DIFF": [
+"iterate.ml",
+2010
+],
+"SUM_DIFFS": [
+"iterate.ml",
+2740
+],
+"SUM_DIFFS_ALT": [
+"iterate.ml",
+2748
+],
+"SUM_EQ": [
+"iterate.ml",
+2116
+],
+"SUM_EQ_0": [
+"iterate.ml",
+2036
+],
+"SUM_EQ_0_NUMSEG": [
+"iterate.ml",
+2621
+],
+"SUM_EQ_GENERAL": [
+"iterate.ml",
+2444
+],
+"SUM_EQ_GENERAL_INVERSES": [
+"iterate.ml",
+2452
+],
+"SUM_EQ_NUMSEG": [
+"iterate.ml",
+2608
+],
+"SUM_EQ_SUPERSET": [
+"iterate.ml",
+2293
+],
+"SUM_GROUP": [
+"iterate.ml",
+2355
+],
+"SUM_GROUP_RELATION": [
+"iterate.ml",
+2365
+],
+"SUM_IMAGE": [
+"iterate.ml",
+2212
+],
+"SUM_IMAGE_GEN": [
+"iterate.ml",
+2347
+],
+"SUM_IMAGE_LE": [
+"iterate.ml",
+2532
+],
+"SUM_IMAGE_NONZERO": [
+"iterate.ml",
+2420
+],
+"SUM_INCL_EXCL": [
+"iterate.ml",
+2014
+],
+"SUM_INJECTION": [
+"iterate.ml",
+2460
+],
+"SUM_LE": [
+"iterate.ml",
+2072
+],
+"SUM_LE_INCLUDED": [
+"iterate.ml",
+2506
+],
+"SUM_LE_NUMSEG": [
+"iterate.ml",
+2603
+],
+"SUM_LMUL": [
+"iterate.ml",
+2045
+],
+"SUM_LT": [
+"iterate.ml",
+2079
+],
+"SUM_LT_ALL": [
+"iterate.ml",
+2092
+],
+"SUM_MULTICOUNT": [
+"iterate.ml",
+2337
+],
+"SUM_MULTICOUNT_GEN": [
+"iterate.ml",
+2318
+],
+"SUM_MUL_BOUND": [
+"iterate.ml",
+2409
+],
+"SUM_NEG": [
+"iterate.ml",
+2063
+],
+"SUM_OFFSET": [
+"iterate.ml",
+2673
+],
+"SUM_OFFSET_0": [
+"iterate.ml",
+2679
+],
+"SUM_PAIR": [
+"iterate.ml",
+2693
+],
+"SUM_PARTIAL_PRE": [
+"iterate.ml",
+2728
+],
+"SUM_PARTIAL_SUC": [
+"iterate.ml",
+2712
+],
+"SUM_POS_BOUND": [
+"iterate.ml",
+2153
+],
+"SUM_POS_EQ_0": [
+"iterate.ml",
+2163
+],
+"SUM_POS_EQ_0_NUMSEG": [
+"iterate.ml",
+2633
+],
+"SUM_POS_LE": [
+"iterate.ml",
+2142
+],
+"SUM_POS_LE_NUMSEG": [
+"iterate.ml",
+2629
+],
+"SUM_POS_LT": [
+"iterate.ml",
+2098
+],
+"SUM_POS_LT_ALL": [
+"iterate.ml",
+2110
+],
+"SUM_REFLECT": [
+"iterate.ml",
+2698
+],
+"SUM_RELATED": [
+"iterate.ml",
+2550
+],
+"SUM_RELATED_NONEMPTY": [
+"iterate.ml",
+2572
+],
+"SUM_RESTRICT": [
+"iterate.ml",
+2245
+],
+"SUM_RESTRICT_SET": [
+"iterate.ml",
+2301
+],
+"SUM_RMUL": [
+"iterate.ml",
+2059
+],
+"SUM_SING": [
+"iterate.ml",
+2195
+],
+"SUM_SING_NUMSEG": [
+"iterate.ml",
+2638
+],
+"SUM_SUB": [
+"iterate.ml",
+2068
+],
+"SUM_SUBSET": [
+"iterate.ml",
+2384
+],
+"SUM_SUBSET_SIMPLE": [
+"iterate.ml",
+2402
+],
+"SUM_SUB_NUMSEG": [
+"iterate.ml",
+2599
+],
+"SUM_SUM_PRODUCT": [
+"iterate.ml",
+2436
+],
+"SUM_SUM_RESTRICT": [
+"iterate.ml",
+2306
+],
+"SUM_SUPERSET": [
+"iterate.ml",
+2219
+],
+"SUM_SUPPORT": [
+"iterate.ml",
+2021
+],
+"SUM_SWAP": [
+"iterate.ml",
+2204
+],
+"SUM_SWAP_NUMSEG": [
+"iterate.ml",
+2661
+],
+"SUM_TRIV_NUMSEG": [
+"iterate.ml",
+2625
+],
+"SUM_UNION": [
+"iterate.ml",
+2004
+],
+"SUM_UNIONS_NONZERO": [
+"iterate.ml",
+2476
+],
+"SUM_UNION_EQ": [
+"iterate.ml",
+2287
+],
+"SUM_UNION_LZERO": [
+"iterate.ml",
+2239
+],
+"SUM_UNION_NONZERO": [
+"iterate.ml",
+2469
+],
+"SUM_UNION_RZERO": [
+"iterate.ml",
+2230
+],
+"SUM_UNIV": [
+"iterate.ml",
+2225
+],
+"SUM_ZERO_EXISTS": [
+"iterate.ml",
+2170
+],
+"SUP": [
+"sets.ml",
+4710
+],
+"SUPERADMISSIBLE_COND": [
+"define.ml",
+262
+],
+"SUPERADMISSIBLE_CONST": [
+"define.ml",
+244
+],
+"SUPERADMISSIBLE_MATCH_GUARDED_PATTERN": [
+"define.ml",
+330
+],
+"SUPERADMISSIBLE_MATCH_SEQPATTERN": [
+"define.ml",
+295
+],
+"SUPERADMISSIBLE_MATCH_UNGUARDED_PATTERN": [
+"define.ml",
+306
+],
+"SUPERADMISSIBLE_T": [
+"define.ml",
+456
+],
+"SUPERADMISSIBLE_TAIL": [
+"define.ml",
+250
+],
+"SUPPORT_CLAUSES": [
+"iterate.ml",
+328
+],
+"SUPPORT_DELTA": [
+"iterate.ml",
+346
+],
+"SUPPORT_EMPTY": [
+"iterate.ml",
+315
+],
+"SUPPORT_SUBSET": [
+"iterate.ml",
+320
+],
+"SUPPORT_SUPPORT": [
+"iterate.ml",
+311
+],
+"SUP_APPROACH": [
+"sets.ml",
+4838
+],
+"SUP_EQ": [
+"sets.ml",
+4705
+],
+"SUP_EXISTS": [
+"sets.ml",
+5094
+],
+"SUP_FINITE": [
+"sets.ml",
+4726
+],
+"SUP_FINITE_LEMMA": [
+"sets.ml",
+4718
+],
+"SUP_INSERT_FINITE": [
+"sets.ml",
+4791
+],
+"SUP_INSERT_INSERT": [
+"sets.ml",
+4805
+],
+"SUP_SING": [
+"sets.ml",
+4801
+],
+"SUP_UNION": [
+"sets.ml",
+4826
+],
+"SUP_UNIQUE": [
+"sets.ml",
+4821
+],
+"SUP_UNIQUE_FINITE": [
+"sets.ml",
+4784
+],
+"SURJ": [
+"sets.ml",
+152
+],
+"SURJECTIVE_EXISTS_THM": [
+"sets.ml",
+1359
+],
+"SURJECTIVE_FORALL_THM": [
+"sets.ml",
+1354
+],
+"SURJECTIVE_IFF_INJECTIVE": [
+"sets.ml",
+4406
+],
+"SURJECTIVE_IFF_INJECTIVE_GEN": [
+"sets.ml",
+4386
+],
+"SURJECTIVE_IMAGE": [
+"sets.ml",
+4514
+],
+"SURJECTIVE_IMAGE_EQ": [
+"sets.ml",
+1046
+],
+"SURJECTIVE_IMAGE_THM": [
+"sets.ml",
+1364
+],
+"SURJECTIVE_MAP": [
+"lists.ml",
+510
+],
+"SURJECTIVE_ON_IMAGE": [
+"sets.ml",
+4504
+],
+"SURJECTIVE_ON_PREIMAGE": [
+"sets.ml",
+4530
+],
+"SURJECTIVE_ON_RIGHT_INVERSE": [
+"sets.ml",
+1286
+],
+"SURJECTIVE_PREIMAGE": [
+"sets.ml",
+4554
+],
+"SURJECTIVE_RIGHT_INVERSE": [
+"sets.ml",
+1313
+],
+"SWAP_EXISTS_THM": [
+"theorems.ml",
+237
+],
+"SWAP_FORALL_THM": [
+"theorems.ml",
+233
+],
+"TARGET_REWRITE_IMPCONV": [
+"impconv.ml",
+1815
+],
+"TAUT": [
+"class.ml",
+371
+],
+"TL": [
+"lists.ml",
+31
+],
+"TOPOLOGICAL_SORT": [
+"iterate.ml",
+196
+],
+"TOP_DEPTH_CTXIMPCONV": [
+"impconv.ml",
+1102
+],
+"TRANSITIVE_STEPWISE_LE": [
+"arith.ml",
+1842
+],
+"TRANSITIVE_STEPWISE_LE_EQ": [
+"arith.ml",
+1832
+],
+"TRANSITIVE_STEPWISE_LT": [
+"arith.ml",
+1825
+],
+"TRANSITIVE_STEPWISE_LT_EQ": [
+"arith.ml",
+1816
+],
+"TREAL_ADD_ASSOC": [
+"realax.ml",
+1483
+],
+"TREAL_ADD_LDISTRIB": [
+"realax.ml",
+1513
+],
+"TREAL_ADD_LID": [
+"realax.ml",
+1488
+],
+"TREAL_ADD_LINV": [
+"realax.ml",
+1493
+],
+"TREAL_ADD_SYM": [
+"realax.ml",
+1478
+],
+"TREAL_ADD_SYM_EQ": [
+"realax.ml",
+1466
+],
+"TREAL_ADD_WELLDEF": [
+"realax.ml",
+1611
+],
+"TREAL_ADD_WELLDEFR": [
+"realax.ml",
+1604
+],
+"TREAL_EQ_AP": [
+"realax.ml",
+1433
+],
+"TREAL_EQ_IMP_LE": [
+"realax.ml",
+1636
+],
+"TREAL_EQ_REFL": [
+"realax.ml",
+1412
+],
+"TREAL_EQ_SYM": [
+"realax.ml",
+1416
+],
+"TREAL_EQ_TRANS": [
+"realax.ml",
+1420
+],
+"TREAL_INV_0": [
+"realax.ml",
+1560
+],
+"TREAL_INV_WELLDEF": [
+"realax.ml",
+1657
+],
+"TREAL_LE_ANTISYM": [
+"realax.ml",
+1523
+],
+"TREAL_LE_LADD_IMP": [
+"realax.ml",
+1540
+],
+"TREAL_LE_MUL": [
+"realax.ml",
+1547
+],
+"TREAL_LE_REFL": [
+"realax.ml",
+1519
+],
+"TREAL_LE_TOTAL": [
+"realax.ml",
+1536
+],
+"TREAL_LE_TRANS": [
+"realax.ml",
+1527
+],
+"TREAL_LE_WELLDEF": [
+"realax.ml",
+1640
+],
+"TREAL_MUL_ASSOC": [
+"realax.ml",
+1502
+],
+"TREAL_MUL_LID": [
+"realax.ml",
+1508
+],
+"TREAL_MUL_LINV": [
+"realax.ml",
+1564
+],
+"TREAL_MUL_SYM": [
+"realax.ml",
+1498
+],
+"TREAL_MUL_SYM_EQ": [
+"realax.ml",
+1470
+],
+"TREAL_MUL_WELLDEF": [
+"realax.ml",
+1628
+],
+"TREAL_MUL_WELLDEFR": [
+"realax.ml",
+1619
+],
+"TREAL_NEG_WELLDEF": [
+"realax.ml",
+1599
+],
+"TREAL_OF_NUM_ADD": [
+"realax.ml",
+1449
+],
+"TREAL_OF_NUM_EQ": [
+"realax.ml",
+1441
+],
+"TREAL_OF_NUM_LE": [
+"realax.ml",
+1445
+],
+"TREAL_OF_NUM_MUL": [
+"realax.ml",
+1455
+],
+"TREAL_OF_NUM_WELLDEF": [
+"realax.ml",
+1594
+],
+"TRIV_AND_EXISTS_THM": [
+"theorems.ml",
+305
+],
+"TRIV_EXISTS_AND_THM": [
+"theorems.ml",
+293
+],
+"TRIV_EXISTS_IMP_THM": [
+"theorems.ml",
+345
+],
+"TRIV_FORALL_IMP_THM": [
+"theorems.ml",
+341
+],
+"TRIV_FORALL_OR_THM": [
+"theorems.ml",
+313
+],
+"TRIV_OR_FORALL_THM": [
+"theorems.ml",
+317
+],
+"TRUTH": [
+"bool.ml",
+79
+],
+"TWO": [
+"arith.ml",
+129
+],
+"T_": [
+"impconv.ml",
+69
+],
+"T_DEF": [
+"bool.ml",
+76
+],
+"UNCURRY_DEF": [
+"pair.ml",
+190
+],
+"UNIFY_REFL_TAC": [
+"itab.ml",
+27
+],
+"UNION": [
+"sets.ml",
+90
+],
+"UNIONS": [
+"sets.ml",
+93
+],
+"UNIONS_0": [
+"sets.ml",
+826
+],
+"UNIONS_1": [
+"sets.ml",
+830
+],
+"UNIONS_2": [
+"sets.ml",
+834
+],
+"UNIONS_DELETE_EMPTY": [
+"sets.ml",
+898
+],
+"UNIONS_DIFF": [
+"sets.ml",
+1138
+],
+"UNIONS_EQ_INTERS": [
+"sets.ml",
+1182
+],
+"UNIONS_GSPEC": [
+"sets.ml",
+286
+],
+"UNIONS_IMAGE": [
+"sets.ml",
+276
+],
+"UNIONS_INSERT": [
+"sets.ml",
+838
+],
+"UNIONS_INSERT_EMPTY": [
+"sets.ml",
+893
+],
+"UNIONS_INTERS": [
+"sets.ml",
+1132
+],
+"UNIONS_IN_CHAIN": [
+"sets.ml",
+1733
+],
+"UNIONS_MAXIMAL_SETS": [
+"sets.ml",
+1706
+],
+"UNIONS_MONO": [
+"sets.ml",
+877
+],
+"UNIONS_MONO_IMAGE": [
+"sets.ml",
+882
+],
+"UNIONS_OVER_INTERS": [
+"sets.ml",
+1171
+],
+"UNIONS_SINGS": [
+"sets.ml",
+1113
+],
+"UNIONS_SINGS_GEN": [
+"sets.ml",
+1109
+],
+"UNIONS_SUBSET": [
+"sets.ml",
+861
+],
+"UNIONS_UNION": [
+"sets.ml",
+869
+],
+"UNIONS_UNIV": [
+"sets.ml",
+888
+],
+"UNION_ACI": [
+"sets.ml",
+754
+],
+"UNION_ASSOC": [
+"sets.ml",
+463
+],
+"UNION_COMM": [
+"sets.ml",
+471
+],
+"UNION_DISJOINT_UNION": [
+"sets.ml",
+3302
+],
+"UNION_EMPTY": [
+"sets.ml",
+484
+],
+"UNION_IDEMPOT": [
+"sets.ml",
+467
+],
+"UNION_OF": [
+"sets.ml",
+4004
+],
+"UNION_OF_EMPTY": [
+"sets.ml",
+4043
+],
+"UNION_OF_INC": [
+"sets.ml",
+4012
+],
+"UNION_OF_MONO": [
+"sets.ml",
+4022
+],
+"UNION_OVER_INTER": [
+"sets.ml",
+590
+],
+"UNION_RESTRICT": [
+"sets.ml",
+502
+],
+"UNION_SUBSET": [
+"sets.ml",
+498
+],
+"UNION_UNIV": [
+"sets.ml",
+489
+],
+"UNIQUE_SKOLEM_ALT": [
+"class.ml",
+434
+],
+"UNIQUE_SKOLEM_THM": [
+"class.ml",
+442
+],
+"UNIV": [
+"sets.ml",
+87
+],
+"UNIV_1": [
+"sets.ml",
+351
+],
+"UNIV_GSPEC": [
+"sets.ml",
+1064
+],
+"UNIV_HAS_SIZE_DIMINDEX": [
+"cart.ml",
+34
+],
+"UNIV_NOT_EMPTY": [
+"sets.ml",
+367
+],
+"UNIV_PCROSS_UNIV": [
+"cart.ml",
+622
+],
+"UNIV_SUBSET": [
+"sets.ml",
+411
+],
+"UNWIND_CONV": [
+"ind_types.ml",
+1421
+],
+"UNWIND_THM1": [
+"theorems.ml",
+204
+],
+"UNWIND_THM2": [
+"theorems.ml",
+212
+],
+"VARIANT_RULE": [
+"impconv.ml",
+87
+],
+"WEAK_CNF_CONV": [
+"canon.ml",
+434
+],
+"WEAK_DNF_CONV": [
+"canon.ml",
+392
+],
+"WF": [
+"wf.ml",
+18
+],
+"WF_ANTISYM": [
+"wf.ml",
+274
+],
+"WF_DCHAIN": [
+"wf.ml",
+42
+],
+"WF_DHAIN_TRANSITIVE": [
+"wf.ml",
+60
+],
+"WF_EQ": [
+"wf.ml",
+25
+],
+"WF_EREC": [
+"wf.ml",
+155
+],
+"WF_FALSE": [
+"wf.ml",
+289
+],
+"WF_FINITE": [
+"sets.ml",
+4636
+],
+"WF_IND": [
+"wf.ml",
+33
+],
+"WF_INDUCT_TAC": [
+"wf.ml",
+420
+],
+"WF_INT_MEASURE": [
+"int.ml",
+1932
+],
+"WF_INT_MEASURE_2": [
+"int.ml",
+1939
+],
+"WF_LEX": [
+"wf.ml",
+226
+],
+"WF_LEX_DEPENDENT": [
+"wf.ml",
+207
+],
+"WF_MEASURE": [
+"wf.ml",
+260
+],
+"WF_MEASURE_GEN": [
+"wf.ml",
+200
+],
+"WF_POINTWISE": [
+"wf.ml",
+231
+],
+"WF_PSUBSET": [
+"sets.ml",
+4654
+],
+"WF_REC": [
+"wf.ml",
+116
+],
+"WF_REC_CASES": [
+"define.ml",
+372
+],
+"WF_REC_CASES'": [
+"define.ml",
+412
+],
+"WF_REC_EXISTS": [
+"wf.ml",
+165
+],
+"WF_REC_INVARIANT": [
+"wf.ml",
+98
+],
+"WF_REC_TAIL": [
+"wf.ml",
+324
+],
+"WF_REC_TAIL_GENERAL": [
+"wf.ml",
+359
+],
+"WF_REC_TAIL_GENERAL'": [
+"define.ml",
+360
+],
+"WF_REC_WF": [
+"wf.ml",
+124
+],
+"WF_REC_num": [
+"wf.ml",
+248
+],
+"WF_REFL": [
+"wf.ml",
+281
+],
+"WF_RESTRICT": [
+"wf.ml",
+195
+],
+"WF_SUBSET": [
+"wf.ml",
+188
+],
+"WF_UREC": [
+"wf.ml",
+73
+],
+"WF_UREC_WF": [
+"wf.ml",
+82
+],
+"WF_num": [
+"wf.ml",
+244
+],
+"WLOG_LE": [
+"arith.ml",
+638
+],
+"WLOG_LE_3": [
+"arith.ml",
+647
+],
+"WLOG_LT": [
+"arith.ml",
+642
+],
+"WLOG_RELATION": [
+"theorems.ml",
+376
+],
+"ZBOT": [
+"ind_types.ml",
+141
+],
+"ZCONSTR": [
+"ind_types.ml",
+137
+],
+"ZCONSTR_ZBOT": [
+"ind_types.ml",
+144
+],
+"ZERO_DEF": [
+"nums.ml",
+65
+],
+"ZERO_ONE_OR_PRIME": [
+"int.ml",
+2612
+],
+"ZERO_ONE_OR_PRIME_DIVPROD": [
+"int.ml",
+2602
+],
+"ZIP": [
+"lists.ml",
+127
+],
+"ZIP_DEF": [
+"lists.ml",
+123
+],
+"ZRECSPACE_CASES": [
+"ind_types.ml",
+152
+],
+"ZRECSPACE_INDUCT": [
+"ind_types.ml",
+152
+],
+"ZRECSPACE_RULES": [
+"ind_types.ml",
+152
+],
+"_FALSITY_": [
+"tactics.ml",
+101
+],
+"_FUNCTION": [
+"pair.ml",
+41
+],
+"_GUARDED_PATTERN": [
+"pair.ml",
+35
+],
+"_MATCH": [
+"pair.ml",
+38
+],
+"_SEQPATTERN": [
+"pair.ml",
+29
+],
+"_UNGUARDED_PATTERN": [
+"pair.ml",
+32
+],
+"addList": [
+"metis.ml",
+7819
+],
+"addName": [
+"metis.ml",
+5285
+],
+"add_convs": [
+"compute.ml",
+789
+],
+"add_funs": [
+"compute.ml",
+788
+],
+"add_in_db": [
+"compute.ml",
+291
+],
+"admissible": [
+"define.ml",
+51
+],
+"allRule": [
+"metis.ml",
+4606
+],
+"anonymousName": [
+"metis.ml",
+6133
+],
+"anonymousVar": [
+"metis.ml",
+6134
+],
+"appName": [
+"metis.ml",
+2419
+],
+"appendName": [
+"metis.ml",
+5609
+],
+"appl": [
+"compute.ml",
+246
+],
+"applyd": [
+"lib.ml",
+618
+],
+"arityPrecedence": [
+"metis.ml",
+6994
+],
+"atoms": [
+"basics.ml",
+454
+],
+"auto_import_definitions": [
+"compute.ml",
+609
+],
+"basic_congs": [
+"simp.ml",
+410
+],
+"basic_rectype_net": [
+"ind_types.ml",
+1022
+],
+"basic_ss": [
+"simp.ml",
+506
+],
+"beta_thm": [
+"compute.ml",
+105
+],
+"binders": [
+"printer.ml",
+71
+],
+"boolToInt": [
+"metis.ml",
+5038
+],
+"bool_INDUCT": [
+"class.ml",
+479
+],
+"bool_RECURSION": [
+"class.ml",
+484
+],
+"bool_redns": [
+"compute.ml",
+754
+],
+"bty": [
+"fusion.ml",
+650
+],
+"cUNKNOWN": [
+"metis.ml",
+5705
+],
+"cardName": [
+"metis.ml",
+5487
+],
+"cart_tybij": [
+"cart.ml",
+111
+],
+"cartesian_product": [
+"sets.ml",
+3052
+],
+"cbv_wk": [
+"compute.ml",
+649
+],
+"char_INDUCT": [
+"lists.ml",
+881
+],
+"char_RECURSION": [
+"lists.ml",
+881
+],
+"claBC_of_litmat_ext": [
+"thecops.ml",
+1017
+],
+"clause_of_matrix": [
+"thecops.ml",
+802
+],
+"comment_token": [
+"parser.ml",
+100
+],
+"compare": [
+"metis.ml",
+7128
+],
+"comparePriority": [
+"metis.ml",
+240
+],
+"cong": [
+"int.ml",
+1163
+],
+"conjuncts": [
+"basics.ml",
+276
+],
+"coprime": [
+"int.ml",
+2562
+],
+"copverb": [
+"firstorder.ml",
+13
+],
+"create_equality_axioms": [
+"thecops.ml",
+509
+],
+"current_goalstack": [
+"tactics.ml",
+910
+],
+"db": [
+"thecops.ml",
+1068
+],
+"deep_alpha": [
+"drule.ml",
+413
+],
+"default": [
+"metis.ml",
+9372
+],
+"defaultFixed": [
+"metis.ml",
+5855
+],
+"defaultModels": [
+"metis.ml",
+9117
+],
+"defaultSize": [
+"metis.ml",
+5853
+],
+"define": [
+"define.ml",
+957
+],
+"define_quotient_type": [
+"quot.ml",
+23
+],
+"define_type_raw": [
+"ind_types.ml",
+1084
+],
+"del_consts": [
+"compute.ml",
+791
+],
+"del_funs": [
+"compute.ml",
+792
+],
+"delete": [
+"metis.ml",
+1217
+],
+"deleteNth": [
+"metis.ml",
+1246
+],
+"deletePick": [
+"metis.ml",
+1231
+],
+"delete_parser": [
+"parser.ml",
+226
+],
+"derive_nonschematic_inductive_relations": [
+"ind_defs.ml",
+57
+],
+"derive_strong_induction": [
+"ind_defs.ml",
+384
+],
+"destAtom": [
+"metis.ml",
+3025
+],
+"destBoolean": [
+"metis.ml",
+2939
+],
+"destConst": [
+"metis.ml",
+2203
+],
+"destEq": [
+"metis.ml",
+3590
+],
+"destExists": [
+"metis.ml",
+3145
+],
+"destFn": [
+"metis.ml",
+2170
+],
+"destForall": [
+"metis.ml",
+3124
+],
+"destIrrefl": [
+"metis.ml",
+3614
+],
+"destNeg": [
+"metis.ml",
+3033
+],
+"destNeq": [
+"metis.ml",
+3598
+],
+"destRefl": [
+"metis.ml",
+3606
+],
+"destVar": [
+"metis.ml",
+2158
+],
+"dest_binary_blind": [
+"impconv.ml",
+147
+],
+"dest_char": [
+"lists.ml",
+886
+],
+"dest_conj": [
+"basics.ml",
+275
+],
+"dest_cons": [
+"basics.ml",
+305
+],
+"dest_disj": [
+"basics.ml",
+290
+],
+"dest_exists": [
+"basics.ml",
+286
+],
+"dest_finty": [
+"basics.ml",
+407
+],
+"dest_forall": [
+"basics.ml",
+282
+],
+"dest_gabs": [
+"basics.ml",
+339
+],
+"dest_imp": [
+"basics.ml",
+279
+],
+"dest_int_rep": [
+"int.ml",
+39
+],
+"dest_numeral": [
+"basics.ml",
+317
+],
+"dest_pair": [
+"pair.ml",
+132
+],
+"dest_select": [
+"class.ml",
+50
+],
+"dest_setenum": [
+"sets.ml",
+3872
+],
+"dest_string": [
+"lists.ml",
+886
+],
+"dest_uexists": [
+"basics.ml",
+303
+],
+"differenceDomain": [
+"metis.ml",
+1472
+],
+"dimindex": [
+"cart.ml",
+14
+],
+"disjoint_union": [
+"sets.ml",
+3266
+],
+"disjuncts": [
+"basics.ml",
+291
+],
+"dist": [
+"realax.ml",
+54
+],
+"distinctness_store": [
+"ind_types.ml",
+1023
+],
+"divides": [
+"int.ml",
+2403
+],
+"dpty": [
+"preterm.ml",
+115
+],
+"empty": [
+"metis.ml",
+7797
+],
+"emptyFixed": [
+"metis.ml",
+5118
+],
+"emptyFunctions": [
+"metis.ml",
+5099
+],
+"emptyRelations": [
+"metis.ml",
+5101
+],
+"emptyValuation": [
+"metis.ml",
+5644
+],
+"empty_net": [
+"nets.ml",
+32
+],
+"empty_ss": [
+"simp.ml",
+504
+],
+"enter": [
+"nets.ml",
+38
+],
+"env_of_preterm": [
+"metis.ml",
+9542
+],
+"env_of_th": [
+"metis.ml",
+9549
+],
+"env_of_ths": [
+"metis.ml",
+9550
+],
+"eqRelation": [
+"metis.ml",
+2850
+],
+"eqRelationArity": [
+"metis.ml",
+2848
+],
+"eqRelationName": [
+"metis.ml",
+2846
+],
+"eq_c": [
+"sets.ml",
+4673
+],
+"extend_basic_congs": [
+"simp.ml",
+410
+],
+"extra_basic_rewrites": [
+"impconv.ml",
+1264
+],
+"fN_SYMBOLS": [
+"metis.ml",
+2226
+],
+"factor": [
+"metis.ml",
+9018
+],
+"filter": [
+"metis.ml",
+6570
+],
+"find_path": [
+"basics.ml",
+433
+],
+"find_terms": [
+"basics.ml",
+218
+],
+"finite_diff_tybij": [
+"cart.ml",
+279
+],
+"finite_image_tybij": [
+"cart.ml",
+54
+],
+"finite_index": [
+"cart.ml",
+117
+],
+"finite_prod_tybij": [
+"cart.ml",
+312
+],
+"finite_sum_tybij": [
+"cart.ml",
+174
+],
+"flattenConj": [
+"metis.ml",
+3062
+],
+"flattenDisj": [
+"metis.ml",
+3087
+],
+"flattenEquiv": [
+"metis.ml",
+3112
+],
+"float_fabs": [
+"hol_lib.ml",
+26
+],
+"float_sqrt": [
+"hol_lib.ml",
+25
+],
+"foldl": [
+"lib.ml",
+580
+],
+"foldr": [
+"lib.ml",
+592
+],
+"follow_path": [
+"basics.ml",
+441
+],
+"freeVars": [
+"metis.ml",
+4227
+],
+"freeVarsList": [
+"metis.ml",
+2329
+],
+"fromFormula": [
+"metis.ml",
+3513
+],
+"fstcart": [
+"cart.ml",
+186
+],
+"fsum": [
+"firstorder.ml",
+86
+],
+"functionNames": [
+"metis.ml",
+2723
+],
+"functions": [
+"metis.ml",
+2717
+],
+"gcd": [
+"lib.ml",
+385
+],
+"ge_c": [
+"sets.ml",
+4678
+],
+"generator": [
+"metis.ml",
+196
+],
+"genvar": [
+"basics.ml",
+17
+],
+"get_infix_status": [
+"printer.ml",
+85
+],
+"get_simple_type": [
+"update_database.ml",
+19
+],
+"gt_c": [
+"sets.ml",
+4681
+],
+"hasTypeFunction": [
+"metis.ml",
+2356
+],
+"hasTypeFunctionName": [
+"metis.ml",
+2354
+],
+"has_inf": [
+"sets.ml",
+5033
+],
+"has_sup": [
+"sets.ml",
+5036
+],
+"hashek_def": [
+"thecops.ml",
+16
+],
+"hashek_eq": [
+"thecops.ml",
+21
+],
+"hashek_prop": [
+"thecops.ml",
+19
+],
+"hashek_thm": [
+"thecops.ml",
+18
+],
+"hashek_tm": [
+"thecops.ml",
+17
+],
+"help_path": [
+"help.ml",
+14
+],
+"hide_constant": [
+"preterm.ml",
+96
+],
+"hide_types": [
+"metis.ml",
+9501
+],
+"hreal_add": [
+"realax.ml",
+1273
+],
+"hreal_add_th": [
+"realax.ml",
+1273
+],
+"hreal_inv": [
+"realax.ml",
+1285
+],
+"hreal_inv_th": [
+"realax.ml",
+1285
+],
+"hreal_le": [
+"realax.ml",
+1281
+],
+"hreal_le_th": [
+"realax.ml",
+1281
+],
+"hreal_mul": [
+"realax.ml",
+1277
+],
+"hreal_mul_th": [
+"realax.ml",
+1277
+],
+"hreal_of_num": [
+"realax.ml",
+1269
+],
+"hreal_of_num_th": [
+"realax.ml",
+1269
+],
+"hreal_tybij": [
+"realax.ml",
+1257
+],
+"ignore_constant_varstruct": [
+"preterm.ml",
+18
+],
+"imp_conv_of_conv": [
+"impconv.ml",
+746
+],
+"imp_conv_of_ctx_imp_conv": [
+"impconv.ml",
+821
+],
+"inductive_type_store": [
+"class.ml",
+489
+],
+"inf": [
+"sets.ml",
+4855
+],
+"inferenceToThm": [
+"metis.ml",
+3981
+],
+"inferenceTypeToString": [
+"metis.ml",
+3822
+],
+"infixes": [
+"printer.ml",
+85
+],
+"injectivity_store": [
+"ind_types.ml",
+1024
+],
+"insert": [
+"metis.ml",
+1195
+],
+"inst_type_dterm": [
+"compute.ml",
+254
+],
+"install_parser": [
+"parser.ml",
+226
+],
+"installed_parsers": [
+"parser.ml",
+226
+],
+"intToBool": [
+"metis.ml",
+5042
+],
+"int_abs": [
+"int.ml",
+143
+],
+"int_abs_th": [
+"int.ml",
+146
+],
+"int_abstr": [
+"int.ml",
+36
+],
+"int_add": [
+"int.ml",
+106
+],
+"int_add_th": [
+"int.ml",
+109
+],
+"int_compute_add_convs": [
+"int.ml",
+1828
+],
+"int_congruent": [
+"int.ml",
+1202
+],
+"int_coprime": [
+"int.ml",
+1218
+],
+"int_divides": [
+"int.ml",
+1182
+],
+"int_eq": [
+"int.ml",
+51
+],
+"int_gcd": [
+"int.ml",
+1976
+],
+"int_ge": [
+"int.ml",
+82
+],
+"int_gt": [
+"int.ml",
+85
+],
+"int_ideal_cofactors": [
+"int.ml",
+1123
+],
+"int_lcm": [
+"int.ml",
+1979
+],
+"int_le": [
+"int.ml",
+76
+],
+"int_lt": [
+"int.ml",
+79
+],
+"int_max": [
+"int.ml",
+160
+],
+"int_max_th": [
+"int.ml",
+163
+],
+"int_min": [
+"int.ml",
+168
+],
+"int_min_th": [
+"int.ml",
+171
+],
+"int_mod": [
+"int.ml",
+1199
+],
+"int_mul": [
+"int.ml",
+131
+],
+"int_mul_th": [
+"int.ml",
+134
+],
+"int_neg": [
+"int.ml",
+96
+],
+"int_neg_th": [
+"int.ml",
+99
+],
+"int_of_num": [
+"int.ml",
+88
+],
+"int_of_num_th": [
+"int.ml",
+91
+],
+"int_pow": [
+"int.ml",
+176
+],
+"int_pow_th": [
+"int.ml",
+179
+],
+"int_red_conv_list": [
+"int.ml",
+1803
+],
+"int_rep": [
+"int.ml",
+36
+],
+"int_sgn": [
+"int.ml",
+151
+],
+"int_sgn_th": [
+"int.ml",
+154
+],
+"int_sub": [
+"int.ml",
+123
+],
+"int_sub_th": [
+"int.ml",
+126
+],
+"int_tybij": [
+"int.ml",
+31
+],
+"integer": [
+"int.ml",
+20
+],
+"intersect": [
+"metis.ml",
+1302
+],
+"intersectDomain": [
+"metis.ml",
+1452
+],
+"iproduct": [
+"iterate.ml",
+1216
+],
+"isApp": [
+"metis.ml",
+2439
+],
+"isAtom": [
+"metis.ml",
+3029
+],
+"isBoolean": [
+"metis.ml",
+2944
+],
+"isConst": [
+"metis.ml",
+2207
+],
+"isEq": [
+"metis.ml",
+3594
+],
+"isExists": [
+"metis.ml",
+3149
+],
+"isFn": [
+"metis.ml",
+2174
+],
+"isFnApp": [
+"metis.ml",
+2432
+],
+"isFnHasType": [
+"metis.ml",
+2366
+],
+"isForall": [
+"metis.ml",
+3128
+],
+"isIrrefl": [
+"metis.ml",
+3618
+],
+"isNeg": [
+"metis.ml",
+3037
+],
+"isNeq": [
+"metis.ml",
+3602
+],
+"isRefl": [
+"metis.ml",
+3610
+],
+"isRenaming": [
+"metis.ml",
+2591
+],
+"isUnit": [
+"metis.ml",
+3785
+],
+"isUnitEq": [
+"metis.ml",
+3791
+],
+"isVar": [
+"metis.ml",
+2162
+],
+"is_conj": [
+"basics.ml",
+274
+],
+"is_cons": [
+"basics.ml",
+306
+],
+"is_disj": [
+"basics.ml",
+289
+],
+"is_exists": [
+"basics.ml",
+285
+],
+"is_forall": [
+"basics.ml",
+281
+],
+"is_gabs": [
+"basics.ml",
+349
+],
+"is_hidden": [
+"preterm.ml",
+96
+],
+"is_imp": [
+"basics.ml",
+278
+],
+"is_int": [
+"int.ml",
+23
+],
+"is_let": [
+"basics.ml",
+384
+],
+"is_list": [
+"basics.ml",
+311
+],
+"is_nadd": [
+"realax.ml",
+253
+],
+"is_nadd_0": [
+"realax.ml",
+256
+],
+"is_numeral": [
+"nums.ml",
+242
+],
+"is_pair": [
+"pair.ml",
+130
+],
+"is_prefix": [
+"printer.ml",
+78
+],
+"is_reserved_word": [
+"printer.ml",
+48
+],
+"is_select": [
+"class.ml",
+49
+],
+"is_setenum": [
+"sets.ml",
+3878
+],
+"is_skip": [
+"compute.ml",
+308
+],
+"is_some": [
+"metis.ml",
+93
+],
+"is_uexists": [
+"basics.ml",
+302
+],
+"isalnum": [
+"printer.ml",
+18
+],
+"isalpha": [
+"printer.ml",
+18
+],
+"isbra": [
+"printer.ml",
+18
+],
+"isnum": [
+"printer.ml",
+18
+],
+"issep": [
+"printer.ml",
+18
+],
+"isspace": [
+"printer.ml",
+18
+],
+"issymb": [
+"printer.ml",
+18
+],
+"isum": [
+"iterate.ml",
+1260
+],
+"iterate": [
+"iterate.ml",
+301
+],
+"iterato": [
+"iterate.ml",
+896
+],
+"lambda": [
+"cart.ml",
+128
+],
+"largestLiterals": [
+"metis.ml",
+8005
+],
+"last": [
+"firstorder.ml",
+88
+],
+"lazyfy_thm": [
+"compute.ml",
+155
+],
+"le_c": [
+"sets.ml",
+4665
+],
+"length": [
+"lib.ml",
+210
+],
+"let_CONV": [
+"pair.ml",
+431
+],
+"lex": [
+"parser.ml",
+102
+],
+"lhand": [
+"equal.ml",
+22
+],
+"lhs": [
+"equal.ml",
+24
+],
+"lift_function": [
+"quot.ml",
+52
+],
+"lift_theorem": [
+"quot.ml",
+129
+],
+"listItems": [
+"compute.ml",
+614
+],
+"listMkExists": [
+"metis.ml",
+3151
+],
+"listMkForall": [
+"metis.ml",
+3130
+],
+"list_CASES": [
+"lists.ml",
+182
+],
+"list_INDUCT": [
+"ind_types.ml",
+885
+],
+"list_RECURSION": [
+"ind_types.ml",
+885
+],
+"list_mk_conj": [
+"bool.ml",
+101
+],
+"list_mk_disj": [
+"bool.ml",
+364
+],
+"list_mk_disjp": [
+"metis.ml",
+9527
+],
+"list_of_option": [
+"impconv.ml",
+60
+],
+"list_of_seq": [
+"lists.ml",
+140
+],
+"list_of_set": [
+"sets.ml",
+3794
+],
+"lit_of_litmat": [
+"thecops.ml",
+799
+],
+"literalRule": [
+"metis.ml",
+4646
+],
+"litext_of_litmat_ext": [
+"thecops.ml",
+1031
+],
+"litmat_of_form": [
+"thecops.ml",
+816
+],
+"lookup": [
+"nets.ml",
+76
+],
+"lt_c": [
+"sets.ml",
+4670
+],
+"make_args": [
+"basics.ml",
+418
+],
+"map": [
+"metis.ml",
+1340
+],
+"mapPartial": [
+"metis.ml",
+1328
+],
+"mapf": [
+"lib.ml",
+564
+],
+"maxSimplify": [
+"metis.ml",
+8465
+],
+"maxSpace": [
+"metis.ml",
+5001
+],
+"merge": [
+"metis.ml",
+1272
+],
+"merge_nets": [
+"nets.ml",
+100
+],
+"meson_brand": [
+"meson.ml",
+24
+],
+"meson_chatty": [
+"meson.ml",
+28
+],
+"meson_dcutin": [
+"meson.ml",
+20
+],
+"meson_depth": [
+"meson.ml",
+16
+],
+"meson_prefine": [
+"meson.ml",
+18
+],
+"meson_skew": [
+"meson.ml",
+22
+],
+"meson_split_limit": [
+"meson.ml",
+26
+],
+"metis_name": [
+"metis.ml",
+9906
+],
+"metis_of_clauses": [
+"metis.ml",
+9941
+],
+"metisverb": [
+"metis.ml",
+21
+],
+"minimal": [
+"arith.ml",
+1772
+],
+"mkBoolean": [
+"metis.ml",
+2935
+],
+"mkEq": [
+"metis.ml",
+2852
+],
+"mkModelClauses": [
+"metis.ml",
+9159
+],
+"mk_char": [
+"lists.ml",
+886
+],
+"mk_conj": [
+"bool.ml",
+100
+],
+"mk_disj": [
+"bool.ml",
+363
+],
+"mk_eq": [
+"fusion.ml",
+657
+],
+"mk_exists": [
+"bool.ml",
+316
+],
+"mk_finty": [
+"basics.ml",
+398
+],
+"mk_forall": [
+"bool.ml",
+246
+],
+"mk_fthm": [
+"tactics.ml",
+103
+],
+"mk_gabs": [
+"basics.ml",
+351
+],
+"mk_iff": [
+"bool.ml",
+49
+],
+"mk_imp": [
+"bool.ml",
+161
+],
+"mk_intconst": [
+"int.ml",
+279
+],
+"mk_neg": [
+"bool.ml",
+419
+],
+"mk_numeral": [
+"nums.ml",
+211
+],
+"mk_pair": [
+"pair.ml",
+134
+],
+"mk_pair_def": [
+"pair.ml",
+48
+],
+"mk_primed_var": [
+"equal.ml",
+32
+],
+"mk_realintconst": [
+"calc_int.ml",
+32
+],
+"mk_rewrites": [
+"simp.ml",
+146
+],
+"mk_select": [
+"class.ml",
+51
+],
+"mk_setenum": [
+"sets.ml",
+3880
+],
+"mk_string": [
+"lists.ml",
+886
+],
+"mk_uexists": [
+"bool.ml",
+472
+],
+"monitoring": [
+"compute.ml",
+580
+],
+"monoidal": [
+"iterate.ml",
+284
+],
+"monotonicity_theorems": [
+"ind_defs.ml",
+248
+],
+"nadd_abs": [
+"realax.ml",
+260
+],
+"nadd_add": [
+"realax.ml",
+517
+],
+"nadd_eq": [
+"realax.ml",
+369
+],
+"nadd_inv": [
+"realax.ml",
+1183
+],
+"nadd_le": [
+"realax.ml",
+421
+],
+"nadd_mul": [
+"realax.ml",
+608
+],
+"nadd_of_num": [
+"realax.ml",
+396
+],
+"nadd_rep": [
+"realax.ml",
+260
+],
+"nadd_rinv": [
+"realax.ml",
+976
+],
+"neqConvsEmpty": [
+"metis.ml",
+7422
+],
+"neutral": [
+"iterate.ml",
+281
+],
+"newId": [
+"metis.ml",
+7880
+],
+"newNet": [
+"metis.ml",
+6562
+],
+"new_compset": [
+"compute.ml",
+613
+],
+"new_definition": [
+"pair.ml",
+154
+],
+"new_inductive_definition": [
+"ind_defs.ml",
+306
+],
+"new_inductive_set": [
+"sets.ml",
+5186
+],
+"new_recursive_definition": [
+"recursion.ml",
+95
+],
+"new_specification": [
+"nums.ml",
+256
+],
+"new_type_abbrev": [
+"preterm.ml",
+81
+],
+"noConv": [
+"metis.ml",
+4387
+],
+"noLiterule": [
+"metis.ml",
+4520
+],
+"noRule": [
+"metis.ml",
+4608
+],
+"nproduct": [
+"iterate.ml",
+1194
+],
+"nsum": [
+"iterate.ml",
+1288
+],
+"null": [
+"metis.ml",
+54
+],
+"null_inst": [
+"tactics.ml",
+17
+],
+"null_meta": [
+"tactics.ml",
+19
+],
+"nullary": [
+"metis.ml",
+2093
+],
+"num_0": [
+"lib.ml",
+395
+],
+"num_Axiom": [
+"nums.ml",
+116
+],
+"num_CASES": [
+"nums.ml",
+177
+],
+"num_CONV": [
+"calc_num.ml",
+1499
+],
+"num_FINITE": [
+"sets.ml",
+3593
+],
+"num_FINITE_AVOID": [
+"sets.ml",
+3603
+],
+"num_INDUCTION": [
+"nums.ml",
+96
+],
+"num_INDUCTION_DOWN": [
+"arith.ml",
+699
+],
+"num_INFINITE": [
+"sets.ml",
+3612
+],
+"num_INFINITE_EQ": [
+"sets.ml",
+3607
+],
+"num_MAX": [
+"arith.ml",
+668
+],
+"num_RECURSION": [
+"nums.ml",
+169
+],
+"num_WF": [
+"arith.ml",
+657
+],
+"num_WF_DOWN": [
+"int.ml",
+2338
+],
+"num_WOP": [
+"arith.ml",
+662
+],
+"num_compute_add_convs": [
+"calc_num.ml",
+1480
+],
+"num_congruent": [
+"int.ml",
+2120
+],
+"num_coprime": [
+"int.ml",
+2124
+],
+"num_divides": [
+"int.ml",
+2114
+],
+"num_gcd": [
+"int.ml",
+2127
+],
+"num_lcm": [
+"int.ml",
+2130
+],
+"num_mod": [
+"int.ml",
+2117
+],
+"num_of_int": [
+"int.ml",
+2071
+],
+"num_of_string": [
+"lib.ml",
+819
+],
+"num_red_conv_list": [
+"calc_num.ml",
+1453
+],
+"num_tydef": [
+"nums.ml",
+61
+],
+"numeralList": [
+"metis.ml",
+5271
+],
+"numeralMin": [
+"metis.ml",
+5268
+],
+"numerator": [
+"lib.ml",
+403
+],
+"numseg": [
+"iterate.ml",
+18
+],
+"o_ASSOC": [
+"trivia.ml",
+30
+],
+"o_DEF": [
+"trivia.ml",
+18
+],
+"o_THM": [
+"trivia.ml",
+24
+],
+"one": [
+"trivia.ml",
+60
+],
+"one_Axiom": [
+"trivia.ml",
+80
+],
+"one_DEF": [
+"trivia.ml",
+57
+],
+"one_INDUCT": [
+"trivia.ml",
+72
+],
+"one_RECURSION": [
+"trivia.ml",
+76
+],
+"one_axiom": [
+"trivia.ml",
+67
+],
+"one_tydef": [
+"trivia.ml",
+54
+],
+"option_DISTINCT": [
+"ind_types.ml",
+1049
+],
+"option_INDUCT": [
+"ind_types.ml",
+881
+],
+"option_INJ": [
+"ind_types.ml",
+1053
+],
+"option_RECURSION": [
+"ind_types.ml",
+881
+],
+"orderToOrient": [
+"metis.ml",
+7314
+],
+"pair_INDUCT": [
+"pair.ml",
+115
+],
+"pair_RECURSION": [
+"pair.ml",
+121
+],
+"pairwise": [
+"sets.ml",
+3894
+],
+"parents": [
+"metis.ml",
+3973
+],
+"parse_as_binder": [
+"printer.ml",
+71
+],
+"parse_as_infix": [
+"printer.ml",
+85
+],
+"parse_as_prefix": [
+"printer.ml",
+78
+],
+"parse_inductive_type_specification": [
+"ind_types.ml",
+739
+],
+"parse_preterm": [
+"parser.ml",
+272
+],
+"parse_pretype": [
+"parser.ml",
+181
+],
+"parses_as_binder": [
+"printer.ml",
+71
+],
+"pastecart": [
+"cart.ml",
+181
+],
+"patterns_of_thm": [
+"impconv.ml",
+1255
+],
+"polynomial_function": [
+"iterate.ml",
+2959
+],
+"pp": [
+"metis.ml",
+9139
+],
+"ppWeightList": [
+"metis.ml",
+7048
+],
+"pp_print_colored_qterm": [
+"printer.ml",
+681
+],
+"pp_print_colored_qtype": [
+"printer.ml",
+235
+],
+"pp_print_colored_term": [
+"printer.ml",
+288
+],
+"pp_print_colored_thm": [
+"printer.ml",
+692
+],
+"pp_print_colored_type": [
+"printer.ml",
+235
+],
+"pp_print_index": [
+"thecops.ml",
+923
+],
+"pp_print_qterm": [
+"printer.ml",
+681
+],
+"pp_print_qtype": [
+"printer.ml",
+214
+],
+"pp_print_term": [
+"printer.ml",
+288
+],
+"pp_print_thm": [
+"printer.ml",
+692
+],
+"pp_print_type": [
+"printer.ml",
+214
+],
+"prebroken_binops": [
+"printer.ml",
+127
+],
+"prefix": [
+"metis.ml",
+2035
+],
+"prefixes": [
+"printer.ml",
+78
+],
+"preprocess": [
+"impconv.ml",
+1390
+],
+"preterm_of_const": [
+"metis.ml",
+9562
+],
+"preterm_of_fol_term": [
+"metis.ml",
+9566
+],
+"preterm_of_predicate": [
+"metis.ml",
+9573
+],
+"prime": [
+"int.ml",
+2572
+],
+"print_all_thm": [
+"printer.ml",
+145
+],
+"print_goal": [
+"tactics.ml",
+832
+],
+"print_goal_hyp_max_boxes": [
+"tactics.ml",
+766
+],
+"print_goalstack": [
+"tactics.ml",
+833
+],
+"print_iclause_i": [
+"thecops.ml",
+936
+],
+"print_matrix_i": [
+"thecops.ml",
+938
+],
+"print_num": [
+"system.ml",
+24
+],
+"print_qterm": [
+"printer.ml",
+722
+],
+"print_qtype": [
+"printer.ml",
+720
+],
+"print_term": [
+"printer.ml",
+721
+],
+"print_thm": [
+"printer.ml",
+723
+],
+"print_type": [
+"printer.ml",
+719
+],
+"print_types_of_subterms": [
+"printer.ml",
+154
+],
+"print_unambiguous_comprehensions": [
+"printer.ml",
+133
+],
+"printer_color_binder": [
+"printer.ml",
+175
+],
+"printer_color_const": [
+"printer.ml",
+171
+],
+"printer_color_infix": [
+"printer.ml",
+177
+],
+"printer_color_itypevar": [
+"printer.ml",
+185
+],
+"printer_color_prefix": [
+"printer.ml",
+179
+],
+"printer_color_resword": [
+"printer.ml",
+173
+],
+"printer_color_type": [
+"printer.ml",
+181
+],
+"printer_color_typevar": [
+"printer.ml",
+183
+],
+"prod_tybij": [
+"pair.ml",
+55
+],
+"product": [
+"iterate.ml",
+1238
+],
+"product_map": [
+"sets.ml",
+3241
+],
+"projectionFixed": [
+"metis.ml",
+5263
+],
+"projectionList": [
+"metis.ml",
+5234
+],
+"projectionMin": [
+"metis.ml",
+5231
+],
+"prove_cases_thm": [
+"ind_types.ml",
+964
+],
+"prove_constructors_distinct": [
+"ind_types.ml",
+929
+],
+"prove_constructors_injective": [
+"ind_types.ml",
+902
+],
+"prove_inductive_relations_exist": [
+"ind_defs.ml",
+306
+],
+"prove_monotonicity_hyps": [
+"ind_defs.ml",
+291
+],
+"prove_recursive_functions_exist": [
+"recursion.ml",
+18
+],
+"randomPriority": [
+"metis.ml",
+238
+],
+"rank": [
+"metis.ml",
+1955
+],
+"real_INFINITE": [
+"sets.ml",
+3689
+],
+"real_abs": [
+"realax.ml",
+1794
+],
+"real_add": [
+"realax.ml",
+1723
+],
+"real_add_th": [
+"realax.ml",
+1723
+],
+"real_div": [
+"realax.ml",
+1801
+],
+"real_ge": [
+"realax.ml",
+1788
+],
+"real_gt": [
+"realax.ml",
+1791
+],
+"real_ideal_cofactors": [
+"calc_rat.ml",
+490
+],
+"real_int_compute_add_convs": [
+"calc_int.ml",
+396
+],
+"real_int_red_conv_list": [
+"calc_int.ml",
+376
+],
+"real_inv": [
+"realax.ml",
+1735
+],
+"real_inv_th": [
+"realax.ml",
+1735
+],
+"real_le": [
+"realax.ml",
+1731
+],
+"real_le_th": [
+"realax.ml",
+1731
+],
+"real_lt": [
+"realax.ml",
+1785
+],
+"real_max": [
+"realax.ml",
+1804
+],
+"real_min": [
+"realax.ml",
+1807
+],
+"real_mod": [
+"int.ml",
+1170
+],
+"real_mul": [
+"realax.ml",
+1727
+],
+"real_mul_th": [
+"realax.ml",
+1727
+],
+"real_neg": [
+"realax.ml",
+1719
+],
+"real_neg_th": [
+"realax.ml",
+1719
+],
+"real_of_num": [
+"realax.ml",
+1715
+],
+"real_of_num_th": [
+"realax.ml",
+1715
+],
+"real_pow": [
+"realax.ml",
+1797
+],
+"real_rat_compute_add_convs": [
+"calc_rat.ml",
+414
+],
+"real_rat_red_conv_list": [
+"calc_rat.ml",
+389
+],
+"real_sgn": [
+"real.ml",
+1521
+],
+"real_sub": [
+"realax.ml",
+1782
+],
+"real_tybij": [
+"realax.ml",
+1712
+],
+"real_zpow": [
+"int.ml",
+2638
+],
+"recspace_tydef": [
+"ind_types.ml",
+157
+],
+"redexes": [
+"metis.ml",
+2607
+],
+"reduce'": [
+"metis.ml",
+7738
+],
+"reduce_cst": [
+"compute.ml",
+587
+],
+"refl_thm": [
+"compute.ml",
+103
+],
+"reflexivity": [
+"metis.ml",
+4278
+],
+"remove": [
+"metis.ml",
+1985
+],
+"remove_type_abbrev": [
+"preterm.ml",
+81
+],
+"repeatTopDownConv": [
+"metis.ml",
+4505
+],
+"report_timing": [
+"lib.ml",
+451
+],
+"reserve_words": [
+"printer.ml",
+48
+],
+"reserved_words": [
+"printer.ml",
+48
+],
+"residueFreeVars": [
+"metis.ml",
+2613
+],
+"resolve": [
+"metis.ml",
+3908
+],
+"retypecheck": [
+"preterm.ml",
+157
+],
+"rev": [
+"lib.ml",
+70
+],
+"reverse_interface_mapping": [
+"printer.ml",
+115
+],
+"rewrConv": [
+"metis.ml",
+4462
+],
+"rewrLiterule": [
+"metis.ml",
+4578
+],
+"rewriteIdRule'": [
+"metis.ml",
+7518
+],
+"rhs": [
+"equal.ml",
+26
+],
+"rhs_concl": [
+"compute.ml",
+102
+],
+"search": [
+"update_database.ml",
+111
+],
+"search_opts": [
+"thecops.ml",
+477
+],
+"set_basic_congs": [
+"simp.ml",
+410
+],
+"set_of_list": [
+"sets.ml",
+3790
+],
+"show_types": [
+"metis.ml",
+9501
+],
+"simplify": [
+"metis.ml",
+8570
+],
+"size": [
+"metis.ml",
+6564
+],
+"sndcart": [
+"cart.ml",
+189
+],
+"spec_all": [
+"impconv.ml",
+151
+],
+"splitGoal": [
+"metis.ml",
+3438
+],
+"split_limit": [
+"metis.ml",
+9958
+],
+"sqrt": [
+"real.ml",
+1663
+],
+"stack_out": [
+"compute.ml",
+621
+],
+"stoppers": [
+"compute.ml",
+581
+],
+"strictify_thm": [
+"compute.ml",
+156
+],
+"strictlySubsumes": [
+"metis.ml",
+6920
+],
+"string_INFINITE": [
+"sets.ml",
+3620
+],
+"string_of_fterm": [
+"thecops.ml",
+218
+],
+"string_of_iclause_i": [
+"thecops.ml",
+929
+],
+"string_of_lit": [
+"thecops.ml",
+219
+],
+"string_of_lits": [
+"thecops.ml",
+220
+],
+"string_of_num_nary": [
+"lib.ml",
+412
+],
+"string_of_term": [
+"printer.ml",
+744
+],
+"string_of_thm": [
+"printer.ml",
+745
+],
+"string_of_tminst": [
+"metis.ml",
+9774
+],
+"string_of_tyinst": [
+"metis.ml",
+9777
+],
+"string_of_type": [
+"printer.ml",
+743
+],
+"stripConj": [
+"metis.ml",
+3054
+],
+"stripDisj": [
+"metis.ml",
+3079
+],
+"stripEquiv": [
+"metis.ml",
+3104
+],
+"stripExists": [
+"metis.ml",
+3157
+],
+"stripForall": [
+"metis.ml",
+3136
+],
+"stripNeg": [
+"metis.ml",
+3039
+],
+"strip_abs": [
+"basics.ml",
+60
+],
+"strip_comb": [
+"basics.ml",
+58
+],
+"strip_conj": [
+"impconv.ml",
+41
+],
+"strip_disj": [
+"thecops.ml",
+806
+],
+"strip_exists": [
+"basics.ml",
+287
+],
+"strip_forall": [
+"basics.ml",
+283
+],
+"strip_gabs": [
+"basics.ml",
+369
+],
+"strip_ncomb": [
+"ind_defs.ml",
+16
+],
+"strong": [
+"compute.ml",
+687
+],
+"subst": [
+"basics.ml",
+111
+],
+"subsumes": [
+"metis.ml",
+6904
+],
+"subterm": [
+"metis.ml",
+2761
+],
+"subterm'": [
+"metis.ml",
+2268
+],
+"sum": [
+"iterate.ml",
+1977
+],
+"sum_INDUCT": [
+"ind_types.ml",
+768
+],
+"sum_RECURSION": [
+"ind_types.ml",
+768
+],
+"sup": [
+"sets.ml",
+4701
+],
+"superadmissible": [
+"define.ml",
+65
+],
+"support": [
+"iterate.ml",
+298
+],
+"symmetry": [
+"metis.ml",
+4294
+],
+"tailadmissible": [
+"define.ml",
+56
+],
+"target_patterns_of_thm": [
+"impconv.ml",
+1651
+],
+"termToAtom": [
+"metis.ml",
+6546
+],
+"termToQterm": [
+"metis.ml",
+6168
+],
+"term_of_preterm": [
+"preterm.ml",
+157
+],
+"term_of_rat": [
+"calc_int.ml",
+54
+],
+"term_order": [
+"simp.ml",
+65
+],
+"term_type_unify": [
+"drule.ml",
+362
+],
+"th": [
+"iterate.ml",
+2776
+],
+"the_compset": [
+"compute.ml",
+786
+],
+"the_definitions": [
+"pair.ml",
+148
+],
+"the_implicit_types": [
+"preterm.ml",
+33
+],
+"the_inductive_definitions": [
+"ind_defs.ml",
+304
+],
+"the_inductive_types": [
+"ind_types.ml",
+1391
+],
+"the_interface": [
+"printer.ml",
+99
+],
+"the_overload_skeletons": [
+"printer.ml",
+101
+],
+"the_specifications": [
+"nums.ml",
+254
+],
+"the_type_definitions": [
+"class.ml",
+119
+],
+"theorems": [
+"help.ml",
+92
+],
+"toFormula": [
+"metis.ml",
+3509
+],
+"toString": [
+"metis.ml",
+2454
+],
+"top": [
+"metis.ml",
+1981
+],
+"transEqn": [
+"metis.ml",
+4370
+],
+"trans_thm": [
+"compute.ml",
+104
+],
+"transitivity": [
+"metis.ml",
+4302
+],
+"treal_add": [
+"realax.ml",
+1391
+],
+"treal_eq": [
+"realax.ml",
+1409
+],
+"treal_inv": [
+"realax.ml",
+1400
+],
+"treal_le": [
+"realax.ml",
+1397
+],
+"treal_mul": [
+"realax.ml",
+1394
+],
+"treal_neg": [
+"realax.ml",
+1388
+],
+"treal_of_num": [
+"realax.ml",
+1385
+],
+"truthName": [
+"metis.ml",
+3373
+],
+"try_user_parser": [
+"parser.ml",
+226
+],
+"tybit0_INDUCT": [
+"cart.ml",
+341
+],
+"tybit0_RECURSION": [
+"cart.ml",
+341
+],
+"tybit1_INDUCT": [
+"cart.ml",
+344
+],
+"tybit1_RECURSION": [
+"cart.ml",
+344
+],
+"type_abbrevs": [
+"preterm.ml",
+81
+],
+"type_invention_error": [
+"preterm.ml",
+27
+],
+"type_invention_warning": [
+"preterm.ml",
+25
+],
+"type_of_pretype": [
+"preterm.ml",
+157
+],
+"typify_universal_set": [
+"printer.ml",
+139
+],
+"unconst_preterm": [
+"metis.ml",
+9535
+],
+"undefine": [
+"lib.ml",
+644
+],
+"undefined": [
+"lib.ml",
+549
+],
+"unhide_constant": [
+"preterm.ml",
+96
+],
+"uniformWeight": [
+"metis.ml",
+6990
+],
+"union": [
+"metis.ml",
+1288
+],
+"unionDomain": [
+"metis.ml",
+1432
+],
+"unionListFixed": [
+"metis.ml",
+5179
+],
+"unparse_as_binder": [
+"printer.ml",
+71
+],
+"unparse_as_infix": [
+"printer.ml",
+85
+],
+"unparse_as_prefix": [
+"printer.ml",
+78
+],
+"unreserve_words": [
+"printer.ml",
+48
+],
+"unspaced_binops": [
+"printer.ml",
+121
+],
+"unzip": [
+"lib.ml",
+318
+],
+"uselessFixedFunction": [
+"metis.ml",
+5095
+],
+"uselessFixedRelation": [
+"metis.ml",
+5097
+],
+"vAR_SYMBOLS": [
+"metis.ml",
+2224
+],
+"variables": [
+"basics.ml",
+95
+],
+"vector": [
+"cart.ml",
+554
+],
+"verb": [
+"metis.ml",
+9647
+],
+"verbose": [
+"lib.ml",
+450
+],
+"weightEmpty": [
+"metis.ml",
+7013
+],
+"weightToString": [
+"metis.ml",
+7071
+],
+"weightZero": [
+"metis.ml",
+7015
+],
+"xVar": [
+"metis.ml",
+4256
+],
+"xVarName": [
+"metis.ml",
+4255
+],
+"yVar": [
+"metis.ml",
+4259
+],
+"yVarName": [
+"metis.ml",
+4258
+],
+"zVar": [
+"metis.ml",
+4262
+],
+"zVarName": [
+"metis.ml",
+4261
+],
+"zeroElement": [
+"metis.ml",
+5061
+],
+"zeroValuation": [
+"metis.ml",
+5656
+]
+},
+"schema": 1
+}

@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "profile": "core",
-  "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
+  "profile": "core_prev",
+  "hol_light_commit": "9b510bc76da4cecf6e509be44d327c9236ec273f",
   "auto_definitions": [
     {
       "hol": "OUTL",
@@ -42,11 +42,11 @@
     [ "_22943", "no carrier mapping for type constructor char (in char)" ],
     [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
     [
-      "_100512",
+      "_100472",
       "unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0"
     ],
     [
-      "_100531",
+      "_100491",
       "unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1"
     ]
   ],
@@ -2351,7 +2351,7 @@
       "status": "native_reuse",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2321,
+      "src_line": 2314,
       "classes": [ "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -2985,25 +2985,6 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 1939,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [
-        "hol_card_finite_cardinality", "hol_finite_finite",
-        "hol_nsum_finsum", "hol_num_omega"
-      ],
-      "notes": [],
-      "var_views": {},
-      "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s c= Power A, finite s /\\ ((forall t c= A, t :e s -> finite t) /\\ (forall t u c= A, t :e s /\\ (u :e s /\\ ~ t = u) -> t :/\\: u = Empty)) -> finite_cardinality (Union s) = finsum s (fun x:set => finite_cardinality x)"
-    },
-    {
-      "name": "CARD_UNIONS_IMAGE",
-      "source_name": "CARD_UNIONS_IMAGE",
-      "aliases": [ "CARD_UNIONS_IMAGE" ],
-      "hash": "5d430c768ca9536456e51355c5591b70",
-      "status": "transport_required",
-      "shard": "iterate",
-      "src_file": "iterate.ml",
       "src_line": 1923,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
@@ -3013,7 +2994,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall f :e Power A :^: K, forall s c= K, finite s /\\ ((forall t :e K, t :e s -> finite (f t)) /\\ (forall t u :e K, t :e s /\\ (u :e s /\\ ~ t = u) -> f t :/\\: f u = Empty)) -> finite_cardinality (Union {f x | x :e s}) = finsum s (fun i:set => finite_cardinality (f i))"
+      "statement": "forall A:set, A <> Empty -> forall s c= Power A, finite s /\\ ((forall t c= A, t :e s -> finite t) /\\ (forall t u c= A, t :e s /\\ (u :e s /\\ ~ t = u) -> t :/\\: u = Empty)) -> finite_cardinality (Union s) = finsum s (fun x:set => finite_cardinality x)"
     },
     {
       "name": "CARD_UNIONS_LE",
@@ -26298,7 +26279,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 1992,
+      "src_line": 1985,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -27855,7 +27836,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 1987,
+      "src_line": 1980,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "omega_Subq_R" ],
       "notes": [],
@@ -31229,7 +31210,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2985,
+      "src_line": 2978,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31245,7 +31226,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2969,
+      "src_line": 2962,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31261,7 +31242,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3093,
+      "src_line": 3086,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R" ],
       "notes": [],
@@ -31277,7 +31258,7 @@
       "status": "native_reuse",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2981,
+      "src_line": 2974,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31293,7 +31274,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2975,
+      "src_line": 2968,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31309,7 +31290,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3067,
+      "src_line": 3060,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31325,7 +31306,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3000,
+      "src_line": 2993,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31341,7 +31322,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3023,
+      "src_line": 3016,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31357,7 +31338,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3012,
+      "src_line": 3005,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31373,7 +31354,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3061,
+      "src_line": 3054,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R" ],
       "notes": [],
@@ -31389,7 +31370,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3008,
+      "src_line": 3001,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31405,7 +31386,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3018,
+      "src_line": 3011,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -31421,7 +31402,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3052,
+      "src_line": 3045,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -31437,7 +31418,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 3084,
+      "src_line": 3077,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R" ],
       "notes": [],
@@ -36902,7 +36883,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2386,
+      "src_line": 2379,
       "classes": [ "generalization", "native_isomorphism" ],
       "bridges": [
         "empty_case:A", "hol_finite_finite", "hol_nsum_finsum",
@@ -36921,7 +36902,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2590,
+      "src_line": 2583,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -36942,7 +36923,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2711,
+      "src_line": 2704,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_nsum_finsum", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -36961,7 +36942,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2935,
+      "src_line": 2928,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -36979,7 +36960,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2945,
+      "src_line": 2938,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -36997,7 +36978,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2925,
+      "src_line": 2918,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -37016,7 +36997,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2893,
+      "src_line": 2886,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -38421,7 +38402,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2858,
+      "src_line": 2851,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -38440,7 +38421,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2878,
+      "src_line": 2871,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -38459,7 +38440,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2830,
+      "src_line": 2823,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe"
@@ -38477,7 +38458,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2849,
+      "src_line": 2842,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -38496,7 +38477,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2843,
+      "src_line": 2836,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -41264,7 +41245,7 @@
       "status": "native_reuse",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2048,
+      "src_line": 2041,
       "classes": [ "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -41282,7 +41263,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2128,
+      "src_line": 2121,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41298,7 +41279,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2268,
+      "src_line": 2261,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -41317,7 +41298,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2134,
+      "src_line": 2127,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41333,7 +41314,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2620,
+      "src_line": 2613,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41349,7 +41330,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2032,
+      "src_line": 2025,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41365,7 +41346,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2036,
+      "src_line": 2029,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41384,7 +41365,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2602,
+      "src_line": 2595,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41400,7 +41381,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2674,
+      "src_line": 2667,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41419,7 +41400,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2435,
+      "src_line": 2428,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41435,7 +41416,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2257,
+      "src_line": 2250,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -41454,7 +41435,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2262,
+      "src_line": 2255,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41475,7 +41456,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2275,
+      "src_line": 2268,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41496,7 +41477,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2283,
+      "src_line": 2276,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41517,7 +41498,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2288,
+      "src_line": 2281,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41538,7 +41519,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2498,
+      "src_line": 2491,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41554,7 +41535,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2505,
+      "src_line": 2498,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41574,7 +41555,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2001,
+      "src_line": 1994,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41593,7 +41574,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2690,
+      "src_line": 2683,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41612,7 +41593,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2649,
+      "src_line": 2642,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -41631,7 +41612,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2662,
+      "src_line": 2655,
       "classes": [ "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe"
@@ -41649,7 +41630,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2656,
+      "src_line": 2649,
       "classes": [ "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_lt_SNoLt",
@@ -41668,7 +41649,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2695,
+      "src_line": 2688,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -41687,7 +41668,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2549,
+      "src_line": 2542,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -41705,7 +41686,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2569,
+      "src_line": 2562,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41725,7 +41706,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2770,
+      "src_line": 2763,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41744,7 +41725,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2762,
+      "src_line": 2755,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41763,7 +41744,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2143,
+      "src_line": 2136,
       "classes": [ "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -41782,7 +41763,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2624,
+      "src_line": 2617,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41801,7 +41782,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 1996,
+      "src_line": 1989,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41820,7 +41801,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2190,
+      "src_line": 2183,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41840,7 +41821,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2195,
+      "src_line": 2188,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41860,7 +41841,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2206,
+      "src_line": 2199,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -41881,7 +41862,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2017,
+      "src_line": 2010,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41897,7 +41878,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2747,
+      "src_line": 2740,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41916,7 +41897,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2755,
+      "src_line": 2748,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -41935,7 +41916,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2123,
+      "src_line": 2116,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -41951,7 +41932,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2043,
+      "src_line": 2036,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -41969,7 +41950,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2628,
+      "src_line": 2621,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -41988,7 +41969,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2451,
+      "src_line": 2444,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42004,7 +41985,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2459,
+      "src_line": 2452,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42020,7 +42001,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2615,
+      "src_line": 2608,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe"
@@ -42038,7 +42019,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2300,
+      "src_line": 2293,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42057,7 +42038,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2362,
+      "src_line": 2355,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42073,7 +42054,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2372,
+      "src_line": 2365,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42089,7 +42070,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2219,
+      "src_line": 2212,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42105,7 +42086,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2354,
+      "src_line": 2347,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42121,7 +42102,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2539,
+      "src_line": 2532,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42140,7 +42121,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2427,
+      "src_line": 2420,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42159,7 +42140,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2021,
+      "src_line": 2014,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42179,7 +42160,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2467,
+      "src_line": 2460,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42195,7 +42176,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2079,
+      "src_line": 2072,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42211,7 +42192,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2513,
+      "src_line": 2506,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42230,7 +42211,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2610,
+      "src_line": 2603,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe"
@@ -42248,7 +42229,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2052,
+      "src_line": 2045,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42264,7 +42245,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2086,
+      "src_line": 2079,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42284,7 +42265,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2099,
+      "src_line": 2092,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42304,7 +42285,7 @@
       "status": "native_reuse",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2344,
+      "src_line": 2337,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -42323,7 +42304,7 @@
       "status": "native_reuse",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2325,
+      "src_line": 2318,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
@@ -42342,7 +42323,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2416,
+      "src_line": 2409,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42361,7 +42342,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2070,
+      "src_line": 2063,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42377,7 +42358,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2680,
+      "src_line": 2673,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum"
@@ -42395,7 +42376,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2686,
+      "src_line": 2679,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42414,7 +42395,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2700,
+      "src_line": 2693,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42433,7 +42414,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2735,
+      "src_line": 2728,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42452,7 +42433,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2719,
+      "src_line": 2712,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "add_nat_add_SNo", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42471,7 +42452,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2160,
+      "src_line": 2153,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42492,7 +42473,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2170,
+      "src_line": 2163,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42513,7 +42494,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2640,
+      "src_line": 2633,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -42532,7 +42513,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2149,
+      "src_line": 2142,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -42550,7 +42531,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2636,
+      "src_line": 2629,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_le_SNoLe",
@@ -42569,7 +42550,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2105,
+      "src_line": 2098,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42590,7 +42571,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2117,
+      "src_line": 2110,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42611,7 +42592,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2705,
+      "src_line": 2698,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_lt_SNoLt",
@@ -42630,7 +42611,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2557,
+      "src_line": 2550,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42649,7 +42630,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2579,
+      "src_line": 2572,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42669,7 +42650,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2252,
+      "src_line": 2245,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42688,7 +42669,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2308,
+      "src_line": 2301,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "omega_Subq_R"
@@ -42706,7 +42687,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2066,
+      "src_line": 2059,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42722,7 +42703,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2202,
+      "src_line": 2195,
       "classes": [ "generalization", "native_isomorphism" ],
       "bridges": [ "empty_case:A", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42738,7 +42719,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2645,
+      "src_line": 2638,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42754,7 +42735,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2075,
+      "src_line": 2068,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42770,7 +42751,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2391,
+      "src_line": 2384,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42789,7 +42770,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2409,
+      "src_line": 2402,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42808,7 +42789,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2606,
+      "src_line": 2599,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42824,7 +42805,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2443,
+      "src_line": 2436,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_prod_setprod", "hol_real_R",
@@ -42843,7 +42824,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2313,
+      "src_line": 2306,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [ "rewrite:eta" ],
@@ -42859,7 +42840,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2226,
+      "src_line": 2219,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42880,7 +42861,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2028,
+      "src_line": 2021,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -42898,7 +42879,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2211,
+      "src_line": 2204,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42914,7 +42895,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2668,
+      "src_line": 2661,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42930,7 +42911,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2632,
+      "src_line": 2625,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_num_omega", "hol_real_R", "hol_sum_finsum", "nat_lt_SNoLt",
@@ -42949,7 +42930,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2011,
+      "src_line": 2004,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -42965,7 +42946,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2483,
+      "src_line": 2476,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -42984,7 +42965,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2294,
+      "src_line": 2287,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_finite_finite", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -43000,7 +42981,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2246,
+      "src_line": 2239,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -43021,7 +43002,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2476,
+      "src_line": 2469,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [
         "hol_finite_finite", "hol_num_omega", "hol_real_R", "hol_sum_finsum",
@@ -43040,7 +43021,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2237,
+      "src_line": 2230,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -43061,7 +43042,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2232,
+      "src_line": 2225,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -43079,7 +43060,7 @@
       "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2177,
+      "src_line": 2170,
       "classes": [
         "definitionally_exact", "generalization", "native_isomorphism"
       ],
@@ -47561,7 +47542,7 @@
       "source_name": "list_CASES",
       "aliases": [ "list_CASES" ],
       "hash": "6c9a307f18507870c827834056fdffa7",
-      "status": "native_reuse",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 182,
@@ -48553,7 +48534,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 2966,
+      "src_line": 2959,
       "classes": [ "definitionally_exact", "native_isomorphism" ],
       "bridges": [ "hol_num_omega", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],
@@ -49108,7 +49089,7 @@
       "status": "transport_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
-      "src_line": 1984,
+      "src_line": 1977,
       "classes": [ "native_isomorphism" ],
       "bridges": [ "hol_iterate", "hol_real_R", "hol_sum_finsum" ],
       "notes": [],

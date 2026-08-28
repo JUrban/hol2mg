@@ -1,0 +1,10 @@
+{
+ "name": "core_prev",
+ "description": "HOL Light core at an older commit (2026-05-18), for testing the upstream-update workflow",
+ "roots": [],
+ "hol_light_commit": "9b510bc76da4cecf6e509be44d327c9236ec273f",
+ "mappings": [
+  "core.json",
+  "lists.json"
+ ]
+}
