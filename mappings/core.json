@@ -1,0 +1,1290 @@
+{
+ "version": 1,
+ "description": "Core mappings: logic, equality, choice, functions, pairs, HOL Light sets, naturals, integers, reals (God1 vocabulary).",
+ "types": [
+  {
+   "hol": "num",
+   "arity": 0,
+   "carrier": "omega",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega",
+   "notes": "HOL Light num <-> finite ordinals; arithmetic operations bridged to SNo operations on omega."
+  },
+  {
+   "hol": "int",
+   "arity": 0,
+   "carrier": "int",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "real",
+   "arity": 0,
+   "carrier": "R",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "prod",
+   "arity": 2,
+   "carrier": "?0 :*: ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod",
+   "notes": "pairs are 2-tuples (functions on the ordinal 2); FST/SND are application to 0/1."
+  },
+  {
+   "hol": "1",
+   "arity": 0,
+   "carrier": "1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_one_1"
+  },
+  {
+   "hol": "sum",
+   "arity": 2,
+   "carrier": "?0 :+: ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_sum_setsum"
+  },
+  {
+   "hol": "list",
+   "arity": 1,
+   "carrier": "finseq ?0",
+   "class": "native_isomorphism",
+   "status": "pending",
+   "bridge": "hol_list_finseq",
+   "module": "native/finseq.mg",
+   "notes": "finite sequences; native infrastructure not yet written."
+  },
+  {
+   "hol": "option",
+   "arity": 1,
+   "carrier": "1 :+: ?0",
+   "class": "native_isomorphism",
+   "status": "pending",
+   "bridge": "hol_option_setsum"
+  }
+ ],
+ "constants": [
+  {
+   "hol": "o",
+   "scheme": "(B->C)->(A->B)->A->C",
+   "args": [
+    "metafun",
+    "metafun"
+   ],
+   "result": "metafun",
+   "template": "fun x:set => ?1 (?2 x)",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "I",
+   "scheme": "A->A",
+   "args": [],
+   "result": "metafun",
+   "template": "fun x:set => x",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "ONE_ONE",
+   "scheme": "(A->B)->bool",
+   "args": [
+    "metafun"
+   ],
+   "result": "prop",
+   "template": "forall x y :e ?A, ?1 x = ?1 y -> x = y",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "ONTO",
+   "scheme": "(A->B)->bool",
+   "args": [
+    "metafun"
+   ],
+   "result": "prop",
+   "template": "forall y :e ?B, exists x :e ?A, ?1 x = y",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "LET_END",
+   "scheme": "A->A",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": ",",
+   "scheme": "A->B->A#B",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "(?1,?2)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "FST",
+   "scheme": "A#B->A",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 0",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "SND",
+   "scheme": "A#B->B",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "CURRY",
+   "scheme": "(A#B->C)->A->B->C",
+   "args": [
+    "metafun",
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 (?2,?3)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "UNCURRY",
+   "scheme": "(A->B->C)->A#B->C",
+   "args": [
+    "metafun",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 (?2 0) (?2 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "one",
+   "scheme": "1",
+   "args": [],
+   "result": "set",
+   "template": "0",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_one_1"
+  },
+  {
+   "hol": "INL",
+   "scheme": "A->A+B",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "Inj0 ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_sum_setsum"
+  },
+  {
+   "hol": "INR",
+   "scheme": "B->A+B",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "Inj1 ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_sum_setsum"
+  },
+  {
+   "hol": "IN",
+   "scheme": "A->(A->bool)->bool",
+   "args": [
+    "set",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "?1 :e ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "HOL predicates as data are subsets of the carrier."
+  },
+  {
+   "hol": "EMPTY",
+   "scheme": "A->bool",
+   "args": [],
+   "result": "subset",
+   "template": "Empty",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "UNIV",
+   "scheme": "A->bool",
+   "args": [],
+   "result": "subset",
+   "template": "?A",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "INSERT",
+   "scheme": "A->(A->bool)->(A->bool)",
+   "args": [
+    "set",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "SetAdjoin ?2 ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "DELETE",
+   "scheme": "(A->bool)->A->(A->bool)",
+   "args": [
+    "subset",
+    "set"
+   ],
+   "result": "subset",
+   "template": "?1 :\\: {?2}",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "UNION",
+   "scheme": "(A->bool)->(A->bool)->(A->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :\\/: ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "INTER",
+   "scheme": "(A->bool)->(A->bool)->(A->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :/\\: ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "DIFF",
+   "scheme": "(A->bool)->(A->bool)->(A->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :\\: ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "SUBSET",
+   "scheme": "(A->bool)->(A->bool)->bool",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "?1 c= ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "PSUBSET",
+   "scheme": "(A->bool)->(A->bool)->bool",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "?1 c= ?2 /\\ ?1 <> ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "DISJOINT",
+   "scheme": "(A->bool)->(A->bool)->bool",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "?1 :/\\: ?2 = Empty",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "UNIONS",
+   "scheme": "((A->bool)->bool)->(A->bool)",
+   "args": [
+    "subset"
+   ],
+   "result": "subset",
+   "template": "Union ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "INTERS",
+   "scheme": "((A->bool)->bool)->(A->bool)",
+   "args": [
+    "subset"
+   ],
+   "result": "subset",
+   "template": "{x :e ?A | forall Y :e ?1, x :e Y}",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "bounded by the carrier so that INTERS {} = UNIV."
+  },
+  {
+   "hol": "IMAGE",
+   "scheme": "(A->B)->(A->bool)->(B->bool)",
+   "args": [
+    "metafun",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "{?1 x | x :e ?2}",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "SING",
+   "scheme": "(A->bool)->bool",
+   "args": [
+    "subset"
+   ],
+   "result": "prop",
+   "template": "exists x :e ?A, ?1 = {x}",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "FINITE",
+   "scheme": "(A->bool)->bool",
+   "args": [
+    "subset"
+   ],
+   "result": "prop",
+   "template": "finite ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_finite"
+  },
+  {
+   "hol": "INFINITE",
+   "scheme": "(A->bool)->bool",
+   "args": [
+    "subset"
+   ],
+   "result": "prop",
+   "template": "infinite ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_finite_finite"
+  },
+  {
+   "hol": "HAS_SIZE",
+   "scheme": "(A->bool)->num->bool",
+   "args": [
+    "subset",
+    "set"
+   ],
+   "result": "prop",
+   "template": "equip ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_has_size_equip"
+  },
+  {
+   "hol": "CARD",
+   "scheme": "(A->bool)->num",
+   "args": [
+    "subset"
+   ],
+   "result": "set",
+   "template": "card ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_card",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "CHOICE",
+   "scheme": "(A->bool)->A",
+   "args": [
+    "subset"
+   ],
+   "result": "set",
+   "template": "choose_in ?A (fun x:set => x :e ?1)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "bridge": "choose_in_spec"
+  },
+  {
+   "hol": "REST",
+   "scheme": "(A->bool)->(A->bool)",
+   "args": [
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :\\: {choose_in ?A (fun x:set => x :e ?1)}",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "bridge": "choose_in_spec"
+  },
+  {
+   "hol": "INJ",
+   "scheme": "(A->B)->(A->bool)->(B->bool)->bool",
+   "args": [
+    "metafun",
+    "subset",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "inj ?2 ?3 ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "SURJ",
+   "scheme": "(A->B)->(A->bool)->(B->bool)->bool",
+   "args": [
+    "metafun",
+    "subset",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "(forall x :e ?2, ?1 x :e ?3) /\\ (forall y :e ?3, exists x :e ?2, ?1 x = y)",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "BIJ",
+   "scheme": "(A->B)->(A->bool)->(B->bool)->bool",
+   "args": [
+    "metafun",
+    "subset",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "bij ?2 ?3 ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "CROSS",
+   "scheme": "(A->bool)->(B->bool)->(A#B->bool)",
+   "args": [
+    "subset",
+    "subset"
+   ],
+   "result": "subset",
+   "template": "?1 :*: ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_prod_setprod"
+  },
+  {
+   "hol": "pairwise",
+   "scheme": "(A->A->bool)->(A->bool)->bool",
+   "args": [
+    "metapred",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "forall x y :e ?2, x <> y -> ?1 x y",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "SUC",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "ordsucc ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "+",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 + ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "add_nat_add_SNo"
+  },
+  {
+   "hol": "*",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 * ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "mul_nat_mul_SNo"
+  },
+  {
+   "hol": "EXP",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 ^ ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "exp_nat_exp_SNo_nat"
+  },
+  {
+   "hol": "<",
+   "scheme": "num->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 < ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "nat_lt_SNoLt"
+  },
+  {
+   "hol": "<=",
+   "scheme": "num->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 <= ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "nat_le_SNoLe"
+  },
+  {
+   "hol": ">",
+   "scheme": "num->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?2 < ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "nat_lt_SNoLt"
+  },
+  {
+   "hol": ">=",
+   "scheme": "num->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?2 <= ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "nat_le_SNoLe"
+  },
+  {
+   "hol": "FACT",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "factorial ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_fact_factorial"
+  },
+  {
+   "hol": "-",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "minus_nat ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "PRE",
+   "scheme": "num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "nat_pred ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "DIV",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "div_nat ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "MOD",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "mod_nat ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "EVEN",
+   "scheme": "num->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "even_nat ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "ODD",
+   "scheme": "num->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "odd_nat ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "module": "native/prelude.mg"
+  },
+  {
+   "hol": "MAX",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 <= ?2 then ?2 else ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "MIN",
+   "scheme": "num->num->num",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 <= ?2 then ?1 else ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "real_of_num",
+   "scheme": "num->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "omega_Subq_R",
+   "notes": "omega c= R in God1, so the injection is the identity."
+  },
+  {
+   "hol": "real_neg",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "- ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_add",
+   "scheme": "real->real->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 + ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_sub",
+   "scheme": "real->real->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 + - ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_mul",
+   "scheme": "real->real->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 * ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_inv",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "recip_SNo ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R",
+   "notes": "both sides take inv 0 = 0"
+  },
+  {
+   "hol": "real_div",
+   "scheme": "real->real->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 :/: ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_pow",
+   "scheme": "real->num->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 ^ ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_abs",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "abs_SNo ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_lt",
+   "scheme": "real->real->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 < ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_le",
+   "scheme": "real->real->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 <= ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_gt",
+   "scheme": "real->real->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?2 < ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_ge",
+   "scheme": "real->real->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?2 <= ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "real_max",
+   "scheme": "real->real->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 <= ?2 then ?2 else ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "real_min",
+   "scheme": "real->real->real",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 <= ?2 then ?1 else ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "real_sgn",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "if 0 < ?1 then 1 else if ?1 < 0 then - 1 else 0",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "int_of_num",
+   "scheme": "num->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "omega_Subq_int"
+  },
+  {
+   "hol": "real_of_int",
+   "scheme": "int->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "int_Subq_R"
+  },
+  {
+   "hol": "integer",
+   "scheme": "real->bool",
+   "args": [
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 :e int",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "int_Subq_R"
+  },
+  {
+   "hol": "int_neg",
+   "scheme": "int->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "- ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_add",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 + ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_sub",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 + - ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_mul",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 * ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_pow",
+   "scheme": "int->num->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 ^ ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_abs",
+   "scheme": "int->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "abs_SNo ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_lt",
+   "scheme": "int->int->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 < ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_le",
+   "scheme": "int->int->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?1 <= ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_gt",
+   "scheme": "int->int->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?2 < ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_ge",
+   "scheme": "int->int->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "?2 <= ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "int_max",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 <= ?2 then ?2 else ?1",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "int_min",
+   "scheme": "int->int->int",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "set",
+   "template": "if ?1 <= ?2 then ?1 else ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "int_sgn",
+   "scheme": "int->int",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "if 0 < ?1 then 1 else if ?1 < 0 then - 1 else 0",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "sup",
+   "scheme": "(real->bool)->real",
+   "args": [
+    "subset"
+   ],
+   "result": "set",
+   "template": "sup ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R",
+   "notes": "God1 sup on subsets of R"
+  },
+  {
+   "hol": "inf",
+   "scheme": "(real->bool)->real",
+   "args": [
+    "subset"
+   ],
+   "result": "set",
+   "template": "inf ?1",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R"
+  },
+  {
+   "hol": "sqrt",
+   "scheme": "real->real",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "if 0 <= ?1 then sqrt_SNo_nonneg ?1 else - sqrt_SNo_nonneg (- ?1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_real_R",
+   "notes": "HOL Light sqrt is odd-extended to negatives"
+  },
+  {
+   "hol": "..",
+   "scheme": "num->num->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "subset",
+   "template": "{i :e omega | ?1 <= i /\\ i <= ?2}",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "int_divides",
+   "scheme": "int->int->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "divides_int ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_int_int"
+  },
+  {
+   "hol": "num_divides",
+   "scheme": "num->num->bool",
+   "args": [
+    "set",
+    "set"
+   ],
+   "result": "prop",
+   "template": "divides_nat ?1 ?2",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "dist",
+   "scheme": "num#num->num",
+   "args": [
+    "set"
+   ],
+   "result": "set",
+   "template": "abs_SNo (?1 0 + - ?1 1)",
+   "class": "native_isomorphism",
+   "status": "reviewed",
+   "bridge": "hol_num_omega"
+  },
+  {
+   "hol": "UNION_OF",
+   "scheme": "(((A->bool)->bool)->bool)->((A->bool)->bool)->(A->bool)->bool",
+   "args": [
+    "metapred",
+    "metapred",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "exists u c= Power ?A, ?1 u /\\ (forall c :e u, ?2 c) /\\ Union u = ?3",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "INTERSECTION_OF",
+   "scheme": "(((A->bool)->bool)->bool)->((A->bool)->bool)->(A->bool)->bool",
+   "args": [
+    "metapred",
+    "metapred",
+    "subset"
+   ],
+   "result": "prop",
+   "template": "exists u c= Power ?A, ?1 u /\\ (forall c :e u, ?2 c) /\\ {x :e ?A | forall Y :e u, x :e Y} = ?3",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  },
+  {
+   "hol": "ARB",
+   "scheme": "A",
+   "args": [],
+   "result": "set",
+   "template": "choose_in ?A (fun x:set => True)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "bridge": "choose_in_spec"
+  },
+  {
+   "hol": "LET",
+   "scheme": "(A->B)->A->B",
+   "args": [
+    "metafun",
+    "set"
+   ],
+   "result": "set",
+   "template": "?1 ?2",
+   "class": "definitionally_exact",
+   "status": "reviewed"
+  }
+ ]
+}

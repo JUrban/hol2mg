@@ -1,0 +1,6 @@
+{
+  "name": "core",
+  "description": "HOL Light core: everything loaded by hol.ml (through database.ml)",
+  "roots": [],
+  "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b"
+}

@@ -6,5 +6,5 @@
 *.cmxa
 _build/
 build/
-/bin/
+/bin/hol2mg
 *.log
