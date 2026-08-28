@@ -224,7 +224,15 @@ let coerce ctx (t : Mg.tm) (from : view) (target : view) : Mg.tm =
         let body = reify ctx applied (VMetaFun (tail, c)) in
         List.iter (release ctx) xs;
         List.fold_right (fun x acc -> Mg.Lam (x, Mg.Set, acc)) xs body
-      end else fail "coerce: metafun arity increase (%s -> %s)" (string_of_view from) (string_of_view target)
+      end else begin
+        (* more arguments than the meta arity: the codomain is a function carrier, apply the value *)
+        let k = List.length ds in
+        let xs = List.map (fun _ -> fresh ctx "x") ds' in
+        let head = List.fold_left (fun acc x -> Mg.App (acc, Mg.Var x)) t (List.filteri (fun i _ -> i < k) xs) in
+        let body = List.fold_left (fun acc x -> Mg.App (acc, Mg.Var x)) (Mg.normalize head) (List.filteri (fun i _ -> i >= k) xs) in
+        List.iter (release ctx) xs;
+        List.fold_right (fun x acc -> Mg.Lam (x, Mg.Set, acc)) xs body
+      end
   | VMetaPred ds, VMetaPred ds' ->
       if List.length ds = List.length ds' then t
       else if List.length ds' < List.length ds then begin
@@ -236,6 +244,17 @@ let coerce ctx (t : Mg.tm) (from : view) (target : view) : Mg.tm =
         List.iter (release ctx) xs;
         List.fold_right (fun x acc -> Mg.Lam (x, Mg.Set, acc)) xs body
       end else fail "coerce: metapred arity increase"
+  | VMetaFun (ds, _), VMetaPred ds' when List.length ds' > List.length ds ->
+      (* a function into subsets used as a predicate of higher arity: membership in the value *)
+      let k = List.length ds in
+      let xs = List.map (fun _ -> fresh ctx "x") ds' in
+      let head = Mg.normalize (List.fold_left (fun acc x -> Mg.App (acc, Mg.Var x)) t (List.filteri (fun i _ -> i < k) xs)) in
+      let rest = List.filteri (fun i _ -> i >= k) xs in
+      let last = List.nth rest (List.length rest - 1) in
+      let mid = List.filteri (fun i _ -> i < List.length rest - 1) rest in
+      let body = mg_in (Mg.Var last) (List.fold_left (fun acc x -> Mg.App (acc, Mg.Var x)) head mid) in
+      List.iter (release ctx) xs;
+      List.fold_right (fun x acc -> Mg.Lam (x, Mg.Set, acc)) xs body
   | (VMetaFun _ | VMetaPred _), (VSet _ | VSubset _) -> reify ctx t from
   | (VSet _ | VSubset _), (VMetaFun _ | VMetaPred _) -> run ctx t target
   | VMetaFun (ds, c), VMetaPred ds' when List.length ds = List.length ds' ->
@@ -484,6 +503,10 @@ and elab_const ctx (t : tm) (c : string) (cty : ty) (args : tm list) (hint : vie
   let arg i = List.nth args i in
   match c, args with
   (* ---- built-in logic ---- *)
+  | ("~" | "/\\" | "\\/" | "==>"), args when List.length args < (if c = "~" then 1 else 2) ->
+      let ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty args in
+      let t' = List.fold_left (fun f a -> App (f, a)) (Const (c, cty)) args in
+      elab_nat ctx (eta_expand (if args = [] then "p" else "q") t' ty) hint
   | "~", [ a ] -> (mg_not (elab ctx a VProp), VProp)
   | "/\\", [ a; b ] -> (mg_and (elab ctx a VProp) (elab ctx b VProp), VProp)
   | "\\/", [ a; b ] -> (mg_or (elab ctx a VProp) (elab ctx b VProp), VProp)
@@ -659,10 +682,15 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
       match res_view with
       | VMetaFun (ds, cod) ->
           let k = List.length ds in
-          if List.length extra > k then fail "over-application of %s" c;
-          let extra' = List.mapi (fun i a -> elab ctx a (VSet (List.nth ds i))) extra in
+          let first = List.filteri (fun i _ -> i < k) extra and more = List.filteri (fun i _ -> i >= k) extra in
+          let extra' = List.mapi (fun i a -> elab ctx a (VSet (List.nth ds i))) first in
           let r = Mg.normalize (Mg.apps r extra') in
-          if List.length extra = k then (r, VSet cod)
+          if more <> [] then begin
+            (* the value is a set-function: continue with set application *)
+            let rest_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) res_hol_ty first in
+            apply_data ctx r rest_ty more
+          end
+          else if List.length extra = k then (r, VSet cod)
           else (r, VMetaFun (List.filteri (fun i _ -> i >= List.length extra) ds, cod))
       | VMetaPred ds ->
           let k = List.length ds in
