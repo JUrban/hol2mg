@@ -8,3 +8,6 @@ _build/
 build/
 /bin/hol2mg
 *.log
+generated/internal/*.jsonl
+!generated/internal/core.jsonl
+generated/reports/*.review.html

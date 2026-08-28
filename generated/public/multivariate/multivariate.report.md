@@ -1,21 +1,20 @@
 # hol2mg statement translation report: profile `multivariate`
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
-- theorems: 17526 discovered, 17030 public
-- automatic definitions: 472 constants and 7 types generated, 15 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: unmapped constant _22943 : bool->bool->bool->bool->bool->bool->bool->bool->char; _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1; group_product: internal constant iterato (HOL Light internal definition/datatype machinery); group_sum: unmapped constant group_product : A group->(K->K->bool)->(K->bool)->(K->A)->A; simplicial_simplex: elab: over-application of oriented_simplex; simplicial_chain: unmapped constant simplicial_simplex : num#((num->real)->bool)->((num->real)->num->real)->bool; simplex_cone: elab: over-application of oriented_simplex; simplicial_cone: unmapped constant simplex_cone : num->(num->real)->((num->real)->num->real)->(num->real)->num->real; simplicial_subdivision: unmapped constant simplicial_cone : num->(num->real)->((num->real)->num->real) frag->((num->real)->num->real) frag)
-- theorems using automatic definitions: 13174
+- theorems: 17526 discovered, 17138 public
+- automatic definitions: 480 constants and 7 types generated, 7 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: unmapped constant _22943 : bool->bool->bool->bool->bool->bool->bool->bool->char; _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1; group_product: internal constant iterato (HOL Light internal definition/datatype machinery); group_sum: unmapped constant group_product : A group->(K->K->bool)->(K->bool)->(K->A)->A)
+- theorems using automatic definitions: 13279
 - mapping files: mappings/core.json, mappings/lists.json, mappings/library.json, mappings/multivariate.json
 
 ## Status counts
 
 | status | count |
 |---|---|
-| transport_required | 14616 |
-| generalization_required | 1995 |
-| pending_mapping | 458 |
-| exact_native | 315 |
+| transport_required | 14717 |
+| generalization_required | 2000 |
+| pending_mapping | 388 |
+| exact_native | 317 |
 | native_reuse | 104 |
-| error | 38 |
 
 ## Public statements per shard
 
@@ -33,16 +32,16 @@
 | clifford | 112 | 0 | 0 |
 | convex | 924 | 0 | 0 |
 | define | 1 | 36 | 0 |
-| degree | 371 | 16 | 1 |
+| degree | 388 | 0 | 0 |
 | derivatives | 208 | 1 | 0 |
 | determinants | 315 | 0 | 0 |
 | floor | 100 | 0 | 0 |
 | frag | 45 | 0 | 0 |
-| grouptheory | 1132 | 87 | 19 |
-| homology | 287 | 44 | 18 |
+| grouptheory | 1151 | 87 | 0 |
+| homology | 349 | 0 | 0 |
 | ind_types | 17 | 32 | 0 |
 | int | 502 | 0 | 0 |
-| integration | 894 | 10 | 0 |
+| integration | 904 | 0 | 0 |
 | iter | 12 | 0 | 0 |
 | iterate | 313 | 11 | 0 |
 | lists | 130 | 2 | 0 |
@@ -79,15 +78,8 @@
 | 21 | unmapped constant group_product : A group->(K->K->bool)->(K->bool)->(K->A)->A |
 | 16 | internal constant admissible (HOL Light internal definition/datatype machinery) |
 | 12 | internal constant iterato (HOL Light internal definition/datatype machinery) |
-| 10 | unmapped constant /\ : bool->bool->bool |
-| 9 | unmapped constant simplicial_chain : num#((num->real)->bool)->((num->real)->num->real) frag->bool |
-| 9 | unmapped constant simplicial_subdivision : num->((num->real)->num->real) frag->((num->real)->num->real) frag |
 | 8 | internal constant superadmissible (HOL Light internal definition/datatype machinery) |
 | 8 | internal construction type ind |
-| 8 | unmapped constant brouwer_degree : ((real,N)cart->(real,N)cart)->int |
-| 8 | unmapped constant brouwer_degree1 : num->((real,N)cart->(real,N)cart)->int |
-| 8 | unmapped constant simplicial_simplex : num#((num->real)->bool)->((num->real)->num->real)->bool |
-| 8 | unmapped constant singular_subdivision : num->((num->real)->A) frag->((num->real)->A) frag |
 | 7 | internal construction type recspace |
 | 6 | internal constant CASEWISE (HOL Light internal definition/datatype machinery) |
 | 6 | internal constant mk_real (HOL Light internal definition/datatype machinery) |
@@ -96,7 +88,6 @@
 | 5 | internal constant tailadmissible (HOL Light internal definition/datatype machinery) |
 | 5 | internal constant treal_eq (HOL Light internal construction) |
 | 5 | unmapped constant group_sum : A group->(A->bool)->(A->A)->A |
-| 5 | unmapped constant simplicial_cone : num->(num->real)->((num->real)->num->real) frag->((num->real)->num->real) frag |
 | 4 | internal constant ZRECSPACE (HOL Light internal definition/datatype machinery) |
 | 4 | internal constant hashek (HOL Light internal definition/datatype machinery) |
 | 4 | unmapped constant group_sum : A group->((A->bool)->bool)->((A->bool)->A)->A |
@@ -133,88 +124,55 @@
 | 1 | internal constant _SEQPATTERN (HOL Light internal definition/datatype machinery) |
 | 1 | internal constant _UNGUARDED_PATTERN (HOL Light internal definition/datatype machinery) |
 | 1 | internal constant hreal_le (HOL Light internal construction) |
-
-## Internal errors
-
-- `BORSUK_ODD_MAPPING_DEGREE_STEP`: elab: over-application of o
-- `BROUWER_DEGREE2_COMPOSE`: elab: coerce: metafun arity increase (metafun(R :^: omega -> R :^: omega) -> metafun(R :^: omega,omega -> R))
-- `GROUP_ACTION_IMAGE`: elab: coerce: metafun arity increase (metafun(A -> Power X :^: Power X) -> metafun(A,Power X -> Power X))
-- `GROUP_ACTION_IMAGE_CONJUGATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ACTION_IMAGE_CONJUGATION_CARRIER`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ACTION_IMAGE_CONJUGATION_SUBGROUPS`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ACTION_IMAGE_SIZED`: elab: coerce: metafun arity increase (metafun(A -> Power X :^: Power X) -> metafun(A,Power X -> Power X))
-- `GROUP_ACTION_LEFT_COSET_MULTIPLICATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ACTION_SUBSET_TRANSLATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ORBIT_IMAGE_CONJUGATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ORBIT_IMAGE_CONJUGATION_GEN`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ORBIT_LEFT_COSET_MULTIPLICATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_ORBIT_LEFT_COSET_MULTIPLICATION_ID`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_STABILIZER_IMAGE_CONJUGATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_STABILIZER_LEFT_COSET_MULTIPLICATION`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `GROUP_STABILIZER_LEFT_COSET_MULTIPLICATION_ID`: elab: coerce: metafun arity increase (metafun(A -> Power A :^: Power A) -> metafun(A,Power A -> Power A))
-- `HOM_INDUCED_COMPOSE`: elab: over-application of o
-- `HOM_INDUCED_COMPOSE_EMPTY`: elab: over-application of o
-- `HOM_RELBOUNDARY_EMPTY`: elab: over-application of hom_relboundary
-- `NATURALITY_HOM_INDUCED`: elab: over-application of o
-- `NATURALITY_HOM_INDUCED_RELBOUNDARY`: elab: over-application of o
-- `ORIENTED_SIMPLEX_EQ`: elab: over-application of oriented_simplex
-- `PRODUCT_GROUP`: elab: over-application of group_mul
-- `QUOTIENT_GROUP`: elab: over-application of group_mul
-- `QUOTIENT_GROUP_INV`: elab: over-application of group_inv
-- `QUOTIENT_GROUP_MUL`: elab: over-application of group_mul
-- `RELATIVE_HOMOLOGY_GROUP`: elab: over-application of group_mul
-- `SIMPLEX_MAP_COMPOSE`: elab: over-application of o
-- `SIMPLEX_MAP_ORIENTED_SIMPLEX`: elab: coerce: metafun arity increase (metafun(omega -> R :^: omega) -> metafun(omega,omega -> R))
-- `SIMPLICIAL_SIMPLEX`: elab: over-application of oriented_simplex
-- `SIMPLICIAL_VERTEX_ORIENTED_SIMPLEX`: elab: coerce: metafun arity increase (metafun(R :^: omega -> R :^: omega) -> metafun(R :^: omega,omega -> R))
-- `SINGULAR_FACE_ORIENTED_SIMPLEX`: elab: over-application of oriented_simplex
-- `SUM_GROUP_CLAUSES`: elab: over-application of group_mul
-- `brouwer_degree1`: elab: coerce: metafun arity increase (metafun(R :^: omega -> R :^: omega) -> metafun(R :^: omega,omega -> R))
-- `hom_relboundary`: elab: over-application of o
-- `oriented_simplex`: elab: over-application of RESTRICTION
-- `simplex_cone`: elab: over-application of oriented_simplex
-- `simplicial_simplex`: elab: over-application of oriented_simplex
+| 1 | internal constant nadd_le (HOL Light internal construction) |
+| 1 | internal constant treal_le (HOL Light internal construction) |
+| 1 | unmapped constant @ : (((A->bool)->B)->bool)->(A->bool)->B |
+| 1 | unmapped constant @ : (((real,?1302266)cart->(real,?1302265)cart)->bool)->(real,?1302266)cart->(real,?1302265)cart |
+| 1 | unmapped constant @ : (((real,N)cart->(real,M)cart)->bool)->(real,N)cart->(real,M)cart |
+| 1 | unmapped constant GABS : (A->bool)->A |
+| 1 | unmapped constant GSPEC : (A->bool)->A->bool |
+| 1 | unmapped constant PASSOC : ((A#B)#C->D)->A#B#C->D |
 
 ## Bridges referenced
 
-- hol_real_R (10491)
-- hol_cart_setexp (8726)
-- hol_num_omega (6133)
-- hol_prod_setprod (3867)
-- hol_typedef_topology (3132)
-- omega_Subq_R (1893)
-- empty_case:A (1711)
-- hol_one_1 (1567)
-- hol_finite_finite (1375)
-- hol_typedef_group (1298)
-- hol_int_int (1110)
-- nat_le_SNoLe (1028)
-- hol_list_finseq (998)
+- hol_real_R (10577)
+- hol_cart_setexp (8750)
+- hol_num_omega (6213)
+- hol_prod_setprod (3923)
+- hol_typedef_topology (3156)
+- omega_Subq_R (1908)
+- empty_case:A (1716)
+- hol_one_1 (1569)
+- hol_finite_finite (1377)
+- hol_typedef_group (1318)
+- hol_int_int (1137)
+- nat_le_SNoLe (1039)
+- hol_list_finseq (999)
 - hol_typedef_net (958)
-- hol_dimindex (792)
-- omega_Subq_int (579)
+- hol_dimindex (797)
+- omega_Subq_int (593)
 - hol_typedef_metric (522)
-- add_nat_add_SNo (385)
+- add_nat_add_SNo (395)
+- hol_typedef_frag (358)
 - hol_countable (356)
 - hol_card_finite_cardinality (348)
-- nat_lt_SNoLt (344)
+- nat_lt_SNoLt (345)
+- hol_sum_finsum (317)
 - hol_finite_sum_idx (313)
-- hol_sum_finsum (313)
-- hol_typedef_frag (313)
 - mul_nat_mul_SNo (299)
 - hol_eq_c_equip (220)
 - empty_case:B (190)
 - exp_nat_exp_SNo_nat (180)
 - hol_typedef_matroid (178)
-- choose_in_spec (166)
+- choose_in_spec (175)
 - hol_product_finprod (135)
-- hol_has_size_equip (131)
+- hol_has_size_equip (132)
 - hol_le_c_atleastp (128)
 - hol_nsum_finsum (108)
-- int_Subq_R (105)
+- int_Subq_R (106)
 - hol_typedef_multivector (94)
-- hol_iterate (90)
-- hol_fun_setexp (89)
+- hol_iterate (92)
+- hol_fun_setexp (91)
 - hol_tybit_idx (89)
 - hol_sum_setsum (65)
 - empty_case:X (57)

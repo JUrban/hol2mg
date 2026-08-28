@@ -1340,6 +1340,12 @@ Admitted.
 Theorem product_group_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> product_group A K k G = ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)},(fun x :e K => if x :e k then group_id A (G x) else choose_in A (fun y:set => True),(fun x :e A :^: K => fun x0 :e K => if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True),fun x :e A :^: K => fun y :e A :^: K => fun x0 :e K => if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True)))).
 Admitted.
 
+// HOL Light: Library/grouptheory.ml:2715 / PRODUCT_GROUP
+// Source hash: md5:8b03aeac91e07e372034b420034915d9
+// Status: transport_required (bridges: choose_in_spec, hol_fun_setexp, hol_typedef_group)
+Theorem PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> (forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> group_carrier (A :^: K) (product_group A K k G) = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e K, group_id (A :^: K) (product_group A K k G) x = if x :e k then group_id A (G x) else choose_in A (fun y:set => True)) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e A :^: K, forall x0 :e K, group_inv (A :^: K) (product_group A K k G) x x0 = if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True)) /\ forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x y :e A :^: K, forall x0 :e K, group_mul (A :^: K) (product_group A K k G) x y x0 = if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True))).
+Admitted.
+
 // HOL Light: Library/grouptheory.ml:2741 / GROUP_POW_PRODUCT_GROUP
 // Source hash: md5:a079cb989c5675e4b11877cfe839f404
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_num_omega, hol_typedef_group)
@@ -1416,6 +1422,12 @@ Admitted.
 // Source hash: md5:532246afa42c55fc4d980fbde21c1f86
 // Status: transport_required (bridges: hol_finite_finite, hol_fun_setexp, hol_typedef_group)
 Theorem SUBGROUP_SUM_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> subgroup_of (A :^: K) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}} (product_group A K k G).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:2875 / SUM_GROUP_CLAUSES
+// Source hash: md5:c18d9f98c223318f60693a49095ea2a4
+// Status: transport_required (bridges: choose_in_spec, hol_finite_finite, hol_fun_setexp, hol_typedef_group)
+Theorem SUM_GROUP_CLAUSES : forall A K:set, A <> Empty -> K <> Empty -> (forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> group_carrier (A :^: K) (sum_group A K k G) = {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e K, group_id (A :^: K) (sum_group A K k G) x = if x :e k then group_id A (G x) else choose_in A (fun y:set => True)) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e A :^: K, forall x0 :e K, group_inv (A :^: K) (sum_group A K k G) x x0 = if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True)) /\ forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x y :e A :^: K, forall x0 :e K, group_mul (A :^: K) (sum_group A K k G) x y x0 = if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2893 / GROUP_POW_SUM_GROUP
@@ -2834,6 +2846,18 @@ Admitted.
 Theorem GROUP_ACTIONS_EQ_ON_GENERATORS : forall A X:set, forall G :e group_hl A, forall t c= A, forall s c= X, forall a:set -> set -> set, (forall x :e A, forall y :e X, a x y :e X) -> forall a':set -> set -> set, (forall x :e A, forall y :e X, a' x y :e X) -> group_action_hl A X G s a /\ (group_action_hl A X G s a' /\ (forall g :e A, forall x :e X, g :e group_carrier A G /\ (g :e t /\ x :e s) -> a g x = a' g x)) -> forall g :e A, forall x :e X, g :e group_carrier A (subgroup_generated A G t) /\ x :e s -> a g x = a' g x.
 Admitted.
 
+// HOL Light: Library/grouptheory.ml:5231 / GROUP_ACTION_IMAGE
+// Source hash: md5:9b66c200319904d80b525a14ece0df4e
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_IMAGE : forall A X:set, A <> Empty -> X <> Empty -> forall G :e group_hl A, forall u c= Power X, forall s c= X, forall a :e X :^: X :^: A, group_action_hl A X G s (fun x:set => fun x0:set => a x x0) /\ ((forall t c= X, t :e u -> t c= s) /\ (forall g :e A, forall t c= X, g :e group_carrier A G /\ t :e u -> {a g x | x :e t} :e u)) -> group_action_hl A (Power X) G u (fun x:set => fun x0:set => (fun x0 :e Power X => {x1 :e X | x1 :e {a x x1 | x1 :e x0}}) x0).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:5239 / GROUP_ACTION_IMAGE_SIZED
+// Source hash: md5:4b10ee14baf17808d35546ec322e886b
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_typedef_group)
+Theorem GROUP_ACTION_IMAGE_SIZED : forall A X:set, A <> Empty -> X <> Empty -> forall G :e group_hl A, forall s c= X, forall k :e omega, forall a :e X :^: X :^: A, group_action_hl A X G s (fun x:set => fun x0:set => a x x0) -> group_action_hl A (Power X) G {t :e Power X | t c= s /\ equip t k} (fun x:set => fun x0:set => (fun x0 :e Power X => {x1 :e X | x1 :e {a x x1 | x1 :e x0}}) x0).
+Admitted.
+
 // HOL Light: Library/grouptheory.ml:5250 / group_stabilizer
 // Source hash: md5:291880b986967e55f569f9e5e795e5b0
 // Status: generalization_required (bridges: empty_case:X, hol_typedef_group)
@@ -3144,6 +3168,12 @@ Admitted.
 // Source hash: md5:3536d35ef7123721f7a39f15f594adb6
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
 Theorem GROUP_STABILIZER_GROUP_TRANSLATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_stabilizer A A G (group_mul A G) a = {group_id A G}.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:5692 / GROUP_ACTION_SUBSET_TRANSLATION
+// Source hash: md5:08d271f64473201be8fa500ad7f46720
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_SUBSET_TRANSLATION : forall A:set, A <> Empty -> forall G :e group_hl A, forall u c= Power A, (forall s c= A, s :e u -> s c= group_carrier A G) /\ (forall a :e A, forall s c= A, a :e group_carrier A G /\ s :e u -> {group_mul A G a x | x :e s} :e u) -> group_action_hl A (Power A) G u (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_mul A G x x0) x1 | x1 :e x0}}) x0).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:5700 / GROUP_ACTION_CONJUGATION
@@ -3540,6 +3570,36 @@ Admitted.
 // Source hash: md5:a76b4b0866f27f367a92c13d1c209f3e
 // Status: generalization_required (bridges: empty_case:X, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_typedef_group)
 Theorem ORBIT_STABILIZER : forall A X:set, A <> Empty -> forall G :e group_hl A, forall s c= X, forall a:set -> set -> set, (forall x :e A, forall y :e X, a x y :e X) -> forall x :e X, finite (group_carrier A G) /\ (group_action_hl A X G s a /\ x :e s) -> finite_cardinality {x0 :e X | group_orbit A X G s a x x0} = finite_cardinality {left_coset_hl A G g (group_stabilizer A X G a x) | g :e A, g :e group_carrier A G}.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:6307 / GROUP_ACTION_LEFT_COSET_MULTIPLICATION
+// Source hash: md5:3705b568d3524bdcaf3f271c6be3a543
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_LEFT_COSET_MULTIPLICATION : forall A:set, A <> Empty -> forall G :e group_hl A, forall h c= A, h c= group_carrier A G -> group_action_hl A (Power A) G {left_coset_hl A G x h | x :e A, x :e group_carrier A G} (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_mul A G x x0) x1 | x1 :e x0}}) x0).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:6320 / GROUP_ORBIT_LEFT_COSET_MULTIPLICATION
+// Source hash: md5:2878457af74af9be0aeed4f4a4b1bf5b
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
+Theorem GROUP_ORBIT_LEFT_COSET_MULTIPLICATION : forall A:set, forall G :e group_hl A, forall h c= A, forall a :e A, a :e group_carrier A G /\ subgroup_of A h G -> forall x c= A, group_orbit A (Power A) G {left_coset_hl A G x0 h | x0 :e A, x0 :e group_carrier A G} (fun x0:set => fun x1:set => (fun x1 :e Power A => {x2 :e A | x2 :e {(fun x1 :e A => group_mul A G x0 x1) x2 | x2 :e x1}}) x1) (left_coset_hl A G a h) x <-> x :e {left_coset_hl A G x0 h | x0 :e A, x0 :e group_carrier A G}.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:6343 / GROUP_STABILIZER_LEFT_COSET_MULTIPLICATION
+// Source hash: md5:23989700c4d0e88107b317c4c9e2fe8f
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
+Theorem GROUP_STABILIZER_LEFT_COSET_MULTIPLICATION : forall A:set, forall G :e group_hl A, forall h c= A, forall a :e A, a :e group_carrier A G /\ subgroup_of A h G -> group_stabilizer A (Power A) G (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_mul A G x x0) x1 | x1 :e x0}}) x0) (left_coset_hl A G a h) = {group_conjugation A G a x | x :e h}.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:6363 / GROUP_ORBIT_LEFT_COSET_MULTIPLICATION_ID
+// Source hash: md5:5ad58ed352954731782b39f487eea8be
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ORBIT_LEFT_COSET_MULTIPLICATION_ID : forall A:set, A <> Empty -> forall G :e group_hl A, forall h c= A, subgroup_of A h G -> forall x c= A, group_orbit A (Power A) G {left_coset_hl A G x0 h | x0 :e A, x0 :e group_carrier A G} (fun x0:set => fun x1:set => (fun x1 :e Power A => {x2 :e A | x2 :e {(fun x1 :e A => group_mul A G x0 x1) x2 | x2 :e x1}}) x1) h x <-> x :e {left_coset_hl A G x0 h | x0 :e A, x0 :e group_carrier A G}.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:6374 / GROUP_STABILIZER_LEFT_COSET_MULTIPLICATION_ID
+// Source hash: md5:7cc3f89e7b2a500f9d8726ce5f76adaa
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_STABILIZER_LEFT_COSET_MULTIPLICATION_ID : forall A:set, A <> Empty -> forall G :e group_hl A, forall h c= A, subgroup_of A h G -> group_stabilizer A (Power A) G (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_mul A G x x0) x1 | x1 :e x0}}) x0) h = h.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:6386 / LAGRANGE_THEOREM_LEFT_GEN
@@ -4166,6 +4226,42 @@ Admitted.
 Theorem GROUP_ORBIT_CONJUGATION : forall A:set, forall G :e group_hl A, forall x x0 :e A, group_orbit A A G (group_carrier A G) (fun x1:set => fun x2:set => group_conjugation A G x1 x2) x x0 <-> (x :e group_carrier A G -> x0 :e {y :e A | y :e group_carrier A G /\ group_conjugate A G {x} {y}}) /\ (~ x :e group_carrier A G -> x0 :e Empty).
 Admitted.
 
+// HOL Light: Library/grouptheory.ml:7552 / GROUP_ACTION_IMAGE_CONJUGATION
+// Source hash: md5:b1a80069f129b2abb53ccaeac3888203
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_IMAGE_CONJUGATION : forall A:set, A <> Empty -> forall G :e group_hl A, forall u c= Power A, (forall t c= A, t :e u -> t c= group_carrier A G) /\ (forall g :e A, forall t c= A, g :e group_carrier A G /\ t :e u -> {group_conjugation A G g x | x :e t} :e u) -> group_action_hl A (Power A) G u (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_conjugation A G x x0) x1 | x1 :e x0}}) x0).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7562 / GROUP_STABILIZER_IMAGE_CONJUGATION
+// Source hash: md5:8c9d5fd124e29fe192f65faebe843a82
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_STABILIZER_IMAGE_CONJUGATION : forall A:set, A <> Empty -> forall G :e group_hl A, forall s c= A, s c= group_carrier A G -> group_stabilizer A (Power A) G (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_conjugation A G x x0) x1 | x1 :e x0}}) x0) s = group_normalizer A G s.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7569 / GROUP_ACTION_IMAGE_CONJUGATION_CARRIER
+// Source hash: md5:2a0979b008e32fdfc4f8c4d3d2cc3f60
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_IMAGE_CONJUGATION_CARRIER : forall A:set, A <> Empty -> forall G :e group_hl A, group_action_hl A (Power A) G {s :e Power A | s c= group_carrier A G} (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_conjugation A G x x0) x1 | x1 :e x0}}) x0).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7575 / GROUP_ACTION_IMAGE_CONJUGATION_SUBGROUPS
+// Source hash: md5:06722d1383d8fbc3cb5d0bbf3d964b36
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_IMAGE_CONJUGATION_SUBGROUPS : forall A:set, A <> Empty -> forall G :e group_hl A, group_action_hl A (Power A) G {n :e Power A | subgroup_of A n G} (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_conjugation A G x x0) x1 | x1 :e x0}}) x0).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7583 / GROUP_ORBIT_IMAGE_CONJUGATION
+// Source hash: md5:897c97d3b824296b33e0893cb4c72309
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ORBIT_IMAGE_CONJUGATION : forall A:set, A <> Empty -> forall G :e group_hl A, forall x x0 c= A, group_orbit A (Power A) G {s :e Power A | s c= group_carrier A G} (fun x1:set => fun x2:set => (fun x2 :e Power A => {x3 :e A | x3 :e {(fun x2 :e A => group_conjugation A G x1 x2) x3 | x3 :e x2}}) x2) x x0 <-> group_conjugate A G x x0.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7589 / GROUP_ORBIT_IMAGE_CONJUGATION_GEN
+// Source hash: md5:252880915157e1146027992fa9a1788e
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ORBIT_IMAGE_CONJUGATION_GEN : forall A:set, A <> Empty -> forall G :e group_hl A, forall u c= Power A, forall s c= A, (forall t c= A, t :e u -> t c= group_carrier A G) /\ s :e u -> forall t c= A, group_orbit A (Power A) G u (fun x:set => fun x0:set => (fun x0 :e Power A => {x1 :e A | x1 :e {(fun x0 :e A => group_conjugation A G x x0) x1 | x1 :e x0}}) x0) s t <-> t :e u /\ group_conjugate A G s t.
+Admitted.
+
 // HOL Light: Library/grouptheory.ml:7597 / CARD_CONJUGATE_SUBSETS_MUL_GEN
 // Source hash: md5:fd8e07ca18f976ba0bf6e5dea65c19b1
 // Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod, hol_typedef_group)
@@ -4190,6 +4286,12 @@ Admitted.
 Theorem quotient_group_thm : forall A:set, A <> Empty -> forall n c= A, forall G :e group_hl A, quotient_group A G n = ({right_coset_hl A G n x | x :e A, x :e group_carrier A G},(n,(fun x :e Power A => group_setinv A G x,fun x :e Power A => fun x0 :e Power A => group_setmul A G x x0))).
 Admitted.
 
+// HOL Light: Library/grouptheory.ml:7645 / QUOTIENT_GROUP
+// Source hash: md5:9317200f9e58ad8ae51d7c7fb1f8bce0
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem QUOTIENT_GROUP : forall A:set, A <> Empty -> (forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> group_carrier (Power A) (quotient_group A G n) = {right_coset_hl A G n x | x :e A, x :e group_carrier A G}) /\ ((forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> group_id (Power A) (quotient_group A G n) = n) /\ ((forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> forall x c= A, forall x0 :e A, x0 :e group_inv (Power A) (quotient_group A G n) x <-> x0 :e group_setinv A G x) /\ forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> forall x x0 c= A, forall x1 :e A, x1 :e group_mul (Power A) (quotient_group A G n) x x0 <-> x1 :e group_setmul A G x x0)).
+Admitted.
+
 // HOL Light: Library/grouptheory.ml:7685 / ABELIAN_QUOTIENT_GROUP
 // Source hash: md5:4773446d719a39f2c59111d95ed25d35
 // Status: transport_required (bridges: hol_typedef_group)
@@ -4212,6 +4314,18 @@ Admitted.
 // Source hash: md5:7f29a4cda5b0060b3465956b7be8c86b
 // Status: transport_required (bridges: hol_typedef_group)
 Theorem QUOTIENT_GROUP_ID : forall A:set, A <> Empty -> forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> group_id (Power A) (quotient_group A G n) = n.
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7715 / QUOTIENT_GROUP_INV
+// Source hash: md5:e2d200ef04b1dc0aa0be19ca8fc8d0c1
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
+Theorem QUOTIENT_GROUP_INV : forall A:set, forall G :e group_hl A, forall n c= A, forall a :e A, normal_subgroup_of A n G /\ a :e group_carrier A G -> forall x :e A, x :e group_inv (Power A) (quotient_group A G n) (right_coset_hl A G n a) <-> x :e right_coset_hl A G n (group_inv A G a).
+Admitted.
+
+// HOL Light: Library/grouptheory.ml:7722 / QUOTIENT_GROUP_MUL
+// Source hash: md5:a47f0e0c2c679de9ab77ed3a48c093da
+// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
+Theorem QUOTIENT_GROUP_MUL : forall A:set, forall G :e group_hl A, forall n c= A, forall a b :e A, normal_subgroup_of A n G /\ (a :e group_carrier A G /\ b :e group_carrier A G) -> forall x :e A, x :e group_mul (Power A) (quotient_group A G n) (right_coset_hl A G n a) (right_coset_hl A G n b) <-> x :e right_coset_hl A G n (group_mul A G a b).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7730 / QUOTIENT_GROUP_DIV

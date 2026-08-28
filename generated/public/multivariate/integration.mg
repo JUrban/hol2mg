@@ -1568,6 +1568,36 @@ Admitted.
 Theorem INTEGRABLE_SPIKE_INTERIOR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall a b :e R :^: idx M, (forall x :e R :^: idx M, x :e open_interval M (a,b) -> g x = f x) -> integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> integrable_on N M g (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:4686 / NEUTRAL_AND
+// Source hash: md5:c68bad4a718e7d2ce8db248ce31c5a41
+// Status: exact_native
+Theorem NEUTRAL_AND : neutral_of 2 (fun a:set => fun b:set => if a /\ b then 1 else 0) = 1 <-> True.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:4690 / MONOIDAL_AND
+// Source hash: md5:931055a66d3282fa1cbf8ea41575f5a9
+// Status: exact_native
+Theorem MONOIDAL_AND : (forall x y :e 2, (x /\ y) = (y /\ x)) /\ (forall x y z :e 2, (x /\ (y /\ z)) = (x /\ y /\ z)) /\ forall x :e 2, (neutral_of 2 (fun a:set => fun b:set => a /\ b) /\ x) = x.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:4694 / ITERATE_AND
+// Source hash: md5:a6ea40db797103b562d51e55cf1a1f66
+// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
+Theorem ITERATE_AND : forall A:set, A <> Empty -> forall p:set -> prop, forall s c= A, finite s -> (iterate_op 2 (fun a:set => fun b:set => if a /\ b then 1 else 0) s (fun x:set => if p x then 1 else 0) = 1 <-> forall x :e A, x :e s -> p x).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:4699 / OPERATIVE_DIVISION_AND
+// Source hash: md5:d3c7372963c186a89d6d18e2a8f6df88
+// Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem OPERATIVE_DIVISION_AND : forall A:set, A <> Empty -> forall P:set -> prop, forall d c= Power (R :^: idx A), forall a b :e R :^: idx A, operative 2 A (fun p:set => fun q:set => p /\ q) P /\ division_of A d (closed_interval A (seq_cons (a,b) seq_nil)) -> ((forall i c= R :^: idx A, i :e d -> P i) <-> P (closed_interval A (seq_cons (a,b) seq_nil))).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:4706 / OPERATIVE_APPROXIMABLE
+// Source hash: md5:b4ec58b04c28d5dc0480e967ee7ca70c
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem OPERATIVE_APPROXIMABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall e0 :e R, 0 <= e0 -> operative 2 M (fun p:set => fun q:set => p /\ q) (fun i:set => exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e i -> vector_norm N (vector_sub N (f x) (g x)) <= e0) /\ integrable_on N M g i)).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:4753 / APPROXIMABLE_ON_DIVISION
 // Source hash: md5:99abc91dd0405a0d6564683bfec474db
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
@@ -1614,6 +1644,12 @@ Admitted.
 // Source hash: md5:0135b3398d2beca26c41fe68065681c3
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem GAUGE_MODIFY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall s c= R :^: idx N, open N s -> open M {x :e R :^: idx M | f x :e s}) -> forall d:set -> set -> prop, gauge N d -> gauge M (fun x:set => fun y:set => d (f x) (f y)).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:5027 / OPERATIVE_INTEGRABLE
+// Source hash: md5:5de00435de8dcf69e3fb5e08b0dbc435
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem OPERATIVE_INTEGRABLE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> operative 2 A (fun p:set => fun q:set => p /\ q) (fun i:set => integrable_on B A f i).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:5034 / INTEGRABLE_SUBINTERVAL
@@ -2664,6 +2700,12 @@ Admitted.
 // Source hash: md5:c8385716235b30ba0e363ff54aa8c426
 // Status: transport_required (bridges: hol_cart_setexp, hol_option_setsum, hol_real_R)
 Theorem OPERATIVE_LIFTED_SETVARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f -> operative (1 :+: R) M (fun x:set => fun x0:set => lifted R R (fun x :e R => fun x0 :e R => x + x0) x x0) (fun i:set => if has_bounded_setvariation_on M N f i then Inj1 (set_variation M N i f) else Inj0 0).
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:9532 / OPERATIVE_HAS_BOUNDED_SETVARIATION_ON
+// Source hash: md5:640beed1c8316117f00b78452bfe52f2
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem OPERATIVE_HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f -> operative 2 M (fun p:set => fun q:set => p /\ q) (fun x:set => has_bounded_setvariation_on M N f x).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9543 / HAS_BOUNDED_SETVARIATION_ON_DIVISION
@@ -4016,6 +4058,12 @@ Admitted.
 Theorem OPERATIVE_REAL_FUNCTION_ENDPOINT_DIFF : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> operative R 1 (fun x:set => fun x0:set => x + x0) (fun k:set => f (interval_upperbound 1 k) + - f (interval_lowerbound 1 k)).
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:17418 / OPERATIVE_HAS_BOUNDED_VARIATION_ON
+// Source hash: md5:5a242e5a69f1f291dfc894060099411c
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem OPERATIVE_HAS_BOUNDED_VARIATION_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative 2 1 (fun p:set => fun q:set => p /\ q) (fun x:set => has_bounded_variation_on N f x).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:17427 / OPERATIVE_LIFTED_VECTOR_VARIATION
 // Source hash: md5:55f0211e6e4105482cde01feb546c383
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_option_setsum, hol_real_R)
@@ -4784,6 +4832,12 @@ Admitted.
 Theorem ABSOLUTELY_SETCONTINUOUS_ON_MUL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx 1) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M 1 f s /\ absolutely_setcontinuous_on M N g s -> absolutely_setcontinuous_on M N (fun x:set => vector_mul N (drop (f x)) (g x)) s.
 Admitted.
 
+// HOL Light: Multivariate/integration.ml:22744 / OPERATIVE_ABSOLUTELY_SETCONTINUOUS_ON
+// Source hash: md5:ea5dac2301ebd89d60e0d992e663afc1
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem OPERATIVE_ABSOLUTELY_SETCONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f -> operative 2 M (fun p:set => fun q:set => p /\ q) (fun x:set => absolutely_setcontinuous_on M N f x).
+Admitted.
+
 // HOL Light: Multivariate/integration.ml:22854 / ABSOLUTELY_SETCONTINUOUS_ON_DIVISION
 // Source hash: md5:8a75758bf4de4c34062debccbc081d13
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
@@ -4992,6 +5046,12 @@ Admitted.
 // Source hash: md5:c7072c10b54d522a6382e53ca3df9889
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_one_1, hol_real_R)
 Theorem ABSOLUTELY_CONTINUOUS_ON_VSUM : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e R :^: idx 1, f x y :e R :^: idx N) -> forall s c= R :^: idx 1, forall k c= A, finite k /\ (forall i :e A, i :e k -> absolutely_continuous_on N (f i) s) -> absolutely_continuous_on N (fun x:set => vsum A N k (fun i:set => f i x)) s.
+Admitted.
+
+// HOL Light: Multivariate/integration.ml:23459 / OPERATIVE_ABSOLUTELY_CONTINUOUS_ON
+// Source hash: md5:49eda5806fe5c1aa04ea834103359de3
+// Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
+Theorem OPERATIVE_ABSOLUTELY_CONTINUOUS_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative 2 1 (fun p:set => fun q:set => p /\ q) (fun x:set => absolutely_continuous_on N f x).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23468 / ABSOLUTELY_CONTINUOUS_ON_DIVISION
