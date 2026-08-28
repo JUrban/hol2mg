@@ -263,7 +263,7 @@ Admitted.
 // HOL Light: Multivariate/derivatives.ml:397 / JACOBIAN_WORKS
 // Source hash: md5:142f57e74121ec0459882d62d9125b2d
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem JACOBIAN_WORKS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 <-> has_derivative B A f (fun h:set => matrix_vector_mul B A (jacobian A B f net0) h) net0.
+Theorem JACOBIAN_WORKS : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall net0 :e net (R :^: idx A), differentiable B A f net0 <-> has_derivative B A f (matrix_vector_mul B A (jacobian A B f net0)) net0.
 Admitted.
 
 // HOL Light: Multivariate/derivatives.ml:408 / LIM_MUL_NORM_WITHIN

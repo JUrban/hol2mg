@@ -377,13 +377,13 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:731 / INVERTIBLE_NEARBY_ONORM
 // Source hash: md5:41ace0d077194695069b034127f06141
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem INVERTIBLE_NEARBY_ONORM : forall N:set, N <> Empty -> forall A B :e R :^: idx N :^: idx N, invertible N N A /\ onorm N N (fun x:set => matrix_vector_mul N N (matrix_sub N N B A) x) < recip_SNo (onorm N N (fun x:set => matrix_vector_mul N N (matrix_inv N N A) x)) -> invertible N N B.
+Theorem INVERTIBLE_NEARBY_ONORM : forall N:set, N <> Empty -> forall A B :e R :^: idx N :^: idx N, invertible N N A /\ onorm N N (matrix_vector_mul N N (matrix_sub N N B A)) < recip_SNo (onorm N N (matrix_vector_mul N N (matrix_inv N N A))) -> invertible N N B.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:774 / INVERTIBLE_NEARBY
 // Source hash: md5:2189a13071b0ff280a35b48f857f1b7a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem INVERTIBLE_NEARBY : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, invertible N N A -> exists e0 :e R, 0 < e0 /\ forall B :e R :^: idx N :^: idx N, onorm N N (fun x:set => matrix_vector_mul N N (matrix_sub N N B A) x) < e0 -> invertible N N B.
+Theorem INVERTIBLE_NEARBY : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, invertible N N A -> exists e0 :e R, 0 < e0 /\ forall B :e R :^: idx N :^: idx N, onorm N N (matrix_vector_mul N N (matrix_sub N N B A)) < e0 -> invertible N N B.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:789 / CRAMER_LEMMA_TRANSP
@@ -779,7 +779,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:1905 / ONORM_DIAGONAL_MATRIX
 // Source hash: md5:8afb1c779b11176f30dcfac9cd7d5ae2
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem ONORM_DIAGONAL_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, diagonal_matrix_hl N N A -> onorm N N (fun x:set => matrix_vector_mul N N A x) = sup {abs_SNo (A i i) | i :e omega, 1 <= i /\ i <= dimindex N}.
+Theorem ONORM_DIAGONAL_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, diagonal_matrix_hl N N A -> onorm N N (matrix_vector_mul N N A) = sup {abs_SNo (A i i) | i :e omega, 1 <= i /\ i <= dimindex N}.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:1939 / positive_semidefinite
@@ -917,7 +917,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2198 / ONORM_LE_NORM_VECTORIZE
 // Source hash: md5:ecba2a96a829b7e96ad3c898aec3bd10
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem ONORM_LE_NORM_VECTORIZE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx M :^: idx N, onorm M N (fun x:set => matrix_vector_mul N M A x) <= vector_norm (idx_n (dimindex N * dimindex M)) (vectorize R N M A).
+Theorem ONORM_LE_NORM_VECTORIZE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx M :^: idx N, onorm M N (matrix_vector_mul N M A) <= vector_norm (idx_n (dimindex N * dimindex M)) (vectorize R N M A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2204 / NORM_VECTORIZE_POW_2
@@ -1265,7 +1265,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2765 / ORTHOGONAL_MATRIX_TRANSFORMATION
 // Source hash: md5:22994aa235a2f0fb548b141974cbe67a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_MATRIX_TRANSFORMATION : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> orthogonal_transformation N (fun x:set => matrix_vector_mul N N A x).
+Theorem ORTHOGONAL_MATRIX_TRANSFORMATION : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> orthogonal_transformation N (matrix_vector_mul N N A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2770 / ORTHOGONAL_MATRIX_MATRIX
@@ -1409,7 +1409,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2961 / ORTHOGONAL_TRANSFORMATION_NEGATION
 // Source hash: md5:5702432210f0ee4f09e239c124cf79cf
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_NEGATION : forall A:set, A <> Empty -> orthogonal_transformation A (fun x:set => vector_neg A x).
+Theorem ORTHOGONAL_TRANSFORMATION_NEGATION : forall A:set, A <> Empty -> orthogonal_transformation A (vector_neg A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2966 / ORTHOGONAL_TRANSFORMATION_1_GEN
@@ -1469,7 +1469,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3076 / ONORM_ORTHOGONAL_MATRIX
 // Source hash: md5:80147e520e579227f36c34a7f88c0bef
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ONORM_ORTHOGONAL_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A -> onorm N N (fun x:set => matrix_vector_mul N N A x) = 1.
+Theorem ONORM_ORTHOGONAL_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A -> onorm N N (matrix_vector_mul N N A) = 1.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3085 / SCALING_LINEAR
@@ -1553,25 +1553,25 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3383 / ONORM_ORTHOGONAL_MATRIX_MUL_LEFT
 // Source hash: md5:3d600a46eb0f799a2cce166563219106
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ONORM_ORTHOGONAL_MATRIX_MUL_LEFT : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> onorm N N (fun x:set => matrix_vector_mul N N (matrix_mul N N N P A) x) = onorm N N (fun x:set => matrix_vector_mul N N A x).
+Theorem ONORM_ORTHOGONAL_MATRIX_MUL_LEFT : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> onorm N N (matrix_vector_mul N N (matrix_mul N N N P A)) = onorm N N (matrix_vector_mul N N A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3393 / ONORM_ORTHOGONAL_MATRIX_MUL_RIGHT
 // Source hash: md5:792cc8a1f8135a2de53662cb475fe2c0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ONORM_ORTHOGONAL_MATRIX_MUL_RIGHT : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> onorm N N (fun x:set => matrix_vector_mul N N (matrix_mul N N N A P) x) = onorm N N (fun x:set => matrix_vector_mul N N A x).
+Theorem ONORM_ORTHOGONAL_MATRIX_MUL_RIGHT : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> onorm N N (matrix_vector_mul N N (matrix_mul N N N A P)) = onorm N N (matrix_vector_mul N N A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3404 / ONORM_DIAGONALIZED_MATRIX
 // Source hash: md5:5c85ed4b065b306866c0477ce764c956
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem ONORM_DIAGONALIZED_MATRIX : forall N:set, N <> Empty -> forall A D P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P /\ (diagonal_matrix_hl N N D /\ matrix_mul N N N (transp N N P) (matrix_mul N N N D P) = A) -> onorm N N (fun x:set => matrix_vector_mul N N A x) = sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N}.
+Theorem ONORM_DIAGONALIZED_MATRIX : forall N:set, N <> Empty -> forall A D P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P /\ (diagonal_matrix_hl N N D /\ matrix_mul N N N (transp N N P) (matrix_mul N N N D P) = A) -> onorm N N (matrix_vector_mul N N A) = sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N}.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3415 / ONORM_DIAGONALIZED_COVARIANCE_MATRIX
 // Source hash: md5:0f64e6ad7baf420e798e0b179cf52c98
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem ONORM_DIAGONALIZED_COVARIANCE_MATRIX : forall N:set, N <> Empty -> forall A D P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P /\ (diagonal_matrix_hl N N D /\ matrix_mul N N N (transp N N P) (matrix_mul N N N D P) = matrix_mul N N N (transp N N A) A) -> onorm N N (fun x:set => matrix_vector_mul N N A x) = if 0 <= sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N} then sqrt_SNo_nonneg (sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N}) else - sqrt_SNo_nonneg (- sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N}).
+Theorem ONORM_DIAGONALIZED_COVARIANCE_MATRIX : forall N:set, N <> Empty -> forall A D P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P /\ (diagonal_matrix_hl N N D /\ matrix_mul N N N (transp N N P) (matrix_mul N N N D P) = matrix_mul N N N (transp N N A) A) -> onorm N N (matrix_vector_mul N N A) = if 0 <= sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N} then sqrt_SNo_nonneg (sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N}) else - sqrt_SNo_nonneg (- sup {abs_SNo (D i i) | i :e omega, 1 <= i /\ i <= dimindex N}).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3432 / ORTHOGONAL_MATRIX_EXISTS_BASIS
@@ -1715,7 +1715,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:4057 / LINEAR_REFLECT_ALONG
 // Source hash: md5:fcc83e0b2e9c8806ecdcdf690290463b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LINEAR_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, linear N N (fun x:set => reflect_along N v x).
+Theorem LINEAR_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, linear N N (reflect_along N v).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4061 / REFLECT_ALONG_0
@@ -1757,7 +1757,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:4090 / ORTHOGONAL_TRANSFORMATION_REFLECT_ALONG
 // Source hash: md5:74c7379174c0f21b32ed1d41256d9ffa
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, orthogonal_transformation N (fun x:set => reflect_along N v x).
+Theorem ORTHOGONAL_TRANSFORMATION_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, orthogonal_transformation N (reflect_along N v).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4104 / REFLECT_ALONG_EQ_SELF
@@ -1805,19 +1805,19 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:4158 / MATRIX_REFLECT_ALONG_BASIS
 // Source hash: md5:6e13d4aa39790f013a9f446f7ec9570b
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem MATRIX_REFLECT_ALONG_BASIS : forall N:set, N <> Empty -> forall k :e omega, 1 <= k /\ k <= dimindex N -> matrix N N (fun x:set => reflect_along N (basis N k) x) = fun i :e idx N => fun j :e idx N => if i = k /\ j = k then - 1 else if i = j then 1 else 0.
+Theorem MATRIX_REFLECT_ALONG_BASIS : forall N:set, N <> Empty -> forall k :e omega, 1 <= k /\ k <= dimindex N -> matrix N N (reflect_along N (basis N k)) = fun i :e idx N => fun j :e idx N => if i = k /\ j = k then - 1 else if i = j then 1 else 0.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4172 / ROTOINVERSION_MATRIX_REFLECT_ALONG
 // Source hash: md5:93528e16c05e13828ee462f78cda39a8
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem ROTOINVERSION_MATRIX_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, ~ v = vec N 0 -> rotoinversion_matrix N (matrix N N (fun x:set => reflect_along N v x)).
+Theorem ROTOINVERSION_MATRIX_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, ~ v = vec N 0 -> rotoinversion_matrix N (matrix N N (reflect_along N v)).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4229 / DET_MATRIX_REFLECT_ALONG
 // Source hash: md5:16d3204de4cbcda7f5a4732c813f9251
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DET_MATRIX_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, det N (matrix N N (fun x:set => reflect_along N v x)) = if v = vec N 0 then 1 else - 1.
+Theorem DET_MATRIX_REFLECT_ALONG : forall N:set, N <> Empty -> forall v :e R :^: idx N, det N (matrix N N (reflect_along N v)) = if v = vec N 0 then 1 else - 1.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4237 / REFLECT_ALONG_BASIS_COMPONENT

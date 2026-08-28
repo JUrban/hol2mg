@@ -7739,7 +7739,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:15821 / CONTINUOUS_MAP_KOLMOGOROV_QUOTIENT
 // Source hash: md5:bf1e029a01e0f806a083d08184e6ad8e
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem CONTINUOUS_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, continuous_map A A (top,top) (fun x:set => kolmogorov_quotient A top x).
+Theorem CONTINUOUS_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, continuous_map A A (top,top) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15830 / OPEN_MAP_KOLMOGOROV_QUOTIENT_EXPLICIT
@@ -7751,13 +7751,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:15839 / OPEN_MAP_KOLMOGOROV_QUOTIENT_GEN
 // Source hash: md5:88c9fced5328e2746042a884c30ca7a0
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem OPEN_MAP_KOLMOGOROV_QUOTIENT_GEN : forall A:set, A <> Empty -> forall top :e topology A, forall s c= A, open_map A A (subtopology A top s,subtopology A top {kolmogorov_quotient A top x | x :e s}) (fun x:set => kolmogorov_quotient A top x).
+Theorem OPEN_MAP_KOLMOGOROV_QUOTIENT_GEN : forall A:set, A <> Empty -> forall top :e topology A, forall s c= A, open_map A A (subtopology A top s,subtopology A top {kolmogorov_quotient A top x | x :e s}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15851 / OPEN_MAP_KOLMOGOROV_QUOTIENT
 // Source hash: md5:240c90a71615d81e76c0a0e65ac98a78
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem OPEN_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, open_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (fun x:set => kolmogorov_quotient A top x).
+Theorem OPEN_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, open_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15861 / CLOSED_MAP_KOLMOGOROV_QUOTIENT_EXPLICIT
@@ -7769,25 +7769,25 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:15870 / CLOSED_MAP_KOLMOGOROV_QUOTIENT_GEN
 // Source hash: md5:9abe466a4c73069cf5db4f2c36fdab3c
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem CLOSED_MAP_KOLMOGOROV_QUOTIENT_GEN : forall A:set, A <> Empty -> forall top :e topology A, forall s c= A, closed_map A A (subtopology A top s,subtopology A top {kolmogorov_quotient A top x | x :e s}) (fun x:set => kolmogorov_quotient A top x).
+Theorem CLOSED_MAP_KOLMOGOROV_QUOTIENT_GEN : forall A:set, A <> Empty -> forall top :e topology A, forall s c= A, closed_map A A (subtopology A top s,subtopology A top {kolmogorov_quotient A top x | x :e s}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15882 / CLOSED_MAP_KOLMOGOROV_QUOTIENT
 // Source hash: md5:1f787d826aced464e1c45609bdfe5ca9
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem CLOSED_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, closed_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (fun x:set => kolmogorov_quotient A top x).
+Theorem CLOSED_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, closed_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15892 / QUOTIENT_MAP_KOLMOGOROV_QUOTIENT_GEN
 // Source hash: md5:6b5dcbcc86c11b76329ab8ef36449398
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem QUOTIENT_MAP_KOLMOGOROV_QUOTIENT_GEN : forall A:set, A <> Empty -> forall top :e topology A, forall s c= A, quotient_map A A (subtopology A top s,subtopology A top {kolmogorov_quotient A top x | x :e s}) (fun x:set => kolmogorov_quotient A top x).
+Theorem QUOTIENT_MAP_KOLMOGOROV_QUOTIENT_GEN : forall A:set, A <> Empty -> forall top :e topology A, forall s c= A, quotient_map A A (subtopology A top s,subtopology A top {kolmogorov_quotient A top x | x :e s}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15905 / QUOTIENT_MAP_KOLMOGOROV_QUOTIENT
 // Source hash: md5:1aa1d156a6ec6a58e3540711f82b7d4e
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem QUOTIENT_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, quotient_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (fun x:set => kolmogorov_quotient A top x).
+Theorem QUOTIENT_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, quotient_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:15915 / KOLMOGOROV_QUOTIENT_EQ
@@ -7835,7 +7835,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:15998 / RETRACTION_MAP_KOLMOGOROV_QUOTIENT
 // Source hash: md5:c4527e928a7db22b1daba98d885e7194
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem RETRACTION_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, retraction_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (fun x:set => kolmogorov_quotient A top x).
+Theorem RETRACTION_MAP_KOLMOGOROV_QUOTIENT : forall A:set, A <> Empty -> forall top :e topology A, retraction_map A A (top,subtopology A top {kolmogorov_quotient A top x | x :e topspace A top}) (kolmogorov_quotient A top).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:16007 / RETRACT_OF_SPACE_KOLMOGOROV_QUOTIENT_IMAGE
@@ -12029,7 +12029,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:27702 / K_SPACE_AS_QUOTIENT_EXPLICIT
 // Source hash: md5:17b2d3d0c0ff433066c5601d3da8be62
 // Status: transport_required (bridges: hol_prod_setprod, hol_typedef_topology)
-Theorem K_SPACE_AS_QUOTIENT_EXPLICIT : forall A:set, A <> Empty -> forall top :e topology A, k_space A top <-> quotient_map (Power A :*: A) A (sum_topology A (Power A) {k :e Power A | compact_in A top k} (fun x:set => subtopology A top x),top) (fun x:set => x 1).
+Theorem K_SPACE_AS_QUOTIENT_EXPLICIT : forall A:set, A <> Empty -> forall top :e topology A, k_space A top <-> quotient_map (Power A :*: A) A (sum_topology A (Power A) {k :e Power A | compact_in A top k} (subtopology A top),top) (fun x:set => x 1).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:27723 / K_SPACE_AS_QUOTIENT
@@ -15047,7 +15047,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:44830 / cantor_map
 // Source hash: md5:710ded79fbd592bf488939e90afb2c10
 // Status: transport_required (bridges: hol_num_omega, hol_real_R)
-Theorem cantor_map_thm : forall a c= omega, cantor_map a = real_infsum (from 0) (fun x:set => cantor_term a x).
+Theorem cantor_map_thm : forall a c= omega, cantor_map a = real_infsum (from 0) (cantor_term a).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:44833 / cantor_set
@@ -15119,7 +15119,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:44931 / CANTOR_PARTIAL_SUM_MONO
 // Source hash: md5:c5014969ab8f15f3a15f511d37e0e496
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
-Theorem CANTOR_PARTIAL_SUM_MONO : forall a c= omega, forall m n :e omega, m <= n -> finsum {i :e omega | 0 <= i /\ i <= m} (fun x:set => cantor_term a x) <= finsum {i :e omega | 0 <= i /\ i <= n} (fun x:set => cantor_term a x).
+Theorem CANTOR_PARTIAL_SUM_MONO : forall a c= omega, forall m n :e omega, m <= n -> finsum {i :e omega | 0 <= i /\ i <= m} (cantor_term a) <= finsum {i :e omega | 0 <= i /\ i <= n} (cantor_term a).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:44940 / SUM_TWOTHIRDS
@@ -15137,13 +15137,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:44971 / CANTOR_MAP_SUMMABLE
 // Source hash: md5:a1bc1125b3ef1e32f861f98f646e7408
 // Status: transport_required (bridges: hol_num_omega, hol_real_R)
-Theorem CANTOR_MAP_SUMMABLE : forall a c= omega, real_summable (from 0) (fun x:set => cantor_term a x).
+Theorem CANTOR_MAP_SUMMABLE : forall a c= omega, real_summable (from 0) (cantor_term a).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:44982 / CANTOR_MAP_SUMS
 // Source hash: md5:a14ca76dc929df1f7716006b09a3231c
 // Status: transport_required (bridges: hol_num_omega, hol_real_R)
-Theorem CANTOR_MAP_SUMS : forall a c= omega, real_sums (fun x:set => cantor_term a x) (cantor_map a) (from 0).
+Theorem CANTOR_MAP_SUMS : forall a c= omega, real_sums (cantor_term a) (cantor_map a) (from 0).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:44988 / CANTOR_MAP_LE_ONE
@@ -15155,13 +15155,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:44997 / CANTOR_MAP_GE_PARTIAL_SUM
 // Source hash: md5:ec15bd1c367805835a48f05782465baa
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem CANTOR_MAP_GE_PARTIAL_SUM : forall a c= omega, forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun x:set => cantor_term a x) <= cantor_map a.
+Theorem CANTOR_MAP_GE_PARTIAL_SUM : forall a c= omega, forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (cantor_term a) <= cantor_map a.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:45010 / CANTOR_MAP_PARTIAL_SUM_BOUND
 // Source hash: md5:5c6218b5d7d8504d5f91b0756e69e54b
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem CANTOR_MAP_PARTIAL_SUM_BOUND : forall a c= omega, forall n :e omega, cantor_map a + - finsum {i :e omega | 0 <= i /\ i <= n} (fun x:set => cantor_term a x) <= (1 :/: 3) ^ (n + 1).
+Theorem CANTOR_MAP_PARTIAL_SUM_BOUND : forall a c= omega, forall n :e omega, cantor_map a + - finsum {i :e omega | 0 <= i /\ i <= n} (cantor_term a) <= (1 :/: 3) ^ (n + 1).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:45035 / CANTOR_MAP_POS
@@ -15185,13 +15185,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:45063 / CANTOR_MAP_CONTINUOUS
 // Source hash: md5:e29a9ae70053c084c07ae079eb513445
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem CANTOR_MAP_CONTINUOUS : continuous_map (Power omega) R (cantor_space,euclideanreal) (fun x:set => cantor_map x).
+Theorem CANTOR_MAP_CONTINUOUS : continuous_map (Power omega) R (cantor_space,euclideanreal) cantor_map.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:45093 / CANTOR_PARTIAL_SUM_DIFF_AT_K
 // Source hash: md5:e3ea59d69c03d12748f6a1b67cede10e
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, hol_sum_finsum, nat_lt_SNoLt, omega_Subq_R)
-Theorem CANTOR_PARTIAL_SUM_DIFF_AT_K : forall a b c= omega, forall k :e omega, (forall j :e omega, j < k -> (j :e a <-> j :e b)) /\ (k :e a /\ ~ k :e b) -> finsum {i :e omega | 0 <= i /\ i <= k} (fun x:set => cantor_term a x) = finsum {i :e omega | 0 <= i /\ i <= k} (fun x:set => cantor_term b x) + 2 :/: 3 ^ (k + 1).
+Theorem CANTOR_PARTIAL_SUM_DIFF_AT_K : forall a b c= omega, forall k :e omega, (forall j :e omega, j < k -> (j :e a <-> j :e b)) /\ (k :e a /\ ~ k :e b) -> finsum {i :e omega | 0 <= i /\ i <= k} (cantor_term a) = finsum {i :e omega | 0 <= i /\ i <= k} (cantor_term b) + 2 :/: 3 ^ (k + 1).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:45115 / CANTOR_MAP_STRICT_LT
@@ -15209,7 +15209,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:45143 / CANTOR_MAP_EMBEDDING
 // Source hash: md5:0e58966f27d83485e9410fe0a8f69c6c
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem CANTOR_MAP_EMBEDDING : embedding_map (Power omega) R (cantor_space,euclideanreal) (fun x:set => cantor_map x).
+Theorem CANTOR_MAP_EMBEDDING : embedding_map (Power omega) R (cantor_space,euclideanreal) cantor_map.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:45150 / CANTOR_MAP_CLOSED_IMAGE

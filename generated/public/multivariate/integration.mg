@@ -1145,7 +1145,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:3099 / OPERATIVE_CONTENT
 // Source hash: md5:d641b44489a57285acee0220d547419b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem OPERATIVE_CONTENT : forall A:set, A <> Empty -> operative R A (fun x:set => fun x0:set => x + x0) (fun x:set => content A x).
+Theorem OPERATIVE_CONTENT : forall A:set, A <> Empty -> operative R A (fun x:set => fun x0:set => x + x0) (content A).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3103 / OPERATIVE_INTEGRAL
@@ -1193,7 +1193,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:3447 / ADDITIVE_CONTENT_DIVISION
 // Source hash: md5:e1e94c792ed35ab059221395d7cfbda5
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem ADDITIVE_CONTENT_DIVISION : forall N:set, N <> Empty -> forall d c= Power (R :^: idx N), forall a b :e R :^: idx N, division_of N d (closed_interval N (seq_cons (a,b) seq_nil)) -> finsum d (fun x:set => content N x) = content N (closed_interval N (seq_cons (a,b) seq_nil)).
+Theorem ADDITIVE_CONTENT_DIVISION : forall N:set, N <> Empty -> forall d c= Power (R :^: idx N), forall a b :e R :^: idx N, division_of N d (closed_interval N (seq_cons (a,b) seq_nil)) -> finsum d (content N) = content N (closed_interval N (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3458 / ADDITIVE_CONTENT_TAGGED_DIVISION
@@ -1205,7 +1205,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:3469 / SUBADDITIVE_CONTENT_DIVISION
 // Source hash: md5:19fa35d3186791b1964a47828896996d
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SUBADDITIVE_CONTENT_DIVISION : forall M:set, M <> Empty -> forall d c= Power (R :^: idx M), forall s c= R :^: idx M, forall a b :e R :^: idx M, division_of M d s /\ s c= closed_interval M (seq_cons (a,b) seq_nil) -> finsum d (fun x:set => content M x) <= content M (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem SUBADDITIVE_CONTENT_DIVISION : forall M:set, M <> Empty -> forall d c= Power (R :^: idx M), forall s c= R :^: idx M, forall a b :e R :^: idx M, division_of M d s /\ s c= closed_interval M (seq_cons (a,b) seq_nil) -> finsum d (content M) <= content M (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3490 / HAS_INTEGRAL_CONST
@@ -1355,7 +1355,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:3964 / negligible
 // Source hash: md5:0031c4ceeff0de10403c59877d5e2d14
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem negligible_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, negligible A s <-> forall a b :e R :^: idx A, has_integral A 1 (fun x:set => indicator A s x) (vec 1 0) (closed_interval A (seq_cons (a,b) seq_nil)).
+Theorem negligible_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, negligible A s <-> forall a b :e R :^: idx A, has_integral A 1 (indicator A s) (vec 1 0) (closed_interval A (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3971 / VSUM_NONZERO_IMAGE_LEMMA
@@ -1511,7 +1511,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:4582 / NEGLIGIBLE
 // Source hash: md5:69cbf555ae57a30d140a44968773695d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem NEGLIGIBLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, negligible N s <-> forall t c= R :^: idx N, has_integral N 1 (fun x:set => indicator N s x) (vec 1 0) t.
+Theorem NEGLIGIBLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, negligible N s <-> forall t c= R :^: idx N, has_integral N 1 (indicator N s) (vec 1 0) t.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4601 / HAS_INTEGRAL_SPIKE_FINITE
@@ -1571,31 +1571,31 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:4686 / NEUTRAL_AND
 // Source hash: md5:c68bad4a718e7d2ce8db248ce31c5a41
 // Status: exact_native
-Theorem NEUTRAL_AND : neutral_of 2 (fun a:set => fun b:set => if a /\ b then 1 else 0) = 1 <-> True.
+Theorem NEUTRAL_AND : neutral_of 2 (fun a:set => fun b:set => if a = 1 /\ b = 1 then 1 else 0) = 1 <-> True.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4690 / MONOIDAL_AND
 // Source hash: md5:931055a66d3282fa1cbf8ea41575f5a9
 // Status: exact_native
-Theorem MONOIDAL_AND : (forall x y :e 2, (x /\ y) = (y /\ x)) /\ (forall x y z :e 2, (x /\ (y /\ z)) = (x /\ y /\ z)) /\ forall x :e 2, (neutral_of 2 (fun a:set => fun b:set => a /\ b) /\ x) = x.
+Theorem MONOIDAL_AND : (forall x y :e 2, (if x = 1 /\ y = 1 then 1 else 0) = if y = 1 /\ x = 1 then 1 else 0) /\ (forall x y z :e 2, (if x = 1 /\ (if y = 1 /\ z = 1 then 1 else 0) = 1 then 1 else 0) = if (if x = 1 /\ y = 1 then 1 else 0) = 1 /\ z = 1 then 1 else 0) /\ forall x :e 2, (if neutral_of 2 (fun a:set => fun b:set => if a = 1 /\ b = 1 then 1 else 0) = 1 /\ x = 1 then 1 else 0) = x.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4694 / ITERATE_AND
 // Source hash: md5:a6ea40db797103b562d51e55cf1a1f66
 // Status: transport_required (bridges: hol_finite_finite, hol_iterate)
-Theorem ITERATE_AND : forall A:set, A <> Empty -> forall p:set -> prop, forall s c= A, finite s -> (iterate_op 2 (fun a:set => fun b:set => if a /\ b then 1 else 0) s (fun x:set => if p x then 1 else 0) = 1 <-> forall x :e A, x :e s -> p x).
+Theorem ITERATE_AND : forall A:set, A <> Empty -> forall p:set -> prop, forall s c= A, finite s -> (iterate_op 2 (fun a:set => fun b:set => if a = 1 /\ b = 1 then 1 else 0) s (fun x:set => if p x then 1 else 0) = 1 <-> forall x :e A, x :e s -> p x).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4699 / OPERATIVE_DIVISION_AND
 // Source hash: md5:d3c7372963c186a89d6d18e2a8f6df88
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem OPERATIVE_DIVISION_AND : forall A:set, A <> Empty -> forall P:set -> prop, forall d c= Power (R :^: idx A), forall a b :e R :^: idx A, operative 2 A (fun p:set => fun q:set => p /\ q) P /\ division_of A d (closed_interval A (seq_cons (a,b) seq_nil)) -> ((forall i c= R :^: idx A, i :e d -> P i) <-> P (closed_interval A (seq_cons (a,b) seq_nil))).
+Theorem OPERATIVE_DIVISION_AND : forall A:set, A <> Empty -> forall P:set -> prop, forall d c= Power (R :^: idx A), forall a b :e R :^: idx A, operative 2 A (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if P x then 1 else 0) /\ division_of A d (closed_interval A (seq_cons (a,b) seq_nil)) -> ((forall i c= R :^: idx A, i :e d -> P i) <-> P (closed_interval A (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4706 / OPERATIVE_APPROXIMABLE
 // Source hash: md5:b4ec58b04c28d5dc0480e967ee7ca70c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem OPERATIVE_APPROXIMABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall e0 :e R, 0 <= e0 -> operative 2 M (fun p:set => fun q:set => p /\ q) (fun i:set => exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e i -> vector_norm N (vector_sub N (f x) (g x)) <= e0) /\ integrable_on N M g i)).
+Theorem OPERATIVE_APPROXIMABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall e0 :e R, 0 <= e0 -> operative 2 M (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if exists g:set -> set, (forall x0 :e R :^: idx M, g x0 :e R :^: idx N) /\ ((forall x0 :e R :^: idx M, x0 :e x -> vector_norm N (vector_sub N (f x0) (g x0)) <= e0) /\ integrable_on N M g x) then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4753 / APPROXIMABLE_ON_DIVISION
@@ -1649,7 +1649,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:5027 / OPERATIVE_INTEGRABLE
 // Source hash: md5:5de00435de8dcf69e3fb5e08b0dbc435
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem OPERATIVE_INTEGRABLE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> operative 2 A (fun p:set => fun q:set => p /\ q) (fun i:set => integrable_on B A f i).
+Theorem OPERATIVE_INTEGRABLE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> operative 2 A (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if integrable_on B A f x then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:5034 / INTEGRABLE_SUBINTERVAL
@@ -2699,25 +2699,25 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9346 / OPERATIVE_LIFTED_SETVARIATION
 // Source hash: md5:c8385716235b30ba0e363ff54aa8c426
 // Status: transport_required (bridges: hol_cart_setexp, hol_option_setsum, hol_real_R)
-Theorem OPERATIVE_LIFTED_SETVARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f -> operative (1 :+: R) M (fun x:set => fun x0:set => lifted R R (fun x :e R => fun x0 :e R => x + x0) x x0) (fun i:set => if has_bounded_setvariation_on M N f i then Inj1 (set_variation M N i f) else Inj0 0).
+Theorem OPERATIVE_LIFTED_SETVARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (vector_add N) f -> operative (1 :+: R) M (fun x:set => fun x0:set => lifted R R (fun x :e R => fun x0 :e R => x + x0) x x0) (fun i:set => if has_bounded_setvariation_on M N f i then Inj1 (set_variation M N i f) else Inj0 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9532 / OPERATIVE_HAS_BOUNDED_SETVARIATION_ON
 // Source hash: md5:640beed1c8316117f00b78452bfe52f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem OPERATIVE_HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f -> operative 2 M (fun p:set => fun q:set => p /\ q) (fun x:set => has_bounded_setvariation_on M N f x).
+Theorem OPERATIVE_HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (vector_add N) f -> operative 2 M (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if has_bounded_setvariation_on M N f x then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9543 / HAS_BOUNDED_SETVARIATION_ON_DIVISION
 // Source hash: md5:64cdbe91dec9085674b91761983c6019
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem HAS_BOUNDED_SETVARIATION_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f /\ division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> ((forall k c= R :^: idx M, k :e d -> has_bounded_setvariation_on M N f k) <-> has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil))).
+Theorem HAS_BOUNDED_SETVARIATION_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), operative (R :^: idx N) M (vector_add N) f /\ division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> ((forall k c= R :^: idx M, k :e d -> has_bounded_setvariation_on M N f k) <-> has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9558 / SET_VARIATION_ON_DIVISION
 // Source hash: md5:b4cbab8a4f7c3655759e1fb4b8510121
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f /\ (division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil))) -> finsum d (fun k:set => set_variation M N k f) = set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f.
+Theorem SET_VARIATION_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), operative (R :^: idx N) M (vector_add N) f /\ (division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil))) -> finsum d (fun k:set => set_variation M N k f) = set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9596 / SET_VARIATION_MONOTONE
@@ -3191,7 +3191,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:11843 / NEGLIGIBLE_ON_UNIV
 // Source hash: md5:cff1dac843069ec1e19a38d2a2996789
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem NEGLIGIBLE_ON_UNIV : forall N:set, N <> Empty -> forall s c= R :^: idx N, negligible N s <-> has_integral N 1 (fun x:set => indicator N s x) (vec 1 0) (R :^: idx N).
+Theorem NEGLIGIBLE_ON_UNIV : forall N:set, N <> Empty -> forall s c= R :^: idx N, negligible N s <-> has_integral N 1 (indicator N s) (vec 1 0) (R :^: idx N).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:11861 / NEGLIGIBLE_COUNTABLE_UNIONS
@@ -4049,7 +4049,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:17369 / OPERATIVE_FUNCTION_ENDPOINT_DIFF
 // Source hash: md5:39041086ff12a780118b37aeb60a81be
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem OPERATIVE_FUNCTION_ENDPOINT_DIFF : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative (R :^: idx N) 1 (fun x:set => fun x0:set => vector_add N x x0) (fun k:set => vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))).
+Theorem OPERATIVE_FUNCTION_ENDPOINT_DIFF : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative (R :^: idx N) 1 (vector_add N) (fun k:set => vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:17409 / OPERATIVE_REAL_FUNCTION_ENDPOINT_DIFF
@@ -4061,7 +4061,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:17418 / OPERATIVE_HAS_BOUNDED_VARIATION_ON
 // Source hash: md5:5a242e5a69f1f291dfc894060099411c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem OPERATIVE_HAS_BOUNDED_VARIATION_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative 2 1 (fun p:set => fun q:set => p /\ q) (fun x:set => has_bounded_variation_on N f x).
+Theorem OPERATIVE_HAS_BOUNDED_VARIATION_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative 2 1 (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if has_bounded_variation_on N f x then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:17427 / OPERATIVE_LIFTED_VECTOR_VARIATION
@@ -4733,7 +4733,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22442 / absolutely_setcontinuous_on
 // Source hash: md5:6a182a2a15b100ab0938c37c4e9870a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem absolutely_setcontinuous_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> finsum d (fun k:set => vector_norm N (f k)) < e0).
+Theorem absolutely_setcontinuous_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (content M) < r) -> finsum d (fun k:set => vector_norm N (f k)) < e0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22449 / ABSOLUTELY_SETCONTINUOUS_COMPARISON
@@ -4757,7 +4757,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22526 / ABSOLUTELY_SETCONTINUOUS_ON_ALT
 // Source hash: md5:d4e16fc7f71b3b658fb5f692eec1250e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_ON_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> vector_norm N (vsum (Power (R :^: idx M)) N d f) < e0.
+Theorem ABSOLUTELY_SETCONTINUOUS_ON_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (content M) < r) -> vector_norm N (vsum (Power (R :^: idx M)) N d f) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22592 / ABSOLUTELY_SETCONTINUOUS_ON_LIFT_ABS
@@ -4835,19 +4835,19 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22744 / OPERATIVE_ABSOLUTELY_SETCONTINUOUS_ON
 // Source hash: md5:ea5dac2301ebd89d60e0d992e663afc1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem OPERATIVE_ABSOLUTELY_SETCONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f -> operative 2 M (fun p:set => fun q:set => p /\ q) (fun x:set => absolutely_setcontinuous_on M N f x).
+Theorem OPERATIVE_ABSOLUTELY_SETCONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> operative (R :^: idx N) M (vector_add N) f -> operative 2 M (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if absolutely_setcontinuous_on M N f x then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22854 / ABSOLUTELY_SETCONTINUOUS_ON_DIVISION
 // Source hash: md5:8a75758bf4de4c34062debccbc081d13
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f /\ division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> ((forall k c= R :^: idx M, k :e d -> absolutely_setcontinuous_on M N f k) <-> absolutely_setcontinuous_on M N f (closed_interval M (seq_cons (a,b) seq_nil))).
+Theorem ABSOLUTELY_SETCONTINUOUS_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), operative (R :^: idx N) M (vector_add N) f /\ division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> ((forall k c= R :^: idx M, k :e d -> absolutely_setcontinuous_on M N f k) <-> absolutely_setcontinuous_on M N f (closed_interval M (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22862 / ABSOLUTELY_SETCONTINUOUS_ON_IMP_HAS_BOUNDED_SETVARIATION_ON
 // Source hash: md5:b316582f2cc07c936d7ed7b32e57dd93
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_ON_IMP_HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, operative (R :^: idx N) M (fun x:set => fun x0:set => vector_add N x x0) f /\ (absolutely_setcontinuous_on M N f s /\ bounded_hl M s) -> has_bounded_setvariation_on M N f s.
+Theorem ABSOLUTELY_SETCONTINUOUS_ON_IMP_HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, operative (R :^: idx N) M (vector_add N) f /\ (absolutely_setcontinuous_on M N f s /\ bounded_hl M s) -> has_bounded_setvariation_on M N f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23057 / absolutely_continuous_on
@@ -5051,7 +5051,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23459 / OPERATIVE_ABSOLUTELY_CONTINUOUS_ON
 // Source hash: md5:49eda5806fe5c1aa04ea834103359de3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem OPERATIVE_ABSOLUTELY_CONTINUOUS_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative 2 1 (fun p:set => fun q:set => p /\ q) (fun x:set => absolutely_continuous_on N f x).
+Theorem OPERATIVE_ABSOLUTELY_CONTINUOUS_ON : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> operative 2 1 (fun x:set => fun x0:set => if x = 1 /\ x0 = 1 then 1 else 0) (fun x:set => if absolutely_continuous_on N f x then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23468 / ABSOLUTELY_CONTINUOUS_ON_DIVISION
@@ -5183,73 +5183,73 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23923 / RECTIFIABLE_PATH_LINEPATH
 // Source hash: md5:56c78844cdb23a5a2471d1f09687e77c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem RECTIFIABLE_PATH_LINEPATH : forall N:set, N <> Empty -> forall a b :e R :^: idx N, rectifiable_path N (fun x:set => linepath N (a,b) x).
+Theorem RECTIFIABLE_PATH_LINEPATH : forall N:set, N <> Empty -> forall a b :e R :^: idx N, rectifiable_path N (linepath N (a,b)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23937 / RECTIFIABLE_PATH_REVERSEPATH
 // Source hash: md5:9579a0d58ac0adb2449148056bf253e0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem RECTIFIABLE_PATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (rectifiable_path N (fun x:set => reversepath N g x) <-> rectifiable_path N g).
+Theorem RECTIFIABLE_PATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (rectifiable_path N (reversepath N g) <-> rectifiable_path N g).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23950 / PATH_LENGTH_REVERSEPATH
 // Source hash: md5:f9bf3a10157299ac6b7089eb6a727462
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_LENGTH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path_length N (fun x:set => reversepath N g x) = path_length N g.
+Theorem PATH_LENGTH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path_length N (reversepath N g) = path_length N g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23958 / RECTIFIABLE_PATH_SUBPATH_EQ
 // Source hash: md5:dc52cc1b45a1b44b027779b69cace813
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem RECTIFIABLE_PATH_SUBPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s t :e R :^: idx 1, rectifiable_path N (fun x:set => subpath (R :^: idx N) s t g x) <-> path N (fun x:set => subpath (R :^: idx N) s t g x) /\ has_bounded_variation_on N g (closed_segment 1 (seq_cons (s,t) seq_nil)).
+Theorem RECTIFIABLE_PATH_SUBPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s t :e R :^: idx 1, rectifiable_path N (subpath (R :^: idx N) s t g) <-> path N (subpath (R :^: idx N) s t g) /\ has_bounded_variation_on N g (closed_segment 1 (seq_cons (s,t) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23976 / PATH_LENGTH_SUBPATH
 // Source hash: md5:37d68782e5fd62665d1226c89272d218
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LENGTH_SUBPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s t :e R :^: idx 1, path_length N (fun x:set => subpath (R :^: idx N) s t g x) = vector_variation N (closed_segment 1 (seq_cons (s,t) seq_nil)) g.
+Theorem PATH_LENGTH_SUBPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s t :e R :^: idx 1, path_length N (subpath (R :^: idx N) s t g) = vector_variation N (closed_segment 1 (seq_cons (s,t) seq_nil)) g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23994 / RECTIFIABLE_PATH_SUBPATH
 // Source hash: md5:265556f88677c4e501d9e07038d53de1
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem RECTIFIABLE_PATH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> rectifiable_path N (fun x:set => subpath (R :^: idx N) u v g x).
+Theorem RECTIFIABLE_PATH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> rectifiable_path N (subpath (R :^: idx N) u v g).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24013 / RECTIFIABLE_PATH_JOIN
 // Source hash: md5:83539000ce6256fc2fa9dca9f1cba45c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem RECTIFIABLE_PATH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (rectifiable_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> rectifiable_path N g1 /\ rectifiable_path N g2).
+Theorem RECTIFIABLE_PATH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (rectifiable_path N (poly_add (R :^: idx N) g1 g2) <-> rectifiable_path N g1 /\ rectifiable_path N g2).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24056 / RECTIFIABLE_PATH_JOIN_IMP
 // Source hash: md5:63b97a06e739d39c7a0e51de13df1260
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem RECTIFIABLE_PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ (rectifiable_path N g2 /\ pathfinish N g1 = pathstart N g2) -> rectifiable_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Theorem RECTIFIABLE_PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ (rectifiable_path N g2 /\ pathfinish N g1 = pathstart N g2) -> rectifiable_path N (poly_add (R :^: idx N) g1 g2).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24063 / RECTIFIABLE_PATH_JOIN_EQ
 // Source hash: md5:1b39fa4c4f734ccbce7774699a8da55f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem RECTIFIABLE_PATH_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ rectifiable_path N g2 -> (rectifiable_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> pathfinish N g1 = pathstart N g2).
+Theorem RECTIFIABLE_PATH_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ rectifiable_path N g2 -> (rectifiable_path N (poly_add (R :^: idx N) g1 g2) <-> pathfinish N g1 = pathstart N g2).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24072 / RECTIFIABLE_PATH_SYM
 // Source hash: md5:f6de80b084133a8ff3db60abfc5fc7fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem RECTIFIABLE_PATH_SYM : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N p -> (rectifiable_path N (fun x:set => poly_add (R :^: idx N) p q x) <-> rectifiable_path N (fun x:set => poly_add (R :^: idx N) q p x)).
+Theorem RECTIFIABLE_PATH_SYM : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N p -> (rectifiable_path N (poly_add (R :^: idx N) p q) <-> rectifiable_path N (poly_add (R :^: idx N) q p)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24078 / RECTIFIABLE_PATH_SHIFTPATH
 // Source hash: md5:710b8d7a977f1a60679a9c4c677258c3
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem RECTIFIABLE_PATH_SHIFTPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ (pathfinish N g = pathstart N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> rectifiable_path N (fun x:set => shiftpath N a g x).
+Theorem RECTIFIABLE_PATH_SHIFTPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ (pathfinish N g = pathstart N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> rectifiable_path N (shiftpath N a g).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24114 / PATH_LENGTH_SHIFTPATH
 // Source hash: md5:d332839664422af58a88f4f85ed55fad
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LENGTH_SHIFTPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ (pathfinish N g = pathstart N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_length N (fun x:set => shiftpath N a g x) = path_length N g.
+Theorem PATH_LENGTH_SHIFTPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ (pathfinish N g = pathstart N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_length N (shiftpath N a g) = path_length N g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24161 / PATH_LENGTH_POS_LE
@@ -5273,19 +5273,19 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:24185 / PATH_LENGTH_JOIN
 // Source hash: md5:34052419ef56bb002b8ea4dba8ba17f3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_LENGTH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ (rectifiable_path N g2 /\ pathfinish N g1 = pathstart N g2) -> path_length N (fun x:set => poly_add (R :^: idx N) g1 g2 x) = path_length N g1 + path_length N g2.
+Theorem PATH_LENGTH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> rectifiable_path N g1 /\ (rectifiable_path N g2 /\ pathfinish N g1 = pathstart N g2) -> path_length N (poly_add (R :^: idx N) g1 g2) = path_length N g1 + path_length N g2.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24225 / PATH_LENGTH_COMBINE
 // Source hash: md5:84eb15204196556ca48350171569e0bc
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LENGTH_COMBINE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall t :e R :^: idx 1, rectifiable_path N g /\ t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> path_length N (fun x:set => subpath (R :^: idx N) (vec 1 0) t g x) + path_length N (fun x:set => subpath (R :^: idx N) t (vec 1 1) g x) = path_length N g.
+Theorem PATH_LENGTH_COMBINE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall t :e R :^: idx 1, rectifiable_path N g /\ t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> path_length N (subpath (R :^: idx N) (vec 1 0) t g) + path_length N (subpath (R :^: idx N) t (vec 1 1) g) = path_length N g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24235 / RECTIFIABLE_PATH_COMBINE
 // Source hash: md5:28513694c75c2ae4ed705f0cb9557fb6
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem RECTIFIABLE_PATH_COMBINE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> (rectifiable_path N g <-> rectifiable_path N (fun x:set => subpath (R :^: idx N) (vec 1 0) t g x) /\ rectifiable_path N (fun x:set => subpath (R :^: idx N) t (vec 1 1) g x)).
+Theorem RECTIFIABLE_PATH_COMBINE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> (rectifiable_path N g <-> rectifiable_path N (subpath (R :^: idx N) (vec 1 0) t g) /\ rectifiable_path N (subpath (R :^: idx N) t (vec 1 1) g)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24253 / LIPSCHITZ_IMP_RECTIFIABLE_PATH
@@ -5321,7 +5321,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:24330 / PATH_LENGTH_SUBPATH_LE
 // Source hash: md5:2f0a085fea37d91e73396cc4be9caf81
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LENGTH_SUBPATH_LE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s t :e R :^: idx 1, rectifiable_path N g /\ (s :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_length N (fun x:set => subpath (R :^: idx N) s t g x) <= path_length N g.
+Theorem PATH_LENGTH_SUBPATH_LE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s t :e R :^: idx 1, rectifiable_path N g /\ (s :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_length N (subpath (R :^: idx N) s t g) <= path_length N g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24359 / RECTIFIABLE_PATH_IMAGE_SUBSET_CBALL
@@ -5333,7 +5333,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:24381 / PATH_LENGTH_LINEPATH
 // Source hash: md5:3a75729d7642ad239ae54ad8bfd198d6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LENGTH_LINEPATH : forall N:set, N <> Empty -> forall a b :e R :^: idx N, path_length N (fun x:set => linepath N (a,b) x) = distance N (a,b).
+Theorem PATH_LENGTH_LINEPATH : forall N:set, N <> Empty -> forall a b :e R :^: idx N, path_length N (linepath N (a,b)) = distance N (a,b).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24391 / RECTIFIABLE_PATH_REPARAMETRIZATION
@@ -5357,19 +5357,19 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:24438 / CONTINUOUS_ON_PATH_LENGTH_SUBPATH_RIGHT
 // Source hash: md5:990fd837e5d600ba4049bbf11f0fd757
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem CONTINUOUS_ON_PATH_LENGTH_SUBPATH_RIGHT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> continuous_on_hl 1 1 (fun x:set => lift (path_length N (fun x0:set => subpath (R :^: idx N) a x g x0))) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
+Theorem CONTINUOUS_ON_PATH_LENGTH_SUBPATH_RIGHT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> continuous_on_hl 1 1 (fun x:set => lift (path_length N (subpath (R :^: idx N) a x g))) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24477 / CONTINUOUS_ON_PATH_LENGTH_SUBPATH_LEFT
 // Source hash: md5:f31ce469ca307ef622143e914299af97
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem CONTINUOUS_ON_PATH_LENGTH_SUBPATH_LEFT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> continuous_on_hl 1 1 (fun x:set => lift (path_length N (fun x0:set => subpath (R :^: idx N) x a g x0))) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
+Theorem CONTINUOUS_ON_PATH_LENGTH_SUBPATH_LEFT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, rectifiable_path N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> continuous_on_hl 1 1 (fun x:set => lift (path_length N (subpath (R :^: idx N) x a g))) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24491 / ARC_LENGTH_REPARAMETRIZATION
 // Source hash: md5:5c8ff9f3189447475d1ece3fb536d1fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ARC_LENGTH_REPARAMETRIZATION : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g -> exists h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) /\ (rectifiable_path N h /\ (path_image N h = path_image N g /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (path_length N h = path_length N g /\ ((arc N g -> arc N h) /\ ((simple_path N g -> simple_path N h) /\ ((forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> path_length N (fun x:set => subpath (R :^: idx N) (vec 1 0) t h x) = path_length N g * drop t) /\ forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> distance N (h x,h y) <= path_length N g * distance 1 (x,y))))))))).
+Theorem ARC_LENGTH_REPARAMETRIZATION : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g -> exists h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) /\ (rectifiable_path N h /\ (path_image N h = path_image N g /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (path_length N h = path_length N g /\ ((arc N g -> arc N h) /\ ((simple_path N g -> simple_path N h) /\ ((forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> path_length N (subpath (R :^: idx N) (vec 1 0) t h) = path_length N g * drop t) /\ forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> distance N (h x,h y) <= path_length N g * distance 1 (x,y))))))))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24625 / SHORTEST_PATH_EXISTS_GEN

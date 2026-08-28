@@ -140,7 +140,7 @@ Definition frag_sub : set -> set -> set -> set :=
 
 // HOL Light: Library/frag.ml:220 / frag_extend   (hash md5:cb0220bbf5a7c28ea0ba12c166134f03)
 Definition frag_extend : set -> set -> (set -> set) -> set -> set :=
-  fun A:set => fun B:set => fun f:set -> set => fun x:set => iterate_op (frag B) (fun a:set => fun b:set => frag_add B a b) (frag_support A x) (fun a:set => frag_cmul B (x a) (f a)).
+  fun A:set => fun B:set => fun f:set -> set => fun x:set => iterate_op (frag B) (frag_add B) (frag_support A x) (fun a:set => frag_cmul B (x a) (f a)).
 
 // HOL Light: Library/grouptheory.ml:29 / group_carrier   (hash md5:6c29ae9cc1317f389730942996e43187)
 Definition group_carrier : set -> set -> set :=
@@ -468,7 +468,7 @@ Definition singular_face : set -> set -> set -> (set -> set) -> set -> set :=
 
 // HOL Light: Multivariate/homology.ml:329 / chain_boundary   (hash md5:af9f2d16e46763ec508c99534aab2fe5)
 Definition chain_boundary : set -> set -> set -> set :=
-  fun A:set => fun p:set => fun c:set => if p = 0 then frag_0 (A :^: (R :^: omega)) else frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => iterate_op (frag (A :^: (R :^: omega))) (fun a:set => fun b:set => frag_add (A :^: (R :^: omega)) a b) {i :e omega | 0 <= i /\ i <= p} (fun k:set => frag_cmul (A :^: (R :^: omega)) ((- 1) ^ k) (frag_of (A :^: (R :^: omega)) (fun x :e R :^: omega => singular_face A p k (fun x:set => f x) x)))) c.
+  fun A:set => fun p:set => fun c:set => if p = 0 then frag_0 (A :^: (R :^: omega)) else frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) {i :e omega | 0 <= i /\ i <= p} (fun k:set => frag_cmul (A :^: (R :^: omega)) ((- 1) ^ k) (frag_of (A :^: (R :^: omega)) (fun x :e R :^: omega => singular_face A p k (fun x:set => f x) x)))) c.
 
 // HOL Light: Multivariate/homology.ml:904 / simplex_map   (hash md5:df8c758123197abd3acc153ffb9dc9e7)
 Definition simplex_map : set -> set -> set -> (set -> set) -> (set -> set) -> set -> set :=
@@ -488,7 +488,7 @@ Definition simplex_cone : set :=
 
 // HOL Light: Multivariate/homology.ml:1527 / simplicial_cone   (hash md5:4a9fa8a2b340edca486542362f943442)
 Definition simplicial_cone : set -> (set -> set) -> set -> set :=
-  fun p:set => fun v:set -> set => fun x:set => frag_extend (R :^: omega :^: (R :^: omega)) (R :^: omega :^: (R :^: omega)) (fun x:set => frag_of (R :^: omega :^: (R :^: omega)) (simplex_cone p (fun x0 :e omega => v x0) x)) x.
+  fun p:set => fun v:set -> set => frag_extend (R :^: omega :^: (R :^: omega)) (R :^: omega :^: (R :^: omega)) (fun x:set => frag_of (R :^: omega :^: (R :^: omega)) (simplex_cone p (fun x0 :e omega => v x0) x)).
 
 // HOL Light: Multivariate/homology.ml:1701 / simplicial_vertex   (hash md5:ce8ecf0bb2b89d47323969b08b4e6ce9)
 Definition simplicial_vertex : set -> (set -> set -> set) -> set -> set :=
@@ -500,7 +500,7 @@ Definition simplicial_subdivision : set :=
 
 // HOL Light: Multivariate/homology.ml:2030 / singular_subdivision   (hash md5:d9691bb5a226c81d351685a9a0e04a2b)
 Definition singular_subdivision : set -> set -> set -> set :=
-  fun A:set => fun p:set => fun x:set => frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => chain_map (R :^: omega) A p (fun x0:set => f x0) (simplicial_subdivision p (frag_of (R :^: omega :^: (R :^: omega)) (fun x0 :e R :^: omega => if x0 :e standard_simplex p then x0 else choose_in (R :^: omega) (fun y:set => True))))) x.
+  fun A:set => fun p:set => frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => chain_map (R :^: omega) A p (fun x0:set => f x0) (simplicial_subdivision p (frag_of (R :^: omega :^: (R :^: omega)) (fun x0 :e R :^: omega => if x0 :e standard_simplex p then x0 else choose_in (R :^: omega) (fun y:set => True))))).
 
 // HOL Light: Multivariate/vectors.ml:56 / vector_add   (hash md5:7391c24a21101f8713fc4e968feace1a)
 Definition vector_add : set -> set -> set -> set :=
@@ -976,7 +976,7 @@ Definition starlike : set -> set -> prop :=
 
 // HOL Light: Multivariate/convex.ml:17589 / barycentre   (hash md5:a165a65a059255c062adf9fae92ffafc)
 Definition barycentre : set -> set -> set :=
-  fun A:set => fun s:set => if finite s then vsum (R :^: idx A) A s (fun x:set => vector_mul A (recip_SNo (finite_cardinality s)) x) else vec A 0.
+  fun A:set => fun s:set => if finite s then vsum (R :^: idx A) A s (vector_mul A (recip_SNo (finite_cardinality s))) else vec A 0.
 
 // HOL Light: Multivariate/paths.ml:15 / path   (hash md5:f99b701734efc54b491b5305755f5419)
 Definition path : set -> (set -> set) -> prop :=
@@ -1252,7 +1252,7 @@ Definition division_points : set -> set -> set -> set :=
 
 // HOL Light: Multivariate/integration.ml:3964 / negligible   (hash md5:99e04e61cc807476014713a934a78516)
 Definition negligible : set -> set -> prop :=
-  fun A:set => fun s:set => forall a b :e R :^: idx A, has_integral A 1 (fun x:set => indicator A s x) (vec 1 0) (closed_interval A (seq_cons (a,b) seq_nil)).
+  fun A:set => fun s:set => forall a b :e R :^: idx A, has_integral A 1 (indicator A s) (vec 1 0) (closed_interval A (seq_cons (a,b) seq_nil)).
 
 // HOL Light: Multivariate/integration.ml:8660 / set_variation   (hash md5:29488104c4620a7ff8c70874552ed3a7)
 Definition set_variation : set -> set -> set -> (set -> set) -> set :=
@@ -1280,7 +1280,7 @@ Definition vector_variation : set -> set -> (set -> set) -> set :=
 
 // HOL Light: Multivariate/integration.ml:22442 / absolutely_setcontinuous_on   (hash md5:a39d6b5bed61a9c494a9af9f86953762)
 Definition absolutely_setcontinuous_on : set -> set -> (set -> set) -> set -> prop :=
-  fun M:set => fun N:set => fun f:set -> set => fun s:set => forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> finsum d (fun k:set => vector_norm N (f k)) < e0.
+  fun M:set => fun N:set => fun f:set -> set => fun s:set => forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (content M) < r) -> finsum d (fun k:set => vector_norm N (f k)) < e0.
 
 // HOL Light: Multivariate/integration.ml:23057 / absolutely_continuous_on   (hash md5:26bf4ed6fc82dd264aeace3242008841)
 Definition absolutely_continuous_on : set -> (set -> set) -> set -> prop :=
@@ -1304,7 +1304,7 @@ Definition measurable : set -> set -> prop :=
 
 // HOL Light: Multivariate/measure.ml:27 / measure   (hash md5:6c706c6ec16ea298004d092a2413c9f8)
 Definition measure : set -> set -> set :=
-  fun A:set => fun s:set => choose_in R (fun m:set => has_measure A s m).
+  fun A:set => fun s:set => choose_in R (has_measure A s).
 
 // HOL Light: Multivariate/measure.ml:6959 / measurable_on   (hash md5:c441fa0b60ed53cb9ccb9b0aecce9ed4)
 Definition measurable_on : set -> set -> (set -> set) -> set -> prop :=
@@ -1312,7 +1312,7 @@ Definition measurable_on : set -> set -> (set -> set) -> set -> prop :=
 
 // HOL Light: Multivariate/measure.ml:6976 / lebesgue_measurable   (hash md5:66f691227fe7372e73c47bfefc40c57e)
 Definition lebesgue_measurable : set -> set -> prop :=
-  fun N:set => fun s:set => measurable_on N 1 (fun x:set => indicator N s x) (R :^: idx N).
+  fun N:set => fun s:set => measurable_on N 1 (indicator N s) (R :^: idx N).
 
 // HOL Light type definition topology (abs topology, rep open_in) as a subtype of (A->bool)->bool
 Definition topology : set -> set :=
@@ -1792,7 +1792,7 @@ Definition cantor_space : set :=
 
 // HOL Light: Multivariate/metric.ml:44830 / cantor_map   (hash md5:189b6ba65cb41c8a48c14643eeb7dc75)
 Definition cantor_map : set -> set :=
-  fun a:set => real_infsum (from 0) (fun x:set => cantor_term a x).
+  fun a:set => real_infsum (from 0) (cantor_term a).
 
 // HOL Light: Multivariate/metric.ml:44833 / cantor_set   (hash md5:5ff3c164434a0db505c5b3a94ff07b51)
 Definition cantor_set : set :=

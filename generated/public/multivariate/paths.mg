@@ -395,199 +395,199 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:439 / REVERSEPATH_REVERSEPATH
 // Source hash: md5:0a9574f4267f46600c2a2b9d194bbad9
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem REVERSEPATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall x :e R :^: idx 1, reversepath N (fun x0:set => reversepath N g x0) x = g x.
+Theorem REVERSEPATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall x :e R :^: idx 1, reversepath N (reversepath N g) x = g x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:444 / PATHSTART_REVERSEPATH
 // Source hash: md5:46fba92797b160761c72cf9f016ba54c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATHSTART_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathstart A (fun x:set => reversepath A g x) = pathfinish A g.
+Theorem PATHSTART_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathstart A (reversepath A g) = pathfinish A g.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:448 / PATHFINISH_REVERSEPATH
 // Source hash: md5:02327668b1a8e674dc30dfdeba127389
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATHFINISH_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A (fun x:set => reversepath A g x) = pathstart A g.
+Theorem PATHFINISH_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A (reversepath A g) = pathstart A g.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:452 / PATHSTART_JOIN
 // Source hash: md5:94759bf6ea532cecac87514dd871fcbb
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATHSTART_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathstart A (fun x:set => poly_add (R :^: idx A) g1 g2 x) = pathstart A g1.
+Theorem PATHSTART_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathstart A (poly_add (R :^: idx A) g1 g2) = pathstart A g1.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:457 / PATHFINISH_JOIN
 // Source hash: md5:975b58e2249aba9a76400368532bb4c0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATHFINISH_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A (fun x:set => poly_add (R :^: idx A) g1 g2 x) = pathfinish A g2.
+Theorem PATHFINISH_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A (poly_add (R :^: idx A) g1 g2) = pathfinish A g2.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:462 / PATH_IMAGE_REVERSEPATH
 // Source hash: md5:9a5c072266ce6dcfd9b413e0a3c70a83
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_IMAGE_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path_image N (fun x:set => reversepath N g x) = path_image N g.
+Theorem PATH_IMAGE_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path_image N (reversepath N g) = path_image N g.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:473 / PATH_REVERSEPATH
 // Source hash: md5:a6f4f0799b8c33791410e13cd8f449ec
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (path N (fun x:set => reversepath N g x) <-> path N g).
+Theorem PATH_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (path N (reversepath N g) <-> path N g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:486 / PATH_JOIN
 // Source hash: md5:b606de5085cff9edcb34525a9d48e601
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> path N g1 /\ path N g2).
+Theorem PATH_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (path N (poly_add (R :^: idx N) g1 g2) <-> path N g1 /\ path N g2).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:581 / PATH_JOIN_IMP
 // Source hash: md5:b5f8ed6e2c70a1542d4250ee58d2191e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g1 /\ (path N g2 /\ pathfinish N g1 = pathstart N g2) -> path N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Theorem PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g1 /\ (path N g2 /\ pathfinish N g1 = pathstart N g2) -> path N (poly_add (R :^: idx N) g1 g2).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:587 / PATH_IMAGE_JOIN_SUBSET
 // Source hash: md5:bdb8b9372589b724fdce6cb2cf50d0af
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_IMAGE_JOIN_SUBSET : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path_image N (fun x:set => poly_add (R :^: idx N) g1 g2 x) c= path_image N g1 :\/: path_image N g2.
+Theorem PATH_IMAGE_JOIN_SUBSET : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path_image N (poly_add (R :^: idx N) g1 g2) c= path_image N g1 :\/: path_image N g2.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:599 / SUBSET_PATH_IMAGE_JOIN
 // Source hash: md5:be6bda1cd16890186a94368246f2540c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SUBSET_PATH_IMAGE_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> forall s c= R :^: idx N, path_image N g1 c= s /\ path_image N g2 c= s -> path_image N (fun x:set => poly_add (R :^: idx N) g1 g2 x) c= s.
+Theorem SUBSET_PATH_IMAGE_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> forall s c= R :^: idx N, path_image N g1 c= s /\ path_image N g2 c= s -> path_image N (poly_add (R :^: idx N) g1 g2) c= s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:607 / PATH_IMAGE_JOIN
 // Source hash: md5:f3c38524ee4eb1c29012c510071e14c4
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_IMAGE_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> path_image A (fun x:set => poly_add (R :^: idx A) g1 g2 x) = path_image A g1 :\/: path_image A g2.
+Theorem PATH_IMAGE_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> path_image A (poly_add (R :^: idx A) g1 g2) = path_image A g1 :\/: path_image A g2.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:632 / NOT_IN_PATH_IMAGE_JOIN
 // Source hash: md5:e96017f1705f210d51cb0f8f7cb2e9ef
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem NOT_IN_PATH_IMAGE_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> forall x :e R :^: idx A, ~ x :e path_image A g1 /\ ~ x :e path_image A g2 -> ~ x :e path_image A (fun x0:set => poly_add (R :^: idx A) g1 g2 x0).
+Theorem NOT_IN_PATH_IMAGE_JOIN : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> forall x :e R :^: idx A, ~ x :e path_image A g1 /\ ~ x :e path_image A g2 -> ~ x :e path_image A (poly_add (R :^: idx A) g1 g2).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:637 / ARC_REVERSEPATH
 // Source hash: md5:f6c858aeb09f55028a70240ae8d28a90
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ARC_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g -> arc A (fun x:set => reversepath A g x).
+Theorem ARC_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g -> arc A (reversepath A g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:647 / ARC_REVERSEPATH_EQ
 // Source hash: md5:0aca85dc6021830e1312aaa5d0785a1c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ARC_REVERSEPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (arc N (fun x:set => reversepath N g x) <-> arc N g).
+Theorem ARC_REVERSEPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (arc N (reversepath N g) <-> arc N g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:651 / SIMPLE_PATH_REVERSEPATH
 // Source hash: md5:dde2a91851c3d56bc55fa94b51f82b97
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> simple_path A g -> simple_path A (fun x:set => reversepath A g x).
+Theorem SIMPLE_PATH_REVERSEPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> simple_path A g -> simple_path A (reversepath A g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:661 / SIMPLE_PATH_REVERSEPATH_EQ
 // Source hash: md5:ee472574a15435bddfb3e5898668a40f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_REVERSEPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (simple_path N (fun x:set => reversepath N g x) <-> simple_path N g).
+Theorem SIMPLE_PATH_REVERSEPATH_EQ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (simple_path N (reversepath N g) <-> simple_path N g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:665 / SIMPLE_PATH_JOIN_LOOP
 // Source hash: md5:f3bf92ff67afe1c26a5cbe60a2e416e0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_JOIN_LOOP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> arc N g1 /\ (arc N g2 /\ (pathfinish N g1 = pathstart N g2 /\ (pathfinish N g2 = pathstart N g1 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2}))) -> simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Theorem SIMPLE_PATH_JOIN_LOOP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> arc N g1 /\ (arc N g2 /\ (pathfinish N g1 = pathstart N g2 /\ (pathfinish N g2 = pathstart N g1 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2}))) -> simple_path N (poly_add (R :^: idx N) g1 g2).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:737 / ARC_JOIN
 // Source hash: md5:c6a6d5c3127c47b3674446289b11625e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ARC_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> arc N g1 /\ (arc N g2 /\ (pathfinish N g1 = pathstart N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g2})) -> arc N (fun x:set => poly_add (R :^: idx N) g1 g2 x).
+Theorem ARC_JOIN : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> arc N g1 /\ (arc N g2 /\ (pathfinish N g1 = pathstart N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g2})) -> arc N (poly_add (R :^: idx N) g1 g2).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:793 / REVERSEPATH_JOINPATHS
 // Source hash: md5:5bf725a71f03f916f603d17ed4c79f5e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem REVERSEPATH_JOINPATHS : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> forall x :e R :^: idx 1, reversepath A (fun x0:set => poly_add (R :^: idx A) g1 g2 x0) x = poly_add (R :^: idx A) (fun x0:set => reversepath A g2 x0) (fun x0:set => reversepath A g1 x0) x.
+Theorem REVERSEPATH_JOINPATHS : forall A:set, A <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx A) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx A) -> pathfinish A g1 = pathstart A g2 -> forall x :e R :^: idx 1, reversepath A (poly_add (R :^: idx A) g1 g2) x = poly_add (R :^: idx A) (reversepath A g2) (reversepath A g1) x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:816 / PATH_JOIN_PATH_ENDS
 // Source hash: md5:75feafa657c921bfa4cc47577d05057b
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_JOIN_PATH_ENDS : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g2 /\ path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) -> pathfinish N g1 = pathstart N g2.
+Theorem PATH_JOIN_PATH_ENDS : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g2 /\ path N (poly_add (R :^: idx N) g1 g2) -> pathfinish N g1 = pathstart N g2.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:850 / PATH_JOIN_EQ
 // Source hash: md5:07d5da1d298024442455deccc135186e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g1 /\ path N g2 -> (path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> pathfinish N g1 = pathstart N g2).
+Theorem PATH_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> path N g1 /\ path N g2 -> (path N (poly_add (R :^: idx N) g1 g2) <-> pathfinish N g1 = pathstart N g2).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:856 / SIMPLE_PATH_JOIN_IMP
 // Source hash: md5:166900da1f0c52817167fe8f1697fbed
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) /\ pathfinish N g1 = pathstart N g2 -> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2}).
+Theorem SIMPLE_PATH_JOIN_IMP : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> simple_path N (poly_add (R :^: idx N) g1 g2) /\ pathfinish N g1 = pathstart N g2 -> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2}).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:911 / SIMPLE_PATH_JOIN_LOOP_EQ
 // Source hash: md5:c57974832946c6876a5e0d604ac264ac
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_JOIN_LOOP_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g2 = pathstart N g1 /\ pathfinish N g1 = pathstart N g2 -> (simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2})).
+Theorem SIMPLE_PATH_JOIN_LOOP_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g2 = pathstart N g1 /\ pathfinish N g1 = pathstart N g2 -> (simple_path N (poly_add (R :^: idx N) g1 g2) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g1,pathstart N g2})).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:921 / SIMPLE_PATH_JOIN_LOOP_EQ_ALT
 // Source hash: md5:27096eaff4cf73693a385fce156c786c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_JOIN_LOOP_EQ_ALT : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g2 = pathstart N g1 /\ pathfinish N g1 = pathstart N g2 -> (simple_path N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 = {pathstart N g1,pathstart N g2})).
+Theorem SIMPLE_PATH_JOIN_LOOP_EQ_ALT : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g2 = pathstart N g1 /\ pathfinish N g1 = pathstart N g2 -> (simple_path N (poly_add (R :^: idx N) g1 g2) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 = {pathstart N g1,pathstart N g2})).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:935 / ARC_JOIN_EQ
 // Source hash: md5:621339be14765812305ba59f184e97be
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ARC_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (arc N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g2})).
+Theorem ARC_JOIN_EQ : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (arc N (poly_add (R :^: idx N) g1 g2) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 c= {pathstart N g2})).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:975 / ARC_JOIN_EQ_ALT
 // Source hash: md5:c4d99d7936958827810cd6ee9d098829
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ARC_JOIN_EQ_ALT : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (arc N (fun x:set => poly_add (R :^: idx N) g1 g2 x) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 = {pathstart N g2})).
+Theorem ARC_JOIN_EQ_ALT : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 -> (arc N (poly_add (R :^: idx N) g1 g2) <-> arc N g1 /\ (arc N g2 /\ path_image N g1 :/\: path_image N g2 = {pathstart N g2})).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:990 / PATH_ASSOC
 // Source hash: md5:0d456b50f5464b38688043bd05b6d159
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (path N (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) <-> path N (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x)).
+Theorem PATH_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (path N (poly_add (R :^: idx N) p (poly_add (R :^: idx N) q r)) <-> path N (poly_add (R :^: idx N) (poly_add (R :^: idx N) p q) r)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:996 / SIMPLE_PATH_ASSOC
 // Source hash: md5:88033d1a9d4930c7c2c99b1d05ebb15f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (simple_path N (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) <-> simple_path N (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x)).
+Theorem SIMPLE_PATH_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (simple_path N (poly_add (R :^: idx N) p (poly_add (R :^: idx N) q r)) <-> simple_path N (poly_add (R :^: idx N) (poly_add (R :^: idx N) p q) r)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1017 / ARC_ASSOC
 // Source hash: md5:b7f872d3ba1001d8d1a12769c1702662
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ARC_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (arc N (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) <-> arc N (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x)).
+Theorem ARC_ASSOC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r -> (arc N (poly_add (R :^: idx N) p (poly_add (R :^: idx N) q r)) <-> arc N (poly_add (R :^: idx N) (poly_add (R :^: idx N) p q) r)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1028 / PATH_SYM
 // Source hash: md5:aced1f474045fd06a3aa0211663decc9
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> (path A (fun x:set => poly_add (R :^: idx A) p q x) <-> path A (fun x:set => poly_add (R :^: idx A) q p x)).
+Theorem PATH_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> (path A (poly_add (R :^: idx A) p q) <-> path A (poly_add (R :^: idx A) q p)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1033 / SIMPLE_PATH_SYM
 // Source hash: md5:f9659c65b58ce4efd132845d81ce051b
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem SIMPLE_PATH_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> (simple_path A (fun x:set => poly_add (R :^: idx A) p q x) <-> simple_path A (fun x:set => poly_add (R :^: idx A) q p x)).
+Theorem SIMPLE_PATH_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> (simple_path A (poly_add (R :^: idx A) p q) <-> simple_path A (poly_add (R :^: idx A) q p)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1038 / PATH_IMAGE_SYM
 // Source hash: md5:a8d51534087fabba4cd06c7631b0053f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_IMAGE_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> path_image A (fun x:set => poly_add (R :^: idx A) p q x) = path_image A (fun x:set => poly_add (R :^: idx A) q p x).
+Theorem PATH_IMAGE_SYM : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx A) -> pathfinish A p = pathstart A q /\ pathfinish A q = pathstart A p -> path_image A (poly_add (R :^: idx A) p q) = path_image A (poly_add (R :^: idx A) q p).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1047 / shiftpath
@@ -611,49 +611,49 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:1064 / PATHSTART_SHIFTPATH
 // Source hash: md5:73a9935edab60bec27c2239d8e65ff46
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem PATHSTART_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> drop a <= 1 -> pathstart A (fun x:set => shiftpath A a g x) = g a.
+Theorem PATHSTART_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> drop a <= 1 -> pathstart A (shiftpath A a g) = g a.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1068 / PATHFINISH_SHIFTPATH
 // Source hash: md5:45c4f3558c9642d2d46c0b30fef397b1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem PATHFINISH_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> 0 <= drop a /\ pathfinish A g = pathstart A g -> pathfinish A (fun x:set => shiftpath A a g x) = g a.
+Theorem PATHFINISH_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> 0 <= drop a /\ pathfinish A g = pathstart A g -> pathfinish A (shiftpath A a g) = g a.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1076 / ENDPOINTS_SHIFTPATH
 // Source hash: md5:066d26dab22231d46d1759378e2a7519
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ENDPOINTS_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A g = pathstart A g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> pathfinish A (fun x:set => shiftpath A a g x) = g a /\ pathstart A (fun x:set => shiftpath A a g x) = g a.
+Theorem ENDPOINTS_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A g = pathstart A g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> pathfinish A (shiftpath A a g) = g a /\ pathstart A (shiftpath A a g) = g a.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1083 / CLOSED_SHIFTPATH
 // Source hash: md5:4306c479813d28e3df64f190223c9c27
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem CLOSED_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A g = pathstart A g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> pathfinish A (fun x:set => shiftpath A a g x) = pathstart A (fun x:set => shiftpath A a g x).
+Theorem CLOSED_SHIFTPATH : forall A:set, A <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> pathfinish A g = pathstart A g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> pathfinish A (shiftpath A a g) = pathstart A (shiftpath A a g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1089 / PATH_SHIFTPATH
 // Source hash: md5:862d39fa1f03e9f57b1e63a975c28b52
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_SHIFTPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, path N g /\ (pathfinish N g = pathstart N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path N (fun x:set => shiftpath N a g x).
+Theorem PATH_SHIFTPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall a :e R :^: idx 1, path N g /\ (pathfinish N g = pathstart N g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path N (shiftpath N a g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1125 / SHIFTPATH_SHIFTPATH
 // Source hash: md5:1256ff99452dbe7e6e2ae57c54f5d0c7
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SHIFTPATH_SHIFTPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall a x :e R :^: idx 1, a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (pathfinish A g = pathstart A g /\ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> shiftpath A (vector_sub 1 (vec 1 1) a) (fun x0:set => shiftpath A a g x0) x = g x.
+Theorem SHIFTPATH_SHIFTPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall a x :e R :^: idx 1, a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (pathfinish A g = pathstart A g /\ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> shiftpath A (vector_sub 1 (vec 1 1) a) (shiftpath A a g) x = g x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1143 / PATH_IMAGE_SHIFTPATH
 // Source hash: md5:e002f634e9f528a1265d4036fcbf8d75
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_IMAGE_SHIFTPATH : forall N:set, N <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ pathfinish N g = pathstart N g -> path_image N (fun x:set => shiftpath N a g x) = path_image N g.
+Theorem PATH_IMAGE_SHIFTPATH : forall N:set, N <> Empty -> forall a :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ pathfinish N g = pathstart N g -> path_image N (shiftpath N a g) = path_image N g.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1174 / SIMPLE_PATH_SHIFTPATH
 // Source hash: md5:05fc2e71662324c5ddae0117a5d805d3
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLE_PATH_SHIFTPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall a :e R :^: idx 1, simple_path A g /\ (pathfinish A g = pathstart A g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> simple_path A (fun x:set => shiftpath A a g x).
+Theorem SIMPLE_PATH_SHIFTPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall a :e R :^: idx 1, simple_path A g /\ (pathfinish A g = pathstart A g /\ a :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> simple_path A (shiftpath A a g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1198 / subpath
@@ -671,37 +671,37 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:1212 / PATH_IMAGE_SUBPATH_GEN
 // Source hash: md5:2861c6cda5f96ad6e96bd11b82525d81
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_IMAGE_SUBPATH_GEN : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path_image N (fun x:set => subpath (R :^: idx N) u v g x) = {g x | x :e closed_segment 1 (seq_cons (u,v) seq_nil)}.
+Theorem PATH_IMAGE_SUBPATH_GEN : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path_image N (subpath (R :^: idx N) u v g) = {g x | x :e closed_segment 1 (seq_cons (u,v) seq_nil)}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1218 / PATH_IMAGE_SUBPATH
 // Source hash: md5:a38b085a5ebcdf95ba7200dfb686f0f8
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_IMAGE_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> drop u <= drop v -> path_image N (fun x:set => subpath (R :^: idx N) u v g x) = {g x | x :e closed_interval 1 (seq_cons (u,v) seq_nil)}.
+Theorem PATH_IMAGE_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> drop u <= drop v -> path_image N (subpath (R :^: idx N) u v g) = {g x | x :e closed_interval 1 (seq_cons (u,v) seq_nil)}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1224 / PATH_IMAGE_SUBPATH_COMBINE
 // Source hash: md5:473d74f253860757f90f5fd0480c2f42
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_IMAGE_SUBPATH_COMBINE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall u :e R :^: idx 1, path N g /\ u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> path_image N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x) :\/: path_image N (fun x:set => subpath (R :^: idx N) u (vec 1 1) g x) = path_image N g.
+Theorem PATH_IMAGE_SUBPATH_COMBINE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall u :e R :^: idx 1, path N g /\ u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> path_image N (subpath (R :^: idx N) (vec 1 0) u g) :\/: path_image N (subpath (R :^: idx N) u (vec 1 1) g) = path_image N g.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1236 / PATH_SUBPATH
 // Source hash: md5:927600f98028917a98782cc183c06fda
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path N (fun x:set => subpath (R :^: idx N) u v g x).
+Theorem PATH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path N (subpath (R :^: idx N) u v g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1251 / PATHSTART_SUBPATH
 // Source hash: md5:4675335fa10d6bcd4eb812f297c3d4db
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATHSTART_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> pathstart N (fun x:set => subpath (R :^: idx N) u v g x) = g u.
+Theorem PATHSTART_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> pathstart N (subpath (R :^: idx N) u v g) = g u.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1255 / PATHFINISH_SUBPATH
 // Source hash: md5:1513c523c2cdeb0ed41b4a88724d39cb
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATHFINISH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> pathfinish N (fun x:set => subpath (R :^: idx N) u v g x) = g v.
+Theorem PATHFINISH_SUBPATH : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> pathfinish N (subpath (R :^: idx N) u v g) = g v.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1260 / SUBPATH_TRIVIAL
@@ -719,7 +719,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:1270 / REVERSEPATH_SUBPATH
 // Source hash: md5:b073b866189ca3fe5d6fbf10d3334877
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem REVERSEPATH_SUBPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v x :e R :^: idx 1, reversepath A (fun x0:set => subpath (R :^: idx A) u v g x0) x = subpath (R :^: idx A) v u g x.
+Theorem REVERSEPATH_SUBPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v x :e R :^: idx 1, reversepath A (subpath (R :^: idx A) u v g) x = subpath (R :^: idx A) v u g x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1277 / SUBPATH_TRANSLATION
@@ -737,49 +737,49 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:1291 / SIMPLE_PATH_SUBPATH_EQ
 // Source hash: md5:010e91e3c34da583b0531515d51c54dc
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLE_PATH_SUBPATH_EQ : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A (fun x:set => subpath (R :^: idx A) u v g x) <-> path A (fun x:set => subpath (R :^: idx A) u v g x) /\ (~ u = v /\ forall x y :e R :^: idx 1, x :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ (y :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ g x = g y) -> x = y \/ (x = u /\ y = v \/ x = v /\ y = u)).
+Theorem SIMPLE_PATH_SUBPATH_EQ : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A (subpath (R :^: idx A) u v g) <-> path A (subpath (R :^: idx A) u v g) /\ (~ u = v /\ forall x y :e R :^: idx 1, x :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ (y :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ g x = g y) -> x = y \/ (x = u /\ y = v \/ x = v /\ y = u)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1312 / ARC_SUBPATH_EQ
 // Source hash: md5:ff9cecc4705e5ba23ca5aa9aff92f06e
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ARC_SUBPATH_EQ : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, arc A (fun x:set => subpath (R :^: idx A) u v g x) <-> path A (fun x:set => subpath (R :^: idx A) u v g x) /\ (~ u = v /\ forall x y :e R :^: idx 1, x :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ (y :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ g x = g y) -> x = y).
+Theorem ARC_SUBPATH_EQ : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, arc A (subpath (R :^: idx A) u v g) <-> path A (subpath (R :^: idx A) u v g) /\ (~ u = v /\ forall x y :e R :^: idx 1, x :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ (y :e closed_segment 1 (seq_cons (u,v) seq_nil) /\ g x = g y) -> x = y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1329 / SIMPLE_PATH_SUBPATH
 // Source hash: md5:ab2d90b9aa9653250e11e3fba89bd044
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLE_PATH_SUBPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ u = v)) -> simple_path A (fun x:set => subpath (R :^: idx A) u v g x).
+Theorem SIMPLE_PATH_SUBPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ u = v)) -> simple_path A (subpath (R :^: idx A) u v g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1352 / ARC_SIMPLE_PATH_SUBPATH
 // Source hash: md5:6118e6cc3e6ece4c1938044046e07b18
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ARC_SIMPLE_PATH_SUBPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ g u = g v)) -> arc A (fun x:set => subpath (R :^: idx A) u v g x).
+Theorem ARC_SIMPLE_PATH_SUBPATH : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ g u = g v)) -> arc A (subpath (R :^: idx A) u v g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1361 / ARC_SUBPATH_ARC
 // Source hash: md5:0c43d75df523fba2a86b93284843cac4
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ARC_SUBPATH_ARC : forall A:set, A <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ u = v)) -> arc A (fun x:set => subpath (R :^: idx A) u v g x).
+Theorem ARC_SUBPATH_ARC : forall A:set, A <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> arc A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ u = v)) -> arc A (subpath (R :^: idx A) u v g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1369 / ARC_SIMPLE_PATH_SUBPATH_INTERIOR
 // Source hash: md5:c538343b40db08b4a2f22eeb9f7d99ae
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem ARC_SIMPLE_PATH_SUBPATH_INTERIOR : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (~ u = v /\ abs_SNo (drop u + - drop v) < 1))) -> arc A (fun x:set => subpath (R :^: idx A) u v g x).
+Theorem ARC_SIMPLE_PATH_SUBPATH_INTERIOR : forall A:set, A <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx A) -> forall u v :e R :^: idx 1, simple_path A g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (~ u = v /\ abs_SNo (drop u + - drop v) < 1))) -> arc A (subpath (R :^: idx A) u v g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1382 / PATH_IMAGE_SUBPATH_SUBSET
 // Source hash: md5:5f854e463b7a6f651a571edfe901503a
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_IMAGE_SUBPATH_SUBSET : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_image N (fun x:set => subpath (R :^: idx N) u v g x) c= path_image N g.
+Theorem PATH_IMAGE_SUBPATH_SUBSET : forall N:set, N <> Empty -> forall u v :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> path N g /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> path_image N (subpath (R :^: idx N) u v g) c= path_image N g.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1391 / JOIN_SUBPATHS_MIDDLE
 // Source hash: md5:7fabf6a0dff3f88bcca8055856ca2c4f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem JOIN_SUBPATHS_MIDDLE : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall x :e R :^: idx 1, poly_add (R :^: idx N) (fun x0:set => subpath (R :^: idx N) (vec 1 0) (lift (1 :/: 2)) p x0) (fun x0:set => subpath (R :^: idx N) (lift (1 :/: 2)) (vec 1 1) p x0) x = p x.
+Theorem JOIN_SUBPATHS_MIDDLE : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall x :e R :^: idx 1, poly_add (R :^: idx N) (subpath (R :^: idx N) (vec 1 0) (lift (1 :/: 2)) p) (subpath (R :^: idx N) (lift (1 :/: 2)) (vec 1 1) p) x = p x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1404 / EXISTS_SUBPATH_OF_PATH
@@ -827,13 +827,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:1853 / SUBPATH_TO_FRONTIER_STRONG
 // Source hash: md5:d57ce818de042d8eb37629a8f850ea96
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SUBPATH_TO_FRONTIER_STRONG : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (pathstart N g :e s /\ ~ pathfinish N g :e s) -> exists u :e R :^: idx 1, u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (~ pathfinish N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x) :e interior N s /\ (u = vec 1 0 \/ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x = vec 1 1 -> subpath (R :^: idx N) (vec 1 0) u g x :e interior N s) /\ pathfinish N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x) :e closure N s)).
+Theorem SUBPATH_TO_FRONTIER_STRONG : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (pathstart N g :e s /\ ~ pathfinish N g :e s) -> exists u :e R :^: idx 1, u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (~ pathfinish N (subpath (R :^: idx N) (vec 1 0) u g) :e interior N s /\ (u = vec 1 0 \/ (forall x :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x = vec 1 1 -> subpath (R :^: idx N) (vec 1 0) u g x :e interior N s) /\ pathfinish N (subpath (R :^: idx N) (vec 1 0) u g) :e closure N s)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1879 / SUBPATH_TO_FRONTIER
 // Source hash: md5:80adbfc23b7120d67dd3e5677f148260
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SUBPATH_TO_FRONTIER : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (pathstart N g :e s /\ ~ pathfinish N g :e s) -> exists u :e R :^: idx 1, u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (pathfinish N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x) :e frontier N s /\ path_image N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x) :\: {pathfinish N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x)} c= interior N s).
+Theorem SUBPATH_TO_FRONTIER : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (pathstart N g :e s /\ ~ pathfinish N g :e s) -> exists u :e R :^: idx 1, u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (pathfinish N (subpath (R :^: idx N) (vec 1 0) u g) :e frontier N s /\ path_image N (subpath (R :^: idx N) (vec 1 0) u g) :\: {pathfinish N (subpath (R :^: idx N) (vec 1 0) u g)} c= interior N s).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:1903 / EXISTS_PATH_SUBPATH_TO_FRONTIER
@@ -851,7 +851,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:1933 / PATH_COMBINE
 // Source hash: md5:61c8c25ce19e45a20ee1ff3623d32a0b
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_COMBINE : forall N:set, N <> Empty -> forall u :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> (path N g <-> path N (fun x:set => subpath (R :^: idx N) (vec 1 0) u g x) /\ path N (fun x:set => subpath (R :^: idx N) u (vec 1 1) g x)).
+Theorem PATH_COMBINE : forall N:set, N <> Empty -> forall u :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> (path N g <-> path N (subpath (R :^: idx N) (vec 1 0) u g) /\ path N (subpath (R :^: idx N) u (vec 1 1) g)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2000 / linepath
@@ -875,67 +875,67 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:2018 / PATHSTART_LINEPATH
 // Source hash: md5:678f8dcf6160edd1d06bef6e04ab0a69
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATHSTART_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, pathstart A (fun x:set => linepath A (a,b) x) = a.
+Theorem PATHSTART_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, pathstart A (linepath A (a,b)) = a.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2022 / PATHFINISH_LINEPATH
 // Source hash: md5:e5872b09c22356ab3687d69110f583de
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATHFINISH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, pathfinish A (fun x:set => linepath A (a,b) x) = b.
+Theorem PATHFINISH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, pathfinish A (linepath A (a,b)) = b.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2026 / CONTINUOUS_LINEPATH_AT
 // Source hash: md5:d58684582df45e4cbd0fdb774d0b0dde
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_LINEPATH_AT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, continuous A (R :^: idx 1) (fun x0:set => linepath A (a,b) x0) (at_hl 1 x).
+Theorem CONTINUOUS_LINEPATH_AT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, continuous A (R :^: idx 1) (linepath A (a,b)) (at_hl 1 x).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2035 / CONTINUOUS_ON_LINEPATH
 // Source hash: md5:35afae8ec67e95c32f58d14b5261dedb
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem CONTINUOUS_ON_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall s c= R :^: idx 1, continuous_on_hl 1 A (fun x:set => linepath A (a,b) x) s.
+Theorem CONTINUOUS_ON_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall s c= R :^: idx 1, continuous_on_hl 1 A (linepath A (a,b)) s.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2039 / PATH_LINEPATH
 // Source hash: md5:931425434664afdf890a81c19208ce4d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, path A (fun x:set => linepath A (a,b) x).
+Theorem PATH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, path A (linepath A (a,b)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2043 / PATH_IMAGE_LINEPATH
 // Source hash: md5:1a0e07001d01e5b355ddadfc4021a7fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_IMAGE_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, path_image A (fun x:set => linepath A (a,b) x) = closed_segment A (seq_cons (a,b) seq_nil).
+Theorem PATH_IMAGE_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, path_image A (linepath A (a,b)) = closed_segment A (seq_cons (a,b) seq_nil).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2050 / REVERSEPATH_LINEPATH
 // Source hash: md5:b8fecc2356ad3a777f2cb44122898adb
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem REVERSEPATH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, reversepath A (fun x0:set => linepath A (a,b) x0) x = linepath A (b,a) x.
+Theorem REVERSEPATH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall x :e R :^: idx 1, reversepath A (linepath A (a,b)) x = linepath A (b,a) x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2055 / ARC_LINEPATH
 // Source hash: md5:0fff1fe28f73285aad9b143bb5cafe5d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ARC_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, ~ a = b -> arc A (fun x:set => linepath A (a,b) x).
+Theorem ARC_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, ~ a = b -> arc A (linepath A (a,b)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2063 / SIMPLE_PATH_LINEPATH
 // Source hash: md5:1571f4cc25d95cc65c8e9b9de1f4c207
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLE_PATH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, ~ a = b -> simple_path A (fun x:set => linepath A (a,b) x).
+Theorem SIMPLE_PATH_LINEPATH : forall A:set, A <> Empty -> forall a b :e R :^: idx A, ~ a = b -> simple_path A (linepath A (a,b)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2067 / SIMPLE_PATH_LINEPATH_EQ
 // Source hash: md5:6a2b77ce7a6efa18f6f5f0527e93f757
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLE_PATH_LINEPATH_EQ : forall N:set, N <> Empty -> forall a b :e R :^: idx N, simple_path N (fun x:set => linepath N (a,b) x) <-> ~ a = b.
+Theorem SIMPLE_PATH_LINEPATH_EQ : forall N:set, N <> Empty -> forall a b :e R :^: idx N, simple_path N (linepath N (a,b)) <-> ~ a = b.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2077 / ARC_LINEPATH_EQ
 // Source hash: md5:f5664cf881282c5682f4d684dd757bb1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ARC_LINEPATH_EQ : forall A:set, A <> Empty -> forall a b :e R :^: idx A, arc A (fun x:set => linepath A (a,b) x) <-> ~ a = b.
+Theorem ARC_LINEPATH_EQ : forall A:set, A <> Empty -> forall a b :e R :^: idx A, arc A (linepath A (a,b)) <-> ~ a = b.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2082 / LINEPATH_REFL
@@ -953,7 +953,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:2091 / SHIFTPATH_TRIVIAL
 // Source hash: md5:e3592e7af9701cf241d4879895a1e690
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SHIFTPATH_TRIVIAL : forall A:set, A <> Empty -> forall t :e R :^: idx 1, forall a :e R :^: idx A, forall x :e R :^: idx 1, shiftpath A t (fun x0:set => linepath A (a,a) x0) x = linepath A (a,a) x.
+Theorem SHIFTPATH_TRIVIAL : forall A:set, A <> Empty -> forall t :e R :^: idx 1, forall a :e R :^: idx A, forall x :e R :^: idx 1, shiftpath A t (linepath A (a,a)) x = linepath A (a,a) x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:2095 / SUBPATH_REFL
@@ -4215,7 +4215,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:16927 / HOMOTOPIC_WITH_REFLECTIONS_ALONG
 // Source hash: md5:f7bb94293cc6d7feb4e293f4f1521118
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem HOMOTOPIC_WITH_REFLECTIONS_ALONG : forall N:set, N <> Empty -> forall P c= R :^: idx N :^: (R :^: idx N), forall s t c= R :^: idx N, forall a b :e R :^: idx N, ~ a = vec N 0 /\ (~ b = vec N 0 /\ (forall c :e R :^: idx N, c :e closed_segment N (seq_cons (a,b) seq_nil) -> (fun x :e R :^: idx N => reflect_along N c x) :e P /\ {reflect_along N c x | x :e s} c= t)) -> homotopic_with (R :^: idx N) (R :^: idx N) P (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) t) (fun x:set => reflect_along N a x) (fun x:set => reflect_along N b x).
+Theorem HOMOTOPIC_WITH_REFLECTIONS_ALONG : forall N:set, N <> Empty -> forall P c= R :^: idx N :^: (R :^: idx N), forall s t c= R :^: idx N, forall a b :e R :^: idx N, ~ a = vec N 0 /\ (~ b = vec N 0 /\ (forall c :e R :^: idx N, c :e closed_segment N (seq_cons (a,b) seq_nil) -> (fun x :e R :^: idx N => reflect_along N c x) :e P /\ {reflect_along N c x | x :e s} c= t)) -> homotopic_with (R :^: idx N) (R :^: idx N) P (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) t) (reflect_along N a) (reflect_along N b).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17000 / HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS
@@ -4335,13 +4335,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:17602 / HOMOTOPIC_PATHS_REVERSEPATH
 // Source hash: md5:e383a0d46bbed0e8b1cde74bd55899a1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_REVERSEPATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> (homotopic_paths N s (fun x:set => reversepath N p x) (fun x:set => reversepath N q x) <-> homotopic_paths N s p q).
+Theorem HOMOTOPIC_PATHS_REVERSEPATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> (homotopic_paths N s (reversepath N p) (reversepath N q) <-> homotopic_paths N s p q).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17641 / HOMOTOPIC_PATHS_JOIN
 // Source hash: md5:4980d825e95f0bbd722c598d4b96388e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_JOIN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall p':set -> set, (forall x :e R :^: idx 1, p' x :e R :^: idx N) -> forall q':set -> set, (forall x :e R :^: idx 1, q' x :e R :^: idx N) -> homotopic_paths N s p p' /\ (homotopic_paths N s q q' /\ pathfinish N p = pathstart N q) -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) p' q' x).
+Theorem HOMOTOPIC_PATHS_JOIN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall p':set -> set, (forall x :e R :^: idx 1, p' x :e R :^: idx N) -> forall q':set -> set, (forall x :e R :^: idx 1, q' x :e R :^: idx N) -> homotopic_paths N s p p' /\ (homotopic_paths N s q q' /\ pathfinish N p = pathstart N q) -> homotopic_paths N s (poly_add (R :^: idx N) p q) (poly_add (R :^: idx N) p' q').
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17675 / HOMOTOPIC_PATHS_CONTINUOUS_IMAGE
@@ -4353,55 +4353,55 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:17692 / HOMOTOPIC_PATHS_RID
 // Source hash: md5:30778bf6c64c44f05c1c43e290e5444c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_PATHS_RID : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> path A p /\ path_image A p c= s -> homotopic_paths A s (fun x:set => poly_add (R :^: idx A) p (fun x0:set => linepath A (pathfinish A p,pathfinish A p) x0) x) p.
+Theorem HOMOTOPIC_PATHS_RID : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx A) -> path A p /\ path_image A p c= s -> homotopic_paths A s (poly_add (R :^: idx A) p (linepath A (pathfinish A p,pathfinish A p))) p.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17719 / HOMOTOPIC_PATHS_LID
 // Source hash: md5:57ae2c50e2f0f7aa6ea857abdd0c9d2a
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_PATHS_LID : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) (fun x0:set => linepath N (pathstart N p,pathstart N p) x0) p x) p.
+Theorem HOMOTOPIC_PATHS_LID : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (poly_add (R :^: idx N) (linepath N (pathstart N p,pathstart N p)) p) p.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17734 / HOMOTOPIC_PATHS_ASSOC
 // Source hash: md5:6417b820658c87a5239245346ffdbcae
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_ASSOC : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ (path N q /\ (path_image N q c= s /\ (path N r /\ (path_image N r c= s /\ (pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r)))))) -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q r x0) x) (fun x:set => poly_add (R :^: idx N) (fun x0:set => poly_add (R :^: idx N) p q x0) r x).
+Theorem HOMOTOPIC_PATHS_ASSOC : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ (path N q /\ (path_image N q c= s /\ (path N r /\ (path_image N r c= s /\ (pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N r)))))) -> homotopic_paths N s (poly_add (R :^: idx N) p (poly_add (R :^: idx N) q r)) (poly_add (R :^: idx N) (poly_add (R :^: idx N) p q) r).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17783 / HOMOTOPIC_PATHS_RINV
 // Source hash: md5:fb7b0319dc99d2f02d11bee00d97ea64
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_PATHS_RINV : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => reversepath N p x0) x) (fun x:set => linepath N (pathstart N p,pathstart N p) x).
+Theorem HOMOTOPIC_PATHS_RINV : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (poly_add (R :^: idx N) p (reversepath N p)) (linepath N (pathstart N p,pathstart N p)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17865 / HOMOTOPIC_PATHS_LINV
 // Source hash: md5:31a1b0783fcef04387e26b9333cfa7f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_PATHS_LINV : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) (fun x0:set => reversepath N p x0) p x) (fun x:set => linepath N (pathfinish N p,pathfinish N p) x).
+Theorem HOMOTOPIC_PATHS_LINV : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ path_image N p c= s -> homotopic_paths N s (poly_add (R :^: idx N) (reversepath N p) p) (linepath N (pathfinish N p,pathfinish N p)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17877 / HOMOTOPIC_PATHS_LCANCEL
 // Source hash: md5:a763e21a16d2709f6bff7df9b9b13e2a
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_LCANCEL : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) p r x) /\ (pathstart N q = pathfinish N p /\ pathstart N r = pathfinish N p) -> homotopic_paths N s q r.
+Theorem HOMOTOPIC_PATHS_LCANCEL : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, homotopic_paths N s (poly_add (R :^: idx N) p q) (poly_add (R :^: idx N) p r) /\ (pathstart N q = pathfinish N p /\ pathstart N r = pathfinish N p) -> homotopic_paths N s q r.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17914 / HOMOTOPIC_PATHS_LCANCEL_EQ
 // Source hash: md5:a3eee9b799a86bf10cdaa1c70abb4c60
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_LCANCEL_EQ : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, pathstart N q = pathfinish N p /\ pathstart N r = pathfinish N p -> (homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) p r x) <-> path N p /\ (path_image N p c= s /\ homotopic_paths N s q r)).
+Theorem HOMOTOPIC_PATHS_LCANCEL_EQ : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, pathstart N q = pathfinish N p /\ pathstart N r = pathfinish N p -> (homotopic_paths N s (poly_add (R :^: idx N) p q) (poly_add (R :^: idx N) p r) <-> path N p /\ (path_image N p c= s /\ homotopic_paths N s q r)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17927 / HOMOTOPIC_PATHS_RCANCEL
 // Source hash: md5:eb2bfc82e125f391f3326d10691ec20b
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_RCANCEL : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p r x) (fun x:set => poly_add (R :^: idx N) q r x) /\ (pathfinish N p = pathstart N r /\ pathfinish N q = pathstart N r) -> homotopic_paths N s p q.
+Theorem HOMOTOPIC_PATHS_RCANCEL : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, homotopic_paths N s (poly_add (R :^: idx N) p r) (poly_add (R :^: idx N) q r) /\ (pathfinish N p = pathstart N r /\ pathfinish N q = pathstart N r) -> homotopic_paths N s p q.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17965 / HOMOTOPIC_PATHS_RCANCEL_EQ
 // Source hash: md5:4c61c8efefa29ad3ccd2a101534c8465
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_PATHS_RCANCEL_EQ : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, pathfinish N p = pathstart N r /\ pathfinish N q = pathstart N r -> (homotopic_paths N s (fun x:set => poly_add (R :^: idx N) p r x) (fun x:set => poly_add (R :^: idx N) q r x) <-> homotopic_paths N s p q /\ (path N r /\ path_image N r c= s)).
+Theorem HOMOTOPIC_PATHS_RCANCEL_EQ : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx N) -> forall s c= R :^: idx N, pathfinish N p = pathstart N r /\ pathfinish N q = pathstart N r -> (homotopic_paths N s (poly_add (R :^: idx N) p r) (poly_add (R :^: idx N) q r) <-> homotopic_paths N s p q /\ (path N r /\ path_image N r c= s)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17982 / homotopic_loops
@@ -4473,7 +4473,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:18079 / HOMOTOPIC_LOOPS_SHIFTPATH_SELF
 // Source hash: md5:028cf59daea1136577aa20b9c4b84d18
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_LOOPS_SHIFTPATH_SELF : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall t :e R :^: idx 1, forall s c= R :^: idx N, path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil))) -> homotopic_loops N s p (fun x:set => shiftpath N t p x).
+Theorem HOMOTOPIC_LOOPS_SHIFTPATH_SELF : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall t :e R :^: idx 1, forall s c= R :^: idx N, path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil))) -> homotopic_loops N s p (shiftpath N t p).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18154 / HOMOTOPIC_PATHS_IMP_HOMOTOPIC_LOOPS
@@ -4485,19 +4485,19 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:18165 / HOMOTOPIC_LOOPS_IMP_HOMOTOPIC_PATHS_NULL
 // Source hash: md5:5a955ad0e45eb188bca0645509f97cfc
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_LOOPS_IMP_HOMOTOPIC_PATHS_NULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall a :e R :^: idx N, homotopic_loops N s p (fun x:set => linepath N (a,a) x) -> homotopic_paths N s p (fun x:set => linepath N (pathstart N p,pathstart N p) x).
+Theorem HOMOTOPIC_LOOPS_IMP_HOMOTOPIC_PATHS_NULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall a :e R :^: idx N, homotopic_loops N s p (linepath N (a,a)) -> homotopic_paths N s p (linepath N (pathstart N p,pathstart N p)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18299 / HOMOTOPIC_LOOPS_CONJUGATE
 // Source hash: md5:846771b96180bdbd2dbcfa96e3e4783f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_LOOPS_CONJUGATE : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall s c= R :^: idx N, path N p /\ (path_image N p c= s /\ (path N q /\ (path_image N q c= s /\ (pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N q)))) -> homotopic_loops N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => poly_add (R :^: idx N) q (fun x1:set => reversepath N p x1) x0) x) q.
+Theorem HOMOTOPIC_LOOPS_CONJUGATE : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall s c= R :^: idx N, path N p /\ (path_image N p c= s /\ (path N q /\ (path_image N q c= s /\ (pathfinish N p = pathstart N q /\ pathfinish N q = pathstart N q)))) -> homotopic_loops N s (poly_add (R :^: idx N) p (poly_add (R :^: idx N) q (reversepath N p))) q.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18397 / PATH_COMPONENT_IMP_HOMOTOPIC_POINTS
 // Source hash: md5:80aeddc94f482770c4fdfe8babba854e
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_COMPONENT_IMP_HOMOTOPIC_POINTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, path_component N s a b -> homotopic_loops N s (fun x:set => linepath N (a,a) x) (fun x:set => linepath N (b,b) x).
+Theorem PATH_COMPONENT_IMP_HOMOTOPIC_POINTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, path_component N s a b -> homotopic_loops N s (linepath N (a,a)) (linepath N (b,b)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18415 / HOMOTOPIC_LOOPS_IMP_PATH_COMPONENT_VALUE
@@ -4509,13 +4509,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:18437 / HOMOTOPIC_POINTS_EQ_PATH_COMPONENT
 // Source hash: md5:0c83d7731b291457ae8e05abbaa3ed50
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_POINTS_EQ_PATH_COMPONENT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, homotopic_loops N s (fun x:set => linepath N (a,a) x) (fun x:set => linepath N (b,b) x) <-> path_component N s a b.
+Theorem HOMOTOPIC_POINTS_EQ_PATH_COMPONENT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, homotopic_loops N s (linepath N (a,a)) (linepath N (b,b)) <-> path_component N s a b.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18448 / PATH_CONNECTED_EQ_HOMOTOPIC_POINTS
 // Source hash: md5:fe9be1b62147e59b796d1eb30f22e2f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_CONNECTED_EQ_HOMOTOPIC_POINTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, path_connected N s <-> forall a b :e R :^: idx N, a :e s /\ b :e s -> homotopic_loops N s (fun x:set => linepath N (a,a) x) (fun x:set => linepath N (b,b) x).
+Theorem PATH_CONNECTED_EQ_HOMOTOPIC_POINTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, path_connected N s <-> forall a b :e R :^: idx N, a :e s /\ b :e s -> homotopic_loops N s (linepath N (a,a)) (linepath N (b,b)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18460 / HOMOTOPIC_WITH_LINEAR
@@ -4587,25 +4587,25 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:18845 / HOMOTOPIC_JOIN_SUBPATHS
 // Source hash: md5:5aec29f3efa4035bb7d75c9239ca13a4
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_JOIN_SUBPATHS : forall N:set, N <> Empty -> forall u v w :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (path_image N g c= s /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ w :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)))) -> homotopic_paths N s (fun x:set => poly_add (R :^: idx N) (fun x0:set => subpath (R :^: idx N) u v g x0) (fun x0:set => subpath (R :^: idx N) v w g x0) x) (fun x:set => subpath (R :^: idx N) u w g x).
+Theorem HOMOTOPIC_JOIN_SUBPATHS : forall N:set, N <> Empty -> forall u v w :e R :^: idx 1, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (path_image N g c= s /\ (u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ (v :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ w :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)))) -> homotopic_paths N s (poly_add (R :^: idx N) (subpath (R :^: idx N) u v g) (subpath (R :^: idx N) v w g)) (subpath (R :^: idx N) u w g).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18992 / HOMOTOPIC_LOOPS_SHIFTPATH
 // Source hash: md5:b97d0a6f9196150ea3ea1bd378448ca0
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_LOOPS_SHIFTPATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall u :e R :^: idx 1, homotopic_loops N s p q /\ u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> homotopic_loops N s (fun x:set => shiftpath N u p x) (fun x:set => shiftpath N u q x).
+Theorem HOMOTOPIC_LOOPS_SHIFTPATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall u :e R :^: idx 1, homotopic_loops N s p q /\ u :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> homotopic_loops N s (shiftpath N u p) (shiftpath N u q).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19054 / HOMOTOPIC_PATHS_LOOP_PARTS
 // Source hash: md5:c336059f8c013a3e5849ff282bae4eee
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_PATHS_LOOP_PARTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall a :e R :^: idx N, homotopic_loops N s (fun x:set => poly_add (R :^: idx N) p (fun x0:set => reversepath N q x0) x) (fun x:set => linepath N (a,a) x) /\ path N q -> homotopic_paths N s p q.
+Theorem HOMOTOPIC_PATHS_LOOP_PARTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> forall a :e R :^: idx N, homotopic_loops N s (poly_add (R :^: idx N) p (reversepath N q)) (linepath N (a,a)) /\ path N q -> homotopic_paths N s p q.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19102 / HOMOTOPIC_LOOPS_ADD_SYM
 // Source hash: md5:3bce84cb59d5619999f3373368af2c89
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HOMOTOPIC_LOOPS_ADD_SYM : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ (path N q /\ (path_image N q c= s /\ (pathfinish N q = pathstart N q /\ pathstart N q = pathstart N p))))) -> homotopic_loops N s (fun x:set => poly_add (R :^: idx N) p q x) (fun x:set => poly_add (R :^: idx N) q p x).
+Theorem HOMOTOPIC_LOOPS_ADD_SYM : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall q:set -> set, (forall x :e R :^: idx 1, q x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ (path N q /\ (path_image N q c= s /\ (pathfinish N q = pathstart N q /\ pathstart N q = pathstart N p))))) -> homotopic_loops N s (poly_add (R :^: idx N) p q) (poly_add (R :^: idx N) q p).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19142 / simply_connected
@@ -4635,25 +4635,25 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:19166 / SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_ANY
 // Source hash: md5:de95d8ef9be4e03c332d3762bbe3ed37
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_ANY : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall a :e R :^: idx N, path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ a :e s)) -> homotopic_loops N s p (fun x:set => linepath N (a,a) x).
+Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_ANY : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> forall a :e R :^: idx N, path N p /\ (path_image N p c= s /\ (pathfinish N p = pathstart N p /\ a :e s)) -> homotopic_loops N s p (linepath N (a,a)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19183 / SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_SOME
 // Source hash: md5:08807529f2e8f51c32631cfea236daa6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_SOME : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ pathfinish N p = pathstart N p) -> exists a :e R :^: idx N, a :e s /\ homotopic_loops N s p (fun x:set => linepath N (a,a) x).
+Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_SOME : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ pathfinish N p = pathstart N p) -> exists a :e R :^: idx N, a :e s /\ homotopic_loops N s p (linepath N (a,a)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19203 / SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_ALL
 // Source hash: md5:3f359fc3f2967cebdec14dddfab98e58
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_ALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> s = Empty \/ exists a :e R :^: idx N, a :e s /\ forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ pathfinish N p = pathstart N p) -> homotopic_loops N s p (fun x:set => linepath N (a,a) x).
+Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_LOOP_ALL : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> s = Empty \/ exists a :e R :^: idx N, a :e s /\ forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ pathfinish N p = pathstart N p) -> homotopic_loops N s p (linepath N (a,a)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19236 / SIMPLY_CONNECTED_EQ_CONTRACTIBLE_PATH
 // Source hash: md5:1434e50858616211c37588f52aba874d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_PATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ pathfinish N p = pathstart N p) -> homotopic_paths N s p (fun x:set => linepath N (pathstart N p,pathstart N p) x).
+Theorem SIMPLY_CONNECTED_EQ_CONTRACTIBLE_PATH : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> path N p /\ (path_image N p c= s /\ pathfinish N p = pathstart N p) -> homotopic_paths N s p (linepath N (pathstart N p,pathstart N p)).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19262 / SIMPLY_CONNECTED_EQ_HOMOTOPIC_PATHS
@@ -4737,13 +4737,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:19585 / SIMPLY_CONNECTED_FUNDAMENTAL_GROUP
 // Source hash: md5:6ad1027d5b0354fd1a276a9ed38fe47c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLY_CONNECTED_FUNDAMENTAL_GROUP : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall a :e R :^: idx N, a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => linepath N (a,a) x0) (fun x0:set => x x0)}}.
+Theorem SIMPLY_CONNECTED_FUNDAMENTAL_GROUP : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall a :e R :^: idx N, a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (linepath N (a,a)) (fun x0:set => x x0)}}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19616 / FUNDAMENTAL_GROUP_SIMPLY_CONNECTED
 // Source hash: md5:c03f0d631fdaadacb09954b9a3924ebc
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem FUNDAMENTAL_GROUP_SIMPLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, simply_connected N s /\ a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => linepath N (a,a) x0) (fun x0:set => x x0)}}.
+Theorem FUNDAMENTAL_GROUP_SIMPLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, simply_connected N s /\ a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (linepath N (a,a)) (fun x0:set => x x0)}}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19629 / NULLHOMOTOPIC_FROM_SPHERE_EXTENSION
@@ -5805,7 +5805,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:25223 / COVERING_SPACE_INESSENTIAL_LOOP_LIFT_IS_LOOP
 // Source hash: md5:cbbeb03f6e13ed7d0a00366e80724489
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem COVERING_SPACE_INESSENTIAL_LOOP_LIFT_IS_LOOP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx M) -> forall a :e R :^: idx N, covering_space M N (c,p) s /\ (path N g /\ (path_image N g c= s /\ (pathfinish N g = pathstart N g /\ (homotopic_paths N s g (fun x:set => linepath N (a,a) x) /\ (path M h /\ (path_image M h c= c /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> p (h t) = g t))))))) -> pathfinish M h = pathstart M h.
+Theorem COVERING_SPACE_INESSENTIAL_LOOP_LIFT_IS_LOOP : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx M) -> forall a :e R :^: idx N, covering_space M N (c,p) s /\ (path N g /\ (path_image N g c= s /\ (pathfinish N g = pathstart N g /\ (homotopic_paths N s g (linepath N (a,a)) /\ (path M h /\ (path_image M h c= c /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> p (h t) = g t))))))) -> pathfinish M h = pathstart M h.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:25251 / COVERING_SPACE_SIMPLY_CONNECTED_LOOP_LIFT_IS_LOOP
@@ -5835,7 +5835,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:25643 / COVERING_SPACE_LIFT_STRONGER
 // Source hash: md5:41dd3d9d1fa69c09778243ba14087585
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem COVERING_SPACE_LIFT_STRONGER : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall f:set -> set, (forall x :e R :^: idx P, f x :e R :^: idx N) -> forall u c= R :^: idx P, forall a :e R :^: idx M, forall z :e R :^: idx P, covering_space M N (c,p) s /\ (a :e c /\ (z :e u /\ (path_connected P u /\ (locally P {x :e Power (R :^: idx P) | path_connected P x} u /\ (continuous_on_hl P N f u /\ ({f x | x :e u} c= s /\ (f z = p a /\ (forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx P) -> path P r /\ (path_image P r c= u /\ (pathstart P r = z /\ pathfinish P r = z)) -> exists b :e R :^: idx N, homotopic_paths N s (fun x:set => f (r x)) (fun x:set => linepath N (b,b) x))))))))) -> exists g:set -> set, (forall x :e R :^: idx P, g x :e R :^: idx M) /\ (continuous_on_hl P M g u /\ ({g x | x :e u} c= c /\ (g z = a /\ forall y :e R :^: idx P, y :e u -> p (g y) = f y))).
+Theorem COVERING_SPACE_LIFT_STRONGER : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall f:set -> set, (forall x :e R :^: idx P, f x :e R :^: idx N) -> forall u c= R :^: idx P, forall a :e R :^: idx M, forall z :e R :^: idx P, covering_space M N (c,p) s /\ (a :e c /\ (z :e u /\ (path_connected P u /\ (locally P {x :e Power (R :^: idx P) | path_connected P x} u /\ (continuous_on_hl P N f u /\ ({f x | x :e u} c= s /\ (f z = p a /\ (forall r:set -> set, (forall x :e R :^: idx 1, r x :e R :^: idx P) -> path P r /\ (path_image P r c= u /\ (pathstart P r = z /\ pathfinish P r = z)) -> exists b :e R :^: idx N, homotopic_paths N s (fun x:set => f (r x)) (linepath N (b,b)))))))))) -> exists g:set -> set, (forall x :e R :^: idx P, g x :e R :^: idx M) /\ (continuous_on_hl P M g u /\ ({g x | x :e u} c= c /\ (g z = a /\ forall y :e R :^: idx P, y :e u -> p (g y) = f y))).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:25668 / COVERING_SPACE_LIFT_STRONG

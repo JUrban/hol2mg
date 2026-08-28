@@ -47,7 +47,7 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:115 / BROUWER_DEGREE1_REFLECT_ALONG
 // Source hash: md5:dda91a759003bbe4ddbe2cf59356e761
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_int_int, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_int)
-Theorem BROUWER_DEGREE1_REFLECT_ALONG : forall N:set, N <> Empty -> forall n :e omega, forall a :e R :^: idx N, 1 <= n /\ (n <= dimindex N /\ a :e span N {basis N x | x :e idx_n n} :\: {vec N 0}) -> brouwer_degree1 N n (fun x:set => reflect_along N a x) = - 1.
+Theorem BROUWER_DEGREE1_REFLECT_ALONG : forall N:set, N <> Empty -> forall n :e omega, forall a :e R :^: idx N, 1 <= n /\ (n <= dimindex N /\ a :e span N {basis N x | x :e idx_n n} :\: {vec N 0}) -> brouwer_degree1 N n (reflect_along N a) = - 1.
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:150 / BROUWER_DEGREE1_NONSURJECTIVE
@@ -89,7 +89,7 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:220 / BROUWER_DEGREE_REFLECT_ALONG
 // Source hash: md5:38335ee9f39d464d87110dae8fdb5538
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
-Theorem BROUWER_DEGREE_REFLECT_ALONG : forall N:set, N <> Empty -> forall a :e R :^: idx N, ~ a = vec N 0 -> brouwer_degree N (fun x:set => reflect_along N a x) = - 1.
+Theorem BROUWER_DEGREE_REFLECT_ALONG : forall N:set, N <> Empty -> forall a :e R :^: idx N, ~ a = vec N 0 -> brouwer_degree N (reflect_along N a) = - 1.
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:228 / BROUWER_DEGREE_NONSURJECTIVE
@@ -269,7 +269,7 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:741 / RETRACTION_CLOSEST_POINT
 // Source hash: md5:c00d424516efecc9a5aca14335c4075f
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem RETRACTION_CLOSEST_POINT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N t /\ (closed N t /\ (~ t = Empty /\ t c= s)) -> retraction N (s,t) (fun x:set => closest_point N t x).
+Theorem RETRACTION_CLOSEST_POINT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N t /\ (closed N t /\ (~ t = Empty /\ t c= s)) -> retraction N (s,t) (closest_point N t).
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:749 / RETRACT_OF_IMP_SUBSET
@@ -2135,13 +2135,13 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:7916 / CONTINUOUS_INTERVAL_BIJ
 // Source hash: md5:497ccb94c84ffed443784a0eb19ff0ea
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_INTERVAL_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, continuous N (R :^: idx N) (fun x0:set => interval_bij N (a,b) (u,v) x0) (at_hl N x).
+Theorem CONTINUOUS_INTERVAL_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, continuous N (R :^: idx N) (interval_bij N (a,b) (u,v)) (at_hl N x).
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:7926 / CONTINUOUS_ON_INTERVAL_BIJ
 // Source hash: md5:91ed74767c312649c7955b2654c34267
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem CONTINUOUS_ON_INTERVAL_BIJ : forall A:set, A <> Empty -> forall a b u v :e R :^: idx A, forall s c= R :^: idx A, continuous_on_hl A A (fun x:set => interval_bij A (a,b) (u,v) x) s.
+Theorem CONTINUOUS_ON_INTERVAL_BIJ : forall A:set, A <> Empty -> forall a b u v :e R :^: idx A, forall s c= R :^: idx A, continuous_on_hl A A (interval_bij A (a,b) (u,v)) s.
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:7931 / IN_INTERVAL_INTERVAL_BIJ

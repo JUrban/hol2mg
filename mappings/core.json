@@ -170,6 +170,19 @@
  "constants": [
   {
    "hol": "o",
+   "scheme": "(B->bool)->(A->B)->A->bool",
+   "args": [
+    "metapred",
+    "metafun"
+   ],
+   "result": "metapred",
+   "template": "fun x:set => ?1 (?2 x)",
+   "class": "definitionally_exact",
+   "status": "reviewed",
+   "notes": "composition of a predicate with a function (more specific scheme first)"
+  },
+  {
+   "hol": "o",
    "scheme": "(B->C)->(A->B)->A->C",
    "args": [
     "metafun",

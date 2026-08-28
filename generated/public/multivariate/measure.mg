@@ -17,7 +17,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:27 / measure
 // Source hash: md5:b669e44af267e2756b9373f9bdb2f76b
 // Status: transport_required (bridges: choose_in_spec, hol_cart_setexp, hol_real_R)
-Theorem measure_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, measure A s = choose_in R (fun m:set => has_measure A s m).
+Theorem measure_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, measure A s = choose_in R (has_measure A s).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:30 / HAS_MEASURE_MEASURE
@@ -95,19 +95,19 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:93 / INTEGRABLE_ON_INDICATOR
 // Source hash: md5:05c81b6509c3cdfc20b3bf8ad08ef179
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem INTEGRABLE_ON_INDICATOR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, integrable_on 1 N (fun x:set => indicator N s x) t <-> measurable N (s :/\: t).
+Theorem INTEGRABLE_ON_INDICATOR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, integrable_on 1 N (indicator N s) t <-> measurable N (s :/\: t).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:101 / ABSOLUTELY_INTEGRABLE_ON_INDICATOR
 // Source hash: md5:87ba4a94d59fe0185608e18c88e883c7
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_ON_INDICATOR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, absolutely_integrable_on 1 N (fun x:set => indicator N s x) t <-> measurable N (s :/\: t).
+Theorem ABSOLUTELY_INTEGRABLE_ON_INDICATOR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, absolutely_integrable_on 1 N (indicator N s) t <-> measurable N (s :/\: t).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:108 / INTEGRAL_INDICATOR
 // Source hash: md5:41eda5d1e0a74b99cfd5a8b70acac2a6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem INTEGRAL_INDICATOR : forall M:set, M <> Empty -> forall s t c= R :^: idx M, measurable M (s :/\: t) -> integral 1 M t (fun x:set => indicator M s x) = lift (measure M (s :/\: t)).
+Theorem INTEGRAL_INDICATOR : forall M:set, M <> Empty -> forall s t c= R :^: idx M, measurable M (s :/\: t) -> integral 1 M t (indicator M s) = lift (measure M (s :/\: t)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:114 / HAS_MEASURE_INTERVAL
@@ -509,7 +509,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:771 / MEASURE_UNIONS_LE
 // Source hash: md5:14534a641995869c8725edc6f80f28e9
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_sum_finsum)
-Theorem MEASURE_UNIONS_LE : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), finite f /\ (forall s c= R :^: idx N, s :e f -> measurable N s) -> measure N (Union f) <= finsum f (fun s:set => measure N s).
+Theorem MEASURE_UNIONS_LE : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), finite f /\ (forall s c= R :^: idx N, s :e f -> measurable N s) -> measure N (Union f) <= finsum f (measure N).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:787 / MEASURABLE_INSERT
@@ -857,7 +857,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:1681 / MEASURE_COUNTABLE_UNIONS_LE_GEN
 // Source hash: md5:00551a9cf8656f38bb8e74268ee16521
 // Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_finite_finite, hol_real_R, hol_sum_finsum)
-Theorem MEASURE_COUNTABLE_UNIONS_LE_GEN : forall N:set, N <> Empty -> forall D c= Power (R :^: idx N), forall B :e R, countable D /\ ((forall d c= R :^: idx N, d :e D -> measurable N d) /\ (forall D' c= Power (R :^: idx N), D' c= D /\ finite D' -> finsum D' (fun d:set => measure N d) <= B)) -> measurable N (Union D) /\ measure N (Union D) <= B.
+Theorem MEASURE_COUNTABLE_UNIONS_LE_GEN : forall N:set, N <> Empty -> forall D c= Power (R :^: idx N), forall B :e R, countable D /\ ((forall d c= R :^: idx N, d :e D -> measurable N d) /\ (forall D' c= Power (R :^: idx N), D' c= D /\ finite D' -> finsum D' (measure N) <= B)) -> measurable N (Union D) /\ measure N (Union D) <= B.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:1694 / MEASURABLE_COUNTABLE_INTERS
@@ -959,7 +959,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:2095 / HAS_MEASURE_ELEMENTARY
 // Source hash: md5:8b850c3338cb6f682077a7d39d8218bd
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem HAS_MEASURE_ELEMENTARY : forall A:set, A <> Empty -> forall d c= Power (R :^: idx A), forall s c= R :^: idx A, division_of A d s -> has_measure A s (finsum d (fun x:set => content A x)).
+Theorem HAS_MEASURE_ELEMENTARY : forall A:set, A <> Empty -> forall d c= Power (R :^: idx A), forall s c= R :^: idx A, division_of A d s -> has_measure A s (finsum d (content A)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:2104 / MEASURABLE_ELEMENTARY
@@ -971,7 +971,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:2108 / MEASURE_ELEMENTARY
 // Source hash: md5:7764254f501d6c4019cdf27dea418b87
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem MEASURE_ELEMENTARY : forall A:set, A <> Empty -> forall d c= Power (R :^: idx A), forall s c= R :^: idx A, division_of A d s -> measure A s = finsum d (fun x:set => content A x).
+Theorem MEASURE_ELEMENTARY : forall A:set, A <> Empty -> forall d c= Power (R :^: idx A), forall s c= R :^: idx A, division_of A d s -> measure A s = finsum d (content A).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:2112 / MEASURABLE_INTER_INTERVAL
@@ -1601,7 +1601,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:6976 / lebesgue_measurable
 // Source hash: md5:4ce41e870010172672837f990649b4c9
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem lebesgue_measurable_thm : forall N:set, N <> Empty -> forall s c= R :^: idx N, lebesgue_measurable N s <-> measurable_on N 1 (fun x:set => indicator N s x) (R :^: idx N).
+Theorem lebesgue_measurable_thm : forall N:set, N <> Empty -> forall s c= R :^: idx N, lebesgue_measurable N s <-> measurable_on N 1 (indicator N s) (R :^: idx N).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:6983 / MEASURABLE_BOUNDED_BY_INTEGRABLE_IMP_INTEGRABLE
@@ -2033,13 +2033,13 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:9355 / MEASURABLE_ON_INDICATOR
 // Source hash: md5:ae2bc87abb8806c874da6f873dbfa98b
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem MEASURABLE_ON_INDICATOR : forall A:set, A <> Empty -> forall s t c= R :^: idx A, measurable_on A 1 (fun x:set => indicator A t x) s <-> lebesgue_measurable A (s :/\: t).
+Theorem MEASURABLE_ON_INDICATOR : forall A:set, A <> Empty -> forall s t c= R :^: idx A, measurable_on A 1 (indicator A t) s <-> lebesgue_measurable A (s :/\: t).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9362 / MEASURABLE_ON_INDICATOR_SUBSET
 // Source hash: md5:f1202d3e521a0123ae2731ed77e6264d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem MEASURABLE_ON_INDICATOR_SUBSET : forall N:set, N <> Empty -> forall s t c= R :^: idx N, t c= s -> (measurable_on N 1 (fun x:set => indicator N t x) s <-> lebesgue_measurable N t).
+Theorem MEASURABLE_ON_INDICATOR_SUBSET : forall N:set, N <> Empty -> forall s t c= R :^: idx N, t c= s -> (measurable_on N 1 (indicator N t) s <-> lebesgue_measurable N t).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9368 / MEASURABLE_IMP_LEBESGUE_MEASURABLE
@@ -3935,13 +3935,13 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:27673 / ABSOLUTELY_CONTINUOUS_REVERSEPATH
 // Source hash: md5:f89335f7a57bb21599ddf9a3619adac4
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_CONTINUOUS_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> absolutely_continuous_on N g (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> absolutely_continuous_on N (fun x:set => reversepath N g x) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
+Theorem ABSOLUTELY_CONTINUOUS_REVERSEPATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> absolutely_continuous_on N g (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) -> absolutely_continuous_on N (reversepath N g) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27721 / ABSOLUTELY_CONTINUOUS_JOINPATHS
 // Source hash: md5:8c23e8c54f63adb751b43c92c1c33928
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_CONTINUOUS_JOINPATHS : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 /\ (absolutely_continuous_on N g1 (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) /\ absolutely_continuous_on N g2 (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil))) -> absolutely_continuous_on N (fun x:set => poly_add (R :^: idx N) g1 g2 x) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
+Theorem ABSOLUTELY_CONTINUOUS_JOINPATHS : forall N:set, N <> Empty -> forall g1:set -> set, (forall x :e R :^: idx 1, g1 x :e R :^: idx N) -> forall g2:set -> set, (forall x :e R :^: idx 1, g2 x :e R :^: idx N) -> pathfinish N g1 = pathstart N g2 /\ (absolutely_continuous_on N g1 (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)) /\ absolutely_continuous_on N g2 (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil))) -> absolutely_continuous_on N (poly_add (R :^: idx N) g1 g2) (closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:27868 / FUBINI_MEASURE

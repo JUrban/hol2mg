@@ -2741,13 +2741,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:6834 / CONTINUOUS_AT_CLOSEST_POINT
 // Source hash: md5:b01c182e0e33b17beb822982d5ba4683
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_AT_CLOSEST_POINT : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous A (R :^: idx A) (fun x0:set => closest_point A s x0) (at_hl A x).
+Theorem CONTINUOUS_AT_CLOSEST_POINT : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous A (R :^: idx A) (closest_point A s) (at_hl A x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6840 / CONTINUOUS_ON_CLOSEST_POINT
 // Source hash: md5:8f7ea965766f8a22ff8931ac4f370949
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem CONTINUOUS_ON_CLOSEST_POINT : forall A:set, A <> Empty -> forall s t c= R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous_on_hl A A (fun x:set => closest_point A s x) t.
+Theorem CONTINUOUS_ON_CLOSEST_POINT : forall A:set, A <> Empty -> forall s t c= R :^: idx A, convex A s /\ (closed A s /\ ~ s = Empty) -> continuous_on_hl A A (closest_point A s) t.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6845 / CLOSEST_POINT_TRANSLATION
@@ -2795,13 +2795,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:6944 / LINEAR_CLOSEST_POINT
 // Source hash: md5:1d6a48316040e86378afe3222dbfb8cd
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LINEAR_CLOSEST_POINT : forall N:set, N <> Empty -> forall s c= R :^: idx N, subspace N s -> linear N N (fun x:set => closest_point N s x).
+Theorem LINEAR_CLOSEST_POINT : forall N:set, N <> Empty -> forall s c= R :^: idx N, subspace N s -> linear N N (closest_point N s).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6957 / SELF_ADJOINT_CLOSEST_POINT
 // Source hash: md5:2654c6e9e4877a7bb54af86eae7bafde
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem SELF_ADJOINT_CLOSEST_POINT : forall N:set, N <> Empty -> forall s c= R :^: idx N, subspace N s -> forall x :e R :^: idx N, adjoint N N (fun x0:set => closest_point N s x0) x = closest_point N s x.
+Theorem SELF_ADJOINT_CLOSEST_POINT : forall N:set, N <> Empty -> forall s c= R :^: idx N, subspace N s -> forall x :e R :^: idx N, adjoint N N (closest_point N s) x = closest_point N s x.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6971 / CLOSEST_POINT_IDEMPOTENT
@@ -2813,7 +2813,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:6979 / MATRIX_INV_PROJECTION_IMAGE
 // Source hash: md5:5d275169795e0320440e73285ae2435e
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem MATRIX_INV_PROJECTION_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx M :^: idx N, matrix_mul N M N A (matrix_inv M N A) = matrix N N (fun x:set => closest_point N {matrix_vector_mul N M A x0 | x0 :e R :^: idx M} x).
+Theorem MATRIX_INV_PROJECTION_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx M :^: idx N, matrix_mul N M N A (matrix_inv M N A) = matrix N N (closest_point N {matrix_vector_mul N M A x0 | x0 :e R :^: idx M}).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6979 / MATRIX_INV_PROJECTION_IMAGE_ALT
@@ -5417,7 +5417,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:17589 / barycentre
 // Source hash: md5:7e8ebf0fbdf1ac7b4d3c8f8b382c1895
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem barycentre_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, barycentre A s = if finite s then vsum (R :^: idx A) A s (fun x:set => vector_mul A (recip_SNo (finite_cardinality s)) x) else vec A 0.
+Theorem barycentre_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, barycentre A s = if finite s then vsum (R :^: idx A) A s (vector_mul A (recip_SNo (finite_cardinality s))) else vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:17593 / BARYCENTRE_0

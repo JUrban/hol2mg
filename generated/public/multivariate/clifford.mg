@@ -143,7 +143,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:190 / MULTIVECTOR_ETA
 // Source hash: md5:d7380bfc0ecd9a8839f4c67bc9e31364
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
-Theorem MULTIVECTOR_ETA : forall A:set, A <> Empty -> forall m :e R :^: idx (multivector A), lambdas A (fun s:set => multivector_index A m s) = m.
+Theorem MULTIVECTOR_ETA : forall A:set, A <> Empty -> forall m :e R :^: idx (multivector A), lambdas A (multivector_index A m) = m.
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:198 / MULTIVECTOR_ADD_COMPONENT
@@ -281,7 +281,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:381 / BILINEAR_PRODUCT
 // Source hash: md5:5ec7836c6e381f41cc6aeee34d8ddd78
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
-Theorem BILINEAR_PRODUCT : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => Product A mult op x x0).
+Theorem BILINEAR_PRODUCT : forall A:set, A <> Empty -> forall mult:set -> set -> set, (forall x y :e Power omega, mult x y :e R) -> forall op:set -> set -> set -> prop, bilinear (multivector A) (multivector A) (multivector A) (Product A mult op).
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:392 / PRODUCT_LADD
@@ -347,7 +347,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:454 / BILINEAR_GEOM
 // Source hash: md5:9ac498c9e5e767ac49e54d4012f06fea
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
-Theorem BILINEAR_GEOM : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => geom_mul A x x0).
+Theorem BILINEAR_GEOM : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (geom_mul A).
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:459 / GEOM_LADD
@@ -419,7 +419,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:522 / BILINEAR_OUTER
 // Source hash: md5:73ca55502a78ce1ea9a8021a7d26cc6b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
-Theorem BILINEAR_OUTER : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => outer A x x0).
+Theorem BILINEAR_OUTER : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (outer A).
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:527 / OUTER_LADD
@@ -485,7 +485,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:571 / BILINEAR_INNER
 // Source hash: md5:d3765e69474c0802bbbb3a9e84aee2be
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_multivector)
-Theorem BILINEAR_INNER : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (fun x:set => fun x0:set => inner A x x0).
+Theorem BILINEAR_INNER : forall A:set, A <> Empty -> bilinear (multivector A) (multivector A) (multivector A) (inner A).
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:576 / INNER_LADD
@@ -653,7 +653,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:954 / NEUTRAL_OUTER
 // Source hash: md5:4e7e7b88cdfa5e6af5b0e72dc7a3a719
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector)
-Theorem NEUTRAL_OUTER : forall A:set, A <> Empty -> neutral_of (R :^: idx (multivector A)) (fun a:set => fun b:set => outer A a b) = mbasis A Empty.
+Theorem NEUTRAL_OUTER : forall A:set, A <> Empty -> neutral_of (R :^: idx (multivector A)) (outer A) = mbasis A Empty.
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:959 / OUTERMORPHISM_MBASIS

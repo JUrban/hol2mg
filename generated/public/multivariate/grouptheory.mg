@@ -707,19 +707,19 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:843 / NEUTRAL_GROUP_ADD
 // Source hash: md5:9a555f3486a51e9780299d9921f0feb4
 // Status: transport_required (bridges: hol_typedef_group)
-Theorem NEUTRAL_GROUP_ADD : forall A:set, A <> Empty -> forall G :e group_hl A, neutral_of A (fun a:set => fun b:set => group_add A G a b) = group_id A G.
+Theorem NEUTRAL_GROUP_ADD : forall A:set, A <> Empty -> forall G :e group_hl A, neutral_of A (group_add A G) = group_id A G.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:848 / MONOIDAL_GROUP_ADD
 // Source hash: md5:7d2462ffeba7f17ed04060a9466a7848
 // Status: transport_required (bridges: hol_typedef_group)
-Theorem MONOIDAL_GROUP_ADD : forall A:set, A <> Empty -> forall G :e group_hl A, (forall x y :e A, group_add A G x y = group_add A G y x) /\ (forall x y z :e A, group_add A G x (group_add A G y z) = group_add A G (group_add A G x y) z) /\ (forall x :e A, group_add A G (neutral_of A (fun a:set => fun b:set => group_add A G a b)) x = x) <-> abelian_group_hl A G.
+Theorem MONOIDAL_GROUP_ADD : forall A:set, A <> Empty -> forall G :e group_hl A, (forall x y :e A, group_add A G x y = group_add A G y x) /\ (forall x y z :e A, group_add A G x (group_add A G y z) = group_add A G (group_add A G x y) z) /\ (forall x :e A, group_add A G (neutral_of A (group_add A G)) x = x) <-> abelian_group_hl A G.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:1788 / ABELIAN_GROUP_ITERATE
 // Source hash: md5:4647ccfbc609a3a3b156905b2c2c9c5f
 // Status: transport_required (bridges: hol_iterate, hol_typedef_group)
-Theorem ABELIAN_GROUP_ITERATE : forall A K:set, A <> Empty -> K <> Empty -> forall G :e group_hl A, forall x:set -> set, (forall x :e K, x x :e A) -> forall k c= K, abelian_group_hl A G /\ (forall i :e K, i :e k -> x i :e group_carrier A G) -> iterate_op A (fun a:set => fun b:set => group_add A G a b) k x :e group_carrier A G.
+Theorem ABELIAN_GROUP_ITERATE : forall A K:set, A <> Empty -> K <> Empty -> forall G :e group_hl A, forall x:set -> set, (forall x :e K, x x :e A) -> forall k c= K, abelian_group_hl A G /\ (forall i :e K, i :e k -> x i :e group_carrier A G) -> iterate_op A (group_add A G) k x :e group_carrier A G.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:1799 / group_conjugation
@@ -1919,19 +1919,19 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:3607 / GROUP_AUTOMORPHISM_CONJUGATION
 // Source hash: md5:c48bad5fa5181f223b6aa4d71f3576bb
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_AUTOMORPHISM_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_automorphism_hl A G (fun x:set => group_conjugation A G a x).
+Theorem GROUP_AUTOMORPHISM_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_automorphism_hl A G (group_conjugation A G a).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:3613 / GROUP_ISOMORPHISM_CONJUGATION
 // Source hash: md5:b802a31fab6f1845b56c5d74746e5645
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_isomorphism_hl A A (G,G) (fun x:set => group_conjugation A G a x).
+Theorem GROUP_ISOMORPHISM_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_isomorphism_hl A A (G,G) (group_conjugation A G a).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:3618 / GROUP_HOMOMORPHISM_CONJUGATION
 // Source hash: md5:bee0e9e1661f0510a278df082bdae637
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_homomorphism_hl A A (G,G) (fun x:set => group_conjugation A G a x).
+Theorem GROUP_HOMOMORPHISM_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_homomorphism_hl A A (G,G) (group_conjugation A G a).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:3624 / CARD_LE_GROUP_MONOMORPHIC_IMAGE
@@ -3179,7 +3179,7 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:5700 / GROUP_ACTION_CONJUGATION
 // Source hash: md5:ab6ce09b8c4719c67efbf021406f8cad
 // Status: transport_required (bridges: hol_typedef_group)
-Theorem GROUP_ACTION_CONJUGATION : forall A:set, A <> Empty -> forall G :e group_hl A, group_action_hl A A G (group_carrier A G) (fun x:set => fun x0:set => group_conjugation A G x x0).
+Theorem GROUP_ACTION_CONJUGATION : forall A:set, A <> Empty -> forall G :e group_hl A, group_action_hl A A G (group_carrier A G) (group_conjugation A G).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:5706 / CARD_GROUP_SETMUL_GEN
@@ -4205,25 +4205,25 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:7514 / GROUP_ACTION_CONJUGATION_NORMAL_SUBGROUP
 // Source hash: md5:0d0e475580fd4b17d9d3224d775143bb
 // Status: transport_required (bridges: hol_typedef_group)
-Theorem GROUP_ACTION_CONJUGATION_NORMAL_SUBGROUP : forall A:set, A <> Empty -> forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> group_action_hl A A G n (fun x:set => fun x0:set => group_conjugation A G x x0).
+Theorem GROUP_ACTION_CONJUGATION_NORMAL_SUBGROUP : forall A:set, A <> Empty -> forall G :e group_hl A, forall n c= A, normal_subgroup_of A n G -> group_action_hl A A G n (group_conjugation A G).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7524 / GROUP_STABILIZER_CONJUGATION
 // Source hash: md5:118a79625c008edfca562f1407631274
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_STABILIZER_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_stabilizer A A G (fun x:set => fun x0:set => group_conjugation A G x x0) a = group_centralizer A G {a}.
+Theorem GROUP_STABILIZER_CONJUGATION : forall A:set, forall G :e group_hl A, forall a :e A, a :e group_carrier A G -> group_stabilizer A A G (group_conjugation A G) a = group_centralizer A G {a}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7533 / GROUP_ORBIT_CONJUGATION_GEN
 // Source hash: md5:602c6409d5442b5718eb2bb37623fb53
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_ORBIT_CONJUGATION_GEN : forall A:set, forall G :e group_hl A, forall s c= A, forall x :e A, s c= group_carrier A G -> forall x0 :e A, group_orbit A A G s (fun x1:set => fun x2:set => group_conjugation A G x1 x2) x x0 <-> (x :e s -> x0 :e {y :e A | y :e s /\ group_conjugate A G {x} {y}}) /\ (~ x :e s -> x0 :e Empty).
+Theorem GROUP_ORBIT_CONJUGATION_GEN : forall A:set, forall G :e group_hl A, forall s c= A, forall x :e A, s c= group_carrier A G -> forall x0 :e A, group_orbit A A G s (group_conjugation A G) x x0 <-> (x :e s -> x0 :e {y :e A | y :e s /\ group_conjugate A G {x} {y}}) /\ (~ x :e s -> x0 :e Empty).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7544 / GROUP_ORBIT_CONJUGATION
 // Source hash: md5:aef4b42efc653c4c5b39526fb97268b7
 // Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_ORBIT_CONJUGATION : forall A:set, forall G :e group_hl A, forall x x0 :e A, group_orbit A A G (group_carrier A G) (fun x1:set => fun x2:set => group_conjugation A G x1 x2) x x0 <-> (x :e group_carrier A G -> x0 :e {y :e A | y :e group_carrier A G /\ group_conjugate A G {x} {y}}) /\ (~ x :e group_carrier A G -> x0 :e Empty).
+Theorem GROUP_ORBIT_CONJUGATION : forall A:set, forall G :e group_hl A, forall x x0 :e A, group_orbit A A G (group_carrier A G) (group_conjugation A G) x x0 <-> (x :e group_carrier A G -> x0 :e {y :e A | y :e group_carrier A G /\ group_conjugate A G {x} {y}}) /\ (~ x :e group_carrier A G -> x0 :e Empty).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7552 / GROUP_ACTION_IMAGE_CONJUGATION
@@ -5663,19 +5663,19 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:11333 / GROUP_HOMOMORPHISM_GROUP_ZPOW
 // Source hash: md5:282f49f0ecc23ea8e9984fcb3653c38f
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_GROUP_ZPOW : forall A:set, forall G :e group_hl A, forall x :e A, x :e group_carrier A G -> group_homomorphism_hl int A (integer_group,G) (fun x0:set => group_zpow A G x x0).
+Theorem GROUP_HOMOMORPHISM_GROUP_ZPOW : forall A:set, forall G :e group_hl A, forall x :e A, x :e group_carrier A G -> group_homomorphism_hl int A (integer_group,G) (group_zpow A G x).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:11340 / GROUP_EPIMORPHISM_GROUP_ZPOW
 // Source hash: md5:d986b89f194f144435dff206180d51a6
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_EPIMORPHISM_GROUP_ZPOW : forall A:set, forall G :e group_hl A, forall x :e A, x :e group_carrier A G -> group_epimorphism int A (integer_group,subgroup_generated A G {x}) (fun x0:set => group_zpow A G x x0).
+Theorem GROUP_EPIMORPHISM_GROUP_ZPOW : forall A:set, forall G :e group_hl A, forall x :e A, x :e group_carrier A G -> group_epimorphism int A (integer_group,subgroup_generated A G {x}) (group_zpow A G x).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:11353 / GROUP_ISOMORPHISM_GROUP_ZPOW
 // Source hash: md5:69e9cc984a1b006507849386b5a358e3
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_int_int, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_GROUP_ZPOW : forall A:set, forall G :e group_hl A, forall x :e A, infinite (group_carrier A (subgroup_generated A G {x})) /\ x :e group_carrier A G -> group_isomorphism_hl int A (integer_group,subgroup_generated A G {x}) (fun x0:set => group_zpow A G x x0).
+Theorem GROUP_ISOMORPHISM_GROUP_ZPOW : forall A:set, forall G :e group_hl A, forall x :e A, infinite (group_carrier A (subgroup_generated A G {x})) /\ x :e group_carrier A G -> group_isomorphism_hl int A (integer_group,subgroup_generated A G {x}) (group_zpow A G x).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:11365 / ISOMORPHIC_GROUP_INFINITE_CYCLIC_INTEGER
@@ -5819,13 +5819,13 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:11584 / GROUP_EPIMORPHISM_INTEGER_MOD_GROUP_ZPOW
 // Source hash: md5:633dc88f1ea102f2c5275421759e90af
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_typedef_group, omega_Subq_int)
-Theorem GROUP_EPIMORPHISM_INTEGER_MOD_GROUP_ZPOW : forall n :e omega, ~ n = 1 -> group_epimorphism int int (integer_group,integer_mod_group n) (fun x:set => group_zpow int (integer_mod_group n) 1 x).
+Theorem GROUP_EPIMORPHISM_INTEGER_MOD_GROUP_ZPOW : forall n :e omega, ~ n = 1 -> group_epimorphism int int (integer_group,integer_mod_group n) (group_zpow int (integer_mod_group n) 1).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:11591 / GROUP_ISOMORPHISM_GROUP_ZPOW_GEN
 // Source hash: md5:edae71b305315779dbef1371197dbdeb
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_GROUP_ZPOW_GEN : forall A:set, forall G :e group_hl A, forall x :e A, x :e group_carrier A G -> group_isomorphism_hl int A (integer_mod_group (group_element_order_hl A G x),subgroup_generated A G {x}) (fun x0:set => group_zpow A G x x0).
+Theorem GROUP_ISOMORPHISM_GROUP_ZPOW_GEN : forall A:set, forall G :e group_hl A, forall x :e A, x :e group_carrier A G -> group_isomorphism_hl int A (integer_mod_group (group_element_order_hl A G x),subgroup_generated A G {x}) (group_zpow A G x).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:11616 / ISOMORPHIC_GROUP_CYCLIC_INTEGER
@@ -6569,13 +6569,13 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:15290 / GROUP_ISOMORPHISM_FREE_ABELIAN_GROUP_SUM
 // Source hash: md5:312fa27596c4c981a89aedbf3b554bed
 // Status: transport_required (bridges: hol_iterate, hol_prod_setprod, hol_typedef_frag, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_FREE_ABELIAN_GROUP_SUM : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall f :e Power A :^: K, (forall x y :e k, x <> y -> f x :/\: f y = Empty) -> group_isomorphism_hl (frag A :^: K) (frag A) (sum_group (frag A) K k (fun i:set => free_abelian_group A (f i)),free_abelian_group A (Union {f i | i :e K, i :e k})) (fun x:set => iterate_op (frag A) (fun a:set => fun b:set => frag_add A a b) k (fun x0:set => x x0)).
+Theorem GROUP_ISOMORPHISM_FREE_ABELIAN_GROUP_SUM : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall f :e Power A :^: K, (forall x y :e k, x <> y -> f x :/\: f y = Empty) -> group_isomorphism_hl (frag A :^: K) (frag A) (sum_group (frag A) K k (fun i:set => free_abelian_group A (f i)),free_abelian_group A (Union {f i | i :e K, i :e k})) (fun x:set => iterate_op (frag A) (frag_add A) k (fun x0:set => x x0)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:15388 / ISOMORPHIC_FREE_ABELIAN_GROUP_UNIONS
 // Source hash: md5:a33204cd216b28a0ebe35c08f2b2761c
 // Status: transport_required (bridges: hol_typedef_frag, hol_typedef_group)
-Theorem ISOMORPHIC_FREE_ABELIAN_GROUP_UNIONS : forall A:set, A <> Empty -> forall k c= Power A, (forall x y :e k, x <> y -> x :/\: y = Empty) -> isomorphic_group (frag A) (frag A :^: Power A) (free_abelian_group A (Union k)) (sum_group (frag A) (Power A) k (fun x:set => free_abelian_group A x)).
+Theorem ISOMORPHIC_FREE_ABELIAN_GROUP_UNIONS : forall A:set, A <> Empty -> forall k c= Power A, (forall x y :e k, x <> y -> x :/\: y = Empty) -> isomorphic_group (frag A) (frag A :^: Power A) (free_abelian_group A (Union k)) (sum_group (frag A) (Power A) k (free_abelian_group A)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:15400 / ISOMORPHIC_SUM_INTEGER_GROUP

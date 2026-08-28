@@ -317,13 +317,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:307 / CONTINUOUS_MAP_LIFT
 // Source hash: md5:18c1ccaa531c67f430d9a7899a1325cf
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem CONTINUOUS_MAP_LIFT : continuous_map R (R :^: idx 1) (euclideanreal,euclidean 1) (fun x:set => lift x).
+Theorem CONTINUOUS_MAP_LIFT : continuous_map R (R :^: idx 1) (euclideanreal,euclidean 1) lift.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:311 / CONTINUOUS_MAP_DROP
 // Source hash: md5:70a1d512d24d8832bc3fce8b37e7f817
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem CONTINUOUS_MAP_DROP : continuous_map (R :^: idx 1) R (euclidean 1,euclideanreal) (fun x:set => drop x).
+Theorem CONTINUOUS_MAP_DROP : continuous_map (R :^: idx 1) R (euclidean 1,euclideanreal) drop.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:315 / CONTINUOUS_MAP_LIFT_EQ
@@ -4589,13 +4589,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:6678 / UNIFORMLY_CONTINUOUS_MAP_LIFT
 // Source hash: md5:e751f44dc5785cd45052093922ce5980
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_metric)
-Theorem UNIFORMLY_CONTINUOUS_MAP_LIFT : uniformly_continuous_map (R :^: idx 1) R (real_euclidean_metric,euclidean_metric 1) (fun x:set => lift x).
+Theorem UNIFORMLY_CONTINUOUS_MAP_LIFT : uniformly_continuous_map (R :^: idx 1) R (real_euclidean_metric,euclidean_metric 1) lift.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6684 / UNIFORMLY_CONTINUOUS_MAP_DROP
 // Source hash: md5:a50b63d6c5d2dc77f63cc1640fa0d1b6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R, hol_typedef_metric)
-Theorem UNIFORMLY_CONTINUOUS_MAP_DROP : uniformly_continuous_map R (R :^: idx 1) (euclidean_metric 1,real_euclidean_metric) (fun x:set => drop x).
+Theorem UNIFORMLY_CONTINUOUS_MAP_DROP : uniformly_continuous_map R (R :^: idx 1) (euclidean_metric 1,real_euclidean_metric) drop.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6691 / UNIFORMLY_CONTINUOUS_MAP_EQ_LIFT
@@ -8795,13 +8795,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:15596 / LIM_NULL_MATRIX_ONORM
 // Source hash: md5:96127b32da1ef8a8dd097e3b34a52b16
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem LIM_NULL_MATRIX_ONORM : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall net0 :e net A, forall A0:set -> set, (forall x :e A, A0 x :e R :^: idx M :^: idx N) -> (tendsto 1 A (fun a:set => lift (onorm M N (fun x:set => matrix_vector_mul N M (A0 a) x))) (vec 1 0) net0 <-> forall x :e R :^: idx M, tendsto N A (fun a:set => matrix_vector_mul N M (A0 a) x) (vec N 0) net0).
+Theorem LIM_NULL_MATRIX_ONORM : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall net0 :e net A, forall A0:set -> set, (forall x :e A, A0 x :e R :^: idx M :^: idx N) -> (tendsto 1 A (fun a:set => lift (onorm M N (matrix_vector_mul N M (A0 a)))) (vec 1 0) net0 <-> forall x :e R :^: idx M, tendsto N A (fun a:set => matrix_vector_mul N M (A0 a) x) (vec N 0) net0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:15605 / LIM_NULL_MATRIX_ONORM_COMPONENTWISE
 // Source hash: md5:aea76b45c8203f314b23bc39cd5afe55
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net, nat_le_SNoLe)
-Theorem LIM_NULL_MATRIX_ONORM_COMPONENTWISE : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall net0 :e net A, forall A0:set -> set, (forall x :e A, A0 x :e R :^: idx M :^: idx N) -> (tendsto 1 A (fun a:set => lift (onorm M N (fun x:set => matrix_vector_mul N M (A0 a) x))) (vec 1 0) net0 <-> forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex M)) -> tendsto 1 A (fun a:set => lift (A0 a i j)) (vec 1 0) net0).
+Theorem LIM_NULL_MATRIX_ONORM_COMPONENTWISE : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall net0 :e net A, forall A0:set -> set, (forall x :e A, A0 x :e R :^: idx M :^: idx N) -> (tendsto 1 A (fun a:set => lift (onorm M N (matrix_vector_mul N M (A0 a)))) (vec 1 0) net0 <-> forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex M)) -> tendsto 1 A (fun a:set => lift (A0 a i j)) (vec 1 0) net0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:15620 / LIM_NULL_ONORM
@@ -10631,13 +10631,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:21163 / DET_LE_ONORM_POW
 // Source hash: md5:2362d7198bc678d8f107e43ae576f82e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R)
-Theorem DET_LE_ONORM_POW : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, abs_SNo (det N A) <= onorm N N (fun x:set => matrix_vector_mul N N A x) ^ dimindex N.
+Theorem DET_LE_ONORM_POW : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, abs_SNo (det N A) <= onorm N N (matrix_vector_mul N N A) ^ dimindex N.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:21177 / ONORM_INVERSE_DET_LE_ONORM_POW
 // Source hash: md5:47f0e673cb7c9604c2c2f7ade068282d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R)
-Theorem ONORM_INVERSE_DET_LE_ONORM_POW : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, invertible N N A -> onorm N N (fun x:set => matrix_vector_mul N N (matrix_inv N N A) x) * det N A <= onorm N N (fun x:set => matrix_vector_mul N N A x) ^ minus_nat (dimindex N) 1.
+Theorem ONORM_INVERSE_DET_LE_ONORM_POW : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, invertible N N A -> onorm N N (matrix_vector_mul N N (matrix_inv N N A)) * det N A <= onorm N N (matrix_vector_mul N N A) ^ minus_nat (dimindex N) 1.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:21318 / ONORM_INVERSE_DET_LE_ONORM_POW_ALT
@@ -10655,7 +10655,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:21356 / POSITIVE_DEFINITE_NEARBY
 // Source hash: md5:81d53d4e5a715f660d2402d61ef87f22
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem POSITIVE_DEFINITE_NEARBY : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, positive_definite N A -> exists e0 :e R, 0 < e0 /\ forall B :e R :^: idx N :^: idx N, symmetric_matrix_hl N B /\ onorm N N (fun x:set => matrix_vector_mul N N (matrix_sub N N B A) x) < e0 -> positive_definite N B.
+Theorem POSITIVE_DEFINITE_NEARBY : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, positive_definite N A -> exists e0 :e R, 0 < e0 /\ forall B :e R :^: idx N :^: idx N, symmetric_matrix_hl N B /\ onorm N N (matrix_vector_mul N N (matrix_sub N N B A)) < e0 -> positive_definite N B.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:21424 / POSITIVE_DEFINITE_EVENTUALLY
@@ -14387,13 +14387,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:34710 / BOREL_MEASURABLE_INDICATOR
 // Source hash: md5:9733029616512d304f562e25a1fa2939
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem BOREL_MEASURABLE_INDICATOR : forall N:set, N <> Empty -> forall s c= R :^: idx N, borel_measurable_on N 1 (fun x:set => indicator N s x) (R :^: idx N) <-> borel N s.
+Theorem BOREL_MEASURABLE_INDICATOR : forall N:set, N <> Empty -> forall s c= R :^: idx N, borel_measurable_on N 1 (indicator N s) (R :^: idx N) <-> borel N s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:34754 / BOREL_MEASURABLE_ON_INDICATOR
 // Source hash: md5:acc4fc9aa7a9b32e14323b509bddd8d3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem BOREL_MEASURABLE_ON_INDICATOR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, borel N s -> (borel_measurable_on N 1 (fun x:set => indicator N t x) s <-> borel N (s :/\: t)).
+Theorem BOREL_MEASURABLE_ON_INDICATOR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, borel N s -> (borel_measurable_on N 1 (indicator N t) s <-> borel N (s :/\: t)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:34773 / BOREL_MEASURABLE_PREIMAGE_BOREL

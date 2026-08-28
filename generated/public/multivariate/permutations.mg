@@ -83,7 +83,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:68 / INVERSE_SWAP
 // Source hash: md5:4d4bc640a8eda32d101e335f5b4e1173
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
-Theorem INVERSE_SWAP : forall A:set, forall a b x :e A, inverse A A (fun x0:set => swap A (a,b) x0) x = swap A (a,b) x.
+Theorem INVERSE_SWAP : forall A:set, forall a b x :e A, inverse A A (swap A (a,b)) x = swap A (a,b) x.
 Admitted.
 
 // HOL Light: Library/permutations.ml:73 / SWAP_GALOIS
@@ -203,7 +203,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:188 / PERMUTES_SWAP
 // Source hash: md5:b603ab5420600faa8efb33e9620260d2
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
-Theorem PERMUTES_SWAP : forall A:set, forall a b :e A, forall s c= A, a :e s /\ b :e s -> permutes A (fun x:set => swap A (a,b) x) s.
+Theorem PERMUTES_SWAP : forall A:set, forall a b :e A, forall s c= A, a :e s /\ b :e s -> permutes A (swap A (a,b)) s.
 Admitted.
 
 // HOL Light: Library/permutations.ml:192 / PERMUTES_SUPERSET
@@ -287,13 +287,13 @@ Admitted.
 // HOL Light: Library/permutations.ml:324 / PERMUTES_INVERSE
 // Source hash: md5:7cc8b69838507b52df0342dbd74ea2e4
 // Status: exact_native
-Theorem PERMUTES_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, permutes A p s -> permutes A (fun x:set => inverse A A p x) s.
+Theorem PERMUTES_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, permutes A p s -> permutes A (inverse A A p) s.
 Admitted.
 
 // HOL Light: Library/permutations.ml:329 / PERMUTES_INVERSE_INVERSE
 // Source hash: md5:ec7756ee3dc3761dad1094f8c2a0e234
 // Status: generalization_required (bridges: empty_case:A)
-Theorem PERMUTES_INVERSE_INVERSE : forall A:set, forall s c= A, forall p:set -> set, (forall x :e A, p x :e A) -> permutes A p s -> forall x :e A, inverse A A (fun x0:set => inverse A A p x0) x = p x.
+Theorem PERMUTES_INVERSE_INVERSE : forall A:set, forall s c= A, forall p:set -> set, (forall x :e A, p x :e A) -> permutes A p s -> forall x :e A, inverse A A (inverse A A p) x = p x.
 Admitted.
 
 // HOL Light: Library/permutations.ml:337 / PERMUTES_INSERT_LEMMA
@@ -425,7 +425,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:604 / PERMUTES_THREE_CYCLE
 // Source hash: md5:c985bd7370c2c51dc51f1b719255d123
 // Status: generalization_required (bridges: empty_case:A)
-Theorem PERMUTES_THREE_CYCLE : forall A:set, forall s c= A, forall a b c :e A, a :e s /\ (b :e s /\ (c :e s /\ (~ a = b /\ (~ b = c /\ ~ a = c)))) -> permutes A (fun x:set => three_cycle A a b c x) s.
+Theorem PERMUTES_THREE_CYCLE : forall A:set, forall s c= A, forall a b c :e A, a :e s /\ (b :e s /\ (c :e s /\ (~ a = b /\ (~ b = c /\ ~ a = c)))) -> permutes A (three_cycle A a b c) s.
 Admitted.
 
 // HOL Light: Library/permutations.ml:612 / THREE_CYCLE_COMPOSE_REVERSE
@@ -437,7 +437,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:618 / THREE_CYCLE_INVERSE
 // Source hash: md5:bc0494c16d3e51238dc878a64bbe1655
 // Status: generalization_required (bridges: empty_case:A)
-Theorem THREE_CYCLE_INVERSE : forall A:set, forall a b c :e A, ~ a = b /\ (~ b = c /\ ~ a = c) -> forall x :e A, inverse A A (fun x0:set => three_cycle A a b c x0) x = three_cycle A a c b x.
+Theorem THREE_CYCLE_INVERSE : forall A:set, forall a b c :e A, ~ a = b /\ (~ b = c /\ ~ a = c) -> forall x :e A, inverse A A (three_cycle A a b c) x = three_cycle A a c b x.
 Admitted.
 
 // HOL Light: Library/permutations.ml:631 / THREE_CYCLE_AS_COMMUTATOR
@@ -449,7 +449,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:653 / THREE_CYCLE_COMMUTATOR
 // Source hash: md5:e1ebc255c8bff3151cfc4fc8fe7e7cd0
 // Status: generalization_required (bridges: empty_case:A)
-Theorem THREE_CYCLE_COMMUTATOR : forall A:set, forall a b c d e0 :e A, ~ a = b /\ (~ a = c /\ (~ a = d /\ (~ a = e0 /\ (~ b = c /\ (~ b = d /\ (~ b = e0 /\ (~ c = d /\ (~ c = e0 /\ ~ d = e0)))))))) -> forall x :e A, three_cycle A a b c x = inverse A A (fun x1:set => three_cycle A d a c x1) (inverse A A (fun x1:set => three_cycle A c e0 b x1) (three_cycle A d a c (three_cycle A c e0 b x))).
+Theorem THREE_CYCLE_COMMUTATOR : forall A:set, forall a b c d e0 :e A, ~ a = b /\ (~ a = c /\ (~ a = d /\ (~ a = e0 /\ (~ b = c /\ (~ b = d /\ (~ b = e0 /\ (~ c = d /\ (~ c = e0 /\ ~ d = e0)))))))) -> forall x :e A, three_cycle A a b c x = inverse A A (three_cycle A d a c) (inverse A A (three_cycle A c e0 b) (three_cycle A d a c (three_cycle A c e0 b x))).
 Admitted.
 
 // HOL Light: Library/permutations.ml:674 / THREE_CYCLE_NOT_I
@@ -497,13 +497,13 @@ Admitted.
 // HOL Light: Library/permutations.ml:700 / SWAPSEQ_SWAP
 // Source hash: md5:deb9c355cb70552fb028910e9638e127
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_prod_setprod)
-Theorem SWAPSEQ_SWAP : forall A:set, forall a b :e A, swapseq A (if a = b then 0 else 1) (fun x:set => swap A (a,b) x).
+Theorem SWAPSEQ_SWAP : forall A:set, forall a b :e A, swapseq A (if a = b then 0 else 1) (swap A (a,b)).
 Admitted.
 
 // HOL Light: Library/permutations.ml:705 / PERMUTATION_SWAP
 // Source hash: md5:b2c6698b3e7b8f932c3440cbbf656d4a
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
-Theorem PERMUTATION_SWAP : forall A:set, forall a b :e A, permutation A (fun x:set => swap A (a,b) x).
+Theorem PERMUTATION_SWAP : forall A:set, forall a b :e A, permutation A (swap A (a,b)).
 Admitted.
 
 // HOL Light: Library/permutations.ml:709 / SWAPSEQ_COMPOSE
@@ -533,13 +533,13 @@ Admitted.
 // HOL Light: Library/permutations.ml:738 / SWAPSEQ_INVERSE
 // Source hash: md5:6c1f7ee3e7e907914269c48fff302d5e
 // Status: transport_required (bridges: hol_num_omega)
-Theorem SWAPSEQ_INVERSE : forall A:set, A <> Empty -> forall n :e omega, forall p:set -> set, (forall x :e A, p x :e A) -> swapseq A n p -> swapseq A n (fun x:set => inverse A A p x).
+Theorem SWAPSEQ_INVERSE : forall A:set, A <> Empty -> forall n :e omega, forall p:set -> set, (forall x :e A, p x :e A) -> swapseq A n p -> swapseq A n (inverse A A p).
 Admitted.
 
 // HOL Light: Library/permutations.ml:742 / PERMUTATION_INVERSE
 // Source hash: md5:7322569a0f0e8adcdf67d99ce122cf11
 // Status: exact_native
-Theorem PERMUTATION_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> permutation A (fun x:set => inverse A A p x).
+Theorem PERMUTATION_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> permutation A (inverse A A p).
 Admitted.
 
 // HOL Light: Library/permutations.ml:761 / SWAP_GENERAL
@@ -593,7 +593,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:861 / EVENPERM_SWAP
 // Source hash: md5:e3609cbd0f6e6e861e32a20eede556a1
 // Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
-Theorem EVENPERM_SWAP : forall A:set, forall a b :e A, evenperm A (fun x:set => swap A (a,b) x) <-> a = b.
+Theorem EVENPERM_SWAP : forall A:set, forall a b :e A, evenperm A (swap A (a,b)) <-> a = b.
 Admitted.
 
 // HOL Light: Library/permutations.ml:866 / EVENPERM_COMPOSE
@@ -605,7 +605,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:875 / EVENPERM_INVERSE
 // Source hash: md5:26e783269ee74a4152562b385443f100
 // Status: exact_native
-Theorem EVENPERM_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> (evenperm A (fun x:set => inverse A A p x) <-> evenperm A p).
+Theorem EVENPERM_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> (evenperm A (inverse A A p) <-> evenperm A p).
 Admitted.
 
 // HOL Light: Library/permutations.ml:885 / PERMUTATION_BIJECTIVE
@@ -707,7 +707,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:1051 / SIGN_INVERSE
 // Source hash: md5:52aa97ed7622a7451e405b023db7aff9
 // Status: transport_required (bridges: hol_real_R)
-Theorem SIGN_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> sign A (fun x:set => inverse A A p x) = sign A p.
+Theorem SIGN_INVERSE : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> sign A (inverse A A p) = sign A p.
 Admitted.
 
 // HOL Light: Library/permutations.ml:1055 / SIGN_COMPOSE
@@ -719,7 +719,7 @@ Admitted.
 // HOL Light: Library/permutations.ml:1059 / SIGN_SWAP
 // Source hash: md5:86d74d579fc098829183cf353b2beb7e
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem SIGN_SWAP : forall A:set, forall a b :e A, sign A (fun x:set => swap A (a,b) x) = if a = b then 1 else - 1.
+Theorem SIGN_SWAP : forall A:set, forall a b :e A, sign A (swap A (a,b)) = if a = b then 1 else - 1.
 Admitted.
 
 // HOL Light: Library/permutations.ml:1063 / SIGN_IDEMPOTENT

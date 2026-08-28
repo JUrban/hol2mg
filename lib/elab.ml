@@ -647,13 +647,9 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
                       | _ -> fail "registry: subset role for non-predicate argument of %s" c)
       | R.RMetaFun _ ->
           if k = 0 || List.length idoms < k then fail "registry: metafun role for non-function argument of %s" c;
-          if residual = bool_ty then begin
-            (* boolean-valued function in a metafun slot: data booleans (2) when the value flows
-               into a set result, otherwise keep it a predicate *)
-            match e.R.c_result with
-            | R.RSet | R.RSubset -> VMetaFun (List.map (carrier ctx) (take k idoms), Mg.Num 2)
-            | _ -> VMetaPred (List.map (carrier ctx) (take k idoms))
-          end
+          (* a boolean-valued function in a metafun slot is a function into the carrier 2 (data);
+             entries that want a predicate must say metapred *)
+          if residual = bool_ty then VMetaFun (List.map (carrier ctx) (take k idoms), Mg.Num 2)
           else VMetaFun (List.map (carrier ctx) (take k idoms), carrier ctx residual)
       | R.RMetaPred _ ->
           if k = 0 || List.length idoms < k || residual <> bool_ty then fail "registry: metapred role for non-predicate argument of %s" c;
