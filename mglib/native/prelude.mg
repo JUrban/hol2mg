@@ -121,7 +121,10 @@ Admitted.
 Theorem idx_idx_n : forall n :e omega, idx (idx_n n) = idx_n n.
 Admitted.
 Theorem dimindex_one : dimindex 1 = 1.
-Admitted.
+prove (if finite 1 then finite_cardinality 1 else 1) = 1.
+rewrite (If_i_1 (finite 1) (finite_cardinality 1) 1 (nat_finite 1 nat_1)).
+exact (god1_finite_cardinality_natural 1 (nat_p_omega 1 nat_1)).
+Qed.
 
 // Concatenation and splitting of vectors (HOL Light pastecart/fstcart/sndcart);
 // the index types are passed explicitly because the dimensions depend on them.

@@ -914,7 +914,9 @@ let elab_tydef (reg : R.t) (tname : string) (target : string) (absname : string)
   let x, tau, body = (match nonempty with
     | App (Const ("?", _), Lam (x, tau, b)) -> (x, tau, b)
     | _ -> raise (Not_definitional "type definition without existential nonemptiness theorem")) in
-  let tvs = List.sort compare (uniq (tyvars_of_ty tau)) in
+  (* the type arguments of the new type are the type variables of the whole predicate
+     (HOL Light: type_vars_in_term), not only those of the representing type *)
+  let tvs = List.sort compare (uniq (tyvars_of_ty tau @ tyvars_of_tm nonempty)) in
   let letters = List.init 26 (fun i -> String.make 1 (Char.chr (65 + i))) in
   let used = ref (List.map sanitize_tyvar (List.filter (fun a -> a = "" || a.[0] <> '?') tvs)) in
   let tv_names = List.map (fun a ->

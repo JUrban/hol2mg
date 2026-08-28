@@ -123,7 +123,11 @@ let () =
             | None -> Hashtbl.replace last_err t.td_name "symbolic type name; needs a hand mapping"; false
             | Some tg ->
                 let tg = if Mg.is_reserved tg then tg ^ "_hl" else tg in
-                (match with_alarm (fun () -> Elab.elab_tydef reg t.td_name tg t.td_abs t.td_rep t.td_nonempty) with
+                (match with_alarm (fun () ->
+                         let at = Elab.elab_tydef reg t.td_name tg t.td_abs t.td_rep t.td_nonempty in
+                         let arity = (try List.assoc t.td_name ex.type_constructors with Not_found -> at.Elab.at_arity) in
+                         if arity <> at.Elab.at_arity then raise (Elab.Not_definitional (Printf.sprintf "type arity %d but %d type variables found" arity at.Elab.at_arity));
+                         at) with
                  | Ok at -> Elab.register_auto_tydef reg at; Hashtbl.replace Mg.sig_names tg (); auto_tydefs := at :: !auto_tydefs; order := `T at :: !order; progress := true; false
                  | Error m -> Hashtbl.replace last_err t.td_name m; true)) !pending_tys;
           pending_defs := List.filter (fun (d : thm_record) ->
