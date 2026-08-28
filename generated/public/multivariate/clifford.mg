@@ -119,7 +119,7 @@ Admitted.
 // HOL Light: Multivariate/clifford.ml:230 / mbasis
 // Source hash: md5:58a6942fd78c9cbecb4d608cd3f1504e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_multivector, omega_Subq_R)
-Theorem mbasis_thm : forall A:set, A <> Empty -> forall i c= omega, mbasis A i = lambdas A (fun x:set => (fun s :e Power omega => if forall x :e omega, x :e i <-> x :e s then 1 else 0) x).
+Theorem mbasis_thm : forall A:set, A <> Empty -> forall i c= omega, mbasis A i = lambdas A (fun s:set => if i = s then 1 else 0).
 Admitted.
 
 // HOL Light: Multivariate/clifford.ml:238 / MBASIS_EQ_0

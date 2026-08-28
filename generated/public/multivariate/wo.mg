@@ -503,19 +503,19 @@ Admitted.
 // HOL Light: Library/wo.ml:674 / QOSET_POINTWISE
 // Source hash: md5:e66c42bee36f4383b32db2459b83d9ce
 // Status: exact_native
-Theorem QOSET_POINTWISE : forall A K:set, A <> Empty -> K <> Empty -> forall l:set -> set -> prop, forall s c= K, qoset_on (A :^: K) (fun x:set => fun x0:set => x0 :e (fun x :e A :^: K => {y :e A :^: K | forall i :e K, i :e s -> l (i i) (y i)}) x) <-> s = Empty \/ qoset_on A l.
+Theorem QOSET_POINTWISE : forall A K:set, A <> Empty -> K <> Empty -> forall l:set -> set -> prop, forall s c= K, qoset_on (A :^: K) (fun x:set => fun y:set => forall i :e K, i :e s -> l (x i) (y i)) <-> s = Empty \/ qoset_on A l.
 Admitted.
 
 // HOL Light: Library/wo.ml:689 / FLD_POINTWISE
 // Source hash: md5:9ef479f341313b5569b12df3bcd0076d
 // Status: exact_native
-Theorem FLD_POINTWISE : forall A K:set, A <> Empty -> K <> Empty -> forall l:set -> set -> prop, forall s c= K, qoset_on A l -> fld_on (A :^: K) (fun x:set => fun x0:set => x0 :e (fun x :e A :^: K => {y :e A :^: K | forall i :e K, i :e s -> l (i i) (y i)}) x) = {x :e A :^: K | forall i :e K, i :e s -> x i :e fld_on A l}.
+Theorem FLD_POINTWISE : forall A K:set, A <> Empty -> K <> Empty -> forall l:set -> set -> prop, forall s c= K, qoset_on A l -> fld_on (A :^: K) (fun x:set => fun y:set => forall i :e K, i :e s -> l (x i) (y i)) = {x :e A :^: K | forall i :e K, i :e s -> x i :e fld_on A l}.
 Admitted.
 
 // HOL Light: Library/wo.ml:698 / WQOSET_POINTWISE
 // Source hash: md5:e0fff5f4458fff4d6456d7bf5758273e
 // Status: transport_required (bridges: hol_finite_finite)
-Theorem WQOSET_POINTWISE : forall A K:set, A <> Empty -> K <> Empty -> forall l:set -> set -> prop, forall s c= K, wqoset_on A l /\ finite s -> wqoset_on (A :^: K) (fun x:set => fun x0:set => x0 :e (fun x :e A :^: K => {y :e A :^: K | forall i :e K, i :e s -> l (i i) (y i)}) x).
+Theorem WQOSET_POINTWISE : forall A K:set, A <> Empty -> K <> Empty -> forall l:set -> set -> prop, forall s c= K, wqoset_on A l /\ finite s -> wqoset_on (A :^: K) (fun x:set => fun y:set => forall i :e K, i :e s -> l (x i) (y i)).
 Admitted.
 
 // HOL Light: Library/wo.ml:719 / DICKSON
@@ -797,13 +797,13 @@ Admitted.
 // HOL Light: Library/wo.ml:1268 / WF_INSEG_WOSET
 // Source hash: md5:87a87349a5b5fde0223d26f5cc21c3d4
 // Status: exact_native
-Theorem WF_INSEG_WOSET : forall A:set, A <> Empty -> forall P c= Power A :^: A, P <> Empty -> exists x :e P, forall y :e P, ~ x :e (fun x1 :e Power A :^: A => {y :e Power A :^: A | woset_on A (fun x2:set => fun x0:set => x0 :e x2 x2) /\ (woset_on A (fun x0:set => fun x10:set => x10 :e y x0) /\ (inseg_on A (fun x2:set => fun x0:set => x0 :e x2 x2) (fun x0:set => fun x10:set => x10 :e y x0) /\ ~ forall x0 x10 :e A, x10 :e x0 x0 <-> x10 :e y x0))}) y.
+Theorem WF_INSEG_WOSET : forall A:set, A <> Empty -> forall P c= Power A :^: A, P <> Empty -> exists x :e P, forall y :e P, ~ (woset_on A (fun x0:set => fun x1:set => x1 :e y x0) /\ (woset_on A (fun x0:set => fun x1:set => x1 :e x x0) /\ (inseg_on A (fun x0:set => fun x1:set => x1 :e y x0) (fun x0:set => fun x1:set => x1 :e x x0) /\ ~ y = x))).
 Admitted.
 
 // HOL Light: Library/wo.ml:1323 / WOSET_INSEG_ORDINAL
 // Source hash: md5:30b0a0e11a6a9b69de17fac5b0041004
 // Status: exact_native (bridges: choose_in_spec)
-Theorem WOSET_INSEG_ORDINAL : forall A:set, A <> Empty -> woset_on (Power A :^: A) (fun x:set => fun x0:set => x0 :e (fun x :e Power A :^: A => {y :e Power A :^: A | ordinal_on A (fun x:set => fun x0:set => x0 :e x x) /\ (ordinal_on A (fun x0:set => fun x1:set => x1 :e y x0) /\ inseg_on A (fun x:set => fun x0:set => x0 :e x x) (fun x0:set => fun x1:set => x1 :e y x0))}) x).
+Theorem WOSET_INSEG_ORDINAL : forall A:set, A <> Empty -> woset_on (Power A :^: A) (fun x:set => fun y:set => ordinal_on A (fun x0:set => fun x1:set => x1 :e x x0) /\ (ordinal_on A (fun x0:set => fun x1:set => x1 :e y x0) /\ inseg_on A (fun x0:set => fun x1:set => x1 :e x x0) (fun x0:set => fun x1:set => x1 :e y x0))).
 Admitted.
 
 // HOL Light: Library/wo.ml:1331 / SUBWOSET_ISO_INSEG

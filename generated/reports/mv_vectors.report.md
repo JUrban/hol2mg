@@ -3,8 +3,8 @@
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
 - theorems: 5084 discovered, 4783 public
 - automatic definitions: 79 constants and 1 types generated, 5 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
-- theorems using automatic definitions: 1461
-- mapping files: mappings/core.json, mappings/lists.json, mappings/library.json
+- theorems using automatic definitions: 1422
+- mapping files: mappings/core.json, mappings/lists.json, mappings/library.json, mappings/multivariate.json
 
 ## Status counts
 

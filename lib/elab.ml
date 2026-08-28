@@ -329,15 +329,13 @@ and elab_nat ctx (t : tm) (hint : view option) : Mg.tm * view =
            let n = fresh ctx x in
            let fv = Free (n, ty) in
            let body' = open_with fv body in
-           let xview = choose_view ctx (n, ty) [ body' ] in
+           (* the argument of a meta lambda is always a set value: a bound function/predicate
+              variable gets the data view (applicative uses print identically) *)
+           let xview = (match choose_view ctx (n, ty) [ body' ] with
+             | VMetaFun _ | VMetaPred _ -> data_view ctx ty
+             | v -> v) in
            ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
-           let xview_meta = (match xview with VMetaFun _ | VMetaPred _ -> true | _ -> false) in
-           if xview_meta then begin
-             (* a lambda binding a function variable used applicatively: keep meta but the
-                incoming argument is a set; run it *)
-             ctx.vars <- List.remove_assoc n ctx.vars; release ctx n;
-             (elab_lam_data ctx t full_ty, data_view ctx full_ty)
-           end else begin
+           begin
              let res_ty = type_of [ ty ] body in
              let inner_view = (match view_of_type ctx res_ty with
                | VMetaFun (ds, c) -> VMetaFun (ds, c) | VMetaPred ds -> VMetaPred ds | v -> v) in
@@ -362,7 +360,10 @@ and elab_lam_data ctx (t : tm) (full_ty : ty) : Mg.tm =
       let n = fresh ctx x in
       let fv = Free (n, ty) in
       let body' = open_with fv body in
-      let xview = choose_view ctx (n, ty) [ body' ] in
+      (* the bound variable of a set lambda / separation is a member of the carrier: data view *)
+      let xview = (match choose_view ctx (n, ty) [ body' ] with
+        | VMetaFun _ | VMetaPred _ -> data_view ctx ty
+        | v -> v) in
       ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
       let res_ty = type_of [ ty ] body in
       let dom = carrier ctx ty in
@@ -371,17 +372,7 @@ and elab_lam_data ctx (t : tm) (full_ty : ty) : Mg.tm =
         else Mg.LamIn (n, dom, elab ctx body' (data_view ctx res_ty))
       in
       ctx.vars <- List.remove_assoc n ctx.vars; release ctx n;
-      (* if the binder variable needed a meta view inside its scope, the set-bound
-         variable must be run: rewrite occurrences *)
-      (match xview with
-       | VMetaFun _ | VMetaPred _ ->
-           (* the variable was declared meta but is bound as a set; convert uses *)
-           let runv = run ctx (Mg.Var n) xview in
-           (match r with
-            | Mg.Sep (n', d, p) -> Mg.Sep (n', d, Mg.normalize (Mg.subst [ (n, runv) ] p))
-            | Mg.LamIn (n', d, b) -> Mg.LamIn (n', d, Mg.normalize (Mg.subst [ (n, runv) ] b))
-            | _ -> r)
-       | _ -> r)
+      r
   | _ -> fail "elab_lam_data: not a lambda"
 
 and elab_binder ctx (kind : [ `All | `Ex ]) (x : string) (ty : ty) (body : tm) : Mg.tm =
@@ -875,7 +866,7 @@ let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty)
 let register_auto (reg : R.t) (d : auto_def) =
   let t = Mg.apps (Mg.Cst d.ad_target) (List.map (fun p -> Mg.Meta p) d.ad_tyvars @ List.mapi (fun i _ -> Mg.Meta (string_of_int (i + 1))) d.ad_roles) in
   let e = { R.c_hol = d.ad_hol; c_scheme = d.ad_scheme; c_args = d.ad_roles; c_result = d.ad_result; c_template = t;
-            c_class = "definitionally_exact"; c_status = "auto"; c_bridge = ""; c_notes = "auto definition"; c_source = "auto" } in
+            c_class = "definitionally_exact"; c_status = "auto"; c_bridge = ""; c_notes = "auto definition"; c_source = "auto"; c_override = None } in
   let prev = (try Hashtbl.find reg.R.consts d.ad_hol with Not_found -> []) in
   Hashtbl.replace reg.R.consts d.ad_hol (prev @ [ e ])
 
@@ -944,6 +935,30 @@ let register_auto_tydef (reg : R.t) (d : auto_tydef) =
   let new_ty = TyApp (d.at_hol, List.map (fun v -> TyVar v) d.at_tyvars) in
   let mk name scheme cls =
     { R.c_hol = name; c_scheme = scheme; c_args = [ R.RSet ]; c_result = R.RSet; c_template = Mg.Meta "1";
-      c_class = cls; c_status = "auto"; c_bridge = "hol_typedef_" ^ d.at_hol; c_notes = "abs/rep of automatic subtype"; c_source = "auto" } in
+      c_class = cls; c_status = "auto"; c_bridge = "hol_typedef_" ^ d.at_hol; c_notes = "abs/rep of automatic subtype"; c_source = "auto"; c_override = None } in
   Hashtbl.replace reg.R.consts d.at_abs [ mk d.at_abs (fun_ty d.at_rep_ty new_ty) "generalization" ];
   Hashtbl.replace reg.R.consts d.at_rep [ mk d.at_rep (fun_ty new_ty d.at_rep_ty) "definitionally_exact" ]
+
+(* A reviewed definition override: the constant keeps its automatic interface (carrier
+   parameters, argument roles from the HOL type) but the body is the given template. *)
+let elab_definition_override (reg : R.t) (cname : string) (target : string) (scheme : ty)
+    (params : string list) (args : string list) (body : Mg.tm) : auto_def =
+  let tvs = List.sort compare (uniq (tyvars_of_ty scheme)) in
+  if List.length params <> List.length tvs then
+    raise (Not_definitional (Printf.sprintf "override for %s: %d carrier params but %d type variables" cname (List.length params) (List.length tvs)));
+  let tv_names = List.combine tvs params in
+  let ctx = { reg; tyvar_names = tv_names; vars = []; used = params; st = { classes = []; bridges = []; notes = [] } } in
+  let all_doms, _ = strip_fun_ty scheme in
+  let k = List.length args in
+  if List.length all_doms < k then raise (Not_definitional "override: more arguments than the type allows");
+  let doms = List.filteri (fun i _ -> i < k) all_doms in
+  let res = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) scheme doms in
+  let roles = List.map role_of_type doms in
+  let result_role = role_of_type res in
+  let mtys = List.map2 (fun r d -> mty_of_view (view_of_role ctx r d)) roles doms in
+  let rty = mty_of_view (view_of_role ctx result_role res) in
+  let ty = List.fold_right (fun _ acc -> Mg.Arr (Mg.Set, acc)) params (List.fold_right (fun m acc -> Mg.Arr (m, acc)) mtys rty) in
+  let term = List.fold_right2 (fun a m acc -> Mg.Lam (a, m, acc)) args mtys body in
+  let term = List.fold_right (fun p acc -> Mg.Lam (p, Mg.Set, acc)) params term in
+  { ad_hol = cname; ad_target = target; ad_type = ty; ad_body = term; ad_scheme = scheme; ad_roles = roles;
+    ad_result = result_role; ad_params = params; ad_tyvars = tvs; ad_notes = [ "definition-override" ] }

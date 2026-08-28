@@ -869,7 +869,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:1509 / SEPARATE_CLOSED_CONES
 // Source hash: md5:311c15c0451ee846948e78bc0bb6b4bd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem SEPARATE_CLOSED_CONES : forall N:set, N <> Empty -> forall c d c= R :^: idx N, conic N c /\ (closed N c /\ (conic N d /\ (closed N d /\ c :/\: d c= {vec N 0}))) -> exists e0 :e R, 0 < e0 /\ forall x y :e R :^: idx N, x :e c /\ y :e d -> e0 * (if sqrt_SNo_nonneg (dot N x x) <= sqrt_SNo_nonneg (dot N y y) then sqrt_SNo_nonneg (dot N y y) else sqrt_SNo_nonneg (dot N x x)) <= distance N (x,y).
+Theorem SEPARATE_CLOSED_CONES : forall N:set, N <> Empty -> forall c d c= R :^: idx N, conic N c /\ (closed N c /\ (conic N d /\ (closed N d /\ c :/\: d c= {vec N 0}))) -> exists e0 :e R, 0 < e0 /\ forall x y :e R :^: idx N, x :e c /\ y :e d -> e0 * (if vector_norm N x <= vector_norm N y then vector_norm N y else vector_norm N x) <= distance N (x,y).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:1616 / affine_dependent
@@ -1205,7 +1205,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:2185 / CONVEX_NORM
 // Source hash: md5:327d9fa10697f6418c9683dc8ab769c4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem CONVEX_NORM : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex_on N (fun x:set => sqrt_SNo_nonneg (dot N x x)) s.
+Theorem CONVEX_NORM : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex_on N (fun x:set => vector_norm N x) s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:2191 / CONVEX_ON_COMPOSE_LINEAR
@@ -1307,7 +1307,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:2590 / BALL_SUBSET_OPEN_MAP_IMAGE
 // Source hash: md5:1be260630507fa854f1b884732745d9d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem BALL_SUBSET_OPEN_MAP_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall r :e R, bounded_hl M s /\ (continuous_on_hl M N f (closure M s) /\ (open N {f x | x :e interior M s} /\ (a :e s /\ (0 < r /\ (forall z :e R :^: idx M, z :e frontier M s -> r <= sqrt_SNo_nonneg (dot N (vector_sub N (f z) (f a)) (vector_sub N (f z) (f a)))))))) -> ball N (f a,r) c= {f x | x :e s}.
+Theorem BALL_SUBSET_OPEN_MAP_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall r :e R, bounded_hl M s /\ (continuous_on_hl M N f (closure M s) /\ (open N {f x | x :e interior M s} /\ (a :e s /\ (0 < r /\ (forall z :e R :^: idx M, z :e frontier M s -> r <= vector_norm N (vector_sub N (f z) (f a))))))) -> ball N (f a,r) c= {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:2670 / CONVEX_SCALING
@@ -2621,43 +2621,43 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:6611 / SIMPLEX_FURTHEST_LT
 // Source hash: md5:d5ee6d77b4f9ed5cf97472baab6fda8a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem SIMPLEX_FURTHEST_LT : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ ~ x :e s -> exists y :e R :^: idx N, y :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < sqrt_SNo_nonneg (dot N (vector_sub N y a) (vector_sub N y a)).
+Theorem SIMPLEX_FURTHEST_LT : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ ~ x :e s -> exists y :e R :^: idx N, y :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ vector_norm N (vector_sub N x a) < vector_norm N (vector_sub N y a).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6681 / SIMPLEX_FURTHEST_LT_EXISTS
 // Source hash: md5:40d5204740bec5f22fabc98caa384576
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem SIMPLEX_FURTHEST_LT_EXISTS : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ ~ x :e s -> exists y :e R :^: idx N, y :e s /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < sqrt_SNo_nonneg (dot N (vector_sub N y a) (vector_sub N y a)).
+Theorem SIMPLEX_FURTHEST_LT_EXISTS : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ ~ x :e s -> exists y :e R :^: idx N, y :e s /\ vector_norm N (vector_sub N x a) < vector_norm N (vector_sub N y a).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6693 / SIMPLEX_FURTHEST_LE_EXISTS
 // Source hash: md5:6bc6eee45c0e3969165e1495563e5529
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem SIMPLEX_FURTHEST_LE_EXISTS : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s -> exists y :e R :^: idx N, y :e s /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= sqrt_SNo_nonneg (dot N (vector_sub N y a) (vector_sub N y a)).
+Theorem SIMPLEX_FURTHEST_LE_EXISTS : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s -> exists y :e R :^: idx N, y :e s /\ vector_norm N (vector_sub N x a) <= vector_norm N (vector_sub N y a).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6699 / SIMPLEX_FURTHEST_LE
 // Source hash: md5:ea2e74ea7c6712157936f785c5216305
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
-Theorem SIMPLEX_FURTHEST_LE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, finite s /\ ~ s = Empty -> exists y :e R :^: idx N, y :e s /\ forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s -> sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= sqrt_SNo_nonneg (dot N (vector_sub N y a) (vector_sub N y a)).
+Theorem SIMPLEX_FURTHEST_LE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, finite s /\ ~ s = Empty -> exists y :e R :^: idx N, y :e s /\ forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s -> vector_norm N (vector_sub N x a) <= vector_norm N (vector_sub N y a).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6713 / SIMPLEX_EXTREMAL_LE
 // Source hash: md5:41209e192c554b6a70b5d1a01bb212db
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
-Theorem SIMPLEX_EXTREMAL_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s /\ ~ s = Empty -> exists u v :e R :^: idx N, u :e s /\ (v :e s /\ forall x y :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ y :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s -> sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) <= sqrt_SNo_nonneg (dot N (vector_sub N u v) (vector_sub N u v))).
+Theorem SIMPLEX_EXTREMAL_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s /\ ~ s = Empty -> exists u v :e R :^: idx N, u :e s /\ (v :e s /\ forall x y :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ y :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s -> vector_norm N (vector_sub N x y) <= vector_norm N (vector_sub N u v)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6728 / SIMPLEX_EXTREMAL_LE_EXISTS
 // Source hash: md5:c47b123aff080f26b3cff81ad2d536fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
-Theorem SIMPLEX_EXTREMAL_LE_EXISTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x y :e R :^: idx N, finite s /\ (x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ y :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s) -> exists u v :e R :^: idx N, u :e s /\ (v :e s /\ sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) <= sqrt_SNo_nonneg (dot N (vector_sub N u v) (vector_sub N u v))).
+Theorem SIMPLEX_EXTREMAL_LE_EXISTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x y :e R :^: idx N, finite s /\ (x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s /\ y :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | convex N x0} s) -> exists u v :e R :^: idx N, u :e s /\ (v :e s /\ vector_norm N (vector_sub N x y) <= vector_norm N (vector_sub N u v)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6738 / CLOSER_POINTS_LEMMA
 // Source hash: md5:bcadcd0b5e98d5025a9ef1dcd6c6e656
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem CLOSER_POINTS_LEMMA : forall N:set, N <> Empty -> forall y z :e R :^: idx N, 0 < dot N y z -> exists u :e R, 0 < u /\ forall v :e R, 0 < v /\ v <= u -> sqrt_SNo_nonneg (dot N (vector_sub N (vector_mul N v z) y) (vector_sub N (vector_mul N v z) y)) < sqrt_SNo_nonneg (dot N y y).
+Theorem CLOSER_POINTS_LEMMA : forall N:set, N <> Empty -> forall y z :e R :^: idx N, 0 < dot N y z -> exists u :e R, 0 < u /\ forall v :e R, 0 < v /\ v <= u -> vector_norm N (vector_sub N (vector_mul N v z) y) < vector_norm N y.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:6754 / CLOSER_POINT_LEMMA
@@ -3221,13 +3221,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:9008 / KIRSZBRAUN
 // Source hash: md5:fd5064f3ed9a34356e1d0be061b4bd01
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem KIRSZBRAUN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, 0 <= B /\ (forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x y :e R :^: idx M, sqrt_SNo_nonneg (dot N (vector_sub N (g x) (g y)) (vector_sub N (g x) (g y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
+Theorem KIRSZBRAUN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, 0 <= B /\ (forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x y :e R :^: idx M, vector_norm N (vector_sub N (g x) (g y)) <= B * vector_norm M (vector_sub M x y)) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:9637 / LIPSCHITZ_EXTENSION_EXISTS
 // Source hash: md5:c9249652204f8e915d7198912b8cabde
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LIPSCHITZ_EXTENSION_EXISTS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((exists B :e R, forall x y :e R :^: idx M, sqrt_SNo_nonneg (dot N (vector_sub N (g x) (g y)) (vector_sub N (g x) (g y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
+Theorem LIPSCHITZ_EXTENSION_EXISTS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((exists B :e R, forall x y :e R :^: idx M, vector_norm N (vector_sub N (g x) (g y)) <= B * vector_norm M (vector_sub M x y)) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:9653 / DUGUNDJI
@@ -3239,7 +3239,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:9804 / TIETZE
 // Source hash: md5:0674e5c1070984deed2bd80c847294f6
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem TIETZE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall u s c= R :^: idx M, forall B :e R, 0 <= B /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) s /\ (continuous_on_hl M N f s /\ (forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= B))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g u /\ ((forall x :e R :^: idx M, x :e s -> g x = f x) /\ forall x :e R :^: idx M, x :e u -> sqrt_SNo_nonneg (dot N (g x) (g x)) <= B)).
+Theorem TIETZE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall u s c= R :^: idx M, forall B :e R, 0 <= B /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) s /\ (continuous_on_hl M N f s /\ (forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= B))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g u /\ ((forall x :e R :^: idx M, x :e s -> g x = f x) /\ forall x :e R :^: idx M, x :e u -> vector_norm N (g x) <= B)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:9820 / TIETZE_CLOSED_INTERVAL
@@ -3665,13 +3665,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:10775 / SEGMENT_FURTHEST_LE
 // Source hash: md5:bb082b36c3d9ca255262e9cad6843c25
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem SEGMENT_FURTHEST_LE : forall N:set, N <> Empty -> forall a b x y :e R :^: idx N, x :e closed_segment N (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x)) <= sqrt_SNo_nonneg (dot N (vector_sub N y a) (vector_sub N y a)) \/ sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x)) <= sqrt_SNo_nonneg (dot N (vector_sub N y b) (vector_sub N y b)).
+Theorem SEGMENT_FURTHEST_LE : forall N:set, N <> Empty -> forall a b x y :e R :^: idx N, x :e closed_segment N (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N y x) <= vector_norm N (vector_sub N y a) \/ vector_norm N (vector_sub N y x) <= vector_norm N (vector_sub N y b).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10786 / SEGMENT_BOUND
 // Source hash: md5:23c3768d92323b46e4e3121face17acc
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem SEGMENT_BOUND : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, x :e closed_segment N (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x b) (vector_sub N x b)) <= sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)).
+Theorem SEGMENT_BOUND : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, x :e closed_segment N (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N x a) <= vector_norm N (vector_sub N b a) /\ vector_norm N (vector_sub N x b) <= vector_norm N (vector_sub N b a).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10797 / BETWEEN_IN_CONVEX_HULL
@@ -3743,13 +3743,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:10902 / BETWEEN_NORM_LT
 // Source hash: md5:deefd30dc7290ca22a4742fb9fc6c5fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem BETWEEN_NORM_LT : forall N:set, N <> Empty -> forall r :e R, forall a b x :e R :^: idx N, sqrt_SNo_nonneg (dot N a a) < r /\ (sqrt_SNo_nonneg (dot N b b) < r /\ between N x (a,b)) -> sqrt_SNo_nonneg (dot N x x) < r.
+Theorem BETWEEN_NORM_LT : forall N:set, N <> Empty -> forall r :e R, forall a b x :e R :^: idx N, vector_norm N a < r /\ (vector_norm N b < r /\ between N x (a,b)) -> vector_norm N x < r.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10907 / BETWEEN_NORM_LE
 // Source hash: md5:da216b1f6499e2505e7a26172fd697a9
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem BETWEEN_NORM_LE : forall N:set, N <> Empty -> forall r :e R, forall a b x :e R :^: idx N, sqrt_SNo_nonneg (dot N a a) <= r /\ (sqrt_SNo_nonneg (dot N b b) <= r /\ between N x (a,b)) -> sqrt_SNo_nonneg (dot N x x) <= r.
+Theorem BETWEEN_NORM_LE : forall N:set, N <> Empty -> forall r :e R, forall a b x :e R :^: idx N, vector_norm N a <= r /\ (vector_norm N b <= r /\ between N x (a,b)) -> vector_norm N x <= r.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10912 / UNION_SEGMENT
@@ -4181,7 +4181,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:12004 / DIFFERENT_NORM_3_COLLINEAR_POINTS
 // Source hash: md5:e21bc66548c61de8845fa16765d43ac3
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem DIFFERENT_NORM_3_COLLINEAR_POINTS : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, ~ (x :e open_segment N (a,b) /\ (sqrt_SNo_nonneg (dot N a a) = sqrt_SNo_nonneg (dot N b b) /\ sqrt_SNo_nonneg (dot N x x) = sqrt_SNo_nonneg (dot N b b))).
+Theorem DIFFERENT_NORM_3_COLLINEAR_POINTS : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, ~ (x :e open_segment N (a,b) /\ (vector_norm N a = vector_norm N b /\ vector_norm N x = vector_norm N b)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:12025 / OPEN_SEGMENT_SUBSET_BALL
@@ -4289,13 +4289,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:12560 / DIAMETER_BOUNDED_BOUND_LT
 // Source hash: md5:d5f5958a2a61f10a924199b08f2f99a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DIAMETER_BOUNDED_BOUND_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x y :e R :^: idx N, bounded_hl N s /\ (x :e relative_interior N s /\ (y :e closure N s /\ ~ diameter N s = 0)) -> sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) < diameter N s.
+Theorem DIAMETER_BOUNDED_BOUND_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x y :e R :^: idx N, bounded_hl N s /\ (x :e relative_interior N s /\ (y :e closure N s /\ ~ diameter N s = 0)) -> vector_norm N (vector_sub N x y) < diameter N s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:12607 / DIAMETER_ATTAINED_RELATIVE_FRONTIER
 // Source hash: md5:32c1fca00b782157f755a0881d3e4c6c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DIAMETER_ATTAINED_RELATIVE_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ ~ diameter N s = 0 -> exists x y :e R :^: idx N, x :e relative_frontier N s /\ (y :e relative_frontier N s /\ sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) = diameter N s).
+Theorem DIAMETER_ATTAINED_RELATIVE_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ ~ diameter N s = 0 -> exists x y :e R :^: idx N, x :e relative_frontier N s /\ (y :e relative_frontier N s /\ vector_norm N (vector_sub N x y) = diameter N s).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:12624 / DIAMETER_RELATIVE_FRONTIER
@@ -4307,7 +4307,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:12640 / DIAMETER_ATTAINED_FRONTIER
 // Source hash: md5:1fcb4854fe1186b14f8b723ac25ed410
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DIAMETER_ATTAINED_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ ~ diameter N s = 0 -> exists x y :e R :^: idx N, x :e frontier N s /\ (y :e frontier N s /\ sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) = diameter N s).
+Theorem DIAMETER_ATTAINED_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ ~ diameter N s = 0 -> exists x y :e R :^: idx N, x :e frontier N s /\ (y :e frontier N s /\ vector_norm N (vector_sub N x y) = diameter N s).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:12650 / DIAMETER_FRONTIER
@@ -4703,7 +4703,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:14353 / SEGMENT_AS_BALL
 // Source hash: md5:68db38111f35d8f2a2e05448870969fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem SEGMENT_AS_BALL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, closed_segment N (seq_cons (a,b) seq_nil) = hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} {a,b} :/\: cball N (vector_mul N (recip_SNo 2) (vector_add N a b),sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)) :/: 2)) /\ forall a b :e R :^: idx N, open_segment N (a,b) = hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} {a,b} :/\: ball N (vector_mul N (recip_SNo 2) (vector_add N a b),sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)) :/: 2).
+Theorem SEGMENT_AS_BALL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, closed_segment N (seq_cons (a,b) seq_nil) = hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} {a,b} :/\: cball N (vector_mul N (recip_SNo 2) (vector_add N a b),vector_norm N (vector_sub N b a) :/: 2)) /\ forall a b :e R :^: idx N, open_segment N (a,b) = hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} {a,b} :/\: ball N (vector_mul N (recip_SNo 2) (vector_add N a b),vector_norm N (vector_sub N b a) :/: 2).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:14382 / CONVEX_SEGMENT
@@ -4925,37 +4925,37 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:15542 / LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION_EXPLICIT
 // Source hash: md5:8f0c4e3766c72883183c546711f03968
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION_EXPLICIT : forall N:set, N <> Empty -> forall r :e R, forall s c= R :^: idx N, forall x y :e R :^: idx N, convex N s /\ (0 < r /\ (vec N 0 :e s /\ (ball N (vec N 0,r) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s c= relative_interior N s /\ (x :e relative_frontier N s /\ y :e relative_frontier N s)))) -> distance N (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x,vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N y y))) y) <= recip_SNo r * distance N (x,y).
+Theorem LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION_EXPLICIT : forall N:set, N <> Empty -> forall r :e R, forall s c= R :^: idx N, forall x y :e R :^: idx N, convex N s /\ (0 < r /\ (vec N 0 :e s /\ (ball N (vec N 0,r) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s c= relative_interior N s /\ (x :e relative_frontier N s /\ y :e relative_frontier N s)))) -> distance N (vector_mul N (recip_SNo (vector_norm N x)) x,vector_mul N (recip_SNo (vector_norm N y)) y) <= recip_SNo r * distance N (x,y).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:15575 / LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION
 // Source hash: md5:37df831de84f01a326eb622e64f16c4a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ vec N 0 :e relative_interior N s -> exists B :e R, forall x y :e R :^: idx N, x :e relative_frontier N s /\ y :e relative_frontier N s -> distance N (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x,vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N y y))) y) <= B * distance N (x,y).
+Theorem LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ vec N 0 :e relative_interior N s -> exists B :e R, forall x y :e R :^: idx N, x :e relative_frontier N s /\ y :e relative_frontier N s -> distance N (vector_mul N (recip_SNo (vector_norm N x)) x,vector_mul N (recip_SNo (vector_norm N y)) y) <= B * distance N (x,y).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:15592 / INVERSE_LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION_EXPLICIT
 // Source hash: md5:fe83a936b62d0f637d0928dcb7f6a5a5
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INVERSE_LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION_EXPLICIT : forall N:set, N <> Empty -> forall r R0 :e R, forall s c= R :^: idx N, forall x y :e R :^: idx N, convex N s /\ (0 < r /\ (vec N 0 :e s /\ (ball N (vec N 0,r) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s c= relative_interior N s /\ (s c= cball N (vec N 0,R0) /\ (x :e relative_frontier N s /\ y :e relative_frontier N s))))) -> r :/: R0 ^ 2 * distance N (x,y) <= distance N (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x,vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N y y))) y).
+Theorem INVERSE_LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION_EXPLICIT : forall N:set, N <> Empty -> forall r R0 :e R, forall s c= R :^: idx N, forall x y :e R :^: idx N, convex N s /\ (0 < r /\ (vec N 0 :e s /\ (ball N (vec N 0,r) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s c= relative_interior N s /\ (s c= cball N (vec N 0,R0) /\ (x :e relative_frontier N s /\ y :e relative_frontier N s))))) -> r :/: R0 ^ 2 * distance N (x,y) <= distance N (vector_mul N (recip_SNo (vector_norm N x)) x,vector_mul N (recip_SNo (vector_norm N y)) y).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:15931 / INVERSE_LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION
 // Source hash: md5:8a6d9bb04422b1eaa123c30b5c6551d3
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INVERSE_LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ vec N 0 :e relative_interior N s) -> exists B :e R, 0 < B /\ forall x y :e R :^: idx N, x :e relative_frontier N s /\ y :e relative_frontier N s -> B * distance N (x,y) <= distance N (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x,vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N y y))) y).
+Theorem INVERSE_LIPSCHITZ_CONVEX_SPHERICAL_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ vec N 0 :e relative_interior N s) -> exists B :e R, 0 < B /\ forall x y :e R :^: idx N, x :e relative_frontier N s /\ y :e relative_frontier N s -> B * distance N (x,y) <= distance N (vector_mul N (recip_SNo (vector_norm N x)) x,vector_mul N (recip_SNo (vector_norm N y)) y).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:15954 / BILIPSCHITZ_HOMEOMORPHISM_SPHERICAL_PROJECTION
 // Source hash: md5:be6b5ffe211c9aab2281ed2384e9ef9e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem BILIPSCHITZ_HOMEOMORPHISM_SPHERICAL_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ vec N 0 :e relative_interior N s) -> exists g :e R :^: idx N :^: (R :^: idx N), homeomorphism N N (relative_frontier N s,sphere N (vec N 0,1) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s) (fun x :e R :^: idx N => vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x,g) /\ ((exists B :e R, forall x y :e R :^: idx N, x :e relative_frontier N s /\ y :e relative_frontier N s -> sqrt_SNo_nonneg (dot N (vector_sub N (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x) (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N y y))) y)) (vector_sub N (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N x x))) x) (vector_mul N (recip_SNo (sqrt_SNo_nonneg (dot N y y))) y))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))) /\ exists B :e R, forall x y :e R :^: idx N, x :e sphere N (vec N 0,1) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s /\ y :e sphere N (vec N 0,1) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s -> sqrt_SNo_nonneg (dot N (vector_sub N (g x) (g y)) (vector_sub N (g x) (g y))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))).
+Theorem BILIPSCHITZ_HOMEOMORPHISM_SPHERICAL_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ vec N 0 :e relative_interior N s) -> exists g :e R :^: idx N :^: (R :^: idx N), homeomorphism N N (relative_frontier N s,sphere N (vec N 0,1) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s) (fun x :e R :^: idx N => vector_mul N (recip_SNo (vector_norm N x)) x,g) /\ ((exists B :e R, forall x y :e R :^: idx N, x :e relative_frontier N s /\ y :e relative_frontier N s -> vector_norm N (vector_sub N (vector_mul N (recip_SNo (vector_norm N x)) x) (vector_mul N (recip_SNo (vector_norm N y)) y)) <= B * vector_norm N (vector_sub N x y)) /\ exists B :e R, forall x y :e R :^: idx N, x :e sphere N (vec N 0,1) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s /\ y :e sphere N (vec N 0,1) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s -> vector_norm N (vector_sub N (g x) (g y)) <= B * vector_norm N (vector_sub N x y)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:16032 / BILIPSCHITZ_HOMEOMORPHISM_RELATIVE_FRONTIERS
 // Source hash: md5:9fdffd88f310ce4d29722836d320ba8b
 // Status: transport_required (bridges: hol_cart_setexp, hol_int_int, hol_prod_setprod, hol_real_R)
-Theorem BILIPSCHITZ_HOMEOMORPHISM_RELATIVE_FRONTIERS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (bounded_hl M s /\ (convex N t /\ (bounded_hl N t /\ aff_dim M s = aff_dim N t))) -> exists f :e R :^: idx N :^: (R :^: idx M), exists g :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (relative_frontier M s,relative_frontier N t) (f,g) /\ ((exists B :e R, forall x y :e R :^: idx M, x :e relative_frontier M s /\ y :e relative_frontier M s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) /\ exists B :e R, forall x y :e R :^: idx N, x :e relative_frontier N t /\ y :e relative_frontier N t -> sqrt_SNo_nonneg (dot M (vector_sub M (g x) (g y)) (vector_sub M (g x) (g y))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))).
+Theorem BILIPSCHITZ_HOMEOMORPHISM_RELATIVE_FRONTIERS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, convex M s /\ (bounded_hl M s /\ (convex N t /\ (bounded_hl N t /\ aff_dim M s = aff_dim N t))) -> exists f :e R :^: idx N :^: (R :^: idx M), exists g :e R :^: idx M :^: (R :^: idx N), homeomorphism M N (relative_frontier M s,relative_frontier N t) (f,g) /\ ((exists B :e R, forall x y :e R :^: idx M, x :e relative_frontier M s /\ y :e relative_frontier M s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) /\ exists B :e R, forall x y :e R :^: idx N, x :e relative_frontier N t /\ y :e relative_frontier N t -> vector_norm M (vector_sub M (g x) (g y)) <= B * vector_norm N (vector_sub N x y)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:16221 / AFF_DIM_NONEMPTY_INTERIOR_EQ
@@ -5279,7 +5279,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:17996 / CONVEX_IMP_LOCALLY_LIPSCHITZ
 // Source hash: md5:f142344e38eaa3ed0b3f10e7f5e6b853
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem CONVEX_IMP_LOCALLY_LIPSCHITZ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, forall a :e R :^: idx N, convex_on N f s /\ a :e relative_interior N s -> exists e0 B :e R, 0 < e0 /\ (0 < B /\ (cball N (a,e0) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s c= s /\ forall x y :e R :^: idx N, x :e cball N (a,e0) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s /\ y :e cball N (a,e0) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s -> abs_SNo (f x + - f y) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)))).
+Theorem CONVEX_IMP_LOCALLY_LIPSCHITZ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, forall a :e R :^: idx N, convex_on N f s /\ a :e relative_interior N s -> exists e0 B :e R, 0 < e0 /\ (0 < B /\ (cball N (a,e0) :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s c= s /\ forall x y :e R :^: idx N, x :e cball N (a,e0) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s /\ y :e cball N (a,e0) :/\: hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s -> abs_SNo (f x + - f y) <= B * vector_norm N (vector_sub N x y))).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:18089 / CONVEX_ON_CONTINUOUS_ON_RELATIVE_INTERIOR

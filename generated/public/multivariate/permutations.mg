@@ -797,19 +797,19 @@ Admitted.
 // HOL Light: Library/permutations.ml:1266 / SUM_PERMUTATIONS_INVERSE
 // Source hash: md5:02772a0da4430f35f90fca2203aefce5
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem SUM_PERMUTATIONS_INVERSE : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} (fun x:set => (fun p :e omega :^: omega => f (fun x :e omega => inverse omega omega (fun x:set => p x) x)) x).
+Theorem SUM_PERMUTATIONS_INVERSE : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} (fun p:set => f (fun x :e omega => inverse omega omega (fun x0:set => p x0) x)).
 Admitted.
 
 // HOL Light: Library/permutations.ml:1278 / SUM_PERMUTATIONS_COMPOSE_L
 // Source hash: md5:cf1aaf705c294ddab655382ca5693ea5
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem SUM_PERMUTATIONS_COMPOSE_L : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, forall q:set -> set, (forall x :e omega, q x :e omega) -> permutes omega q {i :e omega | m <= i /\ i <= n} -> finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} (fun x:set => (fun p :e omega :^: omega => f (fun x :e omega => q (p x))) x).
+Theorem SUM_PERMUTATIONS_COMPOSE_L : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, forall q:set -> set, (forall x :e omega, q x :e omega) -> permutes omega q {i :e omega | m <= i /\ i <= n} -> finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} (fun p:set => f (fun x :e omega => q (p x))).
 Admitted.
 
 // HOL Light: Library/permutations.ml:1297 / SUM_PERMUTATIONS_COMPOSE_R
 // Source hash: md5:9dd0380d63e962cdede88f1e96a1e2ba
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem SUM_PERMUTATIONS_COMPOSE_R : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, forall q:set -> set, (forall x :e omega, q x :e omega) -> permutes omega q {i :e omega | m <= i /\ i <= n} -> finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} (fun x:set => (fun p :e omega :^: omega => f (fun x :e omega => p (q x))) x).
+Theorem SUM_PERMUTATIONS_COMPOSE_R : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, forall q:set -> set, (forall x :e omega, q x :e omega) -> permutes omega q {i :e omega | m <= i /\ i <= n} -> finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} (fun p:set => f (fun x :e omega => p (q x))).
 Admitted.
 
 // HOL Light: Library/permutations.ml:1316 / CARD_EVEN_PERMUTATIONS
@@ -881,12 +881,12 @@ Admitted.
 // HOL Light: Library/permutations.ml:1533 / SUM_OVER_PERMUTATIONS_INSERT
 // Source hash: md5:0bd594f3d44e43ed0f89e8333d7b5194
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SUM_OVER_PERMUTATIONS_INSERT : forall A:set, forall f:set -> set, (forall x :e A :^: A, f x :e R) -> forall a :e A, forall s c= A, finite s /\ ~ a :e s -> finsum {p :e A :^: A | permutes A (fun x:set => p x) (SetAdjoin s a)} f = finsum (SetAdjoin s a) (fun b:set => finsum {p :e A :^: A | permutes A (fun x:set => p x) s} (fun x:set => (fun q :e A :^: A => f (fun x :e A => swap A (a,b) (q x))) x)).
+Theorem SUM_OVER_PERMUTATIONS_INSERT : forall A:set, forall f:set -> set, (forall x :e A :^: A, f x :e R) -> forall a :e A, forall s c= A, finite s /\ ~ a :e s -> finsum {p :e A :^: A | permutes A (fun x:set => p x) (SetAdjoin s a)} f = finsum (SetAdjoin s a) (fun b:set => finsum {p :e A :^: A | permutes A (fun x:set => p x) s} (fun q:set => f (fun x :e A => swap A (a,b) (q x)))).
 Admitted.
 
 // HOL Light: Library/permutations.ml:1555 / SUM_OVER_PERMUTATIONS_NUMSEG
 // Source hash: md5:d793b8a6b2af598f90455751912fbfba
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
-Theorem SUM_OVER_PERMUTATIONS_NUMSEG : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, m <= n -> finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m + 1 <= i /\ i <= n}} (fun x:set => (fun q :e omega :^: omega => f (fun x :e omega => swap omega (m,i) (q x))) x)).
+Theorem SUM_OVER_PERMUTATIONS_NUMSEG : forall f:set -> set, (forall x :e omega :^: omega, f x :e R) -> forall m n :e omega, m <= n -> finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m <= i /\ i <= n}} f = finsum {i :e omega | m <= i /\ i <= n} (fun i:set => finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) {i :e omega | m + 1 <= i /\ i <= n}} (fun q:set => f (fun x :e omega => swap omega (m,i) (q x)))).
 Admitted.
 

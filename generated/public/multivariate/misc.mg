@@ -155,7 +155,7 @@ Admitted.
 // HOL Light:  / CONTINUOUS_DISCRETE_RANGE_CONSTANT_EQ
 // Source hash: md5:228c33e0c834734fcf42eea37aeb2386
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem CONTINUOUS_DISCRETE_RANGE_CONSTANT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, connected M s <-> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> continuous_on_hl M N f s /\ (forall x :e R :^: idx M, x :e s -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx M, y :e s /\ ~ f y = f x -> e0 <= sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x)))) -> exists a :e R :^: idx N, forall x :e R :^: idx M, x :e s -> f x = a.
+Theorem CONTINUOUS_DISCRETE_RANGE_CONSTANT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, connected M s <-> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> continuous_on_hl M N f s /\ (forall x :e R :^: idx M, x :e s -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx M, y :e s /\ ~ f y = f x -> e0 <= vector_norm N (vector_sub N (f y) (f x))) -> exists a :e R :^: idx N, forall x :e R :^: idx M, x :e s -> f x = a.
 Admitted.
 
 // HOL Light:  / CONTINUOUS_FINITE_RANGE_CONSTANT_EQ
@@ -221,37 +221,37 @@ Admitted.
 // HOL Light:  / CONVEX_ON_LEFT_SECANT
 // Source hash: md5:d2a452ec3287dc8d2ddf4c0d47cadbf4
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem CONVEX_ON_LEFT_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e open_segment N (a,b)) -> (f x + - f a) :/: sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= (f b + - f a) :/: sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)).
+Theorem CONVEX_ON_LEFT_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e open_segment N (a,b)) -> (f x + - f a) :/: vector_norm N (vector_sub N x a) <= (f b + - f a) :/: vector_norm N (vector_sub N b a).
 Admitted.
 
 // HOL Light:  / CONVEX_ON_LEFT_SECANT_MUL
 // Source hash: md5:bfcec7ac2e05948e9e96d96320f44a0d
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem CONVEX_ON_LEFT_SECANT_MUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e closed_segment N (seq_cons (a,b) seq_nil)) -> (f x + - f a) * sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)) <= (f b + - f a) * sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)).
+Theorem CONVEX_ON_LEFT_SECANT_MUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e closed_segment N (seq_cons (a,b) seq_nil)) -> (f x + - f a) * vector_norm N (vector_sub N b a) <= (f b + - f a) * vector_norm N (vector_sub N x a).
 Admitted.
 
 // HOL Light:  / CONVEX_ON_MID_SECANT
 // Source hash: md5:44cfd9394915a24b07b5d524be4de91b
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem CONVEX_ON_MID_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e open_segment N (a,b)) -> (f x + - f a) :/: sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= (f b + - f x) :/: sqrt_SNo_nonneg (dot N (vector_sub N b x) (vector_sub N b x)).
+Theorem CONVEX_ON_MID_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e open_segment N (a,b)) -> (f x + - f a) :/: vector_norm N (vector_sub N x a) <= (f b + - f x) :/: vector_norm N (vector_sub N b x).
 Admitted.
 
 // HOL Light:  / CONVEX_ON_MID_SECANT_MUL
 // Source hash: md5:98d08a89a9f411c64d745dd2848b94d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem CONVEX_ON_MID_SECANT_MUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e closed_segment N (seq_cons (a,b) seq_nil)) -> (f x + - f a) * sqrt_SNo_nonneg (dot N (vector_sub N b x) (vector_sub N b x)) <= (f b + - f x) * sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)).
+Theorem CONVEX_ON_MID_SECANT_MUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e closed_segment N (seq_cons (a,b) seq_nil)) -> (f x + - f a) * vector_norm N (vector_sub N b x) <= (f b + - f x) * vector_norm N (vector_sub N x a).
 Admitted.
 
 // HOL Light:  / CONVEX_ON_RIGHT_SECANT
 // Source hash: md5:4c2c674762a1df9b0bf783097b4a823d
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem CONVEX_ON_RIGHT_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e open_segment N (a,b)) -> (f b + - f a) :/: sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)) <= (f b + - f x) :/: sqrt_SNo_nonneg (dot N (vector_sub N b x) (vector_sub N b x)).
+Theorem CONVEX_ON_RIGHT_SECANT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e open_segment N (a,b)) -> (f b + - f a) :/: vector_norm N (vector_sub N b a) <= (f b + - f x) :/: vector_norm N (vector_sub N b x).
 Admitted.
 
 // HOL Light:  / CONVEX_ON_RIGHT_SECANT_MUL
 // Source hash: md5:e2601f7b43bc8b50c7bf308deef45730
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem CONVEX_ON_RIGHT_SECANT_MUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e closed_segment N (seq_cons (a,b) seq_nil)) -> (f b + - f a) * sqrt_SNo_nonneg (dot N (vector_sub N b x) (vector_sub N b x)) <= (f b + - f x) * sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)).
+Theorem CONVEX_ON_RIGHT_SECANT_MUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex_on N f s <-> forall a b x :e R :^: idx N, a :e s /\ (b :e s /\ x :e closed_segment N (seq_cons (a,b) seq_nil)) -> (f b + - f a) * vector_norm N (vector_sub N b x) <= (f b + - f x) * vector_norm N (vector_sub N b a).
 Admitted.
 
 // HOL Light:  / COUNTABLE_INTEGER
@@ -713,13 +713,13 @@ Admitted.
 // HOL Light:  / HOMOTOPIC_LOOPS_NEARBY_EXPLICIT
 // Source hash: md5:818c61b792ef266897c7bf75a681d44b
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_LOOPS_NEARBY_EXPLICIT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N g /\ (path N h /\ (pathfinish N g = pathstart N g /\ (pathfinish N h = pathstart N h /\ (forall t :e R :^: idx 1, forall x :e R :^: idx N, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (h t) (g t)) (vector_sub N (h t) (g t))) < sqrt_SNo_nonneg (dot N (vector_sub N (g t) x) (vector_sub N (g t) x)))))) -> homotopic_loops N s g h.
+Theorem HOMOTOPIC_LOOPS_NEARBY_EXPLICIT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N g /\ (path N h /\ (pathfinish N g = pathstart N g /\ (pathfinish N h = pathstart N h /\ (forall t :e R :^: idx 1, forall x :e R :^: idx N, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x :e s -> vector_norm N (vector_sub N (h t) (g t)) < vector_norm N (vector_sub N (g t) x))))) -> homotopic_loops N s g h.
 Admitted.
 
 // HOL Light:  / HOMOTOPIC_PATHS_NEARBY_EXPLICIT
 // Source hash: md5:936b1d8093bf9b93a4acd8ffc2db5264
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem HOMOTOPIC_PATHS_NEARBY_EXPLICIT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N g /\ (path N h /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (forall t :e R :^: idx 1, forall x :e R :^: idx N, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (h t) (g t)) (vector_sub N (h t) (g t))) < sqrt_SNo_nonneg (dot N (vector_sub N (g t) x) (vector_sub N (g t) x)))))) -> homotopic_paths N s g h.
+Theorem HOMOTOPIC_PATHS_NEARBY_EXPLICIT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N g /\ (path N h /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (forall t :e R :^: idx 1, forall x :e R :^: idx N, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ ~ x :e s -> vector_norm N (vector_sub N (h t) (g t)) < vector_norm N (vector_sub N (g t) x))))) -> homotopic_paths N s g h.
 Admitted.
 
 // HOL Light:  / HULLS_EQ

@@ -659,25 +659,25 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:1695 / has_integral_compact_interval
 // Source hash: md5:401422b96c236b7fb1bd2dd914b689af
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem has_integral_compact_interval_thm : forall A B:set, A <> Empty -> B <> Empty -> forall i c= R :^: idx A, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, has_integral_compact_interval A B f y i <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge A d /\ forall p c= R :^: idx A :*: Power (R :^: idx A), tagged_division_of A p i /\ fine (R :^: idx A) (R :^: idx A) d p -> sqrt_SNo_nonneg (dot B (vector_sub B (vsum (R :^: idx A :*: Power (R :^: idx A)) B p (fun p0:set => vector_mul B (content A (p0 1)) (f (p0 0)))) y) (vector_sub B (vsum (R :^: idx A :*: Power (R :^: idx A)) B p (fun p0:set => vector_mul B (content A (p0 1)) (f (p0 0)))) y)) < e0.
+Theorem has_integral_compact_interval_thm : forall A B:set, A <> Empty -> B <> Empty -> forall i c= R :^: idx A, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, has_integral_compact_interval A B f y i <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge A d /\ forall p c= R :^: idx A :*: Power (R :^: idx A), tagged_division_of A p i /\ fine (R :^: idx A) (R :^: idx A) d p -> vector_norm B (vector_sub B (vsum (R :^: idx A :*: Power (R :^: idx A)) B p (fun p0:set => vector_mul B (content A (p0 1)) (f (p0 0)))) y) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:1702 / has_integral_def
 // Source hash: md5:b839945615ffce2d6ad335ec77b3a726
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem has_integral_def : forall A B:set, A <> Empty -> B <> Empty -> forall i c= R :^: idx A, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, has_integral A B f y i <-> ((exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> has_integral_compact_interval A B f y i) /\ (~ (exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists B0 :e R, 0 < B0 /\ forall a b :e R :^: idx A, ball A (vec A 0,B0) c= closed_interval A (seq_cons (a,b) seq_nil) -> exists z :e R :^: idx B, has_integral_compact_interval A B (fun x:set => if x :e i then f x else vec B 0) z (closed_interval A (seq_cons (a,b) seq_nil)) /\ sqrt_SNo_nonneg (dot B (vector_sub B z y) (vector_sub B z y)) < e0).
+Theorem has_integral_def : forall A B:set, A <> Empty -> B <> Empty -> forall i c= R :^: idx A, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, has_integral A B f y i <-> ((exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> has_integral_compact_interval A B f y i) /\ (~ (exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists B0 :e R, 0 < B0 /\ forall a b :e R :^: idx A, ball A (vec A 0,B0) c= closed_interval A (seq_cons (a,b) seq_nil) -> exists z :e R :^: idx B, has_integral_compact_interval A B (fun x:set => if x :e i then f x else vec B 0) z (closed_interval A (seq_cons (a,b) seq_nil)) /\ vector_norm B (vector_sub B z y) < e0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:1713 / has_integral
 // Source hash: md5:ad0a2b35ac8f61f29de38f939b401b2f
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem has_integral_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, forall a b :e R :^: idx A, has_integral A B f y (closed_interval A (seq_cons (a,b) seq_nil)) <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge A d /\ forall p c= R :^: idx A :*: Power (R :^: idx A), tagged_division_of A p (closed_interval A (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx A) (R :^: idx A) d p -> sqrt_SNo_nonneg (dot B (vector_sub B (vsum (R :^: idx A :*: Power (R :^: idx A)) B p (fun p0:set => vector_mul B (content A (p0 1)) (f (p0 0)))) y) (vector_sub B (vsum (R :^: idx A :*: Power (R :^: idx A)) B p (fun p0:set => vector_mul B (content A (p0 1)) (f (p0 0)))) y)) < e0.
+Theorem has_integral_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, forall a b :e R :^: idx A, has_integral A B f y (closed_interval A (seq_cons (a,b) seq_nil)) <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge A d /\ forall p c= R :^: idx A :*: Power (R :^: idx A), tagged_division_of A p (closed_interval A (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx A) (R :^: idx A) d p -> vector_norm B (vector_sub B (vsum (R :^: idx A :*: Power (R :^: idx A)) B p (fun p0:set => vector_mul B (content A (p0 1)) (f (p0 0)))) y) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:1722 / has_integral_alt
 // Source hash: md5:be606e529f21728cd9a28365657c7227
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem has_integral_alt : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, forall i c= R :^: idx A, has_integral A B f y i <-> ((exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> has_integral A B f y i) /\ (~ (exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists B0 :e R, 0 < B0 /\ forall a b :e R :^: idx A, ball A (vec A 0,B0) c= closed_interval A (seq_cons (a,b) seq_nil) -> exists z :e R :^: idx B, has_integral A B (fun x:set => if x :e i then f x else vec B 0) z (closed_interval A (seq_cons (a,b) seq_nil)) /\ sqrt_SNo_nonneg (dot B (vector_sub B z y) (vector_sub B z y)) < e0).
+Theorem has_integral_alt : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall y :e R :^: idx B, forall i c= R :^: idx A, has_integral A B f y i <-> ((exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> has_integral A B f y i) /\ (~ (exists a b :e R :^: idx A, i = closed_interval A (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists B0 :e R, 0 < B0 /\ forall a b :e R :^: idx A, ball A (vec A 0,B0) c= closed_interval A (seq_cons (a,b) seq_nil) -> exists z :e R :^: idx B, has_integral A B (fun x:set => if x :e i then f x else vec B 0) z (closed_interval A (seq_cons (a,b) seq_nil)) /\ vector_norm B (vector_sub B z y) < e0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:1736 / integrable_on
@@ -1007,7 +1007,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:2519 / INTEGRABLE_CAUCHY
 // Source hash: md5:fbbf5a55e8bb85ef7c13a4e30907c674
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_CAUCHY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p1 p2 c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p1 (closed_interval M (seq_cons (a,b) seq_nil)) /\ (fine (R :^: idx M) (R :^: idx M) d p1 /\ (tagged_division_of M p2 (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p2)) -> sqrt_SNo_nonneg (dot N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p1 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p2 (fun p:set => vector_mul N (content M (p 1)) (f (p 0))))) (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p1 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p2 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))))) < e0.
+Theorem INTEGRABLE_CAUCHY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p1 p2 c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p1 (closed_interval M (seq_cons (a,b) seq_nil)) /\ (fine (R :^: idx M) (R :^: idx M) d p1 /\ (tagged_division_of M p2 (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p2)) -> vector_norm N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p1 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p2 (fun p:set => vector_mul N (content M (p 1)) (f (p 0))))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:2596 / INTERVAL_SPLIT
@@ -1067,7 +1067,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:2940 / HAS_INTEGRAL_SEPARATE_SIDES
 // Source hash: md5:a325cab488292bfa493480b276dc6edd
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem HAS_INTEGRAL_SEPARATE_SIDES : forall M N:set, M <> Empty -> N <> Empty -> forall c :e R, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall i :e R :^: idx N, forall a b :e R :^: idx M, forall k :e omega, has_integral M N f i (closed_interval M (seq_cons (a,b) seq_nil)) /\ (1 <= k /\ k <= dimindex M) -> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p1 p2 c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p1 (closed_interval M (seq_cons (a,b) seq_nil) :/\: {x :e R :^: idx M | x k <= c}) /\ (fine (R :^: idx M) (R :^: idx M) d p1 /\ (tagged_division_of M p2 (closed_interval M (seq_cons (a,b) seq_nil) :/\: {x :e R :^: idx M | c <= x k}) /\ fine (R :^: idx M) (R :^: idx M) d p2)) -> sqrt_SNo_nonneg (dot N (vector_sub N (vector_add N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p1 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p2 (fun p:set => vector_mul N (content M (p 1)) (f (p 0))))) i) (vector_sub N (vector_add N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p1 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p2 (fun p:set => vector_mul N (content M (p 1)) (f (p 0))))) i)) < e0.
+Theorem HAS_INTEGRAL_SEPARATE_SIDES : forall M N:set, M <> Empty -> N <> Empty -> forall c :e R, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall i :e R :^: idx N, forall a b :e R :^: idx M, forall k :e omega, has_integral M N f i (closed_interval M (seq_cons (a,b) seq_nil)) /\ (1 <= k /\ k <= dimindex M) -> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p1 p2 c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p1 (closed_interval M (seq_cons (a,b) seq_nil) :/\: {x :e R :^: idx M | x k <= c}) /\ (fine (R :^: idx M) (R :^: idx M) d p1 /\ (tagged_division_of M p2 (closed_interval M (seq_cons (a,b) seq_nil) :/\: {x :e R :^: idx M | c <= x k}) /\ fine (R :^: idx M) (R :^: idx M) d p2)) -> vector_norm N (vector_sub N (vector_add N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p1 (fun p:set => vector_mul N (content M (p 1)) (f (p 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p2 (fun p:set => vector_mul N (content M (p 1)) (f (p 0))))) i) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:2986 / INTEGRABLE_SPLIT
@@ -1229,25 +1229,25 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:3525 / DSUM_BOUND
 // Source hash: md5:2e9db60383a4faa09af419def225168c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem DSUM_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall p c= Power (R :^: idx M), forall a b :e R :^: idx M, forall c :e R :^: idx N, forall e0 :e R, division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ sqrt_SNo_nonneg (dot N c c) <= e0 -> sqrt_SNo_nonneg (dot N (vsum (Power (R :^: idx M)) N p (fun l:set => vector_mul N (content M l) c)) (vsum (Power (R :^: idx M)) N p (fun l:set => vector_mul N (content M l) c))) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem DSUM_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall p c= Power (R :^: idx M), forall a b :e R :^: idx M, forall c :e R :^: idx N, forall e0 :e R, division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ vector_norm N c <= e0 -> vector_norm N (vsum (Power (R :^: idx M)) N p (fun l:set => vector_mul N (content M l) c)) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3547 / RSUM_BOUND
 // Source hash: md5:63293bd885cc41e4e7a534512749f40c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem RSUM_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall p c= R :^: idx M :*: Power (R :^: idx M), forall a b :e R :^: idx M, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall e0 :e R, tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= e0) -> sqrt_SNo_nonneg (dot N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0))))) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem RSUM_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall p c= R :^: idx M :*: Power (R :^: idx M), forall a b :e R :^: idx M, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall e0 :e R, tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (f x) <= e0) -> vector_norm N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3574 / RSUM_DIFF_BOUND
 // Source hash: md5:648a32467270cca39b7e596199422deb
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem RSUM_DIFF_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall e0 :e R, forall p c= R :^: idx M :*: Power (R :^: idx M), forall a b :e R :^: idx M, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (g x)) (vector_sub N (f x) (g x))) <= e0) -> sqrt_SNo_nonneg (dot N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (g (p0 0))))) (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (g (p0 0)))))) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem RSUM_DIFF_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall e0 :e R, forall p c= R :^: idx M :*: Power (R :^: idx M), forall a b :e R :^: idx M, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (g x)) <= e0) -> vector_norm N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (g (p0 0))))) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3592 / HAS_INTEGRAL_BOUND
 // Source hash: md5:043659aa98c6f8af8f244dbbc4a437f8
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HAS_INTEGRAL_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall i :e R :^: idx N, forall B :e R, 0 <= B /\ (has_integral M N f i (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= B)) -> sqrt_SNo_nonneg (dot N i i) <= B * content M (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem HAS_INTEGRAL_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall i :e R :^: idx N, forall B :e R, 0 <= B /\ (has_integral M N f i (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (f x) <= B)) -> vector_norm N i <= B * content M (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3625 / RSUM_COMPONENT_LE
@@ -1343,7 +1343,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:3851 / INTEGRABLE_UNIFORM_LIMIT
 // Source hash: md5:02df032f475aea46af88e4185cbde4a6
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_UNIFORM_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, (forall e0 :e R, 0 < e0 -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (g x)) (vector_sub N (f x) (g x))) <= e0) /\ integrable_on N M g (closed_interval M (seq_cons (a,b) seq_nil)))) -> integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem INTEGRABLE_UNIFORM_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, (forall e0 :e R, 0 < e0 -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (g x)) <= e0) /\ integrable_on N M g (closed_interval M (seq_cons (a,b) seq_nil)))) -> integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:3964 / negligible
@@ -1565,7 +1565,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:4753 / APPROXIMABLE_ON_DIVISION
 // Source hash: md5:99abc91dd0405a0d6564683bfec474db
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem APPROXIMABLE_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall e0 :e R, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall d c= Power (R :^: idx M), forall a b :e R :^: idx M, 0 <= e0 /\ (division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall i c= R :^: idx M, i :e d -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e i -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (g x)) (vector_sub N (f x) (g x))) <= e0) /\ integrable_on N M g i))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (g x)) (vector_sub N (f x) (g x))) <= e0) /\ integrable_on N M g (closed_interval M (seq_cons (a,b) seq_nil))).
+Theorem APPROXIMABLE_ON_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall e0 :e R, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall d c= Power (R :^: idx M), forall a b :e R :^: idx M, 0 <= e0 /\ (division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall i c= R :^: idx M, i :e d -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e i -> vector_norm N (vector_sub N (f x) (g x)) <= e0) /\ integrable_on N M g i))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (g x)) <= e0) /\ integrable_on N M g (closed_interval M (seq_cons (a,b) seq_nil))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:4774 / INTEGRABLE_CONTINUOUS
@@ -1601,7 +1601,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:4980 / HAS_INTEGRAL_FACTOR_CONTENT
 // Source hash: md5:cf506b59940490798ebaeac71d4bd791
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HAS_INTEGRAL_FACTOR_CONTENT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall i :e R :^: idx N, forall a b :e R :^: idx M, has_integral M N f i (closed_interval M (seq_cons (a,b) seq_nil)) <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> sqrt_SNo_nonneg (dot N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) i) (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) i)) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem HAS_INTEGRAL_FACTOR_CONTENT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall i :e R :^: idx N, forall a b :e R :^: idx M, has_integral M N f i (closed_interval M (seq_cons (a,b) seq_nil)) <-> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> vector_norm N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) i) <= e0 * content M (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:5010 / GAUGE_MODIFY
@@ -1661,7 +1661,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:5332 / HAS_INTEGRAL
 // Source hash: md5:466b3ef769f24ad9d13e50b7fdfe7ef8
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HAS_INTEGRAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall i :e R :^: idx N, forall s c= R :^: idx M, has_integral M N f i s <-> forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) -> exists z :e R :^: idx N, has_integral M N (fun x:set => if x :e s then f x else vec N 0) z (closed_interval M (seq_cons (a,b) seq_nil)) /\ sqrt_SNo_nonneg (dot N (vector_sub N z i) (vector_sub N z i)) < e0.
+Theorem HAS_INTEGRAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall i :e R :^: idx N, forall s c= R :^: idx M, has_integral M N f i s <-> forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) -> exists z :e R :^: idx N, has_integral M N (fun x:set => if x :e s then f x else vec N 0) z (closed_interval M (seq_cons (a,b) seq_nil)) /\ vector_norm N (vector_sub N z i) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:5429 / HAS_INTEGRAL_RESTRICT
@@ -1997,19 +1997,19 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:6364 / HAS_INTEGRAL_ALT
 // Source hash: md5:296882928b50b320be5a99e6121f60da
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HAS_INTEGRAL_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall i :e R :^: idx N, has_integral M N f i s <-> (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) i) (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) i)) < e0.
+Theorem HAS_INTEGRAL_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall i :e R :^: idx N, has_integral M N f i s <-> (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) i) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:6402 / INTEGRABLE_ALT
 // Source hash: md5:5a37770a8a419c875255b993f60536b9
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, integrable_on N M f s <-> (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b c d :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) /\ ball M (vec M 0,B) c= closed_interval M (seq_cons (c,d) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => if x :e s then f x else vec N 0))) (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)))) < e0.
+Theorem INTEGRABLE_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, integrable_on N M f s <-> (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b c d :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) /\ ball M (vec M 0,B) c= closed_interval M (seq_cons (c,d) seq_nil) -> vector_norm N (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => if x :e s then f x else vec N 0))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:6471 / INTEGRABLE_ALT_SUBSET
 // Source hash: md5:805985a795ead263054c4bfb00f698db
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_ALT_SUBSET : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, integrable_on N M f s <-> (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b c d :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) /\ closed_interval M (seq_cons (a,b) seq_nil) c= closed_interval M (seq_cons (c,d) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => if x :e s then f x else vec N 0))) (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)))) < e0.
+Theorem INTEGRABLE_ALT_SUBSET : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, integrable_on N M f s <-> (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ forall e0 :e R, 0 < e0 -> exists B :e R, 0 < B /\ forall a b c d :e R :^: idx M, ball M (vec M 0,B) c= closed_interval M (seq_cons (a,b) seq_nil) /\ closed_interval M (seq_cons (a,b) seq_nil) c= closed_interval M (seq_cons (c,d) seq_nil) -> vector_norm N (vector_sub N (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => if x :e s then f x else vec N 0)) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => if x :e s then f x else vec N 0))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:6505 / INTEGRABLE_ON_SUBINTERVAL
@@ -2075,13 +2075,13 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:6879 / INTEGRABLE_STRADDLE_INTERVAL
 // Source hash: md5:190d18e8f345876c60ca662679bfc123
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_STRADDLE_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall a b :e R :^: idx N, (forall e0 :e R, 0 < e0 -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists h:set -> set, (forall x :e R :^: idx N, h x :e R :^: idx 1) /\ exists i j :e R :^: idx 1, has_integral N 1 g i (closed_interval N (seq_cons (a,b) seq_nil)) /\ (has_integral N 1 h j (closed_interval N (seq_cons (a,b) seq_nil)) /\ (sqrt_SNo_nonneg (dot 1 (vector_sub 1 i j) (vector_sub 1 i j)) < e0 /\ forall x :e R :^: idx N, x :e closed_interval N (seq_cons (a,b) seq_nil) -> drop (g x) <= drop (f x) /\ drop (f x) <= drop (h x)))) -> integrable_on 1 N f (closed_interval N (seq_cons (a,b) seq_nil)).
+Theorem INTEGRABLE_STRADDLE_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall a b :e R :^: idx N, (forall e0 :e R, 0 < e0 -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists h:set -> set, (forall x :e R :^: idx N, h x :e R :^: idx 1) /\ exists i j :e R :^: idx 1, has_integral N 1 g i (closed_interval N (seq_cons (a,b) seq_nil)) /\ (has_integral N 1 h j (closed_interval N (seq_cons (a,b) seq_nil)) /\ (vector_norm 1 (vector_sub 1 i j) < e0 /\ forall x :e R :^: idx N, x :e closed_interval N (seq_cons (a,b) seq_nil) -> drop (g x) <= drop (f x) /\ drop (f x) <= drop (h x)))) -> integrable_on 1 N f (closed_interval N (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:6933 / INTEGRABLE_STRADDLE
 // Source hash: md5:eb4645b697880a556a327092504125cb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_STRADDLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall s c= R :^: idx N, (forall e0 :e R, 0 < e0 -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists h:set -> set, (forall x :e R :^: idx N, h x :e R :^: idx 1) /\ exists i j :e R :^: idx 1, has_integral N 1 g i s /\ (has_integral N 1 h j s /\ (sqrt_SNo_nonneg (dot 1 (vector_sub 1 i j) (vector_sub 1 i j)) < e0 /\ forall x :e R :^: idx N, x :e s -> drop (g x) <= drop (f x) /\ drop (f x) <= drop (h x)))) -> integrable_on 1 N f s.
+Theorem INTEGRABLE_STRADDLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx 1) -> forall s c= R :^: idx N, (forall e0 :e R, 0 < e0 -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx 1) /\ exists h:set -> set, (forall x :e R :^: idx N, h x :e R :^: idx 1) /\ exists i j :e R :^: idx 1, has_integral N 1 g i s /\ (has_integral N 1 h j s /\ (vector_norm 1 (vector_sub 1 i j) < e0 /\ forall x :e R :^: idx N, x :e s -> drop (g x) <= drop (f x) /\ drop (f x) <= drop (h x)))) -> integrable_on 1 N f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:7069 / HAS_INTEGRAL_STRADDLE_NULL
@@ -2231,55 +2231,55 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:7496 / HENSTOCK_LEMMA_PART1
 // Source hash: md5:8ab55e6247c3ce845a4cec9aec60eb13
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HENSTOCK_LEMMA_PART1 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d:set -> set -> prop, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (0 < e0 /\ (gauge M d /\ (forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> sqrt_SNo_nonneg (dot N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) f)) (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) f))) < e0))) -> forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> sqrt_SNo_nonneg (dot N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f))) (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f)))) <= e0.
+Theorem HENSTOCK_LEMMA_PART1 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d:set -> set -> prop, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (0 < e0 /\ (gauge M d /\ (forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> vector_norm N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) f)) < e0))) -> forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> vector_norm N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f))) <= e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:7737 / HENSTOCK_LEMMA_PART2
 // Source hash: md5:d8f3d56cd28b79d3df1872d58b89a974
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem HENSTOCK_LEMMA_PART2 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d:set -> set -> prop, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (0 < e0 /\ (gauge M d /\ (forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> sqrt_SNo_nonneg (dot N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) f)) (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) f))) < e0))) -> forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> finsum p (fun p0:set => sqrt_SNo_nonneg (dot N (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f)) (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f)))) <= 2 * dimindex N * e0.
+Theorem HENSTOCK_LEMMA_PART2 : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d:set -> set -> prop, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (0 < e0 /\ (gauge M d /\ (forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> vector_norm N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M (closed_interval M (seq_cons (a,b) seq_nil)) f)) < e0))) -> forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> finsum p (fun p0:set => vector_norm N (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f))) <= 2 * dimindex N * e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:7760 / HENSTOCK_LEMMA
 // Source hash: md5:73cc72b0d0b84637f1fea4f4333c48c2
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem HENSTOCK_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> finsum p (fun p0:set => sqrt_SNo_nonneg (dot N (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f)) (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f)))) < e0.
+Theorem HENSTOCK_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall p c= R :^: idx M :*: Power (R :^: idx M), tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ fine (R :^: idx M) (R :^: idx M) d p -> finsum p (fun p0:set => vector_norm N (vector_sub N (vector_mul N (content M (p0 1)) (f (p0 0))) (integral N M (p0 1) f))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8342 / INTEGRAL_NORM_BOUND_INTEGRAL
 // Source hash: md5:0ff6fd13aff972ee3595ca723eee1f8d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem INTEGRAL_NORM_BOUND_INTEGRAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, integrable_on N M f s /\ (integrable_on 1 M g s /\ (forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= drop (g x))) -> sqrt_SNo_nonneg (dot N (integral N M s f) (integral N M s f)) <= drop (integral 1 M s g).
+Theorem INTEGRAL_NORM_BOUND_INTEGRAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, integrable_on N M f s /\ (integrable_on 1 M g s /\ (forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= drop (g x))) -> vector_norm N (integral N M s f) <= drop (integral 1 M s g).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8422 / INTEGRAL_NORM_BOUND_INTEGRAL_COMPONENT
 // Source hash: md5:96e70e38eee8ddb1c1461d00d7f8c077
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem INTEGRAL_NORM_BOUND_INTEGRAL_COMPONENT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall s c= R :^: idx M, forall k :e omega, 1 <= k /\ (k <= dimindex P /\ (integrable_on N M f s /\ (integrable_on P M g s /\ (forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= g x k)))) -> sqrt_SNo_nonneg (dot N (integral N M s f) (integral N M s f)) <= integral P M s g k.
+Theorem INTEGRAL_NORM_BOUND_INTEGRAL_COMPONENT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall s c= R :^: idx M, forall k :e omega, 1 <= k /\ (k <= dimindex P /\ (integrable_on N M f s /\ (integrable_on P M g s /\ (forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= g x k)))) -> vector_norm N (integral N M s f) <= integral P M s g k.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8447 / HAS_INTEGRAL_NORM_BOUND_INTEGRAL_COMPONENT
 // Source hash: md5:00b7193200033448317353dbdc44908c
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem HAS_INTEGRAL_NORM_BOUND_INTEGRAL_COMPONENT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall s c= R :^: idx M, forall i :e R :^: idx N, forall j :e R :^: idx P, forall k :e omega, 1 <= k /\ (k <= dimindex P /\ (has_integral M N f i s /\ (has_integral M P g j s /\ (forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= g x k)))) -> sqrt_SNo_nonneg (dot N i i) <= j k.
+Theorem HAS_INTEGRAL_NORM_BOUND_INTEGRAL_COMPONENT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall s c= R :^: idx M, forall i :e R :^: idx N, forall j :e R :^: idx P, forall k :e omega, 1 <= k /\ (k <= dimindex P /\ (has_integral M N f i s /\ (has_integral M P g j s /\ (forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= g x k)))) -> vector_norm N i <= j k.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8460 / INTEGRABLE_ON_ALL_INTERVALS_INTEGRABLE_BOUND
 // Source hash: md5:e904a9eceff7fbbf9907e1fd366e57d5
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem INTEGRABLE_ON_ALL_INTERVALS_INTEGRABLE_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ ((forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= drop (g x)) /\ integrable_on 1 M g s) -> integrable_on N M f s.
+Theorem INTEGRABLE_ON_ALL_INTERVALS_INTEGRABLE_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall a b :e R :^: idx M, integrable_on N M (fun x:set => if x :e s then f x else vec N 0) (closed_interval M (seq_cons (a,b) seq_nil))) /\ ((forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= drop (g x)) /\ integrable_on 1 M g s) -> integrable_on N M f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8660 / set_variation
 // Source hash: md5:4498e8b9122e66abfd53e6da62b3c50b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem set_variation_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> set_variation M N s f = sup {finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) | d :e Power (Power (R :^: idx M)), exists t c= R :^: idx M, division_of M d t /\ t c= s}.
+Theorem set_variation_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> set_variation M N s f = sup {finsum d (fun k:set => vector_norm N (f k)) | d :e Power (Power (R :^: idx M)), exists t c= R :^: idx M, division_of M d t /\ t c= s}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8664 / has_bounded_setvariation_on
 // Source hash: md5:393b0076987882d5a261a487e84e4c99
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem has_bounded_setvariation_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (has_bounded_setvariation_on M N f s <-> exists B :e R, forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B).
+Theorem has_bounded_setvariation_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (has_bounded_setvariation_on M N f s <-> exists B :e R, forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= B).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8669 / SET_VARIATION_DEGENERATES
@@ -2291,19 +2291,19 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:8678 / HAS_BOUNDED_SETVARIATION_ON
 // Source hash: md5:6b07835e52f4fc8b1ed5c954e99e13c8
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s <-> exists B :e R, 0 < B /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B.
+Theorem HAS_BOUNDED_SETVARIATION_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s <-> exists B :e R, 0 < B /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8686 / HAS_BOUNDED_SET_VARIATION
 // Source hash: md5:5115432f9daf4e3773ce6f71d83c386a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SET_VARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall c :e R, has_bounded_setvariation_on M N f s /\ set_variation M N s f <= c <-> forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= c.
+Theorem HAS_BOUNDED_SET_VARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall c :e R, has_bounded_setvariation_on M N f s /\ set_variation M N s f <= c <-> forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= c.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8701 / HAS_BOUNDED_SETVARIATION_COMPARISON
 // Source hash: md5:36a64870bfd4e0ad5115a23b5bd5b2af
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem HAS_BOUNDED_SETVARIATION_COMPARISON : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx P) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (forall a b :e R :^: idx M, ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> sqrt_SNo_nonneg (dot P (g (closed_interval M (seq_cons (a,b) seq_nil))) (g (closed_interval M (seq_cons (a,b) seq_nil)))) <= sqrt_SNo_nonneg (dot N (f (closed_interval M (seq_cons (a,b) seq_nil))) (f (closed_interval M (seq_cons (a,b) seq_nil))))) -> has_bounded_setvariation_on M P g s.
+Theorem HAS_BOUNDED_SETVARIATION_COMPARISON : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx P) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (forall a b :e R :^: idx M, ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> vector_norm P (g (closed_interval M (seq_cons (a,b) seq_nil))) <= vector_norm N (f (closed_interval M (seq_cons (a,b) seq_nil)))) -> has_bounded_setvariation_on M P g s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8720 / HAS_BOUNDED_SETVARIATION_ON_EQ
@@ -2339,19 +2339,19 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:8824 / HAS_BOUNDED_SETVARIATION_ON_ELEMENTARY
 // Source hash: md5:f88cbcf41713cb6b85f2a480bab5df50
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SETVARIATION_ON_ELEMENTARY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists d c= Power (R :^: idx M), division_of M d s) -> (has_bounded_setvariation_on M N f s <-> exists B :e R, forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B).
+Theorem HAS_BOUNDED_SETVARIATION_ON_ELEMENTARY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists d c= Power (R :^: idx M), division_of M d s) -> (has_bounded_setvariation_on M N f s <-> exists B :e R, forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => vector_norm N (f k)) <= B).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8844 / HAS_BOUNDED_SETVARIATION_ON_INTERVAL
 // Source hash: md5:a073c15f50b6b01333f1a5e641b755ee
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SETVARIATION_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) <-> exists B :e R, forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B.
+Theorem HAS_BOUNDED_SETVARIATION_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) <-> exists B :e R, forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (f k)) <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8851 / HAS_BOUNDED_SETVARIATION_ON_UNIV
 // Source hash: md5:c502285d84861ddbce928148a08321bc
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SETVARIATION_ON_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (has_bounded_setvariation_on M N f (R :^: idx M) <-> exists B :e R, forall d c= Power (R :^: idx M), division_of M d (Union d) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B).
+Theorem HAS_BOUNDED_SETVARIATION_ON_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (has_bounded_setvariation_on M N f (R :^: idx M) <-> exists B :e R, forall d c= Power (R :^: idx M), division_of M d (Union d) -> finsum d (fun k:set => vector_norm N (f k)) <= B).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8859 / HAS_BOUNDED_SETVARIATION_ON_SUBSET
@@ -2369,7 +2369,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:8883 / HAS_BOUNDED_SETVARIATION_ON_NORM
 // Source hash: md5:da39d96b843d03ebaa627b2fd77d33d4
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HAS_BOUNDED_SETVARIATION_ON_NORM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M 1 (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) s <-> has_bounded_setvariation_on M N f s.
+Theorem HAS_BOUNDED_SETVARIATION_ON_NORM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M 1 (fun x:set => lift (vector_norm N (f x))) s <-> has_bounded_setvariation_on M N f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8890 / HAS_BOUNDED_SETVARIATION_ON_COMPOSE_LINEAR
@@ -2381,13 +2381,13 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:8908 / HAS_BOUNDED_SETVARIATION_ON_0
 // Source hash: md5:2abda1e15d341820af84472a4e0bf809
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem HAS_BOUNDED_SETVARIATION_ON_0 : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, has_bounded_setvariation_on N A (fun x:set => (fun x :e Power (R :^: idx N) => vec A 0) x) s.
+Theorem HAS_BOUNDED_SETVARIATION_ON_0 : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, has_bounded_setvariation_on N A (fun x:set => vec A 0) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8913 / SET_VARIATION_0
 // Source hash: md5:4d99aa548cb7627687d4968153fa34eb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem SET_VARIATION_0 : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, set_variation N A s (fun x:set => (fun x :e Power (R :^: idx N) => vec A 0) x) = 0.
+Theorem SET_VARIATION_0 : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, set_variation N A s (fun x:set => vec A 0) = 0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:8920 / HAS_BOUNDED_SETVARIATION_ON_CMUL
@@ -2435,79 +2435,79 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9007 / SET_VARIATION_ELEMENTARY_LEMMA
 // Source hash: md5:b86228d06ce1ed31e2e44ac243274f98
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_ELEMENTARY_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall b :e R, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists d c= Power (R :^: idx M), division_of M d s) -> ((forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= b) <-> forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= b).
+Theorem SET_VARIATION_ELEMENTARY_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall b :e R, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists d c= Power (R :^: idx M), division_of M d s) -> ((forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= b) <-> forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => vector_norm N (f k)) <= b).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9026 / SET_VARIATION_ON_ELEMENTARY
 // Source hash: md5:ae34bb2c8234d96cd1b36618358ba9be
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_ON_ELEMENTARY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists d c= Power (R :^: idx M), division_of M d s) -> set_variation M N s f = sup {finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) | d :e Power (Power (R :^: idx M)), division_of M d s}.
+Theorem SET_VARIATION_ON_ELEMENTARY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists d c= Power (R :^: idx M), division_of M d s) -> set_variation M N s f = sup {finsum d (fun k:set => vector_norm N (f k)) | d :e Power (Power (R :^: idx M)), division_of M d s}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9035 / SET_VARIATION_ON_INTERVAL
 // Source hash: md5:94a7e30edb227685df5f11cef458cf0c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f = sup {finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) | d :e Power (Power (R :^: idx M)), division_of M d (closed_interval M (seq_cons (a,b) seq_nil))}.
+Theorem SET_VARIATION_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f = sup {finsum d (fun k:set => vector_norm N (f k)) | d :e Power (Power (R :^: idx M)), division_of M d (closed_interval M (seq_cons (a,b) seq_nil))}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9042 / SET_VARIATION_INTERVAL_LEMMA
 // Source hash: md5:e704c0f13eab76bd87e36f99aaba1285
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_INTERVAL_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall c :e R, is_interval M s -> ((forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= c) <-> forall d c= Power (R :^: idx M), forall a b :e R :^: idx M, division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= c).
+Theorem SET_VARIATION_INTERVAL_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall c :e R, is_interval M s -> ((forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= c) <-> forall d c= Power (R :^: idx M), forall a b :e R :^: idx M, division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> finsum d (fun k:set => vector_norm N (f k)) <= c).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9099 / HAS_BOUNDED_SETVARIATION_WORKS
 // Source hash: md5:208882ce5af3645c571c1f7ea1820513
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SETVARIATION_WORKS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s -> (forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= set_variation M N s f) /\ forall B :e R, (forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B) -> set_variation M N s f <= B.
+Theorem HAS_BOUNDED_SETVARIATION_WORKS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s -> (forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= set_variation M N s f) /\ forall B :e R, (forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= B) -> set_variation M N s f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9119 / HAS_BOUNDED_SETVARIATION_WORKS_ON_ELEMENTARY
 // Source hash: md5:a80e1ac9579e6e1e011a2483d900804c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SETVARIATION_WORKS_ON_ELEMENTARY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (exists d c= Power (R :^: idx M), division_of M d s) -> (forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= set_variation M N s f) /\ forall B :e R, (forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B) -> set_variation M N s f <= B.
+Theorem HAS_BOUNDED_SETVARIATION_WORKS_ON_ELEMENTARY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (exists d c= Power (R :^: idx M), division_of M d s) -> (forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => vector_norm N (f k)) <= set_variation M N s f) /\ forall B :e R, (forall d c= Power (R :^: idx M), division_of M d s -> finsum d (fun k:set => vector_norm N (f k)) <= B) -> set_variation M N s f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9129 / HAS_BOUNDED_SETVARIATION_WORKS_ON_INTERVAL
 // Source hash: md5:cba7faf4206d539ed5635a6c46dd5a44
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_SETVARIATION_WORKS_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) -> (forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f) /\ forall B :e R, (forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B) -> set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f <= B.
+Theorem HAS_BOUNDED_SETVARIATION_WORKS_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) -> (forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (f k)) <= set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f) /\ forall B :e R, (forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (f k)) <= B) -> set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9139 / SET_VARIATION_UBOUND
 // Source hash: md5:e28f1097a30bbc51dfc5749fb1ef7b89
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_UBOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f s /\ (forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B) -> set_variation M N s f <= B.
+Theorem SET_VARIATION_UBOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f s /\ (forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ t c= s -> finsum d (fun k:set => vector_norm N (f k)) <= B) -> set_variation M N s f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9146 / SET_VARIATION_UBOUND_ON_INTERVAL
 // Source hash: md5:a5e128e105653a65604552e4b29a2f5f
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_UBOUND_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= B) -> set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f <= B.
+Theorem SET_VARIATION_UBOUND_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (forall d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (f k)) <= B) -> set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9154 / SET_VARIATION_LBOUND
 // Source hash: md5:52cb0493e16daa9939c6b4a6829f1813
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_LBOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f s /\ (exists d c= Power (R :^: idx M), exists t c= R :^: idx M, division_of M d t /\ (t c= s /\ B <= finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))))) -> B <= set_variation M N s f.
+Theorem SET_VARIATION_LBOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f s /\ (exists d c= Power (R :^: idx M), exists t c= R :^: idx M, division_of M d t /\ (t c= s /\ B <= finsum d (fun k:set => vector_norm N (f k)))) -> B <= set_variation M N s f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9161 / SET_VARIATION_LBOUND_ON_INTERVAL
 // Source hash: md5:2cad201c8a99ce0b726258d6932324eb
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_LBOUND_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (exists d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ B <= finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k)))) -> B <= set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f.
+Theorem SET_VARIATION_LBOUND_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall B :e R, has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (exists d c= Power (R :^: idx M), division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) /\ B <= finsum d (fun k:set => vector_norm N (f k))) -> B <= set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9168 / SET_VARIATION
 // Source hash: md5:c74e791ccfa0128a030ef212343c4700
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall d c= Power (R :^: idx M), forall t c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (division_of M d t /\ t c= s) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= set_variation M N s f.
+Theorem SET_VARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall d c= Power (R :^: idx M), forall t c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (division_of M d t /\ t c= s) -> finsum d (fun k:set => vector_norm N (f k)) <= set_variation M N s f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9174 / SET_VARIATION_WORKS_ON_INTERVAL
 // Source hash: md5:3d6cb005e742b4b2ac1bc0586299d6c1
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem SET_VARIATION_WORKS_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) /\ division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) <= set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f.
+Theorem SET_VARIATION_WORKS_ON_INTERVAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall d c= Power (R :^: idx M), has_bounded_setvariation_on M N f (closed_interval M (seq_cons (a,b) seq_nil)) /\ division_of M d (closed_interval M (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (f k)) <= set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9181 / SET_VARIATION_POS_LE
@@ -2525,13 +2525,13 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9209 / SET_VARIATION_COMPARISON
 // Source hash: md5:e9a397e4479c47e8751d824715da658c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem SET_VARIATION_COMPARISON : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx P) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (forall a b :e R :^: idx M, ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> sqrt_SNo_nonneg (dot P (g (closed_interval M (seq_cons (a,b) seq_nil))) (g (closed_interval M (seq_cons (a,b) seq_nil)))) <= sqrt_SNo_nonneg (dot N (f (closed_interval M (seq_cons (a,b) seq_nil))) (f (closed_interval M (seq_cons (a,b) seq_nil))))) -> set_variation M P s g <= set_variation M N s f.
+Theorem SET_VARIATION_COMPARISON : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx P) -> forall s c= R :^: idx M, has_bounded_setvariation_on M N f s /\ (forall a b :e R :^: idx M, ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> vector_norm P (g (closed_interval M (seq_cons (a,b) seq_nil))) <= vector_norm N (f (closed_interval M (seq_cons (a,b) seq_nil)))) -> set_variation M P s g <= set_variation M N s f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9229 / SET_VARIATION_GE_FUNCTION
 // Source hash: md5:6dbbe86dfe0107fdc39e141ada7758fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem SET_VARIATION_GE_FUNCTION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a b :e R :^: idx M, has_bounded_setvariation_on M N f s /\ (closed_interval M (seq_cons (a,b) seq_nil) c= s /\ ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty) -> sqrt_SNo_nonneg (dot N (f (closed_interval M (seq_cons (a,b) seq_nil))) (f (closed_interval M (seq_cons (a,b) seq_nil)))) <= set_variation M N s f.
+Theorem SET_VARIATION_GE_FUNCTION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a b :e R :^: idx M, has_bounded_setvariation_on M N f s /\ (closed_interval M (seq_cons (a,b) seq_nil) c= s /\ ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty) -> vector_norm N (f (closed_interval M (seq_cons (a,b) seq_nil))) <= set_variation M N s f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9240 / SET_VARIATION_ON_NULL
@@ -2633,7 +2633,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9667 / absolutely_integrable_on
 // Source hash: md5:746f03fcae8cc3feee315c30f637827d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem absolutely_integrable_on_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, absolutely_integrable_on A B f s <-> integrable_on A B f s /\ integrable_on 1 B (fun x:set => lift (sqrt_SNo_nonneg (dot A (f x) (f x)))) s.
+Theorem absolutely_integrable_on_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, absolutely_integrable_on A B f s <-> integrable_on A B f s /\ integrable_on 1 B (fun x:set => lift (vector_norm A (f x))) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9671 / ABSOLUTELY_INTEGRABLE_IMP_INTEGRABLE
@@ -2645,7 +2645,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9675 / ABSOLUTELY_INTEGRABLE_IMP_LIFT_NORM_INTEGRABLE
 // Source hash: md5:ca8a8349dec72932a3cd35e70e030687
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_IMP_LIFT_NORM_INTEGRABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s -> integrable_on 1 M (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) s.
+Theorem ABSOLUTELY_INTEGRABLE_IMP_LIFT_NORM_INTEGRABLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s -> integrable_on 1 M (fun x:set => lift (vector_norm N (f x))) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9680 / ABSOLUTELY_INTEGRABLE_RESTRICT_UNIV
@@ -2669,7 +2669,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9701 / ABSOLUTELY_INTEGRABLE_LE
 // Source hash: md5:ce221231b6eb03f861e5e2c2a5d24914
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_LE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s -> sqrt_SNo_nonneg (dot N (integral N M s f) (integral N M s f)) <= drop (integral 1 M s (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x))))).
+Theorem ABSOLUTELY_INTEGRABLE_LE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_integrable_on N M f s -> vector_norm N (integral N M s f) <= drop (integral 1 M s (fun x:set => lift (vector_norm N (f x)))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9709 / ABSOLUTELY_INTEGRABLE_ON_NULL
@@ -2717,7 +2717,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9746 / ABSOLUTELY_INTEGRABLE_NORM
 // Source hash: md5:ad6cc062678eb0acdc7aa31e2447d7e3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_NORM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, absolutely_integrable_on A B f s -> absolutely_integrable_on 1 B (fun x:set => lift (sqrt_SNo_nonneg (dot A (f x) (f x)))) s.
+Theorem ABSOLUTELY_INTEGRABLE_NORM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, absolutely_integrable_on A B f s -> absolutely_integrable_on 1 B (fun x:set => lift (vector_norm A (f x))) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9751 / ABSOLUTELY_INTEGRABLE_ABS_1
@@ -2813,7 +2813,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:9904 / lemma
 // Source hash: md5:4d00c27664ea3a8fffb4eaf58df14c37
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_sum_finsum)
-Theorem lemma : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx N) -> forall s c= A, forall e0 :e R, finsum s (fun x:set => sqrt_SNo_nonneg (dot N (vector_sub N (f x) (g x)) (vector_sub N (f x) (g x)))) < e0 -> finite s -> abs_SNo (finsum s (fun x:set => sqrt_SNo_nonneg (dot N (f x) (f x))) + - finsum s (fun x:set => sqrt_SNo_nonneg (dot N (g x) (g x)))) < e0.
+Theorem lemma : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx N) -> forall s c= A, forall e0 :e R, finsum s (fun x:set => vector_norm N (vector_sub N (f x) (g x))) < e0 -> finite s -> abs_SNo (finsum s (fun x:set => vector_norm N (f x)) + - finsum s (fun x:set => vector_norm N (g x))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:9918 / BOUNDED_SETVARIATION_ABSOLUTELY_INTEGRABLE_INTERVAL
@@ -2843,7 +2843,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:10577 / ABSOLUTELY_INTEGRABLE_SET_VARIATION
 // Source hash: md5:eac7455effcb6118163c713a93423682
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_SET_VARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) (fun k:set => integral N M k f) = drop (integral 1 M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x))))).
+Theorem ABSOLUTELY_INTEGRABLE_SET_VARIATION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) -> set_variation M N (closed_interval M (seq_cons (a,b) seq_nil)) (fun k:set => integral N M k f) = drop (integral 1 M (closed_interval M (seq_cons (a,b) seq_nil)) (fun x:set => lift (vector_norm N (f x)))).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:10683 / ABSOLUTELY_INTEGRABLE_CONST
@@ -2921,13 +2921,13 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:10992 / ABSOLUTELY_INTEGRABLE_INTEGRABLE_BOUND
 // Source hash: md5:d604fefd84ff77ae08ca2ee2c83a8707
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_INTEGRABLE_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= drop (g x)) /\ (integrable_on N M f s /\ integrable_on 1 M g s) -> absolutely_integrable_on N M f s.
+Theorem ABSOLUTELY_INTEGRABLE_INTEGRABLE_BOUND : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= drop (g x)) /\ (integrable_on N M f s /\ integrable_on 1 M g s) -> absolutely_integrable_on N M f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:11041 / ABSOLUTELY_INTEGRABLE_ABSOLUTELY_INTEGRABLE_BOUND
 // Source hash: md5:ae9a9f6034b779b66991867088920821
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_INTEGRABLE_BOUND : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= sqrt_SNo_nonneg (dot P (g x) (g x))) /\ (integrable_on N M f s /\ absolutely_integrable_on P M g s) -> absolutely_integrable_on N M f s.
+Theorem ABSOLUTELY_INTEGRABLE_ABSOLUTELY_INTEGRABLE_BOUND : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx P) -> forall s c= R :^: idx M, (forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= vector_norm P (g x)) /\ (integrable_on N M f s /\ absolutely_integrable_on P M g s) -> absolutely_integrable_on N M f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:11054 / ABSOLUTELY_INTEGRABLE_INF_1
@@ -3095,7 +3095,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:12129 / INTEGRAL_NORM_BOUND_INTEGRAL_AE
 // Source hash: md5:448bb861c25da8fa3c6a414af55480a4
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem INTEGRAL_NORM_BOUND_INTEGRAL_AE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s t c= R :^: idx M, integrable_on N M f s /\ (integrable_on 1 M g s /\ (negligible M t /\ (forall x :e R :^: idx M, x :e s :\: t -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= drop (g x)))) -> sqrt_SNo_nonneg (dot N (integral N M s f) (integral N M s f)) <= drop (integral 1 M s g).
+Theorem INTEGRAL_NORM_BOUND_INTEGRAL_AE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx 1) -> forall s t c= R :^: idx M, integrable_on N M f s /\ (integrable_on 1 M g s /\ (negligible M t /\ (forall x :e R :^: idx M, x :e s :\: t -> vector_norm N (f x) <= drop (g x)))) -> vector_norm N (integral N M s f) <= drop (integral 1 M s g).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:13328 / ANTIDERIVATIVE_INTEGRAL_CONTINUOUS
@@ -3107,7 +3107,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:13572 / equiintegrable_on
 // Source hash: md5:9faf2e5b364dbcdbdd251d23ac65c30b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem equiintegrable_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall i c= R :^: idx M, equiintegrable_on M N fs i <-> (forall f :e R :^: idx N :^: (R :^: idx M), f :e fs -> integrable_on N M (fun x:set => f x) i) /\ forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall f :e R :^: idx N :^: (R :^: idx M), forall p c= R :^: idx M :*: Power (R :^: idx M), f :e fs /\ (tagged_division_of M p i /\ fine (R :^: idx M) (R :^: idx M) d p) -> sqrt_SNo_nonneg (dot N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M i (fun x:set => f x))) (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M i (fun x:set => f x)))) < e0.
+Theorem equiintegrable_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall i c= R :^: idx M, equiintegrable_on M N fs i <-> (forall f :e R :^: idx N :^: (R :^: idx M), f :e fs -> integrable_on N M (fun x:set => f x) i) /\ forall e0 :e R, 0 < e0 -> exists d:set -> set -> prop, gauge M d /\ forall f :e R :^: idx N :^: (R :^: idx M), forall p c= R :^: idx M :*: Power (R :^: idx M), f :e fs /\ (tagged_division_of M p i /\ fine (R :^: idx M) (R :^: idx M) d p) -> vector_norm N (vector_sub N (vsum (R :^: idx M :*: Power (R :^: idx M)) N p (fun p0:set => vector_mul N (content M (p0 1)) (f (p0 0)))) (integral N M i (fun x:set => f x))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:13581 / EQUIINTEGRABLE_ON_SING
@@ -3185,7 +3185,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:14158 / EQUIINTEGRABLE_UNIFORM_LIMIT
 // Source hash: md5:dce64f01301f18e35b175ca6d0290f0c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem EQUIINTEGRABLE_UNIFORM_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) -> equiintegrable_on M N {g :e R :^: idx N :^: (R :^: idx M) | forall e0 :e R, 0 < e0 -> exists f :e R :^: idx N :^: (R :^: idx M), f :e fs /\ forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (g x) (f x)) (vector_sub N (g x) (f x))) < e0} (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem EQUIINTEGRABLE_UNIFORM_LIMIT : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) -> equiintegrable_on M N {g :e R :^: idx N :^: (R :^: idx M) | forall e0 :e R, 0 < e0 -> exists f :e R :^: idx N :^: (R :^: idx M), f :e fs /\ forall x :e R :^: idx M, x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (g x) (f x)) < e0} (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:14240 / EQUIINTEGRABLE_REFLECT
@@ -3203,31 +3203,31 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:14734 / BOUNDED_EQUIINTEGRAL_OVER_THIN_TAGGED_PARTIAL_DIVISION
 // Source hash: md5:79e9bbc47475bf2aab2d129eac00d6a8
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
-Theorem BOUNDED_EQUIINTEGRAL_OVER_THIN_TAGGED_PARTIAL_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, forall e0 :e R, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ ((forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (h x) (h x)) <= sqrt_SNo_nonneg (dot N (f x) (f x))) /\ 0 < e0)) -> exists d:set -> set -> prop, gauge M d /\ forall c :e R :^: idx M, forall i :e omega, forall p c= R :^: idx M :*: Power (R :^: idx M), forall h :e R :^: idx N :^: (R :^: idx M), c :e closed_interval M (seq_cons (a,b) seq_nil) /\ (1 <= i /\ (i <= dimindex M /\ (tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ (fine (R :^: idx M) (R :^: idx M) d p /\ (h :e fs /\ (forall x :e R :^: idx M, forall k c= R :^: idx M, (x,k) :e p -> ~ k :/\: {x0 :e R :^: idx M | x0 i = c i} = Empty)))))) -> finsum p (fun p0:set => sqrt_SNo_nonneg (dot N (integral N M (p0 1) (fun x:set => h x)) (integral N M (p0 1) (fun x:set => h x)))) < e0.
+Theorem BOUNDED_EQUIINTEGRAL_OVER_THIN_TAGGED_PARTIAL_DIVISION : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, forall e0 :e R, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ ((forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (h x) <= vector_norm N (f x)) /\ 0 < e0)) -> exists d:set -> set -> prop, gauge M d /\ forall c :e R :^: idx M, forall i :e omega, forall p c= R :^: idx M :*: Power (R :^: idx M), forall h :e R :^: idx N :^: (R :^: idx M), c :e closed_interval M (seq_cons (a,b) seq_nil) /\ (1 <= i /\ (i <= dimindex M /\ (tagged_partial_division_of M p (closed_interval M (seq_cons (a,b) seq_nil)) /\ (fine (R :^: idx M) (R :^: idx M) d p /\ (h :e fs /\ (forall x :e R :^: idx M, forall k c= R :^: idx M, (x,k) :e p -> ~ k :/\: {x0 :e R :^: idx M | x0 i = c i} = Empty)))))) -> finsum p (fun p0:set => vector_norm N (integral N M (p0 1) (fun x:set => h x))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:14935 / EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_LE
 // Source hash: md5:e4b7dedc3683f8f3d68cf23bcb31022e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_LE : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (h x) (h x)) <= sqrt_SNo_nonneg (dot N (f x) (f x)))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if x i <= c then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_LE : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (h x) <= vector_norm N (f x))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if x i <= c then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15366 / EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_GE
 // Source hash: md5:e0e4b6e5ffacf6260c6704bd7ea6ca9e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_GE : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (h x) (h x)) <= sqrt_SNo_nonneg (dot N (f x) (f x)))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if c <= x i then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_GE : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (h x) <= vector_norm N (f x))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if c <= x i then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15398 / EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_LT
 // Source hash: md5:1b7e7bddbbdaaff00dea480a03f9fc2e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_LT : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (h x) (h x)) <= sqrt_SNo_nonneg (dot N (f x) (f x)))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if x i < c then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_LT : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (h x) <= vector_norm N (f x))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if x i < c then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15426 / EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_GT
 // Source hash: md5:62f88c34bda9a67890f245847302fe1e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_GT : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (h x) (h x)) <= sqrt_SNo_nonneg (dot N (f x) (f x)))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if c < x i then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem EQUIINTEGRABLE_HALFSPACE_RESTRICTIONS_GT : forall M N:set, M <> Empty -> N <> Empty -> forall fs c= R :^: idx N :^: (R :^: idx M), forall f :e R :^: idx N :^: (R :^: idx M), forall a b :e R :^: idx M, equiintegrable_on M N fs (closed_interval M (seq_cons (a,b) seq_nil)) /\ (f :e fs /\ (forall h :e R :^: idx N :^: (R :^: idx M), forall x :e R :^: idx M, h :e fs /\ x :e closed_interval M (seq_cons (a,b) seq_nil) -> vector_norm N (h x) <= vector_norm N (f x))) -> equiintegrable_on M N (\/_ i :e omega, \/_ c :e R, {(fun x :e R :^: idx M => if c < x i then h x else vec N 0) | h :e R :^: idx N :^: (R :^: idx M), i :e idx M /\ (c :e R /\ h :e fs)}) (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15454 / EQUIINTEGRABLE_OPEN_INTERVAL_RESTRICTIONS
@@ -3245,7 +3245,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:15622 / INDEFINITE_INTEGRAL_CONTINUOUS
 // Source hash: md5:15783a0afe55f25b76ae93b5053b75dd
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INDEFINITE_INTEGRAL_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b c d :e R :^: idx M, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (c :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d :e closed_interval M (seq_cons (a,b) seq_nil) /\ 0 < e0)) -> exists k :e R, 0 < k /\ forall c' d' :e R :^: idx M, c' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (sqrt_SNo_nonneg (dot M (vector_sub M c' c) (vector_sub M c' c)) <= k /\ sqrt_SNo_nonneg (dot M (vector_sub M d' d) (vector_sub M d' d)) <= k)) -> sqrt_SNo_nonneg (dot N (vector_sub N (integral N M (closed_interval M (seq_cons (c',d') seq_nil)) f) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f)) (vector_sub N (integral N M (closed_interval M (seq_cons (c',d') seq_nil)) f) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f))) < e0.
+Theorem INDEFINITE_INTEGRAL_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b c d :e R :^: idx M, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ (c :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d :e closed_interval M (seq_cons (a,b) seq_nil) /\ 0 < e0)) -> exists k :e R, 0 < k /\ forall c' d' :e R :^: idx M, c' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (vector_norm M (vector_sub M c' c) <= k /\ vector_norm M (vector_sub M d' d) <= k)) -> vector_norm N (vector_sub N (integral N M (closed_interval M (seq_cons (c',d') seq_nil)) f) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15729 / INDEFINITE_INTEGRAL_CONTINUOUS_RIGHT
@@ -3269,7 +3269,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:15780 / INDEFINITE_INTEGRAL_UNIFORMLY_CONTINUOUS_EXPLICIT
 // Source hash: md5:e1b1ccc34b588039622aecdb86a13433
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INDEFINITE_INTEGRAL_UNIFORMLY_CONTINUOUS_EXPLICIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ 0 < e0 -> exists k :e R, 0 < k /\ forall c d c' d' :e R :^: idx M, c :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d :e closed_interval M (seq_cons (a,b) seq_nil) /\ (c' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (sqrt_SNo_nonneg (dot M (vector_sub M c' c) (vector_sub M c' c)) <= k /\ sqrt_SNo_nonneg (dot M (vector_sub M d' d) (vector_sub M d' d)) <= k)))) -> sqrt_SNo_nonneg (dot N (vector_sub N (integral N M (closed_interval M (seq_cons (c',d') seq_nil)) f) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f)) (vector_sub N (integral N M (closed_interval M (seq_cons (c',d') seq_nil)) f) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f))) < e0.
+Theorem INDEFINITE_INTEGRAL_UNIFORMLY_CONTINUOUS_EXPLICIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, forall e0 :e R, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)) /\ 0 < e0 -> exists k :e R, 0 < k /\ forall c d c' d' :e R :^: idx M, c :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d :e closed_interval M (seq_cons (a,b) seq_nil) /\ (c' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (d' :e closed_interval M (seq_cons (a,b) seq_nil) /\ (vector_norm M (vector_sub M c' c) <= k /\ vector_norm M (vector_sub M d' d) <= k)))) -> vector_norm N (vector_sub N (integral N M (closed_interval M (seq_cons (c',d') seq_nil)) f) (integral N M (closed_interval M (seq_cons (c,d) seq_nil)) f)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:15806 / BOUNDED_INTEGRALS_OVER_SUBINTERVALS
@@ -3383,49 +3383,49 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:16623 / HAS_BOUNDED_VARIATION_ON_INTERVAL
 // Source hash: md5:2f57b62b7a0135fcb81c435e6c5ac9ab
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VARIATION_ON_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> exists B :e R, forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= B.
+Theorem HAS_BOUNDED_VARIATION_ON_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) <-> exists B :e R, forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16632 / VECTOR_VARIATION_ON_INTERVAL
 // Source hash: md5:b6516446eac9be535f7bfb88fec8359c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem VECTOR_VARIATION_ON_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = sup {finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) | d :e Power (Power (R :^: idx 1)), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil))}.
+Theorem VECTOR_VARIATION_ON_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f = sup {finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) | d :e Power (Power (R :^: idx 1)), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil))}.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16643 / HAS_BOUNDED_VECTOR_VARIATION_ON_INTERVAL
 // Source hash: md5:f913db8b0c7f84d632a76e79bbe3819a
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VECTOR_VARIATION_ON_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall c :e R, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f <= c <-> forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= c.
+Theorem HAS_BOUNDED_VECTOR_VARIATION_ON_INTERVAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall c :e R, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f <= c <-> forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= c.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16660 / HAS_BOUNDED_VECTOR_VARIATION
 // Source hash: md5:4bf80e18205dba429834c63ea6372eeb
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VECTOR_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall c :e R, has_bounded_variation_on N f s /\ vector_variation N s f <= c <-> forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= c.
+Theorem HAS_BOUNDED_VECTOR_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall c :e R, has_bounded_variation_on N f s /\ vector_variation N s f <= c <-> forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ t c= s -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= c.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16669 / HAS_BOUNDED_VARIATION_WORKS
 // Source hash: md5:6d2fe37a5d7ebff18c8ca0ade36706b5
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VARIATION_WORKS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s -> (forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= vector_variation N s f) /\ forall B :e R, (forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ t c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= B) -> vector_variation N s f <= B.
+Theorem HAS_BOUNDED_VARIATION_WORKS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s -> (forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ t c= s -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= vector_variation N s f) /\ forall B :e R, (forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ t c= s -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= B) -> vector_variation N s f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16683 / HAS_BOUNDED_VARIATION_WORKS_ON_ELEMENTARY
 // Source hash: md5:f831adc990232715e3e0ce49aa5815fe
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VARIATION_WORKS_ON_ELEMENTARY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s /\ (exists d c= Power (R :^: idx 1), division_of 1 d s) -> (forall d c= Power (R :^: idx 1), division_of 1 d s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= vector_variation N s f) /\ forall B :e R, (forall d c= Power (R :^: idx 1), division_of 1 d s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= B) -> vector_variation N s f <= B.
+Theorem HAS_BOUNDED_VARIATION_WORKS_ON_ELEMENTARY : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s /\ (exists d c= Power (R :^: idx 1), division_of 1 d s) -> (forall d c= Power (R :^: idx 1), division_of 1 d s -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= vector_variation N s f) /\ forall B :e R, (forall d c= Power (R :^: idx 1), division_of 1 d s -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= B) -> vector_variation N s f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16697 / HAS_BOUNDED_VARIATION_WORKS_ON_INTERVAL
 // Source hash: md5:f1152ae77c03b8061209072196a1884c
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VARIATION_WORKS_ON_INTERVAL : forall N:set, N <> Empty -> forall a b :e R :^: idx 1, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> (forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f) /\ forall B :e R, (forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= B) -> vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f <= B.
+Theorem HAS_BOUNDED_VARIATION_WORKS_ON_INTERVAL : forall N:set, N <> Empty -> forall a b :e R :^: idx 1, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> (forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f) /\ forall B :e R, (forall d c= Power (R :^: idx 1), division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= B) -> vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16712 / HAS_BOUNDED_VECTOR_VARIATION_ON_INTERVAL_GEN
 // Source hash: md5:d1ab40904c78d577aff2d4d80c06713e
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VECTOR_VARIATION_ON_INTERVAL_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall c :e R, is_interval 1 s -> (has_bounded_variation_on N f s /\ vector_variation N s f <= c <-> forall d c= Power (R :^: idx 1), forall a b :e R :^: idx 1, division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ closed_interval 1 (seq_cons (a,b) seq_nil) c= s -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= c).
+Theorem HAS_BOUNDED_VECTOR_VARIATION_ON_INTERVAL_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall c :e R, is_interval 1 s -> (has_bounded_variation_on N f s /\ vector_variation N s f <= c <-> forall d c= Power (R :^: idx 1), forall a b :e R :^: idx 1, division_of 1 d (closed_interval 1 (seq_cons (a,b) seq_nil)) /\ closed_interval 1 (seq_cons (a,b) seq_nil) c= s -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= c).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:16723 / HAS_BOUNDED_VECTOR_VARIATION_ON_SUBINTERVALS
@@ -3575,7 +3575,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:16995 / VECTOR_VARIATION_VMUL
 // Source hash: md5:fea9ec21b607a4bba2656ffb16b7317d
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem VECTOR_VARIATION_VMUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, forall v :e R :^: idx N, has_bounded_variation_on 1 (fun x:set => lift (f x)) s -> vector_variation N s (fun x:set => vector_mul N (f x) v) = sqrt_SNo_nonneg (dot N v v) * vector_variation 1 s (fun x:set => lift (f x)).
+Theorem VECTOR_VARIATION_VMUL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R) -> forall s c= R :^: idx 1, forall v :e R :^: idx N, has_bounded_variation_on 1 (fun x:set => lift (f x)) s -> vector_variation N s (fun x:set => vector_mul N (f x) v) = vector_norm N v * vector_variation 1 s (fun x:set => lift (f x)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:17008 / HAS_BOUNDED_VARIATION_ON_NEG
@@ -3635,7 +3635,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:17068 / HAS_BOUNDED_VARIATION_ON_NORM
 // Source hash: md5:0477256eb7f47e60fee50daef393040a
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HAS_BOUNDED_VARIATION_ON_NORM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s -> has_bounded_variation_on 1 (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) s.
+Theorem HAS_BOUNDED_VARIATION_ON_NORM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s -> has_bounded_variation_on 1 (fun x:set => lift (vector_norm N (f x))) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:17081 / HAS_BOUNDED_VARIATION_ON_MAX
@@ -3707,7 +3707,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:17280 / VECTOR_VARIATION_GE_NORM_FUNCTION
 // Source hash: md5:d7ea6c2797aa8191a3b81c844752dd29
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem VECTOR_VARIATION_GE_NORM_FUNCTION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, has_bounded_variation_on N f s /\ closed_segment 1 (seq_cons (a,b) seq_nil) c= s -> sqrt_SNo_nonneg (dot N (vector_sub N (f b) (f a)) (vector_sub N (f b) (f a))) <= vector_variation N s f.
+Theorem VECTOR_VARIATION_GE_NORM_FUNCTION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall a b :e R :^: idx 1, has_bounded_variation_on N f s /\ closed_segment 1 (seq_cons (a,b) seq_nil) c= s -> vector_norm N (vector_sub N (f b) (f a)) <= vector_variation N s f.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:17295 / VECTOR_VARIATION_GE_DROP_FUNCTION
@@ -3869,7 +3869,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:18145 / HAS_BOUNDED_VARIATION_NONTRIVIAL
 // Source hash: md5:40bd9a7de67700a94d3c2fc86d2f6952
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
-Theorem HAS_BOUNDED_VARIATION_NONTRIVIAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s <-> exists B :e R, forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ (t c= s /\ (forall k c= R :^: idx 1, k :e d -> ~ interior 1 k = Empty)) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))) (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k))))) <= B.
+Theorem HAS_BOUNDED_VARIATION_NONTRIVIAL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, has_bounded_variation_on N f s <-> exists B :e R, forall d c= Power (R :^: idx 1), forall t c= R :^: idx 1, division_of 1 d t /\ (t c= s /\ (forall k c= R :^: idx 1, k :e d -> ~ interior 1 k = Empty)) -> finsum d (fun k:set => vector_norm N (vector_sub N (f (interval_upperbound 1 k)) (f (interval_lowerbound 1 k)))) <= B.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:18182 / INCREASING_BOUNDED_VARIATION_GEN
@@ -4073,25 +4073,25 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:18993 / HAS_BOUNDED_VARIATION_LIPSCHITZ_COMPOSE
 // Source hash: md5:d767c9b6985f48f882f1c5982b7e107c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem HAS_BOUNDED_VARIATION_LIPSCHITZ_COMPOSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> forall s c= R :^: idx 1, forall B :e R, has_bounded_variation_on M g s /\ (forall x y :e R :^: idx M, x :e {g x | x :e s} /\ y :e {g x | x :e s} -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> has_bounded_variation_on N (fun x:set => f (g x)) s.
+Theorem HAS_BOUNDED_VARIATION_LIPSCHITZ_COMPOSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> forall s c= R :^: idx 1, forall B :e R, has_bounded_variation_on M g s /\ (forall x y :e R :^: idx M, x :e {g x | x :e s} /\ y :e {g x | x :e s} -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> has_bounded_variation_on N (fun x:set => f (g x)) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:19012 / LIPSCHITZ_IMP_HAS_BOUNDED_VARIATION
 // Source hash: md5:4657842b9f482de57a35a8e84c3e5365
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem LIPSCHITZ_IMP_HAS_BOUNDED_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall B :e R, bounded_hl 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) -> has_bounded_variation_on N f s.
+Theorem LIPSCHITZ_IMP_HAS_BOUNDED_VARIATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall B :e R, bounded_hl 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm 1 (vector_sub 1 x y)) -> has_bounded_variation_on N f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:19024 / VECTOR_VARIATION_LIPSCHITZ
 // Source hash: md5:a2b30213ad79820c7dde097964edbd3f
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem VECTOR_VARIATION_LIPSCHITZ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall l :e R, drop a <= drop b /\ (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) -> vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f <= l * (drop b + - drop a).
+Theorem VECTOR_VARIATION_LIPSCHITZ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, forall l :e R, drop a <= drop b /\ (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y)) -> vector_variation N (closed_interval 1 (seq_cons (a,b) seq_nil)) f <= l * (drop b + - drop a).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:19051 / LIPSCHITZ_VECTOR_VARIATION
 // Source hash: md5:a8526553d7e65ee3318f8eb2614ab0bf
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem LIPSCHITZ_VECTOR_VARIATION : forall N:set, N <> Empty -> forall B :e R, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> abs_SNo (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f + - vector_variation N (closed_interval 1 (seq_cons (a,y) seq_nil)) f) <= B * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) <-> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))).
+Theorem LIPSCHITZ_VECTOR_VARIATION : forall N:set, N <> Empty -> forall B :e R, forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b :e R :^: idx 1, has_bounded_variation_on N f (closed_interval 1 (seq_cons (a,b) seq_nil)) -> ((forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> abs_SNo (vector_variation N (closed_interval 1 (seq_cons (a,x) seq_nil)) f + - vector_variation N (closed_interval 1 (seq_cons (a,y) seq_nil)) f) <= B * vector_norm 1 (vector_sub 1 x y)) <-> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm 1 (vector_sub 1 x y)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:19113 / HAS_BOUNDED_VARIATION_ON_LINEAR_IMAGE
@@ -4229,13 +4229,13 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22442 / absolutely_setcontinuous_on
 // Source hash: md5:6a182a2a15b100ab0938c37c4e9870a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem absolutely_setcontinuous_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> finsum d (fun k:set => sqrt_SNo_nonneg (dot N (f k) (f k))) < e0).
+Theorem absolutely_setcontinuous_on_thm : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> (absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> finsum d (fun k:set => vector_norm N (f k)) < e0).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22449 / ABSOLUTELY_SETCONTINUOUS_COMPARISON
 // Source hash: md5:28afb661d5e3f3c72397b1448942abb1
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_COMPARISON : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx P) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M N f s /\ (forall a b :e R :^: idx M, ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> sqrt_SNo_nonneg (dot P (g (closed_interval M (seq_cons (a,b) seq_nil))) (g (closed_interval M (seq_cons (a,b) seq_nil)))) <= sqrt_SNo_nonneg (dot N (f (closed_interval M (seq_cons (a,b) seq_nil))) (f (closed_interval M (seq_cons (a,b) seq_nil))))) -> absolutely_setcontinuous_on M P g s.
+Theorem ABSOLUTELY_SETCONTINUOUS_COMPARISON : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall g:set -> set, (forall x :e Power (R :^: idx M), g x :e R :^: idx P) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M N f s /\ (forall a b :e R :^: idx M, ~ closed_interval M (seq_cons (a,b) seq_nil) = Empty /\ closed_interval M (seq_cons (a,b) seq_nil) c= s -> vector_norm P (g (closed_interval M (seq_cons (a,b) seq_nil))) <= vector_norm N (f (closed_interval M (seq_cons (a,b) seq_nil)))) -> absolutely_setcontinuous_on M P g s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22471 / ABSOLUTELY_SETCONTINUOUS_ON_EQ
@@ -4253,7 +4253,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22526 / ABSOLUTELY_SETCONTINUOUS_ON_ALT
 // Source hash: md5:d4e16fc7f71b3b658fb5f692eec1250e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_ON_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> sqrt_SNo_nonneg (dot N (vsum (Power (R :^: idx M)) N d f) (vsum (Power (R :^: idx M)) N d f)) < e0.
+Theorem ABSOLUTELY_SETCONTINUOUS_ON_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M N f s <-> forall e0 :e R, 0 < e0 -> exists r :e R, 0 < r /\ forall d c= Power (R :^: idx M), forall t c= R :^: idx M, division_of M d t /\ (t c= s /\ finsum d (fun x:set => content M x) < r) -> vector_norm N (vsum (Power (R :^: idx M)) N d f) < e0.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22592 / ABSOLUTELY_SETCONTINUOUS_ON_LIFT_ABS
@@ -4271,7 +4271,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22608 / ABSOLUTELY_SETCONTINUOUS_ON_NORM
 // Source hash: md5:bab17b7aeacef061a0f087ee1be12797
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_ON_NORM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M 1 (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) s <-> absolutely_setcontinuous_on M N f s.
+Theorem ABSOLUTELY_SETCONTINUOUS_ON_NORM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e Power (R :^: idx M), f x :e R :^: idx N) -> forall s c= R :^: idx M, absolutely_setcontinuous_on M 1 (fun x:set => lift (vector_norm N (f x))) s <-> absolutely_setcontinuous_on M N f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22615 / ABSOLUTELY_SETCONTINUOUS_ON_COMPOSE_LINEAR
@@ -4283,7 +4283,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:22634 / ABSOLUTELY_SETCONTINUOUS_ON_0
 // Source hash: md5:5ab0c39f8e063442ef9ad22f0368e4c0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem ABSOLUTELY_SETCONTINUOUS_ON_0 : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, absolutely_setcontinuous_on N A (fun x:set => (fun x :e Power (R :^: idx N) => vec A 0) x) s.
+Theorem ABSOLUTELY_SETCONTINUOUS_ON_0 : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, absolutely_setcontinuous_on N A (fun x:set => vec A 0) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:22639 / ABSOLUTELY_SETCONTINUOUS_ON_CMUL
@@ -4469,7 +4469,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23237 / ABSOLUTELY_CONTINUOUS_ON_NORM
 // Source hash: md5:dd85f527d39641abef0bc5de30dc2393
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_CONTINUOUS_ON_NORM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, absolutely_continuous_on N f s -> absolutely_continuous_on 1 (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) s.
+Theorem ABSOLUTELY_CONTINUOUS_ON_NORM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, absolutely_continuous_on N f s -> absolutely_continuous_on 1 (fun x:set => lift (vector_norm N (f x))) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23247 / ABSOLUTELY_CONTINUOUS_ON_MAX
@@ -4487,7 +4487,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23275 / ABSOLUTELY_CONTINUOUS_LIPSCHITZ_COMPOSE
 // Source hash: md5:4e4ee3182d94a8a87699cecab151aec0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem ABSOLUTELY_CONTINUOUS_LIPSCHITZ_COMPOSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> forall s c= R :^: idx 1, forall B :e R, absolutely_continuous_on M g s /\ (forall x y :e R :^: idx M, x :e {g x | x :e s} /\ y :e {g x | x :e s} -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> absolutely_continuous_on N (fun x:set => f (g x)) s.
+Theorem ABSOLUTELY_CONTINUOUS_LIPSCHITZ_COMPOSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> forall s c= R :^: idx 1, forall B :e R, absolutely_continuous_on M g s /\ (forall x y :e R :^: idx M, x :e {g x | x :e s} /\ y :e {g x | x :e s} -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> absolutely_continuous_on N (fun x:set => f (g x)) s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23294 / ABSOLUTELY_CONTINUOUS_ON_ID
@@ -4499,7 +4499,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23310 / LIPSCHITZ_IMP_ABSOLUTELY_CONTINUOUS
 // Source hash: md5:e390786029c744b888c6d29b5969a663
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem LIPSCHITZ_IMP_ABSOLUTELY_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall B :e R, bounded_hl 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) -> absolutely_continuous_on N f s.
+Theorem LIPSCHITZ_IMP_ABSOLUTELY_CONTINUOUS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s c= R :^: idx 1, forall B :e R, bounded_hl 1 s /\ (forall x y :e R :^: idx 1, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm 1 (vector_sub 1 x y)) -> absolutely_continuous_on N f s.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23322 / ABSOLUTELY_CONTINUOUS_ON_IMP_UNIFORMLY_CONTINUOUS
@@ -4601,7 +4601,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23835 / RECTIFIABLE_PATH_LIPSCHITZ_IMAGE
 // Source hash: md5:9b188c431e71b0bca594cfee2015d5b6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem RECTIFIABLE_PATH_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> rectifiable_path M g /\ (exists B :e R, forall x y :e R :^: idx M, x :e path_image M g /\ y :e path_image M g -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> rectifiable_path N (fun x:set => f (g x)).
+Theorem RECTIFIABLE_PATH_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> rectifiable_path M g /\ (exists B :e R, forall x y :e R :^: idx M, x :e path_image M g /\ y :e path_image M g -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> rectifiable_path N (fun x:set => f (g x)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23847 / RECTIFIABLE_PATH_TRANSLATION_EQ
@@ -4631,7 +4631,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:23885 / PATH_LENGTH_LINEAR_IMAGE
 // Source hash: md5:113dfa35b9bb95d8fbed7a585c5f0ca7
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem PATH_LENGTH_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> linear M N f /\ (forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = sqrt_SNo_nonneg (dot M x x)) -> path_length N (fun x:set => f (g x)) = path_length M g.
+Theorem PATH_LENGTH_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx M) -> linear M N f /\ (forall x :e R :^: idx M, vector_norm N (f x) = vector_norm M x) -> path_length N (fun x:set => f (g x)) = path_length M g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:23894 / RECTIFIABLE_PATH_EQ
@@ -4745,13 +4745,13 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:24253 / LIPSCHITZ_IMP_RECTIFIABLE_PATH
 // Source hash: md5:5eac2a4cbcb1bfbf599a294343f617f9
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem LIPSCHITZ_IMP_RECTIFIABLE_PATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall b :e R, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (g x) (g y)) (vector_sub N (g x) (g y))) <= b * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) -> rectifiable_path N g.
+Theorem LIPSCHITZ_IMP_RECTIFIABLE_PATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall b :e R, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> vector_norm N (vector_sub N (g x) (g y)) <= b * vector_norm 1 (vector_sub 1 x y)) -> rectifiable_path N g.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24262 / PATH_LENGTH_LIPSCHITZ
 // Source hash: md5:1c60306ebb0df08847c582fb59a6750f
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem PATH_LENGTH_LIPSCHITZ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall b :e R, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (g x) (g y)) (vector_sub N (g x) (g y))) <= b * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) -> path_length N g <= b.
+Theorem PATH_LENGTH_LIPSCHITZ : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall b :e R, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) /\ y :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> vector_norm N (vector_sub N (g x) (g y)) <= b * vector_norm 1 (vector_sub 1 x y)) -> path_length N g <= b.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24272 / DIST_POINTS_LE_PATH_LENGTH
@@ -4829,7 +4829,7 @@ Admitted.
 // HOL Light: Multivariate/integration.ml:24625 / SHORTEST_PATH_EXISTS_GEN
 // Source hash: md5:9f34216afab4f3674482c9220a7ab80a
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem SHORTEST_PATH_EXISTS_GEN : forall N:set, N <> Empty -> forall P:set -> set -> set -> prop, (forall h:set -> set -> set, (forall x :e omega, forall y :e R :^: idx 1, h x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (forall n :e omega, rectifiable_path N (h n) /\ P (path_image N (h n)) (pathstart N (h n)) (pathfinish N (h n))) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e R :^: idx 1, N0 <= n /\ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (h n x) (g x)) (vector_sub N (h n x) (g x))) < e0) -> P (path_image N g) (pathstart N g) (pathfinish N g)) /\ ((exists t c= R :^: idx N, bounded_hl N t /\ forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ P (path_image N g) (pathstart N g) (pathfinish N g) -> ~ t :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (path_image N g) = Empty) /\ (exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ P (path_image N g) (pathstart N g) (pathfinish N g)))) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (P (path_image N g) (pathstart N g) (pathfinish N g) /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> rectifiable_path N h /\ P (path_image N h) (pathstart N h) (pathfinish N h) -> path_length N g <= path_length N h)).
+Theorem SHORTEST_PATH_EXISTS_GEN : forall N:set, N <> Empty -> forall P:set -> set -> set -> prop, (forall h:set -> set -> set, (forall x :e omega, forall y :e R :^: idx 1, h x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> (forall n :e omega, rectifiable_path N (h n) /\ P (path_image N (h n)) (pathstart N (h n)) (pathfinish N (h n))) /\ (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e R :^: idx 1, N0 <= n /\ x :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> vector_norm N (vector_sub N (h n x) (g x)) < e0) -> P (path_image N g) (pathstart N g) (pathfinish N g)) /\ ((exists t c= R :^: idx N, bounded_hl N t /\ forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> rectifiable_path N g /\ P (path_image N g) (pathstart N g) (pathfinish N g) -> ~ t :/\: hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} (path_image N g) = Empty) /\ (exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ P (path_image N g) (pathstart N g) (pathfinish N g)))) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (rectifiable_path N g /\ (P (path_image N g) (pathstart N g) (pathfinish N g) /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> rectifiable_path N h /\ P (path_image N h) (pathstart N h) (pathfinish N h) -> path_length N g <= path_length N h)).
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:24885 / SHORTEST_ARC_EXISTS

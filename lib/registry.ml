@@ -26,6 +26,7 @@ type const_entry = {
   c_bridge : string;
   c_notes : string;
   c_source : string;              (* mapping file *)
+  c_override : (string list * string list * Mg.tm) option;  (* reviewed definition body: carrier params, args, body *)
 }
 
 type t = {
@@ -159,9 +160,14 @@ let load (files : string list) (type_ctors : (string * int) list) : t =
       let args = List.map (fun a -> role_of_string (to_string a)) (match member "args" cj with `List l -> l | _ -> []) in
       let result = role_of_string (strd "result" "set" cj) in
       let template = Mg.parse_template (str "template" cj) in
+      let override = (match member "override" cj with
+        | `Assoc _ as o ->
+            let names k = (match member k o with `List l -> List.map to_string l | _ -> []) in
+            Some (names "params", names "args", Mg.parse_template (str "body" o))
+        | _ -> None) in
       let e = { c_hol = hol; c_scheme = scheme; c_args = args; c_result = result; c_template = template;
                 c_class = strd "class" "opaque" cj; c_status = strd "status" "draft" cj;
-                c_bridge = strd "bridge" "" cj; c_notes = strd "notes" "" cj; c_source = file } in
+                c_bridge = strd "bridge" "" cj; c_notes = strd "notes" "" cj; c_source = file; c_override = override } in
       (* validate arity against scheme *)
       let dom, _ = strip_fun_ty scheme in
       if List.length args > List.length dom then

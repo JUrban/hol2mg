@@ -2513,7 +2513,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4298 / CONTINUOUS_MAP_COMPONENTWISE
 // Source hash: md5:11e913bcab6bf3a92a10b187f5fc1dc7
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_topology)
-Theorem CONTINUOUS_MAP_COMPONENTWISE : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall top :e topology A, forall tops:set -> set, (forall x :e K, tops x :e topology B) -> forall t c= K, forall f :e B :^: K :^: A, continuous_map A (B :^: K) (top,product_topology B K t tops) (fun x:set => f x) <-> {f x | x :e topspace A top} c= {x :e B :^: K | forall x0 :e K, ~ x0 :e t -> x0 x0 = choose_in B (fun y:set => True)} /\ forall k :e K, k :e t -> continuous_map A B (top,tops k) (fun x:set => f x k).
+Theorem CONTINUOUS_MAP_COMPONENTWISE : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall top :e topology A, forall tops:set -> set, (forall x :e K, tops x :e topology B) -> forall t c= K, forall f :e B :^: K :^: A, continuous_map A (B :^: K) (top,product_topology B K t tops) (fun x:set => f x) <-> {f x | x :e topspace A top} c= {x :e B :^: K | forall x0 :e K, ~ x0 :e t -> x x0 = choose_in B (fun y:set => True)} /\ forall k :e K, k :e t -> continuous_map A B (top,tops k) (fun x:set => f x k).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4369 / CONTINUOUS_MAP_COMPONENTWISE_UNIV
@@ -2525,13 +2525,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4377 / CONTINUOUS_MAP_PRODUCT_PROJECTION
 // Source hash: md5:89dcecd0f5caa98741120f66e92d3882
 // Status: generalization_required (bridges: empty_case:K, hol_prod_setprod, hol_typedef_topology)
-Theorem CONTINUOUS_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall t c= K, forall k :e K, k :e t -> continuous_map (A :^: K) A (product_topology A K t tops,tops k) (fun x:set => (fun x :e A :^: K => k k) x).
+Theorem CONTINUOUS_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall t c= K, forall k :e K, k :e t -> continuous_map (A :^: K) A (product_topology A K t tops,tops k) (fun x:set => x k).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4387 / OPEN_MAP_PRODUCT_PROJECTION
 // Source hash: md5:0a54133b30c304b1ca98b46e6c6193bc
 // Status: generalization_required (bridges: empty_case:K, hol_prod_setprod, hol_typedef_topology)
-Theorem OPEN_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall t c= K, forall k :e K, k :e t -> open_map (A :^: K) A (product_topology A K t tops,tops k) (fun x:set => (fun x :e A :^: K => k k) x).
+Theorem OPEN_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall t c= K, forall k :e K, k :e t -> open_map (A :^: K) A (product_topology A K t tops,tops k) (fun x:set => x k).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4451 / OPEN_IN_CARTESIAN_PRODUCT_GEN
@@ -2585,7 +2585,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4655 / QUOTIENT_MAP_PRODUCT_PROJECTION
 // Source hash: md5:d359559de40b094ed1a3b6d552ef9463
 // Status: generalization_required (bridges: empty_case:K, hol_prod_setprod, hol_typedef_topology)
-Theorem QUOTIENT_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall k c= K, forall i :e K, i :e k -> (quotient_map (A :^: K) A (product_topology A K k tops,tops i) (fun x:set => (fun x :e A :^: K => i i) x) <-> topspace (A :^: K) (product_topology A K k tops) = Empty -> topspace A (tops i) = Empty).
+Theorem QUOTIENT_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall k c= K, forall i :e K, i :e k -> (quotient_map (A :^: K) A (product_topology A K k tops,tops i) (fun x:set => x i) <-> topspace (A :^: K) (product_topology A K k tops) = Empty -> topspace A (tops i) = Empty).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4668 / CONTINUOUS_MAP_PRODUCT
@@ -2609,7 +2609,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:4791 / IN_PRODUCT_TOPOLOGY_CLOSURE_OF
 // Source hash: md5:0341e41546cca3493606d634f066d0e6
 // Status: generalization_required (bridges: empty_case:K, hol_typedef_topology)
-Theorem IN_PRODUCT_TOPOLOGY_CLOSURE_OF : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall s c= A :^: K, forall k c= K, forall z :e A :^: K, z :e closure_of (A :^: K) (product_topology A K k tops) s -> forall i :e K, i :e k -> z i :e closure_of A (tops i) {(fun x :e A :^: K => i i) x | x :e s}.
+Theorem IN_PRODUCT_TOPOLOGY_CLOSURE_OF : forall A K:set, A <> Empty -> forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall s c= A :^: K, forall k c= K, forall z :e A :^: K, z :e closure_of (A :^: K) (product_topology A K k tops) s -> forall i :e K, i :e k -> z i :e closure_of A (tops i) {x i | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:4801 / PRODUCT_TOPOLOGY_EQ
@@ -3395,7 +3395,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:6208 / RETRACTION_MAP_PRODUCT_PROJECTION
 // Source hash: md5:da2f27e2cfeecbf30a3949b4f3ac55ba
 // Status: generalization_required (bridges: empty_case:K, hol_prod_setprod, hol_typedef_topology)
-Theorem RETRACTION_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall k c= K, forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall i :e K, i :e k -> (retraction_map (A :^: K) A (product_topology A K k tops,tops i) (fun x:set => (fun x :e A :^: K => i i) x) <-> topspace (A :^: K) (product_topology A K k tops) = Empty -> topspace A (tops i) = Empty).
+Theorem RETRACTION_MAP_PRODUCT_PROJECTION : forall A K:set, A <> Empty -> forall k c= K, forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall i :e K, i :e k -> (retraction_map (A :^: K) A (product_topology A K k tops,tops i) (fun x:set => x i) <-> topspace (A :^: K) (product_topology A K k tops) = Empty -> topspace A (tops i) = Empty).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:6234 / DISCRETE_SPACE_RETRACTION_MAP_IMAGE
@@ -12377,7 +12377,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:29369 / HOMOTOPIC_WITH_PRODUCT_TOPOLOGY
 // Source hash: md5:843341b617f5304c05762ae88fc31deb
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_topology)
-Theorem HOMOTOPIC_WITH_PRODUCT_TOPOLOGY : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall k c= K, forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall tops':set -> set, (forall x :e K, tops' x :e topology B) -> forall p :e Power (B :^: A) :^: K, forall q c= B :^: K :^: (A :^: K), forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall g:set -> set -> set, (forall x :e K, forall y :e A, g x y :e B) -> (forall i :e K, i :e k -> homotopic_with B A (p i) (tops i,tops' i) (f i) (g i)) /\ (forall h :e B :^: A :^: K, (forall i :e K, i :e k -> h i :e p i) -> (fun x :e A :^: K => fun x0 :e K => if x0 :e k then h x0 (x0 x0) else choose_in B (fun y:set => True)) :e q) -> homotopic_with (B :^: K) (A :^: K) q (product_topology A K k tops,product_topology B K k tops') (fun x:set => (fun z :e A :^: K => fun x :e K => if x :e k then f x (z x) else choose_in B (fun y:set => True)) x) (fun x:set => (fun z :e A :^: K => fun x :e K => if x :e k then g x (z x) else choose_in B (fun y:set => True)) x).
+Theorem HOMOTOPIC_WITH_PRODUCT_TOPOLOGY : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall k c= K, forall tops:set -> set, (forall x :e K, tops x :e topology A) -> forall tops':set -> set, (forall x :e K, tops' x :e topology B) -> forall p :e Power (B :^: A) :^: K, forall q c= B :^: K :^: (A :^: K), forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall g:set -> set -> set, (forall x :e K, forall y :e A, g x y :e B) -> (forall i :e K, i :e k -> homotopic_with B A (p i) (tops i,tops' i) (f i) (g i)) /\ (forall h :e B :^: A :^: K, (forall i :e K, i :e k -> h i :e p i) -> (fun x :e A :^: K => fun x0 :e K => if x0 :e k then h x0 (x x0) else choose_in B (fun y:set => True)) :e q) -> homotopic_with (B :^: K) (A :^: K) q (product_topology A K k tops,product_topology B K k tops') (fun x:set => fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)) (fun x:set => fun x0 :e K => if x0 :e k then g x0 (x x0) else choose_in B (fun y:set => True)).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:29405 / homotopy_equivalent_space
@@ -14201,7 +14201,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:38898 / CONTINUOUS_MAP_NSPHERE_REFLECTION
 // Source hash: md5:eed9739627b4ee2637b593124b879da3
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem CONTINUOUS_MAP_NSPHERE_REFLECTION : forall n k :e omega, continuous_map (R :^: omega) (R :^: omega) (nsphere n,nsphere n) (fun x:set => (fun x :e R :^: omega => fun i :e omega => if i = k then - i i else i i) x).
+Theorem CONTINUOUS_MAP_NSPHERE_REFLECTION : forall n k :e omega, continuous_map (R :^: omega) (R :^: omega) (nsphere n,nsphere n) (fun x:set => fun x0 :e omega => if x0 = k then - x x0 else x x0).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:38912 / CONTRACTIBLE_SPACE_UPPER_HEMISPHERE
@@ -14219,7 +14219,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:39026 / NULLHOMOTOPIC_NONSURJECTIVE_SPHERE_MAP
 // Source hash: md5:c5a83e995b29ee035a07e390352922c1
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem NULLHOMOTOPIC_NONSURJECTIVE_SPHERE_MAP : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ ~ {f x | x :e topspace (R :^: omega) (nsphere p)} = topspace (R :^: omega) (nsphere p) -> exists a :e R :^: omega, homotopic_with (R :^: omega) (R :^: omega) {x :e R :^: omega :^: (R :^: omega) | True} (nsphere p,nsphere p) (fun x:set => f x) (fun x:set => (fun x :e R :^: omega => a) x).
+Theorem NULLHOMOTOPIC_NONSURJECTIVE_SPHERE_MAP : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ ~ {f x | x :e topspace (R :^: omega) (nsphere p)} = topspace (R :^: omega) (nsphere p) -> exists a :e R :^: omega, homotopic_with (R :^: omega) (R :^: omega) {x :e R :^: omega :^: (R :^: omega) | True} (nsphere p,nsphere p) (fun x:set => f x) (fun x:set => fun x0 :e omega => a x0).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:39126 / CONTRACTION_IMP_UNIQUE_FIXPOINT
@@ -14237,13 +14237,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:39263 / funspace
 // Source hash: md5:3ecaef5e9754cb1f04be224d28d4d179
 // Status: generalization_required (bridges: choose_in_spec, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, omega_Subq_R)
-Theorem funspace_thm : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e metric B, funspace A B s m = ({f :e B :^: A | (forall x :e A, x :e s -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\ mbounded B m {f x | x :e s})},fun p :e B :^: A :*: B :^: A => if s = Empty then 0 else sup {mdist B m (p 0 x,p 1 x) | x :e A, x :e s}).
+Theorem funspace_thm : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e metric B, funspace A B s m = ({f :e B :^: A | (forall x :e A, x :e s -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\ mbounded B m {f x | x :e s})},fun p :e B :^: A :*: B :^: A => if s = Empty then 0 else sup {mdist B m (p 0 x,p 1 x) | x :e A, x :e s}).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:39271 / FUNSPACE
 // Source hash: md5:009b8c3e6680611a52c8c2e91c89c15a
 // Status: transport_required (bridges: choose_in_spec, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, omega_Subq_R)
-Theorem FUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e metric B, mspace (B :^: A) (funspace A B s m) = {f :e B :^: A | (forall x :e A, x :e s -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\ mbounded B m {f x | x :e s})} /\ forall f g :e B :^: A, mdist (B :^: A) (funspace A B s m) (f,g) = if s = Empty then 0 else sup {mdist B m (f x,g x) | x :e A, x :e s}.
+Theorem FUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e metric B, mspace (B :^: A) (funspace A B s m) = {f :e B :^: A | (forall x :e A, x :e s -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\ mbounded B m {f x | x :e s})} /\ forall f g :e B :^: A, mdist (B :^: A) (funspace A B s m) (f,g) = if s = Empty then 0 else sup {mdist B m (f x,g x) | x :e A, x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:39380 / FUNSPACE_IMP_WELLDEFINED
@@ -14255,7 +14255,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:39384 / FUNSPACE_IMP_EXTENSIONAL
 // Source hash: md5:a804042e34afd47c522c328d827910da
 // Status: transport_required (bridges: choose_in_spec, hol_typedef_metric)
-Theorem FUNSPACE_IMP_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e metric B, forall f :e B :^: A, f :e mspace (B :^: A) (funspace A B s m) -> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}.
+Theorem FUNSPACE_IMP_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e metric B, forall f :e B :^: A, f :e mspace (B :^: A) (funspace A B s m) -> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:39388 / FUNSPACE_IMP_BOUNDED_IMAGE
@@ -14297,7 +14297,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:39561 / CFUNSPACE
 // Source hash: md5:99994e83bf7a0763097ffe0c47032dd8
 // Status: transport_required (bridges: choose_in_spec, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_topology, omega_Subq_R)
-Theorem CFUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall m :e metric B, (forall top0 :e topology A, forall m0 :e metric B, mspace (B :^: A) (cfunspace A B top0 m0) = {f :e B :^: A | (forall x :e A, x :e topspace A top0 -> f x :e mspace B m0) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e topspace A top0 -> x0 x0 = choose_in B (fun y:set => True)} /\ (mbounded B m0 {f x | x :e topspace A top0} /\ continuous_map A B (top0,mtopology B m0) (fun x:set => f x)))}) /\ forall f g :e B :^: A, mdist (B :^: A) (cfunspace A B top m) (f,g) = if topspace A top = Empty then 0 else sup {mdist B m (f x,g x) | x :e A, x :e topspace A top}.
+Theorem CFUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall m :e metric B, (forall top0 :e topology A, forall m0 :e metric B, mspace (B :^: A) (cfunspace A B top0 m0) = {f :e B :^: A | (forall x :e A, x :e topspace A top0 -> f x :e mspace B m0) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e topspace A top0 -> x x0 = choose_in B (fun y:set => True)} /\ (mbounded B m0 {f x | x :e topspace A top0} /\ continuous_map A B (top0,mtopology B m0) (fun x:set => f x)))}) /\ forall f g :e B :^: A, mdist (B :^: A) (cfunspace A B top m) (f,g) = if topspace A top = Empty then 0 else sup {mdist B m (f x,g x) | x :e A, x :e topspace A top}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:39574 / CFUNSPACE_SUBSET_FUNSPACE
@@ -14345,7 +14345,7 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:39643 / COMPACT_IN_MSPACE_CFUNSPACE
 // Source hash: md5:4d4fc47f337c2f5ffee86f8be0f94c87
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_metric, hol_typedef_topology)
-Theorem COMPACT_IN_MSPACE_CFUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall m :e metric B, compact_in A top (topspace A top) -> mspace (B :^: A) (cfunspace A B top m) = {f :e B :^: A | (forall x :e A, x :e topspace A top -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e topspace A top -> x0 x0 = choose_in B (fun y:set => True)} /\ continuous_map A B (top,mtopology B m) (fun x:set => f x))}.
+Theorem COMPACT_IN_MSPACE_CFUNSPACE : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall m :e metric B, compact_in A top (topspace A top) -> mspace (B :^: A) (cfunspace A B top m) = {f :e B :^: A | (forall x :e A, x :e topspace A top -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e topspace A top -> x x0 = choose_in B (fun y:set => True)} /\ continuous_map A B (top,mtopology B m) (fun x:set => f x))}.
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:39656 / MCOMPLETE_CFUNSPACE
@@ -14465,13 +14465,13 @@ Admitted.
 // HOL Light: Multivariate/metric.ml:40537 / COMPLETELY_REGULAR_SPACE_CUBE_EMBEDDING_EXPLICIT
 // Source hash: md5:eba2666ff15016224c10f03c6fde511a
 // Status: transport_required (bridges: choose_in_spec, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_topology, omega_Subq_R)
-Theorem COMPLETELY_REGULAR_SPACE_CUBE_EMBEDDING_EXPLICIT : forall A:set, A <> Empty -> forall top :e topology A, completely_regular_space A top /\ hausdorff_space A top -> embedding_map A (R :^: (R :^: A)) (top,product_topology R (R :^: A) (mspace (R :^: A) (submetric (R :^: A) (cfunspace A R top real_euclidean_metric) {f :e R :^: A | {f x | x :e topspace A top} c= closed_real_interval (seq_cons (0,1) seq_nil)})) (fun x:set => (fun f :e R :^: A => subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil))) x)) (fun x:set => fun x0 :e R :^: A => if x0 :e mspace (R :^: A) (submetric (R :^: A) (cfunspace A R top real_euclidean_metric) {f :e R :^: A | {f x0 | x0 :e topspace A top} c= closed_real_interval (seq_cons (0,1) seq_nil)}) then (fun f :e R :^: A => f x) x0 else choose_in R (fun y:set => True)).
+Theorem COMPLETELY_REGULAR_SPACE_CUBE_EMBEDDING_EXPLICIT : forall A:set, A <> Empty -> forall top :e topology A, completely_regular_space A top /\ hausdorff_space A top -> embedding_map A (R :^: (R :^: A)) (top,product_topology R (R :^: A) (mspace (R :^: A) (submetric (R :^: A) (cfunspace A R top real_euclidean_metric) {f :e R :^: A | {f x | x :e topspace A top} c= closed_real_interval (seq_cons (0,1) seq_nil)})) (fun f:set => subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil)))) (fun x:set => fun x0 :e R :^: A => if x0 :e mspace (R :^: A) (submetric (R :^: A) (cfunspace A R top real_euclidean_metric) {f :e R :^: A | {f x0 | x0 :e topspace A top} c= closed_real_interval (seq_cons (0,1) seq_nil)}) then x0 x else choose_in R (fun y:set => True)).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:40652 / COMPLETELY_REGULAR_SPACE_CUBE_EMBEDDING
 // Source hash: md5:dac6e585f1ae7a38b58a308d525f21d9
 // Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem COMPLETELY_REGULAR_SPACE_CUBE_EMBEDDING : forall A:set, A <> Empty -> forall top :e topology A, completely_regular_space A top /\ hausdorff_space A top -> exists k c= R :^: A, exists e0 :e R :^: (R :^: A) :^: A, embedding_map A (R :^: (R :^: A)) (top,product_topology R (R :^: A) k (fun x:set => (fun f :e R :^: A => subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil))) x)) (fun x:set => e0 x).
+Theorem COMPLETELY_REGULAR_SPACE_CUBE_EMBEDDING : forall A:set, A <> Empty -> forall top :e topology A, completely_regular_space A top /\ hausdorff_space A top -> exists k c= R :^: A, exists e0 :e R :^: (R :^: A) :^: A, embedding_map A (R :^: (R :^: A)) (top,product_topology R (R :^: A) k (fun f:set => subtopology R euclideanreal (closed_real_interval (seq_cons (0,1) seq_nil)))) (fun x:set => e0 x).
 Admitted.
 
 // HOL Light: Multivariate/metric.ml:40671 / URYSOHN_COMPLETELY_REGULAR_CLOSED_COMPACT

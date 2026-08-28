@@ -8379,7 +8379,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f g :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\\ (g :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\\ (forall x :e A, x :e s -> f x = g x)) -> f = g"
+      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f g :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\\ (g :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\\ (forall x :e A, x :e s -> f x = g x)) -> f = g"
     },
     {
       "name": "EXTENSIONAL_UNIV",
@@ -13364,7 +13364,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {(fun x :e A :^: K => i i) x | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}"
+      "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {x i | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}"
     },
     {
       "name": "IMAGE_RESTRICTION",
@@ -21834,7 +21834,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => True)"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => True)"
     },
     {
       "name": "IN_EXTENSIONAL_UNDEFINED",
@@ -21850,7 +21850,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x x = choose_in B (fun y:set => True)} /\\ ~ x :e s -> f x = choose_in B (fun x:set => True)"
+      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => True)} /\\ ~ x :e s -> f x = choose_in B (fun x:set => True)"
     },
     {
       "name": "IN_GSPEC",
@@ -22132,7 +22132,7 @@
         "g'": "metafun(B_ -> B)"
       },
       "error": "",
-      "statement": "forall A A_ B B_:set, A <> Empty -> A_ <> Empty -> B <> Empty -> B_ <> Empty -> forall f:set -> set, (forall x :e A, f x :e A_) -> forall f':set -> set, (forall x :e A_, f' x :e A) -> forall g:set -> set, (forall x :e B, g x :e B_) -> forall g':set -> set, (forall x :e B_, g' x :e B) -> (forall x :e A_, f (f' x) = x) /\\ (forall y :e A, f' (f y) = y) /\\ ((forall x :e B_, g (g' x) = x) /\\ (forall y :e B, g' (g y) = y)) -> (forall x :e B_ :^: A_, (fun h :e B :^: A => fun a' :e A_ => g (h (f' a'))) ((fun h :e B_ :^: A_ => fun a :e A => g' (h (f a))) x) = x) /\\ forall y :e B :^: A, (fun h :e B_ :^: A_ => fun a :e A => g' (h (f a))) ((fun h :e B :^: A => fun a' :e A_ => g (h (f' a'))) y) = y"
+      "statement": "forall A A_ B B_:set, A <> Empty -> A_ <> Empty -> B <> Empty -> B_ <> Empty -> forall f:set -> set, (forall x :e A, f x :e A_) -> forall f':set -> set, (forall x :e A_, f' x :e A) -> forall g:set -> set, (forall x :e B, g x :e B_) -> forall g':set -> set, (forall x :e B_, g' x :e B) -> (forall x :e A_, f (f' x) = x) /\\ (forall y :e A, f' (f y) = y) /\\ ((forall x :e B_, g (g' x) = x) /\\ (forall y :e B, g' (g y) = y)) -> (forall x :e B_ :^: A_, (fun x0 :e A_ => g ((fun x0 :e A => g' (x (f x0))) (f' x0))) = x) /\\ forall y :e B :^: A, (fun x0 :e A => g' ((fun x0 :e A_ => g (y (f' x0))) (f x0))) = y"
     },
     {
       "name": "ISO_REFL",
@@ -39366,7 +39366,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, (forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = f x) <-> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, (forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = f x) <-> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)}"
     },
     {
       "name": "RESTRICTION_IDEMP",
@@ -39414,7 +39414,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (fun x :e A => if x :e s then f x else choose_in B (fun y:set => True)) :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (fun x :e A => if x :e s then f x else choose_in B (fun y:set => True)) :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)}"
     },
     {
       "name": "RESTRICTION_RESTRICTION",

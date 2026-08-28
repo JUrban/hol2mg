@@ -243,7 +243,7 @@ Theorem RATIONAL_INV_EQ : forall x :e R, recip_SNo x :e rational <-> x :e ration
 Admitted.
 
 // HOL Light: Library/floor.ml:263 / RATIONAL_SUM
-// Source hash: md5:b23f91d8b799d057306689faf506f965
+// Source hash: md5:00c0938a49a8f628a3859504062de6ac
 // Status: transport_required (bridges: hol_real_R, hol_sum_finsum)
 Theorem RATIONAL_SUM : forall A:set, A <> Empty -> forall s c= A, forall x:set -> set, (forall x :e A, x x :e R) -> (forall i :e A, i :e s -> x i :e rational) -> finsum s x :e rational.
 Admitted.

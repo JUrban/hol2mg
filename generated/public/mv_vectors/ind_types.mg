@@ -95,7 +95,7 @@ Admitted.
 // HOL Light: ind_types.ml:1068 / ISO_FUN
 // Source hash: md5:a2a618441e3e25283a31bd76d0349c20
 // Status: exact_native
-Theorem ISO_FUN : forall A A_ B B_:set, A <> Empty -> A_ <> Empty -> B <> Empty -> B_ <> Empty -> forall f:set -> set, (forall x :e A, f x :e A_) -> forall f':set -> set, (forall x :e A_, f' x :e A) -> forall g:set -> set, (forall x :e B, g x :e B_) -> forall g':set -> set, (forall x :e B_, g' x :e B) -> (forall x :e A_, f (f' x) = x) /\ (forall y :e A, f' (f y) = y) /\ ((forall x :e B_, g (g' x) = x) /\ (forall y :e B, g' (g y) = y)) -> (forall x :e B_ :^: A_, (fun h :e B :^: A => fun a' :e A_ => g (h (f' a'))) ((fun h :e B_ :^: A_ => fun a :e A => g' (h (f a))) x) = x) /\ forall y :e B :^: A, (fun h :e B_ :^: A_ => fun a :e A => g' (h (f a))) ((fun h :e B :^: A => fun a' :e A_ => g (h (f' a'))) y) = y.
+Theorem ISO_FUN : forall A A_ B B_:set, A <> Empty -> A_ <> Empty -> B <> Empty -> B_ <> Empty -> forall f:set -> set, (forall x :e A, f x :e A_) -> forall f':set -> set, (forall x :e A_, f' x :e A) -> forall g:set -> set, (forall x :e B, g x :e B_) -> forall g':set -> set, (forall x :e B_, g' x :e B) -> (forall x :e A_, f (f' x) = x) /\ (forall y :e A, f' (f y) = y) /\ ((forall x :e B_, g (g' x) = x) /\ (forall y :e B, g' (g y) = y)) -> (forall x :e B_ :^: A_, (fun x0 :e A_ => g ((fun x0 :e A => g' (x (f x0))) (f' x0))) = x) /\ forall y :e B :^: A, (fun x0 :e A => g' ((fun x0 :e A_ => g (y (f' x0))) (f x0))) = y.
 Admitted.
 
 // HOL Light: ind_types.ml:1073 / ISO_USAGE

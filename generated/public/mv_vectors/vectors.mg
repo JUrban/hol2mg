@@ -141,7 +141,7 @@ Theorem VECTOR_MUL_COMPONENT : forall N:set, N <> Empty -> forall c :e R, forall
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:185 / COND_COMPONENT
-// Source hash: md5:04606d43016aec66728fb2325f5d97b3
+// Source hash: md5:fe8deb5afa569c3d017b30fc27deeb8a
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega)
 Theorem COND_COMPONENT : forall A B:set, B <> Empty -> forall b:prop, forall x y :e A :^: idx B, forall i :e omega, (if b then x else y) i = if b then x i else y i.
 Admitted.
@@ -153,31 +153,31 @@ Theorem VECTOR_ADD_SYM : forall N:set, N <> Empty -> forall x y :e R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:195 / VECTOR_ADD_LID
-// Source hash: md5:3d70b004220d1053393cd8efd59f9ae0
+// Source hash: md5:de39fe96ba91d73ff9802334df751fa4
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_ADD_LID : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_add A (vec A 0) x = x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:197 / VECTOR_ADD_RID
-// Source hash: md5:2dc9e46ad3285dfae9e19c915242a866
+// Source hash: md5:01080a748c3dc79d38d6387aa50f5e58
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_ADD_RID : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_add A x (vec A 0) = x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:199 / VECTOR_SUB_REFL
-// Source hash: md5:c8417145be13d0a6fb569a4c09205a44
+// Source hash: md5:95204390b47cc4608105dbf91ed2982d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_SUB_REFL : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_sub A x x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:201 / VECTOR_ADD_LINV
-// Source hash: md5:f6f1e28b728ebcb6100ac124d5f71190
+// Source hash: md5:db4ed02ad3617b12910838b3e25e6d70
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_ADD_LINV : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_add A (vector_neg A x) x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:203 / VECTOR_ADD_RINV
-// Source hash: md5:b5c3865d036af8111bc720fa6ac35aae
+// Source hash: md5:511b05a24ebd316a92ccfc826e48d0b7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_ADD_RINV : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_add A x (vector_neg A x) = vec A 0.
 Admitted.
@@ -195,25 +195,25 @@ Theorem VECTOR_NEG_SUB : forall N:set, N <> Empty -> forall x y :e R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:209 / VECTOR_SUB_EQ
-// Source hash: md5:64bda102f40ad8481d079eccb50d8273
+// Source hash: md5:24d31beb31c888fe0050bb222ae9932d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_SUB_EQ : forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_sub A x y = vec A 0 <-> x = y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:211 / VECTOR_MUL_ASSOC
-// Source hash: md5:5f544a3418b58dc89a617e979649a4de
+// Source hash: md5:d726051f9bfb00643dbeec292db179a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_MUL_ASSOC : forall A:set, A <> Empty -> forall a b :e R, forall x :e R :^: idx A, vector_mul A a (vector_mul A b x) = vector_mul A (a * b) x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:213 / VECTOR_MUL_LID
-// Source hash: md5:d4e48db706d58febec21a5189ca3caa1
+// Source hash: md5:8a9aebf991b2a393f31da9a9f96a1d26
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VECTOR_MUL_LID : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_mul A 1 x = x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:215 / VECTOR_MUL_LZERO
-// Source hash: md5:fca1bcea955728580cb0aea552fa008d
+// Source hash: md5:64185c702259a4be0036b7006c0b6d97
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VECTOR_MUL_LZERO : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_mul A 0 x = vec A 0.
 Admitted.
@@ -231,25 +231,25 @@ Theorem VECTOR_SUB_ADD2 : forall N:set, N <> Empty -> forall y x :e R :^: idx N,
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:221 / VECTOR_ADD_LDISTRIB
-// Source hash: md5:7f77ac3bbd5fdcae413db56796acb2b2
+// Source hash: md5:506e3a73f770e00ac7a11c814208c2e8
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_ADD_LDISTRIB : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx A, vector_mul A c (vector_add A x y) = vector_add A (vector_mul A c x) (vector_mul A c y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:223 / VECTOR_SUB_LDISTRIB
-// Source hash: md5:cf8af4566dce3aeac16c5f29f9b8edc7
+// Source hash: md5:3021b98f047da2a21b88534d29f2e6da
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_SUB_LDISTRIB : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx A, vector_mul A c (vector_sub A x y) = vector_sub A (vector_mul A c x) (vector_mul A c y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:225 / VECTOR_ADD_RDISTRIB
-// Source hash: md5:df65f19631676d24986094d736723a51
+// Source hash: md5:cd2f7ee01d45f55fce14d832487d06f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_ADD_RDISTRIB : forall A:set, A <> Empty -> forall a b :e R, forall x :e R :^: idx A, vector_mul A (a + b) x = vector_add A (vector_mul A a x) (vector_mul A b x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:227 / VECTOR_SUB_RDISTRIB
-// Source hash: md5:96865ab2f204e59b47b96d170312523d
+// Source hash: md5:69c874de3615b234c9f6dcf143c37a70
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_SUB_RDISTRIB : forall A:set, A <> Empty -> forall a b :e R, forall x :e R :^: idx A, vector_mul A (a + - b) x = vector_sub A (vector_mul A a x) (vector_mul A b x).
 Admitted.
@@ -261,7 +261,7 @@ Theorem VECTOR_ADD_SUB : forall N:set, N <> Empty -> forall x y :e R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:231 / VECTOR_EQ_ADDR
-// Source hash: md5:1b5c5ae11d91f345fc93bd88043fe4f9
+// Source hash: md5:2fb91928d46031716526d3470bade8b3
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_EQ_ADDR : forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_add A x y = x <-> y = vec A 0.
 Admitted.
@@ -273,19 +273,19 @@ Theorem VECTOR_SUB : forall N:set, N <> Empty -> forall x y :e R :^: idx N, vect
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:235 / VECTOR_SUB_RZERO
-// Source hash: md5:512b7abf74d3e390b15a0901061ea43e
+// Source hash: md5:81e5391cc0eb057108bc953d4f2f1178
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_SUB_RZERO : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_sub A x (vec A 0) = x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:237 / VECTOR_MUL_RZERO
-// Source hash: md5:3c0b4f490fc6bd38399973ef26d387e9
+// Source hash: md5:c21f3a4a4c91b3999279074fc2af1640
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_MUL_RZERO : forall A:set, A <> Empty -> forall c :e R, vector_mul A c (vec A 0) = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:239 / VECTOR_NEG_MINUS1
-// Source hash: md5:0bcfd866032654dbdbdd23cf9f6594b5
+// Source hash: md5:86d57106bc529b6a90476f4cbe9274fb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VECTOR_NEG_MINUS1 : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_neg A x = vector_mul A (- 1) x.
 Admitted.
@@ -297,7 +297,7 @@ Theorem VECTOR_ADD_ASSOC : forall N:set, N <> Empty -> forall x y z :e R :^: idx
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:243 / VECTOR_SUB_LZERO
-// Source hash: md5:0ffc4598b5a7d82403e918ee8b6329a5
+// Source hash: md5:4f0a3ea66c24e89440cc49ad894357fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_SUB_LZERO : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_sub A (vec A 0) x = vector_neg A x.
 Admitted.
@@ -309,25 +309,25 @@ Theorem VECTOR_NEG_NEG : forall N:set, N <> Empty -> forall x :e R :^: idx N, ve
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:247 / VECTOR_MUL_LNEG
-// Source hash: md5:e4cc46ffdbdb2a55044d0db58e10ffa1
+// Source hash: md5:adfacfae7a8e53fa130aa2ae51355b62
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_MUL_LNEG : forall A:set, A <> Empty -> forall c :e R, forall x :e R :^: idx A, vector_mul A (- c) x = vector_neg A (vector_mul A c x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:249 / VECTOR_MUL_RNEG
-// Source hash: md5:5608666ddc8d91b219202dd51e101bee
+// Source hash: md5:880c85cb33a57d580e201e3b351b1382
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_MUL_RNEG : forall A:set, A <> Empty -> forall c :e R, forall x :e R :^: idx A, vector_mul A c (vector_neg A x) = vector_neg A (vector_mul A c x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:251 / VECTOR_NEG_0
-// Source hash: md5:16d1de76ac7a6805d1310334ef704549
+// Source hash: md5:183217aac2a28e7c1f724bed1c53ce60
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_NEG_0 : forall A:set, A <> Empty -> vector_neg A (vec A 0) = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:253 / VECTOR_NEG_EQ_0
-// Source hash: md5:2e8631f42ec345a2a3866337c5cb5d7e
+// Source hash: md5:f47a36f9ea646d4ef0c602a688c37a7e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_NEG_EQ_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_neg A x = vec A 0 <-> x = vec A 0.
 Admitted.
@@ -345,7 +345,7 @@ Theorem VECTOR_ADD_AC : forall N:set, N <> Empty -> forall m n p :e R :^: idx N,
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:262 / VEC_EQ
-// Source hash: md5:62fcbe36f0fdf30df64134fa23c237b7
+// Source hash: md5:a18df28a73299cb9a106895635103c62
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VEC_EQ : forall A:set, A <> Empty -> forall m n :e omega, vec A m = vec A n <-> m = n.
 Admitted.
@@ -369,73 +369,73 @@ Theorem EUCLIDEAN_SPACE_INFINITE : forall N:set, N <> Empty -> infinite (R :^: i
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:298 / DOT_SYM
-// Source hash: md5:3cb35d8148fa84b5ed18e6f2fd54ea33
+// Source hash: md5:e9adc86bbcb4c9ca445188cb92bfdcc1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_SYM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A x y = dot A y x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:300 / DOT_LADD
-// Source hash: md5:7f463610687959c0309500769596742d
+// Source hash: md5:0139ac9c2efbe23075edf4850231a87d
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_LADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, dot A (vector_add A x y) z = dot A x z + dot A y z.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:302 / DOT_RADD
-// Source hash: md5:8ec14fb6da537b28101b029cb3a0c22b
+// Source hash: md5:f9a8d2cc73977fa4431445e4922155e7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_RADD : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, dot A x (vector_add A y z) = dot A x y + dot A x z.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:304 / DOT_LSUB
-// Source hash: md5:8e6821fb78f43ebb022668c0f98dad28
+// Source hash: md5:2977a8922b3dba161dc927f01a189d09
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_LSUB : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, dot A (vector_sub A x y) z = dot A x z + - dot A y z.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:306 / DOT_RSUB
-// Source hash: md5:c168c9ec24842bd5dd878ec68a826ba4
+// Source hash: md5:16c02b701b24e8694649fa72a3835a98
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_RSUB : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, dot A x (vector_sub A y z) = dot A x y + - dot A x z.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:308 / DOT_LMUL
-// Source hash: md5:86f82328e255399232d8192486a8e635
+// Source hash: md5:a687d19cb435e24ba90e1af45f99a0e9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_LMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx A, dot A (vector_mul A c x) y = c * dot A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:310 / DOT_RMUL
-// Source hash: md5:09f71068f8f99f0f56e9d49483cd0e6e
+// Source hash: md5:d8f9f0d925e0c439e0a548cc0b973601
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_RMUL : forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx A, dot A x (vector_mul A c y) = c * dot A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:312 / DOT_LNEG
-// Source hash: md5:fb046ddc5877b4443f3b6baa99700d80
+// Source hash: md5:29d46f6b8289fe1b387bb80cd6abd1fb
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_LNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A (vector_neg A x) y = - dot A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:314 / DOT_RNEG
-// Source hash: md5:8583574d400ca1b237233fbb7a3be94c
+// Source hash: md5:bf74cc9016fc22900b3c7a45dea866b8
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_RNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A x (vector_neg A y) = - dot A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:316 / DOT_LZERO
-// Source hash: md5:d1b8980c11c041b95a4fb3f4f5cdfbe9
+// Source hash: md5:b3f599340ddc4d308dae3afa41dff761
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_LZERO : forall A:set, A <> Empty -> forall x :e R :^: idx A, dot A (vec A 0) x = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:318 / DOT_RZERO
-// Source hash: md5:a80d4baef78579f40da0c3cec0431dd2
+// Source hash: md5:090e5ca8bcaaabbaf842e546b20b0a3f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_RZERO : forall A:set, A <> Empty -> forall x :e R :^: idx A, dot A x (vec A 0) = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:320 / DOT_POS_LE
-// Source hash: md5:9cd6f80ba170a003faf43564f1cc2f10
+// Source hash: md5:e230de8f6d1b52c015ef4e7d26239099
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_POS_LE : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 <= dot A x x.
 Admitted.
@@ -447,13 +447,13 @@ Theorem DOT_EQ_0 : forall N:set, N <> Empty -> forall x :e R :^: idx N, dot N x 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:331 / DOT_POS_LT
-// Source hash: md5:bce2649b6e10db08ae59f32ffdc598e2
+// Source hash: md5:b15109779fffb5aa11797d23a8923f3e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_POS_LT : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 < dot A x x <-> ~ x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:335 / FORALL_DOT_EQ_0
-// Source hash: md5:f01a7c1655c6ff933c13980128cf61e2
+// Source hash: md5:390a4bbda52a96a76f290c2416e4901a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem FORALL_DOT_EQ_0 : forall A B:set, A <> Empty -> B <> Empty -> (forall y :e R :^: idx A, (forall x :e R :^: idx A, dot A x y = 0) <-> y = vec A 0) /\ forall x :e R :^: idx B, (forall y :e R :^: idx B, dot B x y = 0) <-> x = vec B 0.
 Admitted.
@@ -519,13 +519,13 @@ Theorem FORALL_REAL_ONE : forall P:set -> prop, (forall x :e R :^: idx 1, P x) <
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:411 / vector_norm
-// Source hash: md5:78733d3af7e2551b89bca2e7cb502901
+// Source hash: md5:0d97fb3bc82d0b2fbee25fd6efd433b3
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem vector_norm_thm : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = if 0 <= dot A x x then sqrt_SNo_nonneg (dot A x x) else - sqrt_SNo_nonneg (- dot A x x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:416 / dist
-// Source hash: md5:3b0f3506006a7c442036a66ed1bcb0a4
+// Source hash: md5:e989261721bed57342d13a7c45e16d05
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem dist : forall A:set, A <> Empty -> forall x y :e R :^: idx A, distance A (x,y) = vector_norm A (vector_sub A x y).
 Admitted.
@@ -543,97 +543,97 @@ Theorem DIST_REAL : forall x y :e R :^: idx 1, distance 1 (x,y) = abs_SNo (x 1 +
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:428 / NORM_0
-// Source hash: md5:12e8df824845a4a4bc00feb44e629443
+// Source hash: md5:3f1112f1e74a20128309ba8f31291e4d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_0 : forall A:set, A <> Empty -> vector_norm A (vec A 0) = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:432 / NORM_POS_LE
-// Source hash: md5:e561beab614dfb9aaed74bce49f0c558
+// Source hash: md5:2d58bbcbf407177f9d85554c082cb316
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_POS_LE : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 <= vector_norm A x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:436 / NORM_NEG
-// Source hash: md5:b09240b0f895b496197d9fe59e981292
+// Source hash: md5:b97e14d97f8119fc86e83344ac190829
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_NEG : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A (vector_neg A x) = vector_norm A x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:440 / NORM_SUB
-// Source hash: md5:5a3727596c0debaa34cec807beb7c291
+// Source hash: md5:9da40ec1f003d9221f6f8d665f98030c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_SUB : forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_norm A (vector_sub A x y) = vector_norm A (vector_sub A y x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:444 / NORM_MUL
-// Source hash: md5:e21ea0c917def56500d4d2c24ee48e6e
+// Source hash: md5:5060c0396ef9d90d448f86f97763c5be
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_MUL : forall A:set, A <> Empty -> forall a :e R, forall x :e R :^: idx A, vector_norm A (vector_mul A a x) = abs_SNo a * vector_norm A x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:449 / NORM_EQ_0_DOT
-// Source hash: md5:892e3d6f7f81b39b5e2ca3cf67fe0b63
+// Source hash: md5:d7cdf5a3a42213acebfbb0849ba7c73b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_EQ_0_DOT : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = 0 <-> dot A x x = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:453 / NORM_EQ_0
-// Source hash: md5:fa322c83a2a6f658a01cc498c4d13d9d
+// Source hash: md5:85262430d413f9519032f359ab28f502
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_EQ_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = 0 <-> x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:457 / NORM_POS_LT
-// Source hash: md5:15454968cb781b8250b2584b11cbab21
+// Source hash: md5:d09333d939002716dc146f4d15b8ae24
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_POS_LT : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 < vector_norm A x <-> ~ x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:461 / NORM_POW_2
-// Source hash: md5:147b4eea90a99d91f78c00156d4b3c19
+// Source hash: md5:f1d640e6538a450f3cbd8f33e69be7fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem NORM_POW_2 : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x ^ 2 = dot A x x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:465 / NORM_EQ_0_IMP
-// Source hash: md5:174d8aee785d6080ce4550abe4f3df05
+// Source hash: md5:7bbcdf2dd17bad72774fd44506f5fb08
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_EQ_0_IMP : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = 0 -> x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:469 / NORM_LE_0
-// Source hash: md5:9156c20661c49cb1e68de9f7aaf412bc
+// Source hash: md5:5e80698e8140e8ee0de8db29098eba19
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_LE_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x <= 0 <-> x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:473 / VECTOR_MUL_EQ_0
-// Source hash: md5:bfca620fa96efad88556cee3b624725e
+// Source hash: md5:fe1db8c2d427f7731d75774df4bb5bbc
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VECTOR_MUL_EQ_0 : forall A:set, A <> Empty -> forall a :e R, forall x :e R :^: idx A, vector_mul A a x = vec A 0 <-> a = 0 \/ x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:477 / VECTOR_MUL_LCANCEL
-// Source hash: md5:2a2d2e107b7d0e0b5d732a73920b20a8
+// Source hash: md5:ee359b9e6f99738884e57403fa7b7af2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VECTOR_MUL_LCANCEL : forall A:set, A <> Empty -> forall a :e R, forall x y :e R :^: idx A, vector_mul A a x = vector_mul A a y <-> a = 0 \/ x = y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:481 / VECTOR_MUL_RCANCEL
-// Source hash: md5:b44b6a8c35c7b65f1a37f93d96a419aa
+// Source hash: md5:0299b246d493363b7d218c7de079d533
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_MUL_RCANCEL : forall A:set, A <> Empty -> forall a b :e R, forall x :e R :^: idx A, vector_mul A a x = vector_mul A b x <-> a = b \/ x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:485 / VECTOR_MUL_LCANCEL_IMP
-// Source hash: md5:513f0dbaf1b6658c2971d0276eb22f40
+// Source hash: md5:27b1e86dc98359a315a34881bcdb57e2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VECTOR_MUL_LCANCEL_IMP : forall A:set, A <> Empty -> forall a :e R, forall x y :e R :^: idx A, ~ a = 0 /\ vector_mul A a x = vector_mul A a y -> x = y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:489 / VECTOR_MUL_RCANCEL_IMP
-// Source hash: md5:a8eb29692108ff65cf63f5a142e9b985
+// Source hash: md5:50b0bef513a9c5931f33d629a598e957
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VECTOR_MUL_RCANCEL_IMP : forall A:set, A <> Empty -> forall a b :e R, forall x :e R :^: idx A, ~ x = vec A 0 /\ vector_mul A a x = vector_mul A b x -> a = b.
 Admitted.
@@ -651,7 +651,7 @@ Theorem NORM_CAUCHY_SCHWARZ_ABS : forall N:set, N <> Empty -> forall x y :e R :^
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:514 / REAL_ABS_NORM
-// Source hash: md5:00baeb2c565a903f1a01e1b1c776912a
+// Source hash: md5:f621f6824071f24377a47c2a1be8bcad
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem REAL_ABS_NORM : forall A:set, A <> Empty -> forall x :e R :^: idx A, abs_SNo (vector_norm A x) = vector_norm A x.
 Admitted.
@@ -663,7 +663,7 @@ Theorem NORM_CAUCHY_SCHWARZ_DIV : forall N:set, N <> Empty -> forall x y :e R :^
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:528 / NORM_TRIANGLE
-// Source hash: md5:cb47cfae23ec6076b5d6e2dc2414353f
+// Source hash: md5:ef6fc4fbee0886f6797c0875c1aca463
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_TRIANGLE : forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_norm A (vector_add A x y) <= vector_norm A x + vector_norm A y.
 Admitted.
@@ -675,13 +675,13 @@ Theorem NORM_TRIANGLE_SUB : forall N:set, N <> Empty -> forall x y :e R :^: idx 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:541 / NORM_TRIANGLE_LE
-// Source hash: md5:22990575cfaaf6b06b068dfbcb8be9d7
+// Source hash: md5:632de3b1b1a8a65dbf855b156b82f8ef
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_TRIANGLE_LE : forall A:set, A <> Empty -> forall e0 :e R, forall x y :e R :^: idx A, vector_norm A x + vector_norm A y <= e0 -> vector_norm A (vector_add A x y) <= e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:545 / NORM_TRIANGLE_LT
-// Source hash: md5:b798346f64fac8a20b755698d02c88cd
+// Source hash: md5:da1883c5f23024b72221dd763660b1f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_TRIANGLE_LT : forall A:set, A <> Empty -> forall e0 :e R, forall x y :e R :^: idx A, vector_norm A x + vector_norm A y < e0 -> vector_norm A (vector_add A x y) < e0.
 Admitted.
@@ -711,31 +711,31 @@ Theorem NORM_LE_L1 : forall N:set, N <> Empty -> forall x :e R :^: idx N, vector
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:591 / REAL_ABS_SUB_NORM
-// Source hash: md5:198faefb7f440cd23973ecaa2104c7f2
+// Source hash: md5:0d59a5a5c052782dc402df27be38d465
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem REAL_ABS_SUB_NORM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, abs_SNo (vector_norm A x + - vector_norm A y) <= vector_norm A (vector_sub A x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:596 / NORM_LE
-// Source hash: md5:9e772fbf633e0b7938b205164a059b2e
+// Source hash: md5:215cc94f61acd74c3e1d13a1bbc0de7b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_LE : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm A x <= vector_norm B y <-> dot A x x <= dot B y y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:600 / NORM_LT
-// Source hash: md5:37651ec25bb72bcd2b4f65c0a99348e4
+// Source hash: md5:adfabee399446b15eafaf80e6bb37af5
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_LT : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm A x < vector_norm B y <-> dot A x x < dot B y y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:604 / NORM_EQ
-// Source hash: md5:ae8540dcdb848916229f1eaf220afa24
+// Source hash: md5:1ac79461b9d9b2288ca61c358daf9d4b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem NORM_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm A x = vector_norm B y <-> dot A x x = dot B y y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:608 / NORM_EQ_1
-// Source hash: md5:f34aca07ce528e9a72944dc16c85c387
+// Source hash: md5:db3b1899d6b5c8acee588d26b7f2f6a8
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_EQ_1 : forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = 1 <-> dot A x x = 1.
 Admitted.
@@ -759,7 +759,7 @@ Theorem L1_LE_NORM : forall N:set, N <> Empty -> forall x :e R :^: idx N, finsum
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:654 / DIST_INCREASES_ONLINE
-// Source hash: md5:e5b5de92f7a7347e9f1a31cb7e130978
+// Source hash: md5:8620a7b1d37cee673dc81a2b8930269d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
 Theorem DIST_INCREASES_ONLINE : forall A:set, A <> Empty -> forall a b d :e R :^: idx A, ~ d = vec A 0 -> distance A (a,b) < distance A (a,vector_add A b d) \/ distance A (a,b) < distance A (a,vector_sub A b d).
 Admitted.
@@ -771,7 +771,7 @@ Theorem NORM_INCREASES_ONLINE : forall N:set, N <> Empty -> forall a d :e R :^: 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:671 / DOT_SQUARE_NORM
-// Source hash: md5:6bb36094705de72412afca3a37d01eb4
+// Source hash: md5:f3c98966d5cd179d5e4beed9f3078c6c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DOT_SQUARE_NORM : forall A:set, A <> Empty -> forall x :e R :^: idx A, dot A x x = vector_norm A x ^ 2.
 Admitted.
@@ -819,37 +819,37 @@ Theorem HOMOMORPHISM_REAL_TO_REAL : forall f:set -> set, (forall x :e R, f x :e 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1073 / DOT_NORM
-// Source hash: md5:27a11512b16a2203f45b7bf3d1bf7f67
+// Source hash: md5:9763a00a8d51a363c5457926d658beff
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_NORM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A x y = ((vector_norm A (vector_add A x y) ^ 2 + - vector_norm A x ^ 2) + - vector_norm A y ^ 2) :/: 2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1077 / DOT_NORM_SUB
-// Source hash: md5:b6c6f4690ec397a83279fe8628c6c684
+// Source hash: md5:d4998bf712cca9f3766869996855b285
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_NORM_SUB : forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A x y = ((vector_norm A x ^ 2 + vector_norm A y ^ 2) + - vector_norm A (vector_sub A x y) ^ 2) :/: 2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1085 / VECTOR_EQ
-// Source hash: md5:d8c45bd24cbdbf346f3623655b5fee9d
+// Source hash: md5:bac5793c28cc6d5bea5986c7494da5d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_EQ : forall A:set, A <> Empty -> forall x y :e R :^: idx A, x = y <-> dot A x x = dot A x y /\ dot A y y = dot A x x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1096 / DIST_REFL
-// Source hash: md5:985483700a316e0df16f8fa36c533287
+// Source hash: md5:a72a0243ff5114cb55b71766fe12b22e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_REFL : forall A:set, A <> Empty -> forall x :e R :^: idx A, distance A (x,x) = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1100 / DIST_SYM
-// Source hash: md5:77984d1596563f1a14c0b547a709850d
+// Source hash: md5:00380dc8191da2d0dd595b822809f0e3
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_SYM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, distance A (x,y) = distance A (y,x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1104 / DIST_POS_LE
-// Source hash: md5:603543c015f7b8c5a4bb6ff96e144558
+// Source hash: md5:6523878a3e749625fe3e034f1aee6990
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_POS_LE : forall A:set, A <> Empty -> forall x y :e R :^: idx A, 0 <= distance A (x,y).
 Admitted.
@@ -867,61 +867,61 @@ Theorem DIST_TRIANGLE : forall N:set, N <> Empty -> forall x y z :e R :^: idx N,
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1116 / DIST_TRIANGLE_ALT
-// Source hash: md5:488eaade80f768b67788ae6ab94085e6
+// Source hash: md5:d2b82391c64377c0495217337a696007
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_TRIANGLE_ALT : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, distance A (y,z) <= distance A (x,y) + distance A (x,z).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1120 / DIST_EQ_0
-// Source hash: md5:1a26f232cab9d889cd6f30be2d7c54fb
+// Source hash: md5:6ec9ac16649ac70e750febd6b8572e71
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_EQ_0 : forall A:set, A <> Empty -> forall x y :e R :^: idx A, distance A (x,y) = 0 <-> x = y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1124 / DIST_POS_LT
-// Source hash: md5:f34f8353df965d396c8d7c75a04dbea1
+// Source hash: md5:e6e04dd113fd316d131280df63b8e64f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_POS_LT : forall A:set, A <> Empty -> forall x y :e R :^: idx A, ~ x = y -> 0 < distance A (x,y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1128 / DIST_NZ
-// Source hash: md5:860f67db7c8a5e8f3276b104520813e4
+// Source hash: md5:6f3d0d5bd5021e38badf1a904ff65cd9
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_NZ : forall A:set, A <> Empty -> forall x y :e R :^: idx A, ~ x = y <-> 0 < distance A (x,y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1132 / DIST_TRIANGLE_LE
-// Source hash: md5:0427e45173cbcc4ce66a5c34d0357566
+// Source hash: md5:744cec99777b41ed2239dd7776762b78
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_TRIANGLE_LE : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, forall e0 :e R, distance A (x,z) + distance A (y,z) <= e0 -> distance A (x,y) <= e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1136 / DIST_TRIANGLE_LT
-// Source hash: md5:5143fabe093efb9093698e5c2ce14f3f
+// Source hash: md5:614f986c706f381e3ddf948744b71dd9
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_TRIANGLE_LT : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, forall e0 :e R, distance A (x,z) + distance A (y,z) < e0 -> distance A (x,y) < e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1140 / DIST_TRIANGLE_HALF_L
-// Source hash: md5:dfd7eb2c751afad007cb39230df98404
+// Source hash: md5:d9a07d49d5fa688cdb65a608a3b1f6e7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_TRIANGLE_HALF_L : forall A:set, A <> Empty -> forall e0 :e R, forall x1 x2 y :e R :^: idx A, distance A (x1,y) < e0 :/: 2 /\ distance A (x2,y) < e0 :/: 2 -> distance A (x1,x2) < e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1144 / DIST_TRIANGLE_HALF_R
-// Source hash: md5:d9493cd2f7b27dd59882a61ec6885da7
+// Source hash: md5:6015c61a773b957f604dc1b078c1a2d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_TRIANGLE_HALF_R : forall A:set, A <> Empty -> forall e0 :e R, forall x1 x2 y :e R :^: idx A, distance A (y,x1) < e0 :/: 2 /\ distance A (y,x2) < e0 :/: 2 -> distance A (x1,x2) < e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1148 / DIST_TRIANGLE_ADD
-// Source hash: md5:704dfe78850cf520cafa6ee7c7304bcb
+// Source hash: md5:4e258cafbb9831ade133c4f7b67281a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_TRIANGLE_ADD : forall A:set, A <> Empty -> forall x x' y y' :e R :^: idx A, distance A (vector_add A x y,vector_add A x' y') <= distance A (x,x') + distance A (y,y').
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1152 / DIST_MUL
-// Source hash: md5:7509e3a037541e0d29dbff11f079b0ee
+// Source hash: md5:44e8c5eb1088a31986c49a68ee17d315
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_MUL : forall A:set, A <> Empty -> forall x y :e R :^: idx A, forall c :e R, distance A (vector_mul A c x,vector_mul A c y) = abs_SNo c * distance A (x,y).
 Admitted.
@@ -933,19 +933,19 @@ Theorem DIST_TRIANGLE_ADD_HALF : forall N:set, N <> Empty -> forall e0 :e R, for
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1161 / DIST_LE_0
-// Source hash: md5:bd43b2876a17e35183ff64a80edb51e0
+// Source hash: md5:a01dfbcc19e064952f4d8978be6c93cc
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_LE_0 : forall A:set, A <> Empty -> forall x y :e R :^: idx A, distance A (x,y) <= 0 <-> x = y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1165 / DIST_EQ
-// Source hash: md5:d17f68de913d947f1b95590d398b4531
+// Source hash: md5:deaaa8646599b9ba83fd5205fb7ec8ea
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
 Theorem DIST_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall w x :e R :^: idx A, forall y z :e R :^: idx B, distance A (w,x) = distance B (y,z) <-> distance A (w,x) ^ 2 = distance B (y,z) ^ 2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1169 / DIST_0
-// Source hash: md5:4ee67907acc7b43fae216a7235890d4b
+// Source hash: md5:d18510d547f583e191c0bcc7f363252f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
 Theorem DIST_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, distance A (x,vec A 0) = vector_norm A x /\ distance A (vec A 0,x) = vector_norm A x.
 Admitted.
@@ -981,55 +981,55 @@ Theorem vsum_thm : forall A N:set, A <> Empty -> N <> Empty -> forall s c= A, fo
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1230 / VSUM_CLAUSES
-// Source hash: md5:b63aca789a66455145cc79468999db54
+// Source hash: md5:788a27653853af8d9324d2f188ce8c86
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
 Theorem VSUM_CLAUSES : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> vsum A B Empty f = vec B 0) /\ forall x :e C, forall f:set -> set, (forall x0 :e C, f x0 :e R :^: idx D) -> forall s c= C, finite s -> vsum C D (SetAdjoin s x) f = if x :e s then vsum C D s f else vector_add D (f x) (vsum C D s f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1239 / VSUM
-// Source hash: md5:18c0b839a4172c79836179b39ee3686b
+// Source hash: md5:077f0c3d8fba88f08ad22949fce322fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_iterate, hol_real_R)
 Theorem VSUM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s f = iterate_op (R :^: idx B) (fun a:set => fun b:set => vector_add B a b) s f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1245 / VSUM_EQ_0
-// Source hash: md5:f7b00803d1bc1b22c2c283e914c194f3
+// Source hash: md5:40d42f77d9c58e1c83fa5e4b41b174f6
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_EQ_0 : forall B A:set, B <> Empty -> A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, (forall x :e A, x :e s -> f x = vec B 0) -> vsum A B s f = vec B 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1249 / VSUM_0
-// Source hash: md5:69cfd2c78effbf862e0f6fc265c2b8b2
+// Source hash: md5:c5fcc432d0dd34a9e782119a0e8d414c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_0 : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, vsum A B s (fun x:set => vec B 0) = vec B 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1253 / VSUM_LMUL
-// Source hash: md5:635500afdfeb69ea21351600609e7e6d
+// Source hash: md5:89f46256bef08cb9c8aa3bcf79ad24db
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VSUM_LMUL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall c :e R, forall s c= A, vsum A B s (fun x:set => vector_mul B c (f x)) = vector_mul B c (vsum A B s f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1257 / VSUM_RMUL
-// Source hash: md5:dbbb6ef86b3317e35b46fae3d3303da1
+// Source hash: md5:74adce06c66275bb6dd7115f9b947ac2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
 Theorem VSUM_RMUL : forall A B:set, A <> Empty -> B <> Empty -> forall c:set -> set, (forall x :e A, c x :e R) -> forall s c= A, forall v :e R :^: idx B, vsum A B s (fun x:set => vector_mul B (c x) v) = vector_mul B (finsum s c) v.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1261 / VSUM_ADD
-// Source hash: md5:076b66eaf548b12ed74659eb5949723c
+// Source hash: md5:9f116728d64950c05556dd7615c7c6d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s (fun x:set => vector_add B (f x) (g x)) = vector_add B (vsum A B s f) (vsum A B s g).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1265 / VSUM_SUB
-// Source hash: md5:3482f17432d052f85f3ce4bf708b4f92
+// Source hash: md5:ddc18df80295da0c85376ce1b390cd8f
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx B) -> forall s c= A, finite s -> vsum A B s (fun x:set => vector_sub B (f x) (g x)) = vector_sub B (vsum A B s f) (vsum A B s g).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1269 / VSUM_CONST
-// Source hash: md5:aeff87fa0fd1905447b998c80ff3c66a
+// Source hash: md5:d66d3204e6d2102ef002c2061a637020
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VSUM_CONST : forall A B:set, A <> Empty -> B <> Empty -> forall c :e R :^: idx B, forall s c= A, finite s -> vsum A B s (fun n:set => c) = vector_mul B (finite_cardinality s) c.
 Admitted.
@@ -1041,25 +1041,25 @@ Theorem VSUM_COMPONENT : forall A N:set, A <> Empty -> N <> Empty -> forall s c=
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1280 / VSUM_IMAGE
-// Source hash: md5:68f16002bd1521d57bd0e89babe4a698
+// Source hash: md5:157c4d3d45f2a9854a25d4985243a4f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_IMAGE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e C, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx B) -> forall s c= C, finite s /\ (forall x y :e C, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> vsum A B {f x | x :e s} g = vsum C B s (fun x:set => g (f x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1287 / VSUM_UNION
-// Source hash: md5:2348fcd09a4b0210a1542727ffa8984d
+// Source hash: md5:2ee5a95aa34771ab82d9de4d39300731
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_UNION : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> vsum A B (s :\/: t) f = vector_add B (vsum A B s f) (vsum A B t f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1292 / VSUM_DIFF
-// Source hash: md5:06b54f1363192afe6520e9e44536c3bf
+// Source hash: md5:3d2ca58e623a693c8a3ee188694fa919
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_DIFF : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s t c= A, finite s /\ t c= s -> vsum A B (s :\: t) f = vector_sub B (vsum A B s f) (vsum A B t f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1297 / VSUM_DELETE
-// Source hash: md5:027ae6034970609b30739189ed5a3672
+// Source hash: md5:cba5a05b073022d1ab44616fb1f5fa91
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_DELETE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, forall a :e A, finite s /\ a :e s -> vsum A B (s :\: {a}) f = vector_sub B (vsum A B s f) (f a).
 Admitted.
@@ -1071,13 +1071,13 @@ Theorem VSUM_INCL_EXCL : forall A N:set, N <> Empty -> forall s t c= A, forall f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1309 / VSUM_NEG
-// Source hash: md5:67a9e80a3bcb4fe617b027b73e1f6df2
+// Source hash: md5:a7b2020623186e03b077b35dcc5d8d8b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VSUM_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, vsum A B s (fun x:set => vector_neg B (f x)) = vector_neg B (vsum A B s f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1313 / VSUM_EQ
-// Source hash: md5:89e8e206e3a4f32d610cf2e2357b130a
+// Source hash: md5:2ad6375b378aed07ab0285a8427dc324
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VSUM_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx B) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> vsum A B s f = vsum A B s g.
 Admitted.
@@ -1101,7 +1101,7 @@ Theorem VSUM_UNIV : forall A N:set, N <> Empty -> forall f:set -> set, (forall x
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1336 / VSUM_EQ_SUPERSET
-// Source hash: md5:b94031c1e89b04071bd59bac52e8078b
+// Source hash: md5:4451fe096f862f218ac5d3ab4f953631
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
 Theorem VSUM_EQ_SUPERSET : forall B A:set, B <> Empty -> A <> Empty -> forall g:set -> set, (forall x :e A, g x :e R :^: idx B) -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s t c= A, finite t /\ (t c= s /\ ((forall x :e A, x :e t -> f x = g x) /\ (forall x :e A, x :e s /\ ~ x :e t -> f x = vec B 0))) -> vsum A B s f = vsum A B t g.
 Admitted.
@@ -1119,13 +1119,13 @@ Theorem VSUM_UNION_LZERO : forall A N:set, N <> Empty -> forall f:set -> set, (f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1356 / VSUM_RESTRICT
-// Source hash: md5:227e315cf21845db92025dce42c27775
+// Source hash: md5:e41bd87d74ed575399756f23a57a677a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, vsum A B s (fun x:set => if x :e s then f x else vec B 0) = vsum A B s f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1360 / VSUM_RESTRICT_SET
-// Source hash: md5:767d3adb404e684f108ee58fc880f976
+// Source hash: md5:8ba0d839b1cf6bfe7fe7bf3005dc0d86
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_RESTRICT_SET : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> vsum A B {x :e A | x :e s /\ P x} f = vsum A B s (fun x:set => if P x then f x else vec B 0).
 Admitted.
@@ -1137,13 +1137,13 @@ Theorem VSUM_CASES : forall A N:set, A <> Empty -> N <> Empty -> forall s c= A, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1373 / VSUM_SING
-// Source hash: md5:665bef75bedb78573fb6c22214c481fd
+// Source hash: md5:38e97270e0990bcc53eb86b50741931f
 // Status: generalization_required (bridges: empty_case:B, hol_cart_setexp, hol_real_R)
 Theorem VSUM_SING : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e B, f x :e R :^: idx A) -> forall x :e B, vsum B A {x} f = f x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1377 / VSUM_NORM
-// Source hash: md5:1849fa6db385a89837fed82bbcdf0ed3
+// Source hash: md5:87b7f9ab248c69121165e28b20d76787
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_sum_finsum)
 Theorem VSUM_NORM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e R :^: idx A) -> forall s c= B, finite s -> vector_norm A (vsum B A s f) <= finsum s (fun x:set => vector_norm A (f x)).
 Admitted.
@@ -1155,19 +1155,19 @@ Theorem VSUM_NORM_LE : forall A N:set, A <> Empty -> N <> Empty -> forall s c= A
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1391 / VSUM_NORM_TRIANGLE
-// Source hash: md5:1a94b7d1d2b6233fef66645f94f2d7b9
+// Source hash: md5:c1c3381236a3fa3a5e52c37d28bbd1c5
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_sum_finsum)
 Theorem VSUM_NORM_TRIANGLE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall b :e R, finite s /\ finsum s (fun a:set => vector_norm B (f a)) <= b -> vector_norm B (vsum A B s f) <= b.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1395 / VSUM_NORM_BOUND
-// Source hash: md5:4887c1cc26c596ec8002c43aa5d5e5a2
+// Source hash: md5:2a04dd0e13a04f9e6d2d5d7fc5b5a12e
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VSUM_NORM_BOUND : forall B A:set, B <> Empty -> A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall b :e R, finite s /\ (forall x :e A, x :e s -> vector_norm B (f x) <= b) -> vector_norm B (vsum A B s f) <= finite_cardinality s * b.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1400 / VSUM_CLAUSES_NUMSEG
-// Source hash: md5:85ae51b8bf2f2b4a1654fb33c7c9e3d3
+// Source hash: md5:1295cb5808aaf509ade8bf679f999aee
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_CLAUSES_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> (forall m :e omega, vsum omega A {i :e omega | m <= i /\ i <= 0} f = if m = 0 then f 0 else vec A 0) /\ forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= ordsucc n} f = if m <= ordsucc n then vector_add A (vsum omega A {i :e omega | m <= i /\ i <= n} f) (f (ordsucc n)) else vsum omega A {i :e omega | m <= i /\ i <= n} f.
 Admitted.
@@ -1179,67 +1179,67 @@ Theorem VSUM_CLAUSES_RIGHT : forall N:set, N <> Empty -> forall f:set -> set, (f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1414 / VSUM_CMUL_NUMSEG
-// Source hash: md5:00f4ae64dafa45900eb539ad71beb789
+// Source hash: md5:e18a30f48c74965c4d8ba4c65c945724
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_CMUL_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall c :e R, forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} (fun x:set => vector_mul A c (f x)) = vector_mul A c (vsum omega A {i :e omega | m <= i /\ i <= n} f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1418 / VSUM_EQ_NUMSEG
-// Source hash: md5:30c7f932e8482d4ff4d603692a2e737c
+// Source hash: md5:1e2b7c1fa62a4f4c12e2e6f16e04901d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_EQ_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e omega, g x :e R :^: idx A) -> forall m n :e omega, (forall x :e omega, m <= x /\ x <= n -> f x = g x) -> vsum omega A {i :e omega | m <= i /\ i <= n} f = vsum omega A {i :e omega | m <= i /\ i <= n} g.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1425 / VSUM_IMAGE_GEN
-// Source hash: md5:134ce5919c4b93a6b6ac3e235ad65196
+// Source hash: md5:9da306ad5dbaf0ea1c73fbf29fde3866
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_IMAGE_GEN : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx C) -> forall s c= A, finite s -> vsum A C s g = vsum B C {f x | x :e s} (fun y:set => vsum A C {x :e A | x :e s /\ f x = y} g).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1432 / VSUM_GROUP
-// Source hash: md5:630d3ecdab950ed18ab865da9c975f70
+// Source hash: md5:0b4eb19635e270148b0517d992044e54
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_GROUP : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx C) -> forall s c= A, forall t c= B, finite s /\ {f x | x :e s} c= t -> vsum B C t (fun y:set => vsum A C {x :e A | x :e s /\ f x = y} g) = vsum A C s g.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1438 / VSUM_GROUP_RELATION
-// Source hash: md5:e5f3056056fd34b1c0e7a2f0f2d47e85
+// Source hash: md5:29b728eae05ff7d83086718975fe0490
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_GROUP_RELATION : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall g:set -> set, (forall x :e A, g x :e R :^: idx C) -> forall s c= A, forall t c= B, finite s /\ (forall x :e A, x :e s -> exists y :e B, y :e t /\ R0 x y /\ forall y0 :e B, y0 :e t /\ R0 x y0 -> y0 = y) -> vsum B C t (fun y:set => vsum A C {x :e A | x :e s /\ R0 x y} g) = vsum A C s g.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1445 / VSUM_VMUL
-// Source hash: md5:d5507d9fd7d494bde2e7c1193fdce23e
+// Source hash: md5:87d44f7d4486bf379d92a8d984e4f8c5
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_sum_finsum)
 Theorem VSUM_VMUL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e R) -> forall v :e R :^: idx A, forall s c= B, vector_mul A (finsum s f) v = vsum B A s (fun x:set => vector_mul A (f x) v).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1449 / VSUM_DELTA
-// Source hash: md5:87c3a3b1496e2ccdd883d2cefda9d323
+// Source hash: md5:cb00aa30debf8aef06503b8ba477e438
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_DELTA : forall A B:set, B <> Empty -> forall b :e R :^: idx B, forall s c= A, forall a :e A, vsum A B s (fun x:set => if x = a then b else vec B 0) = if a :e s then b else vec B 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1455 / VSUM_ADD_NUMSEG
-// Source hash: md5:8baca70f24dc9149db389b7ae8e253f6
+// Source hash: md5:5630359192fa04b7731ea51e30908a5a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_ADD_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e omega, g x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} (fun i:set => vector_add A (f i) (g i)) = vector_add A (vsum omega A {i :e omega | m <= i /\ i <= n} f) (vsum omega A {i :e omega | m <= i /\ i <= n} g).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1459 / VSUM_SUB_NUMSEG
-// Source hash: md5:306c6adcd4a5e88700f9ac185680b167
+// Source hash: md5:dc5ff3f5bbb8d43199f6d7cb79fe5a34
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_SUB_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e omega, g x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} (fun i:set => vector_sub A (f i) (g i)) = vector_sub A (vsum omega A {i :e omega | m <= i /\ i <= n} f) (vsum omega A {i :e omega | m <= i /\ i <= n} g).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1463 / VSUM_ADD_SPLIT
-// Source hash: md5:58fd7ad1db20d6e405d26693abf620b0
+// Source hash: md5:cfe2012ac08b0139a8947fea949eb205
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_ADD_SPLIT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n p :e omega, m <= n + 1 -> vsum omega A {i :e omega | m <= i /\ i <= n + p} f = vector_add A (vsum omega A {i :e omega | m <= i /\ i <= n} f) (vsum omega A {i :e omega | n + 1 <= i /\ i <= n + p} f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1469 / VSUM_VSUM_PRODUCT
-// Source hash: md5:403527f8c8065e0d6e96c385d32d4616
+// Source hash: md5:c6e87941c59a99d95ed0e1340a7c52ac
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R)
 Theorem VSUM_VSUM_PRODUCT : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e R :^: idx C) -> finite s /\ (forall i :e A, i :e s -> finite (t i)) -> vsum A C s (fun i:set => vsum B C (t i) (x i)) = vsum (A :*: B) C (\/_ i :e A, {(i,j) | j :e B, i :e s /\ j :e t i}) (fun p:set => x (p 0) (p 1)).
 Admitted.
@@ -1251,37 +1251,37 @@ Theorem VSUM_IMAGE_NONZERO : forall A B N:set, A <> Empty -> B <> Empty -> N <> 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1494 / VSUM_UNION_NONZERO
-// Source hash: md5:38afd000568707a2fceb2258031b5285
+// Source hash: md5:2e9f1269d870c22a44b92d5ba422faa7
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
 Theorem VSUM_UNION_NONZERO : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s t c= A, finite s /\ (finite t /\ (forall x :e A, x :e s :/\: t -> f x = vec B 0)) -> vsum A B (s :\/: t) f = vector_add B (vsum A B s f) (vsum A B t f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1500 / VSUM_UNIONS_NONZERO
-// Source hash: md5:6f398338f7571c1abf10c09f54cad1cc
+// Source hash: md5:1a5fb63d64e7da8a950969dbf3a7d861
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
 Theorem VSUM_UNIONS_NONZERO : forall B A:set, B <> Empty -> A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= Power A, finite s /\ ((forall t c= A, t :e s -> finite t) /\ (forall t1 t2 c= A, forall x :e A, t1 :e s /\ (t2 :e s /\ (~ t1 = t2 /\ (x :e t1 /\ x :e t2))) -> f x = vec B 0)) -> vsum A B (Union s) f = vsum (Power A) B s (fun t:set => vsum A B t f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1515 / VSUM_CLAUSES_LEFT
-// Source hash: md5:5a59c1ed149a2d661c90968fbc877a3b
+// Source hash: md5:a8d130e58c7dc20caec32800e956ec27
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_CLAUSES_LEFT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, m <= n -> vsum omega A {i :e omega | m <= i /\ i <= n} f = vector_add A (f m) (vsum omega A {i :e omega | m + 1 <= i /\ i <= n} f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1520 / VSUM_DIFFS
-// Source hash: md5:1374b88fee01c5a737e1238ac727fcd4
+// Source hash: md5:3e177691d1a319d2547814f91a9f49b2
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_DIFFS : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} (fun k:set => vector_sub A (f k) (f (k + 1))) = if m <= n then vector_sub A (f m) (f (n + 1)) else vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1529 / VSUM_DIFFS_ALT
-// Source hash: md5:d4be9089ffa2454859d5018d1c2caf7f
+// Source hash: md5:1109b44a35e7b9b70c850f7c2a023686
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_DIFFS_ALT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} (fun k:set => vector_sub A (f (k + 1)) (f k)) = if m <= n then vector_sub A (f (n + 1)) (f m) else vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1536 / VSUM_DELETE_CASES
-// Source hash: md5:99a616fd9f2927d0bc10c83e30103f76
+// Source hash: md5:93fc2c389d11dec3efd2e7ce90a2d95a
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_DELETE_CASES : forall B A:set, B <> Empty -> forall x :e A, forall f:set -> set, (forall x0 :e A, f x0 :e R :^: idx B) -> forall s c= A, finite s -> vsum A B (s :\: {x}) f = if x :e s then vector_sub B (vsum A B s f) (f x) else vsum A B s f.
 Admitted.
@@ -1305,43 +1305,43 @@ Theorem VSUM_NORM_ALLSUBSETS_BOUND : forall A N:set, A <> Empty -> N <> Empty ->
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1610 / DOT_LSUM
-// Source hash: md5:b278347cba8c5c5c65108149d498796d
+// Source hash: md5:665ad814e6825225cd3a3baa272638c1
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_sum_finsum)
 Theorem DOT_LSUM : forall A B:set, A <> Empty -> B <> Empty -> forall s c= B, forall f:set -> set, (forall x :e B, f x :e R :^: idx A) -> forall y :e R :^: idx A, finite s -> dot A (vsum B A s f) y = finsum s (fun x:set => dot A (f x) y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1616 / DOT_RSUM
-// Source hash: md5:7a7a7f21a6b78d63387098426d86fc2c
+// Source hash: md5:737fb29ac8f7ed2e0fd3604f5a228d12
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R, hol_sum_finsum)
 Theorem DOT_RSUM : forall A B:set, A <> Empty -> B <> Empty -> forall s c= B, forall f:set -> set, (forall x :e B, f x :e R :^: idx A) -> forall x :e R :^: idx A, finite s -> dot A x (vsum B A s f) = finsum s (fun y:set => dot A x (f y)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1622 / VSUM_OFFSET
-// Source hash: md5:dac662200e434641c84a4c6179000575
+// Source hash: md5:aaff6bd08a959e3296f76a3f42b96e3e
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_OFFSET : forall A:set, A <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | m + p <= i /\ i <= n + p} f = vsum omega A {i :e omega | m <= i /\ i <= n} (fun i:set => f (i + p)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1626 / VSUM_OFFSET_0
-// Source hash: md5:b199311008838dca5c0e2b2b779e82fb
+// Source hash: md5:d5639f2f2046a5568bb3a37bfb16fa8d
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_OFFSET_0 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, m <= n -> vsum omega A {i :e omega | m <= i /\ i <= n} f = vsum omega A {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => f (i + m)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1630 / VSUM_TRIV_NUMSEG
-// Source hash: md5:8fdfd1ebe5d8f4b65b59836ee6eecfff
+// Source hash: md5:1debcd5014547c5aa977115f1ff53686
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, nat_lt_SNoLt)
 Theorem VSUM_TRIV_NUMSEG : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, n < m -> vsum omega A {i :e omega | m <= i /\ i <= n} f = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1634 / VSUM_CONST_NUMSEG
-// Source hash: md5:e437bf3505debc689bc501f84825de84
+// Source hash: md5:b182f281ada115fbe38c701b98b1e964
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem VSUM_CONST_NUMSEG : forall A:set, A <> Empty -> forall c :e R :^: idx A, forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} (fun n0:set => c) = vector_mul A (minus_nat (n + 1) m) c.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1638 / VSUM_SUC
-// Source hash: md5:77a0c1860c9f8a669679e14655d33013
+// Source hash: md5:d60cffbb0b5c040232bbe62e3681153f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_SUC : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | ordsucc n <= i /\ i <= ordsucc m} f = vsum omega A {i :e omega | n <= i /\ i <= m} (fun x:set => f (ordsucc x)).
 Admitted.
@@ -1365,73 +1365,73 @@ Theorem VSUM_PARTIAL_PRE : forall N:set, N <> Empty -> forall f:set -> set, (for
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1684 / VSUM_COMBINE_L
-// Source hash: md5:efbe070a56fba758b1edd80492619b5d
+// Source hash: md5:bc5802788b80f40dd79ef918ae607305
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem VSUM_COMBINE_L : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n p :e omega, 0 < n /\ (m <= n /\ n <= p + 1) -> vector_add A (vsum omega A {i :e omega | m <= i /\ i <= minus_nat n 1} f) (vsum omega A {i :e omega | n <= i /\ i <= p} f) = vsum omega A {i :e omega | m <= i /\ i <= p} f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1690 / VSUM_COMBINE_R
-// Source hash: md5:951b583d99e73284546b7d3991248653
+// Source hash: md5:7400a84216d2fbe27f72b74989f9f07d
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem VSUM_COMBINE_R : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall m n p :e omega, m <= n + 1 /\ n <= p -> vector_add A (vsum omega A {i :e omega | m <= i /\ i <= n} f) (vsum omega A {i :e omega | n + 1 <= i /\ i <= p} f) = vsum omega A {i :e omega | m <= i /\ i <= p} f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1696 / VSUM_INJECTION
-// Source hash: md5:db7c12df462fae1e16f84a37498a5796
+// Source hash: md5:53fc2650893801cf9cffcce2080e9eea
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_INJECTION : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ (forall x y :e A, x :e s /\ (y :e s /\ p x = p y) -> x = y)) -> vsum A B s (fun x:set => f (p x)) = vsum A B s f.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1705 / VSUM_SWAP
-// Source hash: md5:5351964df7d8a6e01f43b987891f3d55
+// Source hash: md5:eacffdab9b5be344d029aafc4ef9314e
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_SWAP : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e C, forall y :e B, f x y :e R :^: idx A) -> forall s c= C, forall t c= B, finite s /\ finite t -> vsum C A s (fun i:set => vsum B A t (f i)) = vsum B A t (fun j:set => vsum C A s (fun i:set => f i j)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1713 / VSUM_SWAP_NUMSEG
-// Source hash: md5:6c1a3a9301c9b225ff5699795415a5d0
+// Source hash: md5:8db7518cbabdeec10a653eae311b725b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_SWAP_NUMSEG : forall A:set, A <> Empty -> forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e R :^: idx A) -> vsum omega A {i :e omega | a <= i /\ i <= b} (fun i:set => vsum omega A {i :e omega | c <= i /\ i <= d} (f i)) = vsum omega A {i :e omega | c <= i /\ i <= d} (fun j:set => vsum omega A {i :e omega | a <= i /\ i <= b} (fun i:set => f i j)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1719 / VSUM_ADD_GEN
-// Source hash: md5:5814c3a07f294aa27e3c135423a8f003
+// Source hash: md5:fcfc0cec2cac652a7d1f50e49ffe03ab
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
 Theorem VSUM_ADD_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e A, g x :e R :^: idx B) -> forall s c= A, finite {x :e A | x :e s /\ ~ f x = vec B 0} /\ finite {x :e A | x :e s /\ ~ g x = vec B 0} -> vsum A B s (fun x:set => vector_add B (f x) (g x)) = vector_add B (vsum A B s f) (vsum A B s g).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1734 / VSUM_CASES_1
-// Source hash: md5:53b19cf9055e8e740486866ac0b7a7ee
+// Source hash: md5:37adc4cd4fab6d80f5c852bda317086c
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem VSUM_CASES_1 : forall A B:set, B <> Empty -> forall y :e R :^: idx B, forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall s c= A, forall a :e A, finite s /\ a :e s -> vsum A B s (fun x:set => if x = a then y else f x) = vector_add B (vsum A B s f) (vector_sub B y (f a)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1742 / VSUM_SING_NUMSEG
-// Source hash: md5:79afa0a4bd1d696f915e650a215232cd
+// Source hash: md5:d025d2495c78345b9e3fdf0a52e528b1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_SING_NUMSEG : forall A:set, A <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> vsum omega A {i :e omega | n <= i /\ i <= n} f = f n.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1746 / VSUM_1
-// Source hash: md5:168eeccba4600ff9e62e0833a853ae57
+// Source hash: md5:31e969d11f77e93bff272a46c3d2a142
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_1 : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> vsum omega A (idx_n 1) f = f 1.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1750 / VSUM_2
-// Source hash: md5:894565bd50521e4eece1327ecd8f857c
+// Source hash: md5:cc6e788b8de45c5993a71c8d95728679
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_2 : forall A:set, A <> Empty -> forall t:set -> set, (forall x :e omega, t x :e R :^: idx A) -> vsum omega A (idx_n 2) t = vector_add A (t 1) (t 2).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1755 / VSUM_3
-// Source hash: md5:ba7136c23a56bf076d6243ce470a746c
+// Source hash: md5:1aa2e494a101a9194dc2bd372fa8a35a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_3 : forall A:set, A <> Empty -> forall t:set -> set, (forall x :e omega, t x :e R :^: idx A) -> vsum omega A (idx_n 3) t = vector_add A (t 1) (vector_add A (t 2) (t 3)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1760 / VSUM_4
-// Source hash: md5:9f950e18f750a74a20d61ed76cd5d0aa
+// Source hash: md5:7e2d2449f4eb6dd8036238ad37019b4f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem VSUM_4 : forall A:set, A <> Empty -> forall t:set -> set, (forall x :e omega, t x :e R :^: idx A) -> vsum omega A (idx_n 4) t = vector_add A (t 1) (vector_add A (t 2) (vector_add A (t 3) (t 4))).
 Admitted.
@@ -1449,13 +1449,13 @@ Theorem VSUM_PAIR_0 : forall N:set, N <> Empty -> forall f:set -> set, (forall x
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1776 / VSUM_REFLECT
-// Source hash: md5:84aefad10b804db9a22b309c956f39b9
+// Source hash: md5:92419684111ad962acb0e5410c93dff9
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, nat_lt_SNoLt)
 Theorem VSUM_REFLECT : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall m n :e omega, vsum omega A {i :e omega | m <= i /\ i <= n} x = if n < m then vec A 0 else vsum omega A {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1837 / basis
-// Source hash: md5:2cdc54eff3f6c1fe825622a802ae3cdd
+// Source hash: md5:9ef8710d45efa0a95b84ec76a297f8d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem basis_thm : forall A:set, A <> Empty -> forall k :e omega, basis A k = fun i :e idx A => if i = k then 1 else 0.
 Admitted.
@@ -1467,7 +1467,7 @@ Theorem NORM_BASIS : forall N:set, N <> Empty -> forall k :e omega, 1 <= k /\ k 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1853 / NORM_BASIS_1
-// Source hash: md5:2379ffa617281a3580beb4e3006dbd29
+// Source hash: md5:b6ab47b4203c6978b086d5705f3fe438
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem NORM_BASIS_1 : forall A:set, A <> Empty -> vector_norm A (basis A 1) = 1.
 Admitted.
@@ -1533,7 +1533,7 @@ Theorem DOT_BASIS_BASIS : forall N:set, N <> Empty -> forall i j :e omega, 1 <= 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1930 / DOT_BASIS_BASIS_UNEQUAL
-// Source hash: md5:840fb8a7e145174db6ccf1d8dce31608
+// Source hash: md5:d1b7e0b1bad07d843ec4b1166e7b3091
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DOT_BASIS_BASIS_UNEQUAL : forall A:set, A <> Empty -> forall i j :e omega, ~ i = j -> dot A (basis A i) (basis A j) = 0.
 Admitted.
@@ -1551,49 +1551,49 @@ Theorem BASIS_NONZERO : forall N:set, N <> Empty -> forall k :e omega, 1 <= k /\
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1945 / VECTOR_EQ_LDOT
-// Source hash: md5:a3b3deed39f062c3153cf17e420ebc75
+// Source hash: md5:353e816a457a3415df8fce625f0d7987
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_EQ_LDOT : forall A:set, A <> Empty -> forall y z :e R :^: idx A, (forall x :e R :^: idx A, dot A x y = dot A x z) <-> y = z.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1950 / VECTOR_EQ_RDOT
-// Source hash: md5:ae8d09418bc4316f2e137345743f9c9e
+// Source hash: md5:45d424b09186d8c9b73d9fee7932dae6
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem VECTOR_EQ_RDOT : forall A:set, A <> Empty -> forall x y :e R :^: idx A, (forall z :e R :^: idx A, dot A x z = dot A y z) <-> x = y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1959 / orthogonal
-// Source hash: md5:b6b32c72615e946c9bc8257a1d5fc205
+// Source hash: md5:0b2e4b5533a210f5ed49abd04f58e0d4
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem orthogonal_thm : forall A:set, A <> Empty -> forall x y :e R :^: idx A, orthogonal A x y <-> dot A x y = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1962 / ORTHOGONAL_0
-// Source hash: md5:87c19db960bf834f32578705ec601130
+// Source hash: md5:0ea0c7ec28a97f2cd2adbd581ec6c387
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem ORTHOGONAL_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, orthogonal A (vec A 0) x /\ orthogonal A x (vec A 0).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1966 / ORTHOGONAL_REFL
-// Source hash: md5:be41b79dc433f2504303d952ea397dcb
+// Source hash: md5:3214c49673de596a4e05a2cd89de15c3
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem ORTHOGONAL_REFL : forall A:set, A <> Empty -> forall x :e R :^: idx A, orthogonal A x x <-> x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1970 / ORTHOGONAL_SYM
-// Source hash: md5:5a23695e4393d64b4317e8f407a93563
+// Source hash: md5:3dc1f2e6f320341a551942d24d8203f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ORTHOGONAL_SYM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, orthogonal A x y <-> orthogonal A y x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1974 / ORTHOGONAL_LNEG
-// Source hash: md5:3e093627521e349323d2927864c5d94c
+// Source hash: md5:f817d000e466d84d79a070ef8266f78b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ORTHOGONAL_LNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx A, orthogonal A (vector_neg A x) y <-> orthogonal A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:1978 / ORTHOGONAL_RNEG
-// Source hash: md5:e0afc5f290717bbf5e68862febaff874
+// Source hash: md5:d235872853ef7662a297728fc6bb6790
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ORTHOGONAL_RNEG : forall A:set, A <> Empty -> forall x y :e R :^: idx A, orthogonal A x (vector_neg A y) <-> orthogonal A x y.
 Admitted.
@@ -1617,7 +1617,7 @@ Theorem ORTHOGONAL_BASIS_BASIS : forall N:set, N <> Empty -> forall i j :e omega
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2001 / ORTHOGONAL_CLAUSES
-// Source hash: md5:25605841464f664caf1c86f8190bcad0
+// Source hash: md5:00079e60b6700190c225100b3865b544
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem ORTHOGONAL_CLAUSES : forall A B C D E F G H I J:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> F <> Empty -> G <> Empty -> H <> Empty -> I <> Empty -> J <> Empty -> (forall a :e R :^: idx A, orthogonal A a (vec A 0)) /\ ((forall a x :e R :^: idx B, forall c :e R, orthogonal B a x -> orthogonal B a (vector_mul B c x)) /\ ((forall a x :e R :^: idx E, orthogonal E a x -> orthogonal E a (vector_neg E x)) /\ ((forall a x y :e R :^: idx F, orthogonal F a x /\ orthogonal F a y -> orthogonal F a (vector_add F x y)) /\ ((forall a x y :e R :^: idx G, orthogonal G a x /\ orthogonal G a y -> orthogonal G a (vector_sub G x y)) /\ ((forall a :e R :^: idx C, orthogonal C (vec C 0) a) /\ ((forall a x :e R :^: idx D, forall c :e R, orthogonal D x a -> orthogonal D (vector_mul D c x) a) /\ ((forall a x :e R :^: idx H, orthogonal H x a -> orthogonal H (vector_neg H x) a) /\ ((forall a x y :e R :^: idx I, orthogonal I x a /\ orthogonal I y a -> orthogonal I (vector_add I x y) a) /\ forall a x y :e R :^: idx J, orthogonal J x a /\ orthogonal J y a -> orthogonal J (vector_sub J x y) a)))))))).
 Admitted.
@@ -1749,13 +1749,13 @@ Theorem linear_thm : forall M N:set, M <> Empty -> N <> Empty -> forall f:set ->
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2159 / LINEAR_COMPOSE_CMUL
-// Source hash: md5:fff9d06e2dbdfe2f21f53fb2f302ed36
+// Source hash: md5:f816cb042c4e0b2b1d384e6f6f9ded1a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_COMPOSE_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall c :e R, linear B A f -> linear B A (fun x:set => vector_mul A c (f x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2163 / LINEAR_COMPOSE_NEG
-// Source hash: md5:153ef8e52c653861d3c55d8a6521175b
+// Source hash: md5:d21d5ec25b28dfc6ae685a44a895337f
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_COMPOSE_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> linear A B f -> linear A B (fun x:set => vector_neg B (f x)).
 Admitted.
@@ -1767,103 +1767,103 @@ Theorem LINEAR_COMPOSE_NEG_EQ : forall M N:set, M <> Empty -> N <> Empty -> fora
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2174 / LINEAR_COMPOSE_ADD
-// Source hash: md5:d49f09dbd02b57da4cce1f023e0a39f6
+// Source hash: md5:ce17d4e893dc1707cdad2667904fdb43
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_COMPOSE_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> linear A B f /\ linear A B g -> linear A B (fun x:set => vector_add B (f x) (g x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2178 / LINEAR_COMPOSE_SUB
-// Source hash: md5:82d31fbf1da4c24b62be6df4b2d2e3b4
+// Source hash: md5:b094dbd08b0e4c60e36bd62885014eec
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_COMPOSE_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> linear A B f /\ linear A B g -> linear A B (fun x:set => vector_sub B (f x) (g x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2182 / LINEAR_COMPOSE
-// Source hash: md5:f016e9161321603421b318c4833ac0b4
+// Source hash: md5:e0b9f07b4aaa811debbf91e705f242a1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx C) -> linear A B f /\ linear B C g -> linear A C (fun x:set => g (f x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2186 / LINEAR_ID
-// Source hash: md5:0f0084cb1fac96649d396608819792dc
+// Source hash: md5:2e543facfe7ab95edd88d1f85250a0ba
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_ID : forall A:set, A <> Empty -> linear A A (fun x:set => x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2190 / LINEAR_I
-// Source hash: md5:75be084372261bf88139ea18380b4952
+// Source hash: md5:2c6cc5822ebf6fab9a04537a0fc283b7
 // Status: native_reuse (bridges: hol_cart_setexp, hol_real_R)
 // Reuse: this proposition is already a theorem of the target library.
 // Theorem LINEAR_I : forall A:set, A <> Empty -> linear A A (fun x:set => x).
 
 // HOL Light: Multivariate/vectors.ml:2194 / LINEAR_ZERO
-// Source hash: md5:d5969f5db0a4d2cc07a4dba109345f44
+// Source hash: md5:3e85588f99c027419020a9c3bb2a2e92
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem LINEAR_ZERO : forall A B:set, A <> Empty -> B <> Empty -> linear A B (fun x:set => vec B 0).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2198 / LINEAR_NEGATION
-// Source hash: md5:5599efb0a35694710d3ab2942d229a53
+// Source hash: md5:55c0379c34824a8dde094e27cf754430
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_NEGATION : forall A:set, A <> Empty -> linear A A (fun x:set => vector_neg A x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2202 / LINEAR_COMPOSE_VSUM
-// Source hash: md5:01cc0ca21fa68bdf2a9262641b84668d
+// Source hash: md5:bf5927073b18c6151a50ecf419dc42f9
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem LINEAR_COMPOSE_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e C, forall y :e R :^: idx B, f x y :e R :^: idx A) -> forall s c= C, finite s /\ (forall a :e C, a :e s -> linear B A (f a)) -> linear B A (fun x:set => vsum C A s (fun a:set => f a x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2210 / LINEAR_VMUL_COMPONENT
-// Source hash: md5:dba095bc601f177579095bae3a69d0d0
+// Source hash: md5:5557808ec6606110791472ee343e833d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem LINEAR_VMUL_COMPONENT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall v :e R :^: idx A, forall k :e omega, linear M N f /\ (1 <= k /\ k <= dimindex N) -> linear M A (fun x:set => vector_mul A (f x k) v).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2217 / LINEAR_0
-// Source hash: md5:52be82998fa12f75e43e295821393fd6
+// Source hash: md5:9b93122294d87d1529f3bf7c5635604c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem LINEAR_0 : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> linear A B f -> f (vec A 0) = vec B 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2221 / LINEAR_CMUL
-// Source hash: md5:1abd2b261d08e9ad5117fc96621a0943
+// Source hash: md5:bc7d37b0bf3ae1f45ec2969bf4512d1d
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall c :e R, forall x :e R :^: idx A, linear A B f -> f (vector_mul A c x) = vector_mul B c (f x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2225 / LINEAR_NEG
-// Source hash: md5:ae4bb14bd8e8013e31d4ce9afce0c43b
+// Source hash: md5:d8a2430bebb254206193a53f20d77511
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall x :e R :^: idx A, linear A B f -> f (vector_neg A x) = vector_neg B (f x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2229 / LINEAR_ADD
-// Source hash: md5:86d0b018ecb23c29ee04a1628b28d047
+// Source hash: md5:80767b008813f5a667ce3d3fa0d64983
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall x y :e R :^: idx A, linear A B f -> f (vector_add A x y) = vector_add B (f x) (f y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2233 / LINEAR_SUB
-// Source hash: md5:6db0eb1e4c7c36d20624f62077ac1f7b
+// Source hash: md5:cd13c97ced5bd5ecbcdd51a8b5489164
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall x y :e R :^: idx A, linear A B f -> f (vector_sub A x y) = vector_sub B (f x) (f y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2237 / LINEAR_VSUM
-// Source hash: md5:0d41112a1607f3e7d1d861e1ea4a18b0
+// Source hash: md5:9893a80d3656ebaa1991be330f182b0b
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem LINEAR_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e C, g x :e R :^: idx A) -> forall s c= C, linear A B f /\ finite s -> f (vsum C A s g) = vsum C B s (fun x:set => f (g x)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2244 / LINEAR_VSUM_MUL
-// Source hash: md5:38e6759ec7fd60dc0ffa08a4dae7eb04
+// Source hash: md5:5349b184fac547b93c62d7c22a964727
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem LINEAR_VSUM_MUL : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall s c= C, forall c:set -> set, (forall x :e C, c x :e R) -> forall v:set -> set, (forall x :e C, v x :e R :^: idx A) -> linear A B f /\ finite s -> f (vsum C A s (fun i:set => vector_mul A (c i) (v i))) = vsum C B s (fun i:set => vector_mul B (c i) (f (v i))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2250 / LINEAR_INJECTIVE_0
-// Source hash: md5:51dea3c0999c89e464a203dd8a22e8ce
+// Source hash: md5:b99e8fb233192f1d76f161c4a912ed12
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem LINEAR_INJECTIVE_0 : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> linear B A f -> ((forall x y :e R :^: idx B, f x = f y -> x = y) <-> forall x :e R :^: idx B, f x = vec A 0 -> x = vec B 0).
 Admitted.
@@ -1881,13 +1881,13 @@ Theorem LINEAR_BOUNDED_POS : forall M N:set, M <> Empty -> N <> Empty -> forall 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2281 / SYMMETRIC_LINEAR_IMAGE
-// Source hash: md5:c086f7206fe9db29d1256617bd0027e9
+// Source hash: md5:e19c6cd3f0f32407791674df7e5dd101
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SYMMETRIC_LINEAR_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall s c= R :^: idx A, (forall x :e R :^: idx A, x :e s -> vector_neg A x :e s) /\ linear A B f -> forall x :e R :^: idx B, x :e {f x | x :e s} -> vector_neg B x :e {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2291 / bilinear
-// Source hash: md5:26234e05b79ff1d49ade164982ca5306
+// Source hash: md5:1e3983ea2a32155a0b84c5ed208896c4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem bilinear_thm : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e R :^: idx C, forall y :e R :^: idx A, f x y :e R :^: idx B) -> (bilinear A B C f <-> (forall x :e R :^: idx C, linear A B (f x)) /\ forall y :e R :^: idx A, linear C B (fun x:set => f x y)).
 Admitted.
@@ -1899,61 +1899,61 @@ Theorem BILINEAR_SWAP : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2299 / BILINEAR_LADD
-// Source hash: md5:4784e70ba2742c8c5ff4094162908463
+// Source hash: md5:4258500076c681b06b7288edd4355b88
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_LADD : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx B, forall y :e R :^: idx A, h x y :e R :^: idx C) -> forall x y :e R :^: idx B, forall z :e R :^: idx A, bilinear A C B h -> h (vector_add B x y) z = vector_add C (h x z) (h y z).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2303 / BILINEAR_RADD
-// Source hash: md5:8a5f3eb8ee83d8840e3feb667d6ff7e7
+// Source hash: md5:06a7ec210ab0929eb7c7af780c7f145a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_RADD : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx A, forall y :e R :^: idx B, h x y :e R :^: idx C) -> forall x :e R :^: idx A, forall y z :e R :^: idx B, bilinear B C A h -> h x (vector_add B y z) = vector_add C (h x y) (h x z).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2307 / BILINEAR_LMUL
-// Source hash: md5:55c75025bdd6c4b1d87bfdda7918c927
+// Source hash: md5:63875bad67644eec75e5618aa526698d
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_LMUL : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx B, forall y :e R :^: idx A, h x y :e R :^: idx C) -> forall c :e R, forall x :e R :^: idx B, forall y :e R :^: idx A, bilinear A C B h -> h (vector_mul B c x) y = vector_mul C c (h x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2311 / BILINEAR_RMUL
-// Source hash: md5:545364e2ebbec8bfa006edc41031a5d3
+// Source hash: md5:92fb591230d00e66a89f0a1c3d2aea10
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_RMUL : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx A, forall y :e R :^: idx B, h x y :e R :^: idx C) -> forall c :e R, forall x :e R :^: idx A, forall y :e R :^: idx B, bilinear B C A h -> h x (vector_mul B c y) = vector_mul C c (h x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2315 / BILINEAR_LNEG
-// Source hash: md5:c30752ba533aef76a155c1c7d267fbd0
+// Source hash: md5:fdadc320ef524baf7a3ee37586dd3362
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_LNEG : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx B, forall y :e R :^: idx A, h x y :e R :^: idx C) -> forall x :e R :^: idx B, forall y :e R :^: idx A, bilinear A C B h -> h (vector_neg B x) y = vector_neg C (h x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2319 / BILINEAR_RNEG
-// Source hash: md5:9014327351bfce51a9bc84eb8438c70b
+// Source hash: md5:74304212001169c5f5fcd1ba40db5532
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_RNEG : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx A, forall y :e R :^: idx B, h x y :e R :^: idx C) -> forall x :e R :^: idx A, forall y :e R :^: idx B, bilinear B C A h -> h x (vector_neg B y) = vector_neg C (h x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2323 / BILINEAR_LZERO
-// Source hash: md5:f3b4c0124b73230e740101f7f9e55e68
+// Source hash: md5:71e87e03bdb23ca40084dad3f452222f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem BILINEAR_LZERO : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx B, forall y :e R :^: idx A, h x y :e R :^: idx C) -> forall x :e R :^: idx A, bilinear A C B h -> h (vec B 0) x = vec C 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2328 / BILINEAR_RZERO
-// Source hash: md5:5ad65a21fcd3565ba8e998f7cc957a1b
+// Source hash: md5:7e2fc011b666e8a94e97ffb4762510b1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem BILINEAR_RZERO : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx A, forall y :e R :^: idx B, h x y :e R :^: idx C) -> forall x :e R :^: idx A, bilinear B C A h -> h x (vec B 0) = vec C 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2333 / BILINEAR_LSUB
-// Source hash: md5:b44d541056d6b152eb195f7006473f6e
+// Source hash: md5:2d9c53bf9f585c725da2d3e322ef106d
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_LSUB : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx B, forall y :e R :^: idx A, h x y :e R :^: idx C) -> forall x y :e R :^: idx B, forall z :e R :^: idx A, bilinear A C B h -> h (vector_sub B x y) z = vector_sub C (h x z) (h y z).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2337 / BILINEAR_RSUB
-// Source hash: md5:88374e464103b8a94ccc841ff29f3dde
+// Source hash: md5:5935fbf19781059e0012525b4587e784
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem BILINEAR_RSUB : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx A, forall y :e R :^: idx B, h x y :e R :^: idx C) -> forall x :e R :^: idx A, forall y z :e R :^: idx B, bilinear B C A h -> h x (vector_sub B y z) = vector_sub C (h x y) (h x z).
 Admitted.
@@ -1971,7 +1971,7 @@ Theorem BILINEAR_RSUM : forall A M N P:set, A <> Empty -> M <> Empty -> N <> Emp
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2363 / BILINEAR_VSUM
-// Source hash: md5:b631c3436c9bc3d7ad784c82790496f9
+// Source hash: md5:0985485627a0987b587b3d0f1e30fa42
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_prod_setprod, hol_real_R)
 Theorem BILINEAR_VSUM : forall A B M N P:set, A <> Empty -> B <> Empty -> M <> Empty -> N <> Empty -> P <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e B, g x :e R :^: idx N) -> forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> bilinear N P M h /\ (finite s /\ finite t) -> h (vsum A M s f) (vsum B N t g) = vsum (A :*: B) P (s :*: t) (fun p:set => h (f (p 0)) (g (p 1))).
 Admitted.
@@ -1983,7 +1983,7 @@ Theorem BILINEAR_BOUNDED : forall M N P:set, M <> Empty -> N <> Empty -> P <> Em
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2394 / BILINEAR_BOUNDED_POS
-// Source hash: md5:a1320359941de1db60f742624981f19d
+// Source hash: md5:5a57bb6016961d4e9778a98b5895fad7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem BILINEAR_BOUNDED_POS : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall h:set -> set -> set, (forall x :e R :^: idx A, forall y :e R :^: idx B, h x y :e R :^: idx C) -> bilinear B C A h -> exists B0 :e R, 0 < B0 /\ forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm C (h x y) <= B0 * vector_norm A x * vector_norm B y.
 Admitted.
@@ -2037,13 +2037,13 @@ Theorem ADJOINT_ADJOINT : forall M N:set, M <> Empty -> N <> Empty -> forall f:s
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2509 / ADJOINT_UNIQUE
-// Source hash: md5:0eeef924d4626360c102d7f5b5f5212b
+// Source hash: md5:3dbb2f8b034dee509afa9153aee183f4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ADJOINT_UNIQUE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx A, f' x :e R :^: idx B) -> linear B A f /\ (forall x :e R :^: idx A, forall y :e R :^: idx B, dot B (f' x) y = dot A x (f y)) -> forall x :e R :^: idx A, f' x = adjoint B A f x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2514 / ADJOINT_COMPOSE
-// Source hash: md5:4c838bc19a9576dcd8a2a7cfa470f7d3
+// Source hash: md5:d301ead80310dc1ada158e9c59678ce0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ADJOINT_COMPOSE : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> linear N A f /\ linear N N g -> forall x :e R :^: idx A, adjoint N A (fun x:set => f (g x)) x = adjoint N N g (adjoint N A f x).
 Admitted.
@@ -2271,7 +2271,7 @@ Theorem SYMMETRIC_IMP_NORMAL_MATRIX : forall N:set, N <> Empty -> forall A :e R 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2819 / MAT_CMUL
-// Source hash: md5:eba9139c4d39270159c9c01b311375d7
+// Source hash: md5:2d50d66fd582184f1cf26c31d854ad22
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem MAT_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall a :e omega, mat B A a = matrix_cmul B A a (mat B A 1).
 Admitted.
@@ -2313,25 +2313,25 @@ Theorem MATRIX_ADD_ASSOC : forall M N:set, M <> Empty -> N <> Empty -> forall A 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2848 / MATRIX_ADD_LID
-// Source hash: md5:31fc441daa698ab429efeb43b289b806
+// Source hash: md5:a73974115305dcdf9f15e11cc00d592f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_ADD_LID : forall A B:set, A <> Empty -> B <> Empty -> forall A0 :e R :^: idx A :^: idx B, matrix_add B A (mat B A 0) A0 = A0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2852 / MATRIX_ADD_RID
-// Source hash: md5:3b00841043f47283a30c3a19454746f3
+// Source hash: md5:74482b9ffe7df4c71a4188974e85aed6
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_ADD_RID : forall A B:set, A <> Empty -> B <> Empty -> forall A0 :e R :^: idx A :^: idx B, matrix_add B A A0 (mat B A 0) = A0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2856 / MATRIX_ADD_LNEG
-// Source hash: md5:29e7706c65812712babe32bd92a595d9
+// Source hash: md5:f3873266cb6e1f8575b050fb37b384a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_ADD_LNEG : forall A B:set, A <> Empty -> B <> Empty -> forall A0 :e R :^: idx A :^: idx B, matrix_add B A (matrix_neg B A A0) A0 = mat B A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2860 / MATRIX_ADD_RNEG
-// Source hash: md5:0fac2d8586615969a4974631f32a8886
+// Source hash: md5:c022cc5081b35b23c3e66b4a205b5e41
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_ADD_RNEG : forall A B:set, A <> Empty -> B <> Empty -> forall A0 :e R :^: idx A :^: idx B, matrix_add B A A0 (matrix_neg B A A0) = mat B A 0.
 Admitted.
@@ -2343,7 +2343,7 @@ Theorem MATRIX_SUB : forall M N:set, M <> Empty -> N <> Empty -> forall A B :e R
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2868 / MATRIX_SUB_REFL
-// Source hash: md5:5e4b1675a709a6fd57ed6579328afa7e
+// Source hash: md5:8b248f581e82a4b39a8ee310f2aae587
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_SUB_REFL : forall A B:set, A <> Empty -> B <> Empty -> forall A0 :e R :^: idx A :^: idx B, matrix_sub B A A0 A0 = mat B A 0.
 Admitted.
@@ -2457,13 +2457,13 @@ Theorem MATRIX_CMUL_SUB_RDISTRIB : forall M N:set, M <> Empty -> N <> Empty -> f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2964 / MATRIX_CMUL_RZERO
-// Source hash: md5:8351bfd47e94c8327653bcaddecf254d
+// Source hash: md5:b7f271262f569be2d2966146baadfc53
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_CMUL_RZERO : forall A B:set, A <> Empty -> B <> Empty -> forall c :e R, matrix_cmul B A c (mat B A 0) = mat B A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2968 / MATRIX_CMUL_LZERO
-// Source hash: md5:e457ebca0cba54e14d7281d24235a583
+// Source hash: md5:bf6645aed3f9789f067aa42f357f9d0c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem MATRIX_CMUL_LZERO : forall A B:set, A <> Empty -> B <> Empty -> forall A0 :e R :^: idx A :^: idx B, matrix_cmul B A 0 A0 = mat B A 0.
 Admitted.
@@ -2493,7 +2493,7 @@ Theorem MATRIX_NEG_SUB : forall M N:set, M <> Empty -> N <> Empty -> forall A B 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:2990 / MATRIX_NEG_0
-// Source hash: md5:25cdce28fd8234658083297123d2b04c
+// Source hash: md5:52fbb408d0b89f09a53760f61a1b969f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_NEG_0 : forall A B:set, A <> Empty -> B <> Empty -> matrix_neg B A (mat B A 0) = mat B A 0.
 Admitted.
@@ -2529,7 +2529,7 @@ Theorem MATRIX_VECTOR_MUL_LID : forall N:set, N <> Empty -> forall x :e R :^: id
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3022 / MATRIX_VECTOR_MUL_LZERO
-// Source hash: md5:5da643b11f48e7833ec08f67fd11caa5
+// Source hash: md5:c640de3ebd14730076389e45b56f8a69
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_VECTOR_MUL_LZERO : forall A N:set, A <> Empty -> N <> Empty -> forall x :e R :^: idx N, matrix_vector_mul A N (mat A N 0) x = vec A 0.
 Admitted.
@@ -2589,7 +2589,7 @@ Theorem MATRIX_NEG_NEG : forall M N:set, M <> Empty -> N <> Empty -> forall A :e
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3069 / MATRIX_TRANSP_MUL
-// Source hash: md5:3921fdbdbd7cdf35a35eaf036078d142
+// Source hash: md5:fbfc2658cabc3c036c2845999792a363
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem MATRIX_TRANSP_MUL : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall A0 :e R :^: idx A :^: idx B, forall B0 :e R :^: idx C :^: idx A, transp B C (matrix_mul B A C A0 B0) = matrix_mul C A B (transp A C B0) (transp B A A0).
 Admitted.
@@ -2679,7 +2679,7 @@ Theorem SYMMETRIC_MATRIX_NEG : forall N:set, N <> Empty -> forall A :e R :^: idx
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3147 / TRANSP_MAT
-// Source hash: md5:c675d99a178a8089ab5ee8251b041f68
+// Source hash: md5:927597c8abf7760c2047b84184741364
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem TRANSP_MAT : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, transp A B (mat A B n) = mat B A n.
 Admitted.
@@ -2691,7 +2691,7 @@ Theorem TRANSP_TRANSP : forall M N:set, M <> Empty -> N <> Empty -> forall A :e 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3155 / SYMMETRIC_MATRIX_MAT
-// Source hash: md5:f00a8684d55e780e1898628befd4ae20
+// Source hash: md5:cb475fc87a00502fbf2d1418607cc32d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SYMMETRIC_MATRIX_MAT : forall A:set, A <> Empty -> forall n :e omega, symmetric_matrix_hl A (mat A A n).
 Admitted.
@@ -2703,7 +2703,7 @@ Theorem SYMMETRIC_MATRIX_COVARIANCE : forall M N:set, M <> Empty -> N <> Empty -
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3163 / SYMMETRIC_MATRIX_SIMILAR
-// Source hash: md5:67431865e4eb4dc2f9e88cffd03cdd0f
+// Source hash: md5:958a5e019209800280c9bcdf179f640f
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SYMMETRIC_MATRIX_SIMILAR : forall A N:set, A <> Empty -> N <> Empty -> forall A0 :e R :^: idx A :^: idx N, forall B :e R :^: idx N :^: idx N, symmetric_matrix_hl N B -> symmetric_matrix_hl A (matrix_mul A N A (transp N A A0) (matrix_mul N N A B A0)).
 Admitted.
@@ -2805,7 +2805,7 @@ Theorem MATRIX_CMUL_EQ_0 : forall M N:set, M <> Empty -> N <> Empty -> forall A 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3255 / MAT_EQ
-// Source hash: md5:37504999eda4cf8b4397c39f2d04297f
+// Source hash: md5:5ae40152f02c482d51137975c0cc2777
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MAT_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall m n :e omega, mat B A m = mat B A n <-> m = n.
 Admitted.
@@ -2937,7 +2937,7 @@ Theorem MATRIX_OF_MATRIX_VECTOR_MUL : forall M N:set, M <> Empty -> N <> Empty -
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3432 / MATRIX_COMPOSE
-// Source hash: md5:211a07ba5b924a8198cabed8d0864e69
+// Source hash: md5:6c1f294d4caa813b5f43bd933b22a369
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem MATRIX_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx C) -> linear B A f /\ linear A C g -> matrix B C (fun x:set => g (f x)) = matrix_mul C A B (matrix A C g) (matrix B A f).
 Admitted.
@@ -2967,25 +2967,25 @@ Theorem ADJOINT_MATRIX : forall M N:set, M <> Empty -> N <> Empty -> forall A :e
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3465 / MATRIX_ADJOINT
-// Source hash: md5:7118015100a2d89e1c201b96eee2ac23
+// Source hash: md5:009c87abccc306ccaca915dc6daad1ee
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem MATRIX_ADJOINT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> linear A B f -> matrix B A (adjoint A B f) = transp B A (matrix A B f).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3472 / MATRIX_ID
-// Source hash: md5:2de612283fbbce04d7206ae624e90532
+// Source hash: md5:f5e841ba1f6dcedbcb029934464d7dbd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem MATRIX_ID : forall A:set, A <> Empty -> matrix A A (fun x:set => x) = mat A A 1.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3476 / MATRIX_I
-// Source hash: md5:e3fa5f3792f2cf595eeb6c0a32ef8420
+// Source hash: md5:a4ea51a75ecb25ca655440e80a13d14a
 // Status: native_reuse (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 // Reuse: this proposition is already a theorem of the target library.
 // Theorem MATRIX_I : forall A:set, A <> Empty -> matrix A A (fun x:set => x) = mat A A 1.
 
 // HOL Light: Multivariate/vectors.ml:3480 / LINEAR_EQ_MATRIX
-// Source hash: md5:c777839ab1a99c8c922cb6355320c7b6
+// Source hash: md5:b1cf82b0031abbf72bce4f750a9265b5
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_EQ_MATRIX : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> linear A B f /\ (linear A B g /\ matrix A B f = matrix A B g) -> forall x :e R :^: idx A, f x = g x.
 Admitted.
@@ -3009,7 +3009,7 @@ Theorem MATRIX_ADD : forall M N:set, M <> Empty -> N <> Empty -> forall f:set ->
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3502 / MATRIX_SELF_ADJOINT
-// Source hash: md5:44e562c699930660c8a2d1e6dc71306c
+// Source hash: md5:30a8f64398a2bfdea5e5545b58c8b384
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem MATRIX_SELF_ADJOINT : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx A) -> linear A A f -> ((forall x :e R :^: idx A, adjoint A A f x = f x) <-> symmetric_matrix_hl A (matrix A A f)).
 Admitted.
@@ -3039,13 +3039,13 @@ Theorem SYMMETRIC_MATRIX : forall N:set, N <> Empty -> forall A :e R :^: idx N :
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3540 / DOT_MATRIX_TRANSP_LMUL
-// Source hash: md5:cd57db7358130b97575906c32aa69ec0
+// Source hash: md5:1f339efeab2b05b3ba76a718f63575ac
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_MATRIX_TRANSP_LMUL : forall A N:set, A <> Empty -> N <> Empty -> forall A0 :e R :^: idx N :^: idx A, forall x :e R :^: idx A, forall y :e R :^: idx N, dot N (matrix_vector_mul N A (transp A N A0) x) y = dot A x (matrix_vector_mul A N A0 y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3545 / DOT_MATRIX_TRANSP_RMUL
-// Source hash: md5:17250f77a2abab6add079d9111f99483
+// Source hash: md5:0dc2899e0ad0fd5cde8e987987e7ce7c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem DOT_MATRIX_TRANSP_RMUL : forall A N:set, A <> Empty -> N <> Empty -> forall A0 :e R :^: idx A :^: idx N, forall x :e R :^: idx A, forall y :e R :^: idx N, dot A x (matrix_vector_mul A N (transp N A A0) y) = dot N (matrix_vector_mul N A A0 x) y.
 Admitted.
@@ -3093,7 +3093,7 @@ Theorem ONORM_LE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3635 / ONORM_POS_LE
-// Source hash: md5:d9d18bf8f63bf7ae54c1131c25bcbce1
+// Source hash: md5:3d54285a040555609f15b6353422a3ff
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem ONORM_POS_LE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> linear A B f -> 0 <= onorm A B f.
 Admitted.
@@ -3111,13 +3111,13 @@ Theorem ONORM_CONST : forall M N:set, M <> Empty -> N <> Empty -> forall y :e R 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3658 / ONORM_POS_LT
-// Source hash: md5:b18370249fa74dd701f0719298932f7e
+// Source hash: md5:2917aed017e28fd5bf45b62d289ff17f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem ONORM_POS_LT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> linear A B f -> (0 < onorm A B f <-> ~ forall x :e R :^: idx A, f x = vec B 0).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3663 / ONORM_COMPOSE
-// Source hash: md5:a70fcf85d39c423d7f8df1899af6f876
+// Source hash: md5:02194ea427bb1664f48e0e30a2627fbd
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ONORM_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx C, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx C) -> linear C A f /\ linear B C g -> onorm B A (fun x:set => f (g x)) <= onorm C A f * onorm B C g.
 Admitted.
@@ -3141,13 +3141,13 @@ Theorem ONORM_TRIANGLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:se
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3702 / ONORM_TRIANGLE_LE
-// Source hash: md5:0c7efb88cf1a7b1a3057bc01e6507837
+// Source hash: md5:c2fce3c4c2b03cfddb6f3f0c2a524081
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ONORM_TRIANGLE_LE : forall A B:set, A <> Empty -> B <> Empty -> forall e0 :e R, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> linear A B f /\ (linear A B g /\ onorm A B f + onorm A B g <= e0) -> onorm A B (fun x:set => vector_add B (f x) (g x)) <= e0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3707 / ONORM_TRIANGLE_LT
-// Source hash: md5:8230858e4f01ece54059f49563cebede
+// Source hash: md5:8383ba8a8b6705c8eb2655d5c86c9b87
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ONORM_TRIANGLE_LT : forall A B:set, A <> Empty -> B <> Empty -> forall e0 :e R, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx B) -> linear A B f /\ (linear A B g /\ onorm A B f + onorm A B g < e0) -> onorm A B (fun x:set => vector_add B (f x) (g x)) < e0.
 Admitted.
@@ -3423,25 +3423,25 @@ Theorem LIFT_EQ_CMUL : forall x :e R, lift x = vector_mul 1 x (vec 1 1).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3971 / SUM_VSUM
-// Source hash: md5:7d1e98e93f7726e43614b4f6a7a580fc
+// Source hash: md5:11af10f2b7de6d2b6d186019a226b4b8
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
 Theorem SUM_VSUM : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum s f = drop (vsum A 1 s (fun x:set => lift (f x))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3976 / VSUM_REAL
-// Source hash: md5:5e5bce7930392bafeac290c7ac598547
+// Source hash: md5:13d6044c19083749cb5de26e3253b780
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
 Theorem VSUM_REAL : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R :^: idx 1) -> forall s c= A, vsum A 1 s f = lift (finsum s (fun x:set => drop (f x))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3980 / LIFT_SUM
-// Source hash: md5:405e7852227e04973550d08095b877b7
+// Source hash: md5:33c63698b9756f48eafb24b1b536c75f
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
 Theorem LIFT_SUM : forall A:set, A <> Empty -> forall k c= A, forall x:set -> set, (forall x :e A, x x :e R) -> lift (finsum k x) = vsum A 1 k (fun x0:set => lift (x x0)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:3984 / DROP_VSUM
-// Source hash: md5:f2b5c2980fa0e7658cde4895239d2a3f
+// Source hash: md5:00e500b824af82d161cdcf141ece5328
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R, hol_sum_finsum)
 Theorem DROP_VSUM : forall A:set, A <> Empty -> forall k c= A, forall x:set -> set, (forall x :e A, x x :e R :^: idx 1) -> drop (vsum A 1 k x) = finsum k (fun x0:set => drop (x x0)).
 Admitted.
@@ -3519,7 +3519,7 @@ Theorem ABS_DROP : forall x :e R :^: idx 1, abs_SNo (drop x) = vector_norm 1 x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4036 / LINEAR_VMUL_DROP
-// Source hash: md5:1b99e7546688216b3b651705045ee67a
+// Source hash: md5:98d26df58d8ffee47de51b1069864ef6
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem LINEAR_VMUL_DROP : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx 1) -> forall v :e R :^: idx B, linear A 1 f -> linear A B (fun x:set => vector_mul B (drop (f x)) v).
 Admitted.
@@ -3567,7 +3567,7 @@ Theorem IMAGE_DROP_UNIV : {drop x | x :e R :^: idx 1} = R.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4078 / LINEAR_LIFT_DOT
-// Source hash: md5:5d0a018e490745603d42bdfa90fd0d2d
+// Source hash: md5:51d54a9d222f329b3e548fc15f5d81a3
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem LINEAR_LIFT_DOT : forall A:set, A <> Empty -> forall a :e R :^: idx A, linear A 1 (fun x:set => lift (dot A a x)).
 Admitted.
@@ -3621,25 +3621,25 @@ Theorem indicator_thm : forall M:set, M <> Empty -> forall s c= R :^: idx M, for
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4136 / DROP_INDICATOR
-// Source hash: md5:1e8f263e1753f34ad03c138df3382e7c
+// Source hash: md5:c260c92dc5488436d391b99f26f57c37
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
 Theorem DROP_INDICATOR : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, drop (indicator A s x) = if x :e s then 1 else 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4141 / DROP_INDICATOR_POS_LE
-// Source hash: md5:68799ad5352fdff2767af2b72cb17f57
+// Source hash: md5:75421cca42d16c86596cac5d2e72fe40
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
 Theorem DROP_INDICATOR_POS_LE : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, 0 <= drop (indicator A s x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4145 / DROP_INDICATOR_LE_1
-// Source hash: md5:889fb6d608af0da167d9bc0607d56f86
+// Source hash: md5:a3347fd2a72ed56619bf5217503f0974
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
 Theorem DROP_INDICATOR_LE_1 : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, drop (indicator A s x) <= 1.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4149 / DROP_INDICATOR_ABS_LE_1
-// Source hash: md5:8baacbe64cd853e2dd5dc6ddb0637771
+// Source hash: md5:553ff32060a65890396a6a880dc74f14
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
 Theorem DROP_INDICATOR_ABS_LE_1 : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, abs_SNo (drop (indicator A s x)) <= 1.
 Admitted.
@@ -3675,7 +3675,7 @@ Theorem VECTORIZE_0 : forall M N:set, M <> Empty -> N <> Empty -> vectorize R M 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4183 / MATRIFY_0
-// Source hash: md5:c3b6bd2fba73d9ffb4eb24257ff93290
+// Source hash: md5:899c6fa31483de05958303f335f0a8cf
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_num_omega, hol_real_R)
 Theorem MATRIFY_0 : forall A B:set, A <> Empty -> B <> Empty -> matrify R B A (vec (idx_n (dimindex B * dimindex A)) 0) = mat B A 0.
 Admitted.
@@ -3723,19 +3723,19 @@ Theorem BILINEAR_MATRIX_MUL : forall M N P:set, M <> Empty -> N <> Empty -> P <>
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4230 / LINEAR_FSTCART
-// Source hash: md5:4b7349f4cd27127276544c5f65e0701f
+// Source hash: md5:8c903fc5723f3c7e4e5a234910f4d4f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem LINEAR_FSTCART : forall A B:set, A <> Empty -> B <> Empty -> linear (idx_n (dimindex B + dimindex A)) B (fun x:set => fstcart B x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4236 / LINEAR_SNDCART
-// Source hash: md5:287d4b9a267d0f2018b8f2fb8ba8d739
+// Source hash: md5:da7138c2505f56f0259cb5951512deff
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem LINEAR_SNDCART : forall A B:set, A <> Empty -> B <> Empty -> linear (idx_n (dimindex A + dimindex B)) B (fun x:set => sndcart A B x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4243 / FSTCART_VEC
-// Source hash: md5:136414b3057d77c3773616cee39989b8
+// Source hash: md5:1e159242fd045b03edd1f39997f2655a
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem FSTCART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, fstcart B (vec (idx_n (dimindex B + dimindex A)) n) = vec B n.
 Admitted.
@@ -3765,13 +3765,13 @@ Theorem FSTCART_SUB : forall M N:set, M <> Empty -> N <> Empty -> forall x y :e 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4265 / FSTCART_VSUM
-// Source hash: md5:28d92cd0307e9f26a906fa3e941a19de
+// Source hash: md5:2c6e85999b0d2e47a6a90baabc62c823
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx, hol_real_R)
 Theorem FSTCART_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall k c= C, forall x:set -> set, (forall x :e C, x x :e R :^: idx_n (dimindex B + dimindex A)) -> finite k -> fstcart B (vsum C (idx_n (dimindex B + dimindex A)) k x) = vsum C B k (fun i:set => fstcart B (x i)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4271 / SNDCART_VEC
-// Source hash: md5:98146a7332e8ed857144992f2e5208c5
+// Source hash: md5:40ee1fe9cb8a2f11c7fcf71079ddd6ce
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem SNDCART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, sndcart A B (vec (idx_n (dimindex A + dimindex B)) n) = vec B n.
 Admitted.
@@ -3801,13 +3801,13 @@ Theorem SNDCART_SUB : forall M N:set, M <> Empty -> N <> Empty -> forall x y :e 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4294 / SNDCART_VSUM
-// Source hash: md5:d3e2df692061298485ce01e1675cc669
+// Source hash: md5:d4952d1c357e0f419c9c13967d45cdf5
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx, hol_real_R)
 Theorem SNDCART_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall k c= C, forall x:set -> set, (forall x :e C, x x :e R :^: idx_n (dimindex A + dimindex B)) -> finite k -> sndcart A B (vsum C (idx_n (dimindex A + dimindex B)) k x) = vsum C B k (fun i:set => sndcart A B (x i)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4300 / PASTECART_VEC
-// Source hash: md5:07fa9097d8b49942df97e67492420c30
+// Source hash: md5:0012fc7ecaa9a6f22965314abc379f04
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem PASTECART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, pastecart A B (vec A n) (vec B n) = vec (idx_n (dimindex A + dimindex B)) n.
 Admitted.
@@ -3819,7 +3819,7 @@ Theorem PASTECART_ADD : forall M N:set, M <> Empty -> N <> Empty -> forall x1 :e
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4311 / PASTECART_CMUL
-// Source hash: md5:11b3cde85e8ee240f42fa1ea6eca2e60
+// Source hash: md5:c7163e4061646058d9b25e367eef13f5
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem PASTECART_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall x1 :e R :^: idx A, forall y1 :e R :^: idx B, forall c :e R, pastecart A B (vector_mul A c x1) (vector_mul B c y1) = vector_mul (idx_n (dimindex A + dimindex B)) c (pastecart A B x1 y1).
 Admitted.
@@ -3837,13 +3837,13 @@ Theorem PASTECART_SUB : forall M N:set, M <> Empty -> N <> Empty -> forall x1 :e
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4326 / PASTECART_VSUM
-// Source hash: md5:ea7d11fae97773cb80ffb9335fcac897
+// Source hash: md5:8fc9d3eb04a042edfa3b4997d658f84e
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx, hol_real_R)
 Theorem PASTECART_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall k c= C, forall x:set -> set, (forall x :e C, x x :e R :^: idx A) -> forall y:set -> set, (forall x0 :e C, y x0 :e R :^: idx B) -> finite k -> pastecart A B (vsum C A k x) (vsum C B k y) = vsum C (idx_n (dimindex A + dimindex B)) k (fun i:set => pastecart A B (x i) (y i)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4332 / PASTECART_EQ_VEC
-// Source hash: md5:eb84676e72f449e4fa93cc9aaf6973f3
+// Source hash: md5:839c3f874da2881e7ff1f3aaa67d5f4c
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem PASTECART_EQ_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, forall n :e omega, pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n <-> x = vec A n /\ y = vec B n.
 Admitted.
@@ -3861,55 +3861,55 @@ Theorem FSTCART_SNDCART_MATRIX_ADD : forall K M N:set, K <> Empty -> M <> Empty 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4349 / NORM_FSTCART
-// Source hash: md5:0895ffcbc9aab694ec62a3179bc73334
+// Source hash: md5:6714f6c4fd688de1ba74e4c902d16ea2
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem NORM_FSTCART : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx_n (dimindex B + dimindex A), vector_norm B (fstcart B x) <= vector_norm (idx_n (dimindex B + dimindex A)) x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4359 / DIST_FSTCART
-// Source hash: md5:cd559f607a4e92611cf6a2b3a092cf38
+// Source hash: md5:0cec6e687c3dca5348cb2dfa54ec667a
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_prod_setprod, hol_real_R)
 Theorem DIST_FSTCART : forall A B:set, A <> Empty -> B <> Empty -> forall x y :e R :^: idx_n (dimindex B + dimindex A), distance B (fstcart B x,fstcart B y) <= distance (idx_n (dimindex B + dimindex A)) (x,y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4363 / NORM_SNDCART
-// Source hash: md5:ecf976abe6a4106cdcb89ccef60f4745
+// Source hash: md5:b0915e28cbf2c83719368cd3c9cec93d
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem NORM_SNDCART : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx_n (dimindex A + dimindex B), vector_norm B (sndcart A B x) <= vector_norm (idx_n (dimindex A + dimindex B)) x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4376 / DIST_SNDCART
-// Source hash: md5:a6a0d62e1a4ba94000a6100a0cae6d13
+// Source hash: md5:c45fbbd83c2c9034517ebd1a9cfa8256
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_prod_setprod, hol_real_R)
 Theorem DIST_SNDCART : forall A B:set, A <> Empty -> B <> Empty -> forall x y :e R :^: idx_n (dimindex A + dimindex B), distance B (sndcart A B x,sndcart A B y) <= distance (idx_n (dimindex A + dimindex B)) (x,y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4380 / DOT_PASTECART
-// Source hash: md5:d613e6d622308b09b8e6790e6a661c13
+// Source hash: md5:f7934f20cb157ed08f5158570af02c42
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem DOT_PASTECART : forall A B:set, A <> Empty -> B <> Empty -> forall x1 :e R :^: idx A, forall x2 :e R :^: idx B, forall y1 :e R :^: idx A, forall y2 :e R :^: idx B, dot (idx_n (dimindex A + dimindex B)) (pastecart A B x1 x2) (pastecart A B y1 y2) = dot A x1 y1 + dot B x2 y2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4390 / SQNORM_PASTECART
-// Source hash: md5:29f91ecf5ea95caa2af54b43e2c5c2b8
+// Source hash: md5:6e9b843bcb56872756103351fad815fc
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem SQNORM_PASTECART : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm (idx_n (dimindex A + dimindex B)) (pastecart A B x y) ^ 2 = vector_norm A x ^ 2 + vector_norm B y ^ 2.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4394 / NORM_PASTECART
-// Source hash: md5:18845516175df4fd628ab240c4f9e50a
+// Source hash: md5:424fa6e419be77f834bc4eee49594c15
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem NORM_PASTECART : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm (idx_n (dimindex A + dimindex B)) (pastecart A B x y) = if 0 <= vector_norm A x ^ 2 + vector_norm B y ^ 2 then sqrt_SNo_nonneg (vector_norm A x ^ 2 + vector_norm B y ^ 2) else - sqrt_SNo_nonneg (- (vector_norm A x ^ 2 + vector_norm B y ^ 2)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4400 / NORM_PASTECART_LE
-// Source hash: md5:c651b2a79be25440119cc4b050119d92
+// Source hash: md5:4d1ebb132fa96a725bb93ac525152e1f
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_real_R)
 Theorem NORM_PASTECART_LE : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, vector_norm (idx_n (dimindex A + dimindex B)) (pastecart A B x y) <= vector_norm A x + vector_norm B y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4405 / DIST_PASTECART_LE
-// Source hash: md5:f51838a70723f891bc636ea805be912d
+// Source hash: md5:6ccb3e44b3caeb44891303c413ae8752
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_prod_setprod, hol_real_R)
 Theorem DIST_PASTECART_LE : forall A B:set, A <> Empty -> B <> Empty -> forall x1 :e R :^: idx A, forall y1 :e R :^: idx B, forall x2 :e R :^: idx A, forall y2 :e R :^: idx B, distance (idx_n (dimindex A + dimindex B)) (pastecart A B x1 y1,pastecart A B x2 y2) <= distance A (x1,x2) + distance B (y1,y2).
 Admitted.
@@ -3921,19 +3921,19 @@ Theorem NORM_LE_PASTECART : forall M N:set, M <> Empty -> N <> Empty -> forall x
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4419 / DIST_LE_PASTECART
-// Source hash: md5:042061fbd103e49e1756900cc03577f9
+// Source hash: md5:b74c5446417c5ed74d4da8b2e9112641
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_prod_setprod, hol_real_R)
 Theorem DIST_LE_PASTECART : forall A B:set, A <> Empty -> B <> Empty -> forall x1 :e R :^: idx A, forall y1 :e R :^: idx B, forall x2 :e R :^: idx A, forall y2 :e R :^: idx B, distance A (x1,x2) <= distance (idx_n (dimindex A + dimindex B)) (pastecart A B x1 y1,pastecart A B x2 y2) /\ distance B (y1,y2) <= distance (idx_n (dimindex A + dimindex B)) (pastecart A B x1 y1,pastecart A B x2 y2).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4425 / NORM_PASTECART_0
-// Source hash: md5:e51dd786b4c6c614f4256678e2cf3bef
+// Source hash: md5:947d926a749bfb84f0971a97c2f6cf5c
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega, hol_real_R)
 Theorem NORM_PASTECART_0 : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall x :e R :^: idx A, vector_norm (idx_n (dimindex A + dimindex B)) (pastecart A B x (vec B 0)) = vector_norm A x) /\ forall y :e R :^: idx C, vector_norm (idx_n (dimindex D + dimindex C)) (pastecart D C (vec D 0) y) = vector_norm C y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4431 / DIST_PASTECART_CANCEL
-// Source hash: md5:2e725bcb377c7798e789d6f4d1e4ffb7
+// Source hash: md5:cb6d91f41c0b0ccd8a44c91081e26dde
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_prod_setprod, hol_real_R)
 Theorem DIST_PASTECART_CANCEL : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall x x' :e R :^: idx A, forall y :e R :^: idx B, distance (idx_n (dimindex A + dimindex B)) (pastecart A B x y,pastecart A B x' y) = distance A (x,x')) /\ forall x :e R :^: idx C, forall y y' :e R :^: idx D, distance (idx_n (dimindex C + dimindex D)) (pastecart C D x y,pastecart C D x y') = distance D (y,y').
 Admitted.
@@ -3957,7 +3957,7 @@ Theorem dropout_thm : forall M N:set, M <> Empty -> N <> Empty -> forall k :e om
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4457 / pushin
-// Source hash: md5:8a980b06bda242d22cf43b0a95dde437
+// Source hash: md5:ac6dd54fe42333bb980ac319d7cc6340
 // Status: generalization_required (bridges: empty_case:B, hol_cart_setexp, hol_num_omega, nat_lt_SNoLt)
 Theorem pushin_thm : forall A B C:set, A <> Empty -> C <> Empty -> forall k :e omega, forall t :e B, forall x :e B :^: idx C, pushin A B C k t x = fun i :e idx A => if i < k then x i else if i = k then t else x (minus_nat i 1).
 Admitted.
@@ -3993,7 +3993,7 @@ Theorem DROPOUT_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall x y :e R
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4523 / DROPOUT_0
-// Source hash: md5:c1443f53905231e3185ffa97014059ff
+// Source hash: md5:8275359b242f36e1bfda5607a564fd61
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DROPOUT_0 : forall A N:set, A <> Empty -> N <> Empty -> forall k :e omega, dropout N A k (vec N 0) = vec A 0.
 Admitted.
@@ -4011,19 +4011,19 @@ Theorem DOT_PUSHIN : forall M N:set, M <> Empty -> N <> Empty -> forall k :e ome
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4572 / DROPOUT_ADD
-// Source hash: md5:d6fb01c089c14c0a54c0df6453d24928
+// Source hash: md5:466490b477bd16539d183abfc77470ba
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DROPOUT_ADD : forall A N:set, A <> Empty -> N <> Empty -> forall k :e omega, forall x y :e R :^: idx N, dropout N A k (vector_add N x y) = vector_add A (dropout N A k x) (dropout N A k y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4578 / DROPOUT_SUB
-// Source hash: md5:5e99a86d28b59a95eb450fab68fa7139
+// Source hash: md5:99faafb2458078ba45982b3a8df87da7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DROPOUT_SUB : forall A N:set, A <> Empty -> N <> Empty -> forall k :e omega, forall x y :e R :^: idx N, dropout N A k (vector_sub N x y) = vector_sub A (dropout N A k x) (dropout N A k y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4584 / DROPOUT_MUL
-// Source hash: md5:47574c939f58a7ff39e35dcc6acc6a09
+// Source hash: md5:f344ef18564e0b05989dd91f3f94350d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DROPOUT_MUL : forall A N:set, A <> Empty -> N <> Empty -> forall k :e omega, forall c :e R, forall x :e R :^: idx N, dropout N A k (vector_mul N c x) = vector_mul A c (dropout N A k x).
 Admitted.
@@ -4035,31 +4035,31 @@ Theorem LINEAR_DROPOUT : forall M N:set, M <> Empty -> N <> Empty -> forall k :e
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4594 / LINEAR_PUSHIN
-// Source hash: md5:632928ad699eeb986954cb597067832d
+// Source hash: md5:a11c39c3491b90a792e0b9f6e101696d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem LINEAR_PUSHIN : forall A B:set, A <> Empty -> B <> Empty -> forall k :e omega, linear A B (fun x:set => pushin B R A k 0 x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4604 / subspace
-// Source hash: md5:ff5fa8758b001ef0238dabd9de033b7b
+// Source hash: md5:0a81a40639e08e9a9ee8e286b3709c6d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem subspace_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A s <-> vec A 0 :e s /\ ((forall x y :e R :^: idx A, x :e s /\ y :e s -> vector_add A x y :e s) /\ forall c :e R, forall x :e R :^: idx A, x :e s -> vector_mul A c x :e s).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4610 / span
-// Source hash: md5:ae5424ff04a77a885a733418dd6716a3
+// Source hash: md5:b79fb4155b848ea4572738743948ad55
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem span_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, span A s = hull (R :^: idx A) {x :e Power (R :^: idx A) | subspace A x} s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4613 / dependent
-// Source hash: md5:201eca2a08ade9ad639c21b403ac0dd6
+// Source hash: md5:d37590cc5be58ababcc8cc71a6e753a9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem dependent_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, dependent A s <-> exists a :e R :^: idx A, a :e s /\ a :e span A (s :\: {a}).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4616 / independent
-// Source hash: md5:4a826ea072b1283957a3b4b3d430f182
+// Source hash: md5:8d6c1e09e84b84c217cdbea408a4a592
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem independent_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, independent A s <-> ~ dependent A s.
 Admitted.
@@ -4071,25 +4071,25 @@ Theorem SUBSPACE_UNIV : forall N:set, N <> Empty -> subspace N (R :^: idx N).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4627 / SUBSPACE_IMP_NONEMPTY
-// Source hash: md5:98494d679fbfa2e749502e3de96d569d
+// Source hash: md5:2370b5ec9d478afd125376b99eec0b86
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_IMP_NONEMPTY : forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A s -> ~ s = Empty.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4631 / SUBSPACE_0
-// Source hash: md5:6a6f3a6e9740558266d468b68282edab
+// Source hash: md5:7624811974b3ea4e3c1d037346e7e28c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SUBSPACE_0 : forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A s -> vec A 0 :e s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4635 / SUBSPACE_ADD
-// Source hash: md5:a572fbe75e16b625547ee24f313a17f0
+// Source hash: md5:e780bda98f790a39d6051c3aa067b5f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_ADD : forall A:set, A <> Empty -> forall x y :e R :^: idx A, forall s c= R :^: idx A, subspace A s /\ (x :e s /\ y :e s) -> vector_add A x y :e s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4639 / SUBSPACE_MUL
-// Source hash: md5:822ade47f9eaac8323606fac246acae1
+// Source hash: md5:d54a6b3f7861bfabe2f45dfce6a700cd
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_MUL : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall c :e R, forall s c= R :^: idx A, subspace A s /\ x :e s -> vector_mul A c x :e s.
 Admitted.
@@ -4101,7 +4101,7 @@ Theorem SUBSPACE_MUL_EQ : forall N:set, N <> Empty -> forall s c= R :^: idx N, f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4652 / SUBSPACE_NEG
-// Source hash: md5:802ca92111d5bd6149ccc3a93db95dfb
+// Source hash: md5:6cc4f9bead30e757f55191f7fc283615
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_NEG : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall s c= R :^: idx A, subspace A s /\ x :e s -> vector_neg A x :e s.
 Admitted.
@@ -4113,43 +4113,43 @@ Theorem SUBSPACE_NEG_EQ : forall N:set, N <> Empty -> forall s c= R :^: idx N, f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4660 / SUBSPACE_SUB
-// Source hash: md5:30d51306a1934845ba40a3a05c05b865
+// Source hash: md5:ff39420a49ea3e08ede0c35c3262ab1b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_SUB : forall A:set, A <> Empty -> forall x y :e R :^: idx A, forall s c= R :^: idx A, subspace A s /\ (x :e s /\ y :e s) -> vector_sub A x y :e s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4664 / SUBSPACE_VSUM
-// Source hash: md5:e25d3917faec87707d3605213cd40118
+// Source hash: md5:3c7e89c852908a6c1481ee9eb9b05fa0
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem SUBSPACE_VSUM : forall A B:set, A <> Empty -> B <> Empty -> forall s c= R :^: idx B, forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall t c= A, subspace B s /\ (finite t /\ (forall x :e A, x :e t -> f x :e s)) -> vsum A B t f :e s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4672 / SUBSPACE_LINEAR_IMAGE
-// Source hash: md5:19452a87591ad35526ec2cd7da7c0b74
+// Source hash: md5:a5195cdf43d09e11528349b240365b5f
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_LINEAR_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, linear B A f /\ subspace B s -> subspace A {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4678 / SUBSPACE_LINEAR_PREIMAGE
-// Source hash: md5:d307c9a146d533fd8601c373c3da71ec
+// Source hash: md5:bf6099b72ac7a75a14a6c87626f9652c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_LINEAR_PREIMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall s c= R :^: idx B, linear A B f /\ subspace B s -> subspace A {x :e R :^: idx A | f x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4683 / SUBSPACE_TRIVIAL
-// Source hash: md5:3e66ee23993568c818323ee99e5a9ecc
+// Source hash: md5:d74240d9e7c852d64844eb393e62bf01
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SUBSPACE_TRIVIAL : forall A:set, A <> Empty -> subspace A {vec A 0}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4687 / SUBSPACE_INTER
-// Source hash: md5:6a4a677af37fa647aa913386d6780668
+// Source hash: md5:4b709caec5bc3de2ebdcd7016df2f3c0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_INTER : forall A:set, A <> Empty -> forall s t c= R :^: idx A, subspace A s /\ subspace A t -> subspace A (s :/\: t).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4691 / SUBSPACE_INTERS
-// Source hash: md5:5578f0357a85aad5e19c5817675d92a4
+// Source hash: md5:ec0c0417fb34bcfb67b04dde72a9fbd2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_INTERS : forall A:set, A <> Empty -> forall f c= Power (R :^: idx A), (forall s c= R :^: idx A, s :e f -> subspace A s) -> subspace A {x :e R :^: idx A | forall Y :e f, x :e Y}.
 Admitted.
@@ -4179,19 +4179,19 @@ Theorem SUBSPACE_PCROSS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4749 / SPAN_SPAN
-// Source hash: md5:6d4f37aece346cc5f2dd7ad13ea6dfea
+// Source hash: md5:750bab29f645ca62fa63430a7f4b73e8
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_SPAN : forall A:set, A <> Empty -> forall s c= R :^: idx A, span A (span A s) = span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4753 / SPAN_MONO
-// Source hash: md5:1e1255eccd3d17950cd8b07c2126ce10
+// Source hash: md5:0f66674127a4086a037e096b3845b6db
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_MONO : forall A:set, A <> Empty -> forall s t c= R :^: idx A, s c= t -> span A s c= span A t.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4757 / SUBSPACE_SPAN
-// Source hash: md5:7fd6c0ca2b3fb96ea1e019eb87ca58d8
+// Source hash: md5:4b4984f489e13f264fb2a9b5c4d5ea7c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_SPAN : forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A (span A s).
 Admitted.
@@ -4203,37 +4203,37 @@ Theorem NONEMPTY_SPAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, ~ s
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4766 / SPAN_CLAUSES
-// Source hash: md5:bd4ce2ee1bb680995e69c285c58723b0
+// Source hash: md5:cb25e744a668dd5e94161ce893818a22
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SPAN_CLAUSES : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall s c= R :^: idx B, (forall a :e R :^: idx A, forall s0 c= R :^: idx A, a :e s0 -> a :e span A s0) /\ (vec B 0 :e span B s /\ ((forall x y :e R :^: idx D, forall s0 c= R :^: idx D, x :e span D s0 /\ y :e span D s0 -> vector_add D x y :e span D s0) /\ forall x :e R :^: idx C, forall c :e R, forall s0 c= R :^: idx C, x :e span C s0 -> vector_mul C c x :e span C s0)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4773 / SPAN_INDUCT
-// Source hash: md5:b93b21f523f49201fdaaedbf3961f93e
+// Source hash: md5:2337e955814fc198c94dbc0176522633
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_INDUCT : forall A:set, A <> Empty -> forall s h c= R :^: idx A, (forall x :e R :^: idx A, x :e s -> x :e h) /\ subspace A h -> forall x :e R :^: idx A, x :e span A s -> x :e h.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4777 / SPAN_EMPTY
-// Source hash: md5:764ba1d7342b28c6a67eb590d797ce78
+// Source hash: md5:85cdcb43dd61a10b06730ffc04b29fee
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SPAN_EMPTY : forall A:set, A <> Empty -> span A Empty = {vec A 0}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4783 / INDEPENDENT_EMPTY
-// Source hash: md5:40c99e90199821e71c9af7c23c1e50a5
+// Source hash: md5:0062e38a557f3d88f5f5a7974cb957ae
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INDEPENDENT_EMPTY : forall A:set, A <> Empty -> independent A Empty.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4787 / INDEPENDENT_NONZERO
-// Source hash: md5:2c429248c3003675752634ceada2f3a3
+// Source hash: md5:07bbf74a34578ba05224af7070ee86c9
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem INDEPENDENT_NONZERO : forall A:set, A <> Empty -> forall s c= R :^: idx A, independent A s -> ~ vec A 0 :e s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4791 / INDEPENDENT_MONO
-// Source hash: md5:3fdb7ba1deec729da25510b356a77d8f
+// Source hash: md5:f75c17b0ea118187b9d512a86e17f1d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INDEPENDENT_MONO : forall A:set, A <> Empty -> forall s t c= R :^: idx A, independent A t /\ s c= t -> independent A s.
 Admitted.
@@ -4245,7 +4245,7 @@ Theorem DEPENDENT_MONO : forall N:set, N <> Empty -> forall s t c= R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4801 / SPAN_SUBSPACE
-// Source hash: md5:17d82fd0adedf6cfcb9be53e343781cf
+// Source hash: md5:d679a94688d5a4c62e7714a80a625666
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_SUBSPACE : forall A:set, A <> Empty -> forall b s c= R :^: idx A, b c= s /\ (s c= span A b /\ subspace A s) -> span A b = s.
 Admitted.
@@ -4257,19 +4257,19 @@ Theorem SPAN_INDUCT_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, f
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4826 / SPAN_SUPERSET
-// Source hash: md5:22702248984da2b73c8248690b8600f4
+// Source hash: md5:16740e39e0914ddbb2654c1ba1dd78aa
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_SUPERSET : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, x :e s -> x :e span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4830 / SPAN_INC
-// Source hash: md5:512ded3656be9a3146d5ccabb617987a
+// Source hash: md5:f8cc184847e70ca5f04125a4204319e4
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_INC : forall A:set, A <> Empty -> forall s c= R :^: idx A, s c= span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4834 / SPAN_UNION_SUBSET
-// Source hash: md5:c74ea6a78a2f2753861617a4d4812c36
+// Source hash: md5:8768fe5f9186ee51b44fd239c428ecff
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_UNION_SUBSET : forall A:set, A <> Empty -> forall s t c= R :^: idx A, span A s :\/: span A t c= span A (s :\/: t).
 Admitted.
@@ -4281,19 +4281,19 @@ Theorem SPAN_UNIV : forall N:set, N <> Empty -> span N (R :^: idx N) = R :^: idx
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4842 / SPAN_0
-// Source hash: md5:7222f565927f9c55b2e4f4d00d4ad0b5
+// Source hash: md5:248bf3417adabd7bcd1f99acaa1f8a71
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SPAN_0 : forall A:set, A <> Empty -> forall s c= R :^: idx A, vec A 0 :e span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4846 / SPAN_ADD
-// Source hash: md5:731f7e30bcb04ca024d8332645141255
+// Source hash: md5:79bd8e82e605fa61bc87b5352248d7fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_ADD : forall A:set, A <> Empty -> forall x y :e R :^: idx A, forall s c= R :^: idx A, x :e span A s /\ y :e span A s -> vector_add A x y :e span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4850 / SPAN_MUL
-// Source hash: md5:bebb2f403e571edd46c38c86d6e590bb
+// Source hash: md5:b29a5a6086777d1f72fa04843768d5a6
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_MUL : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall c :e R, forall s c= R :^: idx A, x :e span A s -> vector_mul A c x :e span A s.
 Admitted.
@@ -4305,37 +4305,37 @@ Theorem SPAN_MUL_EQ : forall N:set, N <> Empty -> forall x :e R :^: idx N, foral
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4861 / SPAN_NEG
-// Source hash: md5:0032993df1c6d68083e96c5e34137e1d
+// Source hash: md5:f826f6782aa75bc647dd72f8006d75a7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_NEG : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall s c= R :^: idx A, x :e span A s -> vector_neg A x :e span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4865 / SPAN_NEG_EQ
-// Source hash: md5:5c03b147a13636ed155b74ba2cb142c8
+// Source hash: md5:1e639afc7c049f8ab1dfcf923a6dcd05
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_NEG_EQ : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall s c= R :^: idx A, vector_neg A x :e span A s <-> x :e span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4869 / SPAN_SUB
-// Source hash: md5:72e5e254019cadeaf3d5554dfa27c2d6
+// Source hash: md5:4cc4e32cc37fafb830a4c14f20796c22
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_SUB : forall A:set, A <> Empty -> forall x y :e R :^: idx A, forall s c= R :^: idx A, x :e span A s /\ y :e span A s -> vector_sub A x y :e span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4873 / SPAN_VSUM
-// Source hash: md5:266076120bfe016614f4b9c737184273
+// Source hash: md5:b47759a3b491fd9cc11f4e7bd0605069
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_real_R)
 Theorem SPAN_VSUM : forall A B:set, A <> Empty -> B <> Empty -> forall s c= R :^: idx B, forall f:set -> set, (forall x :e A, f x :e R :^: idx B) -> forall t c= A, finite t /\ (forall x :e A, x :e t -> f x :e span B s) -> vsum A B t f :e span B s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4878 / SPAN_ADD_EQ
-// Source hash: md5:1eb1bc6362974bc1a2015344ec89a5ae
+// Source hash: md5:77b9ba8aed823456c2387d1141b5fe9a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_ADD_EQ : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x y :e R :^: idx A, x :e span A s -> (vector_add A x y :e span A s <-> y :e span A s).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4882 / SPAN_EQ_SELF
-// Source hash: md5:a34d07e655e2d0ec4c8eff88e1c284c6
+// Source hash: md5:186b6a144dc694d52c1d4f5780058655
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_EQ_SELF : forall A:set, A <> Empty -> forall s c= R :^: idx A, span A s = s <-> subspace A s.
 Admitted.
@@ -4353,7 +4353,7 @@ Theorem SPAN_SUBSET_SUBSPACE : forall N:set, N <> Empty -> forall s t c= R :^: i
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4896 / SUBSPACE_TRANSLATION_SELF
-// Source hash: md5:aac930506c99c2d213d856823f0a3b22
+// Source hash: md5:0d065df73c17d690b36aefbf77fdcb48
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_TRANSLATION_SELF : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall a :e R :^: idx A, subspace A s /\ a :e s -> {vector_add A a x | x :e s} = s.
 Admitted.
@@ -4365,7 +4365,7 @@ Theorem SUBSPACE_TRANSLATION_SELF_EQ : forall N:set, N <> Empty -> forall s c= R
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4912 / SUBSPACE_SUMS
-// Source hash: md5:9b2127d6a151108e5e3a423c651413e1
+// Source hash: md5:aa6e8bd75afbdd99281e02dc70bbe852
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_SUMS : forall A:set, A <> Empty -> forall s t c= R :^: idx A, subspace A s /\ subspace A t -> subspace A (\/_ x :e R :^: idx A, {vector_add A x y | y :e R :^: idx A, x :e s /\ y :e t}).
 Admitted.
@@ -4413,25 +4413,25 @@ Theorem SPAN_BREAKDOWN_EQ : forall N:set, N <> Empty -> forall x a :e R :^: idx 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5021 / SPAN_INSERT_0
-// Source hash: md5:383c9c8c231e61d2b39b8568e0ef5d85
+// Source hash: md5:d3fc0c4c78dc208af496b3b7668dcb8d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SPAN_INSERT_0 : forall A:set, A <> Empty -> forall s c= R :^: idx A, span A (SetAdjoin s (vec A 0)) = span A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5025 / SPAN_SING
-// Source hash: md5:004ec3087dede85b0ff3e1977927b1ab
+// Source hash: md5:ed154e6b91dc30b04c3311373e524ac2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_SING : forall A:set, A <> Empty -> forall a :e R :^: idx A, span A {a} = {vector_mul A u a | u :e R, u :e R}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5030 / SPAN_2
-// Source hash: md5:3a8168067fa25329eb81482690ca1b79
+// Source hash: md5:7d32666efc921aa6d7d92ea8f68705a7
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_2 : forall A:set, A <> Empty -> forall a b :e R :^: idx A, span A {a,b} = \/_ u :e R, {vector_add A (vector_mul A u a) (vector_mul A v b) | v :e R, u :e R /\ v :e R}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5036 / SPAN_3
-// Source hash: md5:42b871a6b003d51f8d70e7bad87a706b
+// Source hash: md5:92c6c20f46ea473bd5890266dc82aee1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPAN_3 : forall A:set, A <> Empty -> forall a b c :e R :^: idx A, span A {a,b,c} = \/_ u :e R, \/_ v :e R, {vector_add A (vector_mul A u a) (vector_add A (vector_mul A v b) (vector_mul A w c)) | w :e R, u :e R /\ (v :e R /\ w :e R)}.
 Admitted.
@@ -4443,7 +4443,7 @@ Theorem IN_SPAN_INSERT : forall N:set, N <> Empty -> forall a b :e R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5063 / IN_SPAN_DELETE
-// Source hash: md5:6c7323d721c8f4432dca1eac66dbaec7
+// Source hash: md5:ca37f6b1c6ec61308f41d74f6d840f87
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem IN_SPAN_DELETE : forall A:set, A <> Empty -> forall a b :e R :^: idx A, forall s c= R :^: idx A, a :e span A s /\ ~ a :e span A (s :\: {b}) -> b :e span A (SetAdjoin (s :\: {b}) a).
 Admitted.
@@ -4623,7 +4623,7 @@ Theorem EXCHANGE_LEMMA : forall N:set, N <> Empty -> forall s t c= R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5387 / INDEPENDENT_SPAN_BOUND
-// Source hash: md5:ec52eb0671d63f701674c35356ce8c68
+// Source hash: md5:8426482bf8d08d90b79b28fa873fa835
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem INDEPENDENT_SPAN_BOUND : forall A:set, A <> Empty -> forall s t c= R :^: idx A, finite t /\ (independent A s /\ s c= span A t) -> finite s /\ finite_cardinality s <= finite_cardinality t.
 Admitted.
@@ -4659,13 +4659,13 @@ Theorem MAXIMAL_INDEPENDENT_SUBSET : forall N:set, N <> Empty -> forall v c= R :
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5430 / BASIS_EXISTS
-// Source hash: md5:a4956b9bb36e8d3bbadc07ad356ca535
+// Source hash: md5:26f9498e0a28660c6660bcb4b6b0dfaa
 // Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_num_omega, hol_real_R)
 Theorem BASIS_EXISTS : forall A:set, A <> Empty -> forall v c= R :^: idx A, exists b c= R :^: idx A, b c= v /\ (independent A b /\ (v c= span A b /\ equip b (dim A v))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5436 / BASIS_EXISTS_FINITE
-// Source hash: md5:b47eec2d71bb56eef8a6a3e103dacd8d
+// Source hash: md5:3717eff8f6a1e70c79a559be59eb7d53
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_has_size_equip, hol_num_omega, hol_real_R)
 Theorem BASIS_EXISTS_FINITE : forall A:set, A <> Empty -> forall v c= R :^: idx A, exists b c= R :^: idx A, finite b /\ (b c= v /\ (independent A b /\ (v c= span A b /\ equip b (dim A v)))).
 Admitted.
@@ -4689,13 +4689,13 @@ Theorem SPAN_CARD_GE_DIM : forall N:set, N <> Empty -> forall v b c= R :^: idx N
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5468 / BASIS_CARD_EQ_DIM
-// Source hash: md5:50f4db581cee7bd76c679e36159c644a
+// Source hash: md5:6b81f9006245059a85a349fa734ab81b
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
 Theorem BASIS_CARD_EQ_DIM : forall A:set, A <> Empty -> forall v b c= R :^: idx A, b c= v /\ (v c= span A b /\ independent A b) -> finite b /\ finite_cardinality b = dim A v.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5473 / BASIS_HAS_SIZE_DIM
-// Source hash: md5:0b887cd0fe2b1f14b7ba92b45e9fc52a
+// Source hash: md5:9d9861fee31f85e795d206dfec4c5c41
 // Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_num_omega, hol_real_R)
 Theorem BASIS_HAS_SIZE_DIM : forall A:set, A <> Empty -> forall v b c= R :^: idx A, independent A b /\ span A b = v -> equip b (dim A v).
 Admitted.
@@ -4707,13 +4707,13 @@ Theorem DIM_SPAN : forall N:set, N <> Empty -> forall s c= R :^: idx N, dim N (s
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5486 / DIM_UNIQUE
-// Source hash: md5:cc9d1f2dbd207104316a84d23963e364
+// Source hash: md5:4e93b209838533de6347773dbebdbf68
 // Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_num_omega, hol_real_R)
 Theorem DIM_UNIQUE : forall A:set, A <> Empty -> forall n :e omega, forall v b c= R :^: idx A, b c= v /\ (v c= span A b /\ (independent A b /\ equip b n)) -> dim A v = n.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5491 / DIM_LE_CARD
-// Source hash: md5:7586a8092d2e75cbd78b261c4a3c56d2
+// Source hash: md5:5d212e84ea4654dbb0e90303ec30d5ec
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem DIM_LE_CARD : forall A:set, A <> Empty -> forall s c= R :^: idx A, finite s -> dim A s <= finite_cardinality s.
 Admitted.
@@ -4755,7 +4755,7 @@ Theorem CARD_LE_DIM_SPANNING : forall N:set, N <> Empty -> forall v b c= R :^: i
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5540 / CARD_EQ_DIM
-// Source hash: md5:c6e99846cb4b5def63ea4dc66f255bb8
+// Source hash: md5:119b01ade7613afe5703f79c1bc423f0
 // Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_num_omega, hol_real_R)
 Theorem CARD_EQ_DIM : forall A:set, A <> Empty -> forall v b c= R :^: idx A, b c= v /\ equip b (dim A v) -> (independent A b <-> v c= span A b).
 Admitted.
@@ -4803,7 +4803,7 @@ Theorem SUBSET_LE_DIM : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5586 / SPAN_EQ_DIM
-// Source hash: md5:526286ee1aaadaedb0594d6273dd2383
+// Source hash: md5:07aefbfaeb3392a0f006dc451ca7971b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SPAN_EQ_DIM : forall A:set, A <> Empty -> forall s t c= R :^: idx A, span A s = span A t -> dim A s = dim A t.
 Admitted.
@@ -4869,13 +4869,13 @@ Theorem INDEPENDENT_EXPLICIT : forall N:set, N <> Empty -> forall b c= R :^: idx
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5674 / INDEPENDENT_SING
-// Source hash: md5:179baf4e33afaf6200b66b14c6a700f3
+// Source hash: md5:a2bfc41dab5a9a0eb3d3ff10ef4c3a31
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem INDEPENDENT_SING : forall A:set, A <> Empty -> forall x :e R :^: idx A, independent A {x} <-> ~ x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5679 / DEPENDENT_SING
-// Source hash: md5:06e9278ecb2b6cc71d441f3eb456f6b4
+// Source hash: md5:f36a9f02d1ed24f970826407a2b539d8
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DEPENDENT_SING : forall A:set, A <> Empty -> forall x :e R :^: idx A, dependent A {x} <-> x = vec A 0.
 Admitted.
@@ -4911,7 +4911,7 @@ Theorem LINEAR_SUBSPACE_GRAPH : forall M N:set, M <> Empty -> N <> Empty -> fora
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5744 / SPANS_IMAGE
-// Source hash: md5:2c3bddf2bd4eca72e5c35f56f9978099
+// Source hash: md5:52124552b3c2fc116a28c6aa5a6e8bee
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SPANS_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall b v c= R :^: idx A, linear A B f /\ v c= span A b -> {f x | x :e v} c= span B {f x | x :e b}.
 Admitted.
@@ -4923,7 +4923,7 @@ Theorem DIM_LINEAR_IMAGE_LE : forall M N:set, M <> Empty -> N <> Empty -> forall
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5761 / DIM_SING
-// Source hash: md5:cd03410fda0cccf82cbe00b271f0468d
+// Source hash: md5:30dc67ee2d7ee4cb2e37f6f82214a0ec
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem DIM_SING : forall A:set, A <> Empty -> forall x :e R :^: idx A, dim A {x} = if x = vec A 0 then 0 else 1.
 Admitted.
@@ -4995,7 +4995,7 @@ Theorem LINEAR_INDEPENDENT_EXTEND : forall M N:set, M <> Empty -> N <> Empty -> 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6075 / SUBSPACE_KERNEL
-// Source hash: md5:1a27288aa1330cb654d660e534d9dcd6
+// Source hash: md5:ffb86a1b72f42d067388633d8d7102f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem SUBSPACE_KERNEL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> linear A B f -> subspace A {x :e R :^: idx A | f x = vec B 0}.
 Admitted.
@@ -5007,13 +5007,13 @@ Theorem LINEAR_EQ_0_SPAN : forall M N:set, M <> Empty -> N <> Empty -> forall f:
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6092 / LINEAR_EQ_0
-// Source hash: md5:53ae06e00a808fcf85527e5d411dcef9
+// Source hash: md5:3d065269c8ef486f22ec10e2b5689219
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem LINEAR_EQ_0 : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall b s c= R :^: idx A, linear A B f /\ (s c= span A b /\ (forall x :e R :^: idx A, x :e b -> f x = vec B 0)) -> forall x :e R :^: idx A, x :e s -> f x = vec B 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6097 / LINEAR_EQ
-// Source hash: md5:e4e8c1dce3012a4971d926af69b6d87b
+// Source hash: md5:fb0df0ca03b921b2807a766c9a8f7ca3
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem LINEAR_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx A) -> forall b s c= R :^: idx B, linear B A f /\ (linear B A g /\ (s c= span B b /\ (forall x :e R :^: idx B, x :e b -> f x = g x))) -> forall x :e R :^: idx B, x :e s -> f x = g x.
 Admitted.
@@ -5151,7 +5151,7 @@ Theorem LEFT_RIGHT_INVERSE_EQ : forall A:set, forall f:set -> set, (forall x :e 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6399 / ISOMORPHISM_EXPAND
-// Source hash: md5:d920e7113ce9aff1a3c6a5b92845f557
+// Source hash: md5:0a6c099171d0dc55d06881c2dedfb21c
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem ISOMORPHISM_EXPAND : forall A B:set, forall f:set -> set, (forall x :e B, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f (g x) = x) /\ (forall x :e B, g (f x) = x) <-> (forall x :e A, f (g x) = x) /\ forall x :e B, g (f x) = x).
 Admitted.
@@ -5319,13 +5319,13 @@ Theorem columnvector_thm : forall N:set, N <> Empty -> forall v :e R :^: idx N, 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6709 / TRANSP_COLUMNVECTOR
-// Source hash: md5:9a90f04bb1ed68a8d94e23b96892d667
+// Source hash: md5:783011a19617fb81e7dc65d5424554d1
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem TRANSP_COLUMNVECTOR : forall A:set, A <> Empty -> forall v :e R :^: idx A, transp A 1 (columnvector A v) = rowvector A v.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6713 / TRANSP_ROWVECTOR
-// Source hash: md5:82b14be62ea0a8dab17ce3e9096e7793
+// Source hash: md5:3f2841dbc1d9cc9cd17b8a0c2a7eb5ad
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
 Theorem TRANSP_ROWVECTOR : forall A:set, A <> Empty -> forall v :e R :^: idx A, transp 1 A (rowvector A v) = columnvector A v.
 Admitted.
@@ -5355,31 +5355,31 @@ Theorem MATRIX_VECTOR_MUL_IN_COLUMNSPACE : forall M N:set, M <> Empty -> N <> Em
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6751 / SUBSPACE_ORTHOGONAL_TO_VECTOR
-// Source hash: md5:b99da1646e1a86a35f1c34c1b8a8a494
+// Source hash: md5:fd1a3c3df995a8f563a42f004e492d5c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_ORTHOGONAL_TO_VECTOR : forall A:set, A <> Empty -> forall x :e R :^: idx A, subspace A {y :e R :^: idx A | orthogonal A x y}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6755 / SUBSPACE_ORTHOGONAL_TO_VECTORS
-// Source hash: md5:c31ecc0bf2c6d27325fc5e8cd84078b2
+// Source hash: md5:2eb08d209b640dd9400239ff253cd75d
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_ORTHOGONAL_TO_VECTORS : forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A {y :e R :^: idx A | forall x :e R :^: idx A, x :e s -> orthogonal A x y}.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6759 / ORTHOGONAL_TO_SPAN
-// Source hash: md5:4280d6332845d38cd464719e66fb005d
+// Source hash: md5:ed5b3b3daca8348b4fba6dc31feb0ebd
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ORTHOGONAL_TO_SPAN : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, (forall y :e R :^: idx A, y :e s -> orthogonal A x y) -> forall y :e R :^: idx A, y :e span A s -> orthogonal A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6766 / ORTHOGONAL_TO_SPAN_EQ
-// Source hash: md5:d48f28fc1e45fb2a9985170a9b475ca2
+// Source hash: md5:a3c05918a5a562ad295868c42900c433
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ORTHOGONAL_TO_SPAN_EQ : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x :e R :^: idx A, (forall y :e R :^: idx A, y :e span A s -> orthogonal A x y) <-> forall y :e R :^: idx A, y :e s -> orthogonal A x y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6771 / ORTHOGONAL_TO_SPANS_EQ
-// Source hash: md5:75183f3b6bf6d3c701c677b74e81a638
+// Source hash: md5:3f714c78c4f8bd072996d7c45c2bd93a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem ORTHOGONAL_TO_SPANS_EQ : forall A:set, A <> Empty -> forall s t c= R :^: idx A, (forall x y :e R :^: idx A, x :e span A s /\ y :e span A t -> orthogonal A x y) <-> forall x y :e R :^: idx A, x :e s /\ y :e t -> orthogonal A x y.
 Admitted.
@@ -5499,7 +5499,7 @@ Theorem RANK_EQ_0 : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:6930 / RANK_0
-// Source hash: md5:9424bdab0a1a9f6924b82657ce4da3a0
+// Source hash: md5:92723b3ed7c74016d7d9d6dbe258fc7d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem RANK_0 : forall A B:set, A <> Empty -> B <> Empty -> rank A B (mat B A 0) = 0.
 Admitted.
@@ -6501,7 +6501,7 @@ Theorem NUMSEG_DIMINDEX_NONEMPTY : forall N:set, N <> Empty -> exists i :e omega
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9409 / INFNORM_SET_IMAGE
-// Source hash: md5:1fb08671ab97936f0c022b54e0e16708
+// Source hash: md5:0107b66a99e2bc3e201a5c3c5ae4dc84
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem INFNORM_SET_IMAGE : forall A N:set, A <> Empty -> N <> Empty -> forall x :e R :^: idx A, {abs_SNo (x i) | i :e omega, 1 <= i /\ i <= dimindex N} = {abs_SNo (x i) | i :e idx N}.
 Admitted.
@@ -6513,49 +6513,49 @@ Theorem INFNORM_SET_LEMMA : forall N:set, N <> Empty -> forall x :e R :^: idx N,
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9420 / INFNORM_POS_LE
-// Source hash: md5:b39caf2020af3dafc185ce92fb86d2f0
+// Source hash: md5:8a7fb6c7fd7dfe7382d05db227fd328b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem INFNORM_POS_LE : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 <= infnorm A x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9427 / INFNORM_TRIANGLE
-// Source hash: md5:3fca9549c9ecfcf6ccc69c80d559109f
+// Source hash: md5:cf57ca1dfccdf2fc85bb35b3b794a83a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INFNORM_TRIANGLE : forall A:set, A <> Empty -> forall x y :e R :^: idx A, infnorm A (vector_add A x y) <= infnorm A x + infnorm A y.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9440 / INFNORM_EQ_0
-// Source hash: md5:374f59a39c723ee18f9d2f84d0e5ce13
+// Source hash: md5:ebc7521a5cc833c2e7b0698321b022fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem INFNORM_EQ_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A x = 0 <-> x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9447 / INFNORM_0
-// Source hash: md5:84e17ec927d15e4a366036e86bb00790
+// Source hash: md5:4c482d4478d524729ae8cce4facfd822
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem INFNORM_0 : forall A:set, A <> Empty -> infnorm A (vec A 0) = 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9451 / INFNORM_NEG
-// Source hash: md5:18b150b249afa6a470ae192f79fa8cfe
+// Source hash: md5:bfa1a6aedbe9f29f8181549ded941a8b
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INFNORM_NEG : forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A (vector_neg A x) = infnorm A x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9457 / INFNORM_SUB
-// Source hash: md5:968f79aa8acbcb7ef0f25995caa653b5
+// Source hash: md5:99a2c896c20f79b594ebb1e710e1e668
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INFNORM_SUB : forall A:set, A <> Empty -> forall x y :e R :^: idx A, infnorm A (vector_sub A x y) = infnorm A (vector_sub A y x).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9461 / REAL_ABS_SUB_INFNORM
-// Source hash: md5:9402f250e6fca782bb2ca255c8b9ffbf
+// Source hash: md5:f4f7f41a25352ca1da8e01afc4469cc6
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem REAL_ABS_SUB_INFNORM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, abs_SNo (infnorm A x + - infnorm A y) <= infnorm A (vector_sub A x y).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9467 / REAL_ABS_INFNORM
-// Source hash: md5:012515e9c0bb9ca26b66ef226a416abe
+// Source hash: md5:b443e7b5c51ffe49ffdfcb5e9ae471f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem REAL_ABS_INFNORM : forall A:set, A <> Empty -> forall x :e R :^: idx A, abs_SNo (infnorm A x) = infnorm A x.
 Admitted.
@@ -6567,7 +6567,7 @@ Theorem COMPONENT_LE_INFNORM : forall N:set, N <> Empty -> forall x :e R :^: idx
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9479 / INFNORM_MUL_LEMMA
-// Source hash: md5:65e68821b5b2fbc9339a2ee586bbbbd9
+// Source hash: md5:4e0227abf64b0fc6b7a62f24eff57ee0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INFNORM_MUL_LEMMA : forall A:set, A <> Empty -> forall a :e R, forall x :e R :^: idx A, infnorm A (vector_mul A a x) <= abs_SNo a * infnorm A x.
 Admitted.
@@ -6579,13 +6579,13 @@ Theorem INFNORM_MUL : forall N:set, N <> Empty -> forall a :e R, forall x :e R :
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9501 / INFNORM_POS_LT
-// Source hash: md5:e0260f6865c4fbc4d612807385204601
+// Source hash: md5:f59914be7888c35613312261cd95504d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem INFNORM_POS_LT : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 < infnorm A x <-> ~ x = vec A 0.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9509 / INFNORM_LE_NORM
-// Source hash: md5:5de4bcae82a62199bdced5b2d4d0f306
+// Source hash: md5:ddc4b7434caefb4d9f43918554529669
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem INFNORM_LE_NORM : forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A x <= vector_norm A x.
 Admitted.
@@ -6615,7 +6615,7 @@ Theorem NORM_TRIANGLE_EQ : forall N:set, N <> Empty -> forall x y :e R :^: idx N
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9572 / DIST_TRIANGLE_EQ
-// Source hash: md5:e382d17142c89b43aab8f6351121cc2d
+// Source hash: md5:5aa7c647d319aae78a0ce701aba82baf
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem DIST_TRIANGLE_EQ : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, distance A (x,z) = distance A (x,y) + distance A (y,z) <-> vector_mul A (vector_norm A (vector_sub A x y)) (vector_sub A y z) = vector_mul A (vector_norm A (vector_sub A y z)) (vector_sub A x y).
 Admitted.
@@ -6627,7 +6627,7 @@ Theorem NORM_CROSS_MULTIPLY : forall N:set, N <> Empty -> forall a b :e R, foral
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9593 / collinear
-// Source hash: md5:733f69737d33cef8a836637f698ce21e
+// Source hash: md5:3b68583dd98d2542712665ac41325217
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem collinear_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, collinear A s <-> exists u :e R :^: idx A, forall x y :e R :^: idx A, x :e s /\ y :e s -> exists c :e R, vector_sub A x y = vector_mul A c u.
 Admitted.
@@ -6645,19 +6645,19 @@ Theorem COLLINEAR_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, col
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9608 / COLLINEAR_SUBSET
-// Source hash: md5:9675c212a70479ddb3cf9570decb02a2
+// Source hash: md5:69dbdebdb757f1f332206b142b6d6ff0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem COLLINEAR_SUBSET : forall A:set, A <> Empty -> forall s t c= R :^: idx A, collinear A t /\ s c= t -> collinear A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9612 / COLLINEAR_EMPTY
-// Source hash: md5:817676ec4ca4321209df1fe3476a5780
+// Source hash: md5:6b124e2932d91d52e4566d74feaeb53c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem COLLINEAR_EMPTY : forall A:set, A <> Empty -> collinear A Empty.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9616 / COLLINEAR_SING
-// Source hash: md5:a04da6df3474b4e3c6570cdf2ab8e44e
+// Source hash: md5:ec588a4a414f2a1c0191eadf71bd2822
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem COLLINEAR_SING : forall A:set, A <> Empty -> forall x :e R :^: idx A, collinear A {x}.
 Admitted.
@@ -6669,13 +6669,13 @@ Theorem COLLINEAR_2 : forall N:set, N <> Empty -> forall x y :e R :^: idx N, col
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9628 / COLLINEAR_SMALL
-// Source hash: md5:6de65443394fcec2221c907c0757f3c2
+// Source hash: md5:392ef41ca1a4df88876136601daa7c21
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem COLLINEAR_SMALL : forall A:set, A <> Empty -> forall s c= R :^: idx A, finite s /\ finite_cardinality s <= 2 -> collinear A s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9636 / COLLINEAR_3
-// Source hash: md5:21da0c6d9565621bd250aa62eb6f7dbc
+// Source hash: md5:f88deaa79753e6063382e55469b37872
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem COLLINEAR_3 : forall A:set, A <> Empty -> forall x y z :e R :^: idx A, collinear A {x,y,z} <-> collinear A {vec A 0,vector_sub A x y,vector_sub A z y}.
 Admitted.
@@ -6687,7 +6687,7 @@ Theorem COLLINEAR_LEMMA : forall N:set, N <> Empty -> forall x y :e R :^: idx N,
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9670 / COLLINEAR_LEMMA_ALT
-// Source hash: md5:dbddf3cd1acf1d20448f24f1e7fae666
+// Source hash: md5:e7b8ff4b1f6fd8d2069a098527d5c9b2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
 Theorem COLLINEAR_LEMMA_ALT : forall A:set, A <> Empty -> forall x y :e R :^: idx A, collinear A {vec A 0,x,y} <-> x = vec A 0 \/ exists c :e R, y = vector_mul A c x.
 Admitted.
@@ -6759,49 +6759,49 @@ Theorem ORTHOGONAL_AND_COLLINEAR : forall N:set, N <> Empty -> forall x y :e R :
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9813 / between
-// Source hash: md5:313b70576e9fa369ca7e743efbfdf1f3
+// Source hash: md5:34bfe0fbb627d9d16c6fdecd27f23f68
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem between_thm : forall A:set, A <> Empty -> forall a x b :e R :^: idx A, between A x (a,b) <-> distance A (a,b) = distance A (a,x) + distance A (x,b).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9816 / BETWEEN_REFL
-// Source hash: md5:7fc0aa29abf83ba8da9bf525cb594ad2
+// Source hash: md5:de5fc3219211dd2f60ec42f9243837f1
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_REFL : forall A:set, A <> Empty -> forall a b :e R :^: idx A, between A a (a,b) /\ (between A b (a,b) /\ between A a (a,a)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9820 / BETWEEN_REFL_EQ
-// Source hash: md5:a8b2406e6de20dfbda1bf40a1028bcad
+// Source hash: md5:9bf6364f61b098147565c44c765f1203
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_REFL_EQ : forall A:set, A <> Empty -> forall a x :e R :^: idx A, between A x (a,a) <-> x = a.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9824 / BETWEEN_SYM
-// Source hash: md5:b9a6cbf86c7284a945f313a57543ae58
+// Source hash: md5:589f182b45847f0acf0a2cd12b223ff8
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_SYM : forall A:set, A <> Empty -> forall a b x :e R :^: idx A, between A x (a,b) <-> between A x (b,a).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9828 / BETWEEN_ANTISYM
-// Source hash: md5:69f77f59463f1b34877de6dbb5ecb589
+// Source hash: md5:82b153dc99aacda61f3c664ce5023f15
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_ANTISYM : forall A:set, A <> Empty -> forall a b c :e R :^: idx A, between A a (b,c) /\ between A b (a,c) -> a = b.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9832 / BETWEEN_TRANS
-// Source hash: md5:6794bf2255e5eb0d130c586278c698b4
+// Source hash: md5:8cf5754ceedbd9d1a1ebf9d0b0f3f391
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_TRANS : forall A:set, A <> Empty -> forall a b c d :e R :^: idx A, between A a (b,c) /\ between A d (a,c) -> between A d (b,c).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9836 / BETWEEN_TRANS_2
-// Source hash: md5:588e25d4089fdafedfa685ff14ea69e8
+// Source hash: md5:6df7e38786d408568a6a69b70c4c9e55
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_TRANS_2 : forall A:set, A <> Empty -> forall a b c d :e R :^: idx A, between A a (b,c) /\ between A d (a,b) -> between A a (c,d).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9840 / BETWEEN_TRANSLATION
-// Source hash: md5:edae1ce3225a33ebe5ab8bc1492ea3ae
+// Source hash: md5:d1482fbd607ef1908ebd4611d7ebe6eb
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_TRANSLATION : forall A:set, A <> Empty -> forall z a x y :e R :^: idx A, between A (vector_add A a x) (vector_add A a y,vector_add A a z) <-> between A x (y,z).
 Admitted.
@@ -6861,7 +6861,7 @@ Theorem BETWEEN_RESTRICTED_CASES : forall N:set, N <> Empty -> forall a b c x :e
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9946 / COLLINEAR_DIST_BETWEEN
-// Source hash: md5:98e161652ec57fcb72fac13bd8c57f89
+// Source hash: md5:20cc63585f35437b2b5e8585c7dd4f79
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem COLLINEAR_DIST_BETWEEN : forall A:set, A <> Empty -> forall a b x :e R :^: idx A, collinear A {x,a,b} /\ (distance A (x,a) <= distance A (a,b) /\ distance A (x,b) <= distance A (a,b)) -> between A x (a,b).
 Admitted.
@@ -6879,49 +6879,49 @@ Theorem COLLINEAR_1 : forall s c= R :^: idx 1, collinear 1 s.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9977 / midpoint
-// Source hash: md5:232bb670a471cb093fc631a450c763da
+// Source hash: md5:a4a121f4a13252046442357e3611ea9d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem midpoint_thm : forall A:set, A <> Empty -> forall a b :e R :^: idx A, midpoint A (a,b) = vector_mul A (recip_SNo 2) (vector_add A a b).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9980 / MIDPOINT_REFL
-// Source hash: md5:15e56b346bf784ca47a0ada53490e445
+// Source hash: md5:819e627fd24a67363e86c86c8189228e
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem MIDPOINT_REFL : forall A:set, A <> Empty -> forall x :e R :^: idx A, midpoint A (x,x) = x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9984 / MIDPOINT_SYM
-// Source hash: md5:b8d31fca93cca81d393b8c45c21548d0
+// Source hash: md5:54201251726ccd7c1deae228970f8baa
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem MIDPOINT_SYM : forall A:set, A <> Empty -> forall a b :e R :^: idx A, midpoint A (a,b) = midpoint A (b,a).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9988 / DIST_MIDPOINT
-// Source hash: md5:8125af72dbf718868e9bf035c1af7c6f
+// Source hash: md5:78fba7252964c7d88b571e98c563e72c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
 Theorem DIST_MIDPOINT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, distance A (a,midpoint A (a,b)) = distance A (a,b) :/: 2 /\ (distance A (b,midpoint A (a,b)) = distance A (a,b) :/: 2 /\ (distance A (midpoint A (a,b),a) = distance A (a,b) :/: 2 /\ distance A (midpoint A (a,b),b) = distance A (a,b) :/: 2)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9995 / MIDPOINT_EQ_ENDPOINT
-// Source hash: md5:a9edabb5884f20704c6686f605448534
+// Source hash: md5:f1505f083dafc7e3c0cb6daf331ae8fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem MIDPOINT_EQ_ENDPOINT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, (midpoint A (a,b) = a <-> a = b) /\ ((midpoint A (a,b) = b <-> a = b) /\ ((a = midpoint A (a,b) <-> a = b) /\ (b = midpoint A (a,b) <-> a = b))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10002 / BETWEEN_MIDPOINT
-// Source hash: md5:4321f151e7c4362855c00a1d54eb190e
+// Source hash: md5:33f92dcaecb0032a10cd9786781f49ca
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem BETWEEN_MIDPOINT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, between A (midpoint A (a,b)) (a,b) /\ between A (midpoint A (a,b)) (b,a).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10006 / MIDPOINT_LINEAR_IMAGE
-// Source hash: md5:7eca3a2b8c12a359043466a2b88f32c9
+// Source hash: md5:9d630146df60b3b0ee6cd2ac767068f2
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem MIDPOINT_LINEAR_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall a b :e R :^: idx B, linear B A f -> midpoint A (f a,f b) = f (midpoint B (a,b)).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10010 / COLLINEAR_MIDPOINT
-// Source hash: md5:e9f2d36173fb419af4b2371e298720c9
+// Source hash: md5:b32cf915c14b2399c3182e66da7ebf74
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
 Theorem COLLINEAR_MIDPOINT : forall A:set, A <> Empty -> forall a b :e R :^: idx A, collinear A {a,midpoint A (a,b),b}.
 Admitted.
@@ -6969,7 +6969,7 @@ Theorem IN_INTERVAL : forall N:set, N <> Empty -> forall a b :e R :^: idx N, (fo
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10081 / IN_INTERVAL_REFLECT
-// Source hash: md5:1ee45ee6133fcd54bdc76cc2bb4de555
+// Source hash: md5:eed9bce620892db2d0f3a0d117477957
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem IN_INTERVAL_REFLECT : forall A B:set, A <> Empty -> B <> Empty -> (forall a b x :e R :^: idx A, vector_neg A x :e closed_interval A (seq_cons (vector_neg A b,vector_neg A a) seq_nil) <-> x :e closed_interval A (seq_cons (a,b) seq_nil)) /\ forall a b x :e R :^: idx B, vector_neg B x :e open_interval B (vector_neg B b,vector_neg B a) <-> x :e open_interval B (a,b).
 Admitted.
@@ -6999,7 +6999,7 @@ Theorem SUBSET_INTERVAL_IMP : forall N:set, N <> Empty -> forall a c d b :e R :^
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10136 / INTERVAL_SING
-// Source hash: md5:c79de7e7a2aa7f2ce697e3f2c2363ec2
+// Source hash: md5:26bb7cb4e3b574336020aaaac2ec4560
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem INTERVAL_SING : forall A:set, A <> Empty -> forall a :e R :^: idx A, closed_interval A (seq_cons (a,a) seq_nil) = {a} /\ open_interval A (a,a) = Empty.
 Admitted.
@@ -7017,25 +7017,25 @@ Theorem DISJOINT_INTERVAL : forall N:set, N <> Empty -> forall a b c d :e R :^: 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10221 / ENDS_IN_INTERVAL
-// Source hash: md5:5006f0d7a3b6562fec4b26f8d3098fae
+// Source hash: md5:0e22cfb78ad24d0dae82e1ad6883ad0d
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem ENDS_IN_INTERVAL : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall a b :e R :^: idx A, a :e closed_interval A (seq_cons (a,b) seq_nil) <-> ~ closed_interval A (seq_cons (a,b) seq_nil) = Empty) /\ ((forall a b :e R :^: idx B, b :e closed_interval B (seq_cons (a,b) seq_nil) <-> ~ closed_interval B (seq_cons (a,b) seq_nil) = Empty) /\ ((forall a b :e R :^: idx C, ~ a :e open_interval C (a,b)) /\ forall a b :e R :^: idx D, ~ b :e open_interval D (a,b))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10230 / ENDS_IN_UNIT_INTERVAL
-// Source hash: md5:3fcc6d1eb1aa7089634781706ac01b41
+// Source hash: md5:63339266d7da291cb03536eea85e1455
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
 Theorem ENDS_IN_UNIT_INTERVAL : forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> vec A 0 :e closed_interval A (seq_cons (vec A 0,vec A 1) seq_nil) /\ (vec B 1 :e closed_interval B (seq_cons (vec B 0,vec B 1) seq_nil) /\ (~ vec C 0 :e open_interval C (vec C 0,vec C 1) /\ ~ vec D 1 :e open_interval D (vec D 0,vec D 1))).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10238 / INTER_INTERVAL
-// Source hash: md5:37d030a42396676034c01e563eff48ad
+// Source hash: md5:3ef83cab4e450d1460358a0153e848ba
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R)
 Theorem INTER_INTERVAL : forall A:set, A <> Empty -> forall a b c d :e R :^: idx A, closed_interval A (seq_cons (a,b) seq_nil) :/\: closed_interval A (seq_cons (c,d) seq_nil) = closed_interval A (seq_cons (fun i :e idx A => if a i <= c i then c i else a i,fun i :e idx A => if b i <= d i then b i else d i) seq_nil).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10244 / INTERVAL_OPEN_SUBSET_CLOSED
-// Source hash: md5:a72f9f56997577549bef1696a162adc8
+// Source hash: md5:e6e14a9a7bc59678cb408d958109a797
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
 Theorem INTERVAL_OPEN_SUBSET_CLOSED : forall A:set, A <> Empty -> forall a b :e R :^: idx A, open_interval A (a,b) c= closed_interval A (seq_cons (a,b) seq_nil).
 Admitted.
@@ -7047,7 +7047,7 @@ Theorem WLOG_LINEAR_INJECTIVE_IMAGE_2 : forall M N:set, M <> Empty -> N <> Empty
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10266 / WLOG_LINEAR_INJECTIVE_IMAGE_2_ALT
-// Source hash: md5:9c85827cb6d1726b4761ce61116ee2e2
+// Source hash: md5:f5417d5e776e0ea65d88677c56fff0e6
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem WLOG_LINEAR_INJECTIVE_IMAGE_2_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall P Q:set -> prop, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall s c= R :^: idx A, (forall h:set -> set, (forall x :e R :^: idx A, h x :e R :^: idx B) -> forall u c= R :^: idx A, P u /\ linear A B h -> Q {h x | x :e u}) /\ ((forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx A) -> forall t c= R :^: idx B, Q t /\ linear B A g -> P {g x | x :e t}) /\ (linear A B f /\ (forall x y :e R :^: idx A, f x = f y -> x = y))) -> (Q {f x | x :e s} <-> P s).
 Admitted.
@@ -7059,13 +7059,13 @@ Theorem WLOG_LINEAR_INJECTIVE_IMAGE : forall N:set, N <> Empty -> forall P:set -
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10283 / WLOG_LINEAR_INJECTIVE_IMAGE_ALT
-// Source hash: md5:a574050c9126901e7a4724f27a724628
+// Source hash: md5:70fd02623c0bbea2b62fe18f8985b6dc
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem WLOG_LINEAR_INJECTIVE_IMAGE_ALT : forall A:set, A <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx A) -> forall s c= R :^: idx A, (forall g:set -> set, (forall x :e R :^: idx A, g x :e R :^: idx A) -> forall t c= R :^: idx A, P t /\ linear A A g -> P {g x | x :e t}) /\ (linear A A f /\ (forall x y :e R :^: idx A, f x = f y -> x = y)) -> (P {f x | x :e s} <-> P s).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:10317 / SUBSPACE_LINEAR_IMAGE_EQ
-// Source hash: md5:ab6c61abdae427f453bda278a97cbc55
+// Source hash: md5:7342dc84865fefe0b54710317cb7fb69
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
 Theorem SUBSPACE_LINEAR_IMAGE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, linear B A f /\ (forall x y :e R :^: idx B, f x = f y -> x = y) -> (subspace A {f x | x :e s} <-> subspace B s).
 Admitted.

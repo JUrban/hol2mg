@@ -111,8 +111,15 @@ let () =
         | Not_found -> ignore (Unix.alarm 0); Error "Not_found"
         | Invalid_argument m -> ignore (Unix.alarm 0); Error ("invalid_argument: " ^ m)) in
       if not (List.mem "--no-auto" args) then begin
+        (* an override applies only when its scheme matches the constant's generic type *)
+        let override_for c = (match Hashtbl.find_opt reg.Registry.consts c, List.assoc_opt c ex.constants with
+          | Some es, Some ty ->
+              List.find_opt (fun (e : Registry.const_entry) ->
+                e.Registry.c_override <> None && Registry.tymatch e.Registry.c_scheme ty [] <> None) es
+          | _ -> None) in
+        let has_override c = override_for c <> None in
         let pending_defs = ref (List.filter (fun (d : thm_record) ->
-          d.name <> "" && not (Hashtbl.mem reg.Registry.consts d.name) && not (List.mem d.name builtin)) ex.basic_definitions) in
+          d.name <> "" && (not (Hashtbl.mem reg.Registry.consts d.name) || has_override d.name) && not (List.mem d.name builtin)) ex.basic_definitions) in
         let pending_tys = ref (List.filter (fun (t : type_definition) -> not (Hashtbl.mem reg.Registry.types t.td_name)) ex.type_definitions) in
         let last_err = Hashtbl.create 64 in
         let progress = ref true in
@@ -141,9 +148,17 @@ let () =
                      let names = (match Hashtbl.find_opt thm_by_name c with
                        | Some t -> Elab.arg_names_of_theorem t.seq.concl
                        | None -> (match Hashtbl.find_opt thm_by_name (c ^ "_DEF") with Some t -> Elab.arg_names_of_theorem t.seq.concl | None -> [])) in
-                     (match with_alarm (fun () -> Elab.elab_definition reg c tg scheme rhs names) with
+                     let gen () =
+                       (match override_for c with
+                        | Some e ->
+                            let params, args, body = Option.get e.Registry.c_override in
+                            (* the target name is the head of the entry's template *)
+                            let tg = (match Mg.strip_app e.Registry.c_template [] with (Mg.Cst t, _) | (Mg.Var t, _) -> t | _ -> tg) in
+                            Elab.elab_definition_override reg c tg e.Registry.c_scheme params args body
+                        | _ -> Elab.elab_definition reg c tg scheme rhs names) in
+                     (match with_alarm gen with
                       | Ok ad ->
-                          Elab.register_auto reg ad;
+                          if not (has_override c) then Elab.register_auto reg ad;
                           (match ad.Elab.ad_result with
                            | Registry.RMetaFun _ | Registry.RMetaPred _ -> Hashtbl.replace Rewrite.meta_consts ad.Elab.ad_target ()
                            | _ -> ());

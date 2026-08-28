@@ -90,7 +90,7 @@ Definition vectorize : set -> set -> set -> set -> set :=
 Definition matrify : set -> set -> set -> set -> set :=
   fun A:set => fun M:set => fun N:set => fun x:set => fun i :e idx M => fun j :e idx N => x (minus_nat i 1 * dimindex N + j).
 
-// HOL Light:  / hull   (hash md5:d6d5fff447fd62a9da1bed33075490de)
+// HOL Light:  / hull   (hash md5:f95a9d6298d522fc4eb8469d22c8c080)
 Definition hull : set -> set -> set -> set :=
   fun A:set => fun P:set => fun s:set => {x :e A | forall Y :e {t :e Power A | t :e P /\ s c= t}, x :e Y}.
 
@@ -98,7 +98,7 @@ Definition hull : set -> set -> set -> set :=
 Definition from : set -> set :=
   fun n:set => {m :e omega | n <= m}.
 
-// HOL Light:  / relative_to   (hash md5:9856a63b9dfc4c54948a1dcd0dadab9d)
+// HOL Light:  / relative_to   (hash md5:f3779a9995044ee2b117b2c88160b2ef)
 Definition relative_to : set -> set :=
   fun A:set => choose_in (Power (Power A) :^: Power A :^: Power (Power A)) (fun c:set => forall P c= Power A, forall s t c= A, t :e c P s <-> exists u c= A, u :e P /\ s :/\: u = t).
 
@@ -106,7 +106,7 @@ Definition relative_to : set -> set :=
 Definition suslin_operation : set -> (set -> set -> prop) -> set :=
   fun A:set => fun f:set -> set -> prop => Union {{x :e A | forall Y :e {{x :e A | f (seq_mk n (fun x:set => s x)) x} | n :e omega, 1 <= n}, x :e Y} | s :e omega :^: omega, s :e omega :^: omega}.
 
-// HOL Light:  / suslin   (hash md5:73e018de39db2d12b283db9b5613bf80)
+// HOL Light:  / suslin   (hash md5:34fe678f4e7f9dfc3f60a15a4ca1e4e8)
 Definition suslin : set -> set -> set :=
   fun A:set => fun u:set => {suslin_operation A (fun x:set => fun x0:set => x0 :e f x) | f :e Power A :^: finseq omega, forall l :e finseq omega, ~ l = seq_nil -> f l :e u}.
 
@@ -134,23 +134,23 @@ Definition vec : set -> set -> set :=
 Definition dot : set -> set -> set -> set :=
   fun N:set => fun x:set => fun y:set => finsum (idx N) (fun i:set => x i * y i).
 
-// HOL Light: Multivariate/vectors.ml:411 / vector_norm   (hash md5:6f1e5a89740c5d02d02ab9f60966a7a4)
+// HOL Light: Multivariate/vectors.ml:411 / vector_norm   (hash md5:bace3391b77d8abbe5e7965b905b7504)
 Definition vector_norm : set -> set -> set :=
-  fun A:set => fun x:set => if 0 <= dot A x x then sqrt_SNo_nonneg (dot A x x) else - sqrt_SNo_nonneg (- dot A x x).
+  fun N:set => fun x:set => sqrt_SNo_nonneg (dot N x x).
 
-// HOL Light:  / distance   (hash md5:eac0f33c05aa34d833d8bb50beaab297)
+// HOL Light:  / distance   (hash md5:170f95745129ac4e55a5eb4f6e2893fd)
 Definition distance : set -> set -> set :=
-  fun A:set => fun x:set => vector_norm A (vector_sub A (x 0) (x 1)).
+  fun N:set => fun p:set => vector_norm N (vector_sub N (p 0) (p 1)).
 
 // HOL Light: Multivariate/vectors.ml:1227 / vsum   (hash md5:9d61c430be498afea6e5105a277dde93)
 Definition vsum : set -> set -> set -> (set -> set) -> set :=
   fun A:set => fun N:set => fun s:set => fun f:set -> set => fun i :e idx N => finsum s (fun x:set => f x i).
 
-// HOL Light: Multivariate/vectors.ml:1837 / basis   (hash md5:da69e6d0c4848837b8b6246b184ebb0b)
+// HOL Light: Multivariate/vectors.ml:1837 / basis   (hash md5:5b7f24b8febc21710b168664824e94a8)
 Definition basis : set -> set -> set :=
   fun A:set => fun k:set => fun i :e idx A => if i = k then 1 else 0.
 
-// HOL Light: Multivariate/vectors.ml:1959 / orthogonal   (hash md5:3c01225e6083b76874d5bc9ddb132c2d)
+// HOL Light: Multivariate/vectors.ml:1959 / orthogonal   (hash md5:ff3c0bda52c1e809f0071a6ded91f17f)
 Definition orthogonal : set -> set -> set -> prop :=
   fun A:set => fun x:set => fun y:set => dot A x y = 0.
 
@@ -158,7 +158,7 @@ Definition orthogonal : set -> set -> set -> prop :=
 Definition linear : set -> set -> (set -> set) -> prop :=
   fun M:set => fun N:set => fun f:set -> set => (forall x y :e R :^: idx M, f (vector_add M x y) = vector_add N (f x) (f y)) /\ forall c :e R, forall x :e R :^: idx M, f (vector_mul M c x) = vector_mul N c (f x).
 
-// HOL Light: Multivariate/vectors.ml:2291 / bilinear   (hash md5:8ee594a26f80a3c54a1ab718f440fc58)
+// HOL Light: Multivariate/vectors.ml:2291 / bilinear   (hash md5:6b8a88b77ca0b88b5da20ae1ac8988c3)
 Definition bilinear : set -> set -> set -> (set -> set -> set) -> prop :=
   fun A:set => fun B:set => fun C:set => fun f:set -> set -> set => (forall x :e R :^: idx C, linear A B (fun y:set => f x y)) /\ forall y :e R :^: idx A, linear C B (fun x:set => f x y).
 
@@ -254,23 +254,23 @@ Definition indicator : set -> set -> set -> set :=
 Definition dropout : set -> set -> set -> set -> set :=
   fun M:set => fun N:set => fun k:set => fun x:set => fun i :e idx N => if i < k /\ i <= dimindex M then x i else if i + 1 <= dimindex M then x (i + 1) else 0.
 
-// HOL Light: Multivariate/vectors.ml:4457 / pushin   (hash md5:adf7fc67e7fe57a0a7c9c2a43c3196fb)
+// HOL Light: Multivariate/vectors.ml:4457 / pushin   (hash md5:cbedf73830d7a82df19bdfd0d847d2a5)
 Definition pushin : set -> set -> set -> set -> set -> set -> set :=
   fun A:set => fun B:set => fun C:set => fun k:set => fun t:set => fun x:set => fun i :e idx A => if i < k then x i else if i = k then t else x (minus_nat i 1).
 
-// HOL Light: Multivariate/vectors.ml:4604 / subspace   (hash md5:c0a98ee8765217597746e9da164e91f6)
+// HOL Light: Multivariate/vectors.ml:4604 / subspace   (hash md5:c95f4c0c6cf91d74a0f0da445442f21b)
 Definition subspace : set -> set -> prop :=
   fun A:set => fun s:set => vec A 0 :e s /\ ((forall x y :e R :^: idx A, x :e s /\ y :e s -> vector_add A x y :e s) /\ forall c :e R, forall x :e R :^: idx A, x :e s -> vector_mul A c x :e s).
 
-// HOL Light: Multivariate/vectors.ml:4610 / span   (hash md5:5ef47ecfdaa76fe5b75b3563ddef44ff)
+// HOL Light: Multivariate/vectors.ml:4610 / span   (hash md5:ece67e3f65395c45a7deb8d76b33c1ff)
 Definition span : set -> set -> set :=
   fun A:set => fun s:set => hull (R :^: idx A) {x :e Power (R :^: idx A) | subspace A x} s.
 
-// HOL Light: Multivariate/vectors.ml:4613 / dependent   (hash md5:dac668bc44e4f13b587bcd1c1b55424d)
+// HOL Light: Multivariate/vectors.ml:4613 / dependent   (hash md5:aab20b61e0f8c963dc017c0ef5b8456c)
 Definition dependent : set -> set -> prop :=
   fun A:set => fun s:set => exists a :e R :^: idx A, a :e s /\ a :e span A (s :\: {a}).
 
-// HOL Light: Multivariate/vectors.ml:4616 / independent   (hash md5:3e73e8ec4ce52e67a2d1ea255eae1c17)
+// HOL Light: Multivariate/vectors.ml:4616 / independent   (hash md5:79d85f1f07aaf425ee30e5d16e28dca2)
 Definition independent : set -> set -> prop :=
   fun A:set => fun s:set => ~ dependent A s.
 
@@ -302,15 +302,15 @@ Definition matrix_inv : set -> set -> set -> set :=
 Definition infnorm : set -> set :=
   fun N:set => choose_in (R :^: (R :^: idx N)) (fun c:set => forall x :e R :^: idx N, c x = sup {abs_SNo (x i) | i :e omega, 1 <= i /\ i <= dimindex N}).
 
-// HOL Light: Multivariate/vectors.ml:9593 / collinear   (hash md5:9339d36e5525e7961c61d422a89c6f18)
+// HOL Light: Multivariate/vectors.ml:9593 / collinear   (hash md5:c02d8afd3cb3eefbcae4be5ddb7c809d)
 Definition collinear : set -> set -> prop :=
   fun A:set => fun s:set => exists u :e R :^: idx A, forall x y :e R :^: idx A, x :e s /\ y :e s -> exists c :e R, vector_sub A x y = vector_mul A c u.
 
-// HOL Light: Multivariate/vectors.ml:9813 / between   (hash md5:ba129e6a40c0f707fb798f117c3436c7)
+// HOL Light: Multivariate/vectors.ml:9813 / between   (hash md5:ba8f5878df1e77f00dba5fee83c90cf6)
 Definition between : set -> set -> set -> prop :=
   fun A:set => fun x:set => fun y:set => distance A (y 0,y 1) = distance A (y 0,x) + distance A (x,y 1).
 
-// HOL Light: Multivariate/vectors.ml:9977 / midpoint   (hash md5:164f4d0a0ec0f409bd24a0142e27b582)
+// HOL Light: Multivariate/vectors.ml:9977 / midpoint   (hash md5:b35fcf52d7388472d397b9583dcffa5a)
 Definition midpoint : set -> set -> set :=
   fun A:set => fun x:set => vector_mul A (recip_SNo 2) (vector_add A (x 0) (x 1)).
 

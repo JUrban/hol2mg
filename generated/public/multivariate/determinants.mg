@@ -71,7 +71,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:71 / det
 // Source hash: md5:5118abb88001723b9f346954e45591df
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_product_finprod, hol_real_R, hol_sum_finsum)
-Theorem det_thm : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, det N A = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) (idx N)} (fun x:set => (fun p :e omega :^: omega => sign omega (fun x:set => p x) * finprod (idx N) (fun i:set => A i (p i))) x).
+Theorem det_thm : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, det N A = finsum {p :e omega :^: omega | permutes omega (fun x:set => p x) (idx N)} (fun p:set => sign omega (fun x:set => p x) * finprod (idx N) (fun i:set => A i (p i))).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:80 / IN_DIMINDEX_SWAP
@@ -251,13 +251,13 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:457 / DET_LINEAR_ROWS_VSUM_LEMMA
 // Source hash: md5:782b0eff67d5e429d78ba2959054fd65
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
-Theorem DET_LINEAR_ROWS_VSUM_LEMMA : forall N:set, N <> Empty -> forall s c= omega, forall k :e omega, forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx N) -> forall c:set -> set, (forall x :e omega, c x :e R :^: idx N) -> finite s /\ k <= dimindex N -> det N (fun i :e idx N => if i <= k then vsum omega N s (a i) else c i) = finsum {f :e omega :^: omega | (forall i :e omega, 1 <= i /\ i <= k -> f i :e s) /\ forall i :e omega, ~ (1 <= i /\ i <= k) -> f i = i} (fun x:set => (fun f :e omega :^: omega => det N (fun i :e idx N => if i <= k then a i (f i) else c i)) x).
+Theorem DET_LINEAR_ROWS_VSUM_LEMMA : forall N:set, N <> Empty -> forall s c= omega, forall k :e omega, forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx N) -> forall c:set -> set, (forall x :e omega, c x :e R :^: idx N) -> finite s /\ k <= dimindex N -> det N (fun i :e idx N => if i <= k then vsum omega N s (a i) else c i) = finsum {f :e omega :^: omega | (forall i :e omega, 1 <= i /\ i <= k -> f i :e s) /\ forall i :e omega, ~ (1 <= i /\ i <= k) -> f i = i} (fun f:set => det N (fun i :e idx N => if i <= k then a i (f i) else c i)).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:503 / DET_LINEAR_ROWS_VSUM
 // Source hash: md5:fe9db8607dd8c74f7cb49da9eec5edb9
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe)
-Theorem DET_LINEAR_ROWS_VSUM : forall N:set, N <> Empty -> forall s c= omega, forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx N) -> finite s -> det N (fun i :e idx N => vsum omega N s (a i)) = finsum {f :e omega :^: omega | (forall i :e omega, 1 <= i /\ i <= dimindex N -> f i :e s) /\ forall i :e omega, ~ (1 <= i /\ i <= dimindex N) -> f i = i} (fun x:set => (fun f :e omega :^: omega => det N (fun i :e idx N => a i (f i))) x).
+Theorem DET_LINEAR_ROWS_VSUM : forall N:set, N <> Empty -> forall s c= omega, forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx N) -> finite s -> det N (fun i :e idx N => vsum omega N s (a i)) = finsum {f :e omega :^: omega | (forall i :e omega, 1 <= i /\ i <= dimindex N -> f i :e s) /\ forall i :e omega, ~ (1 <= i /\ i <= dimindex N) -> f i = i} (fun f:set => det N (fun i :e idx N => a i (f i))).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:518 / MATRIX_MUL_VSUM_ALT
@@ -905,37 +905,37 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2173 / NORM_VECTORIZE_TRANSP
 // Source hash: md5:b2ef07e6eaf4d224cde9e4bed4ef975c
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem NORM_VECTORIZE_TRANSP : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex M)) (vectorize R N M (transp M N A)) (vectorize R N M (transp M N A))) = sqrt_SNo_nonneg (dot (idx_n (dimindex M * dimindex N)) (vectorize R M N A) (vectorize R M N A)).
+Theorem NORM_VECTORIZE_TRANSP : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, vector_norm (idx_n (dimindex N * dimindex M)) (vectorize R N M (transp M N A)) = vector_norm (idx_n (dimindex M * dimindex N)) (vectorize R M N A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2179 / COMPATIBLE_NORM_VECTORIZE
 // Source hash: md5:e3c889d10cea69b0cc2abf89b1c483d5
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem COMPATIBLE_NORM_VECTORIZE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall x :e R :^: idx N, sqrt_SNo_nonneg (dot M (matrix_vector_mul M N A x) (matrix_vector_mul M N A x)) <= sqrt_SNo_nonneg (dot (idx_n (dimindex M * dimindex N)) (vectorize R M N A) (vectorize R M N A)) * sqrt_SNo_nonneg (dot N x x).
+Theorem COMPATIBLE_NORM_VECTORIZE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, forall x :e R :^: idx N, vector_norm M (matrix_vector_mul M N A x) <= vector_norm (idx_n (dimindex M * dimindex N)) (vectorize R M N A) * vector_norm N x.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2198 / ONORM_LE_NORM_VECTORIZE
 // Source hash: md5:ecba2a96a829b7e96ad3c898aec3bd10
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem ONORM_LE_NORM_VECTORIZE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx M :^: idx N, onorm M N (fun x:set => matrix_vector_mul N M A x) <= sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex M)) (vectorize R N M A) (vectorize R N M A)).
+Theorem ONORM_LE_NORM_VECTORIZE : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx M :^: idx N, onorm M N (fun x:set => matrix_vector_mul N M A x) <= vector_norm (idx_n (dimindex N * dimindex M)) (vectorize R N M A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2204 / NORM_VECTORIZE_POW_2
 // Source hash: md5:6247787387ae9673c677669ad72eb3a4
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, hol_real_R, hol_sum_finsum)
-Theorem NORM_VECTORIZE_POW_2 : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, sqrt_SNo_nonneg (dot (idx_n (dimindex M * dimindex N)) (vectorize R M N A) (vectorize R M N A)) ^ 2 = finsum (idx M) (fun i:set => sqrt_SNo_nonneg (dot N (A i) (A i)) ^ 2).
+Theorem NORM_VECTORIZE_POW_2 : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, vector_norm (idx_n (dimindex M * dimindex N)) (vectorize R M N A) ^ 2 = finsum (idx M) (fun i:set => vector_norm N (A i) ^ 2).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2212 / NORM_VECTORIZE_MUL_LE
 // Source hash: md5:8310736c1608ee654e469fc73e5bcc69
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem NORM_VECTORIZE_MUL_LE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall A :e R :^: idx N :^: idx P, forall B :e R :^: idx M :^: idx N, sqrt_SNo_nonneg (dot (idx_n (dimindex P * dimindex M)) (vectorize R P M (matrix_mul P N M A B)) (vectorize R P M (matrix_mul P N M A B))) <= sqrt_SNo_nonneg (dot (idx_n (dimindex P * dimindex N)) (vectorize R P N A) (vectorize R P N A)) * sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex M)) (vectorize R N M B) (vectorize R N M B)).
+Theorem NORM_VECTORIZE_MUL_LE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall A :e R :^: idx N :^: idx P, forall B :e R :^: idx M :^: idx N, vector_norm (idx_n (dimindex P * dimindex M)) (vectorize R P M (matrix_mul P N M A B)) <= vector_norm (idx_n (dimindex P * dimindex N)) (vectorize R P N A) * vector_norm (idx_n (dimindex N * dimindex M)) (vectorize R N M B).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2226 / NORM_VECTORIZE_HADAMARD_LE
 // Source hash: md5:a9d5d8109b8ee26d67629529ec72e2c9
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_num_omega, hol_real_R)
-Theorem NORM_VECTORIZE_HADAMARD_LE : forall M N:set, M <> Empty -> N <> Empty -> forall A B :e R :^: idx N :^: idx M, sqrt_SNo_nonneg (dot (idx_n (dimindex M * dimindex N)) (vectorize R M N (fun i :e idx M => fun j :e idx N => A i j * B i j)) (vectorize R M N (fun i :e idx M => fun j :e idx N => A i j * B i j))) <= sqrt_SNo_nonneg (dot (idx_n (dimindex M * dimindex N)) (vectorize R M N A) (vectorize R M N A)) * sqrt_SNo_nonneg (dot (idx_n (dimindex M * dimindex N)) (vectorize R M N B) (vectorize R M N B)).
+Theorem NORM_VECTORIZE_HADAMARD_LE : forall M N:set, M <> Empty -> N <> Empty -> forall A B :e R :^: idx N :^: idx M, vector_norm (idx_n (dimindex M * dimindex N)) (vectorize R M N (fun i :e idx M => fun j :e idx N => A i j * B i j)) <= vector_norm (idx_n (dimindex M * dimindex N)) (vectorize R M N A) * vector_norm (idx_n (dimindex M * dimindex N)) (vectorize R M N B).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2242 / TRACE_COVARIANCE_POS_LE
@@ -1139,13 +1139,13 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2487 / HADAMARD_INEQUALITY_ROW
 // Source hash: md5:dfed0908b4466505de9ed8077297dab1
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_product_finprod, hol_real_R)
-Theorem HADAMARD_INEQUALITY_ROW : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, abs_SNo (det N A) <= finprod (idx N) (fun i:set => sqrt_SNo_nonneg (dot N (row N N i A) (row N N i A))).
+Theorem HADAMARD_INEQUALITY_ROW : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, abs_SNo (det N A) <= finprod (idx N) (fun i:set => vector_norm N (row N N i A)).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2637 / HADAMARD_INEQUALITY_COLUMN
 // Source hash: md5:5ed0a4fb1c865a9bb0554b176e675138
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_product_finprod, hol_real_R)
-Theorem HADAMARD_INEQUALITY_COLUMN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, abs_SNo (det N A) <= finprod (idx N) (fun i:set => sqrt_SNo_nonneg (dot N (column N N i A) (column N N i A))).
+Theorem HADAMARD_INEQUALITY_COLUMN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, abs_SNo (det N A) <= finprod (idx N) (fun i:set => vector_norm N (column N N i A)).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2646 / orthogonal_transformation
@@ -1157,7 +1157,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2650 / ORTHOGONAL_TRANSFORMATION
 // Source hash: md5:b0bfeee172981e6830d618d5cf10b6c9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx A) -> (orthogonal_transformation A f <-> linear A A f /\ forall v :e R :^: idx A, sqrt_SNo_nonneg (dot A (f v) (f v)) = sqrt_SNo_nonneg (dot A v v)).
+Theorem ORTHOGONAL_TRANSFORMATION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx A) -> (orthogonal_transformation A f <-> linear A A f /\ forall v :e R :^: idx A, vector_norm A (f v) = vector_norm A v).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2655 / ORTHOGONAL_ORTHOGONAL_TRANSFORMATION
@@ -1235,13 +1235,13 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2710 / NORM_VECTORIZE_ORTHOGONAL_MATRIX_RMUL
 // Source hash: md5:5b0c555ca5f1dc8ba4365c1f498e21fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem NORM_VECTORIZE_ORTHOGONAL_MATRIX_RMUL : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex N)) (vectorize R N N (matrix_mul N N N A P)) (vectorize R N N (matrix_mul N N N A P))) = sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex N)) (vectorize R N N A) (vectorize R N N A)).
+Theorem NORM_VECTORIZE_ORTHOGONAL_MATRIX_RMUL : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> vector_norm (idx_n (dimindex N * dimindex N)) (vectorize R N N (matrix_mul N N N A P)) = vector_norm (idx_n (dimindex N * dimindex N)) (vectorize R N N A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2722 / NORM_VECTORIZE_ORTHOGONAL_MATRIX_LMUL
 // Source hash: md5:552101237c5b300cfa164bbb199ab6ff
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx, hol_real_R)
-Theorem NORM_VECTORIZE_ORTHOGONAL_MATRIX_LMUL : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex N)) (vectorize R N N (matrix_mul N N N P A)) (vectorize R N N (matrix_mul N N N P A))) = sqrt_SNo_nonneg (dot (idx_n (dimindex N * dimindex N)) (vectorize R N N A) (vectorize R N N A)).
+Theorem NORM_VECTORIZE_ORTHOGONAL_MATRIX_LMUL : forall N:set, N <> Empty -> forall A P :e R :^: idx N :^: idx N, orthogonal_matrix_hl N P -> vector_norm (idx_n (dimindex N * dimindex N)) (vectorize R N N (matrix_mul N N N P A)) = vector_norm (idx_n (dimindex N * dimindex N)) (vectorize R N N A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2730 / ORTHOGONAL_MATRIX_ID
@@ -1277,13 +1277,13 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2775 / ORTHOGONAL_MATRIX_NORM_EQ
 // Source hash: md5:231bd27150a0ca646934cc32718d5697
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_MATRIX_NORM_EQ : forall A:set, A <> Empty -> forall A0 :e R :^: idx A :^: idx A, orthogonal_matrix_hl A A0 <-> forall x :e R :^: idx A, sqrt_SNo_nonneg (dot A (matrix_vector_mul A A A0 x) (matrix_vector_mul A A A0 x)) = sqrt_SNo_nonneg (dot A x x).
+Theorem ORTHOGONAL_MATRIX_NORM_EQ : forall A:set, A <> Empty -> forall A0 :e R :^: idx A :^: idx A, orthogonal_matrix_hl A A0 <-> forall x :e R :^: idx A, vector_norm A (matrix_vector_mul A A A0 x) = vector_norm A x.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2780 / ORTHOGONAL_MATRIX_NORM
 // Source hash: md5:5753c8c1271df0d6eceede414fd6b0e1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_MATRIX_NORM : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, forall x :e R :^: idx N, orthogonal_matrix_hl N A -> sqrt_SNo_nonneg (dot N (matrix_vector_mul N N A x) (matrix_vector_mul N N A x)) = sqrt_SNo_nonneg (dot N x x).
+Theorem ORTHOGONAL_MATRIX_NORM : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, forall x :e R :^: idx N, orthogonal_matrix_hl N A -> vector_norm N (matrix_vector_mul N N A x) = vector_norm N x.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2784 / DET_ORTHOGONAL_MATRIX
@@ -1313,49 +1313,49 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:2804 / ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS
 // Source hash: md5:11c0dd7231634316a9e7b1a148b10de7
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (column N N i A) (column N N i A)) = 1) /\ forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ (j <= dimindex N /\ ~ i = j))) -> orthogonal N (column N N i A) (column N N j A).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (column N N i A) = 1) /\ forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ (j <= dimindex N /\ ~ i = j))) -> orthogonal N (column N N i A) (column N N j A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2815 / ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS
 // Source hash: md5:39b09bbfee10fabaf9eefb24387a79fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (row N N i A) (row N N i A)) = 1) /\ forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ (j <= dimindex N /\ ~ i = j))) -> orthogonal N (row N N i A) (row N N j A).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (row N N i A) = 1) /\ forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ (j <= dimindex N /\ ~ i = j))) -> orthogonal N (row N N i A) (row N N j A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2825 / ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_INDEXED
 // Source hash: md5:f8a4664ec8cc9b71d6a205c3a9859e6d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_INDEXED : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (row N N i A) (row N N i A)) = 1) /\ forall x y :e idx N, x <> y -> orthogonal N (row N N x A) (row N N y A).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_INDEXED : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (row N N i A) = 1) /\ forall x y :e idx N, x <> y -> orthogonal N (row N N x A) (row N N y A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2837 / ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_PAIRWISE
 // Source hash: md5:9555fbb79d9217d61ce60c6cff611157
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_PAIRWISE : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> finite_cardinality (rows N N A) = dimindex N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (row N N i A) (row N N i A)) = 1) /\ forall x y :e rows N N A, x <> y -> orthogonal N x y).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_PAIRWISE : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> finite_cardinality (rows N N A) = dimindex N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (row N N i A) = 1) /\ forall x y :e rows N N A, x <> y -> orthogonal N x y).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2853 / ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_SPAN
 // Source hash: md5:82918b4bfbdfcf323a969976cfe77d83
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_SPAN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> span N (rows N N A) = R :^: idx N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (row N N i A) (row N N i A)) = 1) /\ forall x y :e rows N N A, x <> y -> orthogonal N x y).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_ROWS_SPAN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> span N (rows N N A) = R :^: idx N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (row N N i A) = 1) /\ forall x y :e rows N N A, x <> y -> orthogonal N x y).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2871 / ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_INDEXED
 // Source hash: md5:ab7b75e9e23300611fe262959c72e0eb
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_INDEXED : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (column N N i A) (column N N i A)) = 1) /\ forall x y :e idx N, x <> y -> orthogonal N (column N N x A) (column N N y A).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_INDEXED : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> (forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (column N N i A) = 1) /\ forall x y :e idx N, x <> y -> orthogonal N (column N N x A) (column N N y A).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2880 / ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_PAIRWISE
 // Source hash: md5:3e8439d2be9a97dec8480cd8122c5bfd
 // Status: transport_required (bridges: hol_card_finite_cardinality, hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_PAIRWISE : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> finite_cardinality (columns N N A) = dimindex N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (column N N i A) (column N N i A)) = 1) /\ forall x y :e columns N N A, x <> y -> orthogonal N x y).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_PAIRWISE : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> finite_cardinality (columns N N A) = dimindex N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (column N N i A) = 1) /\ forall x y :e columns N N A, x <> y -> orthogonal N x y).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2890 / ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_SPAN
 // Source hash: md5:7d4661f96bc5d6792fe3cda2b157d6fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_SPAN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> span N (columns N N A) = R :^: idx N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> sqrt_SNo_nonneg (dot N (column N N i A) (column N N i A)) = 1) /\ forall x y :e columns N N A, x <> y -> orthogonal N x y).
+Theorem ORTHOGONAL_MATRIX_ORTHONORMAL_COLUMNS_SPAN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A <-> span N (columns N N A) = R :^: idx N /\ ((forall i :e omega, 1 <= i /\ i <= dimindex N -> vector_norm N (column N N i A) = 1) /\ forall x y :e columns N N A, x <> y -> orthogonal N x y).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:2900 / ORTHOGONAL_MATRIX_2
@@ -1493,7 +1493,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3122 / ORTHOGONALITY_PRESERVING_IMP_SCALING
 // Source hash: md5:6298a0c2ed289d0ed915c57a01eb47eb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ORTHOGONALITY_PRESERVING_IMP_SCALING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> linear M N f /\ (forall x y :e R :^: idx M, orthogonal M x y -> orthogonal N (f x) (f y)) -> exists c :e R, 0 <= c /\ forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = c * sqrt_SNo_nonneg (dot M x x).
+Theorem ORTHOGONALITY_PRESERVING_IMP_SCALING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> linear M N f /\ (forall x y :e R :^: idx M, orthogonal M x y -> orthogonal N (f x) (f y)) -> exists c :e R, 0 <= c /\ forall x :e R :^: idx M, vector_norm N (f x) = c * vector_norm M x.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3196 / ORTHOGONAL_TRANSFORMATION_ISOMETRY
@@ -1505,7 +1505,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3210 / ISOMETRY_SPHERE_EXTEND
 // Source hash: md5:c2a43645414960d7a75eae64768d037d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem ISOMETRY_SPHERE_EXTEND : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> (forall x :e R :^: idx N, sqrt_SNo_nonneg (dot N x x) = 1 -> sqrt_SNo_nonneg (dot N (f x) (f x)) = 1) /\ (forall x y :e R :^: idx N, sqrt_SNo_nonneg (dot N x x) = 1 /\ sqrt_SNo_nonneg (dot N y y) = 1 -> distance N (f x,f y) = distance N (x,y)) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) /\ (orthogonal_transformation N g /\ forall x :e R :^: idx N, sqrt_SNo_nonneg (dot N x x) = 1 -> g x = f x).
+Theorem ISOMETRY_SPHERE_EXTEND : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> (forall x :e R :^: idx N, vector_norm N x = 1 -> vector_norm N (f x) = 1) /\ (forall x y :e R :^: idx N, vector_norm N x = 1 /\ vector_norm N y = 1 -> distance N (f x,f y) = distance N (x,y)) -> exists g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) /\ (orthogonal_transformation N g /\ forall x :e R :^: idx N, vector_norm N x = 1 -> g x = f x).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3255 / ORTHOGONAL_TRANSFORMATION_INVERSE_o
@@ -1535,13 +1535,13 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3300 / SQNORM_LE_MAX_EIGENVECTOR_SPAN
 // Source hash: md5:7fc62368f8aabc7302c40a5bf806b952
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SQNORM_LE_MAX_EIGENVECTOR_SPAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall b c= R :^: idx N, forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> forall x :e R :^: idx N, forall l :e R, linear N N f /\ ((forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x0 :e R :^: idx N, x0 :e b -> f x0 = vector_mul N (c x0) x0 /\ c x0 ^ 2 <= l) /\ x :e span N b)) -> sqrt_SNo_nonneg (dot N (f x) (f x)) ^ 2 <= l * sqrt_SNo_nonneg (dot N x x) ^ 2.
+Theorem SQNORM_LE_MAX_EIGENVECTOR_SPAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall b c= R :^: idx N, forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> forall x :e R :^: idx N, forall l :e R, linear N N f /\ ((forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x0 :e R :^: idx N, x0 :e b -> f x0 = vector_mul N (c x0) x0 /\ c x0 ^ 2 <= l) /\ x :e span N b)) -> vector_norm N (f x) ^ 2 <= l * vector_norm N x ^ 2.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3330 / NORM_LE_MAX_EIGENVECTOR_SPAN
 // Source hash: md5:e2fabb9adb0ee79e18af15cef606f871
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem NORM_LE_MAX_EIGENVECTOR_SPAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall b c= R :^: idx N, forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> forall x :e R :^: idx N, forall l :e R, linear N N f /\ ((forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x0 :e R :^: idx N, x0 :e b -> f x0 = vector_mul N (c x0) x0 /\ abs_SNo (c x0) <= l) /\ x :e span N b)) -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= l * sqrt_SNo_nonneg (dot N x x).
+Theorem NORM_LE_MAX_EIGENVECTOR_SPAN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall b c= R :^: idx N, forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> forall x :e R :^: idx N, forall l :e R, linear N N f /\ ((forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x0 :e R :^: idx N, x0 :e b -> f x0 = vector_mul N (c x0) x0 /\ abs_SNo (c x0) <= l) /\ x :e span N b)) -> vector_norm N (f x) <= l * vector_norm N x.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3352 / ONORM_EQ_MAX_EIGENVECTOR
@@ -1577,19 +1577,19 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3432 / ORTHOGONAL_MATRIX_EXISTS_BASIS
 // Source hash: md5:947305b53cbbc4a0df68bc5ffdae9625
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ORTHOGONAL_MATRIX_EXISTS_BASIS : forall N:set, N <> Empty -> forall a :e R :^: idx N, sqrt_SNo_nonneg (dot N a a) = 1 -> exists A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A /\ matrix_vector_mul N N A (basis N 1) = a.
+Theorem ORTHOGONAL_MATRIX_EXISTS_BASIS : forall N:set, N <> Empty -> forall a :e R :^: idx N, vector_norm N a = 1 -> exists A :e R :^: idx N :^: idx N, orthogonal_matrix_hl N A /\ matrix_vector_mul N N A (basis N 1) = a.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3464 / ORTHOGONAL_TRANSFORMATION_EXISTS_1
 // Source hash: md5:1d7571a2a57c65de4992c7c114e77a7f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ORTHOGONAL_TRANSFORMATION_EXISTS_1 : forall N:set, N <> Empty -> forall a b :e R :^: idx N, sqrt_SNo_nonneg (dot N a a) = 1 /\ sqrt_SNo_nonneg (dot N b b) = 1 -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ f a = b).
+Theorem ORTHOGONAL_TRANSFORMATION_EXISTS_1 : forall N:set, N <> Empty -> forall a b :e R :^: idx N, vector_norm N a = 1 /\ vector_norm N b = 1 -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ f a = b).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3482 / ORTHOGONAL_TRANSFORMATION_EXISTS
 // Source hash: md5:c06e08330c18cf780d334597b0e9ede2
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_EXISTS : forall N:set, N <> Empty -> forall a b :e R :^: idx N, sqrt_SNo_nonneg (dot N a a) = sqrt_SNo_nonneg (dot N b b) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ f a = b).
+Theorem ORTHOGONAL_TRANSFORMATION_EXISTS : forall N:set, N <> Empty -> forall a b :e R :^: idx N, vector_norm N a = vector_norm N b -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ f a = b).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3508 / ORTHOGONAL_TRANSFORMATION_INTO_SUBSPACE
@@ -1643,19 +1643,19 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3664 / ROTATION_MATRIX_EXISTS_BASIS
 // Source hash: md5:4a82ca114f47c08325bbc87a7f42599e
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ROTATION_MATRIX_EXISTS_BASIS : forall N:set, N <> Empty -> forall a :e R :^: idx N, 2 <= dimindex N /\ sqrt_SNo_nonneg (dot N a a) = 1 -> exists A :e R :^: idx N :^: idx N, rotation_matrix N A /\ matrix_vector_mul N N A (basis N 1) = a.
+Theorem ROTATION_MATRIX_EXISTS_BASIS : forall N:set, N <> Empty -> forall a :e R :^: idx N, 2 <= dimindex N /\ vector_norm N a = 1 -> exists A :e R :^: idx N :^: idx N, rotation_matrix N A /\ matrix_vector_mul N N A (basis N 1) = a.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3702 / ROTATION_EXISTS_1
 // Source hash: md5:cf733a3c1e843abebeca760bc5351c63
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ROTATION_EXISTS_1 : forall N:set, N <> Empty -> forall a b :e R :^: idx N, 2 <= dimindex N /\ (sqrt_SNo_nonneg (dot N a a) = 1 /\ sqrt_SNo_nonneg (dot N b b) = 1) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ (det N (matrix N N f) = 1 /\ f a = b)).
+Theorem ROTATION_EXISTS_1 : forall N:set, N <> Empty -> forall a b :e R :^: idx N, 2 <= dimindex N /\ (vector_norm N a = 1 /\ vector_norm N b = 1) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ (det N (matrix N N f) = 1 /\ f a = b)).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3722 / ROTATION_EXISTS
 // Source hash: md5:775d3deabe1c230161e15c1cfdbae32b
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem ROTATION_EXISTS : forall N:set, N <> Empty -> forall a b :e R :^: idx N, 2 <= dimindex N /\ sqrt_SNo_nonneg (dot N a a) = sqrt_SNo_nonneg (dot N b b) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ (det N (matrix N N f) = 1 /\ f a = b)).
+Theorem ROTATION_EXISTS : forall N:set, N <> Empty -> forall a b :e R :^: idx N, 2 <= dimindex N /\ vector_norm N a = vector_norm N b -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ (det N (matrix N N f) = 1 /\ f a = b)).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:3746 / ROTATION_RIGHTWARD_LINE
@@ -1691,7 +1691,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:3840 / ORTHOGONAL_TRANSFORMATION_BETWEEN_ORTHOGONAL_SETS
 // Source hash: md5:c04a6b6cb72caefc7e649a92eb657861
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_BETWEEN_ORTHOGONAL_SETS : forall N:set, N <> Empty -> forall v:set -> set, (forall x :e omega, v x :e R :^: idx N) -> forall w:set -> set, (forall x :e omega, w x :e R :^: idx N) -> forall k c= omega, (forall x y :e k, x <> y -> orthogonal N (v x) (v y)) /\ ((forall x y :e k, x <> y -> orthogonal N (w x) (w y)) /\ (forall i :e omega, i :e k -> sqrt_SNo_nonneg (dot N (v i) (v i)) = sqrt_SNo_nonneg (dot N (w i) (w i)))) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ forall i :e omega, i :e k -> f (v i) = w i).
+Theorem ORTHOGONAL_TRANSFORMATION_BETWEEN_ORTHOGONAL_SETS : forall N:set, N <> Empty -> forall v:set -> set, (forall x :e omega, v x :e R :^: idx N) -> forall w:set -> set, (forall x :e omega, w x :e R :^: idx N) -> forall k c= omega, (forall x y :e k, x <> y -> orthogonal N (v x) (v y)) /\ ((forall x y :e k, x <> y -> orthogonal N (w x) (w y)) /\ (forall i :e omega, i :e k -> vector_norm N (v i) = vector_norm N (w i))) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ forall i :e omega, i :e k -> f (v i) = w i).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4039 / reflect_along
@@ -1775,7 +1775,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:4117 / REFLECT_ALONG_LINEAR_IMAGE
 // Source hash: md5:3e13064c416b4a4d93d154088412923f
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem REFLECT_ALONG_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall v x :e R :^: idx M, linear M N f /\ (forall x0 :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x0) (f x0)) = sqrt_SNo_nonneg (dot M x0 x0)) -> reflect_along N (f v) (f x) = f (reflect_along M v x).
+Theorem REFLECT_ALONG_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall v x :e R :^: idx M, linear M N f /\ (forall x0 :e R :^: idx M, vector_norm N (f x0) = vector_norm M x0) -> reflect_along N (f v) (f x) = f (reflect_along M v x).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4126 / REFLECT_ALONG_SCALE
@@ -1835,7 +1835,7 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:4256 / NORM_REFLECT_ALONG
 // Source hash: md5:25176a0138c2f85b029e85f52c77fffb
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem NORM_REFLECT_ALONG : forall N:set, N <> Empty -> forall v x :e R :^: idx N, sqrt_SNo_nonneg (dot N (reflect_along N v x) (reflect_along N v x)) = sqrt_SNo_nonneg (dot N x x).
+Theorem NORM_REFLECT_ALONG : forall N:set, N <> Empty -> forall v x :e R :^: idx N, vector_norm N (reflect_along N v x) = vector_norm N x.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4261 / REFLECT_ALONG_EQ
@@ -1853,25 +1853,25 @@ Admitted.
 // HOL Light: Multivariate/determinants.ml:4270 / REFLECT_ALONG_SWITCH
 // Source hash: md5:80caa8d145bfed5793cfe3ca7b6b80cf
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem REFLECT_ALONG_SWITCH : forall N:set, N <> Empty -> forall a b :e R :^: idx N, sqrt_SNo_nonneg (dot N a a) = sqrt_SNo_nonneg (dot N b b) /\ ~ a = b -> reflect_along N (vector_sub N b a) a = b /\ reflect_along N (vector_sub N b a) b = a.
+Theorem REFLECT_ALONG_SWITCH : forall N:set, N <> Empty -> forall a b :e R :^: idx N, vector_norm N a = vector_norm N b /\ ~ a = b -> reflect_along N (vector_sub N b a) a = b /\ reflect_along N (vector_sub N b a) b = a.
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4287 / ROTOINVERSION_EXISTS_GEN
 // Source hash: md5:c5a46c6c62773b283212f866298a6be4
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ROTOINVERSION_EXISTS_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, subspace N s /\ (a :e s /\ (b :e s /\ (~ a = b /\ sqrt_SNo_nonneg (dot N a a) = sqrt_SNo_nonneg (dot N b b)))) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ ({f x | x :e s} = s /\ ((forall x :e R :^: idx N, orthogonal N a x /\ orthogonal N b x -> f x = x) /\ (det N (matrix N N f) = - 1 /\ (f a = b /\ f b = a))))).
+Theorem ROTOINVERSION_EXISTS_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, subspace N s /\ (a :e s /\ (b :e s /\ (~ a = b /\ vector_norm N a = vector_norm N b))) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ ({f x | x :e s} = s /\ ((forall x :e R :^: idx N, orthogonal N a x /\ orthogonal N b x -> f x = x) /\ (det N (matrix N N f) = - 1 /\ (f a = b /\ f b = a))))).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4307 / ORTHOGONAL_TRANSFORMATION_EXISTS_GEN
 // Source hash: md5:4844c8a3db14bf95f52db2ffc2e59f2f
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem ORTHOGONAL_TRANSFORMATION_EXISTS_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, subspace N s /\ (a :e s /\ (b :e s /\ sqrt_SNo_nonneg (dot N a a) = sqrt_SNo_nonneg (dot N b b))) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ ({f x | x :e s} = s /\ ((forall x :e R :^: idx N, orthogonal N a x /\ orthogonal N b x -> f x = x) /\ (f a = b /\ f b = a)))).
+Theorem ORTHOGONAL_TRANSFORMATION_EXISTS_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a b :e R :^: idx N, subspace N s /\ (a :e s /\ (b :e s /\ vector_norm N a = vector_norm N b)) -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (orthogonal_transformation N f /\ ({f x | x :e s} = s /\ ((forall x :e R :^: idx N, orthogonal N a x /\ orthogonal N b x -> f x = x) /\ (f a = b /\ f b = a)))).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4324 / ORTHOGONAL_TRANSFORMATION_GENERATED_BY_REFLECTIONS
 // Source hash: md5:3b511c58efa0c9d50ac5a119db6d707c
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_list_finseq, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem ORTHOGONAL_TRANSFORMATION_GENERATED_BY_REFLECTIONS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall n :e omega, orthogonal_transformation N f /\ dimindex N <= dim N {x :e R :^: idx N | f x = x} + n -> exists l :e finseq (R :^: idx N), seq_len l <= n /\ (seq_all (fun v:set => ~ v = vec N 0) l /\ forall x :e R :^: idx N, f x = seq_foldr (fun x0:set => fun x1:set => fun x2 :e R :^: idx N => (fun h :e R :^: idx N :^: (R :^: idx N) => fun x01 :e R :^: idx N => reflect_along N x0 (h x01)) x1 x2) l (fun x0 :e R :^: idx N => x0) x).
+Theorem ORTHOGONAL_TRANSFORMATION_GENERATED_BY_REFLECTIONS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall n :e omega, orthogonal_transformation N f /\ dimindex N <= dim N {x :e R :^: idx N | f x = x} + n -> exists l :e finseq (R :^: idx N), seq_len l <= n /\ (seq_all (fun v:set => ~ v = vec N 0) l /\ forall x :e R :^: idx N, f x = seq_foldr (fun x0:set => fun x1:set => fun x2 :e R :^: idx N => reflect_along N x0 (x1 x2)) l (fun x0 :e R :^: idx N => x0) x).
 Admitted.
 
 // HOL Light: Multivariate/determinants.ml:4389 / ORTHOGONAL_TRANSFORMATION_REFLECT_INDUCT

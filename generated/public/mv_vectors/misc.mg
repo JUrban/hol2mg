@@ -21,7 +21,7 @@ Theorem ABS_SQUARE_LT_1 : forall x :e R, x ^ 2 < 1 <-> abs_SNo x < 1.
 Admitted.
 
 // HOL Light:  / APPROACHABLE_LT_LE
-// Source hash: md5:23e81da7a144c6caad8638c5c8a39bce
+// Source hash: md5:54afdab4ade10def5b20fc16157570d6
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem APPROACHABLE_LT_LE : forall A:set, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> ((exists d :e R, 0 < d /\ forall x :e A, f x < d -> P x) <-> exists d :e R, 0 < d /\ forall x :e A, f x <= d -> P x).
 Admitted.
@@ -195,13 +195,13 @@ Theorem EXISTS_DIFF : forall A:set, forall P:set -> prop, (exists s c= A, P (A :
 Admitted.
 
 // HOL Light:  / EXISTS_MATRIFY
-// Source hash: md5:fbcbad1120072e0ee0b1a950cf33f85f
+// Source hash: md5:3b8d7ac1201e43c74ef27dc03cb1624a
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
 Theorem EXISTS_MATRIFY : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx B :^: idx C, P x) <-> exists x :e A :^: idx_n (dimindex C * dimindex B), P (matrify A C B x).
 Admitted.
 
 // HOL Light:  / EXISTS_VECTORIZE
-// Source hash: md5:bace87daa6b74f4713e560de1745a053
+// Source hash: md5:0d832bd30fef52490f0e3b27205440e6
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
 Theorem EXISTS_VECTORIZE : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> exists x :e A :^: idx C :^: idx B, P (vectorize A B C x).
 Admitted.
@@ -255,7 +255,7 @@ Theorem FORALL_DIFF_GEN : forall A:set, forall P:set -> prop, forall u c= A, (fo
 Admitted.
 
 // HOL Light:  / FORALL_MATRIFY
-// Source hash: md5:a197aae5d32b7928e651c60b82ce7f88
+// Source hash: md5:f1abbb15565e193b79ae12a618a41fad
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
 Theorem FORALL_MATRIFY : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (forall x :e A :^: idx B :^: idx C, P x) <-> forall x :e A :^: idx_n (dimindex C * dimindex B), P (matrify A C B x).
 Admitted.
@@ -285,7 +285,7 @@ Theorem FORALL_POS_MONO_EQ : forall P:set -> prop, (forall d e0 :e R, d < e0 /\ 
 Admitted.
 
 // HOL Light:  / FORALL_RELATIVE_TO
-// Source hash: md5:5b16fa4dc7082ba5827b4ff050206460
+// Source hash: md5:00e19968a9a4b9f5a27163da54ad1782
 // Status: exact_native
 Theorem FORALL_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, forall Q:set -> prop, (forall s c= A, s :e relative_to A P u -> Q s) <-> forall s c= A, s :e P -> Q (u :/\: s).
 Admitted.
@@ -297,7 +297,7 @@ Theorem FORALL_SUC : forall P:set -> prop, (forall n :e omega, ~ n = 0 -> P n) <
 Admitted.
 
 // HOL Light:  / FORALL_VECTORIZE
-// Source hash: md5:ce0ee9df169fc7c5cb1caf006f972d0a
+// Source hash: md5:4e14865e4dd21d209c6e0c6e13465df7
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
 Theorem FORALL_VECTORIZE : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (forall x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> forall x :e A :^: idx C :^: idx B, P (vectorize A B C x).
 Admitted.
@@ -357,31 +357,31 @@ Admitted.
 // Theorem GE_REFL : forall n :e omega, n <= n.
 
 // HOL Light:  / HAS_SIZE_1_EXISTS
-// Source hash: md5:f9b6d1585fc711b58a4da7b6b1cee6d6
+// Source hash: md5:1806194ef26c1e7c9a9b85d98e55fd4f
 // Status: transport_required (bridges: hol_has_size_equip, hol_num_omega)
 Theorem HAS_SIZE_1_EXISTS : forall A:set, A <> Empty -> forall s c= A, equip s 1 <-> exists x :e A, x :e s /\ forall y :e A, y :e s -> y = x.
 Admitted.
 
 // HOL Light:  / HULLS_EQ
-// Source hash: md5:7cd090055f1d7abe54f9f526461dbd5f
+// Source hash: md5:316ee5c20e7694080df534eec5d776df
 // Status: generalization_required (bridges: empty_case:A)
 Theorem HULLS_EQ : forall A:set, forall P c= Power A, forall s t c= A, (forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e P) -> {x :e A | forall Y :e f, x :e Y} :e P) /\ (s c= hull A P t /\ t c= hull A P s) -> hull A P s = hull A P t.
 Admitted.
 
 // HOL Light:  / HULL_ANTIMONO
-// Source hash: md5:dc9855ef822cbc216d42fe7fff9c1a93
+// Source hash: md5:2b5711211a7b8960763da4cea52902f6
 // Status: exact_native
 Theorem HULL_ANTIMONO : forall A:set, A <> Empty -> forall P Q c= Power A, forall s c= A, P c= Q -> hull A Q s c= hull A P s.
 Admitted.
 
 // HOL Light:  / HULL_EQ
-// Source hash: md5:c12dc5e279b94701bd07c76edefaf088
+// Source hash: md5:1046f40cb5600e96f635ddf4e8623811
 // Status: exact_native
 Theorem HULL_EQ : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e P) -> {x :e A | forall Y :e f, x :e Y} :e P) -> (hull A P s = s <-> s :e P).
 Admitted.
 
 // HOL Light:  / HULL_HULL
-// Source hash: md5:0b1bfa5157902710fb5ab656d541a529
+// Source hash: md5:8e81f8d16b7adc0b80b4f04d2971b17d
 // Status: exact_native
 Theorem HULL_HULL : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, hull A P (hull A P s) = hull A P s.
 Admitted.
@@ -393,19 +393,19 @@ Theorem HULL_IMAGE : forall A:set, A <> Empty -> forall P c= Power A, forall f:s
 Admitted.
 
 // HOL Light:  / HULL_IMAGE_GALOIS
-// Source hash: md5:632ac9a207234c7a1fbcf8baddd16b51
+// Source hash: md5:2f684707f66eb6da23ec9e9d27ea57ec
 // Status: exact_native
 Theorem HULL_IMAGE_GALOIS : forall A:set, A <> Empty -> forall P c= Power A, forall f:set -> set, (forall x :e A, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e A) -> forall s c= A, (forall s0 c= A, hull A P s0 :e P) /\ ((forall s0 c= A, s0 :e P -> {f x | x :e s0} :e P) /\ ((forall s0 c= A, s0 :e P -> {g x | x :e s0} :e P) /\ (forall s0 t c= A, s0 c= {g x | x :e t} <-> {f x | x :e s0} c= t))) -> hull A P {f x | x :e s} = {f x | x :e hull A P s}.
 Admitted.
 
 // HOL Light:  / HULL_IMAGE_SUBSET
-// Source hash: md5:e952d20a57c3f3190a65612b2f165348
+// Source hash: md5:330ea51bed8babcb259cc135ae4af713
 // Status: exact_native
 Theorem HULL_IMAGE_SUBSET : forall A:set, A <> Empty -> forall P c= Power A, forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, hull A P s :e P /\ (forall s0 c= A, s0 :e P -> {f x | x :e s0} :e P) -> hull A P {f x | x :e s} c= {f x | x :e hull A P s}.
 Admitted.
 
 // HOL Light:  / HULL_INC
-// Source hash: md5:bc4b7b9ec1fd7ec8bf23891120dc1cca
+// Source hash: md5:5b05bc18c696d55e2fa3e81509526dec
 // Status: generalization_required (bridges: empty_case:A)
 Theorem HULL_INC : forall A:set, forall P c= Power A, forall s c= A, forall x :e A, x :e s -> x :e hull A P s.
 Admitted.
@@ -417,73 +417,73 @@ Theorem HULL_INDUCT : forall A:set, forall P c= Power A, forall p:set -> prop, f
 Admitted.
 
 // HOL Light:  / HULL_INSERT
-// Source hash: md5:06b351a5c1f7cebbec609ed27a09e027
+// Source hash: md5:774d200f18f16b46b3ac18f4c5432370
 // Status: generalization_required (bridges: empty_case:A)
 Theorem HULL_INSERT : forall A:set, forall P c= Power A, forall a :e A, forall s c= A, hull A P (SetAdjoin s a) = hull A P (SetAdjoin (hull A P s) a).
 Admitted.
 
 // HOL Light:  / HULL_INTERS_SUBSET
-// Source hash: md5:b71a60f9074669847c9680388a40a36c
+// Source hash: md5:76bb1a84cdebffea32f82f9e54ba01bb
 // Status: exact_native
 Theorem HULL_INTERS_SUBSET : forall A:set, A <> Empty -> forall P f c= Power A, hull A P {x :e A | forall Y :e f, x :e Y} c= {x :e A | forall Y :e {hull A P s | s :e Power A, s :e f}, x :e Y}.
 Admitted.
 
 // HOL Light:  / HULL_INTER_SUBSET
-// Source hash: md5:d56e6df5256e60de064030585af7074d
+// Source hash: md5:f028ed2e1538c9f66dd8f05356038e71
 // Status: exact_native
 Theorem HULL_INTER_SUBSET : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, hull A P (s :/\: t) c= hull A P s :/\: hull A P t.
 Admitted.
 
 // HOL Light:  / HULL_MINIMAL
-// Source hash: md5:1dcdae4ee253cd9df2fd87b9b7f9b61e
+// Source hash: md5:74ed3fadd440e8ff3bf29db44fb0ca6e
 // Status: exact_native
 Theorem HULL_MINIMAL : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, s c= t /\ t :e P -> hull A P s c= t.
 Admitted.
 
 // HOL Light:  / HULL_MONO
-// Source hash: md5:a244fb9a57b2bcbfdbbdf53daed1a71e
+// Source hash: md5:13c37b51520c483cab227e0d8db404f3
 // Status: exact_native
 Theorem HULL_MONO : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, s c= t -> hull A P s c= hull A P t.
 Admitted.
 
 // HOL Light:  / HULL_P
-// Source hash: md5:acdda510135275f9dd31ef88a5eafc2b
+// Source hash: md5:7500ac5ef339d557a3b7ee3df4a497f2
 // Status: exact_native
 Theorem HULL_P : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, s :e P -> hull A P s = s.
 Admitted.
 
 // HOL Light:  / HULL_P_AND_Q
-// Source hash: md5:3ebdecfae9ac65e4f5a42bf195c26de8
+// Source hash: md5:87dddf6d07d6455c311e12952feceefb
 // Status: exact_native
 Theorem HULL_P_AND_Q : forall A:set, A <> Empty -> forall s c= A, forall P Q c= Power A, (forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e P) -> {x :e A | forall Y :e f, x :e Y} :e P) /\ ((forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e Q) -> {x :e A | forall Y :e f, x :e Y} :e Q) /\ (forall s0 c= A, s0 :e Q -> hull A P s0 :e Q)) -> hull A {x :e Power A | x :e P /\ x :e Q} s = hull A P (hull A Q s).
 Admitted.
 
 // HOL Light:  / HULL_REDUNDANT
-// Source hash: md5:9ce9e4b77bff4a3e6e959bd9acafc5fd
+// Source hash: md5:bce9ed015ef6f9fb64d7e2ae0c8e07e5
 // Status: generalization_required (bridges: empty_case:A)
 Theorem HULL_REDUNDANT : forall A:set, forall P c= Power A, forall a :e A, forall s c= A, a :e hull A P s -> hull A P (SetAdjoin s a) = hull A P s.
 Admitted.
 
 // HOL Light:  / HULL_REDUNDANT_EQ
-// Source hash: md5:02bf927481c62d7f3b73f033546e2c72
+// Source hash: md5:e4d9abdd0b26c2e91c5b4a3871fc1d1f
 // Status: generalization_required (bridges: empty_case:A)
 Theorem HULL_REDUNDANT_EQ : forall A:set, forall P c= Power A, forall a :e A, forall s c= A, a :e hull A P s <-> hull A P (SetAdjoin s a) = hull A P s.
 Admitted.
 
 // HOL Light:  / HULL_SUBSET
-// Source hash: md5:b5fb12ae00ac4b749d1615b4a069a954
+// Source hash: md5:b62767308d1ee162e3e2dbae0cf302c1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem HULL_SUBSET : forall A:set, forall P c= Power A, forall s c= A, s c= hull A P s.
 Admitted.
 
 // HOL Light:  / HULL_UNION
-// Source hash: md5:80d52369042ec39208be74e7f367701a
+// Source hash: md5:f5596963d031b0a0a9998835f6eb6857
 // Status: exact_native
 Theorem HULL_UNION : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, hull A P (s :\/: t) = hull A P (hull A P s :\/: hull A P t).
 Admitted.
 
 // HOL Light:  / HULL_UNIONS_SUBSET
-// Source hash: md5:06dfa26b4140092b1480eec41502172b
+// Source hash: md5:42d3ae5841d4e4f108cbc51ac518c368
 // Status: exact_native
 Theorem HULL_UNIONS_SUBSET : forall A:set, A <> Empty -> forall P f c= Power A, Union {hull A P s | s :e Power A, s :e f} c= hull A P (Union f).
 Admitted.
@@ -501,13 +501,13 @@ Theorem HULL_UNION_RIGHT : forall A:set, A <> Empty -> forall P c= Power A, fora
 Admitted.
 
 // HOL Light:  / HULL_UNION_SUBSET
-// Source hash: md5:2cd451d952c12fb6ef15576099392e9e
+// Source hash: md5:4ba1b72e6d9b8986e1cfd8cf7dfad929
 // Status: exact_native
 Theorem HULL_UNION_SUBSET : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, hull A P s :\/: hull A P t c= hull A P (s :\/: t).
 Admitted.
 
 // HOL Light:  / HULL_UNIQUE
-// Source hash: md5:214d22f9a89242f2accfdfb984bebb4a
+// Source hash: md5:72159a4eab90ede28c412504f4a46c27
 // Status: exact_native
 Theorem HULL_UNIQUE : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, s c= t /\ (t :e P /\ (forall t' c= A, s c= t' /\ t' :e P -> t c= t')) -> hull A P s = t.
 Admitted.
@@ -603,7 +603,7 @@ Theorem IRRATIONAL_BETWEEN_EQ : forall a b :e R, (exists q :e R, ~ q :e rational
 Admitted.
 
 // HOL Light:  / IS_HULL
-// Source hash: md5:3d2ac18ca0ee0cf36062d0e91d84fbf7
+// Source hash: md5:d730c8bd5c660063f8b369793ff69745
 // Status: exact_native
 Theorem IS_HULL : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e P) -> {x :e A | forall Y :e f, x :e Y} :e P) -> (s :e P <-> exists t c= A, s = hull A P t).
 Admitted.
@@ -801,7 +801,7 @@ Theorem POSET_TRANS : forall A:set, forall l:set -> set -> prop, poset_on A l ->
 Admitted.
 
 // HOL Light:  / P_HULL
-// Source hash: md5:ba4f07799784d9b221c5171a3421f6dc
+// Source hash: md5:1b748527234ddc5aa480e4d160ac6992
 // Status: exact_native
 Theorem P_HULL : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e P) -> {x :e A | forall Y :e f, x :e Y} :e P) -> hull A P s :e P.
 Admitted.
@@ -1035,7 +1035,7 @@ Theorem REFLECT_REAL_INTERVAL : (forall a b :e R, {- x | x :e closed_real_interv
 Admitted.
 
 // HOL Light:  / RELATIVE_TO
-// Source hash: md5:1f4057948b457a988a5c41e16a60143a
+// Source hash: md5:9c3e056f3135ff7a27ddbd53c8224f5c
 // Status: exact_native
 Theorem RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A P u = {u :/\: s | s :e Power A, s :e P}.
 Admitted.
@@ -1047,13 +1047,13 @@ Theorem RELATIVE_TO_COMPL : forall A:set, A <> Empty -> forall P c= Power A, for
 Admitted.
 
 // HOL Light:  / RELATIVE_TO_IMP_SUBSET
-// Source hash: md5:f41dd2817c441384970494d333b3f70b
+// Source hash: md5:70f94ec9403fc737e4dae551367a381a
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RELATIVE_TO_IMP_SUBSET : forall A:set, forall P c= Power A, forall s t c= A, t :e relative_to A P s -> t c= s.
 Admitted.
 
 // HOL Light:  / RELATIVE_TO_INC
-// Source hash: md5:2145c9f0d72619ede762892a03d2a547
+// Source hash: md5:7cedeb7d72246e7f7af8d979fd06ce76
 // Status: exact_native
 Theorem RELATIVE_TO_INC : forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s :e P -> u :/\: s :e relative_to A P u.
 Admitted.
@@ -1065,7 +1065,7 @@ Theorem RELATIVE_TO_INTER : forall A:set, A <> Empty -> forall P c= Power A, for
 Admitted.
 
 // HOL Light:  / RELATIVE_TO_MONO
-// Source hash: md5:53a9fcb3398160a256af12931c2f7f21
+// Source hash: md5:4935ffe3a789b1e8ca42142f181cf935
 // Status: exact_native
 Theorem RELATIVE_TO_MONO : forall A:set, A <> Empty -> forall s c= A, forall P Q c= Power A, (forall s0 c= A, s0 :e P -> s0 :e Q) -> forall u c= A, s :e relative_to A P u -> s :e relative_to A Q u.
 Admitted.
@@ -1143,7 +1143,7 @@ Theorem SUBSEQUENCE_STEPWISE : forall r:set -> set, (forall x :e omega, r x :e o
 Admitted.
 
 // HOL Light:  / SUBSET_HULL
-// Source hash: md5:6beb88cc522e603f586dade20943c480
+// Source hash: md5:1f8517fdc8c9431f67d1921a7a73c9f0
 // Status: exact_native
 Theorem SUBSET_HULL : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, t :e P -> (hull A P s c= t <-> s c= t).
 Admitted.
@@ -1341,7 +1341,7 @@ Theorem from_thm : forall n :e omega, from n = {m :e omega | n <= m}.
 Admitted.
 
 // HOL Light:  / hull
-// Source hash: md5:3163c4f0ca3ddf8aedfdcbf2df7fbd49
+// Source hash: md5:afd62b722c2164b212ca3fddc891f9ff
 // Status: exact_native
 Theorem hull_thm : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, hull A P s = {x :e A | forall Y :e {t :e Power A | t :e P /\ s c= t}, x :e Y}.
 Admitted.
@@ -1371,7 +1371,7 @@ Theorem real_interval : forall a b :e R, open_real_interval (a,b) = {x :e R | a 
 Admitted.
 
 // HOL Light:  / relative_to
-// Source hash: md5:5f865c5049cb8f32b6c206c65358763f
+// Source hash: md5:139162c4f9b0c9a24b6f52e1d5d05c19
 // Status: exact_native
 Theorem relative_to_thm : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, t :e relative_to A P s <-> exists u c= A, u :e P /\ s :/\: u = t.
 Admitted.
@@ -1383,7 +1383,7 @@ Theorem suslin_operation_thm : forall A:set, A <> Empty -> forall f :e Power A :
 Admitted.
 
 // HOL Light:  / suslin
-// Source hash: md5:64b3d84bcb55b15fb65d13cf209cfd2b
+// Source hash: md5:779577f1befb6808201596e882d744ee
 // Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
 Theorem suslin_thm : forall A:set, A <> Empty -> forall u c= Power A, suslin A u = {suslin_operation A (fun x:set => fun x0:set => x0 :e f x) | f :e Power A :^: finseq omega, forall l :e finseq omega, ~ l = seq_nil -> f l :e u}.
 Admitted.

@@ -1499,25 +1499,25 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:4035 / LIPSCHITZ_ON_UNION
 // Source hash: md5:60a127079a5c32fbd62b745eddbc1bef
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem LIPSCHITZ_ON_UNION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s t c= R :^: idx 1, forall l :e R, is_interval 1 s /\ (is_interval 1 t /\ (~ s :/\: t = Empty /\ ((forall x y :e R :^: idx 1, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) /\ (forall x y :e R :^: idx 1, x :e t /\ y :e t -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y)))))) -> forall x y :e R :^: idx 1, x :e s :\/: t /\ y :e s :\/: t -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y)).
+Theorem LIPSCHITZ_ON_UNION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall s t c= R :^: idx 1, forall l :e R, is_interval 1 s /\ (is_interval 1 t /\ (~ s :/\: t = Empty /\ ((forall x y :e R :^: idx 1, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y)) /\ (forall x y :e R :^: idx 1, x :e t /\ y :e t -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y))))) -> forall x y :e R :^: idx 1, x :e s :\/: t /\ y :e s :\/: t -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4070 / LIPSCHITZ_ON_COMBINE
 // Source hash: md5:cc262c8f1a675b2b03f26abf0230d3fe
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem LIPSCHITZ_ON_COMBINE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, forall l :e R, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) /\ (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (b,c) seq_nil) /\ y :e closed_interval 1 (seq_cons (b,c) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y))) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,c) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,c) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= l * sqrt_SNo_nonneg (dot 1 (vector_sub 1 x y) (vector_sub 1 x y)).
+Theorem LIPSCHITZ_ON_COMBINE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall a b c :e R :^: idx 1, forall l :e R, (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,b) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,b) seq_nil) -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y)) /\ (forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (b,c) seq_nil) /\ y :e closed_interval 1 (seq_cons (b,c) seq_nil) -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y)) -> forall x y :e R :^: idx 1, x :e closed_interval 1 (seq_cons (a,c) seq_nil) /\ y :e closed_interval 1 (seq_cons (a,c) seq_nil) -> vector_norm N (vector_sub N (f x) (f y)) <= l * vector_norm 1 (vector_sub 1 x y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4095 / LOCALLY_LIPSCHITZ_GEN
 // Source hash: md5:0e569c68bffff05e724f89ed9ca5417a
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LOCALLY_LIPSCHITZ_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, forall c :e R, x :e s /\ b < c -> eventually (R :^: idx M) {y :e R :^: idx M | sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))) <= c * sqrt_SNo_nonneg (dot M (vector_sub M y x) (vector_sub M y x))} (within (R :^: idx M) (at M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= b * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y)).
+Theorem LOCALLY_LIPSCHITZ_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, forall c :e R, x :e s /\ b < c -> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= c * vector_norm M (vector_sub M y x)} (within (R :^: idx M) (at M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= b * vector_norm M (vector_sub M x y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4270 / LOCALLY_LIPSCHITZ
 // Source hash: md5:79e2c7c62e1fe3a070681713672c122c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LOCALLY_LIPSCHITZ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, x :e s -> eventually (R :^: idx M) {y :e R :^: idx M | sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))) <= b * sqrt_SNo_nonneg (dot M (vector_sub M y x) (vector_sub M y x))} (within (R :^: idx M) (at M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= b * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y)).
+Theorem LOCALLY_LIPSCHITZ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall b :e R, convex M s /\ (forall x :e R :^: idx M, x :e s -> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (vector_sub N (f y) (f x)) <= b * vector_norm M (vector_sub M y x)} (within (R :^: idx M) (at M x) s)) -> forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= b * vector_norm M (vector_sub M x y).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:4290 / CARD_EQ_SEGMENT
@@ -2483,13 +2483,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:12123 / NORM_SEGMENT_LOWERBOUND
 // Source hash: md5:c84c946190e9688306428a9d10161c35
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem NORM_SEGMENT_LOWERBOUND : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, forall r d :e R, 0 < r /\ (sqrt_SNo_nonneg (dot N a a) = r /\ (sqrt_SNo_nonneg (dot N b b) = r /\ (x :e closed_segment N (seq_cons (a,b) seq_nil) /\ dot N a b = d * r ^ 2))) -> (if 0 <= (1 + - abs_SNo d) :/: 2 then sqrt_SNo_nonneg ((1 + - abs_SNo d) :/: 2) else - sqrt_SNo_nonneg (- (1 + - abs_SNo d) :/: 2)) * r <= sqrt_SNo_nonneg (dot N x x).
+Theorem NORM_SEGMENT_LOWERBOUND : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, forall r d :e R, 0 < r /\ (vector_norm N a = r /\ (vector_norm N b = r /\ (x :e closed_segment N (seq_cons (a,b) seq_nil) /\ dot N a b = d * r ^ 2))) -> (if 0 <= (1 + - abs_SNo d) :/: 2 then sqrt_SNo_nonneg ((1 + - abs_SNo d) :/: 2) else - sqrt_SNo_nonneg (- (1 + - abs_SNo d) :/: 2)) * r <= vector_norm N x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:12176 / NORM_SEGMENT_ORTHOGONAL_LOWERBOUND
 // Source hash: md5:66ecdd7a6ac84f035402bb8ad2261dbd
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem NORM_SEGMENT_ORTHOGONAL_LOWERBOUND : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, forall r :e R, r <= sqrt_SNo_nonneg (dot N a a) /\ (r <= sqrt_SNo_nonneg (dot N b b) /\ (orthogonal N a b /\ x :e closed_segment N (seq_cons (a,b) seq_nil))) -> r :/: 2 <= sqrt_SNo_nonneg (dot N x x).
+Theorem NORM_SEGMENT_ORTHOGONAL_LOWERBOUND : forall N:set, N <> Empty -> forall a b x :e R :^: idx N, forall r :e R, r <= vector_norm N a /\ (r <= vector_norm N b /\ (orthogonal N a b /\ x :e closed_segment N (seq_cons (a,b) seq_nil))) -> r :/: 2 <= vector_norm N x.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:12209 / DENSE_ACCESSIBLE_FRONTIER_POINTS
@@ -2729,13 +2729,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:13161 / PATH_CONNECTED_ANNULUS
 // Source hash: md5:a079ec36f036185e0546865d9b8d08c7
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem PATH_CONNECTED_ANNULUS : forall N:set, N <> Empty -> (forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 < sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 < sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 <= sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < r2}) /\ forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 <= sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < r2})).
+Theorem PATH_CONNECTED_ANNULUS : forall N:set, N <> Empty -> (forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 < vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) < r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 < vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) <= r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 <= vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) < r2}) /\ forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> path_connected N {x :e R :^: idx N | r1 <= vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) < r2})).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:13220 / CONNECTED_ANNULUS
 // Source hash: md5:98655c3bc28320fe2f3261a137357e14
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem CONNECTED_ANNULUS : forall N:set, N <> Empty -> (forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 < sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 < sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) <= r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 <= sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < r2}) /\ forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 <= sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) /\ sqrt_SNo_nonneg (dot N (vector_sub N x a) (vector_sub N x a)) < r2})).
+Theorem CONNECTED_ANNULUS : forall N:set, N <> Empty -> (forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 < vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) < r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 < vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) <= r2}) /\ ((forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 <= vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) < r2}) /\ forall a :e R :^: idx N, forall r1 r2 :e R, 2 <= dimindex N -> connected N {x :e R :^: idx N | r1 <= vector_norm N (vector_sub N x a) /\ vector_norm N (vector_sub N x a) < r2})).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:13236 / PATH_CONNECTED_COMPLEMENT_BOUNDED_CONVEX
@@ -3083,37 +3083,37 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:15458 / OUTSIDE_CONNECTED_COMPONENT_LT
 // Source hash: md5:2122df7f8c476900d2c46bd0492411af
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem OUTSIDE_CONNECTED_COMPONENT_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B < sqrt_SNo_nonneg (dot N y y) /\ connected_component N ((R :^: idx N) :\: s) x y}.
+Theorem OUTSIDE_CONNECTED_COMPONENT_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B < vector_norm N y /\ connected_component N ((R :^: idx N) :\: s) x y}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:15465 / OUTSIDE_CONNECTED_COMPONENT_LE
 // Source hash: md5:ebc447079f3a5deab235f097e3a8032e
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem OUTSIDE_CONNECTED_COMPONENT_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B <= sqrt_SNo_nonneg (dot N y y) /\ connected_component N ((R :^: idx N) :\: s) x y}.
+Theorem OUTSIDE_CONNECTED_COMPONENT_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B <= vector_norm N y /\ connected_component N ((R :^: idx N) :\: s) x y}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:15474 / NOT_OUTSIDE_CONNECTED_COMPONENT_LT
 // Source hash: md5:ea73ebf12f801ccd122b296aacb39ab1
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem NOT_OUTSIDE_CONNECTED_COMPONENT_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> (R :^: idx N) :\: outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B < sqrt_SNo_nonneg (dot N y y) /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
+Theorem NOT_OUTSIDE_CONNECTED_COMPONENT_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> (R :^: idx N) :\: outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B < vector_norm N y /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:15507 / NOT_OUTSIDE_CONNECTED_COMPONENT_LE
 // Source hash: md5:aedbfedb8378b3c7e442062d5313db89
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem NOT_OUTSIDE_CONNECTED_COMPONENT_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> (R :^: idx N) :\: outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B <= sqrt_SNo_nonneg (dot N y y) /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
+Theorem NOT_OUTSIDE_CONNECTED_COMPONENT_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> (R :^: idx N) :\: outside N s = {x :e R :^: idx N | forall B :e R, exists y :e R :^: idx N, B <= vector_norm N y /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:15517 / INSIDE_CONNECTED_COMPONENT_LT
 // Source hash: md5:35fddf70e1bf55a39a6a3a96a2953fb0
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem INSIDE_CONNECTED_COMPONENT_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> inside N s = {x :e R :^: idx N | ~ x :e s /\ forall B :e R, exists y :e R :^: idx N, B < sqrt_SNo_nonneg (dot N y y) /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
+Theorem INSIDE_CONNECTED_COMPONENT_LT : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> inside N s = {x :e R :^: idx N | ~ x :e s /\ forall B :e R, exists y :e R :^: idx N, B < vector_norm N y /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:15527 / INSIDE_CONNECTED_COMPONENT_LE
 // Source hash: md5:5a6c2d43463c547c3a542b404667b1c6
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem INSIDE_CONNECTED_COMPONENT_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> inside N s = {x :e R :^: idx N | ~ x :e s /\ forall B :e R, exists y :e R :^: idx N, B <= sqrt_SNo_nonneg (dot N y y) /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
+Theorem INSIDE_CONNECTED_COMPONENT_LE : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ bounded_hl N s -> inside N s = {x :e R :^: idx N | ~ x :e s /\ forall B :e R, exists y :e R :^: idx N, B <= vector_norm N y /\ ~ connected_component N ((R :^: idx N) :\: s) x y}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:15537 / OUTSIDE_UNION_OUTSIDE_UNION
@@ -3527,25 +3527,25 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:17000 / HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS
 // Source hash: md5:a5a166a1dd369232a6f452cb40317f80
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x:set => x x)} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
+Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x0:set => x x0)} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17094 / HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_GEN
 // Source hash: md5:b02124b630a706f3e9e2dbc0422dcbc2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_GEN : forall N:set, N <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (exists r :e R, 0 < r /\ P r) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x:set => x x)} (subtopology (R :^: idx N) (euclidean N) {x :e R :^: idx N | P (sqrt_SNo_nonneg (dot N x x))},subtopology (R :^: idx N) (euclidean N) {x :e R :^: idx N | P (sqrt_SNo_nonneg (dot N x x))}) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
+Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_GEN : forall N:set, N <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (exists r :e R, 0 < r /\ P r) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x0:set => x x0)} (subtopology (R :^: idx N) (euclidean N) {x :e R :^: idx N | P (vector_norm N x)},subtopology (R :^: idx N) (euclidean N) {x :e R :^: idx N | P (vector_norm N x)}) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17220 / HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_ALT
 // Source hash: md5:4fe03ef190c845f84be1d289cbfe4a83
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x:set => x x)} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
+Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x0:set => x x0)} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17233 / HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_UNIV
 // Source hash: md5:00ea9f936dc6051a052e437d205e2e0c
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_topology)
-Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_UNIV : forall A N:set, N <> Empty -> forall P :e A, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x:set => x x)} (subtopology (R :^: idx N) (euclidean N) (R :^: idx N),subtopology (R :^: idx N) (euclidean N) (R :^: idx N)) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
+Theorem HOMOTOPIC_WITH_ORTHOGONAL_TRANSFORMATIONS_UNIV : forall A N:set, N <> Empty -> forall P :e A, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | orthogonal_transformation N (fun x0:set => x x0)} (subtopology (R :^: idx N) (euclidean N) (R :^: idx N),subtopology (R :^: idx N) (euclidean N) (R :^: idx N)) f g <-> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ det N (matrix N N f) = det N (matrix N N g))).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17245 / HOMOTOPIC_WITH_LINEAR_POSITIVE_DEFINITE_MAPS
@@ -3557,7 +3557,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:17293 / HOMOTOPIC_WITH_LINEAR_MAPS
 // Source hash: md5:b63d6e4510f52acc2a70d4ba7b269f98
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, omega_Subq_R)
-Theorem HOMOTOPIC_WITH_LINEAR_MAPS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | linear N N (fun x:set => x x)} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g <-> linear N N f /\ (linear N N g /\ 0 < det N (matrix N N f) * det N (matrix N N g))).
+Theorem HOMOTOPIC_WITH_LINEAR_MAPS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | linear N N (fun x0:set => x x0)} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g <-> linear N N f /\ (linear N N g /\ 0 < det N (matrix N N f) * det N (matrix N N g))).
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:17399 / homotopic_paths
@@ -3773,13 +3773,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:18570 / HOMOTOPIC_NEARBY_LOOPS
 // Source hash: md5:1b857af00675681bc5a8c334762b46fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HOMOTOPIC_NEARBY_LOOPS : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (pathfinish N g = pathstart N g /\ (open N s /\ path_image N g c= s)) -> exists e0 :e R, 0 < e0 /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N h /\ (pathfinish N h = pathstart N h /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (h t) (g t)) (vector_sub N (h t) (g t))) < e0)) -> homotopic_loops N s g h.
+Theorem HOMOTOPIC_NEARBY_LOOPS : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (pathfinish N g = pathstart N g /\ (open N s /\ path_image N g c= s)) -> exists e0 :e R, 0 < e0 /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N h /\ (pathfinish N h = pathstart N h /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> vector_norm N (vector_sub N (h t) (g t)) < e0)) -> homotopic_loops N s g h.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18570 / HOMOTOPIC_NEARBY_PATHS
 // Source hash: md5:c54e17ee0ac195d1a1fa8d183245f1fa
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem HOMOTOPIC_NEARBY_PATHS : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (open N s /\ path_image N g c= s) -> exists e0 :e R, 0 < e0 /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N h /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> sqrt_SNo_nonneg (dot N (vector_sub N (h t) (g t)) (vector_sub N (h t) (g t))) < e0))) -> homotopic_paths N s g h.
+Theorem HOMOTOPIC_NEARBY_PATHS : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, path N g /\ (open N s /\ path_image N g c= s) -> exists e0 :e R, 0 < e0 /\ forall h:set -> set, (forall x :e R :^: idx 1, h x :e R :^: idx N) -> path N h /\ (pathstart N h = pathstart N g /\ (pathfinish N h = pathfinish N g /\ (forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) -> vector_norm N (vector_sub N (h t) (g t)) < e0))) -> homotopic_paths N s g h.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:18607 / HOMOTOPIC_NON_MIDPOINT_SPHEREMAPS
@@ -3935,7 +3935,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:19511 / fundamental_group
 // Source hash: md5:c1e98549943d913d208a3514f5f427d7
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem fundamental_group_thm : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => p x0) (fun x:set => x x)} | p :e R :^: idx N :^: (R :^: idx 1), path N (fun x:set => p x) /\ (path_image N (fun x:set => p x) c= s /\ (pathstart N (fun x:set => p x) = a /\ pathfinish N (fun x:set => p x) = a))}.
+Theorem fundamental_group_thm : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => p x0) (fun x0:set => x x0)} | p :e R :^: idx N :^: (R :^: idx 1), path N (fun x:set => p x) /\ (path_image N (fun x:set => p x) c= s /\ (pathstart N (fun x:set => p x) = a /\ pathfinish N (fun x:set => p x) = a))}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19516 / FUNDAMENTAL_GROUP_EQ_EMPTY
@@ -3953,13 +3953,13 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:19585 / SIMPLY_CONNECTED_FUNDAMENTAL_GROUP
 // Source hash: md5:6ad1027d5b0354fd1a276a9ed38fe47c
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem SIMPLY_CONNECTED_FUNDAMENTAL_GROUP : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall a :e R :^: idx N, a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => linepath N (a,a) x0) (fun x:set => x x)}}.
+Theorem SIMPLY_CONNECTED_FUNDAMENTAL_GROUP : forall N:set, N <> Empty -> forall s c= R :^: idx N, simply_connected N s <-> path_connected N s /\ forall a :e R :^: idx N, a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => linepath N (a,a) x0) (fun x0:set => x x0)}}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19616 / FUNDAMENTAL_GROUP_SIMPLY_CONNECTED
 // Source hash: md5:c03f0d631fdaadacb09954b9a3924ebc
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem FUNDAMENTAL_GROUP_SIMPLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, simply_connected N s /\ a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => linepath N (a,a) x0) (fun x:set => x x)}}.
+Theorem FUNDAMENTAL_GROUP_SIMPLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, simply_connected N s /\ a :e s -> fundamental_group N (s,a) = {{x :e R :^: idx N :^: (R :^: idx 1) | homotopic_paths N s (fun x0:set => linepath N (a,a) x0) (fun x0:set => x x0)}}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:19629 / NULLHOMOTOPIC_FROM_SPHERE_EXTENSION
@@ -5111,7 +5111,7 @@ Admitted.
 // HOL Light: Multivariate/paths.ml:26897 / CARD_EQ_FUNDAMENTAL_GROUP_COVERING_SPACE_ALT
 // Source hash: md5:8735a227e217c1d3bb3bff5c8ecbe893
 // Status: transport_required (bridges: hol_cart_setexp, hol_eq_c_equip, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem CARD_EQ_FUNDAMENTAL_GROUP_COVERING_SPACE_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall a :e R :^: idx M, covering_space M N (c,p) s /\ (path_connected M c /\ a :e c) -> equip (fundamental_group N (s,p a)) {{x :e R :^: idx M :^: (R :^: idx 1) | homotopic_paths M c (fun x0:set => g x0) (fun x:set => x x)} | g :e R :^: idx M :^: (R :^: idx 1), path M (fun x:set => g x) /\ (path_image M (fun x:set => g x) c= c /\ (pathstart M (fun x:set => g x) = a /\ p (pathfinish M (fun x:set => g x)) = p a))}.
+Theorem CARD_EQ_FUNDAMENTAL_GROUP_COVERING_SPACE_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall c c= R :^: idx M, forall s c= R :^: idx N, forall a :e R :^: idx M, covering_space M N (c,p) s /\ (path_connected M c /\ a :e c) -> equip (fundamental_group N (s,p a)) {{x :e R :^: idx M :^: (R :^: idx 1) | homotopic_paths M c (fun x0:set => g x0) (fun x0:set => x x0)} | g :e R :^: idx M :^: (R :^: idx 1), path M (fun x:set => g x) /\ (path_image M (fun x:set => g x) c= c /\ (pathstart M (fun x:set => g x) = a /\ p (pathfinish M (fun x:set => g x)) = p a))}.
 Admitted.
 
 // HOL Light: Multivariate/paths.ml:26987 / CARD_EQ_FUNDAMENTAL_GROUP_COVERING_SPACE

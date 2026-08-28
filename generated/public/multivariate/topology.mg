@@ -443,19 +443,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:454 / IN_BALL_0
 // Source hash: md5:01d267fb64a6540677b35ca315e04d5c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem IN_BALL_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall e0 :e R, x :e ball A (vec A 0,e0) <-> sqrt_SNo_nonneg (dot A x x) < e0.
+Theorem IN_BALL_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall e0 :e R, x :e ball A (vec A 0,e0) <-> vector_norm A x < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:458 / IN_CBALL_0
 // Source hash: md5:31f1603eb6284f270741eda391dbaaae
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem IN_CBALL_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall e0 :e R, x :e cball A (vec A 0,e0) <-> sqrt_SNo_nonneg (dot A x x) <= e0.
+Theorem IN_CBALL_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall e0 :e R, x :e cball A (vec A 0,e0) <-> vector_norm A x <= e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:462 / IN_SPHERE_0
 // Source hash: md5:7a6f5d85b149718b99058da93527141e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R)
-Theorem IN_SPHERE_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall e0 :e R, x :e sphere A (vec A 0,e0) <-> sqrt_SNo_nonneg (dot A x x) = e0.
+Theorem IN_SPHERE_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, forall e0 :e R, x :e sphere A (vec A 0,e0) <-> vector_norm A x = e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:466 / BALL_TRIVIAL
@@ -545,19 +545,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:525 / BALL_LINEAR_IMAGE
 // Source hash: md5:d5870c1284064beb4984e6e8a6aa3758
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem BALL_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall r :e R, linear M N f /\ ((forall y :e R :^: idx N, exists x0 :e R :^: idx M, f x0 = y) /\ (forall x0 :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x0) (f x0)) = sqrt_SNo_nonneg (dot M x0 x0))) -> ball N (f x,r) = {f x0 | x0 :e ball M (x,r)}.
+Theorem BALL_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall r :e R, linear M N f /\ ((forall y :e R :^: idx N, exists x0 :e R :^: idx M, f x0 = y) /\ (forall x0 :e R :^: idx M, vector_norm N (f x0) = vector_norm M x0)) -> ball N (f x,r) = {f x0 | x0 :e ball M (x,r)}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:531 / CBALL_LINEAR_IMAGE
 // Source hash: md5:29ae69f5611f48e634a4200c343c5dfa
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem CBALL_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall r :e R, linear M N f /\ ((forall y :e R :^: idx N, exists x0 :e R :^: idx M, f x0 = y) /\ (forall x0 :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x0) (f x0)) = sqrt_SNo_nonneg (dot M x0 x0))) -> cball N (f x,r) = {f x0 | x0 :e cball M (x,r)}.
+Theorem CBALL_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall r :e R, linear M N f /\ ((forall y :e R :^: idx N, exists x0 :e R :^: idx M, f x0 = y) /\ (forall x0 :e R :^: idx M, vector_norm N (f x0) = vector_norm M x0)) -> cball N (f x,r) = {f x0 | x0 :e cball M (x,r)}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:537 / SPHERE_LINEAR_IMAGE
 // Source hash: md5:177eb83c4e588b3ab6141ded976b5d23
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem SPHERE_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall r :e R, linear M N f /\ ((forall y :e R :^: idx N, exists x0 :e R :^: idx M, f x0 = y) /\ (forall x0 :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x0) (f x0)) = sqrt_SNo_nonneg (dot M x0 x0))) -> sphere N (f x,r) = {f x0 | x0 :e sphere M (x,r)}.
+Theorem SPHERE_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall x :e R :^: idx M, forall r :e R, linear M N f /\ ((forall y :e R :^: idx N, exists x0 :e R :^: idx M, f x0 = y) /\ (forall x0 :e R :^: idx M, vector_norm N (f x0) = vector_norm M x0)) -> sphere N (f x,r) = {f x0 | x0 :e sphere M (x,r)}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:546 / BALL_SCALING
@@ -851,19 +851,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:899 / HOMEOMORPHIC_MAPS_EUCLIDEAN_SPACE_EUCLIDEAN_GEN
 // Source hash: md5:ddc21d35cf8070f703444e1ba155cd5f
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, nat_le_SNoLe, omega_Subq_R)
-Theorem HOMEOMORPHIC_MAPS_EUCLIDEAN_SPACE_EUCLIDEAN_GEN : forall N:set, N <> Empty -> forall n :e omega, n <= dimindex N -> homeomorphic_maps (R :^: omega) (R :^: idx N) (euclidean_space n,subtopology (R :^: idx N) (euclidean N) (span N {basis N x | x :e idx_n n})) (fun x :e R :^: omega => fun i :e idx N => if 1 <= i /\ i <= n then i i else 0,fun x :e R :^: idx N => fun i :e omega => if 1 <= i /\ i <= n then x i else 0).
+Theorem HOMEOMORPHIC_MAPS_EUCLIDEAN_SPACE_EUCLIDEAN_GEN : forall N:set, N <> Empty -> forall n :e omega, n <= dimindex N -> homeomorphic_maps (R :^: omega) (R :^: idx N) (euclidean_space n,subtopology (R :^: idx N) (euclidean N) (span N {basis N x | x :e idx_n n})) (fun x :e R :^: omega => fun i :e idx N => if 1 <= i /\ i <= n then x i else 0,fun x :e R :^: idx N => fun i :e omega => if 1 <= i /\ i <= n then x i else 0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:929 / HOMEOMORPHIC_MAPS_EUCLIDEAN_SPACE_EUCLIDEAN
 // Source hash: md5:50048442f993e8b14175de433a70a865
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, nat_le_SNoLe, omega_Subq_R)
-Theorem HOMEOMORPHIC_MAPS_EUCLIDEAN_SPACE_EUCLIDEAN : forall N:set, N <> Empty -> homeomorphic_maps (R :^: omega) (R :^: idx N) (euclidean_space (dimindex N),euclidean N) (fun x :e R :^: omega => fun x :e idx N => x x,fun x :e R :^: idx N => fun i :e omega => if 1 <= i /\ i <= dimindex N then x i else 0).
+Theorem HOMEOMORPHIC_MAPS_EUCLIDEAN_SPACE_EUCLIDEAN : forall N:set, N <> Empty -> homeomorphic_maps (R :^: omega) (R :^: idx N) (euclidean_space (dimindex N),euclidean N) (fun x :e R :^: omega => fun i :e idx N => x i,fun x :e R :^: idx N => fun i :e omega => if 1 <= i /\ i <= dimindex N then x i else 0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:940 / HOMEOMORPHIC_MAPS_NSPHERE_EUCLIDEAN_SPHERE
 // Source hash: md5:83472b38633f7dadd8a0ed3c69dcf81d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_topology, nat_le_SNoLe, omega_Subq_R)
-Theorem HOMEOMORPHIC_MAPS_NSPHERE_EUCLIDEAN_SPHERE : forall N:set, N <> Empty -> forall n :e omega, 1 <= n /\ n <= dimindex N -> homeomorphic_maps (R :^: omega) (R :^: idx N) (nsphere (minus_nat n 1),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n})) (fun x :e R :^: omega => fun i :e idx N => if 1 <= i /\ i <= n then i i else 0,fun x :e R :^: idx N => fun i :e omega => if 1 <= i /\ i <= n then x i else 0).
+Theorem HOMEOMORPHIC_MAPS_NSPHERE_EUCLIDEAN_SPHERE : forall N:set, N <> Empty -> forall n :e omega, 1 <= n /\ n <= dimindex N -> homeomorphic_maps (R :^: omega) (R :^: idx N) (nsphere (minus_nat n 1),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n})) (fun x :e R :^: omega => fun i :e idx N => if 1 <= i /\ i <= n then x i else 0,fun x :e R :^: idx N => fun i :e omega => if 1 <= i /\ i <= n then x i else 0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:970 / manhattan
@@ -1253,7 +1253,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:1747 / DISCRETE_SET
 // Source hash: md5:d026566b73bf8d380b5de28f7a05f8ca
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DISCRETE_SET : forall N:set, N <> Empty -> forall s t c= R :^: idx N, {x :e R :^: idx N | x :e t /\ limit_point_of N x s} = Empty <-> forall x :e R :^: idx N, x :e t -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx N, y :e s /\ ~ y = x -> e0 <= sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x)).
+Theorem DISCRETE_SET : forall N:set, N <> Empty -> forall s t c= R :^: idx N, {x :e R :^: idx N | x :e t /\ limit_point_of N x s} = Empty <-> forall x :e R :^: idx N, x :e t -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx N, y :e s /\ ~ y = x -> e0 <= vector_norm N (vector_sub N y x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:1756 / CLOSED_LIMPT
@@ -1337,7 +1337,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:1854 / DISCRETE_IMP_CLOSED
 // Source hash: md5:3d1fb36b490130288586acc3311ed930
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DISCRETE_IMP_CLOSED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall e0 :e R, 0 < e0 /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x)) < e0) -> y = x) -> closed N s.
+Theorem DISCRETE_IMP_CLOSED : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall e0 :e R, 0 < e0 /\ (forall x y :e R :^: idx N, x :e s /\ (y :e s /\ vector_norm N (vector_sub N y x) < e0) -> y = x) -> closed N s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:1872 / LIMPT_OF_UNIV
@@ -2237,7 +2237,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:2936 / at_infinity
 // Source hash: md5:58bfc4359e441fe3cb2cd078ccd52bc1
 // Status: generalization_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R, hol_typedef_net)
-Theorem at_infinity_thm : forall A:set, A <> Empty -> at_infinity A = ({{x :e R :^: idx A | b <= sqrt_SNo_nonneg (dot A x x)} | b :e R, b :e R},Empty).
+Theorem at_infinity_thm : forall A:set, A <> Empty -> at_infinity A = ({{x :e R :^: idx A | b <= vector_norm A x} | b :e R, b :e R},Empty).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:2939 / at_posinfinity
@@ -2279,7 +2279,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:2962 / AT_INFINITY
 // Source hash: md5:c5a1ed52668af857b9d601daf7f318ea
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem AT_INFINITY : forall N:set, N <> Empty -> netfilter (R :^: idx N) (at_infinity N) = {{x :e R :^: idx N | b <= sqrt_SNo_nonneg (dot N x x)} | b :e R, b :e R}.
+Theorem AT_INFINITY : forall N:set, N <> Empty -> netfilter (R :^: idx N) (at_infinity N) = {{x :e R :^: idx N | b <= vector_norm N x} | b :e R, b :e R}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:2962 / NETLIMITS_AT_INFINITY
@@ -2375,19 +2375,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:3063 / EVENTUALLY_AT_INFINITY
 // Source hash: md5:d0438a031bc93ced561200a7be138fd0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem EVENTUALLY_AT_INFINITY : forall A:set, A <> Empty -> forall p c= R :^: idx A, eventually (R :^: idx A) p (at_infinity A) <-> exists b :e R, forall x :e R :^: idx A, b <= sqrt_SNo_nonneg (dot A x x) -> x :e p.
+Theorem EVENTUALLY_AT_INFINITY : forall A:set, A <> Empty -> forall p c= R :^: idx A, eventually (R :^: idx A) p (at_infinity A) <-> exists b :e R, forall x :e R :^: idx A, b <= vector_norm A x -> x :e p.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:3072 / EVENTUALLY_AT_INFINITY_WITHIN
 // Source hash: md5:d938a7a1d216f6c1afbd8ee51141643e
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem EVENTUALLY_AT_INFINITY_WITHIN : forall N:set, N <> Empty -> forall p s c= R :^: idx N, eventually (R :^: idx N) p (within (R :^: idx N) (at_infinity N) s) <-> exists b :e R, forall x :e R :^: idx N, x :e s /\ b <= sqrt_SNo_nonneg (dot N x x) -> x :e p.
+Theorem EVENTUALLY_AT_INFINITY_WITHIN : forall N:set, N <> Empty -> forall p s c= R :^: idx N, eventually (R :^: idx N) p (within (R :^: idx N) (at_infinity N) s) <-> exists b :e R, forall x :e R :^: idx N, x :e s /\ b <= vector_norm N x -> x :e p.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:3079 / EVENTUALLY_AT_INFINITY_POS
 // Source hash: md5:dca28b6667f9bc3d25714a7ca84d0cdb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem EVENTUALLY_AT_INFINITY_POS : forall N:set, N <> Empty -> forall p c= R :^: idx N, eventually (R :^: idx N) p (at_infinity N) <-> exists b :e R, 0 < b /\ forall x :e R :^: idx N, b <= sqrt_SNo_nonneg (dot N x x) -> x :e p.
+Theorem EVENTUALLY_AT_INFINITY_POS : forall N:set, N <> Empty -> forall p c= R :^: idx N, eventually (R :^: idx N) p (at_infinity N) <-> exists b :e R, 0 < b /\ forall x :e R :^: idx N, b <= vector_norm N x -> x :e p.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:3085 / TRIVIAL_LIMIT_AT_INFINITY
@@ -2489,7 +2489,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:3236 / ONORM_LE_EVENTUALLY
 // Source hash: md5:d52b2cfc50298baacba0b34e5b004fdd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem ONORM_LE_EVENTUALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall b :e R, linear M N f -> (onorm M N f <= b <-> eventually (R :^: idx M) {y :e R :^: idx M | sqrt_SNo_nonneg (dot N (f y) (f y)) <= b * sqrt_SNo_nonneg (dot M y y)} (at M (vec M 0))).
+Theorem ONORM_LE_EVENTUALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall b :e R, linear M N f -> (onorm M N f <= b <-> eventually (R :^: idx M) {y :e R :^: idx M | vector_norm N (f y) <= b * vector_norm M y} (at M (vec M 0))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:3247 / EVENTUALLY_WITHIN_REFLECT
@@ -2555,25 +2555,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:4136 / UNIFORM_LIM_ADD
 // Source hash: md5:0b5c6e75883277ab12e72f803c4b00ae
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem UNIFORM_LIM_ADD : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall net0 :e net A, forall P:set -> prop, forall f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e R :^: idx C) -> forall g:set -> set -> set, (forall x :e B, forall y :e A, g x y :e R :^: idx C) -> forall l:set -> set, (forall x :e B, l x :e R :^: idx C) -> forall m:set -> set, (forall x :e B, m x :e R :^: idx C) -> (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> sqrt_SNo_nonneg (dot C (vector_sub C (f n x) (l n)) (vector_sub C (f n x) (l n))) < e0} net0) /\ (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> sqrt_SNo_nonneg (dot C (vector_sub C (g n x) (m n)) (vector_sub C (g n x) (m n))) < e0} net0) -> forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> sqrt_SNo_nonneg (dot C (vector_sub C (vector_add C (f n x) (g n x)) (vector_add C (l n) (m n))) (vector_sub C (vector_add C (f n x) (g n x)) (vector_add C (l n) (m n)))) < e0} net0.
+Theorem UNIFORM_LIM_ADD : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall net0 :e net A, forall P:set -> prop, forall f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e R :^: idx C) -> forall g:set -> set -> set, (forall x :e B, forall y :e A, g x y :e R :^: idx C) -> forall l:set -> set, (forall x :e B, l x :e R :^: idx C) -> forall m:set -> set, (forall x :e B, m x :e R :^: idx C) -> (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> vector_norm C (vector_sub C (f n x) (l n)) < e0} net0) /\ (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> vector_norm C (vector_sub C (g n x) (m n)) < e0} net0) -> forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> vector_norm C (vector_sub C (vector_add C (f n x) (g n x)) (vector_add C (l n) (m n))) < e0} net0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4157 / UNIFORM_LIM_SUB
 // Source hash: md5:14f40b8fd302df819f679b855381b921
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem UNIFORM_LIM_SUB : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall net0 :e net A, forall P:set -> prop, forall f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e R :^: idx C) -> forall g:set -> set -> set, (forall x :e B, forall y :e A, g x y :e R :^: idx C) -> forall l:set -> set, (forall x :e B, l x :e R :^: idx C) -> forall m:set -> set, (forall x :e B, m x :e R :^: idx C) -> (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> sqrt_SNo_nonneg (dot C (vector_sub C (f n x) (l n)) (vector_sub C (f n x) (l n))) < e0} net0) /\ (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> sqrt_SNo_nonneg (dot C (vector_sub C (g n x) (m n)) (vector_sub C (g n x) (m n))) < e0} net0) -> forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> sqrt_SNo_nonneg (dot C (vector_sub C (vector_sub C (f n x) (g n x)) (vector_sub C (l n) (m n))) (vector_sub C (vector_sub C (f n x) (g n x)) (vector_sub C (l n) (m n)))) < e0} net0.
+Theorem UNIFORM_LIM_SUB : forall C A B:set, C <> Empty -> A <> Empty -> B <> Empty -> forall net0 :e net A, forall P:set -> prop, forall f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e R :^: idx C) -> forall g:set -> set -> set, (forall x :e B, forall y :e A, g x y :e R :^: idx C) -> forall l:set -> set, (forall x :e B, l x :e R :^: idx C) -> forall m:set -> set, (forall x :e B, m x :e R :^: idx C) -> (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> vector_norm C (vector_sub C (f n x) (l n)) < e0} net0) /\ (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> vector_norm C (vector_sub C (g n x) (m n)) < e0} net0) -> forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P n -> vector_norm C (vector_sub C (vector_sub C (f n x) (g n x)) (vector_sub C (l n) (m n))) < e0} net0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4182 / UNIFORM_LIM_BILINEAR
 // Source hash: md5:38aecedbe790a4aaefa830c27276e079
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem UNIFORM_LIM_BILINEAR : forall A B M N P:set, A <> Empty -> B <> Empty -> M <> Empty -> N <> Empty -> P <> Empty -> forall net0 :e net A, forall P0:set -> prop, forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> forall f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e R :^: idx M) -> forall g:set -> set -> set, (forall x :e B, forall y :e A, g x y :e R :^: idx N) -> forall l:set -> set, (forall x :e B, l x :e R :^: idx M) -> forall m:set -> set, (forall x :e B, m x :e R :^: idx N) -> forall b1 b2 :e R, bilinear N P M h /\ (eventually A {x :e A | forall n :e B, P0 n -> sqrt_SNo_nonneg (dot M (l n) (l n)) <= b1} net0 /\ (eventually A {x :e A | forall n :e B, P0 n -> sqrt_SNo_nonneg (dot N (m n) (m n)) <= b2} net0 /\ ((forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P0 n -> sqrt_SNo_nonneg (dot M (vector_sub M (f n x) (l n)) (vector_sub M (f n x) (l n))) < e0} net0) /\ (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P0 n -> sqrt_SNo_nonneg (dot N (vector_sub N (g n x) (m n)) (vector_sub N (g n x) (m n))) < e0} net0)))) -> forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P0 n -> sqrt_SNo_nonneg (dot P (vector_sub P (h (f n x) (g n x)) (h (l n) (m n))) (vector_sub P (h (f n x) (g n x)) (h (l n) (m n)))) < e0} net0.
+Theorem UNIFORM_LIM_BILINEAR : forall A B M N P:set, A <> Empty -> B <> Empty -> M <> Empty -> N <> Empty -> P <> Empty -> forall net0 :e net A, forall P0:set -> prop, forall h:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, h x y :e R :^: idx P) -> forall f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e R :^: idx M) -> forall g:set -> set -> set, (forall x :e B, forall y :e A, g x y :e R :^: idx N) -> forall l:set -> set, (forall x :e B, l x :e R :^: idx M) -> forall m:set -> set, (forall x :e B, m x :e R :^: idx N) -> forall b1 b2 :e R, bilinear N P M h /\ (eventually A {x :e A | forall n :e B, P0 n -> vector_norm M (l n) <= b1} net0 /\ (eventually A {x :e A | forall n :e B, P0 n -> vector_norm N (m n) <= b2} net0 /\ ((forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P0 n -> vector_norm M (vector_sub M (f n x) (l n)) < e0} net0) /\ (forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P0 n -> vector_norm N (vector_sub N (g n x) (m n)) < e0} net0)))) -> forall e0 :e R, 0 < e0 -> eventually A {x :e A | forall n :e B, P0 n -> vector_norm P (vector_sub P (h (f n x) (g n x)) (h (l n) (m n))) < e0} net0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4258 / BILINEAR_EPSILON_DELTA
 // Source hash: md5:aeb69316bf45bad0958a3c7f303054c7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem BILINEAR_EPSILON_DELTA : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall a :e R :^: idx M, forall b :e R :^: idx N, forall e0 :e R, bilinear N P M bop /\ 0 < e0 -> exists d :e R, 0 < d /\ forall x :e R :^: idx M, forall y :e R :^: idx N, sqrt_SNo_nonneg (dot M (vector_sub M x a) (vector_sub M x a)) < d /\ sqrt_SNo_nonneg (dot N (vector_sub N y b) (vector_sub N y b)) < d -> sqrt_SNo_nonneg (dot P (vector_sub P (bop x y) (bop a b)) (vector_sub P (bop x y) (bop a b))) < e0.
+Theorem BILINEAR_EPSILON_DELTA : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall a :e R :^: idx M, forall b :e R :^: idx N, forall e0 :e R, bilinear N P M bop /\ 0 < e0 -> exists d :e R, 0 < d /\ forall x :e R :^: idx M, forall y :e R :^: idx N, vector_norm M (vector_sub M x a) < d /\ vector_norm N (vector_sub N y b) < d -> vector_norm P (vector_sub P (bop x y) (bop a b)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4537 / CLOSED_APPROACHABLE
@@ -2747,7 +2747,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:4916 / bounded
 // Source hash: md5:204560049cf3ec512cb6e69a54b9e030
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem bounded_thm : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s <-> exists a :e R, forall x :e R :^: idx N, x :e s -> sqrt_SNo_nonneg (dot N x x) <= a.
+Theorem bounded_thm : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s <-> exists a :e R, forall x :e R :^: idx N, x :e s -> vector_norm N x <= a.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4919 / MBOUNDED_EUCLIDEAN
@@ -2807,7 +2807,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:4976 / BOUNDED_NORM_IMAGE
 // Source hash: md5:20ce845836dc9182d33b658ff4bcd3d0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem BOUNDED_NORM_IMAGE : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s <-> bounded_hl 1 {lift (sqrt_SNo_nonneg (dot N x x)) | x :e s}.
+Theorem BOUNDED_NORM_IMAGE : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s <-> bounded_hl 1 {lift (vector_norm N x) | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4982 / BOUNDED_UNION
@@ -2825,13 +2825,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:4993 / BOUNDED_POS
 // Source hash: md5:45d03d001d9fb776775cc4ea837b4606
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem BOUNDED_POS : forall A:set, A <> Empty -> forall s c= R :^: idx A, bounded_hl A s <-> exists b :e R, 0 < b /\ forall x :e R :^: idx A, x :e s -> sqrt_SNo_nonneg (dot A x x) <= b.
+Theorem BOUNDED_POS : forall A:set, A <> Empty -> forall s c= R :^: idx A, bounded_hl A s <-> exists b :e R, 0 < b /\ forall x :e R :^: idx A, x :e s -> vector_norm A x <= b.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4998 / BOUNDED_POS_LT
 // Source hash: md5:772ab71f8b8376954d7206d89f52c4c4
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem BOUNDED_POS_LT : forall A:set, A <> Empty -> forall s c= R :^: idx A, bounded_hl A s <-> exists b :e R, 0 < b /\ forall x :e R :^: idx A, x :e s -> sqrt_SNo_nonneg (dot A x x) < b.
+Theorem BOUNDED_POS_LT : forall A:set, A <> Empty -> forall s c= R :^: idx A, bounded_hl A s <-> exists b :e R, 0 < b /\ forall x :e R :^: idx A, x :e s -> vector_norm A x < b.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:5004 / BOUNDED_PAIRS
@@ -3167,13 +3167,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:5938 / DISCRETE_BOUNDED_IMP_FINITE
 // Source hash: md5:3a49c2a48f9e62de3bf1944bb5000521
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DISCRETE_BOUNDED_IMP_FINITE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall e0 :e R, 0 < e0 /\ ((forall x y :e R :^: idx N, x :e s /\ (y :e s /\ sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x)) < e0) -> y = x) /\ bounded_hl N s) -> finite s.
+Theorem DISCRETE_BOUNDED_IMP_FINITE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall e0 :e R, 0 < e0 /\ ((forall x y :e R :^: idx N, x :e s /\ (y :e s /\ vector_norm N (vector_sub N y x) < e0) -> y = x) /\ bounded_hl N s) -> finite s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:5963 / FINITE_EQ_BOUNDED_DISCRETE
 // Source hash: md5:1dbc67ac7d22613314cdbcd7af021072
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem FINITE_EQ_BOUNDED_DISCRETE : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s <-> bounded_hl N s /\ exists r :e R, 0 < r /\ forall x y :e R :^: idx N, x :e s /\ (y :e s /\ sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x)) < r) -> x = y.
+Theorem FINITE_EQ_BOUNDED_DISCRETE : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s <-> bounded_hl N s /\ exists r :e R, 0 < r /\ forall x y :e R :^: idx N, x :e s /\ (y :e s /\ vector_norm N (vector_sub N y x) < r) -> x = y.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:5981 / DISCRETE_EQ_FINITE_BOUNDED
@@ -4655,31 +4655,31 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:10294 / LIPSCHITZ_IMP_UNIFORMLY_CONTINUOUS_ON
 // Source hash: md5:ab22ced7f883bccbb8a8f334a7fa513c
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LIPSCHITZ_IMP_UNIFORMLY_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> uniformly_continuous_on_hl M N f s.
+Theorem LIPSCHITZ_IMP_UNIFORMLY_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> uniformly_continuous_on_hl M N f s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10308 / BOUNDED_LIPSCHITZ_IMAGE
 // Source hash: md5:8a260adfbf72840265bd1ce3576862a9
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem BOUNDED_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) /\ bounded_hl M s -> bounded_hl N {f x | x :e s}.
+Theorem BOUNDED_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) /\ bounded_hl M s -> bounded_hl N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10316 / LIPSCHITZ_IMP_CONTINUOUS_ON
 // Source hash: md5:253e572b2305c6e17d5ebdf372c91b79
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem LIPSCHITZ_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y))) -> continuous_on_hl M N f s.
+Theorem LIPSCHITZ_IMP_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (exists B :e R, forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y)) -> continuous_on_hl M N f s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10354 / LIPSCHITZ_ON_SUP
 // Source hash: md5:32ad8eaf4ebdc6d947a67b5ef2c57d92
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem LIPSCHITZ_ON_SUP : forall N:set, N <> Empty -> forall P:set -> prop, forall B :e R, forall s c= R :^: idx N, 0 <= B /\ ((forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> forall x y :e R :^: idx N, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot 1 (vector_sub 1 (f x) (f y)) (vector_sub 1 (f x) (f y))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))) /\ (forall x :e R :^: idx N, x :e s -> exists C :e R, forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> drop (f x) <= C)) -> forall x y :e R :^: idx N, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot 1 (vector_sub 1 (lift (sup {drop (f x) | f :e R :^: idx 1 :^: (R :^: idx N), P f})) (lift (sup {drop (f y) | f :e R :^: idx 1 :^: (R :^: idx N), P f}))) (vector_sub 1 (lift (sup {drop (f x) | f :e R :^: idx 1 :^: (R :^: idx N), P f})) (lift (sup {drop (f y) | f :e R :^: idx 1 :^: (R :^: idx N), P f})))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)).
+Theorem LIPSCHITZ_ON_SUP : forall N:set, N <> Empty -> forall P:set -> prop, forall B :e R, forall s c= R :^: idx N, 0 <= B /\ ((forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> forall x y :e R :^: idx N, x :e s /\ y :e s -> vector_norm 1 (vector_sub 1 (f x) (f y)) <= B * vector_norm N (vector_sub N x y)) /\ (forall x :e R :^: idx N, x :e s -> exists C :e R, forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> drop (f x) <= C)) -> forall x y :e R :^: idx N, x :e s /\ y :e s -> vector_norm 1 (vector_sub 1 (lift (sup {drop (f x) | f :e R :^: idx 1 :^: (R :^: idx N), P f})) (lift (sup {drop (f y) | f :e R :^: idx 1 :^: (R :^: idx N), P f}))) <= B * vector_norm N (vector_sub N x y).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10387 / LIPSCHITZ_ON_INF
 // Source hash: md5:3f5588cd1ac7660ee1c57391349592f9
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem LIPSCHITZ_ON_INF : forall N:set, N <> Empty -> forall P:set -> prop, forall B :e R, forall s c= R :^: idx N, 0 <= B /\ ((forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> forall x y :e R :^: idx N, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot 1 (vector_sub 1 (f x) (f y)) (vector_sub 1 (f x) (f y))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))) /\ (forall x :e R :^: idx N, x :e s -> exists C :e R, forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> C <= drop (f x))) -> forall x y :e R :^: idx N, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot 1 (vector_sub 1 (lift (inf {drop (f x) | f :e R :^: idx 1 :^: (R :^: idx N), P f})) (lift (inf {drop (f y) | f :e R :^: idx 1 :^: (R :^: idx N), P f}))) (vector_sub 1 (lift (inf {drop (f x) | f :e R :^: idx 1 :^: (R :^: idx N), P f})) (lift (inf {drop (f y) | f :e R :^: idx 1 :^: (R :^: idx N), P f})))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)).
+Theorem LIPSCHITZ_ON_INF : forall N:set, N <> Empty -> forall P:set -> prop, forall B :e R, forall s c= R :^: idx N, 0 <= B /\ ((forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> forall x y :e R :^: idx N, x :e s /\ y :e s -> vector_norm 1 (vector_sub 1 (f x) (f y)) <= B * vector_norm N (vector_sub N x y)) /\ (forall x :e R :^: idx N, x :e s -> exists C :e R, forall f :e R :^: idx 1 :^: (R :^: idx N), P f -> C <= drop (f x))) -> forall x y :e R :^: idx N, x :e s /\ y :e s -> vector_norm 1 (vector_sub 1 (lift (inf {drop (f x) | f :e R :^: idx 1 :^: (R :^: idx N), P f})) (lift (inf {drop (f y) | f :e R :^: idx 1 :^: (R :^: idx N), P f}))) <= B * vector_norm N (vector_sub N x y).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10517 / CONTINUOUS_ON_AVOID
@@ -5423,7 +5423,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12149 / CONTINUOUS_UNIFORM_LIMIT
 // Source hash: md5:5d925a97b2aecde9a9c1a1d8feda5272
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONTINUOUS_UNIFORM_LIMIT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall net0 :e net A, forall f:set -> set -> set, (forall x :e A, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, ~ trivial_limit A net0 /\ (eventually A {n :e A | continuous_on_hl M N (f n) s} net0 /\ (forall e0 :e R, 0 < e0 -> eventually A {n :e A | forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f n x) (g x)) (vector_sub N (f n x) (g x))) < e0} net0)) -> continuous_on_hl M N g s.
+Theorem CONTINUOUS_UNIFORM_LIMIT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall net0 :e net A, forall f:set -> set -> set, (forall x :e A, forall y :e R :^: idx M, f x y :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, ~ trivial_limit A net0 /\ (eventually A {n :e A | continuous_on_hl M N (f n) s} net0 /\ (forall e0 :e R, 0 < e0 -> eventually A {n :e A | forall x :e R :^: idx M, x :e s -> vector_norm N (vector_sub N (f n x) (g x)) < e0} net0)) -> continuous_on_hl M N g s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12185 / OPEN_LIFT
@@ -5447,25 +5447,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12213 / CONTINUOUS_ON_LIFT_RANGE
 // Source hash: md5:30b73d1c2a4a4201a35348158bd264a7
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, omega_Subq_R)
-Theorem CONTINUOUS_ON_LIFT_RANGE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R) -> forall s c= R :^: idx A, continuous_on_hl A 1 (fun x:set => lift (f x)) s <-> forall x :e R :^: idx A, x :e s -> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx A, x' :e s /\ sqrt_SNo_nonneg (dot A (vector_sub A x' x) (vector_sub A x' x)) < d -> abs_SNo (f x' + - f x) < e0.
+Theorem CONTINUOUS_ON_LIFT_RANGE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R) -> forall s c= R :^: idx A, continuous_on_hl A 1 (fun x:set => lift (f x)) s <-> forall x :e R :^: idx A, x :e s -> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx A, x' :e s /\ vector_norm A (vector_sub A x' x) < d -> abs_SNo (f x' + - f x) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12233 / CONTINUOUS_ON_LIFT_NORM_COMPOSE
 // Source hash: md5:256825e53772c3b044babf0236ad67b0
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem CONTINUOUS_ON_LIFT_NORM_COMPOSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, continuous_on_hl M N f s -> continuous_on_hl M 1 (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) s.
+Theorem CONTINUOUS_ON_LIFT_NORM_COMPOSE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, continuous_on_hl M N f s -> continuous_on_hl M 1 (fun x:set => lift (vector_norm N (f x))) s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12244 / CONTINUOUS_ON_LIFT_NORM
 // Source hash: md5:59e72ff9490175e7342bdf8cf457edd4
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem CONTINUOUS_ON_LIFT_NORM : forall A:set, A <> Empty -> forall s c= R :^: idx A, continuous_on_hl A 1 (fun x:set => lift (sqrt_SNo_nonneg (dot A x x))) s.
+Theorem CONTINUOUS_ON_LIFT_NORM : forall A:set, A <> Empty -> forall s c= R :^: idx A, continuous_on_hl A 1 (fun x:set => lift (vector_norm A x)) s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12267 / CLOSED_MAP_NORM
 // Source hash: md5:1559e8bdd3392ba6cdac3235bb2bb866
 // Status: transport_required (bridges: hol_cart_setexp, hol_one_1, hol_real_R)
-Theorem CLOSED_MAP_NORM : forall N:set, N <> Empty -> forall s c= R :^: idx N, closed N s -> closed 1 {lift (sqrt_SNo_nonneg (dot N x x)) | x :e s}.
+Theorem CLOSED_MAP_NORM : forall N:set, N <> Empty -> forall s c= R :^: idx N, closed N s -> closed 1 {lift (vector_norm N x) | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12281 / CONTINUOUS_ON_LIFT_COMPONENT
@@ -5633,7 +5633,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12880 / diameter
 // Source hash: md5:58a6915c8cddb1d514faf4aba0af1190
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem diameter_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, diameter A s = if s = Empty then 0 else sup (\/_ x :e R :^: idx A, {sqrt_SNo_nonneg (dot A (vector_sub A x y) (vector_sub A x y)) | y :e R :^: idx A, x :e s /\ y :e s}).
+Theorem diameter_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, diameter A s = if s = Empty then 0 else sup (\/_ x :e R :^: idx A, {vector_norm A (vector_sub A x y) | y :e R :^: idx A, x :e s /\ y :e s}).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12885 / MDIAMETER_EUCLIDEAN
@@ -5645,13 +5645,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12889 / DIAMETER_BOUNDED
 // Source hash: md5:9c8c4feef3faa30c9cbb41886173669e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DIAMETER_BOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> (forall x y :e R :^: idx N, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) <= diameter N s) /\ forall d :e R, 0 <= d /\ d < diameter N s -> exists x y :e R :^: idx N, x :e s /\ (y :e s /\ d < sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))).
+Theorem DIAMETER_BOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> (forall x y :e R :^: idx N, x :e s /\ y :e s -> vector_norm N (vector_sub N x y) <= diameter N s) /\ forall d :e R, 0 <= d /\ d < diameter N s -> exists x y :e R :^: idx N, x :e s /\ (y :e s /\ d < vector_norm N (vector_sub N x y)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12897 / DIAMETER_BOUNDED_BOUND
 // Source hash: md5:ae848146e03906c05965fd8cb3afb4f0
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem DIAMETER_BOUNDED_BOUND : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x y :e R :^: idx A, bounded_hl A s /\ (x :e s /\ y :e s) -> sqrt_SNo_nonneg (dot A (vector_sub A x y) (vector_sub A x y)) <= diameter A s.
+Theorem DIAMETER_BOUNDED_BOUND : forall A:set, A <> Empty -> forall s c= R :^: idx A, forall x y :e R :^: idx A, bounded_hl A s /\ (x :e s /\ y :e s) -> vector_norm A (vector_sub A x y) <= diameter A s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12909 / DIAMETER_TRANSLATION
@@ -5663,7 +5663,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12915 / DIAMETER_LINEAR_IMAGE
 // Source hash: md5:02579a593b8abf5dc2f97103cd979934
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem DIAMETER_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, linear M N f /\ (forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = sqrt_SNo_nonneg (dot M x x)) -> diameter N {f x | x :e s} = diameter M s.
+Theorem DIAMETER_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, linear M N f /\ (forall x :e R :^: idx M, vector_norm N (f x) = vector_norm M x) -> diameter N {f x | x :e s} = diameter M s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12928 / DIAMETER_EMPTY
@@ -5717,7 +5717,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12987 / DIAMETER_LE
 // Source hash: md5:9bf3d106710df9e03c4c6f9cce45381f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DIAMETER_LE : forall N:set, N <> Empty -> forall d :e R, forall s c= R :^: idx N, (~ s = Empty \/ 0 <= d) /\ (forall x y :e R :^: idx N, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y)) <= d) -> diameter N s <= d.
+Theorem DIAMETER_LE : forall N:set, N <> Empty -> forall d :e R, forall s c= R :^: idx N, (~ s = Empty \/ 0 <= d) /\ (forall x y :e R :^: idx N, x :e s /\ y :e s -> vector_norm N (vector_sub N x y) <= d) -> diameter N s <= d.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12994 / BOUNDED_AND_DIAMETER_LE
@@ -6029,7 +6029,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:14022 / DIAMETER_INTERVAL
 // Source hash: md5:096e1394c687e2595a1fa74076304583
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem DIAMETER_INTERVAL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, diameter N (closed_interval N (seq_cons (a,b) seq_nil)) = if closed_interval N (seq_cons (a,b) seq_nil) = Empty then 0 else sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a))) /\ forall a b :e R :^: idx N, diameter N (open_interval N (a,b)) = if open_interval N (a,b) = Empty then 0 else sqrt_SNo_nonneg (dot N (vector_sub N b a) (vector_sub N b a)).
+Theorem DIAMETER_INTERVAL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, diameter N (closed_interval N (seq_cons (a,b) seq_nil)) = if closed_interval N (seq_cons (a,b) seq_nil) = Empty then 0 else vector_norm N (vector_sub N b a)) /\ forall a b :e R :^: idx N, diameter N (open_interval N (a,b)) = if open_interval N (a,b) = Empty then 0 else vector_norm N (vector_sub N b a).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:14056 / IMAGE_TWIZZLE_INTERVAL
@@ -6437,7 +6437,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:15194 / CONTINUOUS_ON_CLOSURE_NORM_LE
 // Source hash: md5:e730224657a7164633cb27287d4d8284
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem CONTINUOUS_ON_CLOSURE_NORM_LE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx M) -> forall s c= R :^: idx N, forall x :e R :^: idx N, forall b :e R, continuous_on_hl N M f (closure N s) /\ ((forall y :e R :^: idx N, y :e s -> sqrt_SNo_nonneg (dot M (f y) (f y)) <= b) /\ x :e closure N s) -> sqrt_SNo_nonneg (dot M (f x) (f x)) <= b.
+Theorem CONTINUOUS_ON_CLOSURE_NORM_LE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx M) -> forall s c= R :^: idx N, forall x :e R :^: idx N, forall b :e R, continuous_on_hl N M f (closure N s) /\ ((forall y :e R :^: idx N, y :e s -> vector_norm M (f y) <= b) /\ x :e closure N s) -> vector_norm M (f x) <= b.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:15206 / CONTINUOUS_ON_CLOSURE_COMPONENT_LE
@@ -7289,7 +7289,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:17865 / CONTINUOUS_DISCRETE_RANGE_CONSTANT
 // Source hash: md5:3153ad1a068d3cf797fd7aca017513b4
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem CONTINUOUS_DISCRETE_RANGE_CONSTANT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, connected M s /\ (continuous_on_hl M N f s /\ (forall x :e R :^: idx M, x :e s -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx M, y :e s /\ ~ f y = f x -> e0 <= sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))))) -> exists a :e R :^: idx N, forall x :e R :^: idx M, x :e s -> f x = a.
+Theorem CONTINUOUS_DISCRETE_RANGE_CONSTANT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, connected M s /\ (continuous_on_hl M N f s /\ (forall x :e R :^: idx M, x :e s -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx M, y :e s /\ ~ f y = f x -> e0 <= vector_norm N (vector_sub N (f y) (f x)))) -> exists a :e R :^: idx N, forall x :e R :^: idx M, x :e s -> f x = a.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:17877 / CONTINUOUS_FINITE_RANGE_CONSTANT
@@ -7349,13 +7349,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:18008 / CAUCHY_ISOMETRIC
 // Source hash: md5:9ef96be4b655a6054321f585c4ce72ad
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem CAUCHY_ISOMETRIC : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx B) -> 0 < e0 /\ (subspace B s /\ (linear B A f /\ ((forall x0 :e R :^: idx B, x0 :e s -> e0 * sqrt_SNo_nonneg (dot B x0 x0) <= sqrt_SNo_nonneg (dot A (f x0) (f x0))) /\ ((forall n :e omega, x n :e s) /\ cauchy A (fun x0:set => f (x x0)))))) -> cauchy B x.
+Theorem CAUCHY_ISOMETRIC : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx B) -> 0 < e0 /\ (subspace B s /\ (linear B A f /\ ((forall x0 :e R :^: idx B, x0 :e s -> e0 * vector_norm B x0 <= vector_norm A (f x0)) /\ ((forall n :e omega, x n :e s) /\ cauchy A (fun x0:set => f (x x0)))))) -> cauchy B x.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18041 / INJECTIVE_IMP_ISOMETRIC
 // Source hash: md5:eb133fd109a505804c5131cb12ba1caf
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem INJECTIVE_IMP_ISOMETRIC : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, closed M s /\ (subspace M s /\ (linear M N f /\ (forall x :e R :^: idx M, x :e s /\ f x = vec N 0 -> x = vec M 0))) -> exists e0 :e R, 0 < e0 /\ forall x :e R :^: idx M, x :e s -> e0 * sqrt_SNo_nonneg (dot M x x) <= sqrt_SNo_nonneg (dot N (f x) (f x)).
+Theorem INJECTIVE_IMP_ISOMETRIC : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, closed M s /\ (subspace M s /\ (linear M N f /\ (forall x :e R :^: idx M, x :e s /\ f x = vec N 0 -> x = vec M 0))) -> exists e0 :e R, 0 < e0 /\ forall x :e R :^: idx M, x :e s -> e0 * vector_norm M x <= vector_norm N (f x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18096 / CLOSED_INJECTIVE_IMAGE_SUBSPACE
@@ -7619,7 +7619,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:18650 / CLOSED_BOUNDEDPREIM_CONTINUOUS_IMAGE
 // Source hash: md5:62cc7f2a0babe38c40eeb94a9c241d27
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem CLOSED_BOUNDEDPREIM_CONTINUOUS_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, closed M s /\ (continuous_on_hl M N f s /\ (forall e0 :e R, bounded_hl M {x :e R :^: idx M | x :e s /\ sqrt_SNo_nonneg (dot N (f x) (f x)) <= e0})) -> closed N {f x | x :e s}.
+Theorem CLOSED_BOUNDEDPREIM_CONTINUOUS_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, closed M s /\ (continuous_on_hl M N f s /\ (forall e0 :e R, bounded_hl M {x :e R :^: idx M | x :e s /\ vector_norm N (f x) <= e0})) -> closed N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18668 / CLOSED_INJECTIVE_IMAGE_SUBSET_SUBSPACE
@@ -7631,19 +7631,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:18687 / BASIS_COORDINATES_LIPSCHITZ
 // Source hash: md5:6d613a0841070dd9878c63794a3c286c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem BASIS_COORDINATES_LIPSCHITZ : forall N:set, N <> Empty -> forall b c= R :^: idx N, independent N b -> exists B :e R, 0 < B /\ forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> forall v :e R :^: idx N, v :e b -> abs_SNo (c v) <= B * sqrt_SNo_nonneg (dot N (vsum (R :^: idx N) N b (fun v0:set => vector_mul N (c v0) v0)) (vsum (R :^: idx N) N b (fun v0:set => vector_mul N (c v0) v0))).
+Theorem BASIS_COORDINATES_LIPSCHITZ : forall N:set, N <> Empty -> forall b c= R :^: idx N, independent N b -> exists B :e R, 0 < B /\ forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> forall v :e R :^: idx N, v :e b -> abs_SNo (c v) <= B * vector_norm N (vsum (R :^: idx N) N b (fun v0:set => vector_mul N (c v0) v0)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18756 / COMPLEMENTARY_SUM_COMPONENTS_LIPSCHITZ
 // Source hash: md5:47eeb178910a18c94e4ea0b2d09c2b9d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem COMPLEMENTARY_SUM_COMPONENTS_LIPSCHITZ : forall N:set, N <> Empty -> forall s t c= R :^: idx N, subspace N s /\ (subspace N t /\ s :/\: t c= {vec N 0}) -> exists B :e R, 0 < B /\ forall x y :e R :^: idx N, x :e s /\ y :e t -> sqrt_SNo_nonneg (dot N x x) <= B * sqrt_SNo_nonneg (dot N (vector_add N x y) (vector_add N x y)).
+Theorem COMPLEMENTARY_SUM_COMPONENTS_LIPSCHITZ : forall N:set, N <> Empty -> forall s t c= R :^: idx N, subspace N s /\ (subspace N t /\ s :/\: t c= {vec N 0}) -> exists B :e R, 0 < B /\ forall x y :e R :^: idx N, x :e s /\ y :e t -> vector_norm N x <= B * vector_norm N (vector_add N x y).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18801 / BASIS_COORDINATES_CONTINUOUS
 // Source hash: md5:214b06a22fd2a88191fc9c1fa4182d2f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem BASIS_COORDINATES_CONTINUOUS : forall N:set, N <> Empty -> forall b c= R :^: idx N, forall e0 :e R, independent N b /\ 0 < e0 -> exists d :e R, 0 < d /\ forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> sqrt_SNo_nonneg (dot N (vsum (R :^: idx N) N b (fun v:set => vector_mul N (c v) v)) (vsum (R :^: idx N) N b (fun v:set => vector_mul N (c v) v))) < d -> forall v :e R :^: idx N, v :e b -> abs_SNo (c v) < e0.
+Theorem BASIS_COORDINATES_CONTINUOUS : forall N:set, N <> Empty -> forall b c= R :^: idx N, forall e0 :e R, independent N b /\ 0 < e0 -> exists d :e R, 0 < d /\ forall c:set -> set, (forall x :e R :^: idx N, c x :e R) -> vector_norm N (vsum (R :^: idx N) N b (fun v:set => vector_mul N (c v) v)) < d -> forall v :e R :^: idx N, v :e b -> abs_SNo (c v) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18818 / COMPLEMENTARY_SUM_HOMEOMORPHIC_PCROSS
@@ -7847,37 +7847,37 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:19975 / SELF_ADJOINT_HAS_EIGENVECTOR_IN_SUBSPACE
 // Source hash: md5:b4d6f3b9fc55f9ceaab3f65a07433584
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem SELF_ADJOINT_HAS_EIGENVECTOR_IN_SUBSPACE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, linear N N f /\ ((forall x :e R :^: idx N, adjoint N N f x = f x) /\ (subspace N s /\ (~ s = {vec N 0} /\ (forall x :e R :^: idx N, x :e s -> f x :e s)))) -> exists v :e R :^: idx N, exists c :e R, v :e s /\ (sqrt_SNo_nonneg (dot N v v) = 1 /\ f v = vector_mul N c v).
+Theorem SELF_ADJOINT_HAS_EIGENVECTOR_IN_SUBSPACE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, linear N N f /\ ((forall x :e R :^: idx N, adjoint N N f x = f x) /\ (subspace N s /\ (~ s = {vec N 0} /\ (forall x :e R :^: idx N, x :e s -> f x :e s)))) -> exists v :e R :^: idx N, exists c :e R, v :e s /\ (vector_norm N v = 1 /\ f v = vector_mul N c v).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:20046 / SELF_ADJOINT_HAS_EIGENVECTOR
 // Source hash: md5:8392c648f8feb58af6bd655541fad40b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem SELF_ADJOINT_HAS_EIGENVECTOR : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> linear N N f /\ (forall x :e R :^: idx N, adjoint N N f x = f x) -> exists v :e R :^: idx N, exists c :e R, sqrt_SNo_nonneg (dot N v v) = 1 /\ f v = vector_mul N c v.
+Theorem SELF_ADJOINT_HAS_EIGENVECTOR : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> linear N N f /\ (forall x :e R :^: idx N, adjoint N N f x = f x) -> exists v :e R :^: idx N, exists c :e R, vector_norm N v = 1 /\ f v = vector_mul N c v.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:20057 / SELF_ADJOINT_HAS_EIGENVECTOR_BASIS_OF_SUBSPACE
 // Source hash: md5:f4d70f97251b3aa24b0635f97164c493
 // Status: transport_required (bridges: hol_cart_setexp, hol_has_size_equip, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem SELF_ADJOINT_HAS_EIGENVECTOR_BASIS_OF_SUBSPACE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, linear N N f /\ ((forall x :e R :^: idx N, adjoint N N f x = f x) /\ (subspace N s /\ (forall x :e R :^: idx N, x :e s -> f x :e s))) -> exists b c= R :^: idx N, b c= s /\ ((forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x :e R :^: idx N, x :e b -> sqrt_SNo_nonneg (dot N x x) = 1 /\ exists c :e R, f x = vector_mul N c x) /\ (independent N b /\ (span N b = s /\ equip b (dim N s))))).
+Theorem SELF_ADJOINT_HAS_EIGENVECTOR_BASIS_OF_SUBSPACE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, linear N N f /\ ((forall x :e R :^: idx N, adjoint N N f x = f x) /\ (subspace N s /\ (forall x :e R :^: idx N, x :e s -> f x :e s))) -> exists b c= R :^: idx N, b c= s /\ ((forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x :e R :^: idx N, x :e b -> vector_norm N x = 1 /\ exists c :e R, f x = vector_mul N c x) /\ (independent N b /\ (span N b = s /\ equip b (dim N s))))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:20135 / SELF_ADJOINT_HAS_EIGENVECTOR_BASIS
 // Source hash: md5:ac6a2415951339e019a03e3fdac1093d
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_has_size_equip, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem SELF_ADJOINT_HAS_EIGENVECTOR_BASIS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> linear N N f /\ (forall x :e R :^: idx N, adjoint N N f x = f x) -> exists b c= R :^: idx N, (forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x :e R :^: idx N, x :e b -> sqrt_SNo_nonneg (dot N x x) = 1 /\ exists c :e R, f x = vector_mul N c x) /\ (independent N b /\ (span N b = R :^: idx N /\ equip b (dimindex N)))).
+Theorem SELF_ADJOINT_HAS_EIGENVECTOR_BASIS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> linear N N f /\ (forall x :e R :^: idx N, adjoint N N f x = f x) -> exists b c= R :^: idx N, (forall x y :e b, x <> y -> orthogonal N x y) /\ ((forall x :e R :^: idx N, x :e b -> vector_norm N x = 1 /\ exists c :e R, f x = vector_mul N c x) /\ (independent N b /\ (span N b = R :^: idx N /\ equip b (dimindex N)))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:20148 / EIGENVALUE_LOWERBOUND_DOT
 // Source hash: md5:7d4b3d8ef2f6ffd82b2840cfc7142b65
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem EIGENVALUE_LOWERBOUND_DOT : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, forall a :e R, symmetric_matrix_hl N A /\ (forall c :e R, forall v :e R :^: idx N, matrix_vector_mul N N A v = vector_mul N c v /\ ~ v = vec N 0 -> a <= c) -> forall x :e R :^: idx N, a * sqrt_SNo_nonneg (dot N x x) ^ 2 <= dot N x (matrix_vector_mul N N A x).
+Theorem EIGENVALUE_LOWERBOUND_DOT : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, forall a :e R, symmetric_matrix_hl N A /\ (forall c :e R, forall v :e R :^: idx N, matrix_vector_mul N N A v = vector_mul N c v /\ ~ v = vec N 0 -> a <= c) -> forall x :e R :^: idx N, a * vector_norm N x ^ 2 <= dot N x (matrix_vector_mul N N A x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:20173 / EIGENVALUE_LOWERBOUND_DOT_EQ
 // Source hash: md5:5a62b672bb41d974a77fdaccfcc8ebda
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem EIGENVALUE_LOWERBOUND_DOT_EQ : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, forall a :e R, symmetric_matrix_hl N A -> ((forall c :e R, forall v :e R :^: idx N, matrix_vector_mul N N A v = vector_mul N c v /\ ~ v = vec N 0 -> a <= c) <-> forall x :e R :^: idx N, a * sqrt_SNo_nonneg (dot N x x) ^ 2 <= dot N x (matrix_vector_mul N N A x)).
+Theorem EIGENVALUE_LOWERBOUND_DOT_EQ : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, forall a :e R, symmetric_matrix_hl N A -> ((forall c :e R, forall v :e R :^: idx N, matrix_vector_mul N N A v = vector_mul N c v /\ ~ v = vec N 0 -> a <= c) <-> forall x :e R :^: idx N, a * vector_norm N x ^ 2 <= dot N x (matrix_vector_mul N N A x)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:20189 / SYMMETRIC_MATRIX_DIAGONALIZABLE_EXPLICIT
@@ -8153,7 +8153,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:21086 / REAL_LE_NORM_MATRIX_MUL_DET
 // Source hash: md5:667b36d01d5c001ccfff677c2e0fbab1
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem REAL_LE_NORM_MATRIX_MUL_DET : forall N:set, N <> Empty -> forall A B :e R :^: idx N :^: idx N, (forall x :e R :^: idx N, sqrt_SNo_nonneg (dot N (matrix_vector_mul N N A x) (matrix_vector_mul N N A x)) <= sqrt_SNo_nonneg (dot N (matrix_vector_mul N N B x) (matrix_vector_mul N N B x))) -> abs_SNo (det N A) <= abs_SNo (det N B).
+Theorem REAL_LE_NORM_MATRIX_MUL_DET : forall N:set, N <> Empty -> forall A B :e R :^: idx N :^: idx N, (forall x :e R :^: idx N, vector_norm N (matrix_vector_mul N N A x) <= vector_norm N (matrix_vector_mul N N B x)) -> abs_SNo (det N A) <= abs_SNo (det N B).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:21163 / DET_LE_ONORM_POW
@@ -8303,13 +8303,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22577 / NORM_VSUM_TRIVIAL_LEMMA
 // Source hash: md5:f3f729c5f1d14459ad5920841520816d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, nat_lt_SNoLt, omega_Subq_R)
-Theorem NORM_VSUM_TRIVIAL_LEMMA : forall A:set, A <> Empty -> forall P:prop, forall s c= omega, forall m n :e omega, forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall e0 :e R, 0 < e0 -> (P -> sqrt_SNo_nonneg (dot A (vsum omega A (s :/\: {i :e omega | m <= i /\ i <= n}) f) (vsum omega A (s :/\: {i :e omega | m <= i /\ i <= n}) f)) < e0 <-> P -> n < m \/ sqrt_SNo_nonneg (dot A (vsum omega A (s :/\: {i :e omega | m <= i /\ i <= n}) f) (vsum omega A (s :/\: {i :e omega | m <= i /\ i <= n}) f)) < e0).
+Theorem NORM_VSUM_TRIVIAL_LEMMA : forall A:set, A <> Empty -> forall P:prop, forall s c= omega, forall m n :e omega, forall f:set -> set, (forall x :e omega, f x :e R :^: idx A) -> forall e0 :e R, 0 < e0 -> (P -> vector_norm A (vsum omega A (s :/\: {i :e omega | m <= i /\ i <= n}) f) < e0 <-> P -> n < m \/ vector_norm A (vsum omega A (s :/\: {i :e omega | m <= i /\ i <= n}) f) < e0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22667 / SERIES_CAUCHY_UNIFORM
 // Source hash: md5:69b62f3f54e63594679f0a0dece5808d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem SERIES_CAUCHY_UNIFORM : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e R :^: idx N) -> forall k c= omega, (exists l:set -> set, (forall x :e A, l x :e R :^: idx N) /\ forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e A, N0 <= n /\ P x -> distance N (vsum omega N (k :/\: {i :e omega | 0 <= i /\ i <= n}) (f x),l x) < e0) <-> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, forall x :e A, N0 <= m /\ P x -> sqrt_SNo_nonneg (dot N (vsum omega N (k :/\: {i :e omega | m <= i /\ i <= n}) (f x)) (vsum omega N (k :/\: {i :e omega | m <= i /\ i <= n}) (f x))) < e0.
+Theorem SERIES_CAUCHY_UNIFORM : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e R :^: idx N) -> forall k c= omega, (exists l:set -> set, (forall x :e A, l x :e R :^: idx N) /\ forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e A, N0 <= n /\ P x -> distance N (vsum omega N (k :/\: {i :e omega | 0 <= i /\ i <= n}) (f x),l x) < e0) <-> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, forall x :e A, N0 <= m /\ P x -> vector_norm N (vsum omega N (k :/\: {i :e omega | m <= i /\ i <= n}) (f x)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22948 / BOUNDED_PARTIAL_SUMS
@@ -8561,7 +8561,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:24626 / SETDIST_LINEAR_IMAGE
 // Source hash: md5:19e3a206ad6be1ef5a8fc7e46430395a
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem SETDIST_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, linear M N f /\ (forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = sqrt_SNo_nonneg (dot M x x)) -> setdist N ({f x | x :e s},{f x | x :e t}) = setdist M (s,t).
+Theorem SETDIST_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, linear M N f /\ (forall x :e R :^: idx M, vector_norm N (f x) = vector_norm M x) -> setdist N ({f x | x :e s},{f x | x :e t}) = setdist M (s,t).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:24640 / SETDIST_UNIQUE
@@ -8819,7 +8819,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:25438 / HAUSDIST_LINEAR_IMAGE
 // Source hash: md5:bbcdfe6d88c36232c2c3c7faa7840ca8
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem HAUSDIST_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, linear M N f /\ (forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = sqrt_SNo_nonneg (dot M x x)) -> hausdist N ({f x | x :e s},{f x | x :e t}) = hausdist M (s,t).
+Theorem HAUSDIST_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, linear M N f /\ (forall x :e R :^: idx M, vector_norm N (f x) = vector_norm M x) -> hausdist N ({f x | x :e s},{f x | x :e t}) = hausdist M (s,t).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:25450 / HAUSDIST_CLOSURE
@@ -9167,7 +9167,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:27577 / DISCRETE_IMP_COUNTABLE
 // Source hash: md5:6d4de2f09d853871d8691f8ac836d834
 // Status: transport_required (bridges: hol_cart_setexp, hol_countable, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem DISCRETE_IMP_COUNTABLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, (forall x :e R :^: idx N, x :e s -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx N, y :e s /\ ~ y = x -> e0 <= sqrt_SNo_nonneg (dot N (vector_sub N y x) (vector_sub N y x))) -> countable s.
+Theorem DISCRETE_IMP_COUNTABLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, (forall x :e R :^: idx N, x :e s -> exists e0 :e R, 0 < e0 /\ forall y :e R :^: idx N, y :e s /\ ~ y = x -> e0 <= vector_norm N (vector_sub N y x)) -> countable s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:27612 / UNCOUNTABLE_CONTAINS_LIMIT_POINT
@@ -9401,7 +9401,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:29344 / IS_INTERVAL_LOCALLY_COMPACT_INTERVAL
 // Source hash: md5:6128e4741ee0d7165b3e843f2b821b4a
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_prod_setprod, hol_real_R)
-Theorem IS_INTERVAL_LOCALLY_COMPACT_INTERVAL : forall N:set, N <> Empty -> forall s c= R :^: idx N, is_interval N s -> locally N {k :e Power (R :^: idx N) | exists a b :e R :^: idx N, forall x :e R :^: idx N, x :e k <-> x :e closed_interval N (seq_cons (a,b) seq_nil)} s.
+Theorem IS_INTERVAL_LOCALLY_COMPACT_INTERVAL : forall N:set, N <> Empty -> forall s c= R :^: idx N, is_interval N s -> locally N {k :e Power (R :^: idx N) | exists a b :e R :^: idx N, k = closed_interval N (seq_cons (a,b) seq_nil)} s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:29963 / gdelta

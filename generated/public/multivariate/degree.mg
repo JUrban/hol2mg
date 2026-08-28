@@ -65,7 +65,7 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:561 / EULER_ROTATION_THEOREM_GEN
 // Source hash: md5:14f06d0ddc6e67cfcff107db9d16b2ca
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem EULER_ROTATION_THEOREM_GEN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, odd_nat (dimindex N) /\ rotation_matrix N A -> exists v :e R :^: idx N, sqrt_SNo_nonneg (dot N v v) = 1 /\ matrix_vector_mul N N A v = v.
+Theorem EULER_ROTATION_THEOREM_GEN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, odd_nat (dimindex N) /\ rotation_matrix N A -> exists v :e R :^: idx N, vector_norm N v = 1 /\ matrix_vector_mul N N A v = v.
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:594 / retraction
@@ -1811,7 +1811,7 @@ Admitted.
 // HOL Light: Multivariate/degree.ml:7805 / PERRON_FROBENIUS
 // Source hash: md5:49100c81d0f4b5ca5c7cf91e14de3454
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem PERRON_FROBENIUS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, (forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex N)) -> 0 <= A i j) -> exists v :e R :^: idx N, exists c :e R, sqrt_SNo_nonneg (dot N v v) = 1 /\ (0 <= c /\ matrix_vector_mul N N A v = vector_mul N c v).
+Theorem PERRON_FROBENIUS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, (forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex N)) -> 0 <= A i j) -> exists v :e R :^: idx N, exists c :e R, vector_norm N v = 1 /\ (0 <= c /\ matrix_vector_mul N N A v = vector_mul N c v).
 Admitted.
 
 // HOL Light: Multivariate/degree.ml:7904 / interval_bij

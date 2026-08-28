@@ -2181,7 +2181,7 @@ Theorem CROSS_EQ_EMPTY : forall A B:set, forall s c= A, forall t c= B, s :*: t =
 Admitted.
 
 // HOL Light: sets.ml:2759 / CROSS_EMPTY
-// Source hash: md5:b11167aedb59041230ffc717c50d6bc5
+// Source hash: md5:e00925b9a577c08c474849dcdafa6f3e
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, empty_case:D, hol_prod_setprod)
 Theorem CROSS_EMPTY : forall C D A B:set, (forall s c= A, s :*: Empty = Empty) /\ forall t c= B, Empty :*: t = Empty.
 Admitted.
@@ -2351,13 +2351,13 @@ Admitted.
 // HOL Light: sets.ml:2936 / IN_EXTENSIONAL
 // Source hash: md5:1281e60a81a928da3c2aa7f8780a8486
 // Status: exact_native (bridges: choose_in_spec)
-Theorem IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => True).
+Theorem IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => True).
 Admitted.
 
 // HOL Light: sets.ml:2940 / IN_EXTENSIONAL_UNDEFINED
 // Source hash: md5:472505a56a2a4b7d06a83bb229c409b0
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
-Theorem IN_EXTENSIONAL_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x x = choose_in B (fun y:set => True)} /\ ~ x :e s -> f x = choose_in B (fun x:set => True).
+Theorem IN_EXTENSIONAL_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => True)} /\ ~ x :e s -> f x = choose_in B (fun x:set => True).
 Admitted.
 
 // HOL Light: sets.ml:2944 / EXTENSIONAL_EMPTY
@@ -2375,7 +2375,7 @@ Admitted.
 // HOL Light: sets.ml:2953 / EXTENSIONAL_EQ
 // Source hash: md5:d8e1dcae4fc83112898d0f3e3f784bf2
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
-Theorem EXTENSIONAL_EQ : forall A B:set, B <> Empty -> forall s c= A, forall f g :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\ (g :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)} /\ (forall x :e A, x :e s -> f x = g x)) -> f = g.
+Theorem EXTENSIONAL_EQ : forall A B:set, B <> Empty -> forall s c= A, forall f g :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\ (g :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\ (forall x :e A, x :e s -> f x = g x)) -> f = g.
 Admitted.
 
 // HOL Light: sets.ml:2965 / RESTRICTION
@@ -2411,7 +2411,7 @@ Admitted.
 // HOL Light: sets.ml:2984 / RESTRICTION_IN_EXTENSIONAL
 // Source hash: md5:d5712d4726595006dd2f72834f5583f1
 // Status: exact_native (bridges: choose_in_spec)
-Theorem RESTRICTION_IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (fun x :e A => if x :e s then f x else choose_in B (fun y:set => True)) :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}.
+Theorem RESTRICTION_IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (fun x :e A => if x :e s then f x else choose_in B (fun y:set => True)) :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)}.
 Admitted.
 
 // HOL Light: sets.ml:2988 / RESTRICTION_EXTENSION
@@ -2423,7 +2423,7 @@ Admitted.
 // HOL Light: sets.ml:2993 / RESTRICTION_FIXPOINT
 // Source hash: md5:08adc1c671e27c196301e2886c563e32
 // Status: exact_native (bridges: choose_in_spec)
-Theorem RESTRICTION_FIXPOINT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, (forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = f x) <-> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x0 x0 = choose_in B (fun y:set => True)}.
+Theorem RESTRICTION_FIXPOINT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, (forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = f x) <-> f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)}.
 Admitted.
 
 // HOL Light: sets.ml:2997 / RESTRICTION_UNIV
@@ -2573,7 +2573,7 @@ Admitted.
 // HOL Light: sets.ml:3181 / IMAGE_PROJECTION_CARTESIAN_PRODUCT
 // Source hash: md5:526fc84464225062ad0d6c6d6c98b5e1
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_fun_setexp)
-Theorem IMAGE_PROJECTION_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {(fun x :e A :^: K => i i) x | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}.
+Theorem IMAGE_PROJECTION_CARTESIAN_PRODUCT : forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {x i | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}.
 Admitted.
 
 // HOL Light: sets.ml:3202 / FORALL_CARTESIAN_PRODUCT_ELEMENTS

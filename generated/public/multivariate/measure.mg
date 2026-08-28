@@ -1127,7 +1127,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:2770 / MEASURE_SEGMENT_1
 // Source hash: md5:c1f60f6bafad4697c4cd47b323f07e2f
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem MEASURE_SEGMENT_1 : (forall a b :e R :^: idx 1, measure 1 (closed_segment 1 (seq_cons (a,b) seq_nil)) = sqrt_SNo_nonneg (dot 1 (vector_sub 1 b a) (vector_sub 1 b a))) /\ forall a b :e R :^: idx 1, measure 1 (open_segment 1 (a,b)) = sqrt_SNo_nonneg (dot 1 (vector_sub 1 b a) (vector_sub 1 b a)).
+Theorem MEASURE_SEGMENT_1 : (forall a b :e R :^: idx 1, measure 1 (closed_segment 1 (seq_cons (a,b) seq_nil)) = vector_norm 1 (vector_sub 1 b a)) /\ forall a b :e R :^: idx 1, measure 1 (open_segment 1 (a,b)) = vector_norm 1 (vector_sub 1 b a).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:2777 / NEGLIGIBLE_SEGMENT
@@ -1361,7 +1361,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:5039 / HAS_MEASURE_ISOMETRY
 // Source hash: md5:70c79de0ce1fccd7e9d91e21fa94ba76
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R)
-Theorem HAS_MEASURE_ISOMETRY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall m :e R, dimindex M = dimindex N /\ (linear M N f /\ (forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = sqrt_SNo_nonneg (dot M x x))) -> (has_measure N {f x | x :e s} m <-> has_measure M s m).
+Theorem HAS_MEASURE_ISOMETRY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall m :e R, dimindex M = dimindex N /\ (linear M N f /\ (forall x :e R :^: idx M, vector_norm N (f x) = vector_norm M x)) -> (has_measure N {f x | x :e s} m <-> has_measure M s m).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:5067 / MEASURABLE_LINEAR_IMAGE_EQ_GEN
@@ -1373,7 +1373,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:5090 / MEASURE_ISOMETRY
 // Source hash: md5:1d880c7631fab4fb7738cb8fa99c8055
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R)
-Theorem MEASURE_ISOMETRY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M = dimindex N /\ (linear M N f /\ (forall x :e R :^: idx M, sqrt_SNo_nonneg (dot N (f x) (f x)) = sqrt_SNo_nonneg (dot M x x))) -> measure N {f x | x :e s} = measure M s.
+Theorem MEASURE_ISOMETRY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M = dimindex N /\ (linear M N f /\ (forall x :e R :^: idx M, vector_norm N (f x) = vector_norm M x)) -> measure N {f x | x :e s} = measure M s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:5097 / MEASURABLE_CONVEX_EQ
@@ -1517,25 +1517,25 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:5975 / INTEGRABLE_CCONTINUOUS_EXPLICIT
 // Source hash: md5:db955f4079c5723b0e6f614e270598fc
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_CCONTINUOUS_EXPLICIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, forall e0 :e R, ~ x :e k /\ 0 < e0 -> exists d :e R, 0 < d /\ forall h :e R, 0 < h /\ h < d -> sqrt_SNo_nonneg (dot N (vector_sub N (vector_mul N (recip_SNo (content M (closed_interval M (seq_cons (x,vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral N M (closed_interval M (seq_cons (x,vector_add M x (vector_mul M h (vec M 1))) seq_nil)) f)) (f x)) (vector_sub N (vector_mul N (recip_SNo (content M (closed_interval M (seq_cons (x,vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral N M (closed_interval M (seq_cons (x,vector_add M x (vector_mul M h (vec M 1))) seq_nil)) f)) (f x))) < e0.
+Theorem INTEGRABLE_CCONTINUOUS_EXPLICIT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, forall e0 :e R, ~ x :e k /\ 0 < e0 -> exists d :e R, 0 < d /\ forall h :e R, 0 < h /\ h < d -> vector_norm N (vector_sub N (vector_mul N (recip_SNo (content M (closed_interval M (seq_cons (x,vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral N M (closed_interval M (seq_cons (x,vector_add M x (vector_mul M h (vec M 1))) seq_nil)) f)) (f x)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:6405 / INTEGRABLE_CCONTINUOUS_EXPLICIT_SYMMETRIC
 // Source hash: md5:d7ed0980a361d0505c311aaa7d3d1c64
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem INTEGRABLE_CCONTINUOUS_EXPLICIT_SYMMETRIC : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, forall e0 :e R, ~ x :e k /\ 0 < e0 -> exists d :e R, 0 < d /\ forall h :e R, 0 < h /\ h < d -> sqrt_SNo_nonneg (dot N (vector_sub N (vector_mul N (recip_SNo (content M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral N M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)) f)) (f x)) (vector_sub N (vector_mul N (recip_SNo (content M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral N M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)) f)) (f x))) < e0.
+Theorem INTEGRABLE_CCONTINUOUS_EXPLICIT_SYMMETRIC : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, forall e0 :e R, ~ x :e k /\ 0 < e0 -> exists d :e R, 0 < d /\ forall h :e R, 0 < h /\ h < d -> vector_norm N (vector_sub N (vector_mul N (recip_SNo (content M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral N M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)) f)) (f x)) < e0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:6863 / ABSOLUTELY_INTEGRABLE_LEBESGUE_POINTS
 // Source hash: md5:2827dae274ad169ebef7ecd519fb7a30
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, omega_Subq_R)
-Theorem ABSOLUTELY_INTEGRABLE_LEBESGUE_POINTS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, forall e0 :e R, ~ x :e k /\ 0 < e0 -> exists d :e R, 0 < d /\ forall h :e R, 0 < h /\ h < d -> sqrt_SNo_nonneg (dot 1 (vector_mul 1 (recip_SNo (content M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral 1 M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)) (fun t:set => lift (sqrt_SNo_nonneg (dot N (vector_sub N (f t) (f x)) (vector_sub N (f t) (f x))))))) (vector_mul 1 (recip_SNo (content M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral 1 M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)) (fun t:set => lift (sqrt_SNo_nonneg (dot N (vector_sub N (f t) (f x)) (vector_sub N (f t) (f x)))))))) < e0.
+Theorem ABSOLUTELY_INTEGRABLE_LEBESGUE_POINTS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (forall a b :e R :^: idx M, absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil))) -> exists k c= R :^: idx M, negligible M k /\ forall x :e R :^: idx M, forall e0 :e R, ~ x :e k /\ 0 < e0 -> exists d :e R, 0 < d /\ forall h :e R, 0 < h /\ h < d -> vector_norm 1 (vector_mul 1 (recip_SNo (content M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)))) (integral 1 M (closed_interval M (seq_cons (vector_sub M x (vector_mul M h (vec M 1)),vector_add M x (vector_mul M h (vec M 1))) seq_nil)) (fun t:set => lift (vector_norm N (vector_sub N (f t) (f x)))))) < e0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:8191 / ABSOLUTELY_INTEGRABLE_IMPROPER_SIMPLE
 // Source hash: md5:abfeab6b9b4da4ae2909dac8145d5fc5
 // Status: transport_required (bridges: hol_cart_setexp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_INTEGRABLE_IMPROPER_SIMPLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, (forall c d :e R :^: idx M, closed_interval M (seq_cons (c,d) seq_nil) c= open_interval M (a,b) -> absolutely_integrable_on N M f (closed_interval M (seq_cons (c,d) seq_nil))) /\ bounded_hl 1 (\/_ c :e R :^: idx M, {integral 1 M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => lift (sqrt_SNo_nonneg (dot N (f x) (f x)))) | d :e R :^: idx M, closed_interval M (seq_cons (c,d) seq_nil) c= open_interval M (a,b)}) -> absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)).
+Theorem ABSOLUTELY_INTEGRABLE_IMPROPER_SIMPLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a b :e R :^: idx M, (forall c d :e R :^: idx M, closed_interval M (seq_cons (c,d) seq_nil) c= open_interval M (a,b) -> absolutely_integrable_on N M f (closed_interval M (seq_cons (c,d) seq_nil))) /\ bounded_hl 1 (\/_ c :e R :^: idx M, {integral 1 M (closed_interval M (seq_cons (c,d) seq_nil)) (fun x:set => lift (vector_norm N (f x))) | d :e R :^: idx M, closed_interval M (seq_cons (c,d) seq_nil) c= open_interval M (a,b)}) -> absolutely_integrable_on N M f (closed_interval M (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:8283 / ABSOLUTELY_INTEGRABLE_IMPROPER
@@ -1547,19 +1547,19 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:8449 / NEGLIGIBLE_LOCALLY_LIPSCHITZ_IMAGE
 // Source hash: md5:9e8baebcb595caba603c753fa4ca5bb5
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem NEGLIGIBLE_LOCALLY_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M <= dimindex N /\ (negligible M s /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, exists b :e R, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))) <= b * sqrt_SNo_nonneg (dot M (vector_sub M y x) (vector_sub M y x))))) -> negligible N {f x | x :e s}.
+Theorem NEGLIGIBLE_LOCALLY_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M <= dimindex N /\ (negligible M s /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, exists b :e R, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> vector_norm N (vector_sub N (f y) (f x)) <= b * vector_norm M (vector_sub M y x)))) -> negligible N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:8741 / NEGLIGIBLE_LOCALLY_LIPSCHITZ_IMAGE_LOWDIM
 // Source hash: md5:33964fdd6b5e37adcb5a2fc415a4cc66
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_lt_SNoLt)
-Theorem NEGLIGIBLE_LOCALLY_LIPSCHITZ_IMAGE_LOWDIM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M < dimindex N /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, exists b :e R, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))) <= b * sqrt_SNo_nonneg (dot M (vector_sub M y x) (vector_sub M y x)))) -> negligible N {f x | x :e s}.
+Theorem NEGLIGIBLE_LOCALLY_LIPSCHITZ_IMAGE_LOWDIM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, dimindex M < dimindex N /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, exists b :e R, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> vector_norm N (vector_sub N (f y) (f x)) <= b * vector_norm M (vector_sub M y x))) -> negligible N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:8774 / NEGLIGIBLE_LIPSCHITZ_IMAGE_UNIV
 // Source hash: md5:d63b48100ac8d309dfe53eead6d37741
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
-Theorem NEGLIGIBLE_LIPSCHITZ_IMAGE_UNIV : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, negligible N s /\ (forall x y :e R :^: idx N, sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot N (vector_sub N x y) (vector_sub N x y))) -> negligible N {f x | x :e s}.
+Theorem NEGLIGIBLE_LIPSCHITZ_IMAGE_UNIV : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall B :e R, negligible N s /\ (forall x y :e R :^: idx N, vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm N (vector_sub N x y)) -> negligible N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:9248 / NEGLIGIBLE_IMAGE_BOUNDED_VARIATION_INTERVAL
@@ -1739,25 +1739,25 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:17207 / MEASURABLE_LOCALLY_LIPSCHITZ_IMAGE
 // Source hash: md5:c824ac362310a99c21f26370302e4318
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem MEASURABLE_LOCALLY_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M y x) (vector_sub M y x))))) -> measurable N {f x | x :e s}.
+Theorem MEASURABLE_LOCALLY_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> vector_norm N (vector_sub N (f y) (f x)) <= B * vector_norm M (vector_sub M y x)))) -> measurable N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:17207 / MEASURE_LOCALLY_LIPSCHITZ_IMAGE
 // Source hash: md5:ea61f2c83bd69eb8615a82bacc81a7f3
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem MEASURE_LOCALLY_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> sqrt_SNo_nonneg (dot N (vector_sub N (f y) (f x)) (vector_sub N (f y) (f x))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M y x) (vector_sub M y x))))) -> measure N {f x | x :e s} <= B ^ dimindex N * measure M s.
+Theorem MEASURE_LOCALLY_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x :e R :^: idx M, x :e s -> exists t c= R :^: idx M, open M t /\ (x :e t /\ forall y :e R :^: idx M, y :e s :/\: t -> vector_norm N (vector_sub N (f y) (f x)) <= B * vector_norm M (vector_sub M y x)))) -> measure N {f x | x :e s} <= B ^ dimindex N * measure M s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:17471 / MEASURABLE_LIPSCHITZ_IMAGE
 // Source hash: md5:b90d5860eb2a27326f878003ffad79bb
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem MEASURABLE_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y)))) -> measurable N {f x | x :e s}.
+Theorem MEASURABLE_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y))) -> measurable N {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:17482 / MEASURE_LIPSCHITZ_IMAGE
 // Source hash: md5:2e2cb925ce86b641f2bba67834ea7940
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
-Theorem MEASURE_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x y :e R :^: idx M, x :e s /\ y :e s -> sqrt_SNo_nonneg (dot N (vector_sub N (f x) (f y)) (vector_sub N (f x) (f y))) <= B * sqrt_SNo_nonneg (dot M (vector_sub M x y) (vector_sub M x y)))) -> measure N {f x | x :e s} <= B ^ dimindex N * measure M s.
+Theorem MEASURE_LIPSCHITZ_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall B :e R, dimindex M <= dimindex N /\ (measurable M s /\ (forall x y :e R :^: idx M, x :e s /\ y :e s -> vector_norm N (vector_sub N (f x) (f y)) <= B * vector_norm M (vector_sub M x y))) -> measure N {f x | x :e s} <= B ^ dimindex N * measure M s.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:19662 / HAS_ABSOLUTE_INTEGRAL_CHANGE_OF_VARIABLES_LINEAR
@@ -1811,7 +1811,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:24747 / ABSOLUTELY_CONTINUOUS_INTEGRAL
 // Source hash: md5:c7a3e5e82f6415b66fbe791cb2ef8d51
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem ABSOLUTELY_CONTINUOUS_INTEGRAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall e0 :e R, absolutely_integrable_on N M f s /\ 0 < e0 -> exists d :e R, 0 < d /\ forall t c= R :^: idx M, t c= s /\ (measurable M t /\ measure M t < d) -> sqrt_SNo_nonneg (dot N (integral N M t f) (integral N M t f)) < e0.
+Theorem ABSOLUTELY_CONTINUOUS_INTEGRAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall e0 :e R, absolutely_integrable_on N M f s /\ 0 < e0 -> exists d :e R, 0 < d /\ forall t c= R :^: idx M, t c= s /\ (measurable M t /\ measure M t < d) -> vector_norm N (integral N M t f) < e0.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:24843 / ABSOLUTELY_CONTINUOUS_INDEFINITE_INTEGRAL_RIGHT
@@ -2081,7 +2081,7 @@ Admitted.
 // HOL Light: Multivariate/measure.ml:31196 / OSTROWSKI_THEOREM
 // Source hash: md5:a2727d6ff2d8a78caf9f95f946da3325
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem OSTROWSKI_THEOREM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall B :e R, forall s c= R :^: idx M, (forall x y :e R :^: idx M, f (vector_add M x y) = vector_add N (f x) (f y)) /\ ((forall x :e R :^: idx M, x :e s -> sqrt_SNo_nonneg (dot N (f x) (f x)) <= B) /\ (measurable M s /\ 0 < measure M s)) -> linear M N f.
+Theorem OSTROWSKI_THEOREM : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall B :e R, forall s c= R :^: idx M, (forall x y :e R :^: idx M, f (vector_add M x y) = vector_add N (f x) (f y)) /\ ((forall x :e R :^: idx M, x :e s -> vector_norm N (f x) <= B) /\ (measurable M s /\ 0 < measure M s)) -> linear M N f.
 Admitted.
 
 // HOL Light: Multivariate/measure.ml:31261 / CONTINUOUS_ADDITIVE_IMP_LINEAR
