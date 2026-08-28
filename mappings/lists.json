@@ -1,0 +1,41 @@
+{
+ "version": 1,
+ "description": "HOL Light lists as native finite sequences (mglib/native/finseq.mg).",
+ "types": [],
+ "constants": [
+  {"hol": "NIL", "scheme": "A list", "args": [], "result": "set", "template": "seq_nil", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "CONS", "scheme": "A->A list->A list", "args": ["set","set"], "result": "set", "template": "seq_cons ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "APPEND", "scheme": "A list->A list->A list", "args": ["set","set"], "result": "set", "template": "seq_append ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "REVERSE", "scheme": "A list->A list", "args": ["set"], "result": "set", "template": "seq_rev ?1", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "LENGTH", "scheme": "A list->num", "args": ["set"], "result": "set", "template": "seq_len ?1", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "MAP", "scheme": "(A->B)->A list->B list", "args": ["metafun","set"], "result": "set", "template": "seq_map ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "MAP2", "scheme": "(A->B->C)->A list->B list->C list", "args": ["metafun","set","set"], "result": "set", "template": "seq_map2 ?1 ?2 ?3", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq", "notes": "unequal lengths: HOL Light unspecified, here the first length"},
+  {"hol": "HD", "scheme": "A list->A", "args": ["set"], "result": "set", "template": "seq_hd ?1", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq", "notes": "HD [] unspecified in HOL Light"},
+  {"hol": "TL", "scheme": "A list->A list", "args": ["set"], "result": "set", "template": "seq_tl ?1", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "LAST", "scheme": "A list->A", "args": ["set"], "result": "set", "template": "seq_last ?1", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "BUTLAST", "scheme": "A list->A list", "args": ["set"], "result": "set", "template": "seq_butlast ?1", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "EL", "scheme": "num->A list->A", "args": ["set","set"], "result": "set", "template": "seq_nth ?2 ?1", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq", "notes": "out of range: HOL unspecified, here 0"},
+  {"hol": "NULL", "scheme": "A list->bool", "args": ["set"], "result": "prop", "template": "seq_len ?1 = 0", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "MEM", "scheme": "A->A list->bool", "args": ["set","set"], "result": "prop", "template": "seq_mem ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "ALL", "scheme": "(A->bool)->A list->bool", "args": ["metapred","set"], "result": "prop", "template": "seq_all ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "EX", "scheme": "(A->bool)->A list->bool", "args": ["metapred","set"], "result": "prop", "template": "seq_ex ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "ALL2", "scheme": "(A->B->bool)->A list->B list->bool", "args": ["metapred","set","set"], "result": "prop", "template": "seq_all2 ?1 ?2 ?3", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "PAIRWISE", "scheme": "(A->A->bool)->A list->bool", "args": ["metapred","set"], "result": "prop", "template": "seq_pairwise ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "FILTER", "scheme": "(A->bool)->A list->A list", "args": ["metapred","set"], "result": "set", "template": "seq_filter ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "ITLIST", "scheme": "(A->B->B)->A list->B->B", "args": ["metafun","set","set"], "result": "set", "template": "seq_foldr ?1 ?2 ?3", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "ITLIST2", "scheme": "(A->B->C->C)->A list->B list->C->C", "args": ["metafun","set","set","set"], "result": "set", "template": "seq_foldr2 ?1 ?2 ?3 ?4", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "REPLICATE", "scheme": "num->A->A list", "args": ["set","set"], "result": "set", "template": "seq_replicate ?1 ?2", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "ZIP", "scheme": "A list->B list->(A#B) list", "args": ["set","set"], "result": "set", "template": "seq_zip ?1 ?2", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "ASSOC", "scheme": "A->(A#B) list->B", "args": ["set","set"], "result": "set", "template": "seq_assoc ?1 ?2", "class": "generalization", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "list_of_seq", "scheme": "(num->A)->num->A list", "args": ["metafun","set"], "result": "set", "template": "seq_mk ?2 ?1", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "set_of_list", "scheme": "A list->(A->bool)", "args": ["set"], "result": "subset", "template": "seq_set ?1", "class": "native_isomorphism", "status": "reviewed", "bridge": "hol_list_finseq"},
+  {"hol": "list_of_set", "scheme": "(A->bool)->A list", "args": ["subset"], "result": "set", "template": "choose_in (finseq ?A) (fun l => seq_set l = ?1 /\\ seq_len l = finite_cardinality ?1)", "class": "definitionally_exact", "status": "reviewed", "bridge": "choose_in_spec"}
+ ],
+ "empty_rules": [
+  {"lhs": "finseq Empty", "rhs": "{seq_nil}", "by": "finseq_Empty"},
+  {"lhs": "seq_len seq_nil", "rhs": "0", "by": "seq_len_nil"},
+  {"lhs": "seq_map ?f seq_nil", "rhs": "seq_nil", "by": "seq_map_nil"},
+  {"lhs": "seq_append seq_nil seq_nil", "rhs": "seq_nil", "by": "seq_append_nil"},
+  {"lhs": "seq_foldr ?f seq_nil ?b", "rhs": "?b", "by": "seq_foldr_nil"}
+ ]
+}

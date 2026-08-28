@@ -35,13 +35,13 @@ Admitted.
 // HOL Light: nums.ml:116 / num_Axiom
 // Source hash: md5:22351265077b01108064d138b673a797
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
-Theorem num_Axiom : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x).
+Theorem num_Axiom : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x).
 Admitted.
 
 // HOL Light: nums.ml:169 / num_RECURSION
 // Source hash: md5:b287304fbed4be3d30468df5802532bb
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
-Theorem num_RECURSION : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n).
+Theorem num_RECURSION : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n).
 Admitted.
 
 // HOL Light: nums.ml:177 / num_CASES

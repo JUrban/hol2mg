@@ -143,7 +143,7 @@ Admitted.
 // HOL Light: realax.ml:216 / BOUNDS_NOTZERO
 // Source hash: md5:564b112172498c8cd64028b48e5452b6
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
-Theorem BOUNDS_NOTZERO : forall P:set -> set -> set, (forall x x0 :e omega, P x x0 :e omega) -> forall A B :e omega, P 0 0 = 0 /\ (forall m n :e omega, P m n <= A * (m + n) + B) -> exists B0 :e omega, forall m n :e omega, P m n <= B0 * (m + n).
+Theorem BOUNDS_NOTZERO : forall P:set -> set -> set, (forall x y :e omega, P x y :e omega) -> forall A B :e omega, P 0 0 = 0 /\ (forall m n :e omega, P m n <= A * (m + n) + B) -> exists B0 :e omega, forall m n :e omega, P m n <= B0 * (m + n).
 Admitted.
 
 // HOL Light: realax.ml:227 / BOUNDS_IGNORE

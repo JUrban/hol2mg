@@ -3,7 +3,8 @@
   "profile": "core",
   "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
   "mapping_files": [
-    [ "mappings/core.json", "fb7b9d09fcac6bd22c685db231bb646f" ]
+    [ "mappings/core.json", "be02e2cd1855f7cd8fd5795ea5f647e8" ],
+    [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ]
   ],
   "signature": "God1.mgs",
   "items": [
@@ -376,7 +377,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant admissible : (A->?140101->bool)->((A->B)->P->bool)->(P->?140101)->((A->B)->P->?140110 list)->bool",
       "statement": ""
     },
     {
@@ -512,112 +513,127 @@
       "source_name": "ALL",
       "aliases": [ "ALL" ],
       "hash": "4e7ccd881d3b6b76b557162de933a2a1",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 65,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A)",
+        "h": "set(A)",
+        "t": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_all P seq_nil <-> True) /\\ (seq_all P (seq_cons h t) <-> P h /\\ seq_all P t)"
     },
     {
       "name": "ALL2",
       "source_name": "ALL2",
       "aliases": [ "ALL2" ],
       "hash": "b1f931b4c35afae213098fafc8984c88",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 87,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A,B)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)",
+        "h2": "set(B)",
+        "t2": "set(finseq B)"
+      },
+      "error": "",
+      "statement": "forall A B:set, forall P:set -> set -> prop, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, (seq_all2 P seq_nil seq_nil <-> True) /\\ ((seq_all2 P (seq_cons h1 t1) seq_nil <-> False) /\\ ((seq_all2 P seq_nil (seq_cons h2 t2) <-> False) /\\ (seq_all2 P (seq_cons h1 t1) (seq_cons h2 t2) <-> P h1 h2 /\\ seq_all2 P t1 t2)))"
     },
     {
       "name": "ALL2_ALL",
       "source_name": "ALL2_ALL",
       "aliases": [ "ALL2_ALL" ],
       "hash": "ad773421ed933244304c5e83c0f77d3c",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 464,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, seq_all2 P l l <-> seq_all (fun x:set => P x x) l"
     },
     {
       "name": "ALL2_AND_RIGHT",
       "source_name": "ALL2_AND_RIGHT",
       "aliases": [ "ALL2_AND_RIGHT" ],
       "hash": "3d794ca2edd1ddfef4b3be7863d04e50",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 283,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall m :e finseq B, forall P:set -> prop, forall Q:set -> set -> prop, seq_all2 (fun x:set => fun y:set => P x /\\ Q x y) l m <-> seq_all P l /\\ seq_all2 Q l m"
     },
     {
       "name": "ALL2_DEF",
       "source_name": "ALL2_DEF",
       "aliases": [ "ALL2_DEF" ],
       "hash": "05f0d882920f2505f89f2a84c1cd96a7",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 81,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A,B)",
+        "l2": "set(finseq B)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall P:set -> set -> prop, forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, (seq_all2 P seq_nil l2 <-> l2 = seq_nil) /\\ (seq_all2 P (seq_cons h1 t1) l2 <-> (l2 = seq_nil -> False) /\\ (~ l2 = seq_nil -> P h1 (seq_hd l2) /\\ seq_all2 P t1 (seq_tl l2)))"
     },
     {
       "name": "ALL2_MAP",
       "source_name": "ALL2_MAP",
       "aliases": [ "ALL2_MAP" ],
       "hash": "e2caf4faab982154814cddd9f86ed0f1",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 272,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all2 P (seq_map f l) l <-> seq_all (fun a:set => P (f a) a) l"
     },
     {
       "name": "ALL2_MAP2",
       "source_name": "ALL2_MAP2",
       "aliases": [ "ALL2_MAP2" ],
       "hash": "b81f14dfc5ba044192bd0ce1542135b6",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 426,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "P": "metapred(B,D)" },
+      "error": "",
+      "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e C, g x :e D) -> forall l :e finseq A, forall m :e finseq C, seq_all2 P (seq_map f l) (seq_map g m) <-> seq_all2 (fun x:set => fun y:set => P (f x) (g y)) l m"
     },
     {
       "name": "ALLPAIRS",
@@ -632,7 +648,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool",
       "statement": ""
     },
     {
@@ -648,7 +664,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool",
       "statement": ""
     },
     {
@@ -664,7 +680,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant ALLPAIRS : (A->C->bool)->A list->C list->bool",
       "statement": ""
     },
     {
@@ -680,7 +696,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool",
       "statement": ""
     },
     {
@@ -696,7 +712,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant ALLPAIRS : (B->A->bool)->B list->A list->bool",
       "statement": ""
     },
     {
@@ -704,176 +720,180 @@
       "source_name": "ALL_APPEND",
       "aliases": [ "ALL_APPEND" ],
       "hash": "0010b3895501ff7a5ff6e1d6798864ea",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 405,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l1 l2 :e finseq A, seq_all P (seq_append l1 l2) <-> seq_all P l1 /\\ seq_all P l2"
     },
     {
       "name": "ALL_EL",
       "source_name": "ALL_EL",
       "aliases": [ "ALL_EL" ],
       "hash": "237e34a641b79831cfd0911e87fd72fd",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 422,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, (forall i :e omega, i < seq_len l -> P (seq_nth l i)) <-> seq_all P l"
     },
     {
       "name": "ALL_EQ",
       "source_name": "ALL_EQ",
       "aliases": [ "ALL_EQ" ],
       "hash": "a9612881dce4440a96189975e8c668ce",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 255,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "R": "metapred(A)",
+        "P": "metapred(A)",
+        "Q": "metapred(A)"
+      },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall R0 P Q:set -> prop, forall l :e finseq A, seq_all R0 l /\\ (forall x :e A, R0 x -> (P x <-> Q x)) -> (seq_all P l <-> seq_all Q l)"
     },
     {
       "name": "ALL_FILTER",
       "source_name": "ALL_FILTER",
       "aliases": [ "ALL_FILTER" ],
       "hash": "6fae4f4a0d9017f391f4c71232191e71",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 604,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, seq_all P (seq_filter Q l) <-> seq_all (fun x:set => Q x -> P x) l"
     },
     {
       "name": "ALL_IMP",
       "source_name": "ALL_IMP",
       "aliases": [ "ALL_IMP" ],
       "hash": "02447eaab41cdada267141a0ab2c2687",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 235,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, (forall x :e A, seq_mem x l /\\ P x -> Q x) /\\ seq_all P l -> seq_all Q l"
     },
     {
       "name": "ALL_MAP",
       "source_name": "ALL_MAP",
       "aliases": [ "ALL_MAP" ],
       "hash": "0f6eaa20955e61ecced785b2b67da0a9",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 250,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all P (seq_map f l) <-> seq_all (fun x:set => P (f x)) l"
     },
     {
       "name": "ALL_MEM",
       "source_name": "ALL_MEM",
       "aliases": [ "ALL_MEM" ],
       "hash": "5056d3db4b0de73fbe817f02698a3036",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 314,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, (forall x :e A, seq_mem x l -> P x) <-> seq_all P l"
     },
     {
       "name": "ALL_MP",
       "source_name": "ALL_MP",
       "aliases": [ "ALL_MP" ],
       "hash": "8f58295fa10e24df7a4af0a66b5fb117",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 299,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, seq_all (fun x:set => P x -> Q x) l /\\ seq_all P l -> seq_all Q l"
     },
     {
       "name": "ALL_T",
       "source_name": "ALL_T",
       "aliases": [ "ALL_T" ],
       "hash": "1ef10b4f01356df5f7678160db331d50",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 262,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_all (fun x:set => True) l"
     },
     {
       "name": "AND_ALL",
       "source_name": "AND_ALL",
       "aliases": [ "AND_ALL" ],
       "hash": "598933552a82047c8fcb589d544d4d05",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 304,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "P": "metapred(A)", "Q": "metapred(A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, seq_all P l /\\ seq_all Q l <-> seq_all (fun x:set => P x /\\ Q x) l"
     },
     {
       "name": "AND_ALL2",
       "source_name": "AND_ALL2",
       "aliases": [ "AND_ALL2" ],
       "hash": "a6e52c25066ce6e8132c25b40a38fd8d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 432,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P Q:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, seq_all2 P l m /\\ seq_all2 Q l m <-> seq_all2 (fun x:set => fun y:set => P x y /\\ Q x y) l m"
     },
     {
       "name": "AND_CLAUSES",
@@ -928,128 +948,128 @@
       "source_name": "APPEND",
       "aliases": [ "APPEND" ],
       "hash": "3ef027801213877da04628f269452000",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 34,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, (forall l :e finseq A, seq_append seq_nil l = l) /\\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l)"
     },
     {
       "name": "APPEND_ASSOC",
       "source_name": "APPEND_ASSOC",
       "aliases": [ "APPEND_ASSOC" ],
       "hash": "595245cd5d4fe352684d336877239fe8",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 161,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l m n :e finseq A, seq_append l (seq_append m n) = seq_append (seq_append l m) n"
     },
     {
       "name": "APPEND_BUTLAST_LAST",
       "source_name": "APPEND_BUTLAST_LAST",
       "aliases": [ "APPEND_BUTLAST_LAST" ],
       "hash": "703f649413aa2037e3dcf32aa4963892",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 540,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_append (seq_butlast l) (seq_cons (seq_last l) seq_nil) = l"
     },
     {
       "name": "APPEND_EQ_NIL",
       "source_name": "APPEND_EQ_NIL",
       "aliases": [ "APPEND_EQ_NIL" ],
       "hash": "e9edc19ed23cabaa314fa3fcaec3296e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 469,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l m :e finseq A, seq_append l m = seq_nil <-> l = seq_nil /\\ m = seq_nil"
     },
     {
       "name": "APPEND_LCANCEL",
       "source_name": "APPEND_LCANCEL",
       "aliases": [ "APPEND_LCANCEL" ],
       "hash": "8c4ba0d4c05300994d04fcf35bfd2317",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 473,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l1 l2 l3 :e finseq A, seq_append l1 l2 = seq_append l1 l3 <-> l2 = l3"
     },
     {
       "name": "APPEND_NIL",
       "source_name": "APPEND_NIL",
       "aliases": [ "APPEND_NIL" ],
       "hash": "34e676cda4ec75f03b52d6a0a1fe6783",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 157,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, seq_append l seq_nil = l"
     },
     {
       "name": "APPEND_RCANCEL",
       "source_name": "APPEND_RCANCEL",
       "aliases": [ "APPEND_RCANCEL" ],
       "hash": "7929e632510a0ef42809349c1908e7fc",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 477,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l1 l2 l3 :e finseq A, seq_append l1 l3 = seq_append l2 l3 <-> l1 = l2"
     },
     {
       "name": "APPEND_SING",
       "source_name": "APPEND_SING",
       "aliases": [ "APPEND_SING" ],
       "hash": "657b1648e9b6042cfb6163edb02d09ee",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 610,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_append (seq_cons h seq_nil) t = seq_cons h t"
     },
     {
       "name": "ARB",
@@ -1600,16 +1620,22 @@
       "source_name": "ASSOC",
       "aliases": [ "ASSOC" ],
       "hash": "5bd30847065b5a896bf69c7d1af89f00",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 111,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [
+        "empty_case:A", "empty_case:B", "hol_list_finseq", "hol_prod_setprod"
+      ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "a": "set(A)",
+        "h": "set(A :*: B)",
+        "t": "set(finseq (A :*: B))"
+      },
+      "error": "",
+      "statement": "forall A B:set, forall a :e A, forall h :e A :*: B, forall t :e finseq (A :*: B), seq_assoc a (seq_cons h t) = if h 0 = a then h 1 else seq_assoc a t"
     },
     {
       "name": "BETA_THM",
@@ -1985,55 +2011,55 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall P:set -> set -> set, (forall x x0 :e omega, P x x0 :e omega) -> forall A B :e omega, P 0 0 = 0 /\\ (forall m n :e omega, P m n <= A * (m + n) + B) -> exists B0 :e omega, forall m n :e omega, P m n <= B0 * (m + n)"
+      "statement": "forall P:set -> set -> set, (forall x y :e omega, P x y :e omega) -> forall A B :e omega, P 0 0 = 0 /\\ (forall m n :e omega, P m n <= A * (m + n) + B) -> exists B0 :e omega, forall m n :e omega, P m n <= B0 * (m + n)"
     },
     {
       "name": "BUTLAST",
       "source_name": "BUTLAST",
       "aliases": [ "BUTLAST" ],
       "hash": "b5b341e30ed8ba1286f7407014f0f75b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 53,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_butlast seq_nil = seq_nil /\\ seq_butlast (seq_cons h t) = if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)"
     },
     {
       "name": "BUTLAST_APPEND",
       "source_name": "BUTLAST_APPEND",
       "aliases": [ "BUTLAST_APPEND" ],
       "hash": "b9b6989022b3a40753c7c1cd6dfbc030",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 533,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l m :e finseq A, seq_butlast (seq_append l m) = if m = seq_nil then seq_butlast l else seq_append l (seq_butlast m)"
     },
     {
       "name": "BUTLAST_CLAUSES",
       "source_name": "BUTLAST_CLAUSES",
       "aliases": [ "BUTLAST_CLAUSES" ],
       "hash": "2669bd204e0a6c6c199749e98d4535d4",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 527,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> seq_butlast seq_nil = seq_nil /\\ ((forall a :e A, seq_butlast (seq_cons a seq_nil) = seq_nil) /\\ forall a h :e A, forall t :e finseq A, seq_butlast (seq_cons a (seq_cons h t)) = seq_cons a (seq_butlast (seq_cons h t)))"
     },
     {
       "name": "CARD",
@@ -2753,16 +2779,19 @@
       "source_name": "CARD_SET_OF_LIST_LE",
       "aliases": [ "CARD_SET_OF_LIST_LE" ],
       "hash": "6e5c8bd4691e77c6851cbf5fb793ae13",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4368,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_list_finseq", "hol_num_omega",
+        "nat_le_SNoLe"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, finite_cardinality (seq_set l) <= seq_len l"
     },
     {
       "name": "CARD_SING",
@@ -3247,7 +3276,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant CASEWISE : ((?138375->?138372)#(?138373->?138375->?138333)) list->?138373->?138372->?138333",
       "statement": ""
     },
     {
@@ -3263,7 +3292,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant CASEWISE : ((?138467->?138464)#(?138465->?138467->?138474)) list->?138465->?138464->?138474",
       "statement": ""
     },
     {
@@ -3279,7 +3308,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant CASEWISE : ((?138308->?138312)#(?138313->?138308->?138272)) list->?138313->?138312->?138272",
       "statement": ""
     },
     {
@@ -3295,7 +3324,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant GABS : (((P->A)#(C->P->B)->bool)->bool)->(P->A)#(C->P->B)->bool",
       "statement": ""
     },
     {
@@ -3848,32 +3877,32 @@
       "source_name": "CONS_11",
       "aliases": [ "CONS_11" ],
       "hash": "50a941211ca5b773825052d4a811750c",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 178,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\\ t1 = t2"
     },
     {
       "name": "CONS_HD_TL",
       "source_name": "CONS_HD_TL",
       "aliases": [ "CONS_HD_TL" ],
       "hash": "c92d05c19eb5a4cde98682e8b8eceaaa",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 590,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)"
     },
     {
       "name": "CONTRAPOS_THM",
@@ -6283,16 +6312,16 @@
       "source_name": "EL",
       "aliases": [ "EL" ],
       "hash": "90e8be5936c40bee20461b9eb5985f6a",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 103,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "l": "set(finseq A)", "n": "set(omega)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth l 0 = seq_hd l /\\ seq_nth l (ordsucc n) = seq_nth (seq_tl l) n"
     },
     {
       "name": "ELEMENT_LE_SUP",
@@ -6315,96 +6344,96 @@
       "source_name": "EL_APPEND",
       "aliases": [ "EL_APPEND" ],
       "hash": "748e8eba07efd541bbb8f4cee28509db",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 563,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall k :e omega, forall l m :e finseq A, seq_nth (seq_append l m) k = if k < seq_len l then seq_nth l k else seq_nth m (minus_nat k (seq_len l))"
     },
     {
       "name": "EL_CONS",
       "source_name": "EL_CONS",
       "aliases": [ "EL_CONS" ],
       "hash": "96bf1046e3cf9e37940e276d513bcf2d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 576,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall n :e omega, forall h :e A, forall t :e finseq A, seq_nth (seq_cons h t) n = if n = 0 then h else seq_nth t (minus_nat n 1)"
     },
     {
       "name": "EL_LIST_OF_SEQ",
       "source_name": "EL_LIST_OF_SEQ",
       "aliases": [ "EL_LIST_OF_SEQ" ],
       "hash": "361e7b194afb22170b3ff15a20553c77",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 665,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant EL : num->A list->A",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall m n :e omega, m < n -> seq_nth (seq_mk n s) m = s m"
     },
     {
       "name": "EL_MAP",
       "source_name": "EL_MAP",
       "aliases": [ "EL_MAP" ],
       "hash": "540a91f3328e7f6a379a49ab731fe835",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 594,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall n :e omega, forall l :e finseq A, n < seq_len l -> seq_nth (seq_map f l) n = f (seq_nth l n)"
     },
     {
       "name": "EL_MAP2",
       "source_name": "EL_MAP2",
       "aliases": [ "EL_MAP2" ],
       "hash": "7dcce9680a2312a32a4141f7d677e5a6",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 488,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall l :e finseq A, forall m :e finseq B, forall k :e omega, k < seq_len l /\\ k < seq_len m -> seq_nth (seq_map2 f l m) k = f (seq_nth l k) (seq_nth m k)"
     },
     {
       "name": "EL_TL",
       "source_name": "EL_TL",
       "aliases": [ "EL_TL" ],
       "hash": "1c4e8150a9c01e601483be55a0dcfe79",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 572,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "add_nat_add_SNo", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "l": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth (seq_tl l) n = seq_nth l (n + 1)"
     },
     {
       "name": "EMPTY",
@@ -6672,11 +6701,11 @@
       "src_file": "class.ml",
       "src_line": 30,
       "classes": [ "generalization" ],
-      "bridges": [ "empty_case:A" ],
+      "bridges": [ "empty_case:A", "empty_case:B" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x"
+      "statement": "forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x"
     },
     {
       "name": "EQ_IMP",
@@ -7069,16 +7098,20 @@
       "source_name": "EX",
       "aliases": [ "EX" ],
       "hash": "8b0dcace39404907876ae25859ceb0ce",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 69,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A)",
+        "h": "set(A)",
+        "t": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_ex P seq_nil <-> False) /\\ (seq_ex P (seq_cons h t) <-> P h \\/ seq_ex P t)"
     },
     {
       "name": "EXCLUDED_MIDDLE",
@@ -7165,16 +7198,16 @@
       "source_name": "EXISTS_EX",
       "aliases": [ "EXISTS_EX" ],
       "hash": "d49b9f16d9da009544ebd72dd5849c7e",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 333,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e Power B :^: A, forall l :e finseq B, (exists x :e A, seq_ex (fun x0:set => x0 :e P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s = 1) l"
     },
     {
       "name": "EXISTS_FINITE_SUBSET_IMAGE",
@@ -7678,7 +7711,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set -> set, (forall x :e B, forall x0 :e A, f x x0 :e C) /\\ P (fun a :e A => fun b :e B => f b a)"
+      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e C) /\\ P (fun a :e A => fun b :e B => f b a)"
     },
     {
       "name": "EXISTS_THM",
@@ -8224,48 +8257,48 @@
       "source_name": "EX_IMP",
       "aliases": [ "EX_IMP" ],
       "hash": "b83579acec443120e1a67e8f0a4550f1",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 309,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, (forall x :e A, seq_mem x l /\\ P x -> Q x) /\\ seq_ex P l -> seq_ex Q l"
     },
     {
       "name": "EX_MAP",
       "source_name": "EX_MAP",
       "aliases": [ "EX_MAP" ],
       "hash": "d621c58bd5cdfcecdbfb7a663680a360",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 328,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_ex P (seq_map f l) <-> seq_ex (fun x:set => P (f x)) l"
     },
     {
       "name": "EX_MEM",
       "source_name": "EX_MEM",
       "aliases": [ "EX_MEM" ],
       "hash": "dc236f3bb7a599b6add4c8d4d4fdc23f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 376,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, (exists x :e A, P x /\\ seq_mem x l) <-> seq_ex P l"
     },
     {
       "name": "FACT",
@@ -8384,48 +8417,52 @@
       "source_name": "FILTER",
       "aliases": [ "FILTER" ],
       "hash": "5e58d440998c996ea4b717dc791fcf55",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 107,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A)",
+        "h": "set(A)",
+        "t": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, seq_filter P seq_nil = seq_nil /\\ seq_filter P (seq_cons h t) = if P h then seq_cons h (seq_filter P t) else seq_filter P t"
     },
     {
       "name": "FILTER_APPEND",
       "source_name": "FILTER_APPEND",
       "aliases": [ "FILTER_APPEND" ],
       "hash": "d4d93b5f36ebb171c6fddf63d85463d1",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 352,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l1 l2 :e finseq A, seq_filter P (seq_append l1 l2) = seq_append (seq_filter P l1) (seq_filter P l2)"
     },
     {
       "name": "FILTER_MAP",
       "source_name": "FILTER_MAP",
       "aliases": [ "FILTER_MAP" ],
       "hash": "1ef199560f30049cdd8cc0984c4dfff5",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 358,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_filter P (seq_map f l) = seq_map f (seq_filter (fun x:set => P (f x)) l)"
     },
     {
       "name": "FINITE_1",
@@ -8464,38 +8501,42 @@
       "source_name": "FINITE_CARD_LE_IMAGE",
       "aliases": [ "FINITE_CARD_LE_IMAGE" ],
       "hash": "bd1998a48f8353a9c0d83ddd5263ca2b",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 2412,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
       "bridges": [
-        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
-        "nat_le_SNoLe"
+        "empty_case:A", "hol_card_finite_cardinality", "hol_finite_finite",
+        "hol_num_omega", "nat_le_SNoLe"
       ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, finite s /\\ finite_cardinality s <= n -> finite {f x | x :e s} /\\ finite_cardinality {f x | x :e s} <= n"
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, finite s /\\ finite_cardinality s <= n -> finite {f x | x :e s} /\\ finite_cardinality {f x | x :e s} <= n"
     },
     {
       "name": "FINITE_CARD_LE_SUBSET",
       "source_name": "FINITE_CARD_LE_SUBSET",
       "aliases": [ "FINITE_CARD_LE_SUBSET" ],
       "hash": "0294240cabc21a126587730c8ec4a493",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 2292,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
       "bridges": [
-        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
-        "nat_le_SNoLe"
+        "empty_case:A", "hol_card_finite_cardinality", "hol_finite_finite",
+        "hol_num_omega", "nat_le_SNoLe"
       ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s t c= A, forall n :e omega, s c= t /\\ (finite t /\\ finite_cardinality t <= n) -> finite s /\\ finite_cardinality s <= n"
+      "statement": "forall A:set, forall s t c= A, forall n :e omega, s c= t /\\ (finite t /\\ finite_cardinality t <= n) -> finite s /\\ finite_cardinality s <= n"
     },
     {
       "name": "FINITE_CARD_LE_UNION",
@@ -8688,16 +8729,18 @@
       "source_name": "FINITE_DIFF",
       "aliases": [ "FINITE_DIFF" ],
       "hash": "60cfe4f67dc59c8c0afd10e32048ff1d",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1687,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s -> finite (s :\\: t)"
+      "statement": "forall A:set, forall s t c= A, finite s -> finite (s :\\: t)"
     },
     {
       "name": "FINITE_DIFF_IMAGE",
@@ -8752,32 +8795,36 @@
       "source_name": "FINITE_FINITE_PREIMAGE",
       "aliases": [ "FINITE_FINITE_PREIMAGE" ],
       "hash": "30d5cc8c2c8496c85c91845bfdfcdc2e",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1508,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:B", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, finite t /\\ (forall y :e B, y :e t -> finite {x :e A | f x = y}) -> finite {x :e A | f x :e t}"
+      "statement": "forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, finite t /\\ (forall y :e B, y :e t -> finite {x :e A | f x = y}) -> finite {x :e A | f x :e t}"
     },
     {
       "name": "FINITE_FINITE_PREIMAGE_GENERAL",
       "source_name": "FINITE_FINITE_PREIMAGE_GENERAL",
       "aliases": [ "FINITE_FINITE_PREIMAGE_GENERAL" ],
       "hash": "c1fff981a855cb59204f69a678ca6455",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1494,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:B", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\\ (forall y :e B, y :e t -> finite {x :e A | x :e s /\\ f x = y}) -> finite {x :e A | x :e s /\\ f x :e t}"
+      "statement": "forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\\ (forall y :e B, y :e t -> finite {x :e A | x :e s /\\ f x = y}) -> finite {x :e A | x :e s /\\ f x :e t}"
     },
     {
       "name": "FINITE_FINITE_UNIONS",
@@ -8853,16 +8900,18 @@
       "source_name": "FINITE_IMAGE",
       "aliases": [ "FINITE_IMAGE" ],
       "hash": "432dfbca4344ace97e63aa457fdad110",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1479,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {f x | x :e s}"
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {f x | x :e s}"
     },
     {
       "name": "FINITE_IMAGE_EQ",
@@ -8905,16 +8954,18 @@
       "source_name": "FINITE_IMAGE_EXPAND",
       "aliases": [ "FINITE_IMAGE_EXPAND" ],
       "hash": "dc943a7d6b3d6b1eb9fc0dd986c272fd",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1467,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {y :e B | exists x :e A, x :e s /\\ y = f x}"
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {y :e B | exists x :e A, x :e s /\\ y = f x}"
     },
     {
       "name": "FINITE_IMAGE_GEN",
@@ -9471,16 +9522,18 @@
       "source_name": "FINITE_PRODUCT_DEPENDENT",
       "aliases": [ "FINITE_PRODUCT_DEPENDENT" ],
       "hash": "86ded7d13f6e6b7f131a4b72b4a1b239",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 2684,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e C) -> forall s c= A, forall t :e Power B :^: A, finite s /\\ (forall x :e A, x :e s -> finite (t x)) -> finite (\\/_ x :e A, {f x y | y :e B, x :e s /\\ y :e t x})"
+      "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t :e Power B :^: A, finite s /\\ (forall x :e A, x :e s -> finite (t x)) -> finite (\\/_ x :e A, {f x y | y :e B, x :e s /\\ y :e t x})"
     },
     {
       "name": "FINITE_PROD_IMAGE",
@@ -9551,16 +9604,18 @@
       "source_name": "FINITE_RESTRICT",
       "aliases": [ "FINITE_RESTRICT" ],
       "hash": "b3c8e8051468a19305d044ce23783d3a",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1409,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, finite s -> finite {x :e A | x :e s /\\ P x}"
+      "statement": "forall A:set, forall s c= A, forall P:set -> prop, finite s -> finite {x :e A | x :e s /\\ P x}"
     },
     {
       "name": "FINITE_RESTRICTED_FUNSPACE",
@@ -9633,16 +9688,16 @@
       "source_name": "FINITE_SET_OF_LIST",
       "aliases": [ "FINITE_SET_OF_LIST" ],
       "hash": "38e0d51202b6da4a07d3459e13ad037e",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3828,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, finite (seq_set l)"
     },
     {
       "name": "FINITE_SING",
@@ -9665,16 +9720,18 @@
       "source_name": "FINITE_SUBSET",
       "aliases": [ "FINITE_SUBSET" ],
       "hash": "cbe809cab3573cf324dd84b560f89471",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1390,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s t c= A, finite t /\\ s c= t -> finite s"
+      "statement": "forall A:set, forall s t c= A, finite t /\\ s c= t -> finite s"
     },
     {
       "name": "FINITE_SUBSET_IMAGE",
@@ -9809,16 +9866,18 @@
       "source_name": "FINITE_SUPPORT",
       "aliases": [ "FINITE_SUPPORT" ],
       "hash": "5f2e5868802d786d3586b28b029dac08",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "iterate",
       "src_file": "iterate.ml",
       "src_line": 324,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}"
     },
     {
       "name": "FINITE_SUPPORT_DELTA",
@@ -9836,7 +9895,7 @@
       "notes": [],
       "var_views": { "s": "subset(A)" },
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)}"
+      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)}"
     },
     {
       "name": "FINITE_TRANSITIVITY_CHAIN",
@@ -10146,7 +10205,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\\ (g Empty = b /\\ forall s c= A, forall x :e A, finite s /\\ x :e s -> g s = f x (g (s :\\: {x})))"
+      "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\\ (g Empty = b /\\ forall s c= A, forall x :e A, finite s /\\ x :e s -> g s = f x (g (s :\\: {x})))"
     },
     {
       "name": "FINREC_FUN_LEMMA",
@@ -10217,16 +10276,16 @@
       "source_name": "FORALL_ALL",
       "aliases": [ "FORALL_ALL" ],
       "hash": "e7b6a1d0c12594c67f5b793f5fe03220",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 338,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e Power B :^: A, forall l :e finseq B, (forall x :e A, seq_all (fun x0:set => x0 :e P x) l) <-> seq_all (fun s:set => forall x :e A, P x s = 1) l"
     },
     {
       "name": "FORALL_AND_THM",
@@ -11584,16 +11643,18 @@
       "source_name": "HAS_SIZE_IMAGE_INJ",
       "aliases": [ "HAS_SIZE_IMAGE_INJ" ],
       "hash": "ad7bebab844592359e54a8da46d551fb",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 2399,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_has_size_equip", "hol_num_omega" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_has_size_equip", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ equip s n -> equip {f x | x :e s} n"
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ equip s n -> equip {f x | x :e s} n"
     },
     {
       "name": "HAS_SIZE_IMAGE_INJ_EQ",
@@ -11792,16 +11853,16 @@
       "source_name": "HAS_SIZE_SET_OF_LIST",
       "aliases": [ "HAS_SIZE_SET_OF_LIST" ],
       "hash": "ae685800b6a0e3b0a09677b2af8370a2",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 4374,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_has_size_equip", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, equip (seq_set l) (seq_len l) <-> seq_pairwise (fun x:set => fun y:set => ~ x = y) l"
     },
     {
       "name": "HAS_SIZE_SUC",
@@ -11968,48 +12029,48 @@
       "source_name": "HD",
       "aliases": [ "HD" ],
       "hash": "e48111d0d8d0854a2e64b2dfd1f92b7e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 28,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h"
     },
     {
       "name": "HD_APPEND",
       "source_name": "HD_APPEND",
       "aliases": [ "HD_APPEND" ],
       "hash": "da7d7062ece2bd17943b9d0f7e786eeb",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 586,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l m :e finseq A, seq_hd (seq_append l m) = if l = seq_nil then seq_hd m else seq_hd l"
     },
     {
       "name": "HD_REVERSE",
       "source_name": "HD_REVERSE",
       "aliases": [ "HD_REVERSE" ],
       "hash": "ab3ea9bf8f9519ab0c9869a62f24e123",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 559,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l"
     },
     {
       "name": "HREAL_ADD_AC",
@@ -13473,32 +13534,36 @@
       "source_name": "INFINITE_IMAGE",
       "aliases": [ "INFINITE_IMAGE" ],
       "hash": "d9e870584dc2baa2b940dbdf3c134786",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1545,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, infinite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) -> infinite {f x | x :e s}"
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, infinite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) -> infinite {f x | x :e s}"
     },
     {
       "name": "INFINITE_IMAGE_INJ",
       "source_name": "INFINITE_IMAGE_INJ",
       "aliases": [ "INFINITE_IMAGE_INJ" ],
       "hash": "50b9d8686458b8ae09f8d86e7575c206",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1555,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> (forall x y :e A, f x = f y -> x = y) -> forall s c= A, infinite s -> infinite {f x | x :e s}"
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> (forall x y :e A, f x = f y -> x = y) -> forall s c= A, infinite s -> infinite {f x | x :e s}"
     },
     {
       "name": "INFINITE_NONEMPTY",
@@ -13521,16 +13586,18 @@
       "source_name": "INFINITE_SUPERSET",
       "aliases": [ "INFINITE_SUPERSET" ],
       "hash": "0e5df829a9916de127c8b30e0a1e66e0",
-      "status": "transport_required",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1691,
-      "classes": [ "definitionally_exact", "native_isomorphism" ],
-      "bridges": [ "hol_finite_finite" ],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_finite_finite" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s t c= A, infinite s /\\ s c= t -> infinite t"
+      "statement": "forall A:set, forall s t c= A, infinite s /\\ s c= t -> infinite t"
     },
     {
       "name": "INFINITE_UNIV_PAIR",
@@ -13859,16 +13926,16 @@
       "source_name": "INJECTIVE_MAP",
       "aliases": [ "INJECTIVE_MAP" ],
       "hash": "eb01dcdc910704add493aee7b5e61f6d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 500,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall l m :e finseq A, seq_map f l = seq_map f m -> l = m) <-> forall x y :e A, f x = f y -> x = y)"
     },
     {
       "name": "INJECTIVE_ON_ALT",
@@ -14060,7 +14127,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> set, (forall x :e A, forall x0 :e B, P x x0 :e C) -> (forall x1 :e A, forall y1 :e B, forall x2 :e A, forall y2 :e B, P x1 y1 = P x2 y2 <-> x1 = x2 /\\ y1 = y2) -> exists X:set -> set, (forall x :e C, X x :e A) /\\ exists Y:set -> set, (forall x :e C, Y x :e B) /\\ forall x :e A, forall y :e B, X (P x y) = x /\\ Y (P x y) = y"
+      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> set, (forall x :e A, forall y :e B, P x y :e C) -> (forall x1 :e A, forall y1 :e B, forall x2 :e A, forall y2 :e B, P x1 y1 = P x2 y2 <-> x1 = x2 /\\ y1 = y2) -> exists X:set -> set, (forall x :e C, X x :e A) /\\ exists Y:set -> set, (forall x :e C, Y x :e B) /\\ forall x :e A, forall y :e B, X (P x y) = x /\\ Y (P x y) = y"
     },
     {
       "name": "INSERT",
@@ -21662,16 +21729,18 @@
       "source_name": "IN_SET_OF_LIST",
       "aliases": [ "IN_SET_OF_LIST" ],
       "hash": "e04f19a74d3f5a4a5d78af3e746c55df",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3832,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall x :e A, forall l :e finseq A, x :e seq_set l <-> seq_mem x l"
     },
     {
       "name": "IN_SING",
@@ -21703,7 +21772,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} <-> x :e s /\\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} <-> x :e s /\\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)"
     },
     {
       "name": "IN_UNION",
@@ -22135,7 +22204,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) s f = if finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} then iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f else neutral_of B (fun a:set => fun b:set => op a b)"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) s f = if finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} then iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f else neutral_of B (fun a:set => fun b:set => op a b)"
     },
     {
       "name": "ITERATE_IMAGE",
@@ -22393,7 +22462,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f = iterate_op B (fun a:set => fun b:set => op a b) s f"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f = iterate_op B (fun a:set => fun b:set => op a b) s f"
     },
     {
       "name": "ITERATE_SWAP",
@@ -22640,80 +22709,100 @@
       "source_name": "ITLIST",
       "aliases": [ "ITLIST" ],
       "hash": "6a2990196b8ccb95c42ea9572b77c762",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 73,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "f": "metafun(A,B -> B)",
+        "b": "set(B)",
+        "h": "set(A)",
+        "t": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A B:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, forall h :e A, forall t :e finseq A, seq_foldr f seq_nil b = b /\\ seq_foldr f (seq_cons h t) b = f h (seq_foldr f t b)"
     },
     {
       "name": "ITLIST2",
       "source_name": "ITLIST2",
       "aliases": [ "ITLIST2" ],
       "hash": "806c92a11af80d573a20824facb83787",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 118,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [
+        "empty_case:A", "empty_case:B", "empty_case:C", "hol_list_finseq"
+      ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "f": "metafun(A,B,C -> C)",
+        "b": "set(C)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)",
+        "h2": "set(B)",
+        "t2": "set(finseq B)"
+      },
+      "error": "",
+      "statement": "forall A B C:set, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e C) -> forall b :e C, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_foldr2 f seq_nil seq_nil b = b /\\ seq_foldr2 f (seq_cons h1 t1) (seq_cons h2 t2) b = f h1 h2 (seq_foldr2 f t1 t2 b)"
     },
     {
       "name": "ITLIST2_DEF",
       "source_name": "ITLIST2_DEF",
       "aliases": [ "ITLIST2_DEF" ],
       "hash": "66a918c3b024e404b398a0b6e52f44d4",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 114,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:C", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "f": "metafun(A,B,C -> C)",
+        "l2": "set(finseq B)",
+        "b": "set(C)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A B C:set, B <> Empty -> forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e C) -> forall l2 :e finseq B, forall b :e C, forall h1 :e A, forall t1 :e finseq A, seq_foldr2 f seq_nil l2 b = b /\\ seq_foldr2 f (seq_cons h1 t1) l2 b = f h1 (seq_hd l2) (seq_foldr2 f t1 (seq_tl l2) b)"
     },
     {
       "name": "ITLIST_APPEND",
       "source_name": "ITLIST_APPEND",
       "aliases": [ "ITLIST_APPEND" ],
       "hash": "8a530b09bf93bfaa44eb3847190e9bde",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 289,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall a :e B, forall l1 l2 :e finseq A, seq_foldr f (seq_append l1 l2) a = seq_foldr f l1 (seq_foldr f l2 a)"
     },
     {
       "name": "ITLIST_EXTRA",
       "source_name": "ITLIST_EXTRA",
       "aliases": [ "ITLIST_EXTRA" ],
       "hash": "d13c7903e336f50874d6fbb2e0e01efa",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 295,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "a": "set(A)", "b": "set(B)" },
+      "error": "",
+      "statement": "forall A B:set, forall a :e A, forall b :e B, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall l :e finseq A, seq_foldr f (seq_append l (seq_cons a seq_nil)) b = seq_foldr f l (f a b)"
     },
     {
       "name": "ITSET",
@@ -22912,80 +23001,80 @@
       "source_name": "LAST",
       "aliases": [ "LAST" ],
       "hash": "8ceaa343a4f12fbf270147102b54e937",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 50,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t"
     },
     {
       "name": "LAST_APPEND",
       "source_name": "LAST_APPEND",
       "aliases": [ "LAST_APPEND" ],
       "hash": "4020322e71adb76451026919c337000e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 545,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall p q :e finseq A, seq_last (seq_append p q) = if q = seq_nil then seq_last p else seq_last q"
     },
     {
       "name": "LAST_CLAUSES",
       "source_name": "LAST_CLAUSES",
       "aliases": [ "LAST_CLAUSES" ],
       "hash": "327d7c7a2dd7f193d5e0edf3faaf28a2",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 152,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "k": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h k :e A, forall t :e finseq A, seq_last (seq_cons h seq_nil) = h /\\ seq_last (seq_cons h (seq_cons k t)) = seq_last (seq_cons k t)"
     },
     {
       "name": "LAST_EL",
       "source_name": "LAST_EL",
       "aliases": [ "LAST_EL" ],
       "hash": "cedb10fc7f4c5badbfdc4bf1fc00dcd0",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 580,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last l = seq_nth l (minus_nat (seq_len l) 1)"
     },
     {
       "name": "LAST_REVERSE",
       "source_name": "LAST_REVERSE",
       "aliases": [ "LAST_REVERSE" ],
       "hash": "c75a8f7488d5cca7950ef0e9cc55247c",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 554,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l"
     },
     {
       "name": "LDIV_LT_EQ",
@@ -23235,224 +23324,229 @@
       "source_name": "LENGTH",
       "aliases": [ "LENGTH" ],
       "hash": "17c615469c05a454f2fd034489234849",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 42,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, seq_len seq_nil = 0 /\\ forall h :e A, forall t :e finseq A, seq_len (seq_cons h t) = ordsucc (seq_len t)"
     },
     {
       "name": "LENGTH_APPEND",
       "source_name": "LENGTH_APPEND",
       "aliases": [ "LENGTH_APPEND" ],
       "hash": "87d5d63471bb0040381d1296f836489b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 198,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [
+        "add_nat_add_SNo", "empty_case:A", "hol_list_finseq", "hol_num_omega"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m"
     },
     {
       "name": "LENGTH_EQ_CONS",
       "source_name": "LENGTH_EQ_CONS",
       "aliases": [ "LENGTH_EQ_CONS" ],
       "hash": "e87970b38cc89e65c536115c9b94fc0e",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 214,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_len l = ordsucc n <-> exists h :e A, exists t :e finseq A, l = seq_cons h t /\\ seq_len t = n"
     },
     {
       "name": "LENGTH_EQ_LIST_OF_SEQ",
       "source_name": "LENGTH_EQ_LIST_OF_SEQ",
       "aliases": [ "LENGTH_EQ_LIST_OF_SEQ" ],
       "hash": "79e80582378ebd2d94081d9da4bb1f99",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 680,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_len l = n <-> l = seq_mk n (fun i:set => seq_nth l i)"
     },
     {
       "name": "LENGTH_EQ_NIL",
       "source_name": "LENGTH_EQ_NIL",
       "aliases": [ "LENGTH_EQ_NIL" ],
       "hash": "a50730425650e431b90f58c470a41521",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 210,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, seq_len l = 0 <-> l = seq_nil"
     },
     {
       "name": "LENGTH_FILTER",
       "source_name": "LENGTH_FILTER",
       "aliases": [ "LENGTH_FILTER" ],
       "hash": "f819a6c8161e197da7164838439a8944",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 370,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_le_SNoLe" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, seq_len (seq_filter P l) <= seq_len l"
     },
     {
       "name": "LENGTH_LIST_OF_SEQ",
       "source_name": "LENGTH_LIST_OF_SEQ",
       "aliases": [ "LENGTH_LIST_OF_SEQ" ],
       "hash": "6917348fe479f76feb31698a1ce30b03",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 660,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant LENGTH : A list->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall n :e omega, seq_len (seq_mk n s) = n"
     },
     {
       "name": "LENGTH_LIST_OF_SET",
       "source_name": "LENGTH_LIST_OF_SET",
       "aliases": [ "LENGTH_LIST_OF_SET" ],
       "hash": "1ef1cba51848cbca13cc9d6ea0b89508",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3815,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_card_finite_cardinality", "hol_finite_finite",
+        "hol_list_finseq", "hol_num_omega"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant LENGTH : A list->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_len (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = finite_cardinality s"
     },
     {
       "name": "LENGTH_MAP",
       "source_name": "LENGTH_MAP",
       "aliases": [ "LENGTH_MAP" ],
       "hash": "46b98d7ca2f174c0346df14d00117beb",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 206,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e B) -> seq_len (seq_map f l) = seq_len l"
     },
     {
       "name": "LENGTH_MAP2",
       "source_name": "LENGTH_MAP2",
       "aliases": [ "LENGTH_MAP2" ],
       "hash": "42acf0238a4233db18add111006f2bd1",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 483,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall l :e finseq A, forall m :e finseq B, seq_len l = seq_len m -> seq_len (seq_map2 f l m) = seq_len m"
     },
     {
       "name": "LENGTH_REPLICATE",
       "source_name": "LENGTH_REPLICATE",
       "aliases": [ "LENGTH_REPLICATE" ],
       "hash": "ea436d6e3dda4edef3e9c33e1650e12c",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 319,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant LENGTH : A list->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall n :e omega, forall x :e A, seq_len (seq_replicate n x) = n"
     },
     {
       "name": "LENGTH_REVERSE",
       "source_name": "LENGTH_REVERSE",
       "aliases": [ "LENGTH_REVERSE" ],
       "hash": "17c013973224e3dee52a9c818586a264",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 219,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_len (seq_rev l) = seq_len l"
     },
     {
       "name": "LENGTH_TL",
       "source_name": "LENGTH_TL",
       "aliases": [ "LENGTH_TL" ],
       "hash": "a85a29a10af63dc1de3488e67a73bc80",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 550,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1"
     },
     {
       "name": "LENGTH_ZIP",
       "source_name": "LENGTH_ZIP",
       "aliases": [ "LENGTH_ZIP" ],
       "hash": "a7bf6b5c7fc3e763c5d6d363dee05649",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 393,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "hol_prod_setprod" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> seq_len (seq_zip l1 l2) = seq_len l2"
     },
     {
       "name": "LET_ADD2",
@@ -23976,112 +24070,119 @@
       "source_name": "LIST_EQ",
       "aliases": [ "LIST_EQ" ],
       "hash": "e80393494d2381101e2f9fdd59b8a934",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 187,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [
+        "empty_case:A", "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l1 l2 :e finseq A, l1 = l2 <-> seq_len l1 = seq_len l2 /\\ forall n :e omega, n < seq_len l2 -> seq_nth l1 n = seq_nth l2 n"
     },
     {
       "name": "LIST_OF_SEQ",
       "source_name": "LIST_OF_SEQ",
       "aliases": [ "LIST_OF_SEQ" ],
       "hash": "32afee83991c959f93b0d743ee582241",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 689,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> (forall f:set -> set, (forall x :e omega, f x :e A) -> seq_mk 0 f = seq_nil) /\\ forall f:set -> set, (forall x :e omega, f x :e A) -> forall n :e omega, seq_mk (ordsucc n) f = seq_cons (f 0) (seq_mk n (fun x:set => f (ordsucc x)))"
     },
     {
       "name": "LIST_OF_SEQ_EQ_NIL",
       "source_name": "LIST_OF_SEQ_EQ_NIL",
       "aliases": [ "LIST_OF_SEQ_EQ_NIL" ],
       "hash": "13814f5ba3138c622e1efb0d01794f46",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 672,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall n :e omega, seq_mk n s = seq_nil <-> n = 0"
     },
     {
       "name": "LIST_OF_SEQ_EQ_SELF",
       "source_name": "LIST_OF_SEQ_EQ_SELF",
       "aliases": [ "LIST_OF_SEQ_EQ_SELF" ],
       "hash": "84a0ee00a59f235eff5a2665fe75758c",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 676,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_mk (seq_len l) (fun i:set => seq_nth l i) = l"
     },
     {
       "name": "LIST_OF_SET_EMPTY",
       "source_name": "LIST_OF_SET_EMPTY",
       "aliases": [ "LIST_OF_SET_EMPTY" ],
       "hash": "77c8888341b38741f7d5f257b8ad4443",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3853,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "choose_in_spec", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> choose_in (finseq A) (fun l:set => seq_set l = Empty /\\ seq_len l = finite_cardinality Empty) = seq_nil"
     },
     {
       "name": "LIST_OF_SET_PROPERTIES",
       "source_name": "LIST_OF_SET_PROPERTIES",
       "aliases": [ "LIST_OF_SET_PROPERTIES" ],
       "hash": "2c60be58b84f78baa8469c2045186954",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3797,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_card_finite_cardinality", "hol_finite_finite",
+        "hol_list_finseq", "hol_num_omega"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant LENGTH : A list->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_set (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = s /\\ seq_len (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = finite_cardinality s"
     },
     {
       "name": "LIST_OF_SET_SING",
       "source_name": "LIST_OF_SET_SING",
       "aliases": [ "LIST_OF_SET_SING" ],
       "hash": "245aa0fb25dbac2ee343dff7deb7baba",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3858,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "choose_in_spec", "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall a :e A, choose_in (finseq A) (fun l:set => seq_set l = {a} /\\ seq_len l = finite_cardinality {a}) = seq_cons a seq_nil"
     },
     {
       "name": "LT",
@@ -24557,240 +24658,255 @@
       "source_name": "MAP",
       "aliases": [ "MAP" ],
       "hash": "1cd1ca7bb70cda875ad5749c1ca01729",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 46,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e B) -> seq_map f seq_nil = seq_nil) /\\ forall f:set -> set, (forall x :e A, f x :e B) -> forall h :e A, forall t :e finseq A, seq_map f (seq_cons h t) = seq_cons (f h) (seq_map f t)"
     },
     {
       "name": "MAP2",
       "source_name": "MAP2",
       "aliases": [ "MAP2" ],
       "hash": "1f34424eb953ced4a6af98ce77d6064e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 98,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "empty_case:B", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "f": "metafun(A,B -> C)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)",
+        "h2": "set(B)",
+        "t2": "set(finseq B)"
+      },
+      "error": "",
+      "statement": "forall A B C:set, C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_map2 f seq_nil seq_nil = seq_nil /\\ seq_map2 f (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (f h1 h2) (seq_map2 f t1 t2)"
     },
     {
       "name": "MAP2_DEF",
       "source_name": "MAP2_DEF",
       "aliases": [ "MAP2_DEF" ],
       "hash": "132dd24cae8f7c26df87b26fc52a9f79",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 94,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "f": "metafun(A,B -> C)",
+        "l": "set(finseq B)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall l :e finseq B, forall h1 :e A, forall t1 :e finseq A, seq_map2 f seq_nil l = seq_nil /\\ seq_map2 f (seq_cons h1 t1) l = seq_cons (f h1 (seq_hd l)) (seq_map2 f t1 (seq_tl l))"
     },
     {
       "name": "MAP_APPEND",
       "source_name": "MAP_APPEND",
       "aliases": [ "MAP_APPEND" ],
       "hash": "e005972551ddebaef8cd43f82996650d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 202,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l1 l2 :e finseq A, seq_map f (seq_append l1 l2) = seq_append (seq_map f l1) (seq_map f l2)"
     },
     {
       "name": "MAP_EQ",
       "source_name": "MAP_EQ",
       "aliases": [ "MAP_EQ" ],
       "hash": "ed81072fd7af91838cbb0ef3425ceb39",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 230,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall l :e finseq A, seq_all (fun x:set => f x = g x) l -> seq_map f l = seq_map g l"
     },
     {
       "name": "MAP_EQ_ALL2",
       "source_name": "MAP_EQ_ALL2",
       "aliases": [ "MAP_EQ_ALL2" ],
       "hash": "5873bdf08728aa876f1f063a2206bd4d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 266,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l m :e finseq A, seq_all2 (fun x:set => fun y:set => f x = f y) l m -> seq_map f l = seq_map f m"
     },
     {
       "name": "MAP_EQ_DEGEN",
       "source_name": "MAP_EQ_DEGEN",
       "aliases": [ "MAP_EQ_DEGEN" ],
       "hash": "361b296c0ed0074ff5265305edb5dcbe",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 277,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e A) -> seq_all (fun x:set => f x = x) l -> seq_map f l = l"
     },
     {
       "name": "MAP_EQ_NIL",
       "source_name": "MAP_EQ_NIL",
       "aliases": [ "MAP_EQ_NIL" ],
       "hash": "f1250992840d45e0d3f24916f01553e8",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 496,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_map f l = seq_nil <-> l = seq_nil"
     },
     {
       "name": "MAP_FST_ZIP",
       "source_name": "MAP_FST_ZIP",
       "aliases": [ "MAP_FST_ZIP" ],
       "hash": "3b52c86e60da8100259bbce8c718ace6",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 381,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "hol_prod_setprod" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> seq_map (fun x:set => x 0) (seq_zip l1 l2) = l1"
     },
     {
       "name": "MAP_I",
       "source_name": "MAP_I",
       "aliases": [ "MAP_I" ],
       "hash": "7308c5409ad7fe485ea20ab13aadeb1b",
-      "status": "pending_mapping",
+      "status": "native_reuse",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 523,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall x :e finseq A, seq_map (fun x:set => x) x = x"
     },
     {
       "name": "MAP_ID",
       "source_name": "MAP_ID",
       "aliases": [ "MAP_ID" ],
       "hash": "84fd0b4115f0cf85275d63eec3f2c524",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 519,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, seq_map (fun x:set => x) l = l"
     },
     {
       "name": "MAP_LIST_OF_SEQ",
       "source_name": "MAP_LIST_OF_SEQ",
       "aliases": [ "MAP_LIST_OF_SEQ" ],
       "hash": "9e3b62b49b5eec817e8fb9ed186f19bb",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 684,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall n :e omega, seq_map g (seq_mk n f) = seq_mk n (fun x:set => g (f x))"
     },
     {
       "name": "MAP_REVERSE",
       "source_name": "MAP_REVERSE",
       "aliases": [ "MAP_REVERSE" ],
       "hash": "038d08910009b286fad2d63812deec2f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 599,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_rev (seq_map f l) = seq_map f (seq_rev l)"
     },
     {
       "name": "MAP_SND_ZIP",
       "source_name": "MAP_SND_ZIP",
       "aliases": [ "MAP_SND_ZIP" ],
       "hash": "ab1691b5345d2c7d820edad5c57c5686",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 387,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "hol_prod_setprod" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> seq_map (fun x:set => x 1) (seq_zip l1 l2) = l2"
     },
     {
       "name": "MAP_o",
       "source_name": "MAP_o",
       "aliases": [ "MAP_o" ],
       "hash": "21dca6e4b2bded73c4144e9ca5c0eb7e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 225,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l)"
     },
     {
       "name": "MATCH_SEQPATTERN",
@@ -24861,16 +24977,16 @@
       "source_name": "MEM",
       "aliases": [ "MEM" ],
       "hash": "e0472c3034cc7dc63e858905bbb6e42d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 77,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "x": "set(A)", "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall x h :e A, forall t :e finseq A, (seq_mem x seq_nil <-> False) /\\ (seq_mem x (seq_cons h t) <-> x = h \\/ seq_mem x t)"
     },
     {
       "name": "MEMBER_NOT_EMPTY",
@@ -24893,160 +25009,167 @@
       "source_name": "MEM_APPEND",
       "aliases": [ "MEM_APPEND" ],
       "hash": "65331249734eb4cc4e9441c91b6a2d51",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 343,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall x :e A, forall l1 l2 :e finseq A, seq_mem x (seq_append l1 l2) <-> seq_mem x l1 \\/ seq_mem x l2"
     },
     {
       "name": "MEM_APPEND_DECOMPOSE",
       "source_name": "MEM_APPEND_DECOMPOSE",
       "aliases": [ "MEM_APPEND_DECOMPOSE" ],
       "hash": "655abb7cee4ccc640944195ea244e94f",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 622,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall x :e A, forall l :e finseq A, seq_mem x l <-> exists l1 l2 :e finseq A, l = seq_append l1 (seq_cons x l2)"
     },
     {
       "name": "MEM_APPEND_DECOMPOSE_LEFT",
       "source_name": "MEM_APPEND_DECOMPOSE_LEFT",
       "aliases": [ "MEM_APPEND_DECOMPOSE_LEFT" ],
       "hash": "b6e9ffc4135587ba40aeaf58d991a37d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 614,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall x :e A, forall l :e finseq A, seq_mem x l <-> exists l1 l2 :e finseq A, ~ seq_mem x l1 /\\ l = seq_append l1 (seq_cons x l2)"
     },
     {
       "name": "MEM_ASSOC",
       "source_name": "MEM_ASSOC",
       "aliases": [ "MEM_ASSOC" ],
       "hash": "dc073e622beda0ca861d2c4e9ed550a0",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 399,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_prod_setprod" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall l :e finseq (A :*: B), forall x :e A, seq_mem (x,seq_assoc x l) l <-> seq_mem x (seq_map (fun x0:set => x0 0) l)"
     },
     {
       "name": "MEM_EL",
       "source_name": "MEM_EL",
       "aliases": [ "MEM_EL" ],
       "hash": "114beac3511e6fe7508305290f9729d7",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 410,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, n < seq_len l -> seq_mem (seq_nth l n) l"
     },
     {
       "name": "MEM_EXISTS_EL",
       "source_name": "MEM_EXISTS_EL",
       "aliases": [ "MEM_EXISTS_EL" ],
       "hash": "4493491e0722295075cb34926b005eaa",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 415,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [
+        "empty_case:A", "hol_list_finseq", "hol_num_omega", "nat_lt_SNoLt"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, forall x :e A, seq_mem x l <-> exists i :e omega, i < seq_len l /\\ x = seq_nth l i"
     },
     {
       "name": "MEM_FILTER",
       "source_name": "MEM_FILTER",
       "aliases": [ "MEM_FILTER" ],
       "hash": "39ddc253a1e4b67034a5db3986958b51",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 364,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall P:set -> prop, forall l :e finseq A, forall x :e A, seq_mem x (seq_filter P l) <-> P x /\\ seq_mem x l"
     },
     {
       "name": "MEM_LIST_OF_SET",
       "source_name": "MEM_LIST_OF_SET",
       "aliases": [ "MEM_LIST_OF_SET" ],
       "hash": "61692abf27370d43800ed8b3058b4a3a",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3819,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "choose_in_spec", "empty_case:A", "hol_finite_finite",
+        "hol_list_finseq"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant MEM : A->A list->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall s c= A, finite s -> forall x :e A, seq_mem x (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) <-> x :e s"
     },
     {
       "name": "MEM_MAP",
       "source_name": "MEM_MAP",
       "aliases": [ "MEM_MAP" ],
       "hash": "efcc0ae65a5073ec9a7e1049fea67bdc",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 347,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:B", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e B, forall l :e finseq A, seq_mem y (seq_map f l) <-> exists x :e A, seq_mem x l /\\ y = f x"
     },
     {
       "name": "MEM_REPLICATE",
       "source_name": "MEM_REPLICATE",
       "aliases": [ "MEM_REPLICATE" ],
       "hash": "88140f512a18ae84690618c6a49b626e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 323,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant MEM : A->A list->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall n :e omega, forall x y :e A, seq_mem x (seq_replicate n y) <-> x = y /\\ ~ n = 0"
     },
     {
       "name": "MIN",
@@ -25907,32 +26030,41 @@
       "source_name": "MONO_ALL",
       "aliases": [ "MONO_ALL" ],
       "hash": "12dcd6b376bafee851fc134588275f08",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 722,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A)",
+        "Q": "metapred(A)",
+        "l": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, (forall x :e A, P x -> Q x) -> seq_all P l -> seq_all Q l"
     },
     {
       "name": "MONO_ALL2",
       "source_name": "MONO_ALL2",
       "aliases": [ "MONO_ALL2" ],
       "hash": "9aedd334a704373cb2ba0a5c9a1d1785",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 727,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "P": "metapred(A,B)",
+        "Q": "metapred(A,B)",
+        "l": "set(finseq A)",
+        "l'": "set(finseq B)"
+      },
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P Q:set -> set -> prop, forall l :e finseq A, forall l' :e finseq B, (forall x :e A, forall y :e B, P x y -> Q x y) -> seq_all2 P l l' -> seq_all2 Q l l'"
     },
     {
       "name": "MONO_AND",
@@ -27455,16 +27587,16 @@
       "source_name": "NOT_ALL",
       "aliases": [ "NOT_ALL" ],
       "hash": "4bc3240b21d38b2b3cf45c9b36ab840f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 245,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, ~ seq_all P l <-> seq_ex (fun x:set => ~ P x) l"
     },
     {
       "name": "NOT_CLAUSES",
@@ -27503,16 +27635,16 @@
       "source_name": "NOT_CONS_NIL",
       "aliases": [ "NOT_CONS_NIL" ],
       "hash": "77428f1d7d66f872892dab61338128c2",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 148,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil"
     },
     {
       "name": "NOT_DEF",
@@ -27583,16 +27715,16 @@
       "source_name": "NOT_EX",
       "aliases": [ "NOT_EX" ],
       "hash": "4c09973e1cfa5822abdb256d3c655a88",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 240,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, ~ seq_ex P l <-> seq_all (fun x:set => ~ P x) l"
     },
     {
       "name": "NOT_EXISTS_THM",
@@ -28748,7 +28880,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e omega) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} (fun x:set => f x y))"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} (fun x:set => f x y))"
     },
     {
       "name": "NSUM_OFFSET",
@@ -29266,16 +29398,16 @@
       "source_name": "NULL",
       "aliases": [ "NULL" ],
       "hash": "700c5999e4885e76686f6dc603c83e3d",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 61,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, (seq_len seq_nil = 0 <-> True) /\\ (seq_len (seq_cons h t) = 0 <-> False)"
     },
     {
       "name": "NUMERAL",
@@ -30169,16 +30301,20 @@
       "source_name": "PAIRWISE",
       "aliases": [ "PAIRWISE" ],
       "hash": "eb123e79540a9b1d62bbfe35e530d530",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 136,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "r": "set(Power A :^: A)",
+        "h": "set(A)",
+        "t": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A:set, forall r :e Power A :^: A, forall h :e A, forall t :e finseq A, (seq_pairwise (fun x:set => fun x0:set => x0 :e r x) seq_nil <-> True) /\\ (seq_pairwise (fun x:set => fun x0:set => x0 :e r x) (seq_cons h t) <-> seq_all (fun x:set => x :e r h) t /\\ seq_pairwise (fun x:set => fun x0:set => x0 :e r x) t)"
     },
     {
       "name": "PAIRWISE_AND",
@@ -30201,16 +30337,16 @@
       "source_name": "PAIRWISE_APPEND",
       "aliases": [ "PAIRWISE_APPEND" ],
       "hash": "df5224d6ab1447dbda247a059923c97e",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 628,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall R0:set -> set -> prop, forall l m :e finseq A, seq_pairwise R0 (seq_append l m) <-> seq_pairwise R0 l /\\ (seq_pairwise R0 m /\\ forall x y :e A, seq_mem x l /\\ seq_mem y m -> R0 x y)"
     },
     {
       "name": "PAIRWISE_CHAIN_UNIONS",
@@ -30281,16 +30417,16 @@
       "source_name": "PAIRWISE_IMPLIES",
       "aliases": [ "PAIRWISE_IMPLIES" ],
       "hash": "8d75040c7d2a055f4216d39f8ea08f8d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 642,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall R0 R':set -> set -> prop, forall l :e finseq A, seq_pairwise R0 l /\\ (forall x y :e A, seq_mem x l /\\ (seq_mem y l /\\ R0 x y) -> R' x y) -> seq_pairwise R' l"
     },
     {
       "name": "PAIRWISE_INSERT",
@@ -30329,16 +30465,16 @@
       "source_name": "PAIRWISE_MAP",
       "aliases": [ "PAIRWISE_MAP" ],
       "hash": "2729e2a3e288fd1a4208cc9737da4dbb",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 636,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_pairwise R0 (seq_map f l) <-> seq_pairwise (fun x:set => fun y:set => R0 (f x) (f y)) l"
     },
     {
       "name": "PAIRWISE_MONO",
@@ -30377,16 +30513,16 @@
       "source_name": "PAIRWISE_TRANSITIVE",
       "aliases": [ "PAIRWISE_TRANSITIVE" ],
       "hash": "602e07b92e365c30942cd7e171a820e7",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 649,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall R0:set -> set -> prop, forall x y :e A, forall l :e finseq A, (forall x0 y0 z :e A, R0 x0 y0 /\\ R0 y0 z -> R0 x0 z) -> (seq_pairwise R0 (seq_cons x (seq_cons y l)) <-> R0 x y /\\ seq_pairwise R0 (seq_cons y l))"
     },
     {
       "name": "PAIRWISE_UNION",
@@ -31212,16 +31348,16 @@
       "source_name": "PSUBSET_SUBSET_TRANS",
       "aliases": [ "PSUBSET_SUBSET_TRANS" ],
       "hash": "add7741f91348a58c0f595a4ea6b0f70",
-      "status": "exact_native",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 431,
-      "classes": [ "definitionally_exact" ],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s t u c= A, s c= t /\\ s <> t /\\ t c= u -> s c= u /\\ s <> u"
+      "statement": "forall A:set, forall s t u c= A, s c= t /\\ s <> t /\\ t c= u -> s c= u /\\ s <> u"
     },
     {
       "name": "PSUBSET_TRANS",
@@ -38674,7 +38810,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant GABS : (((P->A)#((A->B)->P->B)->bool)->bool)->(P->A)#((A->B)->P->B)->bool",
       "statement": ""
     },
     {
@@ -38690,7 +38826,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant GABS : (((?142053->?142033)#((?142033->?142049)->?142053->?142049)->bool)->bool)->(?142053->?142033)#((?142033->?142049)->?142053->?142049)->bool",
       "statement": ""
     },
     {
@@ -38706,7 +38842,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant GABS : (((?142053->?142033)#((?142033->?142049)->?142053->?142049)->bool)->bool)->(?142053->?142033)#((?142033->?142049)->?142053->?142049)->bool",
       "statement": ""
     },
     {
@@ -38730,16 +38866,16 @@
       "source_name": "REPLICATE",
       "aliases": [ "REPLICATE" ],
       "hash": "9a34391ecfb036827021fde7076af99b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 57,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "x": "set(A)", "n": "set(omega)" },
+      "error": "",
+      "statement": "forall A:set, forall x :e A, forall n :e omega, seq_replicate 0 x = seq_nil /\\ seq_replicate (ordsucc n) x = seq_cons x (seq_replicate n x)"
     },
     {
       "name": "REP_ABS_PAIR",
@@ -39050,64 +39186,64 @@
       "source_name": "REVERSE",
       "aliases": [ "REVERSE" ],
       "hash": "7a7d177a687f80c4814a45c86aef55f8",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 38,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "x": "set(A)", "l": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall x :e A, forall l :e finseq A, seq_rev seq_nil = seq_nil /\\ seq_rev (seq_cons x l) = seq_append (seq_rev l) (seq_cons x seq_nil)"
     },
     {
       "name": "REVERSE_APPEND",
       "source_name": "REVERSE_APPEND",
       "aliases": [ "REVERSE_APPEND" ],
       "hash": "45852b5237ddc4ffb91f94da5306964d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 165,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l m :e finseq A, seq_rev (seq_append l m) = seq_append (seq_rev m) (seq_rev l)"
     },
     {
       "name": "REVERSE_EQ_EMPTY",
       "source_name": "REVERSE_EQ_EMPTY",
       "aliases": [ "REVERSE_EQ_EMPTY" ],
       "hash": "3467f2d6598e5780da4e41d8051ea125",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 174,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_rev l = seq_nil <-> l = seq_nil"
     },
     {
       "name": "REVERSE_REVERSE",
       "source_name": "REVERSE_REVERSE",
       "aliases": [ "REVERSE_REVERSE" ],
       "hash": "496b982a508a66ca58b92a2491262a68",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 170,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_rev (seq_rev l) = l"
     },
     {
       "name": "RIGHT_ADD_DISTRIB",
@@ -39402,64 +39538,64 @@
       "source_name": "SET_OF_LIST_APPEND",
       "aliases": [ "SET_OF_LIST_APPEND" ],
       "hash": "71f78d782520f2945776ecaa9f66d3b9",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3838,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l1 l2 :e finseq A, seq_set (seq_append l1 l2) = seq_set l1 :\\/: seq_set l2"
     },
     {
       "name": "SET_OF_LIST_EQ_EMPTY",
       "source_name": "SET_OF_LIST_EQ_EMPTY",
       "aliases": [ "SET_OF_LIST_EQ_EMPTY" ],
       "hash": "3b95c74d1c8514bd39f4217cb7568a84",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3848,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_set l = Empty <-> l = seq_nil"
     },
     {
       "name": "SET_OF_LIST_MAP",
       "source_name": "SET_OF_LIST_MAP",
       "aliases": [ "SET_OF_LIST_MAP" ],
       "hash": "4f00d943be0bd84213704d69ec6f7b11",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3843,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_set (seq_map f l) = {f x | x :e seq_set l}"
     },
     {
       "name": "SET_OF_LIST_OF_SET",
       "source_name": "SET_OF_LIST_OF_SET",
       "aliases": [ "SET_OF_LIST_OF_SET" ],
       "hash": "85840d855553cffe18cef93d6703ee93",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3811,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "choose_in_spec", "hol_finite_finite", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "unmapped constant set_of_list : A list->A->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_set (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = s"
     },
     {
       "name": "SET_PAIR_THM",
@@ -39482,16 +39618,16 @@
       "source_name": "SET_PROVE_CASES",
       "aliases": [ "SET_PROVE_CASES" ],
       "hash": "d165a77e72d5fd3690f52e7e07f4feb2",
-      "status": "exact_native",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 1103,
-      "classes": [ "definitionally_exact" ],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, P Empty /\\ (forall a :e A, forall s c= A, ~ a :e s -> P (SetAdjoin s a)) -> forall s c= A, P s"
+      "statement": "forall A:set, forall P:set -> prop, P Empty /\\ (forall a :e A, forall s c= A, ~ a :e s -> P (SetAdjoin s a)) -> forall s c= A, P s"
     },
     {
       "name": "SET_RECURSION_LEMMA",
@@ -39509,7 +39645,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\\ (g Empty = b /\\ forall x :e A, forall s c= A, finite s -> g (SetAdjoin s x) = if x :e s then g s else f x (g s))"
+      "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\\ (g Empty = b /\\ forall x :e A, forall s c= A, finite s -> g (SetAdjoin s x) = if x :e s then g s else f x (g s))"
     },
     {
       "name": "SIMPLE_IMAGE",
@@ -40439,16 +40575,16 @@
       "source_name": "SUBSET_PSUBSET_TRANS",
       "aliases": [ "SUBSET_PSUBSET_TRANS" ],
       "hash": "5e2f9be37f05432c312f92f3fbf29470",
-      "status": "exact_native",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 435,
-      "classes": [ "definitionally_exact" ],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall s t u c= A, s c= t /\\ (t c= u /\\ t <> u) -> s c= u /\\ s <> u"
+      "statement": "forall A:set, forall s t u c= A, s c= t /\\ (t c= u /\\ t <> u) -> s c= u /\\ s <> u"
     },
     {
       "name": "SUBSET_REFL",
@@ -42368,7 +42504,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e R) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} (fun x:set => f x y))"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} (fun x:set => f x y))"
     },
     {
       "name": "SUM_SUPERSET",
@@ -42753,7 +42889,7 @@
       "notes": [],
       "var_views": { "op": "metafun(C,C -> C)" },
       "error": "",
-      "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x x0 :e C, op x x0 :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = Empty) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = if f x = neutral_of C (fun a:set => fun b:set => op a b) then {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} else SetAdjoin {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} x) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\\: {x} | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\\: {x}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\/: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\\/: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :/\\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C (fun a:set => fun b:set => op a b)} = {f x | x :e {x :e s | g (f x) <> neutral_of C (fun a:set => fun b:set => op a b)}})))))"
+      "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = Empty) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = if f x = neutral_of C (fun a:set => fun b:set => op a b) then {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} else SetAdjoin {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} x) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\\: {x} | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\\: {x}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\/: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\\/: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :/\\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C (fun a:set => fun b:set => op a b)} = {f x | x :e {x :e s | g (f x) <> neutral_of C (fun a:set => fun b:set => op a b)}})))))"
     },
     {
       "name": "SUPPORT_DELTA",
@@ -42769,7 +42905,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)} = if a :e s then {x :e {a} | f x <> neutral_of B (fun a0:set => fun b:set => op a0 b)} else Empty"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)} = if a :e s then {x :e {a} | f x <> neutral_of B (fun a0:set => fun b:set => op a0 b)} else Empty"
     },
     {
       "name": "SUPPORT_EMPTY",
@@ -42785,7 +42921,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b)) <-> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b)) <-> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty"
     },
     {
       "name": "SUPPORT_SUBSET",
@@ -42801,7 +42937,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s"
     },
     {
       "name": "SUPPORT_SUPPORT",
@@ -42817,7 +42953,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}"
+      "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}"
     },
     {
       "name": "SUP_APPROACH",
@@ -43132,16 +43268,16 @@
       "source_name": "SURJECTIVE_MAP",
       "aliases": [ "SURJECTIVE_MAP" ],
       "hash": "c68eac62c1e2887631b83ac6bf4e7cf3",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 510,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall m :e finseq B, exists l :e finseq A, seq_map f l = m) <-> forall y :e B, exists x :e A, f x = y)"
     },
     {
       "name": "SURJECTIVE_ON_IMAGE",
@@ -43260,16 +43396,16 @@
       "source_name": "TL",
       "aliases": [ "TL" ],
       "hash": "a461f6927361fce88089ebdcecc03cd9",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 31,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t"
     },
     {
       "name": "TOPOLOGICAL_SORT",
@@ -44069,7 +44205,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B C:set, C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e C) -> forall x :e A, forall y :e B, f ((x,y) 0) ((x,y) 1) = f x y"
+      "statement": "forall A B C:set, C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f ((x,y) 0) ((x,y) 1) = f x y"
     },
     {
       "name": "UNION",
@@ -44933,7 +45069,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(A,A)" },
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, (forall x :e A, f x = H f x) /\\ forall y :e B :^: A, (forall x :e A, y x = H y x) -> y = f"
+      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, (forall x :e A, f x = H f x) /\\ forall y :e B :^: A, (forall x :e A, y x = H y x) -> y = f"
     },
     {
       "name": "WF_FALSE",
@@ -45018,7 +45154,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, forall P:set -> set -> prop, forall m:set -> set -> set, (forall x :e A, forall x0 :e B, m x x0 :e int) -> (forall x :e A, forall y :e B, 0 <= m x y) /\\ (forall x :e A, forall y :e B, (forall x' :e A, forall y' :e B, m x' y' < m x y -> P x' y') -> P x y) -> forall x :e A, forall y :e B, P x y"
+      "statement": "forall A B:set, forall P:set -> set -> prop, forall m:set -> set -> set, (forall x :e A, forall y :e B, m x y :e int) -> (forall x :e A, forall y :e B, 0 <= m x y) /\\ (forall x :e A, forall y :e B, (forall x' :e A, forall y' :e B, m x' y' < m x y -> P x' y') -> P x y) -> forall x :e A, forall y :e B, P x y"
     },
     {
       "name": "WF_LEX",
@@ -45130,7 +45266,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(A,A)" },
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x"
+      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x"
     },
     {
       "name": "WF_REC_CASES",
@@ -45145,7 +45281,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant CASEWISE : ((P->A)#((A->B)->P->B)) list->(A->B)->A->B",
       "statement": ""
     },
     {
@@ -45161,7 +45297,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "unmapped constant CASEWISE : ((?141776->A)#((A->B)->?141776->B)) list->(A->B)->A->B",
       "statement": ""
     },
     {
@@ -45194,7 +45330,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(A,A)" },
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> forall S:set -> set -> prop, (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z /\\ S z (f z)) -> H f x = H g x /\\ S x (H f x)) -> exists f :e B :^: A, forall x :e A, f x = H f x"
+      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> forall S:set -> set -> prop, (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z /\\ S z (f z)) -> H f x = H g x /\\ S x (H f x)) -> exists f :e B :^: A, forall x :e A, f x = H f x"
     },
     {
       "name": "WF_REC_TAIL",
@@ -45226,7 +45362,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(A,A)" },
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, G x x0 :e A) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> (P f x <-> P g x) /\\ (G f x = G g x /\\ H f x = H g x)) /\\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) /\\ (forall f :e B :^: A, forall x y :e A, P f x /\\ lt y (G f x) -> lt y x))) -> exists f :e B :^: A, forall x :e A, f x = if P f x then f (G f x) else H f x"
+      "statement": "forall A B:set, B <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e B :^: A, forall y :e A, G x y :e A) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> (P f x <-> P g x) /\\ (G f x = G g x /\\ H f x = H g x)) /\\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) /\\ (forall f :e B :^: A, forall x y :e A, P f x /\\ lt y (G f x) -> lt y x))) -> exists f :e B :^: A, forall x :e A, f x = if P f x then f (G f x) else H f x"
     },
     {
       "name": "WF_REC_TAIL_GENERAL'",
@@ -45242,7 +45378,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(T141447,T141447)" },
       "error": "",
-      "statement": "forall T141444 T141447:set, T141444 <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e T141444 :^: T141447, forall x0 :e T141447, G x x0 :e T141447) -> forall H:set -> set -> set, (forall x :e T141444 :^: T141447, forall x0 :e T141447, H x x0 :e T141444) -> forall H':set -> set -> set, (forall x :e T141444 :^: T141447, forall x0 :e T141447, H' x x0 :e T141444) -> (forall P c= T141447, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\\ ((forall f g :e T141444 :^: T141447, forall x :e T141447, (forall z :e T141447, lt z x -> f z = g z) -> (P f x <-> P g x) /\\ (G f x = G g x /\\ H' f x = H' g x)) /\\ ((forall f :e T141444 :^: T141447, forall x y :e T141447, P f x /\\ lt y (G f x) -> lt y x) /\\ (forall f :e T141444 :^: T141447, forall x :e T141447, H f x = if P f x then f (G f x) else H' f x))) -> exists f :e T141444 :^: T141447, forall x :e T141447, f x = H f x"
+      "statement": "forall T141444 T141447:set, T141444 <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, G x y :e T141447) -> forall H:set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, H x y :e T141444) -> forall H':set -> set -> set, (forall x :e T141444 :^: T141447, forall y :e T141447, H' x y :e T141444) -> (forall P c= T141447, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\\ ((forall f g :e T141444 :^: T141447, forall x :e T141447, (forall z :e T141447, lt z x -> f z = g z) -> (P f x <-> P g x) /\\ (G f x = G g x /\\ H' f x = H' g x)) /\\ ((forall f :e T141444 :^: T141447, forall x y :e T141447, P f x /\\ lt y (G f x) -> lt y x) /\\ (forall f :e T141444 :^: T141447, forall x :e T141447, H f x = if P f x then f (G f x) else H' f x))) -> exists f :e T141444 :^: T141447, forall x :e T141447, f x = H f x"
     },
     {
       "name": "WF_REC_WF",
@@ -45258,7 +45394,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(A,A)" },
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall H:set -> set -> set, (forall x :e omega :^: A, forall x0 :e A, H x x0 :e omega) -> (forall f g :e omega :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e omega :^: A, forall x :e A, f x = H f x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x"
+      "statement": "forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall H:set -> set -> set, (forall x :e omega :^: A, forall y :e A, H x y :e omega) -> (forall f g :e omega :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e omega :^: A, forall x :e A, f x = H f x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x"
     },
     {
       "name": "WF_REC_num",
@@ -45274,7 +45410,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall H:set -> set -> set, (forall x :e A :^: omega, forall x0 :e omega, H x x0 :e A) -> (forall f g :e A :^: omega, forall n :e omega, (forall m :e omega, m < n -> f m = g m) -> H f n = H g n) -> exists f :e A :^: omega, forall n :e omega, f n = H f n"
+      "statement": "forall A:set, A <> Empty -> forall H:set -> set -> set, (forall x :e A :^: omega, forall y :e omega, H x y :e A) -> (forall f g :e A :^: omega, forall n :e omega, (forall m :e omega, m < n -> f m = g m) -> H f n = H g n) -> exists f :e A :^: omega, forall n :e omega, f n = H f n"
     },
     {
       "name": "WF_REFL",
@@ -45297,32 +45433,32 @@
       "source_name": "WF_RESTRICT",
       "aliases": [ "WF_RESTRICT" ],
       "hash": "a1bfce7f08611d6dd26f696daa53ceeb",
-      "status": "exact_native",
+      "status": "generalization_required",
       "shard": "wf",
       "src_file": "wf.ml",
       "src_line": 195,
-      "classes": [ "definitionally_exact" ],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall lt:set -> set -> prop, forall P:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P0 c= A, P0 <> Empty -> exists x :e P0, forall y :e P0, ~ (P y /\\ (P x /\\ lt y x))"
+      "statement": "forall A:set, forall lt:set -> set -> prop, forall P:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P0 c= A, P0 <> Empty -> exists x :e P0, forall y :e P0, ~ (P y /\\ (P x /\\ lt y x))"
     },
     {
       "name": "WF_SUBSET",
       "source_name": "WF_SUBSET",
       "aliases": [ "WF_SUBSET" ],
       "hash": "814a5fe983c0a92a1e34dfcf4a54a440",
-      "status": "exact_native",
+      "status": "generalization_required",
       "shard": "wf",
       "src_file": "wf.ml",
       "src_line": 188,
-      "classes": [ "definitionally_exact" ],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall lt lt0:set -> set -> prop, (forall x y :e A, lt x y -> lt0 x y) /\\ (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt0 y x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x"
+      "statement": "forall A:set, forall lt lt0:set -> set -> prop, (forall x y :e A, lt x y -> lt0 x y) /\\ (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt0 y x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x"
     },
     {
       "name": "WF_UREC",
@@ -45338,7 +45474,7 @@
       "notes": [],
       "var_views": { "<<": "metapred(A,A)" },
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> forall f g :e B :^: A, (forall x :e A, f x = H f x) /\\ (forall x :e A, g x = H g x) -> f = g"
+      "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> forall f g :e B :^: A, (forall x :e A, f x = H f x) /\\ (forall x :e A, g x = H g x) -> f = g"
     },
     {
       "name": "WF_UREC_WF",
@@ -45537,32 +45673,43 @@
       "source_name": "ZIP",
       "aliases": [ "ZIP" ],
       "hash": "fd4494788599018ac29f29b4f2822be0",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 127,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [
+        "empty_case:A", "empty_case:B", "hol_list_finseq", "hol_prod_setprod"
+      ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "h1": "set(A)",
+        "t1": "set(finseq A)",
+        "h2": "set(B)",
+        "t2": "set(finseq B)"
+      },
+      "error": "",
+      "statement": "forall A B:set, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_zip seq_nil seq_nil = seq_nil /\\ seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2)"
     },
     {
       "name": "ZIP_DEF",
       "source_name": "ZIP_DEF",
       "aliases": [ "ZIP_DEF" ],
       "hash": "6e2d7c78c5f2e5c31038cd05c1782067",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 123,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq", "hol_prod_setprod" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": {
+        "l2": "set(finseq B)",
+        "h1": "set(A)",
+        "t1": "set(finseq A)"
+      },
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, seq_zip seq_nil l2 = seq_nil /\\ seq_zip (seq_cons h1 t1) l2 = seq_cons (h1,seq_hd l2) (seq_zip t1 (seq_tl l2))"
     },
     {
       "name": "ZRECSPACE_CASES",
@@ -47018,80 +47165,83 @@
       "source_name": "list_CASES",
       "aliases": [ "list_CASES" ],
       "hash": "6c9a307f18507870c827834056fdffa7",
-      "status": "pending_mapping",
+      "status": "native_reuse",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 182,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall l :e finseq A, l = seq_nil \\/ exists h :e A, exists t :e finseq A, l = seq_cons h t"
     },
     {
       "name": "list_INDUCT",
       "source_name": "list_INDUCT",
       "aliases": [ "list_INDUCT" ],
       "hash": "e24a8b3534d12615232f89c947dd6ab3",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 885,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall P:set -> prop, P seq_nil /\\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x"
     },
     {
       "name": "list_RECURSION",
       "source_name": "list_RECURSION",
       "aliases": [ "list_RECURSION" ],
       "hash": "21b923915525c3b3ed6c44a773a64671",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 885,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "generalization", "native_isomorphism" ],
+      "bridges": [ "empty_case:Z", "hol_list_finseq" ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\\ (fn seq_nil = NIL' /\\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1))"
     },
     {
       "name": "list_of_seq",
       "source_name": "list_of_seq",
       "aliases": [ "list_of_seq" ],
       "hash": "c4998480a49055100b294b5ff74a7003",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "lists",
       "src_file": "lists.ml",
       "src_line": 140,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_num_omega" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "s": "metafun(omega -> A)", "n": "set(omega)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall n :e omega, seq_mk 0 s = seq_nil /\\ seq_mk (ordsucc n) s = seq_append (seq_mk n s) (seq_cons (s n) seq_nil)"
     },
     {
       "name": "list_of_set",
       "source_name": "list_of_set",
       "aliases": [ "list_of_set" ],
       "hash": "8f405bc9630b9ef0a99fa9fabc53ce7e",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3794,
-      "classes": [],
-      "bridges": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_card_finite_cardinality", "hol_list_finseq",
+        "hol_num_omega"
+      ],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s c= A, choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s) = choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)"
     },
     {
       "name": "lt_c",
@@ -47315,7 +47465,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x x0 :e A, op x x0 :e A) -> neutral_of A (fun a:set => fun b:set => op a b) = choose_in A (fun x:set => forall y :e A, op x y = y /\\ op y x = y)"
+      "statement": "forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A (fun a:set => fun b:set => op a b) = choose_in A (fun x:set => forall y :e A, op x y = y /\\ op y x = y)"
     },
     {
       "name": "nproduct",
@@ -47368,7 +47518,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\\ (fn 0 = e0 /\\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x)"
+      "statement": "forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\\ (fn 0 = e0 /\\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x)"
     },
     {
       "name": "num_CASES",
@@ -47514,7 +47664,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall x0 :e omega, f x x0 :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\\ (fn 0 = e0 /\\ forall n :e omega, fn (ordsucc n) = f (fn n) n)"
+      "statement": "forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\\ (fn 0 = e0 /\\ forall n :e omega, fn (ordsucc n) = f (fn n) n)"
     },
     {
       "name": "num_WF",
@@ -47952,7 +48102,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B C:set, C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall x0 :e B, PAIR' x x0 :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1"
+      "statement": "forall A B C:set, C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall y :e B, PAIR' x y :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1"
     },
     {
       "name": "pairwise",
@@ -48473,16 +48623,18 @@
       "source_name": "set_of_list",
       "aliases": [ "set_of_list" ],
       "hash": "d3d631d275d67da22322de6660a5f072",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "sets",
       "src_file": "sets.ml",
       "src_line": 3790,
-      "classes": [],
-      "bridges": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_list_finseq" ],
       "notes": [],
-      "var_views": {},
-      "error": "type mapping for list is pending",
-      "statement": ""
+      "var_views": { "h": "set(A)", "t": "set(finseq A)" },
+      "error": "",
+      "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h"
     },
     {
       "name": "sndcart",
@@ -48529,7 +48681,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "no carrier mapping for type constructor char (in char)",
       "statement": ""
     },
     {
@@ -48626,7 +48778,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e A | x :e s /\\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)}"
+      "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e A | x :e s /\\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)}"
     },
     {
       "name": "tailadmissible",
@@ -48833,7 +48985,7 @@
       "bridges": [],
       "notes": [],
       "var_views": {},
-      "error": "type mapping for list is pending",
+      "error": "no carrier mapping for type constructor cart (in (A,N)cart)",
       "statement": ""
     }
   ]

@@ -65,7 +65,7 @@ Admitted.
 // HOL Light: pair.ml:121 / pair_RECURSION
 // Source hash: md5:d319dfea4248978ad1e1ecfa13aee49a
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
-Theorem pair_RECURSION : forall A B C:set, C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall x0 :e B, PAIR' x x0 :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1.
+Theorem pair_RECURSION : forall A B C:set, C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall y :e B, PAIR' x y :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1.
 Admitted.
 
 // HOL Light: pair.ml:187 / CURRY_DEF
@@ -77,7 +77,7 @@ Admitted.
 // HOL Light: pair.ml:190 / UNCURRY_DEF
 // Source hash: md5:3f03a0bbd511648cd075ac39bfcfc4bb
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
-Theorem UNCURRY_DEF : forall A B C:set, C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e C) -> forall x :e A, forall y :e B, f ((x,y) 0) ((x,y) 1) = f x y.
+Theorem UNCURRY_DEF : forall A B C:set, C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f ((x,y) 0) ((x,y) 1) = f x y.
 Admitted.
 
 // HOL Light: pair.ml:295 / FORALL_PAIR_THM
@@ -143,6 +143,6 @@ Admitted.
 // HOL Light: pair.ml:372 / EXISTS_SWAP_FUN_THM
 // Source hash: md5:9888ea217761e153767f9ad2147522e0
 // Status: exact_native
-Theorem EXISTS_SWAP_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set -> set, (forall x :e B, forall x0 :e A, f x x0 :e C) /\ P (fun a :e A => fun b :e B => f b a).
+Theorem EXISTS_SWAP_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e C) /\ P (fun a :e A => fun b :e B => f b a).
 Admitted.
 

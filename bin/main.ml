@@ -65,6 +65,7 @@ let () =
       Mg.declare_notation "Subq" (Mg.Infix ("c=", 500, Mg.NoneA));
       let ex = read_export export_file in
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
+      Emptycase.rules := List.map (fun (l, r, _) -> (l, r)) reg.Registry.empty_rules;
       let srcindex = read_srcindex (opt "--srcindex") in
       (* names of theorems whose proposition Megalodon reported as already known (two-pass reuse) *)
       let known = Hashtbl.create 64 in

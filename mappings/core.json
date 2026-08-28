@@ -57,10 +57,10 @@
    "arity": 1,
    "carrier": "finseq ?0",
    "class": "native_isomorphism",
-   "status": "pending",
+   "status": "reviewed",
    "bridge": "hol_list_finseq",
    "module": "native/finseq.mg",
-   "notes": "finite sequences; native infrastructure not yet written."
+   "notes": "finite sequences (n, f) with f :e A :^: n"
   },
   {
    "hol": "option",

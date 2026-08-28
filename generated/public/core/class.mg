@@ -10,8 +10,8 @@ Admitted.
 
 // HOL Light: class.ml:30 / EQ_EXT
 // Source hash: md5:74f6b9b467171dc186a2df9978244b58
-// Status: generalization_required (bridges: empty_case:A)
-Theorem EQ_EXT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B)
+Theorem EQ_EXT : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
 Admitted.
 
 // HOL Light: class.ml:35 / FUN_EQ_THM

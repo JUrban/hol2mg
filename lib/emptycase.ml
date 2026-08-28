@@ -5,10 +5,38 @@
 open Mg
 
 let empty = Cst "Empty"
-let is_empty t = (t = empty)
+let is_empty t = (t = empty || t = Num 0)
 let tru = Cst "True" and fls = Cst "False"
 
+(* registry-provided rewrite rules (lhs with ?metas, rhs), each justified by a theorem *)
+let rules : (tm * tm) list ref = ref []
+
+let rec fo_match (pat : tm) (t : tm) (sub : (string * tm) list) : (string * tm) list option =
+  match pat, t with
+  | Meta m, _ -> (match List.assoc_opt m sub with Some u -> if u = t then Some sub else None | None -> Some ((m, t) :: sub))
+  | Var a, Var b when a = b -> Some sub
+  | Cst a, Cst b when a = b -> Some sub
+  | Num a, Num b when a = b -> Some sub
+  | App (f, x), App (g, y) -> (match fo_match f g sub with Some s -> fo_match x y s | None -> None)
+  | SetEnum l1, SetEnum l2 when List.length l1 = List.length l2 ->
+      List.fold_left2 (fun acc a b -> match acc with Some s -> fo_match a b s | None -> None) (Some sub) l1 l2
+  | Tuple l1, Tuple l2 when List.length l1 = List.length l2 ->
+      List.fold_left2 (fun acc a b -> match acc with Some s -> fo_match a b s | None -> None) (Some sub) l1 l2
+  | _ -> if pat = t then Some sub else None
+
+let rec apply_rules t =
+  let rec go = function
+    | [] -> t
+    | (lhs, rhs) :: r -> (match fo_match lhs t [] with Some sub -> inst sub rhs | None -> go r)
+  in
+  go !rules
+
 let rec simp t =
+  let t = simp1 t in
+  let t' = apply_rules t in
+  if t' == t || t' = t then t else simp t'
+
+and simp1 t =
   match t with
   | App (App (Cst "In", x), s) ->
       let x = simp x and s = simp s in
@@ -20,7 +48,11 @@ let rec simp t =
   | App (App (Cst "Subq", a), b) ->
       let a = simp a and b = simp b in
       if is_empty a then tru else if is_empty b then simp_prop (mk_eq a empty) else App (App (Cst "Subq", a), b)
-  | App (App (Cst "eq", a), b) -> simp_prop (mk_eq (simp a) (simp b))
+  | App (App (Cst "eq", a), b) ->
+      let a = simp a and b = simp b in
+      (match a, b with
+       | Num x, Num y -> if x = y then tru else fls
+       | _ -> if (is_empty a && is_empty b) then tru else simp_prop (mk_eq a b))
   | App (App (Cst "neq", a), b) -> simp_prop (App (Cst "not", mk_eq (simp a) (simp b)))
   | App (App (Cst "and", a), b) -> simp_prop (mk_and (simp a) (simp b))
   | App (App (Cst "or", a), b) -> simp_prop (mk_or (simp a) (simp b))
@@ -54,7 +86,7 @@ let rec simp t =
        | Lam (y, _, b) -> simp (subst [ (y, x) ] b)
        | LamIn (y, a, b) when is_empty a -> empty        (* beta0 *)
        | _ when is_empty f -> empty                       (* ap Empty x = Empty *)
-       | _ -> App (f, x))
+       | _ -> simp_arith (App (f, x)))
   | Lam (x, ty, b) -> Lam (x, ty, simp b)
   | LamIn (x, a, b) -> let a = simp a in if is_empty a then empty else LamIn (x, a, simp b)
   | All (x, ty, b) -> let b = simp b in if b = tru then tru else All (x, ty, b)
@@ -118,7 +150,17 @@ and simp_prop t =
       if a = b then tru else if a = tru then b else if b = tru then a
       else if a = fls then simp_prop (App (Cst "not", b)) else if b = fls then simp_prop (App (Cst "not", a)) else t
   | App (Cst "not", a) -> if a = tru then fls else if a = fls then tru else t
-  | Imp (a, b) -> if a = fls then tru else if b = tru then tru else if a = tru then b else t
+  | Imp (a, b) -> if a = fls then tru else if b = tru then tru else if a = tru then b else if a = b then tru else t
+  | _ -> t
+
+(* literal arithmetic on numerals *)
+and simp_arith t =
+  match t with
+  | App (App (Cst "add_SNo", Num a), Num b) -> Num (a + b)
+  | App (App (Cst "mul_SNo", Num a), Num b) -> Num (a * b)
+  | App (Cst "ordsucc", Num a) -> Num (a + 1)
+  | App (App (Cst "SNoLt", Num a), Num b) -> if a < b then tru else fls
+  | App (App (Cst "SNoLe", Num a), Num b) -> if a <= b then tru else fls
   | _ -> t
 
 (* Try to drop `A <> Empty ->` premises.  The statement has the shape

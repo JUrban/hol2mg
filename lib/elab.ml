@@ -98,6 +98,11 @@ let fresh ctx base =
   let n = Mg.fresh_name base ctx.used in
   ctx.used <- n :: ctx.used; n
 
+(* fresh names for closure premises: x, y, z, w, ... *)
+let fresh_seq ctx n =
+  let names = [ "x"; "y"; "z"; "w"; "u"; "v" ] in
+  List.init n (fun i -> fresh ctx (if i < List.length names then List.nth names i else "x"))
+
 let release ctx n = ctx.used <- List.filter (( <> ) n) ctx.used
 
 (* ------------------------------------------------------------------------ *)
@@ -390,7 +395,7 @@ and elab_binder ctx (kind : [ `All | `Ex ]) (x : string) (ty : ty) (body : tm) :
   ctx.vars <- List.remove_assoc n ctx.vars; release ctx n;
   let closure = (match xview with
     | VMetaFun (ds, c) ->
-        let xs = List.map (fun _ -> fresh ctx "x") ds in
+        let xs = fresh_seq ctx (List.length ds) in
         let app = List.fold_left (fun acc y -> Mg.App (acc, Mg.Var y)) (Mg.Var n) xs in
         let cl = List.fold_right2 (fun y d acc -> Mg.AllIn (y, d, acc)) xs ds (mg_in app c) in
         List.iter (release ctx) xs; Some cl
@@ -581,7 +586,13 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
                       | _ -> fail "registry: subset role for non-predicate argument of %s" c)
       | R.RMetaFun _ ->
           if k = 0 || List.length idoms < k then fail "registry: metafun role for non-function argument of %s" c;
-          if residual = bool_ty then VMetaFun (List.map (carrier ctx) (take k idoms), Mg.Num 2)
+          if residual = bool_ty then begin
+            (* boolean-valued function in a metafun slot: data booleans (2) when the value flows
+               into a set result, otherwise keep it a predicate *)
+            match e.R.c_result with
+            | R.RSet | R.RSubset -> VMetaFun (List.map (carrier ctx) (take k idoms), Mg.Num 2)
+            | _ -> VMetaPred (List.map (carrier ctx) (take k idoms))
+          end
           else VMetaFun (List.map (carrier ctx) (take k idoms), carrier ctx residual)
       | R.RMetaPred _ ->
           if k = 0 || List.length idoms < k || residual <> bool_ty then fail "registry: metapred role for non-predicate argument of %s" c;
@@ -695,7 +706,7 @@ let elab_sequent (reg : R.t) (seq : sequent) : result =
     | VProp -> Mg.All (n, Mg.Prop, acc)
     | VMetaPred _ -> Mg.All (n, mty_of_view v, acc)
     | VMetaFun (ds, c) ->
-        let xs = List.map (fun _ -> fresh ctx "x") ds in
+        let xs = fresh_seq ctx (List.length ds) in
         let app = List.fold_left (fun acc y -> Mg.App (acc, Mg.Var y)) (Mg.Var n) xs in
         let cl = List.fold_right2 (fun y d acc -> Mg.AllIn (y, d, acc)) xs ds (mg_in app c) in
         List.iter (release ctx) xs;

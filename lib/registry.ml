@@ -32,6 +32,7 @@ type t = {
   types : (string, type_entry) Hashtbl.t;
   consts : (string, const_entry list) Hashtbl.t;   (* several entries may share a name (different schemes) *)
   files : (string * string) list;                  (* file, md5 *)
+  empty_rules : (Mg.tm * Mg.tm * string) list;     (* lhs, rhs, justifying theorem *)
 }
 
 exception Registry_error of string
@@ -129,7 +130,8 @@ let strd k d j = match Yojson.Safe.Util.member k j with `String s -> s | _ -> d
 
 let load (files : string list) (type_ctors : (string * int) list) : t =
   List.iter (fun (c, n) -> Hashtbl.replace type_constructors c n) type_ctors;
-  let reg = { types = Hashtbl.create 64; consts = Hashtbl.create 512; files = [] } in
+  let reg = { types = Hashtbl.create 64; consts = Hashtbl.create 512; files = []; empty_rules = [] } in
+  let rules = ref [] in
   let files_md5 = ref [] in
   List.iter (fun file ->
     let j = Yojson.Safe.from_file file in
@@ -166,8 +168,11 @@ let load (files : string list) (type_ctors : (string * int) list) : t =
         if not ok then raise (Registry_error (Printf.sprintf "%s: constant %s template uses unknown placeholder ?%s" file hol m)))
         (Mg.metas template);
       let prev = (try Hashtbl.find reg.consts hol with Not_found -> []) in
-      Hashtbl.replace reg.consts hol (prev @ [ e ])) (match member "constants" j with `List l -> l | _ -> [])) files;
-  { reg with files = List.rev !files_md5 }
+      Hashtbl.replace reg.consts hol (prev @ [ e ])) (match member "constants" j with `List l -> l | _ -> []);
+    List.iter (fun rj ->
+      rules := (Mg.parse_template (str "lhs" rj), Mg.parse_template (str "rhs" rj), strd "by" "" rj) :: !rules)
+      (match member "empty_rules" j with `List l -> l | _ -> [])) files;
+  { reg with files = List.rev !files_md5; empty_rules = List.rev !rules }
 
 (* first-order matching of a scheme against an occurrence type *)
 let rec tymatch sch ty sofar =

@@ -5,7 +5,7 @@
 // HOL Light: ind_types.ml:16 / INJ_INVERSE2
 // Source hash: md5:678f254c19619e0a438dc71df4f649ad
 // Status: exact_native
-Theorem INJ_INVERSE2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> set, (forall x :e A, forall x0 :e B, P x x0 :e C) -> (forall x1 :e A, forall y1 :e B, forall x2 :e A, forall y2 :e B, P x1 y1 = P x2 y2 <-> x1 = x2 /\ y1 = y2) -> exists X:set -> set, (forall x :e C, X x :e A) /\ exists Y:set -> set, (forall x :e C, Y x :e B) /\ forall x :e A, forall y :e B, X (P x y) = x /\ Y (P x y) = y.
+Theorem INJ_INVERSE2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> set, (forall x :e A, forall y :e B, P x y :e C) -> (forall x1 :e A, forall y1 :e B, forall x2 :e A, forall y2 :e B, P x1 y1 = P x2 y2 <-> x1 = x2 /\ y1 = y2) -> exists X:set -> set, (forall x :e C, X x :e A) /\ exists Y:set -> set, (forall x :e C, Y x :e B) /\ forall x :e A, forall y :e B, X (P x y) = x /\ Y (P x y) = y.
 Admitted.
 
 // HOL Light: ind_types.ml:768 / sum_INDUCT
@@ -18,5 +18,17 @@ Admitted.
 // Source hash: md5:a693dd783d6aeace677183d17ed78fbe
 // Status: transport_required (bridges: hol_sum_setsum)
 Theorem sum_RECURSION : forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a).
+Admitted.
+
+// HOL Light: ind_types.ml:885 / list_INDUCT
+// Source hash: md5:e24a8b3534d12615232f89c947dd6ab3
+// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
+Theorem list_INDUCT : forall A:set, forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x.
+Admitted.
+
+// HOL Light: ind_types.ml:885 / list_RECURSION
+// Source hash: md5:21b923915525c3b3ed6c44a773a64671
+// Status: generalization_required (bridges: empty_case:Z, hol_list_finseq)
+Theorem list_RECURSION : forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1)).
 Admitted.
 

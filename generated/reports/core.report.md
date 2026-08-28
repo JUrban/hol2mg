@@ -1,18 +1,18 @@
 # hol2mg statement translation report: profile `core`
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
-- theorems: 2984 discovered, 2235 public
-- mapping files: mappings/core.json
+- theorems: 2984 discovered, 2378 public
+- mapping files: mappings/core.json, mappings/lists.json
 
 ## Status counts
 
 | status | count |
 |---|---|
-| transport_required | 1560 |
-| pending_mapping | 749 |
-| generalization_required | 451 |
-| exact_native | 157 |
-| native_reuse | 67 |
+| transport_required | 1597 |
+| pending_mapping | 606 |
+| generalization_required | 560 |
+| exact_native | 152 |
+| native_reuse | 69 |
 
 ## Public statements per shard
 
@@ -26,17 +26,17 @@
 | cart | 2 | 101 | 0 |
 | class | 40 | 2 | 0 |
 | define | 1 | 36 | 0 |
-| ind_types | 3 | 46 | 0 |
+| ind_types | 5 | 44 | 0 |
 | int | 459 | 43 | 0 |
 | iterate | 247 | 79 | 0 |
-| lists | 0 | 133 | 0 |
+| lists | 124 | 7 | 0 |
 | misc | 11 | 25 | 0 |
 | nums | 8 | 13 | 0 |
 | pair | 23 | 26 | 0 |
 | real | 316 | 0 | 0 |
 | realarith | 27 | 0 | 0 |
 | realax | 36 | 158 | 0 |
-| sets | 600 | 57 | 0 |
+| sets | 615 | 42 | 0 |
 | tactics | 0 | 1 | 0 |
 | theorems | 64 | 0 | 0 |
 | trivia | 13 | 1 | 0 |
@@ -46,7 +46,6 @@
 
 | count | reason |
 |---|---|
-| 152 | type mapping for list is pending |
 | 82 | internal construction type hreal |
 | 73 | internal construction type nadd |
 | 26 | no carrier mapping for type constructor cart (in (A,M)cart) |
@@ -59,9 +58,9 @@
 | 9 | unmapped constant BIT0 : num->num |
 | 9 | unmapped constant dimindex : (A->bool)->num |
 | 8 | internal construction type ind |
+| 8 | no carrier mapping for type constructor cart (in (A,N)cart) |
 | 8 | unmapped constant disjoint_union : (K->bool)->(K->A->bool)->K#A->bool |
 | 7 | internal construction type recspace |
-| 7 | no carrier mapping for type constructor cart (in (A,N)cart) |
 | 7 | unmapped constant monoidal : (A->A->A)->bool |
 | 7 | unmapped constant monoidal : (C->C->C)->bool |
 | 6 | no carrier mapping for type constructor finite_image (in A finite_image) |
@@ -80,7 +79,6 @@
 | 4 | no carrier mapping for type constructor tybit1 (in A tybit1) |
 | 4 | unmapped constant GABS : ((A#B->bool)->bool)->A#B->bool |
 | 4 | unmapped constant ITSET : (A->B->B)->(A->bool)->B->B |
-| 4 | unmapped constant LENGTH : A list->num |
 | 4 | unmapped constant ZRECSPACE : (num->A->bool)->bool |
 | 4 | unmapped constant dimindex : (N->bool)->num |
 | 4 | unmapped constant hashek : bool |
@@ -88,9 +86,11 @@
 | 3 | GSPEC with 3 bound variables |
 | 3 | GSPEC with 4 bound variables |
 | 3 | no carrier mapping for type constructor cart (in (real,M)cart) |
+| 3 | no carrier mapping for type constructor char (in char) |
 | 3 | no carrier mapping for type constructor tybit0 (in A tybit0) |
 | 3 | non-literal NUMERAL |
 | 3 | unmapped constant <=_c : (B->bool)->(A->bool)->bool |
+| 3 | unmapped constant ALLPAIRS : (A->B->bool)->A list->B list->bool |
 | 3 | unmapped constant GABS : ((A#B->A#B->bool)->bool)->A#B->A#B->bool |
 | 3 | unmapped constant GSPEC : (A->bool)->A->bool |
 | 3 | unmapped constant INJP : (num->A->bool)->(num->A->bool)->num->A->bool |
@@ -98,9 +98,9 @@
 | 3 | unmapped constant NUMPAIR : num->num->num |
 | 3 | unmapped constant mk_pair : A->B->A->B->bool |
 | 3 | unmapped constant product_map : (K->bool)->(K->A->B)->(K->A)->K->B |
-| 2 | no carrier mapping for type constructor char (in char) |
 | 2 | unmapped constant COND : bool->(A->B)->(A->B)->A->B |
 | 2 | unmapped constant FCONS : A->(num->A)->num->A |
+| 2 | unmapped constant GABS : (((?142053->?142033)#((?142033->?142049)->?142053->?142049)->bool)->bool)->(?142053->?142033)#((?142033->?142049)->?142053->?142049)->bool |
 | 2 | unmapped constant GABS : ((A#B#C->D)->bool)->A#B#C->D |
 | 2 | unmapped constant GABS : ((A#B#C->bool)->bool)->A#B#C->bool |
 | 2 | unmapped constant INJA : A->num->A->bool |
@@ -109,32 +109,33 @@
 
 ## Bridges referenced
 
-- hol_num_omega (1155)
+- hol_num_omega (1194)
 - hol_real_R (669)
+- empty_case:A (511)
 - hol_int_int (452)
-- empty_case:A (419)
 - omega_Subq_R (314)
-- hol_finite_finite (288)
+- hol_finite_finite (293)
 - omega_Subq_int (235)
-- nat_le_SNoLe (188)
-- add_nat_add_SNo (160)
-- nat_lt_SNoLt (140)
+- nat_le_SNoLe (190)
+- add_nat_add_SNo (162)
+- nat_lt_SNoLt (148)
+- hol_list_finseq (143)
 - mul_nat_mul_SNo (126)
 - hol_sum_finsum (113)
-- hol_card_finite_cardinality (90)
+- hol_card_finite_cardinality (94)
 - hol_nsum_finsum (89)
-- hol_prod_setprod (78)
-- empty_case:B (58)
-- choose_in_spec (57)
+- hol_prod_setprod (85)
+- empty_case:B (70)
+- choose_in_spec (64)
 - exp_nat_exp_SNo_nat (40)
-- hol_has_size_equip (34)
+- hol_has_size_equip (35)
 - int_Subq_R (33)
 - hol_fun_setexp (19)
 - hol_one_1 (12)
 - empty_case:K (8)
+- empty_case:C (6)
 - hol_iterate (6)
 - hol_fact_factorial (5)
-- empty_case:C (4)
 - hol_nproduct_finprod (2)
 - hol_product_finprod (2)
 - hol_sum_setsum (2)
@@ -142,3 +143,4 @@
 - empty_case:T141447 (1)
 - empty_case:T98960 (1)
 - empty_case:T98973 (1)
+- empty_case:Z (1)

@@ -35,7 +35,7 @@ Admitted.
 // HOL Light: wf.ml:73 / WF_UREC
 // Source hash: md5:b203b94e05aa7984613333a19c288f7a
 // Status: generalization_required (bridges: empty_case:A)
-Theorem WF_UREC : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> forall f g :e B :^: A, (forall x :e A, f x = H f x) /\ (forall x :e A, g x = H g x) -> f = g.
+Theorem WF_UREC : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> forall f g :e B :^: A, (forall x :e A, f x = H f x) /\ (forall x :e A, g x = H g x) -> f = g.
 Admitted.
 
 // HOL Light: wf.ml:82 / WF_UREC_WF
@@ -47,25 +47,25 @@ Admitted.
 // HOL Light: wf.ml:98 / WF_REC_INVARIANT
 // Source hash: md5:75fea806bee6f4b5ba2489b16bc2dc30
 // Status: generalization_required (bridges: empty_case:A)
-Theorem WF_REC_INVARIANT : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> forall S:set -> set -> prop, (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z /\ S z (f z)) -> H f x = H g x /\ S x (H f x)) -> exists f :e B :^: A, forall x :e A, f x = H f x.
+Theorem WF_REC_INVARIANT : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> forall S:set -> set -> prop, (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z /\ S z (f z)) -> H f x = H g x /\ S x (H f x)) -> exists f :e B :^: A, forall x :e A, f x = H f x.
 Admitted.
 
 // HOL Light: wf.ml:116 / WF_REC
 // Source hash: md5:c2b6c542214ace7a599099af99d8943e
 // Status: generalization_required (bridges: empty_case:A)
-Theorem WF_REC : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x.
+Theorem WF_REC : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x.
 Admitted.
 
 // HOL Light: wf.ml:124 / WF_REC_WF
 // Source hash: md5:6399f34196f6e78cea0781aa577c47d8
 // Status: transport_required (bridges: hol_num_omega)
-Theorem WF_REC_WF : forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall H:set -> set -> set, (forall x :e omega :^: A, forall x0 :e A, H x x0 :e omega) -> (forall f g :e omega :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e omega :^: A, forall x :e A, f x = H f x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x.
+Theorem WF_REC_WF : forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall H:set -> set -> set, (forall x :e omega :^: A, forall y :e A, H x y :e omega) -> (forall f g :e omega :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e omega :^: A, forall x :e A, f x = H f x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x.
 Admitted.
 
 // HOL Light: wf.ml:155 / WF_EREC
 // Source hash: md5:eff3dc2a17dae3a0ad607afea443190f
 // Status: generalization_required (bridges: empty_case:A)
-Theorem WF_EREC : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, (forall x :e A, f x = H f x) /\ forall y :e B :^: A, (forall x :e A, y x = H y x) -> y = f.
+Theorem WF_EREC : forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, (forall x :e A, f x = H f x) /\ forall y :e B :^: A, (forall x :e A, y x = H y x) -> y = f.
 Admitted.
 
 // HOL Light: wf.ml:165 / WF_REC_EXISTS
@@ -76,14 +76,14 @@ Admitted.
 
 // HOL Light: wf.ml:188 / WF_SUBSET
 // Source hash: md5:814a5fe983c0a92a1e34dfcf4a54a440
-// Status: exact_native
-Theorem WF_SUBSET : forall A:set, A <> Empty -> forall lt lt0:set -> set -> prop, (forall x y :e A, lt x y -> lt0 x y) /\ (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt0 y x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WF_SUBSET : forall A:set, forall lt lt0:set -> set -> prop, (forall x y :e A, lt x y -> lt0 x y) /\ (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt0 y x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x.
 Admitted.
 
 // HOL Light: wf.ml:195 / WF_RESTRICT
 // Source hash: md5:a1bfce7f08611d6dd26f696daa53ceeb
-// Status: exact_native
-Theorem WF_RESTRICT : forall A:set, A <> Empty -> forall lt:set -> set -> prop, forall P:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P0 c= A, P0 <> Empty -> exists x :e P0, forall y :e P0, ~ (P y /\ (P x /\ lt y x)).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem WF_RESTRICT : forall A:set, forall lt:set -> set -> prop, forall P:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P0 c= A, P0 <> Empty -> exists x :e P0, forall y :e P0, ~ (P y /\ (P x /\ lt y x)).
 Admitted.
 
 // HOL Light: wf.ml:200 / WF_MEASURE_GEN
@@ -101,7 +101,7 @@ Admitted.
 // HOL Light: wf.ml:248 / WF_REC_num
 // Source hash: md5:22be6717a684453cf75c0e860b18cf55
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
-Theorem WF_REC_num : forall A:set, A <> Empty -> forall H:set -> set -> set, (forall x :e A :^: omega, forall x0 :e omega, H x x0 :e A) -> (forall f g :e A :^: omega, forall n :e omega, (forall m :e omega, m < n -> f m = g m) -> H f n = H g n) -> exists f :e A :^: omega, forall n :e omega, f n = H f n.
+Theorem WF_REC_num : forall A:set, A <> Empty -> forall H:set -> set -> set, (forall x :e A :^: omega, forall y :e omega, H x y :e A) -> (forall f g :e A :^: omega, forall n :e omega, (forall m :e omega, m < n -> f m = g m) -> H f n = H g n) -> exists f :e A :^: omega, forall n :e omega, f n = H f n.
 Admitted.
 
 // HOL Light: wf.ml:274 / WF_ANTISYM
@@ -137,6 +137,6 @@ Admitted.
 // HOL Light: wf.ml:359 / WF_REC_TAIL_GENERAL
 // Source hash: md5:72c99beb795211e51200dc3e68f5b921
 // Status: generalization_required (bridges: empty_case:A)
-Theorem WF_REC_TAIL_GENERAL : forall A B:set, B <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, G x x0 :e A) -> forall H:set -> set -> set, (forall x :e B :^: A, forall x0 :e A, H x x0 :e B) -> (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> (P f x <-> P g x) /\ (G f x = G g x /\ H f x = H g x)) /\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) /\ (forall f :e B :^: A, forall x y :e A, P f x /\ lt y (G f x) -> lt y x))) -> exists f :e B :^: A, forall x :e A, f x = if P f x then f (G f x) else H f x.
+Theorem WF_REC_TAIL_GENERAL : forall A B:set, B <> Empty -> forall lt P:set -> set -> prop, forall G:set -> set -> set, (forall x :e B :^: A, forall y :e A, G x y :e A) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) /\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> (P f x <-> P g x) /\ (G f x = G g x /\ H f x = H g x)) /\ ((forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) /\ (forall f :e B :^: A, forall x y :e A, P f x /\ lt y (G f x) -> lt y x))) -> exists f :e B :^: A, forall x :e A, f x = if P f x then f (G f x) else H f x.
 Admitted.
 

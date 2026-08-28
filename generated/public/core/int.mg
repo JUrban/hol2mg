@@ -2483,7 +2483,7 @@ Admitted.
 // HOL Light: int.ml:1939 / WF_INT_MEASURE_2
 // Source hash: md5:fae54c5bd47e76c11b3c61f389ee17d4
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_int_int, hol_num_omega, omega_Subq_int)
-Theorem WF_INT_MEASURE_2 : forall A B:set, forall P:set -> set -> prop, forall m:set -> set -> set, (forall x :e A, forall x0 :e B, m x x0 :e int) -> (forall x :e A, forall y :e B, 0 <= m x y) /\ (forall x :e A, forall y :e B, (forall x' :e A, forall y' :e B, m x' y' < m x y -> P x' y') -> P x y) -> forall x :e A, forall y :e B, P x y.
+Theorem WF_INT_MEASURE_2 : forall A B:set, forall P:set -> set -> prop, forall m:set -> set -> set, (forall x :e A, forall y :e B, m x y :e int) -> (forall x :e A, forall y :e B, 0 <= m x y) /\ (forall x :e A, forall y :e B, (forall x' :e A, forall y' :e B, m x' y' < m x y -> P x' y') -> P x y) -> forall x :e A, forall y :e B, P x y.
 Admitted.
 
 // HOL Light: int.ml:1945 / INT_GCD_EXISTS

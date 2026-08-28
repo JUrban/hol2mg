@@ -185,73 +185,73 @@ Admitted.
 // HOL Light: iterate.ml:281 / neutral
 // Source hash: md5:a8873aaeb854cfc680774eff00267039
 // Status: exact_native (bridges: choose_in_spec)
-Theorem neutral : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x x0 :e A, op x x0 :e A) -> neutral_of A (fun a:set => fun b:set => op a b) = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y).
+Theorem neutral : forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A (fun a:set => fun b:set => op a b) = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y).
 Admitted.
 
 // HOL Light: iterate.ml:298 / support
 // Source hash: md5:db57a04db49d84b327ec80e8d4024bb4
 // Status: generalization_required (bridges: empty_case:A)
-Theorem support : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e A | x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)}.
+Theorem support : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e A | x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b)}.
 Admitted.
 
 // HOL Light: iterate.ml:307 / IN_SUPPORT
 // Source hash: md5:328b596b59f06cf91f1dc806c30ccf3e
 // Status: generalization_required (bridges: empty_case:A)
-Theorem IN_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} <-> x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b).
+Theorem IN_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} <-> x :e s /\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b).
 Admitted.
 
 // HOL Light: iterate.ml:311 / SUPPORT_SUPPORT
 // Source hash: md5:0aedb34b9d6661fba4a5b10ecedffecd
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
+Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
 Admitted.
 
 // HOL Light: iterate.ml:315 / SUPPORT_EMPTY
 // Source hash: md5:51a15a0f30064f51df84243d65184a37
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_EMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b)) <-> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty.
+Theorem SUPPORT_EMPTY : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b)) <-> {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty.
 Admitted.
 
 // HOL Light: iterate.ml:320 / SUPPORT_SUBSET
 // Source hash: md5:1cb492d6d2a10235f4796e2e45535a55
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_SUBSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s.
+Theorem SUPPORT_SUBSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s.
 Admitted.
 
 // HOL Light: iterate.ml:324 / FINITE_SUPPORT
 // Source hash: md5:5f2e5868802d786d3586b28b029dac08
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_SUPPORT : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}.
 Admitted.
 
 // HOL Light: iterate.ml:328 / SUPPORT_CLAUSES
 // Source hash: md5:ef461f246ce98a923ee8cada2ec1fb49
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_CLAUSES : forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x x0 :e C, op x x0 :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = Empty) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = if f x = neutral_of C (fun a:set => fun b:set => op a b) then {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} else SetAdjoin {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} x) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\: {x} | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\/: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\/: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :/\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C (fun a:set => fun b:set => op a b)} = {f x | x :e {x :e s | g (f x) <> neutral_of C (fun a:set => fun b:set => op a b)}}))))).
+Theorem SUPPORT_CLAUSES : forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = Empty) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = if f x = neutral_of C (fun a:set => fun b:set => op a b) then {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} else SetAdjoin {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} x) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\: {x} | f x0 <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\/: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\/: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :/\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\: t | f x <> neutral_of C (fun a:set => fun b:set => op a b)} = {x :e s | f x <> neutral_of C (fun a:set => fun b:set => op a b)} :\: {x :e t | f x <> neutral_of C (fun a:set => fun b:set => op a b)}) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C (fun a:set => fun b:set => op a b)} = {f x | x :e {x :e s | g (f x) <> neutral_of C (fun a:set => fun b:set => op a b)}}))))).
 Admitted.
 
 // HOL Light: iterate.ml:346 / SUPPORT_DELTA
 // Source hash: md5:a35d42478622c94fd25393261650c43a
 // Status: generalization_required (bridges: empty_case:A)
-Theorem SUPPORT_DELTA : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)} = if a :e s then {x :e {a} | f x <> neutral_of B (fun a0:set => fun b:set => op a0 b)} else Empty.
+Theorem SUPPORT_DELTA : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)} = if a :e s then {x :e {a} | f x <> neutral_of B (fun a0:set => fun b:set => op a0 b)} else Empty.
 Admitted.
 
 // HOL Light: iterate.ml:354 / FINITE_SUPPORT_DELTA
 // Source hash: md5:4c8a32d285f23d97bdfdf46d3535970f
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
-Theorem FINITE_SUPPORT_DELTA : forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)}.
+Theorem FINITE_SUPPORT_DELTA : forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B (fun a:set => fun b:set => op a b)) <> neutral_of B (fun a0:set => fun b:set => op a0 b)}.
 Admitted.
 
 // HOL Light: iterate.ml:364 / ITERATE_SUPPORT
 // Source hash: md5:7bbe016893acf7b63a38b08b1ad8c353
 // Status: generalization_required (bridges: empty_case:A, hol_iterate)
-Theorem ITERATE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f = iterate_op B (fun a:set => fun b:set => op a b) s f.
+Theorem ITERATE_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f = iterate_op B (fun a:set => fun b:set => op a b) s f.
 Admitted.
 
 // HOL Light: iterate.ml:368 / ITERATE_EXPAND_CASES
 // Source hash: md5:ab2f925a2f6da5a2ba0afd8fe42aa902
 // Status: transport_required (bridges: hol_finite_finite, hol_iterate)
-Theorem ITERATE_EXPAND_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x x0 :e B, op x x0 :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) s f = if finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} then iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f else neutral_of B (fun a:set => fun b:set => op a b).
+Theorem ITERATE_EXPAND_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B (fun a:set => fun b:set => op a b) s f = if finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} then iterate_op B (fun a:set => fun b:set => op a b) {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} f else neutral_of B (fun a:set => fun b:set => op a b).
 Admitted.
 
 // HOL Light: iterate.ml:1194 / nproduct
@@ -551,7 +551,7 @@ Admitted.
 // HOL Light: iterate.ml:1553 / NSUM_NSUM_RESTRICT
 // Source hash: md5:8d963f584931e2f667cb58fbc9a5193f
 // Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
-Theorem NSUM_NSUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e omega) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
+Theorem NSUM_NSUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
 Admitted.
 
 // HOL Light: iterate.ml:1561 / CARD_EQ_NSUM
@@ -1121,7 +1121,7 @@ Admitted.
 // HOL Light: iterate.ml:2313 / SUM_SUM_RESTRICT
 // Source hash: md5:5945aa04459515a934d2e536a5f547d5
 // Status: transport_required (bridges: hol_finite_finite, hol_real_R, hol_sum_finsum)
-Theorem SUM_SUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall x0 :e B, f x x0 :e R) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
+Theorem SUM_SUM_RESTRICT : forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\ R0 x y} (fun y:set => f x y)) = finsum t (fun y:set => finsum {x :e A | x :e s /\ R0 x y} (fun x:set => f x y)).
 Admitted.
 
 // HOL Light: iterate.ml:2321 / CARD_EQ_SUM
