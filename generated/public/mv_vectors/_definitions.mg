@@ -6,6 +6,14 @@
 Definition matroid : set -> set :=
   fun A:set => {m :e Power A :*: Power A :^: Power A | (forall s c= A, s c= m 0 -> m 1 s c= m 0) /\ ((forall s c= A, s c= m 0 -> s c= m 1 s) /\ ((forall s t c= A, s c= t /\ t c= m 0 -> m 1 s c= m 1 t) /\ ((forall s c= A, s c= m 0 -> m 1 (m 1 s) = m 1 s) /\ ((forall s c= A, forall x :e A, s c= m 0 /\ x :e m 1 s -> exists s' c= A, finite s' /\ (s' c= s /\ x :e m 1 s')) /\ forall s c= A, forall x y :e A, s c= m 0 /\ (x :e m 0 /\ (y :e m 1 (SetAdjoin s x) /\ ~ y :e m 1 s)) -> x :e m 1 (SetAdjoin s y)))))}.
 
+// HOL Light: ind_types.ml:771 / OUTL   (hash md5:b004bb4740b1f78bbe5cc401155083de)
+Definition OUTL : set -> set -> set :=
+  fun A:set => fun B:set => choose_in (A :^: (A :+: B)) (fun c:set => forall x :e A, c (Inj0 x) = x).
+
+// HOL Light: ind_types.ml:774 / OUTR   (hash md5:4ebdd36a8da5bf8bbd62fbd2dfba5dba)
+Definition OUTR : set -> set -> set :=
+  fun A:set => fun B:set => choose_in (B :^: (A :+: B)) (fun c:set => forall y :e B, c (Inj1 y) = y).
+
 // HOL Light: int.ml:1170 / real_mod   (hash md5:60a0f9b5b153ba67635b3c320a044279)
 Definition real_mod : set -> set -> set -> prop :=
   fun n:set => fun x:set => fun y:set => exists q :e R, q :e int /\ x + - y = q * n.
@@ -34,6 +42,10 @@ Definition matroid_independent : set -> set -> set -> prop :=
 Definition matroid_basis : set -> set -> set -> prop :=
   fun A:set => fun m:set => fun s:set => matroid_spanning A m s /\ matroid_independent A m s.
 
+// HOL Light: Library/matroids.ml:240 / matroid_dependent   (hash md5:a5d375aff20e4e04580406b5baafc95a)
+Definition matroid_dependent : set -> set :=
+  fun A:set => choose_in (Power (Power A) :^: matroid A) (fun c:set => forall m :e matroid A, forall s c= A, s :e c m <-> s c= matroid_set A m /\ ~ matroid_independent A m s).
+
 // HOL Light: Library/matroids.ml:829 / matroid_subspace   (hash md5:9304d8d8ada25e2a7a652977b893985d)
 Definition matroid_subspace : set -> set -> set -> prop :=
   fun A:set => fun m:set => fun s:set => s c= matroid_set A m /\ forall x :e A, matroid_span A m s x <-> x :e s.
@@ -42,6 +54,22 @@ Definition matroid_subspace : set -> set -> set -> prop :=
 Definition submatroid : set -> set -> set -> set :=
   fun A:set => fun m:set => fun s:set => ({x :e A | matroid_span A m (matroid_set A m :/\: s) x},fun x :e Power A => {x0 :e A | matroid_span A m x x0}).
 
+// HOL Light: Library/matroids.ml:1057 / matroid_finite_dimensional   (hash md5:b04fee3fdf375c040c79fac441d6fae7)
+Definition matroid_finite_dimensional : set -> set :=
+  fun A:set => choose_in (Power (matroid A)) (fun c:set => forall m :e matroid A, m :e c <-> exists b c= A, finite b /\ matroid_spanning A m b).
+
+// HOL Light: Library/matroids.ml:1061 / matroid_dimension   (hash md5:2d7d70f8733c2e842de9a7d429734c0c)
+Definition matroid_dimension : set -> set :=
+  fun A:set => choose_in (omega :^: matroid A) (fun c:set => forall m :e matroid A, c m = choose_in omega (fun n:set => forall b c= A, matroid_basis A m b -> equip b n)).
+
+// HOL Light: Library/matroids.ml:1065 / matroid_finite_dim   (hash md5:b1da3ce2431dbbc50d694ded5905012a)
+Definition matroid_finite_dim : set -> set :=
+  fun A:set => choose_in (Power (Power A) :^: matroid A) (fun c:set => forall m :e matroid A, forall s c= A, s :e c m <-> s c= matroid_set A m /\ submatroid A m s :e matroid_finite_dimensional A).
+
+// HOL Light: Library/matroids.ml:1070 / matroid_dim   (hash md5:45e7cf6e7991df00693cb126752a4d63)
+Definition matroid_dim : set -> set :=
+  fun A:set => choose_in (omega :^: Power A :^: matroid A) (fun c:set => forall m :e matroid A, forall s c= A, c m s = matroid_dimension A (submatroid A m s)).
+
 // HOL Light:  / is_realinterval   (hash md5:58bbe213df4880c68baa09ac184605fc)
 Definition is_realinterval : set -> prop :=
   fun s:set => forall a b c :e R, a :e s /\ (b :e s /\ (a <= c /\ c <= b)) -> c :e s.
@@ -49,6 +77,10 @@ Definition is_realinterval : set -> prop :=
 // HOL Light:  / open_real_interval   (hash md5:a94b4063973972a157bc00e6b005f534)
 Definition open_real_interval : set -> set :=
   fun x:set => {x0 :e R | x 0 < x0 /\ x0 < x 1}.
+
+// HOL Light:  / closed_real_interval   (hash md5:243924d0c3ae4f6b13fbc2de9de11e69)
+Definition closed_real_interval : set :=
+  choose_in (Power R :^: finseq (R :*: R)) (fun c:set => forall a b :e R, c (seq_cons (a,b) seq_nil) = {x :e R | a <= x /\ x <= b}).
 
 // HOL Light:  / vectorize   (hash md5:f340a8700d8db2d6ac414db8ae798f7b)
 Definition vectorize : set -> set -> set -> set -> set :=
@@ -65,6 +97,10 @@ Definition hull : set -> set -> set -> set :=
 // HOL Light:  / from   (hash md5:52c69448df01f13907cd333262b73d39)
 Definition from : set -> set :=
   fun n:set => {m :e omega | n <= m}.
+
+// HOL Light:  / relative_to   (hash md5:9856a63b9dfc4c54948a1dcd0dadab9d)
+Definition relative_to : set -> set :=
+  fun A:set => choose_in (Power (Power A) :^: Power A :^: Power (Power A)) (fun c:set => forall P c= Power A, forall s t c= A, t :e c P s <-> exists u c= A, u :e P /\ s :/\: u = t).
 
 // HOL Light:  / suslin_operation   (hash md5:6f066ac3e7c0c24cbbdeca6536db8824)
 Definition suslin_operation : set -> (set -> set -> prop) -> set :=
@@ -261,6 +297,10 @@ Definition rank : set -> set -> set -> set :=
 // HOL Light: Multivariate/vectors.ml:8898 / matrix_inv   (hash md5:0e884467d8632ba1d7f7e94a60dbc858)
 Definition matrix_inv : set -> set -> set -> set :=
   fun M:set => fun N:set => fun A:set => matrix N M (fun y:set => choose_in (R :^: idx M) (fun x:set => (forall w :e R :^: idx M, matrix_vector_mul N M A w = vec N 0 -> orthogonal M x w) /\ forall z :e R :^: idx M, orthogonal N (vector_sub N y (matrix_vector_mul N M A x)) (matrix_vector_mul N M A z))).
+
+// HOL Light: Multivariate/vectors.ml:9402 / infnorm   (hash md5:0ffa75ff9218402d414ac4d76d49f094)
+Definition infnorm : set -> set :=
+  fun N:set => choose_in (R :^: (R :^: idx N)) (fun c:set => forall x :e R :^: idx N, c x = sup {abs_SNo (x i) | i :e omega, 1 <= i /\ i <= dimindex N}).
 
 // HOL Light: Multivariate/vectors.ml:9593 / collinear   (hash md5:9339d36e5525e7961c61d422a89c6f18)
 Definition collinear : set -> set -> prop :=

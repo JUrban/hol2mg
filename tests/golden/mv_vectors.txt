@@ -1,0 +1,18 @@
+# name [status]: statement   (regenerate with tools/golden.sh PROFILE --update after review)
+VECTOR_ADD_SYM [transport_required]: forall N:set, N <> Empty -> forall x y :e R :^: idx N, vector_add N x y = vector_add N y x
+DOT_SYM [transport_required]: forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A x y = dot A y x
+NORM_TRIANGLE [transport_required]: forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_norm A (vector_add A x y) <= vector_norm A x + vector_norm A y
+LINEAR_ADD [transport_required]: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall x y :e R :^: idx A, linear A B f -> f (vector_add A x y) = vector_add B (f x) (f y)
+SUBSPACE_SPAN [transport_required]: forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A (span A s)
+SPAN_MONO [transport_required]: forall A:set, A <> Empty -> forall s t c= R :^: idx A, s c= t -> span A s c= span A t
+INDEPENDENT_MONO [transport_required]: forall A:set, A <> Empty -> forall s t c= R :^: idx A, independent A t /\ s c= t -> independent A s
+DIM_SUBSET [transport_required]: forall N:set, N <> Empty -> forall s t c= R :^: idx N, s c= t -> dim N s <= dim N t
+ORTHOGONAL_SYM [transport_required]: forall A:set, A <> Empty -> forall x y :e R :^: idx A, orthogonal A x y <-> orthogonal A y x
+LINEAR_COMPOSE [transport_required]: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx C) -> linear A B f /\ linear B C g -> linear A C (fun x:set => g (f x))
+VECTOR_SUB_EQ [transport_required]: forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_sub A x y = vec A 0 <-> x = y
+NORM_EQ_0 [transport_required]: forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = 0 <-> x = vec A 0
+BASIS_INJ [transport_required]: forall N:set, N <> Empty -> forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ (j <= dimindex N /\ basis N i = basis N j))) -> i = j
+FORALL_VECTOR_1 [generalization_required]: forall A:set, forall P:set -> prop, (forall v :e A :^: idx 1, P v) <-> forall x :e A, P (vector A 1 (seq_cons x seq_nil))
+DOT_LMUL [transport_required]: forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx A, dot A (vector_mul A c x) y = c * dot A x y
+MATRIX_MUL_ASSOC [transport_required]: forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall A :e R :^: idx N :^: idx M, forall B :e R :^: idx P :^: idx N, forall C :e R :^: idx Q :^: idx P, matrix_mul M N Q A (matrix_mul N P Q B C) = matrix_mul M P Q (matrix_mul M N P A B) C
+DIST_TRIANGLE [transport_required]: forall N:set, N <> Empty -> forall x y z :e R :^: idx N, distance N (x,z) <= distance N (x,y) + distance N (y,z)

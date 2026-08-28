@@ -71,12 +71,12 @@ Admitted.
 // HOL Light: Library/iter.ml:97 / ORDER_EXISTENCE_CARD
 // Source hash: md5:df3a7d765bd87e090cdfa41aef70c409
 // Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem ORDER_EXISTENCE_CARD : forall A:set, forall R0 :e Power A :^: A, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, forall k :e omega, finite {R0 (iter_fun n f z) | n :e omega, n :e omega} /\ (finite_cardinality {R0 (iter_fun n f z) | n :e omega, n :e omega} <= k /\ (R0 z z = 1 /\ ((forall x y :e A, R0 x y = 1 -> R0 y x = 1) /\ ((forall x y z0 :e A, R0 x y = 1 /\ R0 y z0 = 1 -> R0 x z0 = 1) /\ (forall x y :e A, R0 (f x) (f y) = 1 <-> R0 x y = 1))))) -> exists d :e omega, 0 < d /\ (d <= k /\ forall n :e omega, R0 (iter_fun n f z) z = 1 <-> divides_nat d n).
+Theorem ORDER_EXISTENCE_CARD : forall A:set, forall R0 :e Power A :^: A, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, forall k :e omega, finite {R0 (iter_fun n f z) | n :e omega, n :e omega} /\ (finite_cardinality {R0 (iter_fun n f z) | n :e omega, n :e omega} <= k /\ (z :e R0 z /\ ((forall x y :e A, y :e R0 x -> x :e R0 y) /\ ((forall x y z0 :e A, y :e R0 x /\ z0 :e R0 y -> z0 :e R0 x) /\ (forall x y :e A, f y :e R0 (f x) <-> y :e R0 x))))) -> exists d :e omega, 0 < d /\ (d <= k /\ forall n :e omega, z :e R0 (iter_fun n f z) <-> divides_nat d n).
 Admitted.
 
 // HOL Light: Library/iter.ml:146 / ORDER_EXISTENCE_FINITE
 // Source hash: md5:476dd335351f1753fd4322f8dbfdb7c3
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem ORDER_EXISTENCE_FINITE : forall A:set, forall R0 :e Power A :^: A, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, finite {R0 (iter_fun n f z) | n :e omega, n :e omega} /\ (R0 z z = 1 /\ ((forall x y :e A, R0 x y = 1 -> R0 y x = 1) /\ ((forall x y z0 :e A, R0 x y = 1 /\ R0 y z0 = 1 -> R0 x z0 = 1) /\ (forall x y :e A, R0 (f x) (f y) = 1 <-> R0 x y = 1)))) -> exists d :e omega, 0 < d /\ forall n :e omega, R0 (iter_fun n f z) z = 1 <-> divides_nat d n.
+Theorem ORDER_EXISTENCE_FINITE : forall A:set, forall R0 :e Power A :^: A, forall f:set -> set, (forall x :e A, f x :e A) -> forall z :e A, finite {R0 (iter_fun n f z) | n :e omega, n :e omega} /\ (z :e R0 z /\ ((forall x y :e A, y :e R0 x -> x :e R0 y) /\ ((forall x y z0 :e A, y :e R0 x /\ z0 :e R0 y -> z0 :e R0 x) /\ (forall x y :e A, f y :e R0 (f x) <-> y :e R0 x)))) -> exists d :e omega, 0 < d /\ forall n :e omega, z :e R0 (iter_fun n f z) <-> divides_nat d n.
 Admitted.
 

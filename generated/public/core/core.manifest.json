@@ -4,6 +4,22 @@
   "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
   "auto_definitions": [
     {
+      "hol": "OUTL",
+      "target": "OUTL",
+      "hash": "b004bb4740b1f78bbe5cc401155083de",
+      "type": "set -> set -> set",
+      "definition": "fun A:set => fun B:set => choose_in (A :^: (A :+: B)) (fun c:set => forall x :e A, c (Inj0 x) = x)",
+      "notes": [ "specification-constant" ]
+    },
+    {
+      "hol": "OUTR",
+      "target": "OUTR",
+      "hash": "4ebdd36a8da5bf8bbd62fbd2dfba5dba",
+      "type": "set -> set -> set",
+      "definition": "fun A:set => fun B:set => choose_in (B :^: (A :+: B)) (fun c:set => forall y :e B, c (Inj1 y) = y)",
+      "notes": [ "specification-constant" ]
+    },
+    {
       "hol": "real_mod",
       "target": "real_mod",
       "hash": "60a0f9b5b153ba67635b3c320a044279",
@@ -23,8 +39,6 @@
   "auto_type_definitions": [],
   "auto_definition_failures": [
     [ "NUM_REP", "internal construction type ind" ],
-    [ "OUTL", "specification-style definition (choice)" ],
-    [ "OUTR", "specification-style definition (choice)" ],
     [ "_22943", "no carrier mapping for type constructor char (in char)" ],
     [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
     [
@@ -4856,7 +4870,7 @@
       "source_name": "DIMINDEX_GE_1",
       "aliases": [ "DIMINDEX_GE_1" ],
       "hash": "6330d948a4ade390789c61f4944f6861",
-      "status": "transport_required",
+      "status": "native_reuse",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 22,
@@ -30523,36 +30537,40 @@
       "statement": "forall A:set, forall P Q:set -> prop, (exists x :e A, P x) \\/ (exists x :e A, Q x) <-> exists x :e A, P x \\/ Q x"
     },
     {
-      "name": "OUTL",
+      "name": "OUTL_thm",
       "source_name": "OUTL",
       "aliases": [ "OUTL" ],
       "hash": "c31d1bada798b3a79e21ff4f54d61c5b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 771,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant OUTL : (A,B)sum->A",
-      "statement": ""
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_sum_setsum" ],
+      "notes": [ "auto:OUTL" ],
+      "var_views": { "x": "set(A)" },
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall x :e A, OUTL A B (Inj0 x) = x"
     },
     {
-      "name": "OUTR",
+      "name": "OUTR_thm",
       "source_name": "OUTR",
       "aliases": [ "OUTR" ],
       "hash": "7d0e05a613fcdc794c952d7ab6306a50",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 774,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant OUTR : (A,B)sum->B",
-      "statement": ""
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:B", "hol_sum_setsum" ],
+      "notes": [ "auto:OUTR" ],
+      "var_views": { "y": "set(B)" },
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> forall y :e B, OUTR A B (Inj1 y) = y"
     },
     {
       "name": "PAIR",

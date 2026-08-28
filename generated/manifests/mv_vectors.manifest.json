@@ -4,6 +4,22 @@
   "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
   "auto_definitions": [
     {
+      "hol": "OUTL",
+      "target": "OUTL",
+      "hash": "b004bb4740b1f78bbe5cc401155083de",
+      "type": "set -> set -> set",
+      "definition": "fun A:set => fun B:set => choose_in (A :^: (A :+: B)) (fun c:set => forall x :e A, c (Inj0 x) = x)",
+      "notes": [ "specification-constant" ]
+    },
+    {
+      "hol": "OUTR",
+      "target": "OUTR",
+      "hash": "4ebdd36a8da5bf8bbd62fbd2dfba5dba",
+      "type": "set -> set -> set",
+      "definition": "fun A:set => fun B:set => choose_in (B :^: (A :+: B)) (fun c:set => forall y :e B, c (Inj1 y) = y)",
+      "notes": [ "specification-constant" ]
+    },
+    {
       "hol": "real_mod",
       "target": "real_mod",
       "hash": "60a0f9b5b153ba67635b3c320a044279",
@@ -60,6 +76,17 @@
       "notes": [ "auto:matroid_spanning", "auto:matroid_independent" ]
     },
     {
+      "hol": "matroid_dependent",
+      "target": "matroid_dependent",
+      "hash": "a5d375aff20e4e04580406b5baafc95a",
+      "type": "set -> set",
+      "definition": "fun A:set => choose_in (Power (Power A) :^: matroid A) (fun c:set => forall m :e matroid A, forall s c= A, s :e c m <-> s c= matroid_set A m /\\ ~ matroid_independent A m s)",
+      "notes": [
+        "auto:matroid_set", "auto:matroid_independent",
+        "specification-constant"
+      ]
+    },
+    {
       "hol": "matroid_subspace",
       "target": "matroid_subspace",
       "hash": "9304d8d8ada25e2a7a652977b893985d",
@@ -76,6 +103,43 @@
       "notes": [ "auto:matroid_set", "auto:matroid_span", "auto:matroid" ]
     },
     {
+      "hol": "matroid_finite_dimensional",
+      "target": "matroid_finite_dimensional",
+      "hash": "b04fee3fdf375c040c79fac441d6fae7",
+      "type": "set -> set",
+      "definition": "fun A:set => choose_in (Power (matroid A)) (fun c:set => forall m :e matroid A, m :e c <-> exists b c= A, finite b /\\ matroid_spanning A m b)",
+      "notes": [ "auto:matroid_spanning", "specification-constant" ]
+    },
+    {
+      "hol": "matroid_dimension",
+      "target": "matroid_dimension",
+      "hash": "2d7d70f8733c2e842de9a7d429734c0c",
+      "type": "set -> set",
+      "definition": "fun A:set => choose_in (omega :^: matroid A) (fun c:set => forall m :e matroid A, c m = choose_in omega (fun n:set => forall b c= A, matroid_basis A m b -> equip b n))",
+      "notes": [ "auto:matroid_basis", "specification-constant" ]
+    },
+    {
+      "hol": "matroid_finite_dim",
+      "target": "matroid_finite_dim",
+      "hash": "b1da3ce2431dbbc50d694ded5905012a",
+      "type": "set -> set",
+      "definition": "fun A:set => choose_in (Power (Power A) :^: matroid A) (fun c:set => forall m :e matroid A, forall s c= A, s :e c m <-> s c= matroid_set A m /\\ submatroid A m s :e matroid_finite_dimensional A)",
+      "notes": [
+        "auto:matroid_set", "auto:submatroid",
+        "auto:matroid_finite_dimensional", "specification-constant"
+      ]
+    },
+    {
+      "hol": "matroid_dim",
+      "target": "matroid_dim",
+      "hash": "45e7cf6e7991df00693cb126752a4d63",
+      "type": "set -> set",
+      "definition": "fun A:set => choose_in (omega :^: Power A :^: matroid A) (fun c:set => forall m :e matroid A, forall s c= A, c m s = matroid_dimension A (submatroid A m s))",
+      "notes": [
+        "auto:submatroid", "auto:matroid_dimension", "specification-constant"
+      ]
+    },
+    {
       "hol": "is_realinterval",
       "target": "is_realinterval",
       "hash": "58bbe213df4880c68baa09ac184605fc",
@@ -90,6 +154,14 @@
       "type": "set -> set",
       "definition": "fun x:set => {x0 :e R | x 0 < x0 /\\ x0 < x 1}",
       "notes": []
+    },
+    {
+      "hol": "closed_real_interval",
+      "target": "closed_real_interval",
+      "hash": "243924d0c3ae4f6b13fbc2de9de11e69",
+      "type": "set",
+      "definition": "choose_in (Power R :^: finseq (R :*: R)) (fun c:set => forall a b :e R, c (seq_cons (a,b) seq_nil) = {x :e R | a <= x /\\ x <= b})",
+      "notes": [ "specification-constant" ]
     },
     {
       "hol": "vectorize",
@@ -122,6 +194,14 @@
       "type": "set -> set",
       "definition": "fun n:set => {m :e omega | n <= m}",
       "notes": []
+    },
+    {
+      "hol": "relative_to",
+      "target": "relative_to",
+      "hash": "9856a63b9dfc4c54948a1dcd0dadab9d",
+      "type": "set -> set",
+      "definition": "fun A:set => choose_in (Power (Power A) :^: Power A :^: Power (Power A)) (fun c:set => forall P c= Power A, forall s t c= A, t :e c P s <-> exists u c= A, u :e P /\\ s :/\\: u = t)",
+      "notes": [ "specification-constant" ]
     },
     {
       "hol": "suslin_operation",
@@ -519,6 +599,14 @@
       ]
     },
     {
+      "hol": "infnorm",
+      "target": "infnorm",
+      "hash": "0ffa75ff9218402d414ac4d76d49f094",
+      "type": "set -> set",
+      "definition": "fun N:set => choose_in (R :^: (R :^: idx N)) (fun c:set => forall x :e R :^: idx N, c x = sup {abs_SNo (x i) | i :e omega, 1 <= i /\\ i <= dimindex N})",
+      "notes": [ "specification-constant" ]
+    },
+    {
       "hol": "collinear",
       "target": "collinear",
       "hash": "9339d36e5525e7961c61d422a89c6f18",
@@ -568,8 +656,6 @@
   ],
   "auto_definition_failures": [
     [ "NUM_REP", "internal construction type ind" ],
-    [ "OUTL", "specification-style definition (choice applied to a code)" ],
-    [ "OUTR", "specification-style definition (choice applied to a code)" ],
     [ "_22943", "no carrier mapping for type constructor char (in char)" ],
     [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
     [
@@ -579,37 +665,6 @@
     [
       "_100531",
       "unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1"
-    ],
-    [
-      "matroid_dependent",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "matroid_finite_dimensional",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "matroid_dimension",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "matroid_finite_dim",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "matroid_dim",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "closed_real_interval",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "relative_to",
-      "specification-style definition (choice applied to a code)"
-    ],
-    [
-      "infnorm", "specification-style definition (choice applied to a code)"
     ]
   ],
   "mapping_files": [
@@ -2126,16 +2181,16 @@
       "source_name": "ARBITRARY_INTERSECTION_OF_RELATIVE_TO",
       "aliases": [ "ARBITRARY_INTERSECTION_OF_RELATIVE_TO" ],
       "hash": "ca11f78934027fd4c8ed614ea10176fe",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A {x :e Power A | exists u c= Power A, True /\\ (forall x0 :e u, x0 :e P) /\\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u = relative_to A {x :e Power A | exists u0 c= Power A, True /\\ (forall x0 :e u0, x0 :e relative_to A P u) /\\ {x0 :e A | forall Y :e u0, x0 :e Y} = x} u"
     },
     {
       "name": "ARBITRARY_INTERSECTION_OF_UNION",
@@ -2286,32 +2341,32 @@
       "source_name": "ARBITRARY_UNION_OF_NONEMPTY_FINITE_INTERSECTION",
       "aliases": [ "ARBITRARY_UNION_OF_NONEMPTY_FINITE_INTERSECTION" ],
       "hash": "5497805154c9de33906e671260b74d74",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall u c= Power A, forall x c= A, (exists u0 c= Power A, True /\\ (forall x0 :e u0, exists u0 c= Power A, finite u0 /\\ ~ u0 = Empty /\\ (forall x1 :e u0, x1 :e u) /\\ {x :e A | forall Y :e u0, x :e Y} = x0) /\\ Union u0 = x) <-> exists u0 c= Power A, True /\\ (forall x0 :e u0, x0 :e relative_to A {x01 :e Power A | exists u0 c= Power A, finite u0 /\\ (forall x1 :e u0, x1 :e u) /\\ {x :e A | forall Y :e u0, x :e Y} = x01} (Union u)) /\\ Union u0 = x"
     },
     {
       "name": "ARBITRARY_UNION_OF_RELATIVE_TO",
       "source_name": "ARBITRARY_UNION_OF_RELATIVE_TO",
       "aliases": [ "ARBITRARY_UNION_OF_RELATIVE_TO" ],
       "hash": "c93332108548ebf7036a037e341e28d8",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u x c= A, x :e relative_to A {x0 :e Power A | exists u c= Power A, True /\\ (forall x1 :e u, x1 :e P) /\\ Union u = x0} u <-> exists u0 c= Power A, True /\\ (forall x0 :e u0, x0 :e relative_to A P u) /\\ Union u0 = x"
     },
     {
       "name": "ARBITRARY_UNION_OF_UNION",
@@ -5681,7 +5736,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power A :^: B | (forall x :e B, forall y :e A, R0 x y = 1 -> x :e t /\\ y :e s) /\\ forall x :e B, x :e t -> exists y :e A, R0 x y = 1 /\\ forall y0 :e A, R0 x y0 = 1 -> y0 = y}"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power A :^: B | (forall x :e B, forall y :e A, y :e R0 x -> x :e t /\\ y :e s) /\\ forall x :e B, x :e t -> exists y :e A, y :e R0 x /\\ forall y0 :e A, y0 :e R0 x -> y0 = y}"
     },
     {
       "name": "CARD_EXP_GRAPH_PAIRED",
@@ -5697,7 +5752,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power (B :*: A) | (forall x :e B, forall y :e A, R0 (x,y) = 1 -> x :e t /\\ y :e s) /\\ forall x :e B, x :e t -> exists y :e A, R0 (x,y) = 1 /\\ forall y0 :e A, R0 (x,y0) = 1 -> y0 = y}"
+      "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power (B :*: A) | (forall x :e B, forall y :e A, (x,y) :e R0 -> x :e t /\\ y :e s) /\\ forall x :e B, x :e t -> exists y :e A, (x,y) :e R0 /\\ forall y0 :e A, (x,y0) :e R0 -> y0 = y}"
     },
     {
       "name": "CARD_EXP_LE_REAL",
@@ -9358,16 +9413,19 @@
       "source_name": "COMPONENT_LE_INFNORM",
       "aliases": [ "COMPONENT_LE_INFNORM" ],
       "hash": "ecaa552d404821de6b7e7ce09c6de9c2",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9471,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_dimindex", "hol_num_omega", "hol_real_R",
+        "nat_le_SNoLe"
+      ],
+      "notes": [ "auto:infnorm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,N)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> forall x :e R :^: idx N, forall i :e omega, 1 <= i /\\ i <= dimindex N -> abs_SNo (x i) <= infnorm N x"
     },
     {
       "name": "COMPONENT_LE_NORM",
@@ -10615,32 +10673,32 @@
       "source_name": "COUNTABLE_INTERSECTION_OF_RELATIVE_TO",
       "aliases": [ "COUNTABLE_INTERSECTION_OF_RELATIVE_TO" ],
       "hash": "f199dab7bbd19bef9d4c28baf9201fd2",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_countable" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A {x :e Power A | exists u c= Power A, countable u /\\ (forall x0 :e u, x0 :e P) /\\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u = relative_to A {x :e Power A | exists u0 c= Power A, countable u0 /\\ (forall x0 :e u0, x0 :e relative_to A P u) /\\ {x0 :e A | forall Y :e u0, x0 :e Y} = x} u"
     },
     {
       "name": "COUNTABLE_INTERSECTION_OF_RELATIVE_TO_ALT",
       "source_name": "COUNTABLE_INTERSECTION_OF_RELATIVE_TO_ALT",
       "aliases": [ "COUNTABLE_INTERSECTION_OF_RELATIVE_TO_ALT" ],
       "hash": "40c7cfe407bb4edcea4ce637e22b07f7",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_countable" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall u s c= A, P u -> (s :e relative_to A {x :e Power A | exists u c= Power A, countable u /\\ (forall c :e u, P c) /\\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u <-> (exists u c= Power A, countable u /\\ (forall c :e u, P c) /\\ {x :e A | forall Y :e u, x :e Y} = s) /\\ s c= u)"
     },
     {
       "name": "COUNTABLE_INTERSECTION_OF_UNION",
@@ -11224,16 +11282,16 @@
       "source_name": "COUNTABLE_UNION_OF_RELATIVE_TO",
       "aliases": [ "COUNTABLE_UNION_OF_RELATIVE_TO" ],
       "hash": "176191deec6a99bb6a56ea7865d144a5",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_countable" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u x c= A, x :e relative_to A {x0 :e Power A | exists u c= Power A, countable u /\\ (forall x1 :e u, x1 :e P) /\\ Union u = x0} u <-> exists u0 c= Power A, countable u0 /\\ (forall x0 :e u0, x0 :e relative_to A P u) /\\ Union u0 = x"
     },
     {
       "name": "COUNTABLE_UNION_OF_UNION",
@@ -12336,7 +12394,7 @@
       "source_name": "DIMINDEX_GE_1",
       "aliases": [ "DIMINDEX_GE_1" ],
       "hash": "6330d948a4ade390789c61f4944f6861",
-      "status": "transport_required",
+      "status": "native_reuse",
       "shard": "cart",
       "src_file": "cart.ml",
       "src_line": 22,
@@ -16234,16 +16292,19 @@
       "source_name": "EMPTY_AS_REAL_INTERVAL",
       "aliases": [ "EMPTY_AS_REAL_INTERVAL" ],
       "hash": "02ed7d225f7e2c6ab830a6226b6e1e98",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_list_finseq", "hol_num_omega", "hol_prod_setprod", "hol_real_R",
+        "omega_Subq_R"
+      ],
+      "notes": [ "auto:closed_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "Empty = closed_real_interval (seq_cons (1,0) seq_nil)"
     },
     {
       "name": "EMPTY_DELETE",
@@ -16397,16 +16458,16 @@
       "source_name": "ENDS_IN_REAL_INTERVAL",
       "aliases": [ "ENDS_IN_REAL_INTERVAL" ],
       "hash": "f748a83c0e7a9a67e69d8e1d2a855083",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "(forall a b :e R, a :e closed_real_interval (seq_cons (a,b) seq_nil) <-> ~ closed_real_interval (seq_cons (a,b) seq_nil) = Empty) /\\ ((forall a b :e R, b :e closed_real_interval (seq_cons (a,b) seq_nil) <-> ~ closed_real_interval (seq_cons (a,b) seq_nil) = Empty) /\\ ((forall a b :e R, ~ a :e open_real_interval (a,b)) /\\ forall a b :e R, ~ b :e open_real_interval (a,b)))"
     },
     {
       "name": "ENDS_IN_UNIT_INTERVAL",
@@ -16432,16 +16493,19 @@
       "source_name": "ENDS_IN_UNIT_REAL_INTERVAL",
       "aliases": [ "ENDS_IN_UNIT_REAL_INTERVAL" ],
       "hash": "efb14126d5c4e386d794328c5cd2c942",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_list_finseq", "hol_num_omega", "hol_prod_setprod", "hol_real_R",
+        "omega_Subq_R"
+      ],
+      "notes": [ "auto:closed_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "0 :e closed_real_interval (seq_cons (0,1) seq_nil) /\\ 1 :e closed_real_interval (seq_cons (0,1) seq_nil)"
     },
     {
       "name": "EPSILON_DELTA_MINIMAL",
@@ -16933,64 +16997,72 @@
       "source_name": "EUCLIDEAN_MATROID_DIM",
       "aliases": [ "EUCLIDEAN_MATROID_DIM" ],
       "hash": "fe99ffa0d29d8b695842fe632d3ccb69",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 5332,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_num_omega", "hol_real_R",
+        "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:dim", "auto:euclidean_matroid", "auto:matroid_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : (real,N)cart matroid->((real,N)cart->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> forall x c= R :^: idx N, matroid_dim (R :^: idx N) (euclidean_matroid N) x = dim N x"
     },
     {
       "name": "EUCLIDEAN_MATROID_DIMENSION",
       "source_name": "EUCLIDEAN_MATROID_DIMENSION",
       "aliases": [ "EUCLIDEAN_MATROID_DIMENSION" ],
       "hash": "7912355767ffa35fa374c85530165af0",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 5314,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_dimindex", "hol_num_omega", "hol_real_R",
+        "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:euclidean_matroid", "auto:matroid_dimension" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : (real,N)cart matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> matroid_dimension (R :^: idx N) (euclidean_matroid N) = dimindex N"
     },
     {
       "name": "EUCLIDEAN_MATROID_FINITE_DIM",
       "source_name": "EUCLIDEAN_MATROID_FINITE_DIM",
       "aliases": [ "EUCLIDEAN_MATROID_FINITE_DIM" ],
       "hash": "c1cfed7e92f5dbda2fa373edf604ff97",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 5321,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R", "hol_typedef_matroid" ],
+      "notes": [ "auto:euclidean_matroid", "auto:matroid_finite_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : (real,N)cart matroid->((real,N)cart->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> forall s c= R :^: idx N, s :e matroid_finite_dim (R :^: idx N) (euclidean_matroid N)"
     },
     {
       "name": "EUCLIDEAN_MATROID_FINITE_DIMENSIONAL",
       "source_name": "EUCLIDEAN_MATROID_FINITE_DIMENSIONAL",
       "aliases": [ "EUCLIDEAN_MATROID_FINITE_DIMENSIONAL" ],
       "hash": "7f5971751e0d819b185d6ae6affa3749",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 5308,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:euclidean_matroid", "auto:matroid_finite_dimensional"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : (real,N)cart matroid->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> euclidean_matroid N :e matroid_finite_dimensional (R :^: idx N)"
     },
     {
       "name": "EUCLIDEAN_MATROID_INDEPENDENT",
@@ -19786,32 +19858,34 @@
       "source_name": "FINITE_IMP_MATROID_FINITE_DIM",
       "aliases": [ "FINITE_IMP_MATROID_FINITE_DIM" ],
       "hash": "ce2c3b373a342bc3c99e04f4c7643342",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1186,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, finite s /\\ s c= matroid_set A m -> s :e matroid_finite_dim A m"
     },
     {
       "name": "FINITE_IMP_MATROID_FINITE_DIM_SPAN",
       "source_name": "FINITE_IMP_MATROID_FINITE_DIM_SPAN",
       "aliases": [ "FINITE_IMP_MATROID_FINITE_DIM_SPAN" ],
       "hash": "6f37817744a8aed9a1ceee0033d76f89",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1463,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, finite s /\\ s c= matroid_set A m -> {x :e A | matroid_span A m s x} :e matroid_finite_dim A m"
     },
     {
       "name": "FINITE_INDEX_INJ",
@@ -20129,32 +20203,32 @@
       "source_name": "FINITE_INTERSECTION_OF_RELATIVE_TO",
       "aliases": [ "FINITE_INTERSECTION_OF_RELATIVE_TO" ],
       "hash": "cbd0aacd3f9b9a366b1401533ef5a013",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A {x :e Power A | exists u c= Power A, finite u /\\ (forall x0 :e u, x0 :e P) /\\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u = relative_to A {x :e Power A | exists u0 c= Power A, finite u0 /\\ (forall x0 :e u0, x0 :e relative_to A P u) /\\ {x0 :e A | forall Y :e u0, x0 :e Y} = x} u"
     },
     {
       "name": "FINITE_INTERSECTION_OF_RELATIVE_TO_ALT",
       "source_name": "FINITE_INTERSECTION_OF_RELATIVE_TO_ALT",
       "aliases": [ "FINITE_INTERSECTION_OF_RELATIVE_TO_ALT" ],
       "hash": "ff6de74e876b774c5a70cfeb1ef84f03",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall u s c= A, P u -> (s :e relative_to A {x :e Power A | exists u c= Power A, finite u /\\ (forall c :e u, P c) /\\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u <-> (exists u c= Power A, finite u /\\ (forall c :e u, P c) /\\ {x :e A | forall Y :e u, x :e Y} = s) /\\ s c= u)"
     },
     {
       "name": "FINITE_INTERSECTION_OF_UNION",
@@ -20996,16 +21070,16 @@
       "source_name": "FINITE_UNION_OF_RELATIVE_TO",
       "aliases": [ "FINITE_UNION_OF_RELATIVE_TO" ],
       "hash": "d2e414dea5fb1d5aeb783fe988da920a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u x c= A, x :e relative_to A {x0 :e Power A | exists u c= Power A, finite u /\\ (forall x1 :e u, x1 :e P) /\\ Union u = x0} u <-> exists u0 c= Power A, finite u0 /\\ (forall x0 :e u0, x0 :e relative_to A P u) /\\ Union u0 = x"
     },
     {
       "name": "FINITE_UNION_OF_UNION",
@@ -22531,16 +22605,20 @@
       "source_name": "FORALL_RELATIVE_TO",
       "aliases": [ "FORALL_RELATIVE_TO" ],
       "hash": "5b16fa4dc7082ba5827b4ff050206460",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant relative_to : ((?203444->bool)->bool)->(?203444->bool)->(?203444->bool)->bool",
-      "statement": ""
+      "notes": [ "auto:relative_to" ],
+      "var_views": {
+        "P": "subset(Power A)",
+        "u": "subset(A)",
+        "Q": "metapred(Power A)"
+      },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, forall Q:set -> prop, (forall s c= A, s :e relative_to A P u -> Q s) <-> forall s c= A, s :e P -> Q (u :/\\: s)"
     },
     {
       "name": "FORALL_SIMP",
@@ -27310,128 +27388,136 @@
       "source_name": "INFNORM_0",
       "aliases": [ "INFNORM_0" ],
       "hash": "84e17ec927d15e4a366036e86bb00790",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9447,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_num_omega", "hol_real_R", "omega_Subq_R"
+      ],
+      "notes": [ "auto:infnorm", "auto:vec" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272291)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> infnorm A (vec A 0) = 0"
     },
     {
       "name": "INFNORM_EQ_0",
       "source_name": "INFNORM_EQ_0",
       "aliases": [ "INFNORM_EQ_0" ],
       "hash": "374f59a39c723ee18f9d2f84d0e5ce13",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9440,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_num_omega", "hol_real_R", "omega_Subq_R"
+      ],
+      "notes": [ "auto:infnorm", "auto:vec" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272283)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A x = 0 <-> x = vec A 0"
     },
     {
       "name": "INFNORM_LE_NORM",
       "source_name": "INFNORM_LE_NORM",
       "aliases": [ "INFNORM_LE_NORM" ],
       "hash": "5de4bcae82a62199bdced5b2d4d0f306",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9509,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:infnorm", "auto:vector_norm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272574)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A x <= vector_norm A x"
     },
     {
       "name": "INFNORM_MUL",
       "source_name": "INFNORM_MUL",
       "aliases": [ "INFNORM_MUL" ],
       "hash": "07b44a57d2615d1721777e257cba3ead",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9487,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:%", "auto:infnorm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,N)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> forall a :e R, forall x :e R :^: idx N, infnorm N (vector_mul N a x) = abs_SNo a * infnorm N x"
     },
     {
       "name": "INFNORM_MUL_LEMMA",
       "source_name": "INFNORM_MUL_LEMMA",
       "aliases": [ "INFNORM_MUL_LEMMA" ],
       "hash": "65e68821b5b2fbc9339a2ee586bbbbd9",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9479,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:%", "auto:infnorm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272490)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall a :e R, forall x :e R :^: idx A, infnorm A (vector_mul A a x) <= abs_SNo a * infnorm A x"
     },
     {
       "name": "INFNORM_NEG",
       "source_name": "INFNORM_NEG",
       "aliases": [ "INFNORM_NEG" ],
       "hash": "18b150b249afa6a470ae192f79fa8cfe",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9451,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:infnorm", "auto:vector_neg" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272310)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A (vector_neg A x) = infnorm A x"
     },
     {
       "name": "INFNORM_POS_LE",
       "source_name": "INFNORM_POS_LE",
       "aliases": [ "INFNORM_POS_LE" ],
       "hash": "b39caf2020af3dafc185ce92fb86d2f0",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9420,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_num_omega", "hol_real_R", "omega_Subq_R"
+      ],
+      "notes": [ "auto:infnorm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272188)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 <= infnorm A x"
     },
     {
       "name": "INFNORM_POS_LT",
       "source_name": "INFNORM_POS_LT",
       "aliases": [ "INFNORM_POS_LT" ],
       "hash": "e0260f6865c4fbc4d612807385204601",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9501,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_num_omega", "hol_real_R", "omega_Subq_R"
+      ],
+      "notes": [ "auto:infnorm", "auto:vec" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272564)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 < infnorm A x <-> ~ x = vec A 0"
     },
     {
       "name": "INFNORM_SET_IMAGE",
@@ -27476,32 +27562,32 @@
       "source_name": "INFNORM_SUB",
       "aliases": [ "INFNORM_SUB" ],
       "hash": "968f79aa8acbcb7ef0f25995caa653b5",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9457,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:infnorm", "auto:vector_sub" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272341)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x y :e R :^: idx A, infnorm A (vector_sub A x y) = infnorm A (vector_sub A y x)"
     },
     {
       "name": "INFNORM_TRIANGLE",
       "source_name": "INFNORM_TRIANGLE",
       "aliases": [ "INFNORM_TRIANGLE" ],
       "hash": "3fca9549c9ecfcf6ccc69c80d559109f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9427,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:infnorm", "auto:vector_add" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272246)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x y :e R :^: idx A, infnorm A (vector_add A x y) <= infnorm A x + infnorm A y"
     },
     {
       "name": "INF_APPROACH",
@@ -29418,16 +29504,16 @@
       "source_name": "INTER_REAL_INTERVAL",
       "aliases": [ "INTER_REAL_INTERVAL" ],
       "hash": "6b393d983f3404b82c6f05f4f1fd67ef",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b c d :e R, closed_real_interval (seq_cons (a,b) seq_nil) :/\\: closed_real_interval (seq_cons (c,d) seq_nil) = closed_real_interval (seq_cons (if a <= c then c else a,if b <= d then b else d) seq_nil)"
     },
     {
       "name": "INTER_RESTRICT",
@@ -36593,32 +36679,32 @@
       "source_name": "IN_REAL_INTERVAL",
       "aliases": [ "IN_REAL_INTERVAL" ],
       "hash": "f83270a98680b8c6c67932308385f317",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b x :e R, (x :e closed_real_interval (seq_cons (a,b) seq_nil) <-> a <= x /\\ x <= b) /\\ (x :e open_real_interval (a,b) <-> a < x /\\ x < b)"
     },
     {
       "name": "IN_REAL_INTERVAL_REFLECT",
       "source_name": "IN_REAL_INTERVAL_REFLECT",
       "aliases": [ "IN_REAL_INTERVAL_REFLECT" ],
       "hash": "ee925f07b78f3022903130de61559480",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "(forall a b x :e R, - x :e closed_real_interval (seq_cons (- b,- a) seq_nil) <-> x :e closed_real_interval (seq_cons (a,b) seq_nil)) /\\ forall a b x :e R, - x :e open_real_interval (- b,- a) <-> x :e open_real_interval (a,b)"
     },
     {
       "name": "IN_REST",
@@ -37191,16 +37277,16 @@
       "source_name": "IS_REALINTERVAL_CONTAINS_INTERVAL",
       "aliases": [ "IS_REALINTERVAL_CONTAINS_INTERVAL" ],
       "hash": "4fe58c5161bad3d3fbaa8736c710ee7a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:is_realinterval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall s c= R, forall a b :e R, is_realinterval s /\\ (a :e s /\\ b :e s) -> closed_real_interval (seq_cons (a,b) seq_nil) c= s"
     },
     {
       "name": "IS_REALINTERVAL_EMPTY",
@@ -37239,16 +37325,19 @@
       "source_name": "IS_REALINTERVAL_INTERVAL",
       "aliases": [ "IS_REALINTERVAL_INTERVAL" ],
       "hash": "082efb27426085d67be94b0760d647b8",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [
+        "auto:closed_real_interval", "auto:is_realinterval",
+        "auto:open_real_interval"
+      ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b :e R, is_realinterval (open_real_interval (a,b)) /\\ is_realinterval (closed_real_interval (seq_cons (a,b) seq_nil))"
     },
     {
       "name": "IS_REALINTERVAL_SHRINK",
@@ -45078,32 +45167,42 @@
       "source_name": "MATROID_BASIS_EXISTS_DIM",
       "aliases": [ "MATROID_BASIS_EXISTS_DIM" ],
       "hash": "fc25fecfe5d319d7d49c3cc42f7b35a0",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1315,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\\ exists b c= A, equip b (matroid_dim A m s) /\\ (b c= {x :e A | matroid_span A m s x} /\\ (matroid_independent A m b /\\ forall x :e A, matroid_span A m b x <-> matroid_span A m s x))"
     },
     {
       "name": "MATROID_BASIS_EXISTS_DIMENSION",
       "source_name": "MATROID_BASIS_EXISTS_DIMENSION",
       "aliases": [ "MATROID_BASIS_EXISTS_DIMENSION" ],
       "hash": "68f5f01703f349329f562ea1d17ae0d5",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1308,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_basis", "auto:matroid_dimension",
+        "auto:matroid_finite_dimensional"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, m :e matroid_finite_dimensional A <-> exists b c= A, equip b (matroid_dimension A m) /\\ matroid_basis A m b"
     },
     {
       "name": "MATROID_BASIS_IMP_SUBSET",
@@ -45147,672 +45246,853 @@
       "source_name": "MATROID_CHOOSE_SUBSET",
       "aliases": [ "MATROID_CHOOSE_SUBSET" ],
       "hash": "91ce06484e9e434d9e5fe4e3c76384ee",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1612,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid",
+        "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent", "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, forall n :e omega, s c= matroid_set A m /\\ (s :e matroid_finite_dim A m -> n <= matroid_dim A m s) -> exists t c= A, t c= s /\\ (matroid_independent A m t /\\ equip t n)"
     },
     {
       "name": "MATROID_CHOOSE_SUBSPACE",
       "source_name": "MATROID_CHOOSE_SUBSPACE",
       "aliases": [ "MATROID_CHOOSE_SUBSPACE" ],
       "hash": "bea51d4a6b9351b8029db32f8e5e2d4b",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1625,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid", "nat_le_SNoLe" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span", "auto:matroid_subspace"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, forall n :e omega, s c= matroid_set A m /\\ (s :e matroid_finite_dim A m -> n <= matroid_dim A m s) -> exists t c= A, matroid_subspace A m t /\\ (t c= {x :e A | matroid_span A m s x} /\\ (t :e matroid_finite_dim A m /\\ matroid_dim A m t = n))"
     },
     {
       "name": "MATROID_CONTAINS_BASIS_DIM",
       "source_name": "MATROID_CONTAINS_BASIS_DIM",
       "aliases": [ "MATROID_CONTAINS_BASIS_DIM" ],
       "hash": "da40722a86545fd60475e10622f6f49b",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1328,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\\ exists b c= A, equip b (matroid_dim A m s) /\\ (b c= s /\\ (matroid_independent A m b /\\ forall x :e A, matroid_span A m b x <-> matroid_span A m s x))"
     },
     {
       "name": "MATROID_DEPENDENT",
       "source_name": "MATROID_DEPENDENT",
       "aliases": [ "MATROID_DEPENDENT" ],
       "hash": "b01d00eef6be9effba0ce16d05f4a462",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 278,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dependent", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_dependent A m <-> s c= matroid_set A m /\\ exists x :e A, x :e s /\\ x :e {x0 :e A | matroid_span A m (s :\\: {x}) x0}"
     },
     {
       "name": "MATROID_DEPENDENT_FINITARY",
       "source_name": "MATROID_DEPENDENT_FINITARY",
       "aliases": [ "MATROID_DEPENDENT_FINITARY" ],
       "hash": "9d0d49e8ff94b4689586b4d664c76ef8",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 324,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_dependent", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_dependent A m <-> s c= matroid_set A m /\\ exists t c= A, finite t /\\ (t c= s /\\ t :e matroid_dependent A m)"
     },
     {
       "name": "MATROID_DEPENDENT_FINITARY_MINIMAL",
       "source_name": "MATROID_DEPENDENT_FINITARY_MINIMAL",
       "aliases": [ "MATROID_DEPENDENT_FINITARY_MINIMAL" ],
       "hash": "538e89f21bad7442602cd1bd7a759841",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 768,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_dependent", "auto:matroid_independent" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_dependent A m -> exists t c= A, finite t /\\ (t c= s /\\ (t :e matroid_dependent A m /\\ forall t' c= A, t' c= t /\\ t' <> t -> matroid_independent A m t'))"
     },
     {
       "name": "MATROID_DEPENDENT_IMP_SUBSET",
       "source_name": "MATROID_DEPENDENT_IMP_SUBSET",
       "aliases": [ "MATROID_DEPENDENT_IMP_SUBSET" ],
       "hash": "4249ae1defa86fce636f1ea3a2f71c38",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 252,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_dependent", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, s :e matroid_dependent A m -> s c= matroid_set A m"
     },
     {
       "name": "MATROID_DIMENSION_ALT",
       "source_name": "MATROID_DIMENSION_ALT",
       "aliases": [ "MATROID_DIMENSION_ALT" ],
       "hash": "7448e7e1c8d5aaab9d3e56d0c7ec9bf1",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1228,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_has_size_equip", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:matroid_basis", "auto:matroid_dimension" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, matroid_dimension A m = choose_in omega (fun n:set => exists b c= A, matroid_basis A m b /\\ equip b n)"
     },
     {
       "name": "MATROID_DIMENSION_EQ_CARD",
       "source_name": "MATROID_DIMENSION_EQ_CARD",
       "aliases": [ "MATROID_DIMENSION_EQ_CARD" ],
       "hash": "40750e520ba551fa4db9affda5cb4d59",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1267,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:matroid_basis", "auto:matroid_dimension" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, matroid_basis A m b /\\ finite b -> matroid_dimension A m = finite_cardinality b"
     },
     {
       "name": "MATROID_DIMENSION_FINITE_LE",
       "source_name": "MATROID_DIMENSION_FINITE_LE",
       "aliases": [ "MATROID_DIMENSION_FINITE_LE" ],
       "hash": "42172e65e927c197e07feb5f39731519",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1369,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dimension", "auto:matroid_finite_dimensional",
+        "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, forall n :e omega, b c= matroid_set A m /\\ (matroid_set A m c= {x :e A | matroid_span A m b x} /\\ (finite b /\\ finite_cardinality b <= n)) -> m :e matroid_finite_dimensional A /\\ matroid_dimension A m <= n"
     },
     {
       "name": "MATROID_DIMENSION_GE",
       "source_name": "MATROID_DIMENSION_GE",
       "aliases": [ "MATROID_DIMENSION_GE" ],
       "hash": "658479d68f19d3f7f94227fca89e582f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1421,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dimension", "auto:matroid_finite_dimensional",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, forall n :e omega, m :e matroid_finite_dimensional A /\\ (matroid_independent A m b /\\ n <= finite_cardinality b) -> n <= matroid_dimension A m"
     },
     {
       "name": "MATROID_DIMENSION_GE_CARD",
       "source_name": "MATROID_DIMENSION_GE_CARD",
       "aliases": [ "MATROID_DIMENSION_GE_CARD" ],
       "hash": "739f39a06b76910e7788ffaece2256d7",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1429,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dimension", "auto:matroid_finite_dimensional",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, m :e matroid_finite_dimensional A /\\ matroid_independent A m b -> finite_cardinality b <= matroid_dimension A m"
     },
     {
       "name": "MATROID_DIMENSION_GE_FINITE_CARD",
       "source_name": "MATROID_DIMENSION_GE_FINITE_CARD",
       "aliases": [ "MATROID_DIMENSION_GE_FINITE_CARD" ],
       "hash": "559fce0977b2abcf9f0421b767784c50",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1412,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dimension", "auto:matroid_finite_dimensional",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, m :e matroid_finite_dimensional A /\\ matroid_independent A m b -> finite b /\\ finite_cardinality b <= matroid_dimension A m"
     },
     {
       "name": "MATROID_DIMENSION_LE",
       "source_name": "MATROID_DIMENSION_LE",
       "aliases": [ "MATROID_DIMENSION_LE" ],
       "hash": "e6cf2240ce07b1c1699387d05f10cbf2",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1354,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dimension", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, forall n :e omega, b c= matroid_set A m /\\ (matroid_set A m c= {x :e A | matroid_span A m b x} /\\ (finite b /\\ finite_cardinality b <= n)) -> matroid_dimension A m <= n"
     },
     {
       "name": "MATROID_DIMENSION_UNIQUE",
       "source_name": "MATROID_DIMENSION_UNIQUE",
       "aliases": [ "MATROID_DIMENSION_UNIQUE" ],
       "hash": "0a9ef9a89c5f122475746702b5983aca",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1261,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:matroid_basis", "auto:matroid_dimension" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, forall n :e omega, matroid_basis A m b /\\ equip b n -> matroid_dimension A m = n"
     },
     {
       "name": "MATROID_DIM_ALT",
       "source_name": "MATROID_DIM_ALT",
       "aliases": [ "MATROID_DIM_ALT" ],
       "hash": "c3fd25a795e3a37d2277e89e4e523ab3",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1249,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_has_size_equip", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_independent", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s c= matroid_set A m -> matroid_dim A m s = choose_in omega (fun n:set => exists b c= A, b c= s /\\ (matroid_independent A m b /\\ (s c= {x :e A | matroid_span A m b x} /\\ equip b n)))"
     },
     {
       "name": "MATROID_DIM_BASIS",
       "source_name": "MATROID_DIM_BASIS",
       "aliases": [ "MATROID_DIM_BASIS" ],
       "hash": "d79a80d50b95c3deba4d176e0ceee856",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1235,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_has_size_equip", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_independent", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s c= matroid_set A m -> matroid_dim A m s = choose_in omega (fun n:set => exists b c= A, b c= s /\\ (matroid_independent A m b /\\ ((forall x :e A, matroid_span A m b x <-> matroid_span A m s x) /\\ equip b n)))"
     },
     {
       "name": "MATROID_DIM_EMPTY",
       "source_name": "MATROID_DIM_EMPTY",
       "aliases": [ "MATROID_DIM_EMPTY" ],
       "hash": "fe6d0b4f5151fa27eb3f0415fa63fc4a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1500,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, matroid_dim A m Empty = 0"
     },
     {
       "name": "MATROID_DIM_EQ_CARD",
       "source_name": "MATROID_DIM_EQ_CARD",
       "aliases": [ "MATROID_DIM_EQ_CARD" ],
       "hash": "498d7023c2161f630b5d07aa8ab8273d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1347,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:matroid_dim", "auto:matroid_independent" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, finite b /\\ matroid_independent A m b -> matroid_dim A m b = finite_cardinality b"
     },
     {
       "name": "MATROID_DIM_EQ_CARD_GEN",
       "source_name": "MATROID_DIM_EQ_CARD_GEN",
       "aliases": [ "MATROID_DIM_EQ_CARD_GEN" ],
       "hash": "836d97ac78a4bfd490e2a10d824d7b8f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1340,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_independent", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, b c= s /\\ (finite b /\\ (matroid_independent A m b /\\ s c= {x :e A | matroid_span A m b x})) -> matroid_dim A m s = finite_cardinality b"
     },
     {
       "name": "MATROID_DIM_EQ_FINITE_CARD_EQ",
       "source_name": "MATROID_DIM_EQ_FINITE_CARD_EQ",
       "aliases": [ "MATROID_DIM_EQ_FINITE_CARD_EQ" ],
       "hash": "c2fd96a20022a70e435773661c4ad75c",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1475,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent", "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s c= matroid_set A m /\\ (finite s /\\ matroid_dim A m s = finite_cardinality s) <-> s :e matroid_finite_dim A m /\\ matroid_independent A m s"
     },
     {
       "name": "MATROID_DIM_EQ_SPAN",
       "source_name": "MATROID_DIM_EQ_SPAN",
       "aliases": [ "MATROID_DIM_EQ_SPAN" ],
       "hash": "4ba0786f69069b2d6e1ae43f9cb38299",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1605,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "empty_case:A", "hol_num_omega", "hol_typedef_matroid",
+        "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s t c= A, t :e matroid_finite_dim A m /\\ (s c= t /\\ matroid_dim A m t <= matroid_dim A m s) -> forall x :e A, matroid_span A m s x <-> matroid_span A m t x"
     },
     {
       "name": "MATROID_DIM_FINITE_LE",
       "source_name": "MATROID_DIM_FINITE_LE",
       "aliases": [ "MATROID_DIM_FINITE_LE" ],
       "hash": "1da0572f12726e46474214c2cf3ce505",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1393,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, forall n :e omega, finite b /\\ (finite_cardinality b <= n /\\ (b c= matroid_set A m /\\ s c= {x :e A | matroid_span A m b x})) -> s :e matroid_finite_dim A m /\\ matroid_dim A m s <= n"
     },
     {
       "name": "MATROID_DIM_GE",
       "source_name": "MATROID_DIM_GE",
       "aliases": [ "MATROID_DIM_GE" ],
       "hash": "f276d420264179346e2b0a84638ad2c7",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1444,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, forall n :e omega, s :e matroid_finite_dim A m /\\ (matroid_independent A m b /\\ (b c= s /\\ n <= finite_cardinality b)) -> n <= matroid_dim A m s"
     },
     {
       "name": "MATROID_DIM_GE_CARD",
       "source_name": "MATROID_DIM_GE_CARD",
       "aliases": [ "MATROID_DIM_GE_CARD" ],
       "hash": "1843c2e1a69eda4679f66e4cc856f19a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1457,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m /\\ matroid_independent A m s -> finite_cardinality s <= matroid_dim A m s"
     },
     {
       "name": "MATROID_DIM_GE_CARD_GEN",
       "source_name": "MATROID_DIM_GE_CARD_GEN",
       "aliases": [ "MATROID_DIM_GE_CARD_GEN" ],
       "hash": "abfb02cd67984e6b03f76ea8e5b40ab8",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1451,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, s :e matroid_finite_dim A m /\\ (matroid_independent A m b /\\ b c= s) -> finite_cardinality b <= matroid_dim A m s"
     },
     {
       "name": "MATROID_DIM_GE_FINITE_CARD",
       "source_name": "MATROID_DIM_GE_FINITE_CARD",
       "aliases": [ "MATROID_DIM_GE_FINITE_CARD" ],
       "hash": "b522137ae705e15f232a046515928600",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1435,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, s :e matroid_finite_dim A m /\\ (matroid_independent A m b /\\ b c= s) -> finite b /\\ finite_cardinality b <= matroid_dim A m s"
     },
     {
       "name": "MATROID_DIM_GE_FINITE_CARD_EQ",
       "source_name": "MATROID_DIM_GE_FINITE_CARD_EQ",
       "aliases": [ "MATROID_DIM_GE_FINITE_CARD_EQ" ],
       "hash": "b44484842bb553698d6fb08a1b755552",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1475,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim",
+        "auto:matroid_independent", "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s c= matroid_set A m /\\ (finite s /\\ finite_cardinality s <= matroid_dim A m s) <-> s :e matroid_finite_dim A m /\\ matroid_independent A m s"
     },
     {
       "name": "MATROID_DIM_INSERT",
       "source_name": "MATROID_DIM_INSERT",
       "aliases": [ "MATROID_DIM_INSERT" ],
       "hash": "c294b11a21831f523e2ffead7299984b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1507,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "add_nat_add_SNo", "empty_case:A", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, forall x :e A, s :e matroid_finite_dim A m /\\ x :e matroid_set A m -> matroid_dim A m (SetAdjoin s x) = if x :e {x0 :e A | matroid_span A m s x0} then matroid_dim A m s else matroid_dim A m s + 1"
     },
     {
       "name": "MATROID_DIM_LE",
       "source_name": "MATROID_DIM_LE",
       "aliases": [ "MATROID_DIM_LE" ],
       "hash": "2733ccda47423b7a157f8d8f6efe2112",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1376,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, forall n :e omega, finite b /\\ (finite_cardinality b <= n /\\ (b c= matroid_set A m /\\ s c= {x :e A | matroid_span A m b x})) -> matroid_dim A m s <= n"
     },
     {
       "name": "MATROID_DIM_LE_CARD",
       "source_name": "MATROID_DIM_LE_CARD",
       "aliases": [ "MATROID_DIM_LE_CARD" ],
       "hash": "b0c54183422036d12248fc8a67400122",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1407,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [ "auto:matroid_dim", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, finite s /\\ s c= matroid_set A m -> matroid_dim A m s <= finite_cardinality s"
     },
     {
       "name": "MATROID_DIM_LE_CARD_GEN",
       "source_name": "MATROID_DIM_LE_CARD_GEN",
       "aliases": [ "MATROID_DIM_LE_CARD_GEN" ],
       "hash": "9ce1b8544fb45640c70b513725df7d86",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1400,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_card_finite_cardinality", "hol_finite_finite", "hol_num_omega",
+        "hol_typedef_matroid", "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, finite b /\\ (b c= matroid_set A m /\\ s c= {x :e A | matroid_span A m b x}) -> matroid_dim A m s <= finite_cardinality b"
     },
     {
       "name": "MATROID_DIM_SET",
       "source_name": "MATROID_DIM_SET",
       "aliases": [ "MATROID_DIM_SET" ],
       "hash": "42c5e4f398bbac08ea4fd3a300e3cb15",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1082,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_dimension", "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, matroid_dim A m (matroid_set A m) = matroid_dimension A m"
     },
     {
       "name": "MATROID_DIM_SPAN",
       "source_name": "MATROID_DIM_SPAN",
       "aliases": [ "MATROID_DIM_SPAN" ],
       "hash": "5f94bb70e8e0dc0ad67e69a5ae730f96",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1101,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_num_omega", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, s c= matroid_set A m -> matroid_dim A m {x :e A | matroid_span A m s x} = matroid_dim A m s"
     },
     {
       "name": "MATROID_DIM_SPAN_EQ",
       "source_name": "MATROID_DIM_SPAN_EQ",
       "aliases": [ "MATROID_DIM_SPAN_EQ" ],
       "hash": "2ccc8c018f27032c5e1c5df2d5bfad0e",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1597,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_num_omega", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s t c= A, s c= matroid_set A m /\\ (t :e matroid_finite_dim A m /\\ ({x :e A | matroid_span A m s x} c= {x :e A | matroid_span A m t x} /\\ matroid_dim A m s = matroid_dim A m t)) -> forall x :e A, matroid_span A m s x <-> matroid_span A m t x"
     },
     {
       "name": "MATROID_DIM_SPAN_EQ_GEN",
       "source_name": "MATROID_DIM_SPAN_EQ_GEN",
       "aliases": [ "MATROID_DIM_SPAN_EQ_GEN" ],
       "hash": "c330a129ba0d2f04798581fb9a412f59",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1589,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [
+        "empty_case:A", "hol_num_omega", "hol_typedef_matroid",
+        "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s t c= A, s c= matroid_set A m /\\ (t :e matroid_finite_dim A m /\\ ({x :e A | matroid_span A m s x} c= {x :e A | matroid_span A m t x} /\\ matroid_dim A m t <= matroid_dim A m s)) -> forall x :e A, matroid_span A m s x <-> matroid_span A m t x"
     },
     {
       "name": "MATROID_DIM_SPAN_PSUBSET",
       "source_name": "MATROID_DIM_SPAN_PSUBSET",
       "aliases": [ "MATROID_DIM_SPAN_PSUBSET" ],
       "hash": "dde69cae6437986072e417d96c1dc4c7",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1565,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid", "nat_lt_SNoLt" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, s c= matroid_set A m /\\ ({x :e A | matroid_span A m s x} c= {x :e A | matroid_span A m t x} /\\ {x :e A | matroid_span A m s x} <> {x :e A | matroid_span A m t x} /\\ t :e matroid_finite_dim A m) -> matroid_dim A m s < matroid_dim A m t"
     },
     {
       "name": "MATROID_DIM_SPAN_SUBSET",
       "source_name": "MATROID_DIM_SPAN_SUBSET",
       "aliases": [ "MATROID_DIM_SPAN_SUBSET" ],
       "hash": "902cdf5d56a9b589814b7b76ff3fc134",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1556,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid", "nat_le_SNoLe" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, s c= matroid_set A m /\\ ({x :e A | matroid_span A m s x} c= {x :e A | matroid_span A m t x} /\\ t :e matroid_finite_dim A m) -> matroid_dim A m s <= matroid_dim A m t"
     },
     {
       "name": "MATROID_DIM_SUBSET",
       "source_name": "MATROID_DIM_SUBSET",
       "aliases": [ "MATROID_DIM_SUBSET" ],
       "hash": "46bc636256024a83ad29cff6b5877721",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1534,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid", "nat_le_SNoLe" ],
+      "notes": [ "auto:matroid_dim", "auto:matroid_finite_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, s c= t /\\ t :e matroid_finite_dim A m -> matroid_dim A m s <= matroid_dim A m t"
     },
     {
       "name": "MATROID_DIM_SUBSET_ALT",
       "source_name": "MATROID_DIM_SUBSET_ALT",
       "aliases": [ "MATROID_DIM_SUBSET_ALT" ],
       "hash": "7afccfe5c0abd5cd77d1a1771492e7e7",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1549,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid", "nat_le_SNoLe" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_finite_dim", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, s c= {x :e A | matroid_span A m t x} /\\ t :e matroid_finite_dim A m -> matroid_dim A m s <= matroid_dim A m t"
     },
     {
       "name": "MATROID_DIM_UNIQUE",
       "source_name": "MATROID_DIM_UNIQUE",
       "aliases": [ "MATROID_DIM_UNIQUE" ],
       "hash": "68192ff308a3c4a611dd3aea7f657dc3",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1284,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_independent", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, forall n :e omega, b c= s /\\ (equip b n /\\ (matroid_independent A m b /\\ s c= {x :e A | matroid_span A m b x})) -> matroid_dim A m s = n"
     },
     {
       "name": "MATROID_DIM_UNIQUE_ALT",
       "source_name": "MATROID_DIM_UNIQUE_ALT",
       "aliases": [ "MATROID_DIM_UNIQUE_ALT" ],
       "hash": "0b884820bbca4e099142cab204bc3b54",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1272,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_independent", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s b c= A, forall n :e omega, s c= matroid_set A m /\\ (b c= matroid_set A m /\\ (equip b n /\\ (matroid_independent A m b /\\ (forall x :e A, matroid_span A m b x <-> matroid_span A m s x)))) -> matroid_dim A m s = n"
     },
     {
       "name": "MATROID_EQ_SPANS_CARD_EQ",
@@ -45876,288 +46156,324 @@
       "source_name": "MATROID_FINITE_DIM",
       "aliases": [ "MATROID_FINITE_DIM" ],
       "hash": "893c2e240141a21315c7d8d7cd7b7d80",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> exists b c= A, finite b /\\ (b c= matroid_set A m /\\ s c= {x :e A | matroid_span A m b x})"
     },
     {
       "name": "MATROID_FINITE_DIMENSIONAL",
       "source_name": "MATROID_FINITE_DIMENSIONAL",
       "aliases": [ "MATROID_FINITE_DIMENSIONAL" ],
       "hash": "3ca184b6db1c05b022297e47ea202263",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1107,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dimensional", "auto:matroid_set",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, m :e matroid_finite_dimensional A <-> exists b c= A, finite b /\\ (b c= matroid_set A m /\\ matroid_set A m c= {x :e A | matroid_span A m b x})"
     },
     {
       "name": "MATROID_FINITE_DIMENSIONAL_ANY",
       "source_name": "MATROID_FINITE_DIMENSIONAL_ANY",
       "aliases": [ "MATROID_FINITE_DIMENSIONAL_ANY" ],
       "hash": "40f1784a57cc29b3352483efb1e4ad57",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1133,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_basis", "auto:matroid_finite_dimensional" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall b c= A, matroid_basis A m b -> (m :e matroid_finite_dimensional A <-> finite b)"
     },
     {
       "name": "MATROID_FINITE_DIMENSIONAL_BASIS",
       "source_name": "MATROID_FINITE_DIMENSIONAL_BASIS",
       "aliases": [ "MATROID_FINITE_DIMENSIONAL_BASIS" ],
       "hash": "0dd1b7797169b3317d200688ad18cbdd",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1116,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_basis", "auto:matroid_finite_dimensional" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, m :e matroid_finite_dimensional A <-> exists b c= A, finite b /\\ matroid_basis A m b"
     },
     {
       "name": "MATROID_FINITE_DIMENSIONAL_CONTAINS_BASIS",
       "source_name": "MATROID_FINITE_DIMENSIONAL_CONTAINS_BASIS",
       "aliases": [ "MATROID_FINITE_DIMENSIONAL_CONTAINS_BASIS" ],
       "hash": "8df46bd9b75abd5c6e4e79c98e9d4a35",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1124,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_basis", "auto:matroid_finite_dimensional",
+        "auto:matroid_spanning"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, m :e matroid_finite_dimensional A /\\ matroid_spanning A m s -> exists b c= A, finite b /\\ (b c= s /\\ matroid_basis A m b)"
     },
     {
       "name": "MATROID_FINITE_DIMENSIONAL_DIM",
       "source_name": "MATROID_FINITE_DIMENSIONAL_DIM",
       "aliases": [ "MATROID_FINITE_DIMENSIONAL_DIM" ],
       "hash": "6dba3bd0d18e83c153aa36f614f4c258",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1178,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_finite_dimensional",
+        "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, m :e matroid_finite_dimensional A /\\ s c= matroid_set A m -> s :e matroid_finite_dim A m"
     },
     {
       "name": "MATROID_FINITE_DIM_BASIS",
       "source_name": "MATROID_FINITE_DIM_BASIS",
       "aliases": [ "MATROID_FINITE_DIM_BASIS" ],
       "hash": "b6b46bc4e9e55c5e400e96b90db25f01",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_independent",
+        "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\\ exists b c= A, finite b /\\ (b c= s /\\ (matroid_independent A m b /\\ forall x :e A, matroid_span A m b x <-> matroid_span A m s x))"
     },
     {
       "name": "MATROID_FINITE_DIM_EMPTY",
       "source_name": "MATROID_FINITE_DIM_EMPTY",
       "aliases": [ "MATROID_FINITE_DIM_EMPTY" ],
       "hash": "78110b9c7f493c5cc9314e3990bb420a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1196,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, Empty :e matroid_finite_dim A m"
     },
     {
       "name": "MATROID_FINITE_DIM_FINITE",
       "source_name": "MATROID_FINITE_DIM_FINITE",
       "aliases": [ "MATROID_FINITE_DIM_FINITE" ],
       "hash": "626cc08097ddf30e7413d21bfc8f7c57",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1191,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, finite s -> (s :e matroid_finite_dim A m <-> s c= matroid_set A m)"
     },
     {
       "name": "MATROID_FINITE_DIM_IMP_SUBSET",
       "source_name": "MATROID_FINITE_DIM_IMP_SUBSET",
       "aliases": [ "MATROID_FINITE_DIM_IMP_SUBSET" ],
       "hash": "1ef7f3466f133df3441046c4bb2f13bc",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1073,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m -> s c= matroid_set A m"
     },
     {
       "name": "MATROID_FINITE_DIM_INSERT",
       "source_name": "MATROID_FINITE_DIM_INSERT",
       "aliases": [ "MATROID_FINITE_DIM_INSERT" ],
       "hash": "4c07a6408996e14410e84446249b98ef",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1219,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim", "auto:matroid_set" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, forall x :e A, SetAdjoin s x :e matroid_finite_dim A m <-> x :e matroid_set A m /\\ s :e matroid_finite_dim A m"
     },
     {
       "name": "MATROID_FINITE_DIM_MONO",
       "source_name": "MATROID_FINITE_DIM_MONO",
       "aliases": [ "MATROID_FINITE_DIM_MONO" ],
       "hash": "c7782b18a8783d577c576b5857ae1a00",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1200,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s t c= A, t :e matroid_finite_dim A m /\\ s c= t -> s :e matroid_finite_dim A m"
     },
     {
       "name": "MATROID_FINITE_DIM_SET",
       "source_name": "MATROID_FINITE_DIM_SET",
       "aliases": [ "MATROID_FINITE_DIM_SET" ],
       "hash": "6b40539ed789f67ea3c875a338be1a05",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1077,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_finite_dimensional",
+        "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, matroid_set A m :e matroid_finite_dim A m <-> m :e matroid_finite_dimensional A"
     },
     {
       "name": "MATROID_FINITE_DIM_SPAN",
       "source_name": "MATROID_FINITE_DIM_SPAN",
       "aliases": [ "MATROID_FINITE_DIM_SPAN" ],
       "hash": "fa223005cf59154693a53c81356965d0",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1094,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, s c= matroid_set A m -> ({x :e A | matroid_span A m s x} :e matroid_finite_dim A m <-> s :e matroid_finite_dim A m)"
     },
     {
       "name": "MATROID_FINITE_DIM_SPAN_EQ",
       "source_name": "MATROID_FINITE_DIM_SPAN_EQ",
       "aliases": [ "MATROID_FINITE_DIM_SPAN_EQ" ],
       "hash": "4fea48a6eb761c0e8949126c6bfa6add",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1087,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\\ {x :e A | matroid_span A m s x} :e matroid_finite_dim A m"
     },
     {
       "name": "MATROID_FINITE_DIM_SUBSET",
       "source_name": "MATROID_FINITE_DIM_SUBSET",
       "aliases": [ "MATROID_FINITE_DIM_SUBSET" ],
       "hash": "932cbbbb344fd1c13df319d9e305bd77",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\\ exists b c= A, finite b /\\ (b c= s /\\ s c= {x :e A | matroid_span A m b x})"
     },
     {
       "name": "MATROID_FINITE_DIM_UNION",
       "source_name": "MATROID_FINITE_DIM_UNION",
       "aliases": [ "MATROID_FINITE_DIM_UNION" ],
       "hash": "bf63ad19c04d439b89cc67840bbf4dc9",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1205,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, s :\\/: t :e matroid_finite_dim A m <-> s :e matroid_finite_dim A m /\\ t :e matroid_finite_dim A m"
     },
     {
       "name": "MATROID_INDEPENDENT",
       "source_name": "MATROID_INDEPENDENT",
       "aliases": [ "MATROID_INDEPENDENT" ],
       "hash": "0ca721c3299f69b6caa45cdb64fadebf",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 272,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dependent", "auto:matroid_independent",
+        "auto:matroid_set"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, matroid_independent A m s <-> s c= matroid_set A m /\\ ~ s :e matroid_dependent A m"
     },
     {
       "name": "MATROID_INDEPENDENT_CARD_LE_SPAN",
@@ -46283,16 +46599,16 @@
       "source_name": "MATROID_INDEPENDENT_IMP_FINITE",
       "aliases": [ "MATROID_INDEPENDENT_IMP_FINITE" ],
       "hash": "73c168142fa58ac13ff4c06bfdfbd67f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1469,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dim", "auto:matroid_independent" ],
       "var_views": {},
-      "error": "unmapped constant matroid_finite_dim : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m /\\ matroid_independent A m s -> finite s"
     },
     {
       "name": "MATROID_INDEPENDENT_IMP_SUBSET",
@@ -46429,32 +46745,43 @@
       "source_name": "MATROID_LOWDIM_EXPAND_BASIS",
       "aliases": [ "MATROID_LOWDIM_EXPAND_BASIS" ],
       "hash": "1eb1e21ea16693772a0f831f7106d827",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1640,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_has_size_equip", "hol_num_omega", "hol_typedef_matroid",
+        "nat_le_SNoLe"
+      ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_dimension",
+        "auto:matroid_finite_dim", "auto:matroid_finite_dimensional",
+        "auto:matroid_independent", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, forall n :e omega, s :e matroid_finite_dim A m /\\ (matroid_dim A m s <= n /\\ (m :e matroid_finite_dimensional A -> n <= matroid_dimension A m)) -> exists b c= A, equip b n /\\ (matroid_independent A m b /\\ {x :e A | matroid_span A m s x} c= {x :e A | matroid_span A m b x})"
     },
     {
       "name": "MATROID_LOWDIM_EXPAND_DIMENSION",
       "source_name": "MATROID_LOWDIM_EXPAND_DIMENSION",
       "aliases": [ "MATROID_LOWDIM_EXPAND_DIMENSION" ],
       "hash": "bfd4ef0afc772ef5787d0e3ae90b8827",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1666,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid", "nat_le_SNoLe" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_dimension",
+        "auto:matroid_finite_dim", "auto:matroid_finite_dimensional",
+        "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, forall n :e omega, s :e matroid_finite_dim A m /\\ (matroid_dim A m s <= n /\\ (m :e matroid_finite_dimensional A -> n <= matroid_dimension A m)) -> exists t c= A, t :e matroid_finite_dim A m /\\ (matroid_dim A m t = n /\\ {x :e A | matroid_span A m s x} c= {x :e A | matroid_span A m t x})"
     },
     {
       "name": "MATROID_MAXIMAL_INDEPENDENT_SUBSET_SPAN",
@@ -46481,32 +46808,35 @@
       "source_name": "MATROID_MINIMALLY_DEPENDENT",
       "aliases": [ "MATROID_MINIMALLY_DEPENDENT" ],
       "hash": "4c03aadee73aa4392bfd715ebf261510",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 788,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dependent", "auto:matroid_independent",
+        "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, (forall t c= A, t c= s /\\ t <> s -> matroid_independent A m t) -> (s :e matroid_dependent A m <-> ~ s = Empty /\\ (s c= matroid_set A m /\\ forall a :e A, a :e s -> a :e {x :e A | matroid_span A m (s :\\: {a}) x}))"
     },
     {
       "name": "MATROID_MINIMALLY_DEPENDENT_SUBSET",
       "source_name": "MATROID_MINIMALLY_DEPENDENT_SUBSET",
       "aliases": [ "MATROID_MINIMALLY_DEPENDENT_SUBSET" ],
       "hash": "bb8aed7faa8b0197610dd903cdf583ef",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 815,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_dependent", "auto:matroid_span" ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_dependent A m -> exists t c= A, finite t /\\ (t c= s /\\ (t :e matroid_dependent A m /\\ (~ t = Empty /\\ forall a :e A, a :e t -> a :e {x :e A | matroid_span A m (t :\\: {a}) x})))"
     },
     {
       "name": "MATROID_SPANNING_ALT",
@@ -46688,32 +47018,41 @@
       "source_name": "MATROID_SPAN_DEPENDENCE",
       "aliases": [ "MATROID_SPAN_DEPENDENCE" ],
       "hash": "a37f5d1d72f5321105dea2db87fa7315",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 554,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dependent", "auto:matroid_independent",
+        "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s c= A, forall x :e A, x :e matroid_set A m /\\ s c= matroid_set A m -> (x :e {x0 :e A | matroid_span A m s x0} <-> x :e s \\/ exists t c= A, t c= s /\\ (matroid_independent A m t /\\ SetAdjoin t x :e matroid_dependent A m))"
     },
     {
       "name": "MATROID_SPAN_DIM_EQ",
       "source_name": "MATROID_SPAN_DIM_EQ",
       "aliases": [ "MATROID_SPAN_DIM_EQ" ],
       "hash": "1ff6669e06512e877244ab0ce905d4e4",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1294,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_num_omega", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_set", "auto:matroid_span"
+      ],
       "var_views": {},
-      "error": "unmapped constant matroid_dim : A matroid->(A->bool)->num",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall m :e matroid A, forall s t c= A, s c= matroid_set A m /\\ (t c= matroid_set A m /\\ (forall x :e A, matroid_span A m s x <-> matroid_span A m t x)) -> matroid_dim A m s = matroid_dim A m t"
     },
     {
       "name": "MATROID_SPAN_EQ",
@@ -51215,16 +51554,19 @@
       "source_name": "NORM_LE_INFNORM",
       "aliases": [ "NORM_LE_INFNORM" ],
       "hash": "43d6c159e4c8ceebc5f677224d7bc299",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9514,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_dimindex", "hol_num_omega", "hol_real_R",
+        "omega_Subq_R"
+      ],
+      "notes": [ "auto:infnorm", "auto:vector_norm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,N)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> forall x :e R :^: idx N, vector_norm N x <= (if 0 <= dimindex N then sqrt_SNo_nonneg (dimindex N) else - sqrt_SNo_nonneg (- dimindex N)) * infnorm N x"
     },
     {
       "name": "NORM_LE_L1",
@@ -54903,7 +55245,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (forall l :e Power A :^: A, P l -> ordinal_on A (fun x:set => fun x0:set => x0 :e l x)) -> ordinal_on A (fun x:set => fun y:set => exists l :e Power A :^: A, P l /\\ l x y = 1)"
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (forall l :e Power A :^: A, P l -> ordinal_on A (fun x:set => fun x0:set => x0 :e l x)) -> ordinal_on A (fun x:set => fun y:set => exists l :e Power A :^: A, P l /\\ y :e l x)"
     },
     {
       "name": "ORDINAL_UNION_LEMMA",
@@ -55642,36 +55984,40 @@
       "statement": "forall A:set, forall P Q:set -> prop, (exists x :e A, P x) \\/ (exists x :e A, Q x) <-> exists x :e A, P x \\/ Q x"
     },
     {
-      "name": "OUTL",
+      "name": "OUTL_thm",
       "source_name": "OUTL",
       "aliases": [ "OUTL" ],
       "hash": "c31d1bada798b3a79e21ff4f54d61c5b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 771,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant OUTL : (A,B)sum->A",
-      "statement": ""
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:A", "hol_sum_setsum" ],
+      "notes": [ "auto:OUTL" ],
+      "var_views": { "x": "set(A)" },
+      "error": "",
+      "statement": "forall A B:set, B <> Empty -> forall x :e A, OUTL A B (Inj0 x) = x"
     },
     {
-      "name": "OUTR",
+      "name": "OUTR_thm",
       "source_name": "OUTR",
       "aliases": [ "OUTR" ],
       "hash": "7d0e05a613fcdc794c952d7ab6306a50",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "ind_types",
       "src_file": "ind_types.ml",
       "src_line": 774,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant OUTR : (A,B)sum->B",
-      "statement": ""
+      "classes": [
+        "definitionally_exact", "generalization", "native_isomorphism"
+      ],
+      "bridges": [ "empty_case:B", "hol_sum_setsum" ],
+      "notes": [ "auto:OUTR" ],
+      "var_views": { "y": "set(B)" },
+      "error": "",
+      "statement": "forall A B:set, A <> Empty -> forall y :e B, OUTR A B (Inj1 y) = y"
     },
     {
       "name": "PADIC_RATIONAL_APPROXIMATION_STRADDLE",
@@ -58684,16 +59030,16 @@
       "source_name": "REAL_ABS_INFNORM",
       "aliases": [ "REAL_ABS_INFNORM" ],
       "hash": "012515e9c0bb9ca26b66ef226a416abe",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9467,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:infnorm" ],
       "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272408)cart->real",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x :e R :^: idx A, abs_SNo (infnorm A x) = infnorm A x"
     },
     {
       "name": "REAL_ABS_INF_LE",
@@ -59038,16 +59384,16 @@
       "source_name": "REAL_ABS_SUB_INFNORM",
       "aliases": [ "REAL_ABS_SUB_INFNORM" ],
       "hash": "9402f250e6fca782bb2ca255c8b9ffbf",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9461,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant infnorm : (real,?272393)cart->real",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_cart_setexp", "hol_real_R" ],
+      "notes": [ "auto:infnorm", "auto:vector_sub" ],
+      "var_views": { "x": "set(R :^: idx A)", "y": "set(R :^: idx A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall x y :e R :^: idx A, abs_SNo (infnorm A x + - infnorm A y) <= infnorm A (vector_sub A x y)"
     },
     {
       "name": "REAL_ABS_SUB_NORM",
@@ -59539,16 +59885,16 @@
       "source_name": "REAL_CLOSED_OPEN_INTERVAL",
       "aliases": [ "REAL_CLOSED_OPEN_INTERVAL" ],
       "hash": "e234a739dfe393f435b37b5d6941fb5a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b :e R, a <= b -> closed_real_interval (seq_cons (a,b) seq_nil) = open_real_interval (a,b) :\\/: {a,b}"
     },
     {
       "name": "REAL_COMPLETE",
@@ -60699,64 +61045,64 @@
       "source_name": "REAL_INTERVAL_EQ_EMPTY",
       "aliases": [ "REAL_INTERVAL_EQ_EMPTY" ],
       "hash": "dda50884786e8fa3992d122cb59f3b0f",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "(forall a b :e R, closed_real_interval (seq_cons (a,b) seq_nil) = Empty <-> b < a) /\\ forall a b :e R, open_real_interval (a,b) = Empty <-> b <= a"
     },
     {
       "name": "REAL_INTERVAL_NE_EMPTY",
       "source_name": "REAL_INTERVAL_NE_EMPTY",
       "aliases": [ "REAL_INTERVAL_NE_EMPTY" ],
       "hash": "bd8b1157b9d6af850888da2e94a3a166",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "(forall a b :e R, ~ closed_real_interval (seq_cons (a,b) seq_nil) = Empty <-> a <= b) /\\ forall a b :e R, ~ open_real_interval (a,b) = Empty <-> a < b"
     },
     {
       "name": "REAL_INTERVAL_OPEN_SUBSET_CLOSED",
       "source_name": "REAL_INTERVAL_OPEN_SUBSET_CLOSED",
       "aliases": [ "REAL_INTERVAL_OPEN_SUBSET_CLOSED" ],
       "hash": "6013d5029e60abad7ff4c39f02f493f5",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b :e R, open_real_interval (a,b) c= closed_real_interval (seq_cons (a,b) seq_nil)"
     },
     {
       "name": "REAL_INTERVAL_SING",
       "source_name": "REAL_INTERVAL_SING",
       "aliases": [ "REAL_INTERVAL_SING" ],
       "hash": "f0d1b639dfebe11dc4d3c3f57cb19d13",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a :e R, closed_real_interval (seq_cons (a,a) seq_nil) = {a} /\\ open_real_interval (a,a) = Empty"
     },
     {
       "name": "REAL_INT_CONGRUENCE",
@@ -64380,16 +64726,16 @@
       "source_name": "REAL_OPEN_CLOSED_INTERVAL",
       "aliases": [ "REAL_OPEN_CLOSED_INTERVAL" ],
       "hash": "0edd50ac1e08116f757ce5443daab891",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b :e R, open_real_interval (a,b) = closed_real_interval (seq_cons (a,b) seq_nil) :\\: {a,b}"
     },
     {
       "name": "REAL_POLYFUN_EQ_0",
@@ -66695,16 +67041,16 @@
       "source_name": "REFLECT_REAL_INTERVAL",
       "aliases": [ "REFLECT_REAL_INTERVAL" ],
       "hash": "bfee800006e4b8469d14bafb63d62445",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "(forall a b :e R, {- x | x :e closed_real_interval (seq_cons (a,b) seq_nil)} = closed_real_interval (seq_cons (- b,- a) seq_nil)) /\\ forall a b :e R, {- x | x :e open_real_interval (a,b)} = open_real_interval (- b,- a)"
     },
     {
       "name": "REFLECT_UNIV",
@@ -66743,192 +67089,192 @@
       "source_name": "RELATIVE_TO",
       "aliases": [ "RELATIVE_TO" ],
       "hash": "1f4057948b457a988a5c41e16a60143a",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant relative_to : ((?203490->bool)->bool)->(?203490->bool)->(?203490->bool)->bool",
-      "statement": ""
+      "notes": [ "auto:relative_to" ],
+      "var_views": { "P": "subset(Power A)", "u": "subset(A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A P u = {u :/\\: s | s :e Power A, s :e P}"
     },
     {
       "name": "RELATIVE_TO_COMPL",
       "source_name": "RELATIVE_TO_COMPL",
       "aliases": [ "RELATIVE_TO_COMPL" ],
       "hash": "05b1fb37bc246558328f15f1493b0b1a",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s c= u -> (u :\\: s :e relative_to A P u <-> s :e relative_to A {c :e Power A | A :\\: c :e P} u)"
     },
     {
       "name": "RELATIVE_TO_IMP_SUBSET",
       "source_name": "RELATIVE_TO_IMP_SUBSET",
       "aliases": [ "RELATIVE_TO_IMP_SUBSET" ],
       "hash": "f41dd2817c441384970494d333b3f70b",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((?203416->bool)->bool)->(?203416->bool)->(?203416->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall P c= Power A, forall s t c= A, t :e relative_to A P s -> t c= s"
     },
     {
       "name": "RELATIVE_TO_INC",
       "source_name": "RELATIVE_TO_INC",
       "aliases": [ "RELATIVE_TO_INC" ],
       "hash": "2145c9f0d72619ede762892a03d2a547",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((?203467->bool)->bool)->(?203467->bool)->(?203467->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s :e P -> u :/\\: s :e relative_to A P u"
     },
     {
       "name": "RELATIVE_TO_INTER",
       "source_name": "RELATIVE_TO_INTER",
       "aliases": [ "RELATIVE_TO_INTER" ],
       "hash": "f8570de11f0bcb9bbcc6fbbb9d30b837",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall c d c= A, c :e P /\\ d :e P -> c :/\\: d :e P) -> forall c d c= A, c :e relative_to A P s /\\ d :e relative_to A P s -> c :/\\: d :e relative_to A P s"
     },
     {
       "name": "RELATIVE_TO_MONO",
       "source_name": "RELATIVE_TO_MONO",
       "aliases": [ "RELATIVE_TO_MONO" ],
       "hash": "53a9fcb3398160a256af12931c2f7f21",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant relative_to : ((?203715->bool)->bool)->(?203715->bool)->(?203715->bool)->bool",
-      "statement": ""
+      "notes": [ "auto:relative_to" ],
+      "var_views": { "s": "subset(A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall s c= A, forall P Q c= Power A, (forall s0 c= A, s0 :e P -> s0 :e Q) -> forall u c= A, s :e relative_to A P u -> s :e relative_to A Q u"
     },
     {
       "name": "RELATIVE_TO_RELATIVE_TO",
       "source_name": "RELATIVE_TO_RELATIVE_TO",
       "aliases": [ "RELATIVE_TO_RELATIVE_TO" ],
       "hash": "75cfc16699db24af35150fabc98fb8cc",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, relative_to A (relative_to A P s) t = relative_to A P (s :/\\: t)"
     },
     {
       "name": "RELATIVE_TO_SUBSET",
       "source_name": "RELATIVE_TO_SUBSET",
       "aliases": [ "RELATIVE_TO_SUBSET" ],
       "hash": "d39a62b8bb6ef93242b9cea4a57336c1",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, s c= t /\\ s :e P -> s :e relative_to A P t"
     },
     {
       "name": "RELATIVE_TO_SUBSET_INC",
       "source_name": "RELATIVE_TO_SUBSET_INC",
       "aliases": [ "RELATIVE_TO_SUBSET_INC" ],
       "hash": "120610080a9b3de84bb5c2603d13a7a3",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s c= u /\\ s :e P -> s :e relative_to A P u"
     },
     {
       "name": "RELATIVE_TO_SUBSET_TRANS",
       "source_name": "RELATIVE_TO_SUBSET_TRANS",
       "aliases": [ "RELATIVE_TO_SUBSET_TRANS" ],
       "hash": "48370076e23d2798505477b9ea52ff14",
-      "status": "pending_mapping",
+      "status": "generalization_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "generalization" ],
+      "bridges": [ "empty_case:A" ],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, forall P c= Power A, forall u s t c= A, s :e relative_to A P u /\\ (s c= t /\\ t c= u) -> s :e relative_to A P t"
     },
     {
       "name": "RELATIVE_TO_UNION",
       "source_name": "RELATIVE_TO_UNION",
       "aliases": [ "RELATIVE_TO_UNION" ],
       "hash": "2b6869b7648d4ab4df46c1d6804ccd9a",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall c d c= A, c :e P /\\ d :e P -> c :\\/: d :e P) -> forall c d c= A, c :e relative_to A P s /\\ d :e relative_to A P s -> c :\\/: d :e relative_to A P s"
     },
     {
       "name": "RELATIVE_TO_UNIV",
       "source_name": "RELATIVE_TO_UNIV",
       "aliases": [ "RELATIVE_TO_UNIV" ],
       "hash": "bd92aa50e9747e9d72fe0fc75e7dd4a2",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
+      "notes": [ "auto:relative_to" ],
       "var_views": {},
-      "error": "unmapped constant relative_to : ((A->bool)->bool)->(A->bool)->(A->bool)->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, s :e relative_to A P A <-> s :e P"
     },
     {
       "name": "REPLICATE",
@@ -70214,16 +70560,16 @@
       "source_name": "SUBSET_REAL_INTERVAL",
       "aliases": [ "SUBSET_REAL_INTERVAL" ],
       "hash": "d1fc48d3f1f2ed5e135c2b6a922c1bdf",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
       "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "error": "",
+      "statement": "forall a b c d :e R, (closed_real_interval (seq_cons (a,b) seq_nil) c= closed_real_interval (seq_cons (c,d) seq_nil) <-> b < a \\/ c <= a /\\ (a <= b /\\ b <= d)) /\\ ((closed_real_interval (seq_cons (a,b) seq_nil) c= open_real_interval (c,d) <-> b < a \\/ c < a /\\ (a <= b /\\ b < d)) /\\ ((open_real_interval (a,b) c= closed_real_interval (seq_cons (c,d) seq_nil) <-> b <= a \\/ c <= a /\\ (a < b /\\ b <= d)) /\\ (open_real_interval (a,b) c= open_real_interval (c,d) <-> b <= a \\/ c <= a /\\ (a < b /\\ b <= d))))"
     },
     {
       "name": "SUBSET_REFL",
@@ -75987,7 +76333,7 @@
       "notes": [],
       "var_views": { "x": "set(A)" },
       "error": "",
-      "statement": "forall A:set, forall x :e A, forall P:set -> prop, x :e fld_on A (fun x0:set => fun y:set => exists l :e Power A :^: A, P l /\\ l x0 y = 1) <-> exists l :e Power A :^: A, P l /\\ x :e fld_on A (fun x0:set => fun x1:set => x1 :e l x0)"
+      "statement": "forall A:set, forall x :e A, forall P:set -> prop, x :e fld_on A (fun x0:set => fun y:set => exists l :e Power A :^: A, P l /\\ y :e l x0) <-> exists l :e Power A :^: A, P l /\\ x :e fld_on A (fun x0:set => fun x1:set => x1 :e l x0)"
     },
     {
       "name": "UNION_IDEMPOT",
@@ -76019,7 +76365,7 @@
       "notes": [],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l:set -> set -> prop, (forall m :e Power A :^: A, P m -> inseg_on A (fun x:set => fun x0:set => x0 :e m x) l) -> inseg_on A (fun x:set => fun y:set => exists l0 :e Power A :^: A, P l0 /\\ l0 x y = 1) l"
+      "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l:set -> set -> prop, (forall m :e Power A :^: A, P m -> inseg_on A (fun x:set => fun x0:set => x0 :e m x) l) -> inseg_on A (fun x:set => fun y:set => exists l0 :e Power A :^: A, P l0 /\\ y :e l0 x) l"
     },
     {
       "name": "UNION_LE_ADD_C",
@@ -81031,20 +81377,20 @@
       "statement": "forall N:set, N <> Empty -> forall l :e finseq (R :^: idx N :*: R :^: idx N), closed_interval N l = {x :e R :^: idx N | forall i :e omega, 1 <= i /\\ i <= dimindex N -> seq_hd l 0 i <= x i /\\ x i <= seq_hd l 1 i}"
     },
     {
-      "name": "closed_real_interval",
+      "name": "closed_real_interval_thm",
       "source_name": "closed_real_interval",
       "aliases": [ "closed_real_interval" ],
       "hash": "2b236165fe65811a878f0107b67ec565",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval" ],
+      "var_views": { "a": "set(R)", "b": "set(R)" },
+      "error": "",
+      "statement": "forall a b :e R, closed_real_interval (seq_cons (a,b) seq_nil) = {x :e R | a <= x /\\ x <= b}"
     },
     {
       "name": "collinear_thm",
@@ -81824,20 +82170,23 @@
       "statement": "forall s c= R, inf s = choose_in R (fun a:set => (forall x :e R, x :e s -> a <= x) /\\ forall b :e R, (forall x :e R, x :e s -> b <= x) -> b <= a)"
     },
     {
-      "name": "infnorm",
+      "name": "infnorm_thm",
       "source_name": "infnorm",
       "aliases": [ "infnorm" ],
       "hash": "c7e0996e4bf81c4ecbea0eefa7ddc299",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "vectors",
       "src_file": "Multivariate/vectors.ml",
       "src_line": 9402,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant infnorm : (real,N)cart->real",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "hol_cart_setexp", "hol_dimindex", "hol_num_omega", "hol_real_R",
+        "nat_le_SNoLe"
+      ],
+      "notes": [ "auto:infnorm" ],
+      "var_views": { "x": "set(R :^: idx N)" },
+      "error": "",
+      "statement": "forall N:set, N <> Empty -> forall x :e R :^: idx N, infnorm N x = sup {abs_SNo (x i) | i :e omega, 1 <= i /\\ i <= dimindex N}"
     },
     {
       "name": "inseg",
@@ -83006,84 +83355,95 @@
       "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, matroid_basis A m s <-> matroid_spanning A m s /\\ matroid_independent A m s"
     },
     {
-      "name": "matroid_dependent",
+      "name": "matroid_dependent_thm",
       "source_name": "matroid_dependent",
       "aliases": [ "matroid_dependent" ],
       "hash": "b8032639c6be97c7ab60cb05ed58eb19",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 240,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant matroid_dependent : A matroid->(A->bool)->bool",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dependent", "auto:matroid_independent",
+        "auto:matroid_set"
+      ],
+      "var_views": { "m": "set(matroid A)", "s": "subset(A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_dependent A m <-> s c= matroid_set A m /\\ ~ matroid_independent A m s"
     },
     {
-      "name": "matroid_dim",
+      "name": "matroid_dim_thm",
       "source_name": "matroid_dim",
       "aliases": [ "matroid_dim" ],
       "hash": "daf6efa5e05a8280d1702a2a5d094e8a",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1070,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_num_omega", "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_dim", "auto:matroid_dimension", "auto:submatroid"
+      ],
+      "var_views": { "m": "set(matroid A)", "s": "subset(A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, matroid_dim A m s = matroid_dimension A (submatroid A m s)"
     },
     {
-      "name": "matroid_dimension",
+      "name": "matroid_dimension_thm",
       "source_name": "matroid_dimension",
       "aliases": [ "matroid_dimension" ],
       "hash": "69fbfbe2d789c822a424c94186727b4d",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1061,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant matroid_dimension : A matroid->num",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [
+        "choose_in_spec", "hol_has_size_equip", "hol_num_omega",
+        "hol_typedef_matroid"
+      ],
+      "notes": [ "auto:matroid_basis", "auto:matroid_dimension" ],
+      "var_views": { "m": "set(matroid A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, matroid_dimension A m = choose_in omega (fun n:set => forall b c= A, matroid_basis A m b -> equip b n)"
     },
     {
-      "name": "matroid_finite_dim",
+      "name": "matroid_finite_dim_thm",
       "source_name": "matroid_finite_dim",
       "aliases": [ "matroid_finite_dim" ],
       "hash": "c67fa1b5b0b8bdb313496926b94b1bc6",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1065,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_typedef_matroid" ],
+      "notes": [
+        "auto:matroid_finite_dim", "auto:matroid_finite_dimensional",
+        "auto:matroid_set", "auto:submatroid"
+      ],
+      "var_views": { "m": "set(matroid A)", "s": "subset(A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\\ submatroid A m s :e matroid_finite_dimensional A"
     },
     {
-      "name": "matroid_finite_dimensional",
+      "name": "matroid_finite_dimensional_thm",
       "source_name": "matroid_finite_dimensional",
       "aliases": [ "matroid_finite_dimensional" ],
       "hash": "1fd5d94579de074af9945f4576873309",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "matroids",
       "src_file": "Library/matroids.ml",
       "src_line": 1057,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant matroid_finite_dimensional : A matroid->bool",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_finite_finite", "hol_typedef_matroid" ],
+      "notes": [ "auto:matroid_finite_dimensional", "auto:matroid_spanning" ],
+      "var_views": { "m": "set(matroid A)" },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall m :e matroid A, m :e matroid_finite_dimensional A <-> exists b c= A, finite b /\\ matroid_spanning A m b"
     },
     {
       "name": "matroid_independent_thm",
@@ -83137,7 +83497,7 @@
       "notes": [ "auto:dest_matroid", "auto:matroid_span" ],
       "var_views": {},
       "error": "",
-      "statement": "forall A:set, forall m :e matroid A, forall x c= A, forall x0 :e A, matroid_span A m x x0 <-> m 1 x x0 = 1"
+      "statement": "forall A:set, forall m :e matroid A, forall x c= A, forall x0 :e A, matroid_span A m x x0 <-> x0 :e m 1 x"
     },
     {
       "name": "matroid_spanning_thm",
@@ -84524,16 +84884,16 @@
       "source_name": "real_interval",
       "aliases": [ "real_interval" ],
       "hash": "336dde35241fe3e8710ec56a210a346b",
-      "status": "pending_mapping",
+      "status": "transport_required",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
-      "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant closed_real_interval : (real#real) list->real->bool",
-      "statement": ""
+      "classes": [ "definitionally_exact", "native_isomorphism" ],
+      "bridges": [ "hol_list_finseq", "hol_prod_setprod", "hol_real_R" ],
+      "notes": [ "auto:closed_real_interval", "auto:open_real_interval" ],
+      "var_views": { "a": "set(R)", "b": "set(R)" },
+      "error": "",
+      "statement": "forall a b :e R, open_real_interval (a,b) = {x :e R | a < x /\\ x < b} /\\ closed_real_interval (seq_cons (a,b) seq_nil) = {x :e R | a <= x /\\ x <= b}"
     },
     {
       "name": "real_inv",
@@ -84826,20 +85186,24 @@
       "statement": "forall z :e R, forall i :e int, (if 0 <= i then z ^ i else recip_SNo (z ^ (- i))) = if 0 <= i then z ^ if i :e omega then i else 0 else recip_SNo (z ^ if - i :e omega then - i else 0)"
     },
     {
-      "name": "relative_to",
+      "name": "relative_to_thm",
       "source_name": "relative_to",
       "aliases": [ "relative_to" ],
       "hash": "5f865c5049cb8f32b6c206c65358763f",
-      "status": "pending_mapping",
+      "status": "exact_native",
       "shard": "misc",
       "src_file": "",
       "src_line": 0,
-      "classes": [],
+      "classes": [ "definitionally_exact" ],
       "bridges": [],
-      "notes": [],
-      "var_views": {},
-      "error": "unmapped constant relative_to : ((?203380->bool)->bool)->(?203380->bool)->(?203380->bool)->bool",
-      "statement": ""
+      "notes": [ "auto:relative_to" ],
+      "var_views": {
+        "P": "subset(Power A)",
+        "s": "subset(A)",
+        "t": "subset(A)"
+      },
+      "error": "",
+      "statement": "forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, t :e relative_to A P s <-> exists u c= A, u :e P /\\ s :/\\: u = t"
     },
     {
       "name": "row_thm",

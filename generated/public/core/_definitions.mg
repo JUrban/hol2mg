@@ -2,6 +2,14 @@
 // Constants: the translated new_definition right-hand side with the type-variable carriers as
 // leading set parameters.  Types: new_type_definition subtypes as separations.  Status auto_definition: review pending.
 
+// HOL Light: ind_types.ml:771 / OUTL   (hash md5:b004bb4740b1f78bbe5cc401155083de)
+Definition OUTL : set -> set -> set :=
+  fun A:set => fun B:set => choose_in (A :^: (A :+: B)) (fun c:set => forall x :e A, c (Inj0 x) = x).
+
+// HOL Light: ind_types.ml:774 / OUTR   (hash md5:4ebdd36a8da5bf8bbd62fbd2dfba5dba)
+Definition OUTR : set -> set -> set :=
+  fun A:set => fun B:set => choose_in (B :^: (A :+: B)) (fun c:set => forall y :e B, c (Inj1 y) = y).
+
 // HOL Light: int.ml:1170 / real_mod   (hash md5:60a0f9b5b153ba67635b3c320a044279)
 Definition real_mod : set -> set -> set -> prop :=
   fun n:set => fun x:set => fun y:set => exists q :e R, q :e int /\ x + - y = q * n.

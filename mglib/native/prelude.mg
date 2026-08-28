@@ -103,13 +103,13 @@ Definition idx : set -> set := fun N => idx_n (dimindex N).
 
 Theorem dimindex_omega : forall N:set, dimindex N :e omega.
 Admitted.
-Theorem dimindex_ge_1 : forall N:set, 1 <= dimindex N.
+Theorem dimindex_ge_1 : forall N:set, N <> Empty -> 1 <= dimindex N.
 Admitted.
 Theorem idx_n_equip : forall n :e omega, equip (idx_n n) n.
 Admitted.
-Theorem dimindex_idx_n : forall n :e omega, 1 <= n -> dimindex (idx_n n) = n.
+Theorem dimindex_idx_n : forall n :e omega, dimindex (idx_n n) = n.
 Admitted.
-Theorem idx_idx_n : forall n :e omega, 1 <= n -> idx (idx_n n) = idx_n n.
+Theorem idx_idx_n : forall n :e omega, idx (idx_n n) = idx_n n.
 Admitted.
 Theorem dimindex_one : dimindex 1 = 1.
 Admitted.

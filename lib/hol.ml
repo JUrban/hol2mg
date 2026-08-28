@@ -110,6 +110,14 @@ let rec replace_free (s, ty) u depth tm =
   | App (f, x) -> App (replace_free (s, ty) u depth f, replace_free (s, ty) u depth x)
   | Lam (s', ty', b) -> Lam (s', ty', replace_free (s, ty) u (depth + 1) b)
 
+(* replace every occurrence of the subterm pat (closed w.r.t. binders) by u *)
+let rec replace_subterm pat u depth tm =
+  if tm = lift depth 0 pat then lift depth 0 u
+  else match tm with
+    | Bound _ | Free _ | Const _ -> tm
+    | App (f, x) -> App (replace_subterm pat u depth f, replace_subterm pat u depth x)
+    | Lam (s, ty, b) -> Lam (s, ty, replace_subterm pat u (depth + 1) b)
+
 let rec frees tm =
   match tm with
   | Free (s, ty) -> [ (s, ty) ]

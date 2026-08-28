@@ -4556,10 +4556,34 @@ Admitted.
 Theorem EUCLIDEAN_MATROID_SUBSPACE : forall N:set, N <> Empty -> forall x c= R :^: idx N, matroid_subspace (R :^: idx N) (euclidean_matroid N) x <-> subspace N x.
 Admitted.
 
+// HOL Light: Multivariate/vectors.ml:5308 / EUCLIDEAN_MATROID_FINITE_DIMENSIONAL
+// Source hash: md5:7f5971751e0d819b185d6ae6affa3749
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_matroid)
+Theorem EUCLIDEAN_MATROID_FINITE_DIMENSIONAL : forall N:set, N <> Empty -> euclidean_matroid N :e matroid_finite_dimensional (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:5314 / EUCLIDEAN_MATROID_DIMENSION
+// Source hash: md5:7912355767ffa35fa374c85530165af0
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, hol_typedef_matroid)
+Theorem EUCLIDEAN_MATROID_DIMENSION : forall N:set, N <> Empty -> matroid_dimension (R :^: idx N) (euclidean_matroid N) = dimindex N.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:5321 / EUCLIDEAN_MATROID_FINITE_DIM
+// Source hash: md5:c1cfed7e92f5dbda2fa373edf604ff97
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_matroid)
+Theorem EUCLIDEAN_MATROID_FINITE_DIM : forall N:set, N <> Empty -> forall s c= R :^: idx N, s :e matroid_finite_dim (R :^: idx N) (euclidean_matroid N).
+Admitted.
+
 // HOL Light: Multivariate/vectors.ml:5327 / EUCLIDEAN_SUBMATROID
 // Source hash: md5:5270140fc569ba358e1f154d21dd734e
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_matroid)
 Theorem EUCLIDEAN_SUBMATROID : forall N:set, N <> Empty -> (forall s c= R :^: idx N, matroid_set (R :^: idx N) (submatroid (R :^: idx N) (euclidean_matroid N) s) = span N s) /\ forall s x c= R :^: idx N, forall x0 :e R :^: idx N, matroid_span (R :^: idx N) (submatroid (R :^: idx N) (euclidean_matroid N) s) x x0 <-> x0 :e span N x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:5332 / EUCLIDEAN_MATROID_DIM
+// Source hash: md5:fe99ffa0d29d8b695842fe632d3ccb69
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_matroid)
+Theorem EUCLIDEAN_MATROID_DIM : forall N:set, N <> Empty -> forall x c= R :^: idx N, matroid_dim (R :^: idx N) (euclidean_matroid N) x = dim N x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:5343 / SPAN_EQ
@@ -6464,6 +6488,12 @@ Admitted.
 Theorem MATRIX_INV_MUL_RINV : forall M N:set, M <> Empty -> N <> Empty -> forall A :e R :^: idx N :^: idx M, matrix_inv M M (matrix_mul M N M A (matrix_inv N M A)) = matrix_mul M N M A (matrix_inv N M A).
 Admitted.
 
+// HOL Light: Multivariate/vectors.ml:9402 / infnorm
+// Source hash: md5:c7e0996e4bf81c4ecbea0eefa7ddc299
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem infnorm_thm : forall N:set, N <> Empty -> forall x :e R :^: idx N, infnorm N x = sup {abs_SNo (x i) | i :e omega, 1 <= i /\ i <= dimindex N}.
+Admitted.
+
 // HOL Light: Multivariate/vectors.ml:9405 / NUMSEG_DIMINDEX_NONEMPTY
 // Source hash: md5:6590140562c6911c2b80ef8cabeb56b6
 // Status: transport_required (bridges: hol_dimindex, hol_num_omega)
@@ -6480,6 +6510,90 @@ Admitted.
 // Source hash: md5:acdd523de6df4d735d048d65cd3d37d6
 // Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, hol_real_R, nat_le_SNoLe)
 Theorem INFNORM_SET_LEMMA : forall N:set, N <> Empty -> forall x :e R :^: idx N, finite {abs_SNo (x i) | i :e omega, 1 <= i /\ i <= dimindex N} /\ ~ {abs_SNo (x i) | i :e omega, 1 <= i /\ i <= dimindex N} = Empty.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9420 / INFNORM_POS_LE
+// Source hash: md5:b39caf2020af3dafc185ce92fb86d2f0
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem INFNORM_POS_LE : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 <= infnorm A x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9427 / INFNORM_TRIANGLE
+// Source hash: md5:3fca9549c9ecfcf6ccc69c80d559109f
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INFNORM_TRIANGLE : forall A:set, A <> Empty -> forall x y :e R :^: idx A, infnorm A (vector_add A x y) <= infnorm A x + infnorm A y.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9440 / INFNORM_EQ_0
+// Source hash: md5:374f59a39c723ee18f9d2f84d0e5ce13
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem INFNORM_EQ_0 : forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A x = 0 <-> x = vec A 0.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9447 / INFNORM_0
+// Source hash: md5:84e17ec927d15e4a366036e86bb00790
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem INFNORM_0 : forall A:set, A <> Empty -> infnorm A (vec A 0) = 0.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9451 / INFNORM_NEG
+// Source hash: md5:18b150b249afa6a470ae192f79fa8cfe
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INFNORM_NEG : forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A (vector_neg A x) = infnorm A x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9457 / INFNORM_SUB
+// Source hash: md5:968f79aa8acbcb7ef0f25995caa653b5
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INFNORM_SUB : forall A:set, A <> Empty -> forall x y :e R :^: idx A, infnorm A (vector_sub A x y) = infnorm A (vector_sub A y x).
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9461 / REAL_ABS_SUB_INFNORM
+// Source hash: md5:9402f250e6fca782bb2ca255c8b9ffbf
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem REAL_ABS_SUB_INFNORM : forall A:set, A <> Empty -> forall x y :e R :^: idx A, abs_SNo (infnorm A x + - infnorm A y) <= infnorm A (vector_sub A x y).
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9467 / REAL_ABS_INFNORM
+// Source hash: md5:012515e9c0bb9ca26b66ef226a416abe
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem REAL_ABS_INFNORM : forall A:set, A <> Empty -> forall x :e R :^: idx A, abs_SNo (infnorm A x) = infnorm A x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9471 / COMPONENT_LE_INFNORM
+// Source hash: md5:ecaa552d404821de6b7e7ce09c6de9c2
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, nat_le_SNoLe)
+Theorem COMPONENT_LE_INFNORM : forall N:set, N <> Empty -> forall x :e R :^: idx N, forall i :e omega, 1 <= i /\ i <= dimindex N -> abs_SNo (x i) <= infnorm N x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9479 / INFNORM_MUL_LEMMA
+// Source hash: md5:65e68821b5b2fbc9339a2ee586bbbbd9
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INFNORM_MUL_LEMMA : forall A:set, A <> Empty -> forall a :e R, forall x :e R :^: idx A, infnorm A (vector_mul A a x) <= abs_SNo a * infnorm A x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9487 / INFNORM_MUL
+// Source hash: md5:07b44a57d2615d1721777e257cba3ead
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INFNORM_MUL : forall N:set, N <> Empty -> forall a :e R, forall x :e R :^: idx N, infnorm N (vector_mul N a x) = abs_SNo a * infnorm N x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9501 / INFNORM_POS_LT
+// Source hash: md5:e0260f6865c4fbc4d612807385204601
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem INFNORM_POS_LT : forall A:set, A <> Empty -> forall x :e R :^: idx A, 0 < infnorm A x <-> ~ x = vec A 0.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9509 / INFNORM_LE_NORM
+// Source hash: md5:5de4bcae82a62199bdced5b2d4d0f306
+// Status: transport_required (bridges: hol_cart_setexp, hol_real_R)
+Theorem INFNORM_LE_NORM : forall A:set, A <> Empty -> forall x :e R :^: idx A, infnorm A x <= vector_norm A x.
+Admitted.
+
+// HOL Light: Multivariate/vectors.ml:9514 / NORM_LE_INFNORM
+// Source hash: md5:43d6c159e4c8ceebc5f677224d7bc299
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem NORM_LE_INFNORM : forall N:set, N <> Empty -> forall x :e R :^: idx N, vector_norm N x <= (if 0 <= dimindex N then sqrt_SNo_nonneg (dimindex N) else - sqrt_SNo_nonneg (- dimindex N)) * infnorm N x.
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:9533 / NORM_CAUCHY_SCHWARZ_EQ

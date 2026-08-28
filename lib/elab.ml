@@ -441,6 +441,16 @@ and elab_eq ctx (ty : ty) (a : tm) (b : tm) : Mg.tm =
   end else
     mg_eq (elab ctx a (VSet (carrier ctx ty))) (elab ctx b (VSet (carrier ctx ty)))
 
+(* apply a set-valued function (data) of HOL type ty to arguments; a predicate codomain
+   sigma -> bool is a subset, so the last application is membership *)
+and apply_data ctx (r : Mg.tm) (ty : ty) (args : tm list) : Mg.tm * view =
+  match args, ty with
+  | [], _ -> (r, data_view ctx ty)
+  | [ a ], TyApp ("fun", [ dom; TyApp ("bool", []) ]) -> (mg_in (elab ctx a (VSet (carrier ctx dom))) r, VProp)
+  | a :: rest, TyApp ("fun", [ dom; cod ]) ->
+      apply_data ctx (Mg.App (r, elab ctx a (data_view ctx dom))) cod rest
+  | _ -> fail "apply_data: too many arguments"
+
 and elab_app ctx (t : tm) (hint : view option) : Mg.tm * view =
   let h, args = head_and_args t in
   let nargs = List.length args in
@@ -472,12 +482,7 @@ and elab_app ctx (t : tm) (hint : view option) : Mg.tm * view =
             | _ -> fail "elab: subset variable %s over-applied" s)
        | Some (_, VSet c, n) ->
            (* set-valued function variable applied via ap *)
-           let doms, res = strip_fun_ty ty in
-           let args' = List.mapi (fun i a -> elab ctx a (data_view ctx (List.nth doms i))) args in
-           let r = Mg.apps (Mg.Var n) args' in
-           let rest_ty = List.fold_right (fun d acc -> fun_ty d acc) (List.filteri (fun i _ -> i >= nargs) doms) res in
-           if rest_ty = bool_ty then (mg_eq r (Mg.Num 1), VProp)   (* boolean carrier value as prop *)
-           else (r, data_view ctx rest_ty)
+           apply_data ctx (Mg.Var n) ty args
        | Some (_, VProp, n) -> if nargs = 0 then (Mg.Var n, VProp) else fail "elab: prop variable applied")
   | Const (c, cty) -> elab_const ctx t c cty args hint
   | Bound _ -> fail "elab: bound head"
@@ -669,12 +674,7 @@ and elab_mapped ctx (e : R.const_entry) inst (c : string) (cty : ty) (args : tm 
           (match extra with
            | [ a ] -> (mg_in (elab ctx a (VSet cdom)) r, VProp)
            | _ -> fail "subset over-applied for %s" c)
-      | VSet _ ->
-          let doms, res = strip_fun_ty res_hol_ty in
-          let extra' = List.mapi (fun i a -> elab ctx a (data_view ctx (List.nth doms i))) extra in
-          let rest_ty = List.fold_right (fun d acc -> fun_ty d acc) (List.filteri (fun i _ -> i >= List.length extra) doms) res in
-          let r = Mg.apps r extra' in
-          if rest_ty = bool_ty then (mg_eq r (Mg.Num 1), VProp) else (r, data_view ctx rest_ty)
+      | VSet _ -> apply_data ctx r res_hol_ty extra
       | VProp -> fail "prop result over-applied for %s" c
     end
   end
@@ -825,17 +825,27 @@ let elab_definition (reg : R.t) (cname : string) (target : string) (scheme : ty)
   let rec leading_lams t acc = (match t with Lam (x, ty, b) -> leading_lams b ((x, ty) :: acc) | _ -> (List.rev acc, t)) in
   let lams, core = leading_lams rhs [] in
   let k = List.length lams in
-  (* new_specification encodes constants as (@f. forall code. spec) code: reject those; a genuine
-     definition by choice (@x. P x) is translated with choose_in *)
-  (match head_and_args core with
-   | Const ("@", _), _ :: _ :: _ -> raise (Not_definitional "specification-style definition (choice applied to a code)")
-   | _ -> ());
+  (* new_specification encodes constants as (@f. forall code. spec (f code)) code; the constant is
+     an (unspecified) witness of spec, so it is defined as choose_in carrier (fun c => spec c) *)
+  let rhs, spec_style = (match core, lams with
+    | App (App (Const ("@", _), Lam (f, fty, App (Const ("!", _), Lam (code, cty, spec)))), code_tm), [] ->
+        let f0 = fresh ctx f and c0 = fresh ctx "c" in
+        let spec = open_with (Free (c0 ^ "_code", cty)) spec in   (* innermost binder: the code *)
+        let spec = open_with (Free (f0, fty)) spec in
+        let applied = App (Free (f0, fty), Free (c0 ^ "_code", cty)) in
+        let spec' = replace_subterm applied (Free (c0, scheme)) 0 spec in
+        if List.mem f0 (free_names spec') || List.mem (c0 ^ "_code") (free_names spec') then
+          raise (Not_definitional "specification-style definition not in the expected shape");
+        release ctx f0; release ctx c0;
+        (App (Const ("@", fun_ty (fun_ty scheme bool_ty) scheme), Lam (c0, scheme, abstract_free (c0, scheme) 0 spec')), true)
+    | _ -> (rhs, false)) in
+  if spec_style then note ctx "specification-constant";
   let all_doms, _ = strip_fun_ty scheme in
   if List.length all_doms < k then raise (Not_definitional "more lambdas than arguments");
   let doms = List.filteri (fun i _ -> i < k) all_doms in
   let res = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) scheme doms in
   let roles = List.map role_of_type doms in
-  let result_role = role_of_type res in
+  let result_role = if spec_style then (match res with TyApp ("bool", []) -> R.RProp | _ -> R.RSet) else role_of_type res in
   (* open the binders with named free variables and forced views *)
   let defaults = [ "x"; "y"; "z"; "w"; "u"; "v" ] in
   let rec open_all t i names acc =

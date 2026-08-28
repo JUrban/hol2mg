@@ -1445,13 +1445,13 @@ Admitted.
 // HOL Light: Library/card.ml:2578 / CARD_EXP_GRAPH
 // Source hash: md5:d97fd3ddc89e9b4a73ae3261feeef06d
 // Status: transport_required (bridges: hol_eq_c_equip, hol_fun_setexp)
-Theorem CARD_EXP_GRAPH : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power A :^: B | (forall x :e B, forall y :e A, R0 x y = 1 -> x :e t /\ y :e s) /\ forall x :e B, x :e t -> exists y :e A, R0 x y = 1 /\ forall y0 :e A, R0 x y0 = 1 -> y0 = y}.
+Theorem CARD_EXP_GRAPH : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power A :^: B | (forall x :e B, forall y :e A, y :e R0 x -> x :e t /\ y :e s) /\ forall x :e B, x :e t -> exists y :e A, y :e R0 x /\ forall y0 :e A, y0 :e R0 x -> y0 = y}.
 Admitted.
 
 // HOL Light: Library/card.ml:2588 / CARD_EXP_GRAPH_PAIRED
 // Source hash: md5:e49c23f417abb6be3f5f134df366dd6c
 // Status: transport_required (bridges: hol_eq_c_equip, hol_fun_setexp, hol_prod_setprod)
-Theorem CARD_EXP_GRAPH_PAIRED : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power (B :*: A) | (forall x :e B, forall y :e A, R0 (x,y) = 1 -> x :e t /\ y :e s) /\ forall x :e B, x :e t -> exists y :e A, R0 (x,y) = 1 /\ forall y0 :e A, R0 (x,y0) = 1 -> y0 = y}.
+Theorem CARD_EXP_GRAPH_PAIRED : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip {f :e A :^: B | (forall x :e t, f x :e s) /\ forall x :e B, ~ x :e t -> f x = choose_in A (fun y:set => False)} {R0 :e Power (B :*: A) | (forall x :e B, forall y :e A, (x,y) :e R0 -> x :e t /\ y :e s) /\ forall x :e B, x :e t -> exists y :e A, (x,y) :e R0 /\ forall y0 :e A, (x,y0) :e R0 -> y0 = y}.
 Admitted.
 
 // HOL Light: Library/card.ml:2601 / CARD_EXP_0

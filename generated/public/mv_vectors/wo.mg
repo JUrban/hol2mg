@@ -623,13 +623,13 @@ Admitted.
 // HOL Light: Library/wo.ml:849 / UNION_FLD
 // Source hash: md5:4990bf86dbb599eab72fa79450ab1093
 // Status: generalization_required (bridges: empty_case:A)
-Theorem UNION_FLD : forall A:set, forall x :e A, forall P:set -> prop, x :e fld_on A (fun x0:set => fun y:set => exists l :e Power A :^: A, P l /\ l x0 y = 1) <-> exists l :e Power A :^: A, P l /\ x :e fld_on A (fun x0:set => fun x1:set => x1 :e l x0).
+Theorem UNION_FLD : forall A:set, forall x :e A, forall P:set -> prop, x :e fld_on A (fun x0:set => fun y:set => exists l :e Power A :^: A, P l /\ y :e l x0) <-> exists l :e Power A :^: A, P l /\ x :e fld_on A (fun x0:set => fun x1:set => x1 :e l x0).
 Admitted.
 
 // HOL Light: Library/wo.ml:853 / UNION_INSEG
 // Source hash: md5:2ac06ebd0b1f5602c14890edd8a55f43
 // Status: exact_native
-Theorem UNION_INSEG : forall A:set, A <> Empty -> forall P:set -> prop, forall l:set -> set -> prop, (forall m :e Power A :^: A, P m -> inseg_on A (fun x:set => fun x0:set => x0 :e m x) l) -> inseg_on A (fun x:set => fun y:set => exists l0 :e Power A :^: A, P l0 /\ l0 x y = 1) l.
+Theorem UNION_INSEG : forall A:set, A <> Empty -> forall P:set -> prop, forall l:set -> set -> prop, (forall m :e Power A :^: A, P m -> inseg_on A (fun x:set => fun x0:set => x0 :e m x) l) -> inseg_on A (fun x:set => fun y:set => exists l0 :e Power A :^: A, P l0 /\ y :e l0 x) l.
 Admitted.
 
 // HOL Light: Library/wo.ml:863 / INSEG_SUBSET
@@ -761,7 +761,7 @@ Admitted.
 // HOL Light: Library/wo.ml:1118 / ORDINAL_UNION
 // Source hash: md5:fc99ba2e77be46b92e085ac27f7be9dd
 // Status: exact_native (bridges: choose_in_spec)
-Theorem ORDINAL_UNION : forall A:set, A <> Empty -> forall P:set -> prop, (forall l :e Power A :^: A, P l -> ordinal_on A (fun x:set => fun x0:set => x0 :e l x)) -> ordinal_on A (fun x:set => fun y:set => exists l :e Power A :^: A, P l /\ l x y = 1).
+Theorem ORDINAL_UNION : forall A:set, A <> Empty -> forall P:set -> prop, (forall l :e Power A :^: A, P l -> ordinal_on A (fun x:set => fun x0:set => x0 :e l x)) -> ordinal_on A (fun x:set => fun y:set => exists l :e Power A :^: A, P l /\ y :e l x).
 Admitted.
 
 // HOL Light: Library/wo.ml:1199 / ORDINAL_UNION_LEMMA

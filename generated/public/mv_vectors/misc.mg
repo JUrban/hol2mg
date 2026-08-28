@@ -26,6 +26,24 @@ Admitted.
 Theorem APPROACHABLE_LT_LE : forall A:set, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> ((exists d :e R, 0 < d /\ forall x :e A, f x < d -> P x) <-> exists d :e R, 0 < d /\ forall x :e A, f x <= d -> P x).
 Admitted.
 
+// HOL Light:  / ARBITRARY_INTERSECTION_OF_RELATIVE_TO
+// Source hash: md5:ca11f78934027fd4c8ed614ea10176fe
+// Status: exact_native
+Theorem ARBITRARY_INTERSECTION_OF_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A {x :e Power A | exists u c= Power A, True /\ (forall x0 :e u, x0 :e P) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u = relative_to A {x :e Power A | exists u0 c= Power A, True /\ (forall x0 :e u0, x0 :e relative_to A P u) /\ {x0 :e A | forall Y :e u0, x0 :e Y} = x} u.
+Admitted.
+
+// HOL Light:  / ARBITRARY_UNION_OF_NONEMPTY_FINITE_INTERSECTION
+// Source hash: md5:5497805154c9de33906e671260b74d74
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem ARBITRARY_UNION_OF_NONEMPTY_FINITE_INTERSECTION : forall A:set, A <> Empty -> forall u c= Power A, forall x c= A, (exists u0 c= Power A, True /\ (forall x0 :e u0, exists u0 c= Power A, finite u0 /\ ~ u0 = Empty /\ (forall x1 :e u0, x1 :e u) /\ {x :e A | forall Y :e u0, x :e Y} = x0) /\ Union u0 = x) <-> exists u0 c= Power A, True /\ (forall x0 :e u0, x0 :e relative_to A {x01 :e Power A | exists u0 c= Power A, finite u0 /\ (forall x1 :e u0, x1 :e u) /\ {x :e A | forall Y :e u0, x :e Y} = x01} (Union u)) /\ Union u0 = x.
+Admitted.
+
+// HOL Light:  / ARBITRARY_UNION_OF_RELATIVE_TO
+// Source hash: md5:c93332108548ebf7036a037e341e28d8
+// Status: exact_native
+Theorem ARBITRARY_UNION_OF_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u x c= A, x :e relative_to A {x0 :e Power A | exists u c= Power A, True /\ (forall x1 :e u, x1 :e P) /\ Union u = x0} u <-> exists u0 c= Power A, True /\ (forall x0 :e u0, x0 :e relative_to A P u) /\ Union u0 = x.
+Admitted.
+
 // HOL Light:  / BACK_AND_FORTH
 // Source hash: md5:6f8da29ffc4d51e890ed055ded234d95
 // Status: transport_required (bridges: hol_countable, hol_finite_finite)
@@ -92,6 +110,18 @@ Admitted.
 Theorem COUNTABLE_INTEGER_COORDINATES : forall N:set, N <> Empty -> countable {x :e R :^: idx N | forall i :e omega, 1 <= i /\ i <= dimindex N -> x i :e int}.
 Admitted.
 
+// HOL Light:  / COUNTABLE_INTERSECTION_OF_RELATIVE_TO
+// Source hash: md5:f199dab7bbd19bef9d4c28baf9201fd2
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_INTERSECTION_OF_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A {x :e Power A | exists u c= Power A, countable u /\ (forall x0 :e u, x0 :e P) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u = relative_to A {x :e Power A | exists u0 c= Power A, countable u0 /\ (forall x0 :e u0, x0 :e relative_to A P u) /\ {x0 :e A | forall Y :e u0, x0 :e Y} = x} u.
+Admitted.
+
+// HOL Light:  / COUNTABLE_INTERSECTION_OF_RELATIVE_TO_ALT
+// Source hash: md5:40c7cfe407bb4edcea4ce637e22b07f7
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_INTERSECTION_OF_RELATIVE_TO_ALT : forall A:set, A <> Empty -> forall P:set -> prop, forall u s c= A, P u -> (s :e relative_to A {x :e Power A | exists u c= Power A, countable u /\ (forall c :e u, P c) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u <-> (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ s c= u).
+Admitted.
+
 // HOL Light:  / COUNTABLE_LOCAL_MAXIMA
 // Source hash: md5:4b2f5fe1f78245465e3d9e94cb6b210b
 // Status: transport_required (bridges: hol_countable, hol_num_omega, hol_real_R, omega_Subq_R)
@@ -128,6 +158,30 @@ Admitted.
 Theorem COUNTABLE_STRICT_LOCAL_MINIMA : forall f:set -> set, (forall x :e R, f x :e R) -> countable {x :e R | exists d :e R, 0 < d /\ forall x' :e R, abs_SNo (x' + - x) < d /\ ~ x' = x -> f x < f x'}.
 Admitted.
 
+// HOL Light:  / COUNTABLE_UNION_OF_RELATIVE_TO
+// Source hash: md5:176191deec6a99bb6a56ea7865d144a5
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_UNION_OF_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u x c= A, x :e relative_to A {x0 :e Power A | exists u c= Power A, countable u /\ (forall x1 :e u, x1 :e P) /\ Union u = x0} u <-> exists u0 c= Power A, countable u0 /\ (forall x0 :e u0, x0 :e relative_to A P u) /\ Union u0 = x.
+Admitted.
+
+// HOL Light:  / EMPTY_AS_REAL_INTERVAL
+// Source hash: md5:02ed7d225f7e2c6ab830a6226b6e1e98
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem EMPTY_AS_REAL_INTERVAL : Empty = closed_real_interval (seq_cons (1,0) seq_nil).
+Admitted.
+
+// HOL Light:  / ENDS_IN_REAL_INTERVAL
+// Source hash: md5:f748a83c0e7a9a67e69d8e1d2a855083
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem ENDS_IN_REAL_INTERVAL : (forall a b :e R, a :e closed_real_interval (seq_cons (a,b) seq_nil) <-> ~ closed_real_interval (seq_cons (a,b) seq_nil) = Empty) /\ ((forall a b :e R, b :e closed_real_interval (seq_cons (a,b) seq_nil) <-> ~ closed_real_interval (seq_cons (a,b) seq_nil) = Empty) /\ ((forall a b :e R, ~ a :e open_real_interval (a,b)) /\ forall a b :e R, ~ b :e open_real_interval (a,b))).
+Admitted.
+
+// HOL Light:  / ENDS_IN_UNIT_REAL_INTERVAL
+// Source hash: md5:efb14126d5c4e386d794328c5cd2c942
+// Status: transport_required (bridges: hol_list_finseq, hol_num_omega, hol_prod_setprod, hol_real_R, omega_Subq_R)
+Theorem ENDS_IN_UNIT_REAL_INTERVAL : 0 :e closed_real_interval (seq_cons (0,1) seq_nil) /\ 1 :e closed_real_interval (seq_cons (0,1) seq_nil).
+Admitted.
+
 // HOL Light:  / EPSILON_DELTA_MINIMAL
 // Source hash: md5:15ee450d470ede4e2eff57ea8b641869
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, omega_Subq_R)
@@ -158,10 +212,28 @@ Admitted.
 Theorem FINITE_INDEX_NUMSEG_SPECIAL : forall A:set, forall s c= A, forall a :e A, finite s /\ a :e s -> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall i j :e omega, i :e idx_n (finite_cardinality s) /\ (j :e idx_n (finite_cardinality s) /\ f i = f j) -> i = j) /\ (s = {f x | x :e idx_n (finite_cardinality s)} /\ f 1 = a)).
 Admitted.
 
+// HOL Light:  / FINITE_INTERSECTION_OF_RELATIVE_TO
+// Source hash: md5:cbd0aacd3f9b9a366b1401533ef5a013
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem FINITE_INTERSECTION_OF_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A {x :e Power A | exists u c= Power A, finite u /\ (forall x0 :e u, x0 :e P) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u = relative_to A {x :e Power A | exists u0 c= Power A, finite u0 /\ (forall x0 :e u0, x0 :e relative_to A P u) /\ {x0 :e A | forall Y :e u0, x0 :e Y} = x} u.
+Admitted.
+
+// HOL Light:  / FINITE_INTERSECTION_OF_RELATIVE_TO_ALT
+// Source hash: md5:ff6de74e876b774c5a70cfeb1ef84f03
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem FINITE_INTERSECTION_OF_RELATIVE_TO_ALT : forall A:set, A <> Empty -> forall P:set -> prop, forall u s c= A, P u -> (s :e relative_to A {x :e Power A | exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x0 :e A | forall Y :e u, x0 :e Y} = x} u <-> (exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = s) /\ s c= u).
+Admitted.
+
 // HOL Light:  / FINITE_INTER_NUMSEG
 // Source hash: md5:f5b07b1956f4d123bb1dfd43d875e98c
 // Status: transport_required (bridges: hol_finite_finite, hol_num_omega)
 Theorem FINITE_INTER_NUMSEG : forall s c= omega, forall m n :e omega, finite (s :/\: {i :e omega | m <= i /\ i <= n}).
+Admitted.
+
+// HOL Light:  / FINITE_UNION_OF_RELATIVE_TO
+// Source hash: md5:d2e414dea5fb1d5aeb783fe988da920a
+// Status: transport_required (bridges: hol_finite_finite)
+Theorem FINITE_UNION_OF_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u x c= A, x :e relative_to A {x0 :e Power A | exists u c= Power A, finite u /\ (forall x1 :e u, x1 :e P) /\ Union u = x0} u <-> exists u0 c= Power A, finite u0 /\ (forall x0 :e u0, x0 :e relative_to A P u) /\ Union u0 = x.
 Admitted.
 
 // HOL Light:  / FORALL_DIFF
@@ -210,6 +282,12 @@ Admitted.
 // Source hash: md5:27570b5aca816f783c257d5283d8fab9
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem FORALL_POS_MONO_EQ : forall P:set -> prop, (forall d e0 :e R, d < e0 /\ P d -> P e0) -> ((forall e0 :e R, 0 < e0 -> P e0) <-> forall n :e omega, ~ n = 0 -> P (recip_SNo n)).
+Admitted.
+
+// HOL Light:  / FORALL_RELATIVE_TO
+// Source hash: md5:5b16fa4dc7082ba5827b4ff050206460
+// Status: exact_native
+Theorem FORALL_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, forall Q:set -> prop, (forall s c= A, s :e relative_to A P u -> Q s) <-> forall s c= A, s :e P -> Q (u :/\: s).
 Admitted.
 
 // HOL Light:  / FORALL_SUC
@@ -464,10 +542,28 @@ Admitted.
 Theorem INFINITE_IRRATIONAL_IN_RANGE : forall a b :e R, a < b -> infinite {q :e R | ~ q :e rational /\ (a < q /\ q < b)}.
 Admitted.
 
+// HOL Light:  / INTER_REAL_INTERVAL
+// Source hash: md5:6b393d983f3404b82c6f05f4f1fd67ef
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem INTER_REAL_INTERVAL : forall a b c d :e R, closed_real_interval (seq_cons (a,b) seq_nil) :/\: closed_real_interval (seq_cons (c,d) seq_nil) = closed_real_interval (seq_cons (if a <= c then c else a,if b <= d then b else d) seq_nil).
+Admitted.
+
 // HOL Light:  / IN_FROM
 // Source hash: md5:de46bf34f18db6f4a2535cddd2ef4232
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem IN_FROM : forall m n :e omega, m :e from n <-> n <= m.
+Admitted.
+
+// HOL Light:  / IN_REAL_INTERVAL
+// Source hash: md5:f83270a98680b8c6c67932308385f317
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem IN_REAL_INTERVAL : forall a b x :e R, (x :e closed_real_interval (seq_cons (a,b) seq_nil) <-> a <= x /\ x <= b) /\ (x :e open_real_interval (a,b) <-> a < x /\ x < b).
+Admitted.
+
+// HOL Light:  / IN_REAL_INTERVAL_REFLECT
+// Source hash: md5:ee925f07b78f3022903130de61559480
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem IN_REAL_INTERVAL_REFLECT : (forall a b x :e R, - x :e closed_real_interval (seq_cons (- b,- a) seq_nil) <-> x :e closed_real_interval (seq_cons (a,b) seq_nil)) /\ forall a b x :e R, - x :e open_real_interval (- b,- a) <-> x :e open_real_interval (a,b).
 Admitted.
 
 // HOL Light:  / IRRATIONAL_APPROXIMATION
@@ -512,6 +608,12 @@ Admitted.
 Theorem IS_HULL : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall f c= Power A, (forall s0 c= A, s0 :e f -> s0 :e P) -> {x :e A | forall Y :e f, x :e Y} :e P) -> (s :e P <-> exists t c= A, s = hull A P t).
 Admitted.
 
+// HOL Light:  / IS_REALINTERVAL_CONTAINS_INTERVAL
+// Source hash: md5:4fe58c5161bad3d3fbaa8736c710ee7a
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem IS_REALINTERVAL_CONTAINS_INTERVAL : forall s c= R, forall a b :e R, is_realinterval s /\ (a :e s /\ b :e s) -> closed_real_interval (seq_cons (a,b) seq_nil) c= s.
+Admitted.
+
 // HOL Light:  / IS_REALINTERVAL_EMPTY
 // Source hash: md5:cf2a77adef1b199f3b57e1723e5b46d7
 // Status: transport_required (bridges: hol_real_R)
@@ -522,6 +624,12 @@ Admitted.
 // Source hash: md5:9809fb15e0c9b3e0e06ba2f177b80515
 // Status: transport_required (bridges: hol_real_R)
 Theorem IS_REALINTERVAL_INTER : forall s t c= R, is_realinterval s /\ is_realinterval t -> is_realinterval (s :/\: t).
+Admitted.
+
+// HOL Light:  / IS_REALINTERVAL_INTERVAL
+// Source hash: md5:082efb27426085d67be94b0760d647b8
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem IS_REALINTERVAL_INTERVAL : forall a b :e R, is_realinterval (open_real_interval (a,b)) /\ is_realinterval (closed_real_interval (seq_cons (a,b) seq_nil)).
 Admitted.
 
 // HOL Light:  / IS_REALINTERVAL_SHRINK
@@ -594,6 +702,24 @@ Admitted.
 // Source hash: md5:ca02d881dc0bb1ca498410e58a1e926d
 // Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
 Theorem MATRIFY_VECTORIZE : forall A M N:set, M <> Empty -> N <> Empty -> forall m :e A :^: idx N :^: idx M, matrify A M N (vectorize A M N m) = m.
+Admitted.
+
+// HOL Light:  / MATROID_FINITE_DIM
+// Source hash: md5:893c2e240141a21315c7d8d7cd7b7d80
+// Status: transport_required (bridges: hol_finite_finite, hol_typedef_matroid)
+Theorem MATROID_FINITE_DIM : forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> exists b c= A, finite b /\ (b c= matroid_set A m /\ s c= {x :e A | matroid_span A m b x}).
+Admitted.
+
+// HOL Light:  / MATROID_FINITE_DIM_BASIS
+// Source hash: md5:b6b46bc4e9e55c5e400e96b90db25f01
+// Status: transport_required (bridges: hol_finite_finite, hol_typedef_matroid)
+Theorem MATROID_FINITE_DIM_BASIS : forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\ exists b c= A, finite b /\ (b c= s /\ (matroid_independent A m b /\ forall x :e A, matroid_span A m b x <-> matroid_span A m s x)).
+Admitted.
+
+// HOL Light:  / MATROID_FINITE_DIM_SUBSET
+// Source hash: md5:932cbbbb344fd1c13df319d9e305bd77
+// Status: transport_required (bridges: hol_finite_finite, hol_typedef_matroid)
+Theorem MATROID_FINITE_DIM_SUBSET : forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\ exists b c= A, finite b /\ (b c= s /\ s c= {x :e A | matroid_span A m b x}).
 Admitted.
 
 // HOL Light:  / MATROID_SPAN_EXCHANGE
@@ -716,6 +842,12 @@ Admitted.
 Theorem REAL_ARCH_RDIV_EQ_0 : forall x c :e R, 0 <= x /\ (0 <= c /\ (forall m :e omega, 0 < m -> m * x <= c)) -> x = 0.
 Admitted.
 
+// HOL Light:  / REAL_CLOSED_OPEN_INTERVAL
+// Source hash: md5:e234a739dfe393f435b37b5d6941fb5a
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REAL_CLOSED_OPEN_INTERVAL : forall a b :e R, a <= b -> closed_real_interval (seq_cons (a,b) seq_nil) = open_real_interval (a,b) :\/: {a,b}.
+Admitted.
+
 // HOL Light:  / REAL_CONVEX_SUM_BOUND_LE
 // Source hash: md5:9098db0d6d34d4dfaa0548f6250b774b
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
@@ -732,6 +864,30 @@ Admitted.
 // Source hash: md5:18cd9bae3943d5baa9dc5b382df62c6e
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_HALF : (forall e0 :e R, 0 < e0 :/: 2 <-> 0 < e0) /\ ((forall e0 :e R, e0 :/: 2 + e0 :/: 2 = e0) /\ forall e0 :e R, 2 * e0 :/: 2 = e0).
+Admitted.
+
+// HOL Light:  / REAL_INTERVAL_EQ_EMPTY
+// Source hash: md5:dda50884786e8fa3992d122cb59f3b0f
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REAL_INTERVAL_EQ_EMPTY : (forall a b :e R, closed_real_interval (seq_cons (a,b) seq_nil) = Empty <-> b < a) /\ forall a b :e R, open_real_interval (a,b) = Empty <-> b <= a.
+Admitted.
+
+// HOL Light:  / REAL_INTERVAL_NE_EMPTY
+// Source hash: md5:bd8b1157b9d6af850888da2e94a3a166
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REAL_INTERVAL_NE_EMPTY : (forall a b :e R, ~ closed_real_interval (seq_cons (a,b) seq_nil) = Empty <-> a <= b) /\ forall a b :e R, ~ open_real_interval (a,b) = Empty <-> a < b.
+Admitted.
+
+// HOL Light:  / REAL_INTERVAL_OPEN_SUBSET_CLOSED
+// Source hash: md5:6013d5029e60abad7ff4c39f02f493f5
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REAL_INTERVAL_OPEN_SUBSET_CLOSED : forall a b :e R, open_real_interval (a,b) c= closed_real_interval (seq_cons (a,b) seq_nil).
+Admitted.
+
+// HOL Light:  / REAL_INTERVAL_SING
+// Source hash: md5:f0d1b639dfebe11dc4d3c3f57cb19d13
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REAL_INTERVAL_SING : forall a :e R, closed_real_interval (seq_cons (a,a) seq_nil) = {a} /\ open_real_interval (a,a) = Empty.
 Admitted.
 
 // HOL Light:  / REAL_INV_0
@@ -860,10 +1016,94 @@ Admitted.
 Theorem REAL_OF_NUM_MUL : forall m n :e omega, m * n = m * n.
 Admitted.
 
+// HOL Light:  / REAL_OPEN_CLOSED_INTERVAL
+// Source hash: md5:0edd50ac1e08116f757ce5443daab891
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REAL_OPEN_CLOSED_INTERVAL : forall a b :e R, open_real_interval (a,b) = closed_real_interval (seq_cons (a,b) seq_nil) :\: {a,b}.
+Admitted.
+
 // HOL Light:  / RECURSION_ON_DYADIC_FRACTIONS
 // Source hash: md5:2c633b7a4fd1d13635a8963302dde36e
 // Status: generalization_required (bridges: empty_case:A, exp_nat_exp_SNo_nat, hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
 Theorem RECURSION_ON_DYADIC_FRACTIONS : forall A:set, forall R0:set -> set -> prop, forall a b :e A, (forall x y z :e A, R0 x y /\ R0 y z -> R0 x z) /\ (R0 a b /\ (forall x y :e A, R0 x y -> exists z :e A, R0 x z /\ R0 z y)) -> exists f:set -> set, (forall x :e R, f x :e A) /\ (f 0 = a /\ (f 1 = b /\ forall x y :e R, x :e (\/_ k :e omega, {k :/: 2 ^ n | n :e omega, k <= 2 ^ n}) /\ (y :e (\/_ k :e omega, {k :/: 2 ^ n | n :e omega, k <= 2 ^ n}) /\ x < y) -> R0 (f x) (f y))).
+Admitted.
+
+// HOL Light:  / REFLECT_REAL_INTERVAL
+// Source hash: md5:bfee800006e4b8469d14bafb63d62445
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem REFLECT_REAL_INTERVAL : (forall a b :e R, {- x | x :e closed_real_interval (seq_cons (a,b) seq_nil)} = closed_real_interval (seq_cons (- b,- a) seq_nil)) /\ forall a b :e R, {- x | x :e open_real_interval (a,b)} = open_real_interval (- b,- a).
+Admitted.
+
+// HOL Light:  / RELATIVE_TO
+// Source hash: md5:1f4057948b457a988a5c41e16a60143a
+// Status: exact_native
+Theorem RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall u c= A, relative_to A P u = {u :/\: s | s :e Power A, s :e P}.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_COMPL
+// Source hash: md5:05b1fb37bc246558328f15f1493b0b1a
+// Status: exact_native
+Theorem RELATIVE_TO_COMPL : forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s c= u -> (u :\: s :e relative_to A P u <-> s :e relative_to A {c :e Power A | A :\: c :e P} u).
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_IMP_SUBSET
+// Source hash: md5:f41dd2817c441384970494d333b3f70b
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RELATIVE_TO_IMP_SUBSET : forall A:set, forall P c= Power A, forall s t c= A, t :e relative_to A P s -> t c= s.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_INC
+// Source hash: md5:2145c9f0d72619ede762892a03d2a547
+// Status: exact_native
+Theorem RELATIVE_TO_INC : forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s :e P -> u :/\: s :e relative_to A P u.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_INTER
+// Source hash: md5:f8570de11f0bcb9bbcc6fbbb9d30b837
+// Status: exact_native
+Theorem RELATIVE_TO_INTER : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall c d c= A, c :e P /\ d :e P -> c :/\: d :e P) -> forall c d c= A, c :e relative_to A P s /\ d :e relative_to A P s -> c :/\: d :e relative_to A P s.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_MONO
+// Source hash: md5:53a9fcb3398160a256af12931c2f7f21
+// Status: exact_native
+Theorem RELATIVE_TO_MONO : forall A:set, A <> Empty -> forall s c= A, forall P Q c= Power A, (forall s0 c= A, s0 :e P -> s0 :e Q) -> forall u c= A, s :e relative_to A P u -> s :e relative_to A Q u.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_RELATIVE_TO
+// Source hash: md5:75cfc16699db24af35150fabc98fb8cc
+// Status: exact_native
+Theorem RELATIVE_TO_RELATIVE_TO : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, relative_to A (relative_to A P s) t = relative_to A P (s :/\: t).
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_SUBSET
+// Source hash: md5:d39a62b8bb6ef93242b9cea4a57336c1
+// Status: exact_native
+Theorem RELATIVE_TO_SUBSET : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, s c= t /\ s :e P -> s :e relative_to A P t.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_SUBSET_INC
+// Source hash: md5:120610080a9b3de84bb5c2603d13a7a3
+// Status: exact_native
+Theorem RELATIVE_TO_SUBSET_INC : forall A:set, A <> Empty -> forall P c= Power A, forall u s c= A, s c= u /\ s :e P -> s :e relative_to A P u.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_SUBSET_TRANS
+// Source hash: md5:48370076e23d2798505477b9ea52ff14
+// Status: generalization_required (bridges: empty_case:A)
+Theorem RELATIVE_TO_SUBSET_TRANS : forall A:set, forall P c= Power A, forall u s t c= A, s :e relative_to A P u /\ (s c= t /\ t c= u) -> s :e relative_to A P t.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_UNION
+// Source hash: md5:2b6869b7648d4ab4df46c1d6804ccd9a
+// Status: exact_native
+Theorem RELATIVE_TO_UNION : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, (forall c d c= A, c :e P /\ d :e P -> c :\/: d :e P) -> forall c d c= A, c :e relative_to A P s /\ d :e relative_to A P s -> c :\/: d :e relative_to A P s.
+Admitted.
+
+// HOL Light:  / RELATIVE_TO_UNIV
+// Source hash: md5:bd92aa50e9747e9d72fe0fc75e7dd4a2
+// Status: exact_native
+Theorem RELATIVE_TO_UNIV : forall A:set, A <> Empty -> forall P c= Power A, forall s c= A, s :e relative_to A P A <-> s :e P.
 Admitted.
 
 // HOL Light:  / SEQ_MONO_LEMMA
@@ -906,6 +1146,12 @@ Admitted.
 // Source hash: md5:6beb88cc522e603f586dade20943c480
 // Status: exact_native
 Theorem SUBSET_HULL : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, t :e P -> (hull A P s c= t <-> s c= t).
+Admitted.
+
+// HOL Light:  / SUBSET_REAL_INTERVAL
+// Source hash: md5:d1fc48d3f1f2ed5e135c2b6a922c1bdf
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem SUBSET_REAL_INTERVAL : forall a b c d :e R, (closed_real_interval (seq_cons (a,b) seq_nil) c= closed_real_interval (seq_cons (c,d) seq_nil) <-> b < a \/ c <= a /\ (a <= b /\ b <= d)) /\ ((closed_real_interval (seq_cons (a,b) seq_nil) c= open_real_interval (c,d) <-> b < a \/ c < a /\ (a <= b /\ b < d)) /\ ((open_real_interval (a,b) c= closed_real_interval (seq_cons (c,d) seq_nil) <-> b <= a \/ c <= a /\ (a < b /\ b <= d)) /\ (open_real_interval (a,b) c= open_real_interval (c,d) <-> b <= a \/ c <= a /\ (a < b /\ b <= d)))).
 Admitted.
 
 // HOL Light:  / SUM_GP
@@ -1082,6 +1328,12 @@ Admitted.
 Theorem WQOSET_NOBAD_SUBSEQ : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ forall i j :e omega, i <= j -> l (x (r i)) (x (r j))).
 Admitted.
 
+// HOL Light:  / closed_real_interval
+// Source hash: md5:2b236165fe65811a878f0107b67ec565
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem closed_real_interval_thm : forall a b :e R, closed_real_interval (seq_cons (a,b) seq_nil) = {x :e R | a <= x /\ x <= b}.
+Admitted.
+
 // HOL Light:  / from
 // Source hash: md5:b0554bf822f90b7c4045d0b3d3c95d19
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
@@ -1110,6 +1362,18 @@ Admitted.
 // Source hash: md5:b90ab1559ee9b05e5f9764bedbf7a5e3
 // Status: transport_required (bridges: hol_prod_setprod, hol_real_R)
 Theorem open_real_interval_thm : forall a b :e R, open_real_interval (a,b) = {x :e R | a < x /\ x < b}.
+Admitted.
+
+// HOL Light:  / real_interval
+// Source hash: md5:336dde35241fe3e8710ec56a210a346b
+// Status: transport_required (bridges: hol_list_finseq, hol_prod_setprod, hol_real_R)
+Theorem real_interval : forall a b :e R, open_real_interval (a,b) = {x :e R | a < x /\ x < b} /\ closed_real_interval (seq_cons (a,b) seq_nil) = {x :e R | a <= x /\ x <= b}.
+Admitted.
+
+// HOL Light:  / relative_to
+// Source hash: md5:5f865c5049cb8f32b6c206c65358763f
+// Status: exact_native
+Theorem relative_to_thm : forall A:set, A <> Empty -> forall P c= Power A, forall s t c= A, t :e relative_to A P s <-> exists u c= A, u :e P /\ s :/\: u = t.
 Admitted.
 
 // HOL Light:  / suslin_operation

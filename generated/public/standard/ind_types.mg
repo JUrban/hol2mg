@@ -20,6 +20,18 @@ Admitted.
 Theorem sum_RECURSION : forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a).
 Admitted.
 
+// HOL Light: ind_types.ml:771 / OUTL
+// Source hash: md5:c31d1bada798b3a79e21ff4f54d61c5b
+// Status: generalization_required (bridges: empty_case:A, hol_sum_setsum)
+Theorem OUTL_thm : forall A B:set, B <> Empty -> forall x :e A, OUTL A B (Inj0 x) = x.
+Admitted.
+
+// HOL Light: ind_types.ml:774 / OUTR
+// Source hash: md5:7d0e05a613fcdc794c952d7ab6306a50
+// Status: generalization_required (bridges: empty_case:B, hol_sum_setsum)
+Theorem OUTR_thm : forall A B:set, A <> Empty -> forall y :e B, OUTR A B (Inj1 y) = y.
+Admitted.
+
 // HOL Light: ind_types.ml:881 / option_INDUCT
 // Source hash: md5:e4c8e92bde030ec48006c86c6a04e07e
 // Status: transport_required (bridges: hol_option_setsum)

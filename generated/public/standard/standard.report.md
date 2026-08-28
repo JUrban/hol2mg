@@ -1,20 +1,20 @@
 # hol2mg statement translation report: profile `standard`
 
 - HOL Light commit: `433477862bb90b328a593e012e09390e99b2439b`
-- theorems: 4590 discovered, 4287 public
-- automatic definitions: 2 constants and 0 types generated, 7 not generated (NUM_REP: internal construction type ind; OUTL: specification-style definition (choice); OUTR: specification-style definition (choice); _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
-- theorems using automatic definitions: 2
+- theorems: 4590 discovered, 4289 public
+- automatic definitions: 4 constants and 0 types generated, 5 not generated (NUM_REP: internal construction type ind; _22943: no carrier mapping for type constructor char (in char); ASCII: no carrier mapping for type constructor char (in char); _100512: unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0; _100531: unmapped constant _mk_tybit1 : ((A,A)finite_sum,1)finite_sum recspace->A tybit1)
+- theorems using automatic definitions: 4
 - mapping files: mappings/core.json, mappings/lists.json, mappings/library.json
 
 ## Status counts
 
 | status | count |
 |---|---|
-| transport_required | 3015 |
-| generalization_required | 948 |
-| pending_mapping | 303 |
+| transport_required | 3014 |
+| generalization_required | 950 |
+| pending_mapping | 301 |
 | exact_native | 237 |
-| native_reuse | 87 |
+| native_reuse | 88 |
 
 ## Public statements per shard
 
@@ -28,11 +28,11 @@
 | calc_num | 18 | 0 | 0 |
 | calc_rat | 17 | 0 | 0 |
 | card | 229 | 0 | 0 |
-| cart | 103 | 0 | 0 |
+| cart | 102 | 0 | 0 |
 | class | 42 | 0 | 0 |
 | define | 1 | 36 | 0 |
 | floor | 100 | 0 | 0 |
-| ind_types | 15 | 34 | 0 |
+| ind_types | 17 | 32 | 0 |
 | int | 498 | 1 | 0 |
 | integer | 214 | 0 | 0 |
 | isum | 92 | 1 | 0 |
@@ -111,8 +111,6 @@
 | 1 | unmapped constant @ : (((A->bool)->B)->bool)->(A->bool)->B |
 | 1 | unmapped constant GABS : (A->bool)->A |
 | 1 | unmapped constant GSPEC : (A->bool)->A->bool |
-| 1 | unmapped constant OUTL : (A,B)sum->A |
-| 1 | unmapped constant OUTR : (A,B)sum->B |
 | 1 | unmapped constant PASSOC : ((A#B)#C->D)->A#B#C->D |
 | 1 | unmapped constant one_REP : 1->bool |
 
@@ -120,7 +118,7 @@
 
 - hol_num_omega (2228)
 - hol_real_R (858)
-- empty_case:A (853)
+- empty_case:A (854)
 - hol_int_int (850)
 - hol_finite_finite (554)
 - hol_prod_setprod (543)
@@ -134,8 +132,8 @@
 - exp_nat_exp_SNo_nat (176)
 - hol_list_finseq (157)
 - hol_card_finite_cardinality (129)
+- empty_case:B (108)
 - hol_product_finprod (108)
-- empty_case:B (107)
 - hol_nsum_finsum (103)
 - int_Subq_R (97)
 - hol_eq_c_equip (95)
@@ -148,7 +146,7 @@
 - hol_nproduct_finprod (58)
 - hol_dimindex (53)
 - hol_finite_sum_idx (50)
-- hol_sum_setsum (41)
+- hol_sum_setsum (43)
 - hol_binom_binomial_coefficient (28)
 - hol_one_1 (23)
 - empty_case:K (22)

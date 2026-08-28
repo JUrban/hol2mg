@@ -1,0 +1,7 @@
+{
+  "name": "multivariate",
+  "description": "HOL Light core plus the whole Multivariate library (Multivariate/make.ml)",
+  "roots": ["Multivariate/make.ml"],
+  "hol_light_commit": "433477862bb90b328a593e012e09390e99b2439b",
+  "mappings": ["core.json", "lists.json", "library.json"]
+}
