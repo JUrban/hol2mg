@@ -134,7 +134,26 @@ claim L3: (if 0 = 0 then a else seq_nth l (nat_pred 0)) = a.
 exact (eq_trans ((ordsucc (seq_len l), F) 1 0) (F 0) a L1 (eq_trans (F 0) (if 0 = 0 then a else seq_nth l (nat_pred 0)) a L2 L3)).
 Qed.
 Theorem seq_nth_cons_S : forall A:set, forall a :e A, forall l :e finseq A, forall i :e seq_len l, seq_nth (seq_cons a l) (ordsucc i) = seq_nth l i.
-Admitted.
+let A a. assume Ha. let l. assume Hl. let i. assume Hi: i :e seq_len l.
+set F := fun i :e ordsucc (seq_len l) => if i = 0 then a else seq_nth l (nat_pred i).
+claim Ln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+claim Hi2: nat_p i. { exact (nat_p_trans (seq_len l) Ln i Hi). }
+claim Hi': ordsucc i :e ordsucc (seq_len l). { exact (nat_ordsucc_in_ordsucc (seq_len l) Ln i Hi). }
+claim L1: (ordsucc (seq_len l), F) 1 (ordsucc i) = F (ordsucc i).
+{ rewrite (tuple_2_1_eq (ordsucc (seq_len l)) F). exact (fun q H => H). }
+claim L2: F (ordsucc i) = (if ordsucc i = 0 then a else seq_nth l (nat_pred (ordsucc i))).
+{ exact (beta (ordsucc (seq_len l)) (fun i => if i = 0 then a else seq_nth l (nat_pred i)) (ordsucc i) Hi'). }
+claim L3: (if ordsucc i = 0 then a else seq_nth l (nat_pred (ordsucc i))) = seq_nth l (nat_pred (ordsucc i)).
+{ exact (If_i_0 (ordsucc i = 0) a (seq_nth l (nat_pred (ordsucc i))) (neq_ordsucc_0 i)). }
+claim L4: nat_pred (ordsucc i) = i.
+{ prove (if ordsucc i = 0 then 0 else ordsucc i + - 1) = i.
+  rewrite (If_i_0 (ordsucc i = 0) 0 (ordsucc i + - 1) (neq_ordsucc_0 i)).
+  rewrite <- (add_SNo_1_ordsucc i (nat_p_omega i Hi2)) at 1.
+  exact (add_SNo_minus_R2 i 1 (nat_p_SNo i Hi2) SNo_1). }
+claim L5: seq_nth l (nat_pred (ordsucc i)) = seq_nth l i.
+{ rewrite L4. exact (fun q H => H). }
+exact (eq_trans ((ordsucc (seq_len l), F) 1 (ordsucc i)) (F (ordsucc i)) (seq_nth l i) L1 (eq_trans (F (ordsucc i)) (if ordsucc i = 0 then a else seq_nth l (nat_pred (ordsucc i))) (seq_nth l i) L2 (eq_trans (if ordsucc i = 0 then a else seq_nth l (nat_pred (ordsucc i))) (seq_nth l (nat_pred (ordsucc i))) (seq_nth l i) L3 L5))).
+Qed.
 Theorem seq_ext : forall A:set, forall l m :e finseq A, seq_len l = seq_len m -> (forall i :e seq_len l, seq_nth l i = seq_nth m i) -> l = m.
 Admitted.
 Theorem seq_cases : forall A:set, forall l :e finseq A, l = seq_nil \/ exists a :e A, exists m :e finseq A, l = seq_cons a m.
@@ -142,7 +161,13 @@ Admitted.
 Theorem seq_induct : forall A:set, forall P:set -> prop, P seq_nil -> (forall a :e A, forall l :e finseq A, P l -> P (seq_cons a l)) -> forall l :e finseq A, P l.
 Admitted.
 Theorem seq_map_finseq : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_map f l :e finseq B.
-Admitted.
+let A B f. assume Hf: forall x :e A, f x :e B. let l. assume Hl: l :e finseq A.
+prove (seq_len l, fun i :e seq_len l => f (seq_nth l i)) :e Sigma_ n :e omega, B :^: n.
+apply (tuple_2_Sigma omega (fun n => B :^: n) (seq_len l) (seq_len_omega A l Hl)).
+prove (fun i :e seq_len l => f (seq_nth l i)) :e Pi_ y :e seq_len l, B.
+apply (lam_Pi (seq_len l) (fun _ => B) (fun i => f (seq_nth l i))).
+let i. assume Hi: i :e seq_len l. exact (Hf (seq_nth l i) (seq_nth_in A l Hl i Hi)).
+Qed.
 Theorem seq_map_nil : forall f:set -> set, seq_map f seq_nil = seq_nil.
 let f.
 prove (seq_len seq_nil, fun i :e seq_len seq_nil => f (seq_nth seq_nil i)) = (0, Empty).
@@ -163,15 +188,34 @@ Admitted.
 Theorem seq_filter_finseq : forall A:set, forall P:set -> prop, forall l :e finseq A, seq_filter P l :e finseq A.
 Admitted.
 Theorem seq_replicate_finseq : forall A:set, forall n :e omega, forall a :e A, seq_replicate n a :e finseq A.
-Admitted.
+let A n. assume Hn: n :e omega. let a. assume Ha: a :e A.
+prove (n, fun i :e n => a) :e Sigma_ m :e omega, A :^: m.
+apply (tuple_2_Sigma omega (fun m => A :^: m) n Hn).
+prove (fun i :e n => a) :e Pi_ y :e n, A.
+apply (lam_Pi n (fun _ => A) (fun _ => a)).
+let i. assume Hi. exact Ha.
+Qed.
 Theorem seq_zip_finseq : forall A B:set, forall l :e finseq A, forall m :e finseq B, seq_len l = seq_len m -> seq_zip l m :e finseq (A :*: B).
-Admitted.
+let A B l. assume Hl: l :e finseq A. let m. assume Hm: m :e finseq B. assume Hlm: seq_len l = seq_len m.
+prove (seq_len l, fun i :e seq_len l => (seq_nth l i, seq_nth m i)) :e Sigma_ n :e omega, (A :*: B) :^: n.
+apply (tuple_2_Sigma omega (fun n => (A :*: B) :^: n) (seq_len l) (seq_len_omega A l Hl)).
+prove (fun i :e seq_len l => (seq_nth l i, seq_nth m i)) :e Pi_ y :e seq_len l, A :*: B.
+apply (lam_Pi (seq_len l) (fun _ => A :*: B) (fun i => (seq_nth l i, seq_nth m i))).
+let i. assume Hi: i :e seq_len l.
+claim Hi2: i :e seq_len m. { rewrite <- Hlm. exact Hi. }
+exact (tuple_2_setprod A B (seq_nth l i) (seq_nth_in A l Hl i Hi) (seq_nth m i) (seq_nth_in B m Hm i Hi2)).
+Qed.
 Theorem seq_tl_finseq : forall A:set, forall l :e finseq A, seq_tl l :e finseq A.
 Admitted.
 Theorem seq_butlast_finseq : forall A:set, forall l :e finseq A, seq_butlast l :e finseq A.
 Admitted.
 Theorem seq_mk_finseq : forall A:set, forall n :e omega, forall f:set -> set, (forall i :e n, f i :e A) -> seq_mk n f :e finseq A.
-Admitted.
+let A n. assume Hn: n :e omega. let f. assume Hf: forall i :e n, f i :e A.
+prove (n, fun i :e n => f i) :e Sigma_ m :e omega, A :^: m.
+apply (tuple_2_Sigma omega (fun m => A :^: m) n Hn).
+prove (fun i :e n => f i) :e Pi_ y :e n, A.
+exact (lam_Pi n (fun _ => A) f Hf).
+Qed.
 Theorem seq_foldr_nil : forall f:set -> set -> set, forall b:set, seq_foldr f seq_nil b = b.
 let f b.
 prove nat_primrec b (fun i r => f (seq_nth seq_nil (seq_len seq_nil + - ordsucc i)) r) (seq_len seq_nil) = b.

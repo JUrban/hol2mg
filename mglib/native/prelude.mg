@@ -9,10 +9,28 @@ Definition choose_in : set -> (set -> prop) -> set :=
   fun A P => if (exists x :e A, P x) then Eps_i (fun x => x :e A /\ P x) else Eps_i (fun x => x :e A).
 
 Theorem choose_in_spec : forall A:set, forall P:set -> prop, (exists x :e A, P x) -> choose_in A P :e A /\ P (choose_in A P).
-Admitted.
+let A. let P. assume H: exists x :e A, P x.
+prove (if (exists x :e A, P x) then Eps_i (fun x => x :e A /\ P x) else Eps_i (fun x => x :e A)) :e A /\ P (if (exists x :e A, P x) then Eps_i (fun x => x :e A /\ P x) else Eps_i (fun x => x :e A)).
+rewrite (If_i_1 (exists x :e A, P x) (Eps_i (fun x => x :e A /\ P x)) (Eps_i (fun x => x :e A)) H).
+exact (Eps_i_ex (fun x => x :e A /\ P x) H).
+Qed.
 
 Theorem choose_in_in : forall A:set, A <> Empty -> forall P:set -> prop, choose_in A P :e A.
-Admitted.
+let A. assume HA: A <> Empty. let P.
+prove (if (exists x :e A, P x) then Eps_i (fun x => x :e A /\ P x) else Eps_i (fun x => x :e A)) :e A.
+apply (xm (exists x :e A, P x)).
+- assume H: exists x :e A, P x.
+  rewrite (If_i_1 (exists x :e A, P x) (Eps_i (fun x => x :e A /\ P x)) (Eps_i (fun x => x :e A)) H).
+  exact (andEL (Eps_i (fun x => x :e A /\ P x) :e A) (P (Eps_i (fun x => x :e A /\ P x))) (Eps_i_ex (fun x => x :e A /\ P x) H)).
+- assume H: ~ exists x :e A, P x.
+  rewrite (If_i_0 (exists x :e A, P x) (Eps_i (fun x => x :e A /\ P x)) (Eps_i (fun x => x :e A)) H).
+  claim L: exists x, x :e A.
+  { apply (xm (exists x, x :e A)).
+    + assume H1: exists x, x :e A. exact H1.
+    + assume H1: ~ exists x, x :e A.
+      exact (FalseE (HA (Empty_eq A (fun x => fun Hx: x :e A => H1 (fun p:prop => fun Hp: (forall x, x :e A -> p) => Hp x Hx)))) (exists x, x :e A)). }
+  exact (Eps_i_ex (fun x => x :e A) L).
+Qed.
 
 // Natural-number operations of HOL Light that have no God1 counterpart.
 // All are stated on omega using the surreal arithmetic that God1 uses for
@@ -37,7 +55,21 @@ Definition odd_nat : set -> prop := fun n => exists k :e omega, n = 2 * k + 1.
 Theorem minus_nat_omega : forall m n :e omega, minus_nat m n :e omega.
 Admitted.
 Theorem nat_pred_omega : forall n :e omega, nat_pred n :e omega.
-Admitted.
+let n. assume Hn: n :e omega.
+apply (nat_inv n (omega_nat_p n Hn)).
+- assume H0: n = 0. rewrite H0.
+  prove (if 0 = 0 then 0 else 0 + - 1) :e omega.
+  rewrite (If_i_1 (0 = 0) 0 (0 + - 1) (fun q H => H)). exact (nat_p_omega 0 nat_0).
+- assume H1: exists x, nat_p x /\ n = ordsucc x.
+  apply (exandE_i nat_p (fun x => n = ordsucc x) H1).
+  let x. assume Hx: nat_p x. assume Hnx: n = ordsucc x.
+  rewrite Hnx.
+  prove (if ordsucc x = 0 then 0 else ordsucc x + - 1) :e omega.
+  rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
+  claim L1: ordsucc x + - 1 = x.
+  { rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1. exact (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). }
+  rewrite L1. exact (nat_p_omega x Hx).
+Qed.
 Theorem div_nat_omega : forall m n :e omega, div_nat m n :e omega.
 Admitted.
 Theorem mod_nat_omega : forall m n :e omega, mod_nat m n :e omega.
