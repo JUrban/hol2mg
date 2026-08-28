@@ -195,10 +195,13 @@ claim L2: (seq_len m, fun i :e seq_len m => seq_nth l i) = (seq_len m, fun i :e 
 { rewrite L1. exact (fun q H => H). }
 exact (eq_trans l (seq_len m, fun i :e seq_len m => seq_nth l i) m L0 (eq_trans (seq_len m, fun i :e seq_len m => seq_nth l i) (seq_len m, fun i :e seq_len m => seq_nth m i) m L2 (seq_eta A m Hm))).
 Qed.
-Theorem seq_cases : forall A:set, forall l :e finseq A, l = seq_nil \/ exists a :e A, exists m :e finseq A, l = seq_cons a m.
-Admitted.
-Theorem seq_induct : forall A:set, forall P:set -> prop, P seq_nil -> (forall a :e A, forall l :e finseq A, P l -> P (seq_cons a l)) -> forall l :e finseq A, P l.
-Admitted.
+
+// computation rules for seq_tl and the empty sequence
+
+
+
+// a nonempty sequence is the cons of its head and tail
+
 
 // computation rules for seq_map
 Theorem seq_len_map : forall f:set -> set, forall l:set, seq_len (seq_map f l) = seq_len l.
@@ -329,6 +332,118 @@ prove (fun i :e nat_pred (seq_len l) => seq_nth l (ordsucc i)) :e Pi_ y :e nat_p
 apply (lam_Pi (nat_pred (seq_len l)) (fun _ => A) (fun i => seq_nth l (ordsucc i))).
 let i. assume Hi: i :e nat_pred (seq_len l).
 exact (seq_nth_in A l Hl (ordsucc i) (nat_pred_succ_in (seq_len l) Ln i Hi)).
+Qed.
+
+Theorem seq_len_tl : forall l:set, seq_len (seq_tl l) = nat_pred (seq_len l).
+let l. exact (tuple_2_0_eq (nat_pred (seq_len l)) (fun i :e nat_pred (seq_len l) => seq_nth l (ordsucc i))).
+Qed.
+
+Theorem seq_nth_tl : forall l:set, forall i :e nat_pred (seq_len l), seq_nth (seq_tl l) i = seq_nth l (ordsucc i).
+let l i. assume Hi: i :e nat_pred (seq_len l).
+set F := fun i :e nat_pred (seq_len l) => seq_nth l (ordsucc i).
+claim L1: (nat_pred (seq_len l), F) 1 i = F i.
+{ rewrite (tuple_2_1_eq (nat_pred (seq_len l)) F). exact (fun q H => H). }
+claim L2: F i = seq_nth l (ordsucc i).
+{ exact (beta (nat_pred (seq_len l)) (fun i => seq_nth l (ordsucc i)) i Hi). }
+exact (eq_trans ((nat_pred (seq_len l), F) 1 i) (F i) (seq_nth l (ordsucc i)) L1 L2).
+Qed.
+
+Theorem seq_len_0_nil : forall A:set, forall l :e finseq A, seq_len l = 0 -> l = seq_nil.
+let A l. assume Hl: l :e finseq A. assume H0: seq_len l = 0.
+apply (seq_ext A l Hl seq_nil (seq_nil_finseq A)).
+- rewrite H0. rewrite seq_len_nil. exact (fun q H => H).
+- let i. assume Hi: i :e seq_len l.
+  claim Hi0: i :e 0. { rewrite <- H0. exact Hi. }
+  exact (FalseE (EmptyE i Hi0) (seq_nth l i = seq_nth seq_nil i)).
+Qed.
+
+Theorem seq_cons_hd_tl : forall A:set, forall l :e finseq A, seq_len l <> 0 -> l = seq_cons (seq_nth l 0) (seq_tl l).
+let A l. assume Hl: l :e finseq A. assume Hne: seq_len l <> 0.
+claim Ln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+claim H0: 0 :e seq_len l.
+{ apply (nat_inv (seq_len l) Ln).
+  - assume H: seq_len l = 0. exact (FalseE (Hne H) (0 :e seq_len l)).
+  - assume H: exists x, nat_p x /\ seq_len l = ordsucc x.
+    apply (exandE_i nat_p (fun x => seq_len l = ordsucc x) H).
+    let x. assume Hx: nat_p x. assume Hlx: seq_len l = ordsucc x.
+    rewrite Hlx. exact (nat_0_in_ordsucc x Hx). }
+claim Ha: seq_nth l 0 :e A. { exact (seq_nth_in A l Hl 0 H0). }
+claim Ht: seq_tl l :e finseq A. { exact (seq_tl_finseq A l Hl). }
+claim Lpred: ordsucc (nat_pred (seq_len l)) = seq_len l.
+{ apply (nat_inv (seq_len l) Ln).
+  - assume H: seq_len l = 0. exact (FalseE (Hne H) (ordsucc (nat_pred (seq_len l)) = seq_len l)).
+  - assume H: exists x, nat_p x /\ seq_len l = ordsucc x.
+    apply (exandE_i nat_p (fun x => seq_len l = ordsucc x) H).
+    let x. assume Hx: nat_p x. assume Hlx: seq_len l = ordsucc x.
+    rewrite Hlx.
+    prove ordsucc (if ordsucc x = 0 then 0 else ordsucc x + - 1) = ordsucc x.
+    rewrite (If_i_0 (ordsucc x = 0) 0 (ordsucc x + - 1) (neq_ordsucc_0 x)).
+    claim L1: ordsucc x + - 1 = x.
+    { rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1. exact (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). }
+    rewrite L1. exact (fun q H => H). }
+apply (seq_ext A l Hl (seq_cons (seq_nth l 0) (seq_tl l)) (seq_cons_finseq A (seq_nth l 0) Ha (seq_tl l) Ht)).
+- rewrite (seq_len_cons A (seq_nth l 0) Ha (seq_tl l) Ht). rewrite (seq_len_tl l). rewrite Lpred. exact (fun q H => H).
+- let i. assume Hi: i :e seq_len l.
+  claim Hi': nat_p i. { exact (nat_p_trans (seq_len l) Ln i Hi). }
+  apply (nat_inv i Hi').
+  + assume Hi0: i = 0. rewrite Hi0. rewrite (seq_nth_cons_0 A (seq_nth l 0) Ha (seq_tl l) Ht). exact (fun q H => H).
+  + assume H1: exists x, nat_p x /\ i = ordsucc x.
+    apply (exandE_i nat_p (fun x => i = ordsucc x) H1).
+    let j. assume Hj: nat_p j. assume Hij: i = ordsucc j.
+    claim Hjt: j :e seq_len (seq_tl l).
+    { rewrite (seq_len_tl l).
+      claim Hsj: ordsucc j :e seq_len l. { rewrite <- Hij. exact Hi. }
+      claim Hsj': ordsucc j :e ordsucc (nat_pred (seq_len l)). { rewrite Lpred. exact Hsj. }
+      claim Lp: nat_p (nat_pred (seq_len l)). { exact (omega_nat_p (nat_pred (seq_len l)) (nat_pred_omega (seq_len l) (seq_len_omega A l Hl))). }
+      apply (ordsuccE (nat_pred (seq_len l)) (ordsucc j) Hsj').
+      * assume H2: ordsucc j :e nat_pred (seq_len l). exact (nat_trans (nat_pred (seq_len l)) Lp (ordsucc j) H2 j (ordsuccI2 j)).
+      * assume H2: ordsucc j = nat_pred (seq_len l). rewrite <- H2. exact (ordsuccI2 j). }
+    claim Hjp: j :e nat_pred (seq_len l). { rewrite <- (seq_len_tl l). exact Hjt. }
+    rewrite Hij. rewrite (seq_nth_cons_S A (seq_nth l 0) Ha (seq_tl l) Ht j Hjt). rewrite (seq_nth_tl l j Hjp). exact (fun q H => H).
+Qed.
+
+Theorem seq_cases : forall A:set, forall l :e finseq A, l = seq_nil \/ exists a :e A, exists m :e finseq A, l = seq_cons a m.
+let A l. assume Hl: l :e finseq A.
+apply (xm (seq_len l = 0)).
+- assume H0: seq_len l = 0. apply orIL. exact (seq_len_0_nil A l Hl H0).
+- assume Hne: seq_len l <> 0. apply orIR.
+  claim Ln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+  claim H0: 0 :e seq_len l.
+  { apply (nat_inv (seq_len l) Ln).
+    + assume H: seq_len l = 0. exact (FalseE (Hne H) (0 :e seq_len l)).
+    + assume H: exists x, nat_p x /\ seq_len l = ordsucc x.
+      apply (exandE_i nat_p (fun x => seq_len l = ordsucc x) H).
+      let x. assume Hx: nat_p x. assume Hlx: seq_len l = ordsucc x.
+      rewrite Hlx. exact (nat_0_in_ordsucc x Hx). }
+  witness (seq_nth l 0). apply andI.
+  + exact (seq_nth_in A l Hl 0 H0).
+  + witness (seq_tl l). apply andI.
+    * exact (seq_tl_finseq A l Hl).
+    * exact (seq_cons_hd_tl A l Hl Hne).
+Qed.
+
+Theorem seq_induct : forall A:set, forall P:set -> prop, P seq_nil -> (forall a :e A, forall l :e finseq A, P l -> P (seq_cons a l)) -> forall l :e finseq A, P l.
+let A P. assume H0: P seq_nil. assume HS: forall a :e A, forall l :e finseq A, P l -> P (seq_cons a l).
+claim L: forall n, nat_p n -> forall l :e finseq A, seq_len l = n -> P l.
+{ apply nat_ind.
+  - let l. assume Hl: l :e finseq A. assume Hn: seq_len l = 0.
+    rewrite (seq_len_0_nil A l Hl Hn). exact H0.
+  - let n. assume Hn: nat_p n. assume IH: forall l :e finseq A, seq_len l = n -> P l.
+    let l. assume Hl: l :e finseq A. assume Hln: seq_len l = ordsucc n.
+    claim Hne: seq_len l <> 0. { rewrite Hln. exact (neq_ordsucc_0 n). }
+    claim Ht: seq_tl l :e finseq A. { exact (seq_tl_finseq A l Hl). }
+    claim Htn: seq_len (seq_tl l) = n.
+    { rewrite (seq_len_tl l). rewrite Hln.
+      prove (if ordsucc n = 0 then 0 else ordsucc n + - 1) = n.
+      rewrite (If_i_0 (ordsucc n = 0) 0 (ordsucc n + - 1) (neq_ordsucc_0 n)).
+      rewrite <- (add_SNo_1_ordsucc n (nat_p_omega n Hn)) at 1. exact (add_SNo_minus_R2 n 1 (nat_p_SNo n Hn) SNo_1). }
+    claim H0l: 0 :e seq_len l. { rewrite Hln. exact (nat_0_in_ordsucc n Hn). }
+    claim Ha: seq_nth l 0 :e A. { exact (seq_nth_in A l Hl 0 H0l). }
+    claim HPC: P (seq_cons (seq_nth l 0) (seq_tl l)).
+    { exact (HS (seq_nth l 0) Ha (seq_tl l) Ht (IH (seq_tl l) Ht Htn)). }
+    exact (seq_cons_hd_tl A l Hl Hne (fun a b => P b) HPC). }
+let l. assume Hl: l :e finseq A.
+exact (L (seq_len l) (omega_nat_p (seq_len l) (seq_len_omega A l Hl)) l Hl (fun q H => H)).
 Qed.
 Theorem seq_butlast_finseq : forall A:set, forall l :e finseq A, seq_butlast l :e finseq A.
 let A l. assume Hl: l :e finseq A.
