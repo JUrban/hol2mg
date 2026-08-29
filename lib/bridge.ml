@@ -665,6 +665,32 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 ignore numv;
                 if nat <> Mg.Num v then unsupported "rel: numeral native %s" (pp nat);
                 (lit, nat, KEq, pf)
+            | "COND" when List.length args = 3 && (match nview with E.VSubset _ -> true | _ -> false) ->
+                (* if c then a else b at a subset type, viewed as a subset: hl_rep of the conditional is
+                   the conditional of the representations (hl_COND_if, hl_rep_if) *)
+                let ty = type_of [] t in
+                let ca = L.carrier g.lctx ty in
+                let ra = (match nview with E.VSubset ra -> ra | _ -> assert false) in
+                let c0 = List.nth args 0 and a = List.nth args 1 and b = List.nth args 2 in
+                let lc, nc, kc, pc = rel g c0 (Some E.VProp) in
+                if kc <> KIff then unsupported "rel: conditional condition";
+                let la, na, ka, pa = rel g a (Some nview) and lb, nb, kb, pb = rel g b (Some nview) in
+                (match ka, kb with KRep _, KRep _ -> () | _ -> unsupported "rel: subset conditional branches");
+                let pf0 = Printf.sprintf "(hl_COND_if %s %s %s %s %s %s %s %s %s)" (ppp ca) (ppp lc) (typ g c0) (ppp nc) pc (ppp la) (typ g a) (ppp lb) (typ g b) in
+                (* hl_rep ra lit = hl_rep ra (if nc then la else lb) = if nc then hl_rep ra la else hl_rep ra lb *)
+                let rep x = Mg.apps (Mg.Cst "hl_rep") [ ra; x ] in
+                let e1 = L.mg_eq (rep lit) (rep (Mg.If (nc, la, lb))) in
+                let pf1 = Printf.sprintf "(f_equal (fun hl__w => hl_rep %s hl__w) %s %s %s)" (ppp ra) (ppp lit) (ppp (Mg.If (nc, la, lb))) pf0 in
+                let e2 = L.mg_eq (rep lit) (Mg.If (nc, rep la, rep lb)) in
+                let pf2 = Printf.sprintf "(eq_trans_i %s %s %s %s (hl_rep_if %s %s %s %s))" (ppp (rep lit)) (ppp (rep (Mg.If (nc, la, lb)))) (ppp (Mg.If (nc, rep la, rep lb))) pf1 (ppp ra) (ppp nc) (ppp la) (ppp lb) in
+                ignore e1;
+                let prop3, pf3 = (let ctx = L.mg_eq (rep lit) (Mg.If (nc, Mg.Var "hl__u", rep lb)) in (L.mg_eq (rep lit) (Mg.If (nc, na, rep lb)), leibniz pa (pp ctx) pf2)) in
+                let prop4, pf4 = (let ctx = L.mg_eq (rep lit) (Mg.If (nc, na, Mg.Var "hl__u")) in (L.mg_eq (rep lit) (Mg.If (nc, na, nb)), leibniz pb (pp ctx) pf3)) in
+                ignore e2; ignore prop3;
+                (match prop4 with
+                 | Mg.App (Mg.App (Mg.Cst "eq", _), r) when r <> nat -> unsupported "rel: subset conditional derived %s differs from %s" (pp r) (pp nat)
+                 | _ -> ());
+                (lit, nat, KRep ra, pf4)
             | "COND" when List.length args = 3 ->
                 (* if c then a else b at a data type: hl_COND_if + argument rewrites *)
                 let ty = type_of [] t in

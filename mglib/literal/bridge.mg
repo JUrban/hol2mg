@@ -906,3 +906,10 @@ let A F G P Q. assume HF HG. apply iffI.
 - assume H. let x. assume Hx. exact (iff_trans (P x) (F x = 1) (Q x) (iff_sym (F x = 1) (P x) (HF x Hx)) (iff_trans (F x = 1) (G x = 1) (Q x) (H x Hx) (HG x Hx))).
 - assume H. let x. assume Hx. exact (iff_trans (F x = 1) (P x) (G x = 1) (HF x Hx) (iff_trans (P x) (Q x) (G x = 1) (H x Hx) (iff_sym (G x = 1) (Q x) (HG x Hx)))).
 Qed.
+
+// ---- conditionals at subset types ----
+Theorem hl_rep_if : forall A:set, forall p:prop, forall u v:set, hl_rep A (if p then u else v) = if p then hl_rep A u else hl_rep A v.
+let A p u v. apply (xm p).
+- assume Hp. exact (eq_trans_i (hl_rep A (if p then u else v)) (hl_rep A u) (if p then hl_rep A u else hl_rep A v) (f_equal (fun w => hl_rep A w) (if p then u else v) u (If_i_1 p u v Hp)) (eq_sym_i (if p then hl_rep A u else hl_rep A v) (hl_rep A u) (If_i_1 p (hl_rep A u) (hl_rep A v) Hp))).
+- assume Hp. exact (eq_trans_i (hl_rep A (if p then u else v)) (hl_rep A v) (if p then hl_rep A u else hl_rep A v) (f_equal (fun w => hl_rep A w) (if p then u else v) v (If_i_0 p u v Hp)) (eq_sym_i (if p then hl_rep A u else hl_rep A v) (hl_rep A v) (If_i_0 p (hl_rep A u) (hl_rep A v) Hp))).
+Qed.

@@ -1341,7 +1341,8 @@ source: !x:A. !y:A. !s:A->bool. x INSERT s DELETE y = (if x = y then s DELETE y 
 status: generalization_required
 statement: forall A:set, forall x y :e A, forall s c= A, SetAdjoin s x :\: {y} = if x = y then s :\: {y} else SetAdjoin (s :\: {y}) x
 literal: forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_DELETE A (hl_INSERT A x s) y = hl_COND (2 :^: A) (if x = y then 1 else 0) (hl_DELETE A s y) (hl_INSERT A x (hl_DELETE A s y))
-cert_status: bridge_unsupported
+bridge: DELETE_INSERT_bridge
+cert_status: native_certified
 
 ### DISJOINT   [sets: membership, algebra, comprehensions, images, families]
 hash: 06faad16c446a9a1f851e720b49c06e3
@@ -1632,7 +1633,8 @@ source: (!m:num. .. m 0 = (if m = 0 then 0 INSERT EMPTY else EMPTY)) /\ (!m:num.
 status: transport_required
 statement: (forall m :e omega, {i :e omega | m <= i /\ i <= 0} = if m = 0 then {0} else Empty) /\ forall m n :e omega, {i :e omega | m <= i /\ i <= ordsucc n} = if m <= ordsucc n then SetAdjoin {i :e omega | m <= i /\ i <= n} (ordsucc n) else {i :e omega | m <= i /\ i <= n}
 literal: (forall m :e omega, hl_numseg m (hl_NUMERAL hl_zero) = hl_COND (2 :^: omega) (if m = hl_NUMERAL hl_zero then 1 else 0) (hl_INSERT omega (hl_NUMERAL hl_zero) (hl_EMPTY omega)) (hl_EMPTY omega)) /\ forall m n :e omega, hl_numseg m (hl_SUC n) = hl_COND (2 :^: omega) (hl_le m (hl_SUC n)) (hl_INSERT omega (hl_SUC n) (hl_numseg m n)) (hl_numseg m n)
-cert_status: bridge_unsupported
+bridge: NUMSEG_CLAUSES_bridge
+cert_status: native_certified
 
 ### SUM_SING   [iteration, sums, number segments]
 hash: dbf2c5eb44671fdd1484486c9cfb2ed3

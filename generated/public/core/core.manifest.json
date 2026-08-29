@@ -6966,7 +6966,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s :*: {x :e A | forall Y :e f, x :e Y} = if f = Empty then s :*: A else {x :e A :*: A | forall Y :e {s :*: t | t :e Power A, t :e f}, x :e Y}) /\\ forall f c= Power A, forall t c= B, {x :e A | forall Y :e f, x :e Y} :*: t = if f = Empty then A :*: t else {x :e A :*: B | forall Y :e {s :*: t | s :e Power A, s :e f}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall s :e 2 :^: A, forall f :e 2 :^: (2 :^: A), hl_CROSS A A s (hl_INTERS A f) = hl_COND (2 :^: (A :*: A)) (if f = hl_EMPTY (2 :^: A) then 1 else 0) (hl_CROSS A A s (hl_UNIV A)) (hl_INTERS (A :*: A) (hl_GSPEC (2 :^: (A :*: A)) (fun GEN_PVAR_139 :e 2 :^: (A :*: A) => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: A)) GEN_PVAR_139 (hl_IN (2 :^: A) t f) (hl_CROSS A A s t) = 1 then 1 else 0)))) /\\ forall f :e 2 :^: (2 :^: A), forall t :e 2 :^: B, hl_CROSS A B (hl_INTERS A f) t = hl_COND (2 :^: (A :*: B)) (if f = hl_EMPTY (2 :^: A) then 1 else 0) (hl_CROSS A B (hl_UNIV A) t) (hl_INTERS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_140 :e 2 :^: (A :*: B) => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_140 (hl_IN (2 :^: A) s f) (hl_CROSS A B s t) = 1 then 1 else 0)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: (A :*: B))",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -7372,9 +7372,9 @@
    "source": "!x:A. !y:A. !s:A->bool. x INSERT s DELETE y = (if x = y then s DELETE y else x INSERT s DELETE y)",
    "statement": "forall A:set, forall x y :e A, forall s c= A, SetAdjoin s x :\\: {y} = if x = y then s :\\: {y} else SetAdjoin (s :\\: {y}) x",
    "literal": "forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_DELETE A (hl_INSERT A x s) y = hl_COND (2 :^: A) (if x = y then 1 else 0) (hl_DELETE A s y) (hl_INSERT A x (hl_DELETE A s y))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DELETE_INSERT_bridge"
   },
   {
    "name": "DELETE_INTER",
@@ -22022,9 +22022,9 @@
    "source": "!s:A->bool. !c:B. IMAGE (\\x:A. c) s = (if s = EMPTY then EMPTY else c INSERT EMPTY)",
    "statement": "forall A B:set, forall s c= A, forall c :e B, {c | x :e s} = if s = Empty then Empty else {c}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall c :e B, hl_IMAGE A B (fun x :e A => c) s = hl_COND (2 :^: B) (if s = hl_EMPTY A then 1 else 0) (hl_EMPTY B) (hl_INSERT B c (hl_EMPTY B))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_CONST_bridge"
   },
   {
    "name": "IMAGE_DELETE_INJ",
@@ -22250,9 +22250,9 @@
    "source": "!s:A->bool. !t:B->bool. IMAGE FST (CROSS s t) = (if t = EMPTY then EMPTY else s)",
    "statement": "forall A B:set, A <> Empty -> forall s c= A, forall t c= B, {x 0 | x :e s :*: t} = if t = Empty then Empty else s",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IMAGE (A :*: B) A (hl_FST A B) (hl_CROSS A B s t) = hl_COND (2 :^: A) (if t = hl_EMPTY B then 1 else 0) (hl_EMPTY A) s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_FST_CROSS_bridge"
   },
   {
    "name": "IMAGE_I",
@@ -22797,9 +22797,9 @@
    "source": "!s:A->bool. !t:B->bool. IMAGE SND (CROSS s t) = (if s = EMPTY then EMPTY else t)",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, {x 1 | x :e s :*: t} = if s = Empty then Empty else t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IMAGE (A :*: B) B (hl_SND A B) (hl_CROSS A B s t) = hl_COND (2 :^: B) (if s = hl_EMPTY A then 1 else 0) (hl_EMPTY B) t",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_SND_CROSS_bridge"
   },
   {
    "name": "IMAGE_SUBSET",
@@ -24545,9 +24545,9 @@
    "source": "!s:A->bool. !t:A->bool. !x:A. x INSERT s DIFF t = (if x IN t then s DIFF t else x INSERT (s DIFF t))",
    "statement": "forall A:set, forall s t c= A, forall x :e A, SetAdjoin s x :\\: t = if x :e t then s :\\: t else SetAdjoin (s :\\: t) x",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_DIFF A (hl_INSERT A x s) t = hl_COND (2 :^: A) (hl_IN A x t) (hl_DIFF A s t) (hl_INSERT A x (hl_DIFF A s t))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INSERT_DIFF_bridge"
   },
   {
    "name": "INSERT_INSERT",
@@ -24601,9 +24601,9 @@
    "source": "!x:A. !s:A->bool. !t:A->bool. x INSERT s INTER t = (if x IN t then x INSERT (s INTER t) else s INTER t)",
    "statement": "forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :/\\: t = if x :e t then SetAdjoin (s :/\\: t) x else s :/\\: t",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_INTER A (hl_INSERT A x s) t = hl_COND (2 :^: A) (hl_IN A x t) (hl_INSERT A x (hl_INTER A s t)) (hl_INTER A s t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INSERT_INTER_bridge"
   },
   {
    "name": "INSERT_RESTRICT",
@@ -24629,9 +24629,9 @@
    "source": "!P:A->bool. !s:A->bool. !a:A. GSPEC (\\GEN%PVAR%30:A. ?x:A. SETSPEC GEN%PVAR%30 (x IN a INSERT s /\\ P x) x) = (if P a then a INSERT GSPEC (\\GEN%PVAR%31:A. ?x:A. SETSPEC GEN%PVAR%31 (x IN s /\\ P x) x) else GSPEC (\\GEN%PVAR%32:A. ?x:A. SETSPEC GEN%PVAR%32 (x IN s /\\ P x) x))",
    "statement": "forall A:set, forall P:set -> prop, forall s c= A, forall a :e A, {x :e A | x :e SetAdjoin s a /\\ P x} = if P a then SetAdjoin {x :e A | x :e s /\\ P x} a else {x :e A | x :e s /\\ P x}",
    "literal": "forall A:set, A <> Empty -> forall P s :e 2 :^: A, forall a :e A, hl_GSPEC A (fun GEN_PVAR_30 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_30 (if hl_IN A x (hl_INSERT A a s) = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0) = hl_COND (2 :^: A) (P a) (hl_INSERT A a (hl_GSPEC A (fun GEN_PVAR_31 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_31 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))) (hl_GSPEC A (fun GEN_PVAR_32 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_32 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INSERT_RESTRICT_bridge"
   },
   {
    "name": "INSERT_SUBSET",
@@ -24685,9 +24685,9 @@
    "source": "!x:A. !s:A->bool. !t:A->bool. x INSERT s UNION t = (if x IN t then s UNION t else x INSERT (s UNION t))",
    "statement": "forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\\/: t = if x :e t then s :\\/: t else SetAdjoin (s :\\/: t) x",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_UNION A (hl_INSERT A x s) t = hl_COND (2 :^: A) (hl_IN A x t) (hl_UNION A s t) (hl_INSERT A x (hl_UNION A s t))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INSERT_UNION_bridge"
   },
   {
    "name": "INSERT_UNION_EQ",
@@ -25600,7 +25600,7 @@
    "statement": "forall A:set, A <> Empty -> (forall f c= Power A, forall s c= A, s :/\\: {x :e A | forall Y :e f, x :e Y} = if f = Empty then s else {x :e A | forall Y :e {s :/\\: t | t :e Power A, t :e f}, x :e Y}) /\\ forall f c= Power A, forall s c= A, {x :e A | forall Y :e f, x :e Y} :/\\: s = if f = Empty then s else {x :e A | forall Y :e {t :/\\: s | t :e Power A, t :e f}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> (forall f :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_INTER A s (hl_INTERS A f) = hl_COND (2 :^: A) (if f = hl_EMPTY (2 :^: A) then 1 else 0) s (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_75 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_75 (hl_IN (2 :^: A) t f) (hl_INTER A s t) = 1 then 1 else 0)))) /\\ forall f :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_INTER A (hl_INTERS A f) s = hl_COND (2 :^: A) (if f = hl_EMPTY (2 :^: A) then 1 else 0) s (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_76 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_76 (hl_IN (2 :^: A) t f) (hl_INTER A t s) = 1 then 1 else 0)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -51184,9 +51184,9 @@
    "source": "(!m:num. .. m 0 = (if m = 0 then 0 INSERT EMPTY else EMPTY)) /\\ (!m:num. !n:num. .. m (SUC n) = (if m <= SUC n then SUC n INSERT .. m n else .. m n))",
    "statement": "(forall m :e omega, {i :e omega | m <= i /\\ i <= 0} = if m = 0 then {0} else Empty) /\\ forall m n :e omega, {i :e omega | m <= i /\\ i <= ordsucc n} = if m <= ordsucc n then SetAdjoin {i :e omega | m <= i /\\ i <= n} (ordsucc n) else {i :e omega | m <= i /\\ i <= n}",
    "literal": "(forall m :e omega, hl_numseg m (hl_NUMERAL hl_zero) = hl_COND (2 :^: omega) (if m = hl_NUMERAL hl_zero then 1 else 0) (hl_INSERT omega (hl_NUMERAL hl_zero) (hl_EMPTY omega)) (hl_EMPTY omega)) /\\ forall m n :e omega, hl_numseg m (hl_SUC n) = hl_COND (2 :^: omega) (hl_le m (hl_SUC n)) (hl_INSERT omega (hl_SUC n) (hl_numseg m n)) (hl_numseg m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: omega)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUMSEG_CLAUSES_bridge"
   },
   {
    "name": "NUMSEG_CLAUSES_LE",
@@ -51419,9 +51419,9 @@
    "source": "!n:num. GSPEC (\\GEN%PVAR%234:num. ?x:num. SETSPEC GEN%PVAR%234 (x < n) x) = (if n = 0 then EMPTY else .. 0 (n - 1))",
    "statement": "forall n :e omega, {x :e omega | x < n} = if n = 0 then Empty else {i :e omega | 0 <= i /\\ i <= minus_nat n 1}",
    "literal": "forall n :e omega, hl_GSPEC omega (fun GEN_PVAR_234 :e omega => if exists x :e omega, hl_SETSPEC omega GEN_PVAR_234 (hl_lt x n) x = 1 then 1 else 0) = hl_COND (2 :^: omega) (if n = hl_NUMERAL hl_zero then 1 else 0) (hl_EMPTY omega) (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: omega)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUMSEG_LT_bridge"
   },
   {
    "name": "NUMSEG_LT_DIMINDEX",
@@ -74585,9 +74585,9 @@
    "source": "(!f:A->C. support op f EMPTY = EMPTY) /\\ (!f:A->C. !x:A. !s:A->bool. support op f (x INSERT s) = (if f x = neutral op then support op f s else x INSERT support op f s)) /\\ (!f:A->C. !x:A. !s:A->bool. support op f (s DELETE x) = support op f s DELETE x) /\\ (!f:A->C. !s:A->bool. !t:A->bool. support op f (s UNION t) = support op f s UNION support op f t) /\\ (!f:A->C. !s:A->bool. !t:A->bool. support op f (s INTER t) = support op f s INTER support op f t) /\\ (!f:A->C. !s:A->bool. !t:A->bool. support op f (s DIFF t) = support op f s DIFF support op f t) /\\ (!f:A->B. !g:B->C. !s:A->bool. support op g (IMAGE f s) = IMAGE f (support op (g o f) s))",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C op} = Empty) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C op} = if f x = neutral_of C op then {x :e s | f x <> neutral_of C op} else SetAdjoin {x :e s | f x <> neutral_of C op} x) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\\: {x} | f x0 <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\\: {x}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\/: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\\/: {x :e t | f x <> neutral_of C op}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\\: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :/\\: {x :e t | f x <> neutral_of C op}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\\: {x :e t | f x <> neutral_of C op}) /\\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C op} = {f x | x :e {x :e s | g (f x) <> neutral_of C op}})))))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, (forall f :e C :^: A, hl_support C A op f (hl_EMPTY A) = hl_EMPTY A) /\\ ((forall f :e C :^: A, forall x :e A, forall s :e 2 :^: A, hl_support C A op f (hl_INSERT A x s) = hl_COND (2 :^: A) (if f x = hl_neutral C op then 1 else 0) (hl_support C A op f s) (hl_INSERT A x (hl_support C A op f s))) /\\ ((forall f :e C :^: A, forall x :e A, forall s :e 2 :^: A, hl_support C A op f (hl_DELETE A s x) = hl_DELETE A (hl_support C A op f s) x) /\\ ((forall f :e C :^: A, forall s t :e 2 :^: A, hl_support C A op f (hl_UNION A s t) = hl_UNION A (hl_support C A op f s) (hl_support C A op f t)) /\\ ((forall f :e C :^: A, forall s t :e 2 :^: A, hl_support C A op f (hl_INTER A s t) = hl_INTER A (hl_support C A op f s) (hl_support C A op f t)) /\\ ((forall f :e C :^: A, forall s t :e 2 :^: A, hl_support C A op f (hl_DIFF A s t) = hl_DIFF A (hl_support C A op f s) (hl_support C A op f t)) /\\ forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, hl_support C B op g (hl_IMAGE A B f s) = hl_IMAGE A B f (hl_support C A op (hl_o B C A g f) s))))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUPPORT_CLAUSES_bridge"
   },
   {
    "name": "SUPPORT_DELTA",
@@ -74615,9 +74615,9 @@
    "source": "!op:B->B->B. !s:A->bool. !f:A->B. !a:A. support op (\\x:A. if x = a then f x else neutral op) s = (if a IN s then support op f (a INSERT EMPTY) else EMPTY)",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B op) <> neutral_of B op} = if a :e s then {x :e {a} | f x <> neutral_of B op} else Empty",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, forall s :e 2 :^: A, forall f :e B :^: A, forall a :e A, hl_support B A op (fun x :e A => hl_COND B (if x = a then 1 else 0) (f x) (hl_neutral B op)) s = hl_COND (2 :^: A) (hl_IN A a s) (hl_support B A op f (hl_INSERT A a (hl_EMPTY A))) (hl_EMPTY A)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUPPORT_DELTA_bridge"
   },
   {
    "name": "SUPPORT_EMPTY",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2062
+  "native_certified": 2074
  }
 }
