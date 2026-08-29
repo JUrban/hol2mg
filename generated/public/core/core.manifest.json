@@ -37980,9 +37980,9 @@
    "source": "(!f:A->int. iproduct EMPTY f = int_of_num 1) /\\ (!x:B. !f:B->int. !s:B->bool. FINITE s ==> iproduct (x INSERT s) f = (if x IN s then iproduct s f else f x * iproduct s f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e int) -> finprod Empty f = 1) /\\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e int) -> forall s c= B, finite s -> finprod (SetAdjoin s x) f = if x :e s then finprod s f else f x * finprod s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall f :e hl_ty_int :^: A, hl_iproduct A (hl_EMPTY A) f = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) /\\ forall x :e B, forall f :e hl_ty_int :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_iproduct B (hl_INSERT B x s) f = hl_COND hl_ty_int (hl_IN B x s) (hl_iproduct B s f) (hl_int_mul (f x) (hl_iproduct B s f))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_iproduct_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IPRODUCT_CLAUSES_bridge"
   },
   {
    "name": "ISO",
@@ -38125,9 +38125,9 @@
    "source": "(!f:A->int. isum EMPTY f = int_of_num 0) /\\ (!x:B. !f:B->int. !s:B->bool. FINITE s ==> isum (x INSERT s) f = (if x IN s then isum s f else f x + isum s f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e int) -> finsum Empty f = 0) /\\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e int) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall f :e hl_ty_int :^: A, hl_isum A (hl_EMPTY A) f = hl_int_of_num (hl_NUMERAL hl_zero)) /\\ forall x :e B, forall f :e hl_ty_int :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_isum B (hl_INSERT B x s) f = hl_COND hl_ty_int (hl_IN B x s) (hl_isum B s f) (hl_int_add (f x) (hl_isum B s f))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_isum_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ISUM_CLAUSES_bridge"
   },
   {
    "name": "ITERATE_BIJECTION",
@@ -48450,9 +48450,9 @@
    "source": "(!f:A->num. nproduct EMPTY f = 1) /\\ (!x:B. !f:B->num. !s:B->bool. FINITE s ==> nproduct (x INSERT s) f = (if x IN s then nproduct s f else f x * nproduct s f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e omega) -> finprod Empty f = 1) /\\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e omega) -> forall s c= B, finite s -> finprod (SetAdjoin s x) f = if x :e s then finprod s f else f x * finprod s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall f :e omega :^: A, hl_nproduct A (hl_EMPTY A) f = hl_NUMERAL (hl_BIT1 hl_zero)) /\\ forall x :e B, forall f :e omega :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_nproduct B (hl_INSERT B x s) f = hl_COND omega (hl_IN B x s) (hl_nproduct B s f) (hl_mul (f x) (hl_nproduct B s f))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_nproduct_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NPRODUCT_CLAUSES_bridge"
   },
   {
    "name": "NSUM_0",
@@ -54247,9 +54247,9 @@
    "source": "(!f:A->real. product EMPTY f = real_of_num 1) /\\ (!x:B. !f:B->real. !s:B->bool. FINITE s ==> product (x INSERT s) f = (if x IN s then product s f else f x * product s f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R) -> finprod Empty f = 1) /\\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e R) -> forall s c= B, finite s -> finprod (SetAdjoin s x) f = if x :e s then finprod s f else f x * finprod s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall f :e R :^: A, hl_product A (hl_EMPTY A) f = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) /\\ forall x :e B, forall f :e R :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_product B (hl_INSERT B x s) f = hl_COND R (hl_IN B x s) (hl_product B s f) (hl_real_mul (f x) (hl_product B s f))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PRODUCT_CLAUSES_bridge"
   },
   {
    "name": "PRODUCT_MAP_RESTRICTION",
@@ -81542,7 +81542,7 @@
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e int) -> finprod x x0 = iterate_op int (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_iproduct A = hl_iterate hl_ty_int A hl_int_mul",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_iproduct_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition (forall x1 y :e int, x1 * y = y * x1) /\\ (forall x1 y z :e int, x1 * y * z = (x1 * y) * z) /\\ forall x1 :e int, neutral_of int (fun a:set => fun b:set => a * b) * x1 = x1 not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -81649,7 +81649,7 @@
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e int) -> finsum x x0 = iterate_op int (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_isum A = hl_iterate hl_ty_int A hl_int_add",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_isum_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition (forall x1 y :e int, x1 + y = y + x1) /\\ (forall x1 y z :e int, x1 + y + z = (x1 + y) + z) /\\ forall x1 :e int, neutral_of int (fun a:set => fun b:set => a + b) + x1 = x1 not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -82292,7 +82292,7 @@
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e omega) -> finprod x x0 = iterate_op omega (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_nproduct A = hl_iterate omega A hl_mul",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_nproduct_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition (forall x1 y :e omega, x1 * y = y * x1) /\\ (forall x1 y z :e omega, x1 * y * z = (x1 * y) * z) /\\ forall x1 :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x1 = x1 not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -83574,7 +83574,7 @@
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e R) -> finprod x x0 = iterate_op R (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_product A = hl_iterate R A hl_real_mul",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_product_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition (forall x1 y :e R, x1 * y = y * x1) /\\ (forall x1 y z :e R, x1 * y * z = (x1 * y) * z) /\\ forall x1 :e R, neutral_of R (fun a:set => fun b:set => a * b) * x1 = x1 not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2369
+  "native_certified": 2373
  }
 }

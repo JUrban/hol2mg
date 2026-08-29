@@ -66,10 +66,6 @@ Admitted.
 Theorem hl_INJF_compat : forall A:set, A <> Empty -> hl_INJF A = Empty.
 Admitted.
 
-// iproduct : (A->bool)->(A->int)->int (not in compat.mg)
-Theorem hl_iproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_iproduct A l1 l2 = finprod (hl_rep A l1) f2.
-Admitted.
-
 // >_c : (A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_sym_3e5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3e5f63 A B l1 l2 = 1 <-> atleastp (hl_rep B l2) (hl_rep A l1) /\ ~ equip (hl_rep B l2) (hl_rep A l1).
 Admitted.
@@ -84,10 +80,6 @@ Admitted.
 
 // _UNGUARDED_PATTERN : bool->bool->bool (not in compat.mg)
 Theorem hl__UNGUARDED_PATTERN_compat : hl__UNGUARDED_PATTERN = Empty.
-Admitted.
-
-// nproduct : (A->bool)->(A->num)->num (not in compat.mg)
-Theorem hl_nproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e omega :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_nproduct A l1 l2 = finprod (hl_rep A l1) f2.
 Admitted.
 
 // dest_cart : (A,N)cart->N finite_image->A (not in compat.mg)
@@ -140,10 +132,6 @@ Admitted.
 
 // FNIL : num->A (not in compat.mg)
 Theorem hl_FNIL_compat : forall A:set, A <> Empty -> hl_FNIL A = Empty.
-Admitted.
-
-// product : (A->bool)->(A->real)->real (not in compat.mg)
-Theorem hl_product_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e R :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_product A l1 l2 = finprod (hl_rep A l1) f2.
 Admitted.
 
 // ZRECSPACE : (num->A->bool)->bool (not in compat.mg)
@@ -260,10 +248,6 @@ Admitted.
 
 // NUMLEFT : num->bool (not in compat.mg)
 Theorem hl_NUMLEFT_compat : hl_NUMLEFT = Empty.
-Admitted.
-
-// isum : (A->bool)->(A->int)->int (not in compat.mg)
-Theorem hl_isum_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_isum A l1 l2 = finsum (hl_rep A l1) f2.
 Admitted.
 
 // ZCONSTR : num->A->(num->num->A->bool)->num->A->bool (not in compat.mg)

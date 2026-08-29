@@ -6865,3 +6865,145 @@ apply iffI.
         exact (Hg2 x' Hx'S u Hu Hgxu). }
       witness u. exact (andI (u :e A) ((hl_IN A u l1 = 1 /\ (fun x :e A => if x :e hl_rep A l1 then g x else choose_in B (fun y:set => True)) u = y) /\ forall x' :e A, (hl_IN A x' l1 = 1 /\ (fun x :e A => if x :e hl_rep A l1 then g x else choose_in B (fun y:set => True)) x' = y) -> x' = u) HuA (andI (hl_IN A u l1 = 1 /\ (fun x :e A => if x :e hl_rep A l1 then g x else choose_in B (fun y:set => True)) u = y) (forall x' :e A, (hl_IN A x' l1 = 1 /\ (fun x :e A => if x :e hl_rep A l1 then g x else choose_in B (fun y:set => True)) x' = y) -> x' = u) (andI (hl_IN A u l1 = 1) ((fun x :e A => if x :e hl_rep A l1 then g x else choose_in B (fun y:set => True)) u = y) Hmu HFu) Huniq)).
 Qed.
+
+// ---- neutral elements of multiplication; iterate_op depends on the carrier only through its neutral/identity; finprod is iterate_op over R ----
+Theorem neutral_of_omega_mul : neutral_of omega (fun a:set => fun b:set => a * b) = 1.
+claim H1: 1 :e omega. { exact (nat_p_omega 1 (nat_ordsucc 0 nat_0)). }
+claim HP0: forall x :e omega, (fun a:set => fun b:set => a * b) 1 x = x /\ (fun a:set => fun b:set => a * b) x 1 = x.
+{ let x. assume Hx. apply andI.
+  - exact (mul_SNo_oneL x (omega_SNo x Hx)).
+  - exact (mul_SNo_oneR x (omega_SNo x Hx)). }
+claim Hu: forall e :e omega, (forall x :e omega, (fun a:set => fun b:set => a * b) e x = x /\ (fun a:set => fun b:set => a * b) x e = x) -> e = 1.
+{ let e. assume He H. apply (H 1 H1). assume H1e _. exact (eq_trans_i e (e * 1) 1 (eq_sym_i (e * 1) e (mul_SNo_oneR e (omega_SNo e He))) H1e). }
+exact (choose_in_unique omega (fun e => forall x :e omega, (fun a:set => fun b:set => a * b) e x = x /\ (fun a:set => fun b:set => a * b) x e = x) 1 H1 HP0 Hu).
+Qed.
+Theorem neutral_of_R_mul : neutral_of R (fun a:set => fun b:set => a * b) = 1.
+claim H1: 1 :e R. { exact real_1. }
+claim HP0: forall x :e R, (fun a:set => fun b:set => a * b) 1 x = x /\ (fun a:set => fun b:set => a * b) x 1 = x.
+{ let x. assume Hx. apply andI.
+  - exact (mul_SNo_oneL x (real_SNo x Hx)).
+  - exact (mul_SNo_oneR x (real_SNo x Hx)). }
+claim Hu: forall e :e R, (forall x :e R, (fun a:set => fun b:set => a * b) e x = x /\ (fun a:set => fun b:set => a * b) x e = x) -> e = 1.
+{ let e. assume He H. apply (H 1 H1). assume H1e _. exact (eq_trans_i e (e * 1) 1 (eq_sym_i (e * 1) e (mul_SNo_oneR e (real_SNo e He))) H1e). }
+exact (choose_in_unique R (fun e => forall x :e R, (fun a:set => fun b:set => a * b) e x = x /\ (fun a:set => fun b:set => a * b) x e = x) 1 H1 HP0 Hu).
+Qed.
+Theorem neutral_of_int_mul : neutral_of int (fun a:set => fun b:set => a * b) = 1.
+claim H1: 1 :e int. { exact (Subq_omega_int 1 (nat_p_omega 1 (nat_ordsucc 0 nat_0))). }
+claim HP0: forall x :e int, (fun a:set => fun b:set => a * b) 1 x = x /\ (fun a:set => fun b:set => a * b) x 1 = x.
+{ let x. assume Hx. apply andI.
+  - exact (mul_SNo_oneL x (int_SNo x Hx)).
+  - exact (mul_SNo_oneR x (int_SNo x Hx)). }
+claim Hu: forall e :e int, (forall x :e int, (fun a:set => fun b:set => a * b) e x = x /\ (fun a:set => fun b:set => a * b) x e = x) -> e = 1.
+{ let e. assume He H. apply (H 1 H1). assume H1e _. exact (eq_trans_i e (e * 1) 1 (eq_sym_i (e * 1) e (mul_SNo_oneR e (int_SNo e He))) H1e). }
+exact (choose_in_unique int (fun e => forall x :e int, (fun a:set => fun b:set => a * b) e x = x /\ (fun a:set => fun b:set => a * b) x e = x) 1 H1 HP0 Hu).
+Qed.
+Theorem neutral_of_int_add : neutral_of int (fun a:set => fun b:set => a + b) = 0.
+claim H0: 0 :e int. { exact (Subq_omega_int 0 (nat_p_omega 0 nat_0)). }
+claim HP0: forall x :e int, (fun a:set => fun b:set => a + b) 0 x = x /\ (fun a:set => fun b:set => a + b) x 0 = x.
+{ let x. assume Hx. apply andI.
+  - exact (add_SNo_0L x (int_SNo x Hx)).
+  - exact (add_SNo_0R x (int_SNo x Hx)). }
+claim Hu: forall e :e int, (forall x :e int, (fun a:set => fun b:set => a + b) e x = x /\ (fun a:set => fun b:set => a + b) x e = x) -> e = 0.
+{ let e. assume He H. apply (H 0 H0). assume H1 _. exact (eq_trans_i e (e + 0) 0 (eq_sym_i (e + 0) e (add_SNo_0R e (int_SNo e He))) H1). }
+exact (choose_in_unique int (fun e => forall x :e int, (fun a:set => fun b:set => a + b) e x = x /\ (fun a:set => fun b:set => a + b) x e = x) 0 H0 HP0 Hu).
+Qed.
+Theorem iterate_op_carrier : forall G1 G2:set, forall op:set -> set -> set, neutral_of G1 op = neutral_of G2 op -> group_identity G1 op = group_identity G2 op -> forall s:set, forall f:set -> set, iterate_op G1 op s f = iterate_op G2 op s f.
+let G1 G2 op. assume Hn Hg. let s f.
+exact (f_equal2 (fun e g => if finite {x :e s | f x <> e} then nat_primrec g (fun i r => op r (f (finite_enumeration {x :e s | f x <> e} i))) (finite_cardinality {x :e s | f x <> e}) else e) (neutral_of G1 op) (neutral_of G2 op) (group_identity G1 op) (group_identity G2 op) Hn Hg).
+Qed.
+Theorem finprod_iterate_op : forall s:set, forall f:set -> set, finprod s f = iterate_op R (fun a:set => fun b:set => a * b) s f.
+let s f.
+exact (f_equal (fun e => if finite {x :e s | f x <> e} then group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> e} i)) (finite_cardinality {x :e s | f x <> e}) else e) 1 (neutral_of R (fun a:set => fun b:set => a * b)) (eq_sym_i (neutral_of R (fun a:set => fun b:set => a * b)) 1 neutral_of_R_mul)).
+Qed.
+Theorem hl_nproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e omega :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_nproduct A l1 l2 = finprod (hl_rep A l1) f2.
+let A. assume HA. let l1. assume H1. let l2. assume H2. let f2. assume Hf.
+claim Hcm: cmonoid_on omega (fun a:set => fun b:set => a * b) /\ group_identity omega (fun a:set => fun b:set => a * b) = neutral_of omega (fun a:set => fun b:set => a * b).
+{ exact (cmonoid_of_monoidal omega (fun a:set => fun b:set => a * b) omega_nonempty (fun x Hx y Hy => mul_SNo_In_omega x Hx y Hy) (fun x Hx y Hy => mul_SNo_com x y (omega_SNo x Hx) (omega_SNo y Hy)) (fun x Hx y Hy z Hz => mul_SNo_assoc x y z (omega_SNo x Hx) (omega_SNo y Hy) (omega_SNo z Hz)) (fun x Hx => (eq_sym_i (neutral_of omega (fun a:set => fun b:set => a * b)) 1 neutral_of_omega_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (omega_SNo x Hx)))). }
+claim Hgi: group_identity omega (fun a:set => fun b:set => a * b) = 1. { apply Hcm. assume _ Hg. exact (eq_trans_i (group_identity omega (fun a:set => fun b:set => a * b)) (neutral_of omega (fun a:set => fun b:set => a * b)) 1 Hg neutral_of_omega_mul). }
+claim Hmon: (forall x y :e omega, x * y = y * x) /\ (forall x y z :e omega, x * (y * z) = (x * y) * z) /\ (forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x).
+{ apply andI.
+  - apply andI.
+    + let x. assume Hx. let y. assume Hy. exact (mul_SNo_com x y (omega_SNo x Hx) (omega_SNo y Hy)).
+    + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (mul_SNo_assoc x y z (omega_SNo x Hx) (omega_SNo y Hy) (omega_SNo z Hz)).
+  - let x. assume Hx. exact ((eq_sym_i (neutral_of omega (fun a:set => fun b:set => a * b)) 1 neutral_of_omega_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (omega_SNo x Hx))). }
+claim Hit: hl_iterate omega A hl_mul l1 l2 = iterate_op omega (fun a:set => fun b:set => a * b) (hl_rep A l1) f2.
+{ exact (hl_iterate_compat omega A omega_nonempty HA hl_mul hl_mul_in (fun a:set => fun b:set => a * b) hl_mul_compat l1 H1 l2 H2 f2 Hf Hmon). }
+claim Hcar: iterate_op omega (fun a:set => fun b:set => a * b) (hl_rep A l1) f2 = iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2.
+{ exact (iterate_op_carrier omega R (fun a:set => fun b:set => a * b) (eq_trans_i (neutral_of omega (fun a:set => fun b:set => a * b)) 1 (neutral_of R (fun a:set => fun b:set => a * b)) neutral_of_omega_mul (eq_sym_i (neutral_of R (fun a:set => fun b:set => a * b)) 1 neutral_of_R_mul)) (eq_trans_i (group_identity omega (fun a:set => fun b:set => a * b)) 1 (group_identity R (fun a:set => fun b:set => a * b)) Hgi (eq_sym_i (group_identity R (fun a:set => fun b:set => a * b)) 1 group_identity_R_mul)) (hl_rep A l1) f2). }
+claim Hlit: hl_nproduct A l1 l2 = hl_iterate omega A hl_mul l1 l2. { exact (f_equal (fun u => u l1 l2) (hl_nproduct A) (hl_iterate omega A hl_mul) (hl_nproduct_unfold A)). }
+exact (eq_trans_i (hl_nproduct A l1 l2) (hl_iterate omega A hl_mul l1 l2) (finprod (hl_rep A l1) f2) Hlit (eq_trans_i (hl_iterate omega A hl_mul l1 l2) (iterate_op omega (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod (hl_rep A l1) f2) Hit (eq_trans_i (iterate_op omega (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod (hl_rep A l1) f2) Hcar (eq_sym_i (finprod (hl_rep A l1) f2) (iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod_iterate_op (hl_rep A l1) f2))))).
+Qed.
+Theorem hl_product_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e R :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_product A l1 l2 = finprod (hl_rep A l1) f2.
+let A. assume HA. let l1. assume H1. let l2. assume H2. let f2. assume Hf.
+claim Hcm: cmonoid_on R (fun a:set => fun b:set => a * b) /\ group_identity R (fun a:set => fun b:set => a * b) = neutral_of R (fun a:set => fun b:set => a * b).
+{ exact (cmonoid_of_monoidal R (fun a:set => fun b:set => a * b) (nonempty_of_In R 1 real_1) (fun x Hx y Hy => real_mul_SNo x Hx y Hy) (fun x Hx y Hy => mul_SNo_com x y (real_SNo x Hx) (real_SNo y Hy)) (fun x Hx y Hy z Hz => mul_SNo_assoc x y z (real_SNo x Hx) (real_SNo y Hy) (real_SNo z Hz)) (fun x Hx => (eq_sym_i (neutral_of R (fun a:set => fun b:set => a * b)) 1 neutral_of_R_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (real_SNo x Hx)))). }
+claim Hgi: group_identity R (fun a:set => fun b:set => a * b) = 1. { apply Hcm. assume _ Hg. exact (eq_trans_i (group_identity R (fun a:set => fun b:set => a * b)) (neutral_of R (fun a:set => fun b:set => a * b)) 1 Hg neutral_of_R_mul). }
+claim Hmon: (forall x y :e R, x * y = y * x) /\ (forall x y z :e R, x * (y * z) = (x * y) * z) /\ (forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x).
+{ apply andI.
+  - apply andI.
+    + let x. assume Hx. let y. assume Hy. exact (mul_SNo_com x y (real_SNo x Hx) (real_SNo y Hy)).
+    + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (mul_SNo_assoc x y z (real_SNo x Hx) (real_SNo y Hy) (real_SNo z Hz)).
+  - let x. assume Hx. exact ((eq_sym_i (neutral_of R (fun a:set => fun b:set => a * b)) 1 neutral_of_R_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (real_SNo x Hx))). }
+claim Hit: hl_iterate R A hl_real_mul l1 l2 = iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2.
+{ exact (hl_iterate_compat R A (nonempty_of_In R 1 real_1) HA hl_real_mul hl_real_mul_in (fun a:set => fun b:set => a * b) hl_real_mul_compat l1 H1 l2 H2 f2 Hf Hmon). }
+claim Hlit: hl_product A l1 l2 = hl_iterate R A hl_real_mul l1 l2. { exact (f_equal (fun u => u l1 l2) (hl_product A) (hl_iterate R A hl_real_mul) (hl_product_unfold A)). }
+exact (eq_trans_i (hl_product A l1 l2) (hl_iterate R A hl_real_mul l1 l2) (finprod (hl_rep A l1) f2) Hlit (eq_trans_i (hl_iterate R A hl_real_mul l1 l2) (iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod (hl_rep A l1) f2) Hit (eq_sym_i (finprod (hl_rep A l1) f2) (iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod_iterate_op (hl_rep A l1) f2)))).
+Qed.
+Theorem hl_iproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_iproduct A l1 l2 = finprod (hl_rep A l1) f2.
+let A. assume HA. let l1. assume H1. let l2. assume H2. let f2. assume Hf.
+claim Hcm: cmonoid_on int (fun a:set => fun b:set => a * b) /\ group_identity int (fun a:set => fun b:set => a * b) = neutral_of int (fun a:set => fun b:set => a * b).
+{ exact (cmonoid_of_monoidal int (fun a:set => fun b:set => a * b) hl_ty_int_native_nonempty (fun x Hx y Hy => int_mul_SNo x Hx y Hy) (fun x Hx y Hy => mul_SNo_com x y (int_SNo x Hx) (int_SNo y Hy)) (fun x Hx y Hy z Hz => mul_SNo_assoc x y z (int_SNo x Hx) (int_SNo y Hy) (int_SNo z Hz)) (fun x Hx => (eq_sym_i (neutral_of int (fun a:set => fun b:set => a * b)) 1 neutral_of_int_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (int_SNo x Hx)))). }
+claim Hgi: group_identity int (fun a:set => fun b:set => a * b) = 1. { apply Hcm. assume _ Hg. exact (eq_trans_i (group_identity int (fun a:set => fun b:set => a * b)) (neutral_of int (fun a:set => fun b:set => a * b)) 1 Hg neutral_of_int_mul). }
+claim Hmon: (forall x y :e int, x * y = y * x) /\ (forall x y z :e int, x * (y * z) = (x * y) * z) /\ (forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x).
+{ apply andI.
+  - apply andI.
+    + let x. assume Hx. let y. assume Hy. exact (mul_SNo_com x y (int_SNo x Hx) (int_SNo y Hy)).
+    + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (mul_SNo_assoc x y z (int_SNo x Hx) (int_SNo y Hy) (int_SNo z Hz)).
+  - let x. assume Hx. exact ((eq_sym_i (neutral_of int (fun a:set => fun b:set => a * b)) 1 neutral_of_int_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (int_SNo x Hx))). }
+claim Hit: hl_iterate int A hl_int_mul l1 l2 = iterate_op int (fun a:set => fun b:set => a * b) (hl_rep A l1) f2.
+{ exact (hl_iterate_compat int A hl_ty_int_native_nonempty HA hl_int_mul hl_int_mul_in (fun a:set => fun b:set => a * b) hl_int_mul_compat l1 H1 l2 H2 f2 Hf Hmon). }
+claim Hcar: iterate_op int (fun a:set => fun b:set => a * b) (hl_rep A l1) f2 = iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2.
+{ exact (iterate_op_carrier int R (fun a:set => fun b:set => a * b) (eq_trans_i (neutral_of int (fun a:set => fun b:set => a * b)) 1 (neutral_of R (fun a:set => fun b:set => a * b)) neutral_of_int_mul (eq_sym_i (neutral_of R (fun a:set => fun b:set => a * b)) 1 neutral_of_R_mul)) (eq_trans_i (group_identity int (fun a:set => fun b:set => a * b)) 1 (group_identity R (fun a:set => fun b:set => a * b)) Hgi (eq_sym_i (group_identity R (fun a:set => fun b:set => a * b)) 1 group_identity_R_mul)) (hl_rep A l1) f2). }
+claim Hlit0: hl_iproduct A l1 l2 = hl_iterate hl_ty_int A hl_int_mul l1 l2. { exact (f_equal (fun u => u l1 l2) (hl_iproduct A) (hl_iterate hl_ty_int A hl_int_mul) (hl_iproduct_unfold A)). }
+claim Hlit: hl_iproduct A l1 l2 = hl_iterate int A hl_int_mul l1 l2. { exact (eq_trans_i (hl_iproduct A l1 l2) (hl_iterate hl_ty_int A hl_int_mul l1 l2) (hl_iterate int A hl_int_mul l1 l2) Hlit0 (f_equal (fun u => hl_iterate u A hl_int_mul l1 l2) hl_ty_int int hl_ty_int_native)). }
+exact (eq_trans_i (hl_iproduct A l1 l2) (hl_iterate int A hl_int_mul l1 l2) (finprod (hl_rep A l1) f2) Hlit (eq_trans_i (hl_iterate int A hl_int_mul l1 l2) (iterate_op int (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod (hl_rep A l1) f2) Hit (eq_trans_i (iterate_op int (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod (hl_rep A l1) f2) Hcar (eq_sym_i (finprod (hl_rep A l1) f2) (iterate_op R (fun a:set => fun b:set => a * b) (hl_rep A l1) f2) (finprod_iterate_op (hl_rep A l1) f2))))).
+Qed.
+
+// ---- compat: isum (the nsum proof over int) ----
+Theorem hl_isum_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_isum A l1 l2 = finsum (hl_rep A l1) f2.
+let A. assume HA. let l1. assume H1. let l2. assume H2. let f2. assume Hf.
+claim HBne: int <> Empty. { exact hl_ty_int_native_nonempty. }
+claim HnB: (hl_neutral int hl_int_add) :e int. { exact (setexp_ap (int :^: int :^: int) int (hl_neutral int) (hl_neutral_in int HBne) hl_int_add hl_int_add_in). }
+claim Hn: (hl_neutral int hl_int_add) = 0. { exact (eq_trans_i (hl_neutral int hl_int_add) (neutral_of int (fun a:set => fun b:set => a + b)) 0 (hl_neutral_compat int HBne hl_int_add hl_int_add_in (fun a b => a + b) hl_int_add_compat) neutral_of_int_add). }
+claim Hsupp_in: (hl_support int A hl_int_add l2 l1) :e 2 :^: A.
+{ exact (setexp_ap (2 :^: A) (2 :^: A) (hl_support int A hl_int_add l2) (setexp2_ap (int :^: int :^: int) (int :^: A) ((2 :^: A) :^: (2 :^: A)) (hl_support int A) (hl_support_in int A HBne HA) hl_int_add hl_int_add_in l2 H2) l1 H1). }
+claim Hsupp: hl_rep A (hl_support int A hl_int_add l2 l1) = {x :e hl_rep A l1 | f2 x <> 0}.
+{ exact (eq_trans_i (hl_rep A (hl_support int A hl_int_add l2 l1)) ({x :e hl_rep A l1 | f2 x <> neutral_of int (fun a:set => fun b:set => a + b)}) {x :e hl_rep A l1 | f2 x <> 0} (hl_support_compat int A HBne HA hl_int_add hl_int_add_in (fun a b => a + b) hl_int_add_compat l2 H2 f2 Hf l1 H1) (f_equal (fun n => {x :e hl_rep A l1 | f2 x <> n}) (neutral_of int (fun a:set => fun b:set => a + b)) 0 neutral_of_int_add)). }
+claim HFc: hl_FINITE A (hl_support int A hl_int_add l2 l1) :e 2. { exact (setexp_ap (2 :^: A) 2 (hl_FINITE A) (hl_FINITE_in A HA) (hl_support int A hl_int_add l2 l1) Hsupp_in). }
+claim HFiff: hl_FINITE A (hl_support int A hl_int_add l2 l1) = 1 <-> finite {x :e hl_rep A l1 | f2 x <> 0}.
+{ exact (Hsupp (fun hl__u hl__v => hl_FINITE A (hl_support int A hl_int_add l2 l1) = 1 <-> finite hl__u) (hl_FINITE_compat A HA (hl_support int A hl_int_add l2 l1) Hsupp_in)). }
+claim HF: (fun x :e A => fun a :e int => hl_int_add (l2 x) a) :e int :^: int :^: A.
+{ exact (lam2_Pi A int int (fun x a => hl_int_add (l2 x) a) (fun x Hx a Ha => setexp2_ap int int int hl_int_add hl_int_add_in (l2 x) (setexp_ap A int l2 H2 x Hx) a Ha)). }
+claim HIT: (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) :e int.
+{ exact (setexp_ap int int (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1)) (setexp2_ap (int :^: int :^: A) (2 :^: A) (int :^: int) (hl_ITSET A int) (hl_ITSET_in A int HA HBne) (fun x :e A => fun a :e int => hl_int_add (l2 x) a) HF (hl_support int A hl_int_add l2 l1) Hsupp_in) (hl_neutral int hl_int_add) HnB). }
+claim Hcond: (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)) = (if finite {x :e hl_rep A l1 | f2 x <> 0} then (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) else (hl_neutral int hl_int_add)).
+{ exact (hl_COND_if int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) HFc (finite {x :e hl_rep A l1 | f2 x <> 0}) HFiff (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) HIT (hl_neutral int hl_int_add) HnB). }
+claim Hlit: hl_isum A l1 l2 = (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)).
+{ exact (eq_trans_i (hl_isum A l1 l2) (hl_iterate int A hl_int_add l1 l2) (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)) (f_equal (fun h => h l1 l2) (hl_isum A) (hl_iterate int A hl_int_add) (eq_trans_i (hl_isum A) (hl_iterate hl_ty_int A hl_int_add) (hl_iterate int A hl_int_add) (hl_isum_unfold A) (f_equal (fun u => hl_iterate u A hl_int_add) hl_ty_int int hl_ty_int_native))) (hl_iterate_unfold int A hl_int_add hl_int_add_in l1 H1 l2 H2)). }
+prove hl_isum A l1 l2 = (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0).
+apply (xm (finite {x :e hl_rep A l1 | f2 x <> 0})).
+- assume Hfin.
+  claim Hfin_supp: finite (hl_rep A (hl_support int A hl_int_add l2 l1)). { exact ((eq_sym_i (hl_rep A (hl_support int A hl_int_add l2 l1)) {x :e hl_rep A l1 | f2 x <> 0} Hsupp) (fun hl__u hl__v => finite hl__u) Hfin). }
+  claim Hits: (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) 0) = (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2).
+  { exact (eq_trans_i (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) 0) (ring_finite_sum R add_SNo (hl_rep A (hl_support int A hl_int_add l2 l1)) f2) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) (hl_itset_finsum A HA int int_Subq_R (Subq_omega_int 0 (nat_p_omega 0 nat_0)) int_add_SNo hl_int_add hl_int_add_in hl_int_add_compat l2 H2 f2 Hf (hl_support int A hl_int_add l2 l1) Hsupp_in Hfin_supp) (f_equal (fun u => ring_finite_sum R add_SNo u f2) (hl_rep A (hl_support int A hl_int_add l2 l1)) {x :e hl_rep A l1 | f2 x <> 0} Hsupp)). }
+  exact (eq_trans_i (hl_isum A l1 l2) (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hlit
+    (eq_trans_i (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) else (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hcond
+      (eq_trans_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) else (hl_neutral int hl_int_add)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) (If_i_1 (finite {x :e hl_rep A l1 | f2 x <> 0}) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add) Hfin)
+        (eq_trans_i (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) (eq_trans_i (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) 0) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) (f_equal (fun u => hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) u) (hl_neutral int hl_int_add) 0 Hn) Hits) (eq_sym_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) (If_i_1 (finite {x :e hl_rep A l1 | f2 x <> 0}) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) 0 Hfin)))))).
+- assume Hnfin.
+  exact (eq_trans_i (hl_isum A l1 l2) (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hlit
+    (eq_trans_i (hl_COND int (hl_FINITE A (hl_support int A hl_int_add l2 l1)) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) else (hl_neutral int hl_int_add)) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hcond
+      (eq_trans_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) else (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) (If_i_0 (finite {x :e hl_rep A l1 | f2 x <> 0}) (hl_ITSET A int (fun x :e A => fun a :e int => hl_int_add (l2 x) a) (hl_support int A hl_int_add l2 l1) (hl_neutral int hl_int_add)) (hl_neutral int hl_int_add) Hnfin)
+        (eq_trans_i (hl_neutral int hl_int_add) 0 (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hn (eq_sym_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) 0 (If_i_0 (finite {x :e hl_rep A l1 | f2 x <> 0}) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) 0 Hnfin)))))).
+Qed.
+
