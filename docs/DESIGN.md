@@ -1407,13 +1407,66 @@ literal statement `hlt_N` follows from `hltu_N` by a generated coherence proof
 exactly as the model theorems do (§21.4); named leaves that are not yet imported are admitted
 in uniform form (`hltu_M`), so the status is `fully_proved` only when no such leaf remains.
 
-### 22.4 Steps
+### 22.4 Implementation (2026-08-29)
 
-1. Recording kernel, shadow directory, statistics — done (this section).
-2. Proof exporter (`hol_export/proof_export.ml`): DAG with node ids, terms in the existing
-   de Bruijn JSON, sequents per node, named leaves by name; size cap per theorem.
-3. Uniform model definitions and the uniform forms of the primitive/logical definitions
-   (`mglib/literal/uniform.mg`), the rule lemma schemas, and the coherence lemmas.
-4. Importer (`lib/proofimport.ml`): closed statements per node, rule translation, claims,
-   coherence, emission into the certification modules; `cert_finalize` counts `fully_proved`.
-5. Pilot run on the ≤ 1 000-node theorems in dependency order; report.
+*Exporter* `hol_export/proof_export.ml` (`tools/hol_proof_export.sh out cap [names]`): types and
+terms are hash-consed into shared records; a proof record lists its inference nodes in post-order
+with local ids, each with its rule, arguments (terms, instantiations), hypotheses and conclusion;
+named theorems of the profile are `NAMED` leaves, except definitions and axioms, which are
+exported as `DEFINITION`/`AXIOM` nodes.  Core with cap 1 000: 1 387 proofs, 208 626 distinct
+terms, 60 MB (`generated/internal/core.proofs.jsonl`, not committed, regenerated on demand).
+
+*Uniform layer* `mglib/literal/uniform.mg` (checked after `model_theorems.mg`): the kernel rules
+as lemma schemas over `hl_eq` (`u_refl`, `u_trans`, `u_mkcomb`, `u_abs`, `u_beta`, `u_eqmp`,
+`u_deduct`, `u_eq_intro/elim`, `u_lam_in`), the characterizations of the logical constants as
+defined by HOL (`hl_T_char`, `hl_F_char`, `hl_not_char`, `hl_and_char`, `hl_or_char`,
+`hl_imp_char`, `hl_forall_char`, `hl_exists_char`, `hl_exists_unique_char`, `hl_COND_char2`),
+the iff-congruences and `If` lemmas used by the coherence proofs, and the three HOL axioms in
+uniform form (`u_ETA_AX`, `u_SELECT_AX`, `u_INFINITY_AX`).  The literal layer already defines
+`hl_and`, `hl_forall`, … as set functions from HOL's definitions, so the uniform translation `U`
+is the literal translation without the deep case for applied logical heads; the two agree on
+every data term up to the characterizations (coherence).
+
+*Importer* `lib/proofimport.ml` (`--proofs FILE` of `translate`): every node becomes a `claim`
+of its closed uniform statement (`forall A.., A <> Empty -> .., forall x :e U[σ].., U[h] = 1 ->
+.. -> U[t] = 1`, type variables sorted and free variables in order of occurrence exactly as
+`Literal.statement`); rule nodes apply the lemma schemas to the premise claims, instantiating a
+premise's closed statement with the node's carriers, variables and hypotheses (alpha-equivalence
+of hypotheses by de Bruijn comparison with binder names erased; premise variables and type
+variables that no longer occur in the conclusion are closed uniformly — `1` for type variables,
+`choose_in C (fun y => True)` for variables — both in the premise applications and in the lemma
+arguments).  Typing derivations, the bulk of the text, are shared: one claim per distinct
+application or abstraction subterm (closed over its own type variables and free variables), emitted
+before the first node that needs it; bound variables are opened with their HOL names so that
+alpha-equivalent subterms share.  `DEFINITION` nodes are reflexivity up to the generated coherence
+proof `L[rhs] = U[rhs]`; the literal statement `hlt_N` is then derived from `hltu_N` by the
+coherence proof `LP[t] <-> U[t] = 1`.  A named leaf `M` is applied as `hltu_M`, declared in the
+shard as `Qed` (imported earlier in the same shard) or `Admitted`; a theorem whose proof depends on
+an admitted leaf is emitted as a checked derivation ending in `Admitted` (Megalodon refuses `Qed`
+there), and `tools/cert_finalize.py` computes `fully_proved` as the closure: proof imported,
+shard checked, every named leaf fully proved (or `literal_proved`).  Megalodon parser notes: a
+lambda whose body is a bare variable is read as a proof lambda in proof-term position — such
+bodies are printed through the definitional identity `hl_id`; equation operands that are lambdas
+must be parenthesized; the claim binders follow the statement's order (all type variables, then
+all nonemptiness hypotheses).
+
+*Artifacts.*  Imported-proof modules are large (about 400 MB for the 1 387 Core proofs) and are
+not committed: `tools/proof_pilot.sh <profile> [cap]` regenerates them under
+`generated/proofcert/<profile>/` (public, literal and certification modules with imported proofs),
+checks them (`JOBS`, `MGTIMEOUT`) and finalizes a manifest copy there; the committed
+`generated/cert/<profile>` and manifest stay without imported proofs.  Imports that fail by
+design: definitions of primitive constants (`one`) and proofs mentioning constants outside the
+literal interface (`ABS_prod`, `dest_num`, `treal_eq`, `one_REP`).  `TYDEF_ABS`/`TYDEF_REP`
+nodes use the generic subtype characterizations (`hl_subtype_abs_rep`, `u_tydef_rep`), with a
+`beta` step when HOL's type-definition theorems carry the predicate eta-expanded.  Inlining
+single-use nodes instead of emitting claims was tried and rejected: Megalodon cannot infer the
+binder types of a proof lambda that is not checked against a stated claim, and the annotated form
+is larger than the claim.
+
+### 22.5 Steps
+
+1. Recording kernel, shadow directory, statistics — done.
+2. Exporter — done.
+3. Uniform layer and coherence lemmas — done.
+4. Importer and emission — done (all kernel rules).
+5. Pilot run on the ≤ 1 000-node theorems — running; results in report 16.
