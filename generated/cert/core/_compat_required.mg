@@ -30,10 +30,6 @@ Admitted.
 Theorem hl_lambda_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e omega, l1 x = f1 x) -> hl_lambda A N l1 = fun i :e idx N => f1 i.
 Admitted.
 
-// ITLIST : (A->B->B)->A list->B->B (not in compat.mg)
-Theorem hl_ITLIST_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e finseq A, forall l3 :e B, hl_ITLIST A B l1 l2 l3 = seq_foldr f1 l2 l3.
-Admitted.
-
 // PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool (not in compat.mg)
 Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: hl_ty_cart A M, forall l2 :e 2 :^: hl_ty_cart A N, hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (hl_ty_cart A M) l1, {pastecart M N x y | y :e hl_rep (hl_ty_cart A N) l2}.
 Admitted.
@@ -44,10 +40,6 @@ Admitted.
 
 // CHOICE : (A->bool)->A at A := A -> bool (not in compat.mg)
 Theorem hl_CHOICE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_CHOICE (2 :^: A) l1 = choose_in (Power A) (fun x:set => x :e hl_rep2 A l1).
-Admitted.
-
-// BIJ : (A->B)->(A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_BIJ_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, forall l3 :e 2 :^: B, hl_BIJ A B l1 l2 l3 = 1 <-> bij (hl_rep A l2) (hl_rep B l3) f1.
 Admitted.
 
 // hashek : bool (not in compat.mg)
@@ -78,16 +70,8 @@ Admitted.
 Theorem hl_iproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_iproduct A l1 l2 = finprod (hl_rep A l1) f2.
 Admitted.
 
-// COUNTABLE : (A->bool)->bool (not in compat.mg)
-Theorem hl_COUNTABLE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_COUNTABLE A l1 = 1 <-> countable (hl_rep A l1).
-Admitted.
-
 // >_c : (A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_sym_3e5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3e5f63 A B l1 l2 = 1 <-> atleastp (hl_rep B l2) (hl_rep A l1) /\ ~ equip (hl_rep B l2) (hl_rep A l1).
-Admitted.
-
-// MEASURE : (A->num)->A->A->bool (not in compat.mg)
-Theorem hl_MEASURE_compat : forall A:set, A <> Empty -> forall l1 :e omega :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 l3 :e A, hl_MEASURE A l1 l2 l3 = 1 <-> f1 l2 < f1 l3.
 Admitted.
 
 // SING : (A->bool)->bool (not in compat.mg)
@@ -96,10 +80,6 @@ Admitted.
 
 // SING : (A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_SING_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_SING (2 :^: A) l1 = 1 <-> exists x :e Power A, hl_rep2 A l1 = {x}.
-Admitted.
-
-// >=_c : (A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_sym_3e3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3e3d5f63 A B l1 l2 = 1 <-> atleastp (hl_rep B l2) (hl_rep A l1).
 Admitted.
 
 // _UNGUARDED_PATTERN : bool->bool->bool (not in compat.mg)
@@ -124,10 +104,6 @@ Admitted.
 
 // $ : (A,N)cart->num->A (not in compat.mg)
 Theorem hl_vindex_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A N, forall l2 :e omega, hl_vindex A N l1 l2 = l1 l2.
-Admitted.
-
-// REST : (A->bool)->A->bool (not in compat.mg)
-Theorem hl_REST_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_rep A (hl_REST A l1) = hl_rep A l1 :\: {choose_in A (fun x:set => x :e hl_rep A l1)}.
 Admitted.
 
 // mk_pair : A->B->A->B->bool (not in compat.mg)
@@ -192,10 +168,6 @@ Admitted.
 
 // SETSPEC : A->bool->A->bool (not in compat.mg)
 Theorem hl_SETSPEC_compat : forall A:set, A <> Empty -> hl_SETSPEC A = Empty.
-Admitted.
-
-// REPLICATE : num->A->A list (not in compat.mg)
-Theorem hl_REPLICATE_compat : forall A:set, A <> Empty -> forall l1 :e omega, forall l2 :e A, hl_REPLICATE A l1 l2 = seq_replicate l1 l2.
 Admitted.
 
 // is_nadd : (num->num)->bool (not in compat.mg)
@@ -290,14 +262,6 @@ Admitted.
 Theorem hl_NUMLEFT_compat : hl_NUMLEFT = Empty.
 Admitted.
 
-// <_c : (A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_sym_3c5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3c5f63 A B l1 l2 = 1 <-> atleastp (hl_rep A l1) (hl_rep B l2) /\ ~ equip (hl_rep A l1) (hl_rep B l2).
-Admitted.
-
-// =_c : (A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_sym_3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3d5f63 A B l1 l2 = 1 <-> equip (hl_rep A l1) (hl_rep B l2).
-Admitted.
-
 // isum : (A->bool)->(A->int)->int (not in compat.mg)
 Theorem hl_isum_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_isum A l1 l2 = finsum (hl_rep A l1) f2.
 Admitted.
@@ -316,10 +280,6 @@ Admitted.
 
 // _FALSITY_ : bool (not in compat.mg)
 Theorem hl__FALSITY__compat : hl__FALSITY_ = Empty.
-Admitted.
-
-// INJ : (A->B)->(A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_INJ_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, forall l3 :e 2 :^: B, hl_INJ A B l1 l2 l3 = 1 <-> inj (hl_rep A l2) (hl_rep B l3) f1.
 Admitted.
 
 // _SEQPATTERN : (A->B->bool)->(A->B->bool)->A->B->bool (not in compat.mg)

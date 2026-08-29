@@ -839,7 +839,8 @@ source: !m:A->num. WF (MEASURE m)
 status: transport_required
 statement: forall A:set, A <> Empty -> forall m:set -> set, (forall x :e A, m x :e omega) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ m y < m x
 literal: forall A:set, A <> Empty -> forall m :e omega :^: A, hl_WF A (hl_MEASURE A m) = 1
-cert_status: bridge_unsupported
+bridge: WF_MEASURE_bridge
+cert_status: native_certified
 
 ### WF_LEX   [well-founded relations]
 hash: ab5a867a79f9dbbf98e3fa352b9392b0
@@ -873,7 +874,8 @@ source: !m:A->num. MEASURE m = (\x:A. \y:A. m x < m y)
 status: generalization_required
 statement: forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y
 literal: forall A:set, A <> Empty -> forall m :e omega :^: A, hl_MEASURE A m = fun x :e A => fun y :e A => hl_lt (m x) (m y)
-cert_status: bridge_unsupported
+bridge: MEASURE_bridge
+cert_status: native_certified
 
 ### NOT_CONS_NIL   [lists (finite sequences), including higher-order mapped operations]
 hash: 77428f1d7d66f872892dab61338128c2
@@ -1059,7 +1061,8 @@ source: !f:A->B->B. !a:B. !l1:A list. !l2:A list. ITLIST f (l1 APPEND l2) a = IT
 status: generalization_required
 statement: forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall a :e B, forall l1 l2 :e finseq A, seq_foldr f (seq_append l1 l2) a = seq_foldr f l1 (seq_foldr f l2 a)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: B :^: A, forall a :e B, forall l1 l2 :e finseq A, hl_ITLIST A B f (hl_APPEND A l1 l2) a = hl_ITLIST A B f l1 (hl_ITLIST A B f l2 a)
-cert_status: bridge_unsupported
+bridge: ITLIST_APPEND_bridge
+cert_status: native_certified
 
 ### MEM_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: efcc0ae65a5073ec9a7e1049fea67bdc
@@ -1111,7 +1114,8 @@ source: !n:num. !x:A. LENGTH (REPLICATE n x) = n
 status: generalization_required
 statement: forall A:set, forall n :e omega, forall x :e A, seq_len (seq_replicate n x) = n
 literal: forall A:set, A <> Empty -> forall n :e omega, forall x :e A, hl_LENGTH A (hl_REPLICATE A n x) = n
-cert_status: bridge_unsupported
+bridge: LENGTH_REPLICATE_bridge
+cert_status: native_certified
 
 ### ZIP   [lists (finite sequences), including higher-order mapped operations]
 hash: fd4494788599018ac29f29b4f2822be0
@@ -1136,7 +1140,8 @@ source: !f:A->B->B. !l:A list. ITLIST f (l APPEND a CONS NIL) b = ITLIST f l (f 
 status: generalization_required
 statement: forall A B:set, forall a :e A, forall b :e B, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall l :e finseq A, seq_foldr f (seq_append l (seq_cons a seq_nil)) b = seq_foldr f l (f a b)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall a :e A, forall b :e B, forall f :e B :^: B :^: A, forall l :e finseq A, hl_ITLIST A B f (hl_APPEND A l (hl_CONS A a (hl_NIL A))) b = hl_ITLIST A B f l (f a b)
-cert_status: bridge_unsupported
+bridge: ITLIST_EXTRA_bridge
+cert_status: native_certified
 
 ### IN_UNION   [sets: membership, algebra, comprehensions, images, families]
 hash: 53bfd4012ecbf824436fdec1d98ef00d
@@ -1394,7 +1399,8 @@ source: !s:A->bool. REST s = s DELETE CHOICE s
 status: generalization_required
 statement: forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :e s)} = s :\: {choose_in A (fun x:set => x :e s)}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_REST A s = hl_DELETE A s (hl_CHOICE A s)
-cert_status: bridge_unsupported
+bridge: REST_bridge
+cert_status: native_certified
 
 ### ARB   [sets: membership, algebra, comprehensions, images, families]
 hash: b453496b4bba3b6602eb4a8f4e4f7fa5
@@ -1543,7 +1549,8 @@ source: !t:B->bool. !s:A->bool. !f:A->B. INJ f s t <=> (!x:A. x IN s ==> f x IN 
 status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (inj s t f <-> (forall x :e A, x :e s -> f x :e t) /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t :e 2 :^: B, forall s :e 2 :^: A, forall f :e B :^: A, hl_INJ A B f s t = 1 <-> (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\ forall x y :e A, hl_IN A x s = 1 /\ (hl_IN A y s = 1 /\ f x = f y) -> x = y
-cert_status: bridge_unsupported
+bridge: INJ_bridge
+cert_status: native_certified
 
 ### BIJ   [finiteness, cardinality, functions between sets]
 hash: e7c76a8cde9eadacde88eed045681195
