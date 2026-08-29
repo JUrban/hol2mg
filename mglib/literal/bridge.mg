@@ -441,3 +441,69 @@ let a. assume H. apply iffI.
 - assume H1. exact (H H1).
 - assume H1. exact (FalseE H1 a).
 Qed.
+
+// ---- two-argument meta-functions and meta-predicates ----
+Definition hl_chip2 : set -> set -> (set -> set -> prop) -> set := fun A B P => fun x :e A => fun y :e B => if P x y then 1 else 0.
+Definition hl_lam2 : set -> set -> (set -> set -> set) -> set := fun A B f => fun x :e A => fun y :e B => f x y.
+Theorem hl_chip2_Pi : forall A B:set, forall P:set -> set -> prop, hl_chip2 A B P :e (2 :^: B) :^: A.
+let A B P. prove (fun x :e A => fun y :e B => if P x y then 1 else 0) :e Pi_ x :e A, 2 :^: B.
+apply (lam_Pi A (fun _ => 2 :^: B) (fun x => fun y :e B => if P x y then 1 else 0)).
+let x. assume _. prove (fun y :e B => if P x y then 1 else 0) :e Pi_ y :e B, 2.
+apply (lam_Pi B (fun _ => 2) (fun y => if P x y then 1 else 0)). let y. assume _. exact (If_in_2 (P x y)).
+Qed.
+Theorem hl_chip2_iff : forall A B:set, forall P:set -> set -> prop, forall x :e A, forall y :e B, hl_chip2 A B P x y = 1 <-> P x y.
+let A B P x. assume Hx. let y. assume Hy.
+prove (fun x :e A => fun y :e B => if P x y then 1 else 0) x y = 1 <-> P x y.
+rewrite (beta A (fun x => fun y :e B => if P x y then 1 else 0) x Hx).
+rewrite (beta B (fun y => if P x y then 1 else 0) y Hy).
+exact (If_1_iff (P x y)).
+Qed.
+Theorem hl_lam2_Pi : forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> hl_lam2 A B f :e (C :^: B) :^: A.
+let A B C f. assume Hf. prove (fun x :e A => fun y :e B => f x y) :e Pi_ x :e A, C :^: B.
+apply (lam_Pi A (fun _ => C :^: B) (fun x => fun y :e B => f x y)).
+let x. assume Hx. prove (fun y :e B => f x y) :e Pi_ y :e B, C.
+apply (lam_Pi B (fun _ => C) (fun y => f x y)). let y. assume Hy. exact (Hf x Hx y Hy).
+Qed.
+Theorem hl_lam2_ap : forall A B:set, forall f:set -> set -> set, forall x :e A, forall y :e B, hl_lam2 A B f x y = f x y.
+let A B f x. assume Hx. let y. assume Hy.
+prove (fun x :e A => fun y :e B => f x y) x y = f x y.
+rewrite (beta A (fun x => fun y :e B => f x y) x Hx). exact (beta B (fun y => f x y) y Hy).
+Qed.
+Theorem setexp2_ap_closure : forall A B C F:set, F :e (C :^: B) :^: A -> forall x :e A, forall y :e B, F x y :e C.
+let A B C F. assume HF. let x. assume Hx. let y. assume Hy.
+exact (setexp_ap B C (F x) (setexp_ap A (C :^: B) F HF x Hx) y Hy).
+Qed.
+Theorem imp_forall_pred2 : forall A B:set, forall L:set -> prop, forall N:(set -> set -> prop) -> prop,
+  (forall P:set -> set -> prop, L (hl_chip2 A B P) -> N P) -> (forall F :e (2 :^: B) :^: A, L F) -> forall P:set -> set -> prop, N P.
+let A B L N. assume H H1. let P. exact (H P (H1 (hl_chip2 A B P) (hl_chip2_Pi A B P))).
+Qed.
+Theorem imp_forall_pred2_rev : forall A B:set, forall L:set -> prop, forall N:(set -> set -> prop) -> prop,
+  (forall F :e (2 :^: B) :^: A, N (fun x y => F x y = 1) -> L F) -> (forall P:set -> set -> prop, N P) -> forall F :e (2 :^: B) :^: A, L F.
+let A B L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun x y => F x y = 1))).
+Qed.
+Theorem imp_exists_pred2 : forall A B:set, forall L:set -> prop, forall N:(set -> set -> prop) -> prop,
+  (forall F :e (2 :^: B) :^: A, L F -> N (fun x y => F x y = 1)) -> (exists F :e (2 :^: B) :^: A, L F) -> exists P:set -> set -> prop, N P.
+let A B L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun x y => F x y = 1). exact (H F HF HL).
+Qed.
+Theorem imp_exists_pred2_rev : forall A B:set, forall L:set -> prop, forall N:(set -> set -> prop) -> prop,
+  (forall P:set -> set -> prop, N P -> L (hl_chip2 A B P)) -> (exists P:set -> set -> prop, N P) -> exists F :e (2 :^: B) :^: A, L F.
+let A B L N. assume H H1. apply H1. let P. assume HP. witness (hl_chip2 A B P). exact (andI (hl_chip2 A B P :e (2 :^: B) :^: A) (L (hl_chip2 A B P)) (hl_chip2_Pi A B P) (H P HP)).
+Qed.
+Theorem imp_forall_fun2 : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set) -> prop,
+  (forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> L (hl_lam2 A B f) -> N f) -> (forall F :e (C :^: B) :^: A, L F) -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> N f.
+let A B C L N. assume H H1. let f. assume Hf. exact (H f Hf (H1 (hl_lam2 A B f) (hl_lam2_Pi A B C f Hf))).
+Qed.
+Theorem imp_forall_fun2_rev : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set) -> prop,
+  (forall F :e (C :^: B) :^: A, N (fun x y => F x y) -> L F) -> (forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> N f) -> forall F :e (C :^: B) :^: A, L F.
+let A B C L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun x y => F x y) (setexp2_ap_closure A B C F HF))).
+Qed.
+Theorem imp_exists_fun2 : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set) -> prop,
+  (forall F :e (C :^: B) :^: A, L F -> N (fun x y => F x y)) -> (exists F :e (C :^: B) :^: A, L F) -> exists f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) /\ N f.
+let A B C L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun x y => F x y).
+exact (andI (forall x :e A, forall y :e B, F x y :e C) (N (fun x y => F x y)) (setexp2_ap_closure A B C F HF) (H F HF HL)).
+Qed.
+Theorem imp_exists_fun2_rev : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set) -> prop,
+  (forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> N f -> L (hl_lam2 A B f)) -> (exists f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) /\ N f) -> exists F :e (C :^: B) :^: A, L F.
+let A B C L N. assume H H1. apply H1. let f. assume Hf0. apply Hf0. assume Hf HN. witness (hl_lam2 A B f).
+exact (andI (hl_lam2 A B f :e (C :^: B) :^: A) (L (hl_lam2 A B f)) (hl_lam2_Pi A B C f Hf) (H f Hf HN)).
+Qed.
