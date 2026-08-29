@@ -153,12 +153,88 @@ apply (nat_inv n (omega_nat_p n Hn)).
   { rewrite <- (add_SNo_1_ordsucc x (nat_p_omega x Hx)) at 1. exact (add_SNo_minus_R2 x 1 (nat_p_SNo x Hx) SNo_1). }
   rewrite L1. exact (nat_p_omega x Hx).
 Qed.
+
+// the quotient chosen by div_nat satisfies its specification
+Theorem div_nat_spec : forall m n :e omega, n <> 0 -> div_nat m n :e omega /\ exists r :e omega, r < n /\ m = div_nat m n * n + r.
+let m. assume Hm: m :e omega. let n. assume Hn: n :e omega. assume Hn0: n <> 0.
+set P := fun q:set => q :e omega /\ exists r :e omega, r < n /\ m = q * n + r.
+claim Hex: exists q, P q.
+{ claim Hn': n :e omega :\: {0}. { exact (setminusI omega {0} n Hn (fun H: n :e {0} => Hn0 (SingE 0 n H))). }
+  apply (exandE_i (fun q => q :e omega) (fun q => exists r :e n, m = add_nat (mul_nat q n) r) (quotient_remainder_nat n Hn' m (omega_nat_p m Hm))).
+  let q. assume Hq: q :e omega. assume Hr: exists r :e n, m = add_nat (mul_nat q n) r.
+  apply (exandE_i (fun r => r :e n) (fun r => m = add_nat (mul_nat q n) r) Hr).
+  let r. assume Hrn: r :e n. assume Hmr: m = add_nat (mul_nat q n) r.
+  witness q.
+  prove q :e omega /\ exists r :e omega, r < n /\ m = q * n + r.
+  apply andI.
+  - exact Hq.
+  - witness r. apply andI.
+    + exact (nat_p_omega r (nat_p_trans n (omega_nat_p n Hn) r Hrn)).
+    + apply andI.
+      * exact (omega_In_SNoLt n Hn r Hrn).
+      * claim Hqn: q * n :e omega. { exact (mul_SNo_In_omega q Hq n Hn). }
+        claim Hro: r :e omega. { exact (nat_p_omega r (nat_p_trans n (omega_nat_p n Hn) r Hrn)). }
+        rewrite <- (add_nat_add_SNo (q * n) Hqn r Hro).
+        rewrite <- (mul_nat_mul_SNo q Hq n Hn).
+        exact Hmr. }
+prove P (if n = 0 then 0 else Eps_i P).
+rewrite (If_i_0 (n = 0) 0 (Eps_i P) Hn0).
+exact (Eps_i_ex P Hex).
+Qed.
+
 Theorem div_nat_omega : forall m n :e omega, div_nat m n :e omega.
-Admitted.
+let m. assume Hm: m :e omega. let n. assume Hn: n :e omega.
+apply (xm (n = 0)).
+- assume H: n = 0.
+  prove (if n = 0 then 0 else Eps_i (fun q => q :e omega /\ exists r :e omega, r < n /\ m = q * n + r)) :e omega.
+  rewrite (If_i_1 (n = 0) 0 (Eps_i (fun q => q :e omega /\ exists r :e omega, r < n /\ m = q * n + r)) H).
+  exact (nat_p_omega 0 nat_0).
+- assume H: n <> 0.
+  exact (andEL (div_nat m n :e omega) (exists r :e omega, r < n /\ m = div_nat m n * n + r) (div_nat_spec m Hm n Hn H)).
+Qed.
 Theorem mod_nat_omega : forall m n :e omega, mod_nat m n :e omega.
-Admitted.
+let m. assume Hm: m :e omega. let n. assume Hn: n :e omega.
+apply (xm (n = 0)).
+- assume H: n = 0.
+  prove (if n = 0 then m else m + - div_nat m n * n) :e omega.
+  rewrite (If_i_1 (n = 0) m (m + - div_nat m n * n) H). exact Hm.
+- assume H: n <> 0.
+  prove (if n = 0 then m else m + - div_nat m n * n) :e omega.
+  rewrite (If_i_0 (n = 0) m (m + - div_nat m n * n) H).
+  claim Hs: div_nat m n :e omega /\ exists r :e omega, r < n /\ m = div_nat m n * n + r. { exact (div_nat_spec m Hm n Hn H). }
+  claim Hq: div_nat m n :e omega. { exact (andEL (div_nat m n :e omega) (exists r :e omega, r < n /\ m = div_nat m n * n + r) Hs). }
+  apply (exandE_i (fun r => r :e omega) (fun r => r < n /\ m = div_nat m n * n + r) (andER (div_nat m n :e omega) (exists r :e omega, r < n /\ m = div_nat m n * n + r) Hs)).
+  let r. assume Hr: r :e omega. assume Hr2: r < n /\ m = div_nat m n * n + r.
+  claim Hmr: m = div_nat m n * n + r. { exact (andER (r < n) (m = div_nat m n * n + r) Hr2). }
+  claim HQ: SNo (div_nat m n * n). { exact (SNo_mul_SNo (div_nat m n) n (omega_SNo (div_nat m n) Hq) (omega_SNo n Hn)). }
+  claim HQr: (div_nat m n * n + r) + - div_nat m n * n = r.
+{ claim L1: (div_nat m n * n + r) + - div_nat m n * n = (r + div_nat m n * n) + - div_nat m n * n.
+  { exact (add_SNo_com (div_nat m n * n) r HQ (omega_SNo r Hr) (fun a b => (div_nat m n * n + r) + - div_nat m n * n = a + - div_nat m n * n) (fun q H => H)). }
+  exact (eq_trans ((div_nat m n * n + r) + - div_nat m n * n) ((r + div_nat m n * n) + - div_nat m n * n) r L1 (add_SNo_minus_R2 r (div_nat m n * n) (omega_SNo r Hr) HQ)). }
+  claim L: m + - div_nat m n * n = r.
+  { exact (Hmr (fun a b => b + - div_nat m n * n = r) HQr). }
+  rewrite L. exact Hr.
+Qed.
 Theorem div_mod_nat : forall m n :e omega, n <> 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
-Admitted.
+let m. assume Hm: m :e omega. let n. assume Hn: n :e omega. assume H: n <> 0.
+claim Hs: div_nat m n :e omega /\ exists r :e omega, r < n /\ m = div_nat m n * n + r. { exact (div_nat_spec m Hm n Hn H). }
+claim Hq: div_nat m n :e omega. { exact (andEL (div_nat m n :e omega) (exists r :e omega, r < n /\ m = div_nat m n * n + r) Hs). }
+apply (exandE_i (fun r => r :e omega) (fun r => r < n /\ m = div_nat m n * n + r) (andER (div_nat m n :e omega) (exists r :e omega, r < n /\ m = div_nat m n * n + r) Hs)).
+let r. assume Hr: r :e omega. assume Hr2: r < n /\ m = div_nat m n * n + r.
+claim Hmr: m = div_nat m n * n + r. { exact (andER (r < n) (m = div_nat m n * n + r) Hr2). }
+claim HQ: SNo (div_nat m n * n). { exact (SNo_mul_SNo (div_nat m n) n (omega_SNo (div_nat m n) Hq) (omega_SNo n Hn)). }
+claim HQr: (div_nat m n * n + r) + - div_nat m n * n = r.
+{ claim L1: (div_nat m n * n + r) + - div_nat m n * n = (r + div_nat m n * n) + - div_nat m n * n.
+  { exact (add_SNo_com (div_nat m n * n) r HQ (omega_SNo r Hr) (fun a b => (div_nat m n * n + r) + - div_nat m n * n = a + - div_nat m n * n) (fun q H => H)). }
+  exact (eq_trans ((div_nat m n * n + r) + - div_nat m n * n) ((r + div_nat m n * n) + - div_nat m n * n) r L1 (add_SNo_minus_R2 r (div_nat m n * n) (omega_SNo r Hr) HQ)). }
+claim L: mod_nat m n = r.
+{ prove (if n = 0 then m else m + - div_nat m n * n) = r.
+  rewrite (If_i_0 (n = 0) m (m + - div_nat m n * n) H).
+  exact (Hmr (fun a b => b + - div_nat m n * n = r) HQr). }
+rewrite L. apply andI.
+- exact Hmr.
+- exact (andEL (r < n) (m = div_nat m n * n + r) Hr2).
+Qed.
 
 
 // members of the predecessor lift to the successor
