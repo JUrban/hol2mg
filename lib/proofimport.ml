@@ -105,6 +105,14 @@ let rec subst_frees (theta : ((string * ty) * tm) list) (t : tm) : tm =
   | Lam (x, ty, b) -> Lam (x, ty, subst_frees theta b)
   | _ -> t
 
+(* alpha-equivalence: de Bruijn terms compared with binder display names erased *)
+let rec canon (t : tm) : tm =
+  match t with
+  | App (f, x) -> App (canon f, canon x)
+  | Lam (_, ty, b) -> Lam ("", ty, canon b)
+  | _ -> t
+let alpha_eq (a : tm) (b : tm) = canon a = canon b
+
 (* ------------------------------------------------------------------------ *)
 (* Signatures and closed statements (the uniform form of a sequent).        *)
 (* ------------------------------------------------------------------------ *)
@@ -184,7 +192,7 @@ let ustmt_of (an : L.analysis) (sg : sg) : Mg.tm =
 
 (* the binders of the closed statement, as a proof-term lambda prefix *)
 let binders (sg : sg) : string =
-  String.concat " " (List.concat_map (fun (_, n) -> [ n; "H" ^ n ^ "ne" ]) sg.tvs
+  String.concat " " (List.map (fun (_, n) -> n) sg.tvs @ List.map (fun (_, n) -> "H" ^ n ^ "ne") sg.tvs
                      @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) sg.vars
                      @ List.mapi (fun i _ -> "Hh" ^ string_of_int i) sg.hyps)
 
@@ -205,10 +213,11 @@ let rec ne (ctx : L.ctx) (ty : ty) : string =
   | TyApp ("list", [ a ]) -> Printf.sprintf "(finseq_nonempty %s)" (ppp (car a))
   | TyApp ("option", [ a ]) -> Printf.sprintf "(setsum_nonempty_l 1 %s one_nonempty)" (ppp (car a))
   | TyApp ("sum", [ a; b ]) -> Printf.sprintf "(setsum_nonempty_l %s %s %s)" (ppp (car a)) (ppp (car b)) (ne ctx a)
+  | TyApp (c, []) when Hashtbl.mem ctx.L.tydefs c -> Printf.sprintf "hl_ty_%s_nonempty" (Elab.sanitize_var c)
   | TyApp (c, _) -> unsupported "nonemptiness of the carrier of %s" c
 
 let hyp_of_var (ctx : L.ctx) (s : string) : string =
-  match List.assoc_opt s ctx.L.vars with Some (Mg.Var n) -> "H" ^ n | _ -> failwith ("hyp_of_var " ^ s)
+  match List.assoc_opt s ctx.L.vars with Some (Mg.Var n) -> "H" ^ n | _ -> unsupported "variable %s not in scope [%s]" s (String.concat "," (List.map fst ctx.L.vars))
 
 let rec utyp (ctx : L.ctx) (t : tm) : string =
   match t with
@@ -346,7 +355,7 @@ let dest_eq (t : tm) : ty * tm * tm =
 
 (* application of a premise's closed statement in the current context *)
 let apply_prem (ctx : L.ctx) (pf : string) (sg_j : sg) ~(tymap : string -> ty) ~(tmmap : string * ty -> Mg.tm * string) ~(hypmap : tm -> string) : string =
-  let tyargs = List.concat_map (fun (a, _) -> let ty = tymap a in [ ppp (L.carrier ctx ty); ne ctx ty ]) sg_j.tvs in
+  let tyargs = List.map (fun (a, _) -> ppp (L.carrier ctx (tymap a))) sg_j.tvs @ List.map (fun (a, _) -> ne ctx (tymap a)) sg_j.tvs in
   let inst_theta = List.map (fun (a, _) -> (a, tymap a)) sg_j.tvs in
   let vargs = List.concat_map (fun (s, ty, _) -> let t, p = tmmap (s, inst_ty inst_theta ty) in [ ppp t; p ]) sg_j.vars in
   let hargs = List.map (fun h -> hypmap h) sg_j.hyps in
@@ -358,7 +367,9 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
   let sg = sgs.(i) in
   let ctx = ctx_of env.an sg in
   let u t = ppp (uterm ctx t) and ty_ t = utyp ctx t and car ty = ppp (L.carrier ctx ty) in
-  let hyp_index (h : tm) = (let rec go k = function [] -> unsupported "hypothesis not in scope" | x :: rest -> if x = h then "Hh" ^ string_of_int k else go (k + 1) rest in go 0 sg.hyps) in
+  let hyp_index (h : tm) = (let rec go k = function
+    | [] -> unsupported "node %d (%s): hypothesis %s not in scope [%s]" i n.rule (Mg.to_string (uterm ctx h)) (String.concat "; " (List.map (fun x -> Mg.to_string (uterm ctx x)) sg.hyps))
+    | x :: rest -> if alpha_eq x h then "Hh" ^ string_of_int k else go (k + 1) rest in go 0 sg.hyps) in
   (* identity-style maps for the current node *)
   let tymap_id a = if List.mem_assoc a sg.tvs then TyVar a else TyApp ("1", []) in
   let tmmap_id (s, ty) =
@@ -417,7 +428,7 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
         Printf.sprintf "(u_eqmp %s %s %s %s %s %s)" (u a) (ty_ a) (u b) (ty_ b) (pre 0) (pre 1)
     | "DEDUCT_ANTISYM_RULE" ->
         let c1 = p.nodes.(List.nth n.prem 0).concl and c2 = p.nodes.(List.nth n.prem 1).concl in
-        let hm1 h = if h = c2 then "Hd__r" else hyp_index h and hm2 h = if h = c1 then "Hd__l" else hyp_index h in
+        let hm1 h = if alpha_eq h c2 then "Hd__r" else hyp_index h and hm2 h = if alpha_eq h c1 then "Hd__l" else hyp_index h in
         let p1 = apply_prem ctx (prem 0) sgs.(List.nth n.prem 0) ~tymap:tymap_id ~tmmap:tmmap_id ~hypmap:hm1 in
         let p2 = apply_prem ctx (prem 1) sgs.(List.nth n.prem 1) ~tymap:tymap_id ~tmmap:tmmap_id ~hypmap:hm2 in
         Printf.sprintf "(u_deduct %s %s %s %s (fun Hd__r => %s) (fun Hd__l => %s))" (u c1) (ty_ c1) (u c2) (ty_ c2) p1 p2
@@ -480,9 +491,9 @@ let import (an : L.analysis) (thm_name : string -> string) (p : proof) (seq : se
   Buffer.add_string buf (Printf.sprintf "exact n%d.\nQed.\n" p.root);
   (* coherence: hlt_N from hltu_N *)
   let ctx = ctx_of an root_sg in
-  let binders_txt = String.concat " " (List.concat_map (fun (_, n) -> [ n; "H" ^ n ^ "ne" ]) root_sg.tvs @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) root_sg.vars @ List.mapi (fun i _ -> "Hl" ^ string_of_int i) root_sg.hyps) in
+  let binders_txt = String.concat " " (List.map (fun (_, n) -> n) root_sg.tvs @ List.map (fun (_, n) -> "H" ^ n ^ "ne") root_sg.tvs @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) root_sg.vars @ List.mapi (fun i _ -> "Hl" ^ string_of_int i) root_sg.hyps) in
   let fwd h k = Printf.sprintf "(%s (%s -> %s = 1) (fun hl__f hl__b => hl__f) Hl%d)" (cohp ctx h) (ppp (L.lprop ctx h)) (ppp (uterm ctx h)) k in
-  let args = String.concat " " (List.concat_map (fun (_, n) -> [ n; "H" ^ n ^ "ne" ]) root_sg.tvs @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) root_sg.vars @ List.mapi (fun k h -> fwd h k) root_sg.hyps) in
+  let args = String.concat " " (List.map (fun (_, n) -> n) root_sg.tvs @ List.map (fun (_, n) -> "H" ^ n ^ "ne") root_sg.tvs @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) root_sg.vars @ List.mapi (fun k h -> fwd h k) root_sg.hyps) in
   let applied = if args = "" then name else Printf.sprintf "(%s %s)" name args in
   let c = root_sg.concl in
   let discharge = Printf.sprintf "(fun %s => (%s (%s = 1 -> %s) (fun hl__f hl__b => hl__b) %s))" binders_txt (cohp ctx c) (ppp (uterm ctx c)) (ppp (L.lprop ctx c)) applied in
