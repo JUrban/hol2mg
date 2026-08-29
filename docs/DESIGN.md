@@ -1045,7 +1045,7 @@ is correct, repeatable native statements.  `lib/literal.ml` is a stub.
 core 2684/2984, standard 4290/4590, mv_vectors 4783/5084, multivariate (all of
 `Multivariate/make.ml`) ≈17.1K/17526 public; all shards check under Megalodon; golden tests and
 `make test` pass; the upstream-update workflow was validated on an older HOL Light commit.
-Native modules: `prelude.mg` (23 Qed / 5 Admitted), `finseq.mg` (35 / 1), `order.mg` (0 / 0).
+Native modules: `prelude.mg` (26 Qed / 5 Admitted), `finseq.mg` (36 / 0), `order.mg` (0 / 0).
 
 ### 20.6 Automatic definitions (extends §6.2 and §10)
 

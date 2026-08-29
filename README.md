@@ -52,5 +52,5 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are
 translated automatically into `generated/public/<profile>/_definitions.mg` (status `auto`,
 listed in the report and review page; a reviewed hand mapping or `override` always wins).
-Native infrastructure (`mglib/native/`): `prelude.mg`, `finseq.mg`, `order.mg`; 58 of its 64
+Native infrastructure (`mglib/native/`): `prelude.mg`, `finseq.mg`, `order.mg`; 62 of its 67
 theorems are proved (`Qed`), the rest are `Admitted` and listed in the reports.

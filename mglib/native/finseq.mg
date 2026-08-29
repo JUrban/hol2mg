@@ -291,7 +291,71 @@ rewrite L1.
 exact (seq_eta A m Hm).
 Qed.
 Theorem seq_append_cons : forall A:set, forall a :e A, forall l m :e finseq A, seq_append (seq_cons a l) m = seq_cons a (seq_append l m).
-Admitted.
+let A a. assume Ha: a :e A. let l. assume Hl: l :e finseq A. let m. assume Hm: m :e finseq A.
+claim Hn: seq_len l :e omega. { exact (seq_len_omega A l Hl). }
+claim Hk: seq_len m :e omega. { exact (seq_len_omega A m Hm). }
+claim Hnp: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) Hn). }
+claim Hc: seq_cons a l :e finseq A. { exact (seq_cons_finseq A a Ha l Hl). }
+claim Hap: seq_append l m :e finseq A. { exact (seq_append_finseq A l Hl m Hm). }
+claim Hlen: seq_len (seq_cons a l) = ordsucc (seq_len l). { exact (seq_len_cons A a Ha l Hl). }
+claim Hlenap: seq_len (seq_append l m) = seq_len l + seq_len m. { exact (tuple_2_0_eq (seq_len l + seq_len m) (fun i :e seq_len l + seq_len m => if i :e seq_len l then seq_nth l i else seq_nth m (i + - seq_len l))). }
+claim Hnk: seq_len l + seq_len m :e omega. { exact (add_SNo_In_omega (seq_len l) Hn (seq_len m) Hk). }
+claim Hnkp: nat_p (seq_len l + seq_len m). { exact (omega_nat_p (seq_len l + seq_len m) Hnk). }
+claim Lnth_ap: forall i :e seq_len l + seq_len m, seq_nth (seq_append l m) i = (if i :e seq_len l then seq_nth l i else seq_nth m (i + - seq_len l)).
+{ let i. assume Hi: i :e seq_len l + seq_len m.
+  set F := fun i :e seq_len l + seq_len m => if i :e seq_len l then seq_nth l i else seq_nth m (i + - seq_len l).
+  claim L1: (seq_len l + seq_len m, F) 1 i = F i. { rewrite (tuple_2_1_eq (seq_len l + seq_len m) F). exact (fun q H => H). }
+  claim L2: F i = (if i :e seq_len l then seq_nth l i else seq_nth m (i + - seq_len l)).
+  { exact (beta (seq_len l + seq_len m) (fun i => if i :e seq_len l then seq_nth l i else seq_nth m (i + - seq_len l)) i Hi). }
+  exact (eq_trans ((seq_len l + seq_len m, F) 1 i) (F i) (if i :e seq_len l then seq_nth l i else seq_nth m (i + - seq_len l)) L1 L2). }
+claim Lnth_apc: forall i :e ordsucc (seq_len l) + seq_len m, seq_nth (seq_append (seq_cons a l) m) i = (if i :e ordsucc (seq_len l) then seq_nth (seq_cons a l) i else seq_nth m (i + - ordsucc (seq_len l))).
+{ let i. assume Hi: i :e ordsucc (seq_len l) + seq_len m.
+  claim Hi': i :e seq_len (seq_cons a l) + seq_len m. { rewrite Hlen. exact Hi. }
+  set F := fun i :e seq_len (seq_cons a l) + seq_len m => if i :e seq_len (seq_cons a l) then seq_nth (seq_cons a l) i else seq_nth m (i + - seq_len (seq_cons a l)).
+  claim L1: (seq_len (seq_cons a l) + seq_len m, F) 1 i = F i. { rewrite (tuple_2_1_eq (seq_len (seq_cons a l) + seq_len m) F). exact (fun q H => H). }
+  claim L2: F i = (if i :e seq_len (seq_cons a l) then seq_nth (seq_cons a l) i else seq_nth m (i + - seq_len (seq_cons a l))).
+  { exact (beta (seq_len (seq_cons a l) + seq_len m) (fun i => if i :e seq_len (seq_cons a l) then seq_nth (seq_cons a l) i else seq_nth m (i + - seq_len (seq_cons a l))) i Hi'). }
+  claim L3: seq_nth (seq_append (seq_cons a l) m) i = (if i :e seq_len (seq_cons a l) then seq_nth (seq_cons a l) i else seq_nth m (i + - seq_len (seq_cons a l))).
+  { exact (eq_trans ((seq_len (seq_cons a l) + seq_len m, F) 1 i) (F i) (if i :e seq_len (seq_cons a l) then seq_nth (seq_cons a l) i else seq_nth m (i + - seq_len (seq_cons a l))) L1 L2). }
+  rewrite L3. rewrite Hlen. exact (fun q H => H). }
+claim E: seq_len (seq_append (seq_cons a l) m) = seq_len (seq_cons a l) + seq_len m.
+{ exact (tuple_2_0_eq (seq_len (seq_cons a l) + seq_len m) (fun i :e seq_len (seq_cons a l) + seq_len m => if i :e seq_len (seq_cons a l) then seq_nth (seq_cons a l) i else seq_nth m (i + - seq_len (seq_cons a l)))). }
+apply (seq_ext A (seq_append (seq_cons a l) m) (seq_append_finseq A (seq_cons a l) Hc m Hm) (seq_cons a (seq_append l m)) (seq_cons_finseq A a Ha (seq_append l m) Hap)).
+- rewrite E. rewrite (seq_len_cons A a Ha (seq_append l m) Hap). rewrite Hlenap. rewrite Hlen.
+  exact (ordsucc_add_SNo_L (seq_len l) Hn (seq_len m) Hk).
+- let i. assume Hi: i :e seq_len (seq_append (seq_cons a l) m).
+  claim Hi1: i :e ordsucc (seq_len l) + seq_len m.
+  { rewrite <- Hlen. rewrite <- E. exact Hi. }
+  claim Hi2: i :e ordsucc (seq_len l + seq_len m). { rewrite <- (ordsucc_add_SNo_L (seq_len l) Hn (seq_len m) Hk). exact Hi1. }
+  claim Hi': nat_p i. { exact (nat_p_trans (ordsucc (seq_len l + seq_len m)) (nat_ordsucc (seq_len l + seq_len m) Hnkp) i Hi2). }
+  rewrite (Lnth_apc i Hi1).
+  apply (nat_inv i Hi').
+  + assume H0: i = 0. rewrite H0.
+    rewrite (If_i_1 (0 :e ordsucc (seq_len l)) (seq_nth (seq_cons a l) 0) (seq_nth m (0 + - ordsucc (seq_len l))) (nat_0_in_ordsucc (seq_len l) Hnp)).
+    rewrite (seq_nth_cons_0 A a Ha l Hl). rewrite (seq_nth_cons_0 A a Ha (seq_append l m) Hap). exact (fun q H => H).
+  + assume H1: exists x, nat_p x /\ i = ordsucc x.
+    apply (exandE_i nat_p (fun x => i = ordsucc x) H1).
+    let j. assume Hj: nat_p j. assume Hij: i = ordsucc j.
+    claim Hjo: j :e omega. { exact (nat_p_omega j Hj). }
+    claim Hjnk: j :e seq_len l + seq_len m.
+    { claim Hsj: ordsucc j :e ordsucc (seq_len l + seq_len m). { rewrite <- Hij. exact Hi2. }
+      exact (ordsucc_in_ordsucc_inv (seq_len l + seq_len m) Hnkp j Hsj). }
+    claim Hjap: j :e seq_len (seq_append l m). { rewrite Hlenap. exact Hjnk. }
+    rewrite Hij.
+    rewrite (seq_nth_cons_S A a Ha (seq_append l m) Hap j Hjap).
+    rewrite (Lnth_ap j Hjnk).
+    rewrite (ordsucc_minus_ordsucc j Hjo (seq_len l) Hn).
+    apply (xm (j :e seq_len l)).
+    * assume H: j :e seq_len l.
+      rewrite (If_i_1 (ordsucc j :e ordsucc (seq_len l)) (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth m (j + - seq_len l)) (nat_ordsucc_in_ordsucc (seq_len l) Hnp j H)).
+      rewrite (If_i_1 (j :e seq_len l) (seq_nth l j) (seq_nth m (j + - seq_len l)) H).
+      exact (seq_nth_cons_S A a Ha l Hl j H).
+    * assume H: ~ (j :e seq_len l).
+      claim H': ~ (ordsucc j :e ordsucc (seq_len l)). { assume Hc2: ordsucc j :e ordsucc (seq_len l). exact (H (ordsucc_in_ordsucc_inv (seq_len l) Hnp j Hc2)). }
+      rewrite (If_i_0 (ordsucc j :e ordsucc (seq_len l)) (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth m (j + - seq_len l)) H').
+      rewrite (If_i_0 (j :e seq_len l) (seq_nth l j) (seq_nth m (j + - seq_len l)) H).
+      exact (fun q H => H).
+Qed.
 Theorem seq_rev_finseq : forall A:set, forall l :e finseq A, seq_rev l :e finseq A.
 let A l. assume Hl: l :e finseq A.
 prove (seq_len l, fun i :e seq_len l => seq_nth l (seq_len l + - ordsucc i)) :e Sigma_ n :e omega, A :^: n.

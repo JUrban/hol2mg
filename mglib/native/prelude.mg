@@ -140,6 +140,37 @@ apply nat_ind.
   rewrite L. exact (H n (ordsuccI2 n) (nat_primrec z g n)).
 Qed.
 
+
+// index arithmetic for successors (naturals)
+Theorem ordsucc_add_SNo_L : forall n k :e omega, ordsucc n + k = ordsucc (n + k).
+let n. assume Hn: n :e omega. let k. assume Hk: k :e omega.
+rewrite <- (add_SNo_1_ordsucc n Hn). rewrite <- (add_SNo_1_ordsucc (n + k) (add_SNo_In_omega n Hn k Hk)).
+exact (add_SNo_com_3b_1_2 n 1 k (omega_SNo n Hn) SNo_1 (omega_SNo k Hk)).
+Qed.
+
+Theorem ordsucc_minus_ordsucc : forall j n :e omega, ordsucc j + - ordsucc n = j + - n.
+let j. assume Hj: j :e omega. let n. assume Hn: n :e omega.
+claim Hj': SNo j. { exact (omega_SNo j Hj). }
+claim Hn': SNo n. { exact (omega_SNo n Hn). }
+rewrite <- (add_SNo_1_ordsucc j Hj). rewrite <- (add_SNo_1_ordsucc n Hn).
+rewrite (minus_add_SNo_distr n 1 Hn' SNo_1).
+prove (j + 1) + (- n + - 1) = j + - n.
+rewrite (add_SNo_com_3b_1_2 j 1 (- n + - 1) Hj' SNo_1 (SNo_add_SNo (- n) (- 1) (SNo_minus_SNo n Hn') (SNo_minus_SNo 1 SNo_1))).
+prove (j + (- n + - 1)) + 1 = j + - n.
+rewrite (add_SNo_assoc j (- n) (- 1) Hj' (SNo_minus_SNo n Hn') (SNo_minus_SNo 1 SNo_1)).
+prove ((j + - n) + - 1) + 1 = j + - n.
+rewrite <- (add_SNo_assoc (j + - n) (- 1) 1 (SNo_add_SNo j (- n) Hj' (SNo_minus_SNo n Hn')) (SNo_minus_SNo 1 SNo_1) SNo_1).
+rewrite (add_SNo_minus_SNo_linv 1 SNo_1).
+exact (add_SNo_0R (j + - n) (SNo_add_SNo j (- n) Hj' (SNo_minus_SNo n Hn'))).
+Qed.
+
+Theorem ordsucc_in_ordsucc_inv : forall n, nat_p n -> forall j, ordsucc j :e ordsucc n -> j :e n.
+let n. assume Hn: nat_p n. let j. assume H: ordsucc j :e ordsucc n.
+apply (ordsuccE n (ordsucc j) H).
+- assume H2: ordsucc j :e n. exact (nat_trans n Hn (ordsucc j) H2 j (ordsuccI2 j)).
+- assume H2: ordsucc j = n. rewrite <- H2. exact (ordsuccI2 j).
+Qed.
+
 // closure facts (to be proved)
 Theorem minus_nat_omega : forall m n :e omega, minus_nat m n :e omega.
 let m. assume Hm: m :e omega. let n. assume Hn: n :e omega.
