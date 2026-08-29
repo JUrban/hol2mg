@@ -1394,13 +1394,16 @@ let unfold_lemma (an : L.analysis) (c : string) (cty : ty) (rhs : tm) : string *
    or, without a tag,  c = @f. CLAUSES(f). *)
 let spec_lemma (an : L.analysis) (c : string) (cty : ty) (rhs : tm) : (string * string * string) option =
   let tvs = L.tyvars_ordered cty [] in
-  if tvs <> [] then None
-  else begin
-    let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs [] in
+  (* polymorphic constants: carrier parameters A.. with nonemptiness premises, as in compat statements *)
+  let tv_names = L.tyvar_params tvs in
+  begin
+    let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
     let nctx = { E.reg = { R.types = Hashtbl.create 1; consts = Hashtbl.create 1; files = []; empty_rules = []; rewrite_rules = []; names = [] }; tyvar_names = []; vars = []; used = []; st = { E.classes = []; bridges = []; notes = [] } } in
-    let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = []; counter = 0; used_compat = []; lit_typing = false; hyps = [] } in
+    let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n)) tv_names; counter = 0; used_compat = []; lit_typing = false; hyps = [] } in
     let name = L.mg_name_of_const c in
-    let hd = Mg.Cst name in
+    let hd = Mg.apps (Mg.Cst name) (List.map (fun (_, n) -> Mg.Var n) tv_names) in
+    let wrap stmt = List.fold_right (fun (_, n) acc -> Mg.All (n, Mg.Set, Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc))) tv_names stmt in
+    let intro = String.concat "" (List.map (fun (_, n) -> Printf.sprintf "let %s. assume H%s. " n n) tv_names) in
     (* replace the de Bruijn pattern by the free variable g and check nothing else is bound *)
     let rec has_bound d t = (match t with Bound i -> i >= d | App (a, b) -> has_bound d a || has_bound d b | Lam (_, _, b) -> has_bound (d + 1) b | _ -> false) in
     let rec repl d pat_f pat_tag gty t =
@@ -1413,18 +1416,18 @@ let spec_lemma (an : L.analysis) (c : string) (cty : ty) (rhs : tm) : (string * 
     let finish c' clauses' t_carrier tag0 =
       if has_bound 0 clauses' then None
       else begin
-        lctx.L.vars <- [ ("g", Mg.Var "g") ]; lctx.L.used <- [ "g" ];
+        lctx.L.vars <- [ ("g", Mg.Var "g") ]; lctx.L.used <- "g" :: List.map snd tv_names;
         let cl_g = L.lprop lctx clauses' in
-        let stmt = Mg.Imp (Mg.ExIn ("g", c', cl_g), L.mg_and (replace_tm (Mg.Var "g") hd cl_g) (L.mg_in hd c')) in
+        let stmt = wrap (Mg.Imp (Mg.ExIn ("g", c', cl_g), L.mg_and (replace_tm (Mg.Var "g") hd cl_g) (L.mg_in hd c'))) in
         match tag0, t_carrier with
         | Some tag0, Some t ->
             (match (try Some (typ g tag0) with _ -> None) with
              | None -> None
              | Some tp ->
-                 let pf = Printf.sprintf "assume Hex. exact (hl_recdef %s %s (fun g => %s) %s %s Hex)." (ppp c') (ppp t) (pp cl_g) (ppp (L.lterm lctx tag0)) tp in
+                 let pf = Printf.sprintf "%sassume Hex. exact (hl_recdef %s %s (fun g => %s) %s %s Hex)." intro (ppp c') (ppp t) (pp cl_g) (ppp (L.lterm lctx tag0)) tp in
                  Some (name ^ "_spec", Mg.to_string stmt, pf))
         | _ ->
-            let pf = Printf.sprintf "assume Hex. exact (hl_recdef0 %s (fun g => %s) Hex)." (ppp c') (pp cl_g) in
+            let pf = Printf.sprintf "%sassume Hex. exact (hl_recdef0 %s (fun g => %s) Hex)." intro (ppp c') (pp cl_g) in
             Some (name ^ "_spec", Mg.to_string stmt, pf)
       end in
     match rhs with

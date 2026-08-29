@@ -863,7 +863,8 @@ source: !h:A. !t:A list. ~(h CONS t = NIL)
 status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, ~ hl_CONS A h t = hl_NIL A
-cert_status: bridge_unsupported
+bridge: NOT_CONS_NIL_bridge
+cert_status: native_certified
 
 ### CONS_11   [lists (finite sequences), including higher-order mapped operations]
 hash: 50a941211ca5b773825052d4a811750c
@@ -871,7 +872,8 @@ source: !h1:A. !h2:A. !t1:A list. !t2:A list. h1 CONS t1 = h2 CONS t2 <=> h1 = h
 status: generalization_required
 statement: forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2
 literal: forall A:set, A <> Empty -> forall h1 h2 :e A, forall t1 t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2
-cert_status: bridge_unsupported
+bridge: CONS_11_bridge
+cert_status: native_certified
 
 ### list_INDUCT   [lists (finite sequences), including higher-order mapped operations]
 hash: e24a8b3534d12615232f89c947dd6ab3
@@ -879,7 +881,8 @@ source: !P:A list->bool. P NIL /\ (!a0:A. !a1:A list. P a1 ==> P (a0 CONS a1)) =
 status: transport_required
 statement: forall A:set, A <> Empty -> forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: finseq A, P (hl_NIL A) = 1 /\ (forall a0 :e A, forall a1 :e finseq A, P a1 = 1 -> P (hl_CONS A a0 a1) = 1) -> forall x :e finseq A, P x = 1
-cert_status: bridge_unsupported
+bridge: list_INDUCT_bridge
+cert_status: native_certified
 
 ### list_CASES   [lists (finite sequences), including higher-order mapped operations]
 hash: 6c9a307f18507870c827834056fdffa7
@@ -887,7 +890,8 @@ source: !l:A list. l = NIL \/ (?h:A. ?t:A list. l = h CONS t)
 status: native_reuse
 statement: forall A:set, forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t
 literal: forall A:set, A <> Empty -> forall l :e finseq A, l = hl_NIL A \/ exists h :e A, exists t :e finseq A, l = hl_CONS A h t
-cert_status: bridge_unsupported
+bridge: list_CASES_bridge
+cert_status: native_certified
 
 ### list_RECURSION   [lists (finite sequences), including higher-order mapped operations]
 hash: 21b923915525c3b3ed6c44a773a64671
@@ -903,7 +907,8 @@ source: (!l:A list. NIL APPEND l = l) /\ (!h:A. !t:A list. !l:A list. h CONS t A
 status: transport_required
 statement: forall A:set, A <> Empty -> (forall l :e finseq A, seq_append seq_nil l = l) /\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l)
 literal: forall A:set, A <> Empty -> (forall l :e finseq A, hl_APPEND A (hl_NIL A) l = l) /\ forall h :e A, forall t l :e finseq A, hl_APPEND A (hl_CONS A h t) l = hl_CONS A h (hl_APPEND A t l)
-cert_status: bridge_unsupported
+bridge: APPEND_bridge
+cert_status: native_certified
 
 ### APPEND_ASSOC   [lists (finite sequences), including higher-order mapped operations]
 hash: 595245cd5d4fe352684d336877239fe8
@@ -911,7 +916,8 @@ source: !l:A list. !m:A list. !n:A list. l APPEND m APPEND n = (l APPEND m) APPE
 status: transport_required
 statement: forall A:set, A <> Empty -> forall l m n :e finseq A, seq_append l (seq_append m n) = seq_append (seq_append l m) n
 literal: forall A:set, A <> Empty -> forall l m n :e finseq A, hl_APPEND A l (hl_APPEND A m n) = hl_APPEND A (hl_APPEND A l m) n
-cert_status: bridge_unsupported
+bridge: APPEND_ASSOC_bridge
+cert_status: native_certified
 
 ### APPEND_NIL   [lists (finite sequences), including higher-order mapped operations]
 hash: 34e676cda4ec75f03b52d6a0a1fe6783
@@ -919,7 +925,8 @@ source: !l:A list. l APPEND NIL = l
 status: transport_required
 statement: forall A:set, A <> Empty -> forall l :e finseq A, seq_append l seq_nil = l
 literal: forall A:set, A <> Empty -> forall l :e finseq A, hl_APPEND A l (hl_NIL A) = l
-cert_status: bridge_unsupported
+bridge: APPEND_NIL_bridge
+cert_status: native_certified
 
 ### LENGTH_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 87d5d63471bb0040381d1296f836489b
@@ -927,7 +934,8 @@ source: !l:A list. !m:A list. LENGTH (l APPEND m) = LENGTH l + LENGTH m
 status: transport_required
 statement: forall A:set, A <> Empty -> forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m
 literal: forall A:set, A <> Empty -> forall l m :e finseq A, hl_LENGTH A (hl_APPEND A l m) = hl_add (hl_LENGTH A l) (hl_LENGTH A m)
-cert_status: bridge_unsupported
+bridge: LENGTH_APPEND_bridge
+cert_status: native_certified
 
 ### MAP_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: e005972551ddebaef8cd43f82996650d
@@ -935,7 +943,8 @@ source: !f:A->B. !l1:A list. !l2:A list. MAP f (l1 APPEND l2) = MAP f l1 APPEND 
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l1 l2 :e finseq A, seq_map f (seq_append l1 l2) = seq_append (seq_map f l1) (seq_map f l2)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l1 l2 :e finseq A, hl_MAP A B f (hl_APPEND A l1 l2) = hl_APPEND B (hl_MAP A B f l1) (hl_MAP A B f l2)
-cert_status: bridge_unsupported
+bridge: MAP_APPEND_bridge
+cert_status: native_certified
 
 ### MAP_o   [lists (finite sequences), including higher-order mapped operations]
 hash: 21dca6e4b2bded73c4144e9ca5c0eb7e
@@ -975,7 +984,8 @@ source: !l:A list. !f:A->B. LENGTH (MAP f l) = LENGTH l
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e B) -> seq_len (seq_map f l) = seq_len l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall f :e B :^: A, hl_LENGTH B (hl_MAP A B f l) = hl_LENGTH A l
-cert_status: bridge_unsupported
+bridge: LENGTH_MAP_bridge
+cert_status: native_certified
 
 ### REVERSE_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 45852b5237ddc4ffb91f94da5306964d
@@ -1055,7 +1065,8 @@ source: !l:A list. LENGTH l = 0 <=> l = NIL
 status: transport_required
 statement: forall A:set, A <> Empty -> forall l :e finseq A, seq_len l = 0 <-> l = seq_nil
 literal: forall A:set, A <> Empty -> forall l :e finseq A, hl_LENGTH A l = hl_NUMERAL hl_zero <-> l = hl_NIL A
-cert_status: bridge_unsupported
+bridge: LENGTH_EQ_NIL_bridge
+cert_status: native_certified
 
 ### LIST_EQ   [lists (finite sequences), including higher-order mapped operations]
 hash: e80393494d2381101e2f9fdd59b8a934

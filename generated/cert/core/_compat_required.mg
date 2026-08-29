@@ -30,10 +30,6 @@ Admitted.
 Theorem hl_mk_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_diff A B l1 = l1.
 Admitted.
 
-// APPEND : A list->A list->A list (not in compat.mg)
-Theorem hl_APPEND_compat : forall A:set, A <> Empty -> forall l1 l2 :e finseq A, hl_APPEND A l1 l2 = seq_append l1 l2.
-Admitted.
-
 // UNION_OF : (((A->bool)->bool)->bool)->((A->bool)->bool)->(A->bool)->bool (not in compat.mg)
 Theorem hl_UNION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 x) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 x) -> forall l3 :e 2 :^: A, hl_UNION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep A l3.
 Admitted.
@@ -218,10 +214,6 @@ Admitted.
 Theorem hl_num_coprime_compat : forall l1 :e omega :*: omega, hl_num_coprime l1 = 1 <-> gcd_int (l1 0) (l1 1) = 1.
 Admitted.
 
-// CONS : A->A list->A list (not in compat.mg)
-Theorem hl_CONS_compat : forall A:set, A <> Empty -> forall l1 :e A, forall l2 :e finseq A, hl_CONS A l1 l2 = seq_cons l1 l2.
-Admitted.
-
 // OUTR : (A,B)sum->B (not in compat.mg)
 Theorem hl_OUTR_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTR A B = OUTR A B.
 Admitted.
@@ -272,10 +264,6 @@ Admitted.
 
 // superadmissible : (A->A->bool)->((A->B)->P->bool)->(P->A)->((A->B)->P->B)->bool (not in compat.mg)
 Theorem hl_superadmissible_compat : forall A B P:set, A <> Empty -> B <> Empty -> P <> Empty -> hl_superadmissible A B P = Empty.
-Admitted.
-
-// LENGTH : A list->num (not in compat.mg)
-Theorem hl_LENGTH_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_LENGTH A l1 = seq_len l1.
 Admitted.
 
 // int_coprime : int#int->bool (not in compat.mg)
@@ -500,10 +488,6 @@ Admitted.
 
 // BUTLAST : A list->A list (not in compat.mg)
 Theorem hl_BUTLAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_BUTLAST A l1 = seq_butlast l1.
-Admitted.
-
-// MAP : (A->B)->A list->B list (not in compat.mg)
-Theorem hl_MAP_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e finseq A, hl_MAP A B l1 l2 = seq_map f1 l2.
 Admitted.
 
 // _FALSITY_ : bool (not in compat.mg)
