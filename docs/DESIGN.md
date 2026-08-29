@@ -1286,6 +1286,13 @@ distinguish statement coverage (public statements), certification coverage
 | date | literal checked | bridges `Qed` (`native_certified`) | compat theorems | report |
 |---|---|---|---|---|
 | 2026-08-29 | 2697 / 2697 supported Core theorems | 802 / 2685 public | 98 (+ generated unfolding/typing/spec lemmas) | `docs/reports/2026-08-29-interim-5.md` |
+| 2026-08-29 (b) | 2697 / 2697 | 1612 / 2685 public | 165 (+ 25 carrier lemmas, 114 bridge-library lemmas; generated: 453 typing, 213 unfolding, 23 specification lemmas) | `docs/reports/2026-08-29-interim-6.md` |
+
+Defects found by certification so far (report 6): a variable-capture bug in the closure
+premises of meta-function binders (14 public Core statements were vacuous on
+`dev/statements-v1`, fixed in `lib/elab.ml`), hypothesis shadowing and an ill-typed
+congruence in generated bridge proofs, template constants parsed as variables.  All were
+caught by Megalodon's `Qed` check of the bridges, none by inspection.
 
 Model-soundness theorems of the primitive interface (§21.4) proved so far: typing of every
 primitive constant (`model.mg`), `hl_COND` characterisation, `hl_ty_int = int`.  Not yet proved

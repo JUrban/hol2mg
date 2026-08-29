@@ -14,13 +14,14 @@ import json,sys
 m=json.load(open(sys.argv[1])); bad=[i['source_name'] for i in m['items'] if i['status']=='error']
 print('internal errors:', len(bad), bad[:5]); sys.exit(1 if bad else 0)
 PY
-python3 tools/golden.py core --manifest "$S/a/core.manifest.json"
 tools/check_public.sh "$S/a" | grep -v "^OK" || true
 tools/check_public.sh "$S/a" >/dev/null && echo "megalodon: all core shards OK"
 tools/check_literal.sh "$S/a/literal" | grep -v "^OK" || true
 tools/check_literal.sh "$S/a/literal" >/dev/null && echo "megalodon: all core literal modules OK"
 PUBDIR="$S/a" LITDIR="$S/a/literal" CERTDIR="$S/a/cert" tools/check_cert.sh core > "$S/cert.log" || { grep "^FAIL" "$S/cert.log"; echo "megalodon: certification FAIL"; exit 1; }
 python3 tools/cert_finalize.py core "$S/cert.log" --manifest "$S/a/core.manifest.json" | sed 's/^/certification: /'
+# golden fixtures record the finalized certification status, so they are compared after finalization
+python3 tools/golden.py core --manifest "$S/a/core.manifest.json"
 python3 - "$S/a/core.manifest.json" <<'PY'
 import json,sys
 m=json.load(open(sys.argv[1])); n=sum(1 for i in m['items'] if i['cert_status']=='native_certified')
