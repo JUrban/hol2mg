@@ -400,12 +400,12 @@ let () =
               | `D (c, cty, rhs) ->
                   if Hashtbl.find_opt an.Literal.supported c = Some true then
                     (match (try Some (Bridge.typing_lemma an typing_ok c cty rhs) with Bridge.Bridge_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("typing lemma " ^ c ^ ": " ^ m); None | Failure m -> prerr_endline ("typing lemma " ^ c ^ ": failure " ^ m); None) with
-                     | Some (name, st, pf) ->
-                         Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf; Hashtbl.replace typing_ok c ();
+                     | Some lemmas ->
+                         List.iter (fun (name, st, pf) -> Printf.fprintf oc "Theorem %s : %s.\n%s\nQed.\n\n" name st pf) lemmas; Hashtbl.replace typing_ok c ();
                          (match (try Some (Bridge.unfold_lemma an c cty rhs) with _ -> None) with
                           | Some (un, ust, upf) -> Printf.fprintf ocu "Theorem %s : %s.\n%s\nQed.\n\n" un ust upf
                           | None -> ());
-                         (match (try Bridge.spec_lemma an c cty rhs with _ -> None) with
+                         (match (try Bridge.spec_lemma an c cty rhs with e -> prerr_endline ("spec lemma " ^ c ^ ": " ^ Printexc.to_string e); None) with
                           | Some (sn, sst, spf) -> Printf.fprintf oc "Theorem %s : %s.\n%s\nQed.\n\n" sn sst spf
                           | None -> ())
                      | None -> ())
@@ -415,10 +415,7 @@ let () =
                        List.iter (fun (name, st, pf) ->
                          if name = "" then Buffer.add_string stubs (Printf.sprintf "// nonemptiness of the carrier of type definition %s (prove in mglib/literal/carriers.mg)\nTheorem hl_ty_%s_nonempty : %s.\nAdmitted.\n\n" td.td_name (Elab.sanitize_var td.td_name) st)
                          else begin
-                           (* proofs may start with a rewrite (native carrier) followed by the proof term *)
-                           (match String.index_opt pf '(' with
-                            | Some i when i > 0 -> Printf.fprintf oc "Theorem %s : %s.\n%sexact %s.\nQed.\n\n" name st (String.sub pf 0 i) (String.sub pf i (String.length pf - i))
-                            | _ -> Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf);
+                           Printf.fprintf oc "Theorem %s : %s.\n%s\nQed.\n\n" name st pf;
                            if name = Literal.mg_name_of_const td.td_abs ^ "_in" then Hashtbl.replace typing_ok td.td_abs ()
                            else Hashtbl.replace typing_ok td.td_rep ()
                          end) lemmas

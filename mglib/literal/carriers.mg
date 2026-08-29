@@ -150,3 +150,71 @@ prove hl_subtype R hl_integer <> Empty.
 apply (hl_subtype_nonempty R hl_integer).
 witness 0. exact (andI (0 :e R) (hl_integer 0 = 1) real_0 hl_integer_0).
 Qed.
+
+// ---- integers as a translated type definition: hl_ty_int = int ----
+Theorem hl_real_abs_compat : forall l1 :e R, hl_real_abs l1 = abs_SNo l1.
+let l1. assume H1.
+rewrite (hl_real_abs_unfold l1 H1).
+rewrite (hl_NUMERAL_unfold hl_zero (nat_p_omega 0 nat_0)).
+prove hl_COND R (hl_real_le (hl_real_of_num 0) l1) l1 (hl_real_neg l1) = abs_SNo l1.
+rewrite (hl_real_of_num_ap 0 (nat_p_omega 0 nat_0)).
+rewrite (hl_real_neg_ap l1 H1).
+claim Ht: hl_real_le 0 l1 :e 2.
+{ rewrite (hl_real_le_ap 0 real_0 l1 H1). exact (If_in_2 (0 <= l1)). }
+rewrite (hl_COND_if R (hl_real_le 0 l1) Ht (0 <= l1) (hl_real_le_iff 0 real_0 l1 H1) l1 H1 (- l1) (real_minus_SNo l1 H1)).
+exact (fun q H => H).
+Qed.
+
+Theorem int_Subq_R : int c= R.
+let x. assume Hx: x :e int.
+apply (binunionE omega {- n | n :e omega} x Hx).
+- assume H. exact (god1_natural_number_is_real x H).
+- assume H. apply (ReplE_impred omega (fun n => - n) x H). let n. assume Hn Hxn.
+  rewrite Hxn. exact (real_minus_SNo n (god1_natural_number_is_real n Hn)).
+Qed.
+
+Theorem hl_ty_int_native_nonempty : int <> Empty.
+exact (nonempty_of_In int 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0))).
+Qed.
+
+Theorem hl_integer_compat : forall l1 :e R, hl_integer l1 = 1 <-> l1 :e int.
+let x. assume Hx.
+rewrite (hl_integer_unfold x Hx).
+apply (iff_trans ((if exists n :e omega, hl_real_abs x = hl_real_of_num n then 1 else 0) = 1) (exists n :e omega, hl_real_abs x = hl_real_of_num n) (x :e int) (If_1_iff (exists n :e omega, hl_real_abs x = hl_real_of_num n))).
+rewrite (hl_real_abs_compat x Hx).
+claim HxS: SNo x. { exact (real_SNo x Hx). }
+apply iffI.
+- assume H. apply H. let n. assume Hn0. apply Hn0. assume Hn Habs.
+  claim Habs2: abs_SNo x = n. { rewrite <- (hl_real_of_num_ap n Hn). exact Habs. }
+  apply (SNoLtLe_or x 0 HxS SNo_0).
+  + assume Hneg: x < 0.
+    claim Hx2: x = - n.
+    { rewrite <- Habs2. rewrite (neg_abs_SNo x HxS Hneg). exact (eq_sym_i (- - x) x (minus_SNo_invol x HxS)). }
+    rewrite Hx2. exact (int_minus_SNo_omega n Hn).
+  + assume Hpos: 0 <= x.
+    claim Hx2: x = n. { rewrite <- Habs2. exact (eq_sym_i (abs_SNo x) x (nonneg_abs_SNo x Hpos)). }
+    rewrite Hx2. exact (Subq_omega_int n Hn).
+- assume H: x :e int.
+  apply (binunionE omega {- n | n :e omega} x H).
+  + assume Hxo: x :e omega. witness x. apply andI.
+    * exact Hxo.
+    * rewrite (hl_real_of_num_ap x Hxo). exact (nonneg_abs_SNo x (omega_nonneg x Hxo)).
+  + assume Hxm. apply (ReplE_impred omega (fun n => - n) x Hxm). let n. assume Hn Hxn.
+    witness n. apply andI.
+    * exact Hn.
+    * rewrite (hl_real_of_num_ap n Hn). rewrite Hxn. rewrite (abs_SNo_minus n (omega_SNo n Hn)). exact (nonneg_abs_SNo n (omega_nonneg n Hn)).
+Qed.
+
+Theorem hl_ty_int_native : hl_ty_int = int.
+prove hl_subtype R hl_integer = int.
+apply set_ext.
+- let x. assume Hx. apply (hl_integer_compat x (hl_subtype_Subq R hl_integer x Hx)). assume H _. apply H. exact (SepE2 R (fun x => hl_integer x = 1) x Hx).
+- let x. assume Hx. claim HxR: x :e R. { exact (int_Subq_R x Hx). }
+  prove x :e {x :e R | hl_integer x = 1}.
+  apply (SepI R (fun x => hl_integer x = 1) x HxR). apply (hl_integer_compat x HxR). assume _ H. exact (H Hx).
+Qed.
+
+Theorem int_hl_ty : forall x :e int, x :e hl_ty_int.
+let x. assume Hx. rewrite hl_ty_int_native. exact Hx.
+Qed.
+

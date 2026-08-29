@@ -403,3 +403,15 @@ assume Hc1 Hc2. apply andI.
   exact ((beta C (fun f => if P f then 1 else 0) (choose_in C (fun f => (fun f :e C => if P f then 1 else 0) f = 1)) Hc1) (fun u v => u = 1) Hc2).
 - exact Hc1.
 Qed.
+
+// ---- equational reasoning by proof terms (rewrite must not be used in goals containing
+//      mul_SNo/exp_SNo_nat: Megalodon's rewrite compares subterms up to unfolding) ----
+Theorem eq_trans_i : forall a b c:set, a = b -> b = c -> a = c.
+let a b c. assume H1 H2. exact (H2 (fun u v => a = u) H1).
+Qed.
+Theorem f_equal : forall f:set -> set, forall a b:set, a = b -> f a = f b.
+let f a b. assume H. exact (H (fun u v => f a = f u) (fun q H => H)).
+Qed.
+Theorem f_equal2 : forall f:set -> set -> set, forall a a' b b':set, a = a' -> b = b' -> f a b = f a' b'.
+let f a a' b b'. assume H1 H2. exact (eq_trans_i (f a b) (f a' b) (f a' b') (H1 (fun u v => f a b = f u b) (fun q H => H)) (H2 (fun u v => f a' b = f a' u) (fun q H => H))).
+Qed.

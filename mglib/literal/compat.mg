@@ -62,18 +62,6 @@ Theorem hl_real_ge_compat : forall l1 l2 :e R, hl_real_ge l1 l2 = 1 <-> l2 <= l1
 let l1. assume H1. let l2. assume H2.
 rewrite (hl_real_ge_unfold l1 H1 l2 H2). exact (hl_real_le_iff l2 H2 l1 H1).
 Qed.
-Theorem hl_real_abs_compat : forall l1 :e R, hl_real_abs l1 = abs_SNo l1.
-let l1. assume H1.
-rewrite (hl_real_abs_unfold l1 H1).
-rewrite (hl_NUMERAL_unfold hl_zero (nat_p_omega 0 nat_0)).
-prove hl_COND R (hl_real_le (hl_real_of_num 0) l1) l1 (hl_real_neg l1) = abs_SNo l1.
-rewrite (hl_real_of_num_ap 0 (nat_p_omega 0 nat_0)).
-rewrite (hl_real_neg_ap l1 H1).
-claim Ht: hl_real_le 0 l1 :e 2.
-{ rewrite (hl_real_le_ap 0 real_0 l1 H1). exact (If_in_2 (0 <= l1)). }
-rewrite (hl_COND_if R (hl_real_le 0 l1) Ht (0 <= l1) (hl_real_le_iff 0 real_0 l1 H1) l1 H1 (- l1) (real_minus_SNo l1 H1)).
-exact (fun q H => H).
-Qed.
 Theorem hl_real_max_compat : forall l1 l2 :e R, hl_real_max l1 l2 = if l1 <= l2 then l2 else l1.
 let l1. assume H1. let l2. assume H2.
 rewrite (hl_real_max_unfold l1 H1 l2 H2).
@@ -265,55 +253,7 @@ apply hl_add_unique.
 - exact H2.
 Qed.
 
-// ---- integers as a translated type definition: hl_ty_int = int ----
-Theorem int_Subq_R : int c= R.
-let x. assume Hx: x :e int.
-apply (binunionE omega {- n | n :e omega} x Hx).
-- assume H. exact (god1_natural_number_is_real x H).
-- assume H. apply (ReplE_impred omega (fun n => - n) x H). let n. assume Hn Hxn.
-  rewrite Hxn. exact (real_minus_SNo n (god1_natural_number_is_real n Hn)).
-Qed.
-Theorem hl_ty_int_native_nonempty : int <> Empty.
-exact (nonempty_of_In int 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0))).
-Qed.
-Theorem hl_integer_compat : forall l1 :e R, hl_integer l1 = 1 <-> l1 :e int.
-let x. assume Hx.
-rewrite (hl_integer_unfold x Hx).
-apply (iff_trans ((if exists n :e omega, hl_real_abs x = hl_real_of_num n then 1 else 0) = 1) (exists n :e omega, hl_real_abs x = hl_real_of_num n) (x :e int) (If_1_iff (exists n :e omega, hl_real_abs x = hl_real_of_num n))).
-rewrite (hl_real_abs_compat x Hx).
-claim HxS: SNo x. { exact (real_SNo x Hx). }
-apply iffI.
-- assume H. apply H. let n. assume Hn0. apply Hn0. assume Hn Habs.
-  claim Habs2: abs_SNo x = n. { rewrite <- (hl_real_of_num_ap n Hn). exact Habs. }
-  apply (SNoLtLe_or x 0 HxS SNo_0).
-  + assume Hneg: x < 0.
-    claim Hx2: x = - n.
-    { rewrite <- Habs2. rewrite (neg_abs_SNo x HxS Hneg). exact (eq_sym_i (- - x) x (minus_SNo_invol x HxS)). }
-    rewrite Hx2. exact (int_minus_SNo_omega n Hn).
-  + assume Hpos: 0 <= x.
-    claim Hx2: x = n. { rewrite <- Habs2. exact (eq_sym_i (abs_SNo x) x (nonneg_abs_SNo x Hpos)). }
-    rewrite Hx2. exact (Subq_omega_int n Hn).
-- assume H: x :e int.
-  apply (binunionE omega {- n | n :e omega} x H).
-  + assume Hxo: x :e omega. witness x. apply andI.
-    * exact Hxo.
-    * rewrite (hl_real_of_num_ap x Hxo). exact (nonneg_abs_SNo x (omega_nonneg x Hxo)).
-  + assume Hxm. apply (ReplE_impred omega (fun n => - n) x Hxm). let n. assume Hn Hxn.
-    witness n. apply andI.
-    * exact Hn.
-    * rewrite (hl_real_of_num_ap n Hn). rewrite Hxn. rewrite (abs_SNo_minus n (omega_SNo n Hn)). exact (nonneg_abs_SNo n (omega_nonneg n Hn)).
-Qed.
-Theorem hl_ty_int_native : hl_ty_int = int.
-prove hl_subtype R hl_integer = int.
-apply set_ext.
-- let x. assume Hx. apply (hl_integer_compat x (hl_subtype_Subq R hl_integer x Hx)). assume H _. apply H. exact (SepE2 R (fun x => hl_integer x = 1) x Hx).
-- let x. assume Hx. claim HxR: x :e R. { exact (int_Subq_R x Hx). }
-  prove x :e {x :e R | hl_integer x = 1}.
-  apply (SepI R (fun x => hl_integer x = 1) x HxR). apply (hl_integer_compat x HxR). assume _ H. exact (H Hx).
-Qed.
-Theorem int_hl_ty : forall x :e int, x :e hl_ty_int.
-let x. assume Hx. rewrite hl_ty_int_native. exact Hx.
-Qed.
+// ---- integers (carrier equation hl_ty_int = int is in carriers.mg) ----
 Theorem hl_real_of_int_compat : forall l1 :e int, hl_real_of_int l1 = l1.
 let x. assume Hx. prove hl_subtype_rep R hl_integer x = x. exact (hl_subtype_rep_ap R hl_integer x (int_hl_ty x Hx)).
 Qed.
@@ -376,4 +316,374 @@ claim HxS: SNo x. { exact (int_SNo x Hx). }
 apply (SNoLtLe_or x 0 HxS SNo_0).
 - assume H. rewrite (neg_abs_SNo x HxS H). exact (hl_int_of_real_int (- x) (int_minus_SNo x Hx)).
 - assume H. rewrite (nonneg_abs_SNo x H). exact (hl_int_of_real_int x Hx).
+Qed.
+
+// ---- helpers for two-argument set functions ----
+Theorem lam2_Pi : forall A B C:set, forall F:set -> set -> set, (forall x :e A, forall y :e B, F x y :e C) -> (fun x :e A => fun y :e B => F x y) :e C :^: B :^: A.
+let A B C F. assume H.
+prove (fun x :e A => fun y :e B => F x y) :e Pi_ x :e A, C :^: B.
+apply (lam_Pi A (fun _ => C :^: B) (fun x => fun y :e B => F x y)).
+let x. assume Hx. prove (fun y :e B => F x y) :e Pi_ y :e B, C.
+apply (lam_Pi B (fun _ => C) (fun y => F x y)). let y. assume Hy. exact (H x Hx y Hy).
+Qed.
+Theorem lam2_beta : forall A B:set, forall F:set -> set -> set, forall x :e A, forall y :e B, (fun x :e A => fun y :e B => F x y) x y = F x y.
+let A B F x. assume Hx. let y. assume Hy.
+rewrite (beta A (fun x => fun y :e B => F x y) x Hx). exact (beta B (fun y => F x y) y Hy).
+Qed.
+Theorem setexp2_ap : forall A B C g:set, g :e C :^: B :^: A -> forall x :e A, forall y :e B, g x y :e C.
+let A B C g. assume Hg. let x. assume Hx. let y. assume Hy.
+exact (setexp_ap B C (g x) (setexp_ap A (C :^: B) g Hg x Hx) y Hy).
+Qed.
+Theorem omega_ordinal_p : forall n :e omega, ordinal n.
+let n. assume Hn. exact (nat_p_ordinal n (omega_nat_p n Hn)).
+Qed.
+
+// ---- BIT0 / BIT1 ----
+Theorem two_mul_ordsucc : forall n :e omega, 2 * ordsucc n = ordsucc (ordsucc (2 * n)).
+let n. assume Hn.
+claim HnS: SNo n. { exact (omega_SNo n Hn). }
+claim Hn2: 2 * n :e omega. { exact (mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) n Hn). }
+claim H2nS: SNo (2 * n). { exact (omega_SNo (2 * n) Hn2). }
+exact (eq_trans_i (2 * ordsucc n) (2 * (n + 1)) (ordsucc (ordsucc (2 * n)))
+  (f_equal (fun x => 2 * x) (ordsucc n) (n + 1) (eq_sym_i (n + 1) (ordsucc n) (add_SNo_1_ordsucc n Hn)))
+  (eq_trans_i (2 * (n + 1)) (2 * n + 2 * 1) (ordsucc (ordsucc (2 * n)))
+    (mul_SNo_distrL 2 n 1 SNo_2 HnS SNo_1)
+    (eq_trans_i (2 * n + 2 * 1) (2 * n + (1 + 1)) (ordsucc (ordsucc (2 * n)))
+      (f_equal (fun x => 2 * n + x) (2 * 1) (1 + 1) (eq_trans_i (2 * 1) 2 (1 + 1) (mul_SNo_oneR 2 SNo_2) (eq_sym_i (1 + 1) 2 add_SNo_1_1_2)))
+      (eq_trans_i (2 * n + (1 + 1)) ((2 * n + 1) + 1) (ordsucc (ordsucc (2 * n)))
+        (add_SNo_assoc (2 * n) 1 1 H2nS SNo_1 SNo_1)
+        (eq_trans_i ((2 * n + 1) + 1) (ordsucc (2 * n) + 1) (ordsucc (ordsucc (2 * n)))
+          (f_equal (fun x => x + 1) (2 * n + 1) (ordsucc (2 * n)) (add_SNo_1_ordsucc (2 * n) Hn2))
+          (add_SNo_1_ordsucc (ordsucc (2 * n)) (omega_ordsucc (2 * n) Hn2))))))).
+Qed.
+Theorem hl_BIT0_compat : forall l1 :e omega, hl_BIT0 l1 = 2 * l1.
+claim Hex: exists g :e omega :^: omega, g (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\ forall n :e omega, g (hl_SUC n) = hl_SUC (hl_SUC (g n)).
+{ witness (fun n :e omega => 2 * n).
+  claim Hw: (fun n :e omega => 2 * n) :e omega :^: omega.
+  { exact (hl_lam_Pi omega omega (fun n => 2 * n) (fun n Hn => mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) n Hn)). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + exact (eq_trans_i ((fun n :e omega => 2 * n) (hl_NUMERAL hl_zero)) (2 * 0) (hl_NUMERAL hl_zero)
+        (eq_trans_i ((fun n :e omega => 2 * n) (hl_NUMERAL hl_zero)) ((fun n :e omega => 2 * n) 0) (2 * 0)
+          (f_equal (fun x => (fun n :e omega => 2 * n) x) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)
+          (beta omega (fun n => 2 * n) 0 (nat_p_omega 0 nat_0)))
+        (eq_trans_i (2 * 0) 0 (hl_NUMERAL hl_zero) (mul_SNo_zeroR 2 SNo_2) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero))).
+    + let n. assume Hn.
+      claim Hn2: 2 * n :e omega. { exact (mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) n Hn). }
+      exact (eq_trans_i ((fun n :e omega => 2 * n) (hl_SUC n)) (2 * ordsucc n) (hl_SUC (hl_SUC ((fun n :e omega => 2 * n) n)))
+        (eq_trans_i ((fun n :e omega => 2 * n) (hl_SUC n)) ((fun n :e omega => 2 * n) (ordsucc n)) (2 * ordsucc n)
+          (f_equal (fun x => (fun n :e omega => 2 * n) x) (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hn))
+          (beta omega (fun n => 2 * n) (ordsucc n) (omega_ordsucc n Hn)))
+        (eq_trans_i (2 * ordsucc n) (ordsucc (ordsucc (2 * n))) (hl_SUC (hl_SUC ((fun n :e omega => 2 * n) n)))
+          (two_mul_ordsucc n Hn)
+          (eq_sym_i (hl_SUC (hl_SUC ((fun n :e omega => 2 * n) n))) (ordsucc (ordsucc (2 * n)))
+            (eq_trans_i (hl_SUC (hl_SUC ((fun n :e omega => 2 * n) n))) (hl_SUC (hl_SUC (2 * n))) (ordsucc (ordsucc (2 * n)))
+              (f_equal (fun x => hl_SUC (hl_SUC x)) ((fun n :e omega => 2 * n) n) (2 * n) (beta omega (fun n => 2 * n) n Hn))
+              (eq_trans_i (hl_SUC (hl_SUC (2 * n))) (hl_SUC (ordsucc (2 * n))) (ordsucc (ordsucc (2 * n)))
+                (f_equal (fun x => hl_SUC x) (hl_SUC (2 * n)) (ordsucc (2 * n)) (hl_SUC_ap (2 * n) Hn2))
+                (hl_SUC_ap (ordsucc (2 * n)) (omega_ordsucc (2 * n) Hn2))))))). }
+apply (hl_BIT0_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+claim Hbase: hl_BIT0 0 = 2 * 0.
+{ exact (eq_trans_i (hl_BIT0 0) (hl_BIT0 (hl_NUMERAL hl_zero)) (2 * 0)
+      (f_equal (fun x => hl_BIT0 x) 0 (hl_NUMERAL hl_zero) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero))
+      (eq_trans_i (hl_BIT0 (hl_NUMERAL hl_zero)) (hl_NUMERAL hl_zero) (2 * 0) H0
+        (eq_trans_i (hl_NUMERAL hl_zero) 0 (2 * 0) hl_NUMERAL_zero (eq_sym_i (2 * 0) 0 (mul_SNo_zeroR 2 SNo_2))))). }
+claim Hstep: forall n, nat_p n -> (hl_BIT0 n = 2 * n) -> hl_BIT0 (ordsucc n) = 2 * (ordsucc n).
+{ let n. assume Hn IH.
+    claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+    claim Hb: hl_BIT0 n :e omega. { exact (setexp_ap omega omega hl_BIT0 Hg n Hno). }
+    exact (eq_trans_i (hl_BIT0 (ordsucc n)) (hl_BIT0 (hl_SUC n)) (2 * ordsucc n)
+      (f_equal (fun x => hl_BIT0 x) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hno)))
+      (eq_trans_i (hl_BIT0 (hl_SUC n)) (hl_SUC (hl_SUC (hl_BIT0 n))) (2 * ordsucc n) (HS n Hno)
+        (eq_trans_i (hl_SUC (hl_SUC (hl_BIT0 n))) (ordsucc (ordsucc (2 * n))) (2 * ordsucc n)
+          (eq_trans_i (hl_SUC (hl_SUC (hl_BIT0 n))) (hl_SUC (ordsucc (hl_BIT0 n))) (ordsucc (ordsucc (2 * n)))
+            (f_equal (fun x => hl_SUC x) (hl_SUC (hl_BIT0 n)) (ordsucc (hl_BIT0 n)) (hl_SUC_ap (hl_BIT0 n) Hb))
+            (eq_trans_i (hl_SUC (ordsucc (hl_BIT0 n))) (ordsucc (ordsucc (hl_BIT0 n))) (ordsucc (ordsucc (2 * n)))
+              (hl_SUC_ap (ordsucc (hl_BIT0 n)) (omega_ordsucc (hl_BIT0 n) Hb))
+              (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 n) (2 * n) IH)))
+          (eq_sym_i (2 * ordsucc n) (ordsucc (ordsucc (2 * n))) (two_mul_ordsucc n Hno))))). }
+claim Hind: forall n, nat_p n -> hl_BIT0 n = 2 * n.
+{ exact (nat_ind (fun n => hl_BIT0 n = 2 * n) Hbase Hstep). }
+let n. assume Hn. exact (Hind n (omega_nat_p n Hn)).
+Qed.
+Theorem hl_BIT1_compat : forall l1 :e omega, hl_BIT1 l1 = 2 * l1 + 1.
+let n. assume Hn.
+claim Hn2: 2 * n :e omega. { exact (mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) n Hn). }
+exact (eq_trans_i (hl_BIT1 n) (hl_SUC (hl_BIT0 n)) (2 * n + 1) (hl_BIT1_unfold n Hn)
+  (eq_trans_i (hl_SUC (hl_BIT0 n)) (hl_SUC (2 * n)) (2 * n + 1)
+    (f_equal (fun x => hl_SUC x) (hl_BIT0 n) (2 * n) (hl_BIT0_compat n Hn))
+    (eq_trans_i (hl_SUC (2 * n)) (ordsucc (2 * n)) (2 * n + 1) (hl_SUC_ap (2 * n) Hn2)
+      (eq_sym_i (2 * n + 1) (ordsucc (2 * n)) (add_SNo_1_ordsucc (2 * n) Hn2))))).
+Qed.
+Theorem hl_one_numeral : hl_NUMERAL (hl_BIT1 hl_zero) = 1.
+exact (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1
+  (hl_NUMERAL_unfold (hl_BIT1 hl_zero) (hl_BIT1_omega hl_zero hl_zero_omega))
+  (eq_trans_i (hl_BIT1 hl_zero) (2 * 0 + 1) 1 (hl_BIT1_compat hl_zero hl_zero_omega)
+    (eq_trans_i (2 * 0 + 1) (0 + 1) 1 (f_equal (fun x => x + 1) (2 * 0) 0 (mul_SNo_zeroR 2 SNo_2)) (add_SNo_0L 1 SNo_1)))).
+Qed.
+
+// ---- closure of natural and real exponentiation ----
+Theorem exp_SNo_nat_In_omega : forall m n :e omega, m ^ n :e omega.
+let m. assume Hm. let n. assume Hn. exact (nat_p_omega (m ^ n) (nat_exp_SNo_nat m (omega_nat_p m Hm) n (omega_nat_p n Hn))).
+Qed.
+Theorem real_exp_SNo_nat : forall x :e R, forall n :e omega, x ^ n :e R.
+let x. assume Hx.
+claim Hbase: x ^ 0 :e R. { exact ((exp_SNo_nat_0 x (real_SNo x Hx)) (fun u v => v :e R) real_1). }
+claim Hstep: forall n, nat_p n -> x ^ n :e R -> x ^ ordsucc n :e R.
+{ let n. assume Hn IH. exact ((exp_SNo_nat_S x (real_SNo x Hx) n Hn) (fun u v => v :e R) (real_mul_SNo x Hx (x ^ n) IH)). }
+let n. assume Hn. exact (nat_ind (fun n => x ^ n :e R) Hbase Hstep n (omega_nat_p n Hn)).
+Qed.
+
+// ---- multiplication, exponentiation, predecessor, factorial ----
+Theorem mul_SNo_ordsucc_L : forall m n :e omega, ordsucc m * n = m * n + n.
+let m. assume Hm. let n. assume Hn.
+exact (eq_trans_i (ordsucc m * n) (mul_nat (ordsucc m) n) (m * n + n)
+  (eq_sym_i (mul_nat (ordsucc m) n) (ordsucc m * n) (mul_nat_mul_SNo (ordsucc m) (omega_ordsucc m Hm) n Hn))
+  (eq_trans_i (mul_nat (ordsucc m) n) (add_nat (mul_nat m n) n) (m * n + n)
+    (mul_nat_SL m (omega_nat_p m Hm) n (omega_nat_p n Hn))
+    (eq_trans_i (add_nat (mul_nat m n) n) (add_nat (m * n) n) (m * n + n)
+      (f_equal (fun x => add_nat x n) (mul_nat m n) (m * n) (mul_nat_mul_SNo m Hm n Hn))
+      (add_nat_add_SNo (m * n) (mul_SNo_In_omega m Hm n Hn) n Hn)))).
+Qed.
+Theorem hl_mul_compat : forall l1 l2 :e omega, hl_mul l1 l2 = l1 * l2.
+claim Hex: exists g :e omega :^: omega :^: omega, (forall n :e omega, g (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) /\ forall m n :e omega, g (hl_SUC m) n = hl_add (g m n) n.
+{ witness (fun m :e omega => fun n :e omega => m * n).
+  claim Hw: (fun m :e omega => fun n :e omega => m * n) :e omega :^: omega :^: omega.
+  { exact (lam2_Pi omega omega omega (fun m n => m * n) (fun m Hm n Hn => mul_SNo_In_omega m Hm n Hn)). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + let n. assume Hn.
+      exact (eq_trans_i ((fun m :e omega => fun n :e omega => m * n) (hl_NUMERAL hl_zero) n) ((fun m :e omega => fun n :e omega => m * n) 0 n) (hl_NUMERAL hl_zero)
+        (f_equal (fun x => (fun m :e omega => fun n :e omega => m * n) x n) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)
+        (eq_trans_i ((fun m :e omega => fun n :e omega => m * n) 0 n) (0 * n) (hl_NUMERAL hl_zero)
+          (lam2_beta omega omega (fun m n => m * n) 0 (nat_p_omega 0 nat_0) n Hn)
+          (eq_trans_i (0 * n) 0 (hl_NUMERAL hl_zero) (mul_SNo_zeroL n (omega_SNo n Hn)) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)))).
+    + let m. assume Hm. let n. assume Hn.
+      claim Hmn: m * n :e omega. { exact (mul_SNo_In_omega m Hm n Hn). }
+      exact (eq_trans_i ((fun m :e omega => fun n :e omega => m * n) (hl_SUC m) n) (ordsucc m * n) (hl_add ((fun m :e omega => fun n :e omega => m * n) m n) n)
+        (eq_trans_i ((fun m :e omega => fun n :e omega => m * n) (hl_SUC m) n) ((fun m :e omega => fun n :e omega => m * n) (ordsucc m) n) (ordsucc m * n)
+          (f_equal (fun x => (fun m :e omega => fun n :e omega => m * n) x n) (hl_SUC m) (ordsucc m) (hl_SUC_ap m Hm))
+          (lam2_beta omega omega (fun m n => m * n) (ordsucc m) (omega_ordsucc m Hm) n Hn))
+        (eq_trans_i (ordsucc m * n) (m * n + n) (hl_add ((fun m :e omega => fun n :e omega => m * n) m n) n)
+          (mul_SNo_ordsucc_L m Hm n Hn)
+          (eq_sym_i (hl_add ((fun m :e omega => fun n :e omega => m * n) m n) n) (m * n + n)
+            (eq_trans_i (hl_add ((fun m :e omega => fun n :e omega => m * n) m n) n) (hl_add (m * n) n) (m * n + n)
+              (f_equal (fun x => hl_add x n) ((fun m :e omega => fun n :e omega => m * n) m n) (m * n) (lam2_beta omega omega (fun m n => m * n) m Hm n Hn))
+              (hl_add_compat (m * n) Hmn n Hn))))). }
+apply (hl_mul_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+claim Hind: forall m, nat_p m -> forall n :e omega, hl_mul m n = m * n.
+{ apply (nat_ind (fun m => forall n :e omega, hl_mul m n = m * n)).
+  - let n. assume Hn.
+    exact (eq_trans_i (hl_mul 0 n) (hl_mul (hl_NUMERAL hl_zero) n) (0 * n)
+      (f_equal (fun x => hl_mul x n) 0 (hl_NUMERAL hl_zero) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero))
+      (eq_trans_i (hl_mul (hl_NUMERAL hl_zero) n) (hl_NUMERAL hl_zero) (0 * n) (H0 n Hn)
+        (eq_trans_i (hl_NUMERAL hl_zero) 0 (0 * n) hl_NUMERAL_zero (eq_sym_i (0 * n) 0 (mul_SNo_zeroL n (omega_SNo n Hn)))))).
+  - let m. assume Hm IH. let n. assume Hn.
+    claim Hmo: m :e omega. { exact (nat_p_omega m Hm). }
+    claim Hg2: hl_mul m n :e omega. { exact (setexp2_ap omega omega omega hl_mul Hg m Hmo n Hn). }
+    exact (eq_trans_i (hl_mul (ordsucc m) n) (hl_mul (hl_SUC m) n) (ordsucc m * n)
+      (f_equal (fun x => hl_mul x n) (ordsucc m) (hl_SUC m) (eq_sym_i (hl_SUC m) (ordsucc m) (hl_SUC_ap m Hmo)))
+      (eq_trans_i (hl_mul (hl_SUC m) n) (hl_add (hl_mul m n) n) (ordsucc m * n) (HS m Hmo n Hn)
+        (eq_trans_i (hl_add (hl_mul m n) n) (hl_mul m n + n) (ordsucc m * n) (hl_add_compat (hl_mul m n) Hg2 n Hn)
+          (eq_trans_i (hl_mul m n + n) (m * n + n) (ordsucc m * n)
+            (f_equal (fun x => x + n) (hl_mul m n) (m * n) (IH n Hn))
+            (eq_sym_i (ordsucc m * n) (m * n + n) (mul_SNo_ordsucc_L m Hmo n Hn)))))). }
+let m. assume Hm. exact (Hind m (omega_nat_p m Hm)).
+Qed.
+Theorem hl_EXP_compat : forall l1 l2 :e omega, hl_EXP l1 l2 = l1 ^ l2.
+claim Hex: exists g :e omega :^: omega :^: omega, (forall m :e omega, g m (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero)) /\ forall m n :e omega, g m (hl_SUC n) = hl_mul m (g m n).
+{ witness (fun m :e omega => fun n :e omega => m ^ n).
+  claim Hw: (fun m :e omega => fun n :e omega => m ^ n) :e omega :^: omega :^: omega.
+  { exact (lam2_Pi omega omega omega (fun m n => m ^ n) (fun m Hm n Hn => exp_SNo_nat_In_omega m Hm n Hn)). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + let m. assume Hm.
+      exact (eq_trans_i ((fun m :e omega => fun n :e omega => m ^ n) m (hl_NUMERAL hl_zero)) ((fun m :e omega => fun n :e omega => m ^ n) m 0) (hl_NUMERAL (hl_BIT1 hl_zero))
+        (f_equal (fun x => (fun m :e omega => fun n :e omega => m ^ n) m x) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)
+        (eq_trans_i ((fun m :e omega => fun n :e omega => m ^ n) m 0) (m ^ 0) (hl_NUMERAL (hl_BIT1 hl_zero))
+          (lam2_beta omega omega (fun m n => m ^ n) m Hm 0 (nat_p_omega 0 nat_0))
+          (eq_trans_i (m ^ 0) 1 (hl_NUMERAL (hl_BIT1 hl_zero)) (exp_SNo_nat_0 m (omega_SNo m Hm)) (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) 1 hl_one_numeral)))).
+    + let m. assume Hm. let n. assume Hn.
+      claim Hmn: m ^ n :e omega. { exact (exp_SNo_nat_In_omega m Hm n Hn). }
+      exact (eq_trans_i ((fun m :e omega => fun n :e omega => m ^ n) m (hl_SUC n)) (m ^ ordsucc n) (hl_mul m ((fun m :e omega => fun n :e omega => m ^ n) m n))
+        (eq_trans_i ((fun m :e omega => fun n :e omega => m ^ n) m (hl_SUC n)) ((fun m :e omega => fun n :e omega => m ^ n) m (ordsucc n)) (m ^ ordsucc n)
+          (f_equal (fun x => (fun m :e omega => fun n :e omega => m ^ n) m x) (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hn))
+          (lam2_beta omega omega (fun m n => m ^ n) m Hm (ordsucc n) (omega_ordsucc n Hn)))
+        (eq_trans_i (m ^ ordsucc n) (m * m ^ n) (hl_mul m ((fun m :e omega => fun n :e omega => m ^ n) m n))
+          (exp_SNo_nat_S m (omega_SNo m Hm) n (omega_nat_p n Hn))
+          (eq_sym_i (hl_mul m ((fun m :e omega => fun n :e omega => m ^ n) m n)) (m * m ^ n)
+            (eq_trans_i (hl_mul m ((fun m :e omega => fun n :e omega => m ^ n) m n)) (hl_mul m (m ^ n)) (m * m ^ n)
+              (f_equal (fun x => hl_mul m x) ((fun m :e omega => fun n :e omega => m ^ n) m n) (m ^ n) (lam2_beta omega omega (fun m n => m ^ n) m Hm n Hn))
+              (hl_mul_compat m Hm (m ^ n) Hmn))))). }
+apply (hl_EXP_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+let m. assume Hm.
+claim Hbase: hl_EXP m 0 = m ^ 0.
+{ exact (eq_trans_i (hl_EXP m 0) (hl_EXP m (hl_NUMERAL hl_zero)) (m ^ 0)
+      (f_equal (fun x => hl_EXP m x) 0 (hl_NUMERAL hl_zero) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero))
+      (eq_trans_i (hl_EXP m (hl_NUMERAL hl_zero)) (hl_NUMERAL (hl_BIT1 hl_zero)) (m ^ 0) (H0 m Hm)
+        (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) 1 (m ^ 0) hl_one_numeral (eq_sym_i (m ^ 0) 1 (exp_SNo_nat_0 m (omega_SNo m Hm)))))). }
+claim Hstep: forall n, nat_p n -> (hl_EXP m n = m ^ n) -> hl_EXP m (ordsucc n) = m ^ (ordsucc n).
+{ let n. assume Hn IH.
+    claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+    claim Hg2: hl_EXP m n :e omega. { exact (setexp2_ap omega omega omega hl_EXP Hg m Hm n Hno). }
+    exact (eq_trans_i (hl_EXP m (ordsucc n)) (hl_EXP m (hl_SUC n)) (m ^ ordsucc n)
+      (f_equal (fun x => hl_EXP m x) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hno)))
+      (eq_trans_i (hl_EXP m (hl_SUC n)) (hl_mul m (hl_EXP m n)) (m ^ ordsucc n) (HS m Hm n Hno)
+        (eq_trans_i (hl_mul m (hl_EXP m n)) (m * hl_EXP m n) (m ^ ordsucc n) (hl_mul_compat m Hm (hl_EXP m n) Hg2)
+          (eq_trans_i (m * hl_EXP m n) (m * m ^ n) (m ^ ordsucc n)
+            (f_equal (fun x => m * x) (hl_EXP m n) (m ^ n) IH)
+            (eq_sym_i (m ^ ordsucc n) (m * m ^ n) (exp_SNo_nat_S m (omega_SNo m Hm) n Hn)))))). }
+claim Hind: forall n, nat_p n -> hl_EXP m n = m ^ n.
+{ exact (nat_ind (fun n => hl_EXP m n = m ^ n) Hbase Hstep). }
+let n. assume Hn. exact (Hind n (omega_nat_p n Hn)).
+Qed.
+Theorem nat_pred_0 : nat_pred 0 = 0.
+prove (if 0 = 0 then 0 else 0 + - 1) = 0. exact (If_i_1 (0 = 0) 0 (0 + - 1) (fun q H => H)).
+Qed.
+Theorem nat_pred_ordsucc : forall n :e omega, nat_pred (ordsucc n) = n.
+let n. assume Hn.
+prove (if ordsucc n = 0 then 0 else ordsucc n + - 1) = n.
+exact (eq_trans_i (if ordsucc n = 0 then 0 else ordsucc n + - 1) (ordsucc n + - 1) n
+  (If_i_0 (ordsucc n = 0) 0 (ordsucc n + - 1) (neq_ordsucc_0 n))
+  (eq_trans_i (ordsucc n + - 1) ((n + 1) + - 1) n
+    (f_equal (fun x => x + - 1) (ordsucc n) (n + 1) (eq_sym_i (n + 1) (ordsucc n) (add_SNo_1_ordsucc n Hn)))
+    (add_SNo_minus_R2 n 1 (omega_SNo n Hn) SNo_1))).
+Qed.
+Theorem hl_PRE_compat : forall l1 :e omega, hl_PRE l1 = nat_pred l1.
+claim Hex: exists g :e omega :^: omega, g (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\ forall n :e omega, g (hl_SUC n) = n.
+{ witness (fun n :e omega => nat_pred n).
+  claim Hw: (fun n :e omega => nat_pred n) :e omega :^: omega.
+  { exact (hl_lam_Pi omega omega (fun n => nat_pred n) (fun n Hn => nat_pred_omega n Hn)). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + rewrite hl_NUMERAL_zero. rewrite (beta omega (fun n => nat_pred n) 0 (nat_p_omega 0 nat_0)). exact nat_pred_0.
+    + let n. assume Hn. rewrite (hl_SUC_ap n Hn). rewrite (beta omega (fun n => nat_pred n) (ordsucc n) (omega_ordsucc n Hn)). exact (nat_pred_ordsucc n Hn). }
+apply (hl_PRE_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+let n. assume Hn.
+apply (nat_inv n (omega_nat_p n Hn)).
+- assume H: n = 0. rewrite H. rewrite nat_pred_0. rewrite <- hl_NUMERAL_zero at 1. rewrite <- hl_NUMERAL_zero at 2. exact H0.
+- assume H: exists k, nat_p k /\ n = ordsucc k. apply (exandE_i nat_p (fun k => n = ordsucc k) H). let k. assume Hk Hnk.
+  claim Hko: k :e omega. { exact (nat_p_omega k Hk). }
+  rewrite Hnk. rewrite (nat_pred_ordsucc k Hko). rewrite <- (hl_SUC_ap k Hko). exact (HS k Hko).
+Qed.
+Theorem hl_FACT_compat : forall l1 :e omega, hl_FACT l1 = factorial l1.
+claim Hf0: factorial 0 = 1. { prove nat_primrec 1 (fun i r => r * ordsucc i) 0 = 1. exact (nat_primrec_0 1 (fun i r => r * ordsucc i)). }
+claim HfS: forall n :e omega, factorial (ordsucc n) = factorial n * ordsucc n.
+{ let n. assume Hn. prove nat_primrec 1 (fun i r => r * ordsucc i) (ordsucc n) = nat_primrec 1 (fun i r => r * ordsucc i) n * ordsucc n.
+  exact (nat_primrec_S 1 (fun i r => r * ordsucc i) n (omega_nat_p n Hn)). }
+claim Hfo0: factorial 0 :e omega. { exact (Hf0 (fun u v => v :e omega) (nat_p_omega 1 nat_1)). }
+claim HfoS: forall n, nat_p n -> factorial n :e omega -> factorial (ordsucc n) :e omega.
+{ let n. assume Hn IH. exact ((HfS n (nat_p_omega n Hn)) (fun u v => v :e omega) (mul_SNo_In_omega (factorial n) IH (ordsucc n) (omega_ordsucc n (nat_p_omega n Hn)))). }
+claim Hfo: forall n, nat_p n -> factorial n :e omega.
+{ exact (nat_ind (fun n => factorial n :e omega) Hfo0 HfoS). }
+claim Hex: exists g :e omega :^: omega, g (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero) /\ forall n :e omega, g (hl_SUC n) = hl_mul (hl_SUC n) (g n).
+{ witness (fun n :e omega => factorial n).
+  claim Hw: (fun n :e omega => factorial n) :e omega :^: omega.
+  { exact (hl_lam_Pi omega omega (fun n => factorial n) (fun n Hn => Hfo n (omega_nat_p n Hn))). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + exact (eq_trans_i ((fun n :e omega => factorial n) (hl_NUMERAL hl_zero)) ((fun n :e omega => factorial n) 0) (hl_NUMERAL (hl_BIT1 hl_zero))
+        (f_equal (fun x => (fun n :e omega => factorial n) x) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)
+        (eq_trans_i ((fun n :e omega => factorial n) 0) (factorial 0) (hl_NUMERAL (hl_BIT1 hl_zero))
+          (beta omega (fun n => factorial n) 0 (nat_p_omega 0 nat_0))
+          (eq_trans_i (factorial 0) 1 (hl_NUMERAL (hl_BIT1 hl_zero)) Hf0 (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) 1 hl_one_numeral)))).
+    + let n. assume Hn.
+      claim Hfn: factorial n :e omega. { exact (Hfo n (omega_nat_p n Hn)). }
+      claim HSn: ordsucc n :e omega. { exact (omega_ordsucc n Hn). }
+      exact (eq_trans_i ((fun n :e omega => factorial n) (hl_SUC n)) (factorial (ordsucc n)) (hl_mul (hl_SUC n) ((fun n :e omega => factorial n) n))
+        (eq_trans_i ((fun n :e omega => factorial n) (hl_SUC n)) ((fun n :e omega => factorial n) (ordsucc n)) (factorial (ordsucc n))
+          (f_equal (fun x => (fun n :e omega => factorial n) x) (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hn))
+          (beta omega (fun n => factorial n) (ordsucc n) HSn))
+        (eq_trans_i (factorial (ordsucc n)) (factorial n * ordsucc n) (hl_mul (hl_SUC n) ((fun n :e omega => factorial n) n)) (HfS n Hn)
+          (eq_trans_i (factorial n * ordsucc n) (ordsucc n * factorial n) (hl_mul (hl_SUC n) ((fun n :e omega => factorial n) n))
+            (mul_SNo_com (factorial n) (ordsucc n) (omega_SNo (factorial n) Hfn) (omega_SNo (ordsucc n) HSn))
+            (eq_sym_i (hl_mul (hl_SUC n) ((fun n :e omega => factorial n) n)) (ordsucc n * factorial n)
+              (eq_trans_i (hl_mul (hl_SUC n) ((fun n :e omega => factorial n) n)) (hl_mul (ordsucc n) (factorial n)) (ordsucc n * factorial n)
+                (f_equal2 (fun x y => hl_mul x y) (hl_SUC n) (ordsucc n) ((fun n :e omega => factorial n) n) (factorial n) (hl_SUC_ap n Hn) (beta omega (fun n => factorial n) n Hn))
+                (hl_mul_compat (ordsucc n) HSn (factorial n) Hfn)))))). }
+apply (hl_FACT_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+claim Hbase: hl_FACT 0 = factorial 0.
+{ exact (eq_trans_i (hl_FACT 0) (hl_FACT (hl_NUMERAL hl_zero)) (factorial 0)
+      (f_equal (fun x => hl_FACT x) 0 (hl_NUMERAL hl_zero) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero))
+      (eq_trans_i (hl_FACT (hl_NUMERAL hl_zero)) (hl_NUMERAL (hl_BIT1 hl_zero)) (factorial 0) H0
+        (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) 1 (factorial 0) hl_one_numeral (eq_sym_i (factorial 0) 1 Hf0)))). }
+claim Hstep: forall n, nat_p n -> (hl_FACT n = factorial n) -> hl_FACT (ordsucc n) = factorial (ordsucc n).
+{ let n. assume Hn IH.
+    claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+    claim HSn: ordsucc n :e omega. { exact (omega_ordsucc n Hno). }
+    claim Hgn: hl_FACT n :e omega. { exact (setexp_ap omega omega hl_FACT Hg n Hno). }
+    exact (eq_trans_i (hl_FACT (ordsucc n)) (hl_FACT (hl_SUC n)) (factorial (ordsucc n))
+      (f_equal (fun x => hl_FACT x) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hno)))
+      (eq_trans_i (hl_FACT (hl_SUC n)) (hl_mul (hl_SUC n) (hl_FACT n)) (factorial (ordsucc n)) (HS n Hno)
+        (eq_trans_i (hl_mul (hl_SUC n) (hl_FACT n)) (hl_mul (ordsucc n) (factorial n)) (factorial (ordsucc n))
+          (f_equal2 (fun x y => hl_mul x y) (hl_SUC n) (ordsucc n) (hl_FACT n) (factorial n) (hl_SUC_ap n Hno) IH)
+          (eq_trans_i (hl_mul (ordsucc n) (factorial n)) (ordsucc n * factorial n) (factorial (ordsucc n))
+            (hl_mul_compat (ordsucc n) HSn (factorial n) (Hfo n Hn))
+            (eq_trans_i (ordsucc n * factorial n) (factorial n * ordsucc n) (factorial (ordsucc n))
+              (mul_SNo_com (ordsucc n) (factorial n) (omega_SNo (ordsucc n) HSn) (omega_SNo (factorial n) (Hfo n Hn)))
+              (eq_sym_i (factorial (ordsucc n)) (factorial n * ordsucc n) (HfS n Hno))))))). }
+claim Hind: forall n, nat_p n -> hl_FACT n = factorial n.
+{ exact (nat_ind (fun n => hl_FACT n = factorial n) Hbase Hstep). }
+let n. assume Hn. exact (Hind n (omega_nat_p n Hn)).
+Qed.
+Theorem hl_real_pow_compat : forall l1 :e R, forall l2 :e omega, hl_real_pow l1 l2 = l1 ^ l2.
+claim Hex: exists g :e R :^: omega :^: R, (forall x :e R, g x (hl_NUMERAL hl_zero) = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) /\ forall x :e R, forall n :e omega, g x (hl_SUC n) = hl_real_mul x (g x n).
+{ witness (fun x :e R => fun n :e omega => x ^ n).
+  claim Hw: (fun x :e R => fun n :e omega => x ^ n) :e R :^: omega :^: R.
+  { exact (lam2_Pi R omega R (fun x n => x ^ n) (fun x Hx n Hn => real_exp_SNo_nat x Hx n Hn)). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + let x. assume Hx.
+      exact (eq_trans_i ((fun x :e R => fun n :e omega => x ^ n) x (hl_NUMERAL hl_zero)) ((fun x :e R => fun n :e omega => x ^ n) x 0) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))
+        (f_equal (fun y => (fun x :e R => fun n :e omega => x ^ n) x y) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)
+        (eq_trans_i ((fun x :e R => fun n :e omega => x ^ n) x 0) (x ^ 0) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))
+          (lam2_beta R omega (fun x n => x ^ n) x Hx 0 (nat_p_omega 0 nat_0))
+          (eq_trans_i (x ^ 0) 1 (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (exp_SNo_nat_0 x (real_SNo x Hx))
+            (eq_sym_i (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) 1
+              (eq_trans_i (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_of_num 1) 1
+                (f_equal (fun y => hl_real_of_num y) (hl_NUMERAL (hl_BIT1 hl_zero)) 1 hl_one_numeral)
+                (hl_real_of_num_ap 1 (nat_p_omega 1 nat_1))))))).
+    + let x. assume Hx. let n. assume Hn.
+      claim Hxn: x ^ n :e R. { exact (real_exp_SNo_nat x Hx n Hn). }
+      exact (eq_trans_i ((fun x :e R => fun n :e omega => x ^ n) x (hl_SUC n)) (x ^ ordsucc n) (hl_real_mul x ((fun x :e R => fun n :e omega => x ^ n) x n))
+        (eq_trans_i ((fun x :e R => fun n :e omega => x ^ n) x (hl_SUC n)) ((fun x :e R => fun n :e omega => x ^ n) x (ordsucc n)) (x ^ ordsucc n)
+          (f_equal (fun y => (fun x :e R => fun n :e omega => x ^ n) x y) (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hn))
+          (lam2_beta R omega (fun x n => x ^ n) x Hx (ordsucc n) (omega_ordsucc n Hn)))
+        (eq_trans_i (x ^ ordsucc n) (x * x ^ n) (hl_real_mul x ((fun x :e R => fun n :e omega => x ^ n) x n))
+          (exp_SNo_nat_S x (real_SNo x Hx) n (omega_nat_p n Hn))
+          (eq_sym_i (hl_real_mul x ((fun x :e R => fun n :e omega => x ^ n) x n)) (x * x ^ n)
+            (eq_trans_i (hl_real_mul x ((fun x :e R => fun n :e omega => x ^ n) x n)) (hl_real_mul x (x ^ n)) (x * x ^ n)
+              (f_equal (fun y => hl_real_mul x y) ((fun x :e R => fun n :e omega => x ^ n) x n) (x ^ n) (lam2_beta R omega (fun x n => x ^ n) x Hx n Hn))
+              (hl_real_mul_ap x Hx (x ^ n) Hxn))))). }
+apply (hl_real_pow_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+let x. assume Hx.
+claim Hbase: hl_real_pow x 0 = x ^ 0.
+{ exact (eq_trans_i (hl_real_pow x 0) (hl_real_pow x (hl_NUMERAL hl_zero)) (x ^ 0)
+      (f_equal (fun y => hl_real_pow x y) 0 (hl_NUMERAL hl_zero) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero))
+      (eq_trans_i (hl_real_pow x (hl_NUMERAL hl_zero)) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (x ^ 0) (H0 x Hx)
+        (eq_trans_i (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) 1 (x ^ 0)
+          (eq_trans_i (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_of_num 1) 1
+            (f_equal (fun y => hl_real_of_num y) (hl_NUMERAL (hl_BIT1 hl_zero)) 1 hl_one_numeral)
+            (hl_real_of_num_ap 1 (nat_p_omega 1 nat_1)))
+          (eq_sym_i (x ^ 0) 1 (exp_SNo_nat_0 x (real_SNo x Hx)))))). }
+claim Hstep: forall n, nat_p n -> (hl_real_pow x n = x ^ n) -> hl_real_pow x (ordsucc n) = x ^ (ordsucc n).
+{ let n. assume Hn IH.
+    claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+    claim Hg2: hl_real_pow x n :e R. { exact (setexp2_ap R omega R hl_real_pow Hg x Hx n Hno). }
+    exact (eq_trans_i (hl_real_pow x (ordsucc n)) (hl_real_pow x (hl_SUC n)) (x ^ ordsucc n)
+      (f_equal (fun y => hl_real_pow x y) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_ap n Hno)))
+      (eq_trans_i (hl_real_pow x (hl_SUC n)) (hl_real_mul x (hl_real_pow x n)) (x ^ ordsucc n) (HS x Hx n Hno)
+        (eq_trans_i (hl_real_mul x (hl_real_pow x n)) (x * hl_real_pow x n) (x ^ ordsucc n) (hl_real_mul_ap x Hx (hl_real_pow x n) Hg2)
+          (eq_trans_i (x * hl_real_pow x n) (x * x ^ n) (x ^ ordsucc n)
+            (f_equal (fun y => x * y) (hl_real_pow x n) (x ^ n) IH)
+            (eq_sym_i (x ^ ordsucc n) (x * x ^ n) (exp_SNo_nat_S x (real_SNo x Hx) n Hn)))))). }
+claim Hind: forall n, nat_p n -> hl_real_pow x n = x ^ n.
+{ exact (nat_ind (fun n => hl_real_pow x n = x ^ n) Hbase Hstep). }
+let n. assume Hn. exact (Hind n (omega_nat_p n Hn)).
 Qed.

@@ -48,6 +48,7 @@ type genv = {
   mutable nonempty : (string * string) list;        (* carrier parameter -> hypothesis name *)
   mutable counter : int;
   mutable used_compat : string list;
+  mutable lit_typing : bool;                        (* refer to the literal-carrier typing lemmas (_in_lit) *)
 }
 
 let paren s = "(" ^ s ^ ")"
@@ -107,6 +108,7 @@ let const_carriers g c ty =
   List.map (fun a -> let t = List.assoc a sub in (L.carrier g.lctx t, t)) (L.tyvars_ordered generic [])
 
 let typing_lemma_name c = L.mg_name_of_const c ^ "_in"
+let typing_lemma_name_of g c = L.mg_name_of_const c ^ (if g.lit_typing && not (List.mem_assoc c L.primitive_consts) then "_in_lit" else "_in")
 
 (* proof of  L[t] :e L[type_of t] *)
 let rec typ g (t : tm) : string =
@@ -117,7 +119,7 @@ let rec typ g (t : tm) : string =
     | Free (k, _) -> (match List.assoc_opt k g.vars with Some v -> v.mem | None -> unsupported "typing: unknown variable %s" k)
     | Const (c, cty) ->
         let cs = const_carriers g c cty in
-        String.concat " " ((paren (typing_lemma_name c)) :: List.map (fun (ca, _) -> ppp ca) cs @ List.map (fun (_, t) -> nonempty_pf g t) cs)
+        String.concat " " ((paren (typing_lemma_name_of g c)) :: List.map (fun (ca, _) -> ppp ca) cs @ List.map (fun (_, t) -> nonempty_pf g t) cs)
         |> paren
     | App (f, x) ->
         let fty = type_of [] f in
@@ -737,7 +739,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
     end else (a, E.sanitize_tyvar a)) tvs in
   let nctx = { E.reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { E.classes = []; bridges = []; notes = [] } } in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
-  let g = { lctx; nctx; an; compat; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = [] } in
+  let g = { lctx; nctx; an; compat; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = false } in
   (* free variables, first occurrence order, native views as Elab *)
   let fvs = uniq (List.concat_map frees all) in
   let decls = List.map (fun (s, ty) ->
@@ -784,24 +786,39 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   { lit_stmt; nat_stmt; proof; compat_used = List.rev g.used_compat }
 
 (* typing lemma of a generated literal definition: forall A..:set, A <> Empty -> .. -> hl_c A.. :e L[sigma] *)
-let typing_lemma (an : L.analysis) (typing_ok : (string, unit) Hashtbl.t) (c : string) (cty : ty) (rhs : tm) : string * string * string =
+(* the rewrites converting native carriers of translated type definitions back to hl_ty_T *)
+let carrier_conv (stmt_native : Mg.tm) : string =
+  let tys = Hashtbl.fold (fun t nat acc -> if replace_tm nat (Mg.Var "u") stmt_native <> stmt_native then t :: acc else acc) L.tydef_native [] in
+  String.concat "" (List.map (fun t -> Printf.sprintf "rewrite <- hl_ty_%s_native. " (E.sanitize_var t)) (List.sort compare tys))
+
+(* typing lemmas of a generated literal definition, in the literal-carrier form (_in_lit, proved
+   structurally) and in the native-carrier form (_in, derived by rewriting the carrier equations) *)
+let typing_lemma (an : L.analysis) (typing_ok : (string, unit) Hashtbl.t) (c : string) (cty : ty) (rhs : tm) : (string * string * string) list =
   let tvs = L.tyvars_ordered cty [] in
   let tv_names = L.tyvar_params tvs in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
-  lctx.L.use_native_tydefs <- true;
   let dummy_reg = { R.types = Hashtbl.create 1; consts = Hashtbl.create 1; files = []; empty_rules = []; rewrite_rules = []; names = [] } in
   let nctx = { E.reg = dummy_reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { E.classes = []; bridges = []; notes = [] } } in
-  let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = [] } in
+  let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = true } in
   (* every constant used must have its typing lemma already *)
   List.iter (fun k -> if k <> c && not (List.mem_assoc k L.primitive_consts) && not (Hashtbl.mem typing_ok k) then unsupported "typing lemma of %s needs %s" c k) (L.consts_of_tm rhs []);
   let pf = typ g rhs in
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
-  let stmt = L.mg_in (Mg.apps (Mg.Cst (L.mg_name_of_const c)) (List.map (fun n -> Mg.Var n) params)) (L.carrier lctx cty) in
-  let stmt = List.fold_right (fun n acc -> Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) params stmt in
-  let stmt = List.fold_right (fun n acc -> Mg.All (n, Mg.Set, acc)) params stmt in
+  let close stmt =
+    let stmt = List.fold_right (fun n acc -> Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) params stmt in
+    List.fold_right (fun n acc -> Mg.All (n, Mg.Set, acc)) params stmt in
+  let hd = Mg.apps (Mg.Cst (L.mg_name_of_const c)) (List.map (fun n -> Mg.Var n) params) in
+  let stmt_lit = close (L.mg_in hd (L.carrier lctx cty)) in
+  lctx.L.use_native_tydefs <- true;
+  let stmt_nat = close (L.mg_in hd (L.carrier lctx cty)) in
   let proof = if params = [] then pf else Printf.sprintf "(fun %s => %s)" (String.concat " " (params @ hyps)) pf in
-  (typing_lemma_name c, Mg.to_string stmt, proof)
+  let lit_name = L.mg_name_of_const c ^ "_in_lit" in
+  let native_proof =
+    if stmt_nat = stmt_lit then Printf.sprintf "exact %s." lit_name
+    else if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_nat) lit_name
+    else Printf.sprintf "let %s. assume %s. %sexact (%s %s)." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_nat) lit_name (String.concat " " (params @ hyps)) in
+  [ (lit_name, Mg.to_string stmt_lit, "exact " ^ proof ^ "."); (typing_lemma_name c, Mg.to_string stmt_nat, native_proof) ]
 
 (* lemmas of a translated type definition: the (admitted) literal nonemptiness fact, the
    nonemptiness of the subtype carrier, and the typing lemmas of abs and rep *)
@@ -811,14 +828,11 @@ let tydef_lemmas (an : L.analysis) (proved : (string, string) Hashtbl.t) (td : t
   if List.length tvs <> arity then unsupported "type definition %s: arity" td.td_name;
   let tv_names = L.tyvar_params tvs in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
-  lctx.L.use_native_tydefs <- true;
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
   let crho = L.carrier lctx rho and p = L.lterm lctx pred in
   let tyname = "hl_ty_" ^ E.sanitize_var td.td_name in
-  let native = (if params = [] then Hashtbl.find_opt L.tydef_native td.td_name else None) in
-  let ty_app = (match native with Some nat -> nat | None -> Mg.apps (Mg.Cst tyname) (List.map (fun n -> Mg.Var n) params)) in
-  let conv = (match native with Some _ -> Printf.sprintf "rewrite <- %s_native. " tyname | None -> "") in
+  let ty_app = Mg.apps (Mg.Cst tyname) (List.map (fun n -> Mg.Var n) params) in
   let close_hyp body = List.fold_right (fun n acc -> Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) params body in
   let close_all body = List.fold_right (fun n acc -> Mg.All (n, Mg.Set, acc)) params body in
   let binder = if params = [] then "" else Printf.sprintf "fun %s => " (String.concat " " (params @ hyps)) in
@@ -828,16 +842,27 @@ let tydef_lemmas (an : L.analysis) (proved : (string, string) Hashtbl.t) (td : t
   let ne_stmt = Mg.to_string (close_all (close_hyp (L.mg_neq ty_app (Mg.Cst "Empty")))) in
   let ne_available = (match Hashtbl.find_opt proved ne_name with Some st -> st = ne_stmt | None -> false) in
   let ty_ne = (ne_name, ne_stmt, "") in
-  let ne_pf = (match native with Some _ -> tyname ^ "_native_nonempty" | None -> Printf.sprintf "(%s %s)" (tyname ^ "_nonempty") args) in
-  let ne_pf = (match native with Some _ -> Printf.sprintf "((fun H:%s <> Empty => (fun HH:hl_ty_%s <> Empty => HH) (%s_native (fun u v => v <> Empty) H)) %s)" (pp ty_app) (E.sanitize_var td.td_name) tyname ne_pf | None -> ne_pf) in
-  let rep_in = (L.mg_name_of_const td.td_rep ^ "_in",
-                Mg.to_string (close_all (close_hyp (L.mg_in (Mg.apps (Mg.Cst (L.mg_name_of_const td.td_rep)) (List.map (fun n -> Mg.Var n) params)) (Mg.apps (Mg.Cst "setexp") [ crho; ty_app ])))),
-                Printf.sprintf "%s(%shl_subtype_rep_in %s %s)" conv binder (ppp crho) (ppp p)) in
-  let abs_in = (L.mg_name_of_const td.td_abs ^ "_in",
-                Mg.to_string (close_all (close_hyp (L.mg_in (Mg.apps (Mg.Cst (L.mg_name_of_const td.td_abs)) (List.map (fun n -> Mg.Var n) params)) (Mg.apps (Mg.Cst "setexp") [ ty_app; crho ])))),
-                Printf.sprintf "%s(%shl_subtype_abs_in %s %s %s)" conv binder (ppp crho) (ppp p) ne_pf) in
+  let ne_pf = Printf.sprintf "(%s %s)" (tyname ^ "_nonempty") args in
+  let rep_hd = Mg.apps (Mg.Cst (L.mg_name_of_const td.td_rep)) (List.map (fun n -> Mg.Var n) params) in
+  let abs_hd = Mg.apps (Mg.Cst (L.mg_name_of_const td.td_abs)) (List.map (fun n -> Mg.Var n) params) in
+  let rep_stmt = close_all (close_hyp (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho; ty_app ]))) in
+  let abs_stmt = close_all (close_hyp (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app; crho ]))) in
+  let rep_lit = (L.mg_name_of_const td.td_rep ^ "_in_lit", Mg.to_string rep_stmt, Printf.sprintf "exact (%shl_subtype_rep_in %s %s)." binder (ppp crho) (ppp p)) in
+  let abs_lit = (L.mg_name_of_const td.td_abs ^ "_in_lit", Mg.to_string abs_stmt, Printf.sprintf "exact (%shl_subtype_abs_in %s %s %s)." binder (ppp crho) (ppp p) ne_pf) in
+  (* native-carrier forms *)
+  lctx.L.use_native_tydefs <- true;
+  let crho_n = L.carrier lctx rho in
+  let ty_app_n = (match (if params = [] then Hashtbl.find_opt L.tydef_native td.td_name else None) with Some nat -> nat | None -> ty_app) in
+  let rep_stmt_n = close_all (close_hyp (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho_n; ty_app_n ]))) in
+  let abs_stmt_n = close_all (close_hyp (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app_n; crho_n ]))) in
+  let derive lit_name stmt_n stmt_l =
+    if stmt_n = stmt_l then Printf.sprintf "exact %s." lit_name
+    else if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_n) lit_name
+    else Printf.sprintf "let %s. assume %s. %sexact (%s %s)." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_n) lit_name (String.concat " " (params @ hyps)) in
+  let rep_in = (L.mg_name_of_const td.td_rep ^ "_in", Mg.to_string rep_stmt_n, derive (L.mg_name_of_const td.td_rep ^ "_in_lit") rep_stmt_n rep_stmt) in
+  let abs_in = (L.mg_name_of_const td.td_abs ^ "_in", Mg.to_string abs_stmt_n, derive (L.mg_name_of_const td.td_abs ^ "_in_lit") abs_stmt_n abs_stmt) in
   ignore ty_ne;
-  if ne_available then [ rep_in; abs_in ] else [ rep_in; ("", ne_stmt, "") ]
+  if ne_available then [ rep_lit; rep_in; abs_lit; abs_in ] else [ rep_lit; rep_in; ("", ne_stmt, "") ]
 
 (* unfolding lemma of a generated literal definition:
      hl_c_unfold : forall A..:set, forall x1 :e C1, .. , hl_c A.. x1 .. xn = body
@@ -886,14 +911,14 @@ let spec_lemma (an : L.analysis) (c : string) (cty : ty) (rhs : tm) : (string * 
   else begin
     let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs [] in
     let nctx = { E.reg = { R.types = Hashtbl.create 1; consts = Hashtbl.create 1; files = []; empty_rules = []; rewrite_rules = []; names = [] }; tyvar_names = []; vars = []; used = []; st = { E.classes = []; bridges = []; notes = [] } } in
-    let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = []; counter = 0; used_compat = [] } in
+    let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = []; counter = 0; used_compat = []; lit_typing = false } in
     let name = L.mg_name_of_const c in
     let hd = Mg.Cst name in
     (* replace the de Bruijn pattern by the free variable g and check nothing else is bound *)
     let rec has_bound d t = (match t with Bound i -> i >= d | App (a, b) -> has_bound d a || has_bound d b | Lam (_, _, b) -> has_bound (d + 1) b | _ -> false) in
     let rec repl d pat_f pat_tag gty t =
       (match t with
-       | App (Bound i, Bound j) when i = pat_f + d && j = pat_tag + d -> Free ("g", gty)
+       | App (Bound i, Bound j) when pat_tag >= 0 && i = pat_f + d && j = pat_tag + d -> Free ("g", gty)
        | Bound i when pat_tag < 0 && i = pat_f + d -> Free ("g", gty)
        | App (a, b) -> App (repl d pat_f pat_tag gty a, repl d pat_f pat_tag gty b)
        | Lam (x, ty, b) -> Lam (x, ty, repl (d + 1) pat_f pat_tag gty b)
