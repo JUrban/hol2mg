@@ -24,10 +24,10 @@ python3 tools/cert_finalize.py core "$S/cert.log" --manifest "$S/a/core.manifest
 python3 tools/golden.py core --manifest "$S/a/core.manifest.json"
 python3 - "$S/a/core.manifest.json" <<'PY'
 import json,sys
-m=json.load(open(sys.argv[1])); n=sum(1 for i in m['items'] if i['cert_status']=='native_certified')
+m=json.load(open(sys.argv[1])); n=sum(1 for i in m['items'] if i['cert_status']=='transport_checked')
 committed=json.load(open('generated/manifests/core.manifest.json'))
-c=sum(1 for i in committed['items'] if i.get('cert_status')=='native_certified')
-print(f'certification: {n} native_certified (committed manifest: {c})')
+c=sum(1 for i in committed['items'] if i.get('cert_status')=='transport_checked')
+print(f'certification: {n} transport_checked (committed manifest: {c})')
 if n < c: print('certification: REGRESSION'); sys.exit(1)
 PY
 rm -rf "$S"

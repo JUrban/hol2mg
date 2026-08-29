@@ -7,7 +7,7 @@ status: exact_native
 statement: forall t:prop, (True /\ t <-> t) /\ ((t /\ True <-> t) /\ ((False /\ t <-> False) /\ ((t /\ False <-> False) /\ (t /\ t <-> t))))
 literal: forall t :e 2, (True /\ t = 1 <-> t = 1) /\ ((t = 1 /\ True <-> t = 1) /\ ((False /\ t = 1 <-> False) /\ ((t = 1 /\ False <-> False) /\ (t = 1 /\ t = 1 <-> t = 1))))
 bridge: AND_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CONJ_ASSOC   [logic: connectives, quantifiers, equality, extensionality]
 hash: 68b444512171831dd562fcbd5b2c97dc
@@ -16,7 +16,7 @@ status: exact_native
 statement: forall t1 t2 t3:prop, t1 /\ (t2 /\ t3) <-> t1 /\ t2 /\ t3
 literal: forall t1 t2 t3 :e 2, t1 = 1 /\ (t2 = 1 /\ t3 = 1) <-> t1 = 1 /\ t2 = 1 /\ t3 = 1
 bridge: CONJ_ASSOC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_AND_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: 75e6b56a5e3738f48b8fb06a01e01c5c
@@ -25,7 +25,7 @@ status: generalization_required
 statement: forall A:set, forall P Q:set -> prop, (forall x :e A, P x /\ Q x) <-> (forall x :e A, P x) /\ forall x :e A, Q x
 literal: forall A:set, A <> Empty -> forall P Q :e 2 :^: A, (forall x :e A, P x = 1 /\ Q x = 1) <-> (forall x :e A, P x = 1) /\ forall x :e A, Q x = 1
 bridge: FORALL_AND_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_OR_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: 4d21283ecdaa6cc6acfad8726c3265d6
@@ -34,7 +34,7 @@ status: generalization_required
 statement: forall A:set, forall P Q:set -> prop, (exists x :e A, P x \/ Q x) <-> (exists x :e A, P x) \/ exists x :e A, Q x
 literal: forall A:set, A <> Empty -> forall P Q :e 2 :^: A, (exists x :e A, P x = 1 \/ Q x = 1) <-> (exists x :e A, P x = 1) \/ exists x :e A, Q x = 1
 bridge: EXISTS_OR_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NOT_FORALL_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: 2ea21d2081aa28f6bd8bb8c2f039cb31
@@ -43,7 +43,7 @@ status: generalization_required
 statement: forall A:set, forall P:set -> prop, ~ (forall x :e A, P x) <-> exists x :e A, ~ P x
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, ~ (forall x :e A, P x = 1) <-> exists x :e A, ~ P x = 1
 bridge: NOT_FORALL_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LEFT_IMP_EXISTS_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: d793fa8a6744565ded8518fb3f09de3c
@@ -52,7 +52,7 @@ status: generalization_required
 statement: forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x) -> Q <-> forall x :e A, P x -> Q
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, forall Q :e 2, (exists x :e A, P x = 1) -> Q = 1 <-> forall x :e A, P x = 1 -> Q = 1
 bridge: LEFT_IMP_EXISTS_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_REFL   [logic: connectives, quantifiers, equality, extensionality]
 hash: e372b30f99349efa111d83e2f360fb61
@@ -61,7 +61,7 @@ status: generalization_required
 statement: forall A:set, forall a :e A, exists x :e A, x = a
 literal: forall A:set, A <> Empty -> forall a :e A, exists x :e A, x = a
 bridge: EXISTS_REFL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_UNIQUE_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: 60b7bbfee72d562d12f567ea88549b0b
@@ -70,7 +70,7 @@ status: generalization_required
 statement: forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x x' :e A, P x /\ P x' -> x = x'
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> (exists x :e A, P x = 1) /\ forall x x' :e A, P x = 1 /\ P x' = 1 -> x = x'
 bridge: EXISTS_UNIQUE_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SWAP_FORALL_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: df4989caae04c5ecc3e98a343479c369
@@ -79,7 +79,7 @@ status: generalization_required
 statement: forall A B:set, forall P:set -> set -> prop, (forall x :e A, forall y :e B, P x y) <-> forall y :e B, forall x :e A, P x y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, forall y :e B, P x y = 1) <-> forall y :e B, forall x :e A, P x y = 1
 bridge: SWAP_FORALL_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### TRIV_FORALL_IMP_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: fc1e6c9b012c86ee3eb169faba899404
@@ -88,7 +88,7 @@ status: generalization_required
 statement: forall A:set, forall P Q:prop, (forall x :e A, P -> Q) <-> (exists x :e A, P) -> forall x :e A, Q
 literal: forall A:set, A <> Empty -> forall P Q :e 2, (forall x :e A, P = 1 -> Q = 1) <-> (exists x :e A, P = 1) -> forall x :e A, Q = 1
 bridge: TRIV_FORALL_IMP_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_SIMP   [logic: connectives, quantifiers, equality, extensionality]
 hash: 5b2bbb121df4deed7a734bfc92ca8777
@@ -97,7 +97,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall t:prop, (forall x :e A, t) <-> t
 literal: forall A:set, A <> Empty -> forall t :e 2, (forall x :e A, t = 1) <-> t = 1
 bridge: FORALL_SIMP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_SIMP   [logic: connectives, quantifiers, equality, extensionality]
 hash: b5ababf3666ca1bcaccce45441156521
@@ -106,7 +106,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall t:prop, (exists x :e A, t) <-> t
 literal: forall A:set, A <> Empty -> forall t :e 2, (exists x :e A, t = 1) <-> t = 1
 bridge: EXISTS_SIMP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### BETA_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: 014410de6c67ffec5a76c8993197b426
@@ -115,7 +115,7 @@ status: generalization_required
 statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e A, (fun x :e A => f x) y = f y
 bridge: BETA_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ABS_SIMP   [logic: connectives, quantifiers, equality, extensionality]
 hash: 60035b0f6aaa54e21e40375b2cfc2b87
@@ -124,7 +124,7 @@ status: generalization_required
 statement: forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t1 :e A, forall t2 :e B, (fun x :e B => t1) t2 = t1
 bridge: ABS_SIMP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EQ_EXT   [logic: connectives, quantifiers, equality, extensionality]
 hash: 74f6b9b467171dc186a2df9978244b58
@@ -133,7 +133,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f g :e B :^: A, (forall x :e A, f x = g x) -> f = g
 bridge: EQ_EXT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FUN_EQ_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: f5a914b29ff3ffb2975dadfdab697414
@@ -142,7 +142,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f g :e B :^: A, f = g <-> forall x :e A, f x = g x
 bridge: FUN_EQ_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MONO_FORALL   [logic: connectives, quantifiers, equality, extensionality]
 hash: 32c8690ef1e35ecb9a776a51c3db2049
@@ -151,7 +151,7 @@ status: generalization_required
 statement: forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (forall x :e A, P x) -> forall x :e A, Q x
 literal: forall A:set, A <> Empty -> forall P Q :e 2 :^: A, (forall x :e A, P x = 1 -> Q x = 1) -> (forall x :e A, P x = 1) -> forall x :e A, Q x = 1
 bridge: MONO_FORALL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MONO_EXISTS   [logic: connectives, quantifiers, equality, extensionality]
 hash: 4025fabd3eb4e3c1e0e82ec526e01240
@@ -160,7 +160,7 @@ status: generalization_required
 statement: forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (exists x :e A, P x) -> exists x :e A, Q x
 literal: forall A:set, A <> Empty -> forall P Q :e 2 :^: A, (forall x :e A, P x = 1 -> Q x = 1) -> (exists x :e A, P x = 1) -> exists x :e A, Q x = 1
 bridge: MONO_EXISTS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EQ_SYM   [logic: connectives, quantifiers, equality, extensionality]
 hash: b9d6fe477bd3d7fa5366b65298ff2a45
@@ -169,7 +169,7 @@ status: generalization_required
 statement: forall A:set, forall x y :e A, x = y -> y = x
 literal: forall A:set, A <> Empty -> forall x y :e A, x = y -> y = x
 bridge: EQ_SYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EQ_TRANS   [logic: connectives, quantifiers, equality, extensionality]
 hash: a433f46488d631f19c0671432eca45a2
@@ -178,7 +178,7 @@ status: generalization_required
 statement: forall A:set, forall x y z :e A, x = y /\ y = z -> x = z
 literal: forall A:set, A <> Empty -> forall x y z :e A, x = y /\ y = z -> x = z
 bridge: EQ_TRANS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SKOLEM_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: 7032340324a1a8ad7909cb040961f738
@@ -187,7 +187,7 @@ status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, exists y :e B, P x y = 1) <-> exists y :e B :^: A, forall x :e A, P x (y x) = 1
 bridge: SKOLEM_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### UNIQUE_SKOLEM_ALT   [logic: connectives, quantifiers, equality, extensionality]
 hash: a0be667b32ad906a5f23194afc353c19
@@ -196,7 +196,7 @@ status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> exists f :e B :^: A, forall x :e A, forall y :e B, P x y = 1 <-> f x = y
 bridge: UNIQUE_SKOLEM_ALT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXCLUDED_MIDDLE   [logic: connectives, quantifiers, equality, extensionality]
 hash: 24badd25546afe87d42d86a1339bd39d
@@ -205,7 +205,7 @@ status: native_reuse
 statement: forall t:prop, t \/ ~ t
 literal: forall t :e 2, t = 1 \/ ~ t = 1
 bridge: EXCLUDED_MIDDLE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### BOOL_CASES_AX   [logic: connectives, quantifiers, equality, extensionality]
 hash: 2d73cf3d9340a07496060ebb19e89f36
@@ -214,7 +214,7 @@ status: exact_native
 statement: forall t:prop, (t <-> True) \/ (t <-> False)
 literal: forall t :e 2, (t = 1 <-> True) \/ (t = 1 <-> False)
 bridge: BOOL_CASES_AX_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ETA_AX   [logic: connectives, quantifiers, equality, extensionality]
 hash: e20b11b91c226ce7c7fa8169d22798c6
@@ -223,7 +223,7 @@ status: generalization_required
 statement: forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t :e B :^: A, (fun x :e A => t x) = t
 bridge: ETA_AX_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SELECT_REFL   [choice, conditionals, Booleans as data]
 hash: 5d89ddfdd48e07285ef4152ba2f87957
@@ -232,7 +232,7 @@ status: generalization_required
 statement: forall A:set, forall x :e A, choose_in A (fun y:set => y = x) = x
 literal: forall A:set, A <> Empty -> forall x :e A, hl_select A (fun y :e A => if y = x then 1 else 0) = x
 bridge: SELECT_REFL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SELECT_UNIQUE   [choice, conditionals, Booleans as data]
 hash: a3ab62395ef165d333cfc84d6aa0b583
@@ -257,7 +257,7 @@ status: generalization_required
 statement: forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2
 literal: forall A:set, A <> Empty -> forall t1 t2 :e A, hl_COND A (if True then 1 else 0) t1 t2 = t1 /\ hl_COND A (if False then 1 else 0) t1 t2 = t2
 bridge: COND_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### COND_EXPAND   [choice, conditionals, Booleans as data]
 hash: a0ffc58d882ed08bb9ceb976d7d87a07
@@ -266,7 +266,7 @@ status: exact_native
 statement: forall b t1 t2:prop, (b -> t1) /\ (~ b -> t2) <-> (~ b \/ t1) /\ (b \/ t2)
 literal: forall b t1 t2 :e 2, b = 1 /\ t1 = 1 \/ ~ b = 1 /\ t2 = 1 <-> (~ b = 1 \/ t1 = 1) /\ (b = 1 \/ t2 = 1)
 bridge: COND_EXPAND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### COND_ABS   [choice, conditionals, Booleans as data]
 hash: 1ff110853c4fd6318c48220aea045eda
@@ -283,7 +283,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f :e B :^: A, forall x y :e A, f (hl_COND A b x y) = hl_COND B b (f x) (f y)
 bridge: COND_RAND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### COND_RATOR   [choice, conditionals, Booleans as data]
 hash: daf8a0139729304ef354db21fe53723a
@@ -300,7 +300,7 @@ status: exact_native
 statement: forall t:prop, ((True <-> t) <-> t) /\ (((t <-> True) <-> t) /\ (((False <-> t) <-> ~ t) /\ ((t <-> False) <-> ~ t)))
 literal: forall t :e 2, ((True <-> t = 1) <-> t = 1) /\ (((t = 1 <-> True) <-> t = 1) /\ (((False <-> t = 1) <-> ~ t = 1) /\ ((t = 1 <-> False) <-> ~ t = 1)))
 bridge: EQ_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NOT_CLAUSES   [choice, conditionals, Booleans as data]
 hash: 3b3c3e9efdbcbcbfc4b0cad619ffceaa
@@ -309,7 +309,7 @@ status: exact_native
 statement: (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True))
 literal: (forall t :e 2, ~ ~ t = 1 <-> t = 1) /\ ((~ True <-> False) /\ (~ False <-> True))
 bridge: NOT_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### I_THM   [polymorphic combinators]
 hash: 869bdf643ad8869e3e6c61189c7171c1
@@ -318,7 +318,7 @@ status: native_reuse
 statement: forall A:set, forall x :e A, x = x
 literal: forall A:set, A <> Empty -> forall x :e A, hl_I A x = x
 bridge: I_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### I_O_ID   [polymorphic combinators]
 hash: dc7aa55a625b9a78c1fd4104e409969c
@@ -327,7 +327,7 @@ status: generalization_required
 statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\ hl_o A B A f (hl_I A) = f
 bridge: I_O_ID_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### o_THM   [polymorphic combinators]
 hash: 5f35f2b84dbd2ff7d1a387066c77a57f
@@ -336,7 +336,7 @@ status: native_reuse
 statement: forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall x :e A, hl_o B C A f g x = f (g x)
 bridge: o_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### o_ASSOC   [polymorphic combinators]
 hash: f22ad52a4382071def526afc8c38a995
@@ -345,7 +345,7 @@ status: generalization_required
 statement: forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x))
 literal: forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall f :e D :^: C, forall g :e C :^: B, forall h :e B :^: A, hl_o C D A f (hl_o B C A g h) = hl_o B D A (hl_o C D B f g) h
 bridge: o_ASSOC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_ONE_THM   [polymorphic combinators]
 hash: 71b389caed42f1429cd0e3335edc3b46
@@ -354,7 +354,7 @@ status: transport_required
 statement: forall P:set -> prop, (forall x :e 1, P x) <-> P 0
 literal: forall P :e 2 :^: 1, (forall x :e 1, P x = 1) <-> P hl_one = 1
 bridge: FORALL_ONE_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_ONE_THM   [polymorphic combinators]
 hash: daa3be611903bccb7d5aace9a4b9ba60
@@ -363,7 +363,7 @@ status: transport_required
 statement: forall P:set -> prop, (exists x :e 1, P x) <-> P 0
 literal: forall P :e 2 :^: 1, (exists x :e 1, P x = 1) <-> P hl_one = 1
 bridge: EXISTS_ONE_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### one   [polymorphic combinators]
 hash: 8221571543fa874800f76ce863e0cf84
@@ -372,7 +372,7 @@ status: transport_required
 statement: forall v :e 1, v = 0
 literal: forall v :e 1, v = hl_one
 bridge: one_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### PAIR_EQ   [products]
 hash: 71770245f4ddd568d85751053a9e5a6e
@@ -381,7 +381,7 @@ status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall a :e A, forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b
 bridge: PAIR_EQ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### PAIR_SURJECTIVE   [products]
 hash: 8a85c46beb474e1e63192937ada8908b
@@ -390,7 +390,7 @@ status: generalization_required
 statement: forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall p :e A :*: B, exists x :e A, exists y :e B, p = hl_pair A B x y
 bridge: PAIR_SURJECTIVE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FST   [products]
 hash: e9c3a4a3164ca2f9e6fad2d535f8ab0f
@@ -399,7 +399,7 @@ status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, x = x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_FST A B (hl_pair A B x y) = x
 bridge: FST_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SND   [products]
 hash: e4ac88e20ba11cb060769e77dcb122fe
@@ -408,7 +408,7 @@ status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, y = y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_SND A B (hl_pair A B x y) = y
 bridge: SND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### PAIR   [products]
 hash: 23613fb98ddd9bc0b8abe81386bec32f
@@ -417,7 +417,7 @@ status: generalization_required
 statement: forall A B:set, forall x :e A :*: B, (x 0,x 1) = x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A :*: B, hl_pair A B (hl_FST A B x) (hl_SND A B x) = x
 bridge: PAIR_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_PAIR_THM   [products]
 hash: 259d29f2f6087c2bd6a11a52412f4491
@@ -426,7 +426,7 @@ status: generalization_required
 statement: forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :*: B), (forall p :e A :*: B, P p = 1) <-> forall p1 :e A, forall p2 :e B, P (hl_pair A B p1 p2) = 1
 bridge: FORALL_PAIR_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_PAIR_THM   [products]
 hash: 64b789e52ff2b13a976b5610389dc69b
@@ -435,7 +435,7 @@ status: generalization_required
 statement: forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :*: B), (exists p :e A :*: B, P p = 1) <-> exists p1 :e A, exists p2 :e B, P (hl_pair A B p1 p2) = 1
 bridge: EXISTS_PAIR_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LAMBDA_PAIR_THM   [products]
 hash: 5cd80d8f0fe05eb8b4cf070c629deed9
@@ -452,7 +452,7 @@ status: generalization_required
 statement: forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: (A :*: B), forall x :e A, forall y :e B, hl_CURRY A B C f x y = f (hl_pair A B x y)
 bridge: CURRY_DEF_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### UNCURRY_DEF   [products]
 hash: 3f03a0bbd511648cd075ac39bfcfc4bb
@@ -476,7 +476,7 @@ status: transport_required
 statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e C :^: B :^: A, P f) <-> forall f:set -> set, (forall x :e A :*: B, f x :e C) -> P (fun a :e A => fun b :e B => f (a,b))
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: B :^: A), (forall f :e C :^: B :^: A, P f = 1) <-> forall f :e C :^: (A :*: B), P (fun a :e A => fun b :e B => f (hl_pair A B a b)) = 1
 bridge: FORALL_UNCURRY_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_PAIRED_THM   [products]
 hash: 4ec8958129e197fc37c7dc4ea0662917
@@ -493,7 +493,7 @@ status: transport_required
 statement: forall n :e omega, ~ ordsucc n = 0
 literal: forall n :e omega, ~ hl_SUC n = hl_NUMERAL hl_zero
 bridge: NOT_SUC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUC_INJ   [naturals: constructors, induction, arithmetic, order, division]
 hash: 5224521fb640c43e425c96e6462ab6d0
@@ -502,7 +502,7 @@ status: transport_required
 statement: forall m n :e omega, ordsucc m = ordsucc n <-> m = n
 literal: forall m n :e omega, hl_SUC m = hl_SUC n <-> m = n
 bridge: SUC_INJ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_INDUCTION   [naturals: constructors, induction, arithmetic, order, division]
 hash: 95f125bb90820dfc772fce4559903527
@@ -511,7 +511,7 @@ status: transport_required
 statement: forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n
 literal: forall P :e 2 :^: omega, P (hl_NUMERAL hl_zero) = 1 /\ (forall n :e omega, P n = 1 -> P (hl_SUC n) = 1) -> forall n :e omega, P n = 1
 bridge: num_INDUCTION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_Axiom   [naturals: constructors, induction, arithmetic, order, division]
 hash: 22351265077b01108064d138b673a797
@@ -520,7 +520,7 @@ status: generalization_required
 statement: forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x)
 literal: forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, hl_exists_unique (A :^: omega) (fun fn :e A :^: omega => if fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n then 1 else 0) = 1
 bridge: num_Axiom_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_RECURSION   [naturals: constructors, induction, arithmetic, order, division]
 hash: b287304fbed4be3d30468df5802532bb
@@ -529,7 +529,7 @@ status: generalization_required
 statement: forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n)
 literal: forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, exists fn :e A :^: omega, fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n
 bridge: num_RECURSION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_CASES   [naturals: constructors, induction, arithmetic, order, division]
 hash: f202972a2e9786d2257c90d475eac48a
@@ -538,7 +538,7 @@ status: transport_required
 statement: forall m :e omega, m = 0 \/ exists n :e omega, m = ordsucc n
 literal: forall m :e omega, m = hl_NUMERAL hl_zero \/ exists n :e omega, m = hl_SUC n
 bridge: num_CASES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_WF   [naturals: constructors, induction, arithmetic, order, division]
 hash: c8e9e8a8b44e66cefba87747759d198f
@@ -547,7 +547,7 @@ status: transport_required
 statement: forall P:set -> prop, (forall n :e omega, (forall m :e omega, m < n -> P m) -> P n) -> forall n :e omega, P n
 literal: forall P :e 2 :^: omega, (forall n :e omega, (forall m :e omega, hl_lt m n = 1 -> P m = 1) -> P n = 1) -> forall n :e omega, P n = 1
 bridge: num_WF_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ADD_CLAUSES   [naturals: constructors, induction, arithmetic, order, division]
 hash: 126d9cc9e3ac78967da56121163e2515
@@ -556,7 +556,7 @@ status: transport_required
 statement: (forall n :e omega, 0 + n = n) /\ ((forall m :e omega, m + 0 = m) /\ ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n)))
 literal: (forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) /\ ((forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m) /\ ((forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) /\ forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)))
 bridge: ADD_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ADD_SYM   [naturals: constructors, induction, arithmetic, order, division]
 hash: 7d864f1eb0ef77376b9bc72e88019c32
@@ -565,7 +565,7 @@ status: transport_required
 statement: forall m n :e omega, m + n = n + m
 literal: forall m n :e omega, hl_add m n = hl_add n m
 bridge: ADD_SYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ADD_ASSOC   [naturals: constructors, induction, arithmetic, order, division]
 hash: b97e64f9ddf8b94f1c6e0e8c8b245bbd
@@ -574,7 +574,7 @@ status: transport_required
 statement: forall m n p :e omega, m + n + p = (m + n) + p
 literal: forall m n p :e omega, hl_add m (hl_add n p) = hl_add (hl_add m n) p
 bridge: ADD_ASSOC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MULT_CLAUSES   [naturals: constructors, induction, arithmetic, order, division]
 hash: feb467b9ce3d44927a3c5047681ce915
@@ -583,7 +583,7 @@ status: transport_required
 statement: (forall n :e omega, 0 * n = 0) /\ ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n))))
 literal: (forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) /\ ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)))))
 bridge: MULT_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MULT_SYM   [naturals: constructors, induction, arithmetic, order, division]
 hash: 7103233ece91e4b797b0f67782824327
@@ -592,7 +592,7 @@ status: transport_required
 statement: forall m n :e omega, m * n = n * m
 literal: forall m n :e omega, hl_mul m n = hl_mul n m
 bridge: MULT_SYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LEFT_ADD_DISTRIB   [naturals: constructors, induction, arithmetic, order, division]
 hash: 95fb7903cf74df59ac85cd362dabe182
@@ -601,7 +601,7 @@ status: transport_required
 statement: forall m n p :e omega, m * (n + p) = m * n + m * p
 literal: forall m n p :e omega, hl_mul m (hl_add n p) = hl_add (hl_mul m n) (hl_mul m p)
 bridge: LEFT_ADD_DISTRIB_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LE_SUC_LT   [naturals: constructors, induction, arithmetic, order, division]
 hash: a059e9b50769a59dbd1b228f22a762b2
@@ -610,7 +610,7 @@ status: transport_required
 statement: forall m n :e omega, ordsucc m <= n <-> m < n
 literal: forall m n :e omega, hl_le (hl_SUC m) n = 1 <-> hl_lt m n = 1
 bridge: LE_SUC_LT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LT_SUC_LE   [naturals: constructors, induction, arithmetic, order, division]
 hash: d61ceddf7a050227ee90dd8409e8a238
@@ -619,7 +619,7 @@ status: transport_required
 statement: forall m n :e omega, m < ordsucc n <-> m <= n
 literal: forall m n :e omega, hl_lt m (hl_SUC n) = 1 <-> hl_le m n = 1
 bridge: LT_SUC_LE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LE_ANTISYM   [naturals: constructors, induction, arithmetic, order, division]
 hash: 92cfc4f4d9868c364256f8b2facfa1c3
@@ -628,7 +628,7 @@ status: transport_required
 statement: forall m n :e omega, m <= n /\ n <= m <-> m = n
 literal: forall m n :e omega, hl_le m n = 1 /\ hl_le n m = 1 <-> m = n
 bridge: LE_ANTISYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LT_TRANS   [naturals: constructors, induction, arithmetic, order, division]
 hash: b1d4795a239cf0b833ba1123d70dc41d
@@ -637,7 +637,7 @@ status: transport_required
 statement: forall m n p :e omega, m < n /\ n < p -> m < p
 literal: forall m n p :e omega, hl_lt m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1
 bridge: LT_TRANS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LE_EXISTS   [naturals: constructors, induction, arithmetic, order, division]
 hash: fc24da01a419be1c250ebb180c054ce7
@@ -646,7 +646,7 @@ status: transport_required
 statement: forall m n :e omega, m <= n <-> exists d :e omega, n = m + d
 literal: forall m n :e omega, hl_le m n = 1 <-> exists d :e omega, n = hl_add m d
 bridge: LE_EXISTS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LT_NZ   [naturals: constructors, induction, arithmetic, order, division]
 hash: 44fb2896bb81711114737091050171b2
@@ -655,7 +655,7 @@ status: transport_required
 statement: forall n :e omega, 0 < n <-> ~ n = 0
 literal: forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 <-> ~ n = hl_NUMERAL hl_zero
 bridge: LT_NZ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXP_ADD   [naturals: constructors, induction, arithmetic, order, division]
 hash: 5354063bdd0efd0e1ad534d027f52f61
@@ -664,7 +664,7 @@ status: transport_required
 statement: forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p
 literal: forall m n p :e omega, hl_EXP m (hl_add n p) = hl_mul (hl_EXP m n) (hl_EXP m p)
 bridge: EXP_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUB_ADD   [naturals: constructors, induction, arithmetic, order, division]
 hash: 0a5b1061c758157ba0232b8361b301a2
@@ -673,7 +673,7 @@ status: transport_required
 statement: forall m n :e omega, n <= m -> minus_nat m n + n = m
 literal: forall m n :e omega, hl_le n m = 1 -> hl_add (hl_sub m n) n = m
 bridge: SUB_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DIVISION   [naturals: constructors, induction, arithmetic, order, division]
 hash: b59e2104560227deeca73507054e0663
@@ -682,7 +682,7 @@ status: transport_required
 statement: forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n
 literal: forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> m = hl_add (hl_mul (hl_DIV m n) n) (hl_MOD m n) /\ hl_lt (hl_MOD m n) n = 1
 bridge: DIVISION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DIV_MULT   [naturals: constructors, induction, arithmetic, order, division]
 hash: 3a8beeb323ea04d1de30bfcba2c25ac4
@@ -691,7 +691,7 @@ status: transport_required
 statement: forall m n :e omega, ~ m = 0 -> div_nat (m * n) m = n
 literal: forall m n :e omega, ~ m = hl_NUMERAL hl_zero -> hl_DIV (hl_mul m n) m = n
 bridge: DIV_MULT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MOD_LT   [naturals: constructors, induction, arithmetic, order, division]
 hash: d694ca4e2590b601d1d07f67592d876b
@@ -700,7 +700,7 @@ status: transport_required
 statement: forall m n :e omega, m < n -> mod_nat m n = m
 literal: forall m n :e omega, hl_lt m n = 1 -> hl_MOD m n = m
 bridge: MOD_LT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EVEN_ADD   [naturals: constructors, induction, arithmetic, order, division]
 hash: b97c6e33433a1b82c867029be0bf2e57
@@ -709,7 +709,7 @@ status: transport_required
 statement: forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n)
 literal: forall m n :e omega, hl_EVEN (hl_add m n) = 1 <-> (hl_EVEN m = 1 <-> hl_EVEN n = 1)
 bridge: EVEN_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ODD_MULT   [naturals: constructors, induction, arithmetic, order, division]
 hash: 4d0b87b1b46bc6ab933f56d6ee5c130f
@@ -718,7 +718,7 @@ status: transport_required
 statement: forall m n :e omega, odd_nat (m * n) <-> odd_nat m /\ odd_nat n
 literal: forall m n :e omega, hl_ODD (hl_mul m n) = 1 <-> hl_ODD m = 1 /\ hl_ODD n = 1
 bridge: ODD_MULT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FACT_LT   [naturals: constructors, induction, arithmetic, order, division]
 hash: 050e25d4c8007df2182d34ae82e12b0a
@@ -727,7 +727,7 @@ status: native_reuse
 statement: forall n :e omega, 0 < factorial n
 literal: forall n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1
 bridge: FACT_LT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MAX   [naturals: constructors, induction, arithmetic, order, division]
 hash: dec7206fd153d46948a1a7573a250572
@@ -736,7 +736,7 @@ status: transport_required
 statement: forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m
 literal: forall m n :e omega, hl_MAX m n = hl_COND omega (hl_le m n) n m
 bridge: MAX_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MIN   [naturals: constructors, induction, arithmetic, order, division]
 hash: cac117c9eae33edc6db6da231d420222
@@ -745,7 +745,7 @@ status: transport_required
 statement: forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n
 literal: forall m n :e omega, hl_MIN m n = hl_COND omega (hl_le m n) m n
 bridge: MIN_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MINIMAL   [naturals: constructors, induction, arithmetic, order, division]
 hash: 443e384aa0f6d3a39950416d1cd74f27
@@ -754,7 +754,7 @@ status: transport_required
 statement: forall P:set -> prop, (exists n :e omega, P n) <-> P (choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m)) /\ forall m :e omega, m < choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) -> ~ P m
 literal: forall P :e 2 :^: omega, (exists n :e omega, P n = 1) <-> P (hl_minimal P) = 1 /\ forall m :e omega, hl_lt m (hl_minimal P) = 1 -> ~ P m = 1
 bridge: MINIMAL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### PRE_ELIM_THM   [naturals: constructors, induction, arithmetic, order, division]
 hash: 54ad4be8bef9fd2931b15c2c9d1fa3e1
@@ -763,7 +763,7 @@ status: transport_required
 statement: forall P:set -> prop, forall n :e omega, P (nat_pred n) <-> forall m :e omega, n = ordsucc m \/ m = 0 /\ n = 0 -> P m
 literal: forall P :e 2 :^: omega, forall n :e omega, P (hl_PRE n) = 1 <-> forall m :e omega, n = hl_SUC m \/ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero -> P m = 1
 bridge: PRE_ELIM_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WLOG_LE   [naturals: constructors, induction, arithmetic, order, division]
 hash: 22c2c6603c7056b533e4c8dd2b677170
@@ -772,7 +772,7 @@ status: transport_required
 statement: forall P:set -> set -> prop, (forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m <= n -> P m n) -> forall m n :e omega, P m n
 literal: forall P :e 2 :^: omega :^: omega, (forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_le m n = 1 -> P m n = 1) -> forall m n :e omega, P m n = 1
 bridge: WLOG_LE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_MAX   [naturals: constructors, induction, arithmetic, order, division]
 hash: c8685b053a9c358dd0c8097ab0840890
@@ -781,7 +781,7 @@ status: transport_required
 statement: forall P:set -> prop, (exists x :e omega, P x) /\ (exists M :e omega, forall x :e omega, P x -> x <= M) <-> exists m :e omega, P m /\ forall x :e omega, P x -> x <= m
 literal: forall P :e 2 :^: omega, (exists x :e omega, P x = 1) /\ (exists M :e omega, forall x :e omega, P x = 1 -> hl_le x M = 1) <-> exists m :e omega, P m = 1 /\ forall x :e omega, P x = 1 -> hl_le x m = 1
 bridge: num_MAX_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ARITH_ADD   [naturals: constructors, induction, arithmetic, order, division]
 hash: 2e4fc31d7a7c1e3570c442349f6dc373
@@ -798,7 +798,7 @@ status: native_reuse
 statement: forall n :e omega, 2 * n = n + n
 literal: forall n :e omega, hl_NUMERAL (hl_BIT0 n) = hl_add (hl_NUMERAL n) (hl_NUMERAL n)
 bridge: BIT0_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### BIT1_THM   [naturals: constructors, induction, arithmetic, order, division]
 hash: 5654419bb755d5c6a785a1195805b6b3
@@ -807,7 +807,7 @@ status: native_reuse
 statement: forall n :e omega, 2 * n + 1 = ordsucc (n + n)
 literal: forall n :e omega, hl_NUMERAL (hl_BIT1 n) = hl_SUC (hl_add (hl_NUMERAL n) (hl_NUMERAL n))
 bridge: BIT1_THM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WF   [well-founded relations]
 hash: 7cfe48218a6cd8da521c969693569484
@@ -816,7 +816,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> forall P:set -> prop, (exists x :e A, P x) -> exists x :e A, P x /\ forall y :e A, lt y x -> ~ P y
 literal: forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> forall P :e 2 :^: A, (exists x :e A, P x = 1) -> exists x :e A, P x = 1 /\ forall y :e A, lt y x = 1 -> ~ P y = 1
 bridge: WF_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WF_IND   [well-founded relations]
 hash: 2f8fbdae1fc99fbb0282e91e4798be47
@@ -825,7 +825,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> forall P:set -> prop, (forall x :e A, (forall y :e A, lt y x -> P y) -> P x) -> forall x :e A, P x
 literal: forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> forall P :e 2 :^: A, (forall x :e A, (forall y :e A, lt y x = 1 -> P y = 1) -> P x = 1) -> forall x :e A, P x = 1
 bridge: WF_IND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WF_DCHAIN   [well-founded relations]
 hash: 0a202e079f28a6155304a3d694551c09
@@ -834,7 +834,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> ~ exists s:set -> set, (forall x :e omega, s x :e A) /\ forall n :e omega, lt (s (ordsucc n)) (s n)
 literal: forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> ~ exists s :e A :^: omega, forall n :e omega, lt (s (hl_SUC n)) (s n) = 1
 bridge: WF_DCHAIN_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WF_MEASURE   [well-founded relations]
 hash: 5d1b43ae387330061cca4c569f00754a
@@ -843,7 +843,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall m:set -> set, (forall x :e A, m x :e omega) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ m y < m x
 literal: forall A:set, A <> Empty -> forall m :e omega :^: A, hl_WF A (hl_MEASURE A m) = 1
 bridge: WF_MEASURE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WF_LEX   [well-founded relations]
 hash: ab5a867a79f9dbbf98e3fa352b9392b0
@@ -860,7 +860,7 @@ status: transport_required
 statement: forall P c= omega, P <> Empty -> exists x :e P, forall y :e P, ~ y < x
 literal: hl_WF omega hl_lt = 1
 bridge: WF_num_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### WF_REC   [well-founded relations]
 hash: c2b6c542214ace7a599099af99d8943e
@@ -869,7 +869,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 -> forall H :e B :^: A :^: (B :^: A), (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x = 1 -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x
 bridge: WF_REC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MEASURE   [well-founded relations]
 hash: abb01e8d84ce430691bf20436f40529b
@@ -878,7 +878,7 @@ status: generalization_required
 statement: forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y
 literal: forall A:set, A <> Empty -> forall m :e omega :^: A, hl_MEASURE A m = fun x :e A => fun y :e A => hl_lt (m x) (m y)
 bridge: MEASURE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NOT_CONS_NIL   [lists (finite sequences), including higher-order mapped operations]
 hash: 77428f1d7d66f872892dab61338128c2
@@ -887,7 +887,7 @@ status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, ~ hl_CONS A h t = hl_NIL A
 bridge: NOT_CONS_NIL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CONS_11   [lists (finite sequences), including higher-order mapped operations]
 hash: 50a941211ca5b773825052d4a811750c
@@ -896,7 +896,7 @@ status: generalization_required
 statement: forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2
 literal: forall A:set, A <> Empty -> forall h1 h2 :e A, forall t1 t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2
 bridge: CONS_11_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### list_INDUCT   [lists (finite sequences), including higher-order mapped operations]
 hash: e24a8b3534d12615232f89c947dd6ab3
@@ -905,7 +905,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: finseq A, P (hl_NIL A) = 1 /\ (forall a0 :e A, forall a1 :e finseq A, P a1 = 1 -> P (hl_CONS A a0 a1) = 1) -> forall x :e finseq A, P x = 1
 bridge: list_INDUCT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### list_CASES   [lists (finite sequences), including higher-order mapped operations]
 hash: 6c9a307f18507870c827834056fdffa7
@@ -914,7 +914,7 @@ status: native_reuse
 statement: forall A:set, forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t
 literal: forall A:set, A <> Empty -> forall l :e finseq A, l = hl_NIL A \/ exists h :e A, exists t :e finseq A, l = hl_CONS A h t
 bridge: list_CASES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### list_RECURSION   [lists (finite sequences), including higher-order mapped operations]
 hash: 21b923915525c3b3ed6c44a773a64671
@@ -931,7 +931,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> (forall l :e finseq A, seq_append seq_nil l = l) /\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l)
 literal: forall A:set, A <> Empty -> (forall l :e finseq A, hl_APPEND A (hl_NIL A) l = l) /\ forall h :e A, forall t l :e finseq A, hl_APPEND A (hl_CONS A h t) l = hl_CONS A h (hl_APPEND A t l)
 bridge: APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### APPEND_ASSOC   [lists (finite sequences), including higher-order mapped operations]
 hash: 595245cd5d4fe352684d336877239fe8
@@ -940,7 +940,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall l m n :e finseq A, seq_append l (seq_append m n) = seq_append (seq_append l m) n
 literal: forall A:set, A <> Empty -> forall l m n :e finseq A, hl_APPEND A l (hl_APPEND A m n) = hl_APPEND A (hl_APPEND A l m) n
 bridge: APPEND_ASSOC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### APPEND_NIL   [lists (finite sequences), including higher-order mapped operations]
 hash: 34e676cda4ec75f03b52d6a0a1fe6783
@@ -949,7 +949,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall l :e finseq A, seq_append l seq_nil = l
 literal: forall A:set, A <> Empty -> forall l :e finseq A, hl_APPEND A l (hl_NIL A) = l
 bridge: APPEND_NIL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LENGTH_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 87d5d63471bb0040381d1296f836489b
@@ -958,7 +958,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m
 literal: forall A:set, A <> Empty -> forall l m :e finseq A, hl_LENGTH A (hl_APPEND A l m) = hl_add (hl_LENGTH A l) (hl_LENGTH A m)
 bridge: LENGTH_APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MAP_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: e005972551ddebaef8cd43f82996650d
@@ -967,7 +967,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l1 l2 :e finseq A, seq_map f (seq_append l1 l2) = seq_append (seq_map f l1) (seq_map f l2)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l1 l2 :e finseq A, hl_MAP A B f (hl_APPEND A l1 l2) = hl_APPEND B (hl_MAP A B f l1) (hl_MAP A B f l2)
 bridge: MAP_APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MAP_o   [lists (finite sequences), including higher-order mapped operations]
 hash: 21dca6e4b2bded73c4144e9ca5c0eb7e
@@ -976,7 +976,7 @@ status: transport_required
 statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall l :e finseq A, hl_MAP A C (hl_o B C A g f) l = hl_MAP B C g (hl_MAP A B f l)
 bridge: MAP_o_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MEM_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 65331249734eb4cc4e9441c91b6a2d51
@@ -985,7 +985,7 @@ status: generalization_required
 statement: forall A:set, forall x :e A, forall l1 l2 :e finseq A, seq_mem x (seq_append l1 l2) <-> seq_mem x l1 \/ seq_mem x l2
 literal: forall A:set, A <> Empty -> forall x :e A, forall l1 l2 :e finseq A, hl_MEM A x (hl_APPEND A l1 l2) = 1 <-> hl_MEM A x l1 = 1 \/ hl_MEM A x l2 = 1
 bridge: MEM_APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### HD   [lists (finite sequences), including higher-order mapped operations]
 hash: e48111d0d8d0854a2e64b2dfd1f92b7e
@@ -994,7 +994,7 @@ status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_HD A (hl_CONS A h t) = h
 bridge: HD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### TL   [lists (finite sequences), including higher-order mapped operations]
 hash: a461f6927361fce88089ebdcecc03cd9
@@ -1003,7 +1003,7 @@ status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_TL A (hl_CONS A h t) = t
 bridge: TL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LENGTH_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: 46b98d7ca2f174c0346df14d00117beb
@@ -1012,7 +1012,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e B) -> seq_len (seq_map f l) = seq_len l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall f :e B :^: A, hl_LENGTH B (hl_MAP A B f l) = hl_LENGTH A l
 bridge: LENGTH_MAP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REVERSE_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 45852b5237ddc4ffb91f94da5306964d
@@ -1021,7 +1021,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall l m :e finseq A, seq_rev (seq_append l m) = seq_append (seq_rev m) (seq_rev l)
 literal: forall A:set, A <> Empty -> forall l m :e finseq A, hl_REVERSE A (hl_APPEND A l m) = hl_APPEND A (hl_REVERSE A m) (hl_REVERSE A l)
 bridge: REVERSE_APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ALL_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: 0f6eaa20955e61ecced785b2b67da0a9
@@ -1030,7 +1030,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all P (seq_map f l) <-> seq_all (fun x:set => P (f x)) l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall l :e finseq A, hl_ALL B P (hl_MAP A B f l) = 1 <-> hl_ALL A (hl_o B 2 A P f) l = 1
 bridge: ALL_MAP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EL   [lists (finite sequences), including higher-order mapped operations]
 hash: 90e8be5936c40bee20461b9eb5985f6a
@@ -1047,7 +1047,7 @@ status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_LAST A (hl_CONS A h t) = hl_COND A (if t = hl_NIL A then 1 else 0) h (hl_LAST A t)
 bridge: LAST_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FILTER_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: d4d93b5f36ebb171c6fddf63d85463d1
@@ -1056,7 +1056,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall P:set -> prop, forall l1 l2 :e finseq A, seq_filter P (seq_append l1 l2) = seq_append (seq_filter P l1) (seq_filter P l2)
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l1 l2 :e finseq A, hl_FILTER A P (hl_APPEND A l1 l2) = hl_APPEND A (hl_FILTER A P l1) (hl_FILTER A P l2)
 bridge: FILTER_APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ITLIST_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 8a530b09bf93bfaa44eb3847190e9bde
@@ -1065,7 +1065,7 @@ status: generalization_required
 statement: forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall a :e B, forall l1 l2 :e finseq A, seq_foldr f (seq_append l1 l2) a = seq_foldr f l1 (seq_foldr f l2 a)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: B :^: A, forall a :e B, forall l1 l2 :e finseq A, hl_ITLIST A B f (hl_APPEND A l1 l2) a = hl_ITLIST A B f l1 (hl_ITLIST A B f l2 a)
 bridge: ITLIST_APPEND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MEM_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: efcc0ae65a5073ec9a7e1049fea67bdc
@@ -1074,7 +1074,7 @@ status: generalization_required
 statement: forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e B, forall l :e finseq A, seq_mem y (seq_map f l) <-> exists x :e A, seq_mem x l /\ y = f x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e B, forall l :e finseq A, hl_MEM B y (hl_MAP A B f l) = 1 <-> exists x :e A, hl_MEM A x l = 1 /\ y = f x
 bridge: MEM_MAP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXISTS_EX   [lists (finite sequences), including higher-order mapped operations]
 hash: d49b9f16d9da009544ebd72dd5849c7e
@@ -1083,7 +1083,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (exists x :e A, seq_ex (P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s) l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq B, (exists x :e A, hl_EX B (P x) l = 1) <-> hl_EX B (fun s :e B => if exists x :e A, P x s = 1 then 1 else 0) l = 1
 bridge: EXISTS_EX_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ALL2_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: e2caf4faab982154814cddd9f86ed0f1
@@ -1092,7 +1092,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all2 P (seq_map f l) l <-> seq_all (fun a:set => P (f a) a) l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: A :^: B, forall f :e B :^: A, forall l :e finseq A, hl_ALL2 B A P (hl_MAP A B f l) l = 1 <-> hl_ALL A (fun a :e A => P (f a) a) l = 1
 bridge: ALL2_MAP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LENGTH_EQ_NIL   [lists (finite sequences), including higher-order mapped operations]
 hash: a50730425650e431b90f58c470a41521
@@ -1101,7 +1101,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall l :e finseq A, seq_len l = 0 <-> l = seq_nil
 literal: forall A:set, A <> Empty -> forall l :e finseq A, hl_LENGTH A l = hl_NUMERAL hl_zero <-> l = hl_NIL A
 bridge: LENGTH_EQ_NIL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### LIST_EQ   [lists (finite sequences), including higher-order mapped operations]
 hash: e80393494d2381101e2f9fdd59b8a934
@@ -1118,7 +1118,7 @@ status: generalization_required
 statement: forall A:set, forall n :e omega, forall x :e A, seq_len (seq_replicate n x) = n
 literal: forall A:set, A <> Empty -> forall n :e omega, forall x :e A, hl_LENGTH A (hl_REPLICATE A n x) = n
 bridge: LENGTH_REPLICATE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ZIP   [lists (finite sequences), including higher-order mapped operations]
 hash: fd4494788599018ac29f29b4f2822be0
@@ -1135,7 +1135,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall l :e finseq A, seq_all (fun x:set => f x = g x) l -> seq_map f l = seq_map g l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f g :e B :^: A, forall l :e finseq A, hl_ALL A (fun x :e A => if f x = g x then 1 else 0) l = 1 -> hl_MAP A B f l = hl_MAP A B g l
 bridge: MAP_EQ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ITLIST_EXTRA   [lists (finite sequences), including higher-order mapped operations]
 hash: d13c7903e336f50874d6fbb2e0e01efa
@@ -1144,7 +1144,7 @@ status: generalization_required
 statement: forall A B:set, forall a :e A, forall b :e B, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall l :e finseq A, seq_foldr f (seq_append l (seq_cons a seq_nil)) b = seq_foldr f l (f a b)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall a :e A, forall b :e B, forall f :e B :^: B :^: A, forall l :e finseq A, hl_ITLIST A B f (hl_APPEND A l (hl_CONS A a (hl_NIL A))) b = hl_ITLIST A B f l (f a b)
 bridge: ITLIST_EXTRA_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_UNION   [sets: membership, algebra, comprehensions, images, families]
 hash: 53bfd4012ecbf824436fdec1d98ef00d
@@ -1153,7 +1153,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, forall x :e A, x :e s :\/: t <-> x :e s \/ x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_UNION A s t) = 1 <-> hl_IN A x s = 1 \/ hl_IN A x t = 1
 bridge: IN_UNION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_INTER   [sets: membership, algebra, comprehensions, images, families]
 hash: 2ac4b17df4e14a7c514df10344e203a5
@@ -1162,7 +1162,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, forall x :e A, x :e s :/\: t <-> x :e s /\ x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_INTER A s t) = 1 <-> hl_IN A x s = 1 /\ hl_IN A x t = 1
 bridge: IN_INTER_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EXTENSION   [sets: membership, algebra, comprehensions, images, families]
 hash: f7141c939edd744d7d6f135168a24813
@@ -1171,7 +1171,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, s = t <-> forall x :e A, hl_IN A x s = 1 <-> hl_IN A x t = 1
 bridge: EXTENSION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUBSET_TRANS   [sets: membership, algebra, comprehensions, images, families]
 hash: 018f8b838b2251133932e492a7b563c9
@@ -1180,7 +1180,7 @@ status: generalization_required
 statement: forall A:set, forall s t u c= A, s c= t /\ t c= u -> s c= u
 literal: forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_SUBSET A s t = 1 /\ hl_SUBSET A t u = 1 -> hl_SUBSET A s u = 1
 bridge: SUBSET_TRANS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### EMPTY_SUBSET   [sets: membership, algebra, comprehensions, images, families]
 hash: ac5fdc02e4441a076caae461078fbdcc
@@ -1189,7 +1189,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, Empty c= s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SUBSET A (hl_EMPTY A) s = 1
 bridge: EMPTY_SUBSET_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### UNIV_SUBSET   [sets: membership, algebra, comprehensions, images, families]
 hash: b3d14bc364eb0f572d7bf080c2756639
@@ -1198,7 +1198,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, A c= s <-> s = A
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SUBSET A (hl_UNIV A) s = 1 <-> s = hl_UNIV A
 bridge: UNIV_SUBSET_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_IMAGE   [sets: membership, algebra, comprehensions, images, families]
 hash: c1c230701c50cc179850f00e47d436dd
@@ -1207,7 +1207,7 @@ status: generalization_required
 statement: forall A B:set, forall y :e B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (y :e {f x | x :e s} <-> exists x :e A, y = f x /\ x :e s)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall y :e B, forall s :e 2 :^: A, forall f :e B :^: A, hl_IN B y (hl_IMAGE A B f s) = 1 <-> exists x :e A, y = f x /\ hl_IN A x s = 1
 bridge: IN_IMAGE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IMAGE_o   [sets: membership, algebra, comprehensions, images, families]
 hash: 9666e7022fca9e70698bca3379b4251d
@@ -1216,7 +1216,7 @@ status: generalization_required
 statement: forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall s :e 2 :^: A, hl_IMAGE A C (hl_o B C A f g) s = hl_IMAGE B C f (hl_IMAGE A B g s)
 bridge: IMAGE_o_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: 62243c550f1aaf57081e91ad62c42ada
@@ -1225,7 +1225,7 @@ status: generalization_required
 statement: forall A:set, forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s
 literal: forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_IN A x (hl_INSERT A y s) = 1 <-> x = y \/ hl_IN A x s = 1
 bridge: IN_INSERT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INSERT_SUBSET   [sets: membership, algebra, comprehensions, images, families]
 hash: 5a05c6364a30b639bab502c24188f136
@@ -1234,7 +1234,7 @@ status: generalization_required
 statement: forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t
 literal: forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_SUBSET A (hl_INSERT A x s) t = 1 <-> hl_IN A x t = 1 /\ hl_SUBSET A s t = 1
 bridge: INSERT_SUBSET_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_DIFF   [sets: membership, algebra, comprehensions, images, families]
 hash: b5cd0dac99fd349231cf6297ee30479a
@@ -1243,7 +1243,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, forall x :e A, x :e s :\: t <-> x :e s /\ ~ x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_DIFF A s t) = 1 <-> hl_IN A x s = 1 /\ ~ hl_IN A x t = 1
 bridge: IN_DIFF_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DIFF_EMPTY   [sets: membership, algebra, comprehensions, images, families]
 hash: b5e5e5858b7fee878ce9b37b99ebfbca
@@ -1252,7 +1252,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, s :\: Empty = s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A s (hl_EMPTY A) = s
 bridge: DIFF_EMPTY_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### UNIONS_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: de1ef5f54205563dbbf8b94ab8d271e9
@@ -1261,7 +1261,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall s c= A, forall u c= Power A, Union (SetAdjoin u s) = s :\/: Union u
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall u :e 2 :^: (2 :^: A), hl_UNIONS A (hl_INSERT (2 :^: A) s u) = hl_UNION A s (hl_UNIONS A u)
 bridge: UNIONS_INSERT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_UNIONS   [sets: membership, algebra, comprehensions, images, families]
 hash: c4eb1df88efda5987e140438f90f45d8
@@ -1270,7 +1270,7 @@ status: generalization_required
 statement: forall A:set, forall s c= Power A, forall x :e A, x :e Union s <-> exists t c= A, t :e s /\ x :e t
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall x :e A, hl_IN A x (hl_UNIONS A s) = 1 <-> exists t :e 2 :^: A, hl_IN (2 :^: A) t s = 1 /\ hl_IN A x t = 1
 bridge: IN_UNIONS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_INTERS   [sets: membership, algebra, comprehensions, images, families]
 hash: 90f987e51ed1bea30a7181c0682ececf
@@ -1279,7 +1279,7 @@ status: generalization_required
 statement: forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall x :e A, hl_IN A x (hl_INTERS A s) = 1 <-> forall t :e 2 :^: A, hl_IN (2 :^: A) t s = 1 -> hl_IN A x t = 1
 bridge: IN_INTERS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INTERS_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: aa86287310a3119611b5759a859e7fa2
@@ -1288,7 +1288,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, forall u c= Power A, {x :e A | forall Y :e SetAdjoin u s, x :e Y} = s :/\: {x :e A | forall Y :e u, x :e Y}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall u :e 2 :^: (2 :^: A), hl_INTERS A (hl_INSERT (2 :^: A) s u) = hl_INTER A s (hl_INTERS A u)
 bridge: INTERS_INSERT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_ELIM_THM   [sets: membership, algebra, comprehensions, images, families]
 hash: f0b562a918d32513fbce399c8874d32d
@@ -1304,7 +1304,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, s c= Empty <-> s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SUBSET A s (hl_EMPTY A) = 1 <-> s = hl_EMPTY A
 bridge: SUBSET_EMPTY_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NOT_IN_EMPTY   [sets: membership, algebra, comprehensions, images, families]
 hash: ebe8471d5c357b956cf0f5e515fe3511
@@ -1313,7 +1313,7 @@ status: generalization_required
 statement: forall A:set, forall x :e A, ~ x :e Empty
 literal: forall A:set, A <> Empty -> forall x :e A, ~ hl_IN A x (hl_EMPTY A) = 1
 bridge: NOT_IN_EMPTY_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### MEMBER_NOT_EMPTY   [sets: membership, algebra, comprehensions, images, families]
 hash: 034de37a8d42754ce2996a70f9091391
@@ -1322,7 +1322,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, (exists x :e A, x :e s) <-> ~ s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, (exists x :e A, hl_IN A x s = 1) <-> ~ s = hl_EMPTY A
 bridge: MEMBER_NOT_EMPTY_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_IN_IMAGE   [sets: membership, algebra, comprehensions, images, families]
 hash: c7978b7e04133ab1326ae6b13e51b939
@@ -1331,7 +1331,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall y :e B, y :e {f x | x :e s} -> P y) <-> forall x :e A, x :e s -> P (f x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall s :e 2 :^: A, (forall y :e B, hl_IN B y (hl_IMAGE A B f s) = 1 -> P y = 1) <-> forall x :e A, hl_IN A x s = 1 -> P (f x) = 1
 bridge: FORALL_IN_IMAGE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IMAGE_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
 hash: d971eba44eb36baa8624acc2c96acb14
@@ -1340,7 +1340,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, {f x | x :e Empty} = Empty /\ {f x0 | x0 :e SetAdjoin s x} = SetAdjoin {f x | x :e s} (f x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall x :e A, forall s :e 2 :^: A, hl_IMAGE A B f (hl_EMPTY A) = hl_EMPTY B /\ hl_IMAGE A B f (hl_INSERT A x s) = hl_INSERT B (f x) (hl_IMAGE A B f s)
 bridge: IMAGE_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_DELETE   [sets: membership, algebra, comprehensions, images, families]
 hash: 9a7c37f71f31bb294187bc2cad212525
@@ -1349,7 +1349,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x y :e A, hl_IN A x (hl_DELETE A s y) = 1 <-> hl_IN A x s = 1 /\ ~ x = y
 bridge: IN_DELETE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DELETE_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: 1189cefe6e65ac793f83e648e9159f01
@@ -1358,7 +1358,7 @@ status: generalization_required
 statement: forall A:set, forall x y :e A, forall s c= A, SetAdjoin s x :\: {y} = if x = y then s :\: {y} else SetAdjoin (s :\: {y}) x
 literal: forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_DELETE A (hl_INSERT A x s) y = hl_COND (2 :^: A) (if x = y then 1 else 0) (hl_DELETE A s y) (hl_INSERT A x (hl_DELETE A s y))
 bridge: DELETE_INSERT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DISJOINT   [sets: membership, algebra, comprehensions, images, families]
 hash: 06faad16c446a9a1f851e720b49c06e3
@@ -1367,7 +1367,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DISJOINT A s t = 1 <-> hl_INTER A s t = hl_EMPTY A
 bridge: DISJOINT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IN_UNIV   [sets: membership, algebra, comprehensions, images, families]
 hash: eee80073ec9a8663b3ed94c2504d029b
@@ -1376,7 +1376,7 @@ status: native_reuse
 statement: forall A:set, forall x :e A, x :e A
 literal: forall A:set, A <> Empty -> forall x :e A, hl_IN A x (hl_UNIV A) = 1
 bridge: IN_UNIV_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUBSET_ANTISYM   [sets: membership, algebra, comprehensions, images, families]
 hash: 66de716356ea282ff6b32df51c0f0aeb
@@ -1385,7 +1385,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, s c= t /\ t c= s -> s = t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_SUBSET A s t = 1 /\ hl_SUBSET A t s = 1 -> s = t
 bridge: SUBSET_ANTISYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CHOICE_DEF   [sets: membership, algebra, comprehensions, images, families]
 hash: 0b240c7b9a6613faa869add5bbe7dfb6
@@ -1394,7 +1394,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, ~ s = Empty -> choose_in A (fun x:set => x :e s) :e s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, ~ s = hl_EMPTY A -> hl_IN A (hl_CHOICE A s) s = 1
 bridge: CHOICE_DEF_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REST   [sets: membership, algebra, comprehensions, images, families]
 hash: e0f633a0788602734c7ec5f0f8e48f26
@@ -1403,7 +1403,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :e s)} = s :\: {choose_in A (fun x:set => x :e s)}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_REST A s = hl_DELETE A s (hl_CHOICE A s)
 bridge: REST_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ARB   [sets: membership, algebra, comprehensions, images, families]
 hash: b453496b4bba3b6602eb4a8f4e4f7fa5
@@ -1412,7 +1412,7 @@ status: generalization_required
 statement: forall A:set, choose_in A (fun x:set => False) = choose_in A (fun x:set => False)
 literal: forall A:set, A <> Empty -> hl_ARB A = hl_select A (fun x :e A => if False then 1 else 0)
 bridge: ARB_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### UNION_ACI   [sets: membership, algebra, comprehensions, images, families]
 hash: 07377596f3694561ea113c5efaff1cef
@@ -1421,7 +1421,7 @@ status: generalization_required
 statement: forall A:set, forall p q r c= A, p :\/: q = q :\/: p /\ (p :\/: q :\/: r = p :\/: (q :\/: r) /\ (p :\/: (q :\/: r) = q :\/: (p :\/: r) /\ (p :\/: p = p /\ p :\/: (p :\/: q) = p :\/: q)))
 literal: forall A:set, A <> Empty -> forall p q r :e 2 :^: A, hl_UNION A p q = hl_UNION A q p /\ (hl_UNION A (hl_UNION A p q) r = hl_UNION A p (hl_UNION A q r) /\ (hl_UNION A p (hl_UNION A q r) = hl_UNION A q (hl_UNION A p r) /\ (hl_UNION A p p = p /\ hl_UNION A p (hl_UNION A p q) = hl_UNION A p q)))
 bridge: UNION_ACI_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### POWERSET_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
 hash: 70a8a2d45d230cb1a42aaf9faab99fd3
@@ -1438,7 +1438,7 @@ status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IN (A :*: B) (hl_pair A B x y) (hl_CROSS A B s t) = 1 <-> hl_IN A x s = 1 /\ hl_IN B y t = 1
 bridge: IN_CROSS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FORALL_IN_GSPEC   [sets: membership, algebra, comprehensions, images, families]
 hash: 4e50b5eb28b9acf79387e641ba5fae71
@@ -1455,7 +1455,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall FINITE':set -> prop, FINITE' Empty /\ (forall x :e A, forall s c= A, FINITE' s -> FINITE' (SetAdjoin s x)) -> forall a c= A, finite a -> FINITE' a
 literal: forall A:set, A <> Empty -> forall FINITE' :e 2 :^: (2 :^: A), FINITE' (hl_EMPTY A) = 1 /\ (forall x :e A, forall s :e 2 :^: A, FINITE' s = 1 -> FINITE' (hl_INSERT A x s) = 1) -> forall a :e 2 :^: A, hl_FINITE A a = 1 -> FINITE' a = 1
 bridge: FINITE_INDUCT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FINITE_UNION   [finiteness, cardinality, functions between sets]
 hash: f8031a98ed188e3cff5f6de0823f5688
@@ -1464,7 +1464,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, finite (s :\/: t) <-> finite s /\ finite t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A (hl_UNION A s t) = 1 <-> hl_FINITE A s = 1 /\ hl_FINITE A t = 1
 bridge: FINITE_UNION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FINITE_IMAGE   [finiteness, cardinality, functions between sets]
 hash: 432dfbca4344ace97e63aa457fdad110
@@ -1473,7 +1473,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {f x | x :e s}
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE B (hl_IMAGE A B f s) = 1
 bridge: FINITE_IMAGE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FINITE_SUBSET   [finiteness, cardinality, functions between sets]
 hash: cbe809cab3573cf324dd84b560f89471
@@ -1482,7 +1482,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, finite t /\ s c= t -> finite s
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A t = 1 /\ hl_SUBSET A s t = 1 -> hl_FINITE A s = 1
 bridge: FINITE_SUBSET_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CARD_CLAUSES   [finiteness, cardinality, functions between sets]
 hash: b98042a9307e6eb5805ab458d8192980
@@ -1491,7 +1491,7 @@ status: generalization_required
 statement: forall A:set, finite_cardinality Empty = 0 /\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s)
 literal: forall A:set, A <> Empty -> hl_CARD A (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_CARD A (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (hl_CARD A s) (hl_SUC (hl_CARD A s))
 bridge: CARD_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CARD_UNION   [finiteness, cardinality, functions between sets]
 hash: dec93797888a7880b4682d0323169b96
@@ -1500,7 +1500,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\ (hl_FINITE A t = 1 /\ hl_INTER A s t = hl_EMPTY A) -> hl_CARD A (hl_UNION A s t) = hl_add (hl_CARD A s) (hl_CARD A t)
 bridge: CARD_UNION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CARD_IMAGE_INJ   [finiteness, cardinality, functions between sets]
 hash: f399386eea1d58d0a78436c2e48d108e
@@ -1509,7 +1509,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite s -> finite_cardinality {f x | x :e s} = finite_cardinality s
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\ (hl_IN A y s = 1 /\ f x = f y) -> x = y) /\ hl_FINITE A s = 1 -> hl_CARD B (hl_IMAGE A B f s) = hl_CARD A s
 bridge: CARD_IMAGE_INJ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### HAS_SIZE   [finiteness, cardinality, functions between sets]
 hash: d40bb36d555c16b9e0d80663db5ee75c
@@ -1518,7 +1518,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n <-> finite s /\ finite_cardinality s = n
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_HAS_SIZE A s n = 1 <-> hl_FINITE A s = 1 /\ hl_CARD A s = n
 bridge: HAS_SIZE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INFINITE   [finiteness, cardinality, functions between sets]
 hash: 7c9d659d5cdcc1d82c3e2e38114de923
@@ -1527,7 +1527,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, infinite s <-> ~ finite s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INFINITE A s = 1 <-> ~ hl_FINITE A s = 1
 bridge: INFINITE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_FINITE   [finiteness, cardinality, functions between sets]
 hash: 1d72873b878bd3f30c51efe6dd52e975
@@ -1536,7 +1536,7 @@ status: transport_required
 statement: forall s c= omega, finite s <-> exists a :e omega, forall x :e omega, x :e s -> x <= a
 literal: forall s :e 2 :^: omega, hl_FINITE omega s = 1 <-> exists a :e omega, forall x :e omega, hl_IN omega x s = 1 -> hl_le x a = 1
 bridge: num_FINITE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SURJ   [finiteness, cardinality, functions between sets]
 hash: 0fa2b466a165ebb28e5dc0409866fdd5
@@ -1545,7 +1545,7 @@ status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e s, f x :e t) /\ (forall y :e t, exists x :e s, f x = y) <-> (forall x :e A, x :e s -> f x :e t) /\ forall x :e B, x :e t -> exists y :e A, y :e s /\ f y = x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t :e 2 :^: B, forall s :e 2 :^: A, forall f :e B :^: A, hl_SURJ A B f s t = 1 <-> (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\ forall x :e B, hl_IN B x t = 1 -> exists y :e A, hl_IN A y s = 1 /\ f y = x
 bridge: SURJ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INJ   [finiteness, cardinality, functions between sets]
 hash: dfd4aee509198cc43c03d54f1ad412fc
@@ -1554,7 +1554,7 @@ status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (inj s t f <-> (forall x :e A, x :e s -> f x :e t) /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t :e 2 :^: B, forall s :e 2 :^: A, forall f :e B :^: A, hl_INJ A B f s t = 1 <-> (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\ forall x y :e A, hl_IN A x s = 1 /\ (hl_IN A y s = 1 /\ f x = f y) -> x = y
 bridge: INJ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### BIJ   [finiteness, cardinality, functions between sets]
 hash: e7c76a8cde9eadacde88eed045681195
@@ -1563,7 +1563,7 @@ status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, bij s t f <-> inj s t f /\ ((forall x :e s, f x :e t) /\ forall y :e t, exists x :e s, f x = y)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_BIJ A B f s t = 1 <-> hl_INJ A B f s t = 1 /\ hl_SURJ A B f s t = 1
 bridge: BIJ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FINITE_CROSS   [finiteness, cardinality, functions between sets]
 hash: 12892b449bb0cf81d2a595538cee5069
@@ -1572,7 +1572,7 @@ status: generalization_required
 statement: forall A B:set, forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\ hl_FINITE B t = 1 -> hl_FINITE (A :*: B) (hl_CROSS A B s t) = 1
 bridge: FINITE_CROSS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CARD_CROSS   [finiteness, cardinality, functions between sets]
 hash: e98f492c84401357c81713e687de88e9
@@ -1581,7 +1581,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite_cardinality (s :*: t) = finite_cardinality s * finite_cardinality t
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\ hl_FINITE B t = 1 -> hl_CARD (A :*: B) (hl_CROSS A B s t) = hl_mul (hl_CARD A s) (hl_CARD B t)
 bridge: CARD_CROSS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### HAS_SIZE_0   [finiteness, cardinality, functions between sets]
 hash: b315301e53d95a91c880c6bafbea05e1
@@ -1590,7 +1590,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, equip s 0 <-> s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_HAS_SIZE A s (hl_NUMERAL hl_zero) = 1 <-> s = hl_EMPTY A
 bridge: HAS_SIZE_0_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FINITE_POWERSET   [finiteness, cardinality, functions between sets]
 hash: 3ae71668592f92c8300210136b6c496e
@@ -1599,7 +1599,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, finite s -> finite {t :e Power A | t c= s}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_157 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_157 (hl_SUBSET A t s) t = 1 then 1 else 0)) = 1
 bridge: FINITE_POWERSET_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INFINITE_NONEMPTY   [finiteness, cardinality, functions between sets]
 hash: f4ba7868f4290b5f0e224feedf2de23e
@@ -1608,7 +1608,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, infinite s -> ~ s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INFINITE A s = 1 -> ~ s = hl_EMPTY A
 bridge: INFINITE_NONEMPTY_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NSUM_CLAUSES   [iteration, sums, number segments]
 hash: ea406f8293ce1f3be12e9bc950e8d8d6
@@ -1617,7 +1617,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e omega) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e omega) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f
 literal: forall A B:set, A <> Empty -> B <> Empty -> (forall f :e omega :^: A, hl_nsum A (hl_EMPTY A) f = hl_NUMERAL hl_zero) /\ forall x :e B, forall f :e omega :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_nsum B (hl_INSERT B x s) f = hl_COND omega (hl_IN B x s) (hl_nsum B s f) (hl_add (f x) (hl_nsum B s f))
 bridge: NSUM_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUM_CLAUSES   [iteration, sums, number segments]
 hash: 203f6a0710932fdee70420e4b7f58758
@@ -1626,7 +1626,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e R) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f
 literal: forall A B:set, A <> Empty -> B <> Empty -> (forall f :e R :^: A, hl_sum A (hl_EMPTY A) f = hl_real_of_num (hl_NUMERAL hl_zero)) /\ forall x :e B, forall f :e R :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_sum B (hl_INSERT B x s) f = hl_COND R (hl_IN B x s) (hl_sum B s f) (hl_real_add (f x) (hl_sum B s f))
 bridge: SUM_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUM_ADD   [iteration, sums, number segments]
 hash: 7b4b78190b429e4506561b3032353a91
@@ -1635,7 +1635,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g
 literal: forall A:set, A <> Empty -> forall f g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun x :e A => hl_real_add (f x) (g x)) = hl_real_add (hl_sum A s f) (hl_sum A s g)
 bridge: SUM_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NSUM_EQ   [iteration, sums, number segments]
 hash: 7b56acbfdcba2de9bb221054d9ae675c
@@ -1644,7 +1644,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finsum s f = finsum s g
 literal: forall A:set, A <> Empty -> forall f g :e omega :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> f x = g x) -> hl_nsum A s f = hl_nsum A s g
 bridge: NSUM_EQ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### ITERATE_CLAUSES   [iteration, sums, number segments]
 hash: fa9418c5d51eff616d0781182d319b2d
@@ -1653,7 +1653,7 @@ status: transport_required
 statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e C) -> iterate_op C op Empty f = neutral_of C op) /\ forall f:set -> set, (forall x :e B, f x :e C) -> forall x :e B, forall s c= B, finite s -> iterate_op C op (SetAdjoin s x) f = if x :e s then iterate_op C op s f else op (f x) (iterate_op C op s f)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> (forall f :e C :^: A, hl_iterate C A op (hl_EMPTY A) f = hl_neutral C op) /\ forall f :e C :^: B, forall x :e B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_iterate C B op (hl_INSERT B x s) f = hl_COND C (hl_IN B x s) (hl_iterate C B op s f) (op (f x) (hl_iterate C B op s f))
 bridge: ITERATE_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NUMSEG_CLAUSES   [iteration, sums, number segments]
 hash: aaec3d7bc1b903fbed446dba31debe52
@@ -1662,7 +1662,7 @@ status: transport_required
 statement: (forall m :e omega, {i :e omega | m <= i /\ i <= 0} = if m = 0 then {0} else Empty) /\ forall m n :e omega, {i :e omega | m <= i /\ i <= ordsucc n} = if m <= ordsucc n then SetAdjoin {i :e omega | m <= i /\ i <= n} (ordsucc n) else {i :e omega | m <= i /\ i <= n}
 literal: (forall m :e omega, hl_numseg m (hl_NUMERAL hl_zero) = hl_COND (2 :^: omega) (if m = hl_NUMERAL hl_zero then 1 else 0) (hl_INSERT omega (hl_NUMERAL hl_zero) (hl_EMPTY omega)) (hl_EMPTY omega)) /\ forall m n :e omega, hl_numseg m (hl_SUC n) = hl_COND (2 :^: omega) (hl_le m (hl_SUC n)) (hl_INSERT omega (hl_SUC n) (hl_numseg m n)) (hl_numseg m n)
 bridge: NUMSEG_CLAUSES_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUM_SING   [iteration, sums, number segments]
 hash: dbf2c5eb44671fdd1484486c9cfb2ed3
@@ -1671,7 +1671,7 @@ status: generalization_required
 statement: forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall x :e A, finsum {x} f = f x
 literal: forall A:set, A <> Empty -> forall f :e R :^: A, forall x :e A, hl_sum A (hl_INSERT A x (hl_EMPTY A)) f = f x
 bridge: SUM_SING_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CARD_NUMSEG   [iteration, sums, number segments]
 hash: 603fc98d20552313cb229eb8c9fd1ab3
@@ -1680,7 +1680,7 @@ status: transport_required
 statement: forall m n :e omega, finite_cardinality {i :e omega | m <= i /\ i <= n} = minus_nat (n + 1) m
 literal: forall m n :e omega, hl_CARD omega (hl_numseg m n) = hl_sub (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) m
 bridge: CARD_NUMSEG_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NSUM_UNION   [iteration, sums, number segments]
 hash: 254da9a0342a265c00884ab83c6b0037
@@ -1689,7 +1689,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finsum (s :\/: t) f = finsum s f + finsum t f
 literal: forall A:set, A <> Empty -> forall f :e omega :^: A, forall s t :e 2 :^: A, hl_FINITE A s = 1 /\ (hl_FINITE A t = 1 /\ hl_DISJOINT A s t = 1) -> hl_nsum A (hl_UNION A s t) f = hl_add (hl_nsum A s f) (hl_nsum A t f)
 bridge: NSUM_UNION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### neutral   [iteration, sums, number segments]
 hash: a8873aaeb854cfc680774eff00267039
@@ -1698,7 +1698,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A op = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y)
 literal: forall A:set, A <> Empty -> forall op :e A :^: A :^: A, hl_neutral A op = hl_select A (fun x :e A => if forall y :e A, op x y = y /\ op y x = y then 1 else 0)
 bridge: neutral_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### support   [iteration, sums, number segments]
 hash: db57a04db49d84b327ec80e8d4024bb4
@@ -1707,7 +1707,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B op} = {x :e A | x :e s /\ ~ f x = neutral_of B op}
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall op :e B :^: B :^: B, hl_support B A op f s = hl_GSPEC A (fun GEN_PVAR_239 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_239 (if hl_IN A x s = 1 /\ ~ f x = hl_neutral B op then 1 else 0) x = 1 then 1 else 0)
 bridge: support_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### SUM_IMAGE   [iteration, sums, number segments]
 hash: ad177bf18ca1c44876fd0f53adc1ddbc
@@ -1716,7 +1716,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x))
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: B, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\ (hl_IN A y s = 1 /\ f x = f y) -> x = y) -> hl_sum B (hl_IMAGE A B f s) g = hl_sum A s (hl_o B R A g f)
 bridge: SUM_IMAGE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NSUM_BOUND   [iteration, sums, number segments]
 hash: 822f18b79cadf3f9e39fe32c88d6727e
@@ -1725,7 +1725,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (forall x :e A, x :e s -> f x <= b) -> finsum s f <= finite_cardinality s * b
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e omega :^: A, forall b :e omega, hl_FINITE A s = 1 /\ (forall x :e A, hl_IN A x s = 1 -> hl_le (f x) b = 1) -> hl_le (hl_nsum A s f) (hl_mul (hl_CARD A s) b) = 1
 bridge: NSUM_BOUND_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CART_EQ   [Cartesian powers and finite index types]
 hash: 12d2a2739958dbd8cafb139a4bfa94c3
@@ -1748,7 +1748,7 @@ status: transport_required
 statement: 1 = 1
 literal: hl_dimindex 1 (hl_UNIV 1) = hl_NUMERAL (hl_BIT1 hl_zero)
 bridge: DIMINDEX_1_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DIMINDEX_2   [Cartesian powers and finite index types]
 hash: d0a8da4f2034656bd4d9e0714a4c82f2
@@ -1778,7 +1778,7 @@ status: native_reuse
 statement: forall A:set, A <> Empty -> 1 <= dimindex A
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A s) = 1
 bridge: DIMINDEX_GE_1_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### FINITE_INDEX_INJ   [Cartesian powers and finite index types]
 hash: ed3f2b168a80aa1187743fa433a8d6e6
@@ -1808,7 +1808,7 @@ status: native_reuse
 statement: forall x y :e R, x + y = y + x
 literal: forall x y :e R, hl_real_add x y = hl_real_add y x
 bridge: REAL_ADD_SYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_MUL_ASSOC   [reals: field axioms, order, derived operations]
 hash: 9ea7c36e21183fa79ec8bfdc791ec8c6
@@ -1817,7 +1817,7 @@ status: native_reuse
 statement: forall x y z :e R, x * y * z = (x * y) * z
 literal: forall x y z :e R, hl_real_mul x (hl_real_mul y z) = hl_real_mul (hl_real_mul x y) z
 bridge: REAL_MUL_ASSOC_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_LE_TRANS   [reals: field axioms, order, derived operations]
 hash: 650af3c1406ad5babc239cd1e46503bc
@@ -1826,7 +1826,7 @@ status: transport_required
 statement: forall x y z :e R, x <= y /\ y <= z -> x <= z
 literal: forall x y z :e R, hl_real_le x y = 1 /\ hl_real_le y z = 1 -> hl_real_le x z = 1
 bridge: REAL_LE_TRANS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_LT_TOTAL   [reals: field axioms, order, derived operations]
 hash: ac4b52bab10f3ed1a46e76f849ba562b
@@ -1835,7 +1835,7 @@ status: transport_required
 statement: forall x y :e R, x = y \/ (x < y \/ y < x)
 literal: forall x y :e R, x = y \/ (hl_real_lt x y = 1 \/ hl_real_lt y x = 1)
 bridge: REAL_LT_TOTAL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_ADD_LINV   [reals: field axioms, order, derived operations]
 hash: 69b62ed94b5a39a5cb6b939e9fd25fcf
@@ -1844,7 +1844,7 @@ status: native_reuse
 statement: forall x :e R, - x + x = 0
 literal: forall x :e R, hl_real_add (hl_real_neg x) x = hl_real_of_num (hl_NUMERAL hl_zero)
 bridge: REAL_ADD_LINV_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_MUL_LINV   [reals: field axioms, order, derived operations]
 hash: a9878dfb3f8f4e0493a76e9de2ddf29c
@@ -1853,7 +1853,7 @@ status: transport_required
 statement: forall x :e R, ~ x = 0 -> recip_SNo x * x = 1
 literal: forall x :e R, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_mul (hl_real_inv x) x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))
 bridge: REAL_MUL_LINV_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_OF_NUM_ADD   [reals: field axioms, order, derived operations]
 hash: 783dde967a79844cda42d3f3e75c41ad
@@ -1862,7 +1862,7 @@ status: transport_required
 statement: forall m n :e omega, m + n = m + n
 literal: forall m n :e omega, hl_real_add (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_add m n)
 bridge: REAL_OF_NUM_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_ABS_TRIANGLE   [reals: field axioms, order, derived operations]
 hash: 8a6e90a0968c0c940616841569612a35
@@ -1871,7 +1871,7 @@ status: native_reuse
 statement: forall x y :e R, abs_SNo (x + y) <= abs_SNo x + abs_SNo y
 literal: forall x y :e R, hl_real_le (hl_real_abs (hl_real_add x y)) (hl_real_add (hl_real_abs x) (hl_real_abs y)) = 1
 bridge: REAL_ABS_TRIANGLE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_POW_ADD   [reals: field axioms, order, derived operations]
 hash: 7444b9839b1bd878ee901b5bf4897d75
@@ -1880,7 +1880,7 @@ status: transport_required
 statement: forall x :e R, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n
 literal: forall x :e R, forall m n :e omega, hl_real_pow x (hl_add m n) = hl_real_mul (hl_real_pow x m) (hl_real_pow x n)
 bridge: REAL_POW_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_INV_INV   [reals: field axioms, order, derived operations]
 hash: 15378ada745a2d9d74f5b75bb47f417d
@@ -1889,7 +1889,7 @@ status: transport_required
 statement: forall x :e R, recip_SNo (recip_SNo x) = x
 literal: forall x :e R, hl_real_inv (hl_real_inv x) = x
 bridge: REAL_INV_INV_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_DIV_REFL   [reals: field axioms, order, derived operations]
 hash: fc6ed5898d96f0fdd75da1bcc15992a9
@@ -1898,7 +1898,7 @@ status: transport_required
 statement: forall x :e R, ~ x = 0 -> x :/: x = 1
 literal: forall x :e R, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_div x x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))
 bridge: REAL_DIV_REFL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_LE_SQUARE   [reals: field axioms, order, derived operations]
 hash: dc0d07c4fc09a788c2ef40abf97ab583
@@ -1907,7 +1907,7 @@ status: transport_required
 statement: forall x :e R, 0 <= x * x
 literal: forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x x) = 1
 bridge: REAL_LE_SQUARE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_ARCH   [reals: field axioms, order, derived operations]
 hash: abad9d45e11f20c4544fb1dbe61c24fa
@@ -1916,7 +1916,7 @@ status: transport_required
 statement: forall x :e R, 0 < x -> forall y :e R, exists n :e omega, y < n * x
 literal: forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> forall y :e R, exists n :e omega, hl_real_lt y (hl_real_mul (hl_real_of_num n) x) = 1
 bridge: REAL_ARCH_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_COMPLETE   [reals: field axioms, order, derived operations]
 hash: ed89d1373d628a31ea8fceb7aa11825a
@@ -1925,7 +1925,7 @@ status: transport_required
 statement: forall P:set -> prop, (exists x :e R, P x) /\ (exists M :e R, forall x :e R, P x -> x <= M) -> exists M :e R, (forall x :e R, P x -> x <= M) /\ forall M' :e R, (forall x :e R, P x -> x <= M') -> M <= M'
 literal: forall P :e 2 :^: R, (exists x :e R, P x = 1) /\ (exists M :e R, forall x :e R, P x = 1 -> hl_real_le x M = 1) -> exists M :e R, (forall x :e R, P x = 1 -> hl_real_le x M = 1) /\ forall M' :e R, (forall x :e R, P x = 1 -> hl_real_le x M' = 1) -> hl_real_le M M' = 1
 bridge: REAL_COMPLETE_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_MAX_MIN   [reals: field axioms, order, derived operations]
 hash: 123f2fec7036c9c21403a85b57953fa0
@@ -1934,7 +1934,7 @@ status: transport_required
 statement: forall x y :e R, (if x <= y then y else x) = - if - x <= - y then - x else - y
 literal: forall x y :e R, hl_real_max x y = hl_real_neg (hl_real_min (hl_real_neg x) (hl_real_neg y))
 bridge: REAL_MAX_MIN_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_LT_LADD_IMP   [reals: field axioms, order, derived operations]
 hash: c540e203a0aead265ae133df5ac2300d
@@ -1943,7 +1943,7 @@ status: transport_required
 statement: forall x y z :e R, y < z -> x + y < x + z
 literal: forall x y z :e R, hl_real_lt y z = 1 -> hl_real_lt (hl_real_add x y) (hl_real_add x z) = 1
 bridge: REAL_LT_LADD_IMP_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_ABS_POS   [reals: field axioms, order, derived operations]
 hash: e8a555b35bac915447922d0b3b8edb07
@@ -1952,7 +1952,7 @@ status: native_reuse
 statement: forall x :e R, 0 <= abs_SNo x
 literal: forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_abs x) = 1
 bridge: REAL_ABS_POS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_INV_0   [reals: field axioms, order, derived operations]
 hash: 58bc73bd1864f8ac755987a82d6740f3
@@ -1961,7 +1961,7 @@ status: native_reuse
 statement: recip_SNo 0 = 0
 literal: hl_real_inv (hl_real_of_num (hl_NUMERAL hl_zero)) = hl_real_of_num (hl_NUMERAL hl_zero)
 bridge: REAL_INV_0_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_POW_2   [reals: field axioms, order, derived operations]
 hash: 6a96774983d9221fa9d194a897100854
@@ -1970,7 +1970,7 @@ status: transport_required
 statement: forall x :e R, x ^ 2 = x * x
 literal: forall x :e R, hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_mul x x
 bridge: REAL_POW_2_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### REAL_LE_ANTISYM   [reals: field axioms, order, derived operations]
 hash: 2a36fae7a764e7b6f8d1470ecbd9d3be
@@ -1979,7 +1979,7 @@ status: transport_required
 statement: forall x y :e R, x <= y /\ y <= x <-> x = y
 literal: forall x y :e R, hl_real_le x y = 1 /\ hl_real_le y x = 1 <-> x = y
 bridge: REAL_LE_ANTISYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_ADD_SYM   [integers]
 hash: 823efccaab8f8c65707f8d2a529cd7e1
@@ -1988,7 +1988,7 @@ status: transport_required
 statement: forall x y :e int, x + y = y + x
 literal: forall x y :e hl_ty_int, hl_int_add x y = hl_int_add y x
 bridge: INT_ADD_SYM_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_OF_NUM_ADD   [integers]
 hash: 51a2e415bbd755081b9c29ecbf28821f
@@ -1997,7 +1997,7 @@ status: transport_required
 statement: forall m n :e omega, m + n = m + n
 literal: forall m n :e omega, hl_int_add (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_add m n)
 bridge: INT_OF_NUM_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_LE_TRANS   [integers]
 hash: ab3a6aadc863a3552c806ad6a6f29b78
@@ -2006,7 +2006,7 @@ status: transport_required
 statement: forall x y z :e int, x <= y /\ y <= z -> x <= z
 literal: forall x y z :e hl_ty_int, hl_int_le x y = 1 /\ hl_int_le y z = 1 -> hl_int_le x z = 1
 bridge: INT_LE_TRANS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_ABS_POS   [integers]
 hash: 52755ebb3b6de706dd592efa6b16d25d
@@ -2015,7 +2015,7 @@ status: transport_required
 statement: forall x :e int, 0 <= abs_SNo x
 literal: forall x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_abs x) = 1
 bridge: INT_ABS_POS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_DIVISION   [integers]
 hash: f0a1be36963cfff364e042a398f6c10d
@@ -2024,7 +2024,7 @@ status: transport_required
 statement: forall m n :e int, ~ n = 0 -> m = div_int m n * n + rem_int m n /\ (0 <= rem_int m n /\ rem_int m n < abs_SNo n)
 literal: forall m n :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> m = hl_int_add (hl_int_mul (hl_div m n) n) (hl_rem m n) /\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_rem m n) = 1 /\ hl_int_lt (hl_rem m n) (hl_int_abs n) = 1)
 bridge: INT_DIVISION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_GCD_EXISTS   [integers]
 hash: 1fd3791a36b29532c3099944ac467d39
@@ -2033,7 +2033,7 @@ status: transport_required
 statement: forall a b :e int, exists d :e int, divides_int d a /\ (divides_int d b /\ exists x y :e int, d = a * x + b * y)
 literal: forall a b :e hl_ty_int, exists d :e hl_ty_int, hl_int_divides d a = 1 /\ (hl_int_divides d b = 1 /\ exists x y :e hl_ty_int, d = hl_int_add (hl_int_mul a x) (hl_int_mul b y))
 bridge: INT_GCD_EXISTS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### NUM_GCD   [integers]
 hash: 71b969f4ff9cc7292e8e593f142bdcc9
@@ -2042,7 +2042,7 @@ status: transport_required
 statement: forall a b :e omega, gcd_int a b = gcd_int a b
 literal: forall a b :e omega, hl_int_of_num (hl_num_gcd (hl_pair omega omega a b)) = hl_int_gcd (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b))
 bridge: NUM_GCD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### CONG   [integers]
 hash: 724c7646174213ceafea3e62084f528f
@@ -2051,7 +2051,7 @@ status: transport_required
 statement: forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n
 literal: forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_MOD x n = hl_MOD y n
 bridge: CONG_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_POW_ADD   [integers]
 hash: 9fd0e6e0611a65097f4817e3221bc72b
@@ -2060,7 +2060,7 @@ status: transport_required
 statement: forall x :e int, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n
 literal: forall x :e hl_ty_int, forall m n :e omega, hl_int_pow x (hl_add m n) = hl_int_mul (hl_int_pow x m) (hl_int_pow x n)
 bridge: INT_POW_ADD_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INTEGER_REAL_OF_INT   [integers]
 hash: fd2f6c28a41c04c5ff22528384474bc8
@@ -2069,7 +2069,7 @@ status: transport_required
 statement: forall x :e int, x :e int
 literal: forall x :e hl_ty_int, hl_integer (hl_real_of_int x) = 1
 bridge: INTEGER_REAL_OF_INT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_FORALL_POS   [integers]
 hash: 85a59e4ef2440743785ab04d2db8ad7b
@@ -2078,7 +2078,7 @@ status: transport_required
 statement: forall P:set -> prop, (forall n :e omega, P n) <-> forall i :e int, 0 <= i -> P i
 literal: forall P :e 2 :^: hl_ty_int, (forall n :e omega, P (hl_int_of_num n) = 1) <-> forall i :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) i = 1 -> P i = 1
 bridge: INT_FORALL_POS_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### INT_ARCH   [integers]
 hash: 351ee14a8335eb82d4a884a47e45ad53
@@ -2087,7 +2087,7 @@ status: transport_required
 statement: forall x d :e int, ~ d = 0 -> exists c :e int, x < c * d
 literal: forall x d :e hl_ty_int, ~ d = hl_int_of_num (hl_NUMERAL hl_zero) -> exists c :e hl_ty_int, hl_int_lt x (hl_int_mul c d) = 1
 bridge: INT_ARCH_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### num_gcd   [integers]
 hash: 88962877646a99de9617e2dde9640448
@@ -2104,7 +2104,7 @@ status: transport_required
 statement: forall m n q r :e int, m = q * n + r /\ (0 <= r /\ r < abs_SNo n) -> div_int m n = q /\ rem_int m n = r
 literal: forall m n q r :e hl_ty_int, m = hl_int_add (hl_int_mul q n) r /\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) r = 1 /\ hl_int_lt r (hl_int_abs n) = 1) -> hl_div m n = q /\ hl_rem m n = r
 bridge: INT_DIVMOD_UNIQ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### OUTL   [option and sum types]
 hash: c31d1bada798b3a79e21ff4f54d61c5b
@@ -2129,7 +2129,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall P:set -> prop, P (Inj0 0) /\ (forall a :e A, P (Inj1 a)) -> forall x :e 1 :+: A, P x
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: (1 :+: A), P (hl_NONE A) = 1 /\ (forall a :e A, P (hl_SOME A a) = 1) -> forall x :e 1 :+: A, P x = 1
 bridge: option_INDUCT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### option_DISTINCT   [option and sum types]
 hash: e7925affd10224458b2c0632786b20c3
@@ -2138,7 +2138,7 @@ status: generalization_required
 statement: forall A:set, forall a :e A, ~ Inj1 a = Inj0 0
 literal: forall A:set, A <> Empty -> forall a :e A, ~ hl_SOME A a = hl_NONE A
 bridge: option_DISTINCT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### option_INJ   [option and sum types]
 hash: 4b1c51697077e7e6230974a578bf806c
@@ -2147,7 +2147,7 @@ status: generalization_required
 statement: forall A:set, forall a b :e A, Inj1 a = Inj1 b <-> a = b
 literal: forall A:set, A <> Empty -> forall a b :e A, hl_SOME A a = hl_SOME A b <-> a = b
 bridge: option_INJ_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### sum_INDUCT   [option and sum types]
 hash: de2725f07074fc50f47627403a63ffd9
@@ -2156,7 +2156,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, (forall a :e A, P (Inj0 a)) /\ (forall a :e B, P (Inj1 a)) -> forall x :e A :+: B, P x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :+: B), (forall a :e A, P (hl_INL A B a) = 1) /\ (forall a :e B, P (hl_INR B A a) = 1) -> forall x :e A :+: B, P x = 1
 bridge: sum_INDUCT_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### sum_RECURSION   [option and sum types]
 hash: a693dd783d6aeace677183d17ed78fbe
@@ -2165,7 +2165,7 @@ status: transport_required
 statement: forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a)
 literal: forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL' :e Z :^: A, forall INR' :e Z :^: B, exists fn :e Z :^: (A :+: B), (forall a :e A, fn (hl_INL A B a) = INL' a) /\ forall a :e B, fn (hl_INR B A a) = INR' a
 bridge: sum_RECURSION_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### DECIMAL   [rationals and decimals]
 hash: fa6361200beb01135fbf6c305ca1bb33
@@ -2174,7 +2174,7 @@ status: transport_required
 statement: forall x y :e omega, x :/: y = x :/: y
 literal: forall x y :e omega, hl_DECIMAL x y = hl_real_div (hl_real_of_num x) (hl_real_of_num y)
 bridge: DECIMAL_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### RAT_LEMMA1   [rationals and decimals]
 hash: e8393a3cd1be553aa7c60366fca81f84
@@ -2183,7 +2183,7 @@ status: transport_required
 statement: forall y1 y2 x1 x2 :e R, ~ y1 = 0 /\ ~ y2 = 0 -> x1 :/: y1 + x2 :/: y2 = (x1 * y2 + x2 * y1) * recip_SNo y1 * recip_SNo y2
 literal: forall y1 y2 x1 x2 :e R, ~ y1 = hl_real_of_num (hl_NUMERAL hl_zero) /\ ~ y2 = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_add (hl_real_div x1 y1) (hl_real_div x2 y2) = hl_real_mul (hl_real_add (hl_real_mul x1 y2) (hl_real_mul x2 y1)) (hl_real_mul (hl_real_inv y1) (hl_real_inv y2))
 bridge: RAT_LEMMA1_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### IND_SUC_0_EXISTS   [type definitions and construction internals (quarantined statuses)]
 hash: 76d6532182ac1531dac8208b34be6e12
@@ -2199,7 +2199,7 @@ status: generalization_required
 statement: forall A:set, forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x
 literal: forall A:set, A <> Empty -> forall f g :e 1 :^: A, f = g
 bridge: one_axiom_bridge
-cert_status: native_certified
+cert_status: transport_checked
 
 ### one_tydef   [type definitions and construction internals (quarantined statuses)]
 hash: 738e5db9b52bb8ffb3de40701e289d23
@@ -2214,5 +2214,5 @@ status: generalization_required
 statement: forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)
 literal: forall A:set, A <> Empty -> forall e1 :e A, hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e1 then 1 else 0) = 1
 bridge: one_Axiom_bridge
-cert_status: native_certified
+cert_status: transport_checked
 

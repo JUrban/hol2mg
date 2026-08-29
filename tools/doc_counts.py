@@ -12,18 +12,19 @@ for prof in ('core', 'standard', 'mv_vectors', 'multivariate'):
         continue
     m = json.load(open(f))
     n = len(m['items']); pub = sum(1 for i in m['items'] if i['status'] in PUBLIC)
-    cert = sum(1 for i in m['items'] if i.get('cert_status') == 'native_certified')
-    counts[prof] = (n, pub, cert)
+    cert = sum(1 for i in m['items'] if i.get('cert_status') == 'transport_checked')
+    lp = sum(1 for i in m['items'] if i.get('cert_status') == 'transport_checked' and i.get('literal_proved'))
+    counts[prof] = (n, pub, cert, lp)
 readme = open(os.path.join(here, 'README.md')).read()
-for prof, (n, pub, cert) in counts.items():
+for prof, (n, pub, cert, lp) in counts.items():
     row = re.search(r'^\| %s[^|]*\| *(\d+) *\| *(\d+) *\|' % re.escape(prof), readme, re.M)
     if not row:
         print(f'doc_counts: README has no coverage row for {prof}'); bad = 1; continue
     if (int(row.group(1)), int(row.group(2))) != (n, pub):
         print(f'doc_counts: README row {prof} says {row.group(1)}/{row.group(2)}, manifest says {n}/{pub}'); bad = 1
 design = open(os.path.join(here, 'docs', 'DESIGN.md')).read()
-for prof, (n, pub, cert) in counts.items():
+for prof, (n, pub, cert, lp) in counts.items():
     if re.search(r'\b%s %d/%d\b' % (re.escape(prof), pub, n), design) is None and re.search(r'\| %s[^|]*\| *%d *\| *%d *\|' % (re.escape(prof), n, pub), design) is None:
         print(f'doc_counts: DESIGN.md does not state {prof} {pub}/{n}'); bad = 1
-print('doc_counts:', 'OK' if not bad else 'FAIL', {p: f'{pub}/{n} public, {cert} certified' for p, (n, pub, cert) in counts.items()})
+print('doc_counts:', 'OK' if not bad else 'FAIL', {p: f'{pub}/{n} public, {cert} transport_checked, {lp} literal_proved' for p, (n, pub, cert, lp) in counts.items()})
 sys.exit(bad)

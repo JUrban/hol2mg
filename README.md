@@ -51,13 +51,17 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 
 ## Semantic certification (`dev/semantics-v1`, docs/DESIGN.md §21)
 
-| profile | public statements | literal statements checked | `native_certified` |
-|---|---|---|---|
-| core | 2685 | 2697 | 2369 |
+| profile | public statements | literal statements checked | `transport_checked` | `literal_proved` | `fully_proved` |
+|---|---|---|---|---|---|
+| core | 2685 | 2697 | 2417 | 38 | 0 |
 
-A theorem is `native_certified` only when Megalodon `Qed`-checked the generated bridge
-`literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`, `tools/cert_finalize.py`);
-the literal statement `hlt_N` is the only admission.  Compatibility theorems for mapped
+A theorem is `transport_checked` (formerly `native_certified`) only when Megalodon `Qed`-checked
+the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`,
+`tools/cert_finalize.py`); the literal statement `hlt_N` is then the only admission.  It is
+`literal_proved` when that admission is discharged too, by a model-soundness theorem of the
+primitive interface (`mglib/literal/model_theorems.mg`, DESIGN §21.4): nothing is admitted.
+`fully_proved` (discharge by an imported HOL Light proof) is reserved for the proof-export pilot
+and is 0 so far.  Compatibility theorems for mapped
 constants are hand-proved in `mglib/literal/compat.mg` from the literal definitions.
 
 Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are

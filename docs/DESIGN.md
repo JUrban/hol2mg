@@ -1212,6 +1212,18 @@ assumption otherwise.  The constants of the skipped constructions (`mk_num`, `de
 `IND_SUC`, `NUM_REP`, `mk_real`, `dest_real`, `treal_*`, `hreal_*`, `nadd_*`, `_mk_list`,
 `_dest_list`, `CONSTR`, `ABS_prod`, …) are unsupported.
 
+**Model-soundness theorems.**  The characterizing theorems of the primitive interface are the
+HOL axioms and construction theorems listed in the table; their *literal statements* are proved
+once, by hand, in `mglib/literal/model_theorems.mg` as `hlt_N_model` (from the primitive
+definitions, God1 and the compatibility theorems only — no admission).  The generator compares the
+statement of `hlt_N_model` with the literal statement it produced for `N` (exact text after
+whitespace normalization) and, when they agree, emits `Theorem hlt_N : … . exact hlt_N_model. Qed.`
+and `Theorem N : … . exact (N_bridge hlt_N). Qed.` in the certification module instead of the
+admissions; the manifest records `literal_proved` and `tools/cert_finalize.py` counts these
+theorems (§21.6).  A model theorem whose statement drifts from the generated literal statement is
+simply not used (the admission stays), so the mechanism cannot certify anything by mistake; the
+check chain (`tools/check_cert.sh`) checks `model_theorems.mg` after `compat.mg`.
+
 **Representation relations** `R_τ(l, n)` between a literal value `l :e L[τ]` and its native
 counterpart `n` (definitions and generic lemmas in `mglib/literal/bridge.mg`):
 
@@ -1270,20 +1282,25 @@ premise is retained in the public statement and the manifest notes `generalizati
 | `literal_emitted` | `hlt_N` generated | `generated/literal/<profile>/<shard>.mg` |
 | `literal_checked` | Megalodon accepted the literal module (definitions + statements) | checker log |
 | `native_emitted` | public statement generated | manifest `statement` |
-| `transport_checked` | bridge `N_bridge` generated and Megalodon accepted its `Qed` | `generated/cert/<profile>/<shard>.mg` |
+| `bridge_checked` | bridge `N_bridge` generated and Megalodon accepted its `Qed` | `generated/cert/<profile>/<shard>.mg` |
 | `public_checked` | public shard accepted, statement byte-identical to the certified one | `tools/check_public.sh`, `tools/cert_verify.py` |
-| `native_certified` | all of the above | manifest `cert_status`, `bridge` |
+| `transport_checked` | all of the above: the native statement follows from the literal statement by a checked proof; the literal statement `hlt_N` is admitted (formerly `native_certified`) | manifest `cert_status`, `bridge` |
+| `literal_proved` | `transport_checked` and `hlt_N` proved (`Qed`) by a model-soundness theorem `hlt_N_model` (§21.4): no admission remains | manifest flag `literal_proved`; `exact hlt_N_model. Qed.` in the certification module |
+| `fully_proved` | `transport_checked` and `hlt_N` proved by an imported HOL Light proof (§21.8 pilot): no admission remains | reserved (0 so far) |
 
 Quarantine statuses (never public certification): `source_type_error`,
 `literal_unsupported`, `compat_missing`, `bridge_mismatch`, `bridge_failed`,
 `emptycase_failed`.  Manifest items record `literal` (statement), `bridge` (theorem name),
 `cert_status`, `compat` (theorems used) and `checker` (Megalodon commit, result).  Reports
-distinguish statement coverage (public statements), certification coverage
-(`native_certified`) and proof-import coverage (later).
+distinguish statement coverage (public statements), transport coverage (`transport_checked`:
+the bridge is checked, the literal fact admitted), `literal_proved` (no admission: literal fact
+discharged by a model theorem) and `fully_proved` (no admission: literal fact discharged by an
+imported HOL proof; the proof-export pilot).  The three are nested: fully_proved and
+literal_proved both imply transport_checked.
 
 ### 21.7 Progress (updated per report)
 
-| date | literal checked | bridges `Qed` (`native_certified`) | compat theorems | report |
+| date | literal checked | bridges `Qed` (`transport_checked`, formerly `native_certified`; `literal_proved` in parentheses from row (k)) | compat theorems | report |
 |---|---|---|---|---|
 | 2026-08-29 | 2697 / 2697 supported Core theorems | 802 / 2685 public | 98 (+ generated unfolding/typing/spec lemmas) | `docs/reports/2026-08-29-interim-5.md` |
 | 2026-08-29 (b) | 2697 / 2697 | 1612 / 2685 public | 165 (+ 25 carrier lemmas, 114 bridge-library lemmas; generated: 453 typing, 213 unfolding, 23 specification lemmas) | `docs/reports/2026-08-29-interim-6.md` |
@@ -1295,6 +1312,7 @@ distinguish statement coverage (public statements), certification coverage
 | 2026-08-29 (h) | 2697 / 2697 | 2314 / 2685 public | 367 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-12.md` |
 | 2026-08-29 (i) | 2697 / 2697 | 2332 / 2685 public | 385 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-13.md` |
 | 2026-08-29 (j) | 2697 / 2697 | 2369 / 2685 public | 406 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-14.md` |
+| 2026-08-29 (k) | 2697 / 2697 | 2417 / 2685 public (38 literal_proved, 0 fully_proved) | 434 (+ 26 carrier lemmas, 162 bridge-library lemmas, 41 model theorems; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-15.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1311,10 +1329,16 @@ process defects (a shard failure committed behind a `grep|tail` pipeline; a dept
 binder), both caught by the next check; the selftest now compares the golden fixtures after
 certification finalisation so that it asserts the certified set.  Report 8: the registry template of `ARB` (`choose_in ?A (fun x => True)`) did not denote HOL Light's `@x. F` (`choose_in A (fun x => False)`); the public statement of `ARB` on `dev/statements-v1` was unprovable, and 45 statements using `ARB`, `RESTRICTION`, `EXTENSIONAL` or `cartesian_product` changed (none of them had been certified).  The generator also applied type-specialised compatibility lemmas with the carrier arguments of the polymorphic literal constant (rejected by Megalodon; fixed).
 
-Model-soundness theorems of the primitive interface (§21.4) proved so far: typing of every
-primitive constant (`model.mg`), `hl_COND` characterisation, `hl_ty_int = int`.  Not yet proved
-(trusted assumptions, to be discharged): `SELECT_AX`, `ETA_AX`, `INFINITY_AX`, the Peano and
-recursion theorems for `omega`, pair/list/option/sum characterisations, the `realax.ml` axioms.
+Model-soundness theorems of the primitive interface (§21.4) proved (`mglib/literal/model_theorems.mg`,
+41 theorems, all `Qed`): typing of every primitive constant (`model.mg`), `hl_COND`
+characterisation, `hl_ty_int = int`, and the literal statements of `SELECT_AX`, `ETA_AX`,
+`BOOL_CASES_AX`, `INFINITY_AX`, `NOT_SUC`, `SUC_INJ`, `num_INDUCTION`, `num_Axiom`, `PAIR_EQ`,
+`PAIR_SURJECTIVE`, `one_axiom`, `NOT_CONS_NIL`, `CONS_11`, `list_INDUCT`, `list_RECURSION`,
+`option_INDUCT`, `option_RECURSION`, `sum_INDUCT`, `sum_RECURSION` and the 21 `realax.ml` axioms
+(`REAL_ADD_SYM` … `REAL_COMPLETE`, `REAL_OF_NUM_*`).  No trusted assumption of the primitive
+interface remains; the model theorem for `hl_INR` exposed a carrier-parameter order bug in
+`model.mg` (fixed in `a40d9ba`).  Every other literal fact `hlt_N` is still admitted until the
+proof-export pilot (§21.8) discharges it.
 
 ### 21.8 Phase exit criteria
 

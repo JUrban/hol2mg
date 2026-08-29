@@ -18,7 +18,9 @@
 - `dev/statements-v1` (tag `statements-v1`) is the frozen statement milestone; develop on
   `dev/semantics-v1`; keep `docs/DESIGN.md` §20–§21 and the copy at
   `/project/repos/HOL_Light_to_Megalodon_Translator_Design.md` in sync.
-- Semantic certification: a theorem is `native_certified` only when Megalodon checked its
-  literal statement module and the literal-to-native bridge (`Qed`, no admitted dependency
-  except the literal source fact).  Never mark certification by hand.
+- Semantic certification: a theorem is `transport_checked` (formerly `native_certified`) only when
+  Megalodon checked its literal statement module and the literal-to-native bridge (`Qed`, no
+  admitted dependency except the literal source fact); `literal_proved` additionally means the
+  literal fact is discharged by a model theorem (`mglib/literal/model_theorems.mg`); `fully_proved`
+  (imported HOL proofs) is reserved.  Never mark certification by hand.
 - Resource limits: a few CPUs; HOL Light export ≈ 2–4 min, Megalodon shard checks ≈ 4 s each.

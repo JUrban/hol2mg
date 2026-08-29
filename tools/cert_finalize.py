@@ -3,9 +3,10 @@
 
   tools/cert_finalize.py PROFILE CHECKLOG [--manifest FILE]
 
-bridge_emitted items in shards reported OK become native_certified (the bridge was Qed-checked
-and the derived public theorem checked); items in failed shards become bridge_failed.  Also
-verifies that the native statement in the certification module equals the public statement.
+bridge_emitted items in shards reported OK become transport_checked (the bridge was Qed-checked
+and the derived public theorem checked; formerly `native_certified`).  Items whose literal source
+fact is discharged by a model theorem (Qed in the certification module) are counted as literal_proved;
+fully_proved (imported HOL proofs) is reserved for the proof-export pilot.
 """
 import json, os, re, sys
 prof = sys.argv[1]; log = sys.argv[2]
@@ -37,13 +38,13 @@ for i in m['items']:
     sh = i['shard']
     if base_ok and sh in ok:
         if cert_stmts.get(i['name']) == i['statement']:
-            i['cert_status'] = 'native_certified'; n_cert += 1
+            i['cert_status'] = 'transport_checked'; n_cert += 1
             if i['name'] in fully_proved and i.get('literal_proved'): n_proved += 1
         else:
             i['cert_status'] = 'bridge_mismatch'; i['cert_error'] = 'certified statement differs from the public statement'; n_mismatch += 1
     else:
         i['cert_status'] = 'bridge_failed'; i['cert_error'] = fail.get(sh, 'base failed' if not base_ok else 'not checked'); n_fail += 1
-m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'native_certified': n_cert, 'native_proved': n_proved}
+m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'transport_checked': n_cert, 'literal_proved': n_proved, 'fully_proved': 0}
 json.dump(m, open(man_file, 'w'), indent=1)
-print(f'cert_finalize {prof}: {n_cert} native_certified ({n_proved} fully proved), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
+print(f'cert_finalize {prof}: {n_cert} transport_checked ({n_proved} literal_proved, 0 fully_proved), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
 sys.exit(1 if fail or n_mismatch else 0)
