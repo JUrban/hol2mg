@@ -4500,3 +4500,36 @@ Qed.
 Theorem hl_NONE_compat : forall A:set, A <> Empty -> hl_NONE A = Inj0 0.
 let A. assume HA. exact (fun q H => H).
 Qed.
+
+// ---- cartesian products of families of subsets ----
+Theorem iff_and_comm : forall A B:prop, (A /\ B) <-> (B /\ A).
+let A B. apply iffI.
+- assume H. apply H. assume HA HB. exact (andI B A HB HA).
+- assume H. apply H. assume HB HA. exact (andI A B HA HB).
+Qed.
+Theorem hl_cartesian_product_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, hl_rep A (l2 x) = f2 x) -> hl_rep (A :^: K) (hl_cartesian_product K A l1 l2) = {f :e A :^: K | (forall i :e hl_rep K l1, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K l1 -> f i = choose_in A (fun y:set => False)}.
+let K A. assume HK HA. let k. assume Hk. let s. assume Hs. let f2. assume Hpw.
+rewrite (hl_cartesian_product_unfold K A k Hk s Hs).
+apply (eq_trans_i (hl_rep (A :^: K) (hl_GSPEC (A :^: K) (fun v :e A :^: K => if exists f :e A :^: K, hl_SETSPEC (A :^: K) v (if hl_EXTENSIONAL K A k f = 1 /\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1 then 1 else 0) f = 1 then 1 else 0))) {f :e A :^: K | (hl_EXTENSIONAL K A k f = 1 /\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1)} {f :e A :^: K | ((forall i :e hl_rep K k, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K k -> f i = choose_in A (fun y:set => False))} (hl_gspec_sep (A :^: K) (fun f => hl_EXTENSIONAL K A k f = 1 /\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1))).
+apply (Sep_ext_iff (A :^: K) (fun f => hl_EXTENSIONAL K A k f = 1 /\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1) (fun f => ((forall i :e hl_rep K k, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K k -> f i = choose_in A (fun y:set => False)))).
+let f. assume Hf.
+claim H1: (hl_EXTENSIONAL K A k f = 1) <-> (forall x :e K, ~ x :e hl_rep K k -> f x = choose_in A (fun y:set => False)). { exact (hl_EXTENSIONAL_compat K A HK HA k Hk f Hf (fun x => f x) (fun x Hx => (fun q H => H))). }
+claim H2: (forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1) <-> (forall i :e hl_rep K k, f i :e f2 i).
+{ apply iffI.
+  - assume H. let i. assume Hi.
+    claim HiK: i :e K. { exact (hl_rep_Subq K k i Hi). }
+    claim Hin: hl_IN K i k = 1. { apply (hl_IN_compat K HK i HiK k Hk). assume _ H3. exact (H3 Hi). }
+    claim Hfi: f i :e A. { exact (setexp_ap K A f Hf i HiK). }
+    claim Hsi: s i :e 2 :^: A. { exact (setexp_ap K (2 :^: A) s Hs i HiK). }
+    claim H4: f i :e hl_rep A (s i). { apply (hl_IN_compat A HA (f i) Hfi (s i) Hsi). assume H5 _. exact (H5 (H i HiK Hin)). }
+    exact ((Hpw i HiK) (fun hl__u hl__v => f i :e hl__u) H4).
+  - assume H. let i. assume HiK Hin.
+    claim Hi: i :e hl_rep K k. { apply (hl_IN_compat K HK i HiK k Hk). assume H3 _. exact (H3 Hin). }
+    claim Hfi: f i :e A. { exact (setexp_ap K A f Hf i HiK). }
+    claim Hsi: s i :e 2 :^: A. { exact (setexp_ap K (2 :^: A) s Hs i HiK). }
+    claim H4: f i :e hl_rep A (s i). { exact ((eq_sym_i (hl_rep A (s i)) (f2 i) (Hpw i HiK)) (fun hl__u hl__v => f i :e hl__u) (H i Hi)). }
+    apply (hl_IN_compat A HA (f i) Hfi (s i) Hsi). assume _ H5. exact (H5 H4). }
+apply (iff_trans (hl_EXTENSIONAL K A k f = 1 /\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1) ((forall x :e K, ~ x :e hl_rep K k -> f x = choose_in A (fun y:set => False)) /\ (forall i :e hl_rep K k, f i :e f2 i)) ((forall i :e hl_rep K k, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K k -> f i = choose_in A (fun y:set => False))).
+- exact (iff_and2 (hl_EXTENSIONAL K A k f = 1) (forall x :e K, ~ x :e hl_rep K k -> f x = choose_in A (fun y:set => False)) (forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1) (forall i :e hl_rep K k, f i :e f2 i) H1 H2).
+- exact (iff_and_comm (forall x :e K, ~ x :e hl_rep K k -> f x = choose_in A (fun y:set => False)) (forall i :e hl_rep K k, f i :e f2 i)).
+Qed.

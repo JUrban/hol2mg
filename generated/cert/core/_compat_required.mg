@@ -126,10 +126,6 @@ Admitted.
 Theorem hl__UNGUARDED_PATTERN_compat : hl__UNGUARDED_PATTERN = Empty.
 Admitted.
 
-// cartesian_product : (K->bool)->(K->A->bool)->(K->A)->bool (not in compat.mg)
-Theorem hl_cartesian_product_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, l2 x = f2 x) -> hl_rep (A :^: K) (hl_cartesian_product K A l1 l2) = {f :e A :^: K | (forall i :e hl_rep K l1, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K l1 -> f i = choose_in A (fun y:set => False)}.
-Admitted.
-
 // nproduct : (A->bool)->(A->num)->num (not in compat.mg)
 Theorem hl_nproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e omega :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_nproduct A l1 l2 = finprod (hl_rep A l1) f2.
 Admitted.
@@ -335,7 +331,7 @@ Theorem hl_dest_finite_image_compat : forall N:set, N <> Empty -> forall l1 :e h
 Admitted.
 
 // disjoint_union : (K->bool)->(K->A->bool)->K#A->bool (not in compat.mg)
-Theorem hl_disjoint_union_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, l2 x = f2 x) -> hl_rep (K :*: A) (hl_disjoint_union K A l1 l2) = {p :e K :*: A | p 0 :e hl_rep K l1 /\ p 1 :e f2 (p 0)}.
+Theorem hl_disjoint_union_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, hl_rep A (l2 x) = f2 x) -> hl_rep (K :*: A) (hl_disjoint_union K A l1 l2) = {p :e K :*: A | p 0 :e hl_rep K l1 /\ p 1 :e f2 (p 0)}.
 Admitted.
 
 // ISO : (A->B)->(B->A)->bool (not in compat.mg)

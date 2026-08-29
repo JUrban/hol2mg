@@ -369,7 +369,7 @@ and compat_statement_of (an : L.analysis) (e : R.const_entry) (scheme : ty) : Mg
       | R.RMetaFun k ->
           let k = (match k with Some k -> k | None -> E.fun_arity aty) in
           (match k, aty with
-           | 1, TyApp ("fun", [ a; _ ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun (f, L.carrier lctx a), Mg.Var f)
+           | 1, TyApp ("fun", [ a; cod ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun (f, L.carrier lctx a, nat_of_lit lctx cod (Mg.App (Mg.Var l, Mg.Var "x"))), Mg.Var f)
            | 2, TyApp ("fun", [ a; TyApp ("fun", [ b; _ ]) ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun2 (f, L.carrier lctx a, L.carrier lctx b), Mg.Var f)
            | _ -> (l, ca, `Bad, Mg.Var l))
       | R.RMetaPred k ->
@@ -407,7 +407,7 @@ and compat_statement_of (an : L.analysis) (e : R.const_entry) (scheme : ty) : Mg
           let body = List.fold_right (fun sc acc -> Mg.Imp (sc, acc)) sides body in
           let body = List.fold_right (fun (l, ca, k, _) acc ->
             let acc = (match k with
-              | `Fun (f, a) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Set), Mg.Imp (Mg.AllIn ("x", a, L.mg_eq (Mg.App (Mg.Var l, Mg.Var "x")) (Mg.App (Mg.Var f, Mg.Var "x"))), acc))
+              | `Fun (f, a, lx) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Set), Mg.Imp (Mg.AllIn ("x", a, L.mg_eq lx (Mg.App (Mg.Var f, Mg.Var "x"))), acc))
               | `Pred (p, a, nx) -> Mg.All (p, Mg.Arr (Mg.Set, Mg.Prop), Mg.Imp (Mg.AllIn ("x", a, L.mg_iff (L.mg_eq (Mg.App (Mg.Var l, Mg.Var "x")) L.one) (Mg.App (Mg.Var p, nx))), acc))
               | `Fun2 (f, a, b) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Set)), Mg.Imp (Mg.AllIn ("x", a, Mg.AllIn ("y", b, L.mg_eq (Mg.apps (Mg.Var l) [ Mg.Var "x"; Mg.Var "y" ]) (Mg.apps (Mg.Var f) [ Mg.Var "x"; Mg.Var "y" ]))), acc))
               | `Pred2 (p, a, b, nx, ny) -> Mg.All (p, Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Prop)), Mg.Imp (Mg.AllIn ("x", a, Mg.AllIn ("y", b, L.mg_iff (L.mg_eq (Mg.apps (Mg.Var l) [ Mg.Var "x"; Mg.Var "y" ]) L.one) (Mg.apps (Mg.Var p) [ nx; ny ]))), acc))
@@ -950,11 +950,22 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                        n hn (ppp lit) n lb (ppp c) n lb n hn np lp np fwd bwd) in
                (lit, nat, KPWP c, pw)
              end else begin
-               let lb, nb, kb, pb = rel g body' (Some (E.VSet d)) in
-               if kb <> KEq then unsupported "rel: lambda body relation";
-               let pw = if pb = "" then Printf.sprintf "(fun %s %s => (beta %s (fun %s:set => %s) %s %s))" n hn (ppp c) n (pp lb) n hn
-                 else Printf.sprintf "(fun %s %s => (eq_trans_i (%s %s) %s %s (beta %s (fun %s:set => %s) %s %s) %s))" n hn (ppp lit) n (ppp lb) (ppp nb) (ppp c) n (pp lb) n hn pb in
-               (lit, nat, KPW c, pw)
+               match d with
+               | Mg.App (Mg.Cst "Power", a) ->
+                   (* a lambda into subsets: hl_rep a (lit x) = nat x from the body's representation relation *)
+                   let lb, nb, kb, pb = rel g body' (Some (E.VSubset a)) in
+                   (match kb with KRep _ -> () | _ -> unsupported "rel: lambda body representation relation");
+                   let rep t = Mg.apps (Mg.Cst "hl_rep") [ a; t ] in
+                   let step1 = Printf.sprintf "(f_equal (fun hl__w => hl_rep %s hl__w) (%s %s) %s (beta %s (fun %s:set => %s) %s %s))" (ppp a) (ppp lit) n (ppp lb) (ppp c) n (pp lb) n hn in
+                   let pw = if pb = "" then Printf.sprintf "(fun %s %s => %s)" n hn step1
+                     else Printf.sprintf "(fun %s %s => (eq_trans_i %s %s %s %s %s))" n hn (ppp (rep (Mg.App (lit, Mg.Var n)))) (ppp (rep lb)) (ppp nb) step1 pb in
+                   (lit, nat, KRepFun (c, a), pw)
+               | _ ->
+                   let lb, nb, kb, pb = rel g body' (Some (E.VSet d)) in
+                   if kb <> KEq then unsupported "rel: lambda body relation";
+                   let pw = if pb = "" then Printf.sprintf "(fun %s %s => (beta %s (fun %s:set => %s) %s %s))" n hn (ppp c) n (pp lb) n hn
+                     else Printf.sprintf "(fun %s %s => (eq_trans_i (%s %s) %s %s (beta %s (fun %s:set => %s) %s %s) %s))" n hn (ppp lit) n (ppp lb) (ppp nb) (ppp c) n (pp lb) n hn pb in
+                   (lit, nat, KPW c, pw)
              end
            with e -> finish (); raise e) in
            finish (); result
@@ -1101,8 +1112,9 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         let k = (match k with Some k -> k | None -> E.fun_arity aty) in
         if k = 1 then begin
           let d, cod = dest_fun_ty aty in
-          let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d ], L.carrier g.lctx cod))) in
-          (match ka with KPW _ -> () | _ -> unsupported "rel_mapped: metafun argument relation");
+          let subset_cod = (match cod with TyApp ("fun", [ _; TyApp ("bool", []) ]) -> true | _ -> false) in
+          let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d ], if subset_cod then nat_carrier_of g.lctx cod else L.carrier g.lctx cod))) in
+          (match ka, subset_cod with KPW _, false | KRepFun _, true -> () | _ -> unsupported "rel_mapped: metafun argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx => (fun q H => H))" else pa in
           let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp na)) in
           parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
@@ -1290,6 +1302,7 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
   | KRep a, E.VSet (Mg.App (Mg.Cst "Power", a')) when a = a' -> (lit, nat, kind, pf)   (* a subset used as data of Power A *)
   | KRep2 a, E.VSet (Mg.App (Mg.Cst "Power", Mg.App (Mg.Cst "Power", a'))) when a = a' -> (lit, nat, kind, pf)
   | KPW a, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
+  | KRepFun _, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KPWP a, E.VMetaPred [ _ ] -> (lit, nat, kind, pf)
   | KPW2 _, E.VMetaFun ([ _; _ ], _) -> (lit, nat, kind, pf)
   | KPWP2 _, E.VMetaPred [ _; _ ] -> (lit, nat, kind, pf)

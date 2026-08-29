@@ -5251,9 +5251,9 @@
    "source": "!k:K->bool. !s:K->A->bool. cartesian_product k s = GSPEC (\\GEN%PVAR%143:K->A. ?f:K->A. SETSPEC GEN%PVAR%143 (!i:K. f i IN (if i IN k then s i else ARB INSERT EMPTY)) f)",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | forall i :e K, f i :e if i :e k then s i else {choose_in A (fun x:set => False)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_GSPEC (A :^: K) (fun GEN_PVAR_143 :e A :^: K => if exists f :e A :^: K, hl_SETSPEC (A :^: K) GEN_PVAR_143 (if forall i :e K, hl_IN A (f i) (hl_COND (2 :^: A) (hl_IN K i k) (s i) (hl_INSERT A (hl_ARB A) (hl_EMPTY A))) = 1 then 1 else 0) f = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARTESIAN_PRODUCT_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT_AS_RESTRICTIONS",
@@ -5281,7 +5281,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {(fun x :e K => if x :e k then f x else choose_in A (fun y:set => False)) | f :e A :^: K, forall i :e K, i :e k -> f i :e s i}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_GSPEC (A :^: K) (fun GEN_PVAR_144 :e A :^: K => if exists f :e A :^: K, hl_SETSPEC (A :^: K) GEN_PVAR_144 (if forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1 then 1 else 0) (hl_RESTRICTION K A k f) = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(A :^: K)",
    "bridge": ""
   },
   {
@@ -5309,9 +5309,9 @@
    "source": "!s:K->A->bool. cartesian_product EMPTY s = (\\i:K. ARB) INSERT EMPTY",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall s :e Power A :^: K, {f :e A :^: K | (forall i :e Empty, f i :e s i) /\\ forall i :e K, ~ i :e Empty -> f i = choose_in A (fun y:set => False)} = {fun i :e K => choose_in A (fun x:set => False)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall s :e 2 :^: A :^: K, hl_cartesian_product K A (hl_EMPTY K) s = hl_INSERT (A :^: K) (fun i :e K => hl_ARB A) (hl_EMPTY (A :^: K))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARTESIAN_PRODUCT_EMPTY_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT_EQ",
@@ -5339,9 +5339,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !t:K->A->bool. cartesian_product k s = cartesian_product k t <=> cartesian_product k s = EMPTY /\\ cartesian_product k t = EMPTY \\/ (!i:K. i IN k ==> s i = t i)",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty /\\ {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty \\/ forall i :e K, i :e k -> s i = t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_cartesian_product K A k t <-> hl_cartesian_product K A k s = hl_EMPTY (A :^: K) /\\ hl_cartesian_product K A k t = hl_EMPTY (A :^: K) \\/ forall i :e K, hl_IN K i k = 1 -> s i = t i",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARTESIAN_PRODUCT_EQ_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT_EQ_EMPTY",
@@ -5367,9 +5367,9 @@
    "source": "!k:K->bool. !s:K->A->bool. cartesian_product k s = EMPTY <=> (?i:K. i IN k /\\ s i = EMPTY)",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty <-> exists i :e K, i :e k /\\ s i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_EMPTY (A :^: K) <-> exists i :e K, hl_IN K i k = 1 /\\ s i = hl_EMPTY A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARTESIAN_PRODUCT_EQ_EMPTY_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT_EQ_MEMBERS",
@@ -5397,9 +5397,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !x:K->A. !y:K->A. x IN cartesian_product k s /\\ y IN cartesian_product k s /\\ (!i:K. i IN k ==> x i = y i) ==> x = y",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall x y :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ (y :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ (forall i :e K, i :e k -> x i = y i)) -> x = y",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall x y :e A :^: K, hl_IN (A :^: K) x (hl_cartesian_product K A k s) = 1 /\\ (hl_IN (A :^: K) y (hl_cartesian_product K A k s) = 1 /\\ (forall i :e K, hl_IN K i k = 1 -> x i = y i)) -> x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARTESIAN_PRODUCT_EQ_MEMBERS_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT_EQ_MEMBERS_EQ",
@@ -5427,9 +5427,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !x:K->A. !y:K->A. x IN cartesian_product k s /\\ y IN cartesian_product k s ==> (x = y <=> (!i:K. i IN k ==> x i = y i))",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall x y :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ y :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} -> (x = y <-> forall i :e K, i :e k -> x i = y i)",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall x y :e A :^: K, hl_IN (A :^: K) x (hl_cartesian_product K A k s) = 1 /\\ hl_IN (A :^: K) y (hl_cartesian_product K A k s) = 1 -> (x = y <-> forall i :e K, hl_IN K i k = 1 -> x i = y i)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARTESIAN_PRODUCT_EQ_MEMBERS_EQ_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT_SINGS",
@@ -5457,7 +5457,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x :e A :^: K, (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => False)) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {x}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall x :e A :^: K, hl_EXTENSIONAL K A k x = 1 -> hl_cartesian_product K A k (fun i :e K => hl_INSERT A (x i) (hl_EMPTY A)) = hl_INSERT (A :^: K) x (hl_EMPTY (A :^: K))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -5486,7 +5486,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => False)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall x :e A :^: K, hl_cartesian_product K A k (fun i :e K => hl_INSERT A (x i) (hl_EMPTY A)) = hl_INSERT (A :^: K) (hl_RESTRICTION K A k x) (hl_EMPTY (A :^: K))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -5514,7 +5514,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> {f :e A :^: K | (forall i :e K, f i :e {x0 :e A | x0 :e A}) /\\ forall i :e K, ~ i :e K -> f i = choose_in A (fun y:set => False)} = A :^: K",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> hl_cartesian_product K A (hl_UNIV K) (fun i :e K => hl_UNIV A) = hl_UNIV (A :^: K)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -12409,9 +12409,9 @@
    "source": "!P:K->A->bool. !k:K->bool. !s:K->A->bool. (?z:K->A. z IN cartesian_product k s /\\ (!i:K. i IN k ==> P i (z i))) <=> (!i:K. i IN k ==> (?x:A. x IN s i /\\ P i x))",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, (exists z :e A :^: K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ forall i :e K, i :e k -> P i (z i)) <-> forall i :e K, i :e k -> exists x :e A, x :e s i /\\ P i x",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall P :e 2 :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, (exists z :e A :^: K, hl_IN (A :^: K) z (hl_cartesian_product K A k s) = 1 /\\ forall i :e K, hl_IN K i k = 1 -> P i (z i) = 1) <-> forall i :e K, hl_IN K i k = 1 -> exists x :e A, hl_IN A x (s i) = 1 /\\ P i x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_CARTESIAN_PRODUCT_ELEMENT_bridge"
   },
   {
    "name": "EXISTS_CURRY",
@@ -17994,9 +17994,9 @@
    "source": "!P:K->A->bool. !k:K->bool. !s:K->A->bool. (!z:K->A. !i:K. z IN cartesian_product k s /\\ i IN k ==> P i (z i)) <=> cartesian_product k s = EMPTY \\/ (!i:K. !x:A. i IN k /\\ x IN s i ==> P i x)",
    "statement": "forall A K:set, A <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, (forall z :e A :^: K, forall i :e K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ i :e k -> P i (z i)) <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty \\/ forall i :e K, forall x :e A, i :e k /\\ x :e s i -> P i x",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall P :e 2 :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, (forall z :e A :^: K, forall i :e K, hl_IN (A :^: K) z (hl_cartesian_product K A k s) = 1 /\\ hl_IN K i k = 1 -> P i (z i) = 1) <-> hl_cartesian_product K A k s = hl_EMPTY (A :^: K) \\/ forall i :e K, forall x :e A, hl_IN K i k = 1 /\\ hl_IN A x (s i) = 1 -> P i x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_CARTESIAN_PRODUCT_ELEMENTS_bridge"
   },
   {
    "name": "FORALL_CARTESIAN_PRODUCT_ELEMENTS_EQ",
@@ -18024,9 +18024,9 @@
    "source": "!P:K->A->bool. !k:K->bool. !s:K->A->bool. ~(cartesian_product k s = EMPTY) ==> ((!i:K. !x:A. i IN k /\\ x IN s i ==> P i x) <=> (!z:K->A. !i:K. z IN cartesian_product k s /\\ i IN k ==> P i (z i)))",
    "statement": "forall A K:set, A <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, ~ {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty -> ((forall i :e K, forall x :e A, i :e k /\\ x :e s i -> P i x) <-> forall z :e A :^: K, forall i :e K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ i :e k -> P i (z i))",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall P :e 2 :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, ~ hl_cartesian_product K A k s = hl_EMPTY (A :^: K) -> ((forall i :e K, forall x :e A, hl_IN K i k = 1 /\\ hl_IN A x (s i) = 1 -> P i x = 1) <-> forall z :e A :^: K, forall i :e K, hl_IN (A :^: K) z (hl_cartesian_product K A k s) = 1 /\\ hl_IN K i k = 1 -> P i (z i) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_CARTESIAN_PRODUCT_ELEMENTS_EQ_bridge"
   },
   {
    "name": "FORALL_CURRY",
@@ -22708,9 +22708,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !i:K. IMAGE (\\x:K->A. x i) (cartesian_product k s) = (if cartesian_product k s = EMPTY then EMPTY else if i IN k then s i else ARB INSERT EMPTY)",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {x i | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => False)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall i :e K, hl_IMAGE (A :^: K) A (fun x :e A :^: K => x i) (hl_cartesian_product K A k s) = hl_COND (2 :^: A) (if hl_cartesian_product K A k s = hl_EMPTY (A :^: K) then 1 else 0) (hl_EMPTY A) (hl_COND (2 :^: A) (hl_IN K i k) (s i) (hl_INSERT A (hl_ARB A) (hl_EMPTY A)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_PROJECTION_CARTESIAN_PRODUCT_bridge"
   },
   {
    "name": "IMAGE_RESTRICTION",
@@ -25429,7 +25429,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} :/\\: {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e s i :/\\: t i}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_INTER (A :^: K) (hl_cartesian_product K A k s) (hl_cartesian_product K A k t) = hl_cartesian_product K A k (fun i :e K => hl_INTER A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -37199,9 +37199,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !x:K->A. x IN cartesian_product k s <=> EXTENSIONAL k x /\\ (!i:K. i IN k ==> x i IN s i)",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, forall x :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => False)) /\\ forall i :e K, i :e k -> x i :e s i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall x :e A :^: K, hl_IN (A :^: K) x (hl_cartesian_product K A k s) = 1 <-> hl_EXTENSIONAL K A k x = 1 /\\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (x i) (s i) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IN_CARTESIAN_PRODUCT_bridge"
   },
   {
    "name": "IN_CROSS",
@@ -70170,9 +70170,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !t:K->A->bool. cartesian_product k s SUBSET cartesian_product k t <=> cartesian_product k s = EMPTY \\/ (!i:K. i IN k ==> s i SUBSET t i)",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} c= {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty \\/ forall i :e K, i :e k -> s i c= t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_SUBSET (A :^: K) (hl_cartesian_product K A k s) (hl_cartesian_product K A k t) = 1 <-> hl_cartesian_product K A k s = hl_EMPTY (A :^: K) \\/ forall i :e K, hl_IN K i k = 1 -> hl_SUBSET A (s i) (t i) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUBSET_CARTESIAN_PRODUCT_bridge"
   },
   {
    "name": "SUBSET_CROSS",
@@ -79593,9 +79593,9 @@
    "source": "!k:K->bool. !s:K->A->bool. cartesian_product k s = GSPEC (\\GEN%PVAR%142:K->A. ?f:K->A. SETSPEC GEN%PVAR%142 (EXTENSIONAL k f /\\ (!i:K. i IN k ==> f i IN s i)) f)",
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall x :e K, ~ x :e k -> f x = choose_in A (fun y:set => False)) /\\ forall i :e K, i :e k -> f i :e s i}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_GSPEC (A :^: K) (fun GEN_PVAR_142 :e A :^: K => if exists f :e A :^: K, hl_SETSPEC (A :^: K) GEN_PVAR_142 (if hl_EXTENSIONAL K A k f = 1 /\\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1 then 1 else 0) f = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "cartesian_product_bridge"
   },
   {
    "name": "char_INDUCT",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2141
+  "native_certified": 2154
  }
 }
