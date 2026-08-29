@@ -200,6 +200,19 @@ let rec alpha_canon depth (t : Mg.tm) : Mg.tm =
 
 let alpha_eq a b = alpha_canon 0 a = alpha_canon 0 b
 
+(* a hypothesis by proposition, up to alpha-equivalence, rebuilding conjunctions from their
+   conjuncts (hypotheses are registered split into conjuncts) *)
+let rec find_hyp g (prop : Mg.tm) : string option =
+  match List.find_map (fun (h, pf) -> if alpha_eq h prop then Some pf else None) g.hyps with
+  | Some pf -> Some pf
+  | None ->
+      (match prop with
+       | Mg.App (Mg.App (Mg.Cst "and", a), b) ->
+           (match find_hyp g a, find_hyp g b with
+            | Some pa, Some pb -> Some (Printf.sprintf "(andI %s %s %s %s)" (ppp a) (ppp b) pa pb)
+            | _ -> None)
+       | _ -> None)
+
 (* bounds of a real set from hypotheses of the forms
      forall x :e R, x :e s -> x <= b / b <= x / abs_SNo x <= a / abs_SNo (x + - l) <= e / a <= x /\ x <= b
    (bound terms must be real variables) *)
@@ -1360,7 +1373,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let derived () = (match derived () with
             | Some p -> Some p
             | None -> (match sc_nat with Mg.App (Mg.Cst "finite", s) -> derive_finite g s 0 | _ -> None)) in
-          (match (match List.assoc_opt sc_nat g.hyps with Some h -> Some h | None -> derived ()) with
+          (match (match find_hyp g sc_nat with Some h -> Some h | None -> derived ()) with
            | None -> unsupported "side condition %s not available from hypotheses [hyps: %s]" (pp sc_nat)
                        (String.concat ", " (List.map (fun (h, _) -> pp h) g.hyps))
            | Some h ->

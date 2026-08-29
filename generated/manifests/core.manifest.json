@@ -38155,9 +38155,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !p:A->A. !s:A->bool. (!x:A. x IN s ==> p x IN s) /\\ (!y:A. y IN s ==> (?!x:A. x IN s /\\ p x = y)) ==> iterate op s f = iterate op s (f o p))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\\ (forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x) -> iterate_op B op s f = iterate_op B op s (fun x:set => f (p x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall p :e A :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall y :e A, hl_IN A y s = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ p x = y then 1 else 0) = 1) -> hl_iterate B A op s f = hl_iterate B A op s (hl_o A B A f p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x, forall x :e A, x :e s -> p x :e s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_BIJECTION_bridge"
   },
   {
    "name": "ITERATE_CASES",
@@ -38186,9 +38186,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!s:A->bool. !P:A->bool. !f:A->B. !g:A->B. FINITE s ==> iterate op s (\\x:A. if P x then f x else g x) = op (iterate op (GSPEC (\\GEN%PVAR%250:A. ?x:A. SETSPEC GEN%PVAR%250 (x IN s /\\ P x) x)) f) (iterate op (GSPEC (\\GEN%PVAR%251:A. ?x:A. SETSPEC GEN%PVAR%251 (x IN s /\\ ~P x) x)) g))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall s c= A, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> finite s -> iterate_op B op s (fun x:set => if P x then f x else g x) = op (iterate_op B op {x :e A | x :e s /\\ P x} f) (iterate_op B op {x :e A | x :e s /\\ ~ P x} g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall s P :e 2 :^: A, forall f g :e B :^: A, hl_FINITE A s = 1 -> hl_iterate B A op s (fun x :e A => hl_COND B (P x) (f x) (g x)) = op (hl_iterate B A op (hl_GSPEC A (fun GEN_PVAR_250 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_250 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) f) (hl_iterate B A op (hl_GSPEC A (fun GEN_PVAR_251 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_251 (if hl_IN A x s = 1 /\\ ~ P x = 1 then 1 else 0) x = 1 then 1 else 0)) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CASES_bridge"
   },
   {
    "name": "ITERATE_CLAUSES",
@@ -38217,9 +38217,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!f:A->C. iterate op EMPTY f = neutral op) /\\ (!f:B->C. !x:B. !s:B->bool. FINITE s ==> iterate op (x INSERT s) f = (if x IN s then iterate op s f else op (f x) (iterate op s f)))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e C) -> iterate_op C op Empty f = neutral_of C op) /\\ forall f:set -> set, (forall x :e B, f x :e C) -> forall x :e B, forall s c= B, finite s -> iterate_op C op (SetAdjoin s x) f = if x :e s then iterate_op C op s f else op (f x) (iterate_op C op s f)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> (forall f :e C :^: A, hl_iterate C A op (hl_EMPTY A) f = hl_neutral C op) /\\ forall f :e C :^: B, forall x :e B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_iterate C B op (hl_INSERT B x s) f = hl_COND C (hl_IN B x s) (hl_iterate C B op s f) (op (f x) (hl_iterate C B op s f))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLAUSES_bridge"
   },
   {
    "name": "ITERATE_CLAUSES_GEN",
@@ -38248,9 +38248,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. iterate op EMPTY f = neutral op) /\\ (!f:A->B. !x:A. !s:A->bool. FINITE (support op f s) ==> iterate op (x INSERT s) f = (if x IN s then iterate op s f else op (f x) (iterate op s f)))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e B) -> iterate_op B op Empty f = neutral_of B op) /\\ forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, finite {x :e s | f x <> neutral_of B op} -> iterate_op B op (SetAdjoin s x) f = if x :e s then iterate_op B op s f else op (f x) (iterate_op B op s f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> (forall f :e B :^: A, hl_iterate B A op (hl_EMPTY A) f = hl_neutral B op) /\\ forall f :e B :^: A, forall x :e A, forall s :e 2 :^: A, hl_FINITE A (hl_support B A op f s) = 1 -> hl_iterate B A op (hl_INSERT A x s) f = hl_COND B (hl_IN A x s) (hl_iterate B A op s f) (op (f x) (hl_iterate B A op s f))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLAUSES_GEN_bridge"
   },
   {
    "name": "ITERATE_CLAUSES_NUMSEG",
@@ -38282,9 +38282,9 @@
    "source": "!op:A->A->A. monoidal op ==> (!m:num. iterate op (.. m 0) f = (if m = 0 then f 0 else neutral op)) /\\ (!m:num. !n:num. iterate op (.. m (SUC n)) f = (if m <= SUC n then op (iterate op (.. m n) f) (f (SUC n)) else iterate op (.. m n) f))",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> (forall m :e omega, iterate_op A op {i :e omega | m <= i /\\ i <= 0} f = if m = 0 then f 0 else neutral_of A op) /\\ forall m n :e omega, iterate_op A op {i :e omega | m <= i /\\ i <= ordsucc n} f = if m <= ordsucc n then op (iterate_op A op {i :e omega | m <= i /\\ i <= n} f) (f (ordsucc n)) else iterate_op A op {i :e omega | m <= i /\\ i <= n} f",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: omega, forall op :e A :^: A :^: A, hl_monoidal A op = 1 -> (forall m :e omega, hl_iterate A omega op (hl_numseg m (hl_NUMERAL hl_zero)) f = hl_COND A (if m = hl_NUMERAL hl_zero then 1 else 0) (f (hl_NUMERAL hl_zero)) (hl_neutral A op)) /\\ forall m n :e omega, hl_iterate A omega op (hl_numseg m (hl_SUC n)) f = hl_COND A (hl_le m (hl_SUC n)) (op (hl_iterate A omega op (hl_numseg m n) f) (f (hl_SUC n))) (hl_iterate A omega op (hl_numseg m n) f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x, forall x y z :e A, op x (op y z) = op (op x y) z, forall x y :e A, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLAUSES_NUMSEG_bridge"
   },
   {
    "name": "ITERATE_CLAUSES_NUMSEG_LE",
@@ -38316,9 +38316,9 @@
    "source": "!op:A->A->A. monoidal op ==> iterate op (GSPEC (\\GEN%PVAR%259:num. ?i:num. SETSPEC GEN%PVAR%259 (i <= 0) i)) f = f 0 /\\ (!k:num. iterate op (GSPEC (\\GEN%PVAR%260:num. ?i:num. SETSPEC GEN%PVAR%260 (i <= SUC k) i)) f = op (iterate op (GSPEC (\\GEN%PVAR%261:num. ?i:num. SETSPEC GEN%PVAR%261 (i <= k) i)) f) (f (SUC k)))",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> iterate_op A op {i :e omega | i <= 0} f = f 0 /\\ forall k :e omega, iterate_op A op {i :e omega | i <= ordsucc k} f = op (iterate_op A op {i :e omega | i <= k} f) (f (ordsucc k))",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: omega, forall op :e A :^: A :^: A, hl_monoidal A op = 1 -> hl_iterate A omega op (hl_GSPEC omega (fun GEN_PVAR_259 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_259 (hl_le i (hl_NUMERAL hl_zero)) i = 1 then 1 else 0)) f = f (hl_NUMERAL hl_zero) /\\ forall k :e omega, hl_iterate A omega op (hl_GSPEC omega (fun GEN_PVAR_260 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_260 (hl_le i (hl_SUC k)) i = 1 then 1 else 0)) f = op (hl_iterate A omega op (hl_GSPEC omega (fun GEN_PVAR_261 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_261 (hl_le i k) i = 1 then 1 else 0)) f) (f (hl_SUC k))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x, forall x y z :e A, op x (op y z) = op (op x y) z, forall x y :e A, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLAUSES_NUMSEG_LE_bridge"
   },
   {
    "name": "ITERATE_CLAUSES_NUMSEG_LT",
@@ -38350,9 +38350,9 @@
    "source": "!op:A->A->A. monoidal op ==> iterate op (GSPEC (\\GEN%PVAR%256:num. ?i:num. SETSPEC GEN%PVAR%256 (i < 0) i)) f = neutral op /\\ (!k:num. iterate op (GSPEC (\\GEN%PVAR%257:num. ?i:num. SETSPEC GEN%PVAR%257 (i < SUC k) i)) f = op (iterate op (GSPEC (\\GEN%PVAR%258:num. ?i:num. SETSPEC GEN%PVAR%258 (i < k) i)) f) (f k))",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> iterate_op A op {i :e omega | i < 0} f = neutral_of A op /\\ forall k :e omega, iterate_op A op {i :e omega | i < ordsucc k} f = op (iterate_op A op {i :e omega | i < k} f) (f k)",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: omega, forall op :e A :^: A :^: A, hl_monoidal A op = 1 -> hl_iterate A omega op (hl_GSPEC omega (fun GEN_PVAR_256 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_256 (hl_lt i (hl_NUMERAL hl_zero)) i = 1 then 1 else 0)) f = hl_neutral A op /\\ forall k :e omega, hl_iterate A omega op (hl_GSPEC omega (fun GEN_PVAR_257 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_257 (hl_lt i (hl_SUC k)) i = 1 then 1 else 0)) f = op (hl_iterate A omega op (hl_GSPEC omega (fun GEN_PVAR_258 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_258 (hl_lt i k) i = 1 then 1 else 0)) f) (f k)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x, forall x y z :e A, op x (op y z) = op (op x y) z, forall x y :e A, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLAUSES_NUMSEG_LT_bridge"
   },
   {
    "name": "ITERATE_CLOSED",
@@ -38380,9 +38380,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!P:B->bool. P (neutral op) /\\ (!x:B. !y:B. P x /\\ P y ==> P (op x y)) ==> (!f:A->B. !s:A->bool. (!x:A. x IN s /\\ ~(f x = neutral op) ==> P (f x)) ==> P (iterate op s f)))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall P:set -> prop, P (neutral_of B op) /\\ (forall x y :e B, P x /\\ P y -> P (op x y)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s /\\ ~ f x = neutral_of B op -> P (f x)) -> P (iterate_op B op s f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall P :e 2 :^: B, P (hl_neutral B op) = 1 /\\ (forall x y :e B, P x = 1 /\\ P y = 1 -> P (op x y) = 1) -> forall f :e B :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 /\\ ~ f x = hl_neutral B op -> P (f x) = 1) -> P (hl_iterate B A op s f) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s /\\ ~ f x = neutral_of B (fun a:set => fun b:set => op a b) -> P (f x), forall x y :e B, P x /\\ P y -> P (op x y), P (neutral_of B (fun a:set => fun b:set => op a b)), forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLOSED_bridge"
   },
   {
    "name": "ITERATE_CLOSED_NONEMPTY",
@@ -38413,9 +38413,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!P:B->bool. (!x:B. !y:B. P x /\\ P y ==> P (op x y)) ==> (!f:A->B. !s:A->bool. FINITE s /\\ ~(s = EMPTY) /\\ (!x:A. x IN s ==> P (f x)) ==> P (iterate op s f)))",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall P:set -> prop, (forall x y :e B, P x /\\ P y -> P (op x y)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> P (f x))) -> P (iterate_op B op s f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall P :e 2 :^: B, (forall x y :e B, P x = 1 /\\ P y = 1 -> P (op x y) = 1) -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> P (f x) = 1)) -> P (hl_iterate B A op s f) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> P (f x), ~ s = Empty, finite s, forall x y :e B, P x /\\ P y -> P (op x y), forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_CLOSED_NONEMPTY_bridge"
   },
   {
    "name": "ITERATE_DELETE",
@@ -38446,9 +38446,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. !a:A. FINITE s /\\ a IN s ==> op (f a) (iterate op (s DELETE a) f) = iterate op s f)",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, finite s /\\ a :e s -> op (f a) (iterate_op B op (s :\\: {a}) f) = iterate_op B op s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s :e 2 :^: A, forall a :e A, hl_FINITE A s = 1 /\\ hl_IN A a s = 1 -> op (f a) (hl_iterate B A op (hl_DELETE A s a) f) = hl_iterate B A op s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a0:set => fun b:set => op a0 b)) x = x not available from hypotheses [hyps: a :e s, finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_DELETE_bridge"
   },
   {
    "name": "ITERATE_DELTA",
@@ -38478,9 +38478,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !a:A. !s:A->bool. iterate op s (\\x:A. if x = a then f x else neutral op) = (if a IN s then f a else neutral op))",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, forall s c= A, iterate_op B op s (fun x:set => if x = a then f x else neutral_of B op) = if a :e s then f a else neutral_of B op",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall a :e A, forall s :e 2 :^: A, hl_iterate B A op s (fun x :e A => hl_COND B (if x = a then 1 else 0) (f x) (hl_neutral B op)) = hl_COND B (hl_IN A a s) (f a) (hl_neutral B op)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a0:set => fun b:set => op a0 b)) x = x not available from hypotheses [hyps: forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_DELTA_bridge"
   },
   {
    "name": "ITERATE_DIFF",
@@ -38509,9 +38509,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. !t:A->bool. FINITE s /\\ t SUBSET s ==> op (iterate op (s DIFF t) f) (iterate op t f) = iterate op s f)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite s /\\ t c= s -> op (iterate_op B op (s :\\: t) f) (iterate_op B op t f) = iterate_op B op s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_SUBSET A t s = 1 -> op (hl_iterate B A op (hl_DIFF A s t) f) (hl_iterate B A op t f) = hl_iterate B A op s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: t c= s, finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_DIFF_bridge"
   },
   {
    "name": "ITERATE_DIFF_GEN",
@@ -38540,9 +38540,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. !t:A->bool. FINITE (support op f s) /\\ support op f t SUBSET support op f s ==> op (iterate op (s DIFF t) f) (iterate op t f) = iterate op s f)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite {x :e s | f x <> neutral_of B op} /\\ {x :e t | f x <> neutral_of B op} c= {x :e s | f x <> neutral_of B op} -> op (iterate_op B op (s :\\: t) f) (iterate_op B op t f) = iterate_op B op s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_FINITE A (hl_support B A op f s) = 1 /\\ hl_SUBSET A (hl_support B A op f t) (hl_support B A op f s) = 1 -> op (hl_iterate B A op (hl_DIFF A s t) f) (hl_iterate B A op t f) = hl_iterate B A op s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: {x :e t | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}, finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_DIFF_GEN_bridge"
   },
   {
    "name": "ITERATE_EQ",
@@ -38570,9 +38570,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !g:A->B. !s:A->bool. (!x:A. x IN s ==> f x = g x) ==> iterate op s f = iterate op s g)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> iterate_op B op s f = iterate_op B op s g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f g :e B :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> f x = g x) -> hl_iterate B A op s f = hl_iterate B A op s g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> f x = g x, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_EQ_bridge"
   },
   {
    "name": "ITERATE_EQ_GENERAL",
@@ -38600,9 +38600,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!s:A->bool. !t:B->bool. !f:A->C. !g:B->C. !h:A->B. (!y:B. y IN t ==> (?!x:A. x IN s /\\ h x = y)) /\\ (!x:A. x IN s ==> h x IN t /\\ g (h x) = f x) ==> iterate op s f = iterate op t g)",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x) /\\ (forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x) -> iterate_op C op s f = iterate_op C op t g",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e C :^: A, forall g :e C :^: B, forall h :e B :^: A, (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ h x = y then 1 else 0) = 1) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ g (h x) = f x) -> hl_iterate C A op s f = hl_iterate C B op t g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x, forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_EQ_GENERAL_bridge"
   },
   {
    "name": "ITERATE_EQ_GENERAL_INVERSES",
@@ -38630,9 +38630,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!s:A->bool. !t:B->bool. !f:A->C. !g:B->C. !h:A->B. !k:B->A. (!y:B. y IN t ==> k y IN s /\\ h (k y) = y) /\\ (!x:A. x IN s ==> h x IN t /\\ k (h x) = x /\\ g (h x) = f x) ==> iterate op s f = iterate op t g)",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall k:set -> set, (forall x :e B, k x :e A) -> (forall y :e B, y :e t -> k y :e s /\\ h (k y) = y) /\\ (forall x :e A, x :e s -> h x :e t /\\ (k (h x) = x /\\ g (h x) = f x)) -> iterate_op C op s f = iterate_op C op t g",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e C :^: A, forall g :e C :^: B, forall h :e B :^: A, forall k :e A :^: B, (forall y :e B, hl_IN B y t = 1 -> hl_IN A (k y) s = 1 /\\ h (k y) = y) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ (k (h x) = x /\\ g (h x) = f x)) -> hl_iterate C A op s f = hl_iterate C B op t g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> h x :e t /\\ (k (h x) = x /\\ g (h x) = f x), forall y :e B, y :e t -> k y :e s /\\ h (k y) = y, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_EQ_GENERAL_INVERSES_bridge"
   },
   {
    "name": "ITERATE_EQ_NEUTRAL",
@@ -38660,9 +38660,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. (!x:A. x IN s ==> f x = neutral op) ==> iterate op s f = neutral op)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = neutral_of B op) -> iterate_op B op s f = neutral_of B op",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> f x = hl_neutral B op) -> hl_iterate B A op s f = hl_neutral B op",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> f x = neutral_of B (fun a:set => fun b:set => op a b), forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_EQ_NEUTRAL_bridge"
   },
   {
    "name": "ITERATE_EXPAND_CASES",
@@ -38723,9 +38723,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!f:A->B. !g:B->C. !s:A->bool. (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) ==> iterate op (IMAGE f s) g = iterate op s (g o f))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) -> iterate_op C op {f x | x :e s} g = iterate_op C op s (fun x:set => g (f x))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) -> hl_iterate C B op (hl_IMAGE A B f s) g = hl_iterate C A op s (hl_o B C A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_IMAGE_bridge"
   },
   {
    "name": "ITERATE_IMAGE_GEN",
@@ -38754,9 +38754,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!f:A->B. !g:A->C. !s:A->bool. FINITE s ==> iterate op s g = iterate op (IMAGE f s) (\\y:B. iterate op (GSPEC (\\GEN%PVAR%247:A. ?x:A. SETSPEC GEN%PVAR%247 (x IN s /\\ f x = y) x)) g))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s -> iterate_op C op s g = iterate_op C op {f x | x :e s} (fun y:set => iterate_op C op {x :e A | x :e s /\\ f x = y} g)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall f :e B :^: A, forall g :e C :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_iterate C A op s g = hl_iterate C B op (hl_IMAGE A B f s) (fun y :e B => hl_iterate C A op (hl_GSPEC A (fun GEN_PVAR_247 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_247 (if hl_IN A x s = 1 /\\ f x = y then 1 else 0) x = 1 then 1 else 0)) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: finite s, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_IMAGE_GEN_bridge"
   },
   {
    "name": "ITERATE_IMAGE_NONZERO",
@@ -38785,9 +38785,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!g:B->C. !f:A->B. !s:A->bool. FINITE s /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ ~(x = y) /\\ f x = f y ==> g (f x) = neutral op) ==> iterate op (IMAGE f s) g = iterate op s (g o f))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ (~ x = y /\\ f x = f y)) -> g (f x) = neutral_of C op) -> iterate_op C op {f x | x :e s} g = iterate_op C op s (fun x:set => g (f x))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall g :e C :^: B, forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ (~ x = y /\\ f x = f y)) -> g (f x) = hl_neutral C op) -> hl_iterate C B op (hl_IMAGE A B f s) g = hl_iterate C A op s (hl_o B C A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x y :e A, x :e s /\\ (y :e s /\\ (~ x = y /\\ f x = f y)) -> g (f x) = neutral_of C (fun a:set => fun b:set => op a b), finite s, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_IMAGE_NONZERO_bridge"
   },
   {
    "name": "ITERATE_INCL_EXCL",
@@ -38818,9 +38818,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!s:A->bool. !t:A->bool. !f:A->B. FINITE s /\\ FINITE t ==> op (iterate op s f) (iterate op t f) = op (iterate op (s UNION t) f) (iterate op (s INTER t) f))",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall s t c= A, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\\ finite t -> op (iterate_op B op s f) (iterate_op B op t f) = op (iterate_op B op (s :\\/: t) f) (iterate_op B op (s :/\\: t) f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall s t :e 2 :^: A, forall f :e B :^: A, hl_FINITE A s = 1 /\\ hl_FINITE A t = 1 -> op (hl_iterate B A op s f) (hl_iterate B A op t f) = op (hl_iterate B A op (hl_UNION A s t) f) (hl_iterate B A op (hl_INTER A s t) f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: finite t, finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_INCL_EXCL_bridge"
   },
   {
    "name": "ITERATE_INJECTION",
@@ -38849,9 +38849,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !p:A->A. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> p x IN s) /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ p x = p y ==> x = y) ==> iterate op s (f o p) = iterate op s f)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\\ ((forall x :e A, x :e s -> p x :e s) /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ p x = p y) -> x = y)) -> iterate_op B op s (fun x:set => f (p x)) = iterate_op B op s f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall p :e A :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ p x = p y) -> x = y)) -> hl_iterate B A op s (hl_o A B A f p) = hl_iterate B A op s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x y :e A, x :e s /\\ (y :e s /\\ p x = p y) -> x = y, forall x :e A, x :e s -> p x :e s, finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_INJECTION_bridge"
   },
   {
    "name": "ITERATE_ITERATE_PRODUCT",
@@ -38883,7 +38883,7 @@
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e C) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> iterate_op C op s (fun i:set => iterate_op C op (t i) (x i)) = iterate_op C op (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e C :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_iterate C A op s (fun i :e A => hl_iterate C B op (t i) (x i)) = hl_iterate C (A :*: B) op (hl_GSPEC (A :*: B) (fun GEN_PVAR_243 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_243 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (C :^: (A :*: B)) (fun f :e C :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ C (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x0 y :e C, op x0 y = op y x0) /\\ (forall x0 y z :e C, op x0 (op y z) = op (op x0 y) z) /\\ forall x0 :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x0 = x0 not available from hypotheses [hyps: forall i :e A, i :e s -> finite (t0 i), finite s, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view metafun(A :*: B -> C), 1 args)",
    "bridge": ""
   },
   {
@@ -38913,9 +38913,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !g:A->B. !s:A->bool. FINITE s ==> iterate op s (\\x:A. op (f x) (g x)) = op (iterate op s f) (iterate op s g))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite s -> iterate_op B op s (fun x:set => op (f x) (g x)) = op (iterate_op B op s f) (iterate_op B op s g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f g :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_iterate B A op s (fun x :e A => op (f x) (g x)) = op (hl_iterate B A op s f) (hl_iterate B A op s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_OP_bridge"
   },
   {
    "name": "ITERATE_OP_GEN",
@@ -38944,9 +38944,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !g:A->B. !s:A->bool. FINITE (support op f s) /\\ FINITE (support op g s) ==> iterate op s (\\x:A. op (f x) (g x)) = op (iterate op s f) (iterate op s g))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite {x :e s | f x <> neutral_of B op} /\\ finite {x :e s | g x <> neutral_of B op} -> iterate_op B op s (fun x:set => op (f x) (g x)) = op (iterate_op B op s f) (iterate_op B op s g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f g :e B :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_support B A op f s) = 1 /\\ hl_FINITE A (hl_support B A op g s) = 1 -> hl_iterate B A op s (fun x :e A => op (f x) (g x)) = op (hl_iterate B A op s f) (hl_iterate B A op s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: finite {x :e s | g x <> neutral_of B (fun a:set => fun b:set => op a b)}, finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_OP_GEN_bridge"
   },
   {
    "name": "ITERATE_PAIR",
@@ -38977,9 +38977,9 @@
    "source": "!op:A->A->A. monoidal op ==> (!f:num->A. !m:num. !n:num. iterate op (.. (2 * m) (2 * n + 1)) f = iterate op (.. m n) (\\i:num. op (f (2 * i)) (f (2 * i + 1))))",
    "statement": "forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall m n :e omega, iterate_op A op {i :e omega | 2 * m <= i /\\ i <= 2 * n + 1} f = iterate_op A op {i :e omega | m <= i /\\ i <= n} (fun i:set => op (f (2 * i)) (f (2 * i + 1)))",
    "literal": "forall A:set, A <> Empty -> forall op :e A :^: A :^: A, hl_monoidal A op = 1 -> forall f :e A :^: omega, forall m n :e omega, hl_iterate A omega op (hl_numseg (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (hl_NUMERAL (hl_BIT1 hl_zero)))) f = hl_iterate A omega op (hl_numseg m n) (fun i :e omega => op (f (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) i)) (f (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) i) (hl_NUMERAL (hl_BIT1 hl_zero)))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x, forall x y z :e A, op x (op y z) = op (op x y) z, forall x y :e A, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_PAIR_bridge"
   },
   {
    "name": "ITERATE_REFLECT",
@@ -39009,9 +39009,9 @@
    "source": "!op:A->A->A. monoidal op ==> (!x:num->A. !m:num. !n:num. iterate op (.. m n) x = (if n < m then neutral op else iterate op (.. 0 (n - m)) (\\i:num. x (n - i))))",
    "statement": "forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> forall m n :e omega, iterate_op A op {i :e omega | m <= i /\\ i <= n} x = if n < m then neutral_of A op else iterate_op A op {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
    "literal": "forall A:set, A <> Empty -> forall op :e A :^: A :^: A, hl_monoidal A op = 1 -> forall x :e A :^: omega, forall m n :e omega, hl_iterate A omega op (hl_numseg m n) x = hl_COND A (hl_lt n m) (hl_neutral A op) (hl_iterate A omega op (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n m)) (fun i :e omega => x (hl_sub n i)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x0 y :e A, op x0 y = op y x0) /\\ (forall x0 y z :e A, op x0 (op y z) = op (op x0 y) z) /\\ forall x0 :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x0 = x0 not available from hypotheses [hyps: forall x :e A, op (neutral_of A (fun a:set => fun b:set => op a b)) x = x, forall x y z :e A, op x (op y z) = op (op x y) z, forall x y :e A, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_REFLECT_bridge"
   },
   {
    "name": "ITERATE_RELATED",
@@ -39040,9 +39040,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!R:B->B->bool. R (neutral op) (neutral op) /\\ (!x1:B. !y1:B. !x2:B. !y2:B. R x1 x2 /\\ R y1 y2 ==> R (op x1 y1) (op x2 y2)) ==> (!f:A->B. !g:A->B. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> R (f x) (g x)) ==> R (iterate op s f) (iterate op s g)))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall R0:set -> set -> prop, R0 (neutral_of B op) (neutral_of B op) /\\ (forall x1 y1 x2 y2 :e B, R0 x1 x2 /\\ R0 y1 y2 -> R0 (op x1 y1) (op x2 y2)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> R0 (f x) (g x)) -> R0 (iterate_op B op s f) (iterate_op B op s g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall R1 :e 2 :^: B :^: B, R1 (hl_neutral B op) (hl_neutral B op) = 1 /\\ (forall x1 y1 x2 y2 :e B, R1 x1 x2 = 1 /\\ R1 y1 y2 = 1 -> R1 (op x1 y1) (op x2 y2) = 1) -> forall f g :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> R1 (f x) (g x) = 1) -> R1 (hl_iterate B A op s f) (hl_iterate B A op s g) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> R0 (f x) (g x), finite s, forall x1 y1 x2 y2 :e B, R0 x1 x2 /\\ R0 y1 y2 -> R0 (op x1 y1) (op x2 y2), R0 (neutral_of B (fun a:set => fun b:set => op a b)) (neutral_of B (fun a:set => fun b:set => op a b)), forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_RELATED_bridge"
   },
   {
    "name": "ITERATE_RELATED_NONEMPTY",
@@ -39073,9 +39073,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!R:B->B->bool. (!x1:B. !y1:B. !x2:B. !y2:B. R x1 x2 /\\ R y1 y2 ==> R (op x1 y1) (op x2 y2)) ==> (!f:A->B. !g:A->B. !s:A->bool. FINITE s /\\ ~(s = EMPTY) /\\ (!x:A. x IN s ==> R (f x) (g x)) ==> R (iterate op s f) (iterate op s g)))",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall R0:set -> set -> prop, (forall x1 y1 x2 y2 :e B, R0 x1 x2 /\\ R0 y1 y2 -> R0 (op x1 y1) (op x2 y2)) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> R0 (f x) (g x))) -> R0 (iterate_op B op s f) (iterate_op B op s g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall R1 :e 2 :^: B :^: B, (forall x1 y1 x2 y2 :e B, R1 x1 x2 = 1 /\\ R1 y1 y2 = 1 -> R1 (op x1 y1) (op x2 y2) = 1) -> forall f g :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> R1 (f x) (g x) = 1)) -> R1 (hl_iterate B A op s f) (hl_iterate B A op s g) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s -> R0 (f x) (g x), ~ s = Empty, finite s, forall x1 y1 x2 y2 :e B, R0 x1 x2 /\\ R0 y1 y2 -> R0 (op x1 y1) (op x2 y2), forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_RELATED_NONEMPTY_bridge"
   },
   {
    "name": "ITERATE_RESTRICT_SET",
@@ -39103,9 +39103,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!P:A->bool. !s:A->bool. !f:A->B. iterate op (GSPEC (\\GEN%PVAR%244:A. ?x:A. SETSPEC GEN%PVAR%244 (x IN s /\\ P x) x)) f = iterate op s (\\x:A. if P x then f x else neutral op))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> iterate_op B op {x :e A | x :e s /\\ P x} f = iterate_op B op s (fun x:set => if P x then f x else neutral_of B op)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall P s :e 2 :^: A, forall f :e B :^: A, hl_iterate B A op (hl_GSPEC A (fun GEN_PVAR_244 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_244 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) f = hl_iterate B A op s (fun x :e A => hl_COND B (P x) (f x) (hl_neutral B op))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_RESTRICT_SET_bridge"
   },
   {
    "name": "ITERATE_SING",
@@ -39135,9 +39135,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !x:A. iterate op (x INSERT EMPTY) f = f x)",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, iterate_op B op {x} f = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall x :e A, hl_iterate B A op (hl_INSERT A x (hl_EMPTY A)) f = f x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x0 y :e B, op x0 y = op y x0) /\\ (forall x0 y z :e B, op x0 (op y z) = op (op x0 y) z) /\\ forall x0 :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x0 = x0 not available from hypotheses [hyps: forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_SING_bridge"
   },
   {
    "name": "ITERATE_SUPERSET",
@@ -39167,9 +39167,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !u:A->bool. !v:A->bool. u SUBSET v /\\ (!x:A. x IN v /\\ ~(x IN u) ==> f x = neutral op) ==> iterate op v f = iterate op u f)",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall u v c= A, u c= v /\\ (forall x :e A, x :e v /\\ ~ x :e u -> f x = neutral_of B op) -> iterate_op B op v f = iterate_op B op u f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall u v :e 2 :^: A, hl_SUBSET A u v = 1 /\\ (forall x :e A, hl_IN A x v = 1 /\\ ~ hl_IN A x u = 1 -> f x = hl_neutral B op) -> hl_iterate B A op v f = hl_iterate B A op u f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e v /\\ ~ x :e u -> f x = neutral_of B (fun a:set => fun b:set => op a b), u c= v, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_SUPERSET_bridge"
   },
   {
    "name": "ITERATE_SUPPORT",
@@ -39230,9 +39230,9 @@
    "source": "!op:C->C->C. monoidal op ==> (!f:A->B->C. !s:A->bool. !t:B->bool. FINITE s /\\ FINITE t ==> iterate op s (\\i:A. iterate op t (f i)) = iterate op t (\\j:B. iterate op s (\\i:A. f i j)))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t c= B, finite s /\\ finite t -> iterate_op C op s (fun i:set => iterate_op C op t (f i)) = iterate_op C op t (fun j:set => iterate_op C op s (fun i:set => f i j))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall f :e C :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_iterate C A op s (fun i :e A => hl_iterate C B op t (f i)) = hl_iterate C B op t (fun j :e B => hl_iterate C A op s (fun i :e A => f i j))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: finite t, finite s, forall x :e C, op (neutral_of C (fun a:set => fun b:set => op a b)) x = x, forall x y z :e C, op x (op y z) = op (op x y) z, forall x y :e C, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_SWAP_bridge"
   },
   {
    "name": "ITERATE_UNION",
@@ -39261,9 +39261,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. !t:A->bool. FINITE s /\\ FINITE t /\\ DISJOINT s t ==> iterate op (s UNION t) f = op (iterate op s f) (iterate op t f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite s /\\ (finite t /\\ s :/\\: t = Empty) -> iterate_op B op (s :\\/: t) f = op (iterate_op B op s f) (iterate_op B op t f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE A t = 1 /\\ hl_DISJOINT A s t = 1) -> hl_iterate B A op (hl_UNION A s t) f = op (hl_iterate B A op s f) (hl_iterate B A op t f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: s :/\\: t = Empty, finite t, finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_UNION_bridge"
   },
   {
    "name": "ITERATE_UNION_GEN",
@@ -39292,9 +39292,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. !t:A->bool. FINITE (support op f s) /\\ FINITE (support op f t) /\\ DISJOINT (support op f s) (support op f t) ==> iterate op (s UNION t) f = op (iterate op s f) (iterate op t f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite {x :e s | f x <> neutral_of B op} /\\ (finite {x :e t | f x <> neutral_of B op} /\\ {x :e s | f x <> neutral_of B op} :/\\: {x :e t | f x <> neutral_of B op} = Empty) -> iterate_op B op (s :\\/: t) f = op (iterate_op B op s f) (iterate_op B op t f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_FINITE A (hl_support B A op f s) = 1 /\\ (hl_FINITE A (hl_support B A op f t) = 1 /\\ hl_DISJOINT A (hl_support B A op f s) (hl_support B A op f t) = 1) -> hl_iterate B A op (hl_UNION A s t) f = op (hl_iterate B A op s f) (hl_iterate B A op t f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)} :/\\: {x :e t | f x <> neutral_of B (fun a:set => fun b:set => op a b)} = Empty, finite {x :e t | f x <> neutral_of B (fun a:set => fun b:set => op a b)}, finite {x :e s | f x <> neutral_of B (fun a:set => fun b:set => op a b)}, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_UNION_GEN_bridge"
   },
   {
    "name": "ITERATE_UNION_NONZERO",
@@ -39323,9 +39323,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. !t:A->bool. FINITE s /\\ FINITE t /\\ (!x:A. x IN s INTER t ==> f x = neutral op) ==> iterate op (s UNION t) f = op (iterate op s f) (iterate op t f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, finite s /\\ (finite t /\\ (forall x :e A, x :e s :/\\: t -> f x = neutral_of B op)) -> iterate_op B op (s :\\/: t) f = op (iterate_op B op s f) (iterate_op B op t f)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE A t = 1 /\\ (forall x :e A, hl_IN A x (hl_INTER A s t) = 1 -> f x = hl_neutral B op)) -> hl_iterate B A op (hl_UNION A s t) f = op (hl_iterate B A op s f) (hl_iterate B A op t f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: forall x :e A, x :e s :/\\: t -> f x = neutral_of B (fun a:set => fun b:set => op a b), finite t, finite s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_UNION_NONZERO_bridge"
   },
   {
    "name": "ITERATE_UNIV",
@@ -39355,9 +39355,9 @@
    "source": "!op:B->B->B. monoidal op ==> (!f:A->B. !s:A->bool. support op f UNIV SUBSET s ==> iterate op s f = iterate op UNIV f)",
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e A | f x <> neutral_of B op} c= s -> iterate_op B op s f = iterate_op B op A f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support B A op f (hl_UNIV A)) s = 1 -> hl_iterate B A op s f = hl_iterate B A op (hl_UNIV A) f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x not available from hypotheses [hyps: {x :e A | f x <> neutral_of B (fun a:set => fun b:set => op a b)} c= s, forall x :e B, op (neutral_of B (fun a:set => fun b:set => op a b)) x = x, forall x y z :e B, op x (op y z) = op (op x y) z, forall x y :e B, op x y = op y x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ITERATE_UNIV_bridge"
   },
   {
    "name": "ITERATO_CLAUSES",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2231
+  "native_certified": 2267
  }
 }

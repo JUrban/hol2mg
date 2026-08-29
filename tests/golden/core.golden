@@ -1636,7 +1636,8 @@ source: !op:C->C->C. monoidal op ==> (!f:A->C. iterate op EMPTY f = neutral op) 
 status: transport_required
 statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e C) -> iterate_op C op Empty f = neutral_of C op) /\ forall f:set -> set, (forall x :e B, f x :e C) -> forall x :e B, forall s c= B, finite s -> iterate_op C op (SetAdjoin s x) f = if x :e s then iterate_op C op s f else op (f x) (iterate_op C op s f)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> (forall f :e C :^: A, hl_iterate C A op (hl_EMPTY A) f = hl_neutral C op) /\ forall f :e C :^: B, forall x :e B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_iterate C B op (hl_INSERT B x s) f = hl_COND C (hl_IN B x s) (hl_iterate C B op s f) (op (f x) (hl_iterate C B op s f))
-cert_status: bridge_unsupported
+bridge: ITERATE_CLAUSES_bridge
+cert_status: native_certified
 
 ### NUMSEG_CLAUSES   [iteration, sums, number segments]
 hash: aaec3d7bc1b903fbed446dba31debe52
