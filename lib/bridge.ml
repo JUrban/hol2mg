@@ -165,6 +165,34 @@ let rec reduce_tuples (t : Mg.tm) : Mg.tm =
   | Mg.FamUnion (x, a, b) -> Mg.FamUnion (x, reduce_tuples a, reduce_tuples b)
   | _ -> t
 
+(* canonical bound-variable names, for comparisons up to alpha-equivalence *)
+let rec alpha_canon depth (t : Mg.tm) : Mg.tm =
+  let bind x body = let x' = "_b" ^ string_of_int depth in (x', alpha_canon (depth + 1) (Mg.subst [ (x, Mg.Var x') ] body)) in
+  let bind2 x b1 b2 = let x' = "_b" ^ string_of_int depth in (x', alpha_canon (depth + 1) (Mg.subst [ (x, Mg.Var x') ] b1), alpha_canon (depth + 1) (Mg.subst [ (x, Mg.Var x') ] b2)) in
+  match t with
+  | Mg.App (a, b) -> Mg.App (alpha_canon depth a, alpha_canon depth b)
+  | Mg.Lam (x, ty, b) -> let x', b' = bind x b in Mg.Lam (x', ty, b')
+  | Mg.LamIn (x, a, b) -> let x', b' = bind x b in Mg.LamIn (x', alpha_canon depth a, b')
+  | Mg.All (x, ty, b) -> let x', b' = bind x b in Mg.All (x', ty, b')
+  | Mg.AllIn (x, a, b) -> let x', b' = bind x b in Mg.AllIn (x', alpha_canon depth a, b')
+  | Mg.AllSub (x, a, b) -> let x', b' = bind x b in Mg.AllSub (x', alpha_canon depth a, b')
+  | Mg.Ex (x, ty, b) -> let x', b' = bind x b in Mg.Ex (x', ty, b')
+  | Mg.ExIn (x, a, b) -> let x', b' = bind x b in Mg.ExIn (x', alpha_canon depth a, b')
+  | Mg.ExSub (x, a, b) -> let x', b' = bind x b in Mg.ExSub (x', alpha_canon depth a, b')
+  | Mg.Imp (a, b) -> Mg.Imp (alpha_canon depth a, alpha_canon depth b)
+  | Mg.Sep (x, a, p) -> let x', p' = bind x p in Mg.Sep (x', alpha_canon depth a, p')
+  | Mg.Repl (x, a, b) -> let x', b' = bind x b in Mg.Repl (x', alpha_canon depth a, b')
+  | Mg.ReplSep (x, a, p, b) -> let x', p', b' = bind2 x p b in Mg.ReplSep (x', alpha_canon depth a, p', b')
+  | Mg.SetEnum l -> Mg.SetEnum (List.map (alpha_canon depth) l)
+  | Mg.If (c, a, b) -> Mg.If (alpha_canon depth c, alpha_canon depth a, alpha_canon depth b)
+  | Mg.Tuple l -> Mg.Tuple (List.map (alpha_canon depth) l)
+  | Mg.SigmaIn (x, a, b) -> let x', b' = bind x b in Mg.SigmaIn (x', alpha_canon depth a, b')
+  | Mg.PiIn (x, a, b) -> let x', b' = bind x b in Mg.PiIn (x', alpha_canon depth a, b')
+  | Mg.FamUnion (x, a, b) -> let x', b' = bind x b in Mg.FamUnion (x', alpha_canon depth a, b')
+  | _ -> t
+
+let alpha_eq a b = alpha_canon 0 a = alpha_canon 0 b
+
 let nprop g t = reduce_tuples (Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx t E.VProp)))
 let ntext g t = pp (nprop g t)
 let lprop g t = L.lprop g.lctx t
@@ -1088,7 +1116,7 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | Mg.App (Mg.LamIn (xn, _, lb), la) ->
                 (lit, nat, KEq, Printf.sprintf "(eq_trans_i %s %s %s (beta %s (fun %s:set => %s) %s %s) %s)" (ppp lit) (ppp l2) (ppp n2) (ppp ca) xn (pp lb) (ppp la) (typ g a) (if p2 = "" then refl else p2))
             | _ -> unsupported "rel: applied lambda shape")
-       | Lam (x, xty, body), E.VMetaPred [ _; d ] when args = [] && (match type_of [] body with TyApp ("fun", [ _; TyApp ("bool", []) ]) -> true | _ -> false) ->
+       | Lam (x, xty, body), E.VMetaPred [ _; d ] when args = [] && (match type_of [ xty ] body with TyApp ("fun", [ _; TyApp ("bool", []) ]) -> true | _ -> false) ->
            (* a lambda into subsets viewed as a binary predicate: lit i a = 1 <-> a :e N[body i] *)
            let n, body', _, cleanup = open_lam g x xty body in
            let r = (try
@@ -1362,7 +1390,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     | Mg.App (Mg.App (Mg.Cst ("iff" | "eq"), _), b) -> b
     | Mg.AllIn (x, _, Mg.App (Mg.App (Mg.Cst ("iff" | "eq"), _), b)) -> Mg.Lam (x, (match e.R.c_result with R.RMetaPred _ -> Mg.Prop | _ -> Mg.Set), b)
     | _ -> prop) in
-  if derived <> nat then unsupported "rel_mapped: derived native %s differs from elaborated %s" (pp derived) (pp nat);
+  if not (alpha_eq derived nat) then unsupported "rel_mapped: derived native %s differs from elaborated %s" (pp derived) (pp nat);
   (lit, nat, kind, pf)
 
 and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
