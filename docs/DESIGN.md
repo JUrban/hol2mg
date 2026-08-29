@@ -451,7 +451,8 @@ Contains only source constructs and types. Passes:
 
 ### 9.2 Literal semantic IR
 
-Implements the uniform set-theoretic translation:
+Superseded by §21.2 (post-audit contract).  Original sketch — implements the uniform
+set-theoretic translation:
 
 - each HOL type is a nonempty set carrier;
 - arrow types are native function sets;
@@ -1069,10 +1070,224 @@ function/boolean variables of lambdas get data views (`x :e B :^: A`, `b :e 2`);
 `metafun` slots are functions into `2` (entries wanting predicates say `metapred`); eta-reduction
 is restricted to meta arities; `at` and other keywords are reserved.
 
-### 20.8 Open items
+### 20.8 Open items (after audit 1, 2026-08-29)
 
-1. Megalodon-checked empty-case proofs to certify `generalization_required` statements.
-2. Remaining admitted native theorems (`seq_foldr_cons`, `seq_filter_finseq`, `div_mod_nat`,
-   `idx_n_equip`, `finsum_*`, `floor_R_int`).
-3. Literal semantic layer (§9.2) before the proof-export project.
-4. Parallel shard checking (`tools/check_public_par.sh`) to cut the Multivariate update time.
+1. Semantic certification of the complete Core profile (§21); progress in §21.7.
+2. Public statements whose empty case cannot be proved automatically keep their `A <> Empty`
+   premise; the resulting diff against `statements-v1` is reported per profile.
+3. Model-soundness theorems of the primitive interface (§21.4) not yet proved are listed in
+   §21.7 as explicit trusted assumptions.
+4. Proof-recording/export pilot only after the certification checkpoint (§21.8).
+
+## 21. Literal semantic layer and certification contract (post-audit design)
+
+Adopted in response to `docs/audits/2026-08-29-design-audit-1.md` (findings A1–A5); the response
+table is `docs/audits/2026-08-29-design-audit-1-response.md`.  This section is authoritative for
+the semantic phase; §9.2 is superseded by §21.2.
+
+### 21.1 Trust boundary
+
+For a supported HOL theorem `⊢ t` (name `N`) the pipeline produces, in this order, and every
+step after the first is machine-checked by Megalodon:
+
+1. **typed source IR** — the exported sequent, re-typechecked (fatal gate, §13.1); identity =
+   `(hol_light_commit, N, md5 sequent hash)`;
+2. **literal statement** `hl_N` — the syntax-directed set-theoretic interpretation of `t`
+   (§21.2), emitted as `Theorem hl_N : … . Admitted.`  This is the *only* admission of the
+   chain: it states that the HOL theorem is true in the literal model.  It is discharged by the
+   later proof-export project;
+3. **bridge** `N_bridge : (literal statement) -> (native statement)`, a generated Megalodon
+   proof ending in `Qed` (§21.5); Megalodon refuses `Qed` for any proof that depends on an
+   admitted theorem, so a bridge cannot rest on anything unproved except its own hypothesis;
+4. **public native statement** `N`, textually identical to the `statements-v1` output unless a
+   generalization had to be withdrawn (§21.5), emitted in the public shard as
+   `Theorem N : … . Admitted.` and in the private certification module as
+   `Theorem N : … . exact (N_bridge hl_N). Admitted.` (checked derivation, admitted only because
+   of `hl_N`).
+
+`transport_required` and `generalization_required` remain *statement-level* labels describing
+which representation changes the native statement involves; they carry no certification.
+Certification is the separate monotone `cert_status` (§21.6).
+
+### 21.2 Literal interpretation (syntax-directed, private)
+
+Notation: `L[τ]` carrier of a HOL type, `L[t]` set-valued interpretation of a term,
+`LP[t]` propositional interpretation of a Boolean term.  Everything is defined by structural
+recursion; no registry template participates except the fixed primitive interface (§21.4).
+
+Types:
+
+| HOL | `L[τ]` |
+|---|---|
+| type variable `A` | set parameter `A` with hypothesis `A <> Empty` (HOL types are inhabited) |
+| `bool` | `2` (= `{0, 1}`; `1` is true) |
+| `σ -> τ` | `L[τ] :^: L[σ]` (uniformly; predicates are functions into `2`) |
+| `σ # τ` | `L[σ] :*: L[τ]` |
+| `num`, `real`, `1`, `ind` | `omega`, `R`, `1`, `omega` (primitive, §21.4) |
+| `σ list`, `σ option`, `σ + τ` | `finseq L[σ]`, `1 :+: L[σ]`, `L[σ] :+: L[τ]` (primitive) |
+| translated type definition `T` with representing type `ρ` and predicate `P` | `hl_T A… = {x :e L[ρ] \| L[P] x = 1}` (§21.4, subtype rules) |
+
+Terms (`x` ranges over set variables named after the HOL variables; constants take their type
+variables as leading carrier arguments in the order of first occurrence in the constant's
+generic type):
+
+| HOL | `L[t]` |
+|---|---|
+| variable `x : σ` | `x` (with `x :e L[σ]` from its binder) |
+| constant `c` of generic type with type variables `α₁…αₖ`, instance `θ` | `hl_c L[θα₁] … L[θαₖ]` |
+| `f a` | `L[f] L[a]` (set application `ap`) |
+| `\x:σ. b` | `fun x :e L[σ] => L[b]` |
+| Boolean term with a logical head (below) used as data | `if LP[t] then 1 else 0` |
+
+Formulas `LP[t]` (deep translation of the logical structure; anything else is `L[t] = 1`):
+
+| HOL | `LP[t]` |
+|---|---|
+| `T`, `F` | `True`, `False` |
+| `~a`, `a /\ b`, `a \/ b`, `a ==> b` | `~LP[a]`, `LP[a] /\ LP[b]`, `LP[a] \/ LP[b]`, `LP[a] -> LP[b]` |
+| `a = b` at `bool` / at other `σ` | `LP[a] <-> LP[b]` / `L[a] = L[b]` (set equality; extensional at function types by `Pi_ext`) |
+| `!x:σ. b`, `?x:σ. b` | `forall x :e L[σ], LP[b]`, `exists x :e L[σ], LP[b]` |
+| `if c then a else b` at `bool` | `(LP[c] /\ LP[a]) \/ (~LP[c] /\ LP[b])` |
+| `?!x. b`, other Boolean terms | `L[t] = 1` |
+
+Statement of `⊢ t` with type variables `A₁…Aₖ` and free variables `x₁:σ₁ … xₙ:σₙ` (first
+occurrence order, as in the native layer):
+`forall A₁ … Aₖ:set, A₁ <> Empty -> … -> forall x₁ :e L[σ₁], … , LP[t]`.
+
+Definitions.  Every HOL kernel definition `c = rhs` (including the choice-based definitions
+produced by `new_specification`, `new_recursive_definition`, `define`) becomes
+`Definition hl_c : set -> … -> set := fun A₁ … Aₖ => L[rhs]`, emitted in kernel order into the
+private module `generated/literal/<profile>/_literal.mg`.  Constants of the primitive interface
+keep their primitive definition instead; constants whose kernel definition mentions an
+unsupported constant are unsupported, and every theorem mentioning an unsupported constant is
+quarantined (`cert_status = literal_unsupported`).  A HOL type definition `T` with
+`abs : ρ -> T`, `rep : T -> ρ` becomes the subtype `hl_T`, `hl_abs = hl_subtype_abs L[ρ] hl_P`,
+`hl_rep = hl_subtype_rep L[ρ] hl_P` (generic definitions in `mglib/literal/model.mg` whose two
+characterizing theorems are proved once); the HOL nonemptiness theorem of the type definition is
+a literal source fact.
+
+The literal layer never pretty-prints: it is emitted only into private certification modules,
+checked by Megalodon (`cert_status ≥ literal_checked`), and consumed by the bridge generator.
+
+### 21.3 Emission pattern and Megalodon facts it relies on
+
+Checked experimentally (2026-08-29): (i) `Qed` is refused for a theorem whose proof uses an
+admitted theorem (`depends on non-proved hl_T1`); (ii) a complete proof followed by
+`Admitted.` is accepted; (iii) `rewrite` cannot use a quantified equation under a binder
+(`rewrite <- H` with `H : forall x, f x = g x` fails) but closed equations rewrite under
+binders.  Consequently the bridge is stated as the implication `N_bridge : L -> N` (Qed), the
+public theorem is derived from it (`exact (N_bridge hl_N). Admitted.`), and generated proofs
+descend through binders with `let`/`assume` before rewriting at atoms.
+
+Certification module per shard, `generated/cert/<profile>/<shard>.mg`, checked after
+`mglib/native/*.mg`, `mglib/literal/model.mg`, `mglib/literal/bridge.mg`, the profile's
+`_definitions.mg` and `_literal.mg`: for each theorem `hl_N` (Admitted), `N_bridge` (Qed),
+`N` (derived, Admitted).  A tool verifies that the native statement in the certification module
+is byte-identical to the public shard's statement.
+
+### 21.4 Primitive interface, representation relations and compatibility theorems
+
+**Primitive interface** (the only place where the literal layer is not syntax-directed):
+
+| HOL | literal definition | characterizing HOL theorems to prove in `model.mg` |
+|---|---|---|
+| `=`, `@` | `hl_eq A x y = if x = y then 1 else 0`; `hl_select A P = choose_in A (fun x => P x = 1)` | `SELECT_AX`, `ETA_AX` (`Pi_eta`) |
+| (`T`, connectives and quantifiers are HOL definitions, not primitive) | | `BOOL_CASES_AX` follows from `cases_2` |
+| `ind = omega` | | `INFINITY_AX` (`ordsucc` is injective and not surjective) |
+| `num = omega`, `_0 = 0`, `SUC = fun n :e omega => ordsucc n` | | `NOT_SUC`, `SUC_INJ`, `num_INDUCTION`, `num_Axiom` |
+| `prod`, `(,)` | `L[σ] :*: L[τ]`, `hl_pair A B x y = (x, y)` | `PAIR_EQ`, `PAIR_SURJECTIVE` (from `Sigma_E`, `tuple_2_*_eq`) |
+| `1`, `one` | `1`, `0` | `one_axiom` (`one_Axiom`, `one_INDUCT`) |
+| `list`, `NIL`, `CONS` | `finseq A`, `seq_nil`, `seq_cons` | `list_INDUCT`, `list_RECURSION`, `NOT_CONS_NIL`, `CONS_11` |
+| `option`, `NONE`, `SOME`; `sum`, `INL`, `INR` | `1 :+: A`, `Inj0 0`, `Inj1`; `A :+: B`, `Inj0`, `Inj1` | `option_INDUCT/RECURSION`, `sum_INDUCT/RECURSION` |
+| `real`, `real_of_num`, `real_neg`, `real_add`, `real_mul`, `real_le`, `real_inv` | `R`, identity on `omega`, `minus_SNo`, `add_SNo`, `mul_SNo`, `SNoLe` (as `2`-valued), `recip_SNo` | the `realax.ml` axioms (`REAL_ADD_SYM` … `REAL_COMPLETE`, `REAL_OF_NUM_*`) |
+
+Everything else (`NUMERAL`, `BIT0`, `BIT1`, `+`, `*`, `<=`, `IN`, `UNION`, `IMAGE`, `HD`,
+`APPEND`, `MAP`, `real_lt`, `real_pow`, `int` and its operations, `iterate`, `sum`, …) is
+interpreted from its kernel definition.  Rationale for interpreting `num` and `real` directly:
+their HOL constructions (`ind` with choice; `nadd`/`hreal`/`treal` quotients) would require an
+isomorphism proof to the God1 carriers in any case; taking the God1 carriers as the
+interpretation moves that proof into the smaller, explicit model-soundness obligation (the
+characterizing theorems), which is machine-checked where proved and listed as a trusted
+assumption otherwise.  The constants of the skipped constructions (`mk_num`, `dest_num`,
+`IND_SUC`, `NUM_REP`, `mk_real`, `dest_real`, `treal_*`, `hreal_*`, `nadd_*`, `_mk_list`,
+`_dest_list`, `CONSTR`, `ABS_prod`, …) are unsupported.
+
+**Representation relations** `R_τ(l, n)` between a literal value `l :e L[τ]` and its native
+counterpart `n` (definitions and generic lemmas in `mglib/literal/bridge.mg`):
+
+| τ | `R_τ(l, n)` |
+|---|---|
+| carrier types with identical carriers (`A`, `num`, `int`, `real`, `1`, products, `finseq`, sums, type definitions) | `l = n` |
+| `bool` as data | `l = n` (both in `2`); as a proposition `p`: `l = 1 <-> p` |
+| `σ -> bool` viewed as a subset `s c= L[σ]` | `hl_rep A l = s` where `hl_rep A F = {x :e A \| F x = 1}` |
+| `σ -> bool` viewed as a meta-predicate `P` | `forall x :e A, l x = 1 <-> P x` |
+| `σ -> τ` viewed as a meta-function `f` | `forall x :e A, l x = f x` (agreement on the HOL domain only) |
+| `σ -> τ` viewed as a set function | `l = n` (both in `L[τ] :^: L[σ]`) |
+
+**Compatibility theorems.**  Every mapped constant `c` has a theorem `hl_c_compat` in
+`mglib/literal/bridge.mg` (or, for automatically defined constants, generated into
+`_literal.mg` and proved by the same generator that proves bridges): under the relations for
+its arguments (in the roles of the mapping entry), the literal application is related to the
+instantiated native template.  Compatibility proofs may use literal source facts (e.g. the
+recursion equations of `+`, `APPEND`) since those lie on the source side of the trust boundary;
+they may not use any other admission.  The mapping entry names its theorem (`compat` field); a
+constant without a proved compatibility theorem makes every theorem using it
+`cert_status = compat_missing`.
+
+### 21.5 Bridge generation and empty carriers
+
+`lib/bridge.ml` is a proof-producing elaborator that walks the HOL term in lockstep with the
+view decisions of `lib/elab.ml`, producing (a) the native statement, (b) a Megalodon proof
+script of `L -> N`.  Its native output must be byte-identical to the statement produced by
+`lib/elab.ml` (which stays the fast preview path); a difference yields
+`cert_status = bridge_mismatch` and is a bug in one of the two.  Proof shape: introduce the
+native binders (`let`/`assume`), instantiate the literal hypothesis with the representation of
+each native variable (`fun x :e A => f x` for meta-functions, `fun x :e A => if P x then 1 else 0`
+for meta-predicates, `fun x :e A => if x :e s then 1 else 0` for subsets), then recurse through
+connectives and quantifiers (both directions where needed: `<->`, `~`, `==>` premises) down to
+atoms, where compatibility theorems, `beta`, `If_i` lemmas and the typing lemmas of literal
+terms (`hl_c A … :e L[σ]`, generated per constant) close the goal.  Post-processing rewrites of
+the native layer (`lib/rewrite.ml`: beta/eta, tuple projections, literal arithmetic, vacuous
+binders, guarded rules with `by` lemmas) are traced and replayed as closed rewrites after the
+enclosing binders have been introduced.
+
+Empty carriers: the literal statement carries `A <> Empty` for each type variable; the native
+statement drops it when `lib/emptycase.ml` proposes so.  The bridge then proves the native
+statement by cases on `A = Empty`: the inhabited case instantiates the literal fact, the empty
+case is proved by a generated proof following the same rules the evaluator used (each rule is a
+lemma in `bridge.mg`: quantification over `Empty`, `Power Empty = {Empty}`,
+`finseq Empty = {seq_nil}`, `Empty :^: A`, …).  If the empty-case proof cannot be generated the
+premise is retained in the public statement and the manifest notes `generalization_withdrawn`.
+
+### 21.6 Certification statuses and manifests
+
+`cert_status` is monotone and set only by tools from checker results:
+
+| status | predicate | artifact |
+|---|---|---|
+| `extracted` | exported sequent present | `generated/internal/<profile>.jsonl` |
+| `source_typed` | source gate passed | manifest item (`source`, `hash`) |
+| `literal_emitted` | `hl_N` generated | `generated/literal/<profile>/<shard>.mg` |
+| `literal_checked` | Megalodon accepted the literal module (definitions + statements) | checker log |
+| `native_emitted` | public statement generated | manifest `statement` |
+| `transport_checked` | bridge `N_bridge` generated and Megalodon accepted its `Qed` | `generated/cert/<profile>/<shard>.mg` |
+| `public_checked` | public shard accepted, statement byte-identical to the certified one | `tools/check_public.sh`, `tools/cert_verify.py` |
+| `native_certified` | all of the above | manifest `cert_status`, `bridge` |
+
+Quarantine statuses (never public certification): `source_type_error`,
+`literal_unsupported`, `compat_missing`, `bridge_mismatch`, `bridge_failed`,
+`emptycase_failed`.  Manifest items record `literal` (statement), `bridge` (theorem name),
+`cert_status`, `compat` (theorems used) and `checker` (Megalodon commit, result).  Reports
+distinguish statement coverage (public statements), certification coverage
+(`native_certified`) and proof-import coverage (later).
+
+### 21.7 Progress (updated per report)
+
+See `docs/reports/` (latest report first) and the certification table in `README.md`.
+
+### 21.8 Phase exit criteria
+
+The audit's §8 criteria, verbatim, plus: the certification tools run in CI on the Core
+profile; the fixture slice `tests/golden/core.names` categories "polymorphic combinators",
+"products", "naturals", "lists", "sets", "choice", "type definitions", "reals" are certified
+before the rest of Core; the proof-export pilot starts only after Core is certified.
