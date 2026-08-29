@@ -1294,6 +1294,13 @@ distinguish statement coverage (public statements), certification coverage
 | 2026-08-29 (g) | 2697 / 2697 | 2267 / 2685 public | 321 (+ 26 carrier lemmas, 161 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-11.md` |
 | 2026-08-29 (h) | 2697 / 2697 | 2314 / 2685 public | 367 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-12.md` |
 | 2026-08-29 (i) | 2697 / 2697 | 2332 / 2685 public | 385 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-13.md` |
+| 2026-08-29 (j) | 2697 / 2697 | 2369 / 2685 public | 406 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-14.md` |
+
+Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
+`MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
+side condition (§21.6); a theorem is certified only when the generator derives the condition
+from its hypotheses, and the definitional clauses of `ASSOC`/`MAP2` themselves stay uncertified
+rather than being related to a native function chosen to agree on the unspecified cases.
 
 Defects found by certification so far (report 6): a variable-capture bug in the closure
 premises of meta-function binders (14 public Core statements were vacuous on
