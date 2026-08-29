@@ -16,6 +16,10 @@ type item = {
   error : string;
   statement : string;
   source : string;            (* HOL Light statement (pretty-printed typed source IR) *)
+  literal : string;           (* literal statement (docs/DESIGN.md §21.2), "" if unsupported *)
+  cert_status : string;       (* certification status (§21.6) *)
+  cert_error : string;        (* reason for a quarantine status *)
+  bridge : string;            (* bridge theorem name once generated *)
 }
 
 let json_of_item (i : item) : Yojson.Safe.t =
@@ -29,7 +33,9 @@ let json_of_item (i : item) : Yojson.Safe.t =
            ("var_views", `Assoc (List.map (fun (k, v) -> (k, `String v)) i.var_views));
            ("error", `String i.error);
            ("source", `String i.source);
-           ("statement", `String i.statement) ]
+           ("statement", `String i.statement);
+           ("literal", `String i.literal); ("cert_status", `String i.cert_status);
+           ("cert_error", `String i.cert_error); ("bridge", `String i.bridge) ]
 
 let write_manifest file (header : (string * Yojson.Safe.t) list) (items : item list) =
   let items = List.sort (fun a b -> compare a.name b.name) items in

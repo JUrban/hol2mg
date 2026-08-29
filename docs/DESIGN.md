@@ -1092,8 +1092,8 @@ step after the first is machine-checked by Megalodon:
 
 1. **typed source IR** — the exported sequent, re-typechecked (fatal gate, §13.1); identity =
    `(hol_light_commit, N, md5 sequent hash)`;
-2. **literal statement** `hl_N` — the syntax-directed set-theoretic interpretation of `t`
-   (§21.2), emitted as `Theorem hl_N : … . Admitted.`  This is the *only* admission of the
+2. **literal statement** `hlt_N` — the syntax-directed set-theoretic interpretation of `t`
+   (§21.2), emitted as `Theorem hlt_N : … . Admitted.`  This is the *only* admission of the
    chain: it states that the HOL theorem is true in the literal model.  It is discharged by the
    later proof-export project;
 3. **bridge** `N_bridge : (literal statement) -> (native statement)`, a generated Megalodon
@@ -1102,8 +1102,8 @@ step after the first is machine-checked by Megalodon:
 4. **public native statement** `N`, textually identical to the `statements-v1` output unless a
    generalization had to be withdrawn (§21.5), emitted in the public shard as
    `Theorem N : … . Admitted.` and in the private certification module as
-   `Theorem N : … . exact (N_bridge hl_N). Admitted.` (checked derivation, admitted only because
-   of `hl_N`).
+   `Theorem N : … . exact (N_bridge hlt_N). Admitted.` (checked derivation, admitted only because
+   of `hlt_N`).
 
 `transport_required` and `generalization_required` remain *statement-level* labels describing
 which representation changes the native statement involves; they carry no certification.
@@ -1176,12 +1176,12 @@ admitted theorem (`depends on non-proved hl_T1`); (ii) a complete proof followed
 `Admitted.` is accepted; (iii) `rewrite` cannot use a quantified equation under a binder
 (`rewrite <- H` with `H : forall x, f x = g x` fails) but closed equations rewrite under
 binders.  Consequently the bridge is stated as the implication `N_bridge : L -> N` (Qed), the
-public theorem is derived from it (`exact (N_bridge hl_N). Admitted.`), and generated proofs
+public theorem is derived from it (`exact (N_bridge hlt_N). Admitted.`), and generated proofs
 descend through binders with `let`/`assume` before rewriting at atoms.
 
 Certification module per shard, `generated/cert/<profile>/<shard>.mg`, checked after
 `mglib/native/*.mg`, `mglib/literal/model.mg`, `mglib/literal/bridge.mg`, the profile's
-`_definitions.mg` and `_literal.mg`: for each theorem `hl_N` (Admitted), `N_bridge` (Qed),
+`_definitions.mg` and `_literal.mg`: for each theorem `hlt_N` (Admitted), `N_bridge` (Qed),
 `N` (derived, Admitted).  A tool verifies that the native statement in the certification module
 is byte-identical to the public shard's statement.
 
@@ -1267,7 +1267,7 @@ premise is retained in the public statement and the manifest notes `generalizati
 |---|---|---|
 | `extracted` | exported sequent present | `generated/internal/<profile>.jsonl` |
 | `source_typed` | source gate passed | manifest item (`source`, `hash`) |
-| `literal_emitted` | `hl_N` generated | `generated/literal/<profile>/<shard>.mg` |
+| `literal_emitted` | `hlt_N` generated | `generated/literal/<profile>/<shard>.mg` |
 | `literal_checked` | Megalodon accepted the literal module (definitions + statements) | checker log |
 | `native_emitted` | public statement generated | manifest `statement` |
 | `transport_checked` | bridge `N_bridge` generated and Megalodon accepted its `Qed` | `generated/cert/<profile>/<shard>.mg` |

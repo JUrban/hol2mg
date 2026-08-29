@@ -190,7 +190,7 @@ let () =
         let shard = if src_file = "" then "misc" else shard_of_file src_file in
         let base = { Manifest.name = sanitize_thm_name th.name; source_name = th.name; aliases = th.aliases; hash = th.hash;
                      status = ""; shard; src_file; src_line; classes = []; bridges = []; notes = []; var_views = [];
-                     error = ""; statement = "";
+                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = "";
                      source = String.concat ", " (List.map Hol.string_of_tm th.seq.hyps) ^ (if th.seq.hyps = [] then "" else " |- ") ^ Hol.string_of_tm th.seq.concl } in
         let verbose = List.mem "--verbose" args in
         if verbose then (prerr_string (th.name ^ " "); flush stderr);
@@ -264,6 +264,75 @@ let () =
               Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" at.Elab.at_target (Mg.string_of_mty at.Elab.at_type) (Mg.to_string at.Elab.at_body)) order;
         close_out oc
       end else if Sys.file_exists def_file then Sys.remove def_file;
+      (* ---- literal layer (docs/DESIGN.md §21): private definitions and admitted literal statements ---- *)
+      let items = (match opt "--literal-out" with
+        | None -> items
+        | Some ldir ->
+            (try Unix.mkdir ldir 0o755 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
+            let an = Literal.analyse ex in
+            let oc = open_out (Filename.concat ldir "_literal.mg") in
+            Printf.fprintf oc "// hol2mg literal layer (private, docs/DESIGN.md §21.2): syntax-directed interpretation of the\n// HOL Light kernel definitions of profile %s (commit %s).  Checked after mglib/native/*.mg and\n// mglib/literal/model.mg.  Generated; do not edit.\n\n" profile hol_commit;
+            let emitted = Hashtbl.create 512 and emitted_tys = Hashtbl.create 16 in
+            let pending_tds = ref an.Literal.type_definitions in
+            let flush_tds () =
+              pending_tds := List.filter (fun ((td : type_definition), arity) ->
+                let rho, pred = Literal.dest_tydef_bij td in
+                let need = List.filter (fun c -> Hashtbl.find_opt an.Literal.supported c = Some true && not (List.mem_assoc c Literal.primitive_consts)) (Literal.consts_of_tm pred []) in
+                let need_tys = List.filter (fun c -> c <> td.td_name && Hashtbl.mem an.Literal.tydefs c) (Literal.tycons_of_tm pred (Literal.tycons_of_ty rho [])) in
+                if List.for_all (Hashtbl.mem emitted) need && List.for_all (Hashtbl.mem emitted_tys) need_tys then begin
+                  (try
+                     let defs = Literal.tydef an.Literal.consts an.Literal.supported an.Literal.tydefs td arity in
+                     Printf.fprintf oc "// HOL Light type definition %s (abs %s, rep %s)\n" td.td_name td.td_abs td.td_rep;
+                     List.iter (fun (n, mty, body) -> Printf.fprintf oc "Definition %s : %s :=\n  %s.\n" n (Mg.string_of_mty mty) (Mg.to_string body)) defs;
+                     Printf.fprintf oc "\n";
+                     Hashtbl.replace emitted td.td_abs (); Hashtbl.replace emitted td.td_rep (); Hashtbl.replace emitted_tys td.td_name ()
+                   with Literal.Literal_unsupported m ->
+                     Hashtbl.replace an.Literal.supported td.td_abs false; Hashtbl.replace an.Literal.supported td.td_rep false;
+                     Hashtbl.remove an.Literal.tydefs td.td_name;
+                     Hashtbl.replace an.Literal.reasons td.td_abs m; Hashtbl.replace an.Literal.reasons td.td_rep m);
+                  false
+                end else true) !pending_tds in
+            flush_tds ();
+            List.iter (fun (c, cty, rhs) ->
+              (try
+                 let n, mty, body = Literal.definition an.Literal.consts an.Literal.supported an.Literal.tydefs c cty rhs in
+                 Printf.fprintf oc "// HOL Light: %s : %s\n" c (Hol.string_of_ty cty);
+                 Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" n (Mg.string_of_mty mty) (Mg.to_string body);
+                 Hashtbl.replace emitted c ();
+                 flush_tds ()
+               with Literal.Literal_unsupported m ->
+                 Hashtbl.replace an.Literal.supported c false; Hashtbl.replace an.Literal.reasons c m)) an.Literal.definitions;
+            close_out oc;
+            let by_shard = Hashtbl.create 32 in
+            let items = List.map (fun (i : Manifest.item) ->
+              let th = Hashtbl.find thm_by_name i.Manifest.source_name in
+              if i.Manifest.status = "source_type_error" then i
+              else
+                let bad = Literal.unsupported_in an th.seq in
+                if bad <> [] then
+                  { i with Manifest.cert_status = "literal_unsupported";
+                           cert_error = String.concat "; " (List.map (fun c -> c ^ (match Hashtbl.find_opt an.Literal.reasons c with Some r -> " (" ^ r ^ ")" | None -> "")) bad) }
+                else
+                  (try
+                     ignore (Unix.alarm 10);
+                     let stmt, _, _ = Literal.statement an.Literal.consts an.Literal.supported an.Literal.tydefs th.seq in
+                     ignore (Unix.alarm 0);
+                     let txt = Mg.to_string stmt in
+                     Hashtbl.replace by_shard i.Manifest.shard ((i, txt) :: (try Hashtbl.find by_shard i.Manifest.shard with Not_found -> []));
+                     { i with Manifest.literal = txt; cert_status = "literal_emitted" }
+                   with
+                   | Literal.Literal_unsupported m -> ignore (Unix.alarm 0); { i with Manifest.cert_status = "literal_unsupported"; cert_error = m }
+                   | Timeout -> { i with Manifest.cert_status = "literal_unsupported"; cert_error = "timeout" }
+                   | Failure m -> ignore (Unix.alarm 0); { i with Manifest.cert_status = "literal_unsupported"; cert_error = "failure: " ^ m })) items in
+            Hashtbl.iter (fun shard l ->
+              let l = List.sort (fun ((a : Manifest.item), _) ((b : Manifest.item), _) -> compare (a.Manifest.src_line, a.Manifest.name) (b.Manifest.src_line, b.Manifest.name)) l in
+              let oc = open_out (Filename.concat ldir (shard ^ ".mg")) in
+              Printf.fprintf oc "// hol2mg literal statements (private): shard %s of profile %s.  Each theorem is the literal\n// interpretation of the HOL Light theorem named in the comment; all are admitted source facts.\n\n" shard profile;
+              List.iter (fun ((i : Manifest.item), txt) ->
+                Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" i.Manifest.src_file (if i.Manifest.src_line > 0 then ":" ^ string_of_int i.Manifest.src_line else "") i.Manifest.source_name i.Manifest.hash;
+                Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n\n" i.Manifest.name txt) l;
+              close_out oc) by_shard;
+            items) in
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in
       let header = [ ("schema", `Int 1); ("profile", `String profile); ("hol_light_commit", `String hol_commit);
                      ("auto_definitions", `List (List.map (fun ((ad : Elab.auto_def), (d : thm_record)) ->
