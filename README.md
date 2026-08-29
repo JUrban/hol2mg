@@ -49,6 +49,17 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 | mv_vectors (+`Multivariate/vectors.ml`) | 5084 | 4784 | 79 automatic definitions |
 | multivariate (`Multivariate/make.ml`) | 17526 | 17138 | 480 automatic definitions + 7 automatic types |
 
+## Semantic certification (`dev/semantics-v1`, docs/DESIGN.md §21)
+
+| profile | public statements | literal statements checked | `native_certified` |
+|---|---|---|---|
+| core | 2685 | 2697 | 802 |
+
+A theorem is `native_certified` only when Megalodon `Qed`-checked the generated bridge
+`literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`, `tools/cert_finalize.py`);
+the literal statement `hlt_N` is the only admission.  Compatibility theorems for mapped
+constants are hand-proved in `mglib/literal/compat.mg` from the literal definitions.
+
 Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are
 translated automatically into `generated/public/<profile>/_definitions.mg` (status `auto`,
 listed in the report and review page; a reviewed hand mapping or `override` always wins).

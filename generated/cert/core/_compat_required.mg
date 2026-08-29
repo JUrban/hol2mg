@@ -334,10 +334,6 @@ Admitted.
 Theorem hl_num_coprime_compat : forall l1 :e omega :*: omega, hl_num_coprime l1 = 1 <-> gcd_int (l1 0) (l1 1) = 1.
 Admitted.
 
-// DISJOINT : (A->bool)->(A->bool)->bool (not in compat.mg)
-Theorem hl_DISJOINT_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_DISJOINT A l1 l2 = 1 <-> hl_rep A l1 :/\: hl_rep A l2 = Empty.
-Admitted.
-
 // treal_inv : hreal#hreal->hreal#hreal (not in compat.mg)
 Theorem hl_treal_inv_compat : hl_treal_inv = Empty.
 Admitted.
@@ -360,10 +356,6 @@ Admitted.
 
 // WF : (A->A->bool)->bool (not in compat.mg)
 Theorem hl_WF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_WF A l1 = 1 <-> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ P1 y x).
-Admitted.
-
-// DELETE : (A->bool)->A->A->bool (not in compat.mg)
-Theorem hl_DELETE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e A, hl_rep A (hl_DELETE A l1 l2) = hl_rep A l1 :\: {l2}.
 Admitted.
 
 // FST : A#B->A (not in compat.mg)
@@ -454,10 +446,6 @@ Admitted.
 Theorem hl_SETSPEC_compat : forall A:set, A <> Empty -> hl_SETSPEC A = Empty.
 Admitted.
 
-// DIFF : (A->bool)->(A->bool)->A->bool (not in compat.mg)
-Theorem hl_DIFF_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_rep A (hl_DIFF A l1 l2) = hl_rep A l1 :\: hl_rep A l2.
-Admitted.
-
 // sqrt : real->real (not in compat.mg)
 Theorem hl_sqrt_compat : forall l1 :e R, hl_sqrt l1 = if 0 <= l1 then sqrt_SNo_nonneg l1 else - sqrt_SNo_nonneg (- l1).
 Admitted.
@@ -526,10 +514,6 @@ Admitted.
 Theorem hl_int_pow_compat : forall l1 :e int, forall l2 :e omega, hl_int_pow l1 l2 = l1 ^ l2.
 Admitted.
 
-// INTER : (A->bool)->(A->bool)->A->bool (not in compat.mg)
-Theorem hl_INTER_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_rep A (hl_INTER A l1 l2) = hl_rep A l1 :/\: hl_rep A l2.
-Admitted.
-
 // num_lcm : num#num->num (not in compat.mg)
 Theorem hl_num_lcm_compat : forall l1 :e omega :*: omega, hl_num_lcm l1 = lcm_int (l1 0) (l1 1).
 Admitted.
@@ -572,10 +556,6 @@ Admitted.
 
 // polynomial_function : (real->real)->bool (not in compat.mg)
 Theorem hl_polynomial_function_compat : forall l1 :e R :^: R, forall f1:set -> set, (forall x :e R, l1 x = f1 x) -> (hl_polynomial_function l1 = 1 <-> polynomial_function_R f1).
-Admitted.
-
-// UNION : (A->bool)->(A->bool)->A->bool (not in compat.mg)
-Theorem hl_UNION_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_rep A (hl_UNION A l1 l2) = hl_rep A l1 :\/: hl_rep A l2.
 Admitted.
 
 // int_ge : int->int->bool (not in compat.mg)
@@ -636,10 +616,6 @@ Admitted.
 
 // disjoint_union : (K->bool)->(K->A->bool)->K#A->bool (not in compat.mg)
 Theorem hl_disjoint_union_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, l2 x = f2 x) -> hl_rep (K :*: A) (hl_disjoint_union K A l1 l2) = {p :e K :*: A | p 0 :e hl_rep K l1 /\ p 1 :e f2 (p 0)}.
-Admitted.
-
-// IMAGE : (A->B)->(A->bool)->B->bool (not in compat.mg)
-Theorem hl_IMAGE_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, hl_rep B (hl_IMAGE A B l1 l2) = {f1 x | x :e hl_rep A l2}.
 Admitted.
 
 // ISO : (A->B)->(B->A)->bool (not in compat.mg)

@@ -4381,7 +4381,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, finite s /\\ (finite t /\\ finite_cardinality s <= finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ ({f x | x :e s} c= t /\\ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ hl_le (hl_CARD A s) (hl_CARD B t) = 1) -> exists f :e B :^: A, hl_SUBSET B (hl_IMAGE A B f s) t = 1 /\\ forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CARD_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -5167,7 +5167,7 @@
    "statement": "forall A:set, forall s t c= A, finite s /\\ (finite t /\\ finite_cardinality (s :\\/: t) < finite_cardinality s + finite_cardinality t) -> ~ s :/\\: t = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE A t = 1 /\\ hl_lt (hl_CARD A (hl_UNION A s t)) (hl_add (hl_CARD A s) (hl_CARD A t)) = 1) -> ~ hl_INTER A s t = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CARD_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -5200,7 +5200,7 @@
    "statement": "forall A:set, forall s t c= A, finite s /\\ finite t -> (finite_cardinality (s :\\/: t) = finite_cardinality s + finite_cardinality t <-> s :/\\: t = Empty)",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_FINITE A t = 1 -> (hl_CARD A (hl_UNION A s t) = hl_add (hl_CARD A s) (hl_CARD A t) <-> hl_INTER A s t = hl_EMPTY A)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CARD_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -5950,7 +5950,7 @@
    "statement": "forall A:set, forall s c= A, A :\\: (A :\\: s) = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A (hl_UNIV A) (hl_DIFF A (hl_UNIV A) s) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7267,7 +7267,7 @@
    "statement": "forall A:set, forall s c= A, forall x :e A, s :\\: {x} = {y :e A | y :e s /\\ ~ y = x}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x :e A, hl_DELETE A s x = hl_GSPEC A (fun GEN_PVAR_6 :e A => if exists y :e A, hl_SETSPEC A GEN_PVAR_6 (if hl_IN A y s = 1 /\\ ~ y = x then 1 else 0) y = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -7295,7 +7295,7 @@
    "statement": "forall A:set, forall x y :e A, forall s c= A, (s :\\: {x}) :\\: {y} = (s :\\: {y}) :\\: {x}",
    "literal": "forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_DELETE A (hl_DELETE A s x) y = hl_DELETE A (hl_DELETE A s y) x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7323,7 +7323,7 @@
    "statement": "forall A:set, forall x :e A, forall s c= A, (s :\\: {x}) :\\: {x} = s :\\: {x}",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s :e 2 :^: A, hl_DELETE A (hl_DELETE A s x) x = hl_DELETE A s x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7351,7 +7351,7 @@
    "statement": "forall A:set, forall x y :e A, forall s c= A, SetAdjoin s x :\\: {y} = if x = y then s :\\: {y} else SetAdjoin (s :\\: {y}) x",
    "literal": "forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_DELETE A (hl_INSERT A x s) y = hl_COND (2 :^: A) (if x = y then 1 else 0) (hl_DELETE A s y) (hl_INSERT A x (hl_DELETE A s y))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -7379,7 +7379,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, (s :\\: {x}) :/\\: t = s :/\\: t :\\: {x}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_INTER A (hl_DELETE A s x) t = hl_DELETE A (hl_INTER A s t) x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7407,7 +7407,7 @@
    "statement": "forall A:set, forall x :e A, forall s c= A, ~ x :e s <-> s :\\: {x} = s",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s :e 2 :^: A, ~ hl_IN A x s = 1 <-> hl_DELETE A s x = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7435,7 +7435,7 @@
    "statement": "forall A:set, forall x :e A, forall s c= A, s :\\: {x} c= s",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s :e 2 :^: A, hl_SUBSET A (hl_DELETE A s x) s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7567,7 +7567,7 @@
    "statement": "forall A:set, forall s t c= A, s :\\: t = {x :e A | x :e s /\\ ~ x :e t}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DIFF A s t = hl_GSPEC A (fun GEN_PVAR_4 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_4 (if hl_IN A x s = 1 /\\ ~ hl_IN A x t = 1 then 1 else 0) x = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -7595,7 +7595,7 @@
    "statement": "forall A:set, forall s t c= A, (s :\\: t) :\\: t = s :\\: t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DIFF A (hl_DIFF A s t) t = hl_DIFF A s t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7623,7 +7623,7 @@
    "statement": "forall A:set, forall s c= A, s :\\: Empty = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A s (hl_EMPTY A) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7651,7 +7651,7 @@
    "statement": "forall A:set, forall s c= A, s :\\: s = Empty",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A s s = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7679,7 +7679,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, s :\\: SetAdjoin t x = (s :\\: {x}) :\\: t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_DIFF A s (hl_INSERT A x t) = hl_DIFF A (hl_DELETE A s x) t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -7704,7 +7704,7 @@
    "statement": "forall A:set, A <> Empty -> forall u c= A, forall s c= Power A, u :\\: {x :e A | forall Y :e s, x :e Y} = Union {u :\\: t | t :e Power A, t :e s}",
    "literal": "forall A:set, A <> Empty -> forall u :e 2 :^: A, forall s :e 2 :^: (2 :^: A), hl_DIFF A u (hl_INTERS A s) = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_64 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_64 (hl_IN (2 :^: A) t s) (hl_DIFF A u t) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INTERS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -7760,7 +7760,7 @@
    "statement": "forall A:set, forall u c= A, forall s c= Power A, u :\\: Union s = u :/\\: {x :e A | forall Y :e {u :\\: t | t :e Power A, t :e s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall u :e 2 :^: A, forall s :e 2 :^: (2 :^: A), hl_DIFF A u (hl_UNIONS A s) = hl_INTER A u (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_68 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_68 (hl_IN (2 :^: A) t s) (hl_DIFF A u t) = 1 then 1 else 0)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -7788,7 +7788,7 @@
    "statement": "forall A:set, forall u c= A, forall s c= Power A, ~ s = Empty -> u :\\: Union s = {x :e A | forall Y :e {u :\\: t | t :e Power A, t :e s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall u :e 2 :^: A, forall s :e 2 :^: (2 :^: A), ~ s = hl_EMPTY (2 :^: A) -> hl_DIFF A u (hl_UNIONS A s) = hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_69 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_69 (hl_IN (2 :^: A) t s) (hl_DIFF A u t) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -7813,7 +7813,7 @@
    "statement": "forall A:set, A <> Empty -> forall s t c= Power A, (forall x y :e s, x <> y -> x :/\\: y = Empty) /\\ t c= s -> Union s :\\: Union t = Union (s :\\: t)",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) (hl_DISJOINT A) s = 1 /\\ hl_SUBSET (2 :^: A) t s = 1 -> hl_DIFF A (hl_UNIONS A s) (hl_UNIONS A t) = hl_UNIONS A (hl_DIFF (2 :^: A) s t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -7841,7 +7841,7 @@
    "statement": "forall A:set, forall s c= A, s :\\: A = Empty",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A s (hl_UNIV A) = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8471,7 +8471,7 @@
    "statement": "forall A:set, forall s t c= A, s :/\\: t = Empty <-> s :/\\: t = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DISJOINT A s t = 1 <-> hl_INTER A s t = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8502,7 +8502,7 @@
    "statement": "forall A B:set, forall s c= A, forall t c= B, forall s' c= A, forall t' c= B, (s :*: t) :/\\: (s' :*: t') = Empty <-> s :/\\: s' = Empty \\/ t :/\\: t' = Empty",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall s' :e 2 :^: A, forall t' :e 2 :^: B, hl_DISJOINT (A :*: B) (hl_CROSS A B s t) (hl_CROSS A B s' t') = 1 <-> hl_DISJOINT A s s' = 1 \\/ hl_DISJOINT B t t' = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CROSS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -8530,7 +8530,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, (s :\\: {x}) :/\\: t = Empty <-> (t :\\: {x}) :/\\: s = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_DISJOINT A (hl_DELETE A s x) t = 1 <-> hl_DISJOINT A (hl_DELETE A t x) s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8560,7 +8560,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :/\\: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = Empty <-> forall i :e K, i :e k -> s i :/\\: t i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_DISJOINT (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = 1 <-> forall i :e K, hl_IN K i k = 1 -> hl_DISJOINT A (s i) (t i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -8588,7 +8588,7 @@
    "statement": "forall A:set, forall s c= A, Empty :/\\: s = Empty /\\ s :/\\: Empty = Empty",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DISJOINT A (hl_EMPTY A) s = 1 /\\ hl_DISJOINT A s (hl_EMPTY A) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8616,7 +8616,7 @@
    "statement": "forall A:set, forall s c= A, s = Empty <-> s :/\\: s = Empty",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, s = hl_EMPTY A <-> hl_DISJOINT A s s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8644,7 +8644,7 @@
    "statement": "forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :/\\: t = Empty <-> s :/\\: t = Empty /\\ ~ x :e t",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_DISJOINT A (hl_INSERT A x s) t = 1 <-> hl_DISJOINT A s t = 1 /\\ ~ hl_IN A x t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8673,7 +8673,7 @@
    "statement": "forall m n p q :e omega, {i :e omega | m <= i /\\ i <= n} :/\\: {i :e omega | p <= i /\\ i <= q} = Empty <-> n < p \\/ (q < m \\/ (n < m \\/ q < p))",
    "literal": "forall m n p q :e omega, hl_DISJOINT omega (hl_numseg m n) (hl_numseg p q) = 1 <-> hl_lt n p = 1 \\/ (hl_lt q m = 1 \\/ (hl_lt n m = 1 \\/ hl_lt q p = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_numseg_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -8732,7 +8732,7 @@
    "statement": "forall A:set, (forall s c= A, forall a :e A, s :/\\: {a} = Empty <-> ~ a :e s) /\\ forall s c= A, forall a :e A, {a} :/\\: s = Empty <-> ~ a :e s",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: A, forall a :e A, hl_DISJOINT A s (hl_INSERT A a (hl_EMPTY A)) = 1 <-> ~ hl_IN A a s = 1) /\\ forall s :e 2 :^: A, forall a :e A, hl_DISJOINT A (hl_INSERT A a (hl_EMPTY A)) s = 1 <-> ~ hl_IN A a s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
    "bridge": ""
   },
   {
@@ -8760,7 +8760,7 @@
    "statement": "forall A:set, forall s t c= A, s :/\\: t = Empty <-> t :/\\: s = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DISJOINT A s t = 1 <-> hl_DISJOINT A t s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -8788,7 +8788,7 @@
    "statement": "forall A:set, forall s t u c= A, (s :\\/: t) :/\\: u = Empty <-> s :/\\: u = Empty /\\ t :/\\: u = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_DISJOINT A (hl_UNION A s t) u = 1 <-> hl_DISJOINT A s u = 1 /\\ hl_DISJOINT A t u = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -11206,7 +11206,7 @@
    "statement": "forall A:set, forall x :e A, Empty :\\: {x} = Empty",
    "literal": "forall A:set, A <> Empty -> forall x :e A, hl_DELETE A (hl_EMPTY A) x = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -11234,7 +11234,7 @@
    "statement": "forall A:set, forall s c= A, Empty :\\: s = Empty",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A (hl_EMPTY A) s = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -11372,7 +11372,7 @@
    "statement": "forall A:set, forall s t c= A, s :\\/: t = Empty <-> s = Empty /\\ t = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_UNION A s t = hl_EMPTY A <-> s = hl_EMPTY A /\\ t = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -12494,7 +12494,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (exists t c= B, finite t /\\ (t c= {f x | x :e s} /\\ P t)) <-> exists t c= A, finite t /\\ (t c= s /\\ P {f x | x :e t})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (exists t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1)) <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_SUBSET A t s = 1 /\\ P (hl_IMAGE A B f t) = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -12522,7 +12522,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (exists t c= B, finite t /\\ (t c= {f x | x :e s} /\\ P t)) <-> exists t c= A, finite t /\\ (t c= s /\\ ((forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)) /\\ P {f x | x :e t}))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (exists t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1)) <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_SUBSET A t s = 1 /\\ ((forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)) /\\ P (hl_IMAGE A B f t) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -12761,7 +12761,7 @@
    "statement": "forall A:set, forall P:set -> prop, forall s t c= A, (exists x :e A, x :e s :\\/: t /\\ P x) <-> (exists x :e A, x :e s /\\ P x) \\/ exists x :e A, x :e t /\\ P x",
    "literal": "forall A:set, A <> Empty -> forall P s t :e 2 :^: A, (exists x :e A, hl_IN A x (hl_UNION A s t) = 1 /\\ P x = 1) <-> (exists x :e A, hl_IN A x s = 1 /\\ P x = 1) \\/ exists x :e A, hl_IN A x t = 1 /\\ P x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -13182,7 +13182,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\\ (finite_cardinality t < n /\\ (t c= {f x | x :e s} /\\ P t))) <-> exists t c= A, finite t /\\ (finite_cardinality t < n /\\ (t c= s /\\ P {f x | x :e t}))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (exists t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ (hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1))) <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ (hl_SUBSET A t s = 1 /\\ P (hl_IMAGE A B f t) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -13213,7 +13213,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\\ (finite_cardinality t < n /\\ (t c= {f x | x :e s} /\\ P t))) <-> exists t c= A, finite t /\\ (finite_cardinality t < n /\\ (t c= s /\\ ((forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)) /\\ P {f x | x :e t})))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (exists t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ (hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1))) <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ (hl_SUBSET A t s = 1 /\\ ((forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)) /\\ P (hl_IMAGE A B f t) = 1)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -13238,7 +13238,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (exists t c= B, t c= {f x | x :e s} /\\ P t) <-> exists t c= A, t c= s /\\ P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (exists t :e 2 :^: B, hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1) <-> exists t :e 2 :^: A, hl_SUBSET A t s = 1 /\\ P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -13263,7 +13263,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (exists t c= B, t c= {f x | x :e s} /\\ P t) <-> exists t c= A, t c= s /\\ ((forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)) /\\ P {f x | x :e t})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (exists t :e 2 :^: B, hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1) <-> exists t :e 2 :^: A, hl_SUBSET A t s = 1 /\\ ((forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)) /\\ P (hl_IMAGE A B f t) = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -13323,7 +13323,7 @@
    "statement": "forall A:set, forall P:set -> prop, forall t u c= A, (exists s c= A, s c= t :\\/: u /\\ P s) <-> exists t' u' c= A, t' c= t /\\ (u' c= u /\\ P (t' :\\/: u'))",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: A), forall t u :e 2 :^: A, (exists s :e 2 :^: A, hl_SUBSET A s (hl_UNION A t u) = 1 /\\ P s = 1) <-> exists t' u' :e 2 :^: A, hl_SUBSET A t' t = 1 /\\ (hl_SUBSET A u' u = 1 /\\ P (hl_UNION A t' u') = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power A)",
    "bridge": ""
   },
   {
@@ -15472,7 +15472,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite {f x | x :e s} <-> exists t c= A, finite t /\\ (t c= s /\\ {f x | x :e s} = {f x | x :e t})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE B (hl_IMAGE A B f s) = 1 <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_SUBSET A t s = 1 /\\ hl_IMAGE A B f s = hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -15502,7 +15502,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite {f x | x :e s} <-> exists t c= A, finite t /\\ (t c= s /\\ ({f x | x :e s} = {f x | x :e t} /\\ forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE B (hl_IMAGE A B f s) = 1 <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_SUBSET A t s = 1 /\\ (hl_IMAGE A B f s = hl_IMAGE A B f t /\\ forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -15843,7 +15843,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s <-> exists k c= omega, exists f:set -> set, (forall x :e omega, f x :e A) /\\ ((forall i j :e omega, i :e k /\\ (j :e k /\\ f i = f j) -> i = j) /\\ (finite k /\\ s = {f x | x :e k}))",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 <-> exists k :e 2 :^: omega, exists f :e A :^: omega, (forall i j :e omega, hl_IN omega i k = 1 /\\ (hl_IN omega j k = 1 /\\ f i = f j) -> i = j) /\\ (hl_FINITE omega k = 1 /\\ s = hl_IMAGE omega A f k)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -15875,7 +15875,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s <-> exists f:set -> set, (forall x :e omega, f x :e A) /\\ ((forall i j :e omega, i :e idx_n (finite_cardinality s) /\\ (j :e idx_n (finite_cardinality s) /\\ f i = f j) -> i = j) /\\ s = {f x | x :e idx_n (finite_cardinality s)})",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 <-> exists f :e A :^: omega, (forall i j :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_CARD A s)) = 1 /\\ (hl_IN omega j (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_CARD A s)) = 1 /\\ f i = f j) -> i = j) /\\ s = hl_IMAGE omega A f (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_CARD A s))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_numseg_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -16964,7 +16964,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\\ t c= {f x | x :e s} <-> exists s' c= A, finite s' /\\ (s' c= s /\\ t = {f x | x :e s'})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1 <-> exists s' :e 2 :^: A, hl_FINITE A s' = 1 /\\ (hl_SUBSET A s' s = 1 /\\ t = hl_IMAGE A B f s')",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -16992,7 +16992,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\\ t c= {f x | x :e s} -> exists s' c= A, finite s' /\\ (s' c= s /\\ t c= {f x | x :e s'})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1 -> exists s' :e 2 :^: A, hl_FINITE A s' = 1 /\\ (hl_SUBSET A s' s = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s') = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -18119,7 +18119,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall t c= B, finite t /\\ t c= {f x | x :e s} -> P t) <-> forall t c= A, finite t /\\ t c= s -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1 -> P t = 1) <-> forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ hl_SUBSET A t s = 1 -> P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -18147,7 +18147,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall t c= B, finite t /\\ t c= {f x | x :e s} -> P t) <-> forall t c= A, finite t /\\ (t c= s /\\ (forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y))) -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1 -> P t = 1) <-> forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_SUBSET A t s = 1 /\\ (forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y))) -> P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -18443,7 +18443,7 @@
    "statement": "forall A:set, forall P:set -> prop, forall s t c= A, (forall x :e A, x :e s :\\/: t -> P x) <-> (forall x :e A, x :e s -> P x) /\\ forall x :e A, x :e t -> P x",
    "literal": "forall A:set, A <> Empty -> forall P s t :e 2 :^: A, (forall x :e A, hl_IN A x (hl_UNION A s t) = 1 -> P x = 1) <-> (forall x :e A, hl_IN A x s = 1 -> P x = 1) /\\ forall x :e A, hl_IN A x t = 1 -> P x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -18787,7 +18787,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\\ (finite_cardinality t < n /\\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\\ (finite_cardinality t < n /\\ t c= s) -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1) -> P t = 1) <-> forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ hl_SUBSET A t s = 1) -> P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -18818,7 +18818,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\\ (finite_cardinality t < n /\\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\\ (finite_cardinality t < n /\\ (t c= s /\\ (forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)))) -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1) -> P t = 1) <-> forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ (hl_SUBSET A t s = 1 /\\ (forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)))) -> P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -18843,7 +18843,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall t c= B, t c= {f x | x :e s} -> P t) <-> forall t c= A, t c= s -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (forall t :e 2 :^: B, hl_SUBSET B t (hl_IMAGE A B f s) = 1 -> P t = 1) <-> forall t :e 2 :^: A, hl_SUBSET A t s = 1 -> P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -18868,7 +18868,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall t c= B, t c= {f x | x :e s} -> P t) <-> forall t c= A, t c= s /\\ (forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)) -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, (forall t :e 2 :^: B, hl_SUBSET B t (hl_IMAGE A B f s) = 1 -> P t = 1) <-> forall t :e 2 :^: A, hl_SUBSET A t s = 1 /\\ (forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)) -> P (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power B)",
    "bridge": ""
   },
   {
@@ -18928,7 +18928,7 @@
    "statement": "forall A:set, forall P:set -> prop, forall t u c= A, (forall s c= A, s c= t :\\/: u -> P s) <-> forall t' u' c= A, t' c= t /\\ u' c= u -> P (t' :\\/: u')",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: A), forall t u :e 2 :^: A, (forall s :e 2 :^: A, hl_SUBSET A s (hl_UNION A t u) = 1 -> P s = 1) <-> forall t' u' :e 2 :^: A, hl_SUBSET A t' t = 1 /\\ hl_SUBSET A u' u = 1 -> P (hl_UNION A t' u') = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power A)",
    "bridge": ""
   },
   {
@@ -19418,7 +19418,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall x :e A, x :e s -> f x :e {f x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) (hl_IMAGE A B f s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -21942,7 +21942,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> {f x | x :e s} = {y :e B | exists x :e A, x :e s /\\ y = f x}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, hl_IMAGE A B f s = hl_GSPEC B (fun GEN_PVAR_7 :e B => if exists y :e B, hl_SETSPEC B GEN_PVAR_7 (if exists x :e A, hl_IN A x s = 1 /\\ y = f x then 1 else 0) y = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -21974,7 +21974,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x0 :e A, f x0 :e B) -> forall x :e A, forall s c= A, {f x | x :e Empty} = Empty /\\ {f x0 | x0 :e SetAdjoin s x} = SetAdjoin {f x | x :e s} (f x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall x :e A, forall s :e 2 :^: A, hl_IMAGE A B f (hl_EMPTY A) = hl_EMPTY B /\\ hl_IMAGE A B f (hl_INSERT A x s) = hl_INSERT B (f x) (hl_IMAGE A B f s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22003,7 +22003,7 @@
    "statement": "forall A B:set, forall s c= A, forall c :e B, {c | x :e s} = if s = Empty then Empty else {c}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall c :e B, hl_IMAGE A B (fun x :e A => c) s = hl_COND (2 :^: B) (if s = hl_EMPTY A then 1 else 0) (hl_EMPTY B) (hl_INSERT B c (hl_EMPTY B))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -22031,7 +22031,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, (forall x :e A, x :e s /\\ f x = f a -> x = a) -> {f x | x :e s :\\: {a}} = {f x | x :e s} :\\: {f a}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall a :e A, (forall x :e A, hl_IN A x s = 1 /\\ f x = f a -> x = a) -> hl_IMAGE A B f (hl_DELETE A s a) = hl_DELETE B (hl_IMAGE A B f s) (f a)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22059,7 +22059,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall a :e A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ a :e s -> {f x | x :e s :\\: {a}} = {f x | x :e s} :\\: {f a}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall a :e A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ hl_IN A a s = 1 -> hl_IMAGE A B f (hl_DELETE A s a) = hl_DELETE B (hl_IMAGE A B f s) (f a)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22087,7 +22087,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, x :e s /\\ (y :e t /\\ f x = f y) -> x = y) -> {f x | x :e s :\\: t} = {f x | x :e s} :\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y t = 1 /\\ f x = f y) -> x = y) -> hl_IMAGE A B f (hl_DIFF A s t) = hl_DIFF B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22115,7 +22115,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ t c= s -> {f x | x :e s :\\: t} = {f x | x :e s} :\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ hl_SUBSET A t s = 1 -> hl_IMAGE A B f (hl_DIFF A s t) = hl_DIFF B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22143,7 +22143,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> {f x | x :e s} = {g x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f g :e B :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> f x = g x) -> hl_IMAGE A B f s = hl_IMAGE A B g s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22171,7 +22171,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {f x | x :e s} = Empty <-> s = Empty",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_IMAGE A B f s = hl_EMPTY B <-> s = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22231,7 +22231,7 @@
    "statement": "forall A B:set, A <> Empty -> forall s c= A, forall t c= B, {x 0 | x :e s :*: t} = if t = Empty then Empty else s",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IMAGE (A :*: B) A (hl_FST A B) (hl_CROSS A B s t) = hl_COND (2 :^: A) (if t = hl_EMPTY B then 1 else 0) (hl_EMPTY A) s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant FST",
    "bridge": ""
   },
   {
@@ -22261,7 +22261,7 @@
    "statement": "forall A:set, forall s c= A, s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (hl_I A) s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -22291,7 +22291,7 @@
    "statement": "forall A:set, forall s c= A, s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (fun x :e A => x) s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -22321,7 +22321,7 @@
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> finite s /\\ {f x | x :e s} = s -> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e A :^: A, hl_FINITE A s = 1 /\\ hl_IMAGE A A f s = s -> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22353,7 +22353,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\\ (finite_cardinality s = finite_cardinality t /\\ {f x | x :e s} = t) -> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, hl_FINITE A s = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ hl_IMAGE A B f s = t) -> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CARD_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22381,7 +22381,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, exists t c= A, t c= s /\\ ({f x | x :e s} = {f x | x :e t} /\\ forall x y :e A, x :e t /\\ (y :e t /\\ f x = f y) -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, exists t :e 2 :^: A, hl_SUBSET A t s = 1 /\\ (hl_IMAGE A B f s = hl_IMAGE A B f t /\\ forall x y :e A, hl_IN A x t = 1 /\\ (hl_IN A y t = 1 /\\ f x = f y) -> x = y)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22406,7 +22406,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= Power A, ~ s = Empty /\\ (forall x y :e A, x :e Union s /\\ (y :e Union s /\\ f x = f y) -> x = y) -> {f x | x :e {x :e A | forall Y :e s, x :e Y}} = {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e s}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: (2 :^: A), ~ s = hl_EMPTY (2 :^: A) /\\ (forall x y :e A, hl_IN A x (hl_UNIONS A s) = 1 /\\ (hl_IN A y (hl_UNIONS A s) = 1 /\\ f x = f y) -> x = y) -> hl_IMAGE A B f (hl_INTERS A s) = hl_INTERS B (hl_IMAGE (2 :^: A) (2 :^: B) (hl_IMAGE A B f) s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INTERS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22431,7 +22431,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, forall s c= A, ~ g = Empty /\\ (forall t c= A, t :e g :\\: {s} -> {x :e A | f x :e {f x | x :e t}} c= t) -> {f x | x :e {x :e A | forall Y :e g, x :e Y}} = {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e g}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e 2 :^: (2 :^: A), forall s :e 2 :^: A, ~ g = hl_EMPTY (2 :^: A) /\\ (forall t :e 2 :^: A, hl_IN (2 :^: A) t (hl_DELETE (2 :^: A) g s) = 1 -> hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_90 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_90 (hl_IN B (f x) (hl_IMAGE A B f t)) x = 1 then 1 else 0)) t = 1) -> hl_IMAGE A B f (hl_INTERS A g) = hl_INTERS B (hl_IMAGE (2 :^: A) (2 :^: B) (hl_IMAGE A B f) g)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INTERS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22456,7 +22456,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, forall s u c= A, ~ g = Empty /\\ ((forall t c= A, t :e g -> t c= u) /\\ (forall t c= A, t :e g :\\: {s} -> {x :e A | x :e u /\\ f x :e {f x | x :e t}} c= t)) -> {f x | x :e {x :e A | forall Y :e g, x :e Y}} = {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e g}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e 2 :^: (2 :^: A), forall s u :e 2 :^: A, ~ g = hl_EMPTY (2 :^: A) /\\ ((forall t :e 2 :^: A, hl_IN (2 :^: A) t g = 1 -> hl_SUBSET A t u = 1) /\\ (forall t :e 2 :^: A, hl_IN (2 :^: A) t (hl_DELETE (2 :^: A) g s) = 1 -> hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_87 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_87 (if hl_IN A x u = 1 /\\ hl_IN B (f x) (hl_IMAGE A B f t) = 1 then 1 else 0) x = 1 then 1 else 0)) t = 1)) -> hl_IMAGE A B f (hl_INTERS A g) = hl_INTERS B (hl_IMAGE (2 :^: A) (2 :^: B) (hl_IMAGE A B f) g)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INTERS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22484,7 +22484,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g c= Power A, {f x | x :e {x :e A | forall Y :e g, x :e Y}} c= {x :e B | forall Y :e {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e g}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e 2 :^: (2 :^: A), hl_SUBSET B (hl_IMAGE A B f (hl_INTERS A g)) (hl_INTERS B (hl_IMAGE (2 :^: A) (2 :^: B) (hl_IMAGE A B f) g)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INTERS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22512,7 +22512,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, (forall x y :e A, f x = f y -> x = y) -> {f x | x :e s :/\\: t} = {f x | x :e s} :/\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, (forall x y :e A, f x = f y -> x = y) -> hl_IMAGE A B f (hl_INTER A s t) = hl_INTER B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22540,7 +22540,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {x :e A | f x :e {f x | x :e s}} c= s \\/ {x :e A | f x :e {f x | x :e t}} c= t -> {f x | x :e s :/\\: t} = {f x | x :e s} :/\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_88 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_88 (hl_IN B (f x) (hl_IMAGE A B f s)) x = 1 then 1 else 0)) s = 1 \\/ hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_89 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_89 (hl_IN B (f x) (hl_IMAGE A B f t)) x = 1 then 1 else 0)) t = 1 -> hl_IMAGE A B f (hl_INTER A s t) = hl_INTER B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -22568,7 +22568,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t u c= A, {x :e A | x :e u /\\ f x :e {f x | x :e s}} c= s /\\ t c= u \\/ {x :e A | x :e u /\\ f x :e {f x | x :e t}} c= t /\\ s c= u -> {f x | x :e s :/\\: t} = {f x | x :e s} :/\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t u :e 2 :^: A, hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_84 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_84 (if hl_IN A x u = 1 /\\ hl_IN B (f x) (hl_IMAGE A B f s) = 1 then 1 else 0) x = 1 then 1 else 0)) s = 1 /\\ hl_SUBSET A t u = 1 \\/ hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_85 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_85 (if hl_IN A x u = 1 /\\ hl_IN B (f x) (hl_IMAGE A B f t) = 1 then 1 else 0) x = 1 then 1 else 0)) t = 1 /\\ hl_SUBSET A s u = 1 -> hl_IMAGE A B f (hl_INTER A s t) = hl_INTER B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -22596,7 +22596,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {f x | x :e s :/\\: t} c= {f x | x :e s} :/\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_SUBSET B (hl_IMAGE A B f (hl_INTER A s t)) (hl_INTER B (hl_IMAGE A B f s) (hl_IMAGE A B f t)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22629,7 +22629,7 @@
    "statement": "forall A B C D:set, B <> Empty -> D <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e C, g x :e D) -> forall s c= A, forall t c= C, {(f (p 0),g (p 1)) | p :e s :*: t} = {f x | x :e s} :*: {g x | x :e t}",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall f :e B :^: A, forall g :e D :^: C, forall s :e 2 :^: A, forall t :e 2 :^: C, hl_IMAGE (A :*: C) (B :*: D) (hl_GABS ((B :*: D) :^: (A :*: C)) (fun f1 :e (B :*: D) :^: (A :*: C) => if forall x :e A, forall y :e C, hl_GEQ (B :*: D) (f1 (hl_pair A C x y)) (hl_pair B D (f x) (g y)) = 1 then 1 else 0)) (hl_CROSS A C s t) = hl_CROSS B D (hl_IMAGE A B f s) (hl_IMAGE C D g t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS",
    "bridge": ""
   },
   {
@@ -22658,7 +22658,7 @@
    "statement": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall s :e Power A :^: K, {(fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)) | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = {f0 :e B :^: K | (forall i :e k, f0 i :e {x0 :e B | x0 :e {f i x1 | x1 :e s i}}) /\\ forall i :e K, ~ i :e k -> f0 i = choose_in B (fun y:set => True)}",
    "literal": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f :e B :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_IMAGE (A :^: K) (B :^: K) (hl_product_map K A B k f) (hl_cartesian_product K A k s) = hl_cartesian_product K B k (fun i :e K => hl_IMAGE A B (f i) (s i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_product_map_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -22689,7 +22689,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {x i | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall i :e K, hl_IMAGE (A :^: K) A (fun x :e A :^: K => x i) (hl_cartesian_product K A k s) = hl_COND (2 :^: A) (if hl_cartesian_product K A k s = hl_EMPTY (A :^: K) then 1 else 0) (hl_EMPTY A) (hl_COND (2 :^: A) (hl_IN K i k) (s i) (hl_INSERT A (hl_ARB A) (hl_EMPTY A)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -22718,7 +22718,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, s c= t -> {(if x :e t then f x else choose_in B (fun y:set => True)) | x :e s} = {f x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_SUBSET A s t = 1 -> hl_IMAGE A B (hl_RESTRICTION A B t f) s = hl_IMAGE A B f s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -22778,7 +22778,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, {x 1 | x :e s :*: t} = if s = Empty then Empty else t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IMAGE (A :*: B) B (hl_SND A B) (hl_CROSS A B s t) = hl_COND (2 :^: B) (if s = hl_EMPTY A then 1 else 0) (hl_EMPTY B) t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant SND",
    "bridge": ""
   },
   {
@@ -22806,7 +22806,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, s c= t -> {f x | x :e s} c= {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_SUBSET A s t = 1 -> hl_SUBSET B (hl_IMAGE A B f s) (hl_IMAGE A B f t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22834,7 +22834,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {f x | x :e s :\\/: t} = {f x | x :e s} :\\/: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_IMAGE A B f (hl_UNION A s t) = hl_UNION B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -22859,7 +22859,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= Power A, {f x | x :e Union s} = Union {{x0 :e B | x0 :e {f x0 | x0 :e x}} | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: (2 :^: A), hl_IMAGE A B f (hl_UNIONS A s) = hl_UNIONS B (hl_IMAGE (2 :^: A) (2 :^: B) (hl_IMAGE A B f) s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22887,7 +22887,7 @@
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall s :e 2 :^: A, hl_IMAGE A C (hl_o B C A f g) s = hl_IMAGE B C f (hl_IMAGE A B g s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -23307,7 +23307,7 @@
    "statement": "forall s c= omega, infinite s -> exists r:set -> set, (forall x :e omega, r x :e omega) /\\ ((forall m n :e omega, m < n -> r m < r n) /\\ {r x | x :e omega} = s)",
    "literal": "forall s :e 2 :^: omega, hl_INFINITE omega s = 1 -> exists r :e omega :^: omega, (forall m n :e omega, hl_lt m n = 1 -> hl_lt (r m) (r n) = 1) /\\ hl_IMAGE omega omega r (hl_UNIV omega) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INFINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -23337,7 +23337,7 @@
    "statement": "forall s c= omega, infinite s <-> exists r:set -> set, (forall x :e omega, r x :e omega) /\\ ((forall m n :e omega, m < n -> r m < r n) /\\ {r x | x :e omega} = s)",
    "literal": "forall s :e 2 :^: omega, hl_INFINITE omega s = 1 <-> exists r :e omega :^: omega, (forall m n :e omega, hl_lt m n = 1 -> hl_lt (r m) (r n) = 1) /\\ hl_IMAGE omega omega r (hl_UNIV omega) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INFINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -24005,7 +24005,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall s t c= A, {f x | x :e s} = {f x | x :e t} -> s = t) <-> forall x y :e A, f x = f y -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall s t :e 2 :^: A, hl_IMAGE A B f s = hl_IMAGE A B f t -> s = t) <-> forall x y :e A, f x = f y -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -24112,7 +24112,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall u c= A, (forall s t c= A, s c= u /\\ (t c= u /\\ {f x | x :e s} = {f x | x :e t}) -> s = t) <-> forall x y :e A, x :e u /\\ (y :e u /\\ f x = f y) -> x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall u :e 2 :^: A, (forall s t :e 2 :^: A, hl_SUBSET A s u = 1 /\\ (hl_SUBSET A t u = 1 /\\ hl_IMAGE A B f s = hl_IMAGE A B f t) -> s = t) <-> forall x y :e A, hl_IN A x u = 1 /\\ (hl_IN A y u = 1 /\\ f x = f y) -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -24165,7 +24165,7 @@
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall u c= B, (forall t t' c= B, t c= u /\\ (t' c= u /\\ {x :e A | x :e s /\\ f x :e t} = {x :e A | x :e s /\\ f x :e t'}) -> t = t') <-> u c= {f x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall u :e 2 :^: B, (forall t t' :e 2 :^: B, hl_SUBSET B t u = 1 /\\ (hl_SUBSET B t' u = 1 /\\ hl_GSPEC A (fun GEN_PVAR_222 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_222 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t = 1 then 1 else 0) x = 1 then 1 else 0) = hl_GSPEC A (fun GEN_PVAR_223 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_223 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t' = 1 then 1 else 0) x = 1 then 1 else 0)) -> t = t') <-> hl_SUBSET B u (hl_IMAGE A B f s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -24190,7 +24190,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall t t' c= B, {x :e A | f x :e t} = {x :e A | f x :e t'} -> t = t') <-> {f x | x :e A} = B)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall t t' :e 2 :^: B, hl_GSPEC A (fun GEN_PVAR_225 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_225 (hl_IN B (f x) t) x = 1 then 1 else 0) = hl_GSPEC A (fun GEN_PVAR_226 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_226 (hl_IN B (f x) t') x = 1 then 1 else 0) -> t = t') <-> hl_IMAGE A B f (hl_UNIV A) = hl_UNIV B",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -24498,7 +24498,7 @@
    "statement": "forall A:set, forall x :e A, forall s c= A, x :e s -> SetAdjoin (s :\\: {x}) x = s",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s :e 2 :^: A, hl_IN A x s = 1 -> hl_INSERT A x (hl_DELETE A s x) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -24526,7 +24526,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, SetAdjoin s x :\\: t = if x :e t then s :\\: t else SetAdjoin (s :\\: t) x",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_DIFF A (hl_INSERT A x s) t = hl_COND (2 :^: A) (hl_IN A x t) (hl_DIFF A s t) (hl_INSERT A x (hl_DIFF A s t))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
    "bridge": ""
   },
   {
@@ -24582,7 +24582,7 @@
    "statement": "forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :/\\: t = if x :e t then SetAdjoin (s :/\\: t) x else s :/\\: t",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_INTER A (hl_INSERT A x s) t = hl_COND (2 :^: A) (hl_IN A x t) (hl_INSERT A x (hl_INTER A s t)) (hl_INTER A s t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
    "bridge": ""
   },
   {
@@ -24666,7 +24666,7 @@
    "statement": "forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\\/: t = if x :e t then s :\\/: t else SetAdjoin (s :\\/: t) x",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_UNION A (hl_INSERT A x s) t = hl_COND (2 :^: A) (hl_IN A x t) (hl_UNION A s t) (hl_INSERT A x (hl_UNION A s t))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
    "bridge": ""
   },
   {
@@ -24694,7 +24694,7 @@
    "statement": "forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\\/: t = SetAdjoin (s :\\/: t) x",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_UNION A (hl_INSERT A x s) t = hl_INSERT A x (hl_UNION A s t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -24779,7 +24779,7 @@
    "statement": "forall A:set, forall s t c= A, s :/\\: t = {x :e A | x :e s /\\ x :e t}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_INTER A s t = hl_GSPEC A (fun GEN_PVAR_2 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_2 (if hl_IN A x s = 1 /\\ hl_IN A x t = 1 then 1 else 0) x = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -25353,7 +25353,7 @@
    "statement": "forall A:set, forall p q r c= A, p :/\\: q = q :/\\: p /\\ (p :/\\: q :/\\: r = p :/\\: (q :/\\: r) /\\ (p :/\\: (q :/\\: r) = q :/\\: (p :/\\: r) /\\ (p :/\\: p = p /\\ p :/\\: (p :/\\: q) = p :/\\: q)))",
    "literal": "forall A:set, A <> Empty -> forall p q r :e 2 :^: A, hl_INTER A p q = hl_INTER A q p /\\ (hl_INTER A (hl_INTER A p q) r = hl_INTER A p (hl_INTER A q r) /\\ (hl_INTER A p (hl_INTER A q r) = hl_INTER A q (hl_INTER A p r) /\\ (hl_INTER A p p = p /\\ hl_INTER A p (hl_INTER A p q) = hl_INTER A p q)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25381,7 +25381,7 @@
    "statement": "forall A:set, forall s t u c= A, s :/\\: t :/\\: u = s :/\\: (t :/\\: u)",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_INTER A (hl_INTER A s t) u = hl_INTER A s (hl_INTER A t u)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25409,7 +25409,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} :/\\: {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e s i :/\\: t i}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_INTER (A :^: K) (hl_cartesian_product K A k s) (hl_cartesian_product K A k t) = hl_cartesian_product K A k (fun i :e K => hl_INTER A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25437,7 +25437,7 @@
    "statement": "forall A:set, forall s t c= A, s :/\\: t = t :/\\: s",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_INTER A s t = hl_INTER A t s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25468,7 +25468,7 @@
    "statement": "forall A B:set, forall s s' c= A, forall t t' c= B, (s :*: t) :/\\: (s' :*: t') = s :/\\: s' :*: t :/\\: t'",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s s' :e 2 :^: A, forall t t' :e 2 :^: B, hl_INTER (A :*: B) (hl_CROSS A B s t) (hl_CROSS A B s' t') = hl_CROSS A B (hl_INTER A s s') (hl_INTER B t t')",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CROSS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25499,7 +25499,7 @@
    "statement": "forall A K:set, forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :/\\: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e {x0 :e A | x0 :e s (p 0) :/\\: t (p 0)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_INTER (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = hl_disjoint_union K A k (fun i :e K => hl_INTER A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25527,7 +25527,7 @@
    "statement": "forall A:set, (forall s c= A, Empty :/\\: s = Empty) /\\ forall s c= A, s :/\\: Empty = Empty",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: A, hl_INTER A (hl_EMPTY A) s = hl_EMPTY A) /\\ forall s :e 2 :^: A, hl_INTER A s (hl_EMPTY A) = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25555,7 +25555,7 @@
    "statement": "forall A:set, forall s c= A, s :/\\: s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INTER A s s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25580,7 +25580,7 @@
    "statement": "forall A:set, A <> Empty -> (forall f c= Power A, forall s c= A, s :/\\: {x :e A | forall Y :e f, x :e Y} = if f = Empty then s else {x :e A | forall Y :e {s :/\\: t | t :e Power A, t :e f}, x :e Y}) /\\ forall f c= Power A, forall s c= A, {x :e A | forall Y :e f, x :e Y} :/\\: s = if f = Empty then s else {x :e A | forall Y :e {t :/\\: s | t :e Power A, t :e f}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> (forall f :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_INTER A s (hl_INTERS A f) = hl_COND (2 :^: A) (if f = hl_EMPTY (2 :^: A) then 1 else 0) s (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_75 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_75 (hl_IN (2 :^: A) t f) (hl_INTER A s t) = 1 then 1 else 0)))) /\\ forall f :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_INTER A (hl_INTERS A f) s = hl_COND (2 :^: A) (if f = hl_EMPTY (2 :^: A) then 1 else 0) s (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_76 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_76 (hl_IN (2 :^: A) t f) (hl_INTER A t s) = 1 then 1 else 0)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INTERS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25608,7 +25608,7 @@
    "statement": "forall m n p q :e omega, {i :e omega | m <= i /\\ i <= n} :/\\: {i :e omega | p <= i /\\ i <= q} = {i :e omega | (if m <= p then p else m) <= i /\\ i <= if n <= q then n else q}",
    "literal": "forall m n p q :e omega, hl_INTER omega (hl_numseg m n) (hl_numseg p q) = hl_numseg (hl_MAX m p) (hl_MIN n q)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_numseg_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25636,7 +25636,7 @@
    "statement": "forall A:set, forall s t u c= A, s :\\/: t :/\\: u = (s :\\/: t) :/\\: (s :\\/: u)",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_UNION A s (hl_INTER A t u) = hl_INTER A (hl_UNION A s t) (hl_UNION A s u)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25723,7 +25723,7 @@
    "statement": "forall A:set, (forall s t c= A, s :/\\: t c= s) /\\ forall s t c= A, t :/\\: s c= s",
    "literal": "forall A:set, A <> Empty -> (forall s t :e 2 :^: A, hl_SUBSET A (hl_INTER A s t) s = 1) /\\ forall s t :e 2 :^: A, hl_SUBSET A (hl_INTER A t s) s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -25748,7 +25748,7 @@
    "statement": "forall A:set, A <> Empty -> (forall s c= Power A, forall t c= A, Union s :/\\: t = Union {x :/\\: t | x :e Power A, x :e s}) /\\ forall s c= Power A, forall t c= A, t :/\\: Union s = Union {t :/\\: x | x :e Power A, x :e s}",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: (2 :^: A), forall t :e 2 :^: A, hl_INTER A (hl_UNIONS A s) t = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_43 :e 2 :^: A => if exists x :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_43 (hl_IN (2 :^: A) x s) (hl_INTER A x t) = 1 then 1 else 0))) /\\ forall s :e 2 :^: (2 :^: A), forall t :e 2 :^: A, hl_INTER A t (hl_UNIONS A s) = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_44 :e 2 :^: A => if exists x :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_44 (hl_IN (2 :^: A) x s) (hl_INTER A t x) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25773,7 +25773,7 @@
    "statement": "forall A:set, A <> Empty -> forall s t c= Power A, (forall x y :e s :\\/: t, x <> y -> x :/\\: y = Empty) -> Union s :/\\: Union t = Union (s :/\\: t)",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) (hl_DISJOINT A) (hl_UNION (2 :^: A) s t) = 1 -> hl_INTER A (hl_UNIONS A s) (hl_UNIONS A t) = hl_UNIONS A (hl_INTER (2 :^: A) s t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -25801,7 +25801,7 @@
    "statement": "forall A:set, (forall s c= A, A :/\\: s = s) /\\ forall s c= A, s :/\\: A = s",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: A, hl_INTER A (hl_UNIV A) s = s) /\\ forall s :e 2 :^: A, hl_INTER A s (hl_UNIV A) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -37239,7 +37239,7 @@
    "statement": "forall A:set, forall s c= A, forall x y :e A, x :e s :\\: {y} <-> x :e s /\\ ~ x = y",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x y :e A, hl_IN A x (hl_DELETE A s y) = 1 <-> hl_IN A x s = 1 /\\ ~ x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -37267,7 +37267,7 @@
    "statement": "forall A:set, forall s c= A, forall x x' :e A, (x :e s <-> x' :e s) <-> (x :e s :\\: {x'} <-> x' :e s :\\: {x})",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x x' :e A, (hl_IN A x s = 1 <-> hl_IN A x' s = 1) <-> (hl_IN A x (hl_DELETE A s x') = 1 <-> hl_IN A x' (hl_DELETE A s x) = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -37295,7 +37295,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, x :e s :\\: t <-> x :e s /\\ ~ x :e t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_DIFF A s t) = 1 <-> hl_IN A x s = 1 /\\ ~ hl_IN A x t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -37323,7 +37323,7 @@
    "statement": "forall A:set, forall s t c= A, s :/\\: t = Empty <-> ~ exists x :e A, x :e s /\\ x :e t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DISJOINT A s t = 1 <-> ~ exists x :e A, hl_IN A x s = 1 /\\ hl_IN A x t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DISJOINT_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -37586,7 +37586,7 @@
    "statement": "forall A B:set, forall y :e B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (y :e {f x | x :e s} <-> exists x :e A, y = f x /\\ x :e s)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall y :e B, forall s :e 2 :^: A, forall f :e B :^: A, hl_IN B y (hl_IMAGE A B f s) = 1 <-> exists x :e A, y = f x /\\ hl_IN A x s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A,B",
    "bridge": ""
   },
   {
@@ -37642,7 +37642,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, x :e s :/\\: t <-> x :e s /\\ x :e t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_INTER A s t) = 1 <-> hl_IN A x s = 1 /\\ hl_IN A x t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -37873,7 +37873,7 @@
    "statement": "forall A:set, forall s t c= A, forall x :e A, x :e s :\\/: t <-> x :e s \\/ x :e t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_UNION A s t) = 1 <-> hl_IN A x s = 1 \\/ hl_IN A x t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -51228,7 +51228,7 @@
    "statement": "forall m p n :e omega, m <= p /\\ p <= n + 1 -> {i :e omega | m <= i /\\ i <= minus_nat p 1} :\\/: {i :e omega | p <= i /\\ i <= n} = {i :e omega | m <= i /\\ i <= n}",
    "literal": "forall m p n :e omega, hl_le m p = 1 /\\ hl_le p (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 -> hl_UNION omega (hl_numseg m (hl_sub p (hl_NUMERAL (hl_BIT1 hl_zero)))) (hl_numseg p n) = hl_numseg m n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_numseg_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -51258,7 +51258,7 @@
    "statement": "forall m p n :e omega, m <= p + 1 /\\ p <= n -> {i :e omega | m <= i /\\ i <= p} :\\/: {i :e omega | p + 1 <= i /\\ i <= n} = {i :e omega | m <= i /\\ i <= n}",
    "literal": "forall m p n :e omega, hl_le m (hl_add p (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 /\\ hl_le p n = 1 -> hl_UNION omega (hl_numseg m p) (hl_numseg (hl_add p (hl_NUMERAL (hl_BIT1 hl_zero))) n) = hl_numseg m n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_numseg_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -52924,7 +52924,7 @@
    "statement": "forall A:set, forall R0:set -> set -> prop, forall s t c= A, (forall x y :e s :\\/: t, x <> y -> R0 x y) <-> (forall x y :e s, x <> y -> R0 x y) /\\ ((forall x y :e t, x <> y -> R0 x y) /\\ forall x y :e A, x :e s :\\: t /\\ y :e t :\\: s -> R0 x y /\\ R0 y x)",
    "literal": "forall A:set, A <> Empty -> forall R1 :e 2 :^: A :^: A, forall s t :e 2 :^: A, hl_pairwise A R1 (hl_UNION A s t) = 1 <-> hl_pairwise A R1 s = 1 /\\ (hl_pairwise A R1 t = 1 /\\ forall x y :e A, hl_IN A x (hl_DIFF A s t) = 1 /\\ hl_IN A y (hl_DIFF A t s) = 1 -> R1 x y = 1 /\\ R1 y x = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_pairwise_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -70192,7 +70192,7 @@
    "statement": "forall A:set, forall x :e A, forall s t c= A, s c= t :\\: {x} <-> ~ x :e s /\\ s c= t",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_SUBSET A s (hl_DELETE A t x) = 1 <-> ~ hl_IN A x s = 1 /\\ hl_SUBSET A s t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70220,7 +70220,7 @@
    "statement": "forall A:set, forall s t c= A, s :\\: t c= s",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_SUBSET A (hl_DIFF A s t) s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70336,7 +70336,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, s c= {f x | x :e t} <-> exists u c= A, u c= t /\\ s = {f x | x :e u}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: B, forall t :e 2 :^: A, hl_SUBSET B s (hl_IMAGE A B f t) = 1 <-> exists u :e 2 :^: A, hl_SUBSET A u t = 1 /\\ s = hl_IMAGE A B f u",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70364,7 +70364,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, s c= {f x | x :e t} <-> exists u c= A, u c= t /\\ ((forall x y :e A, x :e u /\\ y :e u -> (f x = f y <-> x = y)) /\\ s = {f x | x :e u})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: B, forall t :e 2 :^: A, hl_SUBSET B s (hl_IMAGE A B f t) = 1 <-> exists u :e 2 :^: A, hl_SUBSET A u t = 1 /\\ ((forall x y :e A, hl_IN A x u = 1 /\\ hl_IN A y u = 1 -> (f x = f y <-> x = y)) /\\ s = hl_IMAGE A B f u)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70420,7 +70420,7 @@
    "statement": "forall A:set, forall x :e A, forall s t c= A, s c= SetAdjoin t x <-> s :\\: {x} c= t",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_SUBSET A s (hl_INSERT A x t) = 1 <-> hl_SUBSET A (hl_DELETE A s x) t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DELETE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70448,7 +70448,7 @@
    "statement": "forall A:set, forall s t u c= A, s c= t :/\\: u <-> s c= t /\\ s c= u",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_SUBSET A s (hl_INTER A t u) = 1 <-> hl_SUBSET A s t = 1 /\\ hl_SUBSET A s u = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70504,7 +70504,7 @@
    "statement": "forall A:set, forall s t c= A, s c= t <-> s :/\\: t = s",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_SUBSET A s t = 1 <-> hl_INTER A s t = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70705,7 +70705,7 @@
    "statement": "forall A:set, (forall s t c= A, s c= s :\\/: t) /\\ forall s t c= A, s c= t :\\/: s",
    "literal": "forall A:set, A <> Empty -> (forall s t :e 2 :^: A, hl_SUBSET A s (hl_UNION A s t) = 1) /\\ forall s t :e 2 :^: A, hl_SUBSET A s (hl_UNION A t s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -70758,7 +70758,7 @@
    "statement": "forall A:set, forall s t c= A, s c= t <-> s :\\/: t = t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_SUBSET A s t = 1 <-> hl_UNION A s t = t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -75084,7 +75084,7 @@
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> finite s /\\ {f x | x :e s} c= s -> ((forall y :e A, y :e s -> exists x :e A, x :e s /\\ f x = y) <-> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e A :^: A, hl_FINITE A s = 1 /\\ hl_SUBSET A (hl_IMAGE A A f s) s = 1 -> ((forall y :e A, hl_IN A y s = 1 -> exists x :e A, hl_IN A x s = 1 /\\ f x = y) <-> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_FINITE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -75114,7 +75114,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\\ (finite t /\\ (finite_cardinality s = finite_cardinality t /\\ {f x | x :e s} c= t)) -> ((forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y) <-> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ hl_SUBSET B (hl_IMAGE A B f s) t = 1)) -> ((forall y :e B, hl_IN B y t = 1 -> exists x :e A, hl_IN A x s = 1 /\\ f x = y) <-> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_CARD_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -75163,9 +75163,9 @@
    "source": "!f:A->B. !s:A->bool. !t:B->bool. (!y:B. y IN t ==> (?x:A. f x = y)) /\\ (!x:A. f x IN t <=> x IN s) ==> IMAGE f s = t",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, (forall y :e B, y :e t -> exists x :e A, f x = y) /\\ (forall x :e A, f x :e t <-> x :e s) -> {f x | x :e s} = t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, (forall y :e B, hl_IN B y t = 1 -> exists x :e A, f x = y) /\\ (forall x :e A, hl_IN B (f x) t = 1 <-> hl_IN A x s = 1) -> hl_IMAGE A B f s = t",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJECTIVE_IMAGE_EQ_bridge"
   },
   {
    "name": "SURJECTIVE_IMAGE_THM",
@@ -75189,7 +75189,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> forall P:set -> prop, {f x | x :e {x :e A | P (f x)}} = {x :e B | P x})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall y :e B, exists x :e A, f x = y) <-> forall P :e 2 :^: B, hl_IMAGE A B f (hl_GSPEC A (fun GEN_PVAR_91 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_91 (P (f x)) x = 1 then 1 else 0)) = hl_GSPEC B (fun GEN_PVAR_92 :e B => if exists x :e B, hl_SETSPEC B GEN_PVAR_92 (P x) x = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -75240,9 +75240,9 @@
    "source": "!f:A->B. !u:A->bool. !v:B->bool. (!t:B->bool. t SUBSET v ==> (?s:A->bool. s SUBSET u /\\ IMAGE f s = t)) <=> (!y:B. y IN v ==> (?x:A. x IN u /\\ f x = y))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall u c= A, forall v c= B, (forall t c= B, t c= v -> exists s c= A, s c= u /\\ {f x | x :e s} = t) <-> forall y :e B, y :e v -> exists x :e A, x :e u /\\ f x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall u :e 2 :^: A, forall v :e 2 :^: B, (forall t :e 2 :^: B, hl_SUBSET B t v = 1 -> exists s :e 2 :^: A, hl_SUBSET A s u = 1 /\\ hl_IMAGE A B f s = t) <-> forall y :e B, hl_IN B y v = 1 -> exists x :e A, hl_IN A x u = 1 /\\ f x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJECTIVE_ON_IMAGE_bridge"
   },
   {
    "name": "SURJECTIVE_ON_PREIMAGE",
@@ -75266,7 +75266,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall u c= B, (forall k c= A, k c= s -> exists t c= B, t c= u /\\ {x :e A | x :e s /\\ f x :e t} = k) <-> {f x | x :e s} c= u /\\ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall u :e 2 :^: B, (forall k :e 2 :^: A, hl_SUBSET A k s = 1 -> exists t :e 2 :^: B, hl_SUBSET B t u = 1 /\\ hl_GSPEC A (fun GEN_PVAR_224 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_224 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t = 1 then 1 else 0) x = 1 then 1 else 0) = k) <-> hl_SUBSET B (hl_IMAGE A B f s) u = 1 /\\ forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_IMAGE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -76684,7 +76684,7 @@
    "statement": "forall A:set, forall s t c= A, s :\\/: t = {x :e A | x :e s \\/ x :e t}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_UNION A s t = hl_GSPEC A (fun GEN_PVAR_0 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_0 (if hl_IN A x s = 1 \\/ hl_IN A x t = 1 then 1 else 0) x = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
    "bridge": ""
   },
   {
@@ -76837,7 +76837,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= Power A, forall t c= A, Union s :\\: t = Union {x :\\: t | x :e Power A, x :e s}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall t :e 2 :^: A, hl_DIFF A (hl_UNIONS A s) t = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_67 :e 2 :^: A => if exists x :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_67 (hl_IN (2 :^: A) x s) (hl_DIFF A x t) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIFF_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_UNIONS_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -77290,7 +77290,7 @@
    "statement": "forall A:set, forall p q r c= A, p :\\/: q = q :\\/: p /\\ (p :\\/: q :\\/: r = p :\\/: (q :\\/: r) /\\ (p :\\/: (q :\\/: r) = q :\\/: (p :\\/: r) /\\ (p :\\/: p = p /\\ p :\\/: (p :\\/: q) = p :\\/: q)))",
    "literal": "forall A:set, A <> Empty -> forall p q r :e 2 :^: A, hl_UNION A p q = hl_UNION A q p /\\ (hl_UNION A (hl_UNION A p q) r = hl_UNION A p (hl_UNION A q r) /\\ (hl_UNION A p (hl_UNION A q r) = hl_UNION A q (hl_UNION A p r) /\\ (hl_UNION A p p = p /\\ hl_UNION A p (hl_UNION A p q) = hl_UNION A p q)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77318,7 +77318,7 @@
    "statement": "forall A:set, forall s t u c= A, s :\\/: t :\\/: u = s :\\/: (t :\\/: u)",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_UNION A (hl_UNION A s t) u = hl_UNION A s (hl_UNION A t u)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77346,7 +77346,7 @@
    "statement": "forall A:set, forall s t c= A, s :\\/: t = t :\\/: s",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_UNION A s t = hl_UNION A t s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77377,7 +77377,7 @@
    "statement": "forall A K:set, forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :\\/: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e {x0 :e A | x0 :e s (p 0) :\\/: t (p 0)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_UNION (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = hl_disjoint_union K A k (fun i :e K => hl_UNION A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -77405,7 +77405,7 @@
    "statement": "forall A:set, (forall s c= A, Empty :\\/: s = s) /\\ forall s c= A, s :\\/: Empty = s",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: A, hl_UNION A (hl_EMPTY A) s = s) /\\ forall s :e 2 :^: A, hl_UNION A s (hl_EMPTY A) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77433,7 +77433,7 @@
    "statement": "forall A:set, forall s c= A, s :\\/: s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_UNION A s s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77561,7 +77561,7 @@
    "statement": "forall A:set, forall s t u c= A, s :/\\: (t :\\/: u) = s :/\\: t :\\/: s :/\\: u",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_INTER A s (hl_UNION A t u) = hl_UNION A (hl_INTER A s t) (hl_INTER A s u)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INTER_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77617,7 +77617,7 @@
    "statement": "forall A:set, forall s t u c= A, s :\\/: t c= u <-> s c= u /\\ t c= u",
    "literal": "forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_SUBSET A (hl_UNION A s t) u = 1 <-> hl_SUBSET A s u = 1 /\\ hl_SUBSET A t u = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -77645,7 +77645,7 @@
    "statement": "forall A:set, (forall s c= A, A :\\/: s = A) /\\ forall s c= A, s :\\/: A = A",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: A, hl_UNION A (hl_UNIV A) s = hl_UNIV A) /\\ forall s :e 2 :^: A, hl_UNION A s (hl_UNIV A) = hl_UNIV A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_UNION_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: generalization (empty-carrier case) A",
    "bridge": ""
   },
   {
@@ -84885,6 +84885,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 802
+  "native_certified": 804
  }
 }

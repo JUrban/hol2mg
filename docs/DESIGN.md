@@ -1283,7 +1283,14 @@ distinguish statement coverage (public statements), certification coverage
 
 ### 21.7 Progress (updated per report)
 
-See `docs/reports/` (latest report first) and the certification table in `README.md`.
+| date | literal checked | bridges `Qed` (`native_certified`) | compat theorems | report |
+|---|---|---|---|---|
+| 2026-08-29 | 2697 / 2697 supported Core theorems | 802 / 2685 public | 98 (+ generated unfolding/typing/spec lemmas) | `docs/reports/2026-08-29-interim-5.md` |
+
+Model-soundness theorems of the primitive interface (§21.4) proved so far: typing of every
+primitive constant (`model.mg`), `hl_COND` characterisation, `hl_ty_int = int`.  Not yet proved
+(trusted assumptions, to be discharged): `SELECT_AX`, `ETA_AX`, `INFINITY_AX`, the Peano and
+recursion theorems for `omega`, pair/list/option/sum characterisations, the `realax.ml` axioms.
 
 ### 21.8 Phase exit criteria
 

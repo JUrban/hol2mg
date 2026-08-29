@@ -1099,3 +1099,142 @@ claim Hstep: forall n, nat_p n -> (hl_ODD n = 1 <-> odd_nat n) -> (hl_ODD (ordsu
     (iff_trans (~ hl_ODD n = 1) (~ odd_nat n) (odd_nat (ordsucc n)) (not_iff_cong (hl_ODD n = 1) (odd_nat n) IH) (iff_sym (odd_nat (ordsucc n)) (~ odd_nat n) (odd_S_iff n Hno)))). }
 let n. assume Hn. exact (nat_ind (fun n => hl_ODD n = 1 <-> odd_nat n) Hbase Hstep n (omega_nat_p n Hn)).
 Qed.
+
+// ---- set comprehensions (GSPEC / SETSPEC) ----
+Theorem hl_gspec_sep : forall A:set, forall P:set -> prop,
+  hl_rep A (hl_GSPEC A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0)) = {v :e A | P v}.
+let A P.
+claim HF: (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) :e 2 :^: A.
+{ prove (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) :e Pi_ v :e A, 2.
+  apply (lam_Pi A (fun _ => 2) (fun v => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0)).
+  let v. assume _. exact (If_in_2 (exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1)). }
+rewrite (hl_GSPEC_unfold A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) HF).
+claim Hmem: forall v :e A, (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) v = 1 <-> P v.
+{ let v. assume Hv.
+  rewrite (beta A (fun v => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) v Hv).
+  apply (iff_trans ((if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) = 1) (exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1) (P v) (If_1_iff (exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1))).
+  apply iffI.
+  - assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx Hs.
+    claim Hs2: (if (if P x then 1 else 0) = 1 /\ v = x then 1 else 0) = 1.
+    { exact ((hl_SETSPEC_unfold A v Hv (if P x then 1 else 0) (If_in_2 (P x)) x Hx) (fun hl__u hl__v => hl__u = 1) Hs). }
+    apply (If_1_iff ((if P x then 1 else 0) = 1 /\ v = x)). assume H2 _. apply (H2 Hs2). assume H3 H4.
+    rewrite H4. apply (If_1_iff (P x)). assume H5 _. exact (H5 H3).
+  - assume H. witness v. apply andI.
+    + exact Hv.
+    + rewrite (hl_SETSPEC_unfold A v Hv (if P v then 1 else 0) (If_in_2 (P v)) v Hv).
+      apply (If_i_1 ((if P v then 1 else 0) = 1 /\ v = v) 1 0). apply andI.
+      * exact (If_i_1 (P v) 1 0 H).
+      * exact (fun q H => H). }
+apply set_ext.
+- let v. assume Hv.
+  claim HvA: v :e A. { exact (hl_rep_Subq A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) v Hv). }
+  apply (SepI A P v HvA). apply (Hmem v HvA). assume H1 _. apply H1.
+  apply (hl_rep_iff A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) v HvA). assume _ H2. exact (H2 Hv).
+- let v. assume Hv.
+  claim HvA: v :e A. { exact (SepE1 A P v Hv). }
+  apply (hl_rep_iff A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if P x then 1 else 0) x = 1 then 1 else 0) v HvA). assume H1 _. apply H1.
+  apply (Hmem v HvA). assume _ H2. exact (H2 (SepE2 A P v Hv)).
+Qed.
+Theorem hl_gspec_repl : forall A B:set, forall F S:set, F :e B :^: A -> S :e 2 :^: A ->
+  hl_rep B (hl_GSPEC B (fun v :e B => if exists y :e B, hl_SETSPEC B v (if exists x :e A, hl_IN A x S = 1 /\ y = F x then 1 else 0) y = 1 then 1 else 0)) = {F x | x :e hl_rep A S}.
+let A B F S. assume HF HS.
+apply (eq_trans_i (hl_rep B (hl_GSPEC B (fun v :e B => if exists y :e B, hl_SETSPEC B v (if exists x :e A, hl_IN A x S = 1 /\ y = F x then 1 else 0) y = 1 then 1 else 0))) ({v :e B | exists x :e A, hl_IN A x S = 1 /\ v = F x}) ({F x | x :e hl_rep A S}) (hl_gspec_sep B (fun y => exists x :e A, hl_IN A x S = 1 /\ y = F x))).
+apply set_ext.
+- let v. assume Hv. apply (SepE B (fun y => exists x :e A, hl_IN A x S = 1 /\ y = F x) v Hv). assume HvB H.
+  apply H. let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume H3 H4.
+  rewrite H4. apply (ReplI (hl_rep A S) (fun z => F z) x).
+  claim H3': S x = 1. { exact ((hl_IN_unfold A x Hx S HS) (fun hl__u hl__v => hl__u = 1) H3). }
+  apply (hl_rep_iff A S x Hx). assume H5 _. exact (H5 H3').
+- let v. assume Hv. apply (ReplE_impred (hl_rep A S) (fun z => F z) v Hv). let x. assume Hx Hvx.
+  claim HxA: x :e A. { exact (hl_rep_Subq A S x Hx). }
+  apply (SepI B (fun y => exists x :e A, hl_IN A x S = 1 /\ y = F x) v).
+  + rewrite Hvx. exact (setexp_ap A B F HF x HxA).
+  + witness x. apply andI.
+    * exact HxA.
+    * apply andI.
+      { claim H6: S x = 1. { apply (hl_rep_iff A S x HxA). assume _ H5. exact (H5 Hx). }
+        exact ((eq_sym_i (hl_IN A x S) (S x) (hl_IN_unfold A x HxA S HS)) (fun hl__u hl__v => hl__u = 1) H6). }
+      { exact Hvx. }
+Qed.
+Theorem Repl_ext_pw : forall X:set, forall F G:set -> set, (forall x :e X, F x = G x) -> {F x | x :e X} = {G x | x :e X}.
+let X F G. assume H. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred X F y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite (H x Hx). exact (ReplI X G x Hx).
+- let y. assume Hy. apply (ReplE_impred X G y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite <- (H x Hx). exact (ReplI X F x Hx).
+Qed.
+Theorem hl_IMAGE_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, hl_rep B (hl_IMAGE A B l1 l2) = {f1 x | x :e hl_rep A l2}.
+let A B. assume _ _. let l1. assume H1. let f1. assume Hf. let l2. assume H2.
+rewrite (hl_IMAGE_unfold A B l1 H1 l2 H2).
+rewrite (hl_gspec_repl A B l1 l2 H1 H2).
+apply (Repl_ext_pw (hl_rep A l2) (fun x => l1 x) f1).
+let x. assume Hx. exact (Hf x (hl_rep_Subq A l2 x Hx)).
+Qed.
+Theorem hl_UNION_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_rep A (hl_UNION A l1 l2) = hl_rep A l1 :\/: hl_rep A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+rewrite (hl_UNION_unfold A l1 H1 l2 H2).
+apply (eq_trans_i (hl_rep A (hl_GSPEC A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if hl_IN A x l1 = 1 \/ hl_IN A x l2 = 1 then 1 else 0) x = 1 then 1 else 0))) ({v :e A | hl_IN A v l1 = 1 \/ hl_IN A v l2 = 1}) (hl_rep A l1 :\/: hl_rep A l2) (hl_gspec_sep A (fun x => hl_IN A x l1 = 1 \/ hl_IN A x l2 = 1))).
+apply set_ext.
+- let v. assume Hv. apply (SepE A (fun x => hl_IN A x l1 = 1 \/ hl_IN A x l2 = 1) v Hv). assume HvA H. apply H.
+  + assume H3. apply (binunionI1 (hl_rep A l1) (hl_rep A l2) v). apply (hl_IN_compat A HA v HvA l1 H1). assume H4 _. exact (H4 H3).
+  + assume H3. apply (binunionI2 (hl_rep A l1) (hl_rep A l2) v). apply (hl_IN_compat A HA v HvA l2 H2). assume H4 _. exact (H4 H3).
+- let v. assume Hv. apply (binunionE (hl_rep A l1) (hl_rep A l2) v Hv).
+  + assume H3. claim HvA: v :e A. { exact (hl_rep_Subq A l1 v H3). }
+    apply (SepI A (fun x => hl_IN A x l1 = 1 \/ hl_IN A x l2 = 1) v HvA). apply orIL. apply (hl_IN_compat A HA v HvA l1 H1). assume _ H4. exact (H4 H3).
+  + assume H3. claim HvA: v :e A. { exact (hl_rep_Subq A l2 v H3). }
+    apply (SepI A (fun x => hl_IN A x l1 = 1 \/ hl_IN A x l2 = 1) v HvA). apply orIR. apply (hl_IN_compat A HA v HvA l2 H2). assume _ H4. exact (H4 H3).
+Qed.
+Theorem hl_INTER_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_rep A (hl_INTER A l1 l2) = hl_rep A l1 :/\: hl_rep A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+rewrite (hl_INTER_unfold A l1 H1 l2 H2).
+apply (eq_trans_i (hl_rep A (hl_GSPEC A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if hl_IN A x l1 = 1 /\ hl_IN A x l2 = 1 then 1 else 0) x = 1 then 1 else 0))) ({v :e A | hl_IN A v l1 = 1 /\ hl_IN A v l2 = 1}) (hl_rep A l1 :/\: hl_rep A l2) (hl_gspec_sep A (fun x => hl_IN A x l1 = 1 /\ hl_IN A x l2 = 1))).
+apply set_ext.
+- let v. assume Hv. apply (SepE A (fun x => hl_IN A x l1 = 1 /\ hl_IN A x l2 = 1) v Hv). assume HvA H. apply H. assume H3 H4.
+  apply (binintersectI (hl_rep A l1) (hl_rep A l2) v).
+  + apply (hl_IN_compat A HA v HvA l1 H1). assume H5 _. exact (H5 H3).
+  + apply (hl_IN_compat A HA v HvA l2 H2). assume H5 _. exact (H5 H4).
+- let v. assume Hv. apply (binintersectE (hl_rep A l1) (hl_rep A l2) v Hv). assume H3 H4.
+  claim HvA: v :e A. { exact (hl_rep_Subq A l1 v H3). }
+  apply (SepI A (fun x => hl_IN A x l1 = 1 /\ hl_IN A x l2 = 1) v HvA). apply andI.
+  + apply (hl_IN_compat A HA v HvA l1 H1). assume _ H5. exact (H5 H3).
+  + apply (hl_IN_compat A HA v HvA l2 H2). assume _ H5. exact (H5 H4).
+Qed.
+Theorem hl_DIFF_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_rep A (hl_DIFF A l1 l2) = hl_rep A l1 :\: hl_rep A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+rewrite (hl_DIFF_unfold A l1 H1 l2 H2).
+apply (eq_trans_i (hl_rep A (hl_GSPEC A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if hl_IN A x l1 = 1 /\ ~ hl_IN A x l2 = 1 then 1 else 0) x = 1 then 1 else 0))) ({v :e A | hl_IN A v l1 = 1 /\ ~ hl_IN A v l2 = 1}) (hl_rep A l1 :\: hl_rep A l2) (hl_gspec_sep A (fun x => hl_IN A x l1 = 1 /\ ~ hl_IN A x l2 = 1))).
+apply set_ext.
+- let v. assume Hv. apply (SepE A (fun x => hl_IN A x l1 = 1 /\ ~ hl_IN A x l2 = 1) v Hv). assume HvA H. apply H. assume H3 H4.
+  apply (setminusI (hl_rep A l1) (hl_rep A l2) v).
+  + apply (hl_IN_compat A HA v HvA l1 H1). assume H5 _. exact (H5 H3).
+  + assume H6. apply H4. apply (hl_IN_compat A HA v HvA l2 H2). assume _ H5. exact (H5 H6).
+- let v. assume Hv. apply (setminusE (hl_rep A l1) (hl_rep A l2) v Hv). assume H3 H4.
+  claim HvA: v :e A. { exact (hl_rep_Subq A l1 v H3). }
+  apply (SepI A (fun x => hl_IN A x l1 = 1 /\ ~ hl_IN A x l2 = 1) v HvA). apply andI.
+  + apply (hl_IN_compat A HA v HvA l1 H1). assume _ H5. exact (H5 H3).
+  + assume H6. apply H4. apply (hl_IN_compat A HA v HvA l2 H2). assume H5 _. exact (H5 H6).
+Qed.
+Theorem hl_DELETE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e A, hl_rep A (hl_DELETE A l1 l2) = hl_rep A l1 :\: {l2}.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+rewrite (hl_DELETE_unfold A l1 H1 l2 H2).
+apply (eq_trans_i (hl_rep A (hl_GSPEC A (fun v :e A => if exists y :e A, hl_SETSPEC A v (if hl_IN A y l1 = 1 /\ ~ y = l2 then 1 else 0) y = 1 then 1 else 0))) ({v :e A | hl_IN A v l1 = 1 /\ ~ v = l2}) (hl_rep A l1 :\: {l2}) (hl_gspec_sep A (fun y => hl_IN A y l1 = 1 /\ ~ y = l2))).
+apply set_ext.
+- let v. assume Hv. apply (SepE A (fun y => hl_IN A y l1 = 1 /\ ~ y = l2) v Hv). assume HvA H. apply H. assume H3 H4.
+  apply (setminusI (hl_rep A l1) {l2} v).
+  + apply (hl_IN_compat A HA v HvA l1 H1). assume H5 _. exact (H5 H3).
+  + assume H6. exact (H4 (SingE l2 v H6)).
+- let v. assume Hv. apply (setminusE (hl_rep A l1) {l2} v Hv). assume H3 H4.
+  claim HvA: v :e A. { exact (hl_rep_Subq A l1 v H3). }
+  apply (SepI A (fun y => hl_IN A y l1 = 1 /\ ~ y = l2) v HvA). apply andI.
+  + apply (hl_IN_compat A HA v HvA l1 H1). assume _ H5. exact (H5 H3).
+  + assume H6. apply H4. rewrite H6. exact (SingI l2).
+Qed.
+Theorem hl_DISJOINT_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_DISJOINT A l1 l2 = 1 <-> hl_rep A l1 :/\: hl_rep A l2 = Empty.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+rewrite (hl_DISJOINT_unfold A l1 H1 l2 H2).
+apply (iff_trans ((if hl_INTER A l1 l2 = hl_EMPTY A then 1 else 0) = 1) (hl_INTER A l1 l2 = hl_EMPTY A) (hl_rep A l1 :/\: hl_rep A l2 = Empty) (If_1_iff (hl_INTER A l1 l2 = hl_EMPTY A))).
+claim HI: hl_INTER A l1 l2 :e 2 :^: A. { exact (setexp2_ap (2 :^: A) (2 :^: A) (2 :^: A) (hl_INTER A) (hl_INTER_in A HA) l1 H1 l2 H2). }
+claim HE: hl_EMPTY A :e 2 :^: A. { exact (hl_EMPTY_in A HA). }
+apply iffI.
+- assume H. rewrite <- (hl_INTER_compat A HA l1 H1 l2 H2). rewrite <- (hl_EMPTY_compat A HA). exact (f_equal (fun x => hl_rep A x) (hl_INTER A l1 l2) (hl_EMPTY A) H).
+- assume H. apply (hl_rep_inj A (hl_INTER A l1 l2) (hl_EMPTY A) HI HE).
+  rewrite (hl_INTER_compat A HA l1 H1 l2 H2). rewrite (hl_EMPTY_compat A HA). exact H.
+Qed.
