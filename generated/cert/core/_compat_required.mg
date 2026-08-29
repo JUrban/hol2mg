@@ -382,10 +382,6 @@ Admitted.
 Theorem hl_sym_3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3d5f63 A B l1 l2 = 1 <-> equip (hl_rep A l1) (hl_rep B l2).
 Admitted.
 
-// list_of_set : (A->bool)->A list (not in compat.mg)
-Theorem hl_list_of_set_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_list_of_set A l1 = choose_in (finseq A) (fun l:set => seq_set l = hl_rep A l1 /\ seq_len l = finite_cardinality (hl_rep A l1)).
-Admitted.
-
 // int_lcm : int#int->int (not in compat.mg)
 Theorem hl_int_lcm_compat : forall l1 :e int :*: int, hl_int_lcm l1 = lcm_int (l1 0) (l1 1).
 Admitted.
@@ -406,16 +402,8 @@ Admitted.
 Theorem hl_ITSET_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e 2 :^: A, forall l3 :e B, hl_ITSET A B l1 l2 l3 = set_foldr f1 (hl_rep A l2) l3.
 Admitted.
 
-// PAIRWISE : (A->A->bool)->A list->bool (not in compat.mg)
-Theorem hl_PAIRWISE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> forall l2 :e finseq A, hl_PAIRWISE A l1 l2 = 1 <-> seq_pairwise P1 l2.
-Admitted.
-
 // mk_finite_prod : num->(A,B)finite_prod (not in compat.mg)
 Theorem hl_mk_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_prod A B l1 = l1.
-Admitted.
-
-// ALLPAIRS : (A->B->bool)->A list->B list->bool (not in compat.mg)
-Theorem hl_ALLPAIRS_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: B :^: A, forall P1:set -> set -> prop, (forall x :e A, forall y :e B, l1 x y = 1 <-> P1 x y) -> forall l2 :e finseq A, forall l3 :e finseq B, hl_ALLPAIRS A B l1 l2 l3 = 1 <-> forall i :e seq_len l2, forall j :e seq_len l3, P1 (seq_nth l2 i) (seq_nth l3 j).
 Admitted.
 
 // BUTLAST : A list->A list (not in compat.mg)

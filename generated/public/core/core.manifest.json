@@ -1114,7 +1114,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set -> prop, forall l :e finseq B, forall h :e A, forall t :e finseq A, ((forall i :e seq_len seq_nil, forall j :e seq_len l, f (seq_nth seq_nil i) (seq_nth l j)) <-> True) /\\ ((forall i :e seq_len (seq_cons h t), forall j :e seq_len l, f (seq_nth (seq_cons h t) i) (seq_nth l j)) <-> seq_all (f h) l /\\ forall i :e seq_len t, forall j :e seq_len l, f (seq_nth t i) (seq_nth l j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e 2 :^: B :^: A, forall l :e finseq B, forall h :e A, forall t :e finseq A, (hl_ALLPAIRS A B f (hl_NIL A) l = 1 <-> True) /\\ (hl_ALLPAIRS A B f (hl_CONS A h t) l = 1 <-> hl_ALL B (f h) l = 1 /\\ hl_ALLPAIRS A B f t l = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALLPAIRS_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -1145,9 +1145,9 @@
    "source": "!l:A list. !m:B list. !P:A->bool. !Q:B->bool. ALL P l /\\ ALL Q m /\\ (!p:A. !q:B. P p /\\ Q q ==> (R p q <=> R' p q)) ==> (ALLPAIRS R l m <=> ALLPAIRS R' l m)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0 R':set -> set -> prop, forall l :e finseq A, forall m :e finseq B, forall P Q:set -> prop, seq_all P l /\\ (seq_all Q m /\\ (forall p :e A, forall q :e B, P p /\\ Q q -> (R0 p q <-> R' p q))) -> ((forall i :e seq_len l, forall j :e seq_len m, R0 (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len l, forall j :e seq_len m, R' (seq_nth l i) (seq_nth m j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 R' :e 2 :^: B :^: A, forall l :e finseq A, forall m :e finseq B, forall P :e 2 :^: A, forall Q :e 2 :^: B, hl_ALL A P l = 1 /\\ (hl_ALL B Q m = 1 /\\ (forall p :e A, forall q :e B, P p = 1 /\\ Q q = 1 -> (R1 p q = 1 <-> R' p q = 1))) -> (hl_ALLPAIRS A B R1 l m = 1 <-> hl_ALLPAIRS A B R' l m = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALLPAIRS_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALLPAIRS_EQ_bridge"
   },
   {
    "name": "ALLPAIRS_MAP",
@@ -1174,9 +1174,9 @@
    "source": "!P:B->D->bool. !f:A->B. !g:C->D. !l:A list. !m:C list. ALLPAIRS P (MAP f l) (MAP g m) <=> ALLPAIRS (\\x:A. \\y:C. P (f x) (g y)) l m",
    "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e C, g x :e D) -> forall l :e finseq A, forall m :e finseq C, (forall i :e seq_len (seq_map f l), forall j :e seq_len (seq_map g m), P (seq_nth (seq_map f l) i) (seq_nth (seq_map g m) j)) <-> forall i :e seq_len l, forall j :e seq_len m, P (f (seq_nth l i)) (g (seq_nth m j))",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall P :e 2 :^: D :^: B, forall f :e B :^: A, forall g :e D :^: C, forall l :e finseq A, forall m :e finseq C, hl_ALLPAIRS B D P (hl_MAP A B f l) (hl_MAP C D g m) = 1 <-> hl_ALLPAIRS A C (fun x :e A => fun y :e C => P (f x) (g y)) l m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALLPAIRS_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALLPAIRS_MAP_bridge"
   },
   {
    "name": "ALLPAIRS_MEM",
@@ -1203,9 +1203,9 @@
    "source": "!P:A->B->bool. !l:A list. !m:B list. (!x:A. !y:B. MEM x l /\\ MEM y m ==> P x y) <=> ALLPAIRS P l m",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall x :e A, forall y :e B, seq_mem x l /\\ seq_mem y m -> P x y) <-> forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq A, forall m :e finseq B, (forall x :e A, forall y :e B, hl_MEM A x l = 1 /\\ hl_MEM B y m = 1 -> P x y = 1) <-> hl_ALLPAIRS A B P l m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALLPAIRS_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALLPAIRS_MEM_bridge"
   },
   {
    "name": "ALLPAIRS_SYM",
@@ -1232,9 +1232,9 @@
    "source": "!P:A->B->bool. !l:A list. !m:B list. ALLPAIRS P l m <=> ALLPAIRS (\\x:B. \\y:A. P y x) m l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq A, forall m :e finseq B, hl_ALLPAIRS A B P l m = 1 <-> hl_ALLPAIRS B A (fun x :e B => fun y :e A => P y x) m l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALLPAIRS_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALLPAIRS_SYM_bridge"
   },
   {
    "name": "ALL_APPEND",
@@ -20675,9 +20675,9 @@
    "source": "!l:A list. HAS_SIZE (set_of_list l) (LENGTH l) <=> PAIRWISE (\\x:A. \\y:A. ~(x = y)) l",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, equip (seq_set l) (seq_len l) <-> seq_pairwise (fun x:set => fun y:set => ~ x = y) l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_HAS_SIZE A (hl_set_of_list A l) (hl_LENGTH A l) = 1 <-> hl_PAIRWISE A (fun x :e A => fun y :e A => if ~ x = y then 1 else 0) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_PAIRWISE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_SET_OF_LIST_bridge"
   },
   {
    "name": "HAS_SIZE_SUC",
@@ -40909,9 +40909,9 @@
    "source": "!s:A->bool. FINITE s ==> LENGTH (list_of_set s) = CARD s",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_len (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = finite_cardinality s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_LENGTH A (hl_list_of_set A s) = hl_CARD A s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LENGTH_LIST_OF_SET_bridge"
   },
   {
    "name": "LENGTH_MAP",
@@ -42155,9 +42155,9 @@
    "source": "list_of_set EMPTY = NIL",
    "statement": "forall A:set, A <> Empty -> choose_in (finseq A) (fun l:set => seq_set l = Empty /\\ seq_len l = finite_cardinality Empty) = seq_nil",
    "literal": "forall A:set, A <> Empty -> hl_list_of_set A (hl_EMPTY A) = hl_NIL A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LIST_OF_SET_EMPTY_bridge"
   },
   {
    "name": "LIST_OF_SET_PROPERTIES",
@@ -42187,9 +42187,9 @@
    "source": "!s:A->bool. FINITE s ==> set_of_list (list_of_set s) = s /\\ LENGTH (list_of_set s) = CARD s",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_set (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = s /\\ seq_len (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = finite_cardinality s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_set_of_list A (hl_list_of_set A s) = s /\\ hl_LENGTH A (hl_list_of_set A s) = hl_CARD A s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LIST_OF_SET_PROPERTIES_bridge"
   },
   {
    "name": "LIST_OF_SET_SING",
@@ -42218,9 +42218,9 @@
    "source": "!a:A. list_of_set (a INSERT EMPTY) = a CONS NIL",
    "statement": "forall A:set, forall a :e A, choose_in (finseq A) (fun l:set => seq_set l = {a} /\\ seq_len l = finite_cardinality {a}) = seq_cons a seq_nil",
    "literal": "forall A:set, A <> Empty -> forall a :e A, hl_list_of_set A (hl_INSERT A a (hl_EMPTY A)) = hl_CONS A a (hl_NIL A)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LIST_OF_SET_SING_bridge"
   },
   {
    "name": "LT",
@@ -43916,9 +43916,9 @@
    "source": "!s:A->bool. FINITE s ==> (!x:A. MEM x (list_of_set s) <=> x IN s)",
    "statement": "forall A:set, forall s c= A, finite s -> forall x :e A, seq_mem x (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) <-> x :e s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> forall x :e A, hl_MEM A x (hl_list_of_set A s) = 1 <-> hl_IN A x s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MEM_LIST_OF_SET_bridge"
   },
   {
    "name": "MEM_MAP",
@@ -52581,7 +52581,7 @@
    "statement": "forall A:set, forall r:set -> set -> prop, forall h :e A, forall t :e finseq A, (seq_pairwise r seq_nil <-> True) /\\ (seq_pairwise r (seq_cons h t) <-> seq_all (r h) t /\\ seq_pairwise r t)",
    "literal": "forall A:set, A <> Empty -> forall r :e 2 :^: A :^: A, forall h :e A, forall t :e finseq A, (hl_PAIRWISE A r (hl_NIL A) = 1 <-> True) /\\ (hl_PAIRWISE A r (hl_CONS A h t) = 1 <-> hl_ALL A (r h) t = 1 /\\ hl_PAIRWISE A r t = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_PAIRWISE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -52635,9 +52635,9 @@
    "source": "!R:A->A->bool. !l:A list. !m:A list. PAIRWISE R (l APPEND m) <=> PAIRWISE R l /\\ PAIRWISE R m /\\ (!x:A. !y:A. MEM x l /\\ MEM y m ==> R x y)",
    "statement": "forall A:set, A <> Empty -> forall R0:set -> set -> prop, forall l m :e finseq A, seq_pairwise R0 (seq_append l m) <-> seq_pairwise R0 l /\\ (seq_pairwise R0 m /\\ forall x y :e A, seq_mem x l /\\ seq_mem y m -> R0 x y)",
    "literal": "forall A:set, A <> Empty -> forall R1 :e 2 :^: A :^: A, forall l m :e finseq A, hl_PAIRWISE A R1 (hl_APPEND A l m) = 1 <-> hl_PAIRWISE A R1 l = 1 /\\ (hl_PAIRWISE A R1 m = 1 /\\ forall x y :e A, hl_MEM A x l = 1 /\\ hl_MEM A y m = 1 -> R1 x y = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_PAIRWISE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_APPEND_bridge"
   },
   {
    "name": "PAIRWISE_CHAIN_UNIONS",
@@ -52773,9 +52773,9 @@
    "source": "!R:A->A->bool. !R':A->A->bool. !l:A list. PAIRWISE R l /\\ (!x:A. !y:A. MEM x l /\\ MEM y l /\\ R x y ==> R' x y) ==> PAIRWISE R' l",
    "statement": "forall A:set, A <> Empty -> forall R0 R':set -> set -> prop, forall l :e finseq A, seq_pairwise R0 l /\\ (forall x y :e A, seq_mem x l /\\ (seq_mem y l /\\ R0 x y) -> R' x y) -> seq_pairwise R' l",
    "literal": "forall A:set, A <> Empty -> forall R1 R' :e 2 :^: A :^: A, forall l :e finseq A, hl_PAIRWISE A R1 l = 1 /\\ (forall x y :e A, hl_MEM A x l = 1 /\\ (hl_MEM A y l = 1 /\\ R1 x y = 1) -> R' x y = 1) -> hl_PAIRWISE A R' l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_PAIRWISE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_IMPLIES_bridge"
   },
   {
    "name": "PAIRWISE_INSERT",
@@ -52856,9 +52856,9 @@
    "source": "!R:B->B->bool. !f:A->B. !l:A list. PAIRWISE R (MAP f l) <=> PAIRWISE (\\x:A. \\y:A. R (f x) (f y)) l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_pairwise R0 (seq_map f l) <-> seq_pairwise (fun x:set => fun y:set => R0 (f x) (f y)) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: B, forall f :e B :^: A, forall l :e finseq A, hl_PAIRWISE B R1 (hl_MAP A B f l) = 1 <-> hl_PAIRWISE A (fun x :e A => fun y :e A => R1 (f x) (f y)) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_PAIRWISE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_MAP_bridge"
   },
   {
    "name": "PAIRWISE_MONO",
@@ -52941,9 +52941,9 @@
    "source": "!R:A->A->bool. !x:A. !y:A. !l:A list. (!x1:A. !y1:A. !z:A. R x1 y1 /\\ R y1 z ==> R x1 z) ==> (PAIRWISE R (x CONS y CONS l) <=> R x y /\\ PAIRWISE R (y CONS l))",
    "statement": "forall A:set, forall R0:set -> set -> prop, forall x y :e A, forall l :e finseq A, (forall x0 y0 z :e A, R0 x0 y0 /\\ R0 y0 z -> R0 x0 z) -> (seq_pairwise R0 (seq_cons x (seq_cons y l)) <-> R0 x y /\\ seq_pairwise R0 (seq_cons y l))",
    "literal": "forall A:set, A <> Empty -> forall R1 :e 2 :^: A :^: A, forall x y :e A, forall l :e finseq A, (forall x1 y1 z :e A, R1 x1 y1 = 1 /\\ R1 y1 z = 1 -> R1 x1 z = 1) -> (hl_PAIRWISE A R1 (hl_CONS A x (hl_CONS A y l)) = 1 <-> R1 x y = 1 /\\ hl_PAIRWISE A R1 (hl_CONS A y l) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_PAIRWISE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_TRANSITIVE_bridge"
   },
   {
    "name": "PAIRWISE_UNION",
@@ -68888,9 +68888,9 @@
    "source": "!s:A->bool. FINITE s ==> set_of_list (list_of_set s) = s",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_set (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_set_of_list A (hl_list_of_set A s) = s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SET_OF_LIST_OF_SET_bridge"
   },
   {
    "name": "SET_PAIR_THM",
@@ -81915,7 +81915,7 @@
    "statement": "forall A:set, forall s c= A, choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s) = choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_list_of_set A s = hl_select (finseq A) (fun l :e finseq A => if hl_set_of_list A l = s /\\ hl_LENGTH A l = hl_CARD A s then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2047
+  "native_certified": 2062
  }
 }
