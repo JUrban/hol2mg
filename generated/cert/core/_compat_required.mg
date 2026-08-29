@@ -42,10 +42,6 @@ Admitted.
 Theorem hl_ITLIST_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e finseq A, forall l3 :e B, hl_ITLIST A B l1 l2 l3 = seq_foldr f1 l2 l3.
 Admitted.
 
-// ARB : A (not in compat.mg)
-Theorem hl_ARB_compat : forall A:set, A <> Empty -> hl_ARB A = choose_in A (fun x:set => True).
-Admitted.
-
 // EL : num->A list->A (not in compat.mg)
 Theorem hl_EL_compat : forall A:set, A <> Empty -> forall l1 :e omega, forall l2 :e finseq A, hl_EL A l1 l2 = seq_nth l2 l1.
 Admitted.
@@ -68,10 +64,6 @@ Admitted.
 
 // CHOICE : (A->bool)->A at A := A -> bool (not in compat.mg)
 Theorem hl_CHOICE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_CHOICE (2 :^: A) l1 = choose_in (Power A) (fun x:set => x :e hl_rep2 A l1).
-Admitted.
-
-// EXTENSIONAL : (A->bool)->(A->B)->bool (not in compat.mg)
-Theorem hl_EXTENSIONAL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> (hl_EXTENSIONAL A B l1 l2 = 1 <-> forall x :e A, ~ x :e hl_rep A l1 -> f2 x = choose_in B (fun y:set => True)).
 Admitted.
 
 // BIJ : (A->B)->(A->bool)->(B->bool)->bool (not in compat.mg)
@@ -135,7 +127,7 @@ Theorem hl__UNGUARDED_PATTERN_compat : hl__UNGUARDED_PATTERN = Empty.
 Admitted.
 
 // cartesian_product : (K->bool)->(K->A->bool)->(K->A)->bool (not in compat.mg)
-Theorem hl_cartesian_product_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, l2 x = f2 x) -> hl_rep (A :^: K) (hl_cartesian_product K A l1 l2) = {f :e A :^: K | (forall i :e hl_rep K l1, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K l1 -> f i = choose_in A (fun y:set => True)}.
+Theorem hl_cartesian_product_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, l2 x = f2 x) -> hl_rep (A :^: K) (hl_cartesian_product K A l1 l2) = {f :e A :^: K | (forall i :e hl_rep K l1, f i :e f2 i) /\ forall i :e K, ~ i :e hl_rep K l1 -> f i = choose_in A (fun y:set => False)}.
 Admitted.
 
 // nproduct : (A->bool)->(A->num)->num (not in compat.mg)
@@ -156,10 +148,6 @@ Admitted.
 
 // ZIP : A list->B list->(A#B) list (not in compat.mg)
 Theorem hl_ZIP_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, hl_ZIP A B l1 l2 = seq_zip l1 l2.
-Admitted.
-
-// int_mod : int->int->int->bool (not in compat.mg)
-Theorem hl_int_mod_compat : forall l1 l2 l3 :e int, hl_int_mod l1 l2 l3 = 1 <-> divides_int l1 (l2 + - l3).
 Admitted.
 
 // $ : (A,N)cart->num->A (not in compat.mg)

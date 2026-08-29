@@ -3904,3 +3904,59 @@ apply iffI.
         exact (f_equal (fun u => u * x ^ i) (c i) ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (eq_sym_i ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (c i) (eq_trans_i ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (if i :e ordsucc m then c i else 0) (c i) (beta omega (fun i => if i :e ordsucc m then c i else 0) i Hio) (If_i_1 (i :e ordsucc m) (c i) 0 Hi)))). }
       exact (eq_trans_i (p x) (f1 x) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) (Hf x Hx) (eq_trans_i (f1 x) (finsum (ordsucc m) (fun i => c i * x ^ i)) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) (Hall x Hx) (eq_trans_i (finsum (ordsucc m) (fun i => c i * x ^ i)) (finsum (ordsucc m) (fun i => (fun i :e omega => if i :e ordsucc m then c i else 0) i * x ^ i)) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) Hcong (eq_sym_i (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) (finsum (ordsucc m) (fun i => (fun i :e omega => if i :e ordsucc m then c i else 0) i * x ^ i)) (Hsum m Hm (fun i :e omega => if i :e ordsucc m then c i else 0) HcL x Hx))))).
 Qed.
+
+// ---- Boolean conditionals as formulas: literal (c /\ a) \/ (~c /\ b), native (c -> a) /\ (~c -> b) ----
+Theorem cond_bool_fwd : forall lc la lb nc na nb:prop, (lc -> nc) -> (nc -> lc) -> (la -> na) -> (lb -> nb) -> ((lc /\ la) \/ (~ lc /\ lb)) -> ((nc -> na) /\ (~ nc -> nb)).
+let lc la lb nc na nb. assume Hcf Hcb Ha Hb H. apply H.
+- assume H1. apply H1. assume Hlc Hla. apply andI.
+  + assume _. exact (Ha Hla).
+  + assume Hn. exact (FalseE (Hn (Hcf Hlc)) nb).
+- assume H1. apply H1. assume Hnlc Hlb. apply andI.
+  + assume Hnc. exact (FalseE (Hnlc (Hcb Hnc)) na).
+  + assume _. exact (Hb Hlb).
+Qed.
+Theorem cond_bool_bwd : forall lc la lb nc na nb:prop, (lc -> nc) -> (nc -> lc) -> (na -> la) -> (nb -> lb) -> ((nc -> na) /\ (~ nc -> nb)) -> ((lc /\ la) \/ (~ lc /\ lb)).
+let lc la lb nc na nb. assume Hcf Hcb Ha Hb H. apply H. assume H1 H2. apply (xm lc).
+- assume Hlc. apply orIL. apply andI.
+  + exact Hlc.
+  + exact (Ha (H1 (Hcf Hlc))).
+- assume Hnlc. apply orIR. apply andI.
+  + exact Hnlc.
+  + exact (Hb (H2 (fun Hnc => Hnlc (Hcb Hnc)))).
+Qed.
+
+// ---- integer congruences ----
+Theorem hl_int_mod_compat : forall l1 l2 l3 :e int, hl_int_mod l1 l2 l3 = 1 <-> divides_int l1 (l2 + - l3).
+let n. assume Hn. let x. assume Hx. let y. assume Hy.
+claim Hd: x + - y :e int. { exact (int_add_SNo x Hx (- y) (int_minus_SNo y Hy)). }
+exact (iff_eq1_l (hl_int_mod n x y) (hl_int_divides n (x + - y)) (eq_trans_i (hl_int_mod n x y) (hl_int_divides n (hl_int_sub x y)) (hl_int_divides n (x + - y)) (hl_int_mod_unfold n (int_hl_ty n Hn) x (int_hl_ty x Hx) y (int_hl_ty y Hy)) (f_equal (fun u => hl_int_divides n u) (hl_int_sub x y) (x + - y) (hl_int_sub_compat x Hx y Hy))) (divides_int n (x + - y)) (hl_int_divides_compat n Hn (x + - y) Hd)).
+Qed.
+
+// ---- an arbitrary element: HOL Light's ARB = @x. F ----
+Theorem hl_ARB_compat : forall A:set, A <> Empty -> hl_ARB A = choose_in A (fun x:set => False).
+let A. assume HA.
+claim HF: (fun x :e A => if False then 1 else 0) :e 2 :^: A.
+{ prove (fun x :e A => if False then 1 else 0) :e Pi_ x :e A, 2. apply (lam_Pi A (fun _ => 2) (fun x => if False then 1 else 0)). let x. assume _. exact (If_in_2 False). }
+rewrite (hl_ARB_unfold A). rewrite (hl_select_eq A (fun x :e A => if False then 1 else 0) HF).
+apply (choose_in_ext A (fun x => (fun x :e A => if False then 1 else 0) x = 1) (fun x:set => False)).
+let x. assume Hx.
+apply (iff_eq1_l ((fun x :e A => if False then 1 else 0) x) (if False then 1 else 0) (beta A (fun x => if False then 1 else 0) x Hx) False).
+exact (If_1_iff False).
+Qed.
+
+Theorem hl_EXTENSIONAL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> (hl_EXTENSIONAL A B l1 l2 = 1 <-> forall x :e A, ~ x :e hl_rep A l1 -> f2 x = choose_in B (fun y:set => False)).
+let A B. assume HA HB. let s. assume Hs. let f. assume Hf. let f2. assume Hpw.
+claim Harb: hl_ARB B = choose_in B (fun y:set => False). { exact (hl_ARB_compat B HB). }
+claim Hrep: hl_rep (B :^: A) (hl_GSPEC (B :^: A) (fun v :e B :^: A => if exists g :e B :^: A, hl_SETSPEC (B :^: A) v (if forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B then 1 else 0) g = 1 then 1 else 0)) = {g :e B :^: A | forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B}.
+{ exact (hl_gspec_sep (B :^: A) (fun g => forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B)). }
+rewrite (hl_EXTENSIONAL_unfold A B s Hs).
+apply (iff_trans (hl_GSPEC (B :^: A) (fun v :e B :^: A => if exists g :e B :^: A, hl_SETSPEC (B :^: A) v (if forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B then 1 else 0) g = 1 then 1 else 0) f = 1) (f :e {g :e B :^: A | forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B}) (forall x :e A, ~ x :e hl_rep A s -> f2 x = choose_in B (fun y:set => False))).
+- exact (Hrep (fun hl__u hl__v => hl_GSPEC (B :^: A) (fun v :e B :^: A => if exists g :e B :^: A, hl_SETSPEC (B :^: A) v (if forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B then 1 else 0) g = 1 then 1 else 0) f = 1 <-> f :e hl__u) (hl_rep_iff (B :^: A) (hl_GSPEC (B :^: A) (fun v :e B :^: A => if exists g :e B :^: A, hl_SETSPEC (B :^: A) v (if forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B then 1 else 0) g = 1 then 1 else 0)) f Hf)).
+- apply iffI.
+  + assume H. apply (SepE (B :^: A) (fun g => forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B) f H). assume _ H1. let x. assume Hx Hnin.
+    claim Hn: ~ hl_IN A x s = 1. { assume H2. apply Hnin. apply (hl_IN_compat A HA x Hx s Hs). assume H3 _. exact (H3 H2). }
+    exact (eq_trans_i (f2 x) (f x) (choose_in B (fun y:set => False)) (eq_sym_i (f x) (f2 x) (Hpw x Hx)) (eq_trans_i (f x) (hl_ARB B) (choose_in B (fun y:set => False)) (H1 x Hx Hn) Harb)).
+  + assume H. apply (SepI (B :^: A) (fun g => forall x :e A, ~ hl_IN A x s = 1 -> g x = hl_ARB B) f Hf). let x. assume Hx Hn.
+    claim Hnin: ~ x :e hl_rep A s. { assume H2. apply Hn. apply (hl_IN_compat A HA x Hx s Hs). assume _ H3. exact (H3 H2). }
+    exact (eq_trans_i (f x) (f2 x) (hl_ARB B) (Hpw x Hx) (eq_trans_i (f2 x) (choose_in B (fun y:set => False)) (hl_ARB B) (H x Hx Hnin) (eq_sym_i (hl_ARB B) (choose_in B (fun y:set => False)) Harb))).
+Qed.

@@ -904,7 +904,9 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     | [ a ] -> (match List.assoc_opt a sub with Some (TyApp ("fun", [ x; TyApp ("bool", []) ])) -> Some (a, x) | _ -> None)
     | _ -> None) in
   let name = (match nested with Some _ -> compat_for_nested g e | None -> compat_for g e) in
-  let cs = (match nested with Some (_, x) -> [ (L.carrier g.lctx x, x) ] | None -> const_carriers g c cty) in
+  (* carrier parameters of the compatibility lemma: one per type variable of the entry's scheme
+     (a type-specialised entry has none even when the literal constant is polymorphic) *)
+  let cs = (match nested with Some (_, x) -> [ (L.carrier g.lctx x, x) ] | None -> List.map (fun a -> let t = List.assoc a sub in (L.carrier g.lctx t, t)) tvs) in
   (* compat A.. HA.. l1 pf1 [f1 rel1] ... *)
   let doms, _ = strip_fun_ty cty in
   let parts = ref [ paren name ] in
@@ -1227,7 +1229,13 @@ and bridge g (dir : dir) (t : tm) : string =
       end else bridge_eq g dir ty a b
   | Const ("!", _), [ Lam (x, xty, body) ] -> bridge_binder g dir `All x xty body
   | Const ("?", _), [ Lam (x, xty, body) ] -> bridge_binder g dir `Ex x xty body
-  | Const ("COND", _), [ _; _; _ ] when type_of [] t = bool_ty -> unsupported "bridge: boolean conditional"
+  | Const ("COND", _), [ c; a; b ] when type_of [] t = bool_ty ->
+      (* literal (c /\ a) \/ (~c /\ b), native (c -> a) /\ (~c -> b) *)
+      let lc = paren (ltext g c) and nc = paren (ntext g c) and la = paren (ltext g a) and na = paren (ntext g a) and lb = paren (ltext g b) and nb = paren (ntext g b) in
+      let cf = bridge g Fwd c and cb = bridge g Bwd c in
+      (match dir with
+       | Fwd -> Printf.sprintf "(cond_bool_fwd %s %s %s %s %s %s %s %s %s %s)" lc la lb nc na nb cf cb (bridge g Fwd a) (bridge g Fwd b)
+       | Bwd -> Printf.sprintf "(cond_bool_bwd %s %s %s %s %s %s %s %s %s %s)" lc la lb nc na nb cf cb (bridge g Bwd a) (bridge g Bwd b))
   | _ -> bridge_atom g dir t
 
 (* atoms: literal L[t] = 1 versus the native proposition *)

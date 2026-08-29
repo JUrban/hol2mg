@@ -262,7 +262,8 @@ source: !b:bool. !t1:bool. !t2:bool. (if b then t1 else t2) <=> (~b \/ t1) /\ (b
 status: exact_native
 statement: forall b t1 t2:prop, (b -> t1) /\ (~ b -> t2) <-> (~ b \/ t1) /\ (b \/ t2)
 literal: forall b t1 t2 :e 2, b = 1 /\ t1 = 1 \/ ~ b = 1 /\ t2 = 1 <-> (~ b = 1 \/ t1 = 1) /\ (b = 1 \/ t2 = 1)
-cert_status: bridge_unsupported
+bridge: COND_EXPAND_bridge
+cert_status: native_certified
 
 ### COND_ABS   [choice, conditionals, Booleans as data]
 hash: 1ff110853c4fd6318c48220aea045eda
@@ -1384,10 +1385,11 @@ cert_status: bridge_unsupported
 ### ARB   [sets: membership, algebra, comprehensions, images, families]
 hash: b453496b4bba3b6602eb4a8f4e4f7fa5
 source: ARB = (@x:A. F)
-status: exact_native
-statement: forall A:set, A <> Empty -> choose_in A (fun x:set => True) = choose_in A (fun x:set => False)
+status: generalization_required
+statement: forall A:set, choose_in A (fun x:set => False) = choose_in A (fun x:set => False)
 literal: forall A:set, A <> Empty -> hl_ARB A = hl_select A (fun x :e A => if False then 1 else 0)
-cert_status: bridge_unsupported
+bridge: ARB_bridge
+cert_status: native_certified
 
 ### UNION_ACI   [sets: membership, algebra, comprehensions, images, families]
 hash: 07377596f3694561ea113c5efaff1cef

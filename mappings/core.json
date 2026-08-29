@@ -1378,7 +1378,7 @@
    "scheme": "A",
    "args": [],
    "result": "set",
-   "template": "choose_in ?A (fun x:set => True)",
+   "template": "choose_in ?A (fun x:set => False)",
    "class": "definitionally_exact",
    "status": "reviewed",
    "bridge": "choose_in_spec"
@@ -1560,7 +1560,7 @@
     "metafun"
    ],
    "result": "metafun",
-   "template": "fun x:set => if x :e ?1 then ?2 x else choose_in ?B (fun y => True)",
+   "template": "fun x:set => if x :e ?1 then ?2 x else choose_in ?B (fun y:set => False)",
    "class": "definitionally_exact",
    "status": "reviewed",
    "bridge": "choose_in_spec",
@@ -1574,7 +1574,7 @@
     "metafun"
    ],
    "result": "prop",
-   "template": "forall x :e ?A, ~ x :e ?1 -> ?2 x = choose_in ?B (fun y => True)",
+   "template": "forall x :e ?A, ~ x :e ?1 -> ?2 x = choose_in ?B (fun y:set => False)",
    "class": "definitionally_exact",
    "status": "reviewed",
    "bridge": "choose_in_spec"
@@ -1587,7 +1587,7 @@
     "metafun/1"
    ],
    "result": "subset",
-   "template": "{f :e ?A :^: ?K | (forall i :e ?1, f i :e ?2 i) /\\ forall i :e ?K, ~ i :e ?1 -> f i = choose_in ?A (fun y => True)}",
+   "template": "{f :e ?A :^: ?K | (forall i :e ?1, f i :e ?2 i) /\\ forall i :e ?K, ~ i :e ?1 -> f i = choose_in ?A (fun y:set => False)}",
    "class": "native_isomorphism",
    "status": "reviewed",
    "bridge": "hol_fun_setexp"
@@ -2812,7 +2812,7 @@
     "metafun/2"
    ],
    "result": "metafun",
-   "template": "fun x:set => fun i:set => if i :e ?1 then ?2 i (x i) else choose_in ?B (fun y => True)",
+   "template": "fun x:set => fun i:set => if i :e ?1 then ?2 i (x i) else choose_in ?B (fun y:set => False)",
    "class": "definitionally_exact",
    "status": "reviewed",
    "bridge": "choose_in_spec",

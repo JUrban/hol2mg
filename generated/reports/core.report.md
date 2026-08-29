@@ -11,9 +11,9 @@
 | status | count |
 |---|---|
 | transport_required | 1821 |
-| generalization_required | 614 |
+| generalization_required | 615 |
 | pending_mapping | 299 |
-| exact_native | 175 |
+| exact_native | 174 |
 | native_reuse | 75 |
 
 ## Public statements per shard
@@ -105,7 +105,7 @@
 
 - hol_num_omega (1324)
 - hol_real_R (692)
-- empty_case:A (540)
+- empty_case:A (541)
 - hol_int_int (485)
 - hol_finite_finite (335)
 - omega_Subq_R (315)
