@@ -125,6 +125,21 @@ rewrite (add_SNo_com b a (omega_SNo b Hb) (omega_SNo a Ha)).
 exact (omega_In_SNoLt (a + b) Hab i Hi).
 Qed.
 
+
+// primitive recursion only depends on the step function below the bound
+Theorem nat_primrec_ext : forall z:set, forall f g:set -> set -> set, forall n, nat_p n -> (forall i :e n, forall r:set, f i r = g i r) -> nat_primrec z f n = nat_primrec z g n.
+let z f g.
+apply nat_ind.
+- assume _. rewrite (nat_primrec_0 z f). rewrite (nat_primrec_0 z g). exact (fun q H => H).
+- let n. assume Hn: nat_p n.
+  assume IH: (forall i :e n, forall r:set, f i r = g i r) -> nat_primrec z f n = nat_primrec z g n.
+  assume H: forall i :e ordsucc n, forall r:set, f i r = g i r.
+  rewrite (nat_primrec_S z f n Hn). rewrite (nat_primrec_S z g n Hn).
+  claim L: nat_primrec z f n = nat_primrec z g n.
+  { apply IH. let i. assume Hi: i :e n. exact (H i (ordsuccI1 n i Hi)). }
+  rewrite L. exact (H n (ordsuccI2 n) (nat_primrec z g n)).
+Qed.
+
 // closure facts (to be proved)
 Theorem minus_nat_omega : forall m n :e omega, minus_nat m n :e omega.
 let m. assume Hm: m :e omega. let n. assume Hn: n :e omega.

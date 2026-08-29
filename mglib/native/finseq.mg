@@ -301,8 +301,6 @@ apply (lam_Pi (seq_len l) (fun _ => A) (fun i => seq_nth l (seq_len l + - ordsuc
 let i. assume Hi: i :e seq_len l.
 exact (seq_nth_in A l Hl (seq_len l + - ordsucc i) (minus_nat_in (seq_len l) (seq_len_omega A l Hl) i Hi)).
 Qed.
-Theorem seq_filter_finseq : forall A:set, forall P:set -> prop, forall l :e finseq A, seq_filter P l :e finseq A.
-Admitted.
 Theorem seq_replicate_finseq : forall A:set, forall n :e omega, forall a :e A, seq_replicate n a :e finseq A.
 let A n. assume Hn: n :e omega. let a. assume Ha: a :e A.
 prove (n, fun i :e n => a) :e Sigma_ m :e omega, A :^: m.
@@ -443,6 +441,8 @@ claim L: forall n, nat_p n -> forall l :e finseq A, seq_len l = n -> P l.
 let l. assume Hl: l :e finseq A.
 exact (L (seq_len l) (omega_nat_p (seq_len l) (seq_len_omega A l Hl)) l Hl (fun q H => H)).
 Qed.
+
+
 Theorem seq_butlast_finseq : forall A:set, forall l :e finseq A, seq_butlast l :e finseq A.
 let A l. assume Hl: l :e finseq A.
 claim Ln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
@@ -469,7 +469,34 @@ rewrite seq_len_nil.
 exact (nat_primrec_0 b (fun i r => f (seq_nth seq_nil (0 + - ordsucc i)) r)).
 Qed.
 Theorem seq_foldr_cons : forall A:set, forall f:set -> set -> set, forall a :e A, forall l :e finseq A, forall b:set, seq_foldr f (seq_cons a l) b = f a (seq_foldr f l b).
-Admitted.
+let A f a. assume Ha: a :e A. let l. assume Hl: l :e finseq A. let b.
+claim Hn: seq_len l :e omega. { exact (seq_len_omega A l Hl). }
+claim Hnp: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) Hn). }
+claim Hlen: seq_len (seq_cons a l) = ordsucc (seq_len l). { exact (seq_len_cons A a Ha l Hl). }
+prove nat_primrec b (fun i r => f (seq_nth (seq_cons a l) (seq_len (seq_cons a l) + - ordsucc i)) r) (seq_len (seq_cons a l)) = f a (nat_primrec b (fun i r => f (seq_nth l (seq_len l + - ordsucc i)) r) (seq_len l)).
+rewrite Hlen.
+rewrite (nat_primrec_S b (fun i r => f (seq_nth (seq_cons a l) (ordsucc (seq_len l) + - ordsucc i)) r) (seq_len l) Hnp).
+claim L0: ordsucc (seq_len l) + - ordsucc (seq_len l) = 0.
+{ exact (add_SNo_minus_SNo_rinv (ordsucc (seq_len l)) (omega_SNo (ordsucc (seq_len l)) (omega_ordsucc (seq_len l) Hn))). }
+claim Lext: nat_primrec b (fun i r => f (seq_nth (seq_cons a l) (ordsucc (seq_len l) + - ordsucc i)) r) (seq_len l) = nat_primrec b (fun i r => f (seq_nth l (seq_len l + - ordsucc i)) r) (seq_len l).
+{ apply (nat_primrec_ext b (fun i r => f (seq_nth (seq_cons a l) (ordsucc (seq_len l) + - ordsucc i)) r) (fun i r => f (seq_nth l (seq_len l + - ordsucc i)) r) (seq_len l) Hnp).
+  let i. assume Hi: i :e seq_len l. let r.
+  prove f (seq_nth (seq_cons a l) (ordsucc (seq_len l) + - ordsucc i)) r = f (seq_nth l (seq_len l + - ordsucc i)) r.
+  claim Hin: seq_len l + - ordsucc i :e seq_len l. { exact (minus_nat_in (seq_len l) Hn i Hi). }
+  claim Hsi: ordsucc i :e omega. { exact (omega_ordsucc i (nat_p_omega i (nat_p_trans (seq_len l) Hnp i Hi))). }
+  claim Lidx: ordsucc (seq_len l) + - ordsucc i = ordsucc (seq_len l + - ordsucc i).
+  { rewrite <- (add_SNo_1_ordsucc (seq_len l) Hn) at 1.
+    rewrite <- (add_SNo_1_ordsucc (seq_len l + - ordsucc i) (nat_p_omega (seq_len l + - ordsucc i) (nat_p_trans (seq_len l) Hnp (seq_len l + - ordsucc i) Hin))).
+    exact (add_SNo_com_3b_1_2 (seq_len l) 1 (- ordsucc i) (omega_SNo (seq_len l) Hn) SNo_1 (SNo_minus_SNo (ordsucc i) (omega_SNo (ordsucc i) Hsi))). }
+  rewrite Lidx.
+  rewrite (seq_nth_cons_S A a Ha l Hl (seq_len l + - ordsucc i) Hin).
+  exact (fun q H => H). }
+rewrite Lext.
+prove f (seq_nth (seq_cons a l) (ordsucc (seq_len l) + - ordsucc (seq_len l))) (nat_primrec b (fun i r => f (seq_nth l (seq_len l + - ordsucc i)) r) (seq_len l)) = f a (nat_primrec b (fun i r => f (seq_nth l (seq_len l + - ordsucc i)) r) (seq_len l)).
+rewrite L0.
+rewrite (seq_nth_cons_0 A a Ha l Hl).
+exact (fun q H => H).
+Qed.
 Theorem finseq_Empty : finseq Empty = {seq_nil}.
 apply set_ext.
 - let l. assume Hl: l :e finseq Empty.
@@ -498,3 +525,24 @@ Qed.
 Definition seq_of_set : set -> set :=
   fun s => choose_in (finseq s) (fun l => seq_set l = s /\ seq_len l = finite_cardinality s).
 Definition set_foldr : (set -> set -> set) -> set -> set -> set := fun f s b => seq_foldr f (seq_of_set s) b.
+
+Theorem seq_filter_finseq : forall A:set, forall P:set -> prop, forall l :e finseq A, seq_filter P l :e finseq A.
+let A P.
+claim H0: seq_filter P seq_nil :e finseq A.
+{ prove seq_foldr (fun x acc => if P x then seq_cons x acc else acc) seq_nil seq_nil :e finseq A.
+  rewrite (seq_foldr_nil (fun x acc => if P x then seq_cons x acc else acc) seq_nil). exact (seq_nil_finseq A). }
+claim HS: forall a :e A, forall l :e finseq A, seq_filter P l :e finseq A -> seq_filter P (seq_cons a l) :e finseq A.
+{ let a. assume Ha: a :e A. let l. assume Hl: l :e finseq A. assume IH: seq_filter P l :e finseq A.
+  prove seq_foldr (fun x acc => if P x then seq_cons x acc else acc) (seq_cons a l) seq_nil :e finseq A.
+  rewrite (seq_foldr_cons A (fun x acc => if P x then seq_cons x acc else acc) a Ha l Hl seq_nil).
+  prove (if P a then seq_cons a (seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil) else seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil) :e finseq A.
+  apply (xm (P a)).
+  - assume H: P a.
+    rewrite (If_i_1 (P a) (seq_cons a (seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil)) (seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil) H).
+    exact (seq_cons_finseq A a Ha (seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil) IH).
+  - assume H: ~ P a.
+    rewrite (If_i_0 (P a) (seq_cons a (seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil)) (seq_foldr (fun x acc => if P x then seq_cons x acc else acc) l seq_nil) H).
+    exact IH. }
+let l. assume Hl: l :e finseq A.
+exact (seq_induct A (fun l => seq_filter P l :e finseq A) H0 HS l Hl).
+Qed.
