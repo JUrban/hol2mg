@@ -276,6 +276,16 @@ let lterm g t = L.lterm g.lctx t
 (* structural derivation of `finite s` from the hypotheses in scope: finite hypotheses, singletons,
    adjoined elements, unions, replacements, separations, differences, intersections, subsets of
    finite sets (a `s c= t` hypothesis), bounded segments of omega *)
+(* the standard commutative monoids (+, * on omega, R, int) as instances of the iterate side condition *)
+let known_monoid (sc : Mg.tm) : string option =
+  let tpl = List.hd (List.assoc "iterate" side_conditions) in
+  List.find_map (fun (g, op, lemma) ->
+    let optm = cstify (Mg.parse_template (Printf.sprintf "(fun a:set => fun b:set => a %s b)" op)) in
+    let cand = Mg.normalize (Mg.inst [ ("1", optm); ("B", Mg.Cst g) ] (cstify (Mg.parse_template tpl))) in
+    if alpha_eq cand sc then Some lemma else None)
+    [ ("omega", "*", "monoidal_omega_mul"); ("R", "*", "monoidal_R_mul"); ("int", "*", "monoidal_int_mul");
+      ("omega", "+", "monoidal_omega_add"); ("R", "+", "monoidal_R_add"); ("int", "+", "monoidal_int_add") ]
+
 let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
   if depth > 6 then None
   else
@@ -1470,6 +1480,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
             | None ->
                 (match sc_nat with
                  | Mg.App (Mg.App (Mg.Cst "eq", a), b) when a = b -> Some refl
+                 | _ when known_monoid sc_nat <> None -> known_monoid sc_nat
                  | Mg.App (Mg.Cst "finite", s) -> derive_finite g s 0
                  | Mg.App (Mg.App (Mg.Cst "In", n), Mg.App (Mg.Cst "seq_len", l)) ->
                      (match List.assoc_opt "1" !argtyp, List.assoc_opt "2" !argtyp with

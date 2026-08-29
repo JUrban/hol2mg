@@ -1541,7 +1541,8 @@ source: !t:B->bool. !s:A->bool. !f:A->B. SURJ f s t <=> (!x:A. x IN s ==> f x IN
 status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e s, f x :e t) /\ (forall y :e t, exists x :e s, f x = y) <-> (forall x :e A, x :e s -> f x :e t) /\ forall x :e B, x :e t -> exists y :e A, y :e s /\ f y = x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t :e 2 :^: B, forall s :e 2 :^: A, forall f :e B :^: A, hl_SURJ A B f s t = 1 <-> (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\ forall x :e B, hl_IN B x t = 1 -> exists y :e A, hl_IN A y s = 1 /\ f y = x
-cert_status: bridge_unsupported
+bridge: SURJ_bridge
+cert_status: native_certified
 
 ### INJ   [finiteness, cardinality, functions between sets]
 hash: dfd4aee509198cc43c03d54f1ad412fc
@@ -1558,7 +1559,8 @@ source: !f:A->B. !s:A->bool. !t:B->bool. BIJ f s t <=> INJ f s t /\ SURJ f s t
 status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, bij s t f <-> inj s t f /\ ((forall x :e s, f x :e t) /\ forall y :e t, exists x :e s, f x = y)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_BIJ A B f s t = 1 <-> hl_INJ A B f s t = 1 /\ hl_SURJ A B f s t = 1
-cert_status: bridge_unsupported
+bridge: BIJ_bridge
+cert_status: native_certified
 
 ### FINITE_CROSS   [finiteness, cardinality, functions between sets]
 hash: 12892b449bb0cf81d2a595538cee5069

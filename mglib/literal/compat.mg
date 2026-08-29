@@ -7007,3 +7007,81 @@ apply (xm (finite {x :e hl_rep A l1 | f2 x <> 0})).
         (eq_trans_i (hl_neutral int hl_int_add) 0 (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hn (eq_sym_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) 0 (If_i_0 (finite {x :e hl_rep A l1 | f2 x <> 0}) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) 0 Hnfin)))))).
 Qed.
 
+
+// ---- compat: SURJ ----
+Theorem hl_SURJ_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, forall l3 :e 2 :^: B, hl_SURJ A B l1 l2 l3 = 1 <-> (forall x :e hl_rep A l2, f1 x :e hl_rep B l3) /\ forall y :e hl_rep B l3, exists x :e hl_rep A l2, f1 x = y.
+let A B. assume HA HB. let l1. assume Hl1. let f1. assume Hf1. let l2. assume Hl2. let l3. assume Hl3.
+claim Hsurj: hl_SURJ A B l1 l2 l3 = 1 <-> (forall x :e A, hl_IN A x l2 = 1 -> hl_IN B (l1 x) l3 = 1) /\ forall x :e B, hl_IN B x l3 = 1 -> exists y :e A, hl_IN A y l2 = 1 /\ l1 y = x. { exact (hl_SURJ_char A B HA HB l1 Hl1 l2 Hl2 l3 Hl3). }
+claim HinA: forall x :e A, hl_IN A x l2 = 1 <-> x :e hl_rep A l2. { let x. assume Hx. exact (hl_IN_compat A HA x Hx l2 Hl2). }
+claim HinB: forall x :e B, hl_IN B x l3 = 1 <-> x :e hl_rep B l3. { let x. assume Hx. exact (hl_IN_compat B HB x Hx l3 Hl3). }
+claim HsA: forall x :e hl_rep A l2, x :e A. { let x. assume Hx. exact (hl_rep_Subq A l2 x Hx). }
+claim HsB: forall x :e hl_rep B l3, x :e B. { let x. assume Hx. exact (hl_rep_Subq B l3 x Hx). }
+apply Hsurj. assume Hsf Hsb.
+apply iffI.
+- assume H. apply (Hsf H). assume S1 S2. apply andI.
+  + let u. assume Hu. claim HuA: u :e A. { exact (HsA u Hu). }
+    claim Hm: hl_IN A u l2 = 1. { apply (HinA u HuA). assume _ Hb. exact (Hb Hu). }
+    claim Hn: l1 u :e hl_rep B l3. { apply (hl_IN_compat B HB (l1 u) (setexp_ap A B l1 Hl1 u HuA) l3 Hl3). assume Hf _. exact (Hf (S1 u HuA Hm)). }
+    exact ((Hf1 u HuA) (fun hl__u hl__v => hl__u :e hl_rep B l3) Hn).
+  + let w. assume Hw. claim HwB: w :e B. { exact (HsB w Hw). }
+    claim Hw1: hl_IN B w l3 = 1. { apply (HinB w HwB). assume _ Hb. exact (Hb Hw). }
+    apply (S2 w HwB Hw1). let y. assume Hy0. apply Hy0. assume HyA Hy1. apply Hy1. assume Hy2 Hy3.
+    claim HyS: y :e hl_rep A l2. { apply (HinA y HyA). assume Hf _. exact (Hf Hy2). }
+    claim Hfy: f1 y = w. { exact (eq_trans_i (f1 y) (l1 y) w (eq_sym_i (l1 y) (f1 y) (Hf1 y HyA)) Hy3). }
+    witness y. exact (andI (y :e hl_rep A l2) (f1 y = w) HyS Hfy).
+- assume H. apply H. assume Hb1 Hb3. apply Hsb. apply andI.
+  + let x. assume HxA Hx.
+    claim Hxs: x :e hl_rep A l2. { apply (HinA x HxA). assume Hf _. exact (Hf Hx). }
+    claim Hlx: l1 x :e hl_rep B l3. { exact ((eq_sym_i (l1 x) (f1 x) (Hf1 x HxA)) (fun hl__u hl__v => hl__u :e hl_rep B l3) (Hb1 x Hxs)). }
+    apply (hl_IN_compat B HB (l1 x) (setexp_ap A B l1 Hl1 x HxA) l3 Hl3). assume _ Hbk. exact (Hbk Hlx).
+  + let x. assume HxB Hx.
+    claim Hxs: x :e hl_rep B l3. { apply (HinB x HxB). assume Hf _. exact (Hf Hx). }
+    apply (Hb3 x Hxs). let u. assume Hu0. apply Hu0. assume Hu Hfu. claim HuA: u :e A. { exact (HsA u Hu). }
+    claim Hm: hl_IN A u l2 = 1. { apply (HinA u HuA). assume _ Hbk. exact (Hbk Hu). }
+    claim Hl: l1 u = x. { exact (eq_trans_i (l1 u) (f1 u) x (Hf1 u HuA) Hfu). }
+    witness u. exact (andI (u :e A) (hl_IN A u l2 = 1 /\ l1 u = x) HuA (andI (hl_IN A u l2 = 1) (l1 u = x) Hm Hl)).
+Qed.
+
+// ---- the standard commutative monoids as iterate side conditions ----
+Theorem monoidal_omega_mul : (forall x y :e omega, x * y = y * x) /\ (forall x y z :e omega, x * (y * z) = (x * y) * z) /\ (forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x).
+apply andI.
+- apply andI.
+  + let x. assume Hx. let y. assume Hy. exact (mul_SNo_com x y (omega_SNo x Hx) (omega_SNo y Hy)).
+  + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (mul_SNo_assoc x y z (omega_SNo x Hx) (omega_SNo y Hy) (omega_SNo z Hz)).
+- let x. assume Hx. exact ((eq_sym_i (neutral_of omega (fun a:set => fun b:set => a * b)) 1 neutral_of_omega_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (omega_SNo x Hx))).
+Qed.
+Theorem monoidal_omega_add : (forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + (y + z) = (x + y) + z) /\ (forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x).
+apply andI.
+- apply andI.
+  + let x. assume Hx. let y. assume Hy. exact (add_SNo_com x y (omega_SNo x Hx) (omega_SNo y Hy)).
+  + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (add_SNo_assoc x y z (omega_SNo x Hx) (omega_SNo y Hy) (omega_SNo z Hz)).
+- let x. assume Hx. exact ((eq_sym_i (neutral_of omega (fun a:set => fun b:set => a + b)) 0 neutral_of_omega_add) (fun hl__u hl__v => hl__u + x = x) (add_SNo_0L x (omega_SNo x Hx))).
+Qed.
+Theorem monoidal_R_mul : (forall x y :e R, x * y = y * x) /\ (forall x y z :e R, x * (y * z) = (x * y) * z) /\ (forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x).
+apply andI.
+- apply andI.
+  + let x. assume Hx. let y. assume Hy. exact (mul_SNo_com x y (real_SNo x Hx) (real_SNo y Hy)).
+  + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (mul_SNo_assoc x y z (real_SNo x Hx) (real_SNo y Hy) (real_SNo z Hz)).
+- let x. assume Hx. exact ((eq_sym_i (neutral_of R (fun a:set => fun b:set => a * b)) 1 neutral_of_R_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (real_SNo x Hx))).
+Qed.
+Theorem monoidal_R_add : (forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + (y + z) = (x + y) + z) /\ (forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x).
+apply andI.
+- apply andI.
+  + let x. assume Hx. let y. assume Hy. exact (add_SNo_com x y (real_SNo x Hx) (real_SNo y Hy)).
+  + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (add_SNo_assoc x y z (real_SNo x Hx) (real_SNo y Hy) (real_SNo z Hz)).
+- let x. assume Hx. exact ((eq_sym_i (neutral_of R (fun a:set => fun b:set => a + b)) 0 neutral_of_R_add) (fun hl__u hl__v => hl__u + x = x) (add_SNo_0L x (real_SNo x Hx))).
+Qed.
+Theorem monoidal_int_mul : (forall x y :e int, x * y = y * x) /\ (forall x y z :e int, x * (y * z) = (x * y) * z) /\ (forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x).
+apply andI.
+- apply andI.
+  + let x. assume Hx. let y. assume Hy. exact (mul_SNo_com x y (int_SNo x Hx) (int_SNo y Hy)).
+  + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (mul_SNo_assoc x y z (int_SNo x Hx) (int_SNo y Hy) (int_SNo z Hz)).
+- let x. assume Hx. exact ((eq_sym_i (neutral_of int (fun a:set => fun b:set => a * b)) 1 neutral_of_int_mul) (fun hl__u hl__v => hl__u * x = x) (mul_SNo_oneL x (int_SNo x Hx))).
+Qed.
+Theorem monoidal_int_add : (forall x y :e int, x + y = y + x) /\ (forall x y z :e int, x + (y + z) = (x + y) + z) /\ (forall x :e int, neutral_of int (fun a:set => fun b:set => a + b) + x = x).
+apply andI.
+- apply andI.
+  + let x. assume Hx. let y. assume Hy. exact (add_SNo_com x y (int_SNo x Hx) (int_SNo y Hy)).
+  + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (add_SNo_assoc x y z (int_SNo x Hx) (int_SNo y Hy) (int_SNo z Hz)).
+- let x. assume Hx. exact ((eq_sym_i (neutral_of int (fun a:set => fun b:set => a + b)) 0 neutral_of_int_add) (fun hl__u hl__v => hl__u + x = x) (add_SNo_0L x (int_SNo x Hx))).
+Qed.

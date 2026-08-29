@@ -2870,9 +2870,9 @@
    "source": "!f:A->B. !s:A->bool. !t:B->bool. BIJ f s t <=> INJ f s t /\\ SURJ f s t",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, bij s t f <-> inj s t f /\\ ((forall x :e s, f x :e t) /\\ forall y :e t, exists x :e s, f x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_BIJ A B f s t = 1 <-> hl_INJ A B f s t = 1 /\\ hl_SURJ A B f s t = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_SURJ_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BIJ_bridge"
   },
   {
    "name": "BIJECTIONS_CARD_EQ",
@@ -75043,9 +75043,9 @@
    "source": "!t:B->bool. !s:A->bool. !f:A->B. SURJ f s t <=> (!x:A. x IN s ==> f x IN t) /\\ (!x:B. x IN t ==> (?y:A. y IN s /\\ f y = x))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e s, f x :e t) /\\ (forall y :e t, exists x :e s, f x = y) <-> (forall x :e A, x :e s -> f x :e t) /\\ forall x :e B, x :e t -> exists y :e A, y :e s /\\ f y = x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall t :e 2 :^: B, forall s :e 2 :^: A, forall f :e B :^: A, hl_SURJ A B f s t = 1 <-> (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ forall x :e B, hl_IN B x t = 1 -> exists y :e A, hl_IN A y s = 1 /\\ f y = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_SURJ_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJ_bridge"
   },
   {
    "name": "SURJECTIVE_EXISTS_THM",
@@ -81541,9 +81541,9 @@
    "source": "iproduct = iterate int_mul",
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e int) -> finprod x x0 = iterate_op int (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_iproduct A = hl_iterate hl_ty_int A hl_int_mul",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x1 y :e int, x1 * y = y * x1) /\\ (forall x1 y z :e int, x1 * y * z = (x1 * y) * z) /\\ forall x1 :e int, neutral_of int (fun a:set => fun b:set => a * b) * x1 = x1 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "iproduct_bridge"
   },
   {
    "name": "is_int",
@@ -81648,9 +81648,9 @@
    "source": "isum = iterate int_add",
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e int) -> finsum x x0 = iterate_op int (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_isum A = hl_iterate hl_ty_int A hl_int_add",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x1 y :e int, x1 + y = y + x1) /\\ (forall x1 y z :e int, x1 + y + z = (x1 + y) + z) /\\ forall x1 :e int, neutral_of int (fun a:set => fun b:set => a + b) + x1 = x1 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "isum_bridge"
   },
   {
    "name": "iterate",
@@ -82291,9 +82291,9 @@
    "source": "nproduct = iterate *",
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e omega) -> finprod x x0 = iterate_op omega (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_nproduct A = hl_iterate omega A hl_mul",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x1 y :e omega, x1 * y = y * x1) /\\ (forall x1 y z :e omega, x1 * y * z = (x1 * y) * z) /\\ forall x1 :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x1 = x1 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "nproduct_bridge"
   },
   {
    "name": "nsum",
@@ -82321,9 +82321,9 @@
    "source": "nsum = iterate +",
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e omega) -> finsum x x0 = iterate_op omega (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_nsum A = hl_iterate omega A hl_add",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x1 y :e omega, x1 + y = y + x1) /\\ (forall x1 y z :e omega, x1 + y + z = (x1 + y) + z) /\\ forall x1 :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x1 = x1 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "nsum_bridge"
   },
   {
    "name": "num_Axiom",
@@ -83573,9 +83573,9 @@
    "source": "product = iterate real_mul",
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e R) -> finprod x x0 = iterate_op R (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_product A = hl_iterate R A hl_real_mul",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x1 y :e R, x1 * y = y * x1) /\\ (forall x1 y z :e R, x1 * y * z = (x1 * y) * z) /\\ forall x1 :e R, neutral_of R (fun a:set => fun b:set => a * b) * x1 = x1 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "product_bridge"
   },
   {
    "name": "product_map",
@@ -84402,9 +84402,9 @@
    "source": "sum = iterate real_add",
    "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e R) -> finsum x x0 = iterate_op R (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_sum A = hl_iterate R A hl_real_add",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition (forall x1 y :e R, x1 + y = y + x1) /\\ (forall x1 y z :e R, x1 + y + z = (x1 + y) + z) /\\ forall x1 :e R, neutral_of R (fun a:set => fun b:set => a + b) + x1 = x1 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "sum_bridge"
   },
   {
    "name": "sum_INDUCT",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2373
+  "native_certified": 2381
  }
 }
