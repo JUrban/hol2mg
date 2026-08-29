@@ -37140,9 +37140,9 @@
    "source": "!f:A->A. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> f x IN s /\\ f (f x) = x) ==> (EVEN (CARD (GSPEC (\\GEN%PVAR%120:A. ?x:A. SETSPEC GEN%PVAR%120 (x IN s /\\ f x = x) x))) <=> EVEN (CARD s))",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> f x :e s /\\ f (f x) = x) -> (even_nat (finite_cardinality {x :e A | x :e s /\\ f x = x}) <-> even_nat (finite_cardinality s))",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN A (f x) s = 1 /\\ f (f x) = x) -> (hl_EVEN (hl_CARD A (hl_GSPEC A (fun GEN_PVAR_120 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_120 (if hl_IN A x s = 1 /\\ f x = x then 1 else 0) x = 1 then 1 else 0))) = 1 <-> hl_EVEN (hl_CARD A s) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {x :e A | x :e s /\\ f x = x} not available from hypotheses [hyps: forall x :e A, x :e s -> f x :e s /\\ f (f x) = x, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INVOLUTION_EVEN_FIXPOINTS_bridge"
   },
   {
    "name": "INVOLUTION_EVEN_NOFIXPOINTS",
@@ -49978,9 +49978,9 @@
    "source": "!R:A->B->bool. !s:A->bool. !t:B->bool. !k:num. FINITE s /\\ FINITE t /\\ (!j:B. j IN t ==> CARD (GSPEC (\\GEN%PVAR%295:A. ?i:A. SETSPEC GEN%PVAR%295 (i IN s /\\ R i j) i)) = k) ==> nsum s (\\i:A. CARD (GSPEC (\\GEN%PVAR%296:B. ?j:B. SETSPEC GEN%PVAR%296 (j IN t /\\ R i j) j))) = k * CARD t",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = k * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_295 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_295 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k)) -> hl_nsum A s (fun i :e A => hl_CARD B (hl_GSPEC B (fun GEN_PVAR_296 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_296 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0))) = hl_mul k (hl_CARD B t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_MULTICOUNT_bridge"
   },
   {
    "name": "NSUM_MULTICOUNT_GEN",
@@ -50011,9 +50011,9 @@
    "source": "!R:A->B->bool. !s:A->bool. !t:B->bool. !k:B->num. FINITE s /\\ FINITE t /\\ (!j:B. j IN t ==> CARD (GSPEC (\\GEN%PVAR%293:A. ?i:A. SETSPEC GEN%PVAR%293 (i IN s /\\ R i j) i)) = k j) ==> nsum s (\\i:A. CARD (GSPEC (\\GEN%PVAR%294:B. ?j:B. SETSPEC GEN%PVAR%294 (j IN t /\\ R i j) j))) = nsum t (\\i:B. k i)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = finsum t k",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_293 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_293 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k j)) -> hl_nsum A s (fun i :e A => hl_CARD B (hl_GSPEC B (fun GEN_PVAR_294 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_294 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0))) = hl_nsum B t (fun i :e B => k i)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_MULTICOUNT_GEN_bridge"
   },
   {
    "name": "NSUM_MUL_BOUND",
@@ -73026,9 +73026,9 @@
    "source": "!R:A->B->bool. !s:A->bool. !t:B->bool. !k:num. FINITE s /\\ FINITE t /\\ (!j:B. j IN t ==> CARD (GSPEC (\\GEN%PVAR%324:A. ?i:A. SETSPEC GEN%PVAR%324 (i IN s /\\ R i j) i)) = k) ==> sum s (\\i:A. real_of_num (CARD (GSPEC (\\GEN%PVAR%325:B. ?j:B. SETSPEC GEN%PVAR%325 (j IN t /\\ R i j) j)))) = real_of_num (k * CARD t)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = k * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_324 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_324 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k)) -> hl_sum A s (fun i :e A => hl_real_of_num (hl_CARD B (hl_GSPEC B (fun GEN_PVAR_325 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_325 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0)))) = hl_real_of_num (hl_mul k (hl_CARD B t))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_MULTICOUNT_bridge"
   },
   {
    "name": "SUM_MULTICOUNT_GEN",
@@ -73061,9 +73061,9 @@
    "source": "!R:A->B->bool. !s:A->bool. !t:B->bool. !k:B->num. FINITE s /\\ FINITE t /\\ (!j:B. j IN t ==> CARD (GSPEC (\\GEN%PVAR%322:A. ?i:A. SETSPEC GEN%PVAR%322 (i IN s /\\ R i j) i)) = k j) ==> sum s (\\i:A. real_of_num (CARD (GSPEC (\\GEN%PVAR%323:B. ?j:B. SETSPEC GEN%PVAR%323 (j IN t /\\ R i j) j)))) = sum t (\\i:B. real_of_num (k i))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = finsum t k",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_322 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_322 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k j)) -> hl_sum A s (fun i :e A => hl_real_of_num (hl_CARD B (hl_GSPEC B (fun GEN_PVAR_323 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_323 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0)))) = hl_sum B t (fun i :e B => hl_real_of_num (k i))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_MULTICOUNT_GEN_bridge"
   },
   {
    "name": "SUM_MUL_BOUND",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2309
+  "native_certified": 2314
  }
 }

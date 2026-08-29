@@ -293,6 +293,9 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
                    let seg = Mg.Sep (v, Mg.Cst "omega", Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v), n)) in
                    Some (Printf.sprintf "(Subq_finite %s (segment_le_finite %s %s) %s (Sep_Subq_Sep omega (fun %s:set => %s) (fun %s:set => %s <= %s) %s))" (ppp seg) (ppp n) hn (ppp s) v (pp body) v v (ppp n) imp)
                | _ -> None)
+          | Mg.Sep (v, x, Mg.App (Mg.App (Mg.Cst "and", Mg.App (Mg.App (Mg.Cst "In", Mg.Var v'), sx)), q)) when v' = v && (match sub sx (depth + 1) with Some _ -> true | None -> false) ->
+              (* {v :e x | v :e sx /\ q} c= sx *)
+              Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (Sep_Subq_In %s %s (fun %s:set => %s)))" (ppp sx) pf (ppp s) (ppp x) (ppp sx) v (pp q)) (sub sx (depth + 1))
           | Mg.Sep (v, x, p) -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (Sep_Subq %s (fun %s:set => %s)))" (ppp x) pf (ppp s) (ppp x) v (pp p)) (sub x (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "setminus", x), y) -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (setminus_Subq %s %s))" (ppp x) pf (ppp s) (ppp x) (ppp y)) (sub x (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "binintersect", x), y) ->
@@ -1687,6 +1690,8 @@ and bridge_eq g dir ty a b =
                       | Const ("/\\", _), [ p ] -> let a, sfx = data_arg p in Printf.sprintf "(hl_and_eq1%s %s %s %s H%s)" sfx a (typ_arg p) n n
                       | Const ("\\/", _), [ p ] -> let a, sfx = data_arg p in Printf.sprintf "(hl_or_eq1%s %s %s %s H%s)" sfx a (typ_arg p) n n
                       | Const ("~", _), [] -> Printf.sprintf "(hl_not_eq1 %s H%s)" n n
+                      | Const (("?" | "!") as q, TyApp ("fun", [ TyApp ("fun", [ a; _ ]); _ ])), [] ->
+                          Printf.sprintf "(%s %s %s H%s)" (if q = "?" then "hl_exists_eq1" else "hl_forall_eq1") (ppp (L.carrier g.lctx a)) n n
                       | _ -> unsupported "bridge_eq: logical head %s" (match h with Const (c, _) -> c | _ -> "?")) in
                     (Printf.sprintf "(fun %s:set => %s)" n lp, Printf.sprintf "(fun %s H%s => %s)" n n pf)
                   end else

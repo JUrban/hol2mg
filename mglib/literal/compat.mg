@@ -6066,3 +6066,30 @@ apply iffI.
   claim Hne': hl_rep A u <> hl_rep A v. { assume Heq. exact (Hne (hl_rep_inj A u v Hu Hv Heq)). }
   apply (HP u Hu v Hv). assume _ H5. exact (H5 (H (hl_rep A u) HX (hl_rep A v) HY Hne')).
 Qed.
+
+// ---- separations with a membership conjunct are subsets of that set ----
+Theorem Sep_Subq_In : forall X S:set, forall Q:set -> prop, {x :e X | x :e S /\ Q x} c= S.
+let X S Q. let x. assume Hx. apply (SepE X (fun x => x :e S /\ Q x) x Hx). assume _ H. apply H. assume H1 _. exact H1.
+Qed.
+
+// ---- quantifiers as data: their applications versus the literal propositions ----
+Theorem hl_exists_eq1 : forall A:set, forall P :e 2 :^: A, hl_exists A P = 1 <-> exists x :e A, P x = 1.
+let A P. assume HP.
+apply (iff_eq1_l (hl_exists A P) (if forall q :e 2, (forall x :e A, P x = 1 -> q = 1) -> q = 1 then 1 else 0) (hl_exists_unfold A P HP) (exists x :e A, P x = 1)).
+apply (iff_trans ((if forall q :e 2, (forall x :e A, P x = 1 -> q = 1) -> q = 1 then 1 else 0) = 1) (forall q :e 2, (forall x :e A, P x = 1 -> q = 1) -> q = 1) (exists x :e A, P x = 1) (If_1_iff (forall q :e 2, (forall x :e A, P x = 1 -> q = 1) -> q = 1))).
+apply iffI.
+- assume H. apply (xm (exists x :e A, P x = 1)).
+  + assume He. exact He.
+  + assume Hne. exact (FalseE (neq_0_1 (H 0 In_0_2 (fun x Hx Hpx => FalseE (Hne (fun p Hp => Hp x (andI (x :e A) (P x = 1) Hx Hpx))) (0 = 1)))) (exists x :e A, P x = 1)).
+- assume H. let q. assume Hq Hall. apply H. let x. assume Hx0. apply Hx0. assume Hx Hpx. exact (Hall x Hx Hpx).
+Qed.
+Theorem hl_forall_eq1 : forall A:set, forall P :e 2 :^: A, hl_forall A P = 1 <-> forall x :e A, P x = 1.
+let A P. assume HP.
+claim HL: (fun x :e A => if True then 1 else 0) :e 2 :^: A. { prove (fun x :e A => if True then 1 else 0) :e Pi_ x :e A, 2. apply (lam_Pi A (fun _ => 2) (fun x => if True then 1 else 0)). let x. assume _. exact (If_in_2 True). }
+claim H1: (if True then 1 else 0) = 1. { exact (If_i_1 True 1 0 (fun p:prop => fun H:p => H)). }
+apply (iff_eq1_l (hl_forall A P) (if P = (fun x :e A => if True then 1 else 0) then 1 else 0) (hl_forall_unfold A P HP) (forall x :e A, P x = 1)).
+apply (iff_trans ((if P = (fun x :e A => if True then 1 else 0) then 1 else 0) = 1) (P = (fun x :e A => if True then 1 else 0)) (forall x :e A, P x = 1) (If_1_iff (P = (fun x :e A => if True then 1 else 0)))).
+apply iffI.
+- assume H. let x. assume Hx. exact (eq_trans_i (P x) ((fun x :e A => if True then 1 else 0) x) 1 (f_equal (fun u => u x) P (fun x :e A => if True then 1 else 0) H) (eq_trans_i ((fun x :e A => if True then 1 else 0) x) (if True then 1 else 0) 1 (beta A (fun x => if True then 1 else 0) x Hx) H1)).
+- assume H. apply (Pi_ext A (fun _ => 2) P HP (fun x :e A => if True then 1 else 0) HL). let x. assume Hx. exact (eq_trans_i (P x) 1 ((fun x :e A => if True then 1 else 0) x) (H x Hx) (eq_sym_i ((fun x :e A => if True then 1 else 0) x) 1 (eq_trans_i ((fun x :e A => if True then 1 else 0) x) (if True then 1 else 0) 1 (beta A (fun x => if True then 1 else 0) x Hx) H1))).
+Qed.
