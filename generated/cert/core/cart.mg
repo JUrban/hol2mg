@@ -4,23 +4,43 @@
 // _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
 
 // HOL Light: cart.ml:14 / dimindex   (hash md5:ddb3842890aa45dff1fd71f34edb013d)
-// not bridged: 
+Theorem hlt_dimindex_thm : forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+Theorem dimindex_thm_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero))) -> (forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1).
+exact (fun H__top A HAne => ((imp_forall_sub (A) (fun s => hl_dimindex A s = hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero))) (fun s => dimindex A = if finite A then finite_cardinality A else 1) (fun s Hss => (imp_eq (hl_dimindex A (hl_chi A s)) (dimindex A) (hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero))) (if finite A then finite_cardinality A else 1) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_dimindex A (hl_chi A s) = dimindex A) ((hl_dimindex_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s))) (hl_COND_if_dep (omega) (hl_FINITE A (hl_UNIV A)) (setexp_ap (2 :^: A) (2) (hl_FINITE A) ((hl_FINITE_in) (A) HAne) (hl_UNIV A) ((hl_UNIV_in) (A) HAne)) (finite A) (((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_FINITE A (hl_UNIV A) = 1 <-> finite hl__u) ((hl_FINITE_compat) (A) HAne (hl_UNIV A) ((hl_UNIV_in) (A) HAne))) (hl_CARD A (hl_UNIV A)) (setexp_ap (2 :^: A) (omega) (hl_CARD A) ((hl_CARD_in) (A) HAne) (hl_UNIV A) ((hl_UNIV_in) (A) HAne)) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (finite_cardinality A) (1) (fun H__c1 : (finite A) => (((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_CARD A (hl_UNIV A) = finite_cardinality hl__u) (((hl_CARD_compat) (A) HAne (hl_UNIV A) ((hl_UNIV_in) (A) HAne)) ((eq_sym_i (hl_rep A (hl_UNIV A)) (A) ((hl_UNIV_compat) (A) HAne)) (fun hl__u hl__v => finite hl__u) H__c1)))) (fun H__c1 : ~ (finite A) => (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))))))) (H__top A HAne) Empty (Subq_Empty (A)))).
+Qed.
 Theorem dimindex_thm : forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1.
+exact (dimindex_thm_bridge hlt_dimindex_thm).
 Admitted.
 
 // HOL Light: cart.ml:17 / DIMINDEX_NONZERO   (hash md5:d3725a45e0820e3b712217990615246b)
-// not bridged: 
+Theorem hlt_DIMINDEX_NONZERO : forall A:set, A <> Empty -> forall s :e 2 :^: A, ~ hl_dimindex A s = hl_NUMERAL hl_zero.
+Admitted.
+Theorem DIMINDEX_NONZERO_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: A, ~ hl_dimindex A s = hl_NUMERAL hl_zero) -> (forall A:set, A <> Empty -> ~ dimindex A = 0).
+exact (fun H__top A HAne => ((imp_forall_sub (A) (fun s => ~ hl_dimindex A s = hl_NUMERAL hl_zero) (fun s => ~ dimindex A = 0) (fun s Hss => (imp_not (hl_dimindex A (hl_chi A s) = hl_NUMERAL hl_zero) (dimindex A = 0) (imp_eq (dimindex A) (hl_dimindex A (hl_chi A s)) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_dimindex A (hl_chi A s)) (dimindex A) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_dimindex A (hl_chi A s) = dimindex A) ((hl_dimindex_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s)))) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) (H__top A HAne) Empty (Subq_Empty (A)))).
+Qed.
 Theorem DIMINDEX_NONZERO : forall A:set, A <> Empty -> ~ dimindex A = 0.
+exact (DIMINDEX_NONZERO_bridge hlt_DIMINDEX_NONZERO).
 Admitted.
 
 // HOL Light: cart.ml:22 / DIMINDEX_GE_1   (hash md5:6330d948a4ade390789c61f4944f6861)
-// not bridged: 
+Theorem hlt_DIMINDEX_GE_1 : forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A s) = 1.
+Admitted.
+Theorem DIMINDEX_GE_1_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A s) = 1) -> (forall A:set, A <> Empty -> 1 <= dimindex A).
+exact (fun H__top A HAne => ((imp_forall_sub (A) (fun s => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A s) = 1) (fun s => 1 <= dimindex A) (fun s Hss => (iffEL (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A (hl_chi A s)) = 1) (1 <= dimindex A) (((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_dimindex A (hl_chi A s) = dimindex A) ((hl_dimindex_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A (hl_chi A s)) = 1 <-> 1 <= hl__u) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A (hl_chi A s)) = 1 <-> hl__u <= hl_dimindex A (hl_chi A s)) ((hl_le_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (hl_dimindex A (hl_chi A s)) (setexp_ap (2 :^: A) (omega) (hl_dimindex A) ((hl_dimindex_in) (A) HAne) (hl_chi A s) (hl_chi_Pi (A) s)))))))) (H__top A HAne) Empty (Subq_Empty (A)))).
+Qed.
 Theorem DIMINDEX_GE_1 : forall A:set, A <> Empty -> 1 <= dimindex A.
+exact (DIMINDEX_GE_1_bridge hlt_DIMINDEX_GE_1).
 Admitted.
 
 // HOL Light: cart.ml:26 / DIMINDEX_UNIV   (hash md5:6d36efb94145933ec1aa58b078c73e98)
-// not bridged: 
+Theorem hlt_DIMINDEX_UNIV : forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_dimindex A (hl_UNIV A).
+Admitted.
+Theorem DIMINDEX_UNIV_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_dimindex A (hl_UNIV A)) -> (forall A:set, dimindex A = dimindex A).
+exact (fun H__top A => (xm (A = Empty) (dimindex A = dimindex A) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => dimindex hl__u = dimindex hl__u) (fun q H => H))) (fun HAne => ((imp_forall_sub (A) (fun s => hl_dimindex A s = hl_dimindex A (hl_UNIV A)) (fun s => dimindex A = dimindex A) (fun s Hss => (imp_eq (hl_dimindex A (hl_chi A s)) (dimindex A) (hl_dimindex A (hl_UNIV A)) (dimindex A) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_dimindex A (hl_chi A s) = dimindex A) ((hl_dimindex_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s))) (((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_dimindex A (hl_UNIV A) = dimindex A) ((hl_dimindex_compat) (A) HAne (hl_UNIV A) ((hl_UNIV_in) (A) HAne)))))) (H__top A HAne) Empty (Subq_Empty (A)))))).
+Qed.
 Theorem DIMINDEX_UNIV : forall A:set, dimindex A = dimindex A.
+exact (DIMINDEX_UNIV_bridge hlt_DIMINDEX_UNIV).
 Admitted.
 
 // HOL Light: cart.ml:30 / DIMINDEX_UNIQUE   (hash md5:88a36c49579122ac8804e8363815cddd)

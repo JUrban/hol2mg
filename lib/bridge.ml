@@ -2124,12 +2124,56 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
      generalization.  Pair projections `(a,b) 0 = a` are transported by Leibniz steps on the proved
      body; eta-reduced meta lambdas are convertible for Megalodon and need no proof step. *)
   let _, rewrites = Rewrite.run nat_stmt in
-  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "eta" ] in
+  (* idx_n_def / idx_def unfold definitions of the native prelude: the rewritten statement is convertible *)
+  let convertible = [ "eta"; "idx_n_def"; "idx_def" ] in
+  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall" ] @ convertible in
   (match List.filter (fun r -> not (List.mem r replayable)) rewrites with
    | [] -> ()
    | l -> unsupported "native rewrites %s" (String.concat "," l));
   let final = Printf.sprintf "%s %s" inner converted in
-  let nat_body = if List.mem "eta" rewrites then fst (Rewrite.run nat_body) else nat_body in
+  (* replay of vacuous bounded binders (the elaborator drops `forall x :e a, P` with x not in P over an
+     inhabited a): instantiate the proved body at a canonical inhabitant *)
+  let nat_body, final =
+    if not (List.mem "vacuous_forall" rewrites) then (nat_body, final)
+    else begin
+      let witness (a : Mg.tm) : (string * string) option =
+        (match a with
+         | Mg.App (Mg.Cst "Power", x) -> Some ("Empty", Printf.sprintf "(PowerI %s Empty (Subq_Empty %s))" (ppp x) (ppp x))
+         | Mg.Cst "omega" -> Some ("0", "(nat_p_omega 0 nat_0)")
+         | Mg.Cst ("R" | "real") -> Some ("0", "real_0")
+         | Mg.Cst "int" -> Some ("0", "(Subq_omega_int 0 (nat_p_omega 0 nat_0))")
+         | Mg.App (Mg.Cst "finseq", x) -> Some ("seq_nil", Printf.sprintf "(seq_nil_finseq %s)" (ppp x))
+         | Mg.App (Mg.Cst "ordsucc", x) -> Some (ppp x, Printf.sprintf "(ordsuccI2 %s)" (ppp x))
+         | _ -> None) in
+      let rec strip (t : Mg.tm) (pf : string) : Mg.tm * string =
+        (match t with
+         | Mg.AllIn (x, a, b) when not (List.mem x (Mg.free_vars b)) && witness a <> None ->
+             let w, hw = Option.get (witness a) in
+             strip b (Printf.sprintf "(%s %s %s)" pf w hw)
+         | Mg.AllIn (x, a, b) ->
+             let b', pb = strip b (Printf.sprintf "(%s %s H__v%s)" pf x x) in
+             (Mg.AllIn (x, a, b'), Printf.sprintf "(fun %s H__v%s => %s)" x x pb)
+         | Mg.AllSub (x, a, b) when not (List.mem x (Mg.free_vars b)) ->
+             strip b (Printf.sprintf "(%s Empty (Subq_Empty %s))" pf (ppp a))
+         | Mg.AllSub (x, a, b) ->
+             let b', pb = strip b (Printf.sprintf "(%s %s H__v%s)" pf x x) in
+             (Mg.AllSub (x, a, b'), Printf.sprintf "(fun %s H__v%s => %s)" x x pb)
+         | Mg.All (x, ty, b) ->
+             let b', pb = strip b (Printf.sprintf "(%s %s)" pf x) in
+             (Mg.All (x, ty, b'), Printf.sprintf "(fun %s => %s)" x pb)
+         | Mg.Imp (h, b) ->
+             let b', pb = strip b (Printf.sprintf "(%s H__i%d)" pf (String.length pf)) in
+             (Mg.Imp (h, b'), Printf.sprintf "(fun H__i%d => %s)" (String.length pf) pb)
+         | Mg.App (Mg.App (Mg.Cst "and", a), b) ->
+             let a', pa = strip a "H__al" and b', pb = strip b "H__ar" in
+             (Mg.App (Mg.App (Mg.Cst "and", a'), b'), Printf.sprintf "(andI %s %s (%s %s (fun H__al H__ar => %s)) (%s %s (fun H__al H__ar => %s)))" (ppp a') (ppp b') pf (ppp a') pa pf (ppp b') pb)
+         | _ -> (t, pf)) in
+      let target = fst (Rewrite.run nat_body) in
+      let t', pf' = strip nat_body final in
+      if not (alpha_eq t' target) then unsupported "vacuous binder replay: %s vs %s" (pp t') (pp target);
+      (t', pf')
+    end in
+  let nat_body = if List.exists (fun r -> List.mem r convertible) rewrites then fst (Rewrite.run nat_body) else nat_body in
   let nat_stmt = close_lit nat_body in
   let nat_gen, dropped = Emptycase.generalize nat_stmt params in
   let kept_hyps = List.filter_map (fun p -> if List.mem p dropped then None else Some ("H" ^ p ^ "ne")) params in

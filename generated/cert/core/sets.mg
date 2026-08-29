@@ -4834,8 +4834,13 @@ exact (INTERSECTION_OF_EMPTY_bridge hlt_INTERSECTION_OF_EMPTY).
 Admitted.
 
 // HOL Light: sets.ml:4059 / ARBITRARY   (hash md5:ebb3dfc9269b12bd3ecf47beb3fe4538)
-// not bridged: 
+Theorem hlt_ARBITRARY : forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), hl_ARBITRARY A s = 1 <-> True.
+Admitted.
+Theorem ARBITRARY_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), hl_ARBITRARY A s = 1 <-> True) -> (forall A:set, True <-> True).
+exact (fun H__top A => (xm (A = Empty) (True <-> True) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => True <-> True) (iffI (True) (True) (fun _ => (fun p H => H)) (fun _ => (fun p H => H))))) (fun HAne => ((imp_forall_sub2 (A) (fun s => hl_ARBITRARY A s = 1 <-> True) (fun s => True <-> True) (fun s Hss => (imp_iff (hl_ARBITRARY A (hl_chi2 A s) = 1) (True) (True) (True) (iffEL (hl_ARBITRARY A (hl_chi2 A s) = 1) (True) ((hl_rep2_chi2 (A) s Hss) (fun hl__u hl__v => hl_ARBITRARY A (hl_chi2 A s) = 1 <-> True) ((hl_ARBITRARY_compat) (A) HAne (hl_chi2 A s) (hl_chi2_Pi (A) s)))) (iffER (hl_ARBITRARY A (hl_chi2 A s) = 1) (True) ((hl_rep2_chi2 (A) s Hss) (fun hl__u hl__v => hl_ARBITRARY A (hl_chi2 A s) = 1 <-> True) ((hl_ARBITRARY_compat) (A) HAne (hl_chi2 A s) (hl_chi2_Pi (A) s)))) (imp_refl True) (imp_refl True)))) (H__top A HAne) Empty (Subq_Empty (Power A)))))).
+Qed.
 Theorem ARBITRARY : forall A:set, True <-> True.
+exact (ARBITRARY_bridge hlt_ARBITRARY).
 Admitted.
 
 // HOL Light: sets.ml:4062 / ARBITRARY_UNION_OF_ALT   (hash md5:92f9114949a5cf745172023efdca6c9c)

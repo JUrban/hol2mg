@@ -1904,9 +1904,9 @@
    "source": "!s:(A->bool)->bool. ARBITRARY s <=> T",
    "statement": "forall A:set, True <-> True",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), hl_ARBITRARY A s = 1 <-> True",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites vacuous_forall",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ARBITRARY_bridge"
   },
   {
    "name": "ARBITRARY_INTERSECTION_OF_COMPLEMENT",
@@ -4493,9 +4493,9 @@
    "source": "!n:num. CARD (.. 1 n) = n",
    "statement": "forall n :e omega, finite_cardinality (idx_n n) = n",
    "literal": "forall n :e omega, hl_CARD omega (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites idx_n_def",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_NUMSEG_1_bridge"
   },
   {
    "name": "CARD_NUMSEG_LE",
@@ -8202,9 +8202,9 @@
    "source": "!s:A->bool. 1 <= dimindex s",
    "statement": "forall A:set, A <> Empty -> 1 <= dimindex A",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites vacuous_forall",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIMINDEX_GE_1_bridge"
   },
   {
    "name": "DIMINDEX_HAS_SIZE_FINITE_DIFF",
@@ -8328,9 +8328,9 @@
    "source": "!s:A->bool. ~(dimindex s = 0)",
    "statement": "forall A:set, A <> Empty -> ~ dimindex A = 0",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, ~ hl_dimindex A s = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites vacuous_forall",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIMINDEX_NONZERO_bridge"
   },
   {
    "name": "DIMINDEX_TYBIT0",
@@ -8464,9 +8464,9 @@
    "source": "!s:A->bool. dimindex s = dimindex UNIV",
    "statement": "forall A:set, dimindex A = dimindex A",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_dimindex A (hl_UNIV A)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites vacuous_forall",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIMINDEX_UNIV_bridge"
   },
   {
    "name": "DISJOINT",
@@ -20464,9 +20464,9 @@
    "source": "!n:num. HAS_SIZE (.. 1 n) n",
    "statement": "forall n :e omega, equip (idx_n n) n",
    "literal": "forall n :e omega, hl_HAS_SIZE omega (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites idx_n_def",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_NUMSEG_1_bridge"
   },
   {
    "name": "HAS_SIZE_NUMSEG_LE",
@@ -63755,9 +63755,9 @@
    "source": "!n:num. !c:num->real. !k:real. (!x:real. sum (.. 0 n) (\\i:num. c i * x pow i) = k) <=> c 0 = k /\\ (!i:num. i IN .. 1 n ==> c i = real_of_num 0)",
    "statement": "forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> forall k :e R, (forall x :e R, finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = k) <-> c 0 = k /\\ forall i :e omega, i :e idx_n n -> c i = 0",
    "literal": "forall n :e omega, forall c :e R :^: omega, forall k :e R, (forall x :e R, hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = k) <-> c (hl_NUMERAL hl_zero) = k /\\ forall i :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) = 1 -> c i = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites idx_n_def",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_POLYFUN_EQ_CONST_bridge"
   },
   {
    "name": "REAL_POLYFUN_FINITE_ROOTS",
@@ -75500,9 +75500,9 @@
    "source": "!<<:A->A->bool. (!x:A. !y:A. << x y /\\ << y x ==> x = y) /\\ (!x:A. !y:A. !z:A. << x y /\\ << y z ==> << x z) ==> (!n:num. !s:A->bool. HAS_SIZE s n ==> (?f:num->A. s = IMAGE f (.. 1 n) /\\ (!j:num. !k:num. j IN .. 1 n /\\ k IN .. 1 n /\\ j < k ==> ~<< (f k) (f j))))",
    "statement": "forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall x y :e A, lt x y /\\ lt y x -> x = y) /\\ (forall x y z :e A, lt x y /\\ lt y z -> lt x z) -> forall n :e omega, forall s c= A, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\\ (s = {f x | x :e idx_n n} /\\ forall j k :e omega, j :e idx_n n /\\ (k :e idx_n n /\\ j < k) -> ~ lt (f k) (f j))",
    "literal": "forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, (forall x y :e A, lt x y = 1 /\\ lt y x = 1 -> x = y) /\\ (forall x y z :e A, lt x y = 1 /\\ lt y z = 1 -> lt x z = 1) -> forall n :e omega, forall s :e 2 :^: A, hl_HAS_SIZE A s n = 1 -> exists f :e A :^: omega, s = hl_IMAGE omega A f (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) /\\ forall j k :e omega, hl_IN omega j (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) = 1 /\\ (hl_IN omega k (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) = 1 /\\ hl_lt j k = 1) -> ~ lt (f k) (f j) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites idx_n_def",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "TOPOLOGICAL_SORT_bridge"
   },
   {
    "name": "TRANSITIVE_STEPWISE_LE",
@@ -79765,9 +79765,9 @@
    "source": "!s:A->bool. dimindex s = (if FINITE UNIV then CARD UNIV else 1)",
    "statement": "forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites vacuous_forall",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "dimindex_thm_bridge"
   },
   {
    "name": "disjoint_union",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2381
+  "native_certified": 2390
  }
 }

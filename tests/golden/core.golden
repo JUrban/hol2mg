@@ -1772,7 +1772,8 @@ source: !s:A->bool. 1 <= dimindex s
 status: native_reuse
 statement: forall A:set, A <> Empty -> 1 <= dimindex A
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A s) = 1
-cert_status: bridge_unsupported
+bridge: DIMINDEX_GE_1_bridge
+cert_status: native_certified
 
 ### FINITE_INDEX_INJ   [Cartesian powers and finite index types]
 hash: ed3f2b168a80aa1187743fa433a8d6e6
