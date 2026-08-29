@@ -817,3 +817,102 @@ Theorem hl_MIN_compat : forall l1 l2 :e omega, hl_MIN l1 l2 = if l1 <= l2 then l
 let m. assume Hm. let n. assume Hn. rewrite (hl_MIN_unfold m Hm n Hn).
 exact (hl_COND_if omega (hl_le m n) (hl_le_2 m Hm n Hn) (m <= n) (hl_le_compat m Hm n Hn) m Hm n Hn).
 Qed.
+
+// ---- subtraction (truncated) ----
+Theorem minus_nat_0R : forall m :e omega, minus_nat m 0 = m.
+let m. assume Hm.
+prove (if 0 <= m then m + - 0 else 0) = m.
+exact (eq_trans_i (if 0 <= m then m + - 0 else 0) (m + - 0) m
+  (If_i_1 (0 <= m) (m + - 0) 0 (omega_nonneg m Hm))
+  (eq_trans_i (m + - 0) (m + 0) m (f_equal (fun x => m + x) (- 0) 0 minus_SNo_0) (add_SNo_0R m (omega_SNo m Hm)))).
+Qed.
+Theorem omega_minus_omega : forall m n :e omega, n <= m -> m + - n :e omega.
+let m. assume Hm. let n. assume Hn. assume H.
+apply (int_nonneg_omega (m + - n)).
+- exact (int_add_SNo m (Subq_omega_int m Hm) (- n) (int_minus_SNo_omega n Hn)).
+- claim L: 0 + n <= m. { rewrite (add_SNo_0L n (omega_SNo n Hn)). exact H. }
+  exact (add_SNo_minus_Le2b m n 0 (omega_SNo m Hm) (omega_SNo n Hn) SNo_0 L).
+Qed.
+Theorem minus_nat_ordsucc : forall m n :e omega, minus_nat m (ordsucc n) = nat_pred (minus_nat m n).
+let m. assume Hm. let n. assume Hn.
+claim HmS: SNo m. { exact (omega_SNo m Hm). }
+claim HnS: SNo n. { exact (omega_SNo n Hn). }
+claim HSn: ordsucc n :e omega. { exact (omega_ordsucc n Hn). }
+claim HSnS: SNo (ordsucc n). { exact (omega_SNo (ordsucc n) HSn). }
+claim HnSn: n < ordsucc n. { exact (ordinal_In_SNoLt (ordsucc n) (ordinal_ordsucc n (omega_ordinal_p n Hn)) n (ordsuccI2 n)). }
+prove (if ordsucc n <= m then m + - ordsucc n else 0) = nat_pred (if n <= m then m + - n else 0).
+apply (xm (ordsucc n <= m)).
+- assume H1: ordsucc n <= m.
+  claim H2: n <= m. { exact (SNoLtLe n m (SNoLtLe_tra n (ordsucc n) m HnS HSnS HmS HnSn H1)). }
+  claim Hd0: m + - n <> 0.
+  { assume H0: m + - n = 0.
+    claim Hmn: m = n.
+    { claim Hrl: (m + - n) + n = m.
+      { exact (eq_trans_i ((m + - n) + n) (m + (- n + n)) m (eq_sym_i (m + (- n + n)) ((m + - n) + n) (add_SNo_assoc m (- n) n HmS (SNo_minus_SNo n HnS) HnS))
+          (eq_trans_i (m + (- n + n)) (m + 0) m (f_equal (fun x => m + x) (- n + n) 0 (add_SNo_minus_SNo_linv n HnS)) (add_SNo_0R m HmS))). }
+      exact (eq_trans_i m ((m + - n) + n) n (eq_sym_i ((m + - n) + n) m Hrl)
+        (eq_trans_i ((m + - n) + n) (0 + n) n (f_equal (fun x => x + n) (m + - n) 0 H0) (add_SNo_0L n HnS))). }
+    apply (SNoLt_irref n). apply (SNoLtLe_tra n (ordsucc n) n HnS HSnS HnS HnSn). rewrite <- Hmn at 2. exact H1. }
+  rewrite (If_i_1 (ordsucc n <= m) (m + - ordsucc n) 0 H1). rewrite (If_i_1 (n <= m) (m + - n) 0 H2).
+  prove m + - ordsucc n = (if m + - n = 0 then 0 else (m + - n) + - 1).
+  rewrite (If_i_0 (m + - n = 0) 0 ((m + - n) + - 1) Hd0).
+  exact (eq_trans_i (m + - ordsucc n) (m + - (n + 1)) ((m + - n) + - 1)
+    (f_equal (fun x => m + - x) (ordsucc n) (n + 1) (eq_sym_i (n + 1) (ordsucc n) (add_SNo_1_ordsucc n Hn)))
+    (eq_trans_i (m + - (n + 1)) (m + (- n + - 1)) ((m + - n) + - 1)
+      (f_equal (fun x => m + x) (- (n + 1)) (- n + - 1) (minus_add_SNo_distr n 1 HnS SNo_1))
+      (add_SNo_assoc m (- n) (- 1) HmS (SNo_minus_SNo n HnS) (SNo_minus_SNo 1 SNo_1)))).
+- assume H1: ~ (ordsucc n <= m).
+  rewrite (If_i_0 (ordsucc n <= m) (m + - ordsucc n) 0 H1).
+  apply (xm (n <= m)).
+  + assume H2: n <= m. rewrite (If_i_1 (n <= m) (m + - n) 0 H2).
+    claim Hlt: m < ordsucc n. { apply (SNoLtLe_or m (ordsucc n) HmS HSnS). - assume H3. exact H3. - assume H3. exact (FalseE (H1 H3) (m < ordsucc n)). }
+    claim Hmn: m = n.
+    { apply (omega_SNoLt_ordsucc m Hm n Hn). assume H3 _. apply (H3 Hlt).
+      - assume H4. exact H4.
+      - assume H4. prove False. exact (SNoLt_irref m (SNoLtLe_tra m n m HmS HnS HmS H4 H2)). }
+    claim Hz: m + - n = 0. { rewrite Hmn. exact (add_SNo_minus_SNo_rinv n HnS). }
+    rewrite Hz. exact (eq_sym_i (nat_pred 0) 0 nat_pred_0).
+  + assume H2. rewrite (If_i_0 (n <= m) (m + - n) 0 H2). exact (eq_sym_i (nat_pred 0) 0 nat_pred_0).
+Qed.
+Theorem hl_sub_compat : forall l1 l2 :e omega, hl_sub l1 l2 = minus_nat l1 l2.
+claim Hex: exists g :e omega :^: omega :^: omega, (forall m :e omega, g m (hl_NUMERAL hl_zero) = m) /\ forall m n :e omega, g m (hl_SUC n) = hl_PRE (g m n).
+{ witness (fun m :e omega => fun n :e omega => minus_nat m n).
+  claim Hw: (fun m :e omega => fun n :e omega => minus_nat m n) :e omega :^: omega :^: omega.
+  { exact (lam2_Pi omega omega omega (fun m n => minus_nat m n) (fun m Hm n Hn => minus_nat_omega m Hm n Hn)). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + let m. assume Hm. rewrite hl_NUMERAL_zero. rewrite (lam2_beta omega omega (fun m n => minus_nat m n) m Hm 0 (nat_p_omega 0 nat_0)). exact (minus_nat_0R m Hm).
+    + let m. assume Hm. let n. assume Hn. rewrite (hl_SUC_ap n Hn).
+      rewrite (lam2_beta omega omega (fun m n => minus_nat m n) m Hm (ordsucc n) (omega_ordsucc n Hn)).
+      rewrite (lam2_beta omega omega (fun m n => minus_nat m n) m Hm n Hn).
+      rewrite (hl_PRE_compat (minus_nat m n) (minus_nat_omega m Hm n Hn)). exact (minus_nat_ordsucc m Hm n Hn). }
+apply (hl_sub_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+claim Hbase: forall m :e omega, hl_sub m 0 = minus_nat m 0.
+{ let m. assume Hm. rewrite (minus_nat_0R m Hm). rewrite <- hl_NUMERAL_zero at 1. exact (H0 m Hm). }
+claim Hstep: forall n, nat_p n -> (forall m :e omega, hl_sub m n = minus_nat m n) -> forall m :e omega, hl_sub m (ordsucc n) = minus_nat m (ordsucc n).
+{ let n. assume Hn IH. let m. assume Hm.
+  claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+  rewrite (minus_nat_ordsucc m Hm n Hno). rewrite <- (IH m Hm).
+  rewrite <- (hl_PRE_compat (hl_sub m n) (setexp2_ap omega omega omega hl_sub Hg m Hm n Hno)).
+  rewrite <- (hl_SUC_ap n Hno). exact (HS m Hm n Hno). }
+let m. assume Hm. let n. assume Hn.
+exact (nat_ind (fun n => forall m :e omega, hl_sub m n = minus_nat m n) Hbase Hstep n (omega_nat_p n Hn) m Hm).
+Qed.
+
+// ---- numeral evaluation lemmas (used by generated bridges for NUMERAL/BIT0/BIT1) ----
+Theorem hl_BIT0_0 : hl_BIT0 0 = 0.
+exact (eq_trans_i (hl_BIT0 0) (2 * 0) 0 (hl_BIT0_compat 0 (nat_p_omega 0 nat_0)) (mul_SNo_zeroR 2 SNo_2)).
+Qed.
+Theorem hl_BIT0_S : forall n :e omega, hl_BIT0 (ordsucc n) = ordsucc (ordsucc (hl_BIT0 n)).
+let n. assume Hn.
+exact (eq_trans_i (hl_BIT0 (ordsucc n)) (2 * ordsucc n) (ordsucc (ordsucc (hl_BIT0 n)))
+  (hl_BIT0_compat (ordsucc n) (omega_ordsucc n Hn))
+  (eq_trans_i (2 * ordsucc n) (ordsucc (ordsucc (2 * n))) (ordsucc (ordsucc (hl_BIT0 n)))
+    (two_mul_ordsucc n Hn)
+    (f_equal (fun x => ordsucc (ordsucc x)) (2 * n) (hl_BIT0 n) (eq_sym_i (hl_BIT0 n) (2 * n) (hl_BIT0_compat n Hn))))).
+Qed.
+Theorem hl_BIT1_S : forall n :e omega, hl_BIT1 n = ordsucc (hl_BIT0 n).
+let n. assume Hn.
+exact (eq_trans_i (hl_BIT1 n) (hl_SUC (hl_BIT0 n)) (ordsucc (hl_BIT0 n)) (hl_BIT1_unfold n Hn) (hl_SUC_ap (hl_BIT0 n) (hl_BIT0_omega n Hn))).
+Qed.

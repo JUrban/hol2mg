@@ -235,7 +235,7 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
 let refl = "(fun q H => H)"
 
 (* Leibniz: from pf_eq : l = n and pf : P[l] obtain P[n], where ctx is P with a hole `u` *)
-let leibniz pf_eq (ctx_with_u : string) pf = Printf.sprintf "(%s (fun u v => %s) %s)" pf_eq ctx_with_u pf
+let leibniz pf_eq (ctx_with_u : string) pf = Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pf_eq ctx_with_u pf
 
 (* replace occurrences of a subterm by a variable *)
 let rec replace_tm (old : Mg.tm) (by : Mg.tm) (t : Mg.tm) : Mg.tm =
@@ -268,7 +268,7 @@ let rec replace_tm (old : Mg.tm) (by : Mg.tm) (t : Mg.tm) : Mg.tm =
 let rewrite_in (pf_eq : string) (l : Mg.tm) (n : Mg.tm) (prop : Mg.tm) (pf : string) : Mg.tm * string =
   if l = n then (prop, pf)
   else begin
-    let ctx = replace_tm l (Mg.Var "u") prop in
+    let ctx = replace_tm l (Mg.Var "hl__u") prop in
     let prop' = replace_tm l n prop in
     (prop', leibniz pf_eq (pp ctx) pf)
   end
@@ -325,7 +325,7 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   if ka <> KEq then unsupported "rel: argument of set function must be a set value";
                   (* !cur la = ?cur na : from refl by rewriting la -> na *)
                   let prop = L.mg_eq (Mg.App (!cur, la)) (Mg.App (!cur, la)) in
-                  let ctx = L.mg_eq (Mg.App (!cur, la)) (Mg.App (replace_tm la (Mg.Var "u") !cur, Mg.Var "u")) in
+                  let ctx = L.mg_eq (Mg.App (!cur, la)) (Mg.App (replace_tm la (Mg.Var "hl__u") !cur, Mg.Var "hl__u")) in
                   ignore prop; ignore ctx;
                   cur := Mg.App (!cur, na); lit_now := Mg.App (!lit_now, la);
                   pf := if la = na then refl else unsupported "rel: set function applied to non-identical argument") args;
@@ -361,6 +361,40 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | "T" | "F" | "~" | "/\\" | "\\/" | "==>" | "=" | "!" | "?" | "COND" when L.is_logical t ->
                 (* a formula used as data: lit = if LP then 1 else 0; native data view of bool *)
                 unsupported "rel: formula as data"
+            | "NUMERAL" when dest_numeral t <> None ->
+                let v = Option.get (dest_numeral t) in
+                if v > 512 then unsupported "rel: numeral %d too large" v;
+                (* lit = hl_NUMERAL (bits); nat = v; proof by evaluating the bits with hl_BIT0_0 / hl_BIT0_S / hl_BIT1_S *)
+                let bits = List.hd args in
+                let rec num_omega k = if k = 0 then "(nat_p_omega 0 nat_0)" else Printf.sprintf "(nat_p_omega %d (nat_ordsucc %d (omega_nat_p %d %s)))" k (k - 1) (k - 1) (num_omega (k - 1)) in
+                let numv k = Mg.Num k in
+                (* hl_BIT0 (Num w) = Num (2w) *)
+                let rec bit0_num w =
+                  if w = 0 then "hl_BIT0_0"
+                  else Printf.sprintf "(eq_trans_i (hl_BIT0 %d) (ordsucc (ordsucc (hl_BIT0 %d))) %d (hl_BIT0_S %d %s) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 %d) %d %s))"
+                         w (w - 1) (2 * w) (w - 1) (num_omega (w - 1)) (w - 1) (2 * (w - 1)) (bit0_num (w - 1)) in
+                let rec pf_bits (b : tm) : Mg.tm * int * string =
+                  (match b with
+                   | Const ("_0", _) -> (Mg.Cst "hl_zero", 0, "hl_zero_compat")
+                   | App (Const ("BIT0", _), b') ->
+                       let lb, w, pb = pf_bits b' in
+                       let lit = Mg.App (Mg.Cst "hl_BIT0", lb) in
+                       (lit, 2 * w, Printf.sprintf "(eq_trans_i %s (hl_BIT0 %d) %d (f_equal (fun x => hl_BIT0 x) %s %d %s) %s)" (ppp lit) w (2 * w) (ppp lb) w pb (bit0_num w))
+                   | App (Const ("BIT1", _), b') ->
+                       let lb, w, pb = pf_bits b' in
+                       let lit = Mg.App (Mg.Cst "hl_BIT1", lb) in
+                       let mem = Printf.sprintf "((eq_sym_i %s %d %s) (fun hl__u hl__v => u :e omega) %s)" (ppp lb) w pb (num_omega w) in
+                       (lit, 2 * w + 1,
+                        Printf.sprintf "(eq_trans_i %s (ordsucc (hl_BIT0 %s)) %d (hl_BIT1_S %s %s) (f_equal (fun x => ordsucc x) (hl_BIT0 %s) %d (eq_trans_i (hl_BIT0 %s) (hl_BIT0 %d) %d (f_equal (fun x => hl_BIT0 x) %s %d %s) %s)))"
+                          (ppp lit) (ppp lb) (2 * w + 1) (ppp lb) mem (ppp lb) (2 * w) (ppp lb) w (2 * w) (ppp lb) w pb (bit0_num w))
+                   | _ -> unsupported "rel: numeral shape") in
+                let lb, w, pb = pf_bits bits in
+                if w <> v then unsupported "rel: numeral value mismatch";
+                let mem = Printf.sprintf "((eq_sym_i %s %d %s) (fun hl__u hl__v => u :e omega) %s)" (ppp lb) w pb (num_omega w) in
+                let pf = Printf.sprintf "(eq_trans_i %s %s %d (hl_NUMERAL_compat %s %s) %s)" (ppp lit) (ppp lb) v (ppp lb) mem pb in
+                ignore numv;
+                if nat <> Mg.Num v then unsupported "rel: numeral native %s" (pp nat);
+                (lit, nat, KEq, pf)
             | "COND" when List.length args = 3 ->
                 (* if c then a else b at a data type: hl_COND_if + argument rewrites *)
                 let ty = type_of [] t in
@@ -373,9 +407,9 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let pf0 = Printf.sprintf "(hl_COND_if %s %s %s %s %s %s %s %s %s)" (ppp ca) (ppp lc) (typ g c0) (ppp nc) pc (ppp la) (typ g a) (ppp lb) (typ g b) in
                 let prop0 = L.mg_eq lit (Mg.If (nc, la, lb)) in
                 let prop1, pf1 = if la = na then (prop0, pf0) else
-                  (let ctx = L.mg_eq lit (Mg.If (nc, Mg.Var "u", lb)) in (L.mg_eq lit (Mg.If (nc, na, lb)), leibniz (if pa = "" then refl else pa) (pp ctx) pf0)) in
+                  (let ctx = L.mg_eq lit (Mg.If (nc, Mg.Var "hl__u", lb)) in (L.mg_eq lit (Mg.If (nc, na, lb)), leibniz (if pa = "" then refl else pa) (pp ctx) pf0)) in
                 let prop2, pf2 = if lb = nb then (prop1, pf1) else
-                  (let ctx = L.mg_eq lit (Mg.If (nc, na, Mg.Var "u")) in (L.mg_eq lit (Mg.If (nc, na, nb)), leibniz (if pb = "" then refl else pb) (pp ctx) pf1)) in
+                  (let ctx = L.mg_eq lit (Mg.If (nc, na, Mg.Var "hl__u")) in (L.mg_eq lit (Mg.If (nc, na, nb)), leibniz (if pb = "" then refl else pb) (pp ctx) pf1)) in
                 (match prop2 with
                  | Mg.App (Mg.App (Mg.Cst "eq", _), r) when r <> nat -> unsupported "rel: conditional derived %s differs from %s" (pp r) (pp nat)
                  | _ -> ());
@@ -464,7 +498,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
       | Mg.App (Mg.App (Mg.Cst "eq", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "eq", a), b')), b
       | _ -> (fun b' -> b'), prop) in
     let rebuild, b = split_rhs prop in
-    let ctx = rebuild (replace_tm l (Mg.Var "u") b) in
+    let ctx = rebuild (replace_tm l (Mg.Var "hl__u") b) in
     let prop' = rebuild (replace_tm l n b) in
     (prop', leibniz pe (pp ctx) pf)) (prop0, pf0) (List.rev !rewrites) in
   ignore prop;
@@ -769,11 +803,11 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let lit_native_body = ref lit_body in
   let wrap_hl = List.fold_left (fun hl (t, nat) ->
     let lit_ty = Mg.Cst ("hl_ty_" ^ E.sanitize_var t) in
-    if replace_tm lit_ty (Mg.Var "u") !lit_native_body = !lit_native_body then hl
+    if replace_tm lit_ty (Mg.Var "hl__u") !lit_native_body = !lit_native_body then hl
     else begin
-      let ctx = replace_tm lit_ty (Mg.Var "u") !lit_native_body in
+      let ctx = replace_tm lit_ty (Mg.Var "hl__u") !lit_native_body in
       lit_native_body := replace_tm lit_ty nat !lit_native_body;
-      Printf.sprintf "(hl_ty_%s_native (fun u v => %s) %s)" (E.sanitize_var t) (pp ctx) hl
+      Printf.sprintf "(hl_ty_%s_native (fun hl__u hl__v => %s) %s)" (E.sanitize_var t) (pp ctx) hl
     end) "HL0" converters in
   let inner = bridge g Fwd seq.concl in
   (* wrap: fun HL A.. HAne.. => inner (converted (HL A.. HAne..)) *)
@@ -788,7 +822,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
 (* typing lemma of a generated literal definition: forall A..:set, A <> Empty -> .. -> hl_c A.. :e L[sigma] *)
 (* the rewrites converting native carriers of translated type definitions back to hl_ty_T *)
 let carrier_conv (stmt_native : Mg.tm) : string =
-  let tys = Hashtbl.fold (fun t nat acc -> if replace_tm nat (Mg.Var "u") stmt_native <> stmt_native then t :: acc else acc) L.tydef_native [] in
+  let tys = Hashtbl.fold (fun t nat acc -> if replace_tm nat (Mg.Var "hl__u") stmt_native <> stmt_native then t :: acc else acc) L.tydef_native [] in
   String.concat "" (List.map (fun t -> Printf.sprintf "rewrite <- hl_ty_%s_native. " (E.sanitize_var t)) (List.sort compare tys))
 
 (* typing lemmas of a generated literal definition, in the literal-carrier form (_in_lit, proved
