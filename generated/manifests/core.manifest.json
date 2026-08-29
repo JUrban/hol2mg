@@ -41086,9 +41086,9 @@
    "source": "!l1:A list. !l2:B list. LENGTH l1 = LENGTH l2 ==> LENGTH (ZIP l1 l2) = LENGTH l2",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> seq_len (seq_zip l1 l2) = seq_len l2",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, hl_LENGTH A l1 = hl_LENGTH B l2 -> hl_LENGTH (A :*: B) (hl_ZIP A B l1 l2) = hl_LENGTH B l2",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ZIP_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LENGTH_ZIP_bridge"
   },
   {
    "name": "LET_ADD2",
@@ -43326,9 +43326,9 @@
    "source": "!l1:A list. !l2:B list. LENGTH l1 = LENGTH l2 ==> MAP FST (ZIP l1 l2) = l1",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> seq_map (fun x:set => x 0) (seq_zip l1 l2) = l1",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, hl_LENGTH A l1 = hl_LENGTH B l2 -> hl_MAP (A :*: B) A (hl_FST A B) (hl_ZIP A B l1 l2) = l1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ZIP_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_FST_ZIP_bridge"
   },
   {
    "name": "MAP_I",
@@ -43471,9 +43471,9 @@
    "source": "!l1:A list. !l2:B list. LENGTH l1 = LENGTH l2 ==> MAP SND (ZIP l1 l2) = l2",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> seq_map (fun x:set => x 1) (seq_zip l1 l2) = l2",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, hl_LENGTH A l1 = hl_LENGTH B l2 -> hl_MAP (A :*: B) B (hl_SND A B) (hl_ZIP A B l1 l2) = l2",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ZIP_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_SND_ZIP_bridge"
   },
   {
    "name": "MAP_o",
@@ -79218,7 +79218,7 @@
    "statement": "forall A B:set, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_zip seq_nil seq_nil = seq_nil /\\ seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, hl_ZIP A B (hl_NIL A) (hl_NIL B) = hl_NIL (A :*: B) /\\ hl_ZIP A B (hl_CONS A h1 t1) (hl_CONS B h2 t2) = hl_CONS (A :*: B) (hl_pair A B h1 h2) (hl_ZIP A B t1 t2)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ZIP_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition seq_len seq_nil = seq_len seq_nil not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -79252,7 +79252,7 @@
    "statement": "forall A B:set, B <> Empty -> forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, seq_zip seq_nil l2 = seq_nil /\\ seq_zip (seq_cons h1 t1) l2 = seq_cons (h1,seq_hd l2) (seq_zip t1 (seq_tl l2))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, hl_ZIP A B (hl_NIL A) l2 = hl_NIL (A :*: B) /\\ hl_ZIP A B (hl_CONS A h1 t1) l2 = hl_CONS (A :*: B) (hl_pair A B h1 (hl_HD B l2)) (hl_ZIP A B t1 (hl_TL B l2))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ZIP_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition seq_len seq_nil = seq_len l2 not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2282
+  "native_certified": 2285
  }
 }
