@@ -21061,7 +21061,7 @@
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_HD A (hl_REVERSE A l) = hl_LAST A l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition ~ seq_rev l = seq_nil not available from hypotheses [hyps: ~ l = seq_nil]",
    "bridge": ""
   },
   {
@@ -40280,7 +40280,7 @@
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LAST A (hl_REVERSE A l) = hl_HD A l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition ~ seq_rev l = seq_nil not available from hypotheses [hyps: ~ l = seq_nil]",
    "bridge": ""
   },
   {
@@ -40791,7 +40791,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_len l = n <-> l = seq_mk n (fun i:set => seq_nth l i)",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, hl_LENGTH A l = n <-> l = hl_list_of_seq A (fun i :e omega => hl_EL A i l) n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -40877,9 +40877,9 @@
    "source": "!s:num->A. !n:num. LENGTH (list_of_seq s n) = n",
    "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall n :e omega, seq_len (seq_mk n s) = n",
    "literal": "forall A:set, A <> Empty -> forall s :e A :^: omega, forall n :e omega, hl_LENGTH A (hl_list_of_seq A s n) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LENGTH_LIST_OF_SEQ_bridge"
   },
   {
    "name": "LENGTH_LIST_OF_SET",
@@ -41026,9 +41026,9 @@
    "source": "!l:A list. LENGTH (REVERSE l) = LENGTH l",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_len (seq_rev l) = seq_len l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_LENGTH A (hl_REVERSE A l) = hl_LENGTH A l",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LENGTH_REVERSE_bridge"
   },
   {
    "name": "LENGTH_TL",
@@ -42069,9 +42069,9 @@
    "source": "(!f:num->A. list_of_seq f 0 = NIL) /\\ (!f:num->A. !n:num. list_of_seq f (SUC n) = f 0 CONS list_of_seq (f o SUC) n)",
    "statement": "forall A:set, A <> Empty -> (forall f:set -> set, (forall x :e omega, f x :e A) -> seq_mk 0 f = seq_nil) /\\ forall f:set -> set, (forall x :e omega, f x :e A) -> forall n :e omega, seq_mk (ordsucc n) f = seq_cons (f 0) (seq_mk n (fun x:set => f (ordsucc x)))",
    "literal": "forall A:set, A <> Empty -> (forall f :e A :^: omega, hl_list_of_seq A f (hl_NUMERAL hl_zero) = hl_NIL A) /\\ forall f :e A :^: omega, forall n :e omega, hl_list_of_seq A f (hl_SUC n) = hl_CONS A (f (hl_NUMERAL hl_zero)) (hl_list_of_seq A (hl_o omega A omega f hl_SUC) n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LIST_OF_SEQ_bridge"
   },
   {
    "name": "LIST_OF_SEQ_EQ_NIL",
@@ -42097,9 +42097,9 @@
    "source": "!s:num->A. !n:num. list_of_seq s n = NIL <=> n = 0",
    "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall n :e omega, seq_mk n s = seq_nil <-> n = 0",
    "literal": "forall A:set, A <> Empty -> forall s :e A :^: omega, forall n :e omega, hl_list_of_seq A s n = hl_NIL A <-> n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LIST_OF_SEQ_EQ_NIL_bridge"
   },
   {
    "name": "LIST_OF_SEQ_EQ_SELF",
@@ -42127,7 +42127,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_mk (seq_len l) (fun i:set => seq_nth l i) = l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_list_of_seq A (fun i :e omega => hl_EL A i l) (hl_LENGTH A l) = l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -43414,9 +43414,9 @@
    "source": "!f:num->A. !g:A->B. !n:num. MAP g (list_of_seq f n) = list_of_seq (g o f) n",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e omega, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall n :e omega, seq_map g (seq_mk n f) = seq_mk n (fun x:set => g (f x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e A :^: omega, forall g :e B :^: A, forall n :e omega, hl_MAP A B g (hl_list_of_seq A f n) = hl_list_of_seq B (hl_o A B omega g f) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_LIST_OF_SEQ_bridge"
   },
   {
    "name": "MAP_REVERSE",
@@ -43441,9 +43441,9 @@
    "source": "!f:A->B. !l:A list. REVERSE (MAP f l) = MAP f (REVERSE l)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_rev (seq_map f l) = seq_map f (seq_rev l)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l :e finseq A, hl_REVERSE B (hl_MAP A B f l) = hl_MAP A B f (hl_REVERSE A l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_REVERSE_bridge"
   },
   {
    "name": "MAP_SND_ZIP",
@@ -68217,9 +68217,9 @@
    "source": "REVERSE NIL = NIL /\\ REVERSE (x CONS l) = REVERSE l APPEND x CONS NIL",
    "statement": "forall A:set, forall x :e A, forall l :e finseq A, seq_rev seq_nil = seq_nil /\\ seq_rev (seq_cons x l) = seq_append (seq_rev l) (seq_cons x seq_nil)",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall l :e finseq A, hl_REVERSE A (hl_NIL A) = hl_NIL A /\\ hl_REVERSE A (hl_CONS A x l) = hl_APPEND A (hl_REVERSE A l) (hl_CONS A x (hl_NIL A))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REVERSE_bridge"
   },
   {
    "name": "REVERSE_APPEND",
@@ -68244,9 +68244,9 @@
    "source": "!l:A list. !m:A list. REVERSE (l APPEND m) = REVERSE m APPEND REVERSE l",
    "statement": "forall A:set, A <> Empty -> forall l m :e finseq A, seq_rev (seq_append l m) = seq_append (seq_rev m) (seq_rev l)",
    "literal": "forall A:set, A <> Empty -> forall l m :e finseq A, hl_REVERSE A (hl_APPEND A l m) = hl_APPEND A (hl_REVERSE A m) (hl_REVERSE A l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REVERSE_APPEND_bridge"
   },
   {
    "name": "REVERSE_EQ_EMPTY",
@@ -68271,9 +68271,9 @@
    "source": "!l:A list. REVERSE l = NIL <=> l = NIL",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_rev l = seq_nil <-> l = seq_nil",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_REVERSE A l = hl_NIL A <-> l = hl_NIL A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REVERSE_EQ_EMPTY_bridge"
   },
   {
    "name": "REVERSE_REVERSE",
@@ -68298,9 +68298,9 @@
    "source": "!l:A list. REVERSE (REVERSE l) = l",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_rev (seq_rev l) = l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_REVERSE A (hl_REVERSE A l) = l",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REVERSE_REVERSE_bridge"
   },
   {
    "name": "RIGHT_ADD_DISTRIB",
@@ -81881,9 +81881,9 @@
    "source": "list_of_seq s 0 = NIL /\\ list_of_seq s (SUC n) = list_of_seq s n APPEND s n CONS NIL",
    "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall n :e omega, seq_mk 0 s = seq_nil /\\ seq_mk (ordsucc n) s = seq_append (seq_mk n s) (seq_cons (s n) seq_nil)",
    "literal": "forall A:set, A <> Empty -> forall s :e A :^: omega, forall n :e omega, hl_list_of_seq A s (hl_NUMERAL hl_zero) = hl_NIL A /\\ hl_list_of_seq A s (hl_SUC n) = hl_APPEND A (hl_list_of_seq A s n) (hl_CONS A (s n) (hl_NIL A))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_seq_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "list_of_seq_bridge"
   },
   {
    "name": "list_of_set",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2267
+  "native_certified": 2278
  }
 }

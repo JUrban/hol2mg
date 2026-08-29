@@ -282,10 +282,6 @@ Admitted.
 Theorem hl_num_gcd_compat : forall l1 :e omega :*: omega, hl_num_gcd l1 = gcd_int (l1 0) (l1 1).
 Admitted.
 
-// REVERSE : A list->A list (not in compat.mg)
-Theorem hl_REVERSE_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_REVERSE A l1 = seq_rev l1.
-Admitted.
-
 // INL : A->(A,B)sum (not in compat.mg)
 Theorem hl_INL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, hl_INL A B l1 = Inj0 l1.
 Admitted.
@@ -296,10 +292,6 @@ Admitted.
 
 // INJN : num->num->A->bool (not in compat.mg)
 Theorem hl_INJN_compat : forall A:set, A <> Empty -> hl_INJN A = Empty.
-Admitted.
-
-// list_of_seq : (num->A)->num->A list (not in compat.mg)
-Theorem hl_list_of_seq_compat : forall A:set, A <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e omega, l1 x = f1 x) -> forall l2 :e omega, hl_list_of_seq A l1 l2 = seq_mk l2 f1.
 Admitted.
 
 // NULL : A list->bool (not in compat.mg)

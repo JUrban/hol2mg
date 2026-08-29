@@ -1015,7 +1015,8 @@ source: !l:A list. !m:A list. REVERSE (l APPEND m) = REVERSE m APPEND REVERSE l
 status: transport_required
 statement: forall A:set, A <> Empty -> forall l m :e finseq A, seq_rev (seq_append l m) = seq_append (seq_rev m) (seq_rev l)
 literal: forall A:set, A <> Empty -> forall l m :e finseq A, hl_REVERSE A (hl_APPEND A l m) = hl_APPEND A (hl_REVERSE A m) (hl_REVERSE A l)
-cert_status: bridge_unsupported
+bridge: REVERSE_APPEND_bridge
+cert_status: native_certified
 
 ### ALL_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: 0f6eaa20955e61ecced785b2b67da0a9
