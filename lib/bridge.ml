@@ -1478,7 +1478,23 @@ and bridge g (dir : dir) (t : tm) : string =
             | Bwd -> Printf.sprintf "(imp_trans (%s) (%s) (%s) %s (andER ((%s) -> (%s)) ((%s) -> (%s)) %s))" na la' la inner la la' la' la eu)
        | _ -> unsupported "bridge: ?!")
   | Const ("/\\", _), [ a; b ] ->
-      imp_lemma dir "imp_and" (paren (ltext g a)) (paren (ntext g a)) (paren (ltext g b)) (paren (ntext g b)) (bridge g dir a) (bridge g dir b)
+      (* the native conjuncts of a are hypotheses while bridging b (side conditions of b may use them) *)
+      let la = ltext g a and na = ntext g a and lb = ltext g b and nb = ntext g b in
+      let na_t = nprop g a in
+      let rec conjuncts (t : Mg.tm) (h : string) acc =
+        (match t with
+         | Mg.App (Mg.App (Mg.Cst "and", p), q) -> conjuncts q (Printf.sprintf "(andER %s %s %s)" (ppp p) (ppp q) h) (conjuncts p (Printf.sprintf "(andEL %s %s %s)" (ppp p) (ppp q) h) acc)
+         | _ -> (t, h) :: acc) in
+      let saved = g.hyps in
+      let hn = Printf.sprintf "H__and%d" g.counter in
+      g.counter <- g.counter + 1;
+      let pa = bridge g dir a in
+      g.hyps <- conjuncts na_t hn g.hyps;
+      let pb = (try bridge g dir b with e -> g.hyps <- saved; raise e) in
+      g.hyps <- saved;
+      (match dir with
+       | Fwd -> Printf.sprintf "(imp_and_dep (%s) (%s) (%s) (%s) %s (fun %s : (%s) => %s))" la na lb nb pa hn na pb
+       | Bwd -> Printf.sprintf "(imp_and_dep_bwd (%s) (%s) (%s) (%s) %s (fun %s : (%s) => %s))" la na lb nb pa hn na pb)
   | Const ("\\/", _), [ a; b ] ->
       imp_lemma dir "imp_or" (paren (ltext g a)) (paren (ntext g a)) (paren (ltext g b)) (paren (ntext g b)) (bridge g dir a) (bridge g dir b)
   | Const ("==>", _), [ a; b ] ->

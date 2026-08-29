@@ -960,3 +960,13 @@ let K A F S i. assume Hi. let a. assume Ha. assume HS.
 apply (iff_eq1_l ((fun i :e K => F i) i a) (F i a) (f_equal (fun u => u a) ((fun i :e K => F i) i) (F i) (beta K (fun i => F i) i Hi)) (a :e S)).
 exact (HS (fun hl__u hl__v => F i a = 1 <-> a :e hl__u) (hl_rep_iff A (F i) a Ha)).
 Qed.
+
+// ---- conjunctions whose later conjunct may use the earlier one (side conditions) ----
+Theorem imp_and_dep : forall a a' b b':prop, (a -> a') -> (a' -> b -> b') -> a /\ b -> a' /\ b'.
+let a a' b b'. assume Ha Hb H. apply H. assume H1 H2.
+claim H1': a'. { exact (Ha H1). }
+exact (andI a' b' H1' (Hb H1' H2)).
+Qed.
+Theorem imp_and_dep_bwd : forall a a' b b':prop, (a' -> a) -> (a' -> b' -> b) -> a' /\ b' -> a /\ b.
+let a a' b b'. assume Ha Hb H. apply H. assume H1 H2. exact (andI a b (Ha H1) (Hb H1 H2)).
+Qed.

@@ -1024,7 +1024,7 @@
    "statement": "forall A B:set, B <> Empty -> forall P:set -> set -> prop, forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, (seq_all2 P seq_nil l2 <-> l2 = seq_nil) /\\ (seq_all2 P (seq_cons h1 t1) l2 <-> (l2 = seq_nil -> False) /\\ (~ l2 = seq_nil -> P h1 (seq_hd l2) /\\ seq_all2 P t1 (seq_tl l2)))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, (hl_ALL2 A B P (hl_NIL A) l2 = 1 <-> l2 = hl_NIL B) /\\ (hl_ALL2 A B P (hl_CONS A h1 t1) l2 = 1 <-> l2 = hl_NIL B /\\ False \\/ ~ l2 = hl_NIL B /\\ (P h1 (hl_HD B l2) = 1 /\\ hl_ALL2 A B P t1 (hl_TL B l2) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition ~ l2 = seq_nil not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: side condition ~ l2 = seq_nil not available from hypotheses [hyps: seq_all2 P seq_nil l2 <-> l2 = seq_nil]",
    "bridge": ""
   },
   {
@@ -2365,7 +2365,7 @@
    "statement": "0 = 0 /\\ 0 = 0 /\\ ((forall n :e omega, ordsucc n = ordsucc n) /\\ (1 = 1 /\\ ((forall n :e omega, ordsucc (2 * n) = 2 * n + 1) /\\ (forall n :e omega, ordsucc (2 * n + 1) = 2 * ordsucc n))) /\\ ((forall n :e omega, nat_pred n = nat_pred n) /\\ (nat_pred 0 = 0 /\\ ((forall n :e omega, nat_pred (2 * n) = if n = 0 then 0 else 2 * nat_pred n + 1) /\\ (forall n :e omega, nat_pred (2 * n + 1) = 2 * n))) /\\ ((forall m n :e omega, m + n = m + n) /\\ (0 = 0 /\\ ((forall n :e omega, 0 + 2 * n = 2 * n) /\\ ((forall n :e omega, 0 + 2 * n + 1 = 2 * n + 1) /\\ ((forall n :e omega, 2 * n + 0 = 2 * n) /\\ ((forall n :e omega, (2 * n + 1) + 0 = 2 * n + 1) /\\ ((forall m n :e omega, 2 * m + 2 * n = 2 * (m + n)) /\\ ((forall m n :e omega, 2 * m + 2 * n + 1 = 2 * (m + n) + 1) /\\ ((forall m n :e omega, (2 * m + 1) + 2 * n = 2 * (m + n) + 1) /\\ (forall m n :e omega, (2 * m + 1) + 2 * n + 1 = 2 * ordsucc (m + n)))))))))) /\\ ((forall m n :e omega, m * n = m * n) /\\ (0 = 0 /\\ ((forall n :e omega, 0 * 2 * n = 0) /\\ ((forall n :e omega, 0 * (2 * n + 1) = 0) /\\ ((forall n :e omega, (2 * n) * 0 = 0) /\\ ((forall n :e omega, (2 * n + 1) * 0 = 0) /\\ ((forall m n :e omega, (2 * m) * 2 * n = 2 * 2 * m * n) /\\ ((forall m n :e omega, (2 * m) * (2 * n + 1) = 2 * m + 2 * 2 * m * n) /\\ ((forall m n :e omega, (2 * m + 1) * 2 * n = 2 * n + 2 * 2 * m * n) /\\ (forall m n :e omega, (2 * m + 1) * (2 * n + 1) = (2 * m + 1) + 2 * n + 2 * 2 * m * n))))))))) /\\ ((forall m n :e omega, m ^ n = m ^ n) /\\ (0 ^ 0 = 1 /\\ ((forall m :e omega, (2 * m) ^ 0 = 1) /\\ ((forall m :e omega, (2 * m + 1) ^ 0 = 1) /\\ ((forall n :e omega, 0 ^ (2 * n) = 0 ^ n * 0 ^ n) /\\ ((forall m n :e omega, (2 * m) ^ (2 * n) = (2 * m) ^ n * (2 * m) ^ n) /\\ ((forall m n :e omega, (2 * m + 1) ^ (2 * n) = (2 * m + 1) ^ n * (2 * m + 1) ^ n) /\\ ((forall n :e omega, 0 ^ (2 * n + 1) = 0) /\\ ((forall m n :e omega, (2 * m) ^ (2 * n + 1) = (2 * m) * (2 * m) ^ n * (2 * m) ^ n) /\\ (forall m n :e omega, (2 * m + 1) ^ (2 * n + 1) = (2 * m + 1) * (2 * m + 1) ^ n * (2 * m + 1) ^ n))))))))) /\\ ((forall n :e omega, even_nat n <-> even_nat n) /\\ ((even_nat 0 <-> True) /\\ ((forall n :e omega, even_nat (2 * n) <-> True) /\\ (forall n :e omega, even_nat (2 * n + 1) <-> False))) /\\ ((forall n :e omega, odd_nat n <-> odd_nat n) /\\ ((odd_nat 0 <-> False) /\\ ((forall n :e omega, odd_nat (2 * n) <-> False) /\\ (forall n :e omega, odd_nat (2 * n + 1) <-> True))) /\\ ((forall m n :e omega, m = n <-> m = n) /\\ ((0 = 0 <-> True) /\\ ((forall n :e omega, 2 * n = 0 <-> n = 0) /\\ ((forall n :e omega, 2 * n + 1 = 0 <-> False) /\\ ((forall n :e omega, 0 = 2 * n <-> 0 = n) /\\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\\ (forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n))))))))) /\\ ((forall m n :e omega, m <= n <-> m <= n) /\\ ((0 <= 0 <-> True) /\\ ((forall n :e omega, 2 * n <= 0 <-> n <= 0) /\\ ((forall n :e omega, 2 * n + 1 <= 0 <-> False) /\\ ((forall n :e omega, 0 <= 2 * n <-> True) /\\ ((forall n :e omega, 0 <= 2 * n + 1 <-> True) /\\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\\ (forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n))))))))) /\\ ((forall m n :e omega, m < n <-> m < n) /\\ ((0 < 0 <-> False) /\\ ((forall n :e omega, 2 * n < 0 <-> False) /\\ ((forall n :e omega, 2 * n + 1 < 0 <-> False) /\\ ((forall n :e omega, 0 < 2 * n <-> 0 < n) /\\ ((forall n :e omega, 0 < 2 * n + 1 <-> True) /\\ ((forall m n :e omega, 2 * m < 2 * n <-> m < n) /\\ ((forall m n :e omega, 2 * m < 2 * n + 1 <-> m <= n) /\\ ((forall m n :e omega, 2 * m + 1 < 2 * n <-> m < n) /\\ (forall m n :e omega, 2 * m + 1 < 2 * n + 1 <-> m < n))))))))) /\\ ((forall m n :e omega, m <= n <-> m <= n) /\\ (0 <= 0 /\\ ((forall n :e omega, 2 * n <= 0 <-> n <= 0) /\\ ((forall n :e omega, ~ 2 * n + 1 <= 0) /\\ ((forall n :e omega, 0 <= 2 * n) /\\ ((forall n :e omega, 0 <= 2 * n + 1) /\\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\\ (forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n))))))))) /\\ ((forall m n :e omega, m < n <-> m < n) /\\ (~ 0 < 0 /\\ ((forall n :e omega, ~ 2 * n < 0) /\\ ((forall n :e omega, ~ 2 * n + 1 < 0) /\\ ((forall n :e omega, 0 < 2 * n <-> 0 < n) /\\ ((forall n :e omega, 0 < 2 * n + 1) /\\ ((forall m n :e omega, 2 * m < 2 * n <-> m < n) /\\ ((forall m n :e omega, 2 * m < 2 * n + 1 <-> m <= n) /\\ ((forall m n :e omega, 2 * m + 1 < 2 * n <-> m < n) /\\ (forall m n :e omega, 2 * m + 1 < 2 * n + 1 <-> m < n))))))))) /\\ ((forall m n :e omega, minus_nat m n = minus_nat m n) /\\ (minus_nat 0 0 = 0 /\\ ((forall n :e omega, minus_nat 0 (2 * n) = 0) /\\ ((forall n :e omega, minus_nat 0 (2 * n + 1) = 0) /\\ ((forall n :e omega, minus_nat (2 * n) 0 = 2 * n) /\\ ((forall n :e omega, minus_nat (2 * n + 1) 0 = 2 * n + 1) /\\ ((forall m n :e omega, minus_nat (2 * m) (2 * n) = 2 * minus_nat m n) /\\ ((forall m n :e omega, minus_nat (2 * m) (2 * n + 1) = nat_pred (2 * minus_nat m n)) /\\ ((forall m n :e omega, minus_nat (2 * m + 1) (2 * n) = if n <= m then 2 * minus_nat m n + 1 else 0) /\\ forall m n :e omega, minus_nat (2 * m + 1) (2 * n + 1) = 2 * minus_nat m n)))))))))))))))))))))",
    "literal": "hl_NUMERAL (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\\ hl_BIT0 hl_zero = hl_zero /\\ ((forall n :e omega, hl_SUC (hl_NUMERAL n) = hl_NUMERAL (hl_SUC n)) /\\ (hl_SUC hl_zero = hl_BIT1 hl_zero /\\ ((forall n :e omega, hl_SUC (hl_BIT0 n) = hl_BIT1 n) /\\ (forall n :e omega, hl_SUC (hl_BIT1 n) = hl_BIT0 (hl_SUC n)))) /\\ ((forall n :e omega, hl_PRE (hl_NUMERAL n) = hl_NUMERAL (hl_PRE n)) /\\ (hl_PRE hl_zero = hl_zero /\\ ((forall n :e omega, hl_PRE (hl_BIT0 n) = hl_COND omega (if n = hl_zero then 1 else 0) hl_zero (hl_BIT1 (hl_PRE n))) /\\ (forall n :e omega, hl_PRE (hl_BIT1 n) = hl_BIT0 n))) /\\ ((forall m n :e omega, hl_add (hl_NUMERAL m) (hl_NUMERAL n) = hl_NUMERAL (hl_add m n)) /\\ (hl_add hl_zero hl_zero = hl_zero /\\ ((forall n :e omega, hl_add hl_zero (hl_BIT0 n) = hl_BIT0 n) /\\ ((forall n :e omega, hl_add hl_zero (hl_BIT1 n) = hl_BIT1 n) /\\ ((forall n :e omega, hl_add (hl_BIT0 n) hl_zero = hl_BIT0 n) /\\ ((forall n :e omega, hl_add (hl_BIT1 n) hl_zero = hl_BIT1 n) /\\ ((forall m n :e omega, hl_add (hl_BIT0 m) (hl_BIT0 n) = hl_BIT0 (hl_add m n)) /\\ ((forall m n :e omega, hl_add (hl_BIT0 m) (hl_BIT1 n) = hl_BIT1 (hl_add m n)) /\\ ((forall m n :e omega, hl_add (hl_BIT1 m) (hl_BIT0 n) = hl_BIT1 (hl_add m n)) /\\ (forall m n :e omega, hl_add (hl_BIT1 m) (hl_BIT1 n) = hl_BIT0 (hl_SUC (hl_add m n))))))))))) /\\ ((forall m n :e omega, hl_mul (hl_NUMERAL m) (hl_NUMERAL n) = hl_NUMERAL (hl_mul m n)) /\\ (hl_mul hl_zero hl_zero = hl_zero /\\ ((forall n :e omega, hl_mul hl_zero (hl_BIT0 n) = hl_zero) /\\ ((forall n :e omega, hl_mul hl_zero (hl_BIT1 n) = hl_zero) /\\ ((forall n :e omega, hl_mul (hl_BIT0 n) hl_zero = hl_zero) /\\ ((forall n :e omega, hl_mul (hl_BIT1 n) hl_zero = hl_zero) /\\ ((forall m n :e omega, hl_mul (hl_BIT0 m) (hl_BIT0 n) = hl_BIT0 (hl_BIT0 (hl_mul m n))) /\\ ((forall m n :e omega, hl_mul (hl_BIT0 m) (hl_BIT1 n) = hl_add (hl_BIT0 m) (hl_BIT0 (hl_BIT0 (hl_mul m n)))) /\\ ((forall m n :e omega, hl_mul (hl_BIT1 m) (hl_BIT0 n) = hl_add (hl_BIT0 n) (hl_BIT0 (hl_BIT0 (hl_mul m n)))) /\\ (forall m n :e omega, hl_mul (hl_BIT1 m) (hl_BIT1 n) = hl_add (hl_BIT1 m) (hl_add (hl_BIT0 n) (hl_BIT0 (hl_BIT0 (hl_mul m n))))))))))))) /\\ ((forall m n :e omega, hl_EXP (hl_NUMERAL m) (hl_NUMERAL n) = hl_NUMERAL (hl_EXP m n)) /\\ (hl_EXP hl_zero hl_zero = hl_BIT1 hl_zero /\\ ((forall m :e omega, hl_EXP (hl_BIT0 m) hl_zero = hl_BIT1 hl_zero) /\\ ((forall m :e omega, hl_EXP (hl_BIT1 m) hl_zero = hl_BIT1 hl_zero) /\\ ((forall n :e omega, hl_EXP hl_zero (hl_BIT0 n) = hl_mul (hl_EXP hl_zero n) (hl_EXP hl_zero n)) /\\ ((forall m n :e omega, hl_EXP (hl_BIT0 m) (hl_BIT0 n) = hl_mul (hl_EXP (hl_BIT0 m) n) (hl_EXP (hl_BIT0 m) n)) /\\ ((forall m n :e omega, hl_EXP (hl_BIT1 m) (hl_BIT0 n) = hl_mul (hl_EXP (hl_BIT1 m) n) (hl_EXP (hl_BIT1 m) n)) /\\ ((forall n :e omega, hl_EXP hl_zero (hl_BIT1 n) = hl_zero) /\\ ((forall m n :e omega, hl_EXP (hl_BIT0 m) (hl_BIT1 n) = hl_mul (hl_BIT0 m) (hl_mul (hl_EXP (hl_BIT0 m) n) (hl_EXP (hl_BIT0 m) n))) /\\ (forall m n :e omega, hl_EXP (hl_BIT1 m) (hl_BIT1 n) = hl_mul (hl_BIT1 m) (hl_mul (hl_EXP (hl_BIT1 m) n) (hl_EXP (hl_BIT1 m) n))))))))))) /\\ ((forall n :e omega, hl_EVEN (hl_NUMERAL n) = 1 <-> hl_EVEN n = 1) /\\ ((hl_EVEN hl_zero = 1 <-> True) /\\ ((forall n :e omega, hl_EVEN (hl_BIT0 n) = 1 <-> True) /\\ (forall n :e omega, hl_EVEN (hl_BIT1 n) = 1 <-> False))) /\\ ((forall n :e omega, hl_ODD (hl_NUMERAL n) = 1 <-> hl_ODD n = 1) /\\ ((hl_ODD hl_zero = 1 <-> False) /\\ ((forall n :e omega, hl_ODD (hl_BIT0 n) = 1 <-> False) /\\ (forall n :e omega, hl_ODD (hl_BIT1 n) = 1 <-> True))) /\\ ((forall m n :e omega, hl_NUMERAL m = hl_NUMERAL n <-> m = n) /\\ ((hl_zero = hl_zero <-> True) /\\ ((forall n :e omega, hl_BIT0 n = hl_zero <-> n = hl_zero) /\\ ((forall n :e omega, hl_BIT1 n = hl_zero <-> False) /\\ ((forall n :e omega, hl_zero = hl_BIT0 n <-> hl_zero = n) /\\ ((forall n :e omega, hl_zero = hl_BIT1 n <-> False) /\\ ((forall m n :e omega, hl_BIT0 m = hl_BIT0 n <-> m = n) /\\ ((forall m n :e omega, hl_BIT0 m = hl_BIT1 n <-> False) /\\ ((forall m n :e omega, hl_BIT1 m = hl_BIT0 n <-> False) /\\ (forall m n :e omega, hl_BIT1 m = hl_BIT1 n <-> m = n))))))))) /\\ ((forall m n :e omega, hl_le (hl_NUMERAL m) (hl_NUMERAL n) = 1 <-> hl_le m n = 1) /\\ ((hl_le hl_zero hl_zero = 1 <-> True) /\\ ((forall n :e omega, hl_le (hl_BIT0 n) hl_zero = 1 <-> hl_le n hl_zero = 1) /\\ ((forall n :e omega, hl_le (hl_BIT1 n) hl_zero = 1 <-> False) /\\ ((forall n :e omega, hl_le hl_zero (hl_BIT0 n) = 1 <-> True) /\\ ((forall n :e omega, hl_le hl_zero (hl_BIT1 n) = 1 <-> True) /\\ ((forall m n :e omega, hl_le (hl_BIT0 m) (hl_BIT0 n) = 1 <-> hl_le m n = 1) /\\ ((forall m n :e omega, hl_le (hl_BIT0 m) (hl_BIT1 n) = 1 <-> hl_le m n = 1) /\\ ((forall m n :e omega, hl_le (hl_BIT1 m) (hl_BIT0 n) = 1 <-> hl_lt m n = 1) /\\ (forall m n :e omega, hl_le (hl_BIT1 m) (hl_BIT1 n) = 1 <-> hl_le m n = 1))))))))) /\\ ((forall m n :e omega, hl_lt (hl_NUMERAL m) (hl_NUMERAL n) = 1 <-> hl_lt m n = 1) /\\ ((hl_lt hl_zero hl_zero = 1 <-> False) /\\ ((forall n :e omega, hl_lt (hl_BIT0 n) hl_zero = 1 <-> False) /\\ ((forall n :e omega, hl_lt (hl_BIT1 n) hl_zero = 1 <-> False) /\\ ((forall n :e omega, hl_lt hl_zero (hl_BIT0 n) = 1 <-> hl_lt hl_zero n = 1) /\\ ((forall n :e omega, hl_lt hl_zero (hl_BIT1 n) = 1 <-> True) /\\ ((forall m n :e omega, hl_lt (hl_BIT0 m) (hl_BIT0 n) = 1 <-> hl_lt m n = 1) /\\ ((forall m n :e omega, hl_lt (hl_BIT0 m) (hl_BIT1 n) = 1 <-> hl_le m n = 1) /\\ ((forall m n :e omega, hl_lt (hl_BIT1 m) (hl_BIT0 n) = 1 <-> hl_lt m n = 1) /\\ (forall m n :e omega, hl_lt (hl_BIT1 m) (hl_BIT1 n) = 1 <-> hl_lt m n = 1))))))))) /\\ ((forall m n :e omega, hl_ge (hl_NUMERAL n) (hl_NUMERAL m) = 1 <-> hl_ge n m = 1) /\\ (hl_ge hl_zero hl_zero = 1 /\\ ((forall n :e omega, hl_ge hl_zero (hl_BIT0 n) = 1 <-> hl_ge hl_zero n = 1) /\\ ((forall n :e omega, ~ hl_ge hl_zero (hl_BIT1 n) = 1) /\\ ((forall n :e omega, hl_ge (hl_BIT0 n) hl_zero = 1) /\\ ((forall n :e omega, hl_ge (hl_BIT1 n) hl_zero = 1) /\\ ((forall m n :e omega, hl_ge (hl_BIT0 n) (hl_BIT0 m) = 1 <-> hl_ge n m = 1) /\\ ((forall m n :e omega, hl_ge (hl_BIT1 n) (hl_BIT0 m) = 1 <-> hl_ge n m = 1) /\\ ((forall m n :e omega, hl_ge (hl_BIT0 n) (hl_BIT1 m) = 1 <-> hl_gt n m = 1) /\\ (forall m n :e omega, hl_ge (hl_BIT1 n) (hl_BIT1 m) = 1 <-> hl_ge n m = 1))))))))) /\\ ((forall m n :e omega, hl_gt (hl_NUMERAL n) (hl_NUMERAL m) = 1 <-> hl_gt n m = 1) /\\ (~ hl_gt hl_zero hl_zero = 1 /\\ ((forall n :e omega, ~ hl_gt hl_zero (hl_BIT0 n) = 1) /\\ ((forall n :e omega, ~ hl_gt hl_zero (hl_BIT1 n) = 1) /\\ ((forall n :e omega, hl_gt (hl_BIT0 n) hl_zero = 1 <-> hl_gt n hl_zero = 1) /\\ ((forall n :e omega, hl_gt (hl_BIT1 n) hl_zero = 1) /\\ ((forall m n :e omega, hl_gt (hl_BIT0 n) (hl_BIT0 m) = 1 <-> hl_gt n m = 1) /\\ ((forall m n :e omega, hl_gt (hl_BIT1 n) (hl_BIT0 m) = 1 <-> hl_ge n m = 1) /\\ ((forall m n :e omega, hl_gt (hl_BIT0 n) (hl_BIT1 m) = 1 <-> hl_gt n m = 1) /\\ (forall m n :e omega, hl_gt (hl_BIT1 n) (hl_BIT1 m) = 1 <-> hl_gt n m = 1))))))))) /\\ ((forall m n :e omega, hl_sub (hl_NUMERAL m) (hl_NUMERAL n) = hl_NUMERAL (hl_sub m n)) /\\ (hl_sub hl_zero hl_zero = hl_zero /\\ ((forall n :e omega, hl_sub hl_zero (hl_BIT0 n) = hl_zero) /\\ ((forall n :e omega, hl_sub hl_zero (hl_BIT1 n) = hl_zero) /\\ ((forall n :e omega, hl_sub (hl_BIT0 n) hl_zero = hl_BIT0 n) /\\ ((forall n :e omega, hl_sub (hl_BIT1 n) hl_zero = hl_BIT1 n) /\\ ((forall m n :e omega, hl_sub (hl_BIT0 m) (hl_BIT0 n) = hl_BIT0 (hl_sub m n)) /\\ ((forall m n :e omega, hl_sub (hl_BIT0 m) (hl_BIT1 n) = hl_PRE (hl_BIT0 (hl_sub m n))) /\\ ((forall m n :e omega, hl_sub (hl_BIT1 m) (hl_BIT0 n) = hl_COND omega (hl_le n m) (hl_BIT1 (hl_sub m n)) hl_zero) /\\ forall m n :e omega, hl_sub (hl_BIT1 m) (hl_BIT1 n) = hl_BIT0 (hl_sub m n))))))))))))))))))))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native (2 * m + 1) * hl_mul (hl_EXP (2 * m + 1) n) (hl_EXP (2 * m + 1) n) differs from elaborated (2 * m + 1) * (2 * m + 1) ^ n * (2 * m + 1) ^ n",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native (2 * m) * hl_mul (hl_EXP (2 * m) n) (hl_EXP (2 * m) n) differs from elaborated (2 * m) * (2 * m) ^ n * (2 * m) ^ n",
    "bridge": ""
   },
   {
@@ -2484,7 +2484,7 @@
    "statement": "(forall m n :e omega, m ^ n = m ^ n) /\\ (0 ^ 0 = 1 /\\ ((forall m :e omega, (2 * m) ^ 0 = 1) /\\ ((forall m :e omega, (2 * m + 1) ^ 0 = 1) /\\ ((forall n :e omega, 0 ^ (2 * n) = 0 ^ n * 0 ^ n) /\\ ((forall m n :e omega, (2 * m) ^ (2 * n) = (2 * m) ^ n * (2 * m) ^ n) /\\ ((forall m n :e omega, (2 * m + 1) ^ (2 * n) = (2 * m + 1) ^ n * (2 * m + 1) ^ n) /\\ ((forall n :e omega, 0 ^ (2 * n + 1) = 0) /\\ ((forall m n :e omega, (2 * m) ^ (2 * n + 1) = (2 * m) * (2 * m) ^ n * (2 * m) ^ n) /\\ forall m n :e omega, (2 * m + 1) ^ (2 * n + 1) = (2 * m + 1) * (2 * m + 1) ^ n * (2 * m + 1) ^ n))))))))",
    "literal": "(forall m n :e omega, hl_EXP (hl_NUMERAL m) (hl_NUMERAL n) = hl_NUMERAL (hl_EXP m n)) /\\ (hl_EXP hl_zero hl_zero = hl_BIT1 hl_zero /\\ ((forall m :e omega, hl_EXP (hl_BIT0 m) hl_zero = hl_BIT1 hl_zero) /\\ ((forall m :e omega, hl_EXP (hl_BIT1 m) hl_zero = hl_BIT1 hl_zero) /\\ ((forall n :e omega, hl_EXP hl_zero (hl_BIT0 n) = hl_mul (hl_EXP hl_zero n) (hl_EXP hl_zero n)) /\\ ((forall m n :e omega, hl_EXP (hl_BIT0 m) (hl_BIT0 n) = hl_mul (hl_EXP (hl_BIT0 m) n) (hl_EXP (hl_BIT0 m) n)) /\\ ((forall m n :e omega, hl_EXP (hl_BIT1 m) (hl_BIT0 n) = hl_mul (hl_EXP (hl_BIT1 m) n) (hl_EXP (hl_BIT1 m) n)) /\\ ((forall n :e omega, hl_EXP hl_zero (hl_BIT1 n) = hl_zero) /\\ ((forall m n :e omega, hl_EXP (hl_BIT0 m) (hl_BIT1 n) = hl_mul (hl_BIT0 m) (hl_mul (hl_EXP (hl_BIT0 m) n) (hl_EXP (hl_BIT0 m) n))) /\\ forall m n :e omega, hl_EXP (hl_BIT1 m) (hl_BIT1 n) = hl_mul (hl_BIT1 m) (hl_mul (hl_EXP (hl_BIT1 m) n) (hl_EXP (hl_BIT1 m) n))))))))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native (2 * m + 1) * hl_mul (hl_EXP (2 * m + 1) n) (hl_EXP (2 * m + 1) n) differs from elaborated (2 * m + 1) * (2 * m + 1) ^ n * (2 * m + 1) ^ n",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native (2 * m) * hl_mul (hl_EXP (2 * m) n) (hl_EXP (2 * m) n) differs from elaborated (2 * m) * (2 * m) ^ n * (2 * m) ^ n",
    "bridge": ""
   },
   {
@@ -2871,7 +2871,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, bij s t f <-> inj s t f /\\ ((forall x :e s, f x :e t) /\\ forall y :e t, exists x :e s, f x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_BIJ A B f s t = 1 <-> hl_INJ A B f s t = 1 /\\ hl_SURJ A B f s t = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_SURJ_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INJ_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -3827,9 +3827,9 @@
    "source": "!s:A->bool. !t:B->bool. FINITE s /\\ FINITE t /\\ CARD s = CARD t ==> (?f:A->B. (!x:A. x IN s ==> f x IN t) /\\ (!y:B. y IN t ==> (?x:A. x IN s /\\ f x = y)) /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\\ (finite t /\\ finite_cardinality s = finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, x :e s -> f x :e t) /\\ ((forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y) /\\ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ hl_CARD A s = hl_CARD B t) -> exists f :e B :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ ((forall y :e B, hl_IN B y t = 1 -> exists x :e A, hl_IN A x s = 1 /\\ f x = y) /\\ forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_EQ_BIJECTION_bridge"
   },
   {
    "name": "CARD_EQ_BIJECTIONS",
@@ -3857,9 +3857,9 @@
    "source": "!s:A->bool. !t:B->bool. FINITE s /\\ FINITE t /\\ CARD s = CARD t ==> (?f:A->B. ?g:B->A. (!x:A. x IN s ==> f x IN t /\\ g (f x) = x) /\\ (!y:B. y IN t ==> g y IN s /\\ f (g y) = y))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\\ (finite t /\\ finite_cardinality s = finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ exists g:set -> set, (forall x :e B, g x :e A) /\\ ((forall x :e A, x :e s -> f x :e t /\\ g (f x) = x) /\\ forall y :e B, y :e t -> g y :e s /\\ f (g y) = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ hl_CARD A s = hl_CARD B t) -> exists f :e B :^: A, exists g :e A :^: B, (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1 /\\ g (f x) = x) /\\ forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1 /\\ f (g y) = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_EQ_BIJECTIONS_bridge"
   },
   {
    "name": "CARD_EQ_BIJECTIONS_SPECIAL",
@@ -3890,9 +3890,9 @@
    "source": "!s:A->bool. !t:B->bool. !a:A. !b:B. FINITE s /\\ FINITE t /\\ CARD s = CARD t /\\ a IN s /\\ b IN t ==> (?f:A->B. ?g:B->A. f a = b /\\ g b = a /\\ (!x:A. x IN s ==> f x IN t /\\ g (f x) = x) /\\ (!y:B. y IN t ==> g y IN s /\\ f (g y) = y))",
    "statement": "forall A B:set, forall s c= A, forall t c= B, forall a :e A, forall b :e B, finite s /\\ (finite t /\\ (finite_cardinality s = finite_cardinality t /\\ (a :e s /\\ b :e t))) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ exists g:set -> set, (forall x :e B, g x :e A) /\\ (f a = b /\\ (g b = a /\\ ((forall x :e A, x :e s -> f x :e t /\\ g (f x) = x) /\\ forall y :e B, y :e t -> g y :e s /\\ f (g y) = y)))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall a :e A, forall b :e B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ (hl_IN A a s = 1 /\\ hl_IN B b t = 1))) -> exists f :e B :^: A, exists g :e A :^: B, f a = b /\\ (g b = a /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1 /\\ g (f x) = x) /\\ forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1 /\\ f (g y) = y))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_EQ_BIJECTIONS_SPECIAL_bridge"
   },
   {
    "name": "CARD_EQ_NSUM",
@@ -4275,9 +4275,9 @@
    "source": "!s:A->bool. FINITE s /\\ CARD s <= 1 <=> (?a:A. s SUBSET a INSERT EMPTY)",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s /\\ finite_cardinality s <= 1 <-> exists a :e A, s c= {a}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1 <-> exists a :e A, hl_SUBSET A s (hl_INSERT A a (hl_EMPTY A)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_LE_1_bridge"
   },
   {
    "name": "CARD_LE_2",
@@ -4401,9 +4401,9 @@
    "source": "!s:A->bool. !t:B->bool. FINITE s /\\ FINITE t /\\ CARD s <= CARD t ==> (?f:A->B. IMAGE f s SUBSET t /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\\ (finite t /\\ finite_cardinality s <= finite_cardinality t) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ ({f x | x :e s} c= t /\\ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ hl_le (hl_CARD A s) (hl_CARD B t) = 1) -> exists f :e B :^: A, hl_SUBSET B (hl_IMAGE A B f s) t = 1 /\\ forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_LE_INJ_bridge"
   },
   {
    "name": "CARD_LE_UNIONS_CHAIN",
@@ -4432,9 +4432,9 @@
    "source": "!f:(A->bool)->bool. !n:num. (!t:A->bool. !u:A->bool. t IN f /\\ u IN f ==> t SUBSET u \\/ u SUBSET t) /\\ (!t:A->bool. t IN f ==> FINITE t /\\ CARD t <= n) ==> FINITE (UNIONS f) /\\ CARD (UNIONS f) <= n",
    "statement": "forall A:set, A <> Empty -> forall f c= Power A, forall n :e omega, (forall t u c= A, t :e f /\\ u :e f -> t c= u \\/ u c= t) /\\ (forall t c= A, t :e f -> finite t /\\ finite_cardinality t <= n) -> finite (Union f) /\\ finite_cardinality (Union f) <= n",
    "literal": "forall A:set, A <> Empty -> forall f :e 2 :^: (2 :^: A), forall n :e omega, (forall t u :e 2 :^: A, hl_IN (2 :^: A) t f = 1 /\\ hl_IN (2 :^: A) u f = 1 -> hl_SUBSET A t u = 1 \\/ hl_SUBSET A u t = 1) /\\ (forall t :e 2 :^: A, hl_IN (2 :^: A) t f = 1 -> hl_FINITE A t = 1 /\\ hl_le (hl_CARD A t) n = 1) -> hl_FINITE A (hl_UNIONS A f) = 1 /\\ hl_le (hl_CARD A (hl_UNIONS A f)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (hl_rep A t) not available from hypotheses [hyps: hl_rep A t :e f]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_LE_UNIONS_CHAIN_bridge"
   },
   {
    "name": "CARD_NUMSEG",
@@ -4739,7 +4739,7 @@
    "statement": "forall A:set, forall a b c= A, a c= b /\\ ~ finite_cardinality a = finite_cardinality b -> a c= b /\\ a <> b",
    "literal": "forall A:set, A <> Empty -> forall a b :e 2 :^: A, hl_SUBSET A a b = 1 /\\ ~ hl_CARD A a = hl_CARD A b -> hl_PSUBSET A a b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite a not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: side condition finite a not available from hypotheses [hyps: a c= b]",
    "bridge": ""
   },
   {
@@ -4863,9 +4863,9 @@
    "source": "!a:A->bool. !b:A->bool. FINITE b /\\ a SUBSET b /\\ CARD a = CARD b ==> a = b",
    "statement": "forall A:set, forall a b c= A, finite b /\\ (a c= b /\\ finite_cardinality a = finite_cardinality b) -> a = b",
    "literal": "forall A:set, A <> Empty -> forall a b :e 2 :^: A, hl_FINITE A b = 1 /\\ (hl_SUBSET A a b = 1 /\\ hl_CARD A a = hl_CARD A b) -> a = b",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite a not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_SUBSET_EQ_bridge"
   },
   {
    "name": "CARD_SUBSET_IMAGE",
@@ -4927,9 +4927,9 @@
    "source": "!a:A->bool. !b:A->bool. FINITE b /\\ a SUBSET b /\\ CARD b <= CARD a ==> a = b",
    "statement": "forall A:set, forall a b c= A, finite b /\\ (a c= b /\\ finite_cardinality b <= finite_cardinality a) -> a = b",
    "literal": "forall A:set, A <> Empty -> forall a b :e 2 :^: A, hl_FINITE A b = 1 /\\ (hl_SUBSET A a b = 1 /\\ hl_le (hl_CARD A b) (hl_CARD A a) = 1) -> a = b",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite b not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_SUBSET_LE_bridge"
   },
   {
    "name": "CARD_UNION",
@@ -5056,7 +5056,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\\ (forall x :e A, x :e s -> finite (t x) /\\ finite_cardinality (t x) <= n) -> finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, hl_HAS_SIZE A s m = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1 /\\ hl_le (hl_CARD B (t x)) n = 1) -> hl_le (hl_CARD B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_115 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_115 (hl_IN A x s) (t x) = 1 then 1 else 0)))) (hl_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (t0 x) not available from hypotheses [hyps: x :e s]",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
    "bridge": ""
   },
   {
@@ -5187,9 +5187,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE s /\\ FINITE t /\\ CARD (s UNION t) < CARD s + CARD t ==> ~(s INTER t = EMPTY)",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s /\\ (finite t /\\ finite_cardinality (s :\\/: t) < finite_cardinality s + finite_cardinality t) -> ~ s :/\\: t = Empty",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE A t = 1 /\\ hl_lt (hl_CARD A (hl_UNION A s t)) (hl_add (hl_CARD A s) (hl_CARD A t)) = 1) -> ~ hl_INTER A s t = hl_EMPTY A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\/: t) not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_UNION_OVERLAP_bridge"
   },
   {
    "name": "CARD_UNION_OVERLAP_EQ",
@@ -5855,9 +5855,9 @@
    "source": "!n:num. !s:A->bool. !u:A->bool. s SUBSET u /\\ FINITE s /\\ CARD s <= n /\\ (FINITE u ==> n <= CARD u) ==> (?t:A->bool. s SUBSET t /\\ t SUBSET u /\\ HAS_SIZE t n)",
    "statement": "forall A:set, A <> Empty -> forall n :e omega, forall s u c= A, s c= u /\\ (finite s /\\ (finite_cardinality s <= n /\\ (finite u -> n <= finite_cardinality u))) -> exists t c= A, s c= t /\\ (t c= u /\\ equip t n)",
    "literal": "forall A:set, A <> Empty -> forall n :e omega, forall s u :e 2 :^: A, hl_SUBSET A s u = 1 /\\ (hl_FINITE A s = 1 /\\ (hl_le (hl_CARD A s) n = 1 /\\ (hl_FINITE A u = 1 -> hl_le n (hl_CARD A u) = 1))) -> exists t :e 2 :^: A, hl_SUBSET A s t = 1 /\\ (hl_SUBSET A t u = 1 /\\ hl_HAS_SIZE A t n = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CHOOSE_SUBSET_BETWEEN_bridge"
   },
   {
    "name": "CHOOSE_SUBSET_EQ",
@@ -12661,7 +12661,7 @@
    "statement": "forall A B C D E:set, B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P Q:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((exists z :e B, z :e {f x | x :e A, P x} /\\ Q z) <-> exists x :e A, P x /\\ Q (f x))) /\\ ((forall P:set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> ((exists z :e C, z :e (\\/_ x :e A, {f x y | y :e B, P x y}) /\\ Q z) <-> exists x :e A, exists y :e B, P x y /\\ Q (f x y))) /\\ ((forall P:set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> ((exists z :e D, z :e (\\/_ w :e A, \\/_ x :e B, {f w x y | y :e C, P w x y}) /\\ Q z) <-> exists w :e A, exists x :e B, exists y :e C, P w x y /\\ Q (f w x y))) /\\ forall P:set -> set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, forall w :e D, f x y z w :e E) -> ((exists z :e E, z :e (\\/_ v :e A, \\/_ w :e B, \\/_ x :e C, {f v w x y | y :e D, P v w x y}) /\\ Q z) <-> exists v :e A, exists w :e B, exists x :e C, exists y :e D, P v w x y /\\ Q (f v w x y))))",
    "literal": "forall A B C D E:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P :e 2 :^: A, forall Q :e 2 :^: B, forall f :e B :^: A, (exists z :e B, hl_IN B z (hl_GSPEC B (fun GEN_PVAR_12 :e B => if exists x :e A, hl_SETSPEC B GEN_PVAR_12 (P x) (f x) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists x :e A, P x = 1 /\\ Q (f x) = 1) /\\ ((forall P :e 2 :^: B :^: A, forall Q :e 2 :^: C, forall f :e C :^: B :^: A, (exists z :e C, hl_IN C z (hl_GSPEC C (fun GEN_PVAR_13 :e C => if exists x :e A, exists y :e B, hl_SETSPEC C GEN_PVAR_13 (P x y) (f x y) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists x :e A, exists y :e B, P x y = 1 /\\ Q (f x y) = 1) /\\ ((forall P :e 2 :^: C :^: B :^: A, forall Q :e 2 :^: D, forall f :e D :^: C :^: B :^: A, (exists z :e D, hl_IN D z (hl_GSPEC D (fun GEN_PVAR_14 :e D => if exists w :e A, exists x :e B, exists y :e C, hl_SETSPEC D GEN_PVAR_14 (P w x y) (f w x y) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists w :e A, exists x :e B, exists y :e C, P w x y = 1 /\\ Q (f w x y) = 1) /\\ forall P :e 2 :^: D :^: C :^: B :^: A, forall Q :e 2 :^: E, forall f :e E :^: D :^: C :^: B :^: A, (exists z :e E, hl_IN E z (hl_GSPEC E (fun GEN_PVAR_15 :e E => if exists v :e A, exists w :e B, exists x :e C, exists y :e D, hl_SETSPEC E GEN_PVAR_15 (P v w x y) (f v w x y) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists v :e A, exists w :e B, exists x :e C, exists y :e D, P v w x y = 1 /\\ Q (f v w x y) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C,D)",
+   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
    "bridge": ""
   },
   {
@@ -13202,9 +13202,9 @@
    "source": "!P:(B->bool)->bool. !f:A->B. !s:A->bool. !n:num. (?t:B->bool. FINITE t /\\ CARD t < n /\\ t SUBSET IMAGE f s /\\ P t) <=> (?t:A->bool. FINITE t /\\ CARD t < n /\\ t SUBSET s /\\ P (IMAGE f t))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\\ (finite_cardinality t < n /\\ (t c= {f x | x :e s} /\\ P t))) <-> exists t c= A, finite t /\\ (finite_cardinality t < n /\\ (t c= s /\\ P {f x | x :e t}))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (exists t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ (hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1))) <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ (hl_SUBSET A t s = 1 /\\ P (hl_IMAGE A B f t) = 1))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite t not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_SMALL_SUBSET_IMAGE_bridge"
   },
   {
    "name": "EXISTS_SMALL_SUBSET_IMAGE_INJ",
@@ -13233,9 +13233,9 @@
    "source": "!P:(B->bool)->bool. !f:A->B. !s:A->bool. !n:num. (?t:B->bool. FINITE t /\\ CARD t < n /\\ t SUBSET IMAGE f s /\\ P t) <=> (?t:A->bool. FINITE t /\\ CARD t < n /\\ t SUBSET s /\\ (!x:A. !y:A. x IN t /\\ y IN t ==> (f x = f y <=> x = y)) /\\ P (IMAGE f t))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (exists t c= B, finite t /\\ (finite_cardinality t < n /\\ (t c= {f x | x :e s} /\\ P t))) <-> exists t c= A, finite t /\\ (finite_cardinality t < n /\\ (t c= s /\\ ((forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)) /\\ P {f x | x :e t})))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (exists t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ (hl_SUBSET B t (hl_IMAGE A B f s) = 1 /\\ P t = 1))) <-> exists t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ (hl_SUBSET A t s = 1 /\\ ((forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)) /\\ P (hl_IMAGE A B f t) = 1)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite t not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_SMALL_SUBSET_IMAGE_INJ_bridge"
   },
   {
    "name": "EXISTS_SUBSET_IMAGE",
@@ -13482,7 +13482,7 @@
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> exists x :e A, P x /\\ forall y :e A, P y -> y = x",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> exists x :e A, P x = 1 /\\ forall y :e A, P y = 1 -> y = x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#7",
+   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#9",
    "bridge": ""
   },
   {
@@ -13590,7 +13590,7 @@
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\\ forall x x' :e A, P x /\\ P x' -> x = x'",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> (exists x :e A, P x = 1) /\\ forall x x' :e A, P x = 1 /\\ P x' = 1 -> x = x'",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#9",
+   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#13",
    "bridge": ""
   },
   {
@@ -14749,9 +14749,9 @@
    "source": "!f:A->B. !s:A->bool. !n:num. FINITE s /\\ CARD s <= n ==> FINITE (IMAGE f s) /\\ CARD (IMAGE f s) <= n",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, finite s /\\ finite_cardinality s <= n -> finite {f x | x :e s} /\\ finite_cardinality {f x | x :e s} <= n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) n = 1 -> hl_FINITE B (hl_IMAGE A B f s) = 1 /\\ hl_le (hl_CARD B (hl_IMAGE A B f s)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_CARD_LE_IMAGE_bridge"
   },
   {
    "name": "FINITE_CARD_LE_SUBSET",
@@ -14782,9 +14782,9 @@
    "source": "!s:A->bool. !t:A->bool. !n:num. s SUBSET t /\\ FINITE t /\\ CARD t <= n ==> FINITE s /\\ CARD s <= n",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, forall n :e omega, s c= t /\\ (finite t /\\ finite_cardinality t <= n) -> finite s /\\ finite_cardinality s <= n",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall n :e omega, hl_SUBSET A s t = 1 /\\ (hl_FINITE A t = 1 /\\ hl_le (hl_CARD A t) n = 1) -> hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite t not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_CARD_LE_SUBSET_bridge"
   },
   {
    "name": "FINITE_CARD_LE_UNION",
@@ -14814,9 +14814,9 @@
    "source": "!s:A->bool. !t:A->bool. !m:num. !n:num. (FINITE s /\\ CARD s <= m) /\\ FINITE t /\\ CARD t <= n ==> FINITE (s UNION t) /\\ CARD (s UNION t) <= m + n",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, forall m n :e omega, finite s /\\ finite_cardinality s <= m /\\ (finite t /\\ finite_cardinality t <= n) -> finite (s :\\/: t) /\\ finite_cardinality (s :\\/: t) <= m + n",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall m n :e omega, hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) m = 1 /\\ (hl_FINITE A t = 1 /\\ hl_le (hl_CARD A t) n = 1) -> hl_FINITE A (hl_UNION A s t) = 1 /\\ hl_le (hl_CARD A (hl_UNION A s t)) (hl_add m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite t not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_CARD_LE_UNION_bridge"
   },
   {
    "name": "FINITE_CARD_LE_UNIONS",
@@ -14847,7 +14847,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, (forall x :e A, x :e s -> finite (t x) /\\ finite_cardinality (t x) <= n) /\\ (finite s /\\ finite_cardinality s <= m) -> finite (Union {t x | x :e A, x :e s}) /\\ finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1 /\\ hl_le (hl_CARD B (t x)) n = 1) /\\ (hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) m = 1) -> hl_FINITE B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_161 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_161 (hl_IN A x s) (t x) = 1 then 1 else 0))) = 1 /\\ hl_le (hl_CARD B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_162 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_162 (hl_IN A x s) (t x) = 1 then 1 else 0)))) (hl_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
    "bridge": ""
   },
   {
@@ -18316,7 +18316,7 @@
    "statement": "forall A B C D E:set, B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P Q:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall z :e B, z :e {f x | x :e A, P x} -> Q z) <-> forall x :e A, P x -> Q (f x))) /\\ ((forall P:set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> ((forall z :e C, z :e (\\/_ x :e A, {f x y | y :e B, P x y}) -> Q z) <-> forall x :e A, forall y :e B, P x y -> Q (f x y))) /\\ ((forall P:set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> ((forall z :e D, z :e (\\/_ w :e A, \\/_ x :e B, {f w x y | y :e C, P w x y}) -> Q z) <-> forall w :e A, forall x :e B, forall y :e C, P w x y -> Q (f w x y))) /\\ forall P:set -> set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, forall w :e D, f x y z w :e E) -> ((forall z :e E, z :e (\\/_ v :e A, \\/_ w :e B, \\/_ x :e C, {f v w x y | y :e D, P v w x y}) -> Q z) <-> forall v :e A, forall w :e B, forall x :e C, forall y :e D, P v w x y -> Q (f v w x y))))",
    "literal": "forall A B C D E:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P :e 2 :^: A, forall Q :e 2 :^: B, forall f :e B :^: A, (forall z :e B, hl_IN B z (hl_GSPEC B (fun GEN_PVAR_8 :e B => if exists x :e A, hl_SETSPEC B GEN_PVAR_8 (P x) (f x) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall x :e A, P x = 1 -> Q (f x) = 1) /\\ ((forall P :e 2 :^: B :^: A, forall Q :e 2 :^: C, forall f :e C :^: B :^: A, (forall z :e C, hl_IN C z (hl_GSPEC C (fun GEN_PVAR_9 :e C => if exists x :e A, exists y :e B, hl_SETSPEC C GEN_PVAR_9 (P x y) (f x y) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall x :e A, forall y :e B, P x y = 1 -> Q (f x y) = 1) /\\ ((forall P :e 2 :^: C :^: B :^: A, forall Q :e 2 :^: D, forall f :e D :^: C :^: B :^: A, (forall z :e D, hl_IN D z (hl_GSPEC D (fun GEN_PVAR_10 :e D => if exists w :e A, exists x :e B, exists y :e C, hl_SETSPEC D GEN_PVAR_10 (P w x y) (f w x y) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall w :e A, forall x :e B, forall y :e C, P w x y = 1 -> Q (f w x y) = 1) /\\ forall P :e 2 :^: D :^: C :^: B :^: A, forall Q :e 2 :^: E, forall f :e E :^: D :^: C :^: B :^: A, (forall z :e E, hl_IN E z (hl_GSPEC E (fun GEN_PVAR_11 :e E => if exists v :e A, exists w :e B, exists x :e C, exists y :e D, hl_SETSPEC E GEN_PVAR_11 (P v w x y) (f v w x y) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall v :e A, forall w :e B, forall x :e C, forall y :e D, P v w x y = 1 -> Q (f v w x y) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C,D)",
+   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
    "bridge": ""
   },
   {
@@ -18808,9 +18808,9 @@
    "source": "!P:(B->bool)->bool. !f:A->B. !s:A->bool. !n:num. (!t:B->bool. FINITE t /\\ CARD t < n /\\ t SUBSET IMAGE f s ==> P t) <=> (!t:A->bool. FINITE t /\\ CARD t < n /\\ t SUBSET s ==> P (IMAGE f t))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\\ (finite_cardinality t < n /\\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\\ (finite_cardinality t < n /\\ t c= s) -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1) -> P t = 1) <-> forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ hl_SUBSET A t s = 1) -> P (hl_IMAGE A B f t) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (hl_rep A t) not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_SMALL_SUBSET_IMAGE_bridge"
   },
   {
    "name": "FORALL_SMALL_SUBSET_IMAGE_INJ",
@@ -18839,9 +18839,9 @@
    "source": "!P:(B->bool)->bool. !f:A->B. !s:A->bool. !n:num. (!t:B->bool. FINITE t /\\ CARD t < n /\\ t SUBSET IMAGE f s ==> P t) <=> (!t:A->bool. FINITE t /\\ CARD t < n /\\ t SUBSET s /\\ (!x:A. !y:A. x IN t /\\ y IN t ==> (f x = f y <=> x = y)) ==> P (IMAGE f t))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall n :e omega, (forall t c= B, finite t /\\ (finite_cardinality t < n /\\ t c= {f x | x :e s}) -> P t) <-> forall t c= A, finite t /\\ (finite_cardinality t < n /\\ (t c= s /\\ (forall x y :e A, x :e t /\\ y :e t -> (f x = f y <-> x = y)))) -> P {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (2 :^: B), forall f :e B :^: A, forall s :e 2 :^: A, forall n :e omega, (forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ (hl_lt (hl_CARD B t) n = 1 /\\ hl_SUBSET B t (hl_IMAGE A B f s) = 1) -> P t = 1) <-> forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ (hl_lt (hl_CARD A t) n = 1 /\\ (hl_SUBSET A t s = 1 /\\ (forall x y :e A, hl_IN A x t = 1 /\\ hl_IN A y t = 1 -> (f x = f y <-> x = y)))) -> P (hl_IMAGE A B f t) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (hl_rep A t) not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_SMALL_SUBSET_IMAGE_INJ_bridge"
   },
   {
    "name": "FORALL_SUBSET_IMAGE",
@@ -19754,9 +19754,9 @@
    "source": "!s:real->bool. !l:real. has_inf s l <=> ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> b <= x) /\\ inf s = l",
    "statement": "forall s c= R, forall l :e R, is_glb s l <-> ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> b <= x) /\\ inf s = l)",
    "literal": "forall s :e 2 :^: R, forall l :e R, hl_has_inf s l = 1 <-> ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ hl_inf s = l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_INF_INF_bridge"
   },
   {
    "name": "HAS_INF_LBOUND",
@@ -19840,9 +19840,9 @@
    "source": "!s:A->bool. !n:num. HAS_SIZE s n <=> FINITE s /\\ CARD s = n",
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n <-> finite s /\\ finite_cardinality s = n",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_HAS_SIZE A s n = 1 <-> hl_FINITE A s = 1 /\\ hl_CARD A s = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_bridge"
   },
   {
    "name": "HAS_SIZE_0",
@@ -20373,9 +20373,9 @@
    "source": "!f:A->B. !s:A->bool. !t:B->bool. !P:B->bool. !n:num. FINITE s /\\ FINITE t /\\ CARD s = CARD t /\\ IMAGE f s SUBSET t /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) /\\ HAS_SIZE (GSPEC (\\GEN%PVAR%219:A. ?x:A. SETSPEC GEN%PVAR%219 (x IN s /\\ P (f x)) x)) n ==> HAS_SIZE (GSPEC (\\GEN%PVAR%220:B. ?x:B. SETSPEC GEN%PVAR%220 (x IN t /\\ P x) x)) n",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, forall P:set -> prop, forall n :e omega, finite s /\\ (finite t /\\ (finite_cardinality s = finite_cardinality t /\\ ({f x | x :e s} c= t /\\ ((forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ equip {x :e A | x :e s /\\ P (f x)} n)))) -> equip {x :e B | x :e t /\\ P x} n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t P :e 2 :^: B, forall n :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ (hl_SUBSET B (hl_IMAGE A B f s) t = 1 /\\ ((forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ hl_HAS_SIZE A (hl_GSPEC A (fun GEN_PVAR_219 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_219 (if hl_IN A x s = 1 /\\ P (f x) = 1 then 1 else 0) x = 1 then 1 else 0)) n = 1)))) -> hl_HAS_SIZE B (hl_GSPEC B (fun GEN_PVAR_220 :e B => if exists x :e B, hl_SETSPEC B GEN_PVAR_220 (if hl_IN B x t = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_IMAGE_INJ_RESTRICT_bridge"
   },
   {
    "name": "HAS_SIZE_INDEX",
@@ -20941,9 +20941,9 @@
    "source": "!s:real->bool. !l:real. has_sup s l <=> ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> x <= b) /\\ sup s = l",
    "statement": "forall s c= R, forall l :e R, is_lub s l <-> ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> x <= b) /\\ sup s = l)",
    "literal": "forall s :e 2 :^: R, forall l :e R, hl_has_sup s l = 1 <-> ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ hl_sup s = l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SUP_SUP_bridge"
   },
   {
    "name": "HAS_SUP_UBOUND",
@@ -22373,7 +22373,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\\ (finite_cardinality s = finite_cardinality t /\\ {f x | x :e s} = t) -> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, hl_FINITE A s = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ hl_IMAGE A B f s = t) -> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: side condition finite t not available from hypotheses [hyps: finite s]",
    "bridge": ""
   },
   {
@@ -23585,9 +23585,9 @@
    "source": "!s:real->bool. !c:real. ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> b <= x) /\\ inf s < c ==> (?x:real. x IN s /\\ x < c)",
    "statement": "forall s c= R, forall c :e R, ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> b <= x) /\\ inf s < c) -> exists x :e R, x :e s /\\ x < c",
    "literal": "forall s :e 2 :^: R, forall c :e R, ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ hl_real_lt (hl_inf s) c = 1) -> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt x c = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_APPROACH_bridge"
   },
   {
    "name": "INF_EQ",
@@ -25120,7 +25120,7 @@
    "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P:set -> prop, forall f :e Power B :^: A, {x :e B | forall Y :e {f x | x :e A, P x}, x :e Y} = {a :e B | forall x :e A, P x -> a :e f x}) /\\ ((forall P:set -> set -> prop, forall f :e Power C :^: B :^: A, {x :e C | forall Y :e (\\/_ x :e A, {f x y | y :e B, P x y}), x :e Y} = {a :e C | forall x :e A, forall y :e B, P x y -> a :e f x y}) /\\ forall P:set -> set -> set -> prop, forall f :e Power D :^: C :^: B :^: A, {x :e D | forall Y :e (\\/_ x :e A, \\/_ y :e B, {f x y z | z :e C, P x y z}), x :e Y} = {a :e D | forall x :e A, forall y :e B, forall z :e C, P x y z -> a :e f x y z})",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P :e 2 :^: A, forall f :e 2 :^: B :^: A, hl_INTERS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_24 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_24 (P x) (f x) = 1 then 1 else 0)) = hl_GSPEC B (fun GEN_PVAR_25 :e B => if exists a :e B, hl_SETSPEC B GEN_PVAR_25 (if forall x :e A, P x = 1 -> hl_IN B a (f x) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ ((forall P :e 2 :^: B :^: A, forall f :e 2 :^: C :^: B :^: A, hl_INTERS C (hl_GSPEC (2 :^: C) (fun GEN_PVAR_26 :e 2 :^: C => if exists x :e A, exists y :e B, hl_SETSPEC (2 :^: C) GEN_PVAR_26 (P x y) (f x y) = 1 then 1 else 0)) = hl_GSPEC C (fun GEN_PVAR_27 :e C => if exists a :e C, hl_SETSPEC C GEN_PVAR_27 (if forall x :e A, forall y :e B, P x y = 1 -> hl_IN C a (f x y) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ forall P :e 2 :^: C :^: B :^: A, forall f :e 2 :^: D :^: C :^: B :^: A, hl_INTERS D (hl_GSPEC (2 :^: D) (fun GEN_PVAR_28 :e 2 :^: D => if exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC (2 :^: D) GEN_PVAR_28 (P x y z) (f x y z) = 1 then 1 else 0)) = hl_GSPEC D (fun GEN_PVAR_29 :e D => if exists a :e D, hl_SETSPEC D GEN_PVAR_29 (if forall x :e A, forall y :e B, forall z :e C, P x y z = 1 -> hl_IN D a (f x y z) = 1 then 1 else 0) a = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
    "bridge": ""
   },
   {
@@ -48696,9 +48696,9 @@
    "source": "!s:A->bool. !f:A->num. !b:num. FINITE s /\\ ~(s = EMPTY) /\\ (!x:A. x IN s ==> f x <= b DIV CARD s) ==> nsum s f <= b",
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> f x <= div_nat b (finite_cardinality s))) -> finsum s f <= b",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e omega :^: A, forall b :e omega, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> hl_le (f x) (hl_DIV b (hl_CARD A s)) = 1)) -> hl_le (hl_nsum A s f) b = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: x :e s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_BOUND_GEN_bridge"
   },
   {
    "name": "NSUM_BOUND_LT",
@@ -48801,9 +48801,9 @@
    "source": "!s:A->bool. !f:A->num. !b:num. FINITE s /\\ ~(s = EMPTY) /\\ (!x:A. x IN s ==> f x < b DIV CARD s) ==> nsum s f < b",
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> f x < div_nat b (finite_cardinality s))) -> finsum s f < b",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e omega :^: A, forall b :e omega, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> hl_lt (f x) (hl_DIV b (hl_CARD A s)) = 1)) -> hl_lt (hl_nsum A s f) b = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: x :e s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_BOUND_LT_GEN_bridge"
   },
   {
    "name": "NSUM_CASES",
@@ -49979,7 +49979,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = k * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_295 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_295 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k)) -> hl_nsum A s (fun i :e A => hl_CARD B (hl_GSPEC B (fun GEN_PVAR_296 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_296 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0))) = hl_mul k (hl_CARD B t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t]",
+   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
    "bridge": ""
   },
   {
@@ -50012,7 +50012,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = finsum t k",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_293 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_293 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k j)) -> hl_nsum A s (fun i :e A => hl_CARD B (hl_GSPEC B (fun GEN_PVAR_294 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_294 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0))) = hl_nsum B t (fun i :e B => k i)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t]",
+   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
    "bridge": ""
   },
   {
@@ -52548,7 +52548,7 @@
    "statement": "forall A B C D E:set, C <> Empty -> D <> Empty -> E <> Empty -> (forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A :*: B, f (x 0,x 1) = f x) /\\ ((forall f:set -> set, (forall x :e A :*: (B :*: C), f x :e D) -> forall x :e A :*: (B :*: C), f (x 0,(x 1 0,x 1 1)) = f x) /\\ forall f:set -> set, (forall x :e A :*: (B :*: (C :*: D)), f x :e E) -> forall x :e A :*: (B :*: (C :*: D)), f (x 0,(x 1 0,(x 1 1 0,x 1 1 1))) = f x)",
    "literal": "forall A B C D E:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall f :e C :^: (A :*: B), hl_GABS (C :^: (A :*: B)) (fun f' :e C :^: (A :*: B) => if forall x :e A, forall y :e B, hl_GEQ C (f' (hl_pair A B x y)) (f (hl_pair A B x y)) = 1 then 1 else 0) = f) /\\ ((forall f :e D :^: (A :*: (B :*: C)), hl_GABS (D :^: (A :*: (B :*: C))) (fun f' :e D :^: (A :*: (B :*: C)) => if forall x :e A, forall y :e B, forall z :e C, hl_GEQ D (f' (hl_pair A (B :*: C) x (hl_pair B C y z))) (f (hl_pair A (B :*: C) x (hl_pair B C y z))) = 1 then 1 else 0) = f) /\\ forall f :e E :^: (A :*: (B :*: (C :*: D))), hl_GABS (E :^: (A :*: (B :*: (C :*: D)))) (fun f' :e E :^: (A :*: (B :*: (C :*: D))) => if forall w :e A, forall x :e B, forall y :e C, forall z :e D, hl_GEQ E (f' (hl_pair A (B :*: (C :*: D)) w (hl_pair B (C :*: D) x (hl_pair C D y z)))) (f (hl_pair A (B :*: (C :*: D)) w (hl_pair B (C :*: D) x (hl_pair C D y z)))) = 1 then 1 else 0) = f)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view set(E), 2 args)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view set(C), 2 args)",
    "bridge": ""
   },
   {
@@ -63821,9 +63821,9 @@
    "source": "!n:num. !c:num->real. ~(!i:num. i IN .. 0 n ==> c i = real_of_num 0) ==> FINITE (GSPEC (\\GEN%PVAR%347:real. ?x:real. SETSPEC GEN%PVAR%347 (sum (.. 0 n) (\\i:num. c i * x pow i) = real_of_num 0) x)) /\\ CARD (GSPEC (\\GEN%PVAR%348:real. ?x:real. SETSPEC GEN%PVAR%348 (sum (.. 0 n) (\\i:num. c i * x pow i) = real_of_num 0) x)) <= n",
    "statement": "forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> ~ (forall i :e omega, i :e {i :e omega | 0 <= i /\\ i <= n} -> c i = 0) -> finite {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0} /\\ finite_cardinality {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0} <= n",
    "literal": "forall n :e omega, forall c :e R :^: omega, ~ (forall i :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL hl_zero) n) = 1 -> c i = hl_real_of_num (hl_NUMERAL hl_zero)) -> hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_347 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_347 (if hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 /\\ hl_le (hl_CARD R (hl_GSPEC R (fun GEN_PVAR_348 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_348 (if hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0))) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0} not available from hypotheses [hyps: ~ forall i :e omega, i :e {i :e omega | 0 <= i /\\ i <= n} -> c i = 0]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_POLYFUN_ROOTBOUND_bridge"
   },
   {
    "name": "REAL_POLY_CLAUSES",
@@ -71557,9 +71557,9 @@
    "source": "!s:A->bool. !f:A->real. !b:real. FINITE s /\\ ~(s = EMPTY) /\\ (!x:A. x IN s ==> f x <= b / real_of_num (CARD s)) ==> sum s f <= b",
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> f x <= b :/: finite_cardinality s)) -> finsum s f <= b",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e R :^: A, forall b :e R, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> hl_real_le (f x) (hl_real_div b (hl_real_of_num (hl_CARD A s))) = 1)) -> hl_real_le (hl_sum A s f) b = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: x :e s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_BOUND_GEN_bridge"
   },
   {
    "name": "SUM_BOUND_LT",
@@ -71662,9 +71662,9 @@
    "source": "!s:A->bool. !f:A->real. !b:real. FINITE s /\\ ~(s = EMPTY) /\\ (!x:A. x IN s ==> f x < b / real_of_num (CARD s)) ==> sum s f < b",
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> forall b :e R, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> f x < b :/: finite_cardinality s)) -> finsum s f < b",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e R :^: A, forall b :e R, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> hl_real_lt (f x) (hl_real_div b (hl_real_of_num (hl_CARD A s))) = 1)) -> hl_real_lt (hl_sum A s f) b = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: x :e s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_BOUND_LT_GEN_bridge"
   },
   {
    "name": "SUM_CASES",
@@ -73027,7 +73027,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = k * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_324 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_324 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k)) -> hl_sum A s (fun i :e A => hl_real_of_num (hl_CARD B (hl_GSPEC B (fun GEN_PVAR_325 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_325 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0)))) = hl_real_of_num (hl_mul k (hl_CARD B t))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t]",
+   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
    "bridge": ""
   },
   {
@@ -73062,7 +73062,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = finsum t k",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_322 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_322 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k j)) -> hl_sum A s (fun i :e A => hl_real_of_num (hl_CARD B (hl_GSPEC B (fun GEN_PVAR_323 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_323 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0)))) = hl_sum B t (fun i :e B => hl_real_of_num (k i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t]",
+   "cert_error": "bridge_unsupported: side condition finite {i :e A | i :e s /\\ R0 i j} not available from hypotheses [hyps: j :e t, finite t, finite s]",
    "bridge": ""
   },
   {
@@ -74733,9 +74733,9 @@
    "source": "!s:real->bool. !c:real. ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> x <= b) /\\ c < sup s ==> (?x:real. x IN s /\\ c < x)",
    "statement": "forall s c= R, forall c :e R, ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> x <= b) /\\ c < sup s) -> exists x :e R, x :e s /\\ c < x",
    "literal": "forall s :e 2 :^: R, forall c :e R, ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ hl_real_lt c (hl_sup s) = 1) -> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt c x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUP_APPROACH_bridge"
   },
   {
    "name": "SUP_EQ",
@@ -75149,9 +75149,9 @@
    "source": "!s:A->bool. !t:B->bool. !f:A->B. FINITE s /\\ FINITE t /\\ CARD s = CARD t /\\ IMAGE f s SUBSET t ==> ((!y:B. y IN t ==> (?x:A. x IN s /\\ f x = y)) <=> (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> finite s /\\ (finite t /\\ (finite_cardinality s = finite_cardinality t /\\ {f x | x :e s} c= t)) -> ((forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y) <-> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ hl_SUBSET B (hl_IMAGE A B f s) t = 1)) -> ((forall y :e B, hl_IN B y t = 1 -> exists x :e A, hl_IN A x s = 1 /\\ f x = y) <-> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJECTIVE_IFF_INJECTIVE_GEN_bridge"
   },
   {
    "name": "SURJECTIVE_IMAGE",
@@ -76922,7 +76922,7 @@
    "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P:set -> prop, forall f :e Power B :^: A, Union {f x | x :e A, P x} = {a :e B | exists x :e A, P x /\\ a :e f x}) /\\ ((forall P:set -> set -> prop, forall f :e Power C :^: B :^: A, Union (\\/_ x :e A, {f x y | y :e B, P x y}) = {a :e C | exists x :e A, exists y :e B, P x y /\\ a :e f x y}) /\\ forall P:set -> set -> set -> prop, forall f :e Power D :^: C :^: B :^: A, Union (\\/_ x :e A, \\/_ y :e B, {f x y z | z :e C, P x y z}) = {a :e D | exists x :e A, exists y :e B, exists z :e C, P x y z /\\ a :e f x y z})",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P :e 2 :^: A, forall f :e 2 :^: B :^: A, hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_18 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_18 (P x) (f x) = 1 then 1 else 0)) = hl_GSPEC B (fun GEN_PVAR_19 :e B => if exists a :e B, hl_SETSPEC B GEN_PVAR_19 (if exists x :e A, P x = 1 /\\ hl_IN B a (f x) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ ((forall P :e 2 :^: B :^: A, forall f :e 2 :^: C :^: B :^: A, hl_UNIONS C (hl_GSPEC (2 :^: C) (fun GEN_PVAR_20 :e 2 :^: C => if exists x :e A, exists y :e B, hl_SETSPEC (2 :^: C) GEN_PVAR_20 (P x y) (f x y) = 1 then 1 else 0)) = hl_GSPEC C (fun GEN_PVAR_21 :e C => if exists a :e C, hl_SETSPEC C GEN_PVAR_21 (if exists x :e A, exists y :e B, P x y = 1 /\\ hl_IN C a (f x y) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ forall P :e 2 :^: C :^: B :^: A, forall f :e 2 :^: D :^: C :^: B :^: A, hl_UNIONS D (hl_GSPEC (2 :^: D) (fun GEN_PVAR_22 :e 2 :^: D => if exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC (2 :^: D) GEN_PVAR_22 (P x y z) (f x y z) = 1 then 1 else 0)) = hl_GSPEC D (fun GEN_PVAR_23 :e D => if exists a :e D, hl_SETSPEC D GEN_PVAR_23 (if exists x :e A, exists y :e B, exists z :e C, P x y z = 1 /\\ hl_IN D a (f x y z) = 1 then 1 else 0) a = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
    "bridge": ""
   },
   {
@@ -77726,7 +77726,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, P x (f x)) /\\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (y x)) -> forall x :e A, y x = f x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> hl_exists_unique (B :^: A) (fun f :e B :^: A => if forall x :e A, P x (f x) = 1 then 1 else 0) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable y\u0000y#16",
+   "cert_error": "bridge_unsupported: typing: unknown variable y\u0000y#18",
    "bridge": ""
   },
   {
@@ -81915,7 +81915,7 @@
    "statement": "forall A:set, forall s c= A, choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s) = choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_list_of_set A s = hl_select (finseq A) (fun l :e finseq A => if hl_set_of_list A l = s /\\ hl_LENGTH A l = hl_CARD A s then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: seq_set l = s]",
    "bridge": ""
   },
   {
@@ -84430,7 +84430,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, (forall a :e A, P (Inj0 a)) /\\ (forall a :e B, P (Inj1 a)) -> forall x :e A :+: B, P x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :+: B), (forall a :e A, P (hl_INL A B a) = 1) /\\ (forall a :e B, P (hl_INR B A a) = 1) -> forall x :e A :+: B, P x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INR_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INL_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -84457,7 +84457,7 @@
    "statement": "forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\\ ((forall a :e A, fn (Inj0 a) = INL' a) /\\ forall a :e B, fn (Inj1 a) = INR' a)",
    "literal": "forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL' :e Z :^: A, forall INR' :e Z :^: B, exists fn :e Z :^: (A :+: B), (forall a :e A, fn (hl_INL A B a) = INL' a) /\\ forall a :e B, fn (hl_INR B A a) = INR' a",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INR_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_INL_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2189
+  "native_certified": 2218
  }
 }

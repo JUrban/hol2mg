@@ -1505,7 +1505,8 @@ source: !s:A->bool. !n:num. HAS_SIZE s n <=> FINITE s /\ CARD s = n
 status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n <-> finite s /\ finite_cardinality s = n
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_HAS_SIZE A s n = 1 <-> hl_FINITE A s = 1 /\ hl_CARD A s = n
-cert_status: bridge_unsupported
+bridge: HAS_SIZE_bridge
+cert_status: native_certified
 
 ### INFINITE   [finiteness, cardinality, functions between sets]
 hash: 7c9d659d5cdcc1d82c3e2e38114de923
