@@ -2024,7 +2024,8 @@ source: !x:num. !y:num. !n:num. == x y (num_mod n) <=> x MOD n = y MOD n
 status: transport_required
 statement: forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n
 literal: forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_MOD x n = hl_MOD y n
-cert_status: bridge_unsupported
+bridge: CONG_bridge
+cert_status: native_certified
 
 ### INT_POW_ADD   [integers]
 hash: 9fd0e6e0611a65097f4817e3221bc72b

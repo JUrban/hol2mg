@@ -266,10 +266,6 @@ Admitted.
 Theorem hl_finite_index_compat : forall N:set, N <> Empty -> forall l1 :e omega, hl_finite_index N l1 = l1.
 Admitted.
 
-// num_mod : num->num->num->bool (not in compat.mg)
-Theorem hl_num_mod_compat : forall l1 l2 l3 :e omega, hl_num_mod l1 l2 l3 = 1 <-> exists q1 q2 :e omega, l2 + l1 * q1 = l3 + l1 * q2.
-Admitted.
-
 // NUMPAIR : num->num->num (not in compat.mg)
 Theorem hl_NUMPAIR_compat : hl_NUMPAIR = Empty.
 Admitted.

@@ -4421,3 +4421,78 @@ claim Hsub: {i :e omega | i <= n} c= ordsucc n.
   - assume Heq. exact (Heq (fun hl__u hl__v => hl__v :e ordsucc n) (ordsuccI2 n)). }
 exact (Subq_finite (ordsucc n) (nat_finite (ordsucc n) (nat_ordsucc n (omega_nat_p n Hn))) {i :e omega | i <= n} Hsub).
 Qed.
+
+// ---- cancellation helpers ----
+Theorem add_SNo_minus_cancel : forall x y:set, SNo x -> SNo y -> y + (x + - y) = x.
+let x y. assume Hx Hy.
+claim Hmy: SNo (- y). { exact (SNo_minus_SNo y Hy). }
+claim Hxy: SNo (x + - y). { exact (SNo_add_SNo x (- y) Hx Hmy). }
+exact (eq_trans_i (y + (x + - y)) ((x + - y) + y) x (add_SNo_com y (x + - y) Hy Hxy) (eq_trans_i ((x + - y) + y) (x + (- y + y)) x (eq_sym_i (x + (- y + y)) ((x + - y) + y) (add_SNo_assoc x (- y) y Hx Hmy Hy)) (eq_trans_i (x + (- y + y)) (x + 0) x (f_equal (fun u => x + u) (- y + y) 0 (add_SNo_minus_SNo_linv y Hy)) (add_SNo_0R x Hx)))).
+Qed.
+Theorem add_SNo_cancel_L_minus : forall y c:set, SNo y -> SNo c -> (y + c) + - y = c.
+let y c. assume Hy Hc.
+exact (eq_trans_i ((y + c) + - y) ((c + y) + - y) c (f_equal (fun u => u + - y) (y + c) (c + y) (add_SNo_com y c Hy Hc)) (add_SNo_minus_R2 c y Hc Hy)).
+Qed.
+
+// ---- congruences of naturals ----
+Theorem hl_num_mod_compat : forall l1 l2 l3 :e omega, hl_num_mod l1 l2 l3 = 1 <-> exists q1 q2 :e omega, l2 + l1 * q1 = l3 + l1 * q2.
+let n. assume Hn. let x. assume Hx. let y. assume Hy.
+claim Hni: n :e int. { exact (Subq_omega_int n Hn). }
+claim Hxi: x :e int. { exact (Subq_omega_int x Hx). }
+claim Hyi: y :e int. { exact (Subq_omega_int y Hy). }
+claim HnS: SNo n. { exact (omega_SNo n Hn). }
+claim HxS: SNo x. { exact (omega_SNo x Hx). }
+claim HyS: SNo y. { exact (omega_SNo y Hy). }
+claim HmyS: SNo (- y). { exact (SNo_minus_SNo y HyS). }
+claim HmxS: SNo (- x). { exact (SNo_minus_SNo x HxS). }
+claim H1: hl_num_mod n x y = hl_int_mod n x y.
+{ exact (eq_trans_i (hl_num_mod n x y) (hl_int_mod (hl_int_of_num n) (hl_int_of_num x) (hl_int_of_num y)) (hl_int_mod n x y) (hl_num_mod_unfold n Hn x Hx y Hy) (eq_trans_i (hl_int_mod (hl_int_of_num n) (hl_int_of_num x) (hl_int_of_num y)) (hl_int_mod n (hl_int_of_num x) (hl_int_of_num y)) (hl_int_mod n x y) (f_equal (fun u => hl_int_mod u (hl_int_of_num x) (hl_int_of_num y)) (hl_int_of_num n) n (hl_int_of_num_compat n Hn)) (eq_trans_i (hl_int_mod n (hl_int_of_num x) (hl_int_of_num y)) (hl_int_mod n x (hl_int_of_num y)) (hl_int_mod n x y) (f_equal (fun u => hl_int_mod n u (hl_int_of_num y)) (hl_int_of_num x) x (hl_int_of_num_compat x Hx)) (f_equal (fun u => hl_int_mod n x u) (hl_int_of_num y) y (hl_int_of_num_compat y Hy))))). }
+apply (iff_eq1_l (hl_num_mod n x y) (hl_int_mod n x y) H1 (exists q1 q2 :e omega, x + n * q1 = y + n * q2)).
+apply (iff_trans (hl_int_mod n x y = 1) (divides_int n (x + - y)) (exists q1 q2 :e omega, x + n * q1 = y + n * q2) (hl_int_mod_compat n Hni x Hxi y Hyi)).
+claim Hpos: forall q :e omega, n * q = x + - y -> exists q1 q2 :e omega, x + n * q1 = y + n * q2.
+{ let q. assume Hq Heq.
+  witness 0. apply andI.
+  - exact (nat_p_omega 0 nat_0).
+  - witness q. apply andI.
+    + exact Hq.
+    + exact (eq_trans_i (x + n * 0) x (y + n * q) (eq_trans_i (x + n * 0) (x + 0) x (f_equal (fun u => x + u) (n * 0) 0 (mul_SNo_zeroR n HnS)) (add_SNo_0R x HxS)) (eq_sym_i (y + n * q) x (eq_trans_i (y + n * q) (y + (x + - y)) x (f_equal (fun u => y + u) (n * q) (x + - y) Heq) (add_SNo_minus_cancel x y HxS HyS)))). }
+claim Hneg: forall q :e omega, n * (- q) = x + - y -> exists q1 q2 :e omega, x + n * q1 = y + n * q2.
+{ let q. assume Hq Heq.
+  claim HqS: SNo q. { exact (omega_SNo q Hq). }
+  claim HnqS: SNo (n * q). { exact (SNo_mul_SNo n q HnS HqS). }
+  claim Ha: - (n * q) = x + - y. { exact (eq_trans_i (- (n * q)) (n * (- q)) (x + - y) (eq_sym_i (n * (- q)) (- (n * q)) (mul_SNo_minus_distrR n q HnS HqS)) Heq). }
+  claim Hb: n * q = - (x + - y). { exact (eq_trans_i (n * q) (- (- (n * q))) (- (x + - y)) (eq_sym_i (- (- (n * q))) (n * q) (minus_SNo_invol (n * q) HnqS)) (f_equal (fun u => - u) (- (n * q)) (x + - y) Ha)). }
+  claim Hc: - (x + - y) = y + - x. { exact (eq_trans_i (- (x + - y)) (- x + - (- y)) (y + - x) (minus_add_SNo_distr x (- y) HxS HmyS) (eq_trans_i (- x + - (- y)) (- x + y) (y + - x) (f_equal (fun u => - x + u) (- (- y)) y (minus_SNo_invol y HyS)) (add_SNo_com (- x) y HmxS HyS))). }
+  claim Heq2: n * q = y + - x. { exact (eq_trans_i (n * q) (- (x + - y)) (y + - x) Hb Hc). }
+  witness q. apply andI.
+  - exact Hq.
+  - witness 0. apply andI.
+    + exact (nat_p_omega 0 nat_0).
+    + exact (eq_trans_i (x + n * q) y (y + n * 0) (eq_trans_i (x + n * q) (x + (y + - x)) y (f_equal (fun u => x + u) (n * q) (y + - x) Heq2) (add_SNo_minus_cancel y x HyS HxS)) (eq_sym_i (y + n * 0) y (eq_trans_i (y + n * 0) (y + 0) y (f_equal (fun u => y + u) (n * 0) 0 (mul_SNo_zeroR n HnS)) (add_SNo_0R y HyS)))). }
+apply iffI.
+- assume H. apply H. assume H12 Hk. apply Hk. let k. assume Hk0. apply Hk0. assume Hki Hkeq.
+  exact (int_SNo_cases (fun k => n * k = x + - y -> exists q1 q2 :e omega, x + n * q1 = y + n * q2) Hpos Hneg k Hki Hkeq).
+- assume H. apply H. let q1. assume Hq10. apply Hq10. assume Hq1 Hq20. apply Hq20. let q2. assume Hq21. apply Hq21. assume Hq2 Heq.
+  claim Hq1S: SNo q1. { exact (omega_SNo q1 Hq1). }
+  claim Hq2S: SNo q2. { exact (omega_SNo q2 Hq2). }
+  claim Hq1i: q1 :e int. { exact (Subq_omega_int q1 Hq1). }
+  claim Hq2i: q2 :e int. { exact (Subq_omega_int q2 Hq2). }
+  claim Ha: SNo (n * q2). { exact (SNo_mul_SNo n q2 HnS Hq2S). }
+  claim Hb: SNo (n * q1). { exact (SNo_mul_SNo n q1 HnS Hq1S). }
+  claim HmbS: SNo (- (n * q1)). { exact (SNo_minus_SNo (n * q1) Hb). }
+  claim Hmq1S: SNo (- q1). { exact (SNo_minus_SNo q1 Hq1S). }
+  claim Hxeq: x = (y + n * q2) + - (n * q1).
+  { exact (eq_trans_i x ((x + n * q1) + - (n * q1)) ((y + n * q2) + - (n * q1)) (eq_sym_i ((x + n * q1) + - (n * q1)) x (add_SNo_minus_R2 x (n * q1) HxS Hb)) (f_equal (fun u => u + - (n * q1)) (x + n * q1) (y + n * q2) Heq)). }
+  claim Hdiff: x + - y = n * q2 + - (n * q1).
+  { exact (eq_trans_i (x + - y) (((y + n * q2) + - (n * q1)) + - y) (n * q2 + - (n * q1)) (f_equal (fun u => u + - y) x ((y + n * q2) + - (n * q1)) Hxeq) (eq_trans_i (((y + n * q2) + - (n * q1)) + - y) ((y + (n * q2 + - (n * q1))) + - y) (n * q2 + - (n * q1)) (f_equal (fun u => u + - y) ((y + n * q2) + - (n * q1)) (y + (n * q2 + - (n * q1))) (eq_sym_i (y + (n * q2 + - (n * q1))) ((y + n * q2) + - (n * q1)) (add_SNo_assoc y (n * q2) (- (n * q1)) HyS Ha HmbS))) (add_SNo_cancel_L_minus y (n * q2 + - (n * q1)) HyS (SNo_add_SNo (n * q2) (- (n * q1)) Ha HmbS)))). }
+  claim Hprod: n * (q2 + - q1) = x + - y.
+  { exact (eq_trans_i (n * (q2 + - q1)) (n * q2 + n * (- q1)) (x + - y) (mul_SNo_distrL n q2 (- q1) HnS Hq2S Hmq1S) (eq_trans_i (n * q2 + n * (- q1)) (n * q2 + - (n * q1)) (x + - y) (f_equal (fun u => n * q2 + u) (n * (- q1)) (- (n * q1)) (mul_SNo_minus_distrR n q1 HnS Hq1S)) (eq_sym_i (x + - y) (n * q2 + - (n * q1)) Hdiff))). }
+  prove n :e int /\ (x + - y) :e int /\ exists k :e int, n * k = x + - y.
+  apply andI.
+  + apply andI.
+    * exact Hni.
+    * exact (int_add_SNo x Hxi (- y) (int_minus_SNo y Hyi)).
+  + witness (q2 + - q1). apply andI.
+    * exact (int_add_SNo q2 Hq2i (- q1) (int_minus_SNo q1 Hq1i)).
+    * exact Hprod.
+Qed.

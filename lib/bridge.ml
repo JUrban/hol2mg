@@ -1146,9 +1146,16 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                        | _ -> "") in
                      let find_slot alts = List.find_map (fun (tpl, wrap) ->
                        if wrap = "mem" then
-                         List.find_map (fun (h, pf) -> match h with
+                         (match List.find_map (fun (h, pf) -> match h with
                            | Mg.App (Mg.App (Mg.Cst "In", e), s) when s = s_nat -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s %s)" (ppp s_nat) (ppp e) pf)
-                           | _ -> None) g.hyps
+                           | _ -> None) g.hyps with
+                          | Some p -> Some p
+                          | None ->
+                              (* structural nonemptiness: singletons and adjoined elements *)
+                              (match s_nat with
+                               | Mg.SetEnum [ a ] -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s (SingI %s))" (ppp s_nat) (ppp a) (ppp a))
+                               | Mg.App (Mg.App (Mg.Cst "SetAdjoin", x), a) -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s (binunionI2 %s %s %s (SingI %s)))" (ppp s_nat) (ppp a) (ppp x) (ppp (Mg.SetEnum [ a ])) (ppp a) (ppp a))
+                               | _ -> None))
                        else if wrap = "lub" || wrap = "glb" then
                          List.find_map (fun (h, pf) -> match h with
                            | Mg.App (Mg.App (Mg.Cst ("is_lub" | "is_glb" as c), s), x) when s = s_nat && ((c = "is_lub") = (wrap = "lub")) ->
@@ -1164,7 +1171,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                        else begin
                          let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
                          match List.assoc_opt p g.hyps with
-                         | None -> None
+                         | None -> if tpl = "finite ?1" then derive_finite g s_nat 0 else None
                          | Some h -> Some (if wrap = "" then h else Printf.sprintf "(%s %s %s %s)" wrap (ppp s_nat) (Lazy.force hsub) h)
                        end) alts in
                      List.find_map (fun (slots, lemma) ->

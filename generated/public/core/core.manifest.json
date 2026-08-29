@@ -6274,9 +6274,9 @@
    "source": "!x:num. !y:num. !n:num. == x y (num_mod n) <=> x MOD n = y MOD n",
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_MOD x n = hl_MOD y n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CONG_bridge"
   },
   {
    "name": "CONG_DIV2",
@@ -6303,9 +6303,9 @@
    "source": "!a:num. !b:num. !m:num. !n:num. == a b (num_mod (m * n)) ==> == (a DIV m) (b DIV m) (num_mod n)",
    "statement": "forall a b m n :e omega, (exists q1 q2 :e omega, a + (m * n) * q1 = b + (m * n) * q2) -> exists q1 q2 :e omega, div_nat a m + n * q1 = div_nat b m + n * q2",
    "literal": "forall a b m n :e omega, hl_sym_3d3d omega a b (hl_num_mod (hl_mul m n)) = 1 -> hl_sym_3d3d omega (hl_DIV a m) (hl_DIV b m) (hl_num_mod n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CONG_DIV2_bridge"
   },
   {
    "name": "CONG_LMOD",
@@ -6331,9 +6331,9 @@
    "source": "!x:num. !y:num. !n:num. == (x MOD n) y (num_mod n) <=> == x y (num_mod n)",
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, mod_nat x n + n * q1 = y + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega (hl_MOD x n) y (hl_num_mod n) = 1 <-> hl_sym_3d3d omega x y (hl_num_mod n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CONG_LMOD_bridge"
   },
   {
    "name": "CONG_NSUM",
@@ -6361,9 +6361,9 @@
    "source": "!n:num. !f:A->num. !g:A->num. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> == (f x) (g x) (num_mod n)) ==> == (nsum s f) (nsum s g) (num_mod n)",
    "statement": "forall A:set, A <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> exists q1 q2 :e omega, f x + n * q1 = g x + n * q2) -> exists q1 q2 :e omega, finsum s f + n * q1 = finsum s g + n * q2",
    "literal": "forall A:set, A <> Empty -> forall n :e omega, forall f g :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_sym_3d3d omega (f x) (g x) (hl_num_mod n) = 1) -> hl_sym_3d3d omega (hl_nsum A s f) (hl_nsum A s g) (hl_num_mod n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CONG_NSUM_bridge"
   },
   {
    "name": "CONG_RMOD",
@@ -6389,9 +6389,9 @@
    "source": "!x:num. !y:num. !n:num. == x (y MOD n) (num_mod n) <=> == x y (num_mod n)",
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = mod_nat y n + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x (hl_MOD y n) (hl_num_mod n) = 1 <-> hl_sym_3d3d omega x y (hl_num_mod n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CONG_RMOD_bridge"
   },
   {
    "name": "CONJ_ACI",
@@ -23729,7 +23729,7 @@
    "statement": "forall x :e R, forall s c= R, finite s -> inf (SetAdjoin s x) = if s = Empty then x else if x <= inf s then x else inf s",
    "literal": "forall x :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 -> hl_inf (hl_INSERT R x s) = hl_COND R (if s = hl_EMPTY R then 1 else 0) x (hl_real_min x (hl_inf s))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x0 :e R, is_glb (SetAdjoin s x) x0 not available from hypotheses [hyps: finite s]",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: finite s]",
    "bridge": ""
   },
   {
@@ -23811,9 +23811,9 @@
    "source": "!a:real. inf (a INSERT EMPTY) = a",
    "statement": "forall a :e R, inf {a} = a",
    "literal": "forall a :e R, hl_inf (hl_INSERT R a (hl_EMPTY R)) = a",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb {a} x not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_SING_bridge"
   },
   {
    "name": "INF_UNION",
@@ -74877,7 +74877,7 @@
    "statement": "forall x :e R, forall s c= R, finite s -> sup (SetAdjoin s x) = if s = Empty then x else if x <= sup s then sup s else x",
    "literal": "forall x :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 -> hl_sup (hl_INSERT R x s) = hl_COND R (if s = hl_EMPTY R then 1 else 0) x (hl_real_max x (hl_sup s))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x0 :e R, is_lub (SetAdjoin s x) x0 not available from hypotheses [hyps: finite s]",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: finite s]",
    "bridge": ""
   },
   {
@@ -74931,9 +74931,9 @@
    "source": "!a:real. sup (a INSERT EMPTY) = a",
    "statement": "forall a :e R, sup {a} = a",
    "literal": "forall a :e R, hl_sup (hl_INSERT R a (hl_EMPTY R)) = a",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub {a} x not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUP_SING_bridge"
   },
   {
    "name": "SUP_UNION",
@@ -82724,9 +82724,9 @@
    "source": "!x:num. !y:num. !n:num. == x y (num_mod n) <=> == (int_of_num x) (int_of_num y) (int_mod (int_of_num n))",
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> divides_int n (x + - y)",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_sym_3d3d hl_ty_int (hl_int_of_num x) (hl_int_of_num y) (hl_int_mod (hl_int_of_num n)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "num_congruent_bridge"
   },
   {
    "name": "num_coprime",
@@ -82883,9 +82883,9 @@
    "source": "!n:num. !x:num. !y:num. num_mod n x y <=> int_mod (int_of_num n) (int_of_num x) (int_of_num y)",
    "statement": "forall n x y :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> divides_int n (x + - y)",
    "literal": "forall n x y :e omega, hl_num_mod n x y = 1 <-> hl_int_mod (hl_int_of_num n) (hl_int_of_num x) (hl_int_of_num y) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "num_mod_bridge"
   },
   {
    "name": "num_of_int",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2118
+  "native_certified": 2127
  }
 }

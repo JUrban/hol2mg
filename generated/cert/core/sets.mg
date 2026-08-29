@@ -5169,8 +5169,13 @@ Theorem SUP_INSERT_FINITE : forall x :e R, forall s c= R, finite s -> sup (SetAd
 Admitted.
 
 // HOL Light: sets.ml:4801 / SUP_SING   (hash md5:3a9cb35b953582fc5909b65168df7703)
-// not bridged: 
+Theorem hlt_SUP_SING : forall a :e R, hl_sup (hl_INSERT R a (hl_EMPTY R)) = a.
+Admitted.
+Theorem SUP_SING_bridge : (forall a :e R, hl_sup (hl_INSERT R a (hl_EMPTY R)) = a) -> (forall a :e R, sup {a} = a).
+exact (fun H__top => (imp_forall_in (R) (fun a => hl_sup (hl_INSERT R a (hl_EMPTY R)) = a) (fun a => sup {a} = a) (fun a Ha => (imp_eq (hl_sup (hl_INSERT R a (hl_EMPTY R))) (sup {a}) (a) (a) (((binunion_idl ({a})) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = hl__u) (((hl_EMPTY_compat) (R) R_nonempty) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = SetAdjoin hl__u a) ((hl_INSERT_compat) (R) R_nonempty (a) Ha (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty)))) (fun hl__u hl__v => hl_sup (hl_INSERT R a (hl_EMPTY R)) = sup hl__u) (((hl_sup_compat) (hl_INSERT R a (hl_EMPTY R)) (setexp_ap (2 :^: R) (2 :^: R) (hl_INSERT R a) (setexp_ap (R) (2 :^: R :^: (2 :^: R)) (hl_INSERT R) ((hl_INSERT_in) (R) R_nonempty) (a) Ha) (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty))) ((eq_sym_i (hl_rep R (hl_INSERT R a (hl_EMPTY R))) ({a}) ((binunion_idl ({a})) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = hl__u) (((hl_EMPTY_compat) (R) R_nonempty) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = SetAdjoin hl__u a) ((hl_INSERT_compat) (R) R_nonempty (a) Ha (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty))))) (fun hl__u hl__v => exists x :e R, is_lub hl__u x) (lub_of_finite ({a}) (((binunion_idl ({a})) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = hl__u) (((hl_EMPTY_compat) (R) R_nonempty) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = SetAdjoin hl__u a) ((hl_INSERT_compat) (R) R_nonempty (a) Ha (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty)))) (fun hl__u hl__v => hl__u c= R) (hl_rep_Subq (R) (hl_INSERT R a (hl_EMPTY R)))) (neq_Empty_of_mem ({a}) (a) (SingI (a))) (Sing_finite (a)))))) (fun q H => H)))) H__top).
+Qed.
 Theorem SUP_SING : forall a :e R, sup {a} = a.
+exact (SUP_SING_bridge hlt_SUP_SING).
 Admitted.
 
 // HOL Light: sets.ml:4805 / SUP_INSERT_INSERT   (hash md5:db5a0106a36c762e7c82cb152ae005c5)
@@ -5349,8 +5354,13 @@ Theorem INF_INSERT_FINITE : forall x :e R, forall s c= R, finite s -> inf (SetAd
 Admitted.
 
 // HOL Light: sets.ml:4961 / INF_SING   (hash md5:9e9101e9e2f4d065a4ac7559ad6fbbca)
-// not bridged: 
+Theorem hlt_INF_SING : forall a :e R, hl_inf (hl_INSERT R a (hl_EMPTY R)) = a.
+Admitted.
+Theorem INF_SING_bridge : (forall a :e R, hl_inf (hl_INSERT R a (hl_EMPTY R)) = a) -> (forall a :e R, inf {a} = a).
+exact (fun H__top => (imp_forall_in (R) (fun a => hl_inf (hl_INSERT R a (hl_EMPTY R)) = a) (fun a => inf {a} = a) (fun a Ha => (imp_eq (hl_inf (hl_INSERT R a (hl_EMPTY R))) (inf {a}) (a) (a) (((binunion_idl ({a})) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = hl__u) (((hl_EMPTY_compat) (R) R_nonempty) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = SetAdjoin hl__u a) ((hl_INSERT_compat) (R) R_nonempty (a) Ha (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty)))) (fun hl__u hl__v => hl_inf (hl_INSERT R a (hl_EMPTY R)) = inf hl__u) (((hl_inf_compat) (hl_INSERT R a (hl_EMPTY R)) (setexp_ap (2 :^: R) (2 :^: R) (hl_INSERT R a) (setexp_ap (R) (2 :^: R :^: (2 :^: R)) (hl_INSERT R) ((hl_INSERT_in) (R) R_nonempty) (a) Ha) (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty))) ((eq_sym_i (hl_rep R (hl_INSERT R a (hl_EMPTY R))) ({a}) ((binunion_idl ({a})) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = hl__u) (((hl_EMPTY_compat) (R) R_nonempty) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = SetAdjoin hl__u a) ((hl_INSERT_compat) (R) R_nonempty (a) Ha (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty))))) (fun hl__u hl__v => exists x :e R, is_glb hl__u x) (glb_of_finite ({a}) (((binunion_idl ({a})) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = hl__u) (((hl_EMPTY_compat) (R) R_nonempty) (fun hl__u hl__v => hl_rep R (hl_INSERT R a (hl_EMPTY R)) = SetAdjoin hl__u a) ((hl_INSERT_compat) (R) R_nonempty (a) Ha (hl_EMPTY R) ((hl_EMPTY_in) (R) R_nonempty)))) (fun hl__u hl__v => hl__u c= R) (hl_rep_Subq (R) (hl_INSERT R a (hl_EMPTY R)))) (neq_Empty_of_mem ({a}) (a) (SingI (a))) (Sing_finite (a)))))) (fun q H => H)))) H__top).
+Qed.
 Theorem INF_SING : forall a :e R, inf {a} = a.
+exact (INF_SING_bridge hlt_INF_SING).
 Admitted.
 
 // HOL Light: sets.ml:4965 / INF_INSERT_INSERT   (hash md5:f84b8571e923ec6087760074af6ffac8)
