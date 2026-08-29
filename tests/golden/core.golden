@@ -1541,7 +1541,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e omega) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e omega) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f
 literal: forall A B:set, A <> Empty -> B <> Empty -> (forall f :e omega :^: A, hl_nsum A (hl_EMPTY A) f = hl_NUMERAL hl_zero) /\ forall x :e B, forall f :e omega :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_nsum B (hl_INSERT B x s) f = hl_COND omega (hl_IN B x s) (hl_nsum B s f) (hl_add (f x) (hl_nsum B s f))
 bridge: NSUM_CLAUSES_bridge
-cert_status: bridge_failed
+cert_status: native_certified
 
 ### SUM_CLAUSES   [iteration, sums, number segments]
 hash: 203f6a0710932fdee70420e4b7f58758
@@ -1550,7 +1550,7 @@ status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e R) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f
 literal: forall A B:set, A <> Empty -> B <> Empty -> (forall f :e R :^: A, hl_sum A (hl_EMPTY A) f = hl_real_of_num (hl_NUMERAL hl_zero)) /\ forall x :e B, forall f :e R :^: B, forall s :e 2 :^: B, hl_FINITE B s = 1 -> hl_sum B (hl_INSERT B x s) f = hl_COND R (hl_IN B x s) (hl_sum B s f) (hl_real_add (f x) (hl_sum B s f))
 bridge: SUM_CLAUSES_bridge
-cert_status: bridge_failed
+cert_status: native_certified
 
 ### SUM_ADD   [iteration, sums, number segments]
 hash: 7b4b78190b429e4506561b3032353a91
@@ -1567,7 +1567,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finsum s f = finsum s g
 literal: forall A:set, A <> Empty -> forall f g :e omega :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> f x = g x) -> hl_nsum A s f = hl_nsum A s g
 bridge: NSUM_EQ_bridge
-cert_status: bridge_failed
+cert_status: native_certified
 
 ### ITERATE_CLAUSES   [iteration, sums, number segments]
 hash: fa9418c5d51eff616d0781182d319b2d
@@ -1608,7 +1608,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finsum (s :\/: t) f = finsum s f + finsum t f
 literal: forall A:set, A <> Empty -> forall f :e omega :^: A, forall s t :e 2 :^: A, hl_FINITE A s = 1 /\ (hl_FINITE A t = 1 /\ hl_DISJOINT A s t = 1) -> hl_nsum A (hl_UNION A s t) f = hl_add (hl_nsum A s f) (hl_nsum A t f)
 bridge: NSUM_UNION_bridge
-cert_status: bridge_failed
+cert_status: native_certified
 
 ### neutral   [iteration, sums, number segments]
 hash: a8873aaeb854cfc680774eff00267039

@@ -84,6 +84,13 @@ let num_not_lt a b = (* ~ (a < b) for a >= b *)
 let num_not_le a b = (* ~ (a <= b) for a > b *)
   Printf.sprintf "(fun H => SNoLt_irref %d (SNoLtLe_tra %d %d %d (nat_p_SNo %d %s) (nat_p_SNo %d %s) (nat_p_SNo %d %s) %s H))" b b a b b (nat_of b) a (nat_of a) b (nat_of b) (num_lt b a)
 
+(* meta-level (set -> set) variables bound in the native statement; applications of these and
+   lambda arguments are not sets and must not be rewritten with set-level congruences *)
+let metas : string list ref = ref []
+let is_meta_arg = function Lam _ -> true | Var v -> List.mem v !metas | _ -> false
+let rec spine t acc = match t with App (f, x) -> spine f (x :: acc) | h -> (h, acc)
+let rebuild h args = List.fold_left (fun acc a -> App (acc, a)) h args
+
 (* ---- terms: (normal form, proof of t = t') ; proof "" means syntactically identical ---- *)
 let rec simp (t : tm) : tm * string =
   match t with
@@ -114,6 +121,25 @@ let rec simp (t : tm) : tm * string =
         | "finite_cardinality" -> if is_empty a' then (Num 0, "finite_cardinality_Empty") else (t1, "")
         | _ -> (t1, "")) in
       (t2, trans t t1 t2 p1 p2)
+  | App _ when (match fst (spine t []) with Cst _ | Var _ -> true | _ -> false) ->
+      (* application spine of a native constant or variable: rewrite the set-typed arguments one
+         at a time, each inside an explicit context (a set-level `ap` congruence would be ill-typed
+         for meta-level heads such as `finsum s f`); lambda and meta-function arguments are kept *)
+      let h, args = spine t [] in
+      let cur = ref args and cur_t = ref t and pf = ref "" in
+      List.iteri (fun i a ->
+        if not (is_meta_arg a) then begin
+          let a', pa = simp a in
+          if pa <> "" then begin
+            let before = List.filteri (fun j _ -> j < i) !cur and after = List.filteri (fun j _ -> j > i) !cur in
+            let ctx = rebuild h (before @ [ Var "hl__u" ] @ after) in
+            let t' = rebuild h (before @ [ a' ] @ after) in
+            let step = Printf.sprintf "(f_equal (fun hl__u => %s) %s %s %s)" (pp ctx) (ppp a) (ppp a') pa in
+            pf := trans t !cur_t t' !pf step;
+            cur := before @ [ a' ] @ after; cur_t := t'
+          end
+        end) args;
+      (!cur_t, !pf)
   | App (f, x) ->
       let f', pf = simp f and x', px = simp x in
       let t1 = App (f', x') in
@@ -171,7 +197,12 @@ and prove (t : tm) : string =
       let with_c' pf = transport_back c c' pc (AllSub (x, Var "hl__u", b)) pf in
       if is_empty c' then with_c' (Printf.sprintf "(forall_Sub_Empty (fun %s => %s) %s)" x (pp b) (prove (Mg.subst [ (x, empty) ] b)))
       else Printf.sprintf "(fun %s H%s => %s)" x x (prove b)
-  | All (x, _, b) -> Printf.sprintf "(fun %s => %s)" x (prove b)
+  | All (x, ty, b) ->
+      let is_meta = (match ty with Arr _ -> true | _ -> false) in
+      if is_meta then metas := x :: !metas;
+      let r = Printf.sprintf "(fun %s => %s)" x (prove b) in
+      if is_meta then metas := List.tl !metas;
+      r
   | ExIn (x, c, b) ->
       let c', pc = simp c in
       let with_c' pf = transport_back c c' pc (ExIn (x, Var "hl__u", b)) pf in
@@ -256,8 +287,12 @@ and refute (t : tm) : string =
       else (let rb = refute b in lam (Printf.sprintf "H False (fun %s H%s0 => %s (andER (%s :e %s) %s H%s0))" x x rb x (pp c) (ppp b) x))
   | ExSub (x, c, b) ->
       let rb = refute b in lam (Printf.sprintf "H False (fun %s H%s0 => %s (andER (%s c= %s) %s H%s0))" x x rb x (pp c) (ppp b) x)
-  | Ex (x, _, b) ->
-      let rb = refute b in lam (Printf.sprintf "H False (fun %s => %s)" x rb)
+  | Ex (x, ty, b) ->
+      let is_meta = (match ty with Arr _ -> true | _ -> false) in
+      if is_meta then metas := x :: !metas;
+      let rb = refute b in
+      if is_meta then metas := List.tl !metas;
+      lam (Printf.sprintf "H False (fun %s => %s)" x rb)
   | AllIn (x, c, b) ->
       (* a universal over a singleton whose instance is refutable *)
       let c', pc = simp c in
