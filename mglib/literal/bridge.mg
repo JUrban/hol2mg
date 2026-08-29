@@ -716,3 +716,87 @@ witness m. apply andI.
   + prove forall s :e S, m <= s. let y. assume Hy. exact (Hm2 y Hy (HSNo y Hy)).
   + let y. assume Hy Hlb. exact (Hlb m HmS).
 Qed.
+
+// ---- depth-2 representation: sets of subsets ----
+// hl_rep2 A F is the native set of subsets represented by a literal predicate F on predicates;
+// hl_chi2 A S is the literal predicate on predicates representing a native set S c= Power A.
+Definition hl_rep2 : set -> set -> set := fun A F => {hl_rep A u | u :e hl_rep (2 :^: A) F}.
+Definition hl_chi2 : set -> set -> set := fun A S => hl_chi (2 :^: A) {hl_chi A t | t :e S}.
+
+Theorem hl_rep2_Subq : forall A F:set, hl_rep2 A F c= Power A.
+let A F. let y. assume Hy. apply (ReplE_impred (hl_rep (2 :^: A) F) (fun u => hl_rep A u) y Hy). let u. assume Hu Hyu.
+rewrite Hyu. exact (PowerI A (hl_rep A u) (hl_rep_Subq A u)).
+Qed.
+
+Theorem hl_chi2_Pi : forall A S:set, hl_chi2 A S :e 2 :^: (2 :^: A).
+let A S. exact (hl_chi_Pi (2 :^: A) {hl_chi A t | t :e S}).
+Qed.
+
+Theorem mem_rep2_iff : forall A:set, forall t :e 2 :^: A, forall F:set, t :e hl_rep (2 :^: A) F <-> hl_rep A t :e hl_rep2 A F.
+let A t. assume Ht. let F. apply iffI.
+- assume H. exact (ReplI (hl_rep (2 :^: A) F) (fun u => hl_rep A u) t H).
+- assume H. apply (ReplE_impred (hl_rep (2 :^: A) F) (fun u => hl_rep A u) (hl_rep A t) H). let u. assume Hu Htu.
+  claim HuA: u :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) F u Hu). }
+  claim Htu2: t = u. { exact (hl_rep_inj A t u Ht HuA Htu). }
+  exact ((eq_sym_i t u Htu2) (fun hl__u hl__v => hl__u :e hl_rep (2 :^: A) F) Hu).
+Qed.
+
+Theorem hl_rep2_chi2 : forall A S:set, S c= Power A -> hl_rep2 A (hl_chi2 A S) = S.
+let A S. assume HS.
+claim Hr: hl_rep (2 :^: A) (hl_chi2 A S) = {hl_chi A t | t :e S}.
+{ prove hl_rep (2 :^: A) (hl_chi (2 :^: A) {hl_chi A t | t :e S}) = {hl_chi A t | t :e S}.
+  apply (hl_rep_chi (2 :^: A) {hl_chi A t | t :e S}). let y. assume Hy.
+  apply (ReplE_impred S (fun t => hl_chi A t) y Hy). let t. assume Ht Hyt. rewrite Hyt. exact (hl_chi_Pi A t). }
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_chi2 A S)} = S.
+rewrite Hr. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred {hl_chi A t | t :e S} (fun u => hl_rep A u) y Hy). let u. assume Hu Hyu.
+  apply (ReplE_impred S (fun t => hl_chi A t) u Hu). let t. assume Ht Hut.
+  rewrite Hyu. rewrite Hut. rewrite (hl_rep_chi A t (PowerE A t (HS t Ht))). exact Ht.
+- let t. assume Ht.
+  claim H1: hl_chi A t :e {hl_chi A t | t :e S}. { exact (ReplI S (fun t => hl_chi A t) t Ht). }
+  claim H2: hl_rep A (hl_chi A t) :e {hl_rep A u | u :e {hl_chi A t | t :e S}}. { exact (ReplI {hl_chi A t | t :e S} (fun u => hl_rep A u) (hl_chi A t) H1). }
+  exact ((hl_rep_chi A t (PowerE A t (HS t Ht))) (fun hl__u hl__v => hl__u :e {hl_rep A u | u :e {hl_chi A t | t :e S}}) H2).
+Qed.
+
+Theorem hl_rep2_inj : forall A F G:set, F :e 2 :^: (2 :^: A) -> G :e 2 :^: (2 :^: A) -> hl_rep2 A F = hl_rep2 A G -> F = G.
+let A F G. assume HF HG H.
+apply (hl_rep_inj (2 :^: A) F G HF HG). apply set_ext.
+- let t. assume Ht.
+  claim HtA: t :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) F t Ht). }
+  apply (mem_rep2_iff A t HtA G). assume _ H2. apply H2.
+  claim H3: hl_rep A t :e hl_rep2 A F. { apply (mem_rep2_iff A t HtA F). assume H4 _. exact (H4 Ht). }
+  exact (H (fun hl__u hl__v => hl_rep A t :e hl__u) H3).
+- let t. assume Ht.
+  claim HtA: t :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) G t Ht). }
+  apply (mem_rep2_iff A t HtA F). assume _ H2. apply H2.
+  claim H3: hl_rep A t :e hl_rep2 A G. { apply (mem_rep2_iff A t HtA G). assume H4 _. exact (H4 Ht). }
+  exact ((eq_sym_i (hl_rep2 A F) (hl_rep2 A G) H) (fun hl__u hl__v => hl_rep A t :e hl__u) H3).
+Qed.
+
+Theorem imp_forall_sub2 : forall A:set, forall L N:set -> prop,
+  (forall S c= Power A, L (hl_chi2 A S) -> N S) -> (forall F :e 2 :^: (2 :^: A), L F) -> forall S c= Power A, N S.
+let A L N. assume H H1. let S. assume HS. exact (H S HS (H1 (hl_chi2 A S) (hl_chi2_Pi A S))).
+Qed.
+Theorem imp_forall_sub2_rev : forall A:set, forall L N:set -> prop,
+  (forall F :e 2 :^: (2 :^: A), N (hl_rep2 A F) -> L F) -> (forall S c= Power A, N S) -> forall F :e 2 :^: (2 :^: A), L F.
+let A L N. assume H H1. let F. assume HF. exact (H F HF (H1 (hl_rep2 A F) (hl_rep2_Subq A F))).
+Qed.
+Theorem imp_exists_sub2 : forall A:set, forall L N:set -> prop,
+  (forall F :e 2 :^: (2 :^: A), L F -> N (hl_rep2 A F)) -> (exists F :e 2 :^: (2 :^: A), L F) -> exists S c= Power A, N S.
+let A L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (hl_rep2 A F).
+exact (andI (hl_rep2 A F c= Power A) (N (hl_rep2 A F)) (hl_rep2_Subq A F) (H F HF HL)).
+Qed.
+Theorem imp_exists_sub2_rev : forall A:set, forall L N:set -> prop,
+  (forall S c= Power A, N S -> L (hl_chi2 A S)) -> (exists S c= Power A, N S) -> exists F :e 2 :^: (2 :^: A), L F.
+let A L N. assume H H1. apply H1. let S. assume HS0. apply HS0. assume HS HN. witness (hl_chi2 A S).
+exact (andI (hl_chi2 A S :e 2 :^: (2 :^: A)) (L (hl_chi2 A S)) (hl_chi2_Pi A S) (H S HS HN)).
+Qed.
+
+Theorem rep2_eq_fwd : forall A F G s t:set, hl_rep2 A F = s -> hl_rep2 A G = t -> F = G -> s = t.
+let A F G s t. assume HF HG H.
+rewrite <- HF. rewrite <- HG. exact (H (fun u v => hl_rep2 A F = hl_rep2 A u) (fun q H => H)).
+Qed.
+Theorem rep2_eq_bwd : forall A F G s t:set, F :e 2 :^: (2 :^: A) -> G :e 2 :^: (2 :^: A) -> hl_rep2 A F = s -> hl_rep2 A G = t -> s = t -> F = G.
+let A F G s t. assume HF HG Hs Ht H.
+apply (hl_rep2_inj A F G HF HG). rewrite Hs. rewrite Ht. exact H.
+Qed.

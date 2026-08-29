@@ -38,6 +38,10 @@ Admitted.
 Theorem hl_UNION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 x) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 x) -> forall l3 :e 2 :^: A, hl_UNION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep A l3.
 Admitted.
 
+// CARD : (A->bool)->num at A := A -> bool (not in compat.mg)
+Theorem hl_CARD_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), finite (hl_rep2 A l1) -> hl_CARD (2 :^: A) l1 = finite_cardinality (hl_rep2 A l1).
+Admitted.
+
 // lambda : (num->A)->(A,N)cart (not in compat.mg)
 Theorem hl_lambda_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e omega, l1 x = f1 x) -> hl_lambda A N l1 = fun i :e idx N => f1 i.
 Admitted.
@@ -62,6 +66,10 @@ Admitted.
 Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: hl_ty_cart A M, forall l2 :e 2 :^: hl_ty_cart A N, hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (hl_ty_cart A M) l1, {pastecart M N x y | y :e hl_rep (hl_ty_cart A N) l2}.
 Admitted.
 
+// pairwise : (A->A->bool)->(A->bool)->bool at A := A -> bool (not in compat.mg)
+Theorem hl_pairwise_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 x y) -> forall l2 :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) l1 l2 = 1 <-> forall x y :e hl_rep2 A l2, x <> y -> P1 x y.
+Admitted.
+
 // ALL : (A->bool)->A list->bool (not in compat.mg)
 Theorem hl_ALL_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall P1:set -> prop, (forall x :e A, l1 x = 1 <-> P1 x) -> forall l2 :e finseq A, hl_ALL A l1 l2 = 1 <-> seq_all P1 l2.
 Admitted.
@@ -76,6 +84,10 @@ Admitted.
 
 // CHOICE : (A->bool)->A (not in compat.mg)
 Theorem hl_CHOICE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_CHOICE A l1 = choose_in A (fun x:set => x :e hl_rep A l1).
+Admitted.
+
+// CHOICE : (A->bool)->A at A := A -> bool (not in compat.mg)
+Theorem hl_CHOICE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_CHOICE (2 :^: A) l1 = choose_in (Power A) (fun x:set => x :e hl_rep2 A l1).
 Admitted.
 
 // EXTENSIONAL : (A->bool)->(A->B)->bool (not in compat.mg)
@@ -122,10 +134,6 @@ Admitted.
 Theorem hl_INJF_compat : forall A:set, A <> Empty -> hl_INJF A = Empty.
 Admitted.
 
-// INTERS : ((A->bool)->bool)->A->bool (not in compat.mg)
-Theorem hl_INTERS_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_rep A (hl_INTERS A l1) = {x :e A | forall Y :e hl_rep (2 :^: A) l1, x :e Y}.
-Admitted.
-
 // iproduct : (A->bool)->(A->int)->int (not in compat.mg)
 Theorem hl_iproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_iproduct A l1 l2 = finprod (hl_rep A l1) f2.
 Admitted.
@@ -148,6 +156,10 @@ Admitted.
 
 // SING : (A->bool)->bool (not in compat.mg)
 Theorem hl_SING_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_SING A l1 = 1 <-> exists x :e A, hl_rep A l1 = {x}.
+Admitted.
+
+// SING : (A->bool)->bool at A := A -> bool (not in compat.mg)
+Theorem hl_SING_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_SING (2 :^: A) l1 = 1 <-> exists x :e Power A, hl_rep2 A l1 = {x}.
 Admitted.
 
 // >=_c : (A->bool)->(B->bool)->bool (not in compat.mg)
@@ -256,10 +268,6 @@ Admitted.
 
 // ZRECSPACE : (num->A->bool)->bool (not in compat.mg)
 Theorem hl_ZRECSPACE_compat : forall A:set, A <> Empty -> hl_ZRECSPACE A = Empty.
-Admitted.
-
-// UNIONS : ((A->bool)->bool)->A->bool (not in compat.mg)
-Theorem hl_UNIONS_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_rep A (hl_UNIONS A l1) = Union (hl_rep (2 :^: A) l1).
 Admitted.
 
 // EX : (A->bool)->A list->bool (not in compat.mg)
@@ -528,6 +536,10 @@ Admitted.
 
 // LAST : A list->A (not in compat.mg)
 Theorem hl_LAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_LAST A l1 = seq_last l1.
+Admitted.
+
+// HAS_SIZE : (A->bool)->num->bool at A := A -> bool (not in compat.mg)
+Theorem hl_HAS_SIZE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e omega, hl_HAS_SIZE (2 :^: A) l1 l2 = 1 <-> equip (hl_rep2 A l1) l2.
 Admitted.
 
 // vector : A list->(A,N)cart (not in compat.mg)

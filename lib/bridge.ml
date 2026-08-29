@@ -24,6 +24,7 @@ type dir = Fwd | Bwd            (* Fwd: literal -> native; Bwd: native -> litera
 type relkind =
   | KEq                          (* lit = nat *)
   | KRep of Mg.tm                (* hl_rep A lit = nat *)
+  | KRep2 of Mg.tm               (* hl_rep2 A lit = nat : a set of subsets of A (nested representation) *)
   | KPW of Mg.tm                 (* forall x :e A, lit x = nat x  (meta-function, arity 1) *)
   | KPWP of Mg.tm                (* forall x :e A, lit x = 1 <-> nat x (meta-predicate, arity 1) *)
   | KIff                         (* lit = 1 <-> nat *)
@@ -59,9 +60,11 @@ type genv = {
    the bridge discharges it from the hypotheses in scope.  Templates use ?1.. for the literal
    arguments and ?A.. for carriers. *)
 let side_conditions : (string * string list) list =
-  [ ("CARD", [ "finite (hl_rep ?A ?1)" ]);
-    ("sup", [ "exists x :e R, is_lub (hl_rep R ?1) x" ]);
-    ("inf", [ "exists x :e R, is_glb (hl_rep R ?1) x" ]) ]
+  [ ("CARD", [ "finite ?1" ]);
+    ("sup", [ "exists x :e R, is_lub ?1 x" ]);
+    ("inf", [ "exists x :e R, is_glb ?1 x" ]) ]
+(* side-condition templates use the native placeholders: `?1` is the representation of a subset
+   argument (hl_rep .. / hl_rep2 ..) *)
 
 (* derived side conditions: condition template -> alternative rules (premise slots, lemma).
    Each slot lists alternative premise templates with a wrapper lemma ("" = use the hypothesis as
@@ -70,10 +73,10 @@ let side_conditions : (string * string list) list =
    the native set; the rule's lemma takes the set, its `c= R` proof and the slot proofs in order. *)
 let nonempty_alts = [ ("~ ?1 = Empty", ""); ("?1 <> Empty", ""); ("?x :e ?1", "mem") ]
 let side_derivations : (string * ((string * string) list list * string) list) list =
-  [ ("exists x :e R, is_lub (hl_rep R ?1) x",
+  [ ("exists x :e R, is_lub ?1 x",
      [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, x <= b", ""); ("exists b :e R, forall x :e R, x :e ?1 -> x <= b", "bound_above_of_guarded") ] ], "lub_of_bounds");
        ([ nonempty_alts; [ ("finite ?1", "") ] ], "lub_of_finite") ]);
-    ("exists x :e R, is_glb (hl_rep R ?1) x",
+    ("exists x :e R, is_glb ?1 x",
      [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, b <= x", ""); ("exists b :e R, forall x :e R, x :e ?1 -> b <= x", "bound_below_of_guarded") ] ], "glb_of_bounds");
        ([ nonempty_alts; [ ("finite ?1", "") ] ], "glb_of_finite") ]) ]
 
@@ -208,10 +211,42 @@ let compat_name (e : R.const_entry) idx =
      RESULT
    where RESULT relates hl_c A.. l1 .. ln to the template instantiated with l_i (set roles),
    hl_rep A l_i (subset roles), f_i / P_i / p_i (meta roles). *)
-let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
-  let scheme = e.R.c_scheme in
+(* native form of a literal value of the given type: subsets are represented by hl_rep, sets of
+   subsets by hl_rep2; everything else is the value itself *)
+let nat_of_lit lctx (ty : ty) (t : Mg.tm) : Mg.tm =
+  match ty with
+  | TyApp ("fun", [ TyApp ("fun", [ a; TyApp ("bool", []) ]); TyApp ("bool", []) ]) -> Mg.apps (Mg.Cst "hl_rep2") [ L.carrier lctx a; t ]
+  | TyApp ("fun", [ a; TyApp ("bool", []) ]) -> Mg.apps (Mg.Cst "hl_rep") [ L.carrier lctx a; t ]
+  | _ -> t
+
+(* native carrier of a type variable's instance (the carrier of `?A` in templates): subsets are
+   data of `Power A` *)
+let nat_carrier_of lctx (ty : ty) : Mg.tm =
+  match ty with
+  | TyApp ("fun", [ a; TyApp ("bool", []) ]) -> Mg.App (Mg.Cst "Power", L.carrier lctx a)
+  | _ -> L.carrier lctx ty
+
+let rec subst_ty (a : string) (by : ty) (t : ty) : ty =
+  match t with
+  | TyVar b when b = a -> by
+  | TyVar _ -> t
+  | TyApp (c, args) -> TyApp (c, List.map (subst_ty a by) args)
+
+let rec compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option = compat_statement_of an e e.R.c_scheme
+
+(* the entry's compatibility statement at the nested instance A := A -> bool (single type
+   variable), used for set-of-subsets occurrences *)
+and compat_statement_nested (an : L.analysis) (e : R.const_entry) : Mg.tm option =
+  match L.tyvars_ordered e.R.c_scheme [] with
+  | [ a ] -> compat_statement_of an e (subst_ty a (TyApp ("fun", [ TyVar a; TyApp ("bool", []) ])) e.R.c_scheme)
+  | _ -> None
+
+and compat_statement_of (an : L.analysis) (e : R.const_entry) (scheme : ty) : Mg.tm option =
   let tvs = L.tyvars_ordered scheme [] in
   let tv_names = L.tyvar_params tvs in
+  let tv_inst = (match L.tyvars_ordered e.R.c_scheme [], tvs with
+    | [ a ], [ _ ] when scheme <> e.R.c_scheme -> [ (a, TyApp ("fun", [ TyVar a; TyApp ("bool", []) ])) ]
+    | _ -> []) in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
   lctx.L.use_native_tydefs <- true;
   let doms, res = strip_fun_ty scheme in
@@ -224,10 +259,10 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
       let l = L.fresh lctx ("l" ^ string_of_int (i + 1)) in
       let ca = L.carrier lctx aty in
       match role with
-      | R.RSet -> (l, ca, `Set, Mg.Var l)
+      | R.RSet -> (l, ca, `Set, nat_of_lit lctx aty (Mg.Var l))
       | R.RSubset ->
           (match aty with
-           | TyApp ("fun", [ a; TyApp ("bool", []) ]) -> (l, ca, `Set, Mg.apps (Mg.Cst "hl_rep") [ L.carrier lctx a; Mg.Var l ])
+           | TyApp ("fun", [ _; TyApp ("bool", []) ]) -> (l, ca, `Set, nat_of_lit lctx aty (Mg.Var l))
            | _ -> (l, ca, `Bad, Mg.Var l))
       | R.RProp -> let p = L.fresh lctx ("p" ^ string_of_int (i + 1)) in (l, ca, `Prop p, Mg.Var p)
       | R.RMetaFun k ->
@@ -245,7 +280,7 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
     if List.exists (fun (_, _, k, _) -> k = `Bad) args then None
     else begin
       let sub = List.mapi (fun i (_, _, _, t) -> (string_of_int (i + 1), t)) args
-                @ List.map (fun (a, n) -> (a, Mg.Var n)) tv_names in
+                @ List.map (fun (a, n) -> (a, (match List.assoc_opt a tv_inst with Some t -> nat_carrier_of lctx (subst_ty a (TyVar n) t) | None -> Mg.Var n))) tv_names in
       let rhs = Mg.normalize (Mg.inst sub e.R.c_template) in
       (* the literal constant applied to the carrier parameters of its *generic* type instantiated
          at the entry's scheme (an instance entry such as `==` at int gets `hl_sym_3d3d int`) *)
@@ -254,15 +289,14 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
         | R.RProp -> Some (L.mg_iff (L.mg_eq lhs L.one) rhs)
         | R.RSet -> Some (L.mg_eq lhs rhs)
         | R.RSubset -> (match res with
-            | TyApp ("fun", [ a; TyApp ("bool", []) ]) -> Some (L.mg_eq (Mg.apps (Mg.Cst "hl_rep") [ L.carrier lctx a; lhs ]) rhs)
+            | TyApp ("fun", [ _; TyApp ("bool", []) ]) -> Some (L.mg_eq (nat_of_lit lctx res lhs) rhs)
             | _ -> None)
         | _ -> None) in
       match result with
       | None -> None
       | Some body ->
-          let lit_sub = List.mapi (fun i (l, _, _, _) -> (string_of_int (i + 1), Mg.Var l)) args @ List.map (fun (a, n) -> (a, Mg.Var n)) tv_names in
           let sides = (match List.assoc_opt e.R.c_hol side_conditions with
-            | Some l -> List.map (fun t -> Mg.normalize (Mg.inst lit_sub (cstify (Mg.parse_template t)))) l
+            | Some l -> List.map (fun t -> Mg.normalize (Mg.inst sub (cstify (Mg.parse_template t)))) l
             | None -> []) in
           let body = List.fold_right (fun sc acc -> Mg.Imp (sc, acc)) sides body in
           let body = List.fold_right (fun (l, ca, k, _) acc ->
@@ -339,6 +373,16 @@ let compat_for g (e : R.const_entry) : string =
     | Some l -> (let rec find i = function [] -> 0 | x :: r -> if x == e then i else find (i + 1) r in find 0 l)
     | None -> 0) in
   let name = compat_name e idx in
+  (match Hashtbl.find_opt g.compat name with
+   | Some (_, "ok") -> if not (List.mem name g.used_compat) then g.used_compat <- name :: g.used_compat; name
+   | Some (_, st) -> unsupported "compat_missing: %s (%s)" name st
+   | None -> unsupported "compat_missing: %s" name)
+
+let compat_for_nested g (e : R.const_entry) : string =
+  let idx = (match Hashtbl.find_opt g.nctx.E.reg.R.consts e.R.c_hol with
+    | Some l -> (let rec find i = function [] -> 0 | x :: r -> if x == e then i else find (i + 1) r in find 0 l)
+    | None -> 0) in
+  let name = compat_name e idx ^ "_pow" in
   (match Hashtbl.find_opt g.compat name with
    | Some (_, "ok") -> if not (List.mem name g.used_compat) then g.used_compat <- name :: g.used_compat; name
    | Some (_, st) -> unsupported "compat_missing: %s (%s)" name st
@@ -437,6 +481,18 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let prop0 = L.mg_iff (L.mg_eq (Mg.App (v.lit, lx)) L.one) (L.mg_in lx repS) in
                 let natS = (match nat with Mg.App (Mg.App (Mg.Cst "In", _), s) -> s | _ -> unsupported "rel: subset application shape") in
                 let _, pf = if v.rel = "" then (prop0, pf0) else rewrite_in v.rel repS natS prop0 pf0 in
+                (lit, nat, KIff, pf)
+            | KRep2 a, [ x ] ->
+                (* set-of-subsets variable applied to a subset: S x = 1 <-> hl_rep a x :e hl_rep2 a S *)
+                let lx, nx, kx, px = rel g x (Some (E.VSubset a)) in
+                (match kx with KRep _ -> () | _ -> unsupported "rel: nested subset argument relation");
+                let repS = Mg.apps (Mg.Cst "hl_rep2") [ a; v.lit ] and repx = Mg.apps (Mg.Cst "hl_rep") [ a; lx ] in
+                let pf0 = Printf.sprintf "(iff_trans (%s = 1) (%s :e hl_rep (2 :^: %s) %s) (%s :e %s) (hl_rep_iff (2 :^: %s) %s %s %s) (mem_rep2_iff %s %s %s %s))"
+                  (pp (Mg.App (v.lit, lx))) (pp lx) (pp a) (ppp v.lit) (pp repx) (pp repS) (pp a) (ppp v.lit) (ppp lx) (typ g x) (ppp a) (ppp lx) (typ g x) (ppp v.lit) in
+                let prop0 = L.mg_iff (L.mg_eq (Mg.App (v.lit, lx)) L.one) (L.mg_in repx repS) in
+                let prop1, pf1 = if repx = nx then (prop0, pf0) else rewrite_in (if px = "" then refl else px) repx nx prop0 pf0 in
+                let natS = (match nat with Mg.App (Mg.App (Mg.Cst "In", _), s) -> s | _ -> unsupported "rel: nested subset application shape") in
+                let _, pf = if v.rel = "" then (prop1, pf1) else rewrite_in v.rel repS natS prop1 pf1 in
                 (lit, nat, KIff, pf)
             | _ -> unsupported "rel: variable application with this view/arity")
        | Const (c, cty), _ ->
@@ -601,40 +657,65 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
 
 (* mapped constant application: use its compatibility lemma *)
 and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
-  let name = compat_for g e in
-  let cs = const_carriers g c cty in
+  let tvs = L.tyvars_ordered e.R.c_scheme [] in
+  let generic = Hashtbl.find g.an.L.consts c in
+  let sub = L.match_ty generic cty [] in
+  (* a single type variable instantiated to a subset type: the nested instance (_pow lemma), whose
+     carrier parameter is the inner carrier *)
+  let nested = (match tvs with
+    | [ a ] -> (match List.assoc_opt a sub with Some (TyApp ("fun", [ x; TyApp ("bool", []) ])) -> Some (a, x) | _ -> None)
+    | _ -> None) in
+  let name = (match nested with Some _ -> compat_for_nested g e | None -> compat_for g e) in
+  let cs = (match nested with Some (_, x) -> [ (L.carrier g.lctx x, x) ] | None -> const_carriers g c cty) in
   (* compat A.. HA.. l1 pf1 [f1 rel1] ... *)
   let doms, _ = strip_fun_ty cty in
   let parts = ref [ paren name ] in
   List.iter (fun (ca, _) -> parts := ppp ca :: !parts) cs;
   List.iter (fun (_, t) -> parts := nonempty_pf g t :: !parts) cs;
-  (* the statement we obtain, instantiated *)
-  let tvs = L.tyvars_ordered e.R.c_scheme [] in
-  let generic = Hashtbl.find g.an.L.consts c in
-  let sub = L.match_ty generic cty [] in
-  let inst = List.map (fun a -> (a, L.carrier g.lctx (List.assoc a sub))) tvs in
+  (* the statement we obtain, instantiated: `?A` is the native carrier of the instance *)
+  let inst = List.map (fun a -> (a, nat_carrier_of g.lctx (List.assoc a sub))) tvs in
   let tsub = ref (List.map (fun (a, ca) -> (a, ca)) inst) in
-  let lsub = ref (List.map (fun (a, ca) -> (a, ca)) inst) in   (* literal arguments, for side conditions *)
+  let lsub = ref (List.map (fun a -> (a, L.carrier g.lctx (List.assoc a sub))) tvs) in   (* literal arguments, for side conditions *)
   let rewrites = ref [] in     (* (literal subterm, native subterm, proof) to apply to the RHS *)
   List.iteri (fun i (role, a) ->
     let aty = List.nth doms i in
     match role with
     | R.RSet ->
-        let la, na, ka, pa = rel g a (Some (E.VSet (L.carrier g.lctx aty))) in
-        if ka <> KEq then unsupported "rel_mapped: set argument relation";
-        parts := typ g a :: ppp la :: !parts;
-        tsub := (string_of_int (i + 1), la) :: !tsub;
-        lsub := (string_of_int (i + 1), la) :: !lsub;
-        if la <> na then rewrites := (la, na, pa) :: !rewrites
+        let la, na, ka, pa = rel g a (Some (E.VSet (nat_carrier_of g.lctx aty))) in
+        (match ka with
+         | KEq ->
+             parts := typ g a :: ppp la :: !parts;
+             tsub := (string_of_int (i + 1), la) :: !tsub;
+             lsub := (string_of_int (i + 1), la) :: !lsub;
+             if la <> na then rewrites := (la, na, pa) :: !rewrites
+         | KRep ca ->
+             (* a subset used as data: the native value is its representation *)
+             parts := typ g a :: ppp la :: !parts;
+             let repl = Mg.apps (Mg.Cst "hl_rep") [ ca; la ] in
+             tsub := (string_of_int (i + 1), repl) :: !tsub;
+             lsub := (string_of_int (i + 1), la) :: !lsub;
+             if repl <> na then rewrites := (repl, na, (if pa = "" then refl else pa)) :: !rewrites
+         | _ -> unsupported "rel_mapped: set argument relation")
     | R.RSubset ->
         let ca = (match aty with TyApp ("fun", [ d; _ ]) -> L.carrier g.lctx d | _ -> unsupported "subset role") in
-        let la, na, ka, pa = rel g a (Some (E.VSubset ca)) in
-        (match ka with KRep _ -> () | _ -> unsupported "rel_mapped: subset argument relation");
-        parts := typ g a :: ppp la :: !parts;
-        tsub := (string_of_int (i + 1), Mg.apps (Mg.Cst "hl_rep") [ ca; la ]) :: !tsub;
-        lsub := (string_of_int (i + 1), la) :: !lsub;
-        let repl = Mg.apps (Mg.Cst "hl_rep") [ ca; la ] in
-        if repl <> na then rewrites := (repl, na, (if pa = "" then refl else pa)) :: !rewrites
+        let nested_arg = (match aty with TyApp ("fun", [ TyApp ("fun", [ x; TyApp ("bool", []) ]); _ ]) -> Some (L.carrier g.lctx x) | _ -> None) in
+        (match nested_arg with
+         | None ->
+             let la, na, ka, pa = rel g a (Some (E.VSubset ca)) in
+             (match ka with KRep _ -> () | _ -> unsupported "rel_mapped: subset argument relation");
+             parts := typ g a :: ppp la :: !parts;
+             tsub := (string_of_int (i + 1), Mg.apps (Mg.Cst "hl_rep") [ ca; la ]) :: !tsub;
+             lsub := (string_of_int (i + 1), la) :: !lsub;
+             let repl = Mg.apps (Mg.Cst "hl_rep") [ ca; la ] in
+             if repl <> na then rewrites := (repl, na, (if pa = "" then refl else pa)) :: !rewrites
+         | Some cx ->
+             let la, na, ka, pa = rel g a (Some (E.VSubset (Mg.App (Mg.Cst "Power", cx)))) in
+             (match ka with KRep2 _ -> () | _ -> unsupported "rel_mapped: nested subset argument relation");
+             parts := typ g a :: ppp la :: !parts;
+             let repl = Mg.apps (Mg.Cst "hl_rep2") [ cx; la ] in
+             tsub := (string_of_int (i + 1), repl) :: !tsub;
+             lsub := (string_of_int (i + 1), la) :: !lsub;
+             if repl <> na then rewrites := (repl, na, (if pa = "" then refl else pa)) :: !rewrites)
     | R.RProp ->
         let la, na, ka, pa = rel g a (Some E.VProp) in
         if ka <> KIff then unsupported "rel_mapped: prop argument relation";
@@ -688,7 +769,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     | Some scs ->
         let lit_sub = List.mapi (fun i (_, _, _, _) -> ()) [] in ignore lit_sub;
         List.fold_left (fun pf sc_t ->
-          let sc = Mg.normalize (Mg.inst !lsub (cstify (Mg.parse_template sc_t))) in
+          let sc = Mg.normalize (Mg.inst !tsub (cstify (Mg.parse_template sc_t))) in
           (* native form after the pending rewrites *)
           let nat_of t = List.fold_left (fun t (l, n, _) -> replace_tm l n t) t (List.rev !rewrites) in
           let sc_nat = nat_of sc in
@@ -738,8 +819,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     | R.RSubset ->
         let n = List.length e.R.c_args in
         let resty = List.fold_right (fun d acc -> fun_ty d acc) (List.filteri (fun i _ -> i >= n) doms) (snd (strip_fun_ty cty)) in
-        let ca = (match resty with TyApp ("fun", [ d; _ ]) -> L.carrier g.lctx d | _ -> unsupported "subset result") in
-        L.mg_eq (Mg.apps (Mg.Cst "hl_rep") [ ca; lhs ]) rhs0
+        (match resty with TyApp ("fun", [ _; _ ]) -> () | _ -> unsupported "subset result");
+        L.mg_eq (nat_of_lit g.lctx resty lhs) rhs0
     | _ -> unsupported "rel_mapped: result role") in
   (* apply the pending rewrites of the right-hand side *)
   let prop, pf = List.fold_left (fun (prop, pf) (l, n, pe) ->
@@ -753,7 +834,10 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     let prop' = rebuild (replace_tm l n b) in
     (prop', leibniz pe (pp ctx) pf)) (prop0, pf0) (List.rev !rewrites) in
   ignore prop;
-  let kind = (match e.R.c_result with R.RProp -> KIff | R.RSet -> KEq | R.RSubset -> KRep (match nview with E.VSubset a -> a | _ -> Mg.Var "?") | _ -> KEq) in
+  let kind = (match e.R.c_result with
+    | R.RProp -> KIff | R.RSet -> KEq
+    | R.RSubset -> (match nview with E.VSubset (Mg.App (Mg.Cst "Power", a)) -> KRep2 a | E.VSubset a -> KRep a | _ -> KRep (Mg.Var "?"))
+    | _ -> KEq) in
   (* sanity: the derived native form must be the one Elab produced *)
   let derived = (match prop with
     | Mg.App (Mg.App (Mg.Cst ("iff" | "eq"), _), b) -> b
@@ -764,6 +848,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
 and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
   match kind, want with
   | KEq, E.VSet _ | KIff, E.VProp | KRep _, E.VSubset _ -> (lit, nat, kind, pf)
+  | KRep2 _, E.VSubset _ -> (lit, nat, kind, pf)
+  | KRep a, E.VSet (Mg.App (Mg.Cst "Power", a')) when a = a' -> (lit, nat, kind, pf)   (* a subset used as data of Power A *)
   | KPW a, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KPWP a, E.VMetaPred [ _ ] -> (lit, nat, kind, pf)
   | KPW2 _, E.VMetaFun ([ _; _ ], _) -> (lit, nat, kind, pf)
@@ -909,6 +995,10 @@ and bridge_eq g dir ty a b =
         (match dir with
          | Fwd -> Printf.sprintf "(rep_eq_fwd %s %s %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (ppp na) (ppp nb) pa pb
          | Bwd -> Printf.sprintf "(rep_eq_bwd %s %s %s %s %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (ppp na) (ppp nb) (typ g a) (typ g b) pa pb)
+    | KRep2 ca, KRep2 _ ->
+        (match dir with
+         | Fwd -> Printf.sprintf "(rep2_eq_fwd %s %s %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (ppp na) (ppp nb) pa pb
+         | Bwd -> Printf.sprintf "(rep2_eq_bwd %s %s %s %s %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (ppp na) (ppp nb) (typ g a) (typ g b) pa pb)
     | _ -> unsupported "bridge_eq: relation kinds"
   end
 
@@ -1001,6 +1091,24 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         (match kind with
          | `All -> Printf.sprintf "(imp_forall_fun_rev %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) la na n hn sub
          | `Ex -> Printf.sprintf "(imp_exists_fun %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) la na n hn sub)
+      end
+  | E.VSubset (Mg.App (Mg.Cst "Power", c)) ->
+      (* a set of subsets of c: nested representation hl_rep2 / hl_chi2 *)
+      let la = lam_l lbody and na = lam_n nbody in
+      let hs = "H" ^ n ^ "s" in
+      if fwd_first then begin
+        let v = { plain with lit = Mg.apps (Mg.Cst "hl_chi2") [ c; Mg.Var n ]; mem = Printf.sprintf "(hl_chi2_Pi %s %s)" (ppp c) n;
+                             rel = Printf.sprintf "(hl_rep2_chi2 %s %s %s)" (ppp c) n hs; kind = KRep2 c; hyp = hs } in
+        let sub = with_var v (fun () -> bridge g dir body') in
+        (match kind with
+         | `All -> Printf.sprintf "(imp_forall_sub2 %s %s %s (fun %s %s => %s))" (ppp c) la na n hs sub
+         | `Ex -> Printf.sprintf "(imp_exists_sub2_rev %s %s %s (fun %s %s => %s))" (ppp c) la na n hs sub)
+      end else begin
+        let v = { plain with nat = Some (Mg.apps (Mg.Cst "hl_rep2") [ c; Mg.Var n ]); rel = ""; kind = KRep2 c } in
+        let sub = with_var v (fun () -> bridge g dir body') in
+        (match kind with
+         | `All -> Printf.sprintf "(imp_forall_sub2_rev %s %s %s (fun %s %s => %s))" (ppp c) la na n hn sub
+         | `Ex -> Printf.sprintf "(imp_exists_sub2 %s %s %s (fun %s %s => %s))" (ppp c) la na n hn sub)
       end
   | E.VSubset c ->
       let la = lam_l lbody and na = lam_n nbody in

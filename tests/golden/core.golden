@@ -1210,7 +1210,8 @@ source: !s:A->bool. !u:(A->bool)->bool. UNIONS (s INSERT u) = s UNION UNIONS u
 status: exact_native
 statement: forall A:set, A <> Empty -> forall s c= A, forall u c= Power A, Union (SetAdjoin u s) = s :\/: Union u
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall u :e 2 :^: (2 :^: A), hl_UNIONS A (hl_INSERT (2 :^: A) s u) = hl_UNION A s (hl_UNIONS A u)
-cert_status: bridge_unsupported
+bridge: UNIONS_INSERT_bridge
+cert_status: native_certified
 
 ### IN_UNIONS   [sets: membership, algebra, comprehensions, images, families]
 hash: c4eb1df88efda5987e140438f90f45d8
@@ -1218,7 +1219,8 @@ source: !s:(A->bool)->bool. !x:A. x IN UNIONS s <=> (?t:A->bool. t IN s /\ x IN 
 status: generalization_required
 statement: forall A:set, forall s c= Power A, forall x :e A, x :e Union s <-> exists t c= A, t :e s /\ x :e t
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall x :e A, hl_IN A x (hl_UNIONS A s) = 1 <-> exists t :e 2 :^: A, hl_IN (2 :^: A) t s = 1 /\ hl_IN A x t = 1
-cert_status: bridge_unsupported
+bridge: IN_UNIONS_bridge
+cert_status: native_certified
 
 ### IN_INTERS   [sets: membership, algebra, comprehensions, images, families]
 hash: 90f987e51ed1bea30a7181c0682ececf
@@ -1226,7 +1228,8 @@ source: !s:(A->bool)->bool. !x:A. x IN INTERS s <=> (!t:A->bool. t IN s ==> x IN
 status: generalization_required
 statement: forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall x :e A, hl_IN A x (hl_INTERS A s) = 1 <-> forall t :e 2 :^: A, hl_IN (2 :^: A) t s = 1 -> hl_IN A x t = 1
-cert_status: bridge_unsupported
+bridge: IN_INTERS_bridge
+cert_status: native_certified
 
 ### INTERS_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: aa86287310a3119611b5759a859e7fa2
@@ -1234,7 +1237,8 @@ source: !s:A->bool. !u:(A->bool)->bool. INTERS (s INSERT u) = s INTER INTERS u
 status: generalization_required
 statement: forall A:set, forall s c= A, forall u c= Power A, {x :e A | forall Y :e SetAdjoin u s, x :e Y} = s :/\: {x :e A | forall Y :e u, x :e Y}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall u :e 2 :^: (2 :^: A), hl_INTERS A (hl_INSERT (2 :^: A) s u) = hl_INTER A s (hl_INTERS A u)
-cert_status: bridge_unsupported
+bridge: INTERS_INSERT_bridge
+cert_status: native_certified
 
 ### IN_ELIM_THM   [sets: membership, algebra, comprehensions, images, families]
 hash: f0b562a918d32513fbce399c8874d32d

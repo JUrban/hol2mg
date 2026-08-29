@@ -2802,3 +2802,233 @@ prove (if (exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> 
 rewrite (If_i_1 (exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) (Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1)) (Eps_i (fun a:set => a :e R)) Hex2).
 exact (eq_sym_i (Eps_i (fun x:set => x :e R /\ is_glb (hl_rep R s) x)) (Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1)) (Hpe (fun hl__u hl__v => Eps_i hl__u = Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1)) (fun q H => H))).
 Qed.
+
+// ---- images of sets under (injective) meta functions ----
+Theorem Repl_binunion : forall X Y:set, forall F:set -> set, {F x | x :e X :\/: Y} = {F x | x :e X} :\/: {F x | x :e Y}.
+let X Y F. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred (X :\/: Y) F y Hy). let x. assume Hx Hyx. apply (binunionE X Y x Hx).
+  + assume H. rewrite Hyx. exact (binunionI1 {F x | x :e X} {F x | x :e Y} (F x) (ReplI X F x H)).
+  + assume H. rewrite Hyx. exact (binunionI2 {F x | x :e X} {F x | x :e Y} (F x) (ReplI Y F x H)).
+- let y. assume Hy. apply (binunionE {F x | x :e X} {F x | x :e Y} y Hy).
+  + assume H. apply (ReplE_impred X F y H). let x. assume Hx Hyx. rewrite Hyx. exact (ReplI (X :\/: Y) F x (binunionI1 X Y x Hx)).
+  + assume H. apply (ReplE_impred Y F y H). let x. assume Hx Hyx. rewrite Hyx. exact (ReplI (X :\/: Y) F x (binunionI2 X Y x Hx)).
+Qed.
+
+Theorem Repl_Sing : forall a:set, forall F:set -> set, {F x | x :e {a}} = {F a}.
+let a F. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred {a} F y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite (SingE a x Hx). exact (SingI (F a)).
+- let y. assume Hy. rewrite (SingE (F a) y Hy). exact (ReplI {a} F a (SingI a)).
+Qed.
+
+Theorem Repl_binintersect_inj : forall D X Y:set, forall F:set -> set, X c= D -> Y c= D -> (forall u v :e D, F u = F v -> u = v) -> {F x | x :e X :/\: Y} = {F x | x :e X} :/\: {F x | x :e Y}.
+let D X Y F. assume HX HY Hinj. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred (X :/\: Y) F y Hy). let x. assume Hx Hyx. apply (binintersectE X Y x Hx). assume Hx1 Hx2.
+  rewrite Hyx. exact (binintersectI {F x | x :e X} {F x | x :e Y} (F x) (ReplI X F x Hx1) (ReplI Y F x Hx2)).
+- let y. assume Hy. apply (binintersectE {F x | x :e X} {F x | x :e Y} y Hy). assume H1 H2.
+  apply (ReplE_impred X F y H1). let x. assume Hx Hyx. apply (ReplE_impred Y F y H2). let x2. assume Hx2 Hyx2.
+  claim Heq: x = x2. { exact (Hinj x (HX x Hx) x2 (HY x2 Hx2) (eq_trans_i (F x) y (F x2) (eq_sym_i y (F x) Hyx) Hyx2)). }
+  rewrite Hyx. apply (ReplI (X :/\: Y) F x). apply (binintersectI X Y x Hx). rewrite Heq. exact Hx2.
+Qed.
+
+Theorem Repl_setminus_inj : forall D X Y:set, forall F:set -> set, X c= D -> Y c= D -> (forall u v :e D, F u = F v -> u = v) -> {F x | x :e X :\: Y} = {F x | x :e X} :\: {F x | x :e Y}.
+let D X Y F. assume HX HY Hinj. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred (X :\: Y) F y Hy). let x. assume Hx Hyx. apply (setminusE X Y x Hx). assume Hx1 Hx2.
+  rewrite Hyx. apply (setminusI {F x | x :e X} {F x | x :e Y} (F x) (ReplI X F x Hx1)).
+  assume H. apply (ReplE_impred Y F (F x) H). let x2. assume Hx2' Hxx2. apply Hx2. rewrite (Hinj x (HX x Hx1) x2 (HY x2 Hx2') Hxx2). exact Hx2'.
+- let y. assume Hy. apply (setminusE {F x | x :e X} {F x | x :e Y} y Hy). assume H1 H2.
+  apply (ReplE_impred X F y H1). let x. assume Hx Hyx. rewrite Hyx. apply (ReplI (X :\: Y) F x). apply (setminusI X Y x Hx).
+  assume HxY. apply H2. rewrite Hyx. exact (ReplI Y F x HxY).
+Qed.
+
+Theorem Repl_Subq_inj : forall D X Y:set, forall F:set -> set, X c= D -> Y c= D -> (forall u v :e D, F u = F v -> u = v) -> (X c= Y <-> {F x | x :e X} c= {F x | x :e Y}).
+let D X Y F. assume HX HY Hinj. apply iffI.
+- assume H. let y. assume Hy. apply (ReplE_impred X F y Hy). let x. assume Hx Hyx. rewrite Hyx. exact (ReplI Y F x (H x Hx)).
+- assume H. let x. assume Hx.
+  claim H1: F x :e {F x | x :e Y}. { exact (H (F x) (ReplI X F x Hx)). }
+  apply (ReplE_impred Y F (F x) H1). let x2. assume Hx2 Hxx2. rewrite (Hinj x (HX x Hx) x2 (HY x2 Hx2) Hxx2). exact Hx2.
+Qed.
+
+Theorem Repl_eq_inj : forall D X Y:set, forall F:set -> set, X c= D -> Y c= D -> (forall u v :e D, F u = F v -> u = v) -> (X = Y <-> {F x | x :e X} = {F x | x :e Y}).
+let D X Y F. assume HX HY Hinj. apply iffI.
+- assume H. exact (f_equal (fun Z => {F x | x :e Z}) X Y H).
+- assume H. apply set_ext.
+  + apply (Repl_Subq_inj D X Y F HX HY Hinj). assume _ H2. apply H2. rewrite H. exact (Subq_ref {F x | x :e Y}).
+  + apply (Repl_Subq_inj D Y X F HY HX Hinj). assume _ H2. apply H2. rewrite H. exact (Subq_ref {F x | x :e Y}).
+Qed.
+
+Theorem Repl_Empty_iff : forall X:set, forall F:set -> set, {F x | x :e X} = Empty <-> X = Empty.
+let X F. apply iffI.
+- assume H. apply (Empty_eq X). let x. assume Hx. exact (EmptyE (F x) (H (fun hl__u hl__v => F x :e hl__u) (ReplI X F x Hx))).
+- assume H. rewrite H. exact (Repl_Empty F).
+Qed.
+
+// every literal predicate is the characteristic function of its representation
+Theorem hl_chi_rep : forall A:set, forall u :e 2 :^: A, hl_chi A (hl_rep A u) = u.
+let A u. assume Hu. exact (hl_rep_inj A (hl_chi A (hl_rep A u)) u (hl_chi_Pi A (hl_rep A u)) Hu (hl_rep_chi A (hl_rep A u) (hl_rep_Subq A u))).
+Qed.
+
+Theorem Repl_rep_inv : forall A X:set, X c= 2 :^: A -> X = {hl_chi A t | t :e {hl_rep A u | u :e X}}.
+let A X. assume HX. apply set_ext.
+- let u. assume Hu.
+  claim H1: hl_rep A u :e {hl_rep A u | u :e X}. { exact (ReplI X (fun u => hl_rep A u) u Hu). }
+  exact ((hl_chi_rep A u (HX u Hu)) (fun hl__u hl__v => hl__u :e {hl_chi A t | t :e {hl_rep A u | u :e X}}) (ReplI {hl_rep A u | u :e X} (fun t => hl_chi A t) (hl_rep A u) H1)).
+- let v. assume Hv. apply (ReplE_impred {hl_rep A u | u :e X} (fun t => hl_chi A t) v Hv). let t. assume Ht Hvt.
+  apply (ReplE_impred X (fun u => hl_rep A u) t Ht). let u. assume Hu Htu.
+  rewrite Hvt. rewrite Htu. rewrite (hl_chi_rep A u (HX u Hu)). exact Hu.
+Qed.
+
+Theorem rep2_finite_iff : forall A X:set, X c= 2 :^: A -> (finite X <-> finite {hl_rep A u | u :e X}).
+let A X. assume HX. apply iffI.
+- assume H. exact (Repl_finite (fun u => hl_rep A u) X H).
+- assume H. rewrite (Repl_rep_inv A X HX). exact (Repl_finite (fun t => hl_chi A t) {hl_rep A u | u :e X} H).
+Qed.
+
+// ---- set-theoretic constants at the nested instance A := A -> bool ----
+Theorem hl_IN_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: (2 :^: A), hl_IN (2 :^: A) l1 l2 = 1 <-> hl_rep A l1 :e hl_rep2 A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+exact (iff_trans (hl_IN (2 :^: A) l1 l2 = 1) (l1 :e hl_rep (2 :^: A) l2) (hl_rep A l1 :e hl_rep2 A l2) (hl_IN_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2) (mem_rep2_iff A l1 H1 l2)).
+Qed.
+
+Theorem hl_EMPTY_compat_pow : forall A:set, A <> Empty -> hl_rep2 A (hl_EMPTY (2 :^: A)) = Empty.
+let A. assume HA.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_EMPTY (2 :^: A))} = Empty.
+rewrite (hl_EMPTY_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty)). exact (Repl_Empty (fun u => hl_rep A u)).
+Qed.
+
+Theorem hl_UNIV_compat_pow : forall A:set, A <> Empty -> hl_rep2 A (hl_UNIV (2 :^: A)) = Power A.
+let A. assume HA.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_UNIV (2 :^: A))} = Power A.
+rewrite (hl_UNIV_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty)). apply set_ext.
+- let y. assume Hy. apply (ReplE_impred (2 :^: A) (fun u => hl_rep A u) y Hy). let u. assume Hu Hyu. rewrite Hyu. exact (PowerI A (hl_rep A u) (hl_rep_Subq A u)).
+- let s. assume Hs.
+  exact ((hl_rep_chi A s (PowerE A s Hs)) (fun hl__u hl__v => hl__u :e {hl_rep A u | u :e 2 :^: A}) (ReplI (2 :^: A) (fun u => hl_rep A u) (hl_chi A s) (hl_chi_Pi A s))).
+Qed.
+
+Theorem hl_INSERT_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: (2 :^: A), hl_rep2 A (hl_INSERT (2 :^: A) l1 l2) = SetAdjoin (hl_rep2 A l2) (hl_rep A l1).
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_INSERT (2 :^: A) l1 l2)} = {hl_rep A u | u :e hl_rep (2 :^: A) l2} :\/: {hl_rep A l1}.
+rewrite (hl_INSERT_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2).
+prove {hl_rep A u | u :e hl_rep (2 :^: A) l2 :\/: {l1}} = {hl_rep A u | u :e hl_rep (2 :^: A) l2} :\/: {hl_rep A l1}.
+rewrite (Repl_binunion (hl_rep (2 :^: A) l2) {l1} (fun u => hl_rep A u)).
+rewrite (Repl_Sing l1 (fun u => hl_rep A u)). exact (fun q H => H).
+Qed.
+
+Theorem hl_UNION_compat_pow : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: (2 :^: A), hl_rep2 A (hl_UNION (2 :^: A) l1 l2) = hl_rep2 A l1 :\/: hl_rep2 A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_UNION (2 :^: A) l1 l2)} = {hl_rep A u | u :e hl_rep (2 :^: A) l1} :\/: {hl_rep A u | u :e hl_rep (2 :^: A) l2}.
+rewrite (hl_UNION_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2).
+exact (Repl_binunion (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u)).
+Qed.
+
+Theorem hl_INTER_compat_pow : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: (2 :^: A), hl_rep2 A (hl_INTER (2 :^: A) l1 l2) = hl_rep2 A l1 :/\: hl_rep2 A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_INTER (2 :^: A) l1 l2)} = {hl_rep A u | u :e hl_rep (2 :^: A) l1} :/\: {hl_rep A u | u :e hl_rep (2 :^: A) l2}.
+rewrite (hl_INTER_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2).
+exact (Repl_binintersect_inj (2 :^: A) (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l2) (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H)).
+Qed.
+
+Theorem hl_DIFF_compat_pow : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: (2 :^: A), hl_rep2 A (hl_DIFF (2 :^: A) l1 l2) = hl_rep2 A l1 :\: hl_rep2 A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_DIFF (2 :^: A) l1 l2)} = {hl_rep A u | u :e hl_rep (2 :^: A) l1} :\: {hl_rep A u | u :e hl_rep (2 :^: A) l2}.
+rewrite (hl_DIFF_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2).
+exact (Repl_setminus_inj (2 :^: A) (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l2) (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H)).
+Qed.
+
+Theorem hl_DELETE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e 2 :^: A, hl_rep2 A (hl_DELETE (2 :^: A) l1 l2) = hl_rep2 A l1 :\: {hl_rep A l2}.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+prove {hl_rep A u | u :e hl_rep (2 :^: A) (hl_DELETE (2 :^: A) l1 l2)} = {hl_rep A u | u :e hl_rep (2 :^: A) l1} :\: {hl_rep A l2}.
+rewrite (hl_DELETE_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2).
+claim HS: {l2} c= 2 :^: A. { let y. assume Hy. rewrite (SingE l2 y Hy). exact H2. }
+rewrite (Repl_setminus_inj (2 :^: A) (hl_rep (2 :^: A) l1) {l2} (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) HS (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H)).
+rewrite (Repl_Sing l2 (fun u => hl_rep A u)). exact (fun q H => H).
+Qed.
+
+Theorem hl_SUBSET_compat_pow : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: (2 :^: A), hl_SUBSET (2 :^: A) l1 l2 = 1 <-> hl_rep2 A l1 c= hl_rep2 A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+exact (iff_trans (hl_SUBSET (2 :^: A) l1 l2 = 1) (hl_rep (2 :^: A) l1 c= hl_rep (2 :^: A) l2) (hl_rep2 A l1 c= hl_rep2 A l2) (hl_SUBSET_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2)
+  (Repl_Subq_inj (2 :^: A) (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l2) (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H))).
+Qed.
+
+Theorem hl_PSUBSET_compat_pow : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: (2 :^: A), hl_PSUBSET (2 :^: A) l1 l2 = 1 <-> hl_rep2 A l1 c= hl_rep2 A l2 /\ hl_rep2 A l1 <> hl_rep2 A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+claim Hsub: hl_rep (2 :^: A) l1 c= hl_rep (2 :^: A) l2 <-> hl_rep2 A l1 c= hl_rep2 A l2.
+{ exact (Repl_Subq_inj (2 :^: A) (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l2) (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H)). }
+claim Heq: hl_rep (2 :^: A) l1 = hl_rep (2 :^: A) l2 <-> hl_rep2 A l1 = hl_rep2 A l2.
+{ exact (Repl_eq_inj (2 :^: A) (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l2) (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H)). }
+apply (iff_trans (hl_PSUBSET (2 :^: A) l1 l2 = 1) (hl_rep (2 :^: A) l1 c= hl_rep (2 :^: A) l2 /\ hl_rep (2 :^: A) l1 <> hl_rep (2 :^: A) l2) (hl_rep2 A l1 c= hl_rep2 A l2 /\ hl_rep2 A l1 <> hl_rep2 A l2) (hl_PSUBSET_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2)).
+apply iffI.
+- assume H. apply H. assume Hs Hn. apply andI.
+  + apply Hsub. assume H3 _. exact (H3 Hs).
+  + assume H3. apply Hn. apply Heq. assume _ H4. exact (H4 H3).
+- assume H. apply H. assume Hs Hn. apply andI.
+  + apply Hsub. assume _ H3. exact (H3 Hs).
+  + assume H3. apply Hn. apply Heq. assume H4 _. exact (H4 H3).
+Qed.
+
+Theorem hl_FINITE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_FINITE (2 :^: A) l1 = 1 <-> finite (hl_rep2 A l1).
+let A. assume HA. let l1. assume H1.
+exact (iff_trans (hl_FINITE (2 :^: A) l1 = 1) (finite (hl_rep (2 :^: A) l1)) (finite (hl_rep2 A l1)) (hl_FINITE_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1) (rep2_finite_iff A (hl_rep (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l1))).
+Qed.
+
+Theorem hl_INFINITE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_INFINITE (2 :^: A) l1 = 1 <-> infinite (hl_rep2 A l1).
+let A. assume HA. let l1. assume H1.
+apply (iff_trans (hl_INFINITE (2 :^: A) l1 = 1) (infinite (hl_rep (2 :^: A) l1)) (infinite (hl_rep2 A l1)) (hl_INFINITE_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1)).
+prove (~ finite (hl_rep (2 :^: A) l1)) <-> ~ finite (hl_rep2 A l1).
+apply iffI.
+- assume H H2. apply H. apply (rep2_finite_iff A (hl_rep (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l1)). assume _ H3. exact (H3 H2).
+- assume H H2. apply H. apply (rep2_finite_iff A (hl_rep (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l1)). assume H3 _. exact (H3 H2).
+Qed.
+
+Theorem hl_DISJOINT_compat_pow : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: (2 :^: A), hl_DISJOINT (2 :^: A) l1 l2 = 1 <-> hl_rep2 A l1 :/\: hl_rep2 A l2 = Empty.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+claim Hi: hl_rep2 A l1 :/\: hl_rep2 A l2 = {hl_rep A u | u :e hl_rep (2 :^: A) l1 :/\: hl_rep (2 :^: A) l2}.
+{ exact (eq_sym_i {hl_rep A u | u :e hl_rep (2 :^: A) l1 :/\: hl_rep (2 :^: A) l2} (hl_rep2 A l1 :/\: hl_rep2 A l2) (Repl_binintersect_inj (2 :^: A) (hl_rep (2 :^: A) l1) (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) (hl_rep_Subq (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l2) (fun u Hu v Hv H => hl_rep_inj A u v Hu Hv H))). }
+apply (iff_trans (hl_DISJOINT (2 :^: A) l1 l2 = 1) (hl_rep (2 :^: A) l1 :/\: hl_rep (2 :^: A) l2 = Empty) (hl_rep2 A l1 :/\: hl_rep2 A l2 = Empty) (hl_DISJOINT_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2)).
+rewrite Hi. apply iffI.
+- assume H. apply (Repl_Empty_iff (hl_rep (2 :^: A) l1 :/\: hl_rep (2 :^: A) l2) (fun u => hl_rep A u)). assume _ H3. exact (H3 H).
+- assume H. apply (Repl_Empty_iff (hl_rep (2 :^: A) l1 :/\: hl_rep (2 :^: A) l2) (fun u => hl_rep A u)). assume H3 _. exact (H3 H).
+Qed.
+
+// ---- unions and intersections of families ----
+Theorem hl_UNIONS_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_rep A (hl_UNIONS A l1) = Union (hl_rep2 A l1).
+let A. assume HA. let l1. assume H1.
+claim H2ne: 2 :^: A <> Empty. { exact (setexp_nonempty A 2 two_nonempty). }
+rewrite (hl_UNIONS_unfold A l1 H1).
+apply (eq_trans_i (hl_rep A (hl_GSPEC A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if exists u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 /\ hl_IN A x u = 1 then 1 else 0) x = 1 then 1 else 0))) ({v :e A | exists u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 /\ hl_IN A v u = 1}) (Union (hl_rep2 A l1)) (hl_gspec_sep A (fun x => exists u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 /\ hl_IN A x u = 1))).
+apply set_ext.
+- let v. assume Hv. apply (SepE A (fun x => exists u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 /\ hl_IN A x u = 1) v Hv). assume HvA H. apply H. let u. assume Hu0. apply Hu0. assume Hu H3. apply H3. assume H4 H5.
+  claim HuR: u :e hl_rep (2 :^: A) l1. { apply (hl_IN_compat (2 :^: A) H2ne u Hu l1 H1). assume H6 _. exact (H6 H4). }
+  claim HvU: v :e hl_rep A u. { apply (hl_IN_compat A HA v HvA u Hu). assume H6 _. exact (H6 H5). }
+  exact (UnionI (hl_rep2 A l1) v (hl_rep A u) HvU (ReplI (hl_rep (2 :^: A) l1) (fun u => hl_rep A u) u HuR)).
+- let v. assume Hv. apply (UnionE_impred (hl_rep2 A l1) v Hv). let Y. assume HvY HY.
+  apply (ReplE_impred (hl_rep (2 :^: A) l1) (fun u => hl_rep A u) Y HY). let u. assume Hu HYu.
+  claim HuA: u :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) l1 u Hu). }
+  claim HvU: v :e hl_rep A u. { exact (HYu (fun hl__u hl__v => v :e hl__u) HvY). }
+  claim HvA: v :e A. { exact (hl_rep_Subq A u v HvU). }
+  apply (SepI A (fun x => exists u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 /\ hl_IN A x u = 1) v HvA).
+  witness u. apply andI.
+  + exact HuA.
+  + apply andI.
+    * apply (hl_IN_compat (2 :^: A) H2ne u HuA l1 H1). assume _ H6. exact (H6 Hu).
+    * apply (hl_IN_compat A HA v HvA u HuA). assume _ H6. exact (H6 HvU).
+Qed.
+
+Theorem hl_INTERS_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_rep A (hl_INTERS A l1) = {x :e A | forall Y :e hl_rep2 A l1, x :e Y}.
+let A. assume HA. let l1. assume H1.
+claim H2ne: 2 :^: A <> Empty. { exact (setexp_nonempty A 2 two_nonempty). }
+rewrite (hl_INTERS_unfold A l1 H1).
+apply (eq_trans_i (hl_rep A (hl_GSPEC A (fun v :e A => if exists x :e A, hl_SETSPEC A v (if forall u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 -> hl_IN A x u = 1 then 1 else 0) x = 1 then 1 else 0))) ({v :e A | forall u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 -> hl_IN A v u = 1}) ({x :e A | forall Y :e hl_rep2 A l1, x :e Y}) (hl_gspec_sep A (fun x => forall u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 -> hl_IN A x u = 1))).
+apply set_ext.
+- let v. assume Hv. apply (SepE A (fun x => forall u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 -> hl_IN A x u = 1) v Hv). assume HvA H.
+  apply (SepI A (fun x => forall Y :e hl_rep2 A l1, x :e Y) v HvA). let Y. assume HY.
+  apply (ReplE_impred (hl_rep (2 :^: A) l1) (fun u => hl_rep A u) Y HY). let u. assume Hu HYu.
+  claim HuA: u :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) l1 u Hu). }
+  claim H4: hl_IN (2 :^: A) u l1 = 1. { apply (hl_IN_compat (2 :^: A) H2ne u HuA l1 H1). assume _ H6. exact (H6 Hu). }
+  claim HvU: v :e hl_rep A u. { apply (hl_IN_compat A HA v HvA u HuA). assume H6 _. exact (H6 (H u HuA H4)). }
+  rewrite HYu. exact HvU.
+- let v. assume Hv. apply (SepE A (fun x => forall Y :e hl_rep2 A l1, x :e Y) v Hv). assume HvA H.
+  apply (SepI A (fun x => forall u :e 2 :^: A, hl_IN (2 :^: A) u l1 = 1 -> hl_IN A x u = 1) v HvA). let u. assume Hu H4.
+  claim HuR: u :e hl_rep (2 :^: A) l1. { apply (hl_IN_compat (2 :^: A) H2ne u Hu l1 H1). assume H6 _. exact (H6 H4). }
+  claim HvU: v :e hl_rep A u. { exact (H (hl_rep A u) (ReplI (hl_rep (2 :^: A) l1) (fun u => hl_rep A u) u HuR)). }
+  apply (hl_IN_compat A HA v HvA u Hu). assume _ H6. exact (H6 HvU).
+Qed.

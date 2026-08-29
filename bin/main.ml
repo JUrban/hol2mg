@@ -395,7 +395,20 @@ let () =
                       | Some _ -> "stated differently in compat.mg"
                       | None -> "not in compat.mg") in
                     Hashtbl.replace compat name (txt, status);
-                    if status <> "ok" then Buffer.add_string stubs (Printf.sprintf "// %s : %s (%s)\nTheorem %s : %s.\nAdmitted.\n\n" e.Registry.c_hol (Hol.string_of_ty e.Registry.c_scheme) status name txt)) entries) reg.Registry.consts;
+                    if status <> "ok" then Buffer.add_string stubs (Printf.sprintf "// %s : %s (%s)\nTheorem %s : %s.\nAdmitted.\n\n" e.Registry.c_hol (Hol.string_of_ty e.Registry.c_scheme) status name txt);
+                    (* nested instance (sets of subsets) for the set-theoretic constants *)
+                    if List.mem e.Registry.c_hol [ "IN"; "INSERT"; "EMPTY"; "UNIV"; "UNION"; "INTER"; "DIFF"; "DELETE"; "SUBSET"; "PSUBSET"; "DISJOINT"; "FINITE"; "INFINITE"; "CARD"; "HAS_SIZE"; "SING"; "IMAGE"; "pairwise"; "CHOICE" ] then
+                      (match (try Bridge.compat_statement_nested an e with _ -> None) with
+                       | None -> ()
+                       | Some st2 ->
+                           let name2 = name ^ "_pow" in
+                           let txt2 = Mg.to_string st2 in
+                           let status2 = (match Hashtbl.find_opt proved name2 with
+                             | Some p when p = txt2 -> "ok"
+                             | Some _ -> "stated differently in compat.mg"
+                             | None -> "not in compat.mg") in
+                           Hashtbl.replace compat name2 (txt2, status2);
+                           if status2 <> "ok" then Buffer.add_string stubs (Printf.sprintf "// %s : %s at A := A -> bool (%s)\nTheorem %s : %s.\nAdmitted.\n\n" e.Registry.c_hol (Hol.string_of_ty e.Registry.c_scheme) status2 name2 txt2))) entries) reg.Registry.consts;
             (* typing lemmas of the literal definitions *)
             let ocu = open_out (Filename.concat cdir "_literal_unfold.mg") in
             Printf.fprintf ocu "// Unfolding lemmas of the literal definitions (generated with proofs; checked right after _literal.mg).\n\n";
