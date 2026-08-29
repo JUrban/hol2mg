@@ -5457,7 +5457,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x :e A :^: K, (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => False)) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {x}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall x :e A :^: K, hl_EXTENSIONAL K A k x = 1 -> hl_cartesian_product K A k (fun i :e K => hl_INSERT A (x i) (hl_EMPTY A)) = hl_INSERT (A :^: K) x (hl_EMPTY (A :^: K))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: lambda (view metapred(K,A), 0 args)",
    "bridge": ""
   },
   {
@@ -5486,7 +5486,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => False)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall x :e A :^: K, hl_cartesian_product K A k (fun i :e K => hl_INSERT A (x i) (hl_EMPTY A)) = hl_INSERT (A :^: K) (hl_RESTRICTION K A k x) (hl_EMPTY (A :^: K))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: lambda (view metapred(K,A), 0 args)",
    "bridge": ""
   },
   {
@@ -5514,7 +5514,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> {f :e A :^: K | (forall i :e K, f i :e {x0 :e A | x0 :e A}) /\\ forall i :e K, ~ i :e K -> f i = choose_in A (fun y:set => False)} = A :^: K",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> hl_cartesian_product K A (hl_UNIV K) (fun i :e K => hl_UNIV A) = hl_UNIV (A :^: K)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: lambda (view metapred(K,A), 0 args)",
    "bridge": ""
   },
   {
@@ -25429,7 +25429,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} :/\\: {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e s i :/\\: t i}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_INTER (A :^: K) (hl_cartesian_product K A k s) (hl_cartesian_product K A k t) = hl_cartesian_product K A k (fun i :e K => hl_INTER A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: lambda (view metapred(K,A), 0 args)",
    "bridge": ""
   },
   {
@@ -25519,7 +25519,7 @@
    "statement": "forall A K:set, forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :/\\: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e {x0 :e A | x0 :e s (p 0) :/\\: t (p 0)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_INTER (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = hl_disjoint_union K A k (fun i :e K => hl_INTER A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: lambda (view metapred(K,A), 0 args)",
    "bridge": ""
   },
   {
@@ -77408,7 +77408,7 @@
    "statement": "forall A K:set, forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :\\/: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e {x0 :e A | x0 :e s (p 0) :\\/: t (p 0)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_UNION (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = hl_disjoint_union K A k (fun i :e K => hl_UNION A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: lambda (view metapred(K,A), 0 args)",
    "bridge": ""
   },
   {

@@ -1088,7 +1088,12 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | Mg.App (Mg.LamIn (xn, _, lb), la) ->
                 (lit, nat, KEq, Printf.sprintf "(eq_trans_i %s %s %s (beta %s (fun %s:set => %s) %s %s) %s)" (ppp lit) (ppp l2) (ppp n2) (ppp ca) xn (pp lb) (ppp la) (typ g a) (if p2 = "" then refl else p2))
             | _ -> unsupported "rel: applied lambda shape")
-       | Lam _, _ -> unsupported "rel: lambda"
+       | Lam _, _ ->
+           let vs = (match nview with
+             | E.VSet c -> "set(" ^ pp c ^ ")" | E.VSubset c -> "subset(" ^ pp c ^ ")" | E.VProp -> "prop"
+             | E.VMetaFun (cs, d) -> "metafun(" ^ String.concat "," (List.map pp cs) ^ ";" ^ pp d ^ ")"
+             | E.VMetaPred cs -> "metapred(" ^ String.concat "," (List.map pp cs) ^ ")") in
+           unsupported "rel: lambda (view %s, %d args)" vs (List.length args)
        | _ -> unsupported "rel: head")
 
 (* mapped constant application: use its compatibility lemma *)
@@ -1356,6 +1361,14 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
   | KRep2 a, E.VSet (Mg.App (Mg.Cst "Power", Mg.App (Mg.Cst "Power", a'))) when a = a' -> (lit, nat, kind, pf)
   | KPW a, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KRepFun _, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
+  | KPWP2 (c, d), E.VMetaFun ([ c' ], Mg.App (Mg.Cst "Power", d')) when c = c' && d = d' ->
+      (* a binary predicate used as a function into subsets: hl_rep d (lit i) = {a :e d | nat i a} *)
+      (match nat with
+       | Mg.Lam (i, _, Mg.Lam (a, _, body)) ->
+           let nat' = Mg.Lam (i, Mg.Set, Mg.Sep (a, d, body)) in
+           let pf' = Printf.sprintf "(rep_of_pw2 %s %s %s (fun %s %s => %s) %s)" (ppp c) (ppp d) (ppp lit) i a (pp body) pf in
+           (lit, nat', KRepFun (c, d), pf')
+       | _ -> unsupported "coerce_rel: binary predicate as a function into subsets (shape %s)" (pp nat))
   | KPWP a, E.VMetaPred [ _ ] -> (lit, nat, kind, pf)
   | KPW2 _, E.VMetaFun ([ _; _ ], _) -> (lit, nat, kind, pf)
   | KPWP2 _, E.VMetaPred [ _; _ ] -> (lit, nat, kind, pf)

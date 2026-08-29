@@ -948,3 +948,10 @@ witness (fun x :e K => hl_chi A (g x)). apply andI.
 - exact (repfun_chi_Pi K A g).
 - exact (H (fun x :e K => hl_chi A (g x)) (repfun_chi_Pi K A g) g Hg (repfun_chi_pw K A g Hg) HNg).
 Qed.
+
+// ---- a binary predicate viewed as a function into subsets ----
+Theorem rep_of_pw2 : forall K A F:set, forall P:set -> set -> prop, (forall i :e K, forall a :e A, F i a = 1 <-> P i a) -> forall i :e K, hl_rep A (F i) = {a :e A | P i a}.
+let K A F P. assume H. let i. assume Hi.
+prove {a :e A | F i a = 1} = {a :e A | P i a}.
+apply (Sep_ext_iff A (fun a => F i a = 1) (fun a => P i a)). let a. assume Ha. exact (H i Hi a Ha).
+Qed.
