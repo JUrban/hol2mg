@@ -5009,3 +5009,82 @@ claim Hstep: forall h :e A, forall t :e finseq A, hl_BUTLAST A t = seq_butlast t
   exact (eq_trans_i (hl_BUTLAST A (seq_cons h t)) (hl_BUTLAST A (hl_CONS A h t)) (seq_butlast (seq_cons h t)) (f_equal (fun u => hl_BUTLAST A u) (seq_cons h t) (hl_CONS A h t) (eq_sym_i (hl_CONS A h t) (seq_cons h t) Hct)) (eq_trans_i (hl_BUTLAST A (hl_CONS A h t)) (hl_COND (finseq A) (if t = hl_NIL A then 1 else 0) (hl_NIL A) (hl_CONS A h (hl_BUTLAST A t))) (seq_butlast (seq_cons h t)) (Hc h Hh t Ht) (eq_trans_i (hl_COND (finseq A) (if t = hl_NIL A then 1 else 0) (hl_NIL A) (hl_CONS A h (hl_BUTLAST A t))) (if t = seq_nil then hl_NIL A else hl_CONS A h (hl_BUTLAST A t)) (seq_butlast (seq_cons h t)) Hcond (eq_trans_i (if t = seq_nil then hl_NIL A else hl_CONS A h (hl_BUTLAST A t)) (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) (seq_butlast (seq_cons h t)) Hrhs (eq_sym_i (seq_butlast (seq_cons h t)) (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) (seq_butlast_cons A h Hh t Ht)))))). }
 exact (seq_induct A (fun l => hl_BUTLAST A l = seq_butlast l) Hbase Hstep).
 Qed.
+
+// ---- bounds of real sets from concrete, absolute-value and paired bound hypotheses ----
+Theorem SNoLe_abs_SNo : forall x:set, SNo x -> x <= abs_SNo x.
+let x. assume Hx. apply (SNoLtLe_or x 0 Hx SNo_0).
+- assume Hlt.
+  claim Hmx: SNo (- x). { exact (SNo_minus_SNo x Hx). }
+  claim H1: 0 < - x. { exact ((minus_SNo_0) (fun hl__u hl__v => hl__u < - x) (minus_SNo_Lt_contra x 0 Hx SNo_0 Hlt)). }
+  claim H2: x <= - x. { exact (SNoLtLe x (- x) (SNoLt_tra x 0 (- x) Hx SNo_0 Hmx Hlt H1)). }
+  exact ((eq_sym_i (abs_SNo x) (- x) (neg_abs_SNo x Hx Hlt)) (fun hl__u hl__v => x <= hl__u) H2).
+- assume Hge. exact ((eq_sym_i (abs_SNo x) x (nonneg_abs_SNo x Hge)) (fun hl__u hl__v => x <= hl__u) (SNoLe_ref x)).
+Qed.
+Theorem minus_abs_SNoLe : forall x:set, SNo x -> - abs_SNo x <= x.
+let x. assume Hx. apply (SNoLtLe_or x 0 Hx SNo_0).
+- assume Hlt.
+  claim H1: - abs_SNo x = x. { exact (eq_trans_i (- abs_SNo x) (- (- x)) x (f_equal (fun u => - u) (abs_SNo x) (- x) (neg_abs_SNo x Hx Hlt)) (minus_SNo_invol x Hx)). }
+  exact ((eq_sym_i (- abs_SNo x) x H1) (fun hl__u hl__v => hl__u <= x) (SNoLe_ref x)).
+- assume Hge.
+  claim Hmx: SNo (- x). { exact (SNo_minus_SNo x Hx). }
+  claim H1: - x <= 0. { exact ((minus_SNo_0) (fun hl__u hl__v => - x <= hl__u) (minus_SNo_Le_contra 0 x SNo_0 Hx Hge)). }
+  claim H2: - x <= x. { exact (SNoLe_tra (- x) 0 x Hmx SNo_0 Hx H1 Hge). }
+  exact ((eq_sym_i (abs_SNo x) x (nonneg_abs_SNo x Hge)) (fun hl__u hl__v => - hl__u <= x) H2).
+Qed.
+Theorem bound_above_concrete : forall S b:set, b :e R -> (forall x :e R, x :e S -> x <= b) -> exists b :e R, forall x :e R, x :e S -> x <= b.
+let S b. assume Hb H. witness b. apply andI.
+- exact Hb.
+- exact H.
+Qed.
+Theorem bound_below_concrete : forall S b:set, b :e R -> (forall x :e R, x :e S -> b <= x) -> exists b :e R, forall x :e R, x :e S -> b <= x.
+let S b. assume Hb H. witness b. apply andI.
+- exact Hb.
+- exact H.
+Qed.
+Theorem bound_above_of_abs : forall S a:set, a :e R -> (forall x :e R, x :e S -> abs_SNo x <= a) -> exists b :e R, forall x :e R, x :e S -> x <= b.
+let S a. assume Ha H. witness a. apply andI.
+- exact Ha.
+- let x. assume Hx Hxs. exact (SNoLe_tra x (abs_SNo x) a (real_SNo x Hx) (SNo_abs_SNo x (real_SNo x Hx)) (real_SNo a Ha) (SNoLe_abs_SNo x (real_SNo x Hx)) (H x Hx Hxs)).
+Qed.
+Theorem bound_below_of_abs : forall S a:set, a :e R -> (forall x :e R, x :e S -> abs_SNo x <= a) -> exists b :e R, forall x :e R, x :e S -> b <= x.
+let S a. assume Ha H. witness (- a). apply andI.
+- exact (real_minus_SNo a Ha).
+- let x. assume Hx Hxs.
+  claim HxS: SNo x. { exact (real_SNo x Hx). }
+  exact (SNoLe_tra (- a) (- abs_SNo x) x (SNo_minus_SNo a (real_SNo a Ha)) (SNo_minus_SNo (abs_SNo x) (SNo_abs_SNo x HxS)) HxS (minus_SNo_Le_contra (abs_SNo x) a (SNo_abs_SNo x HxS) (real_SNo a Ha) (H x Hx Hxs)) (minus_abs_SNoLe x HxS)).
+Qed.
+Theorem bound_above_of_abs_shift : forall S l e:set, l :e R -> e :e R -> (forall x :e R, x :e S -> abs_SNo (x + - l) <= e) -> exists b :e R, forall x :e R, x :e S -> x <= b.
+let S l e. assume Hl He H. witness (l + e). apply andI.
+- exact (real_add_SNo l Hl e He).
+- let x. assume Hx Hxs.
+  claim HxS: SNo x. { exact (real_SNo x Hx). }
+  claim HlS: SNo l. { exact (real_SNo l Hl). }
+  claim HeS: SNo e. { exact (real_SNo e He). }
+  claim Hd: SNo (x + - l). { exact (SNo_add_SNo x (- l) HxS (SNo_minus_SNo l HlS)). }
+  claim H1: x + - l <= e. { exact (SNoLe_tra (x + - l) (abs_SNo (x + - l)) e Hd (SNo_abs_SNo (x + - l) Hd) HeS (SNoLe_abs_SNo (x + - l) Hd) (H x Hx Hxs)). }
+  claim H2: (x + - l) + l <= e + l. { exact (add_SNo_Le1 (x + - l) l e Hd HlS HeS H1). }
+  exact ((eq_trans_i ((x + - l) + l) (l + (x + - l)) x (add_SNo_com (x + - l) l Hd HlS) (add_SNo_minus_cancel x l HxS HlS)) (fun hl__u hl__v => hl__u <= l + e) ((add_SNo_com e l HeS HlS) (fun hl__u hl__v => (x + - l) + l <= hl__u) H2)).
+Qed.
+Theorem bound_below_of_abs_shift : forall S l e:set, l :e R -> e :e R -> (forall x :e R, x :e S -> abs_SNo (x + - l) <= e) -> exists b :e R, forall x :e R, x :e S -> b <= x.
+let S l e. assume Hl He H. witness (l + - e). apply andI.
+- exact (real_add_SNo l Hl (- e) (real_minus_SNo e He)).
+- let x. assume Hx Hxs.
+  claim HxS: SNo x. { exact (real_SNo x Hx). }
+  claim HlS: SNo l. { exact (real_SNo l Hl). }
+  claim HeS: SNo e. { exact (real_SNo e He). }
+  claim HmeS: SNo (- e). { exact (SNo_minus_SNo e HeS). }
+  claim Hd: SNo (x + - l). { exact (SNo_add_SNo x (- l) HxS (SNo_minus_SNo l HlS)). }
+  claim H1: - e <= x + - l. { exact (SNoLe_tra (- e) (- abs_SNo (x + - l)) (x + - l) HmeS (SNo_minus_SNo (abs_SNo (x + - l)) (SNo_abs_SNo (x + - l) Hd)) Hd (minus_SNo_Le_contra (abs_SNo (x + - l)) e (SNo_abs_SNo (x + - l) Hd) HeS (H x Hx Hxs)) (minus_abs_SNoLe (x + - l) Hd)). }
+  claim H2: - e + l <= (x + - l) + l. { exact (add_SNo_Le1 (- e) l (x + - l) HmeS HlS Hd H1). }
+  exact ((eq_trans_i ((x + - l) + l) (l + (x + - l)) x (add_SNo_com (x + - l) l Hd HlS) (add_SNo_minus_cancel x l HxS HlS)) (fun hl__u hl__v => l + - e <= hl__u) ((add_SNo_com (- e) l HmeS HlS) (fun hl__u hl__v => hl__u <= (x + - l) + l) H2)).
+Qed.
+Theorem bound_above_of_pair : forall S a b:set, b :e R -> (forall x :e R, x :e S -> a <= x /\ x <= b) -> exists b :e R, forall x :e R, x :e S -> x <= b.
+let S a b. assume Hb H. witness b. apply andI.
+- exact Hb.
+- let x. assume Hx Hxs. exact (andER (a <= x) (x <= b) (H x Hx Hxs)).
+Qed.
+Theorem bound_below_of_pair : forall S a b:set, a :e R -> (forall x :e R, x :e S -> a <= x /\ x <= b) -> exists b :e R, forall x :e R, x :e S -> b <= x.
+let S a b. assume Ha H. witness a. apply andI.
+- exact Ha.
+- let x. assume Hx Hxs. exact (andEL (a <= x) (x <= b) (H x Hx Hxs)).
+Qed.

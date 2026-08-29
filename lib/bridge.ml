@@ -82,11 +82,11 @@ let nonempty_alts = [ ("~ ?1 = Empty", ""); ("?1 <> Empty", ""); ("?x :e ?1", "m
    bound with the required carrier); a rule with lemma "" returns its single slot proof *)
 let side_derivations : (string * ((string * string) list list * string) list) list =
   [ ("exists x :e R, is_lub ?1 x",
-     [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, x <= b", ""); ("exists b :e R, forall x :e R, x :e ?1 -> x <= b", "bound_above_of_guarded") ] ], "lub_of_bounds");
+     [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, x <= b", ""); ("exists b :e R, forall x :e R, x :e ?1 -> x <= b", "bound_above_of_guarded"); ("@bound_above", "") ] ], "lub_of_bounds");
        ([ nonempty_alts; [ ("finite ?1", "") ] ], "lub_of_finite");
        ([ [ ("is_lub ?1 ?x", "lub") ] ], "") ]);
     ("exists x :e R, is_glb ?1 x",
-     [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, b <= x", ""); ("exists b :e R, forall x :e R, x :e ?1 -> b <= x", "bound_below_of_guarded") ] ], "glb_of_bounds");
+     [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, b <= x", ""); ("exists b :e R, forall x :e R, x :e ?1 -> b <= x", "bound_below_of_guarded"); ("@bound_below", "") ] ], "glb_of_bounds");
        ([ nonempty_alts; [ ("finite ?1", "") ] ], "glb_of_finite");
        ([ [ ("is_glb ?1 ?x", "glb") ] ], "") ]);
     ("?1 :e omega",
@@ -197,6 +197,33 @@ let rec alpha_canon depth (t : Mg.tm) : Mg.tm =
   | _ -> t
 
 let alpha_eq a b = alpha_canon 0 a = alpha_canon 0 b
+
+(* bounds of a real set from hypotheses of the forms
+     forall x :e R, x :e s -> x <= b / b <= x / abs_SNo x <= a / abs_SNo (x + - l) <= e / a <= x /\ x <= b
+   (bound terms must be real variables) *)
+let derive_bound g (s : Mg.tm) (upper : bool) : string option =
+  let typR t = (match nat_var_mem g t with Some (Mg.Cst ("R" | "real"), h) -> Some h | _ -> None) in
+  let is_x x t = (t = Mg.Var x) in
+  List.find_map (fun (h, hp) -> match h with
+    | Mg.AllIn (x, Mg.Cst ("R" | "real"), Mg.Imp (Mg.App (Mg.App (Mg.Cst "In", xv), s'), body)) when is_x x xv && s' = s ->
+        (match body with
+         | Mg.App (Mg.App (Mg.Cst "SNoLe", xv'), b) when is_x x xv' && upper && not (List.mem x (Mg.free_vars b)) ->
+             Option.map (fun hb -> Printf.sprintf "(bound_above_concrete %s %s %s %s)" (ppp s) (ppp b) hb hp) (typR b)
+         | Mg.App (Mg.App (Mg.Cst "SNoLe", b), xv') when is_x x xv' && not upper && not (List.mem x (Mg.free_vars b)) ->
+             Option.map (fun hb -> Printf.sprintf "(bound_below_concrete %s %s %s %s)" (ppp s) (ppp b) hb hp) (typR b)
+         | Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.App (Mg.Cst "abs_SNo", xv')), a) when is_x x xv' && not (List.mem x (Mg.free_vars a)) ->
+             Option.map (fun ha -> Printf.sprintf "(%s %s %s %s %s)" (if upper then "bound_above_of_abs" else "bound_below_of_abs") (ppp s) (ppp a) ha hp) (typR a)
+         | Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.App (Mg.Cst "abs_SNo", Mg.App (Mg.App (Mg.Cst "add_SNo", xv'), Mg.App (Mg.Cst "minus_SNo", l)))), e)
+           when is_x x xv' && not (List.mem x (Mg.free_vars l)) && not (List.mem x (Mg.free_vars e)) ->
+             (match typR l, typR e with
+              | Some hl, Some he -> Some (Printf.sprintf "(%s %s %s %s %s %s %s)" (if upper then "bound_above_of_abs_shift" else "bound_below_of_abs_shift") (ppp s) (ppp l) (ppp e) hl he hp)
+              | _ -> None)
+         | Mg.App (Mg.App (Mg.Cst "and", Mg.App (Mg.App (Mg.Cst "SNoLe", a), xv1)), Mg.App (Mg.App (Mg.Cst "SNoLe", xv2), b))
+           when is_x x xv1 && is_x x xv2 && not (List.mem x (Mg.free_vars a)) && not (List.mem x (Mg.free_vars b)) ->
+             if upper then Option.map (fun hb -> Printf.sprintf "(bound_above_of_pair %s %s %s %s %s)" (ppp s) (ppp a) (ppp b) hb hp) (typR b)
+             else Option.map (fun ha -> Printf.sprintf "(bound_below_of_pair %s %s %s %s %s)" (ppp s) (ppp a) (ppp b) ha hp) (typR a)
+         | _ -> None)
+    | _ -> None) g.hyps
 
 let nprop g t = reduce_tuples (Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx t E.VProp)))
 let ntext g t = pp (nprop g t)
@@ -1308,6 +1335,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                           | Some (c, hx) when Mg.to_string c = Mg.to_string (Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl)))) -> None
                           | Some (Mg.Cst "omega", hx) when tpl = "?1 :e omega" -> Some hx
                           | _ -> None)
+                       else if tpl = "@bound_above" then Option.map (fun p -> Printf.sprintf "(bound_above_of_guarded %s %s %s)" (ppp s_nat) (Lazy.force hsub) p) (derive_bound g s_nat true)
+                       else if tpl = "@bound_below" then Option.map (fun p -> Printf.sprintf "(bound_below_of_guarded %s %s %s)" (ppp s_nat) (Lazy.force hsub) p) (derive_bound g s_nat false)
                        else begin
                          let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
                          match List.assoc_opt p g.hyps with
