@@ -53655,9 +53655,9 @@
    "source": "!p:real->real. !q:real->real. polynomial_function p /\\ polynomial_function q ==> polynomial_function (\\x:real. p x + q x)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\\ polynomial_function_R q -> polynomial_function_R (fun x:set => p x + q x)",
    "literal": "forall p q :e R :^: R, hl_polynomial_function p = 1 /\\ hl_polynomial_function q = 1 -> hl_polynomial_function (fun x :e R => hl_real_add (p x) (q x)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_ADD_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_CONST",
@@ -53682,9 +53682,9 @@
    "source": "!c:real. polynomial_function (\\x:real. c)",
    "statement": "forall c :e R, polynomial_function_R (fun x:set => c)",
    "literal": "forall c :e R, hl_polynomial_function (fun x :e R => c) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_CONST_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_FINITE_ROOTS",
@@ -53710,9 +53710,9 @@
    "source": "!p:real->real. !a:real. polynomial_function p ==> (FINITE (GSPEC (\\GEN%PVAR%353:real. ?x:real. SETSPEC GEN%PVAR%353 (p x = a) x)) <=> ~(!x:real. p x = a))",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall a :e R, polynomial_function_R p -> (finite {x :e R | p x = a} <-> ~ forall x :e R, p x = a)",
    "literal": "forall p :e R :^: R, forall a :e R, hl_polynomial_function p = 1 -> (hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_353 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_353 (if p x = a then 1 else 0) x = 1 then 1 else 0)) = 1 <-> ~ forall x :e R, p x = a)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_FINITE_ROOTS_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_I",
@@ -53739,7 +53739,7 @@
    "statement": "polynomial_function_R (fun x:set => x)",
    "literal": "hl_polynomial_function (hl_I R) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -53765,9 +53765,9 @@
    "source": "polynomial_function (\\x:real. x)",
    "statement": "polynomial_function_R (fun x:set => x)",
    "literal": "hl_polynomial_function (fun x :e R => x) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_ID_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_INDUCT",
@@ -53793,7 +53793,7 @@
    "statement": "forall P:set -> prop, P (fun x :e R => x) /\\ ((forall c :e R, P (fun x :e R => c)) /\\ ((forall p q :e R :^: R, P p /\\ P q -> P (fun x :e R => p x + q x)) /\\ (forall p q :e R :^: R, P p /\\ P q -> P (fun x :e R => p x * q x)))) -> forall p :e R :^: R, polynomial_function_R (fun x:set => p x) -> P p",
    "literal": "forall P :e 2 :^: (R :^: R), P (fun x :e R => x) = 1 /\\ ((forall c :e R, P (fun x :e R => c) = 1) /\\ ((forall p q :e R :^: R, P p = 1 /\\ P q = 1 -> P (fun x :e R => hl_real_add (p x) (q x)) = 1) /\\ (forall p q :e R :^: R, P p = 1 /\\ P q = 1 -> P (fun x :e R => hl_real_mul (p x) (q x)) = 1))) -> forall p :e R :^: R, hl_polynomial_function p = 1 -> P p = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native polynomial_function_R p differs from elaborated polynomial_function_R (fun x:set => p x)",
    "bridge": ""
   },
   {
@@ -53819,9 +53819,9 @@
    "source": "!p:real->real. !c:real. polynomial_function p ==> polynomial_function (\\x:real. c * p x)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall c :e R, polynomial_function_R p -> polynomial_function_R (fun x:set => c * p x)",
    "literal": "forall p :e R :^: R, forall c :e R, hl_polynomial_function p = 1 -> hl_polynomial_function (fun x :e R => hl_real_mul c (p x)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_LMUL_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_MUL",
@@ -53846,9 +53846,9 @@
    "source": "!p:real->real. !q:real->real. polynomial_function p /\\ polynomial_function q ==> polynomial_function (\\x:real. p x * q x)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\\ polynomial_function_R q -> polynomial_function_R (fun x:set => p x * q x)",
    "literal": "forall p q :e R :^: R, hl_polynomial_function p = 1 /\\ hl_polynomial_function q = 1 -> hl_polynomial_function (fun x :e R => hl_real_mul (p x) (q x)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_MUL_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_NEG",
@@ -53873,9 +53873,9 @@
    "source": "!p:real->real. polynomial_function (\\x:real. real_neg (p x)) <=> polynomial_function p",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R (fun x:set => - p x) <-> polynomial_function_R p)",
    "literal": "forall p :e R :^: R, hl_polynomial_function (fun x :e R => hl_real_neg (p x)) = 1 <-> hl_polynomial_function p = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_NEG_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_POW",
@@ -53901,9 +53901,9 @@
    "source": "!p:real->real. !n:num. polynomial_function p ==> polynomial_function (\\x:real. p x pow n)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall n :e omega, polynomial_function_R p -> polynomial_function_R (fun x:set => p x ^ n)",
    "literal": "forall p :e R :^: R, forall n :e omega, hl_polynomial_function p = 1 -> hl_polynomial_function (fun x :e R => hl_real_pow (p x) n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_POW_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_RMUL",
@@ -53928,9 +53928,9 @@
    "source": "!p:real->real. !c:real. polynomial_function p ==> polynomial_function (\\x:real. p x * c)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall c :e R, polynomial_function_R p -> polynomial_function_R (fun x:set => p x * c)",
    "literal": "forall p :e R :^: R, forall c :e R, hl_polynomial_function p = 1 -> hl_polynomial_function (fun x :e R => hl_real_mul (p x) c) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_RMUL_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_SUB",
@@ -53955,9 +53955,9 @@
    "source": "!p:real->real. !q:real->real. polynomial_function p /\\ polynomial_function q ==> polynomial_function (\\x:real. p x - q x)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\\ polynomial_function_R q -> polynomial_function_R (fun x:set => p x + - q x)",
    "literal": "forall p q :e R :^: R, hl_polynomial_function p = 1 /\\ hl_polynomial_function q = 1 -> hl_polynomial_function (fun x :e R => hl_real_sub (p x) (q x)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_SUB_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_SUM",
@@ -53986,7 +53986,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall p:set -> set -> set, (forall x :e R, forall y :e A, p x y :e R) -> finite s /\\ (forall i :e A, i :e s -> polynomial_function_R (fun x:set => p x i)) -> polynomial_function_R (fun x:set => finsum s (p x))",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall p :e R :^: A :^: R, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_polynomial_function (fun x :e R => p x i) = 1) -> hl_polynomial_function (fun x :e R => hl_sum A s (p x)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -54013,9 +54013,9 @@
    "source": "!p:real->real. !q:real->real. polynomial_function p /\\ polynomial_function q ==> polynomial_function (p o q)",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> forall q:set -> set, (forall x :e R, q x :e R) -> polynomial_function_R p /\\ polynomial_function_R q -> polynomial_function_R (fun x:set => p (q x))",
    "literal": "forall p q :e R :^: R, hl_polynomial_function p = 1 /\\ hl_polynomial_function q = 1 -> hl_polynomial_function (hl_o R R R p q) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_o_bridge"
   },
   {
    "name": "POWERSET_CLAUSES",
@@ -83492,9 +83492,9 @@
    "source": "!p:real->real. polynomial_function p <=> (?m:num. ?c:num->real. !x:real. p x = sum (.. 0 m) (\\i:num. c i * x pow i))",
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R p <-> exists m :e omega, exists c:set -> set, (forall x :e omega, c x :e R) /\\ forall x :e R, p x = finsum {i :e omega | 0 <= i /\\ i <= m} (fun i:set => c i * x ^ i))",
    "literal": "forall p :e R :^: R, hl_polynomial_function p = 1 <-> exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "polynomial_function_thm_bridge"
   },
   {
    "name": "prime",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1964
+  "native_certified": 1976
  }
 }

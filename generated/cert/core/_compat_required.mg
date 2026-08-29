@@ -330,10 +330,6 @@ Admitted.
 Theorem hl__GUARDED_PATTERN_compat : hl__GUARDED_PATTERN = Empty.
 Admitted.
 
-// polynomial_function : (real->real)->bool (not in compat.mg)
-Theorem hl_polynomial_function_compat : forall l1 :e R :^: R, forall f1:set -> set, (forall x :e R, l1 x = f1 x) -> (hl_polynomial_function l1 = 1 <-> polynomial_function_R f1).
-Admitted.
-
 // int_ge : int->int->bool (not in compat.mg)
 Theorem hl_int_ge_compat : forall l1 l2 :e int, hl_int_ge l1 l2 = 1 <-> l2 <= l1.
 Admitted.

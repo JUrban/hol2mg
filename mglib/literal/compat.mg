@@ -3824,3 +3824,83 @@ Theorem pw_eta_fun2 : forall D1 D2 F:set, forall N:set -> set -> set, (forall x 
 let D1 D2 F N. assume H. let x. assume Hx. let y. assume Hy.
 exact (eq_trans_i (F x y) ((fun x :e D1 => fun y :e D2 => F x y) x y) (N x y) (eq_sym_i ((fun x :e D1 => fun y :e D2 => F x y) x y) (F x y) (lam2_beta D1 D2 (fun x y => F x y) x Hx y Hy)) (H x Hx y Hy)).
 Qed.
+
+// ---- polynomial functions: the literal segment sum is the native finite sum over ordsucc m ----
+Theorem numseg0_ordsucc : forall m :e omega, {i :e omega | 0 <= i /\ i <= m} = ordsucc m.
+let m. assume Hm.
+claim HmS: SNo m. { exact (omega_SNo m Hm). }
+apply set_ext.
+- let i. assume Hi. apply (SepE omega (fun i => 0 <= i /\ i <= m) i Hi). assume Hio H. apply H. assume _ Hle.
+  apply (SNoLeE i m (omega_SNo i Hio) HmS Hle).
+  + assume Hlt. exact (ordsuccI1 m i (omega_SNoLt_In m Hm i Hio Hlt)).
+  + assume Heq. exact (Heq (fun hl__u hl__v => hl__v :e ordsucc m) (ordsuccI2 m)).
+- let i. assume Hi.
+  claim Hio: i :e omega. { exact (omega_TransSet (ordsucc m) (omega_ordsucc m Hm) i Hi). }
+  apply (SepI omega (fun i => 0 <= i /\ i <= m) i Hio). apply andI.
+  + exact (omega_nonneg i Hio).
+  + apply (ordsuccE m i Hi).
+    * assume H. exact (SNoLtLe i m (omega_In_SNoLt m Hm i H)).
+    * assume H. exact ((eq_sym_i i m H) (fun hl__u hl__v => hl__u <= m) (SNoLe_ref m)).
+Qed.
+
+Theorem finsum_congr : forall s:set, forall f g:set -> set, (forall i :e s, f i = g i) -> finsum s f = finsum s g.
+let s f g. assume H.
+claim Hsep: {x :e s | f x <> 0} = {x :e s | g x <> 0}.
+{ apply (Sep_ext_iff s (fun x => f x <> 0) (fun x => g x <> 0)). let x. assume Hx. apply iffI.
+  - assume H1 H2. apply H1. exact (eq_trans_i (f x) (g x) 0 (H x Hx) H2).
+  - assume H1 H2. apply H1. exact (eq_trans_i (g x) (f x) 0 (eq_sym_i (f x) (g x) (H x Hx)) H2). }
+prove (if finite {x :e s | f x <> 0} then ring_finite_sum R add_SNo {x :e s | f x <> 0} f else 0) = (if finite {x :e s | g x <> 0} then ring_finite_sum R add_SNo {x :e s | g x <> 0} g else 0).
+apply (xm (finite {x :e s | f x <> 0})).
+- assume Hf.
+  claim Hg: finite {x :e s | g x <> 0}. { exact (Hsep (fun hl__u hl__v => finite hl__u) Hf). }
+  claim Hsum: ring_finite_sum R add_SNo {x :e s | f x <> 0} f = ring_finite_sum R add_SNo {x :e s | g x <> 0} g.
+  { exact (eq_trans_i (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) (ring_finite_sum R add_SNo {x :e s | f x <> 0} g) (ring_finite_sum R add_SNo {x :e s | g x <> 0} g) (god1_ring_finite_sum_congr_finite R add_SNo {x :e s | f x <> 0} Hf f g (fun x Hx => H x (SepE1 s (fun x => f x <> 0) x Hx))) (f_equal (fun u => ring_finite_sum R add_SNo u g) {x :e s | f x <> 0} {x :e s | g x <> 0} Hsep)). }
+  exact (eq_trans_i (if finite {x :e s | f x <> 0} then ring_finite_sum R add_SNo {x :e s | f x <> 0} f else 0) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) (if finite {x :e s | g x <> 0} then ring_finite_sum R add_SNo {x :e s | g x <> 0} g else 0) (If_i_1 (finite {x :e s | f x <> 0}) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) 0 Hf) (eq_trans_i (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) (ring_finite_sum R add_SNo {x :e s | g x <> 0} g) (if finite {x :e s | g x <> 0} then ring_finite_sum R add_SNo {x :e s | g x <> 0} g else 0) Hsum (eq_sym_i (if finite {x :e s | g x <> 0} then ring_finite_sum R add_SNo {x :e s | g x <> 0} g else 0) (ring_finite_sum R add_SNo {x :e s | g x <> 0} g) (If_i_1 (finite {x :e s | g x <> 0}) (ring_finite_sum R add_SNo {x :e s | g x <> 0} g) 0 Hg)))).
+- assume Hnf.
+  claim Hng: ~ finite {x :e s | g x <> 0}. { assume Hg. apply Hnf. exact ((eq_sym_i {x :e s | f x <> 0} {x :e s | g x <> 0} Hsep) (fun hl__u hl__v => finite hl__u) Hg). }
+  exact (eq_trans_i (if finite {x :e s | f x <> 0} then ring_finite_sum R add_SNo {x :e s | f x <> 0} f else 0) 0 (if finite {x :e s | g x <> 0} then ring_finite_sum R add_SNo {x :e s | g x <> 0} g else 0) (If_i_0 (finite {x :e s | f x <> 0}) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) 0 Hnf) (eq_sym_i (if finite {x :e s | g x <> 0} then ring_finite_sum R add_SNo {x :e s | g x <> 0} g else 0) 0 (If_i_0 (finite {x :e s | g x <> 0}) (ring_finite_sum R add_SNo {x :e s | g x <> 0} g) 0 Hng))).
+Qed.
+
+Theorem hl_polynomial_function_compat : forall l1 :e R :^: R, forall f1:set -> set, (forall x :e R, l1 x = f1 x) -> (hl_polynomial_function l1 = 1 <-> polynomial_function_R f1).
+let p. assume Hp. let f1. assume Hf.
+claim H0o: hl_NUMERAL hl_zero :e omega. { exact ((eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0)). }
+claim Hsum: forall m :e omega, forall c :e R :^: omega, forall x :e R, hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = finsum (ordsucc m) (fun i => c i * x ^ i).
+{ let m. assume Hm. let c. assume Hc. let x. assume Hx.
+  claim Hns: (hl_numseg (hl_NUMERAL hl_zero) m) :e 2 :^: omega. { exact (setexp2_ap omega omega (2 :^: omega) hl_numseg hl_numseg_in (hl_NUMERAL hl_zero) H0o m Hm). }
+  claim Hrep: hl_rep omega (hl_numseg (hl_NUMERAL hl_zero) m) = ordsucc m.
+  { exact (eq_trans_i (hl_rep omega (hl_numseg (hl_NUMERAL hl_zero) m)) {i :e omega | hl_NUMERAL hl_zero <= i /\ i <= m} (ordsucc m) (hl_numseg_compat (hl_NUMERAL hl_zero) H0o m Hm) (eq_trans_i {i :e omega | hl_NUMERAL hl_zero <= i /\ i <= m} {i :e omega | 0 <= i /\ i <= m} (ordsucc m) (f_equal (fun z => {i :e omega | z <= i /\ i <= m}) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (numseg0_ordsucc m Hm))). }
+  claim HL: (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) :e R :^: omega.
+  { prove (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) :e Pi_ i :e omega, R. apply (lam_Pi omega (fun _ => R) (fun i => hl_real_mul (c i) (hl_real_pow x i))). let i. assume Hi.
+    exact (setexp2_ap R R R hl_real_mul hl_real_mul_in (c i) (setexp_ap omega R c Hc i Hi) (hl_real_pow x i) (setexp2_ap R omega R hl_real_pow hl_real_pow_in x Hx i Hi)). }
+  claim Hpw: forall i :e omega, (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) i = c i * x ^ i.
+  { let i. assume Hi.
+    claim HciR: c i :e R. { exact (setexp_ap omega R c Hc i Hi). }
+    claim HpR: hl_real_pow x i :e R. { exact (setexp2_ap R omega R hl_real_pow hl_real_pow_in x Hx i Hi). }
+    exact (eq_trans_i ((fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) i) (hl_real_mul (c i) (hl_real_pow x i)) (c i * x ^ i) (beta omega (fun i => hl_real_mul (c i) (hl_real_pow x i)) i Hi) (eq_trans_i (hl_real_mul (c i) (hl_real_pow x i)) (c i * hl_real_pow x i) (c i * x ^ i) (hl_real_mul_ap (c i) HciR (hl_real_pow x i) HpR) (f_equal (fun u => c i * u) (hl_real_pow x i) (x ^ i) (hl_real_pow_compat x Hx i Hi)))). }
+  exact (eq_trans_i (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))) (finsum (hl_rep omega (hl_numseg (hl_NUMERAL hl_zero) m)) (fun i => c i * x ^ i)) (finsum (ordsucc m) (fun i => c i * x ^ i)) (hl_sum_compat omega omega_nonempty (hl_numseg (hl_NUMERAL hl_zero) m) Hns (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) HL (fun i => c i * x ^ i) Hpw) (f_equal (fun u => finsum u (fun i => c i * x ^ i)) (hl_rep omega (hl_numseg (hl_NUMERAL hl_zero) m)) (ordsucc m) Hrep)). }
+apply (iff_eq1_l (hl_polynomial_function p) (if (exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))) then 1 else 0) (hl_polynomial_function_unfold p Hp) (polynomial_function_R f1)).
+apply (iff_trans ((if (exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))) then 1 else 0) = 1) (exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))) (polynomial_function_R f1) (If_1_iff (exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))))).
+prove (exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))) <-> (exists m :e omega, exists c:set -> set, (forall i :e ordsucc m, c i :e R) /\ forall x :e R, f1 x = finsum (ordsucc m) (fun i => c i * x ^ i)).
+apply iffI.
+- assume H. apply H. let m. assume Hm0. apply Hm0. assume Hm Hc0. apply Hc0. let c. assume Hc1. apply Hc1. assume Hc Hall.
+  witness m. apply andI.
+  + exact Hm.
+  + witness (fun i:set => c i). apply andI.
+    * let i. assume Hi. exact (setexp_ap omega R c Hc i (omega_TransSet (ordsucc m) (omega_ordsucc m Hm) i Hi)).
+    * let x. assume Hx. exact (eq_trans_i (f1 x) (p x) (finsum (ordsucc m) (fun i => c i * x ^ i)) (eq_sym_i (p x) (f1 x) (Hf x Hx)) (eq_trans_i (p x) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))) (finsum (ordsucc m) (fun i => c i * x ^ i)) (Hall x Hx) (Hsum m Hm c Hc x Hx))).
+- assume H. apply H. let m. assume Hm0. apply Hm0. assume Hm Hc0. apply Hc0. let c. assume Hc1. apply Hc1. assume HcR Hall.
+  claim HcL: (fun i :e omega => if i :e ordsucc m then c i else 0) :e R :^: omega.
+  { prove (fun i :e omega => if i :e ordsucc m then c i else 0) :e Pi_ i :e omega, R. apply (lam_Pi omega (fun _ => R) (fun i => if i :e ordsucc m then c i else 0)). let i. assume Hi. apply (xm (i :e ordsucc m)).
+    - assume H1. exact ((eq_sym_i (if i :e ordsucc m then c i else 0) (c i) (If_i_1 (i :e ordsucc m) (c i) 0 H1)) (fun hl__u hl__v => hl__u :e R) (HcR i H1)).
+    - assume H1. exact ((eq_sym_i (if i :e ordsucc m then c i else 0) 0 (If_i_0 (i :e ordsucc m) (c i) 0 H1)) (fun hl__u hl__v => hl__u :e R) real_0). }
+  witness m. apply andI.
+  + exact Hm.
+  + witness (fun i :e omega => if i :e ordsucc m then c i else 0). apply andI.
+    * exact HcL.
+    * let x. assume Hx.
+      claim Hcong: finsum (ordsucc m) (fun i => c i * x ^ i) = finsum (ordsucc m) (fun i => (fun i :e omega => if i :e ordsucc m then c i else 0) i * x ^ i).
+      { apply (finsum_congr (ordsucc m) (fun i => c i * x ^ i) (fun i => (fun i :e omega => if i :e ordsucc m then c i else 0) i * x ^ i)). let i. assume Hi.
+        claim Hio: i :e omega. { exact (omega_TransSet (ordsucc m) (omega_ordsucc m Hm) i Hi). }
+        exact (f_equal (fun u => u * x ^ i) (c i) ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (eq_sym_i ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (c i) (eq_trans_i ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (if i :e ordsucc m then c i else 0) (c i) (beta omega (fun i => if i :e ordsucc m then c i else 0) i Hio) (If_i_1 (i :e ordsucc m) (c i) 0 Hi)))). }
+      exact (eq_trans_i (p x) (f1 x) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) (Hf x Hx) (eq_trans_i (f1 x) (finsum (ordsucc m) (fun i => c i * x ^ i)) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) (Hall x Hx) (eq_trans_i (finsum (ordsucc m) (fun i => c i * x ^ i)) (finsum (ordsucc m) (fun i => (fun i :e omega => if i :e ordsucc m then c i else 0) i * x ^ i)) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) Hcong (eq_sym_i (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul ((fun i :e omega => if i :e ordsucc m then c i else 0) i) (hl_real_pow x i))) (finsum (ordsucc m) (fun i => (fun i :e omega => if i :e ordsucc m then c i else 0) i * x ^ i)) (Hsum m Hm (fun i :e omega => if i :e ordsucc m then c i else 0) HcL x Hx))))).
+Qed.
