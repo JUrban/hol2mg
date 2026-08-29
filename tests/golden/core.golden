@@ -1474,7 +1474,8 @@ source: CARD EMPTY = 0 /\ (!x:A. !s:A->bool. FINITE s ==> CARD (x INSERT s) = (i
 status: generalization_required
 statement: forall A:set, finite_cardinality Empty = 0 /\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s)
 literal: forall A:set, A <> Empty -> hl_CARD A (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_CARD A (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (hl_CARD A s) (hl_SUC (hl_CARD A s))
-cert_status: bridge_unsupported
+bridge: CARD_CLAUSES_bridge
+cert_status: native_certified
 
 ### CARD_UNION   [finiteness, cardinality, functions between sets]
 hash: dec93797888a7880b4682d0323169b96
@@ -1482,7 +1483,8 @@ source: !s:A->bool. !t:A->bool. FINITE s /\ FINITE t /\ s INTER t = EMPTY ==> CA
 status: transport_required
 statement: forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\ (hl_FINITE A t = 1 /\ hl_INTER A s t = hl_EMPTY A) -> hl_CARD A (hl_UNION A s t) = hl_add (hl_CARD A s) (hl_CARD A t)
-cert_status: bridge_unsupported
+bridge: CARD_UNION_bridge
+cert_status: native_certified
 
 ### CARD_IMAGE_INJ   [finiteness, cardinality, functions between sets]
 hash: f399386eea1d58d0a78436c2e48d108e
@@ -1490,7 +1492,8 @@ source: !f:A->B. !s:A->bool. (!x:A. !y:A. x IN s /\ y IN s /\ f x = f y ==> x = 
 status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite s -> finite_cardinality {f x | x :e s} = finite_cardinality s
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\ (hl_IN A y s = 1 /\ f x = f y) -> x = y) /\ hl_FINITE A s = 1 -> hl_CARD B (hl_IMAGE A B f s) = hl_CARD A s
-cert_status: bridge_unsupported
+bridge: CARD_IMAGE_INJ_bridge
+cert_status: native_certified
 
 ### HAS_SIZE   [finiteness, cardinality, functions between sets]
 hash: d40bb36d555c16b9e0d80663db5ee75c
@@ -1653,7 +1656,8 @@ source: !m:num. !n:num. CARD (.. m n) = (n + 1) - m
 status: transport_required
 statement: forall m n :e omega, finite_cardinality {i :e omega | m <= i /\ i <= n} = minus_nat (n + 1) m
 literal: forall m n :e omega, hl_CARD omega (hl_numseg m n) = hl_sub (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) m
-cert_status: bridge_unsupported
+bridge: CARD_NUMSEG_bridge
+cert_status: native_certified
 
 ### NSUM_UNION   [iteration, sums, number segments]
 hash: 254da9a0342a265c00884ab83c6b0037

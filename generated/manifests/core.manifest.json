@@ -3607,9 +3607,9 @@
    "source": "CARD UNIV = 2",
    "statement": "finite_cardinality 2 = 2",
    "literal": "hl_CARD 2 (hl_UNIV 2) = hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite 2 not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_BOOL_bridge"
   },
   {
    "name": "CARD_CART_UNIV",
@@ -3672,9 +3672,9 @@
    "source": "CARD EMPTY = 0 /\\ (!x:A. !s:A->bool. FINITE s ==> CARD (x INSERT s) = (if x IN s then CARD s else SUC (CARD s)))",
    "statement": "forall A:set, finite_cardinality Empty = 0 /\\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s)",
    "literal": "forall A:set, A <> Empty -> hl_CARD A (hl_EMPTY A) = hl_NUMERAL hl_zero /\\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_CARD A (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (hl_CARD A s) (hl_SUC (hl_CARD A s))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (SetAdjoin s x) not available from hypotheses [hyps: finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_CLAUSES_bridge"
   },
   {
    "name": "CARD_CROSS",
@@ -3735,9 +3735,9 @@
    "source": "!x:A. !s:A->bool. FINITE s ==> CARD (s DELETE x) = (if x IN s then CARD s - 1 else CARD s)",
    "statement": "forall A:set, forall x :e A, forall s c= A, finite s -> finite_cardinality (s :\\: {x}) = if x :e s then minus_nat (finite_cardinality s) 1 else finite_cardinality s",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_CARD A (hl_DELETE A s x) = hl_COND omega (hl_IN A x s) (hl_sub (hl_CARD A s) (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_CARD A s)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\: {x}) not available from hypotheses [hyps: finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_DELETE_bridge"
   },
   {
    "name": "CARD_DIFF",
@@ -3765,9 +3765,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE s /\\ t SUBSET s ==> CARD (s DIFF t) = CARD s - CARD t",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s /\\ t c= s -> finite_cardinality (s :\\: t) = minus_nat (finite_cardinality s) (finite_cardinality t)",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_SUBSET A t s = 1 -> hl_CARD A (hl_DIFF A s t) = hl_sub (hl_CARD A s) (hl_CARD A t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\: t) not available from hypotheses [hyps: t c= s, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_DIFF_bridge"
   },
   {
    "name": "CARD_EQ_0",
@@ -4083,9 +4083,9 @@
    "source": "!f:A->B. !s:A->bool. FINITE s ==> (CARD (IMAGE f s) = CARD s <=> (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y))",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> (finite_cardinality {f x | x :e s} = finite_cardinality s <-> forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> (hl_CARD B (hl_IMAGE A B f s) = hl_CARD A s <-> forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {f x | x :e s} not available from hypotheses [hyps: finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_IMAGE_EQ_INJ_bridge"
   },
   {
    "name": "CARD_IMAGE_INJ",
@@ -4115,9 +4115,9 @@
    "source": "!f:A->B. !s:A->bool. (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) /\\ FINITE s ==> CARD (IMAGE f s) = CARD s",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ finite s -> finite_cardinality {f x | x :e s} = finite_cardinality s",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ hl_FINITE A s = 1 -> hl_CARD B (hl_IMAGE A B f s) = hl_CARD A s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {f x | x :e s} not available from hypotheses [hyps: finite s, forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_IMAGE_INJ_bridge"
   },
   {
    "name": "CARD_IMAGE_INJ_EQ",
@@ -4178,9 +4178,9 @@
    "source": "!f:A->B. !s:A->bool. FINITE s ==> CARD (IMAGE f s) <= CARD s",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite_cardinality {f x | x :e s} <= finite_cardinality s",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_le (hl_CARD B (hl_IMAGE A B f s)) (hl_CARD A s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {f x | x :e s} not available from hypotheses [hyps: finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_IMAGE_LE_bridge"
   },
   {
    "name": "CARD_IMAGE_LE2",
@@ -4211,9 +4211,9 @@
    "source": "!f:A->B. !g:A->C. !s:A->bool. FINITE s /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ g x = g y ==> f x = f y) ==> CARD (IMAGE f s) <= CARD (IMAGE g s)",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ g x = g y) -> f x = f y) -> finite_cardinality {f x | x :e s} <= finite_cardinality {g x | x :e s}",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ g x = g y) -> f x = f y) -> hl_le (hl_CARD B (hl_IMAGE A B f s)) (hl_CARD C (hl_IMAGE A C g s)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {f x | x :e s} not available from hypotheses [hyps: forall x y :e A, x :e s /\\ (y :e s /\\ g x = g y) -> f x = f y, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_IMAGE_LE2_bridge"
   },
   {
    "name": "CARD_IMAGE_LT2",
@@ -4244,9 +4244,9 @@
    "source": "!f:A->B. !g:A->C. !s:A->bool. FINITE s /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ g x = g y ==> f x = f y) /\\ ~(!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> g x = g y) ==> CARD (IMAGE f s) < CARD (IMAGE g s)",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\\ ((forall x y :e A, x :e s /\\ (y :e s /\\ g x = g y) -> f x = f y) /\\ ~ (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> g x = g y)) -> finite_cardinality {f x | x :e s} < finite_cardinality {g x | x :e s}",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ ((forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ g x = g y) -> f x = f y) /\\ ~ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> g x = g y)) -> hl_lt (hl_CARD B (hl_IMAGE A B f s)) (hl_CARD C (hl_IMAGE A C g s)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {f x | x :e s} not available from hypotheses [hyps: ~ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> g x = g y, forall x y :e A, x :e s /\\ (y :e s /\\ g x = g y) -> f x = f y, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_IMAGE_LT2_bridge"
   },
   {
    "name": "CARD_LE_1",
@@ -4462,9 +4462,9 @@
    "source": "!m:num. !n:num. CARD (.. m n) = (n + 1) - m",
    "statement": "forall m n :e omega, finite_cardinality {i :e omega | m <= i /\\ i <= n} = minus_nat (n + 1) m",
    "literal": "forall m n :e omega, hl_CARD omega (hl_numseg m n) = hl_sub (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e omega | m <= i /\\ i <= n} not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_NUMSEG_bridge"
   },
   {
    "name": "CARD_NUMSEG_1",
@@ -4494,7 +4494,7 @@
    "statement": "forall n :e omega, finite_cardinality (idx_n n) = n",
    "literal": "forall n :e omega, hl_CARD omega (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) = n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {i :e omega | 1 <= i /\\ i <= n} not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: native rewrites idx_n_def",
    "bridge": ""
   },
   {
@@ -4523,9 +4523,9 @@
    "source": "!n:num. CARD (GSPEC (\\GEN%PVAR%192:num. ?m:num. SETSPEC GEN%PVAR%192 (m <= n) m)) = n + 1",
    "statement": "forall n :e omega, finite_cardinality {m :e omega | m <= n} = n + 1",
    "literal": "forall n :e omega, hl_CARD omega (hl_GSPEC omega (fun GEN_PVAR_192 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_192 (hl_le m n) m = 1 then 1 else 0)) = hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {m :e omega | m <= n} not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_NUMSEG_LE_bridge"
   },
   {
    "name": "CARD_NUMSEG_LEMMA",
@@ -4582,9 +4582,9 @@
    "source": "!n:num. CARD (GSPEC (\\GEN%PVAR%185:num. ?m:num. SETSPEC GEN%PVAR%185 (m < n) m)) = n",
    "statement": "forall n :e omega, finite_cardinality {m :e omega | m < n} = n",
    "literal": "forall n :e omega, hl_CARD omega (hl_GSPEC omega (fun GEN_PVAR_185 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_185 (hl_lt m n) m = 1 then 1 else 0)) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {m :e omega | m < n} not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_NUMSEG_LT_bridge"
   },
   {
    "name": "CARD_POWERSET",
@@ -4676,9 +4676,9 @@
    "source": "!a:A->bool. !b:A->bool. PSUBSET a b /\\ FINITE b ==> CARD a < CARD b",
    "statement": "forall A:set, A <> Empty -> forall a b c= A, a c= b /\\ a <> b /\\ finite b -> finite_cardinality a < finite_cardinality b",
    "literal": "forall A:set, A <> Empty -> forall a b :e 2 :^: A, hl_PSUBSET A a b = 1 /\\ hl_FINITE A b = 1 -> hl_lt (hl_CARD A a) (hl_CARD A b) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite a not available from hypotheses [hyps: finite b, a <> b, a c= b]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_PSUBSET_bridge"
   },
   {
    "name": "CARD_PSUBSET_EQ",
@@ -4707,9 +4707,9 @@
    "source": "!a:A->bool. !b:A->bool. FINITE b /\\ a SUBSET b ==> (PSUBSET a b <=> CARD a < CARD b)",
    "statement": "forall A:set, A <> Empty -> forall a b c= A, finite b /\\ a c= b -> (a c= b /\\ a <> b <-> finite_cardinality a < finite_cardinality b)",
    "literal": "forall A:set, A <> Empty -> forall a b :e 2 :^: A, hl_FINITE A b = 1 /\\ hl_SUBSET A a b = 1 -> (hl_PSUBSET A a b = 1 <-> hl_lt (hl_CARD A a) (hl_CARD A b) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite a not available from hypotheses [hyps: a c= b, finite b]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_PSUBSET_EQ_bridge"
   },
   {
    "name": "CARD_PSUBSET_IMP",
@@ -4798,9 +4798,9 @@
    "source": "!a:A. CARD (a INSERT EMPTY) = 1",
    "statement": "forall A:set, forall a :e A, finite_cardinality {a} = 1",
    "literal": "forall A:set, A <> Empty -> forall a :e A, hl_CARD A (hl_INSERT A a (hl_EMPTY A)) = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite {a} not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_SING_bridge"
   },
   {
    "name": "CARD_SUBSET",
@@ -4831,9 +4831,9 @@
    "source": "!a:A->bool. !b:A->bool. a SUBSET b /\\ FINITE b ==> CARD a <= CARD b",
    "statement": "forall A:set, forall a b c= A, a c= b /\\ finite b -> finite_cardinality a <= finite_cardinality b",
    "literal": "forall A:set, A <> Empty -> forall a b :e 2 :^: A, hl_SUBSET A a b = 1 /\\ hl_FINITE A b = 1 -> hl_le (hl_CARD A a) (hl_CARD A b) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite a not available from hypotheses [hyps: finite b, a c= b]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_SUBSET_bridge"
   },
   {
    "name": "CARD_SUBSET_EQ",
@@ -4894,9 +4894,9 @@
    "source": "!f:A->B. !s:B->bool. !t:A->bool. FINITE t /\\ s SUBSET IMAGE f t ==> CARD s <= CARD t",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= B, forall t c= A, finite t /\\ s c= {f x | x :e t} -> finite_cardinality s <= finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: B, forall t :e 2 :^: A, hl_FINITE A t = 1 /\\ hl_SUBSET B s (hl_IMAGE A B f t) = 1 -> hl_le (hl_CARD B s) (hl_CARD A t) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: s c= {f x | x :e t}, finite t]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_SUBSET_IMAGE_bridge"
   },
   {
    "name": "CARD_SUBSET_LE",
@@ -4960,9 +4960,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE s /\\ FINITE t /\\ s INTER t = EMPTY ==> CARD (s UNION t) = CARD s + CARD t",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s /\\ (finite t /\\ s :/\\: t = Empty) -> finite_cardinality (s :\\/: t) = finite_cardinality s + finite_cardinality t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ (hl_FINITE A t = 1 /\\ hl_INTER A s t = hl_EMPTY A) -> hl_CARD A (hl_UNION A s t) = hl_add (hl_CARD A s) (hl_CARD A t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\/: t) not available from hypotheses [hyps: s :/\\: t = Empty, finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_UNION_bridge"
   },
   {
    "name": "CARD_UNIONS",
@@ -5119,9 +5119,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE s /\\ FINITE t ==> CARD (s UNION t) = (CARD s + CARD t) - CARD (s INTER t)",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s /\\ finite t -> finite_cardinality (s :\\/: t) = minus_nat (finite_cardinality s + finite_cardinality t) (finite_cardinality (s :/\\: t))",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_FINITE A t = 1 -> hl_CARD A (hl_UNION A s t) = hl_sub (hl_add (hl_CARD A s) (hl_CARD A t)) (hl_CARD A (hl_INTER A s t))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\/: t) not available from hypotheses [hyps: finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_UNION_GEN_bridge"
   },
   {
    "name": "CARD_UNION_LE",
@@ -5153,9 +5153,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE s /\\ FINITE t ==> CARD (s UNION t) <= CARD s + CARD t",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s /\\ finite t -> finite_cardinality (s :\\/: t) <= finite_cardinality s + finite_cardinality t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_FINITE A t = 1 -> hl_le (hl_CARD A (hl_UNION A s t)) (hl_add (hl_CARD A s) (hl_CARD A t)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\/: t) not available from hypotheses [hyps: finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_UNION_LE_bridge"
   },
   {
    "name": "CARD_UNION_OVERLAP",
@@ -5220,9 +5220,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE s /\\ FINITE t ==> (CARD (s UNION t) = CARD s + CARD t <=> s INTER t = EMPTY)",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, finite s /\\ finite t -> (finite_cardinality (s :\\/: t) = finite_cardinality s + finite_cardinality t <-> s :/\\: t = Empty)",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_FINITE A t = 1 -> (hl_CARD A (hl_UNION A s t) = hl_add (hl_CARD A s) (hl_CARD A t) <-> hl_INTER A s t = hl_EMPTY A)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :\\/: t) not available from hypotheses [hyps: finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_UNION_OVERLAP_EQ_bridge"
   },
   {
    "name": "CARTESIAN_PRODUCT",
@@ -70142,9 +70142,9 @@
    "source": "!s:A->bool. !t:A->bool. FINITE t /\\ s SUBSET t ==> (CARD s = CARD t <=> s = t)",
    "statement": "forall A:set, forall s t c= A, finite t /\\ s c= t -> (finite_cardinality s = finite_cardinality t <-> s = t)",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A t = 1 /\\ hl_SUBSET A s t = 1 -> (hl_CARD A s = hl_CARD A t <-> s = t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: s c= t, finite t]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUBSET_CARD_EQ_bridge"
   },
   {
    "name": "SUBSET_CARTESIAN_PRODUCT",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2096
+  "native_certified": 2118
  }
 }
