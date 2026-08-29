@@ -591,3 +591,20 @@ Qed.
 Theorem Empty_neq_of_In : forall X x:set, x :e X -> Empty <> X.
 let X x. assume Hx H. exact (EmptyE x (H (fun hl__u hl__v => x :e hl__v) Hx)).
 Qed.
+
+// ---- comprehension extensionality ----
+Theorem Sep_ext_iff : forall A:set, forall P Q:set -> prop, (forall x :e A, P x <-> Q x) -> {x :e A | P x} = {x :e A | Q x}.
+let A P Q. assume H. apply set_ext.
+- let x. assume Hx. apply (SepE A P x Hx). assume HxA HP. apply (SepI A Q x HxA). apply (H x HxA). assume H1 _. exact (H1 HP).
+- let x. assume Hx. apply (SepE A Q x Hx). assume HxA HQ. apply (SepI A P x HxA). apply (H x HxA). assume _ H2. exact (H2 HQ).
+Qed.
+Theorem ReplSep_ext : forall A:set, forall P Q:set -> prop, forall F G:set -> set, (forall x :e A, P x <-> Q x) -> (forall x :e A, F x = G x) -> {F x | x :e A, P x} = {G x | x :e A, Q x}.
+let A P Q F G. assume HPQ HFG. apply set_ext.
+- let y. assume Hy. apply (ReplSepE_impred A P F y Hy). let x. assume Hx HP Hyx. rewrite Hyx. rewrite (HFG x Hx). apply (ReplSepI A Q G x Hx). apply (HPQ x Hx). assume H1 _. exact (H1 HP).
+- let y. assume Hy. apply (ReplSepE_impred A Q G y Hy). let x. assume Hx HQ Hyx. rewrite Hyx. rewrite <- (HFG x Hx). apply (ReplSepI A P F x Hx). apply (HPQ x Hx). assume _ H2. exact (H2 HQ).
+Qed.
+Theorem Repl_ext_pw2 : forall A:set, forall F G:set -> set, (forall x :e A, F x = G x) -> {F x | x :e A} = {G x | x :e A}.
+let A F G. assume H. apply set_ext.
+- let y. assume Hy. apply (ReplE_impred A F y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite (H x Hx). exact (ReplI A G x Hx).
+- let y. assume Hy. apply (ReplE_impred A G y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite <- (H x Hx). exact (ReplI A F x Hx).
+Qed.

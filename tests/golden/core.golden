@@ -273,7 +273,8 @@ source: !b:bool. !f:A->B. !x:A. !y:A. f (if b then x else y) = (if b then f x el
 status: generalization_required
 statement: forall A B:set, B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f :e B :^: A, forall x y :e A, f (hl_COND A b x y) = hl_COND B b (f x) (f y)
-cert_status: bridge_unsupported
+bridge: COND_RAND_bridge
+cert_status: native_certified
 
 ### COND_RATOR   [choice, conditionals, Booleans as data]
 hash: daf8a0139729304ef354db21fe53723a
@@ -500,7 +501,8 @@ source: !e:A. !f:A->num->A. ?fn:num->A. fn 0 = e /\ (!n:num. fn (SUC n) = f (fn 
 status: generalization_required
 statement: forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n)
 literal: forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, exists fn :e A :^: omega, fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n
-cert_status: bridge_unsupported
+bridge: num_RECURSION_bridge
+cert_status: native_certified
 
 ### num_CASES   [naturals: constructors, induction, arithmetic, order, division]
 hash: f202972a2e9786d2257c90d475eac48a

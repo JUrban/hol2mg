@@ -309,6 +309,11 @@ let compat_for g (e : R.const_entry) : string =
    | Some (_, st) -> unsupported "compat_missing: %s (%s)" name st
    | None -> unsupported "compat_missing: %s" name)
 
+let imp_lemma dir name la na lb nb pa pb =
+  match dir with
+  | Fwd -> Printf.sprintf "(%s %s %s %s %s %s %s)" name la na lb nb pa pb
+  | Bwd -> Printf.sprintf "(%s %s %s %s %s %s %s)" name na la nb lb pa pb
+
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
   let nat, nview = E.elab_nat g.nctx t want in
@@ -349,12 +354,17 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 if nview <> E.VSet (Mg.Var "?") then ();
                 (lit, nat, KEq, !pf)
             | KPW a, [ x ] ->
-                (* meta-function variable applied: lit = F x, nat = f x' with rel: forall x :e A, F x = f x *)
-                let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
+                (* meta-function variable applied: lit = F lx, nat = f nx with rel: forall x :e A, F x = f x *)
+                let lx, nx, kx, px = rel g x (Some (E.VSet a)) in
                 if kx <> KEq then unsupported "rel: metafun argument";
-                if lx <> nx then unsupported "rel: metafun applied to non-identical argument (%s vs %s)" (pp lx) (pp nx);
-                if v.rel = "" then (lit, nat, KEq, refl)
-                else (lit, nat, KEq, Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
+                (* base: lit = head lx where head is the native function; then rewrite lx -> nx in the RHS only *)
+                let head = if v.rel = "" then v.lit else (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf0 = if v.rel = "" then refl else Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x) in
+                if lx = nx then (lit, nat, KEq, pf0)
+                else begin
+                  let ctx = L.mg_eq lit (Mg.App (head, Mg.Var "hl__u")) in
+                  (lit, nat, KEq, leibniz (if px = "" then refl else px) (pp ctx) pf0)
+                end
             | KPWP a, [ x ] ->
                 let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
                 if kx <> KEq then unsupported "rel: metapred argument";
@@ -362,11 +372,13 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 if v.rel = "" then (lit, nat, KIff, Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)))
                 else (lit, nat, KIff, Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
             | KPW2 (a, b), [ x; y ] ->
-                let lx, nx, kx, _ = rel g x (Some (E.VSet a)) and ly, ny, ky, _ = rel g y (Some (E.VSet b)) in
+                let lx, nx, kx, px = rel g x (Some (E.VSet a)) and ly, ny, ky, py = rel g y (Some (E.VSet b)) in
                 if kx <> KEq || ky <> KEq then unsupported "rel: metafun2 argument";
-                if lx <> nx || ly <> ny then unsupported "rel: metafun2 applied to non-identical arguments";
-                if v.rel = "" then (lit, nat, KEq, refl)
-                else (lit, nat, KEq, Printf.sprintf "(%s %s %s %s %s)" v.rel (ppp lx) (typ g x) (ppp ly) (typ g y))
+                let head = if v.rel = "" then v.lit else (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf0 = if v.rel = "" then refl else Printf.sprintf "(%s %s %s %s %s)" v.rel (ppp lx) (typ g x) (ppp ly) (typ g y) in
+                let pf1 = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_eq lit (Mg.apps head [ Mg.Var "hl__u"; ly ]))) pf0 in
+                let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_eq lit (Mg.apps head [ nx; Mg.Var "hl__u" ]))) pf1 in
+                (lit, nat, KEq, pf2)
             | KPWP2 (a, b), [ x; y ] ->
                 let lx, nx, kx, _ = rel g x (Some (E.VSet a)) and ly, ny, ky, _ = rel g y (Some (E.VSet b)) in
                 if kx <> KEq || ky <> KEq then unsupported "rel: metapred2 argument";
@@ -390,6 +402,58 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | "T" | "F" | "~" | "/\\" | "\\/" | "==>" | "=" | "!" | "?" | "COND" when L.is_logical t ->
                 (* a formula used as data: lit = if LP then 1 else 0; native data view of bool *)
                 unsupported "rel: formula as data"
+            | "GSPEC" when (match E.dest_gspec t with Some (_, [ _ ], _, _) -> true | _ -> false) ->
+                let _, xs, p, body = Option.get (E.dest_gspec t) in
+                let x, xty = List.hd xs in
+                let n = E.fresh g.nctx x in
+                let key = x ^ "\000" ^ n ^ "#" ^ string_of_int g.counter in
+                g.counter <- g.counter + 1;
+                let open1 tm = open_with (Const ("T", bool_ty)) (open_with (Free (key, xty)) tm) in
+                let p' = open1 p and body' = open1 body in
+                let ca = L.carrier g.lctx xty in
+                let body_ty = type_of [] body' in
+                let cb = L.carrier g.lctx body_ty in
+                g.nctx.E.vars <- (key, (xty, E.VSet ca, n)) :: g.nctx.E.vars;
+                g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars; g.lctx.L.used <- n :: g.lctx.L.used;
+                g.vars <- (key, { vty = xty; view = E.VSet ca; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
+                let cleanup () =
+                  g.nctx.E.vars <- List.remove_assoc key g.nctx.E.vars; E.release g.nctx n;
+                  g.lctx.L.vars <- List.remove_assoc key g.lctx.L.vars; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used;
+                  g.vars <- List.remove_assoc key g.vars in
+                let result = (try
+                  let lp = if L.is_logical p' then Mg.If (lprop g p', L.one, L.zero) else lterm g p' in
+                  let lt = lterm g body' in
+                  let np = nprop g p' in
+                  let nt = Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx body' (E.data_view g.nctx body_ty))) in
+                  let hn = "H" ^ n in
+                  let q_lam = Printf.sprintf "(fun %s => %s)" n (pp lp) and f_lam = Printf.sprintf "(fun %s => %s)" n (pp lt) in
+                  let hq = Printf.sprintf "(fun %s %s => %s)" n hn (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
+                  let generic = Printf.sprintf "(hl_gspec_generic %s %s %s %s %s)" (ppp ca) (ppp cb) q_lam f_lam hq in
+                  let mid = Mg.Sep ("v", cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt))) in
+                  (* iff between q x = 1 and the native predicate *)
+                  let iff_p () =
+                    if L.is_logical p' then
+                      Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p')
+                    else (let _, _, kp, pfp = rel g p' (Some E.VProp) in if kp <> KIff then unsupported "gspec predicate relation"; pfp) in
+                  let eq_t () = (let lt2, nt2, kt, pt = rel g body' (Some (E.VSet cb)) in if kt <> KEq then unsupported "gspec body relation"; if lt2 <> lt || nt2 <> nt then unsupported "gspec body texts"; if pt = "" then refl else pt) in
+                  let hf = Printf.sprintf "(fun %s %s => %s)" n hn (typ g body') in
+                  (match nat with
+                   | Mg.Sep (_, _, _) when lt = Mg.Var n && cb = ca ->
+                       let native_pred = Printf.sprintf "(fun %s => %s)" n (pp np) in
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (eq_trans_i %s %s %s (gspec_sep_form %s %s) (Sep_ext_iff %s (fun %s => %s = 1) %s (fun %s %s => %s))))"
+                                  (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp mid) (ppp (Mg.Sep (n, ca, L.mg_eq lp L.one))) (ppp nat) (ppp ca) q_lam (ppp ca) n (ppp lp) native_pred n hn (iff_p ()) in
+                       (lit, nat, KRep cb, pf)
+                   | Mg.Repl (_, _, _) when (match p' with Const ("T", _) -> true | _ -> false) ->
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (eq_trans_i %s %s %s (gspec_repl_form %s %s %s %s) (Repl_ext_pw2 %s %s (fun %s => %s) (fun %s %s => %s))))"
+                                  (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp mid) (ppp (Mg.Repl (n, ca, lt))) (ppp nat) (ppp ca) (ppp cb) f_lam hf (ppp ca) f_lam n (pp nt) n hn (eq_t ()) in
+                       (lit, nat, KRep cb, pf)
+                   | Mg.ReplSep (_, _, _, _) ->
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (eq_trans_i %s %s %s (gspec_replsep_form %s %s %s %s %s) (ReplSep_ext %s (fun %s => %s = 1) (fun %s => %s) %s (fun %s => %s) (fun %s %s => %s) (fun %s %s => %s))))"
+                                  (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp mid) (ppp (Mg.ReplSep (n, ca, L.mg_eq lp L.one, lt))) (ppp nat) (ppp ca) (ppp cb) q_lam f_lam hf (ppp ca) n (ppp lp) n (pp np) f_lam n (pp nt) n hn (iff_p ()) n hn (eq_t ()) in
+                       (lit, nat, KRep cb, pf)
+                   | _ -> unsupported "gspec native form %s" (pp nat))
+                  with e -> cleanup (); raise e) in
+                cleanup (); result
             | "NUMERAL" when dest_numeral t <> None ->
                 let v = Option.get (dest_numeral t) in
                 if v > 512 then unsupported "rel: numeral %d too large" v;
@@ -496,7 +560,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d ], L.carrier g.lctx cod))) in
           (match ka with KPW _ -> () | _ -> unsupported "rel_mapped: metafun argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx => (fun q H => H))" else pa in
-          parts := paren pw :: ppp na :: typ g a :: ppp la :: !parts;
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x => %s hl__x)" (ppp na)) in
+          parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else if k = 2 then begin
           let d1, r1 = dest_fun_ty aty in
@@ -504,7 +569,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d1; L.carrier g.lctx d2 ], L.carrier g.lctx cod))) in
           (match ka with KPW2 _ -> () | _ -> unsupported "rel_mapped: metafun2 argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx y Hy => (fun q H => H))" else pa in
-          parts := paren pw :: ppp na :: typ g a :: ppp la :: !parts;
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x hl__y => %s hl__x hl__y)" (ppp na)) in
+          parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else unsupported "rel_mapped: metafun arity %d" k
     | R.RMetaPred k ->
@@ -514,7 +580,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaPred [ L.carrier g.lctx d ])) in
           (match ka with KPWP _ -> () | _ -> unsupported "rel_mapped: metapred argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx => iff_refl (%s x = 1))" (ppp la) else pa in
-          parts := paren pw :: ppp na :: typ g a :: ppp la :: !parts;
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x => %s hl__x)" (ppp na)) in
+          parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else if k = 2 then begin
           let d1, r1 = dest_fun_ty aty in
@@ -522,7 +589,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaPred [ L.carrier g.lctx d1; L.carrier g.lctx d2 ])) in
           (match ka with KPWP2 _ -> () | _ -> unsupported "rel_mapped: metapred2 argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx y Hy => iff_refl (%s x y = 1))" (ppp la) else pa in
-          parts := paren pw :: ppp na :: typ g a :: ppp la :: !parts;
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x hl__y => %s hl__x hl__y)" (ppp na)) in
+          parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else unsupported "rel_mapped: metapred arity %d" k) (List.combine e.R.c_args (List.filteri (fun i _ -> i < List.length e.R.c_args) args));
   let pf0 = paren (String.concat " " (List.rev !parts)) in
@@ -596,12 +664,7 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
 (* Formula bridging.                                                        *)
 (* ------------------------------------------------------------------------ *)
 
-let imp_lemma dir name la na lb nb pa pb =
-  match dir with
-  | Fwd -> Printf.sprintf "(%s %s %s %s %s %s %s)" name la na lb nb pa pb
-  | Bwd -> Printf.sprintf "(%s %s %s %s %s %s %s)" name na la nb lb pa pb
-
-let rec bridge g (dir : dir) (t : tm) : string =
+and bridge g (dir : dir) (t : tm) : string =
   match head_and_args t with
   | Const ("T", _), [] -> "(imp_refl True)"
   | Const ("F", _), [] -> "(imp_refl False)"

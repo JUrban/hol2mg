@@ -1449,3 +1449,121 @@ apply iffI.
     rewrite (god1_finite_cardinality_equip_eq (hl_rep A s) n Hfin (nat_finite n (omega_nat_p n Hn)) H).
     exact (god1_finite_cardinality_natural n Hn).
 Qed.
+
+// ---- generic comprehension forms for GSPEC terms in theorem statements ----
+// hl_rep B (GSPEC (fun v => if exists x :e A, SETSPEC v (q x) (F x) = 1 ..)) = {v :e B | exists x :e A, q x = 1 /\ v = F x}
+Theorem hl_gspec_generic : forall A B:set, forall q F:set -> set, (forall x :e A, q x :e 2) ->
+  hl_rep B (hl_GSPEC B (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0)) = {v :e B | exists x :e A, q x = 1 /\ v = F x}.
+let A B q F. assume Hq.
+claim HG: (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) :e 2 :^: B.
+{ prove (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) :e Pi_ v :e B, 2.
+  apply (lam_Pi B (fun _ => 2) (fun v => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0)). let v. assume _. exact (If_in_2 (exists x :e A, hl_SETSPEC B v (q x) (F x) = 1)). }
+rewrite (hl_GSPEC_unfold B (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) HG).
+apply set_ext.
+- let v. assume Hv.
+  claim HvB: v :e B. { exact (hl_rep_Subq B (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) v Hv). }
+  claim H1: (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) v = 1.
+  { apply (hl_rep_iff B (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) v HvB). assume _ H. exact (H Hv). }
+  claim H2: (if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) = 1.
+  { exact ((beta B (fun v => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) v HvB) (fun hl__u hl__v => hl__u = 1) H1). }
+  apply (SepI B (fun v => exists x :e A, q x = 1 /\ v = F x) v HvB).
+  apply (If_1_iff (exists x :e A, hl_SETSPEC B v (q x) (F x) = 1)). assume H3 _. apply (H3 H2). let x. assume Hx0. apply Hx0. assume Hx Hs.
+  claim HFx: F x :e B.
+  { apply (xm (F x :e B)).
+    - assume H. exact H.
+    - assume H. prove False.
+      claim Hs2: hl_SETSPEC B v (q x) (F x) = 0.
+      { prove (fun v_32420 :e B => fun v_32421 :e 2 => fun v_32422 :e B => if v_32421 = 1 /\ v_32420 = v_32422 then 1 else 0) v (q x) (F x) = 0.
+        rewrite (beta B (fun v_32420 => fun v_32421 :e 2 => fun v_32422 :e B => if v_32421 = 1 /\ v_32420 = v_32422 then 1 else 0) v HvB).
+        rewrite (beta 2 (fun v_32421 => fun v_32422 :e B => if v_32421 = 1 /\ v = v_32422 then 1 else 0) (q x) (Hq x Hx)).
+        exact (beta0 B (fun v_32422 => if q x = 1 /\ v = v_32422 then 1 else 0) (F x) H). }
+      apply neq_0_1. rewrite <- Hs2 at 1. exact Hs. }
+  claim Hs3: (if q x = 1 /\ v = F x then 1 else 0) = 1.
+  { exact ((hl_SETSPEC_unfold B v HvB (q x) (Hq x Hx) (F x) HFx) (fun hl__u hl__v => hl__u = 1) Hs). }
+  witness x. apply andI.
+  + exact Hx.
+  + apply (If_1_iff (q x = 1 /\ v = F x)). assume H4 _. exact (H4 Hs3).
+- let v. assume Hv. apply (SepE B (fun v => exists x :e A, q x = 1 /\ v = F x) v Hv). assume HvB H.
+  apply (hl_rep_iff B (fun v :e B => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) v HvB). assume H1 _. apply H1.
+  rewrite (beta B (fun v => if exists x :e A, hl_SETSPEC B v (q x) (F x) = 1 then 1 else 0) v HvB).
+  apply (If_i_1 (exists x :e A, hl_SETSPEC B v (q x) (F x) = 1) 1 0).
+  apply H. let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume Hqx Hvx.
+  claim HFx: F x :e B. { rewrite <- Hvx. exact HvB. }
+  witness x. apply andI.
+  + exact Hx.
+  + rewrite (hl_SETSPEC_unfold B v HvB (q x) (Hq x Hx) (F x) HFx). apply (If_i_1 (q x = 1 /\ v = F x) 1 0). exact (andI (q x = 1) (v = F x) Hqx Hvx).
+Qed.
+Theorem gspec_sep_form : forall A:set, forall q:set -> set, {v :e A | exists x :e A, q x = 1 /\ v = x} = {v :e A | q v = 1}.
+let A q. apply (Sep_ext_iff A (fun v => exists x :e A, q x = 1 /\ v = x) (fun v => q v = 1)). let v. assume Hv. apply iffI.
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume Hq Hvx. rewrite Hvx. exact Hq.
+- assume H. witness v. apply andI.
+  + exact Hv.
+  + exact (andI (q v = 1) (v = v) H (fun p H => H)).
+Qed.
+Theorem gspec_replsep_form : forall A B:set, forall q F:set -> set, (forall x :e A, F x :e B) -> {v :e B | exists x :e A, q x = 1 /\ v = F x} = {F x | x :e A, q x = 1}.
+let A B q F. assume HF. apply set_ext.
+- let v. assume Hv. apply (SepE B (fun v => exists x :e A, q x = 1 /\ v = F x) v Hv). assume HvB H. apply H. let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume Hq Hvx.
+  rewrite Hvx. exact (ReplSepI A (fun x => q x = 1) F x Hx Hq).
+- let v. assume Hv. apply (ReplSepE_impred A (fun x => q x = 1) F v Hv). let x. assume Hx Hq Hvx.
+  claim HvB: v :e B. { rewrite Hvx. exact (HF x Hx). }
+  apply (SepI B (fun v => exists x :e A, q x = 1 /\ v = F x) v HvB). witness x. apply andI.
+  + exact Hx.
+  + exact (andI (q x = 1) (v = F x) Hq Hvx).
+Qed.
+Theorem gspec_repl_form : forall A B:set, forall F:set -> set, (forall x :e A, F x :e B) -> {v :e B | exists x :e A, (if True then 1 else 0) = 1 /\ v = F x} = {F x | x :e A}.
+let A B F. assume HF. apply set_ext.
+- let v. assume Hv. apply (SepE B (fun v => exists x :e A, (if True then 1 else 0) = 1 /\ v = F x) v Hv). assume HvB H. apply H. let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume _ Hvx.
+  rewrite Hvx. exact (ReplI A F x Hx).
+- let v. assume Hv. apply (ReplE_impred A F v Hv). let x. assume Hx Hvx.
+  claim HvB: v :e B. { rewrite Hvx. exact (HF x Hx). }
+  apply (SepI B (fun v => exists x :e A, (if True then 1 else 0) = 1 /\ v = F x) v HvB). witness x. apply andI.
+  + exact Hx.
+  + exact (andI ((if True then 1 else 0) = 1) (v = F x) (If_i_1 True 1 0 (fun p H => H)) Hvx).
+Qed.
+
+// ---- quotient and remainder ----
+Theorem omega_Lt_ordsucc_Le : forall a b :e omega, a < b -> ordsucc a <= b.
+let a. assume Ha. let b. assume Hb. assume H.
+claim Hab: a :e b. { exact (ordinal_SNoLt_In a b (omega_ordinal_p a Ha) (omega_ordinal_p b Hb) H). }
+apply (ordinal_Subq_SNoLe (ordsucc a) b (ordinal_ordsucc a (omega_ordinal_p a Ha)) (omega_ordinal_p b Hb)).
+let z. assume Hz. apply (ordsuccE a z Hz).
+- assume H1. exact (nat_trans b (omega_nat_p b Hb) a Hab z H1).
+- assume H1. rewrite H1. exact Hab.
+Qed.
+Theorem div_mod_lt_absurd : forall n q1 r1 q2 r2 :e omega, r1 < n -> q1 < q2 -> q1 * n + r1 = q2 * n + r2 -> False.
+let n. assume Hn. let q1. assume Hq1. let r1. assume Hr1. let q2. assume Hq2. let r2. assume Hr2. assume Hr1n Hq H.
+claim HnS: SNo n. { exact (omega_SNo n Hn). }
+claim Hq1S: SNo q1. { exact (omega_SNo q1 Hq1). }
+claim Hq2S: SNo q2. { exact (omega_SNo q2 Hq2). }
+claim Hr1S: SNo r1. { exact (omega_SNo r1 Hr1). }
+claim Hr2S: SNo r2. { exact (omega_SNo r2 Hr2). }
+claim Hq1n: SNo (q1 * n). { exact (omega_SNo (q1 * n) (mul_SNo_In_omega q1 Hq1 n Hn)). }
+claim Hq2n: SNo (q2 * n). { exact (omega_SNo (q2 * n) (mul_SNo_In_omega q2 Hq2 n Hn)). }
+claim HSq1: SNo (ordsucc q1). { exact (omega_SNo (ordsucc q1) (omega_ordsucc q1 Hq1)). }
+claim H1: q1 * n + r1 < q1 * n + n. { exact (add_SNo_Lt2 (q1 * n) r1 n Hq1n Hr1S HnS Hr1n). }
+claim H2: q1 * n + n = ordsucc q1 * n.
+{ exact (eq_trans_i (q1 * n + n) ((q1 + 1) * n) (ordsucc q1 * n)
+    (eq_sym_i ((q1 + 1) * n) (q1 * n + n) (eq_trans_i ((q1 + 1) * n) (q1 * n + 1 * n) (q1 * n + n) (mul_SNo_distrR q1 1 n Hq1S SNo_1 HnS) (f_equal (fun x => q1 * n + x) (1 * n) n (mul_SNo_oneL n HnS))))
+    (f_equal (fun x => x * n) (q1 + 1) (ordsucc q1) (add_SNo_1_ordsucc q1 Hq1))). }
+claim H3: ordsucc q1 * n <= q2 * n.
+{ exact (nonneg_mul_SNo_Le2 (ordsucc q1) n q2 n HSq1 HnS Hq2S HnS (omega_nonneg (ordsucc q1) (omega_ordsucc q1 Hq1)) (omega_nonneg n Hn) (omega_Lt_ordsucc_Le q1 Hq1 q2 Hq2 Hq) (SNoLe_ref n)). }
+claim H4: q2 * n <= q2 * n + r2.
+{ exact ((add_SNo_0R (q2 * n) Hq2n) (fun hl__u hl__v => hl__u <= q2 * n + r2) (add_SNo_Le2 (q2 * n) 0 r2 Hq2n SNo_0 Hr2S (omega_nonneg r2 Hr2))). }
+claim H5: q1 * n + r1 < q2 * n + r2.
+{ exact (SNoLtLe_tra (q1 * n + r1) (q1 * n + n) (q2 * n + r2) (SNo_add_SNo (q1 * n) r1 Hq1n Hr1S) (SNo_add_SNo (q1 * n) n Hq1n HnS) (SNo_add_SNo (q2 * n) r2 Hq2n Hr2S) H1
+    (SNoLe_tra (q1 * n + n) (q2 * n) (q2 * n + r2) (SNo_add_SNo (q1 * n) n Hq1n HnS) Hq2n (SNo_add_SNo (q2 * n) r2 Hq2n Hr2S) ((eq_sym_i (q1 * n + n) (ordsucc q1 * n) H2) (fun hl__u hl__v => hl__u <= q2 * n) H3) H4)). }
+exact (SNoLt_irref (q1 * n + r1) ((eq_sym_i (q1 * n + r1) (q2 * n + r2) H) (fun hl__u hl__v => q1 * n + r1 < hl__u) H5)).
+Qed.
+Theorem div_mod_unique : forall n q1 r1 q2 r2 :e omega, r1 < n -> r2 < n -> q1 * n + r1 = q2 * n + r2 -> q1 = q2 /\ r1 = r2.
+let n. assume Hn. let q1. assume Hq1. let r1. assume Hr1. let q2. assume Hq2. let r2. assume Hr2. assume Hr1n Hr2n H.
+claim Hqq: q1 = q2.
+{ apply (SNoLt_trichotomy_or q1 q2 (omega_SNo q1 Hq1) (omega_SNo q2 Hq2)).
+  - assume H1. apply H1.
+    + assume H2. exact (FalseE (div_mod_lt_absurd n Hn q1 Hq1 r1 Hr1 q2 Hq2 r2 Hr2 Hr1n H2 H) (q1 = q2)).
+    + assume H2. exact H2.
+  - assume H1. exact (FalseE (div_mod_lt_absurd n Hn q2 Hq2 r2 Hr2 q1 Hq1 r1 Hr1 Hr2n H1 (eq_sym_i (q1 * n + r1) (q2 * n + r2) H)) (q1 = q2)). }
+apply andI.
+- exact Hqq.
+- claim H2: q1 * n + r1 = q1 * n + r2. { exact (eq_trans_i (q1 * n + r1) (q2 * n + r2) (q1 * n + r2) H (f_equal (fun x => x * n + r2) q2 q1 (eq_sym_i q1 q2 Hqq))). }
+  exact (add_SNo_cancel_L (q1 * n) r1 r2 (omega_SNo (q1 * n) (mul_SNo_In_omega q1 Hq1 n Hn)) (omega_SNo r1 Hr1) (omega_SNo r2 Hr2) H2).
+Qed.

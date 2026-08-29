@@ -2899,7 +2899,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> (finite s \\/ finite t) /\\ ((forall x :e A, x :e s -> f x :e t /\\ g (f x) = x) /\\ (forall y :e B, y :e t -> g y :e s /\\ f (g y) = y)) -> finite_cardinality s = finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, forall g :e A :^: B, (hl_FINITE A s = 1 \\/ hl_FINITE B t = 1) /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1 /\\ g (f x) = x) /\\ (forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1 /\\ f (g y) = y)) -> hl_CARD A s = hl_CARD B t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam B g y vs g y)",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -2929,9 +2929,9 @@
    "source": "!s:A->bool. !t:B->bool. !f:A->B. !g:B->A. (!x:A. x IN s ==> f x IN t /\\ g (f x) = x) /\\ (!y:B. y IN t ==> g y IN s /\\ f (g y) = y) /\\ HAS_SIZE s n ==> HAS_SIZE t n",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> (forall x :e A, x :e s -> f x :e t /\\ g (f x) = x) /\\ ((forall y :e B, y :e t -> g y :e s /\\ f (g y) = y) /\\ equip s n) -> equip t n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, forall g :e A :^: B, (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1 /\\ g (f x) = x) /\\ ((forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1 /\\ f (g y) = y) /\\ hl_HAS_SIZE A s n = 1) -> hl_HAS_SIZE B t n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam B g y vs g y)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BIJECTIONS_HAS_SIZE_bridge"
   },
   {
    "name": "BIJECTIONS_HAS_SIZE_EQ",
@@ -2958,9 +2958,9 @@
    "source": "!s:A->bool. !t:B->bool. !f:A->B. !g:B->A. (!x:A. x IN s ==> f x IN t /\\ g (f x) = x) /\\ (!y:B. y IN t ==> g y IN s /\\ f (g y) = y) ==> (!n:num. HAS_SIZE s n <=> HAS_SIZE t n)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> (forall x :e A, x :e s -> f x :e t /\\ g (f x) = x) /\\ (forall y :e B, y :e t -> g y :e s /\\ f (g y) = y) -> forall n :e omega, equip s n <-> equip t n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e B :^: A, forall g :e A :^: B, (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1 /\\ g (f x) = x) /\\ (forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1 /\\ f (g y) = y) -> forall n :e omega, hl_HAS_SIZE A s n = 1 <-> hl_HAS_SIZE B t n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam B g y vs g y)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BIJECTIONS_HAS_SIZE_EQ_bridge"
   },
   {
    "name": "BIJECTIVE_LEFT_RIGHT_INVERSE",
@@ -2981,9 +2981,9 @@
    "source": "!f:A->B. (!x:A. !y:A. f x = f y ==> x = y) /\\ (!y:B. ?x:A. f x = y) <=> (?g:B->A. (!y:B. f (g y) = y) /\\ (!x:A. g (f x) = x))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) /\\ (forall y :e B, exists x :e A, f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\\ ((forall y :e B, f (g y) = y) /\\ forall x :e A, g (f x) = x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall x y :e A, f x = f y -> x = y) /\\ (forall y :e B, exists x :e A, f x = y) <-> exists g :e A :^: B, (forall y :e B, f (g y) = y) /\\ forall x :e A, g (f x) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BIJECTIVE_LEFT_RIGHT_INVERSE_bridge"
   },
   {
    "name": "BIJECTIVE_ON_LEFT_RIGHT_INVERSE",
@@ -3006,9 +3006,9 @@
    "source": "!f:A->B. !s:A->bool. !t:B->bool. (!x:A. x IN s ==> f x IN t) ==> ((!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) /\\ (!y:B. y IN t ==> (?x:A. x IN s /\\ f x = y)) <=> (?g:B->A. (!y:B. y IN t ==> g y IN s) /\\ (!y:B. y IN t ==> f (g y) = y) /\\ (!x:A. x IN s ==> g (f x) = x)))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, (forall x :e A, x :e s -> f x :e t) -> ((forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ (forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\\ ((forall y :e B, y :e t -> g y :e s) /\\ ((forall y :e B, y :e t -> f (g y) = y) /\\ forall x :e A, x :e s -> g (f x) = x)))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) -> ((forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ (forall y :e B, hl_IN B y t = 1 -> exists x :e A, hl_IN A x s = 1 /\\ f x = y) <-> exists g :e A :^: B, (forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1) /\\ ((forall y :e B, hl_IN B y t = 1 -> f (g y) = y) /\\ forall x :e A, hl_IN A x s = 1 -> g (f x) = x))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BIJECTIVE_ON_LEFT_RIGHT_INVERSE_bridge"
   },
   {
    "name": "BINARY_INDUCT",
@@ -3457,9 +3457,9 @@
    "source": "!P:num->num->num. !A:num. !B:num. P 0 0 = 0 /\\ (!m:num. !n:num. P m n <= A * (m + n) + B) ==> (?B1:num. !m:num. !n:num. P m n <= B1 * (m + n))",
    "statement": "forall P:set -> set -> set, (forall x y :e omega, P x y :e omega) -> forall A B :e omega, P 0 0 = 0 /\\ (forall m n :e omega, P m n <= A * (m + n) + B) -> exists B0 :e omega, forall m n :e omega, P m n <= B0 * (m + n)",
    "literal": "forall P :e omega :^: omega :^: omega, forall A B :e omega, P (hl_NUMERAL hl_zero) (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\\ (forall m n :e omega, hl_le (P m n) (hl_add (hl_mul A (hl_add m n)) B) = 1) -> exists B1 :e omega, forall m n :e omega, hl_le (P m n) (hl_mul B1 (hl_add m n)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun2 applied to non-identical arguments",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BOUNDS_NOTZERO_bridge"
   },
   {
    "name": "BUTLAST",
@@ -4019,7 +4019,7 @@
    "statement": "forall A B:set, A <> Empty -> forall d :e B, forall s c= A, forall t c= B, finite s /\\ finite t -> finite_cardinality {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\\ forall x :e A, ~ x :e s -> f x = d} = finite_cardinality t ^ finite_cardinality s",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_CARD (B :^: A) (hl_GSPEC (B :^: A) (fun GEN_PVAR_151 :e B :^: A => if exists f :e B :^: A, hl_SETSPEC (B :^: A) GEN_PVAR_151 (if (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ forall x :e A, ~ hl_IN A x s = 1 -> f x = d then 1 else 0) f = 1 then 1 else 0)) = hl_EXP (hl_CARD B t) (hl_CARD A s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep (B :^: A) {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\\ forall x :e A, ~ x :e s -> f x = d}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -4522,7 +4522,7 @@
    "statement": "forall n :e omega, finite_cardinality {m :e omega | m <= n} = n + 1",
    "literal": "forall n :e omega, hl_CARD omega (hl_GSPEC omega (fun GEN_PVAR_192 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_192 (hl_le m n) m = 1 then 1 else 0)) = hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep omega {m :e omega | m <= n}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -4581,7 +4581,7 @@
    "statement": "forall n :e omega, finite_cardinality {m :e omega | m < n} = n",
    "literal": "forall n :e omega, hl_CARD omega (hl_GSPEC omega (fun GEN_PVAR_185 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_185 (hl_lt m n) m = 1 then 1 else 0)) = n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep omega {m :e omega | m < n}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -4612,7 +4612,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> finite_cardinality {t :e Power A | t c= s} = 2 ^ finite_cardinality s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_CARD (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_156 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_156 (hl_SUBSET A t s) t = 1 then 1 else 0)) = hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_CARD A s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -6189,9 +6189,9 @@
    "source": "!b:bool. !f:A->B. !x:A. !y:A. f (if b then x else y) = (if b then f x else f y)",
    "statement": "forall A B:set, B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f :e B :^: A, forall x y :e A, f (hl_COND A b x y) = hl_COND B b (f x) (f y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_COND A (if b then 1 else 0) x y vs if b then x else y)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "COND_RAND_bridge"
   },
   {
    "name": "COND_RATOR",
@@ -7286,9 +7286,9 @@
    "source": "!s:A->bool. !x:A. s DELETE x = GSPEC (\\GEN%PVAR%6:A. ?y:A. SETSPEC GEN%PVAR%6 (y IN s /\\ ~(y = x)) y)",
    "statement": "forall A:set, forall s c= A, forall x :e A, s :\\: {x} = {y :e A | y :e s /\\ ~ y = x}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x :e A, hl_DELETE A s x = hl_GSPEC A (fun GEN_PVAR_6 :e A => if exists y :e A, hl_SETSPEC A GEN_PVAR_6 (if hl_IN A y s = 1 /\\ ~ y = x then 1 else 0) y = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DELETE_bridge"
   },
   {
    "name": "DELETE_COMM",
@@ -7586,9 +7586,9 @@
    "source": "!s:A->bool. !t:A->bool. s DIFF t = GSPEC (\\GEN%PVAR%4:A. ?x:A. SETSPEC GEN%PVAR%4 (x IN s /\\ ~(x IN t)) x)",
    "statement": "forall A:set, forall s t c= A, s :\\: t = {x :e A | x :e s /\\ ~ x :e t}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DIFF A s t = hl_GSPEC A (fun GEN_PVAR_4 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_4 (if hl_IN A x s = 1 /\\ ~ hl_IN A x t = 1 then 1 else 0) x = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIFF_bridge"
   },
   {
    "name": "DIFF_DIFF",
@@ -7751,9 +7751,9 @@
    "source": "!P:A->bool. !s:A->bool. !t:A->bool. GSPEC (\\GEN%PVAR%40:A. ?x:A. SETSPEC GEN%PVAR%40 (x IN s DIFF t /\\ P x) x) = GSPEC (\\GEN%PVAR%41:A. ?x:A. SETSPEC GEN%PVAR%41 (x IN s /\\ P x) x) DIFF GSPEC (\\GEN%PVAR%42:A. ?x:A. SETSPEC GEN%PVAR%42 (x IN t /\\ P x) x)",
    "statement": "forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\\: t /\\ P x} = {x :e A | x :e s /\\ P x} :\\: {x :e A | x :e t /\\ P x}",
    "literal": "forall A:set, A <> Empty -> forall P s t :e 2 :^: A, hl_GSPEC A (fun GEN_PVAR_40 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_40 (if hl_IN A x (hl_DIFF A s t) = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0) = hl_DIFF A (hl_GSPEC A (fun GEN_PVAR_41 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_41 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) (hl_GSPEC A (fun GEN_PVAR_42 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_42 (if hl_IN A x t = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIFF_RESTRICT_bridge"
   },
   {
    "name": "DIFF_UNIONS",
@@ -11281,9 +11281,9 @@
    "source": "GSPEC (\\GEN%PVAR%48:A. ?x:A. SETSPEC GEN%PVAR%48 F x) = EMPTY",
    "statement": "forall A:set, {x :e A | False} = Empty",
    "literal": "forall A:set, A <> Empty -> hl_GSPEC A (fun GEN_PVAR_48 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_48 (if False then 1 else 0) x = 1 then 1 else 0) = hl_EMPTY A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EMPTY_GSPEC_bridge"
   },
   {
    "name": "EMPTY_NOT_UNIV",
@@ -15279,9 +15279,9 @@
    "source": "!f:A->B. !t:B->bool. FINITE t /\\ (!y:B. y IN t ==> FINITE (GSPEC (\\GEN%PVAR%102:A. ?x:A. SETSPEC GEN%PVAR%102 (f x = y) x))) ==> FINITE (GSPEC (\\GEN%PVAR%103:A. ?x:A. SETSPEC GEN%PVAR%103 (f x IN t) x))",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, finite t /\\ (forall y :e B, y :e t -> finite {x :e A | f x = y}) -> finite {x :e A | f x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ (forall y :e B, hl_IN B y t = 1 -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_102 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_102 (if f x = y then 1 else 0) x = 1 then 1 else 0)) = 1) -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_103 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_103 (hl_IN B (f x) t) x = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_FINITE_PREIMAGE_bridge"
   },
   {
    "name": "FINITE_FINITE_PREIMAGE_GENERAL",
@@ -15311,9 +15311,9 @@
    "source": "!f:A->B. !s:A->bool. !t:B->bool. FINITE t /\\ (!y:B. y IN t ==> FINITE (GSPEC (\\GEN%PVAR%100:A. ?x:A. SETSPEC GEN%PVAR%100 (x IN s /\\ f x = y) x))) ==> FINITE (GSPEC (\\GEN%PVAR%101:A. ?x:A. SETSPEC GEN%PVAR%101 (x IN s /\\ f x IN t) x))",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\\ (forall y :e B, y :e t -> finite {x :e A | x :e s /\\ f x = y}) -> finite {x :e A | x :e s /\\ f x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE B t = 1 /\\ (forall y :e B, hl_IN B y t = 1 -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_100 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_100 (if hl_IN A x s = 1 /\\ f x = y then 1 else 0) x = 1 then 1 else 0)) = 1) -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_101 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_101 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t = 1 then 1 else 0) x = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_FINITE_PREIMAGE_GENERAL_bridge"
   },
   {
    "name": "FINITE_FINITE_UNIONS",
@@ -15371,9 +15371,9 @@
    "source": "!s:A->bool. !t:B->bool. FINITE s /\\ FINITE t ==> FINITE (GSPEC (\\GEN%PVAR%152:A->B. ?f:A->B. SETSPEC GEN%PVAR%152 ((!x:A. x IN s ==> f x IN t) /\\ (!x:A. ~(x IN s) ==> f x = d)) f))",
    "statement": "forall A B:set, A <> Empty -> forall d :e B, forall s c= A, forall t c= B, finite s /\\ finite t -> finite {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\\ forall x :e A, ~ x :e s -> f x = d}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_FINITE (B :^: A) (hl_GSPEC (B :^: A) (fun GEN_PVAR_152 :e B :^: A => if exists f :e B :^: A, hl_SETSPEC (B :^: A) GEN_PVAR_152 (if (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ forall x :e A, ~ hl_IN A x s = 1 -> f x = d then 1 else 0) f = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_FUNSPACE_bridge"
   },
   {
    "name": "FINITE_FUNSPACE_UNIV",
@@ -15553,9 +15553,9 @@
    "source": "!f:A->B. !s:A->bool. FINITE s ==> FINITE (GSPEC (\\GEN%PVAR%96:B. ?y:B. SETSPEC GEN%PVAR%96 (?x:A. x IN s /\\ y = f x) y))",
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {y :e B | exists x :e A, x :e s /\\ y = f x}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE B (hl_GSPEC B (fun GEN_PVAR_96 :e B => if exists y :e B, hl_SETSPEC B GEN_PVAR_96 (if exists x :e A, hl_IN A x s = 1 /\\ y = f x then 1 else 0) y = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_IMAGE_EXPAND_bridge"
   },
   {
    "name": "FINITE_IMAGE_GEN",
@@ -15679,9 +15679,9 @@
    "source": "!f:A->B. !A:B->bool. (!x:A. !y:A. f x = f y ==> x = y) /\\ FINITE A ==> FINITE (GSPEC (\\GEN%PVAR%104:A. ?x:A. SETSPEC GEN%PVAR%104 (f x IN A) x))",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall A0 c= B, (forall x y :e A, f x = f y -> x = y) /\\ finite A0 -> finite {x :e A | f x :e A0}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall A1 :e 2 :^: B, (forall x y :e A, f x = f y -> x = y) /\\ hl_FINITE B A1 = 1 -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_104 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_104 (hl_IN B (f x) A1) x = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_IMAGE_INJ_bridge"
   },
   {
    "name": "FINITE_IMAGE_INJ_EQ",
@@ -15741,9 +15741,9 @@
    "source": "!f:A->B. !A:B->bool. !s:A->bool. (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) /\\ FINITE A ==> FINITE (GSPEC (\\GEN%PVAR%97:A. ?x:A. SETSPEC GEN%PVAR%97 (x IN s /\\ f x IN A) x))",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall A0 c= B, forall s c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ finite A0 -> finite {x :e A | x :e s /\\ f x :e A0}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall A1 :e 2 :^: B, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ hl_FINITE B A1 = 1 -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_97 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_97 (if hl_IN A x s = 1 /\\ hl_IN B (f x) A1 = 1 then 1 else 0) x = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_IMAGE_INJ_GENERAL_bridge"
   },
   {
    "name": "FINITE_INDEX_INJ",
@@ -16332,9 +16332,9 @@
    "source": "(!l:int. !r:int. FINITE (GSPEC (\\GEN%PVAR%235:int. ?x:int. SETSPEC GEN%PVAR%235 (l <= x /\\ x <= r) x))) /\\ (!l:int. !r:int. FINITE (GSPEC (\\GEN%PVAR%236:int. ?x:int. SETSPEC GEN%PVAR%236 (l <= x /\\ x < r) x))) /\\ (!l:int. !r:int. FINITE (GSPEC (\\GEN%PVAR%237:int. ?x:int. SETSPEC GEN%PVAR%237 (l < x /\\ x <= r) x))) /\\ (!l:int. !r:int. FINITE (GSPEC (\\GEN%PVAR%238:int. ?x:int. SETSPEC GEN%PVAR%238 (l < x /\\ x < r) x)))",
    "statement": "(forall l r :e int, finite {x :e int | l <= x /\\ x <= r}) /\\ ((forall l r :e int, finite {x :e int | l <= x /\\ x < r}) /\\ ((forall l r :e int, finite {x :e int | l < x /\\ x <= r}) /\\ forall l r :e int, finite {x :e int | l < x /\\ x < r}))",
    "literal": "(forall l r :e hl_ty_int, hl_FINITE hl_ty_int (hl_GSPEC hl_ty_int (fun GEN_PVAR_235 :e hl_ty_int => if exists x :e hl_ty_int, hl_SETSPEC hl_ty_int GEN_PVAR_235 (if hl_int_le l x = 1 /\\ hl_int_le x r = 1 then 1 else 0) x = 1 then 1 else 0)) = 1) /\\ ((forall l r :e hl_ty_int, hl_FINITE hl_ty_int (hl_GSPEC hl_ty_int (fun GEN_PVAR_236 :e hl_ty_int => if exists x :e hl_ty_int, hl_SETSPEC hl_ty_int GEN_PVAR_236 (if hl_int_le l x = 1 /\\ hl_int_lt x r = 1 then 1 else 0) x = 1 then 1 else 0)) = 1) /\\ ((forall l r :e hl_ty_int, hl_FINITE hl_ty_int (hl_GSPEC hl_ty_int (fun GEN_PVAR_237 :e hl_ty_int => if exists x :e hl_ty_int, hl_SETSPEC hl_ty_int GEN_PVAR_237 (if hl_int_lt l x = 1 /\\ hl_int_le x r = 1 then 1 else 0) x = 1 then 1 else 0)) = 1) /\\ forall l r :e hl_ty_int, hl_FINITE hl_ty_int (hl_GSPEC hl_ty_int (fun GEN_PVAR_238 :e hl_ty_int => if exists x :e hl_ty_int, hl_SETSPEC hl_ty_int GEN_PVAR_238 (if hl_int_lt l x = 1 /\\ hl_int_lt x r = 1 then 1 else 0) x = 1 then 1 else 0)) = 1))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_INT_SEG_bridge"
   },
   {
    "name": "FINITE_NUMSEG",
@@ -16390,9 +16390,9 @@
    "source": "!n:num. FINITE (GSPEC (\\GEN%PVAR%191:num. ?m:num. SETSPEC GEN%PVAR%191 (m <= n) m))",
    "statement": "forall n :e omega, finite {m :e omega | m <= n}",
    "literal": "forall n :e omega, hl_FINITE omega (hl_GSPEC omega (fun GEN_PVAR_191 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_191 (hl_le m n) m = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_NUMSEG_LE_bridge"
   },
   {
    "name": "FINITE_NUMSEG_LT",
@@ -16419,9 +16419,9 @@
    "source": "!n:num. FINITE (GSPEC (\\GEN%PVAR%186:num. ?m:num. SETSPEC GEN%PVAR%186 (m < n) m))",
    "statement": "forall n :e omega, finite {m :e omega | m < n}",
    "literal": "forall n :e omega, hl_FINITE omega (hl_GSPEC omega (fun GEN_PVAR_186 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_186 (hl_lt m n) m = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_NUMSEG_LT_bridge"
   },
   {
    "name": "FINITE_PCROSS",
@@ -16511,7 +16511,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> finite {t :e Power A | t c= s}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_157 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_157 (hl_SUBSET A t s) t = 1 then 1 else 0)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -16539,7 +16539,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite {t :e Power A | t c= s} <-> finite s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_158 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_158 (hl_SUBSET A t s) t = 1 then 1 else 0)) = 1 <-> hl_FINITE A s = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -16664,9 +16664,9 @@
    "source": "(!a:real. ~FINITE (GSPEC (\\GEN%PVAR%202:real. ?x:real. SETSPEC GEN%PVAR%202 (a < x) x))) /\\ (!a:real. ~FINITE (GSPEC (\\GEN%PVAR%203:real. ?x:real. SETSPEC GEN%PVAR%203 (a <= x) x))) /\\ (!b:real. ~FINITE (GSPEC (\\GEN%PVAR%204:real. ?x:real. SETSPEC GEN%PVAR%204 (x < b) x))) /\\ (!b:real. ~FINITE (GSPEC (\\GEN%PVAR%205:real. ?x:real. SETSPEC GEN%PVAR%205 (x <= b) x))) /\\ (!a:real. !b:real. FINITE (GSPEC (\\GEN%PVAR%206:real. ?x:real. SETSPEC GEN%PVAR%206 (a < x /\\ x < b) x)) <=> b <= a) /\\ (!a:real. !b:real. FINITE (GSPEC (\\GEN%PVAR%207:real. ?x:real. SETSPEC GEN%PVAR%207 (a <= x /\\ x < b) x)) <=> b <= a) /\\ (!a:real. !b:real. FINITE (GSPEC (\\GEN%PVAR%208:real. ?x:real. SETSPEC GEN%PVAR%208 (a < x /\\ x <= b) x)) <=> b <= a) /\\ (!a:real. !b:real. FINITE (GSPEC (\\GEN%PVAR%209:real. ?x:real. SETSPEC GEN%PVAR%209 (a <= x /\\ x <= b) x)) <=> b <= a)",
    "statement": "(forall a :e R, ~ finite {x :e R | a < x}) /\\ ((forall a :e R, ~ finite {x :e R | a <= x}) /\\ ((forall b :e R, ~ finite {x :e R | x < b}) /\\ ((forall b :e R, ~ finite {x :e R | x <= b}) /\\ ((forall a b :e R, finite {x :e R | a < x /\\ x < b} <-> b <= a) /\\ ((forall a b :e R, finite {x :e R | a <= x /\\ x < b} <-> b <= a) /\\ ((forall a b :e R, finite {x :e R | a < x /\\ x <= b} <-> b <= a) /\\ forall a b :e R, finite {x :e R | a <= x /\\ x <= b} <-> b <= a))))))",
    "literal": "(forall a :e R, ~ hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_202 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_202 (hl_real_lt a x) x = 1 then 1 else 0)) = 1) /\\ ((forall a :e R, ~ hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_203 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_203 (hl_real_le a x) x = 1 then 1 else 0)) = 1) /\\ ((forall b :e R, ~ hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_204 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_204 (hl_real_lt x b) x = 1 then 1 else 0)) = 1) /\\ ((forall b :e R, ~ hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_205 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_205 (hl_real_le x b) x = 1 then 1 else 0)) = 1) /\\ ((forall a b :e R, hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_206 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_206 (if hl_real_lt a x = 1 /\\ hl_real_lt x b = 1 then 1 else 0) x = 1 then 1 else 0)) = 1 <-> hl_real_le b a = 1) /\\ ((forall a b :e R, hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_207 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_207 (if hl_real_le a x = 1 /\\ hl_real_lt x b = 1 then 1 else 0) x = 1 then 1 else 0)) = 1 <-> hl_real_le b a = 1) /\\ ((forall a b :e R, hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_208 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_208 (if hl_real_lt a x = 1 /\\ hl_real_le x b = 1 then 1 else 0) x = 1 then 1 else 0)) = 1 <-> hl_real_le b a = 1) /\\ forall a b :e R, hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_209 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_209 (if hl_real_le a x = 1 /\\ hl_real_le x b = 1 then 1 else 0) x = 1 then 1 else 0)) = 1 <-> hl_real_le b a = 1))))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_REAL_INTERVAL_bridge"
   },
   {
    "name": "FINITE_RECURSION",
@@ -16696,7 +16696,7 @@
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> set_foldr f Empty b = b /\\ forall x :e A, forall s c= A, finite s -> set_foldr f (SetAdjoin s x) b = if x :e s then set_foldr f s b else f x (set_foldr f s b)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: B :^: A, forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> hl_ITSET A B f (hl_EMPTY A) b = b /\\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_ITSET A B f (hl_INSERT A x s) b = hl_COND B (hl_IN A x s) (hl_ITSET A B f s b) (f x (hl_ITSET A B f s b))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun2 applied to non-identical arguments",
+   "cert_error": "bridge_unsupported: compat_missing: hl_ITSET_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -16727,7 +16727,7 @@
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> set_foldr f Empty b = b /\\ forall x :e A, forall s c= A, finite s -> set_foldr f s b = if x :e s then f x (set_foldr f (s :\\: {x}) b) else set_foldr f (s :\\: {x}) b",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: B :^: A, forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> hl_ITSET A B f (hl_EMPTY A) b = b /\\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_ITSET A B f s b = hl_COND B (hl_IN A x s) (f x (hl_ITSET A B f (hl_DELETE A s x) b)) (hl_ITSET A B f (hl_DELETE A s x) b)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun2 applied to non-identical arguments",
+   "cert_error": "bridge_unsupported: compat_missing: hl_ITSET_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -16756,9 +16756,9 @@
    "source": "!s:A->bool. !P:A->bool. FINITE s ==> FINITE (GSPEC (\\GEN%PVAR%93:A. ?x:A. SETSPEC GEN%PVAR%93 (x IN s /\\ P x) x))",
    "statement": "forall A:set, forall s c= A, forall P:set -> prop, finite s -> finite {x :e A | x :e s /\\ P x}",
    "literal": "forall A:set, A <> Empty -> forall s P :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_93 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_93 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_RESTRICT_bridge"
   },
   {
    "name": "FINITE_RESTRICTED_FUNSPACE",
@@ -16784,9 +16784,9 @@
    "source": "!s:A->bool. !t:B->bool. !k:A->B. FINITE s /\\ FINITE t ==> FINITE (GSPEC (\\GEN%PVAR%180:A->B. ?f:A->B. SETSPEC GEN%PVAR%180 (IMAGE f s SUBSET t /\\ GSPEC (\\GEN%PVAR%179:A. ?x:A. SETSPEC GEN%PVAR%179 (~(f x = k x)) x) SUBSET s) f))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall k:set -> set, (forall x :e A, k x :e B) -> finite s /\\ finite t -> finite {f :e B :^: A | {f x | x :e s} c= t /\\ {x :e A | ~ f x = k x} c= s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e B :^: A, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_FINITE (B :^: A) (hl_GSPEC (B :^: A) (fun GEN_PVAR_180 :e B :^: A => if exists f :e B :^: A, hl_SETSPEC (B :^: A) GEN_PVAR_180 (if hl_SUBSET B (hl_IMAGE A B f s) t = 1 /\\ hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_179 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_179 (if ~ f x = k x then 1 else 0) x = 1 then 1 else 0)) s = 1 then 1 else 0) f = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_RESTRICTED_FUNSPACE_bridge"
   },
   {
    "name": "FINITE_RESTRICTED_POWERSET",
@@ -16815,7 +16815,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall n :e omega, finite {t :e Power A | t c= s /\\ equip t n} <-> finite s \\/ n = 0",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_176 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_176 (if hl_SUBSET A t s = 1 /\\ hl_HAS_SIZE A t n = 1 then 1 else 0) t = 1 then 1 else 0)) = 1 <-> hl_FINITE A s = 1 \\/ n = hl_NUMERAL hl_zero",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -16843,7 +16843,7 @@
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, finite s -> finite {t :e Power A | t c= s /\\ P t}",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_160 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_160 (if hl_SUBSET A t s = 1 /\\ P t = 1 then 1 else 0) t = 1 then 1 else 0)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -17790,7 +17790,7 @@
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\\ (g Empty = b /\\ forall s c= A, forall x :e A, finite s /\\ x :e s -> g s = f x (g (s :\\: {x})))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: B :^: A, forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g :e B :^: (2 :^: A), g (hl_EMPTY A) = b /\\ forall s :e 2 :^: A, forall x :e A, hl_FINITE A s = 1 /\\ hl_IN A x s = 1 -> g s = f x (g (hl_DELETE A s x))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun2 applied to non-identical arguments",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power A)",
    "bridge": ""
   },
   {
@@ -19324,9 +19324,9 @@
    "source": "!P:A->bool. !f:A->B. !g:A->C. (!x:A. !y:A. P x /\\ P y /\\ g x = g y ==> f x = f y) <=> (?h:C->B. !x:A. P x ==> f x = h (g x))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> ((forall x y :e A, P x /\\ (P y /\\ g x = g y) -> f x = f y) <-> exists h:set -> set, (forall x :e C, h x :e B) /\\ forall x :e A, P x -> f x = h (g x))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: A, forall f :e B :^: A, forall g :e C :^: A, (forall x y :e A, P x = 1 /\\ (P y = 1 /\\ g x = g y) -> f x = f y) <-> exists h :e B :^: C, forall x :e A, P x = 1 -> f x = h (g x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A g x vs g x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FUNCTION_FACTORS_LEFT_GEN_bridge"
   },
   {
    "name": "FUNCTION_FACTORS_RIGHT",
@@ -19376,9 +19376,9 @@
    "source": "!P:A->bool. !f:A->C. !g:B->C. (!x:A. P x ==> (?y:B. g y = f x)) <=> (?h:A->B. !x:A. P x ==> f x = g (h x))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> ((forall x :e A, P x -> exists y :e B, g y = f x) <-> exists h:set -> set, (forall x :e A, h x :e B) /\\ forall x :e A, P x -> f x = g (h x))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: A, forall f :e C :^: A, forall g :e C :^: B, (forall x :e A, P x = 1 -> exists y :e B, g y = f x) <-> exists h :e B :^: A, forall x :e A, P x = 1 -> f x = g (h x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A h x vs h x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FUNCTION_FACTORS_RIGHT_GEN_bridge"
   },
   {
    "name": "FUN_EQ_THM",
@@ -20248,9 +20248,9 @@
    "source": "!d:B. !n:num. !t:B->bool. !m:num. !s:A->bool. HAS_SIZE s m /\\ HAS_SIZE t n ==> HAS_SIZE (GSPEC (\\GEN%PVAR%150:A->B. ?f:A->B. SETSPEC GEN%PVAR%150 ((!x:A. x IN s ==> f x IN t) /\\ (!x:A. ~(x IN s) ==> f x = d)) f)) (n EXP m)",
    "statement": "forall A B:set, A <> Empty -> forall d :e B, forall n :e omega, forall t c= B, forall m :e omega, forall s c= A, equip s m /\\ equip t n -> equip {f :e B :^: A | (forall x :e A, x :e s -> f x :e t) /\\ forall x :e A, ~ x :e s -> f x = d} (n ^ m)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e B, forall n :e omega, forall t :e 2 :^: B, forall m :e omega, forall s :e 2 :^: A, hl_HAS_SIZE A s m = 1 /\\ hl_HAS_SIZE B t n = 1 -> hl_HAS_SIZE (B :^: A) (hl_GSPEC (B :^: A) (fun GEN_PVAR_150 :e B :^: A => if exists f :e B :^: A, hl_SETSPEC (B :^: A) GEN_PVAR_150 (if (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ forall x :e A, ~ hl_IN A x s = 1 -> f x = d then 1 else 0) f = 1 then 1 else 0)) (hl_EXP n m) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_FUNSPACE_bridge"
   },
   {
    "name": "HAS_SIZE_FUNSPACE_UNIV",
@@ -20372,7 +20372,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, forall P:set -> prop, forall n :e omega, finite s /\\ (finite t /\\ (finite_cardinality s = finite_cardinality t /\\ ({f x | x :e s} c= t /\\ ((forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) /\\ equip {x :e A | x :e s /\\ P (f x)} n)))) -> equip {x :e B | x :e t /\\ P x} n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t P :e 2 :^: B, forall n :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (hl_CARD A s = hl_CARD B t /\\ (hl_SUBSET B (hl_IMAGE A B f s) t = 1 /\\ ((forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) /\\ hl_HAS_SIZE A (hl_GSPEC A (fun GEN_PVAR_219 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_219 (if hl_IN A x s = 1 /\\ P (f x) = 1 then 1 else 0) x = 1 then 1 else 0)) n = 1)))) -> hl_HAS_SIZE B (hl_GSPEC B (fun GEN_PVAR_220 :e B => if exists x :e B, hl_SETSPEC B GEN_PVAR_220 (if hl_IN B x t = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) n = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: rel: metapred applied to non-identical argument",
    "bridge": ""
   },
   {
@@ -20492,9 +20492,9 @@
    "source": "!n:num. HAS_SIZE (GSPEC (\\GEN%PVAR%190:num. ?m:num. SETSPEC GEN%PVAR%190 (m <= n) m)) (n + 1)",
    "statement": "forall n :e omega, equip {m :e omega | m <= n} (n + 1)",
    "literal": "forall n :e omega, hl_HAS_SIZE omega (hl_GSPEC omega (fun GEN_PVAR_190 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_190 (hl_le m n) m = 1 then 1 else 0)) (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_NUMSEG_LE_bridge"
   },
   {
    "name": "HAS_SIZE_NUMSEG_LT",
@@ -20521,9 +20521,9 @@
    "source": "!n:num. HAS_SIZE (GSPEC (\\GEN%PVAR%184:num. ?m:num. SETSPEC GEN%PVAR%184 (m < n) m)) n",
    "statement": "forall n :e omega, equip {m :e omega | m < n} n",
    "literal": "forall n :e omega, hl_HAS_SIZE omega (hl_GSPEC omega (fun GEN_PVAR_184 :e omega => if exists m :e omega, hl_SETSPEC omega GEN_PVAR_184 (hl_lt m n) m = 1 then 1 else 0)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_NUMSEG_LT_bridge"
   },
   {
    "name": "HAS_SIZE_PCROSS",
@@ -20583,7 +20583,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n -> equip {t :e Power A | t c= s} (2 ^ n)",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_HAS_SIZE A s n = 1 -> hl_HAS_SIZE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_155 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_155 (hl_SUBSET A t s) t = 1 then 1 else 0)) (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -21959,9 +21959,9 @@
    "source": "!s:A->bool. !f:A->B. IMAGE f s = GSPEC (\\GEN%PVAR%7:B. ?y:B. SETSPEC GEN%PVAR%7 (?x:A. x IN s /\\ y = f x) y)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> {f x | x :e s} = {y :e B | exists x :e A, x :e s /\\ y = f x}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, hl_IMAGE A B f s = hl_GSPEC B (fun GEN_PVAR_7 :e B => if exists y :e B, hl_SETSPEC B GEN_PVAR_7 (if exists x :e A, hl_IN A x s = 1 /\\ y = f x then 1 else 0) y = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_bridge"
   },
   {
    "name": "IMAGE_CLAUSES",
@@ -22557,9 +22557,9 @@
    "source": "!f:A->B. !s:A->bool. !t:A->bool. GSPEC (\\GEN%PVAR%88:A. ?x:A. SETSPEC GEN%PVAR%88 (f x IN IMAGE f s) x) SUBSET s \\/ GSPEC (\\GEN%PVAR%89:A. ?x:A. SETSPEC GEN%PVAR%89 (f x IN IMAGE f t) x) SUBSET t ==> IMAGE f (s INTER t) = IMAGE f s INTER IMAGE f t",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, {x :e A | f x :e {f x | x :e s}} c= s \\/ {x :e A | f x :e {f x | x :e t}} c= t -> {f x | x :e s :/\\: t} = {f x | x :e s} :/\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_88 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_88 (hl_IN B (f x) (hl_IMAGE A B f s)) x = 1 then 1 else 0)) s = 1 \\/ hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_89 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_89 (hl_IN B (f x) (hl_IMAGE A B f t)) x = 1 then 1 else 0)) t = 1 -> hl_IMAGE A B f (hl_INTER A s t) = hl_INTER B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_INTER_SATURATED_bridge"
   },
   {
    "name": "IMAGE_INTER_SATURATED_GEN",
@@ -22585,9 +22585,9 @@
    "source": "!f:A->B. !s:A->bool. !t:A->bool. !u:A->bool. GSPEC (\\GEN%PVAR%84:A. ?x:A. SETSPEC GEN%PVAR%84 (x IN u /\\ f x IN IMAGE f s) x) SUBSET s /\\ t SUBSET u \\/ GSPEC (\\GEN%PVAR%85:A. ?x:A. SETSPEC GEN%PVAR%85 (x IN u /\\ f x IN IMAGE f t) x) SUBSET t /\\ s SUBSET u ==> IMAGE f (s INTER t) = IMAGE f s INTER IMAGE f t",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t u c= A, {x :e A | x :e u /\\ f x :e {f x | x :e s}} c= s /\\ t c= u \\/ {x :e A | x :e u /\\ f x :e {f x | x :e t}} c= t /\\ s c= u -> {f x | x :e s :/\\: t} = {f x | x :e s} :/\\: {f x | x :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t u :e 2 :^: A, hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_84 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_84 (if hl_IN A x u = 1 /\\ hl_IN B (f x) (hl_IMAGE A B f s) = 1 then 1 else 0) x = 1 then 1 else 0)) s = 1 /\\ hl_SUBSET A t u = 1 \\/ hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_85 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_85 (if hl_IN A x u = 1 /\\ hl_IN B (f x) (hl_IMAGE A B f t) = 1 then 1 else 0) x = 1 then 1 else 0)) t = 1 /\\ hl_SUBSET A s u = 1 -> hl_IMAGE A B f (hl_INTER A s t) = hl_INTER B (hl_IMAGE A B f s) (hl_IMAGE A B f t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_INTER_SATURATED_GEN_bridge"
   },
   {
    "name": "IMAGE_INTER_SUBSET",
@@ -24045,9 +24045,9 @@
    "source": "!f:A->B. (!x:A. !y:A. f x = f y ==> x = y) <=> (?g:B->A. !x:A. g (f x) = x)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\\ forall x :e A, g (f x) = x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall x y :e A, f x = f y -> x = y) <-> exists g :e A :^: B, forall x :e A, g (f x) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INJECTIVE_LEFT_INVERSE_bridge"
   },
   {
    "name": "INJECTIVE_MAP",
@@ -24154,9 +24154,9 @@
    "source": "!f:A->B. !s:A->bool. (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) <=> (?g:B->A. !x:A. x IN s ==> g (f x) = x)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\\ forall x :e A, x :e s -> g (f x) = x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) <-> exists g :e A :^: B, forall x :e A, hl_IN A x s = 1 -> g (f x) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INJECTIVE_ON_LEFT_INVERSE_bridge"
   },
   {
    "name": "INJECTIVE_ON_PREIMAGE",
@@ -24182,9 +24182,9 @@
    "source": "!f:A->B. !s:A->bool. !u:B->bool. (!t:B->bool. !t':B->bool. t SUBSET u /\\ t' SUBSET u /\\ GSPEC (\\GEN%PVAR%222:A. ?x:A. SETSPEC GEN%PVAR%222 (x IN s /\\ f x IN t) x) = GSPEC (\\GEN%PVAR%223:A. ?x:A. SETSPEC GEN%PVAR%223 (x IN s /\\ f x IN t') x) ==> t = t') <=> u SUBSET IMAGE f s",
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall u c= B, (forall t t' c= B, t c= u /\\ (t' c= u /\\ {x :e A | x :e s /\\ f x :e t} = {x :e A | x :e s /\\ f x :e t'}) -> t = t') <-> u c= {f x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall u :e 2 :^: B, (forall t t' :e 2 :^: B, hl_SUBSET B t u = 1 /\\ (hl_SUBSET B t' u = 1 /\\ hl_GSPEC A (fun GEN_PVAR_222 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_222 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t = 1 then 1 else 0) x = 1 then 1 else 0) = hl_GSPEC A (fun GEN_PVAR_223 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_223 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t' = 1 then 1 else 0) x = 1 then 1 else 0)) -> t = t') <-> hl_SUBSET B u (hl_IMAGE A B f s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INJECTIVE_ON_PREIMAGE_bridge"
   },
   {
    "name": "INJECTIVE_PREIMAGE",
@@ -24207,9 +24207,9 @@
    "source": "!f:A->B. (!t:B->bool. !t':B->bool. GSPEC (\\GEN%PVAR%225:A. ?x:A. SETSPEC GEN%PVAR%225 (f x IN t) x) = GSPEC (\\GEN%PVAR%226:A. ?x:A. SETSPEC GEN%PVAR%226 (f x IN t') x) ==> t = t') <=> IMAGE f UNIV = UNIV",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall t t' c= B, {x :e A | f x :e t} = {x :e A | f x :e t'} -> t = t') <-> {f x | x :e A} = B)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall t t' :e 2 :^: B, hl_GSPEC A (fun GEN_PVAR_225 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_225 (hl_IN B (f x) t) x = 1 then 1 else 0) = hl_GSPEC A (fun GEN_PVAR_226 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_226 (hl_IN B (f x) t') x = 1 then 1 else 0) -> t = t') <-> hl_IMAGE A B f (hl_UNIV A) = hl_UNIV B",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INJECTIVE_PREIMAGE_bridge"
   },
   {
    "name": "INJF",
@@ -24368,9 +24368,9 @@
    "source": "!P:A->B->C. (!x1:A. !y1:B. !x2:A. !y2:B. P x1 y1 = P x2 y2 <=> x1 = x2 /\\ y1 = y2) ==> (?X:C->A. ?Y:C->B. !x:A. !y:B. X (P x y) = x /\\ Y (P x y) = y)",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> set, (forall x :e A, forall y :e B, P x y :e C) -> (forall x1 :e A, forall y1 :e B, forall x2 :e A, forall y2 :e B, P x1 y1 = P x2 y2 <-> x1 = x2 /\\ y1 = y2) -> exists X:set -> set, (forall x :e C, X x :e A) /\\ exists Y:set -> set, (forall x :e C, Y x :e B) /\\ forall x :e A, forall y :e B, X (P x y) = x /\\ Y (P x y) = y",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e C :^: B :^: A, (forall x1 :e A, forall y1 :e B, forall x2 :e A, forall y2 :e B, P x1 y1 = P x2 y2 <-> x1 = x2 /\\ y1 = y2) -> exists X :e A :^: C, exists Y :e B :^: C, forall x :e A, forall y :e B, X (P x y) = x /\\ Y (P x y) = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam2 A B P x y vs P x y)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INJ_INVERSE2_bridge"
   },
   {
    "name": "INSERT",
@@ -24399,9 +24399,9 @@
    "source": "x INSERT s = GSPEC (\\GEN%PVAR%5:A. ?y:A. SETSPEC GEN%PVAR%5 (y IN s \\/ y = x) y)",
    "statement": "forall A:set, forall x :e A, forall s c= A, SetAdjoin s x = {y :e A | y :e s \\/ y = x}",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall s :e 2 :^: A, hl_INSERT A x s = hl_GSPEC A (fun GEN_PVAR_5 :e A => if exists y :e A, hl_SETSPEC A GEN_PVAR_5 (if hl_IN A y s = 1 \\/ y = x then 1 else 0) y = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INSERT_bridge"
   },
   {
    "name": "INSERT_AC",
@@ -24628,7 +24628,7 @@
    "statement": "forall A:set, forall P:set -> prop, forall s c= A, forall a :e A, {x :e A | x :e SetAdjoin s a /\\ P x} = if P a then SetAdjoin {x :e A | x :e s /\\ P x} a else {x :e A | x :e s /\\ P x}",
    "literal": "forall A:set, A <> Empty -> forall P s :e 2 :^: A, forall a :e A, hl_GSPEC A (fun GEN_PVAR_30 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_30 (if hl_IN A x (hl_INSERT A a s) = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0) = hl_COND (2 :^: A) (P a) (hl_INSERT A a (hl_GSPEC A (fun GEN_PVAR_31 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_31 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))) (hl_GSPEC A (fun GEN_PVAR_32 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_32 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
    "bridge": ""
   },
   {
@@ -24796,9 +24796,9 @@
    "source": "!s:A->bool. !t:A->bool. s INTER t = GSPEC (\\GEN%PVAR%2:A. ?x:A. SETSPEC GEN%PVAR%2 (x IN s /\\ x IN t) x)",
    "statement": "forall A:set, forall s t c= A, s :/\\: t = {x :e A | x :e s /\\ x :e t}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_INTER A s t = hl_GSPEC A (fun GEN_PVAR_2 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_2 (if hl_IN A x s = 1 /\\ hl_IN A x t = 1 then 1 else 0) x = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTER_bridge"
   },
   {
    "name": "INTERS",
@@ -25712,9 +25712,9 @@
    "source": "!P:A->bool. !s:A->bool. !t:A->bool. GSPEC (\\GEN%PVAR%37:A. ?x:A. SETSPEC GEN%PVAR%37 (x IN s INTER t /\\ P x) x) = GSPEC (\\GEN%PVAR%38:A. ?x:A. SETSPEC GEN%PVAR%38 (x IN s /\\ P x) x) INTER GSPEC (\\GEN%PVAR%39:A. ?x:A. SETSPEC GEN%PVAR%39 (x IN t /\\ P x) x)",
    "statement": "forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :/\\: t /\\ P x} = {x :e A | x :e s /\\ P x} :/\\: {x :e A | x :e t /\\ P x}",
    "literal": "forall A:set, A <> Empty -> forall P s t :e 2 :^: A, hl_GSPEC A (fun GEN_PVAR_37 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_37 (if hl_IN A x (hl_INTER A s t) = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0) = hl_INTER A (hl_GSPEC A (fun GEN_PVAR_38 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_38 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) (hl_GSPEC A (fun GEN_PVAR_39 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_39 (if hl_IN A x t = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTER_RESTRICT_bridge"
   },
   {
    "name": "INTER_SUBSET",
@@ -37139,7 +37139,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> f x :e s /\\ f (f x) = x) -> (even_nat (finite_cardinality {x :e A | x :e s /\\ f x = x}) <-> even_nat (finite_cardinality s))",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN A (f x) s = 1 /\\ f (f x) = x) -> (hl_EVEN (hl_CARD A (hl_GSPEC A (fun GEN_PVAR_120 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_120 (if hl_IN A x s = 1 /\\ f x = x then 1 else 0) x = 1 then 1 else 0))) = 1 <-> hl_EVEN (hl_CARD A s) = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -37169,7 +37169,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> f x :e s /\\ (~ f x = x /\\ f (f x) = x)) -> even_nat (finite_cardinality s)",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN A (f x) s = 1 /\\ (~ f x = x /\\ f (f x) = x)) -> hl_EVEN (hl_CARD A s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -37574,9 +37574,9 @@
    "source": "!s:A->bool. GSPEC (\\GEN%PVAR%52:A. ?x:A. SETSPEC GEN%PVAR%52 (x IN s) x) = s",
    "statement": "forall A:set, forall s c= A, {x :e A | x :e s} = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_GSPEC A (fun GEN_PVAR_52 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_52 (hl_IN A x s) x = 1 then 1 else 0) = s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IN_GSPEC_bridge"
   },
   {
    "name": "IN_IMAGE",
@@ -38006,7 +38006,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e B, f (g x) = x) /\\ (forall y :e A, g (f y) = y) <-> (forall x :e B, f (g x) = x) /\\ forall y :e A, g (f y) = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall g :e A :^: B, forall f :e B :^: A, hl_ISO A B f g = 1 <-> (forall x :e B, f (g x) = x) /\\ forall y :e A, g (f y) = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f y vs f y)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_ISO_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -39811,7 +39811,7 @@
    "statement": "forall A B:set, A <> Empty -> forall s c= A, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall g:set -> set -> set, (forall x :e A, forall y :e B, g x y :e B) -> forall b :e B, finite s /\\ ((forall x :e A, x :e s -> forall x0 :e B, f x x0 = g x x0) /\\ ((forall x y :e A, forall s0 :e B, ~ x = y -> f x (f y s0) = f y (f x s0)) /\\ (forall x y :e A, forall s0 :e B, ~ x = y -> g x (g y s0) = g y (g x s0)))) -> set_foldr f s b = set_foldr g s b",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f g :e B :^: B :^: A, forall b :e B, hl_FINITE A s = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> f x = g x) /\\ ((forall x y :e A, forall s1 :e B, ~ x = y -> f x (f y s1) = f y (f x s1)) /\\ (forall x y :e A, forall s1 :e B, ~ x = y -> g x (g y s1) = g y (g x s1)))) -> hl_ITSET A B f s b = hl_ITSET A B g s b",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun2 applied to non-identical arguments",
+   "cert_error": "bridge_unsupported: compat_missing: hl_ITSET_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -48538,7 +48538,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite {x :e A | x :e s /\\ ~ f x = 0} /\\ finite {x :e A | x :e s /\\ ~ g x = 0} -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_287 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_287 (if hl_IN A x s = 1 /\\ ~ f x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 /\\ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_288 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_288 (if hl_IN A x s = 1 /\\ ~ g x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_nsum A s (fun x :e A => hl_add (f x) (g x)) = hl_add (hl_nsum A s f) (hl_nsum A s g)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -49179,7 +49179,7 @@
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, ~ finite {x :e A | x :e s /\\ ~ f x = 0} -> finsum s f = 0",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, ~ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_286 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_286 (if hl_IN A x s = 1 /\\ ~ f x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_nsum A s f = hl_NUMERAL hl_zero",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -49454,7 +49454,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x) /\\ (forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x) -> finsum s f = finsum t g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e omega :^: A, forall g :e omega :^: B, forall h :e B :^: A, (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ h x = y then 1 else 0) = 1) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ g (h x) = f x) -> hl_nsum A s f = hl_nsum B t g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A h x vs h x)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
    "bridge": ""
   },
   {
@@ -49483,7 +49483,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall k:set -> set, (forall x :e B, k x :e A) -> (forall y :e B, y :e t -> k y :e s /\\ h (k y) = y) /\\ (forall x :e A, x :e s -> h x :e t /\\ (k (h x) = x /\\ g (h x) = f x)) -> finsum s f = finsum t g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e omega :^: A, forall g :e omega :^: B, forall h :e B :^: A, forall k :e A :^: B, (forall y :e B, hl_IN B y t = 1 -> hl_IN A (k y) s = 1 /\\ h (k y) = y) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ (k (h x) = x /\\ g (h x) = f x)) -> hl_nsum A s f = hl_nsum B t g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A h x vs h x)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -49694,7 +49694,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set, (forall x :e B, d x :e omega) -> forall i:set -> set, (forall x :e A, i x :e B) -> forall s c= A, finite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ (~ x = y /\\ i x = i y)) -> d (i x) = 0) -> finsum {i x | x :e s} d = finsum s (fun x:set => d (i x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e omega :^: B, forall i :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ (~ x = y /\\ i x = i y)) -> d (i x) = hl_NUMERAL hl_zero) -> hl_nsum B (hl_IMAGE A B i s) d = hl_nsum A s (hl_o B omega A d i)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A i x vs i x)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -49819,7 +49819,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x <= g x) /\\ finite {x :e A | x :e s /\\ ~ g x = 0} -> finsum s f <= finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e omega :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_le (f x) (g x) = 1) /\\ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_301 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_301 (if hl_IN A x s = 1 /\\ ~ g x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_le (hl_nsum A s f) (hl_nsum A s g) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -49977,7 +49977,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = k * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_295 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_295 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k)) -> hl_nsum A s (fun i :e A => hl_CARD B (hl_GSPEC B (fun GEN_PVAR_296 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_296 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0))) = hl_mul k (hl_CARD B t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A {i :e A | i :e s /\\ R0 i j}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -50010,7 +50010,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = finsum t k",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_293 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_293 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k j)) -> hl_nsum A s (fun i :e A => hl_CARD B (hl_GSPEC B (fun GEN_PVAR_294 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_294 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0))) = hl_nsum B t (fun i :e B => k i)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A {i :e A | i :e s /\\ R0 i j}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -51212,7 +51212,7 @@
    "statement": "{i :e omega | i <= 0} = {0} /\\ forall k :e omega, {i :e omega | i <= ordsucc k} = SetAdjoin {i :e omega | i <= k} (ordsucc k)",
    "literal": "hl_GSPEC omega (fun GEN_PVAR_187 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_187 (hl_le i (hl_NUMERAL hl_zero)) i = 1 then 1 else 0) = hl_INSERT omega (hl_NUMERAL hl_zero) (hl_EMPTY omega) /\\ forall k :e omega, hl_GSPEC omega (fun GEN_PVAR_188 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_188 (hl_le i (hl_SUC k)) i = 1 then 1 else 0) = hl_INSERT omega (hl_SUC k) (hl_GSPEC omega (fun GEN_PVAR_189 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_189 (hl_le i k) i = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty 0 differs from elaborated {0}",
    "bridge": ""
   },
   {
@@ -51240,9 +51240,9 @@
    "source": "GSPEC (\\GEN%PVAR%181:num. ?i:num. SETSPEC GEN%PVAR%181 (i < 0) i) = EMPTY /\\ (!k:num. GSPEC (\\GEN%PVAR%182:num. ?i:num. SETSPEC GEN%PVAR%182 (i < SUC k) i) = k INSERT GSPEC (\\GEN%PVAR%183:num. ?i:num. SETSPEC GEN%PVAR%183 (i < k) i))",
    "statement": "{i :e omega | i < 0} = Empty /\\ forall k :e omega, {i :e omega | i < ordsucc k} = SetAdjoin {i :e omega | i < k} k",
    "literal": "hl_GSPEC omega (fun GEN_PVAR_181 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_181 (hl_lt i (hl_NUMERAL hl_zero)) i = 1 then 1 else 0) = hl_EMPTY omega /\\ forall k :e omega, hl_GSPEC omega (fun GEN_PVAR_182 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_182 (hl_lt i (hl_SUC k)) i = 1 then 1 else 0) = hl_INSERT omega k (hl_GSPEC omega (fun GEN_PVAR_183 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_183 (hl_lt i k) i = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUMSEG_CLAUSES_LT_bridge"
   },
   {
    "name": "NUMSEG_COMBINE_L",
@@ -51359,7 +51359,7 @@
    "statement": "forall n :e omega, {x :e omega | x <= n} = {i :e omega | 0 <= i /\\ i <= n}",
    "literal": "forall n :e omega, hl_GSPEC omega (fun GEN_PVAR_233 :e omega => if exists x :e omega, hl_SETSPEC omega GEN_PVAR_233 (hl_le x n) x = 1 then 1 else 0) = hl_numseg (hl_NUMERAL hl_zero) n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_numseg_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -51418,7 +51418,7 @@
    "statement": "forall n :e omega, {x :e omega | x < n} = if n = 0 then Empty else {i :e omega | 0 <= i /\\ i <= minus_nat n 1}",
    "literal": "forall n :e omega, hl_GSPEC omega (fun GEN_PVAR_234 :e omega => if exists x :e omega, hl_SETSPEC omega GEN_PVAR_234 (hl_lt x n) x = 1 then 1 else 0) = hl_COND (2 :^: omega) (if n = hl_NUMERAL hl_zero then 1 else 0) (hl_EMPTY omega) (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -51448,7 +51448,7 @@
    "statement": "forall N:set, N <> Empty -> {i :e omega | i < dimindex N} = {i :e omega | 0 <= i /\\ i <= minus_nat (dimindex N) 1}",
    "literal": "forall N:set, N <> Empty -> hl_GSPEC omega (fun GEN_PVAR_354 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_354 (hl_lt i (hl_dimindex N (hl_UNIV N))) i = 1 then 1 else 0) = hl_numseg (hl_NUMERAL hl_zero) (hl_sub (hl_dimindex N (hl_UNIV N)) (hl_NUMERAL (hl_BIT1 hl_zero)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_dimindex_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -54039,7 +54039,7 @@
    "statement": "forall A:set, A <> Empty -> {s :e Power A | s c= Empty} = {Empty} /\\ forall a :e A, forall t c= A, {s :e Power A | s c= SetAdjoin t a} = {s :e Power A | s c= t} :\\/: {{x0 :e A | x0 :e SetAdjoin x a} | x :e {s :e Power A | s c= t}}",
    "literal": "forall A:set, A <> Empty -> hl_GSPEC (2 :^: A) (fun GEN_PVAR_163 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_163 (hl_SUBSET A s (hl_EMPTY A)) s = 1 then 1 else 0) = hl_INSERT (2 :^: A) (hl_EMPTY A) (hl_EMPTY (2 :^: A)) /\\ forall a :e A, forall t :e 2 :^: A, hl_GSPEC (2 :^: A) (fun GEN_PVAR_164 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_164 (hl_SUBSET A s (hl_INSERT A a t)) s = 1 then 1 else 0) = hl_UNION (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_165 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_165 (hl_SUBSET A s t) s = 1 then 1 else 0)) (hl_IMAGE (2 :^: A) (2 :^: A) (fun s :e 2 :^: A => hl_INSERT A a s) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_166 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_166 (hl_SUBSET A s t) s = 1 then 1 else 0)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -63656,7 +63656,7 @@
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite {i :e A | i :e s /\\ ~ f i = 0} -> finsum s f = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_335 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_335 (if hl_IN A i s = 1 /\\ ~ f i = hl_NUMERAL hl_zero then 1 else 0) i = 1 then 1 else 0)) = 1 -> hl_real_of_num (hl_nsum A s f) = hl_sum A s (fun x :e A => hl_real_of_num (f x))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -68973,7 +68973,7 @@
    "statement": "forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\\ (g Empty = b /\\ forall x :e A, forall s c= A, finite s -> g (SetAdjoin s x) = if x :e s then g s else f x (g s))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: B :^: A, forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g :e B :^: (2 :^: A), g (hl_EMPTY A) = b /\\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND B (hl_IN A x s) (g s) (f x (g s))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun2 applied to non-identical arguments",
+   "cert_error": "bridge_unsupported: coerce_rel: set(Power A)",
    "bridge": ""
   },
   {
@@ -69000,9 +69000,9 @@
    "source": "!f:A->B. !s:A->bool. GSPEC (\\GEN%PVAR%45:B. ?x:A. SETSPEC GEN%PVAR%45 (x IN s) (f x)) = IMAGE f s",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {f x | x :e A, x :e s} = {f x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_GSPEC B (fun GEN_PVAR_45 :e B => if exists x :e A, hl_SETSPEC B GEN_PVAR_45 (hl_IN A x s) (f x) = 1 then 1 else 0) = hl_IMAGE A B f s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SIMPLE_IMAGE_bridge"
   },
   {
    "name": "SIMPLE_IMAGE_GEN",
@@ -69028,9 +69028,9 @@
    "source": "!f:A->B. !P:A->bool. GSPEC (\\GEN%PVAR%46:B. ?x:A. SETSPEC GEN%PVAR%46 (P x) (f x)) = IMAGE f (GSPEC (\\GEN%PVAR%47:A. ?x:A. SETSPEC GEN%PVAR%47 (P x) x))",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall P:set -> prop, {f x | x :e A, P x} = {f x | x :e {x :e A | P x}}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall P :e 2 :^: A, hl_GSPEC B (fun GEN_PVAR_46 :e B => if exists x :e A, hl_SETSPEC B GEN_PVAR_46 (P x) (f x) = 1 then 1 else 0) = hl_IMAGE A B f (hl_GSPEC A (fun GEN_PVAR_47 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_47 (P x) x = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SIMPLE_IMAGE_GEN_bridge"
   },
   {
    "name": "SING",
@@ -69112,7 +69112,7 @@
    "statement": "forall A:set, (forall a :e A, {x :e A | x = a} = {a}) /\\ forall a :e A, {x :e A | a = x} = {a}",
    "literal": "forall A:set, A <> Empty -> (forall a :e A, hl_GSPEC A (fun GEN_PVAR_50 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_50 (if x = a then 1 else 0) x = 1 then 1 else 0) = hl_INSERT A a (hl_EMPTY A)) /\\ forall a :e A, hl_GSPEC A (fun GEN_PVAR_51 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_51 (if a = x then 1 else 0) x = 1 then 1 else 0) = hl_INSERT A a (hl_EMPTY A)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
    "bridge": ""
   },
   {
@@ -70682,9 +70682,9 @@
    "source": "!s:A->bool. !P:A->bool. GSPEC (\\GEN%PVAR%33:A. ?x:A. SETSPEC GEN%PVAR%33 (x IN s /\\ P x) x) SUBSET s",
    "statement": "forall A:set, forall s c= A, forall P:set -> prop, {x :e A | x :e s /\\ P x} c= s",
    "literal": "forall A:set, A <> Empty -> forall s P :e 2 :^: A, hl_SUBSET A (hl_GSPEC A (fun GEN_PVAR_33 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_33 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUBSET_RESTRICT_bridge"
   },
   {
    "name": "SUBSET_TRANS",
@@ -71397,7 +71397,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite {x :e A | x :e s /\\ ~ f x = 0} /\\ finite {x :e A | x :e s /\\ ~ g x = 0} -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_314 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_314 (if hl_IN A x s = 1 /\\ ~ f x = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 /\\ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_315 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_315 (if hl_IN A x s = 1 /\\ ~ g x = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_sum A s (fun x :e A => hl_real_add (f x) (g x)) = hl_real_add (hl_sum A s f) (hl_sum A s g)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -72147,7 +72147,7 @@
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, ~ finite {x :e A | x :e s /\\ ~ f x = 0} -> finsum s f = 0",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, ~ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_313 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_313 (if hl_IN A x s = 1 /\\ ~ f x = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_sum A s f = hl_real_of_num (hl_NUMERAL hl_zero)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -72467,7 +72467,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x) /\\ (forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x) -> finsum s f = finsum t g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e R :^: A, forall g :e R :^: B, forall h :e B :^: A, (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ h x = y then 1 else 0) = 1) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ g (h x) = f x) -> hl_sum A s f = hl_sum B t g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A h x vs h x)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
    "bridge": ""
   },
   {
@@ -72496,7 +72496,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall k:set -> set, (forall x :e B, k x :e A) -> (forall y :e B, y :e t -> k y :e s /\\ h (k y) = y) /\\ (forall x :e A, x :e s -> h x :e t /\\ (k (h x) = x /\\ g (h x) = f x)) -> finsum s f = finsum t g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e R :^: A, forall g :e R :^: B, forall h :e B :^: A, forall k :e A :^: B, (forall y :e B, hl_IN B y t = 1 -> hl_IN A (k y) s = 1 /\\ h (k y) = y) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ (k (h x) = x /\\ g (h x) = f x)) -> hl_sum A s f = hl_sum B t g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A h x vs h x)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -72712,7 +72712,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> 0 <= g (f x)) -> finsum {f x | x :e s} g <= finsum s (fun x:set => g (f x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: B, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (g (f x)) = 1) -> hl_real_le (hl_sum B (hl_IMAGE A B f s) g) (hl_sum A s (hl_o B R A g f)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A f x vs f x)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -72744,7 +72744,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set, (forall x :e B, d x :e R) -> forall i:set -> set, (forall x :e A, i x :e B) -> forall s c= A, finite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ (~ x = y /\\ i x = i y)) -> d (i x) = 0) -> finsum {i x | x :e s} d = finsum s (fun x:set => d (i x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e R :^: B, forall i :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ (~ x = y /\\ i x = i y)) -> d (i x) = hl_real_of_num (hl_NUMERAL hl_zero)) -> hl_sum B (hl_IMAGE A B i s) d = hl_sum A s (hl_o B R A d i)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A i x vs i x)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -73025,7 +73025,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k :e omega, finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = k * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_324 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_324 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k)) -> hl_sum A s (fun i :e A => hl_real_of_num (hl_CARD B (hl_GSPEC B (fun GEN_PVAR_325 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_325 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0)))) = hl_real_of_num (hl_mul k (hl_CARD B t))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A {i :e A | i :e s /\\ R0 i j}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -73060,7 +73060,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall s c= A, forall t c= B, forall k:set -> set, (forall x :e B, k x :e omega) -> finite s /\\ (finite t /\\ (forall j :e B, j :e t -> finite_cardinality {i :e A | i :e s /\\ R0 i j} = k j)) -> finsum s (fun i:set => finite_cardinality {j :e B | j :e t /\\ R0 i j}) = finsum t k",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, forall k :e omega :^: B, hl_FINITE A s = 1 /\\ (hl_FINITE B t = 1 /\\ (forall j :e B, hl_IN B j t = 1 -> hl_CARD A (hl_GSPEC A (fun GEN_PVAR_322 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_322 (if hl_IN A i s = 1 /\\ R1 i j = 1 then 1 else 0) i = 1 then 1 else 0)) = k j)) -> hl_sum A s (fun i :e A => hl_real_of_num (hl_CARD B (hl_GSPEC B (fun GEN_PVAR_323 :e B => if exists j :e B, hl_SETSPEC B GEN_PVAR_323 (if hl_IN B j t = 1 /\\ R1 i j = 1 then 1 else 0) j = 1 then 1 else 0)))) = hl_sum B t (fun i :e B => hl_real_of_num (k i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A {i :e A | i :e s /\\ R0 i j}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -75223,7 +75223,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> forall P:set -> prop, {f x | x :e {x :e A | P (f x)}} = {x :e B | P x})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall y :e B, exists x :e A, f x = y) <-> forall P :e 2 :^: B, hl_IMAGE A B f (hl_GSPEC A (fun GEN_PVAR_91 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_91 (P (f x)) x = 1 then 1 else 0)) = hl_GSPEC B (fun GEN_PVAR_92 :e B => if exists x :e B, hl_SETSPEC B GEN_PVAR_92 (P x) x = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: rel: metapred applied to non-identical argument",
    "bridge": ""
   },
   {
@@ -75299,9 +75299,9 @@
    "source": "!f:A->B. !s:A->bool. !u:B->bool. (!k:A->bool. k SUBSET s ==> (?t:B->bool. t SUBSET u /\\ GSPEC (\\GEN%PVAR%224:A. ?x:A. SETSPEC GEN%PVAR%224 (x IN s /\\ f x IN t) x) = k)) <=> IMAGE f s SUBSET u /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall u c= B, (forall k c= A, k c= s -> exists t c= B, t c= u /\\ {x :e A | x :e s /\\ f x :e t} = k) <-> {f x | x :e s} c= u /\\ forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall u :e 2 :^: B, (forall k :e 2 :^: A, hl_SUBSET A k s = 1 -> exists t :e 2 :^: B, hl_SUBSET B t u = 1 /\\ hl_GSPEC A (fun GEN_PVAR_224 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_224 (if hl_IN A x s = 1 /\\ hl_IN B (f x) t = 1 then 1 else 0) x = 1 then 1 else 0) = k) <-> hl_SUBSET B (hl_IMAGE A B f s) u = 1 /\\ forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJECTIVE_ON_PREIMAGE_bridge"
   },
   {
    "name": "SURJECTIVE_ON_RIGHT_INVERSE",
@@ -75328,9 +75328,9 @@
    "source": "!f:A->B. !t:B->bool. (!y:B. y IN t ==> (?x:A. x IN s /\\ f x = y)) <=> (?g:B->A. !y:B. y IN t ==> g y IN s /\\ f (g y) = y)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, (forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\\ forall y :e B, y :e t -> g y :e s /\\ f (g y) = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall t :e 2 :^: B, (forall y :e B, hl_IN B y t = 1 -> exists x :e A, hl_IN A x s = 1 /\\ f x = y) <-> exists g :e A :^: B, forall y :e B, hl_IN B y t = 1 -> hl_IN A (g y) s = 1 /\\ f (g y) = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam B g y vs g y)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJECTIVE_ON_RIGHT_INVERSE_bridge"
   },
   {
    "name": "SURJECTIVE_PREIMAGE",
@@ -75378,9 +75378,9 @@
    "source": "!f:A->B. (!y:B. ?x:A. f x = y) <=> (?g:B->A. !y:B. f (g y) = y)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> exists g:set -> set, (forall x :e B, g x :e A) /\\ forall y :e B, f (g y) = y)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, (forall y :e B, exists x :e A, f x = y) <-> exists g :e A :^: B, forall y :e B, f (g y) = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam B g y vs g y)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SURJECTIVE_RIGHT_INVERSE_bridge"
   },
   {
    "name": "SWAP_EXISTS_THM",
@@ -76714,9 +76714,9 @@
    "source": "!s:A->bool. !t:A->bool. s UNION t = GSPEC (\\GEN%PVAR%0:A. ?x:A. SETSPEC GEN%PVAR%0 (x IN s \\/ x IN t) x)",
    "statement": "forall A:set, forall s t c= A, s :\\/: t = {x :e A | x :e s \\/ x :e t}",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_UNION A s t = hl_GSPEC A (fun GEN_PVAR_0 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_0 (if hl_IN A x s = 1 \\/ hl_IN A x t = 1 then 1 else 0) x = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNION_bridge"
   },
   {
    "name": "UNIONS",
@@ -77617,9 +77617,9 @@
    "source": "!P:A->bool. !s:A->bool. !t:A->bool. GSPEC (\\GEN%PVAR%34:A. ?x:A. SETSPEC GEN%PVAR%34 (x IN s UNION t /\\ P x) x) = GSPEC (\\GEN%PVAR%35:A. ?x:A. SETSPEC GEN%PVAR%35 (x IN s /\\ P x) x) UNION GSPEC (\\GEN%PVAR%36:A. ?x:A. SETSPEC GEN%PVAR%36 (x IN t /\\ P x) x)",
    "statement": "forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\\/: t /\\ P x} = {x :e A | x :e s /\\ P x} :\\/: {x :e A | x :e t /\\ P x}",
    "literal": "forall A:set, A <> Empty -> forall P s t :e 2 :^: A, hl_GSPEC A (fun GEN_PVAR_34 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_34 (if hl_IN A x (hl_UNION A s t) = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0) = hl_UNION A (hl_GSPEC A (fun GEN_PVAR_35 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_35 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) (hl_GSPEC A (fun GEN_PVAR_36 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_36 (if hl_IN A x t = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNION_RESTRICT_bridge"
   },
   {
    "name": "UNION_SUBSET",
@@ -77807,9 +77807,9 @@
    "source": "GSPEC (\\GEN%PVAR%49:A. ?x:A. SETSPEC GEN%PVAR%49 T x) = UNIV",
    "statement": "forall A:set, {x :e A | True} = A",
    "literal": "forall A:set, A <> Empty -> hl_GSPEC A (fun GEN_PVAR_49 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_49 (if True then 1 else 0) x = 1 then 1 else 0) = hl_UNIV A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIV_GSPEC_bridge"
   },
   {
    "name": "UNIV_HAS_SIZE_DIMINDEX",
@@ -78061,7 +78061,7 @@
    "statement": "forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> ~ exists s:set -> set, (forall x :e omega, s x :e A) /\\ forall n :e omega, lt (s (ordsucc n)) (s n)",
    "literal": "forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> ~ exists s :e A :^: omega, forall n :e omega, lt (s (hl_SUC n)) (s n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_SUC n vs ordsucc n)",
+   "cert_error": "bridge_unsupported: rel: metapred2 applied to non-identical arguments",
    "bridge": ""
   },
   {
@@ -78200,7 +78200,7 @@
    "statement": "forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall x :e A, ~ lt x x) /\\ ((forall x y z :e A, lt x y /\\ lt y z -> lt x z) /\\ (forall x :e A, finite {y :e A | lt y x})) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x",
    "literal": "forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, (forall x :e A, ~ lt x x = 1) /\\ ((forall x y z :e A, lt x y = 1 /\\ lt y z = 1 -> lt x z = 1) /\\ (forall x :e A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_229 :e A => if exists y :e A, hl_SETSPEC A GEN_PVAR_229 (lt y x) y = 1 then 1 else 0)) = 1)) -> hl_WF A lt = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC",
+   "cert_error": "bridge_unsupported: compat_missing: hl_WF_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -78626,9 +78626,9 @@
    "source": "!P:A->bool. !g:A->A. !h:A->B. ?f:A->B. !x:A. f x = (if P x then f (g x) else h x)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall g:set -> set, (forall x :e A, g x :e A) -> forall h:set -> set, (forall x :e A, h x :e B) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ forall x :e A, f x = if P x then f (g x) else h x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: A, forall g :e A :^: A, forall h :e B :^: A, exists f :e B :^: A, forall x :e A, f x = hl_COND B (P x) (f (g x)) (h x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_lam A g x vs g x)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_REC_TAIL_bridge"
   },
   {
    "name": "WF_REC_TAIL_GENERAL",
@@ -82607,9 +82607,9 @@
    "source": "!e:A. !f:A->num->A. ?fn:num->A. fn 0 = e /\\ (!n:num. fn (SUC n) = f (fn n) n)",
    "statement": "forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\\ (fn 0 = e0 /\\ forall n :e omega, fn (ordsucc n) = f (fn n) n)",
    "literal": "forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, exists fn :e A :^: omega, fn (hl_NUMERAL hl_zero) = e1 /\\ forall n :e omega, fn (hl_SUC n) = f (fn n) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: metafun applied to non-identical argument (hl_SUC n vs ordsucc n)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "num_RECURSION_bridge"
   },
   {
    "name": "num_WF",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1000
+  "native_certified": 1051
  }
 }
