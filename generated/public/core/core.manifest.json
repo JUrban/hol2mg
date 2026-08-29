@@ -33785,9 +33785,9 @@
    "source": "!x:int. int_of_num 0 <= x ==> int_of_num (num_of_int x) = x",
    "statement": "forall x :e int, 0 <= x -> (if x :e omega then x else 0) = x",
    "literal": "forall x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_int_of_num (hl_num_of_int x) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_OF_NUM_OF_INT_bridge"
   },
   {
    "name": "INT_OF_NUM_POW",
@@ -51757,7 +51757,7 @@
    "statement": "forall x :e int, 0 <= x <-> (if x :e omega then x else 0) = x",
    "literal": "forall x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 <-> hl_int_of_num (hl_num_of_int x) = x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition x :e omega not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -51788,7 +51788,7 @@
    "statement": "forall x y :e int, 0 <= x /\\ 0 <= y -> (if x + y :e omega then x + y else 0) = (if x :e omega then x else 0) + if y :e omega then y else 0",
    "literal": "forall x y :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 /\\ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_num_of_int (hl_int_add x y) = hl_add (hl_num_of_int x) (hl_num_of_int y)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition x + y :e omega not available from hypotheses [hyps: 0 <= y, 0 <= x]",
    "bridge": ""
   },
   {
@@ -51819,7 +51819,7 @@
    "statement": "forall x y :e int, 0 <= x /\\ 0 <= y -> (if x * y :e omega then x * y else 0) = (if x :e omega then x else 0) * if y :e omega then y else 0",
    "literal": "forall x y :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 /\\ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_num_of_int (hl_int_mul x y) = hl_mul (hl_num_of_int x) (hl_num_of_int y)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition x * y :e omega not available from hypotheses [hyps: 0 <= y, 0 <= x]",
    "bridge": ""
   },
   {
@@ -51848,9 +51848,9 @@
    "source": "!n:num. num_of_int (int_of_num n) = n",
    "statement": "forall n :e omega, (if n :e omega then n else 0) = n",
    "literal": "forall n :e omega, hl_num_of_int (hl_int_of_num n) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUM_OF_INT_OF_NUM_bridge"
   },
   {
    "name": "NUM_OF_INT_POW",
@@ -51880,7 +51880,7 @@
    "statement": "forall x :e int, forall n :e omega, 0 <= x -> (if x ^ n :e omega then x ^ n else 0) = (if x :e omega then x else 0) ^ n",
    "literal": "forall x :e hl_ty_int, forall n :e omega, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_num_of_int (hl_int_pow x n) = hl_EXP (hl_num_of_int x) n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition x ^ n :e omega not available from hypotheses [hyps: 0 <= x]",
    "bridge": ""
   },
   {
@@ -82914,7 +82914,7 @@
    "statement": "forall x :e int, (if x :e omega then x else 0) = choose_in omega (fun n:set => n = x)",
    "literal": "forall x :e hl_ty_int, hl_num_of_int x = hl_select omega (fun n :e omega => if hl_int_of_num n = x then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition x :e omega not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84251,7 +84251,7 @@
    "statement": "forall z :e R, forall i :e int, (if 0 <= i then z ^ i else recip_SNo (z ^ (- i))) = if 0 <= i then z ^ if i :e omega then i else 0 else recip_SNo (z ^ if - i :e omega then - i else 0)",
    "literal": "forall z :e R, forall i :e hl_ty_int, hl_real_zpow z i = hl_COND R (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) i) (hl_real_pow z (hl_num_of_int i)) (hl_real_inv (hl_real_pow z (hl_num_of_int (hl_int_neg i))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_of_int_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition i :e omega not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1929
+  "native_certified": 1931
  }
 }

@@ -62,7 +62,8 @@ type genv = {
 let side_conditions : (string * string list) list =
   [ ("CARD", [ "finite ?1" ]);
     ("sup", [ "exists x :e R, is_lub ?1 x" ]);
-    ("inf", [ "exists x :e R, is_glb ?1 x" ]) ]
+    ("inf", [ "exists x :e R, is_glb ?1 x" ]);
+    ("num_of_int", [ "?1 :e omega" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
    argument (hl_rep .. / hl_rep2 ..) *)
 
@@ -72,13 +73,31 @@ let side_conditions : (string * string list) list =
    `wrapper S Hsub h`).  Premises are matched among the hypotheses in native form, `?1` denoting
    the native set; the rule's lemma takes the set, its `c= R` proof and the slot proofs in order. *)
 let nonempty_alts = [ ("~ ?1 = Empty", ""); ("?1 <> Empty", ""); ("?x :e ?1", "mem") ]
+(* special wrappers: "mem" (a membership hypothesis gives nonemptiness), "lub"/"glb" (a hypothesis
+   `is_lub ?1 x` with x a real variable gives the witness), "var" (the native term is a variable
+   bound with the required carrier); a rule with lemma "" returns its single slot proof *)
 let side_derivations : (string * ((string * string) list list * string) list) list =
   [ ("exists x :e R, is_lub ?1 x",
      [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, x <= b", ""); ("exists b :e R, forall x :e R, x :e ?1 -> x <= b", "bound_above_of_guarded") ] ], "lub_of_bounds");
-       ([ nonempty_alts; [ ("finite ?1", "") ] ], "lub_of_finite") ]);
+       ([ nonempty_alts; [ ("finite ?1", "") ] ], "lub_of_finite");
+       ([ [ ("is_lub ?1 ?x", "lub") ] ], "") ]);
     ("exists x :e R, is_glb ?1 x",
      [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, b <= x", ""); ("exists b :e R, forall x :e R, x :e ?1 -> b <= x", "bound_below_of_guarded") ] ], "glb_of_bounds");
-       ([ nonempty_alts; [ ("finite ?1", "") ] ], "glb_of_finite") ]) ]
+       ([ nonempty_alts; [ ("finite ?1", "") ] ], "glb_of_finite");
+       ([ [ ("is_glb ?1 ?x", "glb") ] ], "") ]);
+    ("?1 :e omega",
+     [ ([ [ ("0 <= ?1", "") ] ], "int_nonneg_omega");
+       ([ [ ("?1 :e omega", "var") ] ], "") ]) ]
+
+(* the membership hypothesis of a native variable bound with a set carrier *)
+let nat_var_mem g (t : Mg.tm) : (Mg.tm * string) option =
+  match t with
+  | Mg.Var n ->
+      List.find_map (fun (k, v) ->
+        match List.assoc_opt k g.nctx.E.vars, v.view with
+        | Some (_, _, n'), E.VSet c when n' = n && v.nat = None -> Some (c, v.mem)
+        | _ -> None) g.vars
+  | _ -> None
 
 (* the template parser only knows the God1 signature: literal-layer constants (hl_...) come back
    as variables; make them constants so that structural matching against generated terms works *)
@@ -765,6 +784,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let inst = List.map (fun a -> (a, nat_carrier_of g.lctx (List.assoc a sub))) tvs in
   let tsub = ref (List.map (fun (a, ca) -> (a, ca)) inst) in
   let lsub = ref (List.map (fun a -> (a, L.carrier g.lctx (List.assoc a sub))) tvs) in   (* literal arguments, for side conditions *)
+  let argtyp = ref [] in   (* literal typing proofs of set arguments: (index, (literal, proof, carrier)) *)
   let rewrites = ref [] in     (* (literal subterm, native subterm, proof) to apply to the RHS *)
   List.iteri (fun i (role, a) ->
     let aty = List.nth doms i in
@@ -776,6 +796,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
              parts := typ g a :: ppp la :: !parts;
              tsub := (string_of_int (i + 1), la) :: !tsub;
              lsub := (string_of_int (i + 1), la) :: !lsub;
+             argtyp := (string_of_int (i + 1), (la, typ g a, L.carrier g.lctx aty)) :: !argtyp;
              if la <> na then rewrites := (la, na, pa) :: !rewrites
          | KRep ca ->
              (* a subset used as data: the native value is its representation *)
@@ -873,12 +894,29 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                  | Some la, Some s_lit ->
                      let s_nat = nat_of s_lit in
                      let ca = (match s_lit with Mg.App (Mg.App (Mg.Cst "hl_rep", ca), _) -> ca | _ -> Mg.Cst "R") in
-                     let hsub = lazy (snd (transport_fwd (Mg.App (Mg.App (Mg.Cst "Subq", s_lit), ca), Printf.sprintf "(hl_rep_Subq %s %s)" (ppp ca) (ppp la)))) in
+                     (* the "typing" argument of a rule: a subset argument's `c= carrier`, a set argument's
+                        membership, transported to the native term *)
+                     let hsub = lazy (match s_lit, List.assoc_opt "1" !argtyp with
+                       | Mg.App (Mg.App (Mg.Cst "hl_rep", _), _), _ -> snd (transport_fwd (Mg.App (Mg.App (Mg.Cst "Subq", s_lit), ca), Printf.sprintf "(hl_rep_Subq %s %s)" (ppp ca) (ppp la)))
+                       | _, Some (l, tp, c) -> snd (transport_fwd (L.mg_in l c, tp))
+                       | _ -> "") in
                      let find_slot alts = List.find_map (fun (tpl, wrap) ->
                        if wrap = "mem" then
                          List.find_map (fun (h, pf) -> match h with
                            | Mg.App (Mg.App (Mg.Cst "In", e), s) when s = s_nat -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s %s)" (ppp s_nat) (ppp e) pf)
                            | _ -> None) g.hyps
+                       else if wrap = "lub" || wrap = "glb" then
+                         List.find_map (fun (h, pf) -> match h with
+                           | Mg.App (Mg.App (Mg.Cst ("is_lub" | "is_glb" as c), s), x) when s = s_nat && ((c = "is_lub") = (wrap = "lub")) ->
+                               (match nat_var_mem g x with
+                                | Some (Mg.Cst ("R" | "real"), hx) -> Some (Printf.sprintf "(%s_witness %s %s %s %s)" wrap (ppp s_nat) (ppp x) hx pf)
+                                | _ -> None)
+                           | _ -> None) g.hyps
+                       else if wrap = "var" then
+                         (match nat_var_mem g s_nat with
+                          | Some (c, hx) when Mg.to_string c = Mg.to_string (Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl)))) -> None
+                          | Some (Mg.Cst "omega", hx) when tpl = "?1 :e omega" -> Some hx
+                          | _ -> None)
                        else begin
                          let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
                          match List.assoc_opt p g.hyps with
@@ -888,6 +926,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                      List.find_map (fun (slots, lemma) ->
                        let premises = List.map find_slot slots in
                        if List.exists (fun p -> p = None) premises then None
+                       else if lemma = "" then Some (Option.get (List.hd premises))
                        else Some (Printf.sprintf "(%s %s %s %s)" lemma (ppp s_nat) (Lazy.force hsub) (String.concat " " (List.map (fun p -> Option.get p) premises)))) rules
                  | _ -> None)) in
           (match (match List.assoc_opt sc_nat g.hyps with Some h -> Some h | None -> derived ()) with

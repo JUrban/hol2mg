@@ -865,3 +865,14 @@ let p q x y. assume H. apply (xm p).
   claim Hnq: ~ q. { assume Hq. apply Hnp. apply H. assume _ H2. exact (H2 Hq). }
   exact (eq_trans_i (if p then x else y) y (if q then x else y) (If_i_0 p x y Hnp) (eq_sym_i (if q then x else y) y (If_i_0 q x y Hnq))).
 Qed.
+
+Theorem lub_witness : forall S x:set, x :e R -> is_lub S x -> exists y :e R, is_lub S y.
+let S x. assume Hx H. witness x. apply andI.
+- exact Hx.
+- exact H.
+Qed.
+Theorem glb_witness : forall S x:set, x :e R -> is_glb S x -> exists y :e R, is_glb S y.
+let S x. assume Hx H. witness x. apply andI.
+- exact Hx.
+- exact H.
+Qed.

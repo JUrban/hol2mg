@@ -3808,3 +3808,9 @@ claim Hstep: forall h :e A, forall t :e finseq A, (hl_EX A l1 t = 1 <-> seq_ex P
   exact (iff_sym (seq_ex P1 (seq_cons h t)) (P1 h \/ seq_ex P1 t) (seq_ex_cons A h Hh t Ht P1)). }
 exact (seq_induct A (fun l => hl_EX A l1 l = 1 <-> seq_ex P1 l) Hbase Hstep).
 Qed.
+
+// ---- num_of_int on naturals (conditional: HOL Light leaves negative arguments unspecified) ----
+Theorem hl_num_of_int_compat : forall l1 :e int, l1 :e omega -> hl_num_of_int l1 = if l1 :e omega then l1 else 0.
+let x. assume Hx Ho.
+exact (eq_trans_i (hl_num_of_int x) x (if x :e omega then x else 0) (hl_num_of_int_nonneg x Hx (omega_nonneg x Ho)) (eq_sym_i (if x :e omega then x else 0) x (If_i_1 (x :e omega) x 0 Ho))).
+Qed.

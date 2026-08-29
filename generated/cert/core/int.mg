@@ -4254,13 +4254,23 @@ Theorem num_of_int : forall x :e int, (if x :e omega then x else 0) = choose_in 
 Admitted.
 
 // HOL Light: int.ml:2074 / NUM_OF_INT_OF_NUM   (hash md5:c009afb9d7386914218b003872a341e8)
-// not bridged: 
+Theorem hlt_NUM_OF_INT_OF_NUM : forall n :e omega, hl_num_of_int (hl_int_of_num n) = n.
+Admitted.
+Theorem NUM_OF_INT_OF_NUM_bridge : (forall n :e omega, hl_num_of_int (hl_int_of_num n) = n) -> (forall n :e omega, (if n :e omega then n else 0) = n).
+exact (fun H__top => (imp_forall_in (omega) (fun n => hl_num_of_int (hl_int_of_num n) = n) (fun n => (if n :e omega then n else 0) = n) (fun n Hn => (imp_eq (hl_num_of_int (hl_int_of_num n)) (if n :e omega then n else 0) (n) (n) (((hl_int_of_num_compat) (n) Hn) (fun hl__u hl__v => hl_num_of_int (hl_int_of_num n) = if hl__u :e omega then hl__u else 0) (((hl_num_of_int_compat) (hl_int_of_num n) (setexp_ap (omega) (int) (hl_int_of_num) ((hl_int_of_num_in)) (n) Hn)) ((eq_sym_i (hl_int_of_num n) (n) ((hl_int_of_num_compat) (n) Hn)) (fun hl__u hl__v => hl__u :e omega) Hn))) (fun q H => H)))) H__top).
+Qed.
 Theorem NUM_OF_INT_OF_NUM : forall n :e omega, (if n :e omega then n else 0) = n.
+exact (NUM_OF_INT_OF_NUM_bridge hlt_NUM_OF_INT_OF_NUM).
 Admitted.
 
 // HOL Light: int.ml:2078 / INT_OF_NUM_OF_INT   (hash md5:9dd43ce894f2017692e90eededc92bb8)
-// not bridged: 
+Theorem hlt_INT_OF_NUM_OF_INT : forall x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_int_of_num (hl_num_of_int x) = x.
+Admitted.
+Theorem INT_OF_NUM_OF_INT_bridge : (forall x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_int_of_num (hl_num_of_int x) = x) -> (forall x :e int, 0 <= x -> (if x :e omega then x else 0) = x).
+exact (fun H__top => (imp_forall_in (int) (fun x => hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_int_of_num (hl_num_of_int x) = x) (fun x => 0 <= x -> (if x :e omega then x else 0) = x) (fun x Hx => (fun H__L : ((hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) -> (hl_int_of_num (hl_num_of_int x) = x)) => fun H__hyp1 : (0 <= x) => (imp_eq (hl_int_of_num (hl_num_of_int x)) (if x :e omega then x else 0) (x) (x) ((((hl_num_of_int_compat) (x) Hx) (int_nonneg_omega (x) Hx H__hyp1)) (fun hl__u hl__v => hl_int_of_num (hl_num_of_int x) = hl__u) ((hl_int_of_num_compat) (hl_num_of_int x) (setexp_ap (int) (omega) (hl_num_of_int) ((hl_num_of_int_in)) (x) Hx))) (fun q H => H)) (H__L ((iffER (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) (0 <= x) (((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_int_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_int_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun hl__u hl__v => hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 <-> hl__u <= x) ((hl_int_le_compat) (hl_int_of_num (hl_NUMERAL hl_zero)) (setexp_ap (omega) (int) (hl_int_of_num) ((hl_int_of_num_in)) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))) (x) Hx))) H__hyp1))))) (hl_ty_int_native (fun hl__u hl__v => forall x :e hl__u, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_int_of_num (hl_num_of_int x) = x) H__top)).
+Qed.
 Theorem INT_OF_NUM_OF_INT : forall x :e int, 0 <= x -> (if x :e omega then x else 0) = x.
+exact (INT_OF_NUM_OF_INT_bridge hlt_INT_OF_NUM_OF_INT).
 Admitted.
 
 // HOL Light: int.ml:2083 / NUM_OF_INT   (hash md5:695dcc6218781ccdc6c65fb7edfe5eff)
