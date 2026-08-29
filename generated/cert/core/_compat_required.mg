@@ -238,10 +238,6 @@ Admitted.
 Theorem hl_sym_3d3d_compat2 : forall A:set, A <> Empty -> forall l1 l2 :e A, forall l3 :e 2 :^: A :^: A, forall P3:set -> set -> prop, (forall x y :e A, l3 x y = 1 <-> P3 x y) -> (hl_sym_3d3d A l1 l2 l3 = 1 <-> P3 l1 l2).
 Admitted.
 
-// SND : A#B->B (not in compat.mg)
-Theorem hl_SND_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A :*: B, hl_SND A B l1 = l1 1.
-Admitted.
-
 // >=_c : (A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_sym_3e3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3e3d5f63 A B l1 l2 = 1 <-> atleastp (hl_rep B l2) (hl_rep A l1).
 Admitted.
@@ -302,10 +298,6 @@ Admitted.
 Theorem hl_mktybit1_compat : forall A:set, A <> Empty -> forall l1 :e hl_ty_finite_sum (hl_ty_finite_sum A A) 1, hl_mktybit1 A l1 = l1.
 Admitted.
 
-// FINITE : (A->bool)->bool (not in compat.mg)
-Theorem hl_FINITE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_FINITE A l1 = 1 <-> finite (hl_rep A l1).
-Admitted.
-
 // $ : (A,N)cart->num->A (not in compat.mg)
 Theorem hl_vindex_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A N, forall l2 :e omega, hl_vindex A N l1 l2 = l1 l2.
 Admitted.
@@ -356,10 +348,6 @@ Admitted.
 
 // WF : (A->A->bool)->bool (not in compat.mg)
 Theorem hl_WF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_WF A l1 = 1 <-> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ P1 y x).
-Admitted.
-
-// FST : A#B->A (not in compat.mg)
-Theorem hl_FST_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A :*: B, hl_FST A B l1 = l1 0.
 Admitted.
 
 // ZBOT : num->A->bool (not in compat.mg)

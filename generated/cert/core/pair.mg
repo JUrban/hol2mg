@@ -55,7 +55,7 @@ Admitted.
 
 // HOL Light: pair.ml:121 / pair_RECURSION   (hash md5:d319dfea4248978ad1e1ecfa13aee49a)
 // not bridged: 
-Theorem pair_RECURSION : forall A B C:set, C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall y :e B, PAIR' x y :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1.
+Theorem pair_RECURSION : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall y :e B, PAIR' x y :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1.
 Admitted.
 
 // HOL Light: pair.ml:187 / CURRY_DEF   (hash md5:cede113a4abd362ecff19b551d8931ed)

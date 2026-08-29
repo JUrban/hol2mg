@@ -145,7 +145,7 @@ Admitted.
 
 // HOL Light: wf.ml:324 / WF_REC_TAIL   (hash md5:5ebf42ce478fde0c9b6f81dfe2ffcf34)
 // not bridged: 
-Theorem WF_REC_TAIL : forall A B:set, B <> Empty -> forall P:set -> prop, forall g:set -> set, (forall x :e A, g x :e A) -> forall h:set -> set, (forall x :e A, h x :e B) -> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, f x = if P x then f (g x) else h x.
+Theorem WF_REC_TAIL : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall g:set -> set, (forall x :e A, g x :e A) -> forall h:set -> set, (forall x :e A, h x :e B) -> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, f x = if P x then f (g x) else h x.
 Admitted.
 
 // HOL Light: wf.ml:359 / WF_REC_TAIL_GENERAL   (hash md5:72c99beb795211e51200dc3e68f5b921)

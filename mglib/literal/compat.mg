@@ -1238,3 +1238,105 @@ apply iffI.
 - assume H. apply (hl_rep_inj A (hl_INTER A l1 l2) (hl_EMPTY A) HI HE).
   rewrite (hl_INTER_compat A HA l1 H1 l2 H2). rewrite (hl_EMPTY_compat A HA). exact H.
 Qed.
+
+// ---- pairs ----
+Theorem hl_FST_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A :*: B, hl_FST A B l1 = l1 0.
+let A B. assume _ _. let p. assume Hp.
+rewrite (hl_FST_unfold A B p Hp).
+claim HP: (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) :e 2 :^: A.
+{ prove (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) :e Pi_ x :e A, 2.
+  apply (lam_Pi A (fun _ => 2) (fun x => if exists y :e B, p = hl_pair A B x y then 1 else 0)). let x. assume _. exact (If_in_2 (exists y :e B, p = hl_pair A B x y)). }
+rewrite (hl_select_eq A (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) HP).
+claim Hspec: forall z :e A, (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1 <-> exists y :e B, p = hl_pair A B z y.
+{ let z. assume Hz. rewrite (beta A (fun x => if exists y :e B, p = hl_pair A B x y then 1 else 0) z Hz). exact (If_1_iff (exists y :e B, p = hl_pair A B z y)). }
+claim Hp0: p 0 :e A. { exact (ap0_Sigma A (fun _ => B) p Hp). }
+claim Hp1: p 1 :e B. { exact (ap1_Sigma A (fun _ => B) p Hp). }
+claim Hpeta: p = hl_pair A B (p 0) (p 1).
+{ rewrite (hl_pair_ap A B (p 0) Hp0 (p 1) Hp1). exact (eq_sym_i (p 0, p 1) p (tuple_Sigma_eta A (fun _ => B) p Hp)). }
+claim Hex: exists z :e A, (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1.
+{ witness (p 0). apply andI.
+  - exact Hp0.
+  - apply (Hspec (p 0) Hp0). assume _ H. apply H. witness (p 1). apply andI.
+    + exact Hp1.
+    + exact Hpeta. }
+apply (choose_in_spec A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1) Hex). assume Hc1 Hc2.
+apply (Hspec (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1)) Hc1). assume H _. apply (H Hc2). let y. assume Hy0. apply Hy0. assume Hy Hpy.
+claim Hpy2: p = (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1), y).
+{ exact ((hl_pair_ap A B (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1)) Hc1 y Hy) (fun hl__u hl__v => p = hl__u) Hpy). }
+exact (eq_sym_i (p 0) (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1))
+  (eq_trans_i (p 0) ((choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1), y) 0) (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1))
+    (f_equal (fun q => q 0) p (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1), y) Hpy2)
+    (tuple_2_0_eq (choose_in A (fun z => (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0) z = 1)) y))).
+Qed.
+Theorem hl_SND_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A :*: B, hl_SND A B l1 = l1 1.
+let A B. assume _ _. let p. assume Hp.
+rewrite (hl_SND_unfold A B p Hp).
+claim HP: (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) :e 2 :^: B.
+{ prove (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) :e Pi_ y :e B, 2.
+  apply (lam_Pi B (fun _ => 2) (fun y => if exists x :e A, p = hl_pair A B x y then 1 else 0)). let y. assume _. exact (If_in_2 (exists x :e A, p = hl_pair A B x y)). }
+rewrite (hl_select_eq B (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) HP).
+claim Hspec: forall z :e B, (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1 <-> exists x :e A, p = hl_pair A B x z.
+{ let z. assume Hz. rewrite (beta B (fun y => if exists x :e A, p = hl_pair A B x y then 1 else 0) z Hz). exact (If_1_iff (exists x :e A, p = hl_pair A B x z)). }
+claim Hp0: p 0 :e A. { exact (ap0_Sigma A (fun _ => B) p Hp). }
+claim Hp1: p 1 :e B. { exact (ap1_Sigma A (fun _ => B) p Hp). }
+claim Hpeta: p = hl_pair A B (p 0) (p 1).
+{ rewrite (hl_pair_ap A B (p 0) Hp0 (p 1) Hp1). exact (eq_sym_i (p 0, p 1) p (tuple_Sigma_eta A (fun _ => B) p Hp)). }
+claim Hex: exists z :e B, (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1.
+{ witness (p 1). apply andI.
+  - exact Hp1.
+  - apply (Hspec (p 1) Hp1). assume _ H. apply H. witness (p 0). apply andI.
+    + exact Hp0.
+    + exact Hpeta. }
+apply (choose_in_spec B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1) Hex). assume Hc1 Hc2.
+apply (Hspec (choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1)) Hc1). assume H _. apply (H Hc2). let x. assume Hx0. apply Hx0. assume Hx Hpx.
+claim Hpx2: p = (x, choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1)).
+{ exact ((hl_pair_ap A B x Hx (choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1)) Hc1) (fun hl__u hl__v => p = hl__u) Hpx). }
+exact (eq_sym_i (p 1) (choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1))
+  (eq_trans_i (p 1) ((x, choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1)) 1) (choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1))
+    (f_equal (fun q => q 1) p (x, choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1)) Hpx2)
+    (tuple_2_1_eq x (choose_in B (fun z => (fun y :e B => if exists x :e A, p = hl_pair A B x y then 1 else 0) z = 1))))).
+Qed.
+
+// ---- finiteness ----
+Theorem hl_FINITE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_FINITE A l1 = 1 <-> finite (hl_rep A l1).
+let A. assume HA. let a. assume Ha.
+rewrite (hl_FINITE_unfold A a Ha).
+apply (iff_trans ((if forall FINITE' :e 2 :^: (2 :^: A), (forall a1 :e 2 :^: A, a1 = hl_EMPTY A \/ (exists x :e A, exists s :e 2 :^: A, a1 = hl_INSERT A x s /\ FINITE' s = 1) -> FINITE' a1 = 1) -> FINITE' a = 1 then 1 else 0) = 1)
+  (forall FINITE' :e 2 :^: (2 :^: A), (forall a1 :e 2 :^: A, a1 = hl_EMPTY A \/ (exists x :e A, exists s :e 2 :^: A, a1 = hl_INSERT A x s /\ FINITE' s = 1) -> FINITE' a1 = 1) -> FINITE' a = 1)
+  (finite (hl_rep A a))
+  (If_1_iff (forall FINITE' :e 2 :^: (2 :^: A), (forall a1 :e 2 :^: A, a1 = hl_EMPTY A \/ (exists x :e A, exists s :e 2 :^: A, a1 = hl_INSERT A x s /\ FINITE' s = 1) -> FINITE' a1 = 1) -> FINITE' a = 1))).
+apply iffI.
+- assume H.
+  claim HF: hl_chip (2 :^: A) (fun s => finite (hl_rep A s)) :e 2 :^: (2 :^: A). { exact (hl_chip_Pi (2 :^: A) (fun s => finite (hl_rep A s))). }
+  claim Hclosed: forall a1 :e 2 :^: A, a1 = hl_EMPTY A \/ (exists x :e A, exists s :e 2 :^: A, a1 = hl_INSERT A x s /\ hl_chip (2 :^: A) (fun s => finite (hl_rep A s)) s = 1) -> hl_chip (2 :^: A) (fun s => finite (hl_rep A s)) a1 = 1.
+  { let a1. assume Ha1 H1. apply (hl_chip_iff (2 :^: A) (fun s => finite (hl_rep A s)) a1 Ha1). assume _ H2. apply H2.
+    prove finite (hl_rep A a1).
+    apply H1.
+    - assume H3: a1 = hl_EMPTY A. rewrite H3. rewrite (hl_EMPTY_compat A HA). exact finite_Empty.
+    - assume H3. apply H3. let x. assume Hx0. apply Hx0. assume Hx H4. apply H4. let s. assume Hs0. apply Hs0. assume Hs H5. apply H5. assume H6 H7.
+      claim Hfs: finite (hl_rep A s). { apply (hl_chip_iff (2 :^: A) (fun s => finite (hl_rep A s)) s Hs). assume H8 _. exact (H8 H7). }
+      rewrite H6. rewrite (hl_INSERT_compat A HA x Hx s Hs).
+      prove finite (hl_rep A s :\/: {x}). exact (adjoin_finite (hl_rep A s) x Hfs). }
+  claim Hres: hl_chip (2 :^: A) (fun s => finite (hl_rep A s)) a = 1. { exact (H (hl_chip (2 :^: A) (fun s => finite (hl_rep A s))) HF Hclosed). }
+  apply (hl_chip_iff (2 :^: A) (fun s => finite (hl_rep A s)) a Ha). assume H8 _. exact (H8 Hres).
+- assume Hfin. let F. assume HF Hclosed.
+  claim Hind: forall X, finite X -> forall b :e 2 :^: A, hl_rep A b = X -> F b = 1.
+  { apply (finite_ind (fun X => forall b :e 2 :^: A, hl_rep A b = X -> F b = 1)).
+    - let b. assume Hb Hrb. apply (Hclosed b Hb). apply orIL.
+      apply (hl_rep_inj A b (hl_EMPTY A) Hb (hl_EMPTY_in A HA)). rewrite Hrb. exact (eq_sym_i (hl_rep A (hl_EMPTY A)) Empty (hl_EMPTY_compat A HA)).
+    - let X y. assume HX Hy IH. let b. assume Hb Hrb. apply (Hclosed b Hb). apply orIR.
+      claim HrbA: X :\/: {y} c= A. { rewrite <- Hrb. exact (hl_rep_Subq A b). }
+      claim HXA: X c= A. { let z. assume Hz. exact (HrbA z (binunionI1 X {y} z Hz)). }
+      claim HyA: y :e A. { exact (HrbA y (binunionI2 X {y} y (SingI y))). }
+      claim Hchi: hl_chi A X :e 2 :^: A. { exact (hl_chi_Pi A X). }
+      witness y. apply andI.
+      + exact HyA.
+      + witness (hl_chi A X). apply andI.
+        * exact Hchi.
+        * apply andI.
+          { apply (hl_rep_inj A b (hl_INSERT A y (hl_chi A X)) Hb (setexp2_ap A (2 :^: A) (2 :^: A) (hl_INSERT A) (hl_INSERT_in A HA) y HyA (hl_chi A X) Hchi)).
+            rewrite (hl_INSERT_compat A HA y HyA (hl_chi A X) Hchi). rewrite (hl_rep_chi A X HXA).
+            prove hl_rep A b = X :\/: {y}. exact Hrb. }
+          { exact (IH (hl_chi A X) Hchi (hl_rep_chi A X HXA)). } }
+  exact (Hind (hl_rep A a) Hfin a Ha (fun q H => H)).
+Qed.

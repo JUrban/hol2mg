@@ -82,6 +82,10 @@ let () =
       let ex = read_export export_file in
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
       Emptycase.rules := List.map (fun (l, r, _) -> (l, r)) reg.Registry.empty_rules;
+      (* empty-carrier generalizations must be provable (docs/DESIGN.md §21.5) *)
+      Emptycase.justify := (fun p body -> (try ignore (Emptyproof.prove body); true with
+        | Emptyproof.Cannot m -> (if Sys.getenv_opt "HOL2MG_DEBUG_EMPTY" <> None then prerr_endline ("emptycase withdrawn for " ^ p ^ ": " ^ m)); false
+        | _ -> false));
       Rewrite.rules := reg.Registry.rewrite_rules;
       (* hand-mapped constants have unknown Megalodon arities: no eta through them *)
       let srcindex = read_srcindex (opt "--srcindex") in
@@ -207,8 +211,10 @@ let () =
           else
           (try
              ignore (Unix.alarm (match opt "--timeout" with Some s -> int_of_string s | None -> 10));
+             Emptycase.withdrawn := [];
              let r = Elab.elab_sequent reg th.seq in
              ignore (Unix.alarm 0);
+             let r = if !Emptycase.withdrawn = [] then r else { r with Elab.notes = ("generalization_withdrawn:" ^ String.concat "," (List.rev !Emptycase.withdrawn)) :: r.Elab.notes } in
              let st = if Hashtbl.mem known base.Manifest.name then "native_reuse" else status_of_classes r.Elab.classes in
              { base with Manifest.status = st; classes = r.Elab.classes;
                bridges = r.Elab.bridges; notes = r.Elab.notes; var_views = r.Elab.var_views;
@@ -436,14 +442,8 @@ let () =
                     let lit_txt = Mg.to_string o.Bridge.lit_stmt in
                     if lit_txt <> i.Manifest.literal then Error ("bridge_mismatch: literal statement differs: " ^ lit_txt)
                     else begin
-                      let nat, rewrites = Rewrite.run o.Bridge.nat_stmt in
-                      let nat, dropped = Emptycase.generalize nat (List.map snd (let tvs = List.sort compare (Hol.uniq (Hol.tyvars_of_tm th.seq.concl)) in List.map (fun a -> (a, a)) tvs)) in
-                      ignore nat;
                       let pre = Mg.to_string o.Bridge.nat_stmt in
-                      if rewrites <> [] then Error ("bridge_unsupported: native rewrites " ^ String.concat "," rewrites)
-                      else if pre <> i.Manifest.statement then
-                        (if dropped <> [] || (String.length i.Manifest.statement < String.length pre) then Error ("bridge_unsupported: generalization (empty-carrier case) " ^ String.concat "," dropped)
-                         else Error ("bridge_mismatch: derived native statement differs: " ^ pre))
+                      if pre <> i.Manifest.statement then Error ("bridge_mismatch: derived native statement differs: " ^ pre)
                       else Ok o
                     end
                   with

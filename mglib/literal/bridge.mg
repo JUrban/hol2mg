@@ -507,3 +507,87 @@ Theorem imp_exists_fun2_rev : forall A B C:set, forall L:set -> prop, forall N:(
 let A B C L N. assume H H1. apply H1. let f. assume Hf0. apply Hf0. assume Hf HN. witness (hl_lam2 A B f).
 exact (andI (hl_lam2 A B f :e (C :^: B) :^: A) (L (hl_lam2 A B f)) (hl_lam2_Pi A B C f Hf) (H f Hf HN)).
 Qed.
+
+// ---- empty-carrier identities (used by generated empty-case proofs) ----
+Theorem binintersect_Empty_L : forall X:set, Empty :/\: X = Empty.
+let X. apply Empty_eq. let x. assume H. exact (EmptyE x (binintersectE1 Empty X x H)).
+Qed.
+Theorem binintersect_Empty_R : forall X:set, X :/\: Empty = Empty.
+let X. apply Empty_eq. let x. assume H. exact (EmptyE x (binintersectE2 X Empty x H)).
+Qed.
+Theorem setminus_Empty_L : forall X:set, Empty :\: X = Empty.
+let X. apply Empty_eq. let x. assume H. exact (EmptyE x (setminusE1 Empty X x H)).
+Qed.
+Theorem setminus_Empty_R : forall X:set, X :\: Empty = X.
+let X. apply set_ext.
+- let x. assume H. exact (setminusE1 X Empty x H).
+- let x. assume H. exact (setminusI X Empty x H (EmptyE x)).
+Qed.
+Theorem Union_Empty : Union Empty = Empty.
+apply Empty_eq. let x. assume H. apply (UnionE_impred Empty x H). let Y. assume _ HY. exact (EmptyE Y HY).
+Qed.
+Theorem ap_Empty : forall x:set, Empty x = Empty.
+let x. apply Empty_eq. let y. assume H. apply (ReplSepE_impred Empty (fun z => exists w, z = setsum x w) proj1 y H). let z. assume Hz _ _. exact (EmptyE z Hz).
+Qed.
+Theorem ReplSep_Empty : forall P:set -> prop, forall F:set -> set, {F x | x :e Empty, P x} = Empty.
+let P F. apply Empty_eq. let y. assume H. apply (ReplSepE_impred Empty P F y H). let x. assume Hx _ _. exact (EmptyE x Hx).
+Qed.
+Theorem Sigma_Empty : forall Y:set -> set, (Sigma_ x :e Empty, Y x) = Empty.
+let Y. prove (\/_ x :e Empty, {setsum x y | y :e Y x}) = Empty. exact (famunion_Empty (fun x => {setsum x y | y :e Y x})).
+Qed.
+Theorem setprod_Empty_L : forall B:set, Empty :*: B = Empty.
+let B. exact (Sigma_Empty (fun _ => B)).
+Qed.
+Theorem setprod_Empty_R : forall A:set, A :*: Empty = Empty.
+let A. prove (\/_ x :e A, {setsum x y | y :e Empty}) = Empty.
+apply Empty_eq. let z. assume H. apply (famunionE_impred A (fun x => {setsum x y | y :e Empty}) z H). let x. assume _ Hz.
+apply (ReplE_impred Empty (fun y => setsum x y) z Hz). let y. assume Hy _. exact (EmptyE y Hy).
+Qed.
+Theorem setsum_Empty : Empty :+: Empty = Empty.
+prove {Inj0 x | x :e Empty} :\/: {Inj1 y | y :e Empty} = Empty.
+rewrite (Repl_Empty Inj0). rewrite (Repl_Empty Inj1). exact (binunion_idl Empty).
+Qed.
+Theorem Pi_Empty_dom : forall Y:set -> set, (Pi_ x :e Empty, Y x) = {Empty}.
+let Y. prove {f :e Power (Sigma_ x :e Empty, Union (Y x)) | forall x :e Empty, f x :e Y x} = {Empty}.
+rewrite (Sigma_Empty (fun x => Union (Y x))). rewrite Power_0_Sing_0.
+apply set_ext.
+- let f. assume H. exact (SepE1 {0} (fun f => forall x :e Empty, f x :e Y x) f H).
+- let f. assume H. apply (SepI {0} (fun f => forall x :e Empty, f x :e Y x) f H). let x. assume Hx. exact (FalseE (EmptyE x Hx) (f x :e Y x)).
+Qed.
+Theorem setexp_Empty_dom : forall X:set, X :^: Empty = {Empty}.
+let X. exact (Pi_Empty_dom (fun _ => X)).
+Qed.
+Theorem setexp_Empty_cod : forall Y:set, Y <> Empty -> Empty :^: Y = Empty.
+let Y. assume HY. apply Empty_eq. let f. assume Hf.
+claim Hex: exists y, y :e Y.
+{ apply (xm (exists y, y :e Y)).
+  - assume H. exact H.
+  - assume H. prove False. apply HY. apply Empty_eq. let y. assume Hy. apply H. witness y. exact Hy. }
+apply Hex. let y. assume Hy. exact (EmptyE (f y) (setexp_ap Y Empty f Hf y Hy)).
+Qed.
+Theorem finite_cardinality_Empty : finite_cardinality Empty = 0.
+exact (god1_finite_cardinality_natural 0 (nat_p_omega 0 nat_0)).
+Qed.
+Theorem Sing_eq_iff : forall e x:set, x :e {e} <-> x = e.
+let e x. apply iffI.
+- assume H. exact (SingE e x H).
+- assume H. rewrite H. exact (SingI e).
+Qed.
+Theorem forall_Sing : forall e:set, forall P:set -> prop, P e -> forall x :e {e}, P x.
+let e P. assume H. let x. assume Hx. rewrite (SingE e x Hx). exact H.
+Qed.
+Theorem exists_Sing : forall e:set, forall P:set -> prop, P e -> exists x :e {e}, P x.
+let e P. assume H. witness e. exact (andI (e :e {e}) (P e) (SingI e) H).
+Qed.
+Theorem forall_Sub_Empty : forall P:set -> prop, P Empty -> forall s c= Empty, P s.
+let P. assume H. let s. assume Hs. rewrite (Empty_Subq_eq s Hs). exact H.
+Qed.
+Theorem exists_Sub_Empty : forall P:set -> prop, P Empty -> exists s c= Empty, P s.
+let P. assume H. witness Empty. exact (andI (Empty c= Empty) (P Empty) (Subq_ref Empty) H).
+Qed.
+Theorem nonempty_Num_succ : forall n:set, ordsucc n <> Empty.
+let n. exact (neq_ordsucc_0 n).
+Qed.
+Theorem Empty_neq_of_In : forall X x:set, x :e X -> Empty <> X.
+let X x. assume Hx H. exact (EmptyE x (H (fun hl__u hl__v => x :e hl__v) Hx)).
+Qed.

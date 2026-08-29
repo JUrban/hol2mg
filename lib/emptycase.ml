@@ -81,7 +81,7 @@ and simp1 t =
   | App (App (Cst "setminus", x), y) ->
       let x = simp x and y = simp y in
       if is_empty x then empty else if is_empty y then x else App (App (Cst "setminus", x), y)
-  | App (Cst "finseq", a) -> let a = simp a in if is_empty a then SetEnum [ empty ] else App (Cst "finseq", a)
+  | App (Cst "finseq", a) -> let a = simp a in if is_empty a then SetEnum [ Cst "seq_nil" ] else App (Cst "finseq", a)
   | App (Cst "finite", a) -> let a = simp a in if is_empty a then tru else App (Cst "finite", a)
   | App (Cst "finite_cardinality", a) -> let a = simp a in if is_empty a then Num 0 else App (Cst "finite_cardinality", a)
   | App (App (Cst "equip", a), b) -> let a = simp a and b = simp b in if is_empty a && (is_empty b || b = Num 0) then tru else App (App (Cst "equip", a), b)
@@ -168,6 +168,11 @@ and simp_arith t =
 (* Try to drop `A <> Empty ->` premises.  The statement has the shape
    forall A1 .. An : set, A1 <> Empty -> ... -> An <> Empty -> body.
    Returns the new statement and the list of parameters generalised. *)
+(* justification hook: a parameter's premise is dropped only if the empty-carrier case can be
+   proved (set by the certification pipeline to Emptyproof.prove; default: syntactic only) *)
+let justify : (string -> tm -> bool) ref = ref (fun _ _ -> true)
+let withdrawn : string list ref = ref []
+
 let generalize (stmt : tm) (params : string list) : tm * string list =
   (* split off the parameter binders *)
   let rec split_params t = function
@@ -194,7 +199,10 @@ let generalize (stmt : tm) (params : string list) : tm * string list =
       let others = List.sort_uniq compare others in
       let with_prems = List.fold_right (fun q acc -> Imp (App (App (Cst "neq", Var q), Cst "Empty"), acc)) others body in
       let inst = subst [ (p, Cst "Empty") ] with_prems in
-      if simp inst = tru then dropped := p :: !dropped else keep := p :: !keep) bound;
+      if simp inst = tru then begin
+        if !justify p (subst [ (p, Cst "Empty") ] body) then dropped := p :: !dropped
+        else begin withdrawn := p :: !withdrawn; keep := p :: !keep end
+      end else keep := p :: !keep) bound;
     let kept = List.filter (fun p -> not (List.mem p !dropped)) bound in
     let body' = List.fold_right (fun q acc -> Imp (App (App (Cst "neq", Var q), Cst "Empty"), acc)) kept body in
     let stmt' = List.fold_right (fun p acc -> All (p, Set, acc)) bound body' in

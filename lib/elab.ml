@@ -766,27 +766,13 @@ let elab_sequent (reg : R.t) (seq : sequent) : result =
       used := l :: !used; (a, l)
     end else (a, sanitize_tyvar a)) tvs in
   let ctx = { reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { classes = []; bridges = []; notes = [] } } in
-  (* free variables in order of first occurrence *)
+  (* free variables in order of first occurrence: they are elaborated as outermost universal
+     binders (identical naming and views to the bridge generator, which wraps them the same way) *)
   let fvs = uniq (List.concat_map frees all) in
-  let decls = List.map (fun (s, ty) ->
-    let n = fresh ctx s in
-    let v = choose_view ctx (s, ty) all in
-    (* rename in terms if needed *)
-    ctx.vars <- (s, (ty, v, n)) :: ctx.vars;
-    (s, ty, v, n)) fvs in
-  let body = List.fold_right (fun h acc -> Mg.Imp (elab ctx h VProp, acc)) seq.hyps (elab ctx seq.concl VProp) in
-  let body = List.fold_right (fun (_, _, v, n) acc ->
-    match v with
-    | VSet c -> Mg.AllIn (n, c, acc)
-    | VSubset c -> Mg.AllSub (n, c, acc)
-    | VProp -> Mg.All (n, Mg.Prop, acc)
-    | VMetaPred _ -> Mg.All (n, mty_of_view v, acc)
-    | VMetaFun (ds, c) ->
-        let xs = fresh_seq ctx (List.length ds) in
-        let app = List.fold_left (fun acc y -> Mg.App (acc, Mg.Var y)) (Mg.Var n) xs in
-        let cl = List.fold_right2 (fun y d acc -> Mg.AllIn (y, d, acc)) xs ds (mg_in app c) in
-        List.iter (release ctx) xs;
-        Mg.All (n, mty_of_view v, Mg.Imp (cl, acc))) decls body in
+  let decls = List.map (fun (s, ty) -> (s, ty, choose_view ctx (s, ty) all, s)) fvs in
+  let concl = List.fold_right (fun h acc -> mk_imp h acc) seq.hyps seq.concl in
+  let concl = List.fold_right (fun (s, ty) acc -> mk_forall s ty (abstract_free (s, ty) 0 acc)) fvs concl in
+  let body = elab ctx concl VProp in
   let body = List.fold_right (fun (_, n) acc -> Mg.Imp (mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) tv_names body in
   let body = List.fold_right (fun (_, n) acc -> Mg.All (n, Mg.Set, acc)) tv_names body in
   let body, rewrites = Rewrite.run body in

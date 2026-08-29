@@ -10,10 +10,10 @@
 
 | status | count |
 |---|---|
-| transport_required | 1758 |
-| generalization_required | 696 |
+| transport_required | 1821 |
+| generalization_required | 614 |
 | pending_mapping | 299 |
-| exact_native | 156 |
+| exact_native | 175 |
 | native_reuse | 75 |
 
 ## Public statements per shard
@@ -105,7 +105,7 @@
 
 - hol_num_omega (1324)
 - hol_real_R (692)
-- empty_case:A (614)
+- empty_case:A (540)
 - hol_int_int (485)
 - hol_finite_finite (335)
 - omega_Subq_R (315)
@@ -117,9 +117,9 @@
 - mul_nat_mul_SNo (144)
 - hol_prod_setprod (135)
 - hol_sum_finsum (118)
-- empty_case:B (102)
 - hol_card_finite_cardinality (98)
 - hol_nsum_finsum (91)
+- empty_case:B (90)
 - choose_in_spec (71)
 - hol_cart_setexp (54)
 - hol_dimindex (50)
@@ -130,9 +130,9 @@
 - int_Subq_R (34)
 - hol_one_1 (23)
 - hol_fun_setexp (20)
-- empty_case:K (18)
 - hol_tybit_idx (18)
 - empty_case:C (16)
+- empty_case:K (16)
 - hol_finite_image_idx (11)
 - hol_le_c_atleastp (6)
 - hol_option_setsum (6)

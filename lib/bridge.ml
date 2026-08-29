@@ -875,14 +875,28 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
       Printf.sprintf "(hl_ty_%s_native (fun hl__u hl__v => %s) %s)" (E.sanitize_var t) (pp ctx) hl
     end) "HL0" converters in
   let inner = bridge g Fwd seq.concl in
-  (* wrap: fun HL A.. HAne.. => inner (converted (HL A.. HAne..)) *)
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
   let hl_inst = if params = [] then "HL" else Printf.sprintf "(HL %s)" (String.concat " " (params @ hyps)) in
   let converted = if wrap_hl = "HL0" then hl_inst else Str.global_replace (Str.regexp_string "HL0") hl_inst wrap_hl in
-  let proof = Printf.sprintf "(fun HL %s => %s %s)" (String.concat " " (params @ hyps)) inner converted in
-  let proof = if params = [] then Printf.sprintf "(fun HL => %s %s)" inner converted else proof in
-  { lit_stmt; nat_stmt; proof; compat_used = List.rev g.used_compat }
+  (* native post-processing: approved rewrites (not yet replayed) and empty-carrier generalization *)
+  let _, rewrites = Rewrite.run nat_stmt in
+  if rewrites <> [] then unsupported "native rewrites %s" (String.concat "," rewrites);
+  let nat_gen, dropped = Emptycase.generalize nat_stmt params in
+  let kept_hyps = List.filter_map (fun p -> if List.mem p dropped then None else Some ("H" ^ p ^ "ne")) params in
+  (* case analysis on the dropped carriers: the first dropped parameter is split innermost, so that
+     its empty case may assume the later parameters nonempty, as the evaluator did *)
+  let final = Printf.sprintf "%s %s" inner converted in
+  let body_text = pp nat_body in
+  let split = List.fold_left (fun acc d ->
+    let body_d = Mg.subst [ (d, Mg.Cst "Empty") ] nat_body in
+    let pf_empty = (try Emptyproof.prove body_d with Emptyproof.Cannot m -> unsupported "empty-carrier case of %s: %s" d m) in
+    let ctx = Mg.subst [ (d, Mg.Var "hl__u") ] nat_body in
+    let transported = Printf.sprintf "((eq_sym_i %s Empty H%se) (fun hl__u hl__v => %s) %s)" d d (pp ctx) pf_empty in
+    Printf.sprintf "(xm (%s = Empty) (%s) (fun H%se => %s) (fun H%sne => %s))" d body_text d transported d acc) final dropped in
+  let proof = if params = [] then Printf.sprintf "(fun HL => %s)" split
+              else Printf.sprintf "(fun HL %s => %s)" (String.concat " " (params @ kept_hyps)) split in
+  { lit_stmt; nat_stmt = nat_gen; proof; compat_used = List.rev g.used_compat }
 
 (* typing lemma of a generated literal definition: forall A..:set, A <> Empty -> .. -> hl_c A.. :e L[sigma] *)
 (* the rewrites converting native carriers of translated type definitions back to hl_ty_T *)

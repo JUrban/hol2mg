@@ -49,7 +49,12 @@ Theorem DIMINDEX_1 : 1 = 1.
 Admitted.
 
 // HOL Light: cart.ml:389 / FINITE_1   (hash md5:90a6cd0195246fd82f4fbaf42c36e52d)
-// not bridged: 
+Theorem hlt_FINITE_1 : hl_FINITE 1 (hl_UNIV 1) = 1.
+Admitted.
+Theorem FINITE_1_bridge : (hl_FINITE 1 (hl_UNIV 1) = 1) -> (finite 1).
+exact (fun HL => (iffEL (hl_FINITE 1 (hl_UNIV 1) = 1) (finite 1) (((hl_UNIV_compat) (1) one_nonempty) (fun hl__u hl__v => hl_FINITE 1 (hl_UNIV 1) = 1 <-> finite hl__u) ((hl_FINITE_compat) (1) one_nonempty (hl_UNIV 1) ((hl_UNIV_in) (1) one_nonempty)))) HL).
+Qed.
 Theorem FINITE_1 : finite 1.
+exact (FINITE_1_bridge hlt_FINITE_1).
 Admitted.
 

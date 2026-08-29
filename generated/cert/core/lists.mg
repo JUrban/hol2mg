@@ -25,12 +25,12 @@ Admitted.
 
 // HOL Light: lists.ml:42 / LENGTH   (hash md5:17c615469c05a454f2fd034489234849)
 // not bridged: 
-Theorem LENGTH : forall A:set, seq_len seq_nil = 0 /\ forall h :e A, forall t :e finseq A, seq_len (seq_cons h t) = ordsucc (seq_len t).
+Theorem LENGTH : forall A:set, A <> Empty -> seq_len seq_nil = 0 /\ forall h :e A, forall t :e finseq A, seq_len (seq_cons h t) = ordsucc (seq_len t).
 Admitted.
 
 // HOL Light: lists.ml:46 / MAP   (hash md5:1cd1ca7bb70cda875ad5749c1ca01729)
 // not bridged: 
-Theorem MAP : forall A B:set, B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e B) -> seq_map f seq_nil = seq_nil) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall h :e A, forall t :e finseq A, seq_map f (seq_cons h t) = seq_cons (f h) (seq_map f t).
+Theorem MAP : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e B) -> seq_map f seq_nil = seq_nil) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall h :e A, forall t :e finseq A, seq_map f (seq_cons h t) = seq_cons (f h) (seq_map f t).
 Admitted.
 
 // HOL Light: lists.ml:50 / LAST   (hash md5:8ceaa343a4f12fbf270147102b54e937)
@@ -185,7 +185,7 @@ Admitted.
 
 // HOL Light: lists.ml:182 / list_CASES   (hash md5:6c9a307f18507870c827834056fdffa7)
 // not bridged: 
-Theorem list_CASES : forall A:set, A <> Empty -> forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t.
+Theorem list_CASES : forall A:set, forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t.
 Admitted.
 
 // HOL Light: lists.ml:187 / LIST_EQ   (hash md5:e80393494d2381101e2f9fdd59b8a934)
@@ -510,7 +510,7 @@ Admitted.
 
 // HOL Light: lists.ml:540 / APPEND_BUTLAST_LAST   (hash md5:703f649413aa2037e3dcf32aa4963892)
 // not bridged: 
-Theorem APPEND_BUTLAST_LAST : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_append (seq_butlast l) (seq_cons (seq_last l) seq_nil) = l.
+Theorem APPEND_BUTLAST_LAST : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_append (seq_butlast l) (seq_cons (seq_last l) seq_nil) = l.
 Admitted.
 
 // HOL Light: lists.ml:545 / LAST_APPEND   (hash md5:4020322e71adb76451026919c337000e)
@@ -520,17 +520,17 @@ Admitted.
 
 // HOL Light: lists.ml:550 / LENGTH_TL   (hash md5:a85a29a10af63dc1de3488e67a73bc80)
 // not bridged: 
-Theorem LENGTH_TL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1.
+Theorem LENGTH_TL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1.
 Admitted.
 
 // HOL Light: lists.ml:554 / LAST_REVERSE   (hash md5:c75a8f7488d5cca7950ef0e9cc55247c)
 // not bridged: 
-Theorem LAST_REVERSE : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l.
+Theorem LAST_REVERSE : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l.
 Admitted.
 
 // HOL Light: lists.ml:559 / HD_REVERSE   (hash md5:ab3ea9bf8f9519ab0c9869a62f24e123)
 // not bridged: 
-Theorem HD_REVERSE : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l.
+Theorem HD_REVERSE : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l.
 Admitted.
 
 // HOL Light: lists.ml:563 / EL_APPEND   (hash md5:748e8eba07efd541bbb8f4cee28509db)
@@ -550,7 +550,7 @@ Admitted.
 
 // HOL Light: lists.ml:580 / LAST_EL   (hash md5:cedb10fc7f4c5badbfdc4bf1fc00dcd0)
 // not bridged: 
-Theorem LAST_EL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> seq_last l = seq_nth l (minus_nat (seq_len l) 1).
+Theorem LAST_EL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last l = seq_nth l (minus_nat (seq_len l) 1).
 Admitted.
 
 // HOL Light: lists.ml:586 / HD_APPEND   (hash md5:da7d7062ece2bd17943b9d0f7e786eeb)
@@ -560,7 +560,7 @@ Admitted.
 
 // HOL Light: lists.ml:590 / CONS_HD_TL   (hash md5:c92d05c19eb5a4cde98682e8b8eceaaa)
 // not bridged: 
-Theorem CONS_HD_TL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l).
+Theorem CONS_HD_TL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l).
 Admitted.
 
 // HOL Light: lists.ml:594 / EL_MAP   (hash md5:540a91f3328e7f6a379a49ab731fe835)

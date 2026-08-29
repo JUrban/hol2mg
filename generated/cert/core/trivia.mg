@@ -54,8 +54,13 @@ Theorem one : forall v :e 1, v = 0.
 Admitted.
 
 // HOL Light: trivia.ml:67 / one_axiom   (hash md5:1d5dc2e3ae749e7020d13e448211d911)
-// not bridged: 
+Theorem hlt_one_axiom : forall A:set, A <> Empty -> forall f g :e 1 :^: A, f = g.
+Admitted.
+Theorem one_axiom_bridge : (forall A:set, A <> Empty -> forall f g :e 1 :^: A, f = g) -> (forall A:set, forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x).
+exact (fun HL A => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e 1) -> forall g:set -> set, (forall x :e hl__u, g x :e 1) -> forall x :e hl__u, f x = g x) (fun f => (fun H : forall x :e Empty, f x :e 1 => (fun g => (fun H : forall x :e Empty, g x :e 1 => (forall_in_Empty (fun x => f x = g x)))))))) (fun HAne => (imp_forall_fun (A) (1) (fun f => forall g :e 1 :^: A, f = g) (fun f => forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x) (fun f Hfc => (imp_forall_fun (A) (1) (fun g => hl_lam A f = g) (fun g => forall x :e A, f x = g x) (fun g Hgc => (imp_trans (hl_lam A f = hl_lam A g) (forall x :e A, hl_lam A f x = hl_lam A g x) (forall x :e A, f x = g x) (iffEL (hl_lam A f = hl_lam A g) (forall x :e A, hl_lam A f x = hl_lam A g x) (eq_Pi_pointwise (A) (1) (hl_lam A f) (hl_lam A g) (hl_lam_Pi (A) (1) f Hfc) (hl_lam_Pi (A) (1) g Hgc))) (imp_forall_in (A) (fun x => hl_lam A f x = hl_lam A g x) (fun x => f x = g x) (fun x Hx => (imp_eq (hl_lam A f x) (f x) (hl_lam A g x) (g x) ((hl_lam_ap (A) f) (x) Hx) ((hl_lam_ap (A) g) (x) Hx))))))))) (HL A HAne)))).
+Qed.
 Theorem one_axiom : forall A:set, forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x.
+exact (one_axiom_bridge hlt_one_axiom).
 Admitted.
 
 // HOL Light: trivia.ml:72 / one_INDUCT   (hash md5:0e4245b52b095218ca689907aa0d46a7)
