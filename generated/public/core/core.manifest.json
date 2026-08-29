@@ -1289,9 +1289,9 @@
    "source": "!P:A->bool. !l:A list. (!i:num. i < LENGTH l ==> P (EL i l)) <=> ALL P l",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, (forall i :e omega, i < seq_len l -> P (seq_nth l i)) <-> seq_all P l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l :e finseq A, (forall i :e omega, hl_lt i (hl_LENGTH A l) = 1 -> P (hl_EL A i l) = 1) <-> hl_ALL A P l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL_EL_bridge"
   },
   {
    "name": "ALL_EQ",
@@ -10962,7 +10962,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth l 0 = seq_hd l /\\ seq_nth l (ordsucc n) = seq_nth (seq_tl l) n",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, hl_EL A (hl_NUMERAL hl_zero) l = hl_HD A l /\\ hl_EL A (hl_SUC n) l = hl_EL A n (hl_TL A l)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition 0 :e seq_len l not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -11020,7 +11020,7 @@
    "statement": "forall A:set, A <> Empty -> forall k :e omega, forall l m :e finseq A, seq_nth (seq_append l m) k = if k < seq_len l then seq_nth l k else seq_nth m (minus_nat k (seq_len l))",
    "literal": "forall A:set, A <> Empty -> forall k :e omega, forall l m :e finseq A, hl_EL A k (hl_APPEND A l m) = hl_COND A (hl_lt k (hl_LENGTH A l)) (hl_EL A k l) (hl_EL A (hl_sub k (hl_LENGTH A l)) m)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition k :e seq_len (seq_append l m) not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -11050,7 +11050,7 @@
    "statement": "forall A:set, forall n :e omega, forall h :e A, forall t :e finseq A, seq_nth (seq_cons h t) n = if n = 0 then h else seq_nth t (minus_nat n 1)",
    "literal": "forall A:set, A <> Empty -> forall n :e omega, forall h :e A, forall t :e finseq A, hl_EL A n (hl_CONS A h t) = hl_COND A (if n = hl_NUMERAL hl_zero then 1 else 0) h (hl_EL A (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero))) t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition n :e seq_len (seq_cons h t) not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -11079,9 +11079,9 @@
    "source": "!s:num->A. !m:num. !n:num. m < n ==> EL m (list_of_seq s n) = s m",
    "statement": "forall A:set, A <> Empty -> forall s:set -> set, (forall x :e omega, s x :e A) -> forall m n :e omega, m < n -> seq_nth (seq_mk n s) m = s m",
    "literal": "forall A:set, A <> Empty -> forall s :e A :^: omega, forall m n :e omega, hl_lt m n = 1 -> hl_EL A m (hl_list_of_seq A s n) = s m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EL_LIST_OF_SEQ_bridge"
   },
   {
    "name": "EL_MAP",
@@ -11109,9 +11109,9 @@
    "source": "!f:A->B. !n:num. !l:A list. n < LENGTH l ==> EL n (MAP f l) = f (EL n l)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall n :e omega, forall l :e finseq A, n < seq_len l -> seq_nth (seq_map f l) n = f (seq_nth l n)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall n :e omega, forall l :e finseq A, hl_lt n (hl_LENGTH A l) = 1 -> hl_EL B n (hl_MAP A B f l) = f (hl_EL A n l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EL_MAP_bridge"
   },
   {
    "name": "EL_MAP2",
@@ -11140,7 +11140,7 @@
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall l :e finseq A, forall m :e finseq B, forall k :e omega, k < seq_len l /\\ k < seq_len m -> seq_nth (seq_map2 f l m) k = f (seq_nth l k) (seq_nth m k)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B :^: A, forall l :e finseq A, forall m :e finseq B, forall k :e omega, hl_lt k (hl_LENGTH A l) = 1 /\\ hl_lt k (hl_LENGTH B m) = 1 -> hl_EL C k (hl_MAP2 A B C f l m) = f (hl_EL A k l) (hl_EL B k m)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_MAP2_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -11172,7 +11172,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth (seq_tl l) n = seq_nth l (n + 1)",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, hl_EL A n (hl_TL A l) = hl_EL A (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition ~ l = seq_nil not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -40251,7 +40251,7 @@
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last l = seq_nth l (minus_nat (seq_len l) 1)",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LAST A l = hl_EL A (hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero))) l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition minus_nat (seq_len l) 1 :e seq_len l not available from hypotheses [hyps: ~ l = seq_nil]",
    "bridge": ""
   },
   {
@@ -40791,7 +40791,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_len l = n <-> l = seq_mk n (fun i:set => seq_nth l i)",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, hl_LENGTH A l = n <-> l = hl_list_of_seq A (fun i :e omega => hl_EL A i l) n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition i :e seq_len l not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -42041,7 +42041,7 @@
    "statement": "forall A:set, forall l1 l2 :e finseq A, l1 = l2 <-> seq_len l1 = seq_len l2 /\\ forall n :e omega, n < seq_len l2 -> seq_nth l1 n = seq_nth l2 n",
    "literal": "forall A:set, A <> Empty -> forall l1 l2 :e finseq A, l1 = l2 <-> hl_LENGTH A l1 = hl_LENGTH A l2 /\\ forall n :e omega, hl_lt n (hl_LENGTH A l2) = 1 -> hl_EL A n l1 = hl_EL A n l2",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition n :e seq_len l1 not available from hypotheses [hyps: n < seq_len l2, seq_len l1 = seq_len l2]",
    "bridge": ""
   },
   {
@@ -42127,7 +42127,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_mk (seq_len l) (fun i:set => seq_nth l i) = l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_list_of_seq A (fun i :e omega => hl_EL A i l) (hl_LENGTH A l) = l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition i :e seq_len l not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -43824,9 +43824,9 @@
    "source": "!l:A list. !n:num. n < LENGTH l ==> MEM (EL n l) l",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, n < seq_len l -> seq_mem (seq_nth l n) l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, hl_lt n (hl_LENGTH A l) = 1 -> hl_MEM A (hl_EL A n l) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MEM_EL_bridge"
   },
   {
    "name": "MEM_EXISTS_EL",
@@ -43855,9 +43855,9 @@
    "source": "!l:A list. !x:A. MEM x l <=> (?i:num. i < LENGTH l /\\ x = EL i l)",
    "statement": "forall A:set, forall l :e finseq A, forall x :e A, seq_mem x l <-> exists i :e omega, i < seq_len l /\\ x = seq_nth l i",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, forall x :e A, hl_MEM A x l = 1 <-> exists i :e omega, hl_lt i (hl_LENGTH A l) = 1 /\\ x = hl_EL A i l",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MEM_EXISTS_EL_bridge"
   },
   {
    "name": "MEM_FILTER",
@@ -79218,7 +79218,7 @@
    "statement": "forall A B:set, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_zip seq_nil seq_nil = seq_nil /\\ seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, hl_ZIP A B (hl_NIL A) (hl_NIL B) = hl_NIL (A :*: B) /\\ hl_ZIP A B (hl_CONS A h1 t1) (hl_CONS B h2 t2) = hl_CONS (A :*: B) (hl_pair A B h1 h2) (hl_ZIP A B t1 t2)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition seq_len seq_nil = seq_len seq_nil not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: side condition seq_len (seq_cons h1 t1) = seq_len (seq_cons h2 t2) not available from hypotheses [hyps: seq_zip seq_nil seq_nil = seq_nil]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2332
+  "native_certified": 2337
  }
 }

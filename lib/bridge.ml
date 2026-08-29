@@ -70,6 +70,7 @@ let side_conditions : (string * string list) list =
     ("TL", [ "~ ?1 = seq_nil" ]);
     ("LAST", [ "~ ?1 = seq_nil" ]);
     ("ZIP", [ "seq_len ?1 = seq_len ?2" ]);
+    ("EL", [ "?1 :e seq_len ?2" ]);
     (* iterate is characterised only for monoidal operations (HOL Light's ITSET is a choice) *)
     ("iterate", [ "(forall x y :e ?B, ?1 x y = ?1 y x) /\\ (forall x y z :e ?B, ?1 x (?1 y z) = ?1 (?1 x y) z) /\\ (forall x :e ?B, ?1 (neutral_of ?B (fun a b => ?1 a b)) x = x)" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
@@ -210,6 +211,21 @@ let nat_var_mem_pf g (t : Mg.tm) : string =
        | Some h -> h
        | None -> unsupported "typing of variable %s" n)
   | _ -> unsupported "typing of a non-variable"
+
+(* an index n :e seq_len l from a hypothesis n < seq_len l, also through seq_map / seq_mk;
+   tyn / tyl are the membership proofs n :e omega and l :e finseq a *)
+let derive_index g (n : Mg.tm) (l : Mg.tm) (tyn : string) (tyl : string) (a : Mg.tm) : string option =
+  let find_lt x = List.find_map (fun (h, pf) -> if alpha_eq h (Mg.App (Mg.App (Mg.Cst "SNoLt", n), x)) then Some pf else None) g.hyps in
+  let base h = Printf.sprintf "(index_of_lt %s %s %s %s %s %s)" (ppp a) (ppp l) tyl (ppp n) tyn h in
+  match find_lt (Mg.App (Mg.Cst "seq_len", l)) with
+  | Some h -> Some (base h)
+  | None ->
+      (match l with
+       | Mg.App (Mg.App (Mg.Cst "seq_map", f), l') ->
+           Option.map (fun h -> base (Printf.sprintf "((eq_sym_i (seq_len %s) (seq_len %s) (seq_len_map %s %s)) (fun hl__u hl__v => %s < hl__u) %s)" (ppp l) (ppp l') (ppp f) (ppp l') (pp n) h)) (find_lt (Mg.App (Mg.Cst "seq_len", l')))
+       | Mg.App (Mg.App (Mg.Cst "seq_mk", m), f) ->
+           Option.map (fun h -> base (Printf.sprintf "((eq_sym_i (seq_len %s) %s (seq_len_mk %s %s)) (fun hl__u hl__v => %s < hl__u) %s)" (ppp l) (ppp m) (ppp m) (ppp f) (pp n) h)) (find_lt m)
+       | _ -> None)
 
 (* a hypothesis by proposition, up to alpha-equivalence, rebuilding conjunctions from their
    conjuncts (hypotheses are registered split into conjuncts) *)
@@ -1395,7 +1411,17 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                  | _ -> None)) in
           let derived () = (match derived () with
             | Some p -> Some p
-            | None -> (match sc_nat with Mg.App (Mg.Cst "finite", s) -> derive_finite g s 0 | _ -> None)) in
+            | None ->
+                (match sc_nat with
+                 | Mg.App (Mg.App (Mg.Cst "eq", a), b) when a = b -> Some refl
+                 | Mg.App (Mg.Cst "finite", s) -> derive_finite g s 0
+                 | Mg.App (Mg.App (Mg.Cst "In", n), Mg.App (Mg.Cst "seq_len", l)) ->
+                     (match List.assoc_opt "1" !argtyp, List.assoc_opt "2" !argtyp with
+                      | Some (l1, t1, c1), Some (l2, t2, c2) ->
+                          let tyn = snd (transport_fwd (L.mg_in l1 c1, t1)) and tyl = snd (transport_fwd (L.mg_in l2 c2, t2)) in
+                          (match c2 with Mg.App (Mg.Cst "finseq", a) -> derive_index g n l tyn tyl a | _ -> None)
+                      | _ -> None)
+                 | _ -> None)) in
           (match (match find_hyp g sc_nat with Some h -> Some h | None -> derived ()) with
            | None -> unsupported "side condition %s not available from hypotheses [hyps: %s]" (pp sc_nat)
                        (String.concat ", " (List.map (fun (h, _) -> pp h) g.hyps))

@@ -6474,3 +6474,43 @@ claim Hli: lcm_int (p 0) (p 1) :e int. { exact (Subq_omega_int (lcm_int (p 0) (p
 rewrite (hl_num_lcm_unfold p Hp).
 exact (eq_trans_i (hl_num_of_int (hl_int_lcm (hl_pair hl_ty_int hl_ty_int (hl_int_of_num (hl_FST omega omega p)) (hl_int_of_num (hl_SND omega omega p))))) (hl_num_of_int (lcm_int (p 0) (p 1))) (lcm_int (p 0) (p 1)) (f_equal (fun u => hl_num_of_int u) (hl_int_lcm (hl_pair hl_ty_int hl_ty_int (hl_int_of_num (hl_FST omega omega p)) (hl_int_of_num (hl_SND omega omega p)))) (lcm_int (p 0) (p 1)) (eq_trans_i (hl_int_lcm (hl_pair hl_ty_int hl_ty_int (hl_int_of_num (hl_FST omega omega p)) (hl_int_of_num (hl_SND omega omega p)))) (hl_int_lcm (p 0, p 1)) (lcm_int (p 0) (p 1)) (f_equal (fun u => hl_int_lcm u) (hl_pair hl_ty_int hl_ty_int (hl_int_of_num (hl_FST omega omega p)) (hl_int_of_num (hl_SND omega omega p))) (p 0, p 1) Hpair) Hlcm)) (eq_trans_i (hl_num_of_int (lcm_int (p 0) (p 1))) (if lcm_int (p 0) (p 1) :e omega then lcm_int (p 0) (p 1) else 0) (lcm_int (p 0) (p 1)) (hl_num_of_int_compat (lcm_int (p 0) (p 1)) Hli Hlo) (If_i_1 (lcm_int (p 0) (p 1) :e omega) (lcm_int (p 0) (p 1)) 0 Hlo))).
 Qed.
+
+// ---- an index below the length is in the length ----
+Theorem index_of_lt : forall A:set, forall l :e finseq A, forall n :e omega, n < seq_len l -> n :e seq_len l.
+let A l. assume Hl. let n. assume Hn Hlt. exact (omega_SNoLt_In (seq_len l) (seq_len_omega A l Hl) n Hn Hlt).
+Qed.
+
+// ---- EL: the n-th element, conditional on the index being in range ----
+Theorem hl_EL_compat : forall A:set, A <> Empty -> forall l1 :e omega, forall l2 :e finseq A, l1 :e seq_len l2 -> hl_EL A l1 l2 = seq_nth l2 l1.
+let A. assume HA.
+claim H0o: hl_NUMERAL hl_zero :e omega. { exact ((eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0)). }
+claim HG: forall n :e omega, forall l :e finseq A, (fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) n l = hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n). { let n. assume Hn. let l. assume Hl. exact (lam2_beta omega (finseq A) (fun n l => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) n Hn l Hl). }
+claim HGA: forall n :e omega, forall l :e finseq A, hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n) :e A. { let n. assume Hn. let l. assume Hl. exact (setexp_ap (finseq A) A (hl_HD A) (hl_HD_in A HA) (nat_primrec l (fun _ r => hl_TL A r) n) (tlk_finseq A HA l Hl n (omega_nat_p n Hn))). }
+claim Hex: exists g :e A :^: finseq A :^: omega, (forall l :e finseq A, g (hl_NUMERAL hl_zero) l = hl_HD A l) /\ forall n :e omega, forall l :e finseq A, g (hl_SUC n) l = g n (hl_TL A l).
+{ witness (fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)). apply andI.
+  - exact (lam2_Pi omega (finseq A) A (fun n l => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) (fun n Hn l Hl => HGA n Hn l Hl)).
+  - apply andI.
+    + let l. assume Hl.
+      exact (eq_trans_i ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) (hl_NUMERAL hl_zero) l) ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) 0 l) (hl_HD A l) (f_equal (fun u => (fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) u l) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (eq_trans_i ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) 0 l) (hl_HD A (nat_primrec l (fun _ r => hl_TL A r) 0)) (hl_HD A l) (HG 0 (nat_p_omega 0 nat_0) l Hl) (f_equal (fun u => hl_HD A u) (nat_primrec l (fun _ r => hl_TL A r) 0) l (nat_primrec_0 l (fun _ r => hl_TL A r))))).
+    + let n. assume Hn. let l. assume Hl.
+      claim HSn: ordsucc n :e omega. { exact (omega_ordsucc n Hn). }
+      claim Htl: hl_TL A l :e finseq A. { exact (setexp_ap (finseq A) (finseq A) (hl_TL A) (hl_TL_in A HA) l Hl). }
+      exact (eq_trans_i ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) (hl_SUC n) l) ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) (ordsucc n) l) ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) n (hl_TL A l)) (f_equal (fun u => (fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) u l) (hl_SUC n) (ordsucc n) (hl_SUC_compat n Hn)) (eq_trans_i ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) (ordsucc n) l) (hl_HD A (nat_primrec l (fun _ r => hl_TL A r) (ordsucc n))) ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) n (hl_TL A l)) (HG (ordsucc n) HSn l Hl) (eq_trans_i (hl_HD A (nat_primrec l (fun _ r => hl_TL A r) (ordsucc n))) (hl_HD A (nat_primrec (hl_TL A l) (fun _ r => hl_TL A r) n)) ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) n (hl_TL A l)) (f_equal (fun u => hl_HD A u) (nat_primrec l (fun _ r => hl_TL A r) (ordsucc n)) (nat_primrec (hl_TL A l) (fun _ r => hl_TL A r) n) (eq_sym_i (nat_primrec (hl_TL A l) (fun _ r => hl_TL A r) n) (nat_primrec l (fun _ r => hl_TL A r) (ordsucc n)) (tlk_shift A l n (omega_nat_p n Hn)))) (eq_sym_i ((fun n :e omega => fun l :e finseq A => hl_HD A (nat_primrec l (fun _ r => hl_TL A r) n)) n (hl_TL A l)) (hl_HD A (nat_primrec (hl_TL A l) (fun _ r => hl_TL A r) n)) (HG n Hn (hl_TL A l) Htl))))). }
+apply (hl_EL_spec A HA Hex). assume H12 Hin. apply H12. assume H0 HS.
+claim Hbase: forall l :e finseq A, 0 :e seq_len l -> hl_EL A 0 l = seq_nth l 0.
+{ let l. assume Hl H0l.
+  claim Hne: ~ l = seq_nil. { assume H. exact (EmptyE 0 (seq_len_nil (fun hl__u hl__v => 0 :e hl__u) ((f_equal (fun u => seq_len u) l seq_nil H) (fun hl__u hl__v => 0 :e hl__u) H0l))). }
+  exact (eq_trans_i (hl_EL A 0 l) (hl_EL A (hl_NUMERAL hl_zero) l) (seq_nth l 0) (f_equal (fun u => hl_EL A u l) 0 (hl_NUMERAL hl_zero) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)) (eq_trans_i (hl_EL A (hl_NUMERAL hl_zero) l) (hl_HD A l) (seq_nth l 0) (H0 l Hl) (hl_HD_compat A HA l Hl Hne))). }
+claim Hstep: forall n, nat_p n -> (forall l :e finseq A, n :e seq_len l -> hl_EL A n l = seq_nth l n) -> (forall l :e finseq A, ordsucc n :e seq_len l -> hl_EL A (ordsucc n) l = seq_nth l (ordsucc n)).
+{ let n. assume Hn IH. let l. assume Hl HSl.
+  claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+  claim Hne: ~ l = seq_nil. { assume H. exact (EmptyE (ordsucc n) (seq_len_nil (fun hl__u hl__v => ordsucc n :e hl__u) ((f_equal (fun u => seq_len u) l seq_nil H) (fun hl__u hl__v => ordsucc n :e hl__u) HSl))). }
+  claim Htl: hl_TL A l = seq_tl l. { exact (hl_TL_compat A HA l Hl Hne). }
+  claim Htlf: seq_tl l :e finseq A. { exact (seq_tl_finseq A l Hl). }
+  claim Hln: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+  claim Hsuccn: nat_pred (ordsucc n) = n. { exact (nat_pred_ordsucc_nat n Hn). }
+  claim Hnp: n :e nat_pred (seq_len l). { exact (Hsuccn (fun hl__u hl__v => hl__u :e nat_pred (seq_len l)) (nat_pred_in (nat_pred (seq_len l)) (nat_p_trans (seq_len l) Hln (nat_pred (seq_len l)) ((eq_sym_i (seq_len l) (ordsucc (nat_pred (seq_len l))) (seq_len_ordsucc_pred A l Hl Hne)) (fun hl__u hl__v => nat_pred (seq_len l) :e hl__u) (ordsuccI2 (nat_pred (seq_len l))))) (ordsucc n) ((seq_len_ordsucc_pred A l Hl Hne) (fun hl__u hl__v => ordsucc n :e hl__u) HSl) (neq_ordsucc_0 n))). }
+  claim Hntl: n :e seq_len (seq_tl l). { exact ((eq_sym_i (seq_len (seq_tl l)) (nat_pred (seq_len l)) (seq_len_tl l)) (fun hl__u hl__v => n :e hl__u) Hnp). }
+  exact (eq_trans_i (hl_EL A (ordsucc n) l) (hl_EL A (hl_SUC n) l) (seq_nth l (ordsucc n)) (f_equal (fun u => hl_EL A u l) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_compat n Hno))) (eq_trans_i (hl_EL A (hl_SUC n) l) (hl_EL A n (hl_TL A l)) (seq_nth l (ordsucc n)) (HS n Hno l Hl) (eq_trans_i (hl_EL A n (hl_TL A l)) (hl_EL A n (seq_tl l)) (seq_nth l (ordsucc n)) (f_equal (fun u => hl_EL A n u) (hl_TL A l) (seq_tl l) Htl) (eq_trans_i (hl_EL A n (seq_tl l)) (seq_nth (seq_tl l) n) (seq_nth l (ordsucc n)) (IH (seq_tl l) Htlf Hntl) (seq_nth_tl l n Hnp))))). }
+let n. assume Hn. exact (nat_ind (fun n => forall l :e finseq A, n :e seq_len l -> hl_EL A n l = seq_nth l n) Hbase Hstep n (omega_nat_p n Hn)).
+Qed.
