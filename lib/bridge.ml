@@ -780,7 +780,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
   let hl_inst = if params = [] then "HL" else Printf.sprintf "(HL %s)" (String.concat " " (params @ hyps)) in
-  let converted = if wrap_hl = "HL0" then hl_inst else Printf.sprintf "((fun HL0 => %s) %s)" wrap_hl hl_inst in
+  let converted = if wrap_hl = "HL0" then hl_inst else Str.global_replace (Str.regexp_string "HL0") hl_inst wrap_hl in
   let proof = Printf.sprintf "(fun HL %s => %s %s)" (String.concat " " (params @ hyps)) inner converted in
   let proof = if params = [] then Printf.sprintf "(fun HL => %s %s)" inner converted else proof in
   { lit_stmt; nat_stmt; proof; compat_used = List.rev g.used_compat }

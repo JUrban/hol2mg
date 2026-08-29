@@ -687,3 +687,133 @@ claim Hind: forall n, nat_p n -> hl_real_pow x n = x ^ n.
 { exact (nat_ind (fun n => hl_real_pow x n = x ^ n) Hbase Hstep). }
 let n. assume Hn. exact (Hind n (omega_nat_p n Hn)).
 Qed.
+
+// ---- order on the naturals ----
+Theorem omega_not_lt_0 : forall m :e omega, ~ (m < 0).
+let m. assume Hm H. exact (SNoLt_irref m (SNoLtLe_tra m 0 m (omega_SNo m Hm) SNo_0 (omega_SNo m Hm) H (omega_nonneg m Hm))).
+Qed.
+Theorem omega_SNoLt_ordsucc : forall m n :e omega, m < ordsucc n <-> m = n \/ m < n.
+let m. assume Hm. let n. assume Hn.
+claim Hom: ordinal m. { exact (omega_ordinal_p m Hm). }
+claim Hon: ordinal n. { exact (omega_ordinal_p n Hn). }
+claim HoSn: ordinal (ordsucc n). { exact (ordinal_ordsucc n Hon). }
+apply iffI.
+- assume H.
+  apply (ordsuccE n m (ordinal_SNoLt_In m (ordsucc n) Hom HoSn H)).
+  + assume H1. exact (orIR (m = n) (m < n) (ordinal_In_SNoLt n Hon m H1)).
+  + assume H1. exact (orIL (m = n) (m < n) H1).
+- assume H. apply H.
+  + assume H1. rewrite H1. exact (ordinal_In_SNoLt (ordsucc n) HoSn n (ordsuccI2 n)).
+  + assume H1. exact (ordinal_In_SNoLt (ordsucc n) HoSn m (ordsuccI1 n m (ordinal_SNoLt_In m n Hom Hon H1))).
+Qed.
+Theorem omega_SNoLe_0 : forall m :e omega, m <= 0 <-> m = 0.
+let m. assume Hm. apply iffI.
+- assume H. exact (SNoLe_antisym m 0 (omega_SNo m Hm) SNo_0 H (omega_nonneg m Hm)).
+- assume H. rewrite H. exact (SNoLe_ref 0).
+Qed.
+Theorem omega_SNoLe_ordsucc : forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
+let m. assume Hm. let n. assume Hn.
+claim HmS: SNo m. { exact (omega_SNo m Hm). }
+claim HnS: SNo n. { exact (omega_SNo n Hn). }
+claim HSnS: SNo (ordsucc n). { exact (omega_SNo (ordsucc n) (omega_ordsucc n Hn)). }
+apply iffI.
+- assume H. apply (SNoLeE m (ordsucc n) HmS HSnS H).
+  + assume H1. apply (omega_SNoLt_ordsucc m Hm n Hn). assume H2 _. apply (H2 H1).
+    * assume H3. apply orIR. rewrite H3. exact (SNoLe_ref n).
+    * assume H3. exact (orIR (m = ordsucc n) (m <= n) (SNoLtLe m n H3)).
+  + assume H1. exact (orIL (m = ordsucc n) (m <= n) H1).
+- assume H. apply H.
+  + assume H1. rewrite H1. exact (SNoLe_ref (ordsucc n)).
+  + assume H1. apply SNoLtLe. apply (SNoLeLt_tra m n (ordsucc n) HmS HnS HSnS H1).
+    exact (ordinal_In_SNoLt (ordsucc n) (ordinal_ordsucc n (omega_ordinal_p n Hn)) n (ordsuccI2 n)).
+Qed.
+Theorem hl_lt_compat : forall l1 l2 :e omega, hl_lt l1 l2 = 1 <-> l1 < l2.
+claim Hex: exists g :e 2 :^: omega :^: omega, (forall m :e omega, g m (hl_NUMERAL hl_zero) = 1 <-> False) /\ forall m n :e omega, g m (hl_SUC n) = 1 <-> m = n \/ g m n = 1.
+{ witness (fun m :e omega => fun n :e omega => if m < n then 1 else 0).
+  claim Hw: (fun m :e omega => fun n :e omega => if m < n then 1 else 0) :e 2 :^: omega :^: omega.
+  { exact (lam2_Pi omega omega 2 (fun m n => if m < n then 1 else 0) (fun m Hm n Hn => If_in_2 (m < n))). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + let m. assume Hm. rewrite hl_NUMERAL_zero.
+      rewrite (lam2_beta omega omega (fun m n => if m < n then 1 else 0) m Hm 0 (nat_p_omega 0 nat_0)).
+      exact (iff_trans ((if m < 0 then 1 else 0) = 1) (m < 0) False (If_1_iff (m < 0)) (iff_False_of_not (m < 0) (omega_not_lt_0 m Hm))).
+    + let m. assume Hm. let n. assume Hn. rewrite (hl_SUC_ap n Hn).
+      rewrite (lam2_beta omega omega (fun m n => if m < n then 1 else 0) m Hm (ordsucc n) (omega_ordsucc n Hn)).
+      rewrite (lam2_beta omega omega (fun m n => if m < n then 1 else 0) m Hm n Hn).
+      apply (iff_trans ((if m < ordsucc n then 1 else 0) = 1) (m < ordsucc n) (m = n \/ (if m < n then 1 else 0) = 1) (If_1_iff (m < ordsucc n))).
+      apply (iff_trans (m < ordsucc n) (m = n \/ m < n) (m = n \/ (if m < n then 1 else 0) = 1) (omega_SNoLt_ordsucc m Hm n Hn)).
+      exact (or_iff_cong (m = n) (m = n) (m < n) ((if m < n then 1 else 0) = 1) (iff_refl (m = n)) (iff_sym ((if m < n then 1 else 0) = 1) (m < n) (If_1_iff (m < n)))). }
+apply (hl_lt_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+claim Hbase: forall m :e omega, hl_lt m 0 = 1 <-> m < 0.
+{ let m. assume Hm.
+  exact (iff_trans (hl_lt m 0 = 1) False (m < 0)
+    (hl_NUMERAL_zero (fun u v => hl_lt m u = 1 <-> False) (H0 m Hm))
+    (iff_sym (m < 0) False (iff_False_of_not (m < 0) (omega_not_lt_0 m Hm)))). }
+claim Hstep: forall n, nat_p n -> (forall m :e omega, hl_lt m n = 1 <-> m < n) -> forall m :e omega, hl_lt m (ordsucc n) = 1 <-> m < ordsucc n.
+{ let n. assume Hn IH. let m. assume Hm.
+  claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+  exact (iff_trans (hl_lt m (ordsucc n) = 1) (m = n \/ hl_lt m n = 1) (m < ordsucc n)
+    ((hl_SUC_ap n Hno) (fun u v => hl_lt m u = 1 <-> m = n \/ hl_lt m n = 1) (HS m Hm n Hno))
+    (iff_trans (m = n \/ hl_lt m n = 1) (m = n \/ m < n) (m < ordsucc n)
+      (or_iff_cong (m = n) (m = n) (hl_lt m n = 1) (m < n) (iff_refl (m = n)) (IH m Hm))
+      (iff_sym (m < ordsucc n) (m = n \/ m < n) (omega_SNoLt_ordsucc m Hm n Hno)))). }
+let m. assume Hm. let n. assume Hn.
+exact (nat_ind (fun n => forall m :e omega, hl_lt m n = 1 <-> m < n) Hbase Hstep n (omega_nat_p n Hn) m Hm).
+Qed.
+Theorem hl_le_compat : forall l1 l2 :e omega, hl_le l1 l2 = 1 <-> l1 <= l2.
+claim Hex: exists g :e 2 :^: omega :^: omega, (forall m :e omega, g m (hl_NUMERAL hl_zero) = 1 <-> m = hl_NUMERAL hl_zero) /\ forall m n :e omega, g m (hl_SUC n) = 1 <-> m = hl_SUC n \/ g m n = 1.
+{ witness (fun m :e omega => fun n :e omega => if m <= n then 1 else 0).
+  claim Hw: (fun m :e omega => fun n :e omega => if m <= n then 1 else 0) :e 2 :^: omega :^: omega.
+  { exact (lam2_Pi omega omega 2 (fun m n => if m <= n then 1 else 0) (fun m Hm n Hn => If_in_2 (m <= n))). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + let m. assume Hm. rewrite hl_NUMERAL_zero.
+      rewrite (lam2_beta omega omega (fun m n => if m <= n then 1 else 0) m Hm 0 (nat_p_omega 0 nat_0)).
+      exact (iff_trans ((if m <= 0 then 1 else 0) = 1) (m <= 0) (m = 0) (If_1_iff (m <= 0)) (omega_SNoLe_0 m Hm)).
+    + let m. assume Hm. let n. assume Hn. rewrite (hl_SUC_ap n Hn).
+      rewrite (lam2_beta omega omega (fun m n => if m <= n then 1 else 0) m Hm (ordsucc n) (omega_ordsucc n Hn)).
+      rewrite (lam2_beta omega omega (fun m n => if m <= n then 1 else 0) m Hm n Hn).
+      apply (iff_trans ((if m <= ordsucc n then 1 else 0) = 1) (m <= ordsucc n) (m = ordsucc n \/ (if m <= n then 1 else 0) = 1) (If_1_iff (m <= ordsucc n))).
+      apply (iff_trans (m <= ordsucc n) (m = ordsucc n \/ m <= n) (m = ordsucc n \/ (if m <= n then 1 else 0) = 1) (omega_SNoLe_ordsucc m Hm n Hn)).
+      exact (or_iff_cong (m = ordsucc n) (m = ordsucc n) (m <= n) ((if m <= n then 1 else 0) = 1) (iff_refl (m = ordsucc n)) (iff_sym ((if m <= n then 1 else 0) = 1) (m <= n) (If_1_iff (m <= n)))). }
+apply (hl_le_spec Hex). assume HP Hg. apply HP. assume H0 HS.
+claim Hbase: forall m :e omega, hl_le m 0 = 1 <-> m <= 0.
+{ let m. assume Hm.
+  exact (iff_trans (hl_le m 0 = 1) (m = 0) (m <= 0)
+    (hl_NUMERAL_zero (fun u v => hl_le m u = 1 <-> m = u) (H0 m Hm))
+    (iff_sym (m <= 0) (m = 0) (omega_SNoLe_0 m Hm))). }
+claim Hstep: forall n, nat_p n -> (forall m :e omega, hl_le m n = 1 <-> m <= n) -> forall m :e omega, hl_le m (ordsucc n) = 1 <-> m <= ordsucc n.
+{ let n. assume Hn IH. let m. assume Hm.
+  claim Hno: n :e omega. { exact (nat_p_omega n Hn). }
+  exact (iff_trans (hl_le m (ordsucc n) = 1) (m = ordsucc n \/ hl_le m n = 1) (m <= ordsucc n)
+    ((hl_SUC_ap n Hno) (fun u v => hl_le m u = 1 <-> m = u \/ hl_le m n = 1) (HS m Hm n Hno))
+    (iff_trans (m = ordsucc n \/ hl_le m n = 1) (m = ordsucc n \/ m <= n) (m <= ordsucc n)
+      (or_iff_cong (m = ordsucc n) (m = ordsucc n) (hl_le m n = 1) (m <= n) (iff_refl (m = ordsucc n)) (IH m Hm))
+      (iff_sym (m <= ordsucc n) (m = ordsucc n \/ m <= n) (omega_SNoLe_ordsucc m Hm n Hno)))). }
+let m. assume Hm. let n. assume Hn.
+exact (nat_ind (fun n => forall m :e omega, hl_le m n = 1 <-> m <= n) Hbase Hstep n (omega_nat_p n Hn) m Hm).
+Qed.
+Theorem hl_gt_compat : forall l1 l2 :e omega, hl_gt l1 l2 = 1 <-> l2 < l1.
+let m. assume Hm. let n. assume Hn. rewrite (hl_gt_unfold m Hm n Hn). exact (hl_lt_compat n Hn m Hm).
+Qed.
+Theorem hl_ge_compat : forall l1 l2 :e omega, hl_ge l1 l2 = 1 <-> l2 <= l1.
+let m. assume Hm. let n. assume Hn. rewrite (hl_ge_unfold m Hm n Hn). exact (hl_le_compat n Hn m Hm).
+Qed.
+Theorem hl_le_2 : forall m n :e omega, hl_le m n :e 2.
+let m. assume Hm. let n. assume Hn. apply (xm (m <= n)).
+- assume H. apply (hl_le_compat m Hm n Hn). assume _ H2. rewrite (H2 H). exact In_1_2.
+- assume H.
+  claim H0: hl_le m n = 0.
+  { apply (In_2_not_1 (hl_le m n) (setexp2_ap omega omega 2 hl_le hl_le_in m Hm n Hn)). assume H1. apply H. apply (hl_le_compat m Hm n Hn). assume H2 _. exact (H2 H1). }
+  rewrite H0. exact In_0_2.
+Qed.
+Theorem hl_MAX_compat : forall l1 l2 :e omega, hl_MAX l1 l2 = if l1 <= l2 then l2 else l1.
+let m. assume Hm. let n. assume Hn. rewrite (hl_MAX_unfold m Hm n Hn).
+exact (hl_COND_if omega (hl_le m n) (hl_le_2 m Hm n Hn) (m <= n) (hl_le_compat m Hm n Hn) n Hn m Hm).
+Qed.
+Theorem hl_MIN_compat : forall l1 l2 :e omega, hl_MIN l1 l2 = if l1 <= l2 then l1 else l2.
+let m. assume Hm. let n. assume Hn. rewrite (hl_MIN_unfold m Hm n Hn).
+exact (hl_COND_if omega (hl_le m n) (hl_le_2 m Hm n Hn) (m <= n) (hl_le_compat m Hm n Hn) m Hm n Hn).
+Qed.

@@ -415,3 +415,29 @@ Qed.
 Theorem f_equal2 : forall f:set -> set -> set, forall a a' b b':set, a = a' -> b = b' -> f a b = f a' b'.
 let f a a' b b'. assume H1 H2. exact (eq_trans_i (f a b) (f a' b) (f a' b') (H1 (fun u v => f a b = f u b) (fun q H => H)) (H2 (fun u v => f a' b = f a' u) (fun q H => H))).
 Qed.
+
+// ---- iff congruences ----
+Theorem or_iff_cong : forall a a' b b':prop, (a <-> a') -> (b <-> b') -> (a \/ b <-> a' \/ b').
+let a a' b b'. assume Ha Hb. apply Ha. assume Ha1 Ha2. apply Hb. assume Hb1 Hb2. apply iffI.
+- assume H. apply H.
+  + assume H1. exact (orIL a' b' (Ha1 H1)).
+  + assume H1. exact (orIR a' b' (Hb1 H1)).
+- assume H. apply H.
+  + assume H1. exact (orIL a b (Ha2 H1)).
+  + assume H1. exact (orIR a b (Hb2 H1)).
+Qed.
+Theorem and_iff_cong : forall a a' b b':prop, (a <-> a') -> (b <-> b') -> (a /\ b <-> a' /\ b').
+let a a' b b'. assume Ha Hb. apply Ha. assume Ha1 Ha2. apply Hb. assume Hb1 Hb2. apply iffI.
+- assume H. apply H. assume H1 H2. exact (andI a' b' (Ha1 H1) (Hb1 H2)).
+- assume H. apply H. assume H1 H2. exact (andI a b (Ha2 H1) (Hb2 H2)).
+Qed.
+Theorem not_iff_cong : forall a a':prop, (a <-> a') -> (~ a <-> ~ a').
+let a a'. assume Ha. apply Ha. assume Ha1 Ha2. apply iffI.
+- assume H H1. exact (H (Ha2 H1)).
+- assume H H1. exact (H (Ha1 H1)).
+Qed.
+Theorem iff_False_of_not : forall a:prop, ~ a -> (a <-> False).
+let a. assume H. apply iffI.
+- assume H1. exact (H H1).
+- assume H1. exact (FalseE H1 a).
+Qed.
