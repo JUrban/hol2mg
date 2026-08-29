@@ -4,13 +4,23 @@
 // _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
 
 // HOL Light: lists.ml:28 / HD   (hash md5:e48111d0d8d0854a2e64b2dfd1f92b7e)
-// not bridged: 
+Theorem hlt_HD : forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_HD A (hl_CONS A h t) = h.
+Admitted.
+Theorem HD_bridge : (forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_HD A (hl_CONS A h t) = h) -> (forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h).
+exact (fun H__top A => (xm (A = Empty) (forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall h :e hl__u, forall t :e finseq hl__u, seq_hd (seq_cons h t) = h) (forall_in_Empty (fun h => forall t :e finseq Empty, seq_hd (seq_cons h t) = h)))) (fun HAne => (imp_forall_in (A) (fun h => forall t :e finseq A, hl_HD A (hl_CONS A h t) = h) (fun h => forall t :e finseq A, seq_hd (seq_cons h t) = h) (fun h Hh => (imp_forall_in (finseq A) (fun t => hl_HD A (hl_CONS A h t) = h) (fun t => seq_hd (seq_cons h t) = h) (fun t Ht => (imp_eq (hl_HD A (hl_CONS A h t)) (seq_hd (seq_cons h t)) (h) (h) (((hl_CONS_compat) (A) HAne (h) Hh (t) Ht) (fun hl__u hl__v => hl_HD A (hl_CONS A h t) = seq_hd hl__u) (((hl_HD_compat) (A) HAne (hl_CONS A h t) (setexp_ap (finseq A) (finseq A) (hl_CONS A h) (setexp_ap (A) (finseq A :^: finseq A) (hl_CONS A) ((hl_CONS_in) (A) HAne) (h) Hh) (t) Ht)) ((eq_sym_i (hl_CONS A h t) (seq_cons h t) ((hl_CONS_compat) (A) HAne (h) Hh (t) Ht)) (fun hl__u hl__v => ~ hl__u = seq_nil) (seq_cons_neq_nil (h) (t))))) (fun q H => H)))))) (H__top A HAne)))).
+Qed.
 Theorem HD : forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h.
+exact (HD_bridge hlt_HD).
 Admitted.
 
 // HOL Light: lists.ml:31 / TL   (hash md5:a461f6927361fce88089ebdcecc03cd9)
-// not bridged: 
+Theorem hlt_TL : forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_TL A (hl_CONS A h t) = t.
+Admitted.
+Theorem TL_bridge : (forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_TL A (hl_CONS A h t) = t) -> (forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t).
+exact (fun H__top A => (xm (A = Empty) (forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall h :e hl__u, forall t :e finseq hl__u, seq_tl (seq_cons h t) = t) (forall_in_Empty (fun h => forall t :e finseq Empty, seq_tl (seq_cons h t) = t)))) (fun HAne => (imp_forall_in (A) (fun h => forall t :e finseq A, hl_TL A (hl_CONS A h t) = t) (fun h => forall t :e finseq A, seq_tl (seq_cons h t) = t) (fun h Hh => (imp_forall_in (finseq A) (fun t => hl_TL A (hl_CONS A h t) = t) (fun t => seq_tl (seq_cons h t) = t) (fun t Ht => (imp_eq (hl_TL A (hl_CONS A h t)) (seq_tl (seq_cons h t)) (t) (t) (((hl_CONS_compat) (A) HAne (h) Hh (t) Ht) (fun hl__u hl__v => hl_TL A (hl_CONS A h t) = seq_tl hl__u) (((hl_TL_compat) (A) HAne (hl_CONS A h t) (setexp_ap (finseq A) (finseq A) (hl_CONS A h) (setexp_ap (A) (finseq A :^: finseq A) (hl_CONS A) ((hl_CONS_in) (A) HAne) (h) Hh) (t) Ht)) ((eq_sym_i (hl_CONS A h t) (seq_cons h t) ((hl_CONS_compat) (A) HAne (h) Hh (t) Ht)) (fun hl__u hl__v => ~ hl__u = seq_nil) (seq_cons_neq_nil (h) (t))))) (fun q H => H)))))) (H__top A HAne)))).
+Qed.
 Theorem TL : forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t.
+exact (TL_bridge hlt_TL).
 Admitted.
 
 // HOL Light: lists.ml:34 / APPEND   (hash md5:3ef027801213877da04628f269452000)
@@ -794,8 +804,13 @@ Theorem LAST_APPEND : forall A:set, A <> Empty -> forall p q :e finseq A, seq_la
 Admitted.
 
 // HOL Light: lists.ml:550 / LENGTH_TL   (hash md5:a85a29a10af63dc1de3488e67a73bc80)
-// not bridged: 
+Theorem hlt_LENGTH_TL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LENGTH A (hl_TL A l) = hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+Theorem LENGTH_TL_bridge : (forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LENGTH A (hl_TL A l) = hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero))) -> (forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1).
+exact (fun H__top A => (xm (A = Empty) (forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall l :e finseq hl__u, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1) ((eq_sym_i (finseq Empty) ({seq_nil}) finseq_Empty) (fun hl__u hl__v => forall l :e hl__u, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1) (forall_Sing (seq_nil) (fun l => ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1) (fun H : ~ seq_nil = seq_nil => FalseE ((fun H : ~ seq_nil = seq_nil => H (fun q H => H)) H) (seq_len (seq_tl seq_nil) = minus_nat (seq_len seq_nil) 1)))))) (fun HAne => (imp_forall_in (finseq A) (fun l => ~ l = hl_NIL A -> hl_LENGTH A (hl_TL A l) = hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero))) (fun l => ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1) (fun l Hl => (fun H__L : ((~ l = hl_NIL A) -> (hl_LENGTH A (hl_TL A l) = hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero)))) => fun H__hyp1 : (~ l = seq_nil) => (imp_eq (hl_LENGTH A (hl_TL A l)) (seq_len (seq_tl l)) (hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero))) (minus_nat (seq_len l) 1) ((((hl_TL_compat) (A) HAne (l) Hl) H__hyp1) (fun hl__u hl__v => hl_LENGTH A (hl_TL A l) = seq_len hl__u) ((hl_LENGTH_compat) (A) HAne (hl_TL A l) (setexp_ap (finseq A) (finseq A) (hl_TL A) ((hl_TL_in) (A) HAne) (l) Hl))) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero)) = minus_nat (seq_len l) hl__u) (((hl_LENGTH_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero)) = minus_nat hl__u (hl_NUMERAL (hl_BIT1 hl_zero))) ((hl_sub_compat) (hl_LENGTH A l) (setexp_ap (finseq A) (omega) (hl_LENGTH A) ((hl_LENGTH_in) (A) HAne) (l) Hl) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))))) (H__L ((imp_not (l = seq_nil) (l = hl_NIL A) (imp_eq (l) (l) (hl_NIL A) (seq_nil) (fun q H => H) ((hl_NIL_compat) (A) HAne))) H__hyp1))))) (H__top A HAne)))).
+Qed.
 Theorem LENGTH_TL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1.
+exact (LENGTH_TL_bridge hlt_LENGTH_TL).
 Admitted.
 
 // HOL Light: lists.ml:554 / LAST_REVERSE   (hash md5:c75a8f7488d5cca7950ef0e9cc55247c)
@@ -834,8 +849,13 @@ Theorem HD_APPEND : forall A:set, A <> Empty -> forall l m :e finseq A, seq_hd (
 Admitted.
 
 // HOL Light: lists.ml:590 / CONS_HD_TL   (hash md5:c92d05c19eb5a4cde98682e8b8eceaaa)
-// not bridged: 
+Theorem hlt_CONS_HD_TL : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> l = hl_CONS A (hl_HD A l) (hl_TL A l).
+Admitted.
+Theorem CONS_HD_TL_bridge : (forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> l = hl_CONS A (hl_HD A l) (hl_TL A l)) -> (forall A:set, forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)).
+exact (fun H__top A => (xm (A = Empty) (forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall l :e finseq hl__u, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)) ((eq_sym_i (finseq Empty) ({seq_nil}) finseq_Empty) (fun hl__u hl__v => forall l :e hl__u, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)) (forall_Sing (seq_nil) (fun l => ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)) (fun H : ~ seq_nil = seq_nil => FalseE ((fun H : ~ seq_nil = seq_nil => H (fun q H => H)) H) (seq_nil = seq_cons (seq_hd seq_nil) (seq_tl seq_nil))))))) (fun HAne => (imp_forall_in (finseq A) (fun l => ~ l = hl_NIL A -> l = hl_CONS A (hl_HD A l) (hl_TL A l)) (fun l => ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)) (fun l Hl => (fun H__L : ((~ l = hl_NIL A) -> (l = hl_CONS A (hl_HD A l) (hl_TL A l))) => fun H__hyp1 : (~ l = seq_nil) => (imp_eq (l) (l) (hl_CONS A (hl_HD A l) (hl_TL A l)) (seq_cons (seq_hd l) (seq_tl l)) (fun q H => H) ((((hl_TL_compat) (A) HAne (l) Hl) H__hyp1) (fun hl__u hl__v => hl_CONS A (hl_HD A l) (hl_TL A l) = seq_cons (seq_hd l) hl__u) ((((hl_HD_compat) (A) HAne (l) Hl) H__hyp1) (fun hl__u hl__v => hl_CONS A (hl_HD A l) (hl_TL A l) = seq_cons hl__u (hl_TL A l)) ((hl_CONS_compat) (A) HAne (hl_HD A l) (setexp_ap (finseq A) (A) (hl_HD A) ((hl_HD_in) (A) HAne) (l) Hl) (hl_TL A l) (setexp_ap (finseq A) (finseq A) (hl_TL A) ((hl_TL_in) (A) HAne) (l) Hl))))) (H__L ((imp_not (l = seq_nil) (l = hl_NIL A) (imp_eq (l) (l) (hl_NIL A) (seq_nil) (fun q H => H) ((hl_NIL_compat) (A) HAne))) H__hyp1))))) (H__top A HAne)))).
+Qed.
 Theorem CONS_HD_TL : forall A:set, forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l).
+exact (CONS_HD_TL_bridge hlt_CONS_HD_TL).
 Admitted.
 
 // HOL Light: lists.ml:594 / EL_MAP   (hash md5:540a91f3328e7f6a379a49ab731fe835)

@@ -988,7 +988,8 @@ source: HD (h CONS t) = h
 status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_HD A (hl_CONS A h t) = h
-cert_status: bridge_unsupported
+bridge: HD_bridge
+cert_status: native_certified
 
 ### TL   [lists (finite sequences), including higher-order mapped operations]
 hash: a461f6927361fce88089ebdcecc03cd9
@@ -996,7 +997,8 @@ source: TL (h CONS t) = t
 status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_TL A (hl_CONS A h t) = t
-cert_status: bridge_unsupported
+bridge: TL_bridge
+cert_status: native_certified
 
 ### LENGTH_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: 46b98d7ca2f174c0346df14d00117beb

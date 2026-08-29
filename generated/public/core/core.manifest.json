@@ -6635,9 +6635,9 @@
    "source": "!l:A list. ~(l = NIL) ==> l = HD l CONS TL l",
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> l = seq_cons (seq_hd l) (seq_tl l)",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> l = hl_CONS A (hl_HD A l) (hl_TL A l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_HD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CONS_HD_TL_bridge"
   },
   {
    "name": "CONTRAPOS_THM",
@@ -21001,9 +21001,9 @@
    "source": "HD (h CONS t) = h",
    "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h",
    "literal": "forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_HD A (hl_CONS A h t) = h",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_HD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HD_bridge"
   },
   {
    "name": "HD_APPEND",
@@ -21032,7 +21032,7 @@
    "statement": "forall A:set, A <> Empty -> forall l m :e finseq A, seq_hd (seq_append l m) = if l = seq_nil then seq_hd m else seq_hd l",
    "literal": "forall A:set, A <> Empty -> forall l m :e finseq A, hl_HD A (hl_APPEND A l m) = hl_COND A (if l = hl_NIL A then 1 else 0) (hl_HD A m) (hl_HD A l)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_HD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition ~ seq_append l m = seq_nil not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -21061,7 +21061,7 @@
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_HD A (hl_REVERSE A l) = hl_LAST A l",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_HD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_REVERSE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -41056,9 +41056,9 @@
    "source": "!l:A list. ~(l = NIL) ==> LENGTH (TL l) = LENGTH l - 1",
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_len (seq_tl l) = minus_nat (seq_len l) 1",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LENGTH A (hl_TL A l) = hl_sub (hl_LENGTH A l) (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_TL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LENGTH_TL_bridge"
   },
   {
    "name": "LENGTH_ZIP",
@@ -75468,9 +75468,9 @@
    "source": "TL (h CONS t) = t",
    "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t",
    "literal": "forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_TL A (hl_CONS A h t) = t",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_TL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "TL_bridge"
   },
   {
    "name": "TOPOLOGICAL_SORT",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2172
+  "native_certified": 2176
  }
 }

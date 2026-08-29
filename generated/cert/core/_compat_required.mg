@@ -18,10 +18,6 @@ Admitted.
 Theorem hl_INJP_compat : forall A:set, A <> Empty -> hl_INJP A = Empty.
 Admitted.
 
-// HD : A list->A (not in compat.mg)
-Theorem hl_HD_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_HD A l1 = seq_hd l1.
-Admitted.
-
 // <=_c : (A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_sym_3c3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3c3d5f63 A B l1 l2 = 1 <-> atleastp (hl_rep A l1) (hl_rep B l2).
 Admitted.
@@ -200,10 +196,6 @@ Admitted.
 
 // product : (A->bool)->(A->real)->real (not in compat.mg)
 Theorem hl_product_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e R :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_product A l1 l2 = finprod (hl_rep A l1) f2.
-Admitted.
-
-// TL : A list->A list (not in compat.mg)
-Theorem hl_TL_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_TL A l1 = seq_tl l1.
 Admitted.
 
 // ZRECSPACE : (num->A->bool)->bool (not in compat.mg)

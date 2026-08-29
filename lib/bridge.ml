@@ -64,7 +64,9 @@ let side_conditions : (string * string list) list =
   [ ("CARD", [ "finite ?1" ]);
     ("sup", [ "exists x :e R, is_lub ?1 x" ]);
     ("inf", [ "exists x :e R, is_glb ?1 x" ]);
-    ("num_of_int", [ "?1 :e omega" ]) ]
+    ("num_of_int", [ "?1 :e omega" ]);
+    ("HD", [ "~ ?1 = seq_nil" ]);
+    ("TL", [ "~ ?1 = seq_nil" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
    argument (hl_rep .. / hl_rep2 ..) *)
 
@@ -88,7 +90,9 @@ let side_derivations : (string * ((string * string) list list * string) list) li
        ([ [ ("is_glb ?1 ?x", "glb") ] ], "") ]);
     ("?1 :e omega",
      [ ([ [ ("0 <= ?1", "") ] ], "int_nonneg_omega");
-       ([ [ ("?1 :e omega", "var") ] ], "") ]) ]
+       ([ [ ("?1 :e omega", "var") ] ], "") ]);
+    ("~ ?1 = seq_nil",
+     [ ([ [ ("~ ?1 = seq_nil", ""); ("?1 <> seq_nil", "") ] ], "") ]) ]
 
 (* the membership hypothesis of a native variable bound with a set carrier *)
 let nat_var_mem g (t : Mg.tm) : (Mg.tm * string) option =
@@ -1303,7 +1307,13 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                        else begin
                          let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
                          match List.assoc_opt p g.hyps with
-                         | None -> if tpl = "finite ?1" then derive_finite g s_nat 0 else None
+                         | None ->
+                             if tpl = "finite ?1" then derive_finite g s_nat 0
+                             else if tpl = "~ ?1 = seq_nil" then
+                               (match s_nat with
+                                | Mg.App (Mg.App (Mg.Cst "seq_cons", h), t) -> Some (Printf.sprintf "(seq_cons_neq_nil %s %s)" (ppp h) (ppp t))
+                                | _ -> None)
+                             else None
                          | Some h -> Some (if wrap = "" then h else Printf.sprintf "(%s %s %s %s)" wrap (ppp s_nat) (Lazy.force hsub) h)
                        end) alts in
                      List.find_map (fun (slots, lemma) ->
