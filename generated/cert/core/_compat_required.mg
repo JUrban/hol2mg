@@ -139,7 +139,7 @@ Theorem hl_NUMSND_compat : hl_NUMSND = Empty.
 Admitted.
 
 // ZIP : A list->B list->(A#B) list (not in compat.mg)
-Theorem hl_ZIP_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, hl_ZIP A B l1 l2 = seq_zip l1 l2.
+Theorem hl_ZIP_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e finseq A, forall l2 :e finseq B, seq_len l1 = seq_len l2 -> hl_ZIP A B l1 l2 = seq_zip l1 l2.
 Admitted.
 
 // $ : (A,N)cart->num->A (not in compat.mg)

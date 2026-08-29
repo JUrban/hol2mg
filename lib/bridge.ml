@@ -68,6 +68,7 @@ let side_conditions : (string * string list) list =
     ("HD", [ "~ ?1 = seq_nil" ]);
     ("TL", [ "~ ?1 = seq_nil" ]);
     ("LAST", [ "~ ?1 = seq_nil" ]);
+    ("ZIP", [ "seq_len ?1 = seq_len ?2" ]);
     (* iterate is characterised only for monoidal operations (HOL Light's ITSET is a choice) *)
     ("iterate", [ "(forall x y :e ?B, ?1 x y = ?1 y x) /\\ (forall x y z :e ?B, ?1 x (?1 y z) = ?1 (?1 x y) z) /\\ (forall x :e ?B, ?1 (neutral_of ?B (fun a b => ?1 a b)) x = x)" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
@@ -1457,6 +1458,9 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
   | KRep2 _, E.VSubset _ -> (lit, nat, kind, pf)
   | KRep a, E.VSet (Mg.App (Mg.Cst "Power", a')) when a = a' -> (lit, nat, kind, pf)   (* a subset used as data of Power A *)
   | KRep2 a, E.VSet (Mg.App (Mg.Cst "Power", Mg.App (Mg.Cst "Power", a'))) when a = a' -> (lit, nat, kind, pf)
+  | KIff, E.VSet (Mg.Num 2) ->
+      (* a Boolean formula used as data: lit = if nat then 1 else 0 *)
+      (lit, Mg.If (nat, L.one, L.zero), KEq, Printf.sprintf "(bool_data_of_iff %s %s %s %s)" (ppp lit) (ppp nat) (typ g t) pf)
   | KPW a, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KRepFun _, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KPWP2 (c, d), E.VMetaFun ([ c' ], Mg.App (Mg.Cst "Power", d')) when c = c' && d = d' ->

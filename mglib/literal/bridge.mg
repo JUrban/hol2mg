@@ -970,3 +970,15 @@ Qed.
 Theorem imp_and_dep_bwd : forall a a' b b':prop, (a' -> a) -> (a' -> b' -> b) -> a' /\ b' -> a /\ b.
 let a a' b b'. assume Ha Hb H. apply H. assume H1 H2. exact (andI a b (Ha H1) (Hb H1 H2)).
 Qed.
+
+// ---- a Boolean term related by an iff, used as data ----
+Theorem bool_data_of_iff : forall t:set, forall p:prop, t :e 2 -> (t = 1 <-> p) -> t = if p then 1 else 0.
+let t p. assume Ht Hiff. apply (xm p).
+- assume Hp. apply Hiff. assume _ H2. exact (eq_trans_i t 1 (if p then 1 else 0) (H2 Hp) (eq_sym_i (if p then 1 else 0) 1 (If_i_1 p 1 0 Hp))).
+- assume Hnp.
+  claim H0: (if p then 1 else 0) = 0. { exact (If_i_0 p 1 0 Hnp). }
+  claim Hcases: t = 0 \/ t = 1. { exact (cases_2 t Ht (fun u => u = 0 \/ u = 1) (orIL (0 = 0) (0 = 1) (fun q H => H)) (orIR (1 = 0) (1 = 1) (fun q H => H))). }
+  apply Hcases.
+  + assume Ht0. exact (eq_trans_i t 0 (if p then 1 else 0) Ht0 (eq_sym_i (if p then 1 else 0) 0 H0)).
+  + assume Ht1. apply Hiff. assume H1 _. exact (FalseE (Hnp (H1 Ht1)) (t = if p then 1 else 0)).
+Qed.

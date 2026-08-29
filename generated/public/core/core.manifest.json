@@ -12381,9 +12381,9 @@
    "source": "(?b:bool. P b) <=> P T \\/ P F",
    "statement": "forall P:set -> prop, (exists b:prop, P (if b then 1 else 0)) <-> P (if True then 1 else 0) \\/ P (if False then 1 else 0)",
    "literal": "forall P :e 2 :^: 2, (exists b :e 2, P b = 1) <-> P (if True then 1 else 0) = 1 \\/ P (if False then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_BOOL_THM_bridge"
   },
   {
    "name": "EXISTS_CARTESIAN_PRODUCT_ELEMENT",
@@ -17964,9 +17964,9 @@
    "source": "(!b:bool. P b) <=> P T /\\ P F",
    "statement": "forall P:set -> prop, (forall b:prop, P (if b then 1 else 0)) <-> P (if True then 1 else 0) /\\ P (if False then 1 else 0)",
    "literal": "forall P :e 2 :^: 2, (forall b :e 2, P b = 1) <-> P (if True then 1 else 0) = 1 /\\ P (if False then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_BOOL_THM_bridge"
   },
   {
    "name": "FORALL_CARTESIAN_PRODUCT_ELEMENTS",
@@ -79504,9 +79504,9 @@
    "source": "!P:bool->bool. P F /\\ P T ==> (!x:bool. P x)",
    "statement": "forall P:set -> prop, P (if False then 1 else 0) /\\ P (if True then 1 else 0) -> forall x:prop, P (if x then 1 else 0)",
    "literal": "forall P :e 2 :^: 2, P (if False then 1 else 0) = 1 /\\ P (if True then 1 else 0) = 1 -> forall x :e 2, P x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "bool_INDUCT_bridge"
   },
   {
    "name": "bool_RECURSION",
@@ -79531,9 +79531,9 @@
    "source": "!a:A. !b:A. ?f:bool->A. f F = a /\\ f T = b",
    "statement": "forall A:set, forall a b :e A, exists f:set -> set, (forall x :e 2, f x :e A) /\\ (f (if False then 1 else 0) = a /\\ f (if True then 1 else 0) = b)",
    "literal": "forall A:set, A <> Empty -> forall a b :e A, exists f :e A :^: 2, f (if False then 1 else 0) = a /\\ f (if True then 1 else 0) = b",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "bool_RECURSION_bridge"
   },
   {
    "name": "cart_tybij",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2278
+  "native_certified": 2282
  }
 }
