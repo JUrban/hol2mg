@@ -824,3 +824,33 @@ Qed.
 Theorem hl_chi2_rep2 : forall A:set, forall u :e 2 :^: (2 :^: A), hl_chi2 A (hl_rep2 A u) = u.
 let A u. assume Hu. exact (hl_rep2_inj A (hl_chi2 A (hl_rep2 A u)) u (hl_chi2_Pi A (hl_rep2 A u)) Hu (hl_rep2_chi2 A (hl_rep2 A u) (hl_rep2_Subq A u))).
 Qed.
+
+// ---- pointwise relations of eta-expanded literal functions ----
+Theorem pw_eta_pred : forall D F:set, forall N:set -> prop, (forall x :e D, (fun x :e D => F x) x = 1 <-> N x) -> forall x :e D, F x = 1 <-> N x.
+let D F N. assume H. let x. assume Hx.
+exact (iff_eq1_l (F x) ((fun x :e D => F x) x) (eq_sym_i ((fun x :e D => F x) x) (F x) (beta D (fun x => F x) x Hx)) (N x) (H x Hx)).
+Qed.
+Theorem pw_eta_fun : forall D F:set, forall N:set -> set, (forall x :e D, (fun x :e D => F x) x = N x) -> forall x :e D, F x = N x.
+let D F N. assume H. let x. assume Hx.
+exact (eq_trans_i (F x) ((fun x :e D => F x) x) (N x) (eq_sym_i ((fun x :e D => F x) x) (F x) (beta D (fun x => F x) x Hx)) (H x Hx)).
+Qed.
+
+// ---- equality of Boolean-valued functions is pointwise equivalence ----
+Theorem two_eq_iff : forall x y :e 2, x = y <-> (x = 1 <-> y = 1).
+let x. assume Hx. let y. assume Hy. apply iffI.
+- assume H. apply iffI.
+  + assume H1. exact (eq_trans_i y x 1 (eq_sym_i x y H) H1).
+  + assume H1. exact (eq_trans_i x y 1 H H1).
+- assume H. apply H. assume H1 H2.
+  claim C0: (0 = 1 -> y = 1) -> (y = 1 -> 0 = 1) -> 0 = y.
+  { assume _ H3. exact (cases_2 y Hy (fun y => (y = 1 -> 0 = 1) -> 0 = y) (fun _ => (fun q H => H)) (fun H4 => FalseE (neq_0_1 (H4 (fun q H => H))) (0 = 1)) H3). }
+  claim C1: (1 = 1 -> y = 1) -> (y = 1 -> 1 = 1) -> 1 = y.
+  { assume H3 _. exact (eq_sym_i y 1 (H3 (fun q H => H))). }
+  exact (cases_2 x Hx (fun x => (x = 1 -> y = 1) -> (y = 1 -> x = 1) -> x = y) C0 C1 H1 H2).
+Qed.
+
+Theorem eq_Pi_pointwise_bool : forall A F G:set, F :e 2 :^: A -> G :e 2 :^: A -> (F = G <-> forall x :e A, F x = 1 <-> G x = 1).
+let A F G. assume HF HG. apply iffI.
+- assume H. let x. assume Hx. apply (two_eq_iff (F x) (ap_Pi_2 A F HF x Hx) (G x) (ap_Pi_2 A G HG x Hx)). assume H1 _. exact (H1 (eq_to_pw A F G H x Hx)).
+- assume H. apply (Pi_ext A (fun _ => 2) F HF G HG). let x. assume Hx. apply (two_eq_iff (F x) (ap_Pi_2 A F HF x Hx) (G x) (ap_Pi_2 A G HG x Hx)). assume _ H2. exact (H2 (H x Hx)).
+Qed.

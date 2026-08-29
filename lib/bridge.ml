@@ -644,16 +644,15 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                      let l', n', k', pf' = rel g t' (Some nview) in
                      ignore n';
                      let ca = L.carrier g.lctx dom in
+                     (* the native side is applied to the representation of the literal element *)
+                     let rx = nat_of_lit g.lctx dom (Mg.Var "hl__x") in
+                     let m = if rx = Mg.Var "hl__x" then ppp nat else Printf.sprintf "(fun hl__x:set => %s %s)" (ppp nat) (ppp rx) in
                      (match k', l' with
-                      | KPWP _, Mg.LamIn (xn, _, body) ->
-                          (* lit z = (fun x :e D => lit x) z  by beta (the body at z is literally lit z) *)
-                          let pw = Printf.sprintf "(fun hl__z hl__Hz => (iff_eq1_l (%s hl__z) (%s hl__z) (eq_sym_i (%s hl__z) (%s hl__z) (beta %s (fun %s:set => %s) hl__z hl__Hz)) (%s hl__z) (%s hl__z hl__Hz)))"
-                            (ppp lit) (ppp l') (ppp l') (ppp lit) (ppp ca) xn (pp body) (ppp nat) pf' in
-                          (lit, nat, k', pw)
-                      | KPW _, Mg.LamIn (xn, _, body) ->
-                          let pw = Printf.sprintf "(fun hl__z hl__Hz => (eq_trans_i (%s hl__z) (%s hl__z) (%s hl__z) (eq_sym_i (%s hl__z) (%s hl__z) (beta %s (fun %s:set => %s) hl__z hl__Hz)) (%s hl__z hl__Hz)))"
-                            (ppp lit) (ppp l') (ppp nat) (ppp l') (ppp lit) (ppp ca) xn (pp body) pf' in
-                          (lit, nat, k', pw)
+                      | KPWP _, Mg.LamIn _ ->
+                          (* pf' : forall x :e D, (fun x :e D => lit x) x = 1 <-> M x *)
+                          (lit, nat, k', Printf.sprintf "(pw_eta_pred %s %s %s %s)" (ppp ca) (ppp lit) m pf')
+                      | KPW _, Mg.LamIn _ ->
+                          (lit, nat, k', Printf.sprintf "(pw_eta_fun %s %s %s %s)" (ppp ca) (ppp lit) m pf')
                       | _ -> unsupported "rel: partial application shape")
                  | Some _ -> unsupported "rel: partial application of mapped constant %s (view %s, %d args)" c (E.string_of_view nview) (List.length args)
                  | None -> unsupported "rel: unmapped constant %s (view %s, %d args)" c (E.string_of_view nview) (List.length args)))
@@ -692,9 +691,18 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
              if is_pred then begin
                let lp = ltext g body' and np = ntext g body' in
                let fwd = bridge g Fwd body' and bwd = bridge g Bwd body' in
-               let lb = Printf.sprintf "(if %s then 1 else 0)" lp in
-               let pw = Printf.sprintf "(fun %s %s => (iff_eq1_l (%s %s) %s (beta %s (fun %s:set => %s) %s %s) (%s) (iff_trans (%s = 1) (%s) (%s) (If_1_iff (%s)) (iffI (%s) (%s) %s %s))))"
-                 n hn (ppp lit) n lb (ppp c) n lb n hn np lb lp np lp lp np fwd bwd in
+               let lbt = lterm g body' in
+               let pw = (match lbt with
+                 | Mg.If (_, Mg.Num 1, Mg.Num 0) ->
+                     (* logical body: the literal lambda returns `if LP then 1 else 0` *)
+                     let lb = Printf.sprintf "(if %s then 1 else 0)" lp in
+                     Printf.sprintf "(fun %s %s => (iff_eq1_l (%s %s) %s (beta %s (fun %s:set => %s) %s %s) (%s) (iff_trans (%s = 1) (%s) (%s) (If_1_iff (%s)) (iffI (%s) (%s) %s %s))))"
+                       n hn (ppp lit) n lb (ppp c) n lb n hn np lb lp np lp lp np fwd bwd
+                 | _ ->
+                     (* Boolean-valued term body: the literal lambda returns the term itself, LP is `term = 1` *)
+                     let lb = ppp lbt in
+                     Printf.sprintf "(fun %s %s => (iff_eq1_l (%s %s) %s (beta %s (fun %s:set => %s) %s %s) (%s) (iffI (%s) (%s) %s %s)))"
+                       n hn (ppp lit) n lb (ppp c) n lb n hn np lp np fwd bwd) in
                (lit, nat, KPWP c, pw)
              end else begin
                let lb, nb, kb, pb = rel g body' (Some (E.VSet d)) in
@@ -1032,7 +1040,8 @@ and bridge_eq g dir ty a b =
          let lit_eq = paren (pp (L.mg_eq la lb)) in
          let lit_pw = paren (ltext g pw) in
          let nat_pw = paren (ntext g pw) in
-         let iff = Printf.sprintf "(eq_Pi_pointwise %s %s %s %s %s %s)" (ppp ca) (ppp cb) (ppp la) (ppp lb) (typ g a) (typ g b) in
+         let iff = if cod = bool_ty then Printf.sprintf "(eq_Pi_pointwise_bool %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (typ g a) (typ g b)
+           else Printf.sprintf "(eq_Pi_pointwise %s %s %s %s %s %s)" (ppp ca) (ppp cb) (ppp la) (ppp lb) (typ g a) (typ g b) in
          (match dir with
           | Fwd -> Printf.sprintf "(imp_trans %s %s %s (iffEL %s %s %s) %s)" lit_eq lit_pw nat_pw lit_eq lit_pw iff (bridge g Fwd pw)
           | Bwd -> Printf.sprintf "(imp_trans %s %s %s %s (iffER %s %s %s))" nat_pw lit_pw lit_eq (bridge g Bwd pw) lit_eq lit_pw iff))
