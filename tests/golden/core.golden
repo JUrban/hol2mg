@@ -1040,7 +1040,8 @@ source: LAST (h CONS t) = (if t = NIL then h else LAST t)
 status: generalization_required
 statement: forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t
 literal: forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_LAST A (hl_CONS A h t) = hl_COND A (if t = hl_NIL A then 1 else 0) h (hl_LAST A t)
-cert_status: bridge_unsupported
+bridge: LAST_bridge
+cert_status: native_certified
 
 ### FILTER_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: d4d93b5f36ebb171c6fddf63d85463d1

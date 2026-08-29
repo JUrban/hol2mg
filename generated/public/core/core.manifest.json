@@ -23728,9 +23728,9 @@
    "source": "!x:real. !s:real->bool. FINITE s ==> inf (x INSERT s) = (if s = EMPTY then x else real_min x (inf s))",
    "statement": "forall x :e R, forall s c= R, finite s -> inf (SetAdjoin s x) = if s = Empty then x else if x <= inf s then x else inf s",
    "literal": "forall x :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 -> hl_inf (hl_INSERT R x s) = hl_COND R (if s = hl_EMPTY R then 1 else 0) x (hl_real_min x (hl_inf s))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_INSERT_FINITE_bridge"
   },
   {
    "name": "INF_INSERT_INSERT",
@@ -40157,9 +40157,9 @@
    "source": "LAST (h CONS t) = (if t = NIL then h else LAST t)",
    "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t",
    "literal": "forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_LAST A (hl_CONS A h t) = hl_COND A (if t = hl_NIL A then 1 else 0) h (hl_LAST A t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition ~ t = seq_nil not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LAST_bridge"
   },
   {
    "name": "LAST_APPEND",
@@ -74876,9 +74876,9 @@
    "source": "!x:real. !s:real->bool. FINITE s ==> sup (x INSERT s) = (if s = EMPTY then x else real_max x (sup s))",
    "statement": "forall x :e R, forall s c= R, finite s -> sup (SetAdjoin s x) = if s = Empty then x else if x <= sup s then sup s else x",
    "literal": "forall x :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 -> hl_sup (hl_INSERT R x s) = hl_COND R (if s = hl_EMPTY R then 1 else 0) x (hl_real_max x (hl_sup s))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUP_INSERT_FINITE_bridge"
   },
   {
    "name": "SUP_INSERT_INSERT",
@@ -79766,7 +79766,7 @@
    "statement": "forall A:set, A <> Empty -> dimindex A = if finite A then finite_cardinality A else 1",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_dimindex A s = hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite A not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: native rewrites vacuous_forall",
    "bridge": ""
   },
   {
@@ -84253,7 +84253,7 @@
    "statement": "forall z :e R, forall i :e int, (if 0 <= i then z ^ i else recip_SNo (z ^ (- i))) = if 0 <= i then z ^ if i :e omega then i else 0 else recip_SNo (z ^ if - i :e omega then - i else 0)",
    "literal": "forall z :e R, forall i :e hl_ty_int, hl_real_zpow z i = hl_COND R (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) i) (hl_real_pow z (hl_num_of_int i)) (hl_real_inv (hl_real_pow z (hl_num_of_int (hl_int_neg i))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition i :e omega not available from hypotheses [hyps: ]",
+   "cert_error": "bridge_unsupported: side condition - i :e omega not available from hypotheses [hyps: ~ 0 <= i]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2218
+  "native_certified": 2221
  }
 }

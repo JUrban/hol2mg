@@ -887,18 +887,21 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let c0 = List.nth args 0 and a = List.nth args 1 and b = List.nth args 2 in
                 let lc, nc, kc, pc = rel g c0 (Some E.VProp) in
                 if kc <> KIff then unsupported "rel: conditional condition";
-                let la, na, ka, pa = rel g a (Some (E.VSet ca)) and lb, nb, kb, pb = rel g b (Some (E.VSet ca)) in
+                (* the branches are related under the condition / its negation (side conditions may use them) *)
+                let saved = g.hyps in
+                let hc = Printf.sprintf "H__c%d" g.counter in
+                g.counter <- g.counter + 1;
+                g.hyps <- (nc, hc) :: saved;
+                let la, na, ka, pa = (try rel g a (Some (E.VSet ca)) with e -> g.hyps <- saved; raise e) in
+                g.hyps <- (L.mg_not nc, hc) :: saved;
+                let lb, nb, kb, pb = (try rel g b (Some (E.VSet ca)) with e -> g.hyps <- saved; raise e) in
+                g.hyps <- saved;
                 if ka <> KEq || kb <> KEq then unsupported "rel: conditional branches";
-                let pf0 = Printf.sprintf "(hl_COND_if %s %s %s %s %s %s %s %s %s)" (ppp ca) (ppp lc) (typ g c0) (ppp nc) pc (ppp la) (typ g a) (ppp lb) (typ g b) in
-                let prop0 = L.mg_eq lit (Mg.If (nc, la, lb)) in
-                let prop1, pf1 = if la = na then (prop0, pf0) else
-                  (let ctx = L.mg_eq lit (Mg.If (nc, Mg.Var "hl__u", lb)) in (L.mg_eq lit (Mg.If (nc, na, lb)), leibniz (if pa = "" then refl else pa) (pp ctx) pf0)) in
-                let prop2, pf2 = if lb = nb then (prop1, pf1) else
-                  (let ctx = L.mg_eq lit (Mg.If (nc, na, Mg.Var "hl__u")) in (L.mg_eq lit (Mg.If (nc, na, nb)), leibniz (if pb = "" then refl else pb) (pp ctx) pf1)) in
-                (match prop2 with
-                 | Mg.App (Mg.App (Mg.Cst "eq", _), r) when r <> nat -> unsupported "rel: conditional derived %s differs from %s" (pp r) (pp nat)
-                 | _ -> ());
-                (lit, nat, KEq, pf2)
+                let pa = if pa = "" then refl else pa and pb = if pb = "" then refl else pb in
+                let pf = Printf.sprintf "(hl_COND_if_dep %s %s %s %s %s %s %s %s %s %s %s (fun %s : %s => %s) (fun %s : ~ %s => %s))" (ppp ca) (ppp lc) (typ g c0) (ppp nc) pc (ppp la) (typ g a) (ppp lb) (typ g b) (ppp na) (ppp nb) hc (ppp nc) pa hc (ppp nc) pb in
+                let derived = Mg.If (nc, na, nb) in
+                if not (alpha_eq derived nat) then unsupported "rel: conditional derived %s differs from %s" (pp derived) (pp nat);
+                (lit, nat, KEq, pf)
             | "o" when (match args, nview with [ _; _ ], (E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ]) -> true | _ -> false) ->
                 (* composition as a meta function/predicate: relate the lambda \x. f (g x) and go back
                    to the literal hl_o with pw_o_pred / pw_o_fun *)

@@ -218,3 +218,12 @@ Theorem int_hl_ty : forall x :e int, x :e hl_ty_int.
 let x. assume Hx. rewrite hl_ty_int_native. exact Hx.
 Qed.
 
+
+// conditionals whose branches are related under the condition / its negation
+Theorem hl_COND_if_dep : forall A:set, forall t :e 2, forall p:prop, (t = 1 <-> p) -> forall x y :e A, forall x' y':set, (p -> x = x') -> (~ p -> y = y') -> hl_COND A t x y = if p then x' else y'.
+let A t. assume Ht. let p. assume Hp. let x. assume Hx. let y. assume Hy. let x' y'. assume Hx' Hy'.
+rewrite (hl_COND_if A t Ht p Hp x Hx y Hy).
+apply (xm p).
+- assume H. exact (eq_trans_i (if p then x else y) x (if p then x' else y') (If_i_1 p x y H) (eq_trans_i x x' (if p then x' else y') (Hx' H) (eq_sym_i (if p then x' else y') x' (If_i_1 p x' y' H)))).
+- assume H. exact (eq_trans_i (if p then x else y) y (if p then x' else y') (If_i_0 p x y H) (eq_trans_i y y' (if p then x' else y') (Hy' H) (eq_sym_i (if p then x' else y') y' (If_i_0 p x' y' H)))).
+Qed.
