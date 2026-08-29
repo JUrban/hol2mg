@@ -59,7 +59,18 @@ type genv = {
    the bridge discharges it from the hypotheses in scope.  Templates use ?1.. for the literal
    arguments and ?A.. for carriers. *)
 let side_conditions : (string * string list) list =
-  [ ("CARD", [ "finite (hl_rep ?A ?1)" ]) ]
+  [ ("CARD", [ "finite (hl_rep ?A ?1)" ]);
+    ("sup", [ "exists x :e R, is_lub (hl_rep R ?1) x" ]);
+    ("inf", [ "exists x :e R, is_glb (hl_rep R ?1) x" ]) ]
+
+(* derived side conditions: (condition template, (premise templates — alternatives per slot —,
+   lemma)); premises are matched among the hypotheses in their native form, `?1` denoting the
+   native set; the lemma takes the set, its `c= R` proof and the premises in order *)
+let side_derivations : (string * (string list list * string)) list =
+  [ ("exists x :e R, is_lub (hl_rep R ?1) x",
+     ([ [ "~ ?1 = Empty"; "?1 <> Empty" ]; [ "exists b :e R, forall x :e ?1, x <= b" ] ], "lub_of_bounds"));
+    ("exists x :e R, is_glb (hl_rep R ?1) x",
+     ([ [ "~ ?1 = Empty"; "?1 <> Empty" ]; [ "exists b :e R, forall x :e ?1, b <= x" ] ], "glb_of_bounds")) ]
 
 (* the template parser only knows the God1 signature: literal-layer constants (hl_...) come back
    as variables; make them constants so that structural matching against generated terms works *)
@@ -674,8 +685,30 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         List.fold_left (fun pf sc_t ->
           let sc = Mg.normalize (Mg.inst !lsub (cstify (Mg.parse_template sc_t))) in
           (* native form after the pending rewrites *)
-          let sc_nat = List.fold_left (fun t (l, n, _) -> replace_tm l n t) sc (List.rev !rewrites) in
-          (match List.assoc_opt sc_nat g.hyps with
+          let nat_of t = List.fold_left (fun t (l, n, _) -> replace_tm l n t) t (List.rev !rewrites) in
+          let sc_nat = nat_of sc in
+          (* forward transport of a literal-level proof through the pending rewrites *)
+          let transport_fwd (prop, pf) = List.fold_left (fun (cur, pf) (l, n, pe) ->
+            if replace_tm l n cur = cur then (cur, pf)
+            else (replace_tm l n cur, Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm l (Mg.Var "hl__u") cur)) pf)) (prop, pf) (List.rev !rewrites) in
+          let derived () = (match List.assoc_opt sc_t side_derivations with
+            | None -> None
+            | Some (slots, lemma) ->
+                (match List.assoc_opt "1" !lsub, List.assoc_opt "1" !tsub with
+                 | Some la, Some s_lit ->
+                     let s_nat = nat_of s_lit in
+                     let find_slot alts = List.find_map (fun tpl ->
+                       let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
+                       List.assoc_opt p g.hyps) alts in
+                     let premises = List.map find_slot slots in
+                     if List.exists (fun p -> p = None) premises then None
+                     else begin
+                       let ca = (match s_lit with Mg.App (Mg.App (Mg.Cst "hl_rep", ca), _) -> ca | _ -> Mg.Cst "R") in
+                       let _, hsub = transport_fwd (Mg.App (Mg.App (Mg.Cst "Subq", s_lit), ca), Printf.sprintf "(hl_rep_Subq %s %s)" (ppp ca) (ppp la)) in
+                       Some (Printf.sprintf "(%s %s %s %s)" lemma (ppp s_nat) hsub (String.concat " " (List.map (fun p -> Option.get p) premises)))
+                     end
+                 | _ -> None)) in
+          (match (match List.assoc_opt sc_nat g.hyps with Some h -> Some h | None -> derived ()) with
            | None -> unsupported "side condition %s not available from hypotheses [hyps: %s]" (pp sc_nat)
                        (String.concat ", " (List.map (fun (h, _) -> pp h) g.hyps))
            | Some h ->

@@ -2696,3 +2696,109 @@ apply iffI.
     claim HPb: T b = 1. { apply (Hv b Hb). assume H2 _. exact (H2 Hfb). }
     exact (eq_trans_i a x b (Hu a Ha HPa) (eq_sym_i b x (Hu b Hb HPb))).
 Qed.
+
+Theorem hl_sup_compat : forall l1 :e 2 :^: R, (exists x :e R, is_lub (hl_rep R l1) x) -> hl_sup l1 = sup (hl_rep R l1).
+let s. assume Hs Hex.
+claim HRne: R <> Empty. { assume H. exact (EmptyE 0 (H (fun hl__u hl__v => 0 :e hl__u) real_0)). }
+claim HF: (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) :e 2 :^: R.
+{ prove (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) :e Pi_ a :e R, 2.
+  apply (lam_Pi R (fun _ => 2) (fun a => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0)).
+  let a. assume _. exact (If_in_2 ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1)). }
+claim Hub: forall a :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) <-> upper_bound (hl_rep R s) a.
+{ let a. assume Ha. prove (forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) <-> forall x :e hl_rep R s, x <= a.
+  apply iffI.
+  - assume H. let x. assume Hx.
+    claim HxR: x :e R. { exact (hl_rep_Subq R s x Hx). }
+    claim Hin: hl_IN R x s = 1. { apply (hl_IN_compat R HRne x HxR s Hs). assume _ H2. exact (H2 Hx). }
+    apply (hl_real_le_compat x HxR a Ha). assume H2 _. exact (H2 (H x HxR Hin)).
+  - assume H. let x. assume HxR. assume Hin.
+    claim Hx: x :e hl_rep R s. { apply (hl_IN_compat R HRne x HxR s Hs). assume H2 _. exact (H2 Hin). }
+    apply (hl_real_le_compat x HxR a Ha). assume _ H2. exact (H2 (H x Hx)). }
+claim HQ: forall a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1 <-> is_lub (hl_rep R s) a.
+{ let a. assume Ha.
+  apply (iff_eq1_l ((fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a) (if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) (beta R (fun a => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a Ha) (is_lub (hl_rep R s) a)).
+  apply (iff_trans ((if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) = 1) ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) (is_lub (hl_rep R s) a) (If_1_iff ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1))).
+  prove ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) <-> upper_bound (hl_rep R s) a /\ forall y :e R, upper_bound (hl_rep R s) y -> a <= y.
+  apply iffI.
+  - assume H. apply H. assume H1 H2. apply andI.
+    + apply (Hub a Ha). assume H3 _. exact (H3 H1).
+    + let y. assume Hy Huy.
+      claim H4: forall x :e R, hl_IN R x s = 1 -> hl_real_le x y = 1. { apply (Hub y Hy). assume _ H5. exact (H5 Huy). }
+      apply (hl_real_le_compat a Ha y Hy). assume H5 _. exact (H5 (H2 y Hy H4)).
+  - assume H. apply H. assume H1 H2. apply andI.
+    + apply (Hub a Ha). assume _ H3. exact (H3 H1).
+    + let b. assume Hb H4.
+      claim Hub_b: upper_bound (hl_rep R s) b. { apply (Hub b Hb). assume H5 _. exact (H5 H4). }
+      apply (hl_real_le_compat a Ha b Hb). assume _ H5. exact (H5 (H2 b Hb Hub_b)). }
+claim Hex2: exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1.
+{ apply Hex. let a. assume Ha0. apply Ha0. assume Ha Hl. witness a. apply andI.
+  - exact Ha.
+  - apply (HQ a Ha). assume _ H. exact (H Hl). }
+claim Hiff: forall a:set, (a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1) <-> (a :e R /\ is_lub (hl_rep R s) a).
+{ let a. apply iffI.
+  - assume H. apply H. assume Ha H1. apply andI.
+    + exact Ha.
+    + apply (HQ a Ha). assume H2 _. exact (H2 H1).
+  - assume H. apply H. assume Ha H1. apply andI.
+    + exact Ha.
+    + apply (HQ a Ha). assume _ H2. exact (H2 H1). }
+claim Hpe: (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1) = (fun x:set => x :e R /\ is_lub (hl_rep R s) x).
+{ exact (pred_ext (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1) (fun x:set => x :e R /\ is_lub (hl_rep R s) x) Hiff). }
+rewrite (hl_sup_unfold s Hs). rewrite (hl_select_eq R (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) HF).
+prove (if (exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1) then Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1) else Eps_i (fun a:set => a :e R)) = Eps_i (fun x:set => x :e R /\ is_lub (hl_rep R s) x).
+rewrite (If_i_1 (exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1) (Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1)) (Eps_i (fun a:set => a :e R)) Hex2).
+exact (eq_sym_i (Eps_i (fun x:set => x :e R /\ is_lub (hl_rep R s) x)) (Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1)) (Hpe (fun hl__u hl__v => Eps_i hl__u = Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1) then 1 else 0) a = 1)) (fun q H => H))).
+Qed.
+
+Theorem hl_inf_compat : forall l1 :e 2 :^: R, (exists x :e R, is_glb (hl_rep R l1) x) -> hl_inf l1 = inf (hl_rep R l1).
+let s. assume Hs Hex.
+claim HRne: R <> Empty. { assume H. exact (EmptyE 0 (H (fun hl__u hl__v => 0 :e hl__u) real_0)). }
+claim HF: (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) :e 2 :^: R.
+{ prove (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) :e Pi_ a :e R, 2.
+  apply (lam_Pi R (fun _ => 2) (fun a => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0)).
+  let a. assume _. exact (If_in_2 ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1)). }
+claim Hub: forall a :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) <-> lower_bound (hl_rep R s) a.
+{ let a. assume Ha. prove (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) <-> forall x :e hl_rep R s, a <= x.
+  apply iffI.
+  - assume H. let x. assume Hx.
+    claim HxR: x :e R. { exact (hl_rep_Subq R s x Hx). }
+    claim Hin: hl_IN R x s = 1. { apply (hl_IN_compat R HRne x HxR s Hs). assume _ H2. exact (H2 Hx). }
+    apply (hl_real_le_compat a Ha x HxR). assume H2 _. exact (H2 (H x HxR Hin)).
+  - assume H. let x. assume HxR. assume Hin.
+    claim Hx: x :e hl_rep R s. { apply (hl_IN_compat R HRne x HxR s Hs). assume H2 _. exact (H2 Hin). }
+    apply (hl_real_le_compat a Ha x HxR). assume _ H2. exact (H2 (H x Hx)). }
+claim HQ: forall a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1 <-> is_glb (hl_rep R s) a.
+{ let a. assume Ha.
+  apply (iff_eq1_l ((fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a) (if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) (beta R (fun a => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a Ha) (is_glb (hl_rep R s) a)).
+  apply (iff_trans ((if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) = 1) ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) (is_glb (hl_rep R s) a) (If_1_iff ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1))).
+  prove ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) <-> lower_bound (hl_rep R s) a /\ forall y :e R, lower_bound (hl_rep R s) y -> y <= a.
+  apply iffI.
+  - assume H. apply H. assume H1 H2. apply andI.
+    + apply (Hub a Ha). assume H3 _. exact (H3 H1).
+    + let y. assume Hy Huy.
+      claim H4: forall x :e R, hl_IN R x s = 1 -> hl_real_le y x = 1. { apply (Hub y Hy). assume _ H5. exact (H5 Huy). }
+      apply (hl_real_le_compat y Hy a Ha). assume H5 _. exact (H5 (H2 y Hy H4)).
+  - assume H. apply H. assume H1 H2. apply andI.
+    + apply (Hub a Ha). assume _ H3. exact (H3 H1).
+    + let b. assume Hb H4.
+      claim Hub_b: lower_bound (hl_rep R s) b. { apply (Hub b Hb). assume H5 _. exact (H5 H4). }
+      apply (hl_real_le_compat b Hb a Ha). assume _ H5. exact (H5 (H2 b Hb Hub_b)). }
+claim Hex2: exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1.
+{ apply Hex. let a. assume Ha0. apply Ha0. assume Ha Hl. witness a. apply andI.
+  - exact Ha.
+  - apply (HQ a Ha). assume _ H. exact (H Hl). }
+claim Hiff: forall a:set, (a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) <-> (a :e R /\ is_glb (hl_rep R s) a).
+{ let a. apply iffI.
+  - assume H. apply H. assume Ha H1. apply andI.
+    + exact Ha.
+    + apply (HQ a Ha). assume H2 _. exact (H2 H1).
+  - assume H. apply H. assume Ha H1. apply andI.
+    + exact Ha.
+    + apply (HQ a Ha). assume _ H2. exact (H2 H1). }
+claim Hpe: (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) = (fun x:set => x :e R /\ is_glb (hl_rep R s) x).
+{ exact (pred_ext (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) (fun x:set => x :e R /\ is_glb (hl_rep R s) x) Hiff). }
+rewrite (hl_inf_unfold s Hs). rewrite (hl_select_eq R (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) HF).
+prove (if (exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) then Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) else Eps_i (fun a:set => a :e R)) = Eps_i (fun x:set => x :e R /\ is_glb (hl_rep R s) x).
+rewrite (If_i_1 (exists a :e R, (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1) (Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1)) (Eps_i (fun a:set => a :e R)) Hex2).
+exact (eq_sym_i (Eps_i (fun x:set => x :e R /\ is_glb (hl_rep R s) x)) (Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1)) (Hpe (fun hl__u hl__v => Eps_i hl__u = Eps_i (fun a:set => a :e R /\ (fun a :e R => if ((forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1) then 1 else 0) a = 1)) (fun q H => H))).
+Qed.

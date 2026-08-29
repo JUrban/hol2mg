@@ -653,3 +653,28 @@ apply (xm (exists x :e A, P x)).
   rewrite (If_i_0 (exists x :e A, Q x) (Eps_i (fun x:set => x :e A /\ Q x)) (Eps_i (fun x:set => x :e A)) H2).
   exact (fun q H => H).
 Qed.
+
+// ---- least upper / greatest lower bounds from nonemptiness and boundedness ----
+Theorem lub_of_bounds : forall S:set, S c= R -> ~ S = Empty -> (exists b :e R, forall x :e S, x <= b) -> exists x :e R, is_lub S x.
+let S. assume HS Hne Hb.
+claim Hnonempty: nonempty S.
+{ prove exists x, x :e S. apply (xm (exists x, x :e S)).
+  - assume H. exact H.
+  - assume H.
+    claim HE: S = Empty. { apply (Empty_eq S). let x. assume Hx. apply H. witness x. exact Hx. }
+    exact (FalseE (Hne HE) (exists x, x :e S)). }
+claim Hbounded: bounded_above S. { exact Hb. }
+exact (lub_exists_R S HS Hnonempty Hbounded).
+Qed.
+
+Theorem glb_of_bounds : forall S:set, S c= R -> ~ S = Empty -> (exists b :e R, forall x :e S, b <= x) -> exists x :e R, is_glb S x.
+let S. assume HS Hne Hb.
+claim Hnonempty: nonempty S.
+{ prove exists x, x :e S. apply (xm (exists x, x :e S)).
+  - assume H. exact H.
+  - assume H.
+    claim HE: S = Empty. { apply (Empty_eq S). let x. assume Hx. apply H. witness x. exact Hx. }
+    exact (FalseE (Hne HE) (exists x, x :e S)). }
+claim Hbounded: bounded_below S. { exact Hb. }
+exact (glb_exists_R_of_lub_exists_R R_has_lub_property S HS Hnonempty Hbounded).
+Qed.

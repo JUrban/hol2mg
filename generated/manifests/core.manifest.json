@@ -10988,7 +10988,7 @@
    "statement": "forall s c= R, forall a :e R, (exists b :e R, forall x :e R, x :e s -> x <= b) /\\ a :e s -> a <= sup s",
    "literal": "forall s :e 2 :^: R, forall a :e R, (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ hl_IN R a s = 1 -> hl_real_le a (hl_sup s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: a :e s, exists b :e R, forall x :e R, x :e s -> x <= b]",
    "bridge": ""
   },
   {
@@ -19753,7 +19753,7 @@
    "statement": "forall s c= R, forall l :e R, is_glb s l <-> ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> b <= x) /\\ inf s = l)",
    "literal": "forall s :e 2 :^: R, forall l :e R, hl_has_inf s l = 1 <-> ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ hl_inf s = l)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -20940,7 +20940,7 @@
    "statement": "forall s c= R, forall l :e R, is_lub s l <-> ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> x <= b) /\\ sup s = l)",
    "literal": "forall s :e 2 :^: R, forall l :e R, hl_has_sup s l = 1 <-> ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ hl_sup s = l)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -23180,7 +23180,7 @@
    "statement": "forall s c= R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> b <= x) -> (forall x :e R, x :e s -> inf s <= x) /\\ forall b :e R, (forall x :e R, x :e s -> b <= x) -> b <= inf s",
    "literal": "forall s :e 2 :^: R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> (forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_inf s) x = 1) /\\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b (hl_inf s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> b <= x, exists b :e R, forall x :e R, x :e s -> b <= x, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -23584,7 +23584,7 @@
    "statement": "forall s c= R, forall c :e R, ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> b <= x) /\\ inf s < c) -> exists x :e R, x :e s /\\ x < c",
    "literal": "forall s :e 2 :^: R, forall c :e R, ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ hl_real_lt (hl_inf s) c = 1) -> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt x c = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -23612,7 +23612,7 @@
    "statement": "forall s t c= R, (forall a :e R, (forall x :e R, x :e s -> a <= x) <-> forall x :e R, x :e t -> a <= x) -> inf s = inf t",
    "literal": "forall s t :e 2 :^: R, (forall a :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) <-> forall x :e R, hl_IN R x t = 1 -> hl_real_le a x = 1) -> hl_inf s = hl_inf t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall a :e R, (forall x :e R, x :e s -> a <= x) <-> forall x :e R, x :e t -> a <= x]",
    "bridge": ""
   },
   {
@@ -23669,7 +23669,7 @@
    "statement": "forall s c= R, finite s /\\ ~ s = Empty -> inf s :e s /\\ forall x :e R, x :e s -> inf s <= x",
    "literal": "forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> hl_IN R (hl_inf s) s = 1 /\\ forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_inf s) x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: x :e s, ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -23727,7 +23727,7 @@
    "statement": "forall x :e R, forall s c= R, finite s -> inf (SetAdjoin s x) = if s = Empty then x else if x <= inf s then x else inf s",
    "literal": "forall x :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 -> hl_inf (hl_INSERT R x s) = hl_COND R (if s = hl_EMPTY R then 1 else 0) x (hl_real_min x (hl_inf s))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x0 :e R, is_glb (SetAdjoin s x) x0 not available from hypotheses [hyps: finite s]",
    "bridge": ""
   },
   {
@@ -23755,7 +23755,7 @@
    "statement": "forall a b :e R, forall s c= R, inf (SetAdjoin (SetAdjoin s a) b) = inf (SetAdjoin s (if a <= b then a else b))",
    "literal": "forall a b :e R, forall s :e 2 :^: R, hl_inf (hl_INSERT R b (hl_INSERT R a s)) = hl_inf (hl_INSERT R (hl_real_min a b) s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb (SetAdjoin (SetAdjoin s a) b) x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -23783,7 +23783,7 @@
    "statement": "forall s c= R, forall a :e R, (exists b :e R, forall x :e R, x :e s -> b <= x) /\\ a :e s -> inf s <= a",
    "literal": "forall s :e 2 :^: R, forall a :e R, (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ hl_IN R a s = 1 -> hl_real_le (hl_inf s) a = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: a :e s, exists b :e R, forall x :e R, x :e s -> b <= x]",
    "bridge": ""
   },
   {
@@ -23810,7 +23810,7 @@
    "statement": "forall a :e R, inf {a} = a",
    "literal": "forall a :e R, hl_inf (hl_INSERT R a (hl_EMPTY R)) = a",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
    "bridge": ""
   },
   {
@@ -23838,7 +23838,7 @@
    "statement": "forall s t c= R, ~ s = Empty /\\ (~ t = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> b <= x) /\\ (exists c :e R, forall x :e R, x :e t -> c <= x))) -> inf (s :\\/: t) = if inf s <= inf t then inf s else inf t",
    "literal": "forall s t :e 2 :^: R, ~ s = hl_EMPTY R /\\ (~ t = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ (exists c :e R, forall x :e R, hl_IN R x t = 1 -> hl_real_le c x = 1))) -> hl_inf (hl_UNION R s t) = hl_real_min (hl_inf s) (hl_inf t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb (s :\\/: t) x not available from hypotheses [hyps: exists c :e R, forall x :e R, x :e t -> c <= x, exists b :e R, forall x :e R, x :e s -> b <= x, ~ t = Empty, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -23866,7 +23866,7 @@
    "statement": "forall s c= R, forall b :e R, (forall c :e R, (forall x :e R, x :e s -> c <= x) <-> c <= b) -> inf s = b",
    "literal": "forall s :e 2 :^: R, forall b :e R, (forall c :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le c x = 1) <-> hl_real_le c b = 1) -> hl_inf s = b",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall c :e R, (forall x :e R, x :e s -> c <= x) <-> c <= b]",
    "bridge": ""
   },
   {
@@ -23897,7 +23897,7 @@
    "statement": "forall a :e R, forall s c= R, finite s /\\ ~ s = Empty -> (inf s = a <-> a :e s /\\ forall y :e R, y :e s -> a <= y)",
    "literal": "forall a :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_inf s = a <-> hl_IN R a s = 1 /\\ forall y :e R, hl_IN R y s = 1 -> hl_real_le a y = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -55041,7 +55041,7 @@
    "statement": "forall s c= R, forall a :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> abs_SNo x <= a) -> abs_SNo (inf s) <= a",
    "literal": "forall s :e 2 :^: R, forall a :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_real_abs x) a = 1) -> hl_real_le (hl_real_abs (hl_inf s)) a = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> abs_SNo x <= a, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -55575,7 +55575,7 @@
    "statement": "forall s c= R, forall a :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> abs_SNo x <= a) -> abs_SNo (sup s) <= a",
    "literal": "forall s :e 2 :^: R, forall a :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_real_abs x) a = 1) -> hl_real_le (hl_real_abs (hl_sup s)) a = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> abs_SNo x <= a, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -57583,7 +57583,7 @@
    "statement": "forall s c= R, forall l e0 :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> abs_SNo (x + - l) <= e0) -> abs_SNo (inf s + - l) <= e0",
    "literal": "forall s :e 2 :^: R, forall l e1 :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_real_abs (hl_real_sub x l)) e1 = 1) -> hl_real_le (hl_real_abs (hl_real_sub (hl_inf s) l)) e1 = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> abs_SNo (x + - l) <= e0, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -57611,7 +57611,7 @@
    "statement": "forall s c= R, forall a b :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> a <= x /\\ x <= b) -> a <= inf s /\\ inf s <= b",
    "literal": "forall s :e 2 :^: R, forall a b :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1 /\\ hl_real_le x b = 1) -> hl_real_le a (hl_inf s) = 1 /\\ hl_real_le (hl_inf s) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> a <= x /\\ x <= b, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -57639,7 +57639,7 @@
    "statement": "forall s c= R, forall a b y :e R, y :e s /\\ (y <= b /\\ (forall x :e R, x :e s -> a <= x)) -> inf s <= b",
    "literal": "forall s :e 2 :^: R, forall a b y :e R, hl_IN R y s = 1 /\\ (hl_real_le y b = 1 /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1)) -> hl_real_le (hl_inf s) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> a <= x, y <= b, y :e s]",
    "bridge": ""
   },
   {
@@ -57668,7 +57668,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (inf s <= a <-> exists x :e R, x :e s /\\ x <= a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le (hl_inf s) a = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_le x a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -57697,7 +57697,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (inf s < a <-> exists x :e R, x :e s /\\ x < a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt (hl_inf s) a = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt x a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -57725,7 +57725,7 @@
    "statement": "forall s c= R, forall b :e R, (forall x :e R, x :e s -> b <= x) /\\ (forall b' :e R, b < b' -> exists x :e R, x :e s /\\ x < b') -> inf s = b",
    "literal": "forall s :e 2 :^: R, forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ (forall b' :e R, hl_real_lt b b' = 1 -> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt x b' = 1) -> hl_inf s = b",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall b' :e R, b < b' -> exists x :e R, x :e s /\\ x < b', forall x :e R, x :e s -> b <= x]",
    "bridge": ""
   },
   {
@@ -58573,7 +58573,7 @@
    "statement": "forall s c= R, forall b :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> b <= x) -> b <= inf s",
    "literal": "forall s :e 2 :^: R, forall b :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b (hl_inf s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> b <= x, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -58601,7 +58601,7 @@
    "statement": "forall s c= R, forall y :e R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> b <= x) -> (y <= inf s <-> forall x :e R, x :e s -> y <= x)",
    "literal": "forall s :e 2 :^: R, forall y :e R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> (hl_real_le y (hl_inf s) = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le y x = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: exists b :e R, forall x :e R, x :e s -> b <= x, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -58630,7 +58630,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a <= inf s <-> forall x :e R, x :e s -> a <= x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le a (hl_inf s) = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -58658,7 +58658,7 @@
    "statement": "forall s t c= R, ~ t = Empty /\\ (t c= s /\\ (exists b :e R, forall x :e R, x :e s -> b <= x)) -> inf s <= inf t",
    "literal": "forall s t :e 2 :^: R, ~ t = hl_EMPTY R /\\ (hl_SUBSET R t s = 1 /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1)) -> hl_real_le (hl_inf s) (hl_inf t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: exists b :e R, forall x :e R, x :e s -> b <= x, t c= s, ~ t = Empty]",
    "bridge": ""
   },
   {
@@ -59739,7 +59739,7 @@
    "statement": "forall s c= R, forall a b y :e R, y :e s /\\ (a <= y /\\ (forall x :e R, x :e s -> x <= b)) -> a <= sup s",
    "literal": "forall s :e 2 :^: R, forall a b y :e R, hl_IN R y s = 1 /\\ (hl_real_le a y = 1 /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1)) -> hl_real_le a (hl_sup s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> x <= b, a <= y, y :e s]",
    "bridge": ""
   },
   {
@@ -59768,7 +59768,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a <= sup s <-> exists x :e R, x :e s /\\ a <= x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le a (hl_sup s) = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_le a x = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -60575,7 +60575,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a < inf s <-> forall x :e R, x :e s -> a < x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt a (hl_inf s) = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_lt a x = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -61628,7 +61628,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a < sup s <-> exists x :e R, x :e s /\\ a < x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt a (hl_sup s) = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt a x = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -61882,7 +61882,7 @@
    "statement": "forall x y :e R, (if x <= y then y else x) = sup {x,y}",
    "literal": "forall x y :e R, hl_real_max x y = hl_sup (hl_INSERT R x (hl_INSERT R y (hl_EMPTY R)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty y differs from elaborated {y}",
    "bridge": ""
   },
   {
@@ -61998,7 +61998,7 @@
    "statement": "forall x y :e R, (if x <= y then x else y) = inf {x,y}",
    "literal": "forall x y :e R, hl_real_min x y = hl_inf (hl_INSERT R x (hl_INSERT R y (hl_EMPTY R)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty y differs from elaborated {y}",
    "bridge": ""
   },
   {
@@ -66667,7 +66667,7 @@
    "statement": "forall s c= R, forall l e0 :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> abs_SNo (x + - l) <= e0) -> abs_SNo (sup s + - l) <= e0",
    "literal": "forall s :e 2 :^: R, forall l e1 :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_real_abs (hl_real_sub x l)) e1 = 1) -> hl_real_le (hl_real_abs (hl_real_sub (hl_sup s) l)) e1 = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> abs_SNo (x + - l) <= e0, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -66695,7 +66695,7 @@
    "statement": "forall s c= R, forall a b :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> a <= x /\\ x <= b) -> a <= sup s /\\ sup s <= b",
    "literal": "forall s :e 2 :^: R, forall a b :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1 /\\ hl_real_le x b = 1) -> hl_real_le a (hl_sup s) = 1 /\\ hl_real_le (hl_sup s) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> a <= x /\\ x <= b, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -66753,7 +66753,7 @@
    "statement": "forall s c= R, forall b :e R, ~ s = Empty /\\ (forall x :e R, x :e s -> x <= b) -> sup s <= b",
    "literal": "forall s :e 2 :^: R, forall b :e R, ~ s = hl_EMPTY R /\\ (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le (hl_sup s) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> x <= b, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -66781,7 +66781,7 @@
    "statement": "forall s c= R, forall y :e R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> x <= b) -> (sup s <= y <-> forall x :e R, x :e s -> x <= y)",
    "literal": "forall s :e 2 :^: R, forall y :e R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> (hl_real_le (hl_sup s) y = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le x y = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: exists b :e R, forall x :e R, x :e s -> x <= b, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -66810,7 +66810,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (sup s <= a <-> forall x :e R, x :e s -> x <= a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le (hl_sup s) a = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -66838,7 +66838,7 @@
    "statement": "forall s t c= R, ~ s = Empty /\\ (s c= t /\\ (exists b :e R, forall x :e R, x :e t -> x <= b)) -> sup s <= sup t",
    "literal": "forall s t :e 2 :^: R, ~ s = hl_EMPTY R /\\ (hl_SUBSET R s t = 1 /\\ (exists b :e R, forall x :e R, hl_IN R x t = 1 -> hl_real_le x b = 1)) -> hl_real_le (hl_sup s) (hl_sup t) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: exists b :e R, forall x :e R, x :e t -> x <= b, s c= t, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -66867,7 +66867,7 @@
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (sup s < a <-> forall x :e R, x :e s -> x < a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt (hl_sup s) a = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_lt x a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -66895,7 +66895,7 @@
    "statement": "forall s c= R, forall b :e R, (forall x :e R, x :e s -> x <= b) /\\ (forall b' :e R, b' < b -> exists x :e R, x :e s /\\ b' < x) -> sup s = b",
    "literal": "forall s :e 2 :^: R, forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ (forall b' :e R, hl_real_lt b' b = 1 -> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt b' x = 1) -> hl_sup s = b",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall b' :e R, b' < b -> exists x :e R, x :e s /\\ b' < x, forall x :e R, x :e s -> x <= b]",
    "bridge": ""
   },
   {
@@ -74391,7 +74391,7 @@
    "statement": "forall s c= R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> x <= b) -> (forall x :e R, x :e s -> x <= sup s) /\\ forall b :e R, (forall x :e R, x :e s -> x <= b) -> sup s <= b",
    "literal": "forall s :e 2 :^: R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> (forall x :e R, hl_IN R x s = 1 -> hl_real_le x (hl_sup s) = 1) /\\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le (hl_sup s) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> x <= b, exists b :e R, forall x :e R, x :e s -> x <= b, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -74732,7 +74732,7 @@
    "statement": "forall s c= R, forall c :e R, ~ s = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> x <= b) /\\ c < sup s) -> exists x :e R, x :e s /\\ c < x",
    "literal": "forall s :e 2 :^: R, forall c :e R, ~ s = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ hl_real_lt c (hl_sup s) = 1) -> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt c x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -74760,7 +74760,7 @@
    "statement": "forall s t c= R, (forall b :e R, (forall x :e R, x :e s -> x <= b) <-> forall x :e R, x :e t -> x <= b) -> sup s = sup t",
    "literal": "forall s t :e 2 :^: R, (forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) <-> forall x :e R, hl_IN R x t = 1 -> hl_real_le x b = 1) -> hl_sup s = hl_sup t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall b :e R, (forall x :e R, x :e s -> x <= b) <-> forall x :e R, x :e t -> x <= b]",
    "bridge": ""
   },
   {
@@ -74817,7 +74817,7 @@
    "statement": "forall s c= R, finite s /\\ ~ s = Empty -> sup s :e s /\\ forall x :e R, x :e s -> x <= sup s",
    "literal": "forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> hl_IN R (hl_sup s) s = 1 /\\ forall x :e R, hl_IN R x s = 1 -> hl_real_le x (hl_sup s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: x :e s, ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -74875,7 +74875,7 @@
    "statement": "forall x :e R, forall s c= R, finite s -> sup (SetAdjoin s x) = if s = Empty then x else if x <= sup s then sup s else x",
    "literal": "forall x :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 -> hl_sup (hl_INSERT R x s) = hl_COND R (if s = hl_EMPTY R then 1 else 0) x (hl_real_max x (hl_sup s))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x0 :e R, is_lub (SetAdjoin s x) x0 not available from hypotheses [hyps: finite s]",
    "bridge": ""
   },
   {
@@ -74903,7 +74903,7 @@
    "statement": "forall a b :e R, forall s c= R, sup (SetAdjoin (SetAdjoin s a) b) = sup (SetAdjoin s (if a <= b then b else a))",
    "literal": "forall a b :e R, forall s :e 2 :^: R, hl_sup (hl_INSERT R b (hl_INSERT R a s)) = hl_sup (hl_INSERT R (hl_real_max a b) s)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub (SetAdjoin (SetAdjoin s a) b) x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -74930,7 +74930,7 @@
    "statement": "forall a :e R, sup {a} = a",
    "literal": "forall a :e R, hl_sup (hl_INSERT R a (hl_EMPTY R)) = a",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
    "bridge": ""
   },
   {
@@ -74958,7 +74958,7 @@
    "statement": "forall s t c= R, ~ s = Empty /\\ (~ t = Empty /\\ ((exists b :e R, forall x :e R, x :e s -> x <= b) /\\ (exists c :e R, forall x :e R, x :e t -> x <= c))) -> sup (s :\\/: t) = if sup s <= sup t then sup t else sup s",
    "literal": "forall s t :e 2 :^: R, ~ s = hl_EMPTY R /\\ (~ t = hl_EMPTY R /\\ ((exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ (exists c :e R, forall x :e R, hl_IN R x t = 1 -> hl_real_le x c = 1))) -> hl_sup (hl_UNION R s t) = hl_real_max (hl_sup s) (hl_sup t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub (s :\\/: t) x not available from hypotheses [hyps: exists c :e R, forall x :e R, x :e t -> x <= c, exists b :e R, forall x :e R, x :e s -> x <= b, ~ t = Empty, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -74986,7 +74986,7 @@
    "statement": "forall s c= R, forall b :e R, (forall c :e R, (forall x :e R, x :e s -> x <= c) <-> b <= c) -> sup s = b",
    "literal": "forall s :e 2 :^: R, forall b :e R, (forall c :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x c = 1) <-> hl_real_le b c = 1) -> hl_sup s = b",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall c :e R, (forall x :e R, x :e s -> x <= c) <-> b <= c]",
    "bridge": ""
   },
   {
@@ -75017,7 +75017,7 @@
    "statement": "forall a :e R, forall s c= R, finite s /\\ ~ s = Empty -> (sup s = a <-> a :e s /\\ forall y :e R, y :e s -> y <= a)",
    "literal": "forall a :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_sup s = a <-> hl_IN R a s = 1 /\\ forall y :e R, hl_IN R y s = 1 -> hl_real_le y a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
    "bridge": ""
   },
   {
@@ -80458,7 +80458,7 @@
    "statement": "forall s c= R, inf s = choose_in R (fun a:set => (forall x :e R, x :e s -> a <= x) /\\ forall b :e R, (forall x :e R, x :e s -> b <= x) -> b <= a)",
    "literal": "forall s :e 2 :^: R, hl_inf s = hl_select R (fun a :e R => if (forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1) /\\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b a = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_inf_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84484,7 +84484,7 @@
    "statement": "forall s c= R, sup s = choose_in R (fun a:set => (forall x :e R, x :e s -> x <= a) /\\ forall b :e R, (forall x :e R, x :e s -> x <= b) -> a <= b)",
    "literal": "forall s :e 2 :^: R, hl_sup s = hl_select R (fun a :e R => if (forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1) /\\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le a b = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sup_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
