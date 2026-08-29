@@ -4646,7 +4646,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\\ finite t -> finite_cardinality (\\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t}) = finite_cardinality s * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_CARD (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_130 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_130 (if hl_IN A x s = 1 /\\ hl_IN B y t = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)) = hl_mul (hl_CARD A s) (hl_CARD B t)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
+   "cert_error": "bridge_unsupported: side condition finite (\\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t}) not available from hypotheses [hyps: finite t, finite s]",
    "bridge": ""
   },
   {
@@ -6780,9 +6780,9 @@
    "source": "!s:A->bool. !t:B->bool. CROSS s t = GSPEC (\\GEN%PVAR%132:A#B. ?x:A. ?y:B. SETSPEC GEN%PVAR%132 (x IN s /\\ y IN t) (x , y))",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, s :*: t = \\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_CROSS A B s t = hl_GSPEC (A :*: B) (fun GEN_PVAR_132 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_132 (if hl_IN A x s = 1 /\\ hl_IN B y t = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CROSS_bridge"
   },
   {
    "name": "CROSS_DIFF",
@@ -7142,7 +7142,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f c= Power A, forall g c= Power B, Union f :*: Union g = Union (\\/_ s :e Power A, {s :*: t | t :e Power B, s :e f /\\ t :e g})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e 2 :^: (2 :^: A), forall g :e 2 :^: (2 :^: B), hl_CROSS A B (hl_UNIONS A f) (hl_UNIONS B g) = hl_UNIONS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_133 :e 2 :^: (A :*: B) => if exists s :e 2 :^: A, exists t :e 2 :^: B, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_133 (if hl_IN (2 :^: A) s f = 1 /\\ hl_IN (2 :^: B) t g = 1 then 1 else 0) (hl_CROSS A B s t) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (Power (A :*: B))), 1 args)",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -8581,9 +8581,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !t:K->A->bool. DISJOINT (disjoint_union k s) (disjoint_union k t) <=> (!i:K. i IN k ==> DISJOINT (s i) (t i))",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :/\\: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = Empty <-> forall i :e K, i :e k -> s i :/\\: t i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_DISJOINT (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = 1 <-> forall i :e K, hl_IN K i k = 1 -> hl_DISJOINT A (s i) (t i) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DISJOINT_DISJOINT_UNION_bridge"
   },
   {
    "name": "DISJOINT_EMPTY",
@@ -8839,9 +8839,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !t:K->A->bool. disjoint_union k s = disjoint_union k t <=> (!i:K. i IN k ==> s i = t i)",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} <-> forall i :e K, i :e k -> s i = t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_disjoint_union K A k s = hl_disjoint_union K A k t <-> forall i :e K, hl_IN K i k = 1 -> s i = t i",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DISJOINT_UNION_EQ_bridge"
   },
   {
    "name": "DISJOINT_UNION_EQ_EMPTY",
@@ -8869,9 +8869,9 @@
    "source": "!k:K->bool. !s:K->A->bool. disjoint_union k s = EMPTY <=> (!i:K. i IN k ==> s i = EMPTY)",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} = Empty <-> forall i :e K, i :e k -> s i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_disjoint_union K A k s = hl_EMPTY (K :*: A) <-> forall i :e K, hl_IN K i k = 1 -> s i = hl_EMPTY A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DISJOINT_UNION_EQ_EMPTY_bridge"
   },
   {
    "name": "DISJ_ACI",
@@ -16571,9 +16571,9 @@
    "source": "!s:A->bool. !t:B->bool. FINITE s /\\ FINITE t ==> FINITE (GSPEC (\\GEN%PVAR%129:A#B. ?x:A. ?y:B. SETSPEC GEN%PVAR%129 (x IN s /\\ y IN t) (x , y)))",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall t c= B, finite s /\\ finite t -> finite (\\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t})",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_FINITE (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_129 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_129 (if hl_IN A x s = 1 /\\ hl_IN B y t = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_PRODUCT_bridge"
   },
   {
    "name": "FINITE_PRODUCT_DEPENDENT",
@@ -16601,9 +16601,9 @@
    "source": "!f:A->B->C. !s:A->bool. !t:A->B->bool. FINITE s /\\ (!x:A. x IN s ==> FINITE (t x)) ==> FINITE (GSPEC (\\GEN%PVAR%128:C. ?x:A. ?y:B. SETSPEC GEN%PVAR%128 (x IN s /\\ y IN t x) (f x y)))",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t :e Power B :^: A, finite s /\\ (forall x :e A, x :e s -> finite (t x)) -> finite (\\/_ x :e A, {f x y | y :e B, x :e s /\\ y :e t x})",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1) -> hl_FINITE C (hl_GSPEC C (fun GEN_PVAR_128 :e C => if exists x :e A, exists y :e B, hl_SETSPEC C GEN_PVAR_128 (if hl_IN A x s = 1 /\\ hl_IN B y (t x) = 1 then 1 else 0) (f x y) = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power C), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_PRODUCT_DEPENDENT_bridge"
   },
   {
    "name": "FINITE_PROD_IMAGE",
@@ -20615,9 +20615,9 @@
    "source": "!s:A->bool. !m:num. !t:B->bool. !n:num. HAS_SIZE s m /\\ HAS_SIZE t n ==> HAS_SIZE (GSPEC (\\GEN%PVAR%131:A#B. ?x:A. ?y:B. SETSPEC GEN%PVAR%131 (x IN s /\\ y IN t) (x , y))) (m * n)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e omega, forall t c= B, forall n :e omega, equip s m /\\ equip t n -> equip (\\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t}) (m * n)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall m :e omega, forall t :e 2 :^: B, forall n :e omega, hl_HAS_SIZE A s m = 1 /\\ hl_HAS_SIZE B t n = 1 -> hl_HAS_SIZE (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_131 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_131 (if hl_IN A x s = 1 /\\ hl_IN B y t = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)) (hl_mul m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_PRODUCT_bridge"
   },
   {
    "name": "HAS_SIZE_PRODUCT_DEPENDENT",
@@ -20646,9 +20646,9 @@
    "source": "!s:A->bool. !m:num. !t:A->B->bool. !n:num. HAS_SIZE s m /\\ (!x:A. x IN s ==> HAS_SIZE (t x) n) ==> HAS_SIZE (GSPEC (\\GEN%PVAR%123:A#B. ?x:A. ?y:B. SETSPEC GEN%PVAR%123 (x IN s /\\ y IN t x) (x , y))) (m * n)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e omega, forall t :e Power B :^: A, forall n :e omega, equip s m /\\ (forall x :e A, x :e s -> equip (t x) n) -> equip (\\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t x}) (m * n)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall m :e omega, forall t :e 2 :^: B :^: A, forall n :e omega, hl_HAS_SIZE A s m = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_HAS_SIZE B (t x) n = 1) -> hl_HAS_SIZE (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_123 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_123 (if hl_IN A x s = 1 /\\ hl_IN B y (t x) = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)) (hl_mul m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_PRODUCT_DEPENDENT_bridge"
   },
   {
    "name": "HAS_SIZE_SET_OF_LIST",
@@ -25519,7 +25519,7 @@
    "statement": "forall A K:set, forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :/\\: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e {x0 :e A | x0 :e s (p 0) :/\\: t (p 0)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_INTER (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = hl_disjoint_union K A k (fun i :e K => hl_INTER A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -37373,9 +37373,9 @@
    "source": "!P:A->B->bool. !a:A. !b:B. a , b IN GSPEC (\\GEN%PVAR%53:A#B. ?x:A. ?y:B. SETSPEC GEN%PVAR%53 (P x y) (x , y)) <=> P a b",
    "statement": "forall A B:set, forall P:set -> set -> prop, forall a :e A, forall b :e B, (a,b) :e (\\/_ x :e A, {(x,y) | y :e B, P x y}) <-> P a b",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall a :e A, forall b :e B, hl_IN (A :*: B) (hl_pair A B a b) (hl_GSPEC (A :*: B) (fun GEN_PVAR_53 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_53 (P x y) (hl_pair A B x y) = 1 then 1 else 0)) = 1 <-> P a b = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IN_ELIM_PAIR_THM_bridge"
   },
   {
    "name": "IN_ELIM_PASTECART_THM",
@@ -50076,7 +50076,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e omega) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e omega :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_nsum A s (fun i :e A => hl_nsum B (t i) (x i)) = hl_nsum (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_302 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_302 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (omega :^: (A :*: B)) (fun f :e omega :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ omega (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view metafun(A :*: B -> omega), 1 args)",
    "bridge": ""
   },
   {
@@ -68917,9 +68917,9 @@
    "source": "!P:A#B->bool. GSPEC (\\GEN%PVAR%59:A#B. ?p:A#B. SETSPEC GEN%PVAR%59 (P p) p) = GSPEC (\\GEN%PVAR%60:A#B. ?a:A. ?b:B. SETSPEC GEN%PVAR%60 (P (a , b)) (a , b))",
    "statement": "forall A B:set, B <> Empty -> forall P:set -> prop, {p :e A :*: B | P p} = \\/_ a :e A, {(a,b) | b :e B, P (a,b)}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :*: B), hl_GSPEC (A :*: B) (fun GEN_PVAR_59 :e A :*: B => if exists p :e A :*: B, hl_SETSPEC (A :*: B) GEN_PVAR_59 (P p) p = 1 then 1 else 0) = hl_GSPEC (A :*: B) (fun GEN_PVAR_60 :e A :*: B => if exists a :e A, exists b :e B, hl_SETSPEC (A :*: B) GEN_PVAR_60 (P (hl_pair A B a b)) (hl_pair A B a b) = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SET_PAIR_THM_bridge"
   },
   {
    "name": "SET_PROVE_CASES",
@@ -70287,9 +70287,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !t:K->A->bool. disjoint_union k s SUBSET disjoint_union k t <=> (!i:K. i IN k ==> s i SUBSET t i)",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} c= {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} <-> forall i :e K, i :e k -> s i c= t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_SUBSET (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = 1 <-> forall i :e K, hl_IN K i k = 1 -> hl_SUBSET A (s i) (t i) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUBSET_DISJOINT_UNION_bridge"
   },
   {
    "name": "SUBSET_DISJOINT_UNION_EXISTS",
@@ -70317,9 +70317,9 @@
    "source": "!k:K->bool. !s:K->A->bool. !u:K#A->bool. u SUBSET disjoint_union k s <=> (?t:K->A->bool. u = disjoint_union k t /\\ (!i:K. i IN k ==> t i SUBSET s i))",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall u c= K :*: A, u c= {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} <-> exists t :e Power A :^: K, u = {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} /\\ forall i :e K, i :e k -> t i c= s i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall u :e 2 :^: (K :*: A), hl_SUBSET (K :*: A) u (hl_disjoint_union K A k s) = 1 <-> exists t :e 2 :^: A :^: K, u = hl_disjoint_union K A k t /\\ forall i :e K, hl_IN K i k = 1 -> hl_SUBSET A (t i) (s i) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUBSET_DISJOINT_UNION_EXISTS_bridge"
   },
   {
    "name": "SUBSET_EMPTY",
@@ -73919,7 +73919,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e R) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e R :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_sum A s (fun i :e A => hl_sum B (t i) (x i)) = hl_sum (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_329 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_329 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (R :^: (A :*: B)) (fun f :e R :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ R (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view metafun(A :*: B -> R), 1 args)",
    "bridge": ""
   },
   {
@@ -77408,7 +77408,7 @@
    "statement": "forall A K:set, forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :\\/: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e {x0 :e A | x0 :e s (p 0) :\\/: t (p 0)}}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_UNION (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = hl_disjoint_union K A k (fun i :e K => hl_UNION A (s i) (t i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: lambda",
    "bridge": ""
   },
   {
@@ -79795,9 +79795,9 @@
    "source": "!k:K->bool. !s:K->A->bool. disjoint_union k s = GSPEC (\\GEN%PVAR%145:K#A. ?i:K. ?x:A. SETSPEC GEN%PVAR%145 (i IN k /\\ x IN s i) (i , x))",
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} = \\/_ i :e K, {(i,x) | x :e A, i :e k /\\ x :e s i}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_disjoint_union K A k s = hl_GSPEC (K :*: A) (fun GEN_PVAR_145 :e K :*: A => if exists i :e K, exists x :e A, hl_SETSPEC (K :*: A) GEN_PVAR_145 (if hl_IN K i k = 1 /\\ hl_IN A x (s i) = 1 then 1 else 0) (hl_pair K A i x) = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "disjoint_union_bridge"
   },
   {
    "name": "dist",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2154
+  "native_certified": 2167
  }
 }

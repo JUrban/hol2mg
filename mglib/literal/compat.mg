@@ -4533,3 +4533,106 @@ apply (iff_trans (hl_EXTENSIONAL K A k f = 1 /\ forall i :e K, hl_IN K i k = 1 -
 - exact (iff_and2 (hl_EXTENSIONAL K A k f = 1) (forall x :e K, ~ x :e hl_rep K k -> f x = choose_in A (fun y:set => False)) (forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1) (forall i :e hl_rep K k, f i :e f2 i) H1 H2).
 - exact (iff_and_comm (forall x :e K, ~ x :e hl_rep K k -> f x = choose_in A (fun y:set => False)) (forall i :e hl_rep K k, f i :e f2 i)).
 Qed.
+
+// ---- comprehensions with two pattern variables ----
+Theorem hl_gspec_generic2 : forall A B C:set, forall q F:set -> set -> set, (forall x :e A, forall y :e B, q x y :e 2) -> hl_rep C (hl_GSPEC C (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0)) = {v :e C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y}.
+let A B C q F. assume Hq.
+claim HG: (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) :e 2 :^: C.
+{ prove (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) :e Pi_ v :e C, 2. apply (lam_Pi C (fun _ => 2) (fun v => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0)). let v. assume _. exact (If_in_2 (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1)). }
+rewrite (hl_GSPEC_unfold C (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) HG).
+apply set_ext.
+- let v. assume Hv.
+  claim HvC: v :e C. { exact (hl_rep_Subq C (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) v Hv). }
+  claim H1: (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) v = 1. { apply (hl_rep_iff C (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) v HvC). assume _ H. exact (H Hv). }
+  claim H2: (if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) = 1. { exact ((beta C (fun v => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) v HvC) (fun hl__u hl__v => hl__u = 1) H1). }
+  apply (SepI C (fun v => exists x :e A, exists y :e B, q x y = 1 /\ v = F x y) v HvC).
+  apply (If_1_iff (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1)). assume H3 _. apply (H3 H2). let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Hs.
+  claim HFx: F x y :e C.
+  { apply (xm (F x y :e C)).
+    - assume H. exact H.
+    - assume H. prove False.
+      claim Hs2: hl_SETSPEC C v (q x y) (F x y) = 0.
+      { prove (fun v_32420 :e C => fun v_32421 :e 2 => fun v_32422 :e C => if v_32421 = 1 /\ v_32420 = v_32422 then 1 else 0) v (q x y) (F x y) = 0.
+        rewrite (beta C (fun v_32420 => fun v_32421 :e 2 => fun v_32422 :e C => if v_32421 = 1 /\ v_32420 = v_32422 then 1 else 0) v HvC).
+        rewrite (beta 2 (fun v_32421 => fun v_32422 :e C => if v_32421 = 1 /\ v = v_32422 then 1 else 0) (q x y) (Hq x Hx y Hy)).
+        exact (beta0 C (fun v_32422 => if q x y = 1 /\ v = v_32422 then 1 else 0) (F x y) H). }
+      apply neq_0_1. rewrite <- Hs2 at 1. exact Hs. }
+  claim Hs3: (if q x y = 1 /\ v = F x y then 1 else 0) = 1.
+  { exact ((hl_SETSPEC_unfold C v HvC (q x y) (Hq x Hx y Hy) (F x y) HFx) (fun hl__u hl__v => hl__u = 1) Hs). }
+  witness x. apply andI.
+  + exact Hx.
+  + witness y. apply andI.
+    * exact Hy.
+    * apply (If_1_iff (q x y = 1 /\ v = F x y)). assume H4 _. exact (H4 Hs3).
+- let v. assume Hv. apply (SepE C (fun v => exists x :e A, exists y :e B, q x y = 1 /\ v = F x y) v Hv). assume HvC H.
+  apply (hl_rep_iff C (fun v :e C => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) v HvC). assume H1 _. apply H1.
+  rewrite (beta C (fun v => if (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) then 1 else 0) v HvC).
+  apply (If_i_1 (exists x :e A, exists y :e B, hl_SETSPEC C v (q x y) (F x y) = 1) 1 0).
+  apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy H2. apply H2. assume Hqx Hvx.
+  claim HFx: F x y :e C. { rewrite <- Hvx. exact HvC. }
+  witness x. apply andI.
+  + exact Hx.
+  + witness y. apply andI.
+    * exact Hy.
+    * rewrite (hl_SETSPEC_unfold C v HvC (q x y) (Hq x Hx y Hy) (F x y) HFx). apply (If_i_1 (q x y = 1 /\ v = F x y) 1 0). exact (andI (q x y = 1) (v = F x y) Hqx Hvx).
+Qed.
+Theorem gspec_famunion_form : forall A B C:set, forall q:set -> set -> set, forall F F':set -> set -> set, forall P:set -> set -> prop, (forall x :e A, forall y :e B, F x y :e C) -> (forall x :e A, forall y :e B, F x y = F' x y) -> (forall x :e A, forall y :e B, q x y = 1 <-> P x y) -> {v :e C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y} = \/_ x :e A, {F' x y | y :e B, P x y}.
+let A B C q F F' P. assume HF HFF HP. apply set_ext.
+- let v. assume Hv. apply (SepE C (fun v => exists x :e A, exists y :e B, q x y = 1 /\ v = F x y) v Hv). assume HvC H.
+  apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy H2. apply H2. assume Hq Hvx.
+  claim HPxy: P x y. { apply (HP x Hx y Hy). assume H3 _. exact (H3 Hq). }
+  claim Hv': v = F' x y. { exact (eq_trans_i v (F x y) (F' x y) Hvx (HFF x Hx y Hy)). }
+  apply (famunionI A (fun x => {F' x y | y :e B, P x y}) x v Hx).
+  exact ((eq_sym_i v (F' x y) Hv') (fun hl__u hl__v => hl__u :e {F' x y | y :e B, P x y}) (ReplSepI B (fun y => P x y) (fun y => F' x y) y Hy HPxy)).
+- let v. assume Hv. apply (famunionE_impred A (fun x => {F' x y | y :e B, P x y}) v Hv). let x. assume Hx Hvx.
+  apply (ReplSepE_impred B (fun y => P x y) (fun y => F' x y) v Hvx). let y. assume Hy HPxy Hv'.
+  claim Hvx': v = F x y. { exact (eq_trans_i v (F' x y) (F x y) Hv' (eq_sym_i (F x y) (F' x y) (HFF x Hx y Hy))). }
+  claim HvC: v :e C. { exact ((eq_sym_i v (F x y) Hvx') (fun hl__u hl__v => hl__u :e C) (HF x Hx y Hy)). }
+  claim Hq: q x y = 1. { apply (HP x Hx y Hy). assume _ H3. exact (H3 HPxy). }
+  apply (SepI C (fun v => exists x :e A, exists y :e B, q x y = 1 /\ v = F x y) v HvC).
+  witness x. apply andI.
+  + exact Hx.
+  + witness y. apply andI.
+    * exact Hy.
+    * exact (andI (q x y = 1) (v = F x y) Hq Hvx').
+Qed.
+
+// ---- disjoint unions of families of subsets ----
+Theorem hl_disjoint_union_compat : forall K A:set, K <> Empty -> A <> Empty -> forall l1 :e 2 :^: K, forall l2 :e 2 :^: A :^: K, forall f2:set -> set, (forall x :e K, hl_rep A (l2 x) = f2 x) -> hl_rep (K :*: A) (hl_disjoint_union K A l1 l2) = {p :e K :*: A | p 0 :e hl_rep K l1 /\ p 1 :e f2 (p 0)}.
+let K A. assume HK HA. let k. assume Hk. let s. assume Hs. let f2. assume Hpw.
+rewrite (hl_disjoint_union_unfold K A k Hk s Hs).
+apply (eq_trans_i (hl_rep (K :*: A) (hl_GSPEC (K :*: A) (fun v :e K :*: A => if exists i :e K, exists x :e A, hl_SETSPEC (K :*: A) v (if hl_IN K i k = 1 /\ hl_IN A x (s i) = 1 then 1 else 0) (hl_pair K A i x) = 1 then 1 else 0))) {v :e K :*: A | exists i :e K, exists x :e A, (if hl_IN K i k = 1 /\ hl_IN A x (s i) = 1 then 1 else 0) = 1 /\ v = hl_pair K A i x} {p :e K :*: A | p 0 :e hl_rep K k /\ p 1 :e f2 (p 0)} (hl_gspec_generic2 K A (K :*: A) (fun i x => (if hl_IN K i k = 1 /\ hl_IN A x (s i) = 1 then 1 else 0)) (fun i x => hl_pair K A i x) (fun i Hi x Hx => If_in_2 (hl_IN K i k = 1 /\ hl_IN A x (s i) = 1)))).
+apply (Sep_ext_iff (K :*: A) (fun v => exists i :e K, exists x :e A, (if hl_IN K i k = 1 /\ hl_IN A x (s i) = 1 then 1 else 0) = 1 /\ v = hl_pair K A i x) (fun p => p 0 :e hl_rep K k /\ p 1 :e f2 (p 0))).
+let p. assume Hp. apply iffI.
+- assume H. apply H. let i. assume Hi0. apply Hi0. assume Hi Hx0. apply Hx0. let x. assume Hx1. apply Hx1. assume Hx H2. apply H2. assume Hc Hpe.
+  claim Hc': (hl_IN K i k = 1 /\ hl_IN A x (s i) = 1). { apply (If_1_iff (hl_IN K i k = 1 /\ hl_IN A x (s i) = 1)). assume H3 _. exact (H3 Hc). }
+  apply Hc'. assume Hik Hxs.
+  claim Hpe': p = (i,x). { exact (eq_trans_i p (hl_pair K A i x) (i,x) Hpe (hl_pair_compat K A HK HA i Hi x Hx)). }
+  claim Hp0: p 0 = i. { exact (eq_trans_i (p 0) ((i,x) 0) i (f_equal (fun u => u 0) p (i,x) Hpe') (tuple_2_0_eq i x)). }
+  claim Hp1: p 1 = x. { exact (eq_trans_i (p 1) ((i,x) 1) x (f_equal (fun u => u 1) p (i,x) Hpe') (tuple_2_1_eq i x)). }
+  claim Hsi: s i :e 2 :^: A. { exact (setexp_ap K (2 :^: A) s Hs i Hi). }
+  claim H4: x :e hl_rep A (s i). { apply (hl_IN_compat A HA x Hx (s i) Hsi). assume H5 _. exact (H5 Hxs). }
+  claim H5: i :e hl_rep K k. { apply (hl_IN_compat K HK i Hi k Hk). assume H6 _. exact (H6 Hik). }
+  claim H6: x :e f2 i. { exact ((Hpw i Hi) (fun hl__u hl__v => x :e hl__u) H4). }
+  prove p 0 :e hl_rep K k /\ p 1 :e f2 (p 0).
+  apply andI.
+  + exact ((eq_sym_i (p 0) i Hp0) (fun hl__u hl__v => hl__u :e hl_rep K k) H5).
+  + exact ((eq_sym_i (p 0) i Hp0) (fun hl__u hl__v => p 1 :e f2 hl__u) ((eq_sym_i (p 1) x Hp1) (fun hl__u hl__v => hl__u :e f2 i) H6)).
+- assume H.
+  claim H': p 0 :e hl_rep K k /\ p 1 :e f2 (p 0). { exact H. }
+  apply H'. assume H0 H1.
+  claim Hi: p 0 :e K. { exact (ap0_Sigma K (fun _ => A) p Hp). }
+  claim Hx: p 1 :e A. { exact (ap1_Sigma K (fun _ => A) p Hp). }
+  claim Hik: hl_IN K (p 0) k = 1. { apply (hl_IN_compat K HK (p 0) Hi k Hk). assume _ H3. exact (H3 H0). }
+  claim Hsi: s (p 0) :e 2 :^: A. { exact (setexp_ap K (2 :^: A) s Hs (p 0) Hi). }
+  claim H4: p 1 :e hl_rep A (s (p 0)). { exact ((eq_sym_i (hl_rep A (s (p 0))) (f2 (p 0)) (Hpw (p 0) Hi)) (fun hl__u hl__v => p 1 :e hl__u) H1). }
+  claim Hxs: hl_IN A (p 1) (s (p 0)) = 1. { apply (hl_IN_compat A HA (p 1) Hx (s (p 0)) Hsi). assume _ H5. exact (H5 H4). }
+  claim Hpe: p = hl_pair K A (p 0) (p 1). { exact (eq_sym_i (hl_pair K A (p 0) (p 1)) p (eq_trans_i (hl_pair K A (p 0) (p 1)) (p 0,p 1) p (hl_pair_compat K A HK HA (p 0) Hi (p 1) Hx) (tuple_Sigma_eta K (fun _ => A) p Hp))). }
+  witness (p 0). apply andI.
+  + exact Hi.
+  + witness (p 1). apply andI.
+    * exact Hx.
+    * apply andI.
+      - exact (If_i_1 (hl_IN K (p 0) k = 1 /\ hl_IN A (p 1) (s (p 0)) = 1) 1 0 (andI (hl_IN K (p 0) k = 1) (hl_IN A (p 1) (s (p 0)) = 1) Hik Hxs)).
+      - exact Hpe.
+Qed.

@@ -682,6 +682,59 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                           (lit, nat, KEq, Printf.sprintf "(if_prop_cong (%s) (%s) 1 0 %s)" lp np iff)
                       | _ -> unsupported "rel: formula as data (native %s)" (pp nat))
                  | _ -> unsupported "rel: formula as data (view %s)" (E.string_of_view nview))
+            | "GSPEC" when (match E.dest_gspec t with Some (_, [ _; _ ], _, _) -> true | _ -> false) ->
+                (* a comprehension with two pattern variables {F x y | P x y}: native \/_ x :e A, {F x y | y :e B, P x y} *)
+                let _, xs, p, body = Option.get (E.dest_gspec t) in
+                let (x, xty), (y, yty) = (match xs with [ a; b ] -> (a, b) | _ -> assert false) in
+                let nx = E.fresh g.nctx x in
+                let kx = x ^ "\000" ^ nx ^ "#" ^ string_of_int g.counter in
+                g.counter <- g.counter + 1;
+                let ny = E.fresh g.nctx y in
+                let ky = y ^ "\000" ^ ny ^ "#" ^ string_of_int g.counter in
+                g.counter <- g.counter + 1;
+                let open2 tm = open_with (Const ("T", bool_ty)) (open_with (Free (kx, xty)) (open_with (Free (ky, yty)) tm)) in
+                let p' = open2 p and body' = open2 body in
+                let ca = L.carrier g.lctx xty and cb2 = L.carrier g.lctx yty in
+                let body_ty = type_of [] body' in
+                let cb = L.carrier g.lctx body_ty in
+                let reg (k, ty, n, c) =
+                  g.nctx.E.vars <- (k, (ty, E.VSet c, n)) :: g.nctx.E.vars;
+                  g.lctx.L.vars <- (k, Mg.Var n) :: g.lctx.L.vars; g.lctx.L.used <- n :: g.lctx.L.used;
+                  g.vars <- (k, { vty = ty; view = E.VSet c; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars in
+                reg (kx, xty, nx, ca); reg (ky, yty, ny, cb2);
+                let cleanup () = List.iter (fun (k, n) ->
+                  g.nctx.E.vars <- List.remove_assoc k g.nctx.E.vars; E.release g.nctx n;
+                  g.lctx.L.vars <- List.remove_assoc k g.lctx.L.vars; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used;
+                  g.vars <- List.remove_assoc k g.vars) [ (kx, nx); (ky, ny) ] in
+                let result = (try
+                  let lp = if L.is_logical p' then Mg.If (lprop g p', L.one, L.zero) else lterm g p' in
+                  let lt = lterm g body' in
+                  let np = nprop g p' in
+                  let nt = reduce_tuples (Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx body' (E.data_view g.nctx body_ty)))) in
+                  let hx = "H" ^ nx and hy = "H" ^ ny in
+                  let q_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp lp) and f_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp lt) in
+                  let hq = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
+                  let generic = Printf.sprintf "(hl_gspec_generic2 %s %s %s %s %s %s)" (ppp ca) (ppp cb2) (ppp cb) q_lam f_lam hq in
+                  let mid = Mg.Sep ("v", cb, Mg.ExIn (nx, ca, Mg.ExIn (ny, cb2, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt)))) in
+                  let iff_p =
+                    if L.is_logical p' then
+                      Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p')
+                    else (let _, _, kp, pfp = rel g p' (Some E.VProp) in if kp <> KIff then unsupported "gspec predicate relation"; pfp) in
+                  let lt2, nt2, kt, pt = rel g body' (Some (E.VSet cb)) in
+                  if kt <> KEq then unsupported "gspec body relation";
+                  if lt2 <> lt || nt2 <> nt then unsupported "gspec body texts";
+                  let pt = if pt = "" then refl else pt in
+                  (match nat with
+                   | Mg.FamUnion (_, a, Mg.ReplSep (_, b, _, _)) when a = ca && b = cb2 -> ()
+                   | _ -> unsupported "gspec pair pattern: native %s is not a family union" (pp nat));
+                  let hf = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (typ g body') in
+                  let hff = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy pt in
+                  let hp = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy iff_p in
+                  let f'_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp nt) and p_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp np) in
+                  let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (gspec_famunion_form %s %s %s %s %s %s %s %s %s %s))" (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp ca) (ppp cb2) (ppp cb) q_lam f_lam f'_lam p_lam hf hff hp in
+                  (lit, nat, KRep cb, pf)
+                  with e -> cleanup (); raise e) in
+                cleanup (); result
             | "GSPEC" when (match E.dest_gspec t with Some (_, [ _ ], _, _) -> true | _ -> false) ->
                 let _, xs, p, body = Option.get (E.dest_gspec t) in
                 let x, xty = List.hd xs in
