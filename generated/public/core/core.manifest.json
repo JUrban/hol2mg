@@ -12331,9 +12331,9 @@
    "source": "(EX P NIL <=> F) /\\ (EX P (h CONS t) <=> P h \\/ EX P t)",
    "statement": "forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_ex P seq_nil <-> False) /\\ (seq_ex P (seq_cons h t) <-> P h \\/ seq_ex P t)",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall h :e A, forall t :e finseq A, (hl_EX A P (hl_NIL A) = 1 <-> False) /\\ (hl_EX A P (hl_CONS A h t) = 1 <-> P h = 1 \\/ hl_EX A P t = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EX_bridge"
   },
   {
    "name": "EXCLUDED_MIDDLE",
@@ -12487,7 +12487,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (exists x :e A, seq_ex (P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq B, (exists x :e A, hl_EX B (P x) l = 1) <-> hl_EX B (fun s :e B => if exists x :e A, P x s = 1 then 1 else 0) l = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -14324,9 +14324,9 @@
    "source": "!P:A->bool. !Q:A->bool. !l:A list. (!x:A. MEM x l /\\ P x ==> Q x) /\\ EX P l ==> EX Q l",
    "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, (forall x :e A, seq_mem x l /\\ P x -> Q x) /\\ seq_ex P l -> seq_ex Q l",
    "literal": "forall A:set, A <> Empty -> forall P Q :e 2 :^: A, forall l :e finseq A, (forall x :e A, hl_MEM A x l = 1 /\\ P x = 1 -> Q x = 1) /\\ hl_EX A P l = 1 -> hl_EX A Q l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EX_IMP_bridge"
   },
   {
    "name": "EX_MAP",
@@ -14352,9 +14352,9 @@
    "source": "!P:B->bool. !f:A->B. !l:A list. EX P (MAP f l) <=> EX (P o f) l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_ex P (seq_map f l) <-> seq_ex (fun x:set => P (f x)) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall l :e finseq A, hl_EX B P (hl_MAP A B f l) = 1 <-> hl_EX A (hl_o B 2 A P f) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EX_MAP_bridge"
   },
   {
    "name": "EX_MEM",
@@ -14379,9 +14379,9 @@
    "source": "!P:A->bool. !l:A list. (?x:A. P x /\\ MEM x l) <=> EX P l",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, (exists x :e A, P x /\\ seq_mem x l) <-> seq_ex P l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l :e finseq A, (exists x :e A, P x = 1 /\\ hl_MEM A x l = 1) <-> hl_EX A P l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EX_MEM_bridge"
   },
   {
    "name": "FACT",
@@ -47885,9 +47885,9 @@
    "source": "!P:A->bool. !l:A list. ~ALL P l <=> EX (\\x:A. ~P x) l",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, ~ seq_all P l <-> seq_ex (fun x:set => ~ P x) l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l :e finseq A, ~ hl_ALL A P l = 1 <-> hl_EX A (fun x :e A => if ~ P x = 1 then 1 else 0) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NOT_ALL_bridge"
   },
   {
    "name": "NOT_CLAUSES",
@@ -48093,9 +48093,9 @@
    "source": "!P:A->bool. !l:A list. ~EX P l <=> ALL (\\x:A. ~P x) l",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, ~ seq_ex P l <-> seq_all (fun x:set => ~ P x) l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l :e finseq A, ~ hl_EX A P l = 1 <-> hl_ALL A (fun x :e A => if ~ P x = 1 then 1 else 0) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_EX_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NOT_EX_bridge"
   },
   {
    "name": "NOT_EXISTS_THM",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1889
+  "native_certified": 1895
  }
 }
