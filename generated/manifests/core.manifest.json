@@ -1113,9 +1113,9 @@
    "source": "(ALLPAIRS f NIL l <=> T) /\\ (ALLPAIRS f (h CONS t) l <=> ALL (f h) l /\\ ALLPAIRS f t l)",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set -> prop, forall l :e finseq B, forall h :e A, forall t :e finseq A, ((forall i :e seq_len seq_nil, forall j :e seq_len l, f (seq_nth seq_nil i) (seq_nth l j)) <-> True) /\\ ((forall i :e seq_len (seq_cons h t), forall j :e seq_len l, f (seq_nth (seq_cons h t) i) (seq_nth l j)) <-> seq_all (f h) l /\\ forall i :e seq_len t, forall j :e seq_len l, f (seq_nth t i) (seq_nth l j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e 2 :^: B :^: A, forall l :e finseq B, forall h :e A, forall t :e finseq A, (hl_ALLPAIRS A B f (hl_NIL A) l = 1 <-> True) /\\ (hl_ALLPAIRS A B f (hl_CONS A h t) l = 1 <-> hl_ALL B (f h) l = 1 /\\ hl_ALLPAIRS A B f t l = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALLPAIRS_bridge"
   },
   {
    "name": "ALLPAIRS_EQ",
@@ -5023,7 +5023,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall f :e Power A :^: K, forall s c= K, finite s /\\ ((forall t :e K, t :e s -> finite (f t)) /\\ (forall t u :e K, t :e s /\\ (u :e s /\\ ~ t = u) -> f t :/\\: f u = Empty)) -> finite_cardinality (Union {f x | x :e s}) = finsum s (fun i:set => finite_cardinality (f i))",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall f :e 2 :^: A :^: K, forall s :e 2 :^: K, hl_FINITE K s = 1 /\\ ((forall t :e K, hl_IN K t s = 1 -> hl_FINITE A (f t) = 1) /\\ (forall t u :e K, hl_IN K t s = 1 /\\ (hl_IN K u s = 1 /\\ ~ t = u) -> hl_INTER A (f t) (f u) = hl_EMPTY A)) -> hl_CARD A (hl_UNIONS A (hl_IMAGE K (2 :^: A) f s)) = hl_nsum K s (fun i :e K => hl_CARD A (f i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: coerce_rel: metafun(K,A -> 2)",
    "bridge": ""
   },
   {
@@ -5056,7 +5056,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\\ (forall x :e A, x :e s -> finite (t x) /\\ finite_cardinality (t x) <= n) -> finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, hl_HAS_SIZE A s m = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1 /\\ hl_le (hl_CARD B (t x)) n = 1) -> hl_le (hl_CARD B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_115 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_115 (hl_IN A x s) (t x) = 1 then 1 else 0)))) (hl_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: side condition finite (t0 x) not available from hypotheses [hyps: x :e s]",
    "bridge": ""
   },
   {
@@ -5340,7 +5340,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty /\\ {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty \\/ forall i :e K, i :e k -> s i = t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_cartesian_product K A k t <-> hl_cartesian_product K A k s = hl_EMPTY (A :^: K) /\\ hl_cartesian_product K A k t = hl_EMPTY (A :^: K) \\/ forall i :e K, hl_IN K i k = 1 -> s i = t i",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -5368,7 +5368,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty <-> exists i :e K, i :e k /\\ s i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_cartesian_product K A k s = hl_EMPTY (A :^: K) <-> exists i :e K, hl_IN K i k = 1 /\\ s i = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -8582,7 +8582,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} :/\\: {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} = Empty <-> forall i :e K, i :e k -> s i :/\\: t i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_DISJOINT (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = 1 <-> forall i :e K, hl_IN K i k = 1 -> hl_DISJOINT A (s i) (t i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -8840,7 +8840,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} = {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} <-> forall i :e K, i :e k -> s i = t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_disjoint_union K A k s = hl_disjoint_union K A k t <-> forall i :e K, hl_IN K i k = 1 -> s i = t i",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -8870,7 +8870,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} = Empty <-> forall i :e K, i :e k -> s i = Empty",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_disjoint_union K A k s = hl_EMPTY (K :*: A) <-> forall i :e K, hl_IN K i k = 1 -> s i = hl_EMPTY A",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -12410,7 +12410,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, (exists z :e A :^: K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ forall i :e K, i :e k -> P i (z i)) <-> forall i :e K, i :e k -> exists x :e A, x :e s i /\\ P i x",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall P :e 2 :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, (exists z :e A :^: K, hl_IN (A :^: K) z (hl_cartesian_product K A k s) = 1 /\\ forall i :e K, hl_IN K i k = 1 -> P i (z i) = 1) <-> forall i :e K, hl_IN K i k = 1 -> exists x :e A, hl_IN A x (s i) = 1 /\\ P i x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -12488,9 +12488,9 @@
    "source": "!P:A->B->bool. !l:B list. (?x:A. EX (P x) l) <=> EX (\\s:B. ?x:A. P x s) l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (exists x :e A, seq_ex (P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq B, (exists x :e A, hl_EX B (P x) l = 1) <-> hl_EX B (fun s :e B => if exists x :e A, P x s = 1 then 1 else 0) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_EX_bridge"
   },
   {
    "name": "EXISTS_FINITE_SUBSET_IMAGE",
@@ -12972,9 +12972,9 @@
    "source": "!P:A option->bool. (?x:A option. P x) <=> P NONE \\/ (?a:A. P (SOME a))",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e 1 :+: A, P x) <-> P (Inj0 0) \\/ exists a :e A, P (Inj1 a)",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (1 :+: A), (exists x :e 1 :+: A, P x = 1) <-> P (hl_NONE A) = 1 \\/ exists a :e A, P (hl_SOME A a) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_NONE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_OPTION_THM_bridge"
   },
   {
    "name": "EXISTS_OR_THM",
@@ -16602,7 +16602,7 @@
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t :e Power B :^: A, finite s /\\ (forall x :e A, x :e s -> finite (t x)) -> finite (\\/_ x :e A, {f x y | y :e B, x :e s /\\ y :e t x})",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1) -> hl_FINITE C (hl_GSPEC C (fun GEN_PVAR_128 :e C => if exists x :e A, exists y :e B, hl_SETSPEC C GEN_PVAR_128 (if hl_IN A x s = 1 /\\ hl_IN B y (t x) = 1 then 1 else 0) (f x y) = 1 then 1 else 0)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power C), 1 args)",
    "bridge": ""
   },
   {
@@ -17912,9 +17912,9 @@
    "source": "!P:A->B->bool. !l:B list. (!x:A. ALL (P x) l) <=> ALL (\\s:B. !x:A. P x s) l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (forall x :e A, seq_all (P x) l) <-> seq_all (fun s:set => forall x :e A, P x s) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq B, (forall x :e A, hl_ALL B (P x) l = 1) <-> hl_ALL B (fun s :e B => if forall x :e A, P x s = 1 then 1 else 0) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_ALL_bridge"
   },
   {
    "name": "FORALL_AND_THM",
@@ -17995,7 +17995,7 @@
    "statement": "forall A K:set, A <> Empty -> forall P:set -> set -> prop, forall k c= K, forall s :e Power A :^: K, (forall z :e A :^: K, forall i :e K, z :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\\ i :e k -> P i (z i)) <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty \\/ forall i :e K, forall x :e A, i :e k /\\ x :e s i -> P i x",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall P :e 2 :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, (forall z :e A :^: K, forall i :e K, hl_IN (A :^: K) z (hl_cartesian_product K A k s) = 1 /\\ hl_IN K i k = 1 -> P i (z i) = 1) <-> hl_cartesian_product K A k s = hl_EMPTY (A :^: K) \\/ forall i :e K, forall x :e A, hl_IN K i k = 1 /\\ hl_IN A x (s i) = 1 -> P i x = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -18632,9 +18632,9 @@
    "source": "!P:A option->bool. (!x:A option. P x) <=> P NONE /\\ (!a:A. P (SOME a))",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (forall x :e 1 :+: A, P x) <-> P (Inj0 0) /\\ forall a :e A, P (Inj1 a)",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (1 :+: A), (forall x :e 1 :+: A, P x = 1) <-> P (hl_NONE A) = 1 /\\ forall a :e A, P (hl_SOME A a) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_NONE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_OPTION_THM_bridge"
   },
   {
    "name": "FORALL_PAIRED_THM",
@@ -20647,7 +20647,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall m :e omega, forall t :e Power B :^: A, forall n :e omega, equip s m /\\ (forall x :e A, x :e s -> equip (t x) n) -> equip (\\/_ x :e A, {(x,y) | y :e B, x :e s /\\ y :e t x}) (m * n)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall m :e omega, forall t :e 2 :^: B :^: A, forall n :e omega, hl_HAS_SIZE A s m = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_HAS_SIZE B (t x) n = 1) -> hl_HAS_SIZE (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_123 :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) GEN_PVAR_123 (if hl_IN A x s = 1 /\\ hl_IN B y (t x) = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)) (hl_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
    "bridge": ""
   },
   {
@@ -20830,7 +20830,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\\ ((forall x :e A, x :e s -> equip (t x) n) /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ ~ x = y) -> t x :/\\: t y = Empty)) -> equip (Union {t x | x :e A, x :e s}) (m * n)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, hl_HAS_SIZE A s m = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_HAS_SIZE B (t x) n = 1) /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ ~ x = y) -> hl_DISJOINT B (t x) (t y) = 1)) -> hl_HAS_SIZE B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_109 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_109 (hl_IN A x s) (t x) = 1 then 1 else 0))) (hl_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
    "bridge": ""
   },
   {
@@ -25229,7 +25229,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e Power (Power B) :^: A, forall s c= A, {x :e B | forall Y :e {Union (f x) | x :e A, x :e s}, x :e Y} = Union {{x :e B | forall Y :e {g x | x :e A, x :e s}, x :e Y} | g :e Power B :^: A, forall x :e A, x :e s -> g x :e f x}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e 2 :^: (2 :^: B) :^: A, forall s :e 2 :^: A, hl_INTERS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_70 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_70 (hl_IN A x s) (hl_UNIONS B (f x)) = 1 then 1 else 0)) = hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_74 :e 2 :^: B => if exists g :e 2 :^: B :^: A, hl_SETSPEC (2 :^: B) GEN_PVAR_74 (if forall x :e A, hl_IN A x s = 1 -> hl_IN (2 :^: B) (g x) (f x) = 1 then 1 else 0) (hl_INTERS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_73 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_73 (hl_IN A x s) (g x) = 1 then 1 else 0))) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(Power B)",
+   "cert_error": "bridge_unsupported: rel_mapped: nested subset argument relation",
    "bridge": ""
   },
   {
@@ -37200,7 +37200,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, forall x :e A :^: K, x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> (forall x0 :e K, ~ x0 :e k -> x x0 = choose_in A (fun y:set => False)) /\\ forall i :e K, i :e k -> x i :e s i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall x :e A :^: K, hl_IN (A :^: K) x (hl_cartesian_product K A k s) = 1 <-> hl_EXTENSIONAL K A k x = 1 /\\ forall i :e K, hl_IN K i k = 1 -> hl_IN A (x i) (s i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -38883,7 +38883,7 @@
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e C) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> iterate_op C op s (fun i:set => iterate_op C op (t i) (x i)) = iterate_op C op (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e C :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_iterate C A op s (fun i :e A => hl_iterate C B op (t i) (x i)) = hl_iterate C (A :*: B) op (hl_GSPEC (A :*: B) (fun GEN_PVAR_243 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_243 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (C :^: (A :*: B)) (fun f :e C :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ C (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_iterate_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -50076,7 +50076,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e omega) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e omega :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_nsum A s (fun i :e A => hl_nsum B (t i) (x i)) = hl_nsum (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_302 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_302 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (omega :^: (A :*: B)) (fun f :e omega :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ omega (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
    "bridge": ""
   },
   {
@@ -50693,9 +50693,9 @@
    "source": "!f:A->B->num. !s:A->bool. !t:B->bool. FINITE s /\\ FINITE t ==> nsum s (\\i:A. nsum t (f i)) = nsum t (\\j:B. nsum s (\\i:A. f i j))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun i:set => finsum t (f i)) = finsum t (fun j:set => finsum s (fun i:set => f i j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e omega :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_nsum A s (fun i :e A => hl_nsum B t (f i)) = hl_nsum B t (fun j :e B => hl_nsum A s (fun i :e A => f i j))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_SWAP_bridge"
   },
   {
    "name": "NSUM_SWAP_NUMSEG",
@@ -50722,9 +50722,9 @@
    "source": "!a:num. !b:num. !c:num. !d:num. !f:num->num->num. nsum (.. a b) (\\i:num. nsum (.. c d) (f i)) = nsum (.. c d) (\\j:num. nsum (.. a b) (\\i:num. f i j))",
    "statement": "forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e omega) -> finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\\ i <= d} (f i)) = finsum {i :e omega | c <= i /\\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => f i j))",
    "literal": "forall a b c d :e omega, forall f :e omega :^: omega :^: omega, hl_nsum omega (hl_numseg a b) (fun i :e omega => hl_nsum omega (hl_numseg c d) (f i)) = hl_nsum omega (hl_numseg c d) (fun j :e omega => hl_nsum omega (hl_numseg a b) (fun i :e omega => f i j))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_SWAP_NUMSEG_bridge"
   },
   {
    "name": "NSUM_TRIV_NUMSEG",
@@ -52580,9 +52580,9 @@
    "source": "(PAIRWISE r NIL <=> T) /\\ (PAIRWISE r (h CONS t) <=> ALL (r h) t /\\ PAIRWISE r t)",
    "statement": "forall A:set, forall r:set -> set -> prop, forall h :e A, forall t :e finseq A, (seq_pairwise r seq_nil <-> True) /\\ (seq_pairwise r (seq_cons h t) <-> seq_all (r h) t /\\ seq_pairwise r t)",
    "literal": "forall A:set, A <> Empty -> forall r :e 2 :^: A :^: A, forall h :e A, forall t :e finseq A, (hl_PAIRWISE A r (hl_NIL A) = 1 <-> True) /\\ (hl_PAIRWISE A r (hl_CONS A h t) = 1 <-> hl_ALL A (r h) t = 1 /\\ hl_PAIRWISE A r t = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_bridge"
   },
   {
    "name": "PAIRWISE_AND",
@@ -53987,9 +53987,9 @@
    "source": "!s:A->bool. !p:real->A->real. FINITE s /\\ (!i:A. i IN s ==> polynomial_function (\\x:real. p x i)) ==> polynomial_function (\\x:real. sum s (p x))",
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall p:set -> set -> set, (forall x :e R, forall y :e A, p x y :e R) -> finite s /\\ (forall i :e A, i :e s -> polynomial_function_R (fun x:set => p x i)) -> polynomial_function_R (fun x:set => finsum s (p x))",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall p :e R :^: A :^: R, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_polynomial_function (fun x :e R => p x i) = 1) -> hl_polynomial_function (fun x :e R => hl_sum A s (p x)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_SUM_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_o",
@@ -67985,7 +67985,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s :e Power A :^: K, forall f:set -> set, (forall x :e K, f x :e A) -> ((fun x :e K => if x :e k then f x else choose_in A (fun y:set => False)) :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> forall i :e K, i :e k -> f i :e s i)",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall f :e A :^: K, hl_IN (A :^: K) (hl_RESTRICTION K A k f) (hl_cartesian_product K A k s) = 1 <-> forall i :e K, hl_IN K i k = 1 -> hl_IN A (f i) (s i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(A :^: K)",
    "bridge": ""
   },
   {
@@ -70171,7 +70171,7 @@
    "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall s t :e Power A :^: K, {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} c= {f :e A :^: K | (forall i :e k, f i :e t i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} <-> {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = Empty \\/ forall i :e K, i :e k -> s i c= t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_SUBSET (A :^: K) (hl_cartesian_product K A k s) (hl_cartesian_product K A k t) = 1 <-> hl_cartesian_product K A k s = hl_EMPTY (A :^: K) \\/ forall i :e K, hl_IN K i k = 1 -> hl_SUBSET A (s i) (t i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -70288,7 +70288,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s t :e Power A :^: K, {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} c= {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} <-> forall i :e K, i :e k -> s i c= t i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s t :e 2 :^: A :^: K, hl_SUBSET (K :*: A) (hl_disjoint_union K A k s) (hl_disjoint_union K A k t) = 1 <-> forall i :e K, hl_IN K i k = 1 -> hl_SUBSET A (s i) (t i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -70318,7 +70318,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall u c= K :*: A, u c= {p :e K :*: A | p 0 :e k /\\ p 1 :e s (p 0)} <-> exists t :e Power A :^: K, u = {p :e K :*: A | p 0 :e k /\\ p 1 :e t (p 0)} /\\ forall i :e K, i :e k -> t i c= s i",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall u :e 2 :^: (K :*: A), hl_SUBSET (K :*: A) u (hl_disjoint_union K A k s) = 1 <-> exists t :e 2 :^: A :^: K, u = hl_disjoint_union K A k t /\\ forall i :e K, hl_IN K i k = 1 -> hl_SUBSET A (t i) (s i) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_disjoint_union_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -73919,7 +73919,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e R) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e R :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_sum A s (fun i :e A => hl_sum B (t i) (x i)) = hl_sum (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_329 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_329 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (R :^: (A :*: B)) (fun f :e R :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ R (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: B)), 1 args)",
    "bridge": ""
   },
   {
@@ -74043,9 +74043,9 @@
    "source": "!f:A->B->real. !s:A->bool. !t:B->bool. FINITE s /\\ FINITE t ==> sum s (\\i:A. sum t (f i)) = sum t (\\j:B. sum s (\\i:A. f i j))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun i:set => finsum t (f i)) = finsum t (fun j:set => finsum s (fun i:set => f i j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e R :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_sum A s (fun i :e A => hl_sum B t (f i)) = hl_sum B t (fun j :e B => hl_sum A s (fun i :e A => f i j))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_SWAP_bridge"
   },
   {
    "name": "SUM_SWAP_NUMSEG",
@@ -74073,9 +74073,9 @@
    "source": "!a:num. !b:num. !c:num. !d:num. !f:num->num->real. sum (.. a b) (\\i:num. sum (.. c d) (f i)) = sum (.. c d) (\\j:num. sum (.. a b) (\\i:num. f i j))",
    "statement": "forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e R) -> finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\\ i <= d} (f i)) = finsum {i :e omega | c <= i /\\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => f i j))",
    "literal": "forall a b c d :e omega, forall f :e R :^: omega :^: omega, hl_sum omega (hl_numseg a b) (fun i :e omega => hl_sum omega (hl_numseg c d) (f i)) = hl_sum omega (hl_numseg c d) (fun j :e omega => hl_sum omega (hl_numseg a b) (fun i :e omega => f i j))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_SWAP_NUMSEG_bridge"
   },
   {
    "name": "SUM_TRIV_NUMSEG",
@@ -77133,7 +77133,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f g :e Power B :^: A, forall s c= A, (forall x :e A, x :e s -> f x c= g x) -> Union {f x | x :e s} c= Union {g x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f g :e 2 :^: B :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_SUBSET B (f x) (g x) = 1) -> hl_SUBSET B (hl_UNIONS B (hl_IMAGE A (2 :^: B) f s)) (hl_UNIONS B (hl_IMAGE A (2 :^: B) g s)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: coerce_rel: metafun(A,B -> 2)",
    "bridge": ""
   },
   {
@@ -77158,7 +77158,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e Power (Power B) :^: A, forall s c= A, Union {{x0 :e B | forall Y :e f x, x0 :e Y} | x :e A, x :e s} = {x :e B | forall Y :e {Union {g x | x :e A, x :e s} | g :e Power B :^: A, forall x :e A, x :e s -> g x :e f x}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e 2 :^: (2 :^: B) :^: A, forall s :e 2 :^: A, hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_77 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_77 (hl_IN A x s) (hl_INTERS B (f x)) = 1 then 1 else 0)) = hl_INTERS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_81 :e 2 :^: B => if exists g :e 2 :^: B :^: A, hl_SETSPEC (2 :^: B) GEN_PVAR_81 (if forall x :e A, hl_IN A x s = 1 -> hl_IN (2 :^: B) (g x) (f x) = 1 then 1 else 0) (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_80 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_80 (hl_IN A x s) (g x) = 1 then 1 else 0))) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(Power B)",
+   "cert_error": "bridge_unsupported: rel_mapped: nested subset argument relation",
    "bridge": ""
   },
   {
@@ -83257,9 +83257,9 @@
    "source": "!a:A. ~(SOME a = NONE)",
    "statement": "forall A:set, forall a :e A, ~ Inj1 a = Inj0 0",
    "literal": "forall A:set, A <> Empty -> forall a :e A, ~ hl_SOME A a = hl_NONE A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_NONE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "option_DISTINCT_bridge"
   },
   {
    "name": "option_INDUCT",
@@ -83284,9 +83284,9 @@
    "source": "!P:A option->bool. P NONE /\\ (!a:A. P (SOME a)) ==> (!x:A option. P x)",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, P (Inj0 0) /\\ (forall a :e A, P (Inj1 a)) -> forall x :e 1 :+: A, P x",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (1 :+: A), P (hl_NONE A) = 1 /\\ (forall a :e A, P (hl_SOME A a) = 1) -> forall x :e 1 :+: A, P x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_NONE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "option_INDUCT_bridge"
   },
   {
    "name": "option_INJ",
@@ -83342,9 +83342,9 @@
    "source": "!NONE':Z. !SOME':A->Z. ?fn:A option->Z. fn NONE = NONE' /\\ (!a:A. fn (SOME a) = SOME' a)",
    "statement": "forall A Z:set, A <> Empty -> forall NONE' :e Z, forall SOME':set -> set, (forall x :e A, SOME' x :e Z) -> exists fn:set -> set, (forall x :e 1 :+: A, fn x :e Z) /\\ (fn (Inj0 0) = NONE' /\\ forall a :e A, fn (Inj1 a) = SOME' a)",
    "literal": "forall A Z:set, A <> Empty -> Z <> Empty -> forall NONE' :e Z, forall SOME' :e Z :^: A, exists fn :e Z :^: (1 :+: A), fn (hl_NONE A) = NONE' /\\ forall a :e A, fn (hl_SOME A a) = SOME' a",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_NONE_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "option_RECURSION_bridge"
   },
   {
    "name": "pair_INDUCT",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2127
+  "native_certified": 2141
  }
 }

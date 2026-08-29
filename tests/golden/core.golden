@@ -1072,7 +1072,8 @@ source: !P:A->B->bool. !l:B list. (?x:A. EX (P x) l) <=> EX (\s:B. ?x:A. P x s) 
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (exists x :e A, seq_ex (P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s) l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l :e finseq B, (exists x :e A, hl_EX B (P x) l = 1) <-> hl_EX B (fun s :e B => if exists x :e A, P x s = 1 then 1 else 0) l = 1
-cert_status: bridge_unsupported
+bridge: EXISTS_EX_bridge
+cert_status: native_certified
 
 ### ALL2_MAP   [lists (finite sequences), including higher-order mapped operations]
 hash: e2caf4faab982154814cddd9f86ed0f1
@@ -2102,7 +2103,8 @@ source: !P:A option->bool. P NONE /\ (!a:A. P (SOME a)) ==> (!x:A option. P x)
 status: transport_required
 statement: forall A:set, A <> Empty -> forall P:set -> prop, P (Inj0 0) /\ (forall a :e A, P (Inj1 a)) -> forall x :e 1 :+: A, P x
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: (1 :+: A), P (hl_NONE A) = 1 /\ (forall a :e A, P (hl_SOME A a) = 1) -> forall x :e 1 :+: A, P x = 1
-cert_status: bridge_unsupported
+bridge: option_INDUCT_bridge
+cert_status: native_certified
 
 ### option_DISTINCT   [option and sum types]
 hash: e7925affd10224458b2c0632786b20c3
@@ -2110,7 +2112,8 @@ source: !a:A. ~(SOME a = NONE)
 status: generalization_required
 statement: forall A:set, forall a :e A, ~ Inj1 a = Inj0 0
 literal: forall A:set, A <> Empty -> forall a :e A, ~ hl_SOME A a = hl_NONE A
-cert_status: bridge_unsupported
+bridge: option_DISTINCT_bridge
+cert_status: native_certified
 
 ### option_INJ   [option and sum types]
 hash: 4b1c51697077e7e6230974a578bf806c

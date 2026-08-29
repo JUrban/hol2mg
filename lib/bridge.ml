@@ -27,6 +27,7 @@ type relkind =
   | KRep2 of Mg.tm               (* hl_rep2 A lit = nat : a set of subsets of A (nested representation) *)
   | KPW of Mg.tm                 (* forall x :e A, lit x = nat x  (meta-function, arity 1) *)
   | KPWP of Mg.tm                (* forall x :e A, lit x = 1 <-> nat x (meta-predicate, arity 1) *)
+  | KRepFun of Mg.tm * Mg.tm     (* forall x :e K, hl_rep A (lit x) = nat x  (function into subsets of A) *)
   | KIff                         (* lit = 1 <-> nat *)
   | KPW2 of Mg.tm * Mg.tm        (* forall x :e A, forall y :e B, lit x y = nat x y *)
   | KPWP2 of Mg.tm * Mg.tm       (* forall x :e A, forall y :e B, lit x y = 1 <-> nat x y *)
@@ -642,6 +643,27 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let natS = (match nat with Mg.App (Mg.App (Mg.Cst "In", _), s) -> s | _ -> unsupported "rel: nested subset application shape") in
                 let _, pf = if v.rel = "" then (prop1, pf1) else rewrite_in v.rel repS natS prop1 pf1 in
                 (lit, nat, KIff, pf)
+            | KRepFun (kc, a), [ x ] ->
+                (* a function into subsets applied: hl_rep a (f x) = g x from the pointwise hypothesis *)
+                let lx, nx, kx, px = rel g x (Some (E.VSet kc)) in
+                if kx <> KEq then unsupported "rel: function-into-subsets argument relation";
+                let head = (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf0 = Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x) in
+                let pf = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_eq (Mg.apps (Mg.Cst "hl_rep") [ a; lit ]) (Mg.App (head, Mg.Var "hl__u")))) pf0 in
+                (lit, nat, KRep a, pf)
+            | KPWP2 (a, b), [ x ] when (match nview with E.VMetaPred [ _ ] -> true | _ -> false) ->
+                (* a binary meta-predicate variable applied to one argument, used as a unary one *)
+                let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
+                if kx <> KEq || lx <> nx then unsupported "rel: partial metapred2 argument";
+                let pw = if v.rel = "" then Printf.sprintf "(fun hl__y Hhl__y => (iff_refl (%s hl__y = 1)))" (ppp lit)
+                  else Printf.sprintf "(fun hl__y Hhl__y => (%s %s %s hl__y Hhl__y))" v.rel (ppp lx) (typ g x) in
+                (lit, nat, KPWP b, pw)
+            | KPW2 (a, b), [ x ] when (match nview with E.VMetaFun ([ _ ], _) -> true | _ -> false) ->
+                let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
+                if kx <> KEq || lx <> nx then unsupported "rel: partial metafun2 argument";
+                let pw = if v.rel = "" then Printf.sprintf "(fun hl__y Hhl__y => %s)" refl
+                  else Printf.sprintf "(fun hl__y Hhl__y => (%s %s %s hl__y Hhl__y))" v.rel (ppp lx) (typ g x) in
+                (lit, nat, KPW b, pw)
             | _ -> unsupported "rel: variable application with this view/arity")
        | Const (c, cty), _ ->
            (match c with
@@ -1532,6 +1554,19 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
   (* fwd_first: the sub-bridge sees the native variable (representation instantiated on the literal side);
      otherwise the literal variable is given and the native side is substituted *)
   match xview with
+  | E.VSet (Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.Cst "Power", a)), k)) when (match xty with TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("bool", []) ]) ]) -> true | _ -> false) ->
+      (* a function into subsets: the literal f :e 2 :^: A :^: K and the native g :e Power A :^: K are
+         bound together with the pointwise hypothesis hl_rep A (f x) = g x *)
+      let la = lam_l lbody and na = lam_n nbody in
+      let n2 = E.fresh g.nctx n in
+      let hn2 = "H" ^ n2 and hpw = "H" ^ n ^ "pw" in
+      let v = { plain with nat = Some (Mg.Var n2); rel = hpw; kind = KRepFun (k, a); hyp = hn2 } in
+      let sub = (try with_var v (fun () -> bridge g dir body') with e -> E.release g.nctx n2; raise e) in
+      E.release g.nctx n2;
+      let lemma = (match kind, dir with
+        | `All, Fwd -> "imp_forall_repfun" | `All, Bwd -> "imp_forall_repfun_rev"
+        | `Ex, Fwd -> "imp_exists_repfun" | `Ex, Bwd -> "imp_exists_repfun_rev") in
+      Printf.sprintf "(%s %s %s %s %s (fun %s %s %s %s %s => %s))" lemma (ppp k) (ppp a) la na n hn n2 hn2 hpw sub
   | E.VSet c ->
       let sub = with_var plain (fun () -> bridge g dir body') in
       let la = lam_l lbody and na = lam_n nbody in

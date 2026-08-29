@@ -4496,3 +4496,7 @@ apply iffI.
     * exact (int_add_SNo q2 Hq2i (- q1) (int_minus_SNo q1 Hq1i)).
     * exact Hprod.
 Qed.
+
+Theorem hl_NONE_compat : forall A:set, A <> Empty -> hl_NONE A = Inj0 0.
+let A. assume HA. exact (fun q H => H).
+Qed.

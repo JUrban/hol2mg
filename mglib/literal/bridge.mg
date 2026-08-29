@@ -913,3 +913,38 @@ let A p u v. apply (xm p).
 - assume Hp. exact (eq_trans_i (hl_rep A (if p then u else v)) (hl_rep A u) (if p then hl_rep A u else hl_rep A v) (f_equal (fun w => hl_rep A w) (if p then u else v) u (If_i_1 p u v Hp)) (eq_sym_i (if p then hl_rep A u else hl_rep A v) (hl_rep A u) (If_i_1 p (hl_rep A u) (hl_rep A v) Hp))).
 - assume Hp. exact (eq_trans_i (hl_rep A (if p then u else v)) (hl_rep A v) (if p then hl_rep A u else hl_rep A v) (f_equal (fun w => hl_rep A w) (if p then u else v) v (If_i_0 p u v Hp)) (eq_sym_i (if p then hl_rep A u else hl_rep A v) (hl_rep A v) (If_i_0 p (hl_rep A u) (hl_rep A v) Hp))).
 Qed.
+
+// ---- functions into subsets: literal f :e 2 :^: A :^: K versus native g :e Power A :^: K, related pointwise ----
+Theorem repfun_rep_Pi : forall K A f:set, (fun x :e K => hl_rep A (f x)) :e Power A :^: K.
+let K A f. prove (fun x :e K => hl_rep A (f x)) :e Pi_ x :e K, Power A. apply (lam_Pi K (fun _ => Power A) (fun x => hl_rep A (f x))). let x. assume _. exact (PowerI A (hl_rep A (f x)) (hl_rep_Subq A (f x))).
+Qed.
+Theorem repfun_chi_Pi : forall K A f:set, (fun x :e K => hl_chi A (f x)) :e 2 :^: A :^: K.
+let K A f. prove (fun x :e K => hl_chi A (f x)) :e Pi_ x :e K, 2 :^: A. apply (lam_Pi K (fun _ => 2 :^: A) (fun x => hl_chi A (f x))). let x. assume _. exact (hl_chi_Pi A (f x)).
+Qed.
+Theorem repfun_rep_pw : forall K A f:set, forall x :e K, hl_rep A (f x) = (fun x :e K => hl_rep A (f x)) x.
+let K A f x. assume Hx. exact (eq_sym_i ((fun x :e K => hl_rep A (f x)) x) (hl_rep A (f x)) (beta K (fun x => hl_rep A (f x)) x Hx)).
+Qed.
+Theorem repfun_chi_pw : forall K A f:set, f :e Power A :^: K -> forall x :e K, hl_rep A ((fun x :e K => hl_chi A (f x)) x) = f x.
+let K A f. assume Hf. let x. assume Hx.
+exact (eq_trans_i (hl_rep A ((fun x :e K => hl_chi A (f x)) x)) (hl_rep A (hl_chi A (f x))) (f x) (f_equal (fun u => hl_rep A u) ((fun x :e K => hl_chi A (f x)) x) (hl_chi A (f x)) (beta K (fun x => hl_chi A (f x)) x Hx)) (hl_rep_chi A (f x) (PowerE A (f x) (setexp_ap K (Power A) f Hf x Hx)))).
+Qed.
+Theorem imp_forall_repfun : forall K A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K, forall g :e Power A :^: K, (forall x :e K, hl_rep A (f x) = g x) -> L f -> N g) -> (forall f :e 2 :^: A :^: K, L f) -> forall g :e Power A :^: K, N g.
+let K A L N. assume H HL. let g. assume Hg.
+exact (H (fun x :e K => hl_chi A (g x)) (repfun_chi_Pi K A g) g Hg (repfun_chi_pw K A g Hg) (HL (fun x :e K => hl_chi A (g x)) (repfun_chi_Pi K A g))).
+Qed.
+Theorem imp_forall_repfun_rev : forall K A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K, forall g :e Power A :^: K, (forall x :e K, hl_rep A (f x) = g x) -> N g -> L f) -> (forall g :e Power A :^: K, N g) -> forall f :e 2 :^: A :^: K, L f.
+let K A L N. assume H HN. let f. assume Hf.
+exact (H f Hf (fun x :e K => hl_rep A (f x)) (repfun_rep_Pi K A f) (repfun_rep_pw K A f) (HN (fun x :e K => hl_rep A (f x)) (repfun_rep_Pi K A f))).
+Qed.
+Theorem imp_exists_repfun : forall K A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K, forall g :e Power A :^: K, (forall x :e K, hl_rep A (f x) = g x) -> L f -> N g) -> (exists f :e 2 :^: A :^: K, L f) -> exists g :e Power A :^: K, N g.
+let K A L N. assume H HE. apply HE. let f. assume Hf0. apply Hf0. assume Hf HLf.
+witness (fun x :e K => hl_rep A (f x)). apply andI.
+- exact (repfun_rep_Pi K A f).
+- exact (H f Hf (fun x :e K => hl_rep A (f x)) (repfun_rep_Pi K A f) (repfun_rep_pw K A f) HLf).
+Qed.
+Theorem imp_exists_repfun_rev : forall K A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K, forall g :e Power A :^: K, (forall x :e K, hl_rep A (f x) = g x) -> N g -> L f) -> (exists g :e Power A :^: K, N g) -> exists f :e 2 :^: A :^: K, L f.
+let K A L N. assume H HE. apply HE. let g. assume Hg0. apply Hg0. assume Hg HNg.
+witness (fun x :e K => hl_chi A (g x)). apply andI.
+- exact (repfun_chi_Pi K A g).
+- exact (H (fun x :e K => hl_chi A (g x)) (repfun_chi_Pi K A g) g Hg (repfun_chi_pw K A g Hg) HNg).
+Qed.

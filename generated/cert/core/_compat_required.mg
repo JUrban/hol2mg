@@ -178,10 +178,6 @@ Admitted.
 Theorem hl_OUTR_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTR A B = OUTR A B.
 Admitted.
 
-// NONE : A option (not in compat.mg)
-Theorem hl_NONE_compat : forall A:set, A <> Empty -> hl_NONE A = Inj0 0.
-Admitted.
-
 // SURJ : (A->B)->(A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_SURJ_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, forall l3 :e 2 :^: B, hl_SURJ A B l1 l2 l3 = 1 <-> (forall x :e hl_rep A l2, f1 x :e hl_rep B l3) /\ forall y :e hl_rep B l3, exists x :e hl_rep A l2, f1 x = y.
 Admitted.
