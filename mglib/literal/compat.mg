@@ -5879,3 +5879,54 @@ Qed.
 Theorem hl_or_eq1_if : forall p q :e 2, hl_or (if p = 1 then 1 else 0) q = 1 <-> (p = 1 \/ q = 1).
 let p. assume Hp. let q. assume Hq. exact ((eq_sym_i (if p = 1 then 1 else 0) p (if_eq1_id p Hp)) (fun hl__u hl__v => hl_or hl__u q = 1 <-> (p = 1 \/ q = 1)) (hl_or_eq1 p Hp q Hq)).
 Qed.
+
+// ---- ternary meta predicates as data ----
+Definition hl_chip3 : set -> set -> set -> (set -> set -> set -> prop) -> set := fun A B C P => fun x :e A => fun y :e B => fun z :e C => if P x y z then 1 else 0.
+Theorem hl_chip3_Pi : forall A B C:set, forall P:set -> set -> set -> prop, hl_chip3 A B C P :e ((2 :^: C) :^: B) :^: A.
+let A B C P. prove (fun x :e A => fun y :e B => fun z :e C => if P x y z then 1 else 0) :e Pi_ x :e A, (2 :^: C) :^: B.
+apply (lam_Pi A (fun _ => (2 :^: C) :^: B) (fun x => fun y :e B => fun z :e C => if P x y z then 1 else 0)). let x. assume Hx.
+exact (lam2_Pi B C 2 (fun y z => if P x y z then 1 else 0) (fun y Hy z Hz => If_in_2 (P x y z))).
+Qed.
+Theorem hl_chip3_iff : forall A B C:set, forall P:set -> set -> set -> prop, forall x :e A, forall y :e B, forall z :e C, hl_chip3 A B C P x y z = 1 <-> P x y z.
+let A B C P x. assume Hx. let y. assume Hy. let z. assume Hz.
+claim H1: hl_chip3 A B C P x = (fun y :e B => fun z :e C => if P x y z then 1 else 0). { exact (beta A (fun x => fun y :e B => fun z :e C => if P x y z then 1 else 0) x Hx). }
+claim H2: hl_chip3 A B C P x y z = if P x y z then 1 else 0. { exact (eq_trans_i (hl_chip3 A B C P x y z) ((fun y :e B => fun z :e C => if P x y z then 1 else 0) y z) (if P x y z then 1 else 0) (f_equal (fun u => u y z) (hl_chip3 A B C P x) (fun y :e B => fun z :e C => if P x y z then 1 else 0) H1) (lam2_beta B C (fun y z => if P x y z then 1 else 0) y Hy z Hz)). }
+apply (iff_eq1_l (hl_chip3 A B C P x y z) (if P x y z then 1 else 0) H2 (P x y z)). exact (If_1_iff (P x y z)).
+Qed.
+Theorem imp_forall_pred3 : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set -> prop) -> prop, (forall P:set -> set -> set -> prop, L (hl_chip3 A B C P) -> N P) -> (forall F :e ((2 :^: C) :^: B) :^: A, L F) -> forall P:set -> set -> set -> prop, N P.
+let A B C L N. assume H H1. let P. exact (H P (H1 (hl_chip3 A B C P) (hl_chip3_Pi A B C P))).
+Qed.
+Theorem imp_forall_pred3_rev : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set -> prop) -> prop, (forall F :e ((2 :^: C) :^: B) :^: A, N (fun x y z => F x y z = 1) -> L F) -> (forall P:set -> set -> set -> prop, N P) -> forall F :e ((2 :^: C) :^: B) :^: A, L F.
+let A B C L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun x y z => F x y z = 1))).
+Qed.
+Theorem imp_exists_pred3 : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set -> prop) -> prop, (forall F :e ((2 :^: C) :^: B) :^: A, L F -> N (fun x y z => F x y z = 1)) -> (exists F :e ((2 :^: C) :^: B) :^: A, L F) -> exists P:set -> set -> set -> prop, N P.
+let A B C L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun x y z => F x y z = 1). exact (H F HF HL).
+Qed.
+Theorem imp_exists_pred3_rev : forall A B C:set, forall L:set -> prop, forall N:(set -> set -> set -> prop) -> prop, (forall P:set -> set -> set -> prop, N P -> L (hl_chip3 A B C P)) -> (exists P:set -> set -> set -> prop, N P) -> exists F :e ((2 :^: C) :^: B) :^: A, L F.
+let A B C L N. assume H H1. apply H1. let P. assume HP. witness (hl_chip3 A B C P). exact (andI (hl_chip3 A B C P :e ((2 :^: C) :^: B) :^: A) (L (hl_chip3 A B C P)) (hl_chip3_Pi A B C P) (H P HP)).
+Qed.
+
+// ---- logical constants applied to a proposition used as data ----
+Theorem imp_iff_l : forall a a' b:prop, (a <-> a') -> ((a -> b) <-> (a' -> b)).
+let a a' b. assume H. apply H. assume H1 H2. apply iffI.
+- assume H3 Ha'. exact (H3 (H2 Ha')).
+- assume H3 Ha. exact (H3 (H1 Ha)).
+Qed.
+Theorem iff_or2 : forall A A' B B':prop, (A <-> A') -> (B <-> B') -> (A \/ B <-> A' \/ B').
+let A A' B B'. assume HA HB. apply HA. assume HA1 HA2. apply HB. assume HB1 HB2. apply iffI.
+- assume H. apply H.
+  + assume H1. exact (orIL A' B' (HA1 H1)).
+  + assume H2. exact (orIR A' B' (HB1 H2)).
+- assume H. apply H.
+  + assume H1. exact (orIL A B (HA2 H1)).
+  + assume H2. exact (orIR A B (HB2 H2)).
+Qed.
+Theorem hl_imp_eq1_pif : forall p:prop, forall q :e 2, hl_imp (if p then 1 else 0) q = 1 <-> (p -> q = 1).
+let p q. assume Hq. exact (iff_trans (hl_imp (if p then 1 else 0) q = 1) ((if p then 1 else 0) = 1 -> q = 1) (p -> q = 1) (hl_imp_eq1 (if p then 1 else 0) (If_in_2 p) q Hq) (imp_iff_l ((if p then 1 else 0) = 1) p (q = 1) (If_1_iff p))).
+Qed.
+Theorem hl_and_eq1_pif : forall p:prop, forall q :e 2, hl_and (if p then 1 else 0) q = 1 <-> (p /\ q = 1).
+let p q. assume Hq. exact (iff_trans (hl_and (if p then 1 else 0) q = 1) ((if p then 1 else 0) = 1 /\ q = 1) (p /\ q = 1) (hl_and_eq1 (if p then 1 else 0) (If_in_2 p) q Hq) (iff_and2 ((if p then 1 else 0) = 1) p (q = 1) (q = 1) (If_1_iff p) (iff_refl (q = 1)))).
+Qed.
+Theorem hl_or_eq1_pif : forall p:prop, forall q :e 2, hl_or (if p then 1 else 0) q = 1 <-> (p \/ q = 1).
+let p q. assume Hq. exact (iff_trans (hl_or (if p then 1 else 0) q = 1) ((if p then 1 else 0) = 1 \/ q = 1) (p \/ q = 1) (hl_or_eq1 (if p then 1 else 0) (If_in_2 p) q Hq) (iff_or2 ((if p then 1 else 0) = 1) p (q = 1) (q = 1) (If_1_iff p) (iff_refl (q = 1)))).
+Qed.

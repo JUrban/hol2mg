@@ -28,6 +28,7 @@ type relkind =
   | KPW of Mg.tm                 (* forall x :e A, lit x = nat x  (meta-function, arity 1) *)
   | KPWP of Mg.tm                (* forall x :e A, lit x = 1 <-> nat x (meta-predicate, arity 1) *)
   | KRepFun of Mg.tm * Mg.tm     (* forall x :e K, hl_rep A (lit x) = nat x  (function into subsets of A) *)
+  | KPWP3 of Mg.tm * Mg.tm * Mg.tm  (* forall x y z, lit x y z = 1 <-> nat x y z (meta-predicate, arity 3) *)
   | KIff                         (* lit = 1 <-> nat *)
   | KPW2 of Mg.tm * Mg.tm        (* forall x :e A, forall y :e B, lit x y = nat x y *)
   | KPWP2 of Mg.tm * Mg.tm       (* forall x :e A, forall y :e B, lit x y = 1 <-> nat x y *)
@@ -705,6 +706,15 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let pf1 = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ Mg.Var "hl__u"; ly ]))) pf0 in
                 let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ nx; Mg.Var "hl__u" ]))) pf1 in
                 (lit, nat, KIff, pf2)
+            | KPWP3 (a, b, c), [ x; y; z ] ->
+                let lx, nx, kx, px = rel g x (Some (E.VSet a)) and ly, ny, ky, py = rel g y (Some (E.VSet b)) and lz, nz, kz, pz = rel g z (Some (E.VSet c)) in
+                if kx <> KEq || ky <> KEq || kz <> KEq then unsupported "rel: metapred3 argument";
+                let pf0 = if v.rel = "" then Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)) else Printf.sprintf "(%s %s %s %s %s %s %s)" v.rel (ppp lx) (typ g x) (ppp ly) (typ g y) (ppp lz) (typ g z) in
+                let head = (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf1 = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ Mg.Var "hl__u"; ly; lz ]))) pf0 in
+                let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ nx; Mg.Var "hl__u"; lz ]))) pf1 in
+                let pf3 = if lz = nz then pf2 else leibniz (if pz = "" then refl else pz) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ nx; ny; Mg.Var "hl__u" ]))) pf2 in
+                (lit, nat, KIff, pf3)
             | KRep a, [ x ] ->
                 (* subset variable applied: native x :e s; literal S x = 1 *)
                 let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
@@ -1665,10 +1675,12 @@ and bridge_eq g dir ty a b =
                        Boolean variable used as data): the _if lemma variants take care of the latter *)
                     let data_arg p = (match lterm g p with
                       | Mg.If (Mg.App (Mg.App (Mg.Cst "eq", (Mg.Var _ as v)), Mg.Num 1), Mg.Num 1, Mg.Num 0) -> (ppp v, "_if")
-                      | Mg.If _ -> unsupported "bridge_eq: logical head applied to a formula"
+                      | Mg.If ((Mg.Var _), Mg.Num 1, Mg.Num 0) as l -> (ppp l, "")
+                      | Mg.If _ as l -> unsupported "bridge_eq: logical head applied to a formula (%s)" (pp l)
                       | l -> (ppp l, "")) in
                     let typ_arg p = (match lterm g p with
                       | Mg.If (Mg.App (Mg.App (Mg.Cst "eq", (Mg.Var _ as v)), Mg.Num 1), Mg.Num 1, Mg.Num 0) -> nat_var_mem_pf g v
+                      | Mg.If ((Mg.Var _ as v), Mg.Num 1, Mg.Num 0) -> Printf.sprintf "(If_in_2 %s)" (pp v)
                       | _ -> typ g p) in
                     let pf = (match h, hargs with
                       | Const ("==>", _), [ p ] -> let a, sfx = data_arg p in Printf.sprintf "(hl_imp_eq1%s %s %s %s H%s)" sfx a (typ_arg p) n n
@@ -1871,6 +1883,18 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         (match kind with
          | `All -> Printf.sprintf "(imp_forall_sub_rev %s %s %s (fun %s %s => %s))" (ppp c) la na n hn sub
          | `Ex -> Printf.sprintf "(imp_exists_sub %s %s %s (fun %s %s => %s))" (ppp c) la na n hn sub)
+      end
+  | E.VMetaPred [ c; d; e ] ->
+      let la = lam_l lbody and na = lam_n nbody in
+      if fwd_first then begin
+        let v = { plain with lit = Mg.apps (Mg.Cst "hl_chip3") [ c; d; e; Mg.Var n ]; mem = Printf.sprintf "(hl_chip3_Pi %s %s %s %s)" (ppp c) (ppp d) (ppp e) n;
+                             rel = Printf.sprintf "(hl_chip3_iff %s %s %s %s)" (ppp c) (ppp d) (ppp e) n; kind = KPWP3 (c, d, e) } in
+        let sub = with_var v (fun () -> bridge g dir body') in
+        Printf.sprintf "(%s %s %s %s %s %s (fun %s => %s))" (lemma (match kind with `All -> "pred3" | `Ex -> "pred3_rev")) (ppp c) (ppp d) (ppp e) la na n sub
+      end else begin
+        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.Lam ("y", Mg.Set, Mg.Lam ("z", Mg.Set, L.mg_eq (Mg.apps (Mg.Var n) [ Mg.Var "x"; Mg.Var "y"; Mg.Var "z" ]) L.one)))); rel = ""; kind = KPWP3 (c, d, e) } in
+        let sub = with_var v (fun () -> bridge g dir body') in
+        Printf.sprintf "(%s %s %s %s %s %s (fun %s %s => %s))" (lemma (match kind with `All -> "pred3_rev" | `Ex -> "pred3")) (ppp c) (ppp d) (ppp e) la na n hn sub
       end
   | E.VMetaPred [ c; d ] ->
       let la = lam_l lbody and na = lam_n nbody in

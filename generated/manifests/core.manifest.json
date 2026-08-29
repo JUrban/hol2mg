@@ -1586,9 +1586,9 @@
    "source": "/\\ = (\\p:bool. \\q:bool. (\\f:bool->bool->bool. f p q) = (\\f:bool->bool->bool. f T T))",
    "statement": "forall p q:prop, p /\\ q <-> forall f:set -> set -> prop, f (if p then 1 else 0) (if q then 1 else 0) <-> f (if True then 1 else 0) (if True then 1 else 0)",
    "literal": "hl_and = fun p :e 2 => fun q :e 2 => if (fun f :e 2 :^: 2 :^: 2 => f p q) = fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0) then 1 else 0",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: logical head applied to a formula",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "AND_DEF_bridge"
   },
   {
    "name": "AND_FORALL_THM",
@@ -7485,9 +7485,9 @@
    "source": "!P:num->A->bool. !R:num->A->A->bool. (?a:A. P 0 a) /\\ (!n:num. !x:A. P n x ==> (?y:A. P (SUC n) y /\\ R n x y)) ==> (?f:num->A. (!n:num. P n (f n)) /\\ (!n:num. R n (f n) (f (SUC n))))",
    "statement": "forall A:set, forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, (exists a :e A, P 0 a) /\\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\\ ((forall n :e omega, P n (f n)) /\\ forall n :e omega, R0 n (f n) (f (ordsucc n)))",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A :^: omega, forall R1 :e 2 :^: A :^: A :^: omega, (exists a :e A, P (hl_NUMERAL hl_zero) a = 1) /\\ (forall n :e omega, forall x :e A, P n x = 1 -> exists y :e A, P (hl_SUC n) y = 1 /\\ R1 n x y = 1) -> exists f :e A :^: omega, (forall n :e omega, P n (f n) = 1) /\\ forall n :e omega, R1 n (f n) (f (hl_SUC n)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(omega,A,A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DEPENDENT_CHOICE_bridge"
   },
   {
    "name": "DEPENDENT_CHOICE_FIXED",
@@ -7514,9 +7514,9 @@
    "source": "!P:num->A->bool. !R:num->A->A->bool. !a:A. P 0 a /\\ (!n:num. !x:A. P n x ==> (?y:A. P (SUC n) y /\\ R n x y)) ==> (?f:num->A. f 0 = a /\\ (!n:num. P n (f n)) /\\ (!n:num. R n (f n) (f (SUC n))))",
    "statement": "forall A:set, forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, forall a :e A, P 0 a /\\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\\ (f 0 = a /\\ ((forall n :e omega, P n (f n)) /\\ forall n :e omega, R0 n (f n) (f (ordsucc n))))",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A :^: omega, forall R1 :e 2 :^: A :^: A :^: omega, forall a :e A, P (hl_NUMERAL hl_zero) a = 1 /\\ (forall n :e omega, forall x :e A, P n x = 1 -> exists y :e A, P (hl_SUC n) y = 1 /\\ R1 n x y = 1) -> exists f :e A :^: omega, f (hl_NUMERAL hl_zero) = a /\\ ((forall n :e omega, P n (f n) = 1) /\\ forall n :e omega, R1 n (f n) (f (hl_SUC n)) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(omega,A,A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DEPENDENT_CHOICE_FIXED_bridge"
   },
   {
    "name": "DEST_REC_INJ",
@@ -12661,7 +12661,7 @@
    "statement": "forall A B C D E:set, B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P Q:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((exists z :e B, z :e {f x | x :e A, P x} /\\ Q z) <-> exists x :e A, P x /\\ Q (f x))) /\\ ((forall P:set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> ((exists z :e C, z :e (\\/_ x :e A, {f x y | y :e B, P x y}) /\\ Q z) <-> exists x :e A, exists y :e B, P x y /\\ Q (f x y))) /\\ ((forall P:set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> ((exists z :e D, z :e (\\/_ w :e A, \\/_ x :e B, {f w x y | y :e C, P w x y}) /\\ Q z) <-> exists w :e A, exists x :e B, exists y :e C, P w x y /\\ Q (f w x y))) /\\ forall P:set -> set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, forall w :e D, f x y z w :e E) -> ((exists z :e E, z :e (\\/_ v :e A, \\/_ w :e B, \\/_ x :e C, {f v w x y | y :e D, P v w x y}) /\\ Q z) <-> exists v :e A, exists w :e B, exists x :e C, exists y :e D, P v w x y /\\ Q (f v w x y))))",
    "literal": "forall A B C D E:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P :e 2 :^: A, forall Q :e 2 :^: B, forall f :e B :^: A, (exists z :e B, hl_IN B z (hl_GSPEC B (fun GEN_PVAR_12 :e B => if exists x :e A, hl_SETSPEC B GEN_PVAR_12 (P x) (f x) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists x :e A, P x = 1 /\\ Q (f x) = 1) /\\ ((forall P :e 2 :^: B :^: A, forall Q :e 2 :^: C, forall f :e C :^: B :^: A, (exists z :e C, hl_IN C z (hl_GSPEC C (fun GEN_PVAR_13 :e C => if exists x :e A, exists y :e B, hl_SETSPEC C GEN_PVAR_13 (P x y) (f x y) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists x :e A, exists y :e B, P x y = 1 /\\ Q (f x y) = 1) /\\ ((forall P :e 2 :^: C :^: B :^: A, forall Q :e 2 :^: D, forall f :e D :^: C :^: B :^: A, (exists z :e D, hl_IN D z (hl_GSPEC D (fun GEN_PVAR_14 :e D => if exists w :e A, exists x :e B, exists y :e C, hl_SETSPEC D GEN_PVAR_14 (P w x y) (f w x y) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists w :e A, exists x :e B, exists y :e C, P w x y = 1 /\\ Q (f w x y) = 1) /\\ forall P :e 2 :^: D :^: C :^: B :^: A, forall Q :e 2 :^: E, forall f :e E :^: D :^: C :^: B :^: A, (exists z :e E, hl_IN E z (hl_GSPEC E (fun GEN_PVAR_15 :e E => if exists v :e A, exists w :e B, exists x :e C, exists y :e D, hl_SETSPEC E GEN_PVAR_15 (P v w x y) (f v w x y) = 1 then 1 else 0)) = 1 /\\ Q z = 1) <-> exists v :e A, exists w :e B, exists x :e C, exists y :e D, P v w x y = 1 /\\ Q (f v w x y) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: bridge_binder: view metafun(A,B,C -> D)",
    "bridge": ""
   },
   {
@@ -13428,7 +13428,7 @@
    "statement": "forall A B C:set, forall P:set -> set -> set -> prop, (exists x :e A :*: (B :*: C), P (x 0) (x 1 0) (x 1 1)) <-> exists x :e A, exists y :e B, exists z :e C, P x y z",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: C :^: B :^: A, hl_exists (A :*: (B :*: C)) (hl_GABS (2 :^: (A :*: (B :*: C))) (fun f :e 2 :^: (A :*: (B :*: C)) => if forall x :e A, forall y :e B, forall z :e C, hl_GEQ 2 (f (hl_pair A (B :*: C) x (hl_pair B C y z))) (P x y z) = 1 then 1 else 0)) = 1 <-> exists x :e A, exists y :e B, exists z :e C, P x y z = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ? (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -17816,9 +17816,9 @@
    "source": "!P:A->bool. !R:A->B->C->bool. (!s:A. P s ==> (?a:B. ?n:C. R s a n)) /\\ (!n1:C. !n2:C. !s:A. !a1:B. !a2:B. R s a1 n1 /\\ R s a2 n2 ==> a1 = a2 /\\ n1 = n2) ==> (?f:A->B. !s:A. !a:B. P s ==> ((?n:C. R s a n) <=> f s = a))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, forall R0:set -> set -> set -> prop, (forall s :e A, P s -> exists a :e B, exists n :e C, R0 s a n) /\\ (forall n1 n2 :e C, forall s :e A, forall a1 a2 :e B, R0 s a1 n1 /\\ R0 s a2 n2 -> a1 = a2 /\\ n1 = n2) -> exists f:set -> set, (forall x :e A, f x :e B) /\\ forall s :e A, forall a :e B, P s -> ((exists n :e C, R0 s a n) <-> f s = a)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: A, forall R1 :e 2 :^: C :^: B :^: A, (forall s :e A, P s = 1 -> exists a :e B, exists n :e C, R1 s a n = 1) /\\ (forall n1 n2 :e C, forall s :e A, forall a1 a2 :e B, R1 s a1 n1 = 1 /\\ R1 s a2 n2 = 1 -> a1 = a2 /\\ n1 = n2) -> exists f :e B :^: A, forall s :e A, forall a :e B, P s = 1 -> ((exists n :e C, R1 s a n = 1) <-> f s = a)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINREC_FUN_LEMMA_bridge"
   },
   {
    "name": "FINREC_SUC_LEMMA",
@@ -18316,7 +18316,7 @@
    "statement": "forall A B C D E:set, B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P Q:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall z :e B, z :e {f x | x :e A, P x} -> Q z) <-> forall x :e A, P x -> Q (f x))) /\\ ((forall P:set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> ((forall z :e C, z :e (\\/_ x :e A, {f x y | y :e B, P x y}) -> Q z) <-> forall x :e A, forall y :e B, P x y -> Q (f x y))) /\\ ((forall P:set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> ((forall z :e D, z :e (\\/_ w :e A, \\/_ x :e B, {f w x y | y :e C, P w x y}) -> Q z) <-> forall w :e A, forall x :e B, forall y :e C, P w x y -> Q (f w x y))) /\\ forall P:set -> set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, forall w :e D, f x y z w :e E) -> ((forall z :e E, z :e (\\/_ v :e A, \\/_ w :e B, \\/_ x :e C, {f v w x y | y :e D, P v w x y}) -> Q z) <-> forall v :e A, forall w :e B, forall x :e C, forall y :e D, P v w x y -> Q (f v w x y))))",
    "literal": "forall A B C D E:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P :e 2 :^: A, forall Q :e 2 :^: B, forall f :e B :^: A, (forall z :e B, hl_IN B z (hl_GSPEC B (fun GEN_PVAR_8 :e B => if exists x :e A, hl_SETSPEC B GEN_PVAR_8 (P x) (f x) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall x :e A, P x = 1 -> Q (f x) = 1) /\\ ((forall P :e 2 :^: B :^: A, forall Q :e 2 :^: C, forall f :e C :^: B :^: A, (forall z :e C, hl_IN C z (hl_GSPEC C (fun GEN_PVAR_9 :e C => if exists x :e A, exists y :e B, hl_SETSPEC C GEN_PVAR_9 (P x y) (f x y) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall x :e A, forall y :e B, P x y = 1 -> Q (f x y) = 1) /\\ ((forall P :e 2 :^: C :^: B :^: A, forall Q :e 2 :^: D, forall f :e D :^: C :^: B :^: A, (forall z :e D, hl_IN D z (hl_GSPEC D (fun GEN_PVAR_10 :e D => if exists w :e A, exists x :e B, exists y :e C, hl_SETSPEC D GEN_PVAR_10 (P w x y) (f w x y) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall w :e A, forall x :e B, forall y :e C, P w x y = 1 -> Q (f w x y) = 1) /\\ forall P :e 2 :^: D :^: C :^: B :^: A, forall Q :e 2 :^: E, forall f :e E :^: D :^: C :^: B :^: A, (forall z :e E, hl_IN E z (hl_GSPEC E (fun GEN_PVAR_11 :e E => if exists v :e A, exists w :e B, exists x :e C, exists y :e D, hl_SETSPEC E GEN_PVAR_11 (P v w x y) (f v w x y) = 1 then 1 else 0)) = 1 -> Q z = 1) <-> forall v :e A, forall w :e B, forall x :e C, forall y :e D, P v w x y = 1 -> Q (f v w x y) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: bridge_binder: view metafun(A,B,C -> D)",
    "bridge": ""
   },
   {
@@ -18982,7 +18982,7 @@
    "statement": "forall A B C:set, forall P:set -> set -> set -> prop, (forall x :e A :*: (B :*: C), P (x 0) (x 1 0) (x 1 1)) <-> forall x :e A, forall y :e B, forall z :e C, P x y z",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: C :^: B :^: A, hl_forall (A :*: (B :*: C)) (hl_GABS (2 :^: (A :*: (B :*: C))) (fun f :e 2 :^: (A :*: (B :*: C)) => if forall x :e A, forall y :e B, forall z :e C, hl_GEQ 2 (f (hl_pair A (B :*: C) x (hl_pair B C y z))) (P x y z) = 1 then 1 else 0)) = 1 <-> forall x :e A, forall y :e B, forall z :e C, P x y z = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ! (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -23006,9 +23006,9 @@
    "source": "==> = (\\p:bool. \\q:bool. p /\\ q <=> p)",
    "statement": "forall p q:prop, p -> q <-> (p /\\ q <-> p)",
    "literal": "hl_imp = fun p :e 2 => fun q :e 2 => if p = 1 /\\ q = 1 <-> p = 1 then 1 else 0",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: logical head applied to a formula",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMP_DEF_bridge"
   },
   {
    "name": "IMP_IMP",
@@ -37048,9 +37048,9 @@
    "source": "!P:int->int->int->bool. (!x:int. !y:int. !z:int. P x y z ==> P y x z /\\ P x z y) /\\ (!x:int. !y:int. !z:int. x <= y /\\ y <= z ==> P x y z) ==> (!x:int. !y:int. !z:int. P x y z)",
    "statement": "forall P:set -> set -> set -> prop, (forall x y z :e int, P x y z -> P y x z /\\ P x z y) /\\ (forall x y z :e int, x <= y /\\ y <= z -> P x y z) -> forall x y z :e int, P x y z",
    "literal": "forall P :e 2 :^: hl_ty_int :^: hl_ty_int :^: hl_ty_int, (forall x y z :e hl_ty_int, P x y z = 1 -> P y x z = 1 /\\ P x z y = 1) /\\ (forall x y z :e hl_ty_int, hl_int_le x y = 1 /\\ hl_int_le y z = 1 -> P x y z = 1) -> forall x y z :e hl_ty_int, P x y z = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(int,int,int)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_WLOG_LE_3_bridge"
   },
   {
    "name": "INT_WLOG_LT",
@@ -37493,7 +37493,7 @@
    "statement": "forall A B C:set, (forall P:set -> set -> set -> prop, forall a :e A, forall b :e B, forall c :e C, (a,(b,c)) :e (\\/_ x :e A, \\/_ y :e B, {(x,(y,z)) | z :e C, P x y z}) <-> P a b c) /\\ forall P:set -> set -> set -> prop, forall a :e A, forall b :e B, forall c :e C, ((a,b),c) :e (\\/_ x :e A, \\/_ y :e B, {((x,y),z) | z :e C, P x y z}) <-> P a b c",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> (forall P :e 2 :^: C :^: B :^: A, forall a :e A, forall b :e B, forall c :e C, hl_IN (A :*: (B :*: C)) (hl_pair A (B :*: C) a (hl_pair B C b c)) (hl_GSPEC (A :*: (B :*: C)) (fun GEN_PVAR_54 :e A :*: (B :*: C) => if exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC (A :*: (B :*: C)) GEN_PVAR_54 (P x y z) (hl_pair A (B :*: C) x (hl_pair B C y z)) = 1 then 1 else 0)) = 1 <-> P a b c = 1) /\\ forall P :e 2 :^: C :^: B :^: A, forall a :e A, forall b :e B, forall c :e C, hl_IN (A :*: B :*: C) (hl_pair (A :*: B) C (hl_pair A B a b) c) (hl_GSPEC (A :*: B :*: C) (fun GEN_PVAR_55 :e A :*: B :*: C => if exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC (A :*: B :*: C) GEN_PVAR_55 (P x y z) (hl_pair (A :*: B) C (hl_pair A B x y) z) = 1 then 1 else 0)) = 1 <-> P a b c = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,C)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GSPEC (view subset(Power (A :*: (B :*: C))), 1 args)",
    "bridge": ""
   },
   {
@@ -52390,9 +52390,9 @@
    "source": "\\/ = (\\p:bool. \\q:bool. !r:bool. (p ==> r) ==> (q ==> r) ==> r)",
    "statement": "forall p q:prop, p \\/ q <-> forall r:prop, (p -> r) -> (q -> r) -> r",
    "literal": "hl_or = fun p :e 2 => fun q :e 2 => if forall r :e 2, (p = 1 -> r = 1) -> (q = 1 -> r = 1) -> r = 1 then 1 else 0",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: logical head applied to a formula",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "OR_DEF_bridge"
   },
   {
    "name": "OR_EXISTS_THM",
@@ -66952,9 +66952,9 @@
    "source": "!P:real->real->real->bool. (!x:real. !y:real. !z:real. P x y z ==> P y x z /\\ P x z y) /\\ (!x:real. !y:real. !z:real. x <= y /\\ y <= z ==> P x y z) ==> (!x:real. !y:real. !z:real. P x y z)",
    "statement": "forall P:set -> set -> set -> prop, (forall x y z :e R, P x y z -> P y x z /\\ P x z y) /\\ (forall x y z :e R, x <= y /\\ y <= z -> P x y z) -> forall x y z :e R, P x y z",
    "literal": "forall P :e 2 :^: R :^: R :^: R, (forall x y z :e R, P x y z = 1 -> P y x z = 1 /\\ P x z y = 1) /\\ (forall x y z :e R, hl_real_le x y = 1 /\\ hl_real_le y z = 1 -> P x y z = 1) -> forall x y z :e R, P x y z = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(R,R,R)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_WLOG_LE_3_bridge"
   },
   {
    "name": "REAL_WLOG_LT",
@@ -78354,7 +78354,7 @@
    "statement": "forall A B:set, B <> Empty -> forall R0:set -> set -> prop, forall S:set -> set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ R0 y x) /\\ (forall a :e A, forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ S a y x) -> forall P c= A :*: B, P <> Empty -> exists x :e P, forall y :e P, ~ (R0 (y 0) (x 0) \\/ y 0 = x 0 /\\ S (y 0) (y 1) (x 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: A :^: A, forall S :e 2 :^: B :^: B :^: A, hl_WF A R1 = 1 /\\ (forall a :e A, hl_WF B (S a) = 1) -> hl_WF (A :*: B) (hl_GABS (2 :^: (A :*: B) :^: (A :*: B)) (fun f :e 2 :^: (A :*: B) :^: (A :*: B) => if forall r1 :e A, forall s1 :e B, hl_GEQ (2 :^: (A :*: B)) (f (hl_pair A B r1 s1)) (hl_GABS (2 :^: (A :*: B)) (fun f1 :e 2 :^: (A :*: B) => if forall r2 :e A, forall s2 :e B, hl_GEQ 2 (f1 (hl_pair A B r2 s2)) (if R1 r1 r2 = 1 \\/ r1 = r2 /\\ S r1 s1 s2 = 1 then 1 else 0) = 1 then 1 else 0)) = 1 then 1 else 0)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(A,B,B)",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -78573,9 +78573,9 @@
    "source": "WF << ==> (!P:(A->B)->A->B->bool. (!f:A->B. !g:A->B. !x:A. !y:B. (!z:A. << z x ==> f z = g z) ==> (P f x y <=> P g x y)) /\\ (!f:A->B. !x:A. (!z:A. << z x ==> P f z (f z)) ==> (?y:B. P f x y)) ==> (?f:A->B. !x:A. P f x (f x)))",
    "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P:set -> set -> set -> prop, (forall f g :e B :^: A, forall x :e A, forall y :e B, (forall z :e A, lt z x -> f z = g z) -> (P f x y <-> P g x y)) /\\ (forall f :e B :^: A, forall x :e A, (forall z :e A, lt z x -> P f z (f z)) -> exists y :e B, P f x y) -> exists f :e B :^: A, forall x :e A, P f x (f x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 -> forall P :e 2 :^: B :^: A :^: (B :^: A), (forall f g :e B :^: A, forall x :e A, forall y :e B, (forall z :e A, lt z x = 1 -> f z = g z) -> (P f x y = 1 <-> P g x y = 1)) /\\ (forall f :e B :^: A, forall x :e A, (forall z :e A, lt z x = 1 -> P f z (f z) = 1) -> exists y :e B, P f x y = 1) -> exists f :e B :^: A, forall x :e A, P f x (f x) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(B :^: A,A,B)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_REC_EXISTS_bridge"
   },
   {
    "name": "WF_REC_INVARIANT",
@@ -78976,9 +78976,9 @@
    "source": "!P:num->num->num->bool. (!x:num. !y:num. !z:num. P x y z ==> P y x z /\\ P x z y) /\\ (!x:num. !y:num. !z:num. x <= y /\\ y <= z ==> P x y z) ==> (!x:num. !y:num. !z:num. P x y z)",
    "statement": "forall P:set -> set -> set -> prop, (forall x y z :e omega, P x y z -> P y x z /\\ P x z y) /\\ (forall x y z :e omega, x <= y /\\ y <= z -> P x y z) -> forall x y z :e omega, P x y z",
    "literal": "forall P :e 2 :^: omega :^: omega :^: omega, (forall x y z :e omega, P x y z = 1 -> P y x z = 1 /\\ P x z y = 1) /\\ (forall x y z :e omega, hl_le x y = 1 /\\ hl_le y z = 1 -> P x y z = 1) -> forall x y z :e omega, P x y z = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_binder: view metapred(omega,omega,omega)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WLOG_LE_3_bridge"
   },
   {
    "name": "WLOG_LT",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2285
+  "native_certified": 2295
  }
 }
