@@ -7153,3 +7153,28 @@ claim R1: l1 :e R. { exact (omega_subq_R l1 H1). }
 claim R2: l2 :e R. { exact (omega_subq_R l2 H2). }
 exact (eq_trans_i (hl_DECIMAL l1 l2) (hl_real_div (hl_real_of_num l1) (hl_real_of_num l2)) (l1 :/: l2) (hl_DECIMAL_unfold l1 H1 l2 H2) (eq_trans_i (hl_real_div (hl_real_of_num l1) (hl_real_of_num l2)) (hl_real_div l1 l2) (l1 :/: l2) (f_equal2 (fun u v => hl_real_div u v) (hl_real_of_num l1) l1 (hl_real_of_num l2) l2 (hl_real_of_num_compat l1 H1) (hl_real_of_num_compat l2 H2)) (hl_real_div_compat l1 R1 l2 R2))).
 Qed.
+
+// ---- comprehensions with an ordinary pattern variable and a subset-valued body: hl_rep2 on the result ----
+Theorem gspec_replsep_form_rep2 : forall A B:set, forall q F:set -> set, forall P':set -> prop, forall F':set -> set, (forall x :e A, F x :e 2 :^: B) -> (forall x :e A, q x = 1 <-> P' x) -> (forall x :e A, hl_rep B (F x) = F' x) -> {hl_rep B v | v :e {v :e 2 :^: B | exists x :e A, q x = 1 /\ v = F x}} = {F' x | x :e A, P' x}.
+let A B q F P' F'. assume HFB HP HF.
+apply set_ext.
+- let w. assume Hw. apply (ReplE_impred {v :e 2 :^: B | exists x :e A, q x = 1 /\ v = F x} (fun v => hl_rep B v) w Hw). let v. assume Hv Hwv.
+  apply (SepE (2 :^: B) (fun v => exists x :e A, q x = 1 /\ v = F x) v Hv). assume HvB H. apply H. let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume Hqx Hvx.
+  claim HPx: P' x. { apply (HP x Hx). assume H3 _. exact (H3 Hqx). }
+  claim Hweq: w = F' x. { exact (eq_trans_i w (hl_rep B v) (F' x) Hwv (eq_trans_i (hl_rep B v) (hl_rep B (F x)) (F' x) (f_equal (fun u => hl_rep B u) v (F x) Hvx) (HF x Hx))). }
+  exact ((eq_sym_i w (F' x) Hweq) (fun hl__u hl__v => hl__u :e {F' x | x :e A, P' x}) (ReplSepI A (fun x => P' x) (fun x => F' x) x Hx HPx)).
+- let w. assume Hw. apply (ReplSepE_impred A (fun x => P' x) (fun x => F' x) w Hw). let x. assume Hx HPx Hwx.
+  claim Hqx: q x = 1. { apply (HP x Hx). assume _ H3. exact (H3 HPx). }
+  claim Hex: exists x' :e A, q x' = 1 /\ F x = F x'. { witness x. apply andI. exact Hx. apply andI. exact Hqx. exact (fun p H => H). }
+  claim Hin: F x :e {v :e 2 :^: B | exists x :e A, q x = 1 /\ v = F x}. { exact (SepI (2 :^: B) (fun v => exists x :e A, q x = 1 /\ v = F x) (F x) (HFB x Hx) Hex). }
+  claim Hweq: hl_rep B (F x) = w. { exact (eq_trans_i (hl_rep B (F x)) (F' x) w (HF x Hx) (eq_sym_i w (F' x) Hwx)). }
+  exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep B v | v :e {v :e 2 :^: B | exists x :e A, q x = 1 /\ v = F x}}) (ReplI {v :e 2 :^: B | exists x :e A, q x = 1 /\ v = F x} (fun v => hl_rep B v) (F x) Hin)).
+Qed.
+Theorem gspec_repl_form_rep2 : forall A B:set, forall F:set -> set, forall F':set -> set, (forall x :e A, F x :e 2 :^: B) -> (forall x :e A, hl_rep B (F x) = F' x) -> {hl_rep B v | v :e {v :e 2 :^: B | exists x :e A, (if True then 1 else 0) = 1 /\ v = F x}} = {F' x | x :e A}.
+let A B F F'. assume HFB HF.
+claim HT: forall x :e A, (if True then 1 else 0) = 1 <-> True. { let x. assume _. apply iffI. - assume _. exact (fun p H => H). - assume _. exact (If_i_1 True 1 0 (fun p H => H)). }
+rewrite (gspec_replsep_form_rep2 A B (fun x => if True then 1 else 0) F (fun x => True) F' HFB HT HF).
+apply set_ext.
+- let w. assume Hw. apply (ReplSepE_impred A (fun x => True) (fun x => F' x) w Hw). let x. assume Hx _ Hwx. exact ((eq_sym_i w (F' x) Hwx) (fun hl__u hl__v => hl__u :e {F' x | x :e A}) (ReplI A (fun x => F' x) x Hx)).
+- let w. assume Hw. apply (ReplE_impred A (fun x => F' x) w Hw). let x. assume Hx Hwx. exact ((eq_sym_i w (F' x) Hwx) (fun hl__u hl__v => hl__u :e {F' x | x :e A, True}) (ReplSepI A (fun x => True) (fun x => F' x) x Hx (fun p H => H))).
+Qed.

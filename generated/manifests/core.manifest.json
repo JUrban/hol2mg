@@ -5056,7 +5056,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\\ (forall x :e A, x :e s -> finite (t x) /\\ finite_cardinality (t x) <= n) -> finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, hl_HAS_SIZE A s m = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1 /\\ hl_le (hl_CARD B (t x)) n = 1) -> hl_le (hl_CARD B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_115 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_115 (hl_IN A x s) (t x) = 1 then 1 else 0)))) (hl_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
+   "cert_error": "bridge_unsupported: side condition finite (Union {t0 x | x :e A, x :e s}) not available from hypotheses [hyps: forall x :e A, x :e s -> finite (t0 x) /\\ finite_cardinality (t0 x) <= n, equip s m]",
    "bridge": ""
   },
   {
@@ -14846,9 +14846,9 @@
    "source": "!s:A->bool. !t:A->B->bool. !m:num. !n:num. (!x:A. x IN s ==> FINITE (t x) /\\ CARD (t x) <= n) /\\ FINITE s /\\ CARD s <= m ==> FINITE (UNIONS (GSPEC (\\GEN%PVAR%161:B->bool. ?x:A. SETSPEC GEN%PVAR%161 (x IN s) (t x)))) /\\ CARD (UNIONS (GSPEC (\\GEN%PVAR%162:B->bool. ?x:A. SETSPEC GEN%PVAR%162 (x IN s) (t x)))) <= m * n",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, (forall x :e A, x :e s -> finite (t x) /\\ finite_cardinality (t x) <= n) /\\ (finite s /\\ finite_cardinality s <= m) -> finite (Union {t x | x :e A, x :e s}) /\\ finite_cardinality (Union {t x | x :e A, x :e s}) <= m * n",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, (forall x :e A, hl_IN A x s = 1 -> hl_FINITE B (t x) = 1 /\\ hl_le (hl_CARD B (t x)) n = 1) /\\ (hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) m = 1) -> hl_FINITE B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_161 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_161 (hl_IN A x s) (t x) = 1 then 1 else 0))) = 1 /\\ hl_le (hl_CARD B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_162 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_162 (hl_IN A x s) (t x) = 1 then 1 else 0)))) (hl_mul m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_CARD_LE_UNIONS_bridge"
   },
   {
    "name": "FINITE_CART",
@@ -20829,9 +20829,9 @@
    "source": "!s:A->bool. !t:A->B->bool. !m:num. !n:num. HAS_SIZE s m /\\ (!x:A. x IN s ==> HAS_SIZE (t x) n) /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ ~(x = y) ==> DISJOINT (t x) (t y)) ==> HAS_SIZE (UNIONS (GSPEC (\\GEN%PVAR%109:B->bool. ?x:A. SETSPEC GEN%PVAR%109 (x IN s) (t x)))) (m * n)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall m n :e omega, equip s m /\\ ((forall x :e A, x :e s -> equip (t x) n) /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ ~ x = y) -> t x :/\\: t y = Empty)) -> equip (Union {t x | x :e A, x :e s}) (m * n)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall m n :e omega, hl_HAS_SIZE A s m = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_HAS_SIZE B (t x) n = 1) /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ ~ x = y) -> hl_DISJOINT B (t x) (t y) = 1)) -> hl_HAS_SIZE B (hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_109 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_109 (hl_IN A x s) (t x) = 1 then 1 else 0))) (hl_mul m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_UNIONS_bridge"
   },
   {
    "name": "HAS_SUP",
@@ -25120,7 +25120,7 @@
    "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P:set -> prop, forall f :e Power B :^: A, {x :e B | forall Y :e {f x | x :e A, P x}, x :e Y} = {a :e B | forall x :e A, P x -> a :e f x}) /\\ ((forall P:set -> set -> prop, forall f :e Power C :^: B :^: A, {x :e C | forall Y :e (\\/_ x :e A, {f x y | y :e B, P x y}), x :e Y} = {a :e C | forall x :e A, forall y :e B, P x y -> a :e f x y}) /\\ forall P:set -> set -> set -> prop, forall f :e Power D :^: C :^: B :^: A, {x :e D | forall Y :e (\\/_ x :e A, \\/_ y :e B, {f x y z | z :e C, P x y z}), x :e Y} = {a :e D | forall x :e A, forall y :e B, forall z :e C, P x y z -> a :e f x y z})",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P :e 2 :^: A, forall f :e 2 :^: B :^: A, hl_INTERS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_24 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_24 (P x) (f x) = 1 then 1 else 0)) = hl_GSPEC B (fun GEN_PVAR_25 :e B => if exists a :e B, hl_SETSPEC B GEN_PVAR_25 (if forall x :e A, P x = 1 -> hl_IN B a (f x) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ ((forall P :e 2 :^: B :^: A, forall f :e 2 :^: C :^: B :^: A, hl_INTERS C (hl_GSPEC (2 :^: C) (fun GEN_PVAR_26 :e 2 :^: C => if exists x :e A, exists y :e B, hl_SETSPEC (2 :^: C) GEN_PVAR_26 (P x y) (f x y) = 1 then 1 else 0)) = hl_GSPEC C (fun GEN_PVAR_27 :e C => if exists a :e C, hl_SETSPEC C GEN_PVAR_27 (if forall x :e A, forall y :e B, P x y = 1 -> hl_IN C a (f x y) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ forall P :e 2 :^: C :^: B :^: A, forall f :e 2 :^: D :^: C :^: B :^: A, hl_INTERS D (hl_GSPEC (2 :^: D) (fun GEN_PVAR_28 :e 2 :^: D => if exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC (2 :^: D) GEN_PVAR_28 (P x y z) (f x y z) = 1 then 1 else 0)) = hl_GSPEC D (fun GEN_PVAR_29 :e D => if exists a :e D, hl_SETSPEC D GEN_PVAR_29 (if forall x :e A, forall y :e B, forall z :e C, P x y z = 1 -> hl_IN D a (f x y z) = 1 then 1 else 0) a = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
+   "cert_error": "bridge_unsupported: rel_mapped: nested subset argument relation",
    "bridge": ""
   },
   {
@@ -76922,7 +76922,7 @@
    "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P:set -> prop, forall f :e Power B :^: A, Union {f x | x :e A, P x} = {a :e B | exists x :e A, P x /\\ a :e f x}) /\\ ((forall P:set -> set -> prop, forall f :e Power C :^: B :^: A, Union (\\/_ x :e A, {f x y | y :e B, P x y}) = {a :e C | exists x :e A, exists y :e B, P x y /\\ a :e f x y}) /\\ forall P:set -> set -> set -> prop, forall f :e Power D :^: C :^: B :^: A, Union (\\/_ x :e A, \\/_ y :e B, {f x y z | z :e C, P x y z}) = {a :e D | exists x :e A, exists y :e B, exists z :e C, P x y z /\\ a :e f x y z})",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> (forall P :e 2 :^: A, forall f :e 2 :^: B :^: A, hl_UNIONS B (hl_GSPEC (2 :^: B) (fun GEN_PVAR_18 :e 2 :^: B => if exists x :e A, hl_SETSPEC (2 :^: B) GEN_PVAR_18 (P x) (f x) = 1 then 1 else 0)) = hl_GSPEC B (fun GEN_PVAR_19 :e B => if exists a :e B, hl_SETSPEC B GEN_PVAR_19 (if exists x :e A, P x = 1 /\\ hl_IN B a (f x) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ ((forall P :e 2 :^: B :^: A, forall f :e 2 :^: C :^: B :^: A, hl_UNIONS C (hl_GSPEC (2 :^: C) (fun GEN_PVAR_20 :e 2 :^: C => if exists x :e A, exists y :e B, hl_SETSPEC (2 :^: C) GEN_PVAR_20 (P x y) (f x y) = 1 then 1 else 0)) = hl_GSPEC C (fun GEN_PVAR_21 :e C => if exists a :e C, hl_SETSPEC C GEN_PVAR_21 (if exists x :e A, exists y :e B, P x y = 1 /\\ hl_IN C a (f x y) = 1 then 1 else 0) a = 1 then 1 else 0)) /\\ forall P :e 2 :^: C :^: B :^: A, forall f :e 2 :^: D :^: C :^: B :^: A, hl_UNIONS D (hl_GSPEC (2 :^: D) (fun GEN_PVAR_22 :e 2 :^: D => if exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC (2 :^: D) GEN_PVAR_22 (P x y z) (f x y z) = 1 then 1 else 0)) = hl_GSPEC D (fun GEN_PVAR_23 :e D => if exists a :e D, hl_SETSPEC D GEN_PVAR_23 (if exists x :e A, exists y :e B, exists z :e C, P x y z = 1 /\\ hl_IN D a (f x y z) = 1 then 1 else 0) a = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: B)",
+   "cert_error": "bridge_unsupported: rel_mapped: nested subset argument relation",
    "bridge": ""
   },
   {
@@ -77185,9 +77185,9 @@
    "source": "!s:A->bool. UNIONS (GSPEC (\\GEN%PVAR%63:A->bool. ?x:A. SETSPEC GEN%PVAR%63 (x IN s) (x INSERT EMPTY))) = s",
    "statement": "forall A:set, forall s c= A, Union {{x} | x :e A, x :e s} = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_63 :e 2 :^: A => if exists x :e A, hl_SETSPEC (2 :^: A) GEN_PVAR_63 (hl_IN A x s) (hl_INSERT A x (hl_EMPTY A)) = 1 then 1 else 0)) = s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_SINGS_bridge"
   },
   {
    "name": "UNIONS_SINGS_GEN",
@@ -77213,9 +77213,9 @@
    "source": "!P:A->bool. UNIONS (GSPEC (\\GEN%PVAR%61:A->bool. ?x:A. SETSPEC GEN%PVAR%61 (P x) (x INSERT EMPTY))) = GSPEC (\\GEN%PVAR%62:A. ?x:A. SETSPEC GEN%PVAR%62 (P x) x)",
    "statement": "forall A:set, forall P:set -> prop, Union {{x} | x :e A, P x} = {x :e A | P x}",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_61 :e 2 :^: A => if exists x :e A, hl_SETSPEC (2 :^: A) GEN_PVAR_61 (P x) (hl_INSERT A x (hl_EMPTY A)) = 1 then 1 else 0)) = hl_GSPEC A (fun GEN_PVAR_62 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_62 (P x) x = 1 then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_SINGS_GEN_bridge"
   },
   {
    "name": "UNIONS_SUBSET",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2411
+  "native_certified": 2415
  }
 }
