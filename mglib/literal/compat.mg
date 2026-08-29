@@ -3960,3 +3960,74 @@ apply (iff_trans (hl_GSPEC (B :^: A) (fun v :e B :^: A => if exists g :e B :^: A
     claim Hnin: ~ x :e hl_rep A s. { assume H2. apply Hn. apply (hl_IN_compat A HA x Hx s Hs). assume _ H3. exact (H3 H2). }
     exact (eq_trans_i (f x) (f2 x) (hl_ARB B) (Hpw x Hx) (eq_trans_i (f2 x) (choose_in B (fun y:set => False)) (hl_ARB B) (H x Hx Hnin) (eq_sym_i (hl_ARB B) (choose_in B (fun y:set => False)) Harb))).
 Qed.
+
+// ---- logical constants as data: their applications versus the literal propositions ----
+Theorem hl_imp_eq1 : forall p q :e 2, hl_imp p q = 1 <-> (p = 1 -> q = 1).
+let p. assume Hp. let q. assume Hq.
+apply (iff_eq1_l (hl_imp p q) (if p = 1 /\ q = 1 <-> p = 1 then 1 else 0) (hl_imp_unfold p Hp q Hq) (p = 1 -> q = 1)).
+apply (iff_trans ((if p = 1 /\ q = 1 <-> p = 1 then 1 else 0) = 1) (p = 1 /\ q = 1 <-> p = 1) (p = 1 -> q = 1) (If_1_iff (p = 1 /\ q = 1 <-> p = 1))).
+apply iffI.
+- assume H. assume Hp1. apply H. assume _ H2. apply (H2 Hp1). assume _ Hq1. exact Hq1.
+- assume H. apply iffI.
+  + assume H1. apply H1. assume Hp1 _. exact Hp1.
+  + assume Hp1. apply andI.
+    * exact Hp1.
+    * exact (H Hp1).
+Qed.
+Theorem hl_not_eq1 : forall p :e 2, hl_not p = 1 <-> ~ p = 1.
+let p. assume Hp.
+apply (iff_eq1_l (hl_not p) (if p = 1 -> False then 1 else 0) (hl_not_unfold p Hp) (~ p = 1)).
+exact (If_1_iff (p = 1 -> False)).
+Qed.
+Theorem hl_or_eq1 : forall p q :e 2, hl_or p q = 1 <-> (p = 1 \/ q = 1).
+let p. assume Hp. let q. assume Hq.
+apply (iff_eq1_l (hl_or p q) (if (forall r :e 2, (p = 1 -> r = 1) -> (q = 1 -> r = 1) -> r = 1) then 1 else 0) (hl_or_unfold p Hp q Hq) (p = 1 \/ q = 1)).
+apply (iff_trans ((if (forall r :e 2, (p = 1 -> r = 1) -> (q = 1 -> r = 1) -> r = 1) then 1 else 0) = 1) (forall r :e 2, (p = 1 -> r = 1) -> (q = 1 -> r = 1) -> r = 1) (p = 1 \/ q = 1) (If_1_iff (forall r :e 2, (p = 1 -> r = 1) -> (q = 1 -> r = 1) -> r = 1))).
+apply iffI.
+- assume H. apply (xm (p = 1)).
+  + assume Hp1. apply orIL. exact Hp1.
+  + assume Hnp. apply (xm (q = 1)).
+    * assume Hq1. apply orIR. exact Hq1.
+    * assume Hnq. exact (FalseE (neq_0_1 (H 0 In_0_2 (fun Hp1 => FalseE (Hnp Hp1) (0 = 1)) (fun Hq1 => FalseE (Hnq Hq1) (0 = 1)))) (p = 1 \/ q = 1)).
+- assume H. let r. assume Hr. assume H1 H2. apply H.
+  + assume Hp1. exact (H1 Hp1).
+  + assume Hq1. exact (H2 Hq1).
+Qed.
+Theorem hl_and_eq1 : forall p q :e 2, hl_and p q = 1 <-> (p = 1 /\ q = 1).
+let p. assume Hp. let q. assume Hq.
+claim H1: (if True then 1 else 0) = 1. { exact (If_i_1 True 1 0 (fun p:prop => fun H:p => H)). }
+claim H12: (if True then 1 else 0) :e 2. { exact (If_in_2 True). }
+claim Hf1: (fun a :e 2 => fun b :e 2 => a) :e 2 :^: 2 :^: 2.
+{ prove (fun a :e 2 => fun b :e 2 => a) :e Pi_ a :e 2, 2 :^: 2. apply (lam_Pi 2 (fun _ => 2 :^: 2) (fun a => fun b :e 2 => a)). let a. assume Ha. prove (fun b :e 2 => a) :e Pi_ b :e 2, 2. apply (lam_Pi 2 (fun _ => 2) (fun b => a)). let b. assume _. exact Ha. }
+claim Hf2: (fun a :e 2 => fun b :e 2 => b) :e 2 :^: 2 :^: 2.
+{ prove (fun a :e 2 => fun b :e 2 => b) :e Pi_ a :e 2, 2 :^: 2. apply (lam_Pi 2 (fun _ => 2 :^: 2) (fun a => fun b :e 2 => b)). let a. assume Ha. prove (fun b :e 2 => b) :e Pi_ b :e 2, 2. apply (lam_Pi 2 (fun _ => 2) (fun b => b)). let b. assume Hb. exact Hb. }
+apply (iff_eq1_l (hl_and p q) (if ((fun f :e 2 :^: 2 :^: 2 => f p q) = (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0))) then 1 else 0) (hl_and_unfold p Hp q Hq) (p = 1 /\ q = 1)).
+apply (iff_trans ((if ((fun f :e 2 :^: 2 :^: 2 => f p q) = (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0))) then 1 else 0) = 1) ((fun f :e 2 :^: 2 :^: 2 => f p q) = (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0))) (p = 1 /\ q = 1) (If_1_iff ((fun f :e 2 :^: 2 :^: 2 => f p q) = (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0))))).
+apply iffI.
+- assume H.
+  claim HLp: (fun f :e 2 :^: 2 :^: 2 => f p q) (fun a :e 2 => fun b :e 2 => a) = p. { exact (eq_trans_i ((fun f :e 2 :^: 2 :^: 2 => f p q) (fun a :e 2 => fun b :e 2 => a)) ((fun a :e 2 => fun b :e 2 => a) p q) p (beta (2 :^: 2 :^: 2) (fun f => f p q) (fun a :e 2 => fun b :e 2 => a) Hf1) (lam2_beta 2 2 (fun a b => a) p Hp q Hq)). }
+  claim HRp: (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => a) = p. { exact (H (fun hl__u hl__v => hl__u (fun a :e 2 => fun b :e 2 => a) = p) HLp). }
+  claim HR1: (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => a) = 1. { exact (eq_trans_i ((fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => a)) ((fun a :e 2 => fun b :e 2 => a) (if True then 1 else 0) (if True then 1 else 0)) 1 (beta (2 :^: 2 :^: 2) (fun f => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => a) Hf1) (eq_trans_i ((fun a :e 2 => fun b :e 2 => a) (if True then 1 else 0) (if True then 1 else 0)) (if True then 1 else 0) 1 (lam2_beta 2 2 (fun a b => a) (if True then 1 else 0) H12 (if True then 1 else 0) H12) H1)). }
+  claim HLq: (fun f :e 2 :^: 2 :^: 2 => f p q) (fun a :e 2 => fun b :e 2 => b) = q. { exact (eq_trans_i ((fun f :e 2 :^: 2 :^: 2 => f p q) (fun a :e 2 => fun b :e 2 => b)) ((fun a :e 2 => fun b :e 2 => b) p q) q (beta (2 :^: 2 :^: 2) (fun f => f p q) (fun a :e 2 => fun b :e 2 => b) Hf2) (lam2_beta 2 2 (fun a b => b) p Hp q Hq)). }
+  claim HRq: (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => b) = q. { exact (H (fun hl__u hl__v => hl__u (fun a :e 2 => fun b :e 2 => b) = q) HLq). }
+  claim HR2: (fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => b) = 1. { exact (eq_trans_i ((fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => b)) ((fun a :e 2 => fun b :e 2 => b) (if True then 1 else 0) (if True then 1 else 0)) 1 (beta (2 :^: 2 :^: 2) (fun f => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => b) Hf2) (eq_trans_i ((fun a :e 2 => fun b :e 2 => b) (if True then 1 else 0) (if True then 1 else 0)) (if True then 1 else 0) 1 (lam2_beta 2 2 (fun a b => b) (if True then 1 else 0) H12 (if True then 1 else 0) H12) H1)). }
+  apply andI.
+  + exact (eq_trans_i p ((fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => a)) 1 (eq_sym_i ((fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => a)) p HRp) HR1).
+  + exact (eq_trans_i q ((fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => b)) 1 (eq_sym_i ((fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0)) (fun a :e 2 => fun b :e 2 => b)) q HRq) HR2).
+- assume H. apply H. assume Hp1 Hq1.
+  claim Hp1': p = (if True then 1 else 0). { exact (eq_trans_i p 1 (if True then 1 else 0) Hp1 (eq_sym_i (if True then 1 else 0) 1 H1)). }
+  claim Hq1': q = (if True then 1 else 0). { exact (eq_trans_i q 1 (if True then 1 else 0) Hq1 (eq_sym_i (if True then 1 else 0) 1 H1)). }
+  apply (lam_ext_in (2 :^: 2 :^: 2) (fun f => f p q) (fun f => f (if True then 1 else 0) (if True then 1 else 0))). let f. assume Hf.
+  exact (f_equal2 (fun u v => f u v) p (if True then 1 else 0) q (if True then 1 else 0) Hp1' Hq1').
+Qed.
+
+// ---- restriction of a function to a subset ----
+Theorem hl_RESTRICTION_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> forall x :e A, hl_RESTRICTION A B l1 l2 x = if x :e hl_rep A l1 then f2 x else choose_in B (fun y:set => False).
+let A B. assume HA HB. let s. assume Hs. let f. assume Hf. let f2. assume Hpw. let x. assume Hx.
+claim HIN: hl_IN A x s :e 2. { exact (setexp2_ap A (2 :^: A) 2 (hl_IN A) (hl_IN_in A HA) x Hx s Hs). }
+claim Hfx: f x :e B. { exact (setexp_ap A B f Hf x Hx). }
+claim Harb: hl_ARB B :e B. { exact (hl_ARB_in B HB). }
+rewrite (hl_RESTRICTION_unfold A B s Hs f Hf x Hx).
+rewrite (hl_COND_if B (hl_IN A x s) HIN (x :e hl_rep A s) (hl_IN_compat A HA x Hx s Hs) (f x) Hfx (hl_ARB B) Harb).
+exact (f_equal2 (fun u v => if x :e hl_rep A s then u else v) (f x) (f2 x) (hl_ARB B) (choose_in B (fun y:set => False)) (Hpw x Hx) (hl_ARB_compat B HB)).
+Qed.

@@ -78,6 +78,10 @@ Admitted.
 Theorem hl_FINREC_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_FINREC A B = Empty.
 Admitted.
 
+// I : A->A (not in compat.mg)
+Theorem hl_I_compat : forall A:set, A <> Empty -> forall x :e A, hl_I A x = x.
+Admitted.
+
 // dest_finite_prod : (A,B)finite_prod->num (not in compat.mg)
 Theorem hl_dest_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_prod A B, hl_dest_finite_prod A B l1 = l1.
 Admitted.
@@ -196,6 +200,10 @@ Admitted.
 
 // dest_finite_sum : (A,B)finite_sum->num (not in compat.mg)
 Theorem hl_dest_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_sum A B, hl_dest_finite_sum A B l1 = l1.
+Admitted.
+
+// product_map : (K->bool)->(K->A->B)->(K->A)->K->B (not in compat.mg)
+Theorem hl_product_map_compat : forall K A B:set, K <> Empty -> A <> Empty -> B <> Empty -> forall l1 :e 2 :^: K, forall l2 :e B :^: A :^: K, forall f2:set -> set -> set, (forall x :e K, forall y :e A, l2 x y = f2 x y) -> forall x :e A :^: K, hl_product_map K A B l1 l2 x = fun i:set => if i :e hl_rep K l1 then f2 i (x i) else choose_in B (fun y:set => False).
 Admitted.
 
 // FNIL : num->A (not in compat.mg)
@@ -352,6 +360,14 @@ Admitted.
 
 // ISO : (A->B)->(B->A)->bool (not in compat.mg)
 Theorem hl_ISO_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e A :^: B, forall f2:set -> set, (forall x :e B, l2 x = f2 x) -> (hl_ISO A B l1 l2 = 1 <-> (forall x :e B, f1 (f2 x) = x) /\ forall y :e A, f2 (f1 y) = y).
+Admitted.
+
+// o : (B->bool)->(A->B)->A->bool (not in compat.mg)
+Theorem hl_o_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e 2 :^: B, forall P1:set -> prop, (forall x :e B, l1 x = 1 <-> P1 x) -> forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> forall x :e A, hl_o B 2 A l1 l2 x = 1 <-> P1 (f2 x).
+Admitted.
+
+// o : (B->C)->(A->B)->A->C (not in compat.mg)
+Theorem hl_o_compat1 : forall B C A:set, B <> Empty -> C <> Empty -> A <> Empty -> forall l1 :e C :^: B, forall f1:set -> set, (forall x :e B, l1 x = f1 x) -> forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> forall x :e A, hl_o B C A l1 l2 x = f1 (f2 x).
 Admitted.
 
 // ASSOC : A->(A#B) list->B (not in compat.mg)

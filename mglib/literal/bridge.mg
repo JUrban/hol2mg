@@ -894,3 +894,15 @@ let A P Q. assume H. apply set_ext.
 - let x. assume Hx. apply (SepE A Q x Hx). assume HxA HQ.
   apply (hl_rep_iff A (hl_chip A P) x HxA). assume H1 _. apply H1. apply (hl_chip_iff A P x HxA). assume _ H2. apply H2. apply (H x HxA). assume _ H3. exact (H3 HQ).
 Qed.
+
+// ---- pointwise equalities whose sides are literal lambdas: beta-reduce under the binder ----
+Theorem pw_app_conv : forall A:set, forall F G:set, forall F' G':set -> set, (forall x :e A, F x = F' x) -> (forall x :e A, G x = G' x) -> ((forall x :e A, F x = G x) <-> (forall x :e A, F' x = G' x)).
+let A F G F' G'. assume HF HG. apply iffI.
+- assume H. let x. assume Hx. exact (eq_trans_i (F' x) (F x) (G' x) (eq_sym_i (F x) (F' x) (HF x Hx)) (eq_trans_i (F x) (G x) (G' x) (H x Hx) (HG x Hx))).
+- assume H. let x. assume Hx. exact (eq_trans_i (F x) (F' x) (G x) (HF x Hx) (eq_trans_i (F' x) (G' x) (G x) (H x Hx) (eq_sym_i (G x) (G' x) (HG x Hx)))).
+Qed.
+Theorem pw_app_conv_bool : forall A:set, forall F G:set, forall P Q:set -> prop, (forall x :e A, F x = 1 <-> P x) -> (forall x :e A, G x = 1 <-> Q x) -> ((forall x :e A, F x = 1 <-> G x = 1) <-> (forall x :e A, P x <-> Q x)).
+let A F G P Q. assume HF HG. apply iffI.
+- assume H. let x. assume Hx. exact (iff_trans (P x) (F x = 1) (Q x) (iff_sym (F x = 1) (P x) (HF x Hx)) (iff_trans (F x = 1) (G x = 1) (Q x) (H x Hx) (HG x Hx))).
+- assume H. let x. assume Hx. exact (iff_trans (F x = 1) (P x) (G x = 1) (HF x Hx) (iff_trans (P x) (Q x) (G x = 1) (H x Hx) (iff_sym (G x = 1) (Q x) (HG x Hx)))).
+Qed.

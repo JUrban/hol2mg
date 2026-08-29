@@ -220,7 +220,8 @@ source: !t:A->B. (\x:A. t x) = t
 status: generalization_required
 statement: forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t :e B :^: A, (fun x :e A => t x) = t
-cert_status: bridge_unsupported
+bridge: ETA_AX_bridge
+cert_status: native_certified
 
 ### SELECT_REFL   [choice, conditionals, Booleans as data]
 hash: 5d89ddfdd48e07285ef4152ba2f87957

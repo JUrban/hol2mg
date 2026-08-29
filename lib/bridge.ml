@@ -310,7 +310,12 @@ and compat_statement_of (an : L.analysis) (e : R.const_entry) (scheme : ty) : Mg
         | R.RSubset -> (match res with
             | TyApp ("fun", [ _; TyApp ("bool", []) ]) -> Some (L.mg_eq (nat_of_lit lctx res lhs) rhs)
             | _ -> None)
-        | _ -> None) in
+        | R.RMetaFun _ -> (match res with
+            | TyApp ("fun", [ d; _ ]) -> Some (Mg.AllIn ("x", L.carrier lctx d, L.mg_eq (Mg.App (lhs, Mg.Var "x")) (Mg.normalize (Mg.App (rhs, Mg.Var "x")))))
+            | _ -> None)
+        | R.RMetaPred _ -> (match res with
+            | TyApp ("fun", [ d; TyApp ("bool", []) ]) -> Some (Mg.AllIn ("x", L.carrier lctx d, L.mg_iff (L.mg_eq (Mg.App (lhs, Mg.Var "x")) L.one) (Mg.normalize (Mg.App (rhs, Mg.Var "x")))))
+            | _ -> None)) in
       match result with
       | None -> None
       | Some body ->
@@ -1081,13 +1086,23 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         let resty = List.fold_right (fun d acc -> fun_ty d acc) (List.filteri (fun i _ -> i >= n) doms) (snd (strip_fun_ty cty)) in
         (match resty with TyApp ("fun", [ _; _ ]) -> () | _ -> unsupported "subset result");
         L.mg_eq (nat_of_lit g.lctx resty lhs) rhs0
-    | _ -> unsupported "rel_mapped: result role") in
+    | R.RMetaFun _ | R.RMetaPred _ ->
+        (* meta-valued result: pointwise on the next argument, named as in the elaborated lambda *)
+        let n = List.length e.R.c_args in
+        let resty = List.fold_right (fun d acc -> fun_ty d acc) (List.filteri (fun i _ -> i >= n) doms) (snd (strip_fun_ty cty)) in
+        let d = (match resty with TyApp ("fun", [ d; _ ]) -> d | _ -> unsupported "rel_mapped: meta result type") in
+        let xn = (match nat with Mg.Lam (xn, _, _) -> xn | _ -> unsupported "rel_mapped: meta result is not a lambda") in
+        let body = Mg.normalize (Mg.App (rhs0, Mg.Var xn)) in
+        (match e.R.c_result with
+         | R.RMetaPred _ -> Mg.AllIn (xn, L.carrier g.lctx d, L.mg_iff (L.mg_eq (Mg.App (lhs, Mg.Var xn)) L.one) body)
+         | _ -> Mg.AllIn (xn, L.carrier g.lctx d, L.mg_eq (Mg.App (lhs, Mg.Var xn)) body))) in
   (* apply the pending rewrites of the right-hand side *)
   let prop, pf = List.fold_left (fun (prop, pf) (l, n, pe) ->
     (* only rewrite inside the RHS: abstract occurrences in the RHS part *)
     let split_rhs prop = (match prop with
       | Mg.App (Mg.App (Mg.Cst "iff", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "iff", a), b')), b
       | Mg.App (Mg.App (Mg.Cst "eq", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "eq", a), b')), b
+      | Mg.AllIn (x, c, Mg.App (Mg.App (Mg.Cst (("iff" | "eq") as k), a), b)) -> (fun b' -> Mg.AllIn (x, c, Mg.App (Mg.App (Mg.Cst k, a), b'))), b
       | _ -> (fun b' -> b'), prop) in
     let rebuild, b = split_rhs prop in
     let ctx = rebuild (replace_tm l (Mg.Var "hl__u") b) in
@@ -1105,6 +1120,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let split_rhs prop = (match prop with
     | Mg.App (Mg.App (Mg.Cst "iff", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "iff", a), b')), b
     | Mg.App (Mg.App (Mg.Cst "eq", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "eq", a), b')), b
+    | Mg.AllIn (x, c, Mg.App (Mg.App (Mg.Cst (("iff" | "eq") as k), a), b)) -> (fun b' -> Mg.AllIn (x, c, Mg.App (Mg.App (Mg.Cst k, a), b'))), b
     | _ -> (fun b' -> b'), prop) in
   let rec normalize_singletons (prop, pf) =
     let rebuild, b = split_rhs prop in
@@ -1118,10 +1134,12 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let kind = (match e.R.c_result with
     | R.RProp -> KIff | R.RSet -> KEq
     | R.RSubset -> (match nview with E.VSubset (Mg.App (Mg.Cst "Power", a)) -> KRep2 a | E.VSubset a -> KRep a | _ -> KRep (Mg.Var "?"))
-    | _ -> KEq) in
+    | R.RMetaFun _ -> (match prop with Mg.AllIn (_, c, _) -> KPW c | _ -> KEq)
+    | R.RMetaPred _ -> (match prop with Mg.AllIn (_, c, _) -> KPWP c | _ -> KIff)) in
   (* sanity: the derived native form must be the one Elab produced *)
   let derived = (match prop with
     | Mg.App (Mg.App (Mg.Cst ("iff" | "eq"), _), b) -> b
+    | Mg.AllIn (x, _, Mg.App (Mg.App (Mg.Cst ("iff" | "eq"), _), b)) -> Mg.Lam (x, (match e.R.c_result with R.RMetaPred _ -> Mg.Prop | _ -> Mg.Set), b)
     | _ -> prop) in
   if derived <> nat then unsupported "rel_mapped: derived native %s differs from elaborated %s" (pp derived) (pp nat);
   (lit, nat, kind, pf)
@@ -1258,16 +1276,67 @@ and bridge_eq g dir ty a b =
     let pw = E.mk_forall hint dom inner in
     (* literal: L[a] = L[b] (set functions) <-> forall x :e A, L[a] x = L[b] x  (eq_Pi_pointwise) ;
        the literal of `pw` is forall x :e A, L[a x] = L[b x] where L[(\y.t) x] is a beta redex *)
+    let ca = L.carrier g.lctx dom and cb = L.carrier g.lctx cod in
+    let la = lterm g a and lb = lterm g b in
+    let lit_eq = paren (pp (L.mg_eq la lb)) in
+    let lit_pw = paren (ltext g pw) in
+    let nat_pw = paren (ntext g pw) in
+    let is_bool = cod = bool_ty in
+    let iff = if is_bool then Printf.sprintf "(eq_Pi_pointwise_bool %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (typ g a) (typ g b)
+      else Printf.sprintf "(eq_Pi_pointwise %s %s %s %s %s %s)" (ppp ca) (ppp cb) (ppp la) (ppp lb) (typ g a) (typ g b) in
     (match a, b with
-     | Lam _, _ | _, Lam _ -> unsupported "bridge_eq: pointwise equality with a lambda side"
+     | Lam _, _ | _, Lam _ ->
+         (* a lambda side: the literal of `pw` has the beta-reduced body, the pointwise form of
+            eq_Pi_pointwise the applied lambda; convert with pw_app_conv[_bool] *)
+         let side s ls =
+           (match s with
+            | Lam (x, xty, body) ->
+                let n, body', _, cleanup = open_lam g x xty body in
+                let r = (try
+                  let lbt = lterm g body' in
+                  if is_bool then
+                    (match lbt with
+                     | Mg.If (_, Mg.Num 1, Mg.Num 0) ->
+                         let lp = ltext g body' in
+                         (Printf.sprintf "(fun %s:set => %s)" n lp,
+                          Printf.sprintf "(fun %s H%s => (iff_eq1_l (%s %s) %s (beta %s (fun %s => %s) %s H%s) (%s) (If_1_iff (%s))))" n n ls n (ppp lbt) (ppp ca) n (pp lbt) n n lp lp)
+                     | _ ->
+                         (Printf.sprintf "(fun %s:set => %s = 1)" n (pp lbt),
+                          Printf.sprintf "(fun %s H%s => (iff_eq1_l (%s %s) %s (beta %s (fun %s => %s) %s H%s) (%s = 1) (iff_refl (%s = 1))))" n n ls n (ppp lbt) (ppp ca) n (pp lbt) n n (pp lbt) (pp lbt)))
+                  else
+                    (Printf.sprintf "(fun %s:set => %s)" n (pp lbt),
+                     Printf.sprintf "(fun %s H%s => (beta %s (fun %s => %s) %s H%s))" n n (ppp ca) n (pp lbt) n n)
+                  with e -> cleanup (); raise e) in
+                cleanup (); r
+            | _ when is_bool ->
+                (* the application may be logical (a partially applied logical constant): its literal
+                   is a proposition, related to the data constant by hl_<c>_eq1 *)
+                let n, body', _, cleanup = open_lam g "x" dom (App (lift 1 0 s, Bound 0)) in
+                let r = (try
+                  if L.is_logical body' then begin
+                    let lp = ltext g body' in
+                    let h, hargs = head_and_args s in
+                    let data_arg p = (match lterm g p with Mg.If _ -> unsupported "bridge_eq: logical head applied to a formula" | l -> ppp l) in
+                    let pf = (match h, hargs with
+                      | Const ("==>", _), [ p ] -> Printf.sprintf "(hl_imp_eq1 %s %s %s H%s)" (data_arg p) (typ g p) n n
+                      | Const ("/\\", _), [ p ] -> Printf.sprintf "(hl_and_eq1 %s %s %s H%s)" (data_arg p) (typ g p) n n
+                      | Const ("\\/", _), [ p ] -> Printf.sprintf "(hl_or_eq1 %s %s %s H%s)" (data_arg p) (typ g p) n n
+                      | Const ("~", _), [] -> Printf.sprintf "(hl_not_eq1 %s H%s)" n n
+                      | _ -> unsupported "bridge_eq: logical head %s" (match h with Const (c, _) -> c | _ -> "?")) in
+                    (Printf.sprintf "(fun %s:set => %s)" n lp, Printf.sprintf "(fun %s H%s => %s)" n n pf)
+                  end else
+                    (Printf.sprintf "(fun %s:set => %s %s = 1)" n ls n, Printf.sprintf "(fun %s H%s => (iff_refl (%s %s = 1)))" n n ls n)
+                  with e -> cleanup (); raise e) in
+                cleanup (); r
+            | _ -> (Printf.sprintf "(fun hl__pw:set => %s hl__pw)" ls, Printf.sprintf "(fun hl__pw Hhl__pw => %s)" refl)) in
+         let fa, pa = side a (ppp la) and fb, pb = side b (ppp lb) in
+         let lit_pw0 = if is_bool then Printf.sprintf "(forall hl__pw :e %s, %s hl__pw = 1 <-> %s hl__pw = 1)" (ppp ca) (ppp la) (ppp lb)
+           else Printf.sprintf "(forall hl__pw :e %s, %s hl__pw = %s hl__pw)" (ppp ca) (ppp la) (ppp lb) in
+         let conv = Printf.sprintf "(%s %s %s %s %s %s %s %s)" (if is_bool then "pw_app_conv_bool" else "pw_app_conv") (ppp ca) (ppp la) (ppp lb) fa fb pa pb in
+         (match dir with
+          | Fwd -> Printf.sprintf "(imp_trans %s %s %s (imp_trans %s %s %s (iffEL %s %s %s) (iffEL %s %s %s)) %s)" lit_eq lit_pw nat_pw lit_eq lit_pw0 lit_pw lit_eq lit_pw0 iff lit_pw0 lit_pw conv (bridge g Fwd pw)
+          | Bwd -> Printf.sprintf "(imp_trans %s %s %s %s (imp_trans %s %s %s (iffER %s %s %s) (iffER %s %s %s)))" nat_pw lit_pw lit_eq (bridge g Bwd pw) lit_pw lit_pw0 lit_eq lit_pw0 lit_pw conv lit_eq lit_pw0 iff)
      | _ ->
-         let ca = L.carrier g.lctx dom and cb = L.carrier g.lctx cod in
-         let la = lterm g a and lb = lterm g b in
-         let lit_eq = paren (pp (L.mg_eq la lb)) in
-         let lit_pw = paren (ltext g pw) in
-         let nat_pw = paren (ntext g pw) in
-         let iff = if cod = bool_ty then Printf.sprintf "(eq_Pi_pointwise_bool %s %s %s %s %s)" (ppp ca) (ppp la) (ppp lb) (typ g a) (typ g b)
-           else Printf.sprintf "(eq_Pi_pointwise %s %s %s %s %s %s)" (ppp ca) (ppp cb) (ppp la) (ppp lb) (typ g a) (typ g b) in
          (match dir with
           | Fwd -> Printf.sprintf "(imp_trans %s %s %s (iffEL %s %s %s) %s)" lit_eq lit_pw nat_pw lit_eq lit_pw iff (bridge g Fwd pw)
           | Bwd -> Printf.sprintf "(imp_trans %s %s %s %s (iffER %s %s %s))" nat_pw lit_pw lit_eq (bridge g Bwd pw) lit_eq lit_pw iff))

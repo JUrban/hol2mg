@@ -1587,7 +1587,7 @@
    "statement": "forall p q:prop, p /\\ q <-> forall f:set -> set -> prop, f (if p then 1 else 0) (if q then 1 else 0) <-> f (if True then 1 else 0) (if True then 1 else 0)",
    "literal": "hl_and = fun p :e 2 => fun q :e 2 => if (fun f :e 2 :^: 2 :^: 2 => f p q) = fun f :e 2 :^: 2 :^: 2 => f (if True then 1 else 0) (if True then 1 else 0) then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: bridge_eq: logical head applied to a formula",
    "bridge": ""
   },
   {
@@ -6027,7 +6027,7 @@
    "statement": "forall A B:set, forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, (if b then f x else g x) = if b then f x else g x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f g :e B :^: A, (fun x :e A => hl_COND B b (f x) (g x)) = hl_COND (B :^: A) b f g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant COND (view set(B), 4 args)",
    "bridge": ""
   },
   {
@@ -6082,9 +6082,9 @@
    "source": "COND = (\\t:bool. \\t1:A. \\t2:A. @x:A. ((t <=> T) ==> x = t1) /\\ ((t <=> F) ==> x = t2))",
    "statement": "forall A:set, forall t:prop, forall t1 t2 :e A, (if t then t1 else t2) = choose_in A (fun x:set => ((t <-> True) -> x = t1) /\\ ((t <-> False) -> x = t2))",
    "literal": "forall A:set, A <> Empty -> hl_COND A = fun t :e 2 => fun t1 :e A => fun t2 :e A => hl_select A (fun x :e A => if ((t = 1 <-> True) -> x = t1) /\\ ((t = 1 <-> False) -> x = t2) then 1 else 0)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "COND_DEF_bridge"
   },
   {
    "name": "COND_ELIM_THM",
@@ -11200,7 +11200,7 @@
    "statement": "forall A:set, forall x :e A, x :e Empty <-> False",
    "literal": "forall A:set, A <> Empty -> hl_EMPTY A = fun x :e A => if False then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant EMPTY (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -11913,9 +11913,9 @@
    "source": "!t:A->B. (\\x:A. t x) = t",
    "statement": "forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall t :e B :^: A, (fun x :e A => t x) = t",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ETA_AX_bridge"
   },
   {
    "name": "ETA_ONE",
@@ -11940,9 +11940,9 @@
    "source": "!f:1->A. (\\x:1. f one) = f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e 1, f x :e A) -> forall x :e 1, f 0 = f x",
    "literal": "forall A:set, A <> Empty -> forall f :e A :^: 1, (fun x :e 1 => f hl_one) = f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ETA_ONE_bridge"
   },
   {
    "name": "EVEN",
@@ -12462,7 +12462,7 @@
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> forall q:prop, (forall x :e A, P x -> q) -> q",
    "literal": "forall A:set, A <> Empty -> hl_exists A = fun P :e 2 :^: A => if forall q :e 2, (forall x :e A, P x = 1 -> q = 1) -> q = 1 then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ? (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -13395,7 +13395,7 @@
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A P)",
    "literal": "forall A:set, A <> Empty -> hl_exists A = fun P :e 2 :^: A => P (hl_select A P)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant @ (view set(A), 1 args)",
    "bridge": ""
   },
   {
@@ -13536,7 +13536,7 @@
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\\ forall x y :e A, P x /\\ P y -> x = y",
    "literal": "forall A:set, A <> Empty -> hl_exists_unique A = fun P :e 2 :^: A => if hl_exists A P = 1 /\\ forall x y :e A, P x = 1 /\\ P y = 1 -> x = y then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ? (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -18081,7 +18081,7 @@
    "statement": "forall A:set, forall P:set -> prop, (forall x :e A, P x) <-> forall x :e A, P x <-> True",
    "literal": "forall A:set, A <> Empty -> hl_forall A = fun P :e 2 :^: A => if P = fun x :e A => if True then 1 else 0 then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant ! (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -22281,7 +22281,7 @@
    "statement": "forall A:set, forall s c= A, s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (hl_I A) s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22678,7 +22678,7 @@
    "statement": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall s :e Power A :^: K, {(fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)) | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}} = {f0 :e B :^: K | (forall i :e k, f0 i :e {x0 :e B | x0 :e {f i x1 | x1 :e s i}}) /\\ forall i :e K, ~ i :e k -> f0 i = choose_in B (fun y:set => False)}",
    "literal": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f :e B :^: A :^: K, forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, hl_IMAGE (A :^: K) (B :^: K) (hl_product_map K A B k f) (hl_cartesian_product K A k s) = hl_cartesian_product K B k (fun i :e K => hl_IMAGE A B (f i) (s i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_product_map_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: compat_missing: hl_product_map_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -22737,9 +22737,9 @@
    "source": "!f:A->B. !s:A->bool. !t:A->bool. s SUBSET t ==> IMAGE (RESTRICTION t f) s = IMAGE f s",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s t c= A, s c= t -> {(if x :e t then f x else choose_in B (fun y:set => False)) | x :e s} = {f x | x :e s}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s t :e 2 :^: A, hl_SUBSET A s t = 1 -> hl_IMAGE A B (hl_RESTRICTION A B t f) s = hl_IMAGE A B f s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_RESTRICTION_bridge"
   },
   {
    "name": "IMAGE_SNDCART_PCROSS",
@@ -23007,7 +23007,7 @@
    "statement": "forall p q:prop, p -> q <-> (p /\\ q <-> p)",
    "literal": "hl_imp = fun p :e 2 => fun q :e 2 => if p = 1 /\\ q = 1 <-> p = 1 then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: bridge_eq: logical head applied to a formula",
    "bridge": ""
   },
   {
@@ -24490,7 +24490,7 @@
    "statement": "forall A:set, forall s c= A, forall x y :e A, y :e SetAdjoin s x <-> y :e s \\/ y = x",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x :e A, hl_INSERT A x s = fun y :e A => if hl_IN A y s = 1 \\/ y = x then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant INSERT (view prop, 3 args)",
    "bridge": ""
   },
   {
@@ -24851,9 +24851,9 @@
    "source": "!P:((A->bool)->bool)->bool. !Q:(A->bool)->bool. INTERSECTION_OF P Q = (\\s:A->bool. ?u:(A->bool)->bool. P u /\\ (!c:A->bool. c IN u ==> Q c) /\\ INTERS u = s)",
    "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, (exists u c= Power A, P u /\\ (forall c :e u, Q c) /\\ {x :e A | forall Y :e u, x :e Y} = s) <-> exists u c= Power A, P u /\\ ((forall c c= A, c :e u -> Q c) /\\ {x :e A | forall Y :e u, x :e Y} = s)",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: (2 :^: A)), forall Q :e 2 :^: (2 :^: A), hl_INTERSECTION_OF A P Q = fun s :e 2 :^: A => if exists u :e 2 :^: (2 :^: A), P u = 1 /\\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> Q c = 1) /\\ hl_INTERS A u = s) then 1 else 0",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTERSECTION_OF_bridge"
   },
   {
    "name": "INTERSECTION_OF_EMPTY",
@@ -39841,7 +39841,7 @@
    "statement": "forall A:set, forall x :e A, x = x",
    "literal": "forall A:set, A <> Empty -> hl_I A = fun x :e A => x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -39870,7 +39870,7 @@
    "statement": "forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\\ forall x :e A, f x = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\\ hl_o A B A f (hl_I A) = f",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -39898,7 +39898,7 @@
    "statement": "forall A:set, forall x :e A, x = x",
    "literal": "forall A:set, A <> Empty -> forall x :e A, hl_I A x = x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -39994,7 +39994,7 @@
    "statement": "forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall p :e A :*: B, f (p 0) (p 1) = f (p 0) (p 1)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B :^: A, hl_GABS (C :^: (A :*: B)) (fun f1 :e C :^: (A :*: B) => if forall x :e A, forall y :e B, hl_GEQ C (f1 (hl_pair A B x y)) (f x y) = 1 then 1 else 0) = fun p :e A :*: B => f (hl_FST A B p) (hl_SND A B p)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view set(C), 2 args)",
    "bridge": ""
   },
   {
@@ -40026,7 +40026,7 @@
    "statement": "forall A B C:set, C <> Empty -> forall t:set -> set, (forall x :e A :*: B, t x :e C) -> forall p :e A :*: B, t p = t (p 0,p 1)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall t :e C :^: (A :*: B), (fun p :e A :*: B => t p) = hl_GABS (C :^: (A :*: B)) (fun f :e C :^: (A :*: B) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (t (hl_pair A B x y)) = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view set(C), 2 args)",
    "bridge": ""
   },
   {
@@ -40093,7 +40093,7 @@
    "statement": "forall A B C D:set, D <> Empty -> forall f:set -> set, (forall x :e A :*: (B :*: C), f x :e D) -> forall t :e A :*: (B :*: C), f t = f (t 0,(t 1 0,t 1 1))",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall f :e D :^: (A :*: (B :*: C)), (fun t :e A :*: (B :*: C) => f t) = hl_GABS (D :^: (A :*: (B :*: C))) (fun f' :e D :^: (A :*: (B :*: C)) => if forall x :e A, forall y :e B, forall z :e C, hl_GEQ D (f' (hl_pair A (B :*: C) x (hl_pair B C y z))) (f (hl_pair A (B :*: C) x (hl_pair B C y z))) = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: unmapped constant GABS (view set(D), 2 args)",
    "bridge": ""
   },
   {
@@ -43357,7 +43357,7 @@
    "statement": "forall A:set, A <> Empty -> forall x :e finseq A, seq_map (fun x:set => x) x = x",
    "literal": "forall A:set, A <> Empty -> hl_MAP A A (hl_I A) = hl_I (finseq A)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -43584,7 +43584,7 @@
    "statement": "forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y",
    "literal": "forall A:set, A <> Empty -> forall m :e omega :^: A, hl_MEASURE A m = fun x :e A => fun y :e A => hl_lt (m x) (m y)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: compat_missing: hl_MEASURE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -47985,9 +47985,9 @@
    "source": "~ = (\\p:bool. p ==> F)",
    "statement": "forall p:prop, ~ p <-> p -> False",
    "literal": "hl_not = fun p :e 2 => if p = 1 -> False then 1 else 0",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NOT_DEF_bridge"
   },
   {
    "name": "NOT_EMPTY_INSERT",
@@ -52391,7 +52391,7 @@
    "statement": "forall p q:prop, p \\/ q <-> forall r:prop, (p -> r) -> (q -> r) -> r",
    "literal": "hl_or = fun p :e 2 => fun q :e 2 => if forall r :e 2, (p = 1 -> r = 1) -> (q = 1 -> r = 1) -> r = 1 then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: bridge_eq: logical head applied to a formula",
    "bridge": ""
   },
   {
@@ -53741,7 +53741,7 @@
    "statement": "polynomial_function_R (fun x:set => x)",
    "literal": "hl_polynomial_function (hl_I R) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -67724,9 +67724,9 @@
    "source": "!s:A->bool. !f:A->B. !x:A. RESTRICTION s f x = (if x IN s then f x else ARB)",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun x:set => False)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, hl_RESTRICTION A B s f x = hl_COND B (hl_IN A x s) (f x) (hl_ARB B)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_bridge"
   },
   {
    "name": "RESTRICTION_COMPOSE",
@@ -67753,9 +67753,9 @@
    "source": "!f:A->B. !g:B->C. !s:A->bool. !t:B->bool. IMAGE f s SUBSET t ==> RESTRICTION s (RESTRICTION t g o RESTRICTION s f) = RESTRICTION s (g o f)",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t -> forall x :e A, (if x :e s then if (if x :e s then f x else choose_in B (fun y:set => False)) :e t then g (if x :e s then f x else choose_in B (fun y:set => False)) else choose_in C (fun y:set => False) else choose_in C (fun y:set => False)) = if x :e s then g (f x) else choose_in C (fun y:set => False)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_SUBSET B (hl_IMAGE A B f s) t = 1 -> hl_RESTRICTION A C s (hl_o B C A (hl_RESTRICTION B C t g) (hl_RESTRICTION A B s f)) = hl_RESTRICTION A C s (hl_o B C A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_COMPOSE_bridge"
   },
   {
    "name": "RESTRICTION_COMPOSE_LEFT",
@@ -67782,9 +67782,9 @@
    "source": "!f:A->B. !g:B->C. !s:A->bool. !t:B->bool. IMAGE f s SUBSET t ==> RESTRICTION s (RESTRICTION t g o f) = RESTRICTION s (g o f)",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t -> forall x :e A, (if x :e s then if f x :e t then g (f x) else choose_in C (fun y:set => False) else choose_in C (fun y:set => False)) = if x :e s then g (f x) else choose_in C (fun y:set => False)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_SUBSET B (hl_IMAGE A B f s) t = 1 -> hl_RESTRICTION A C s (hl_o B C A (hl_RESTRICTION B C t g) f) = hl_RESTRICTION A C s (hl_o B C A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_COMPOSE_LEFT_bridge"
   },
   {
    "name": "RESTRICTION_COMPOSE_RIGHT",
@@ -67811,9 +67811,9 @@
    "source": "!f:A->B. !g:B->C. !s:A->bool. RESTRICTION s (g o RESTRICTION s f) = RESTRICTION s (g o f)",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall x :e A, (if x :e s then g (if x :e s then f x else choose_in B (fun y:set => False)) else choose_in C (fun y:set => False)) = if x :e s then g (f x) else choose_in C (fun y:set => False)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, hl_RESTRICTION A C s (hl_o B C A g (hl_RESTRICTION A B s f)) = hl_RESTRICTION A C s (hl_o B C A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_COMPOSE_RIGHT_bridge"
   },
   {
    "name": "RESTRICTION_DEFINED",
@@ -67840,9 +67840,9 @@
    "source": "!s:A->bool. !f:A->B. !x:A. x IN s ==> RESTRICTION s f x = f x",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, hl_IN A x s = 1 -> hl_RESTRICTION A B s f x = f x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_DEFINED_bridge"
   },
   {
    "name": "RESTRICTION_EQ",
@@ -67870,9 +67870,9 @@
    "source": "!s:A->bool. !f:A->B. !x:A. !y:B. x IN s /\\ f x = y ==> RESTRICTION s f x = y",
    "statement": "forall A B:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall y :e B, x :e s /\\ f x = y -> (if x :e s then f x else choose_in B (fun y:set => False)) = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, forall y :e B, hl_IN A x s = 1 /\\ f x = y -> hl_RESTRICTION A B s f x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_EQ_bridge"
   },
   {
    "name": "RESTRICTION_EXTENSION",
@@ -67899,9 +67899,9 @@
    "source": "!s:A->bool. !f:A->B. !g:A->B. RESTRICTION s f = RESTRICTION s g <=> (!x:A. x IN s ==> f x = g x)",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then g x else choose_in B (fun y:set => False)) <-> forall x :e A, x :e s -> f x = g x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f g :e B :^: A, hl_RESTRICTION A B s f = hl_RESTRICTION A B s g <-> forall x :e A, hl_IN A x s = 1 -> f x = g x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_EXTENSION_bridge"
   },
   {
    "name": "RESTRICTION_FIXPOINT",
@@ -67955,9 +67955,9 @@
    "source": "!s:A->bool. !f:A->B. RESTRICTION s (RESTRICTION s f) = RESTRICTION s f",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then if x :e s then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun y:set => False)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, hl_RESTRICTION A B s (hl_RESTRICTION A B s f) = hl_RESTRICTION A B s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_IDEMP_bridge"
   },
   {
    "name": "RESTRICTION_IN_CARTESIAN_PRODUCT",
@@ -68012,7 +68012,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (fun x :e A => if x :e s then f x else choose_in B (fun y:set => False)) :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, hl_IN (B :^: A) (hl_RESTRICTION A B s f) (hl_EXTENSIONAL A B s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: coerce_rel: set(B :^: A)",
    "bridge": ""
   },
   {
@@ -68040,9 +68040,9 @@
    "source": "!s:A->bool. !t:A->bool. !f:A->B. s SUBSET t ==> RESTRICTION s (RESTRICTION t f) = RESTRICTION s f",
    "statement": "forall A B:set, B <> Empty -> forall s t c= A, forall f:set -> set, (forall x :e A, f x :e B) -> s c= t -> forall x :e A, (if x :e s then if x :e t then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun y:set => False)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s t :e 2 :^: A, forall f :e B :^: A, hl_SUBSET A s t = 1 -> hl_RESTRICTION A B s (hl_RESTRICTION A B t f) = hl_RESTRICTION A B s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_RESTRICTION_bridge"
   },
   {
    "name": "RESTRICTION_THM",
@@ -68069,9 +68069,9 @@
    "source": "!s:A->bool. !f:A->B. RESTRICTION s f = (\\x:A. if x IN s then f x else ARB)",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun x:set => False)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, hl_RESTRICTION A B s f = fun x :e A => hl_COND B (hl_IN A x s) (f x) (hl_ARB B)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_THM_bridge"
   },
   {
    "name": "RESTRICTION_UNDEFINED",
@@ -68098,9 +68098,9 @@
    "source": "!s:A->bool. !f:A->B. !x:A. ~(x IN s) ==> RESTRICTION s f x = ARB",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = choose_in B (fun x:set => False)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, ~ hl_IN A x s = 1 -> hl_RESTRICTION A B s f x = hl_ARB B",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_UNDEFINED_bridge"
   },
   {
    "name": "RESTRICTION_UNIQUE",
@@ -68127,9 +68127,9 @@
    "source": "!s:A->bool. !f:A->B. !g:A->B. RESTRICTION s f = g <=> EXTENSIONAL s g /\\ (!x:A. x IN s ==> f x = g x)",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, (if x :e s then f x else choose_in B (fun y:set => False)) = g x) <-> (forall x :e A, ~ x :e s -> g x = choose_in B (fun y:set => False)) /\\ forall x :e A, x :e s -> f x = g x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f g :e B :^: A, hl_RESTRICTION A B s f = g <-> hl_EXTENSIONAL A B s g = 1 /\\ forall x :e A, hl_IN A x s = 1 -> f x = g x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_UNIQUE_bridge"
   },
   {
    "name": "RESTRICTION_UNIQUE_ALT",
@@ -68156,9 +68156,9 @@
    "source": "!s:A->bool. !f:A->B. !g:A->B. f = RESTRICTION s g <=> EXTENSIONAL s f /\\ (!x:A. x IN s ==> f x = g x)",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = if x :e s then g x else choose_in B (fun y:set => False)) <-> (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)) /\\ forall x :e A, x :e s -> f x = g x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f g :e B :^: A, f = hl_RESTRICTION A B s g <-> hl_EXTENSIONAL A B s f = 1 /\\ forall x :e A, hl_IN A x s = 1 -> f x = g x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_UNIQUE_ALT_bridge"
   },
   {
    "name": "RESTRICTION_UNIV",
@@ -68185,9 +68185,9 @@
    "source": "!f:A->B. RESTRICTION UNIV f = f",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e A then f x else choose_in B (fun y:set => False)) = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_RESTRICTION A B (hl_UNIV A) f = f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RESTRICTION_UNIV_bridge"
   },
   {
    "name": "REVERSE",
@@ -76654,9 +76654,9 @@
    "source": "T <=> (\\p:bool. p) = (\\p:bool. p)",
    "statement": "True <-> forall p:prop, p <-> p",
    "literal": "True <-> (fun p :e 2 => p) = fun p :e 2 => p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "T_DEF_bridge"
   },
   {
    "name": "UNCURRY_DEF",
@@ -77488,9 +77488,9 @@
    "source": "!P:((A->bool)->bool)->bool. !Q:(A->bool)->bool. UNION_OF P Q = (\\s:A->bool. ?u:(A->bool)->bool. P u /\\ (!c:A->bool. c IN u ==> Q c) /\\ UNIONS u = s)",
    "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, (exists u c= Power A, P u /\\ (forall c :e u, Q c) /\\ Union u = s) <-> exists u c= Power A, P u /\\ ((forall c c= A, c :e u -> Q c) /\\ Union u = s)",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: (2 :^: A)), forall Q :e 2 :^: (2 :^: A), hl_UNION_OF A P Q = fun s :e 2 :^: A => if exists u :e 2 :^: (2 :^: A), P u = 1 /\\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> Q c = 1) /\\ hl_UNIONS A u = s) then 1 else 0",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNION_OF_bridge"
   },
   {
    "name": "UNION_OF_EMPTY",
@@ -77754,7 +77754,7 @@
    "statement": "forall A:set, forall x :e A, x :e A <-> True",
    "literal": "forall A:set, A <> Empty -> hl_UNIV A = fun x :e A => if True then 1 else 0",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant UNIV (view prop, 1 args)",
    "bridge": ""
   },
   {
@@ -83005,9 +83005,9 @@
    "source": "!f:B->C. !g:A->B. f o g = (\\x:A. f (g x))",
    "statement": "forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, hl_o B C A f g = fun x :e A => f (g x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "o_DEF_bridge"
   },
   {
    "name": "o_THM",
@@ -83605,7 +83605,7 @@
    "statement": "forall A B K:set, forall k c= K, forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall x :e A :^: K, forall x0 :e K, (if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)",
    "literal": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall f :e B :^: A :^: K, hl_product_map K A B k f = fun x :e A :^: K => hl_RESTRICTION K B k (fun i :e K => f i (x i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: bridge_eq: pointwise equality with a lambda side",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant product_map (view set(B), 4 args)",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2000
+  "native_certified": 2023
  }
 }
