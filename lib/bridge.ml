@@ -515,8 +515,20 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
        | Const (c, cty), _ ->
            (match c with
             | "T" | "F" | "~" | "/\\" | "\\/" | "==>" | "=" | "!" | "?" | "COND" when L.is_logical t ->
-                (* a formula used as data: lit = if LP then 1 else 0; native data view of bool *)
-                unsupported "rel: formula as data"
+                (* a formula used as data: lit = if LP then 1 else 0.  In a prop position the relation is
+                   `lit = 1 <-> NP`; in a set position the native side is `if NP then 1 else 0` *)
+                let lp = ltext g t and np = ntext g t in
+                let fwd = bridge g Fwd t and bwd = bridge g Bwd t in
+                let iff = Printf.sprintf "(iffI (%s) (%s) %s %s)" lp np fwd bwd in
+                (match nview with
+                 | E.VProp ->
+                     (lit, nat, KIff, Printf.sprintf "(iff_trans ((if %s then 1 else 0) = 1) (%s) (%s) (If_1_iff (%s)) %s)" lp lp np lp iff)
+                 | E.VSet _ ->
+                     (match nat with
+                      | Mg.If (npp, Mg.Num 1, Mg.Num 0) when npp = nprop g t ->
+                          (lit, nat, KEq, Printf.sprintf "(if_prop_cong (%s) (%s) 1 0 %s)" lp np iff)
+                      | _ -> unsupported "rel: formula as data (native %s)" (pp nat))
+                 | _ -> unsupported "rel: formula as data (view %s)" (E.string_of_view nview))
             | "GSPEC" when (match E.dest_gspec t with Some (_, [ _ ], _, _) -> true | _ -> false) ->
                 let _, xs, p, body = Option.get (E.dest_gspec t) in
                 let x, xty = List.hd xs in
@@ -912,7 +924,9 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     (prop', leibniz pe (pp ctx) pf)) (prop0, pf0) (List.rev !rewrites) in
   (* replay the elaborator's singleton normalisation SetAdjoin Empty a = {a} on the native side *)
   let rec find_adjoin_empty t = (match t with
-    | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Cst "Empty"), a) -> Some (t, a)
+    | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Cst "Empty"), a) -> Some (t, Mg.SetEnum [ a ], Printf.sprintf "(binunion_idl %s)" (ppp (Mg.SetEnum [ a ])))
+    | Mg.App (Mg.Tuple [ a; b ], Mg.Num 0) -> Some (t, a, Printf.sprintf "(tuple_2_0_eq %s %s)" (ppp a) (ppp b))
+    | Mg.App (Mg.Tuple [ a; b ], Mg.Num 1) -> Some (t, b, Printf.sprintf "(tuple_2_1_eq %s %s)" (ppp a) (ppp b))
     | Mg.App (f, x) -> (match find_adjoin_empty f with Some r -> Some r | None -> find_adjoin_empty x)
     | Mg.Sep (_, a, p) -> (match find_adjoin_empty a with Some r -> Some r | None -> find_adjoin_empty p)
     | Mg.If (c, a, b) -> (match find_adjoin_empty c with Some r -> Some r | None -> (match find_adjoin_empty a with Some r -> Some r | None -> find_adjoin_empty b))
@@ -925,11 +939,10 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     let rebuild, b = split_rhs prop in
     (match find_adjoin_empty b with
      | None -> (prop, pf)
-     | Some (l, a) ->
-         let n = Mg.SetEnum [ a ] in
+     | Some (l, n, pe) ->
          let ctx = rebuild (replace_tm l (Mg.Var "hl__u") b) in
          let prop' = rebuild (replace_tm l n b) in
-         normalize_singletons (prop', leibniz (Printf.sprintf "(binunion_idl %s)" (ppp n)) (pp ctx) pf)) in
+         normalize_singletons (prop', leibniz pe (pp ctx) pf)) in
   let prop, pf = normalize_singletons (prop, pf) in
   let kind = (match e.R.c_result with
     | R.RProp -> KIff | R.RSet -> KEq
@@ -1373,14 +1386,21 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
   let hl_inst = if params = [] then "H__top" else Printf.sprintf "(H__top %s)" (String.concat " " (params @ hyps)) in
   let converted = if wrap_hl = "HL0" then hl_inst else Str.global_replace (Str.regexp_string "HL0") hl_inst wrap_hl in
-  (* native post-processing: approved rewrites (not yet replayed) and empty-carrier generalization *)
+  (* native post-processing: replay of the elaborator's approved rewrites, then the empty-carrier
+     generalization.  Pair projections `(a,b) 0 = a` are transported by Leibniz steps on the proved
+     body; eta-reduced meta lambdas are convertible for Megalodon and need no proof step. *)
   let _, rewrites = Rewrite.run nat_stmt in
-  if rewrites <> [] then unsupported "native rewrites %s" (String.concat "," rewrites);
+  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "eta" ] in
+  (match List.filter (fun r -> not (List.mem r replayable)) rewrites with
+   | [] -> ()
+   | l -> unsupported "native rewrites %s" (String.concat "," l));
+  let final = Printf.sprintf "%s %s" inner converted in
+  let nat_body = if List.mem "eta" rewrites then fst (Rewrite.run nat_body) else nat_body in
+  let nat_stmt = close_lit nat_body in
   let nat_gen, dropped = Emptycase.generalize nat_stmt params in
   let kept_hyps = List.filter_map (fun p -> if List.mem p dropped then None else Some ("H" ^ p ^ "ne")) params in
   (* case analysis on the dropped carriers: the first dropped parameter is split innermost, so that
      its empty case may assume the later parameters nonempty, as the evaluator did *)
-  let final = Printf.sprintf "%s %s" inner converted in
   let body_text = pp nat_body in
   let split = List.fold_left (fun acc d ->
     let body_d = Mg.subst [ (d, Mg.Cst "Empty") ] nat_body in

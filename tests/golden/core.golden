@@ -251,7 +251,8 @@ source: !t1:A. !t2:A. (if T then t1 else t2) = t1 /\ (if F then t1 else t2) = t2
 status: generalization_required
 statement: forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2
 literal: forall A:set, A <> Empty -> forall t1 t2 :e A, hl_COND A (if True then 1 else 0) t1 t2 = t1 /\ hl_COND A (if False then 1 else 0) t1 t2 = t2
-cert_status: bridge_unsupported
+bridge: COND_CLAUSES_bridge
+cert_status: native_certified
 
 ### COND_EXPAND   [choice, conditionals, Booleans as data]
 hash: a0ffc58d882ed08bb9ceb976d7d87a07
@@ -1653,7 +1654,8 @@ source: !op:A->A->A. neutral op = (@x:A. !y:A. op x y = y /\ op y x = y)
 status: exact_native
 statement: forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A op = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y)
 literal: forall A:set, A <> Empty -> forall op :e A :^: A :^: A, hl_neutral A op = hl_select A (fun x :e A => if forall y :e A, op x y = y /\ op y x = y then 1 else 0)
-cert_status: bridge_unsupported
+bridge: neutral_bridge
+cert_status: native_certified
 
 ### support   [iteration, sums, number segments]
 hash: db57a04db49d84b327ec80e8d4024bb4
@@ -1661,7 +1663,8 @@ source: !s:A->bool. !f:A->B. !op:B->B->B. support op f s = GSPEC (\GEN%PVAR%239:
 status: generalization_required
 statement: forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B op} = {x :e A | x :e s /\ ~ f x = neutral_of B op}
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall op :e B :^: B :^: B, hl_support B A op f s = hl_GSPEC A (fun GEN_PVAR_239 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_239 (if hl_IN A x s = 1 /\ ~ f x = hl_neutral B op then 1 else 0) x = 1 then 1 else 0)
-cert_status: bridge_unsupported
+bridge: support_bridge
+cert_status: native_certified
 
 ### SUM_IMAGE   [iteration, sums, number segments]
 hash: ad177bf18ca1c44876fd0f53adc1ddbc

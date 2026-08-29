@@ -854,3 +854,14 @@ let A F G. assume HF HG. apply iffI.
 - assume H. let x. assume Hx. apply (two_eq_iff (F x) (ap_Pi_2 A F HF x Hx) (G x) (ap_Pi_2 A G HG x Hx)). assume H1 _. exact (H1 (eq_to_pw A F G H x Hx)).
 - assume H. apply (Pi_ext A (fun _ => 2) F HF G HG). let x. assume Hx. apply (two_eq_iff (F x) (ap_Pi_2 A F HF x Hx) (G x) (ap_Pi_2 A G HG x Hx)). assume _ H2. exact (H2 (H x Hx)).
 Qed.
+
+// ---- a formula used as data: if P then 1 else 0 ----
+Theorem if_prop_cong : forall p q:prop, forall x y:set, (p <-> q) -> (if p then x else y) = (if q then x else y).
+let p q x y. assume H. apply (xm p).
+- assume Hp.
+  claim Hq: q. { apply H. assume H1 _. exact (H1 Hp). }
+  exact (eq_trans_i (if p then x else y) x (if q then x else y) (If_i_1 p x y Hp) (eq_sym_i (if q then x else y) x (If_i_1 q x y Hq))).
+- assume Hnp.
+  claim Hnq: ~ q. { assume Hq. apply Hnp. apply H. assume _ H2. exact (H2 Hq). }
+  exact (eq_trans_i (if p then x else y) y (if q then x else y) (If_i_0 p x y Hnp) (eq_sym_i (if q then x else y) y (If_i_0 q x y Hnq))).
+Qed.

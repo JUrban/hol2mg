@@ -249,8 +249,13 @@ Theorem COND_DEF : forall A:set, forall t:prop, forall t1 t2 :e A, (if t then t1
 Admitted.
 
 // HOL Light: class.ml:319 / COND_CLAUSES   (hash md5:0917c6f97e746313156fb948ae4a0a66)
-// not bridged: 
+Theorem hlt_COND_CLAUSES : forall A:set, A <> Empty -> forall t1 t2 :e A, hl_COND A (if True then 1 else 0) t1 t2 = t1 /\ hl_COND A (if False then 1 else 0) t1 t2 = t2.
+Admitted.
+Theorem COND_CLAUSES_bridge : (forall A:set, A <> Empty -> forall t1 t2 :e A, hl_COND A (if True then 1 else 0) t1 t2 = t1 /\ hl_COND A (if False then 1 else 0) t1 t2 = t2) -> (forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2).
+exact (fun H__top A => (xm (A = Empty) (forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall t1 t2 :e hl__u, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2) (forall_in_Empty (fun t1 => forall t2 :e Empty, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2)))) (fun HAne => (imp_forall_in (A) (fun t1 => forall t2 :e A, hl_COND A (if True then 1 else 0) t1 t2 = t1 /\ hl_COND A (if False then 1 else 0) t1 t2 = t2) (fun t1 => forall t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2) (fun t1 Ht1 => (imp_forall_in (A) (fun t2 => hl_COND A (if True then 1 else 0) t1 t2 = t1 /\ hl_COND A (if False then 1 else 0) t1 t2 = t2) (fun t2 => (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2) (fun t2 Ht2 => (imp_and (hl_COND A (if True then 1 else 0) t1 t2 = t1) ((if True then t1 else t2) = t1) (hl_COND A (if False then 1 else 0) t1 t2 = t2) ((if False then t1 else t2) = t2) (imp_eq (hl_COND A (if True then 1 else 0) t1 t2) (if True then t1 else t2) (t1) (t1) (hl_COND_if (A) (if True then 1 else 0) (If_in_2 (True)) (True) (iff_trans ((if True then 1 else 0) = 1) (True) (True) (If_1_iff (True)) (iffI (True) (True) (imp_refl True) (imp_refl True))) (t1) Ht1 (t2) Ht2) (fun q H => H)) (imp_eq (hl_COND A (if False then 1 else 0) t1 t2) (if False then t1 else t2) (t2) (t2) (hl_COND_if (A) (if False then 1 else 0) (If_in_2 (False)) (False) (iff_trans ((if False then 1 else 0) = 1) (False) (False) (If_1_iff (False)) (iffI (False) (False) (imp_refl False) (imp_refl False))) (t1) Ht1 (t2) Ht2) (fun q H => H))))))) (H__top A HAne)))).
+Qed.
 Theorem COND_CLAUSES : forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2.
+exact (COND_CLAUSES_bridge hlt_COND_CLAUSES).
 Admitted.
 
 // HOL Light: class.ml:342 / COND_EXPAND   (hash md5:a0ffc58d882ed08bb9ceb976d7d87a07)
@@ -289,8 +294,13 @@ Theorem COND_ABS : forall A B:set, forall b:prop, forall f:set -> set, (forall x
 Admitted.
 
 // HOL Light: class.ml:363 / COND_SWAP   (hash md5:517d4149a3b1212d2fd976fea9192f45)
-// not bridged: 
+Theorem hlt_COND_SWAP : forall A:set, A <> Empty -> forall p :e 2, forall x y :e A, hl_COND A (if ~ p = 1 then 1 else 0) x y = hl_COND A p y x.
+Admitted.
+Theorem COND_SWAP_bridge : (forall A:set, A <> Empty -> forall p :e 2, forall x y :e A, hl_COND A (if ~ p = 1 then 1 else 0) x y = hl_COND A p y x) -> (forall A:set, forall p:prop, forall x y :e A, (if ~ p then x else y) = if p then y else x).
+exact (fun H__top A => (xm (A = Empty) (forall p:prop, forall x y :e A, (if ~ p then x else y) = if p then y else x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall p:prop, forall x y :e hl__u, (if ~ p then x else y) = if p then y else x) (fun p => (forall_in_Empty (fun x => forall y :e Empty, (if ~ p then x else y) = if p then y else x))))) (fun HAne => (imp_forall_bool (fun p => forall x y :e A, hl_COND A (if ~ p = 1 then 1 else 0) x y = hl_COND A p y x) (fun p => forall x y :e A, (if ~ p then x else y) = if p then y else x) (fun p => (imp_forall_in (A) (fun x => forall y :e A, hl_COND A (if ~ (if p then 1 else 0) = 1 then 1 else 0) x y = hl_COND A (if p then 1 else 0) y x) (fun x => forall y :e A, (if ~ p then x else y) = if p then y else x) (fun x Hx => (imp_forall_in (A) (fun y => hl_COND A (if ~ (if p then 1 else 0) = 1 then 1 else 0) x y = hl_COND A (if p then 1 else 0) y x) (fun y => (if ~ p then x else y) = if p then y else x) (fun y Hy => (imp_eq (hl_COND A (if ~ (if p then 1 else 0) = 1 then 1 else 0) x y) (if ~ p then x else y) (hl_COND A (if p then 1 else 0) y x) (if p then y else x) (hl_COND_if (A) (if ~ (if p then 1 else 0) = 1 then 1 else 0) (If_in_2 (~ (if p then 1 else 0) = 1)) (~ p) (iff_trans ((if ~ (if p then 1 else 0) = 1 then 1 else 0) = 1) (~ (if p then 1 else 0) = 1) (~ p) (If_1_iff (~ (if p then 1 else 0) = 1)) (iffI (~ (if p then 1 else 0) = 1) (~ p) (imp_not ((if p then 1 else 0) = 1) (p) (iffER ((if p then 1 else 0) = 1) (p) (If_1_iff p))) (imp_not (p) ((if p then 1 else 0) = 1) (iffEL ((if p then 1 else 0) = 1) (p) (If_1_iff p))))) (x) Hx (y) Hy) (hl_COND_if (A) (if p then 1 else 0) (If_in_2 p) (p) (If_1_iff p) (y) Hy (x) Hx)))))))) (H__top A HAne)))).
+Qed.
 Theorem COND_SWAP : forall A:set, forall p:prop, forall x y :e A, (if ~ p then x else y) = if p then y else x.
+exact (COND_SWAP_bridge hlt_COND_SWAP).
 Admitted.
 
 // HOL Light: class.ml:388 / MONO_COND   (hash md5:3bf95bbe2ccb554b6786e9c177f87e70)
