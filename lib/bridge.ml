@@ -745,6 +745,38 @@ and bridge g (dir : dir) (t : tm) : string =
       (match dir with
        | Fwd -> Printf.sprintf "(imp_not %s %s %s)" la na (bridge g Bwd a)
        | Bwd -> Printf.sprintf "(imp_not %s %s %s)" na la (bridge g Fwd a))
+  | Const ("?!", _), [ p ] ->
+      (* ?!x. P x is bridged through its expansion ?x. P x /\ !y. P y ==> y = x (exactly as the
+         elaborator renders it); the literal constant hl_exists_unique is related to that expansion
+         by hl_exists_unique_lit *)
+      let p = (match p with Lam _ -> p | _ -> let pty, _ = dest_fun_ty (type_of [] p) in E.eta_expand "x" p pty) in
+      (match p with
+       | Lam (x, ty, body) ->
+           let py = Hol.lift 1 1 body in
+           let uniq = E.mk_forall "y" ty (E.mk_imp py (E.mk_eq ty (Bound 0) (Bound 1))) in
+           let expanded = E.mk_exists x ty (E.mk_conj body uniq) in
+           let n = E.fresh g.nctx x in
+           let key = x ^ "\000" ^ n ^ "#" ^ string_of_int g.counter in
+           g.counter <- g.counter + 1;
+           let body' = open_with (Free (key, ty)) body in
+           if not (List.mem n g.lctx.L.used) then g.lctx.L.used <- n :: g.lctx.L.used;
+           g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars;
+           let cleanup () =
+             g.lctx.L.vars <- List.remove_assoc key g.lctx.L.vars; E.release g.nctx n;
+             g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used in
+           (* the literal body is either `if LP then 1 else 0` (logical body) or a set term of 2 *)
+           let lb, lp, tb = (try (lterm g body', ltext g body', typ g body') with e -> cleanup (); raise e) in
+           cleanup ();
+           let ca = L.carrier g.lctx ty in
+           let la = ltext g t and la' = ltext g expanded and na = ntext g t in
+           let eu = (match lb with
+             | Mg.If (_, Mg.Num 1, Mg.Num 0) -> Printf.sprintf "(hl_exists_unique_lit %s (fun %s => %s))" (ppp ca) n lp
+             | _ -> Printf.sprintf "(hl_exists_unique_lit_fun %s (fun %s => %s) (fun %s H%s => %s))" (ppp ca) n (pp lb) n n tb) in
+           let inner = bridge g dir expanded in
+           (match dir with
+            | Fwd -> Printf.sprintf "(imp_trans (%s) (%s) (%s) (andEL ((%s) -> (%s)) ((%s) -> (%s)) %s) %s)" la la' na la la' la' la eu inner
+            | Bwd -> Printf.sprintf "(imp_trans (%s) (%s) (%s) %s (andER ((%s) -> (%s)) ((%s) -> (%s)) %s))" na la' la inner la la' la' la eu)
+       | _ -> unsupported "bridge: ?!")
   | Const ("/\\", _), [ a; b ] ->
       imp_lemma dir "imp_and" (paren (ltext g a)) (paren (ntext g a)) (paren (ltext g b)) (paren (ntext g b)) (bridge g dir a) (bridge g dir b)
   | Const ("\\/", _), [ a; b ] ->

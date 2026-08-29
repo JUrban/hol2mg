@@ -2585,3 +2585,114 @@ claim Hmain: choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sg
     exact (eq_trans_i (choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1)) (sqrt_SNo_nonneg x) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (choose_in_unique R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1) (sqrt_SNo_nonneg x) HsR HPN Huniq) (eq_sym_i (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (sqrt_SNo_nonneg x) HN)). }
 exact (eq_trans_i (hl_sqrt x) (hl_select R (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0)) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (hl_sqrt_unfold x Hx) (eq_trans_i (hl_select R (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0)) (choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1)) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (hl_select_eq R (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) HF) Hmain)).
 Qed.
+
+// ---- existence and unique existence applied to a literal predicate ----
+Theorem hl_exists_lit : forall A:set, forall P:set -> prop, hl_exists A (fun x :e A => if P x then 1 else 0) = 1 <-> exists x :e A, P x.
+let A P.
+claim HF: (fun x :e A => if P x then 1 else 0) :e 2 :^: A.
+{ prove (fun x :e A => if P x then 1 else 0) :e Pi_ x :e A, 2.
+  apply (lam_Pi A (fun _ => 2) (fun x => if P x then 1 else 0)).
+  let x. assume _. exact (If_in_2 (P x)). }
+claim Hv: forall x :e A, (fun x :e A => if P x then 1 else 0) x = 1 <-> P x.
+{ let x. assume Hx. exact (iff_eq1_l ((fun x :e A => if P x then 1 else 0) x) (if P x then 1 else 0) (beta A (fun x => if P x then 1 else 0) x Hx) (P x) (If_1_iff (P x))). }
+apply (iff_eq1_l (hl_exists A (fun x :e A => if P x then 1 else 0)) (if forall q :e 2, (forall x :e A, (fun x :e A => if P x then 1 else 0) x = 1 -> q = 1) -> q = 1 then 1 else 0) (hl_exists_unfold A (fun x :e A => if P x then 1 else 0) HF) (exists x :e A, P x)).
+apply (iff_trans ((if forall q :e 2, (forall x :e A, (fun x :e A => if P x then 1 else 0) x = 1 -> q = 1) -> q = 1 then 1 else 0) = 1) (forall q :e 2, (forall x :e A, (fun x :e A => if P x then 1 else 0) x = 1 -> q = 1) -> q = 1) (exists x :e A, P x) (If_1_iff (forall q :e 2, (forall x :e A, (fun x :e A => if P x then 1 else 0) x = 1 -> q = 1) -> q = 1))).
+apply iffI.
+- assume H.
+  claim Hq: (if exists x :e A, P x then 1 else 0) = 1.
+  { apply (H (if exists x :e A, P x then 1 else 0) (If_in_2 (exists x :e A, P x))).
+    let x. assume Hx. assume Hx1.
+    claim HPx: P x. { apply (Hv x Hx). assume H1 _. exact (H1 Hx1). }
+    apply (If_i_1 (exists x :e A, P x) 1 0). witness x. apply andI.
+    + exact Hx.
+    + exact HPx. }
+  apply (If_1_iff (exists x :e A, P x)). assume H1 _. exact (H1 Hq).
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx HPx.
+  let q. assume Hq H2. apply (H2 x Hx). apply (Hv x Hx). assume _ H3. exact (H3 HPx).
+Qed.
+
+Theorem hl_exists_unique_lit : forall A:set, forall P:set -> prop, hl_exists_unique A (fun x :e A => if P x then 1 else 0) = 1 <-> exists x :e A, P x /\ forall y :e A, P y -> y = x.
+let A P.
+claim HF: (fun x :e A => if P x then 1 else 0) :e 2 :^: A.
+{ prove (fun x :e A => if P x then 1 else 0) :e Pi_ x :e A, 2.
+  apply (lam_Pi A (fun _ => 2) (fun x => if P x then 1 else 0)).
+  let x. assume _. exact (If_in_2 (P x)). }
+claim Hv: forall x :e A, (fun x :e A => if P x then 1 else 0) x = 1 <-> P x.
+{ let x. assume Hx. exact (iff_eq1_l ((fun x :e A => if P x then 1 else 0) x) (if P x then 1 else 0) (beta A (fun x => if P x then 1 else 0) x Hx) (P x) (If_1_iff (P x))). }
+apply (iff_eq1_l (hl_exists_unique A (fun x :e A => if P x then 1 else 0)) (if hl_exists A (fun x :e A => if P x then 1 else 0) = 1 /\ forall x y :e A, (fun x :e A => if P x then 1 else 0) x = 1 /\ (fun x :e A => if P x then 1 else 0) y = 1 -> x = y then 1 else 0) (hl_exists_unique_unfold A (fun x :e A => if P x then 1 else 0) HF) (exists x :e A, P x /\ forall y :e A, P y -> y = x)).
+apply (iff_trans ((if hl_exists A (fun x :e A => if P x then 1 else 0) = 1 /\ forall x y :e A, (fun x :e A => if P x then 1 else 0) x = 1 /\ (fun x :e A => if P x then 1 else 0) y = 1 -> x = y then 1 else 0) = 1) (hl_exists A (fun x :e A => if P x then 1 else 0) = 1 /\ forall x y :e A, (fun x :e A => if P x then 1 else 0) x = 1 /\ (fun x :e A => if P x then 1 else 0) y = 1 -> x = y) (exists x :e A, P x /\ forall y :e A, P y -> y = x) (If_1_iff (hl_exists A (fun x :e A => if P x then 1 else 0) = 1 /\ forall x y :e A, (fun x :e A => if P x then 1 else 0) x = 1 /\ (fun x :e A => if P x then 1 else 0) y = 1 -> x = y))).
+apply iffI.
+- assume H. apply H. assume He Hu.
+  claim Hex: exists x :e A, P x. { apply (hl_exists_lit A P). assume H1 _. exact (H1 He). }
+  apply Hex. let x. assume Hx0. apply Hx0. assume Hx HPx.
+  witness x. apply andI.
+  + exact Hx.
+  + apply andI.
+    * exact HPx.
+    * let y. assume Hy HPy.
+      claim Hfy: (fun x :e A => if P x then 1 else 0) y = 1. { apply (Hv y Hy). assume _ H2. exact (H2 HPy). }
+      claim Hfx: (fun x :e A => if P x then 1 else 0) x = 1. { apply (Hv x Hx). assume _ H2. exact (H2 HPx). }
+      exact (Hu y Hy x Hx (andI ((fun x :e A => if P x then 1 else 0) y = 1) ((fun x :e A => if P x then 1 else 0) x = 1) Hfy Hfx)).
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx H1. apply H1. assume HPx Hu.
+  apply andI.
+  + apply (hl_exists_lit A P). assume _ H2. apply H2. witness x. apply andI.
+    * exact Hx.
+    * exact HPx.
+  + let a. assume Ha. let b. assume Hb. assume Hab. apply Hab. assume Hfa Hfb.
+    claim HPa: P a. { apply (Hv a Ha). assume H2 _. exact (H2 Hfa). }
+    claim HPb: P b. { apply (Hv b Hb). assume H2 _. exact (H2 Hfb). }
+    exact (eq_trans_i a x b (Hu a Ha HPa) (eq_sym_i b x (Hu b Hb HPb))).
+Qed.
+
+Theorem hl_exists_lit_fun : forall A:set, forall T:set -> set, (forall x :e A, T x :e 2) -> (hl_exists A (fun x :e A => T x) = 1 <-> exists x :e A, T x = 1).
+let A T. assume HT.
+claim HF: (fun x :e A => T x) :e 2 :^: A.
+{ prove (fun x :e A => T x) :e Pi_ x :e A, 2. exact (lam_Pi A (fun _ => 2) T HT). }
+claim Hv: forall x :e A, (fun x :e A => T x) x = 1 <-> T x = 1.
+{ let x. assume Hx. exact (iff_eq1_l ((fun x :e A => T x) x) (T x) (beta A T x Hx) (T x = 1) (iff_refl (T x = 1))). }
+apply (iff_eq1_l (hl_exists A (fun x :e A => T x)) (if forall q :e 2, (forall x :e A, (fun x :e A => T x) x = 1 -> q = 1) -> q = 1 then 1 else 0) (hl_exists_unfold A (fun x :e A => T x) HF) (exists x :e A, T x = 1)).
+apply (iff_trans ((if forall q :e 2, (forall x :e A, (fun x :e A => T x) x = 1 -> q = 1) -> q = 1 then 1 else 0) = 1) (forall q :e 2, (forall x :e A, (fun x :e A => T x) x = 1 -> q = 1) -> q = 1) (exists x :e A, T x = 1) (If_1_iff (forall q :e 2, (forall x :e A, (fun x :e A => T x) x = 1 -> q = 1) -> q = 1))).
+apply iffI.
+- assume H.
+  claim Hq: (if exists x :e A, T x = 1 then 1 else 0) = 1.
+  { apply (H (if exists x :e A, T x = 1 then 1 else 0) (If_in_2 (exists x :e A, T x = 1))).
+    let x. assume Hx. assume Hx1.
+    claim HPx: T x = 1. { apply (Hv x Hx). assume H1 _. exact (H1 Hx1). }
+    apply (If_i_1 (exists x :e A, T x = 1) 1 0). witness x. apply andI.
+    + exact Hx.
+    + exact HPx. }
+  apply (If_1_iff (exists x :e A, T x = 1)). assume H1 _. exact (H1 Hq).
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx HPx.
+  let q. assume Hq H2. apply (H2 x Hx). apply (Hv x Hx). assume _ H3. exact (H3 HPx).
+Qed.
+
+Theorem hl_exists_unique_lit_fun : forall A:set, forall T:set -> set, (forall x :e A, T x :e 2) -> (hl_exists_unique A (fun x :e A => T x) = 1 <-> exists x :e A, T x = 1 /\ forall y :e A, T y = 1 -> y = x).
+let A T. assume HT.
+claim HF: (fun x :e A => T x) :e 2 :^: A.
+{ prove (fun x :e A => T x) :e Pi_ x :e A, 2. exact (lam_Pi A (fun _ => 2) T HT). }
+claim Hv: forall x :e A, (fun x :e A => T x) x = 1 <-> T x = 1.
+{ let x. assume Hx. exact (iff_eq1_l ((fun x :e A => T x) x) (T x) (beta A T x Hx) (T x = 1) (iff_refl (T x = 1))). }
+apply (iff_eq1_l (hl_exists_unique A (fun x :e A => T x)) (if hl_exists A (fun x :e A => T x) = 1 /\ forall x y :e A, (fun x :e A => T x) x = 1 /\ (fun x :e A => T x) y = 1 -> x = y then 1 else 0) (hl_exists_unique_unfold A (fun x :e A => T x) HF) (exists x :e A, T x = 1 /\ forall y :e A, T y = 1 -> y = x)).
+apply (iff_trans ((if hl_exists A (fun x :e A => T x) = 1 /\ forall x y :e A, (fun x :e A => T x) x = 1 /\ (fun x :e A => T x) y = 1 -> x = y then 1 else 0) = 1) (hl_exists A (fun x :e A => T x) = 1 /\ forall x y :e A, (fun x :e A => T x) x = 1 /\ (fun x :e A => T x) y = 1 -> x = y) (exists x :e A, T x = 1 /\ forall y :e A, T y = 1 -> y = x) (If_1_iff (hl_exists A (fun x :e A => T x) = 1 /\ forall x y :e A, (fun x :e A => T x) x = 1 /\ (fun x :e A => T x) y = 1 -> x = y))).
+apply iffI.
+- assume H. apply H. assume He Hu.
+  claim Hex: exists x :e A, T x = 1. { apply (hl_exists_lit_fun A T HT). assume H1 _. exact (H1 He). }
+  apply Hex. let x. assume Hx0. apply Hx0. assume Hx HPx.
+  witness x. apply andI.
+  + exact Hx.
+  + apply andI.
+    * exact HPx.
+    * let y. assume Hy HPy.
+      claim Hfy: (fun x :e A => T x) y = 1. { apply (Hv y Hy). assume _ H2. exact (H2 HPy). }
+      claim Hfx: (fun x :e A => T x) x = 1. { apply (Hv x Hx). assume _ H2. exact (H2 HPx). }
+      exact (Hu y Hy x Hx (andI ((fun x :e A => T x) y = 1) ((fun x :e A => T x) x = 1) Hfy Hfx)).
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx H1. apply H1. assume HPx Hu.
+  apply andI.
+  + apply (hl_exists_lit_fun A T HT). assume _ H2. apply H2. witness x. apply andI.
+    * exact Hx.
+    * exact HPx.
+  + let a. assume Ha. let b. assume Hb. assume Hab. apply Hab. assume Hfa Hfb.
+    claim HPa: T a = 1. { apply (Hv a Ha). assume H2 _. exact (H2 Hfa). }
+    claim HPb: T b = 1. { apply (Hv b Hb). assume H2 _. exact (H2 Hfb). }
+    exact (eq_trans_i a x b (Hu a Ha HPa) (eq_sym_i b x (Hu b Hb HPb))).
+Qed.

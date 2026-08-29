@@ -500,7 +500,8 @@ source: !e:A. !f:A->num->A. ?!fn:num->A. fn 0 = e /\ (!n:num. fn (SUC n) = f (fn
 status: generalization_required
 statement: forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x)
 literal: forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, hl_exists_unique (A :^: omega) (fun fn :e A :^: omega => if fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n then 1 else 0) = 1
-cert_status: bridge_unsupported
+bridge: num_Axiom_bridge
+cert_status: native_certified
 
 ### num_RECURSION   [naturals: constructors, induction, arithmetic, order, division]
 hash: b287304fbed4be3d30468df5802532bb

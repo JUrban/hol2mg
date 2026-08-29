@@ -269,8 +269,13 @@ exact (EXISTS_REFL_bridge hlt_EXISTS_REFL).
 Admitted.
 
 // HOL Light: theorems.ml:193 / EXISTS_UNIQUE_REFL   (hash md5:073206835fb258ce74d7a2600f421fc2)
-// not bridged: 
+Theorem hlt_EXISTS_UNIQUE_REFL : forall A:set, A <> Empty -> forall a :e A, hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1.
+Admitted.
+Theorem EXISTS_UNIQUE_REFL_bridge : (forall A:set, A <> Empty -> forall a :e A, hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1) -> (forall A:set, forall a :e A, exists x :e A, x = a /\ forall y :e A, y = a -> y = x).
+exact (fun H__top A => (xm (A = Empty) (forall a :e A, exists x :e A, x = a /\ forall y :e A, y = a -> y = x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall a :e hl__u, exists x :e hl__u, x = a /\ forall y :e hl__u, y = a -> y = x) (forall_in_Empty (fun a => exists x :e Empty, x = a /\ forall y :e Empty, y = a -> y = x)))) (fun HAne => (imp_forall_in (A) (fun a => hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1) (fun a => exists x :e A, x = a /\ forall y :e A, y = a -> y = x) (fun a Ha => (imp_trans (hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1) (exists x :e A, x = a /\ forall y :e A, y = a -> y = x) (exists x :e A, x = a /\ forall y :e A, y = a -> y = x) (andEL ((hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1) -> (exists x :e A, x = a /\ forall y :e A, y = a -> y = x)) ((exists x :e A, x = a /\ forall y :e A, y = a -> y = x) -> (hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1)) (hl_exists_unique_lit (A) (fun x => x = a))) (imp_exists_in (A) (fun x => x = a /\ forall y :e A, y = a -> y = x) (fun x => x = a /\ forall y :e A, y = a -> y = x) (fun x Hx => (imp_and (x = a) (x = a) (forall y :e A, y = a -> y = x) (forall y :e A, y = a -> y = x) (imp_eq (x) (x) (a) (a) (fun q H => H) (fun q H => H)) (imp_forall_in (A) (fun y => y = a -> y = x) (fun y => y = a -> y = x) (fun y Hy => (fun H__L : ((y = a) -> (y = x)) => fun H__hyp4 : (y = a) => (imp_eq (y) (y) (x) (x) (fun q H => H) (fun q H => H)) (H__L ((imp_eq (y) (y) (a) (a) (eq_sym_i (y) (y) (fun q H => H)) (eq_sym_i (a) (a) (fun q H => H))) H__hyp4))))))))))) (H__top A HAne)))).
+Qed.
 Theorem EXISTS_UNIQUE_REFL : forall A:set, forall a :e A, exists x :e A, x = a /\ forall y :e A, y = a -> y = x.
+exact (EXISTS_UNIQUE_REFL_bridge hlt_EXISTS_UNIQUE_REFL).
 Admitted.
 
 // HOL Light: theorems.ml:204 / UNWIND_THM1   (hash md5:e252b2b585ba192019ab0a47e91cd9f2)

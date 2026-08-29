@@ -4144,7 +4144,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite s /\\ ((forall x :e A, x :e s -> f x :e t) /\\ (forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y /\\ forall y0 :e A, y0 :e s /\\ f y0 = y -> y0 = x)) -> finite_cardinality t = finite_cardinality s",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ f x = y then 1 else 0) = 1)) -> hl_CARD B t = hl_CARD A s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: side condition finite t not available from hypotheses [hyps: forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y /\\ forall y0 :e A, y0 :e s /\\ f y0 = y -> y0 = x, forall x :e A, x :e s -> f x :e t, finite s]",
    "bridge": ""
   },
   {
@@ -13480,7 +13480,7 @@
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> exists x :e A, P x /\\ forall y :e A, P y -> y = x",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> exists x :e A, P x = 1 /\\ forall y :e A, P y = 1 -> y = x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#7",
    "bridge": ""
   },
   {
@@ -13507,7 +13507,7 @@
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> exists x :e A, forall y :e A, P y <-> x = y",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> exists x :e A, forall y :e A, P y = 1 <-> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#5",
    "bridge": ""
   },
   {
@@ -13560,9 +13560,9 @@
    "source": "!a:A. ?!x:A. x = a",
    "statement": "forall A:set, forall a :e A, exists x :e A, x = a /\\ forall y :e A, y = a -> y = x",
    "literal": "forall A:set, A <> Empty -> forall a :e A, hl_exists_unique A (fun x :e A => if x = a then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_UNIQUE_REFL_bridge"
   },
   {
    "name": "EXISTS_UNIQUE_THM",
@@ -13588,7 +13588,7 @@
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\\ forall x x' :e A, P x /\\ P x' -> x = x'",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> (exists x :e A, P x = 1) /\\ forall x x' :e A, P x = 1 /\\ P x' = 1 -> x = x'",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#9",
    "bridge": ""
   },
   {
@@ -20401,9 +20401,9 @@
    "source": "!s:A->bool. !n:num. HAS_SIZE s n ==> (?f:num->A. (!m:num. m < n ==> f m IN s) /\\ (!x:A. x IN s ==> (?!m:num. m < n /\\ f m = x)))",
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n -> exists f:set -> set, (forall x :e omega, f x :e A) /\\ ((forall m :e omega, m < n -> f m :e s) /\\ forall x :e A, x :e s -> exists m :e omega, m < n /\\ f m = x /\\ forall y :e omega, y < n /\\ f y = x -> y = m)",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_HAS_SIZE A s n = 1 -> exists f :e A :^: omega, (forall m :e omega, hl_lt m n = 1 -> hl_IN A (f m) s = 1) /\\ forall x :e A, hl_IN A x s = 1 -> hl_exists_unique omega (fun m :e omega => if hl_lt m n = 1 /\\ f m = x then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HAS_SIZE_INDEX_bridge"
   },
   {
    "name": "HAS_SIZE_NUMSEG",
@@ -38154,7 +38154,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> (forall x y :e B, op x y = op y x) /\\ (forall x y z :e B, op x (op y z) = op (op x y) z) /\\ (forall x :e B, op (neutral_of B op) x = x) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\\ (forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x) -> iterate_op B op s f = iterate_op B op s (fun x:set => f (p x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, hl_monoidal B op = 1 -> forall f :e B :^: A, forall p :e A :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall y :e A, hl_IN A y s = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ p x = y then 1 else 0) = 1) -> hl_iterate B A op s f = hl_iterate B A op s (hl_o A B A f p)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: compat_missing: hl_iterate_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -38599,7 +38599,7 @@
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x) /\\ (forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x) -> iterate_op C op s f = iterate_op C op t g",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e C :^: A, forall g :e C :^: B, forall h :e B :^: A, (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ h x = y then 1 else 0) = 1) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ g (h x) = f x) -> hl_iterate C A op s f = hl_iterate C B op t g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: compat_missing: hl_iterate_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -48628,7 +48628,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\\ (forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x))",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall p :e A :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall y :e A, hl_IN A y s = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ p x = y then 1 else 0) = 1) -> hl_nsum A s f = hl_nsum A s (hl_o A omega A f p)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -49453,9 +49453,9 @@
    "source": "!s:A->bool. !t:B->bool. !f:A->num. !g:B->num. !h:A->B. (!y:B. y IN t ==> (?!x:A. x IN s /\\ h x = y)) /\\ (!x:A. x IN s ==> h x IN t /\\ g (h x) = f x) ==> nsum s f = nsum t g",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x) /\\ (forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x) -> finsum s f = finsum t g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e omega :^: A, forall g :e omega :^: B, forall h :e B :^: A, (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ h x = y then 1 else 0) = 1) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ g (h x) = f x) -> hl_nsum A s f = hl_nsum B t g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_EQ_GENERAL_bridge"
   },
   {
    "name": "NSUM_EQ_GENERAL_INVERSES",
@@ -49604,9 +49604,9 @@
    "source": "!R:A->B->bool. !g:A->num. !s:A->bool. !t:B->bool. FINITE s /\\ (!x:A. x IN s ==> (?!y:B. y IN t /\\ R x y)) ==> nsum t (\\y:B. nsum (GSPEC (\\GEN%PVAR%299:A. ?x:A. SETSPEC GEN%PVAR%299 (x IN s /\\ R x y) x)) g) = nsum s g",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, forall t c= B, finite s /\\ (forall x :e A, x :e s -> exists y :e B, y :e t /\\ R0 x y /\\ forall y0 :e B, y0 :e t /\\ R0 x y0 -> y0 = y) -> finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} g) = finsum s g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall g :e omega :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_exists_unique B (fun y :e B => if hl_IN B y t = 1 /\\ R1 x y = 1 then 1 else 0) = 1) -> hl_nsum B t (fun y :e B => hl_nsum A (hl_GSPEC A (fun GEN_PVAR_299 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_299 (if hl_IN A x s = 1 /\\ R1 x y = 1 then 1 else 0) x = 1 then 1 else 0)) g) = hl_nsum A s g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_GROUP_RELATION_bridge"
   },
   {
    "name": "NSUM_IMAGE",
@@ -69085,7 +69085,7 @@
    "statement": "forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, x :e s /\\ forall y :e A, y :e s -> y = x",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, (exists x :e A, s = hl_INSERT A x (hl_EMPTY A)) <-> hl_exists_unique A (fun x :e A => hl_IN A x s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#1",
    "bridge": ""
   },
   {
@@ -71488,7 +71488,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\\ (forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x))",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall p :e A :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall y :e A, hl_IN A y s = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ p x = y then 1 else 0) = 1) -> hl_sum A s f = hl_sum A s (hl_o A R A f p)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -72466,9 +72466,9 @@
    "source": "!s:A->bool. !t:B->bool. !f:A->real. !g:B->real. !h:A->B. (!y:B. y IN t ==> (?!x:A. x IN s /\\ h x = y)) /\\ (!x:A. x IN s ==> h x IN t /\\ g (h x) = f x) ==> sum s f = sum t g",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall h:set -> set, (forall x :e A, h x :e B) -> (forall y :e B, y :e t -> exists x :e A, x :e s /\\ h x = y /\\ forall y0 :e A, y0 :e s /\\ h y0 = y -> y0 = x) /\\ (forall x :e A, x :e s -> h x :e t /\\ g (h x) = f x) -> finsum s f = finsum t g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, forall f :e R :^: A, forall g :e R :^: B, forall h :e B :^: A, (forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ h x = y then 1 else 0) = 1) /\\ (forall x :e A, hl_IN A x s = 1 -> hl_IN B (h x) t = 1 /\\ g (h x) = f x) -> hl_sum A s f = hl_sum B t g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_EQ_GENERAL_bridge"
   },
   {
    "name": "SUM_EQ_GENERAL_INVERSES",
@@ -72620,9 +72620,9 @@
    "source": "!R:A->B->bool. !g:A->real. !s:A->bool. !t:B->bool. FINITE s /\\ (!x:A. x IN s ==> (?!y:B. y IN t /\\ R x y)) ==> sum t (\\y:B. sum (GSPEC (\\GEN%PVAR%328:A. ?x:A. SETSPEC GEN%PVAR%328 (x IN s /\\ R x y) x)) g) = sum s g",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, forall t c= B, finite s /\\ (forall x :e A, x :e s -> exists y :e B, y :e t /\\ R0 x y /\\ forall y0 :e B, y0 :e t /\\ R0 x y0 -> y0 = y) -> finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} g) = finsum s g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall g :e R :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_exists_unique B (fun y :e B => if hl_IN B y t = 1 /\\ R1 x y = 1 then 1 else 0) = 1) -> hl_sum B t (fun y :e B => hl_sum A (hl_GSPEC A (fun GEN_PVAR_328 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_328 (if hl_IN A x s = 1 /\\ R1 x y = 1 then 1 else 0) x = 1 then 1 else 0)) g) = hl_sum A s g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_GROUP_RELATION_bridge"
   },
   {
    "name": "SUM_IMAGE",
@@ -77699,7 +77699,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ forall x :e A, forall y :e B, P x y <-> f x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> exists f :e B :^: A, forall x :e A, forall y :e B, P x y = 1 <-> f x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: typing: unknown variable y\u0000y#8",
    "bridge": ""
   },
   {
@@ -77724,7 +77724,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, P x (f x)) /\\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (y x)) -> forall x :e A, y x = f x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> hl_exists_unique (B :^: A) (fun f :e B :^: A => if forall x :e A, P x (f x) = 1 then 1 else 0) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: typing: unknown variable y\u0000y#16",
    "bridge": ""
   },
   {
@@ -78146,9 +78146,9 @@
    "source": "WF << ==> (!H:(A->B)->A->B. (!f:A->B. !g:A->B. !x:A. (!z:A. << z x ==> f z = g z) ==> H f x = H g x) ==> (?!f:A->B. !x:A. f x = H f x))",
    "statement": "forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, (forall x :e A, f x = H f x) /\\ forall y :e B :^: A, (forall x :e A, y x = H y x) -> y = f",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 -> forall H :e B :^: A :^: (B :^: A), (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x = 1 -> f z = g z) -> H f x = H g x) -> hl_exists_unique (B :^: A) (fun f :e B :^: A => if forall x :e A, f x = H f x then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_EREC_bridge"
   },
   {
    "name": "WF_FALSE",
@@ -79885,7 +79885,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, equip s t <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, x :e s -> f x :e t) /\\ forall y :e B, y :e t -> exists x :e A, x :e s /\\ f x = y /\\ forall y0 :e A, y0 :e s /\\ f y0 = y -> y0 = x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall t :e 2 :^: B, forall s :e 2 :^: A, hl_sym_3d5f63 A B s t = 1 <-> exists f :e B :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN B (f x) t = 1) /\\ forall y :e B, hl_IN B y t = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ f x = y then 1 else 0) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sym_3d5f63_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -82348,9 +82348,9 @@
    "source": "!e:A. !f:A->num->A. ?!fn:num->A. fn 0 = e /\\ (!n:num. fn (SUC n) = f (fn n) n)",
    "statement": "forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\\ (fn 0 = e0 /\\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x)",
    "literal": "forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, hl_exists_unique (A :^: omega) (fun fn :e A :^: omega => if fn (hl_NUMERAL hl_zero) = e1 /\\ forall n :e omega, fn (hl_SUC n) = f (fn n) n then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "num_Axiom_bridge"
   },
   {
    "name": "num_CASES",
@@ -83090,7 +83090,7 @@
    "statement": "forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\\ (fn 0 = e0 /\\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)",
    "literal": "forall A:set, A <> Empty -> forall e1 :e A, hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e1 then 1 else 0) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant ?!",
+   "cert_error": "bridge_unsupported: compat_missing: hl_one_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1604
+  "native_certified": 1612
  }
 }
