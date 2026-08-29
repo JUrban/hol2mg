@@ -801,21 +801,26 @@ let A F G s t. assume HF HG Hs Ht H.
 apply (hl_rep2_inj A F G HF HG). rewrite Hs. rewrite Ht. exact H.
 Qed.
 
-// ---- meta-predicates on subsets: the literal predicate acts on literal predicates through the representation ----
-Theorem imp_forall_pred_rep : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
-  (forall P:set -> prop, L (hl_chip (2 :^: c) (fun x => P (hl_rep c x))) -> N P) -> (forall F :e 2 :^: (2 :^: c), L F) -> forall P:set -> prop, N P.
-let c L N. assume H H1. let P. exact (H P (H1 (hl_chip (2 :^: c) (fun x => P (hl_rep c x))) (hl_chip_Pi (2 :^: c) (fun x => P (hl_rep c x))))).
+// ---- meta-predicates on represented data: the literal predicate on the literal carrier D acts through
+// the representation r (hl_rep c / hl_rep2 c); the converse direction uses the characteristic map ch ----
+Theorem imp_forall_pred_rep : forall D:set, forall r:set -> set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall P:set -> prop, L (hl_chip D (fun x => P (r x))) -> N P) -> (forall F :e 2 :^: D, L F) -> forall P:set -> prop, N P.
+let D r L N. assume H H1. let P. exact (H P (H1 (hl_chip D (fun x => P (r x))) (hl_chip_Pi D (fun x => P (r x))))).
 Qed.
-Theorem imp_forall_pred_rep_rev : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
-  (forall F :e 2 :^: (2 :^: c), N (fun T => F (hl_chi c T) = 1) -> L F) -> (forall P:set -> prop, N P) -> forall F :e 2 :^: (2 :^: c), L F.
-let c L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun T => F (hl_chi c T) = 1))).
+Theorem imp_forall_pred_rep_rev : forall D:set, forall ch:set -> set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall F :e 2 :^: D, N (fun T => F (ch T) = 1) -> L F) -> (forall P:set -> prop, N P) -> forall F :e 2 :^: D, L F.
+let D ch L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun T => F (ch T) = 1))).
 Qed.
-Theorem imp_exists_pred_rep : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
-  (forall F :e 2 :^: (2 :^: c), L F -> N (fun T => F (hl_chi c T) = 1)) -> (exists F :e 2 :^: (2 :^: c), L F) -> exists P:set -> prop, N P.
-let c L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun T => F (hl_chi c T) = 1). exact (H F HF HL).
+Theorem imp_exists_pred_rep : forall D:set, forall ch:set -> set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall F :e 2 :^: D, L F -> N (fun T => F (ch T) = 1)) -> (exists F :e 2 :^: D, L F) -> exists P:set -> prop, N P.
+let D ch L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun T => F (ch T) = 1). exact (H F HF HL).
 Qed.
-Theorem imp_exists_pred_rep_rev : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
-  (forall P:set -> prop, N P -> L (hl_chip (2 :^: c) (fun x => P (hl_rep c x)))) -> (exists P:set -> prop, N P) -> exists F :e 2 :^: (2 :^: c), L F.
-let c L N. assume H H1. apply H1. let P. assume HP. witness (hl_chip (2 :^: c) (fun x => P (hl_rep c x))).
-exact (andI (hl_chip (2 :^: c) (fun x => P (hl_rep c x)) :e 2 :^: (2 :^: c)) (L (hl_chip (2 :^: c) (fun x => P (hl_rep c x)))) (hl_chip_Pi (2 :^: c) (fun x => P (hl_rep c x))) (H P HP)).
+Theorem imp_exists_pred_rep_rev : forall D:set, forall r:set -> set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall P:set -> prop, N P -> L (hl_chip D (fun x => P (r x)))) -> (exists P:set -> prop, N P) -> exists F :e 2 :^: D, L F.
+let D r L N. assume H H1. apply H1. let P. assume HP. witness (hl_chip D (fun x => P (r x))).
+exact (andI (hl_chip D (fun x => P (r x)) :e 2 :^: D) (L (hl_chip D (fun x => P (r x)))) (hl_chip_Pi D (fun x => P (r x))) (H P HP)).
+Qed.
+
+Theorem hl_chi2_rep2 : forall A:set, forall u :e 2 :^: (2 :^: A), hl_chi2 A (hl_rep2 A u) = u.
+let A u. assume Hu. exact (hl_rep2_inj A (hl_chi2 A (hl_rep2 A u)) u (hl_chi2_Pi A (hl_rep2 A u)) Hu (hl_rep2_chi2 A (hl_rep2 A u) (hl_rep2_Subq A u))).
 Qed.

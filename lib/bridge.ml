@@ -447,16 +447,23 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | KPWP a, [ x ] ->
                 (* the argument is a set value of the literal carrier a; a subset-typed argument (a = 2 :^: c)
                    is a native subset of c, related through its representation *)
-                let want = (match a with Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), c) -> E.VSet (Mg.App (Mg.Cst "Power", c)) | _ -> E.VSet a) in
+                let want = (match a with
+                  | Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), c)) -> E.VSet (Mg.App (Mg.Cst "Power", Mg.App (Mg.Cst "Power", c)))
+                  | Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), c) -> E.VSet (Mg.App (Mg.Cst "Power", c))
+                  | _ -> E.VSet a) in
                 let lx, nx, kx, px = rel g x (Some want) in
+                let conv c _rep_c chi_c chi_rep rp =
+                  (* lit = n lx ; nat = n (ch (r lx)) = 1 *)
+                  Printf.sprintf "((eq_sym_i (%s %s %s) %s (%s %s %s %s)) (fun hl__u hl__v => %s = 1 <-> %s = 1) (iff_refl (%s = 1)))"
+                    chi_c (ppp c) (ppp rp) (ppp lx) chi_rep (ppp c) (ppp lx) (typ g x) (pp lit) (pp (Mg.App (v.lit, Mg.Var "hl__u"))) (pp lit) in
                 let arg_lit, pf0 = (match kx with
                   | KEq -> (lx, if v.rel = "" then Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)) else Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
                   | KRep c ->
                       let rp = Mg.apps (Mg.Cst "hl_rep") [ c; lx ] in
-                      (rp, if v.rel = "" then
-                         Printf.sprintf "((eq_sym_i (hl_chi %s %s) %s (hl_chi_rep %s %s %s)) (fun hl__u hl__v => %s = 1 <-> %s = 1) (iff_refl (%s = 1)))"
-                           (ppp c) (ppp rp) (ppp lx) (ppp c) (ppp lx) (typ g x) (pp lit) (pp (Mg.App (v.lit, Mg.Var "hl__u"))) (pp lit)
-                       else Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
+                      (rp, if v.rel = "" then conv c "hl_rep" "hl_chi" "hl_chi_rep" rp else Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
+                  | KRep2 c ->
+                      let rp = Mg.apps (Mg.Cst "hl_rep2") [ c; lx ] in
+                      (rp, if v.rel = "" then conv c "hl_rep2" "hl_chi2" "hl_chi2_rep2" rp else Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
                   | _ -> unsupported "rel: metapred argument") in
                 if arg_lit = nx then (lit, nat, KIff, pf0)
                 else begin
@@ -640,6 +647,7 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
            if not (List.mem n g.lctx.L.used) then g.lctx.L.used <- n :: g.lctx.L.used;
            g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars;
            let plain = (match xview with
+             | E.VSubset (Mg.App (Mg.Cst "Power", cs)) -> { vty = xty; view = xview; lit = Mg.Var n; nat = Some (Mg.apps (Mg.Cst "hl_rep2") [ cs; Mg.Var n ]); mem = "H" ^ n; rel = ""; kind = KRep2 cs; hyp = "" }
              | E.VSubset cs -> { vty = xty; view = xview; lit = Mg.Var n; nat = Some (Mg.apps (Mg.Cst "hl_rep") [ cs; Mg.Var n ]); mem = "H" ^ n; rel = ""; kind = KRep cs; hyp = "" }
              | _ -> { vty = xty; view = xview; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) in
            g.vars <- (key, plain) :: g.vars;
@@ -864,6 +872,7 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
   | KEq, E.VSet _ | KIff, E.VProp | KRep _, E.VSubset _ -> (lit, nat, kind, pf)
   | KRep2 _, E.VSubset _ -> (lit, nat, kind, pf)
   | KRep a, E.VSet (Mg.App (Mg.Cst "Power", a')) when a = a' -> (lit, nat, kind, pf)   (* a subset used as data of Power A *)
+  | KRep2 a, E.VSet (Mg.App (Mg.Cst "Power", Mg.App (Mg.Cst "Power", a'))) when a = a' -> (lit, nat, kind, pf)
   | KPW a, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KPWP a, E.VMetaPred [ _ ] -> (lit, nat, kind, pf)
   | KPW2 _, E.VMetaFun ([ _; _ ], _) -> (lit, nat, kind, pf)
@@ -1078,19 +1087,25 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
        | Fwd -> Printf.sprintf "(%s %s %s %s (fun %s %s => %s))" (lemma "in") (ppp c) la na n hn sub
        | Bwd -> Printf.sprintf "(%s %s %s %s (fun %s %s => %s))" (lemma "in") (ppp c) na la n hn sub)
   | E.VMetaPred [ Mg.App (Mg.Cst "Power", c) ] ->
-      (* a predicate on subsets of c: literal predicates on literal predicates, composed with hl_rep *)
+      (* a predicate on subsets (depth 1) or on sets of subsets (depth 2): literal predicates on the
+         literal carrier D, composed with the representation r; converse direction through ch *)
       let la = lam_l lbody and na = lam_n nbody in
-      let c2 = Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), c) in
+      let two_pow x = Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), x) in
+      let c', rep_c, chi_c = (match c with
+        | Mg.App (Mg.Cst "Power", c') -> (c', "hl_rep2", "hl_chi2")
+        | _ -> (c, "hl_rep", "hl_chi")) in
+      let d = (match c with Mg.App (Mg.Cst "Power", c') -> two_pow (two_pow c') | _ -> two_pow c) in
+      let r = Printf.sprintf "(fun hl__x => %s %s hl__x)" rep_c (ppp c') and ch = Printf.sprintf "(fun hl__T => %s %s hl__T)" chi_c (ppp c') in
       if fwd_first then begin
-        let comp = Mg.Lam ("hl__x", Mg.Set, Mg.App (Mg.Var n, Mg.apps (Mg.Cst "hl_rep") [ c; Mg.Var "hl__x" ])) in
-        let v = { plain with lit = Mg.apps (Mg.Cst "hl_chip") [ c2; comp ]; mem = Printf.sprintf "(hl_chip_Pi %s %s)" (ppp c2) (ppp comp);
-                             rel = Printf.sprintf "(hl_chip_iff %s %s)" (ppp c2) (ppp comp); kind = KPWP c2 } in
+        let comp = Mg.Lam ("hl__x", Mg.Set, Mg.App (Mg.Var n, Mg.apps (Mg.Cst rep_c) [ c'; Mg.Var "hl__x" ])) in
+        let v = { plain with lit = Mg.apps (Mg.Cst "hl_chip") [ d; comp ]; mem = Printf.sprintf "(hl_chip_Pi %s %s)" (ppp d) (ppp comp);
+                             rel = Printf.sprintf "(hl_chip_iff %s %s)" (ppp d) (ppp comp); kind = KPWP d } in
         let sub = with_var v (fun () -> bridge g dir body') in
-        Printf.sprintf "(%s %s %s %s (fun %s => %s))" (match kind with `All -> "imp_forall_pred_rep" | `Ex -> "imp_exists_pred_rep_rev") (ppp c) la na n sub
+        Printf.sprintf "(%s %s %s %s %s (fun %s => %s))" (match kind with `All -> "imp_forall_pred_rep" | `Ex -> "imp_exists_pred_rep_rev") (ppp d) r la na n sub
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("hl__T", Mg.Set, L.mg_eq (Mg.App (Mg.Var n, Mg.apps (Mg.Cst "hl_chi") [ c; Mg.Var "hl__T" ])) L.one)); rel = ""; kind = KPWP c2 } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__T", Mg.Set, L.mg_eq (Mg.App (Mg.Var n, Mg.apps (Mg.Cst chi_c) [ c'; Mg.Var "hl__T" ])) L.one)); rel = ""; kind = KPWP d } in
         let sub = with_var v (fun () -> bridge g dir body') in
-        Printf.sprintf "(%s %s %s %s (fun %s %s => %s))" (match kind with `All -> "imp_forall_pred_rep_rev" | `Ex -> "imp_exists_pred_rep") (ppp c) la na n hn sub
+        Printf.sprintf "(%s %s %s %s %s (fun %s %s => %s))" (match kind with `All -> "imp_forall_pred_rep_rev" | `Ex -> "imp_exists_pred_rep") (ppp d) ch la na n hn sub
       end
   | E.VMetaPred [ c ] ->
       let la = lam_l lbody and na = lam_n nbody in
