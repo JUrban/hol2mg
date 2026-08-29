@@ -5088,3 +5088,192 @@ let S a b. assume Ha H. witness a. apply andI.
 - exact Ha.
 - let x. assume Hx Hxs. exact (andEL (a <= x) (x <= b) (H x Hx Hxs)).
 Qed.
+
+// ---- commutative monoids: products over enumerations (for HOL Light's iterate) ----
+Definition cmonoid_on : set -> (set -> set -> set) -> prop := fun G op => (forall x y :e G, op x y :e G) /\ (forall x y :e G, op x y = op y x) /\ (forall x y z :e G, op x (op y z) = op (op x y) z) /\ (group_identity G op :e G /\ forall x :e G, op (group_identity G op) x = x /\ op x (group_identity G op) = x).
+Theorem cmonoid_clo : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall x y :e G, op x y :e G.
+let G op. assume H. apply H. assume H123 _. apply H123. assume H12 _. apply H12. assume H1 _. exact H1.
+Qed.
+Theorem cmonoid_com : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall x y :e G, op x y = op y x.
+let G op. assume H. apply H. assume H123 _. apply H123. assume H12 _. apply H12. assume _ H2. exact H2.
+Qed.
+Theorem cmonoid_ass : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall x y z :e G, op x (op y z) = op (op x y) z.
+let G op. assume H. apply H. assume H123 _. apply H123. assume _ H3. exact H3.
+Qed.
+Theorem cmonoid_id_in : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> group_identity G op :e G.
+let G op. assume H. apply H. assume _ H4. apply H4. assume H41 _. exact H41.
+Qed.
+Theorem cmonoid_idl : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall x :e G, op (group_identity G op) x = x.
+let G op. assume H. apply H. assume _ H4. apply H4. assume _ H42. let x. assume Hx. apply (H42 x Hx). assume H1 _. exact H1.
+Qed.
+Theorem cmonoid_idr : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall x :e G, op x (group_identity G op) = x.
+let G op. assume H. apply H. assume _ H4. apply H4. assume _ H42. let x. assume Hx. apply (H42 x Hx). assume _ H2. exact H2.
+Qed.
+Theorem gwp_in : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall f:set -> set, forall n:set, nat_p n -> (forall i :e n, f i :e G) -> group_word_product G op f n :e G.
+let G op. assume HM. let f.
+claim Hbase: (forall i :e 0, f i :e G) -> (group_word_product G op f 0) :e G.
+{ assume _. exact ((eq_sym_i (group_word_product G op f 0) (group_identity G op) (god1_group_word_product_zero G op f)) (fun hl__u hl__v => hl__u :e G) (cmonoid_id_in G op HM)). }
+claim Hstep: forall n, nat_p n -> ((forall i :e n, f i :e G) -> (group_word_product G op f n) :e G) -> ((forall i :e ordsucc n, f i :e G) -> (group_word_product G op f (ordsucc n)) :e G).
+{ let n. assume Hn IH Hf.
+  exact ((eq_sym_i (group_word_product G op f (ordsucc n)) (op (group_word_product G op f n) (f n)) (god1_group_word_product_successor G op f n Hn)) (fun hl__u hl__v => hl__u :e G) (cmonoid_clo G op HM (group_word_product G op f n) (IH (fun i Hi => Hf i (ordsuccI1 n i Hi))) (f n) (Hf n (ordsuccI2 n)))). }
+exact (nat_ind (fun n => (forall i :e n, f i :e G) -> group_word_product G op f n :e G) Hbase Hstep).
+Qed.
+Theorem not_In_ordsucc_self_of_In : forall n j:set, nat_p n -> j :e ordsucc n -> ~ n :e j.
+let n j. assume Hn Hj H. apply (ordsuccE n j Hj).
+- assume H1. exact (In_no2cycle n j H H1).
+- assume H1. exact (In_irref n (H1 (fun hl__u hl__v => n :e hl__u) H)).
+Qed.
+Theorem gwp_pullout : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall n:set, nat_p n -> forall f:set -> set, (forall i :e ordsucc n, f i :e G) -> forall j :e ordsucc n, group_word_product G op f (ordsucc n) = op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n).
+let G op. assume HM.
+claim Hclo: forall x y :e G, op x y :e G. { exact (cmonoid_clo G op HM). }
+claim Hcom: forall x y :e G, op x y = op y x. { exact (cmonoid_com G op HM). }
+claim Hass: forall x y z :e G, op x (op y z) = op (op x y) z. { exact (cmonoid_ass G op HM). }
+claim Hid: group_identity G op :e G. { exact (cmonoid_id_in G op HM). }
+claim Hidl: forall x :e G, op (group_identity G op) x = x. { exact (cmonoid_idl G op HM). }
+claim Hidr: forall x :e G, op x (group_identity G op) = x. { exact (cmonoid_idr G op HM). }
+claim Hbase: forall f:set -> set, (forall i :e ordsucc 0, f i :e G) -> forall j :e ordsucc 0, group_word_product G op f (ordsucc 0) = op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) 0).
+{ let f. assume Hf. let j. assume Hj.
+  claim Hj0: j = 0. { apply (ordsuccE 0 j Hj). - assume H. exact (FalseE (EmptyE j H) (j = 0)). - assume H. exact H. }
+  claim Hf0: f 0 :e G. { exact (Hf 0 (ordsuccI2 0)). }
+  claim HL: group_word_product G op f (ordsucc 0) = f 0.
+  { exact (eq_trans_i (group_word_product G op f (ordsucc 0)) (op (group_word_product G op f 0) (f 0)) (f 0) (god1_group_word_product_successor G op f 0 nat_0) (eq_trans_i (op (group_word_product G op f 0) (f 0)) (op (group_identity G op) (f 0)) (f 0) (f_equal (fun u => op u (f 0)) (group_word_product G op f 0) (group_identity G op) (god1_group_word_product_zero G op f)) (Hidl (f 0) Hf0))). }
+  claim HR: op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) 0) = f 0.
+  { exact (eq_trans_i (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) 0)) (op (f j) (group_identity G op)) (f 0) (f_equal (fun u => op (f j) u) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) 0) (group_identity G op) (god1_group_word_product_zero G op (fun i:set => f (if i :e j then i else ordsucc i)))) (eq_trans_i (op (f j) (group_identity G op)) (f j) (f 0) (Hidr (f j) (Hf j Hj)) (f_equal (fun u => f u) j 0 Hj0))). }
+  exact (eq_trans_i (group_word_product G op f (ordsucc 0)) (f 0) (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) 0)) HL (eq_sym_i (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) 0)) (f 0) HR)). }
+claim Hstep: forall n, nat_p n -> (forall f:set -> set, (forall i :e ordsucc n, f i :e G) -> forall j :e ordsucc n, group_word_product G op f (ordsucc n) = op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) -> (forall f:set -> set, (forall i :e ordsucc (ordsucc n), f i :e G) -> forall j :e ordsucc (ordsucc n), group_word_product G op f (ordsucc (ordsucc n)) = op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n))).
+{ let n. assume Hn IH. let f. assume Hf. let j. assume Hj.
+  claim HSn: nat_p (ordsucc n). { exact (nat_ordsucc n Hn). }
+  claim HfS: forall i :e ordsucc n, f i :e G. { let i. assume Hi. exact (Hf i (ordsuccI1 (ordsucc n) i Hi)). }
+  claim Hfn1: f (ordsucc n) :e G. { exact (Hf (ordsucc n) (ordsuccI2 (ordsucc n))). }
+  claim HgS: group_word_product G op f (ordsucc n) :e G. { exact (gwp_in G op HM f (ordsucc n) HSn HfS). }
+  claim Hsucc2: group_word_product G op f (ordsucc (ordsucc n)) = op (group_word_product G op f (ordsucc n)) (f (ordsucc n)). { exact (god1_group_word_product_successor G op f (ordsucc n) HSn). }
+  apply (ordsuccE (ordsucc n) j Hj).
+  - assume Hjn.
+    claim Hfj: f j :e G. { exact (HfS j Hjn). }
+    claim HSKf: forall i :e ordsucc n, (fun i:set => f (if i :e j then i else ordsucc i)) i :e G.
+    { let i. assume Hi. apply (xm (i :e j)).
+      - assume H. exact ((eq_sym_i (if i :e j then i else ordsucc i) i (If_i_1 (i :e j) i (ordsucc i) H)) (fun hl__u hl__v => f hl__u :e G) (Hf i (ordsuccI1 (ordsucc n) i Hi))).
+      - assume H. exact ((eq_sym_i (if i :e j then i else ordsucc i) (ordsucc i) (If_i_0 (i :e j) i (ordsucc i) H)) (fun hl__u hl__v => f hl__u :e G) (Hf (ordsucc i) (nat_ordsucc_in_ordsucc (ordsucc n) HSn i Hi))). }
+    claim HSKn: forall i :e n, (fun i:set => f (if i :e j then i else ordsucc i)) i :e G. { let i. assume Hi. exact (HSKf i (ordsuccI1 n i Hi)). }
+    claim HgSK: group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n :e G. { exact (gwp_in G op HM (fun i:set => f (if i :e j then i else ordsucc i)) n Hn HSKn). }
+    claim HIH: group_word_product G op f (ordsucc n) = op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n). { exact (IH f HfS j Hjn). }
+    claim Hnj: ~ n :e j. { exact (not_In_ordsucc_self_of_In n j Hn Hjn). }
+    claim HSKn1: (fun i:set => f (if i :e j then i else ordsucc i)) n = f (ordsucc n). { exact (f_equal (fun u => f u) (if n :e j then n else ordsucc n) (ordsucc n) (If_i_0 (n :e j) n (ordsucc n) Hnj)). }
+    claim HR: op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n)) = op (f j) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n))).
+    { exact (f_equal (fun u => op (f j) u) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n)) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n))) (eq_trans_i (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n)) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) ((fun i:set => f (if i :e j then i else ordsucc i)) n)) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n))) (god1_group_word_product_successor G op (fun i:set => f (if i :e j then i else ordsucc i)) n Hn) (f_equal (fun u => op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) u) ((fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n)) HSKn1))). }
+    exact (eq_trans_i (group_word_product G op f (ordsucc (ordsucc n))) (op (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) (f (ordsucc n))) (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n))) (eq_trans_i (group_word_product G op f (ordsucc (ordsucc n))) (op (group_word_product G op f (ordsucc n)) (f (ordsucc n))) (op (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) (f (ordsucc n))) Hsucc2 (f_equal (fun u => op u (f (ordsucc n))) (group_word_product G op f (ordsucc n)) (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) HIH)) (eq_trans_i (op (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) (f (ordsucc n))) (op (f j) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n)))) (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n))) (eq_sym_i (op (f j) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n)))) (op (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) (f (ordsucc n))) (Hass (f j) Hfj (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) HgSK (f (ordsucc n)) Hfn1)) (eq_sym_i (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n))) (op (f j) (op (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n) (f (ordsucc n)))) HR))).
+  - assume Hjn.
+    claim HSKeq: forall i :e ordsucc n, (fun i:set => f (if i :e j then i else ordsucc i)) i = f i.
+    { let i. assume Hi.
+      claim Hij: i :e j. { exact ((eq_sym_i j (ordsucc n) Hjn) (fun hl__u hl__v => i :e hl__u) Hi). }
+      exact (f_equal (fun u => f u) (if i :e j then i else ordsucc i) i (If_i_1 (i :e j) i (ordsucc i) Hij)). }
+    claim Hcongr: group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n) = group_word_product G op f (ordsucc n). { exact (god1_group_word_product_congr G op (fun i:set => f (if i :e j then i else ordsucc i)) f (ordsucc n) HSn HSKeq). }
+    claim Hfj: f j :e G. { exact (Hf j Hj). }
+    claim Hfjn: f j = f (ordsucc n). { exact (f_equal (fun u => f u) j (ordsucc n) Hjn). }
+    exact (eq_trans_i (group_word_product G op f (ordsucc (ordsucc n))) (op (group_word_product G op f (ordsucc n)) (f (ordsucc n))) (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n))) Hsucc2 (eq_trans_i (op (group_word_product G op f (ordsucc n)) (f (ordsucc n))) (op (f (ordsucc n)) (group_word_product G op f (ordsucc n))) (op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n))) (Hcom (group_word_product G op f (ordsucc n)) HgS (f (ordsucc n)) Hfn1) (f_equal2 (fun u v => op u v) (f (ordsucc n)) (f j) (group_word_product G op f (ordsucc n)) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n)) (eq_sym_i (f j) (f (ordsucc n)) Hfjn) (eq_sym_i (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) (ordsucc n)) (group_word_product G op f (ordsucc n)) Hcongr)))). }
+exact (nat_ind (fun n => forall f:set -> set, (forall i :e ordsucc n, f i :e G) -> forall j :e ordsucc n, group_word_product G op f (ordsucc n) = op (f j) (group_word_product G op (fun i:set => f (if i :e j then i else ordsucc i)) n)) Hbase Hstep).
+Qed.
+
+// ---- bijections: removing an element, skipping an index ----
+Theorem bij_remove : forall D X:set, forall e:set -> set, bij D X e -> forall j :e D, bij (D :\: {j}) (X :\: {e j}) e.
+let D X e. assume Hb. let j. assume Hj. apply (bijE D X e Hb). assume H1 H2 H3. apply (bijI (D :\: {j}) (X :\: {e j}) e).
+- let u. assume Hu. apply (setminusE D {j} u Hu). assume HuD Huj. apply (setminusI X {e j} (e u) (H1 u HuD)). assume Heu.
+  apply Huj. exact ((eq_sym_i u j (H2 u HuD j Hj (SingE (e j) (e u) Heu))) (fun hl__u hl__v => hl__u :e {j}) (SingI j)).
+- let u. assume Hu. let v. assume Hv. assume Heq. exact (H2 u (setminusE1 D {j} u Hu) v (setminusE1 D {j} v Hv) Heq).
+- let w. assume Hw. apply (setminusE X {e j} w Hw). assume HwX Hwj. apply (H3 w HwX). let u. assume Hu0. apply Hu0. assume HuD Heu.
+  witness u. apply andI.
+  + apply (setminusI D {j} u HuD). assume Huj.
+    claim Huj': u = j. { exact (SingE j u Huj). }
+    apply Hwj. exact ((Heu) (fun hl__u hl__v => hl__u :e {e j}) ((eq_sym_i u j Huj') (fun hl__u hl__v => e hl__u :e {e j}) (SingI (e j)))).
+  + exact Heu.
+Qed.
+Theorem setminus_ordsucc_self : forall n:set, nat_p n -> ordsucc n :\: {n} = n.
+let n. assume Hn. apply set_ext.
+- let x. assume Hx. apply (setminusE (ordsucc n) {n} x Hx). assume H1 H2. apply (ordsuccE n x H1).
+  + assume H. exact H.
+  + assume H. exact (FalseE (H2 ((eq_sym_i x n H) (fun hl__u hl__v => hl__u :e {n}) (SingI n))) (x :e n)).
+- let x. assume Hx. apply (setminusI (ordsucc n) {n} x (ordsuccI1 n x Hx)). assume H. exact (In_irref n ((SingE n x H) (fun hl__u hl__v => hl__u :e n) Hx)).
+Qed.
+Theorem bij_skip : forall n:set, nat_p n -> forall j :e ordsucc n, bij n (ordsucc n :\: {j}) (fun i:set => if i :e j then i else ordsucc i).
+let n. assume Hn. let j. assume Hj.
+claim Hjn: nat_p j. { exact (nat_p_trans (ordsucc n) (nat_ordsucc n Hn) j Hj). }
+claim Hjsub: j c= n. { exact (nat_ordsucc_trans n Hn j Hj). }
+apply (bijI n (ordsucc n :\: {j}) (fun i:set => if i :e j then i else ordsucc i)).
+- let i. assume Hi. apply (xm (i :e j)).
+  + assume H. prove (if i :e j then i else ordsucc i) :e ordsucc n :\: {j}.
+    rewrite (If_i_1 (i :e j) i (ordsucc i) H). apply (setminusI (ordsucc n) {j} i (ordsuccI1 n i Hi)). assume H2. exact (In_irref j ((SingE j i H2) (fun hl__u hl__v => hl__u :e j) H)).
+  + assume H. prove (if i :e j then i else ordsucc i) :e ordsucc n :\: {j}.
+    rewrite (If_i_0 (i :e j) i (ordsucc i) H). apply (setminusI (ordsucc n) {j} (ordsucc i) (nat_ordsucc_in_ordsucc n Hn i Hi)). assume H2. apply H. exact ((SingE j (ordsucc i) H2) (fun hl__u hl__v => i :e hl__u) (ordsuccI2 i)).
+- let i1. assume Hi1. let i2. assume Hi2. assume Heq.
+  claim Hi1n: nat_p i1. { exact (nat_p_trans n Hn i1 Hi1). }
+  claim Hi2n: nat_p i2. { exact (nat_p_trans n Hn i2 Hi2). }
+  apply (xm (i1 :e j)).
+  + assume H1. apply (xm (i2 :e j)).
+    * assume H2. exact (eq_trans_i i1 (if i1 :e j then i1 else ordsucc i1) i2 (eq_sym_i (if i1 :e j then i1 else ordsucc i1) i1 (If_i_1 (i1 :e j) i1 (ordsucc i1) H1)) (eq_trans_i (if i1 :e j then i1 else ordsucc i1) (if i2 :e j then i2 else ordsucc i2) i2 Heq (If_i_1 (i2 :e j) i2 (ordsucc i2) H2))).
+    * assume H2.
+      claim H3: i1 = ordsucc i2. { exact (eq_trans_i i1 (if i1 :e j then i1 else ordsucc i1) (ordsucc i2) (eq_sym_i (if i1 :e j then i1 else ordsucc i1) i1 (If_i_1 (i1 :e j) i1 (ordsucc i1) H1)) (eq_trans_i (if i1 :e j then i1 else ordsucc i1) (if i2 :e j then i2 else ordsucc i2) (ordsucc i2) Heq (If_i_0 (i2 :e j) i2 (ordsucc i2) H2))). }
+      exact (FalseE (H2 (nat_trans j Hjn i1 H1 i2 (H3 (fun hl__u hl__v => i2 :e hl__v) (ordsuccI2 i2)))) (i1 = i2)).
+  + assume H1. apply (xm (i2 :e j)).
+    * assume H2.
+      claim H3: ordsucc i1 = i2. { exact (eq_trans_i (ordsucc i1) (if i1 :e j then i1 else ordsucc i1) i2 (eq_sym_i (if i1 :e j then i1 else ordsucc i1) (ordsucc i1) (If_i_0 (i1 :e j) i1 (ordsucc i1) H1)) (eq_trans_i (if i1 :e j then i1 else ordsucc i1) (if i2 :e j then i2 else ordsucc i2) i2 Heq (If_i_1 (i2 :e j) i2 (ordsucc i2) H2))). }
+      exact (FalseE (H1 (nat_trans j Hjn i2 H2 i1 (H3 (fun hl__u hl__v => i1 :e hl__u) (ordsuccI2 i1)))) (i1 = i2)).
+    * assume H2.
+      claim H3: ordsucc i1 = ordsucc i2. { exact (eq_trans_i (ordsucc i1) (if i1 :e j then i1 else ordsucc i1) (ordsucc i2) (eq_sym_i (if i1 :e j then i1 else ordsucc i1) (ordsucc i1) (If_i_0 (i1 :e j) i1 (ordsucc i1) H1)) (eq_trans_i (if i1 :e j then i1 else ordsucc i1) (if i2 :e j then i2 else ordsucc i2) (ordsucc i2) Heq (If_i_0 (i2 :e j) i2 (ordsucc i2) H2))). }
+      exact (ordsucc_inj i1 i2 H3).
+- let w. assume Hw. apply (setminusE (ordsucc n) {j} w Hw). assume HwS Hwj.
+  claim Hwn: nat_p w. { exact (nat_p_trans (ordsucc n) (nat_ordsucc n Hn) w HwS). }
+  apply (ordinal_trichotomy_or_impred w j (nat_p_ordinal w Hwn) (nat_p_ordinal j Hjn)).
+  + assume Hwj'. witness w. apply andI.
+    * exact (Hjsub w Hwj').
+    * exact (If_i_1 (w :e j) w (ordsucc w) Hwj').
+  + assume Hwj'. exact (FalseE (Hwj ((eq_sym_i w j Hwj') (fun hl__u hl__v => hl__u :e {j}) (SingI j))) (exists u :e n, (if u :e j then u else ordsucc u) = w)).
+  + assume Hjw.
+    apply (nat_inv w Hwn).
+    * assume Hw0. exact (FalseE (EmptyE j (Hw0 (fun hl__u hl__v => j :e hl__u) Hjw)) (exists u :e n, (if u :e j then u else ordsucc u) = w)).
+    * assume H. apply H. let i. assume Hi0. apply Hi0. assume Hin Hwi.
+      claim Hin': i :e n.
+      { apply (ordsuccE n (ordsucc i) (Hwi (fun hl__u hl__v => hl__u :e ordsucc n) HwS)).
+        - assume H1. exact (nat_trans n Hn (ordsucc i) H1 i (ordsuccI2 i)).
+        - assume H1. exact (H1 (fun hl__u hl__v => i :e hl__u) (ordsuccI2 i)). }
+      claim Hnij: ~ i :e j.
+      { assume Hij. apply (ordsuccE i j (Hwi (fun hl__u hl__v => j :e hl__u) Hjw)).
+        - assume H1. exact (In_no2cycle i j Hij H1).
+        - assume H1. exact (In_irref i (H1 (fun hl__u hl__v => i :e hl__u) Hij)). }
+      witness i. apply andI.
+      - exact Hin'.
+      - exact (eq_trans_i (if i :e j then i else ordsucc i) (ordsucc i) w (If_i_0 (i :e j) i (ordsucc i) Hnij) (eq_sym_i w (ordsucc i) Hwi)).
+Qed.
+Theorem bij_restrict : forall n:set, nat_p n -> forall X:set, forall e:set -> set, bij (ordsucc n) X e -> bij n (X :\: {e n}) e.
+let n. assume Hn. let X e. assume Hb.
+exact ((setminus_ordsucc_self n Hn) (fun hl__u hl__v => bij hl__u (X :\: {e n}) e) (bij_remove (ordsucc n) X e Hb n (ordsuccI2 n))).
+Qed.
+Theorem gwp_bij_invariant : forall G:set, forall op:set -> set -> set, cmonoid_on G op -> forall n:set, nat_p n -> forall X:set, forall e1 e2:set -> set, bij n X e1 -> bij n X e2 -> forall f:set -> set, (forall x :e X, f x :e G) -> group_word_product G op (fun i:set => f (e1 i)) n = group_word_product G op (fun i:set => f (e2 i)) n.
+let G op. assume HM.
+claim Hcom: forall x y :e G, op x y = op y x. { exact (cmonoid_com G op HM). }
+claim Hbase: forall X:set, forall e1 e2:set -> set, bij 0 X e1 -> bij 0 X e2 -> forall f:set -> set, (forall x :e X, f x :e G) -> group_word_product G op (fun i:set => f (e1 i)) 0 = group_word_product G op (fun i:set => f (e2 i)) 0.
+{ let X e1 e2. assume _ _. let f. assume _. exact (eq_trans_i (group_word_product G op (fun i:set => f (e1 i)) 0) (group_identity G op) (group_word_product G op (fun i:set => f (e2 i)) 0) (god1_group_word_product_zero G op (fun i:set => f (e1 i))) (eq_sym_i (group_word_product G op (fun i:set => f (e2 i)) 0) (group_identity G op) (god1_group_word_product_zero G op (fun i:set => f (e2 i))))). }
+claim Hstep: forall n, nat_p n -> (forall X:set, forall e1 e2:set -> set, bij n X e1 -> bij n X e2 -> forall f:set -> set, (forall x :e X, f x :e G) -> group_word_product G op (fun i:set => f (e1 i)) n = group_word_product G op (fun i:set => f (e2 i)) n) -> (forall X:set, forall e1 e2:set -> set, bij (ordsucc n) X e1 -> bij (ordsucc n) X e2 -> forall f:set -> set, (forall x :e X, f x :e G) -> group_word_product G op (fun i:set => f (e1 i)) (ordsucc n) = group_word_product G op (fun i:set => f (e2 i)) (ordsucc n)).
+{ let n. assume Hn IH. let X e1 e2. assume Hb1 Hb2. let f. assume Hf.
+  claim HSn: nat_p (ordsucc n). { exact (nat_ordsucc n Hn). }
+  claim He1X: forall i :e ordsucc n, e1 i :e X. { apply (bijE (ordsucc n) X e1 Hb1). assume H1 _ _. exact H1. }
+  claim He2X: forall i :e ordsucc n, e2 i :e X. { apply (bijE (ordsucc n) X e2 Hb2). assume H1 _ _. exact H1. }
+  claim Hx: e1 n :e X. { exact (He1X n (ordsuccI2 n)). }
+  claim Hf1: forall i :e ordsucc n, f (e1 i) :e G. { let i. assume Hi. exact (Hf (e1 i) (He1X i Hi)). }
+  claim Hf2: forall i :e ordsucc n, f (e2 i) :e G. { let i. assume Hi. exact (Hf (e2 i) (He2X i Hi)). }
+  claim Hf1n: forall i :e n, f (e1 i) :e G. { let i. assume Hi. exact (Hf1 i (ordsuccI1 n i Hi)). }
+  claim Hg1: group_word_product G op (fun i:set => f (e1 i)) n :e G. { exact (gwp_in G op HM (fun i:set => f (e1 i)) n Hn Hf1n). }
+  claim Hex: exists j :e ordsucc n, e2 j = e1 n. { apply (bijE (ordsucc n) X e2 Hb2). assume _ _ H3. exact (H3 (e1 n) Hx). }
+  apply Hex. let j. assume Hj0. apply Hj0. assume Hj Hej.
+  claim HL: group_word_product G op (fun i:set => f (e1 i)) (ordsucc n) = op (group_word_product G op (fun i:set => f (e1 i)) n) (f (e1 n)). { exact (god1_group_word_product_successor G op (fun i:set => f (e1 i)) n Hn). }
+  claim HR: group_word_product G op (fun i:set => f (e2 i)) (ordsucc n) = op (f (e2 j)) (group_word_product G op (fun i:set => (fun i:set => f (e2 i)) (if i :e j then i else ordsucc i)) n). { exact (gwp_pullout G op HM n Hn (fun i:set => f (e2 i)) Hf2 j Hj). }
+  claim Hb1': bij n (X :\: {e1 n}) e1. { exact (bij_restrict n Hn X e1 Hb1). }
+  claim Hb2': bij n (X :\: {e1 n}) (fun i:set => e2 (if i :e j then i else ordsucc i)).
+  { claim Hb2r: bij (ordsucc n :\: {j}) (X :\: {e2 j}) e2. { exact (bij_remove (ordsucc n) X e2 Hb2 j Hj). }
+    claim Hb2r': bij (ordsucc n :\: {j}) (X :\: {e1 n}) e2. { exact (Hej (fun hl__u hl__v => bij (ordsucc n :\: {j}) (X :\: {hl__u}) e2) Hb2r). }
+    exact (bij_comp n (ordsucc n :\: {j}) (X :\: {e1 n}) (fun i:set => if i :e j then i else ordsucc i) e2 (bij_skip n Hn j Hj) Hb2r'). }
+  claim Hf': forall x :e X :\: {e1 n}, f x :e G. { let x. assume Hx'. exact (Hf x (setminusE1 X {e1 n} x Hx')). }
+  claim HIH: group_word_product G op (fun i:set => f (e1 i)) n = group_word_product G op (fun i:set => f (e2 (if i :e j then i else ordsucc i))) n. { exact (IH (X :\: {e1 n}) e1 (fun i:set => e2 (if i :e j then i else ordsucc i)) Hb1' Hb2' f Hf'). }
+  claim Hfx: f (e1 n) :e G. { exact (Hf (e1 n) Hx). }
+  exact (eq_trans_i (group_word_product G op (fun i:set => f (e1 i)) (ordsucc n)) (op (group_word_product G op (fun i:set => f (e1 i)) n) (f (e1 n))) (group_word_product G op (fun i:set => f (e2 i)) (ordsucc n)) HL (eq_trans_i (op (group_word_product G op (fun i:set => f (e1 i)) n) (f (e1 n))) (op (f (e1 n)) (group_word_product G op (fun i:set => f (e1 i)) n)) (group_word_product G op (fun i:set => f (e2 i)) (ordsucc n)) (Hcom (group_word_product G op (fun i:set => f (e1 i)) n) Hg1 (f (e1 n)) Hfx) (eq_trans_i (op (f (e1 n)) (group_word_product G op (fun i:set => f (e1 i)) n)) (op (f (e2 j)) (group_word_product G op (fun i:set => f (e2 (if i :e j then i else ordsucc i))) n)) (group_word_product G op (fun i:set => f (e2 i)) (ordsucc n)) (f_equal2 (fun u v => op u v) (f (e1 n)) (f (e2 j)) (group_word_product G op (fun i:set => f (e1 i)) n) (group_word_product G op (fun i:set => f (e2 (if i :e j then i else ordsucc i))) n) (f_equal (fun u => f u) (e1 n) (e2 j) (eq_sym_i (e2 j) (e1 n) Hej)) HIH) (eq_sym_i (group_word_product G op (fun i:set => f (e2 i)) (ordsucc n)) (op (f (e2 j)) (group_word_product G op (fun i:set => (fun i:set => f (e2 i)) (if i :e j then i else ordsucc i)) n)) HR)))). }
+exact (nat_ind (fun n => forall X:set, forall e1 e2:set -> set, bij n X e1 -> bij n X e2 -> forall f:set -> set, (forall x :e X, f x :e G) -> group_word_product G op (fun i:set => f (e1 i)) n = group_word_product G op (fun i:set => f (e2 i)) n) Hbase Hstep).
+Qed.
