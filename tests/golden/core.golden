@@ -1585,7 +1585,8 @@ source: !s:A->bool. FINITE s ==> FINITE (GSPEC (\GEN%PVAR%157:A->bool. ?t:A->boo
 status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, finite s -> finite {t :e Power A | t c= s}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_157 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_157 (hl_SUBSET A t s) t = 1 then 1 else 0)) = 1
-cert_status: bridge_unsupported
+bridge: FINITE_POWERSET_bridge
+cert_status: native_certified
 
 ### INFINITE_NONEMPTY   [finiteness, cardinality, functions between sets]
 hash: f4ba7868f4290b5f0e224feedf2de23e

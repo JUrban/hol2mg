@@ -6965,9 +6965,9 @@
    "source": "(!s:A->bool. !f:(A->bool)->bool. CROSS s (INTERS f) = (if f = EMPTY then CROSS s UNIV else INTERS (GSPEC (\\GEN%PVAR%139:A#A->bool. ?t:A->bool. SETSPEC GEN%PVAR%139 (t IN f) (CROSS s t))))) /\\ (!f:(A->bool)->bool. !t:B->bool. CROSS (INTERS f) t = (if f = EMPTY then CROSS UNIV t else INTERS (GSPEC (\\GEN%PVAR%140:A#B->bool. ?s:A->bool. SETSPEC GEN%PVAR%140 (s IN f) (CROSS s t)))))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s :*: {x :e A | forall Y :e f, x :e Y} = if f = Empty then s :*: A else {x :e A :*: A | forall Y :e {s :*: t | t :e Power A, t :e f}, x :e Y}) /\\ forall f c= Power A, forall t c= B, {x :e A | forall Y :e f, x :e Y} :*: t = if f = Empty then A :*: t else {x :e A :*: B | forall Y :e {s :*: t | s :e Power A, s :e f}, x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall s :e 2 :^: A, forall f :e 2 :^: (2 :^: A), hl_CROSS A A s (hl_INTERS A f) = hl_COND (2 :^: (A :*: A)) (if f = hl_EMPTY (2 :^: A) then 1 else 0) (hl_CROSS A A s (hl_UNIV A)) (hl_INTERS (A :*: A) (hl_GSPEC (2 :^: (A :*: A)) (fun GEN_PVAR_139 :e 2 :^: (A :*: A) => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: A)) GEN_PVAR_139 (hl_IN (2 :^: A) t f) (hl_CROSS A A s t) = 1 then 1 else 0)))) /\\ forall f :e 2 :^: (2 :^: A), forall t :e 2 :^: B, hl_CROSS A B (hl_INTERS A f) t = hl_COND (2 :^: (A :*: B)) (if f = hl_EMPTY (2 :^: A) then 1 else 0) (hl_CROSS A B (hl_UNIV A) t) (hl_INTERS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_140 :e 2 :^: (A :*: B) => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_140 (hl_IN (2 :^: A) s f) (hl_CROSS A B s t) = 1 then 1 else 0)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CROSS_INTERS_bridge"
   },
   {
    "name": "CROSS_INTERS_INTERS",
@@ -6994,7 +6994,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f c= Power A, forall g c= Power B, {x :e A | forall Y :e f, x :e Y} :*: {x :e B | forall Y :e g, x :e Y} = if f = Empty then {x :e A :*: B | forall Y :e {A :*: t | t :e Power B, t :e g}, x :e Y} else if g = Empty then {x :e A :*: B | forall Y :e {s :*: B | s :e Power A, s :e f}, x :e Y} else {x :e A :*: B | forall Y :e (\\/_ s :e Power A, {s :*: t | t :e Power B, s :e f /\\ t :e g}), x :e Y}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e 2 :^: (2 :^: A), forall g :e 2 :^: (2 :^: B), hl_CROSS A B (hl_INTERS A f) (hl_INTERS B g) = hl_COND (2 :^: (A :*: B)) (if f = hl_EMPTY (2 :^: A) then 1 else 0) (hl_INTERS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_136 :e 2 :^: (A :*: B) => if exists t :e 2 :^: B, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_136 (hl_IN (2 :^: B) t g) (hl_CROSS A B (hl_UNIV A) t) = 1 then 1 else 0))) (hl_COND (2 :^: (A :*: B)) (if g = hl_EMPTY (2 :^: B) then 1 else 0) (hl_INTERS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_137 :e 2 :^: (A :*: B) => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_137 (hl_IN (2 :^: A) s f) (hl_CROSS A B s (hl_UNIV B)) = 1 then 1 else 0))) (hl_INTERS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_138 :e 2 :^: (A :*: B) => if exists s :e 2 :^: A, exists t :e 2 :^: B, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_138 (if hl_IN (2 :^: A) s f = 1 /\\ hl_IN (2 :^: B) t g = 1 then 1 else 0) (hl_CROSS A B s t) = 1 then 1 else 0))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
+   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
    "bridge": ""
   },
   {
@@ -7113,9 +7113,9 @@
    "source": "(!s:A->bool. !f:(A->bool)->bool. CROSS s (UNIONS f) = UNIONS (GSPEC (\\GEN%PVAR%134:A#A->bool. ?t:A->bool. SETSPEC GEN%PVAR%134 (t IN f) (CROSS s t)))) /\\ (!f:(A->bool)->bool. !t:B->bool. CROSS (UNIONS f) t = UNIONS (GSPEC (\\GEN%PVAR%135:A#B->bool. ?s:A->bool. SETSPEC GEN%PVAR%135 (s IN f) (CROSS s t))))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> (forall s c= A, forall f c= Power A, s :*: Union f = Union {s :*: t | t :e Power A, t :e f}) /\\ forall f c= Power A, forall t c= B, Union f :*: t = Union {s :*: t | s :e Power A, s :e f}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> (forall s :e 2 :^: A, forall f :e 2 :^: (2 :^: A), hl_CROSS A A s (hl_UNIONS A f) = hl_UNIONS (A :*: A) (hl_GSPEC (2 :^: (A :*: A)) (fun GEN_PVAR_134 :e 2 :^: (A :*: A) => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: A)) GEN_PVAR_134 (hl_IN (2 :^: A) t f) (hl_CROSS A A s t) = 1 then 1 else 0))) /\\ forall f :e 2 :^: (2 :^: A), forall t :e 2 :^: B, hl_CROSS A B (hl_UNIONS A f) t = hl_UNIONS (A :*: B) (hl_GSPEC (2 :^: (A :*: B)) (fun GEN_PVAR_135 :e 2 :^: (A :*: B) => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: (A :*: B)) GEN_PVAR_135 (hl_IN (2 :^: A) s f) (hl_CROSS A B s t) = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CROSS_UNIONS_bridge"
   },
   {
    "name": "CROSS_UNIONS_UNIONS",
@@ -7725,9 +7725,9 @@
    "source": "!u:A->bool. !s:(A->bool)->bool. u DIFF INTERS s = UNIONS (GSPEC (\\GEN%PVAR%64:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%64 (t IN s) (u DIFF t)))",
    "statement": "forall A:set, A <> Empty -> forall u c= A, forall s c= Power A, u :\\: {x :e A | forall Y :e s, x :e Y} = Union {u :\\: t | t :e Power A, t :e s}",
    "literal": "forall A:set, A <> Empty -> forall u :e 2 :^: A, forall s :e 2 :^: (2 :^: A), hl_DIFF A u (hl_INTERS A s) = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_64 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_64 (hl_IN (2 :^: A) t s) (hl_DIFF A u t) = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIFF_INTERS_bridge"
   },
   {
    "name": "DIFF_RESTRICT",
@@ -7781,9 +7781,9 @@
    "source": "!u:A->bool. !s:(A->bool)->bool. u DIFF UNIONS s = u INTER INTERS (GSPEC (\\GEN%PVAR%68:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%68 (t IN s) (u DIFF t)))",
    "statement": "forall A:set, forall u c= A, forall s c= Power A, u :\\: Union s = u :/\\: {x :e A | forall Y :e {u :\\: t | t :e Power A, t :e s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall u :e 2 :^: A, forall s :e 2 :^: (2 :^: A), hl_DIFF A u (hl_UNIONS A s) = hl_INTER A u (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_68 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_68 (hl_IN (2 :^: A) t s) (hl_DIFF A u t) = 1 then 1 else 0)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIFF_UNIONS_bridge"
   },
   {
    "name": "DIFF_UNIONS_NONEMPTY",
@@ -7809,9 +7809,9 @@
    "source": "!u:A->bool. !s:(A->bool)->bool. ~(s = EMPTY) ==> u DIFF UNIONS s = INTERS (GSPEC (\\GEN%PVAR%69:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%69 (t IN s) (u DIFF t)))",
    "statement": "forall A:set, forall u c= A, forall s c= Power A, ~ s = Empty -> u :\\: Union s = {x :e A | forall Y :e {u :\\: t | t :e Power A, t :e s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall u :e 2 :^: A, forall s :e 2 :^: (2 :^: A), ~ s = hl_EMPTY (2 :^: A) -> hl_DIFF A u (hl_UNIONS A s) = hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_69 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_69 (hl_IN (2 :^: A) t s) (hl_DIFF A u t) = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIFF_UNIONS_NONEMPTY_bridge"
   },
   {
    "name": "DIFF_UNIONS_PAIRWISE_DISJOINT",
@@ -13615,7 +13615,7 @@
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (exists s c= A, P s /\\ forall y c= A, P y -> y = s) <-> Union {s :e Power A | P s} = {x :e A | forall Y :e {s :e Power A | P s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: A), hl_exists_unique (2 :^: A) (fun s :e 2 :^: A => P s) = 1 <-> hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_82 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_82 (P s) s = 1 then 1 else 0)) = hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_83 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_83 (P s) s = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: nested subset argument relation",
+   "cert_error": "bridge_unsupported: typing: unknown variable s\u0000s#11",
    "bridge": ""
   },
   {
@@ -16512,9 +16512,9 @@
    "source": "!s:A->bool. FINITE s ==> FINITE (GSPEC (\\GEN%PVAR%157:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%157 (t SUBSET s) t))",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> finite {t :e Power A | t c= s}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_157 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_157 (hl_SUBSET A t s) t = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_POWERSET_bridge"
   },
   {
    "name": "FINITE_POWERSET_EQ",
@@ -16540,9 +16540,9 @@
    "source": "!s:A->bool. FINITE (GSPEC (\\GEN%PVAR%158:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%158 (t SUBSET s) t)) <=> FINITE s",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite {t :e Power A | t c= s} <-> finite s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_158 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_158 (hl_SUBSET A t s) t = 1 then 1 else 0)) = 1 <-> hl_FINITE A s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_POWERSET_EQ_bridge"
   },
   {
    "name": "FINITE_PRODUCT",
@@ -16816,9 +16816,9 @@
    "source": "!s:A->bool. !n:num. FINITE (GSPEC (\\GEN%PVAR%176:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%176 (t SUBSET s /\\ HAS_SIZE t n) t)) <=> FINITE s \\/ n = 0",
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall n :e omega, finite {t :e Power A | t c= s /\\ equip t n} <-> finite s \\/ n = 0",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall n :e omega, hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_176 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_176 (if hl_SUBSET A t s = 1 /\\ hl_HAS_SIZE A t n = 1 then 1 else 0) t = 1 then 1 else 0)) = 1 <-> hl_FINITE A s = 1 \\/ n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_RESTRICTED_POWERSET_bridge"
   },
   {
    "name": "FINITE_RESTRICTED_SUBSETS",
@@ -16844,9 +16844,9 @@
    "source": "!P:(A->bool)->bool. !s:A->bool. FINITE s ==> FINITE (GSPEC (\\GEN%PVAR%160:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%160 (t SUBSET s /\\ P t) t))",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, finite s -> finite {t :e Power A | t c= s /\\ P t}",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_160 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_160 (if hl_SUBSET A t s = 1 /\\ P t = 1 then 1 else 0) t = 1 then 1 else 0)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_RESTRICTED_SUBSETS_bridge"
   },
   {
    "name": "FINITE_RULES",
@@ -25340,9 +25340,9 @@
    "source": "!s:(A->bool)->bool. INTERS s = UNIV DIFF UNIONS (GSPEC (\\GEN%PVAR%65:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%65 (t IN s) (UNIV DIFF t)))",
    "statement": "forall A:set, forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = A :\\: Union {A :\\: t | t :e Power A, t :e s}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), hl_INTERS A s = hl_DIFF A (hl_UNIV A) (hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_65 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_65 (hl_IN (2 :^: A) t s) (hl_DIFF A (hl_UNIV A) t) = 1 then 1 else 0)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTERS_UNIONS_bridge"
   },
   {
    "name": "INTER_ACI",
@@ -25599,9 +25599,9 @@
    "source": "(!f:(A->bool)->bool. !s:A->bool. s INTER INTERS f = (if f = EMPTY then s else INTERS (GSPEC (\\GEN%PVAR%75:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%75 (t IN f) (s INTER t))))) /\\ (!f:(A->bool)->bool. !s:A->bool. INTERS f INTER s = (if f = EMPTY then s else INTERS (GSPEC (\\GEN%PVAR%76:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%76 (t IN f) (t INTER s)))))",
    "statement": "forall A:set, A <> Empty -> (forall f c= Power A, forall s c= A, s :/\\: {x :e A | forall Y :e f, x :e Y} = if f = Empty then s else {x :e A | forall Y :e {s :/\\: t | t :e Power A, t :e f}, x :e Y}) /\\ forall f c= Power A, forall s c= A, {x :e A | forall Y :e f, x :e Y} :/\\: s = if f = Empty then s else {x :e A | forall Y :e {t :/\\: s | t :e Power A, t :e f}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> (forall f :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_INTER A s (hl_INTERS A f) = hl_COND (2 :^: A) (if f = hl_EMPTY (2 :^: A) then 1 else 0) s (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_75 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_75 (hl_IN (2 :^: A) t f) (hl_INTER A s t) = 1 then 1 else 0)))) /\\ forall f :e 2 :^: (2 :^: A), forall s :e 2 :^: A, hl_INTER A (hl_INTERS A f) s = hl_COND (2 :^: A) (if f = hl_EMPTY (2 :^: A) then 1 else 0) s (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_76 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_76 (hl_IN (2 :^: A) t f) (hl_INTER A t s) = 1 then 1 else 0)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTER_INTERS_bridge"
   },
   {
    "name": "INTER_NUMSEG",
@@ -25767,9 +25767,9 @@
    "source": "(!s:(A->bool)->bool. !t:A->bool. UNIONS s INTER t = UNIONS (GSPEC (\\GEN%PVAR%43:A->bool. ?x:A->bool. SETSPEC GEN%PVAR%43 (x IN s) (x INTER t)))) /\\ (!s:(A->bool)->bool. !t:A->bool. t INTER UNIONS s = UNIONS (GSPEC (\\GEN%PVAR%44:A->bool. ?x:A->bool. SETSPEC GEN%PVAR%44 (x IN s) (t INTER x))))",
    "statement": "forall A:set, A <> Empty -> (forall s c= Power A, forall t c= A, Union s :/\\: t = Union {x :/\\: t | x :e Power A, x :e s}) /\\ forall s c= Power A, forall t c= A, t :/\\: Union s = Union {t :/\\: x | x :e Power A, x :e s}",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: (2 :^: A), forall t :e 2 :^: A, hl_INTER A (hl_UNIONS A s) t = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_43 :e 2 :^: A => if exists x :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_43 (hl_IN (2 :^: A) x s) (hl_INTER A x t) = 1 then 1 else 0))) /\\ forall s :e 2 :^: (2 :^: A), forall t :e 2 :^: A, hl_INTER A t (hl_UNIONS A s) = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_44 :e 2 :^: A => if exists x :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_44 (hl_IN (2 :^: A) x s) (hl_INTER A t x) = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTER_UNIONS_bridge"
   },
   {
    "name": "INTER_UNIONS_PAIRWISE_DISJOINT",
@@ -54041,7 +54041,7 @@
    "statement": "forall A:set, A <> Empty -> {s :e Power A | s c= Empty} = {Empty} /\\ forall a :e A, forall t c= A, {s :e Power A | s c= SetAdjoin t a} = {s :e Power A | s c= t} :\\/: {{x0 :e A | x0 :e SetAdjoin x a} | x :e {s :e Power A | s c= t}}",
    "literal": "forall A:set, A <> Empty -> hl_GSPEC (2 :^: A) (fun GEN_PVAR_163 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_163 (hl_SUBSET A s (hl_EMPTY A)) s = 1 then 1 else 0) = hl_INSERT (2 :^: A) (hl_EMPTY A) (hl_EMPTY (2 :^: A)) /\\ forall a :e A, forall t :e 2 :^: A, hl_GSPEC (2 :^: A) (fun GEN_PVAR_164 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_164 (hl_SUBSET A s (hl_INSERT A a t)) s = 1 then 1 else 0) = hl_UNION (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_165 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_165 (hl_SUBSET A s t) s = 1 then 1 else 0)) (hl_IMAGE (2 :^: A) (2 :^: A) (fun s :e 2 :^: A => hl_INSERT A a s) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_166 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_166 (hl_SUBSET A s t) s = 1 then 1 else 0)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
+   "cert_error": "bridge_unsupported: coerce_rel: metafun(2 :^: A,A -> 2)",
    "bridge": ""
   },
   {
@@ -76869,9 +76869,9 @@
    "source": "!s:(A->bool)->bool. !t:A->bool. UNIONS s DIFF t = UNIONS (GSPEC (\\GEN%PVAR%67:A->bool. ?x:A->bool. SETSPEC GEN%PVAR%67 (x IN s) (x DIFF t)))",
    "statement": "forall A:set, A <> Empty -> forall s c= Power A, forall t c= A, Union s :\\: t = Union {x :\\: t | x :e Power A, x :e s}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall t :e 2 :^: A, hl_DIFF A (hl_UNIONS A s) t = hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_67 :e 2 :^: A => if exists x :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_67 (hl_IN (2 :^: A) x s) (hl_DIFF A x t) = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_DIFF_bridge"
   },
   {
    "name": "UNIONS_EQ_INTERS",
@@ -77023,9 +77023,9 @@
    "source": "!s:(A->bool)->bool. UNIONS s = UNIV DIFF INTERS (GSPEC (\\GEN%PVAR%66:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%66 (t IN s) (UNIV DIFF t)))",
    "statement": "forall A:set, A <> Empty -> forall s c= Power A, Union s = A :\\: {x :e A | forall Y :e {A :\\: t | t :e Power A, t :e s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), hl_UNIONS A s = hl_DIFF A (hl_UNIV A) (hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_66 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_66 (hl_IN (2 :^: A) t s) (hl_DIFF A (hl_UNIV A) t) = 1 then 1 else 0)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_INTERS_bridge"
   },
   {
    "name": "UNIONS_IN_CHAIN",
@@ -77079,9 +77079,9 @@
    "source": "!f:(A->bool)->bool. FINITE f ==> UNIONS (GSPEC (\\GEN%PVAR%106:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%106 (t IN f /\\ (!u:A->bool. u IN f ==> ~PSUBSET t u)) t)) = UNIONS f",
    "statement": "forall A:set, A <> Empty -> forall f c= Power A, finite f -> Union {t :e Power A | t :e f /\\ forall u c= A, u :e f -> ~ (t c= u /\\ t <> u)} = Union f",
    "literal": "forall A:set, A <> Empty -> forall f :e 2 :^: (2 :^: A), hl_FINITE (2 :^: A) f = 1 -> hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_106 :e 2 :^: A => if exists t :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_106 (if hl_IN (2 :^: A) t f = 1 /\\ forall u :e 2 :^: A, hl_IN (2 :^: A) u f = 1 -> ~ hl_PSUBSET A t u = 1 then 1 else 0) t = 1 then 1 else 0)) = hl_UNIONS A f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: coerce_rel: subset(A)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_MAXIMAL_SETS_bridge"
   },
   {
    "name": "UNIONS_MONO",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2337
+  "native_certified": 2352
  }
 }

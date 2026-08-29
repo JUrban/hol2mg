@@ -6514,3 +6514,41 @@ claim Hstep: forall n, nat_p n -> (forall l :e finseq A, n :e seq_len l -> hl_EL
   exact (eq_trans_i (hl_EL A (ordsucc n) l) (hl_EL A (hl_SUC n) l) (seq_nth l (ordsucc n)) (f_equal (fun u => hl_EL A u l) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_compat n Hno))) (eq_trans_i (hl_EL A (hl_SUC n) l) (hl_EL A n (hl_TL A l)) (seq_nth l (ordsucc n)) (HS n Hno l Hl) (eq_trans_i (hl_EL A n (hl_TL A l)) (hl_EL A n (seq_tl l)) (seq_nth l (ordsucc n)) (f_equal (fun u => hl_EL A n u) (hl_TL A l) (seq_tl l) Htl) (eq_trans_i (hl_EL A n (seq_tl l)) (seq_nth (seq_tl l) n) (seq_nth l (ordsucc n)) (IH (seq_tl l) Htlf Hntl) (seq_nth_tl l n Hnp))))). }
 let n. assume Hn. exact (nat_ind (fun n => forall l :e finseq A, n :e seq_len l -> hl_EL A n l = seq_nth l n) Hbase Hstep n (omega_nat_p n Hn)).
 Qed.
+
+// ---- comprehensions over subsets with subset-valued bodies: representation on both sides ----
+Theorem gspec_replsep_form_sub2 : forall A B:set, forall q F:set -> set, forall P':set -> prop, forall F':set -> set, (forall t :e 2 :^: A, F t :e 2 :^: B) -> (forall t :e 2 :^: A, q t = 1 <-> P' (hl_rep A t)) -> (forall t :e 2 :^: A, hl_rep B (F t) = F' (hl_rep A t)) -> {hl_rep B v | v :e {v :e 2 :^: B | exists t :e 2 :^: A, q t = 1 /\ v = F t}} = {F' u | u :e Power A, P' u}.
+let A B q F P' F'. assume HFB HP HF.
+apply set_ext.
+- let w. assume Hw. apply (ReplE_impred {v :e 2 :^: B | exists t :e 2 :^: A, q t = 1 /\ v = F t} (fun v => hl_rep B v) w Hw). let v. assume Hv Hwv.
+  apply (SepE (2 :^: B) (fun v => exists t :e 2 :^: A, q t = 1 /\ v = F t) v Hv). assume HvB H. apply H. let t. assume Ht0. apply Ht0. assume Ht H2. apply H2. assume Hqt Hvt.
+  claim Hu: hl_rep A t :e Power A. { exact (PowerI A (hl_rep A t) (hl_rep_Subq A t)). }
+  claim HPu: P' (hl_rep A t). { apply (HP t Ht). assume H3 _. exact (H3 Hqt). }
+  claim Hweq: w = F' (hl_rep A t). { exact (eq_trans_i w (hl_rep B v) (F' (hl_rep A t)) Hwv (eq_trans_i (hl_rep B v) (hl_rep B (F t)) (F' (hl_rep A t)) (f_equal (fun x => hl_rep B x) v (F t) Hvt) (HF t Ht))). }
+  exact ((eq_sym_i w (F' (hl_rep A t)) Hweq) (fun hl__u hl__v => hl__u :e {F' u | u :e Power A, P' u}) (ReplSepI (Power A) (fun u => P' u) (fun u => F' u) (hl_rep A t) Hu HPu)).
+- let w. assume Hw. apply (ReplSepE_impred (Power A) (fun u => P' u) (fun u => F' u) w Hw). let u. assume Hu HPu Hwu.
+  claim HuA: u c= A. { exact (PowerE A u Hu). }
+  claim Ht: hl_chi A u :e 2 :^: A. { exact (hl_chi_Pi A u). }
+  claim Hru: hl_rep A (hl_chi A u) = u. { exact (hl_rep_chi A u HuA). }
+  claim Hqt: q (hl_chi A u) = 1. { apply (HP (hl_chi A u) Ht). assume _ H3. apply H3. exact ((eq_sym_i (hl_rep A (hl_chi A u)) u Hru) (fun hl__u hl__v => P' hl__u) HPu). }
+  claim Hex: exists t :e 2 :^: A, q t = 1 /\ F (hl_chi A u) = F t. { witness (hl_chi A u). apply andI. exact Ht. apply andI. exact Hqt. exact (fun p H => H). }
+  claim Hin: F (hl_chi A u) :e {v :e 2 :^: B | exists t :e 2 :^: A, q t = 1 /\ v = F t}. { exact (SepI (2 :^: B) (fun v => exists t :e 2 :^: A, q t = 1 /\ v = F t) (F (hl_chi A u)) (HFB (hl_chi A u) Ht) Hex). }
+  claim Hweq: hl_rep B (F (hl_chi A u)) = w. { exact (eq_trans_i (hl_rep B (F (hl_chi A u))) (F' u) w (eq_trans_i (hl_rep B (F (hl_chi A u))) (F' (hl_rep A (hl_chi A u))) (F' u) (HF (hl_chi A u) Ht) (f_equal (fun x => F' x) (hl_rep A (hl_chi A u)) u Hru)) (eq_sym_i w (F' u) Hwu)). }
+  exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep B v | v :e {v :e 2 :^: B | exists t :e 2 :^: A, q t = 1 /\ v = F t}}) (ReplI {v :e 2 :^: B | exists t :e 2 :^: A, q t = 1 /\ v = F t} (fun v => hl_rep B v) (F (hl_chi A u)) Hin)).
+Qed.
+Theorem gspec_repl_form_sub2 : forall A B:set, forall F:set -> set, forall F':set -> set, (forall t :e 2 :^: A, F t :e 2 :^: B) -> (forall t :e 2 :^: A, hl_rep B (F t) = F' (hl_rep A t)) -> {hl_rep B v | v :e {v :e 2 :^: B | exists t :e 2 :^: A, (if True then 1 else 0) = 1 /\ v = F t}} = {F' u | u :e Power A}.
+let A B F F'. assume HFB HF.
+claim HT: forall t :e 2 :^: A, (if True then 1 else 0) = 1 <-> True. { let t. assume _. apply iffI. - assume _. exact (fun p H => H). - assume _. exact (If_i_1 True 1 0 (fun p H => H)). }
+rewrite (gspec_replsep_form_sub2 A B (fun t => if True then 1 else 0) F (fun u => True) F' HFB HT HF).
+apply set_ext.
+- let w. assume Hw. apply (ReplSepE_impred (Power A) (fun u => True) (fun u => F' u) w Hw). let u. assume Hu _ Hwu. exact ((eq_sym_i w (F' u) Hwu) (fun hl__u hl__v => hl__u :e {F' u | u :e Power A}) (ReplI (Power A) (fun u => F' u) u Hu)).
+- let w. assume Hw. apply (ReplE_impred (Power A) (fun u => F' u) w Hw). let u. assume Hu Hwu. exact ((eq_sym_i w (F' u) Hwu) (fun hl__u hl__v => hl__u :e {F' u | u :e Power A, True}) (ReplSepI (Power A) (fun u => True) (fun u => F' u) u Hu (fun p H => H))).
+Qed.
+Theorem gspec_sep_form_sub2 : forall A:set, forall q:set -> set, forall P':set -> prop, (forall t :e 2 :^: A, q t = 1 <-> P' (hl_rep A t)) -> {hl_rep A v | v :e {v :e 2 :^: A | exists t :e 2 :^: A, q t = 1 /\ v = t}} = {u :e Power A | P' u}.
+let A q P'. assume HP.
+claim HFB: forall t :e 2 :^: A, t :e 2 :^: A. { let t. assume Ht. exact Ht. }
+claim HF: forall t :e 2 :^: A, hl_rep A t = hl_rep A t. { let t. assume _. exact (fun p H => H). }
+rewrite (gspec_replsep_form_sub2 A A q (fun t => t) P' (fun u => u) HFB HP HF).
+apply set_ext.
+- let w. assume Hw. apply (ReplSepE_impred (Power A) (fun u => P' u) (fun u => u) w Hw). let u. assume Hu HPu Hwu. exact ((eq_sym_i w u Hwu) (fun hl__u hl__v => hl__u :e {u :e Power A | P' u}) (SepI (Power A) (fun u => P' u) u Hu HPu)).
+- let w. assume Hw. apply (SepE (Power A) (fun u => P' u) w Hw). assume Hw1 Hw2. exact (ReplSepI (Power A) (fun u => P' u) (fun u => u) w Hw1 Hw2).
+Qed.

@@ -860,6 +860,61 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let ca = L.carrier g.lctx xty in
                 let body_ty = type_of [] body' in
                 let cb = L.carrier g.lctx body_ty in
+                let sub2 = (match xty, body_ty with
+                  | TyApp ("fun", [ a_ty; TyApp ("bool", []) ]), TyApp ("fun", [ b_ty; TyApp ("bool", []) ]) ->
+                      let ca' = L.carrier g.lctx a_ty and cb' = L.carrier g.lctx b_ty in
+                      if alpha_eq (E.carrier g.nctx a_ty) ca' && alpha_eq (E.carrier g.nctx b_ty) cb' then Some (ca', cb') else None
+                  | _ -> None) in
+                if sub2 <> None then begin
+                  (* comprehension over subsets with a subset-valued body: the pattern variable is represented
+                     (hl_rep ca' n) in the pointwise proofs, the result by hl_rep2 (gspec_*_form_sub2) *)
+                  let ca', cb' = Option.get sub2 in
+                  let hn = "H" ^ n in
+                  g.nctx.E.vars <- (key, (xty, E.VSubset ca', n)) :: g.nctx.E.vars;
+                  g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars; g.lctx.L.used <- n :: g.lctx.L.used;
+                  let cleanup () =
+                    g.nctx.E.vars <- List.remove_assoc key g.nctx.E.vars; E.release g.nctx n;
+                    g.lctx.L.vars <- List.remove_assoc key g.lctx.L.vars; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used;
+                    g.vars <- List.remove_assoc key g.vars in
+                  let result = (try
+                    (* phase 1: native texts with the plain variable (the lambdas P', F' of the form lemmas) *)
+                    let np0 = nprop g p' in
+                    let nt0 = Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx body' (E.VSubset cb'))) in
+                    (* phase 2: pointwise proofs with the variable represented as hl_rep ca' n *)
+                    g.vars <- (key, { vty = xty; view = E.VSubset ca'; lit = Mg.Var n; nat = Some (Mg.apps (Mg.Cst "hl_rep") [ ca'; Mg.Var n ]); mem = hn; rel = ""; kind = KRep ca'; hyp = "" }) :: g.vars;
+                    let lp = if L.is_logical p' then Mg.If (lprop g p', L.one, L.zero) else lterm g p' in
+                    let lt = lterm g body' in
+                    let q_lam = Printf.sprintf "(fun %s => %s)" n (pp lp) and f_lam = Printf.sprintf "(fun %s => %s)" n (pp lt) in
+                    let p_lam = Printf.sprintf "(fun %s => %s)" n (pp np0) and fn_lam = Printf.sprintf "(fun %s => %s)" n (pp nt0) in
+                    let hq = Printf.sprintf "(fun %s %s => %s)" n hn (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
+                    let generic = Printf.sprintf "(hl_gspec_generic %s %s %s %s %s)" (ppp ca) (ppp cb) q_lam f_lam hq in
+                    let mid = Mg.Sep ("v", cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt))) in
+                    let mid2 = Mg.Repl ("v", mid, Mg.apps (Mg.Cst "hl_rep") [ cb'; Mg.Var "v" ]) in
+                    let iff_p () =
+                      if L.is_logical p' then
+                        (let np = nprop g p' in
+                         Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p'))
+                      else (let _, _, kp, pfp = rel g p' (Some E.VProp) in if kp <> KIff then unsupported "gspec predicate relation"; pfp) in
+                    let hp () = Printf.sprintf "(fun %s %s => %s)" n hn (iff_p ()) in
+                    let hff () =
+                      let lb, _, kb, pb = rel g body' (Some (E.VSubset cb')) in
+                      (match kb with KRep _ -> () | _ -> unsupported "gspec subset body relation");
+                      if lb <> lt then unsupported "gspec subset body texts";
+                      Printf.sprintf "(fun %s %s => %s)" n hn (if pb = "" then refl else pb) in
+                    let hf = Printf.sprintf "(fun %s %s => %s)" n hn (typ g body') in
+                    let wrap form = Printf.sprintf "(eq_trans_i (hl_rep2 %s %s) %s %s (f_equal (fun hl__u => {hl_rep %s hl__w | hl__w :e hl__u}) (hl_rep %s %s) %s %s) %s)" (ppp cb') (ppp lit) (ppp mid2) (ppp nat) (ppp cb') (ppp cb) (ppp lit) (ppp mid) generic form in
+                    let pa = Mg.App (Mg.Cst "Power", ca') in
+                    (match nat with
+                     | Mg.Sep (_, dom, _) when lt = Mg.Var n && alpha_eq cb' ca' && alpha_eq dom pa ->
+                         (lit, nat, KRep2 cb', wrap (Printf.sprintf "(gspec_sep_form_sub2 %s %s %s %s)" (ppp ca') q_lam p_lam (hp ())))
+                     | Mg.Repl (_, dom, _) when (match p' with Const ("T", _) -> true | _ -> false) && alpha_eq dom pa ->
+                         (lit, nat, KRep2 cb', wrap (Printf.sprintf "(gspec_repl_form_sub2 %s %s %s %s %s %s)" (ppp ca') (ppp cb') f_lam fn_lam hf (hff ())))
+                     | Mg.ReplSep (_, dom, _, _) when alpha_eq dom pa ->
+                         (lit, nat, KRep2 cb', wrap (Printf.sprintf "(gspec_replsep_form_sub2 %s %s %s %s %s %s %s %s %s)" (ppp ca') (ppp cb') q_lam f_lam p_lam fn_lam hf (hp ()) (hff ())))
+                     | _ -> unsupported "gspec (subset pattern) native form %s" (pp nat))
+                    with e -> cleanup (); raise e) in
+                  cleanup (); result
+                end else begin
                 g.nctx.E.vars <- (key, (xty, E.VSet ca, n)) :: g.nctx.E.vars;
                 g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars; g.lctx.L.used <- n :: g.lctx.L.used;
                 g.vars <- (key, { vty = xty; view = E.VSet ca; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
@@ -901,6 +956,7 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                    | _ -> unsupported "gspec native form %s" (pp nat))
                   with e -> cleanup (); raise e) in
                 cleanup (); result
+                end
             | "NUMERAL" when dest_numeral t <> None ->
                 let v = Option.get (dest_numeral t) in
                 if v > 512 then unsupported "rel: numeral %d too large" v;
