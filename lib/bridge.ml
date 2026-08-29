@@ -383,14 +383,14 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                    | App (Const ("BIT1", _), b') ->
                        let lb, w, pb = pf_bits b' in
                        let lit = Mg.App (Mg.Cst "hl_BIT1", lb) in
-                       let mem = Printf.sprintf "((eq_sym_i %s %d %s) (fun hl__u hl__v => u :e omega) %s)" (ppp lb) w pb (num_omega w) in
+                       let mem = Printf.sprintf "((eq_sym_i %s %d %s) (fun hl__u hl__v => hl__u :e omega) %s)" (ppp lb) w pb (num_omega w) in
                        (lit, 2 * w + 1,
                         Printf.sprintf "(eq_trans_i %s (ordsucc (hl_BIT0 %s)) %d (hl_BIT1_S %s %s) (f_equal (fun x => ordsucc x) (hl_BIT0 %s) %d (eq_trans_i (hl_BIT0 %s) (hl_BIT0 %d) %d (f_equal (fun x => hl_BIT0 x) %s %d %s) %s)))"
                           (ppp lit) (ppp lb) (2 * w + 1) (ppp lb) mem (ppp lb) (2 * w) (ppp lb) w (2 * w) (ppp lb) w pb (bit0_num w))
                    | _ -> unsupported "rel: numeral shape") in
                 let lb, w, pb = pf_bits bits in
                 if w <> v then unsupported "rel: numeral value mismatch";
-                let mem = Printf.sprintf "((eq_sym_i %s %d %s) (fun hl__u hl__v => u :e omega) %s)" (ppp lb) w pb (num_omega w) in
+                let mem = Printf.sprintf "((eq_sym_i %s %d %s) (fun hl__u hl__v => hl__u :e omega) %s)" (ppp lb) w pb (num_omega w) in
                 let pf = Printf.sprintf "(eq_trans_i %s %s %d (hl_NUMERAL_compat %s %s) %s)" (ppp lit) (ppp lb) v (ppp lb) mem pb in
                 ignore numv;
                 if nat <> Mg.Num v then unsupported "rel: numeral native %s" (pp nat);

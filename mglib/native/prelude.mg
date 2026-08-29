@@ -47,8 +47,8 @@ Definition div_nat : set -> set -> set :=
   fun m n => if n = 0 then 0 else Eps_i (fun q => q :e omega /\ exists r :e omega, r < n /\ m = q * n + r).
 Definition mod_nat : set -> set -> set := fun m n => if n = 0 then m else m + - div_nat m n * n.
 
-Definition even_nat : set -> prop := fun n => exists k :e omega, n = 2 * k.
-Definition odd_nat : set -> prop := fun n => exists k :e omega, n = 2 * k + 1.
+Definition even_nat : set -> prop := fun n => exists k :e omega, n = k + k.
+Definition odd_nat : set -> prop := fun n => exists k :e omega, n = (k + k) + 1.
 
 
 
