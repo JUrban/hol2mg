@@ -31,7 +31,7 @@ Theorem hl_mk_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> f
 Admitted.
 
 // UNION_OF : (((A->bool)->bool)->bool)->((A->bool)->bool)->(A->bool)->bool (not in compat.mg)
-Theorem hl_UNION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 x) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 x) -> forall l3 :e 2 :^: A, hl_UNION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep A l3.
+Theorem hl_UNION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 (hl_rep2 A x)) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 (hl_rep A x)) -> forall l3 :e 2 :^: A, hl_UNION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep A l3.
 Admitted.
 
 // CARD : (A->bool)->num at A := A -> bool (not in compat.mg)
@@ -59,7 +59,7 @@ Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Em
 Admitted.
 
 // pairwise : (A->A->bool)->(A->bool)->bool at A := A -> bool (not in compat.mg)
-Theorem hl_pairwise_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 x y) -> forall l2 :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) l1 l2 = 1 <-> forall x y :e hl_rep2 A l2, x <> y -> P1 x y.
+Theorem hl_pairwise_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> forall l2 :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) l1 l2 = 1 <-> forall x y :e hl_rep2 A l2, x <> y -> P1 x y.
 Admitted.
 
 // NUMSUM : bool->num->num (not in compat.mg)
@@ -447,7 +447,7 @@ Theorem hl_ALLPAIRS_compat : forall A B:set, A <> Empty -> B <> Empty -> forall 
 Admitted.
 
 // INTERSECTION_OF : (((A->bool)->bool)->bool)->((A->bool)->bool)->(A->bool)->bool (not in compat.mg)
-Theorem hl_INTERSECTION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 x) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 x) -> forall l3 :e 2 :^: A, hl_INTERSECTION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ {x :e A | forall Y :e u, x :e Y} = hl_rep A l3.
+Theorem hl_INTERSECTION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 (hl_rep2 A x)) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 (hl_rep A x)) -> forall l3 :e 2 :^: A, hl_INTERSECTION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ {x :e A | forall Y :e u, x :e Y} = hl_rep A l3.
 Admitted.
 
 // BUTLAST : A list->A list (not in compat.mg)

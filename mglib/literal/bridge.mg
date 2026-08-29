@@ -800,3 +800,22 @@ Theorem rep2_eq_bwd : forall A F G s t:set, F :e 2 :^: (2 :^: A) -> G :e 2 :^: (
 let A F G s t. assume HF HG Hs Ht H.
 apply (hl_rep2_inj A F G HF HG). rewrite Hs. rewrite Ht. exact H.
 Qed.
+
+// ---- meta-predicates on subsets: the literal predicate acts on literal predicates through the representation ----
+Theorem imp_forall_pred_rep : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall P:set -> prop, L (hl_chip (2 :^: c) (fun x => P (hl_rep c x))) -> N P) -> (forall F :e 2 :^: (2 :^: c), L F) -> forall P:set -> prop, N P.
+let c L N. assume H H1. let P. exact (H P (H1 (hl_chip (2 :^: c) (fun x => P (hl_rep c x))) (hl_chip_Pi (2 :^: c) (fun x => P (hl_rep c x))))).
+Qed.
+Theorem imp_forall_pred_rep_rev : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall F :e 2 :^: (2 :^: c), N (fun T => F (hl_chi c T) = 1) -> L F) -> (forall P:set -> prop, N P) -> forall F :e 2 :^: (2 :^: c), L F.
+let c L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun T => F (hl_chi c T) = 1))).
+Qed.
+Theorem imp_exists_pred_rep : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall F :e 2 :^: (2 :^: c), L F -> N (fun T => F (hl_chi c T) = 1)) -> (exists F :e 2 :^: (2 :^: c), L F) -> exists P:set -> prop, N P.
+let c L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun T => F (hl_chi c T) = 1). exact (H F HF HL).
+Qed.
+Theorem imp_exists_pred_rep_rev : forall c:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall P:set -> prop, N P -> L (hl_chip (2 :^: c) (fun x => P (hl_rep c x)))) -> (exists P:set -> prop, N P) -> exists F :e 2 :^: (2 :^: c), L F.
+let c L N. assume H H1. apply H1. let P. assume HP. witness (hl_chip (2 :^: c) (fun x => P (hl_rep c x))).
+exact (andI (hl_chip (2 :^: c) (fun x => P (hl_rep c x)) :e 2 :^: (2 :^: c)) (L (hl_chip (2 :^: c) (fun x => P (hl_rep c x)))) (hl_chip_Pi (2 :^: c) (fun x => P (hl_rep c x))) (H P HP)).
+Qed.

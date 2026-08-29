@@ -1418,7 +1418,8 @@ source: !FINITE':(A->bool)->bool. FINITE' EMPTY /\ (!x:A. !s:A->bool. FINITE' s 
 status: transport_required
 statement: forall A:set, A <> Empty -> forall FINITE':set -> prop, FINITE' Empty /\ (forall x :e A, forall s c= A, FINITE' s -> FINITE' (SetAdjoin s x)) -> forall a c= A, finite a -> FINITE' a
 literal: forall A:set, A <> Empty -> forall FINITE' :e 2 :^: (2 :^: A), FINITE' (hl_EMPTY A) = 1 /\ (forall x :e A, forall s :e 2 :^: A, FINITE' s = 1 -> FINITE' (hl_INSERT A x s) = 1) -> forall a :e 2 :^: A, hl_FINITE A a = 1 -> FINITE' a = 1
-cert_status: bridge_unsupported
+bridge: FINITE_INDUCT_bridge
+cert_status: native_certified
 
 ### FINITE_UNION   [finiteness, cardinality, functions between sets]
 hash: f8031a98ed188e3cff5f6de0823f5688
