@@ -1291,6 +1291,7 @@ distinguish statement coverage (public statements), certification coverage
 | 2026-08-29 (d) | 2697 / 2697 | 2023 / 2685 public | 243 (+ 25 carrier lemmas, 148 bridge-library lemmas; generated: 485 typing, 213 unfolding, 0 specification lemmas) | `docs/reports/2026-08-29-interim-8.md` |
 | 2026-08-29 (e) | 2697 / 2697 | 2167 / 2685 public | 270 (+ 25 carrier lemmas, 157 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-9.md` |
 | 2026-08-29 (f) | 2697 / 2697 | 2231 / 2685 public | 298 (+ 26 carrier lemmas, 161 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-10.md` |
+| 2026-08-29 (g) | 2697 / 2697 | 2267 / 2685 public | 321 (+ 26 carrier lemmas, 161 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-11.md` |
 
 Defects found by certification so far (report 6): a variable-capture bug in the closure
 premises of meta-function binders (14 public Core statements were vacuous on

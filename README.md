@@ -53,7 +53,7 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 
 | profile | public statements | literal statements checked | `native_certified` |
 |---|---|---|---|
-| core | 2685 | 2697 | 2231 |
+| core | 2685 | 2697 | 2267 |
 
 A theorem is `native_certified` only when Megalodon `Qed`-checked the generated bridge
 `literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`, `tools/cert_finalize.py`);
