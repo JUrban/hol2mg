@@ -1083,7 +1083,8 @@ source: !P:B->A->bool. !f:A->B. !l:A list. ALL2 P (MAP f l) l <=> ALL (\a:A. P (
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all2 P (seq_map f l) l <-> seq_all (fun a:set => P (f a) a) l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: A :^: B, forall f :e B :^: A, forall l :e finseq A, hl_ALL2 B A P (hl_MAP A B f l) l = 1 <-> hl_ALL A (fun a :e A => P (f a) a) l = 1
-cert_status: bridge_unsupported
+bridge: ALL2_MAP_bridge
+cert_status: native_certified
 
 ### LENGTH_EQ_NIL   [lists (finite sequences), including higher-order mapped operations]
 hash: a50730425650e431b90f58c470a41521

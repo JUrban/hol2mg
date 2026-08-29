@@ -935,9 +935,9 @@
    "source": "(ALL2 P NIL NIL <=> T) /\\ (ALL2 P (h1 CONS t1) NIL <=> F) /\\ (ALL2 P NIL (h2 CONS t2) <=> F) /\\ (ALL2 P (h1 CONS t1) (h2 CONS t2) <=> P h1 h2 /\\ ALL2 P t1 t2)",
    "statement": "forall A B:set, forall P:set -> set -> prop, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, (seq_all2 P seq_nil seq_nil <-> True) /\\ ((seq_all2 P (seq_cons h1 t1) seq_nil <-> False) /\\ ((seq_all2 P seq_nil (seq_cons h2 t2) <-> False) /\\ (seq_all2 P (seq_cons h1 t1) (seq_cons h2 t2) <-> P h1 h2 /\\ seq_all2 P t1 t2)))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, (hl_ALL2 A B P (hl_NIL A) (hl_NIL B) = 1 <-> True) /\\ ((hl_ALL2 A B P (hl_CONS A h1 t1) (hl_NIL B) = 1 <-> False) /\\ ((hl_ALL2 A B P (hl_NIL A) (hl_CONS B h2 t2) = 1 <-> False) /\\ (hl_ALL2 A B P (hl_CONS A h1 t1) (hl_CONS B h2 t2) = 1 <-> P h1 h2 = 1 /\\ hl_ALL2 A B P t1 t2 = 1)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL2_bridge"
   },
   {
    "name": "ALL2_ALL",
@@ -962,9 +962,9 @@
    "source": "!P:A->A->bool. !l:A list. ALL2 P l l <=> ALL (\\x:A. P x x) l",
    "statement": "forall A:set, A <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, seq_all2 P l l <-> seq_all (fun x:set => P x x) l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A :^: A, forall l :e finseq A, hl_ALL2 A A P l l = 1 <-> hl_ALL A (fun x :e A => P x x) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL2_ALL_bridge"
   },
   {
    "name": "ALL2_AND_RIGHT",
@@ -989,9 +989,9 @@
    "source": "!l:A list. !m:B list. !P:A->bool. !Q:A->B->bool. ALL2 (\\x:A. \\y:B. P x /\\ Q x y) l m <=> ALL P l /\\ ALL2 Q l m",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall m :e finseq B, forall P:set -> prop, forall Q:set -> set -> prop, seq_all2 (fun x:set => fun y:set => P x /\\ Q x y) l m <-> seq_all P l /\\ seq_all2 Q l m",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall m :e finseq B, forall P :e 2 :^: A, forall Q :e 2 :^: B :^: A, hl_ALL2 A B (fun x :e A => fun y :e B => if P x = 1 /\\ Q x y = 1 then 1 else 0) l m = 1 <-> hl_ALL A P l = 1 /\\ hl_ALL2 A B Q l m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL2_AND_RIGHT_bridge"
   },
   {
    "name": "ALL2_DEF",
@@ -1024,7 +1024,7 @@
    "statement": "forall A B:set, B <> Empty -> forall P:set -> set -> prop, forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, (seq_all2 P seq_nil l2 <-> l2 = seq_nil) /\\ (seq_all2 P (seq_cons h1 t1) l2 <-> (l2 = seq_nil -> False) /\\ (~ l2 = seq_nil -> P h1 (seq_hd l2) /\\ seq_all2 P t1 (seq_tl l2)))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, forall l2 :e finseq B, forall h1 :e A, forall t1 :e finseq A, (hl_ALL2 A B P (hl_NIL A) l2 = 1 <-> l2 = hl_NIL B) /\\ (hl_ALL2 A B P (hl_CONS A h1 t1) l2 = 1 <-> l2 = hl_NIL B /\\ False \\/ ~ l2 = hl_NIL B /\\ (P h1 (hl_HD B l2) = 1 /\\ hl_ALL2 A B P t1 (hl_TL B l2) = 1))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition ~ l2 = seq_nil not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -1050,9 +1050,9 @@
    "source": "!P:B->A->bool. !f:A->B. !l:A list. ALL2 P (MAP f l) l <=> ALL (\\a:A. P (f a) a) l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all2 P (seq_map f l) l <-> seq_all (fun a:set => P (f a) a) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: A :^: B, forall f :e B :^: A, forall l :e finseq A, hl_ALL2 B A P (hl_MAP A B f l) l = 1 <-> hl_ALL A (fun a :e A => P (f a) a) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL2_MAP_bridge"
   },
   {
    "name": "ALL2_MAP2",
@@ -1079,9 +1079,9 @@
    "source": "!f:A->B. !g:C->D. !l:A list. !m:C list. ALL2 P (MAP f l) (MAP g m) <=> ALL2 (\\x:A. \\y:C. P (f x) (g y)) l m",
    "statement": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e C, g x :e D) -> forall l :e finseq A, forall m :e finseq C, seq_all2 P (seq_map f l) (seq_map g m) <-> seq_all2 (fun x:set => fun y:set => P (f x) (g y)) l m",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall P :e 2 :^: D :^: B, forall f :e B :^: A, forall g :e D :^: C, forall l :e finseq A, forall m :e finseq C, hl_ALL2 B D P (hl_MAP A B f l) (hl_MAP C D g m) = 1 <-> hl_ALL2 A C (fun x :e A => fun y :e C => P (f x) (g y)) l m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL2_MAP2_bridge"
   },
   {
    "name": "ALLPAIRS",
@@ -1540,9 +1540,9 @@
    "source": "!P:A->B->bool. !Q:A->B->bool. !l:A list. !m:B list. ALL2 P l m /\\ ALL2 Q l m <=> ALL2 (\\x:A. \\y:B. P x y /\\ Q x y) l m",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P Q:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, seq_all2 P l m /\\ seq_all2 Q l m <-> seq_all2 (fun x:set => fun y:set => P x y /\\ Q x y) l m",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P Q :e 2 :^: B :^: A, forall l :e finseq A, forall m :e finseq B, hl_ALL2 A B P l m = 1 /\\ hl_ALL2 A B Q l m = 1 <-> hl_ALL2 A B (fun x :e A => fun y :e B => if P x y = 1 /\\ Q x y = 1 then 1 else 0) l m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "AND_ALL2_bridge"
   },
   {
    "name": "AND_CLAUSES",
@@ -43238,9 +43238,9 @@
    "source": "!f:A->B. !l:A list. !m:A list. ALL2 (\\x:A. \\y:A. f x = f y) l m ==> MAP f l = MAP f m",
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l m :e finseq A, seq_all2 (fun x:set => fun y:set => f x = f y) l m -> seq_map f l = seq_map f m",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l m :e finseq A, hl_ALL2 A A (fun x :e A => fun y :e A => if f x = f y then 1 else 0) l m = 1 -> hl_MAP A B f l = hl_MAP A B f m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_EQ_ALL2_bridge"
   },
   {
    "name": "MAP_EQ_DEGEN",
@@ -45545,9 +45545,9 @@
    "source": "(!x:A. !y:B. P x y ==> Q x y) ==> ALL2 P l l' ==> ALL2 Q l l'",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P Q:set -> set -> prop, forall l :e finseq A, forall l' :e finseq B, (forall x :e A, forall y :e B, P x y -> Q x y) -> seq_all2 P l l' -> seq_all2 Q l l'",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P Q :e 2 :^: B :^: A, forall l :e finseq A, forall l' :e finseq B, (forall x :e A, forall y :e B, P x y = 1 -> Q x y = 1) -> hl_ALL2 A B P l l' = 1 -> hl_ALL2 A B Q l l' = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_ALL2_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONO_ALL2_bridge"
   },
   {
    "name": "MONO_AND",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2176
+  "native_certified": 2184
  }
 }

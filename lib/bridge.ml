@@ -66,7 +66,8 @@ let side_conditions : (string * string list) list =
     ("inf", [ "exists x :e R, is_glb ?1 x" ]);
     ("num_of_int", [ "?1 :e omega" ]);
     ("HD", [ "~ ?1 = seq_nil" ]);
-    ("TL", [ "~ ?1 = seq_nil" ]) ]
+    ("TL", [ "~ ?1 = seq_nil" ]);
+    ("LAST", [ "~ ?1 = seq_nil" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
    argument (hl_rep .. / hl_rep2 ..) *)
 

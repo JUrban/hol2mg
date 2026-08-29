@@ -362,10 +362,6 @@ Admitted.
 Theorem hl_int_lcm_compat : forall l1 :e int :*: int, hl_int_lcm l1 = lcm_int (l1 0) (l1 1).
 Admitted.
 
-// ALL2 : (A->B->bool)->A list->B list->bool (not in compat.mg)
-Theorem hl_ALL2_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: B :^: A, forall P1:set -> set -> prop, (forall x :e A, forall y :e B, l1 x y = 1 <-> P1 x y) -> forall l2 :e finseq A, forall l3 :e finseq B, hl_ALL2 A B l1 l2 l3 = 1 <-> seq_all2 P1 l2 l3.
-Admitted.
-
 // isum : (A->bool)->(A->int)->int (not in compat.mg)
 Theorem hl_isum_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_isum A l1 l2 = finsum (hl_rep A l1) f2.
 Admitted.
@@ -403,7 +399,7 @@ Theorem hl_real_mod_compat : forall l1 l2 l3 :e R, hl_real_mod l1 l2 l3 = 1 <-> 
 Admitted.
 
 // LAST : A list->A (not in compat.mg)
-Theorem hl_LAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_LAST A l1 = seq_last l1.
+Theorem hl_LAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, ~ l1 = seq_nil -> hl_LAST A l1 = seq_last l1.
 Admitted.
 
 // HAS_SIZE : (A->bool)->num->bool at A := A -> bool (not in compat.mg)
