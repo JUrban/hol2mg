@@ -3662,3 +3662,71 @@ apply iffI.
     claim Hlt: m < n. { apply (hl_lt_compat m Hm n Hn). assume H4 _. exact (H4 Hl). }
     exact (SNoLt_irref m (SNoLtLe_tra m n m (omega_SNo m Hm) (omega_SNo n Hn) (omega_SNo m Hm) Hlt (H2 m Hm HPm))).
 Qed.
+
+Theorem hl_UNION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 (hl_rep2 A x)) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 (hl_rep A x)) -> forall l3 :e 2 :^: A, hl_UNION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep A l3.
+let A. assume HA. let l1. assume H1. let P1. assume Hp1. let l2. assume H2. let P2. assume Hp2. let l3. assume H3.
+claim H2ne: 2 :^: A <> Empty. { exact (setexp_nonempty A 2 two_nonempty). }
+apply (iff_eq1_l (hl_UNION_OF A l1 l2 l3) (if (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_UNIONS A u = l3)) then 1 else 0) (hl_UNION_OF_unfold A l1 H1 l2 H2 l3 H3) (exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ (Union u) = hl_rep A l3)).
+apply (iff_trans ((if (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_UNIONS A u = l3)) then 1 else 0) = 1) (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_UNIONS A u = l3)) (exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ (Union u) = hl_rep A l3) (If_1_iff (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_UNIONS A u = l3)))).
+apply iffI.
+- assume H. apply H. let u. assume Hu0. apply Hu0. assume Hu Hc. apply Hc. assume Hl1 Hc2. apply Hc2. assume Hall Heq.
+  witness (hl_rep2 A u). apply andI.
+  + exact (hl_rep2_Subq A u).
+  + apply andI.
+    * apply andI.
+      { apply (Hp1 u Hu). assume H4 _. exact (H4 Hl1). }
+      { let c. assume Hc'. apply (ReplE_impred (hl_rep (2 :^: A) u) (fun v => hl_rep A v) c Hc'). let v. assume Hv Hcv.
+        claim HvA: v :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) u v Hv). }
+        claim Hin: hl_IN (2 :^: A) v u = 1. { apply (hl_IN_compat (2 :^: A) H2ne v HvA u Hu). assume _ H5. exact (H5 Hv). }
+        claim HP: P2 (hl_rep A v). { apply (Hp2 v HvA). assume H5 _. exact (H5 (Hall v HvA Hin)). }
+        exact ((eq_sym_i c (hl_rep A v) Hcv) (fun hl__u hl__v => P2 hl__u) HP). }
+    * exact (eq_trans_i (Union (hl_rep2 A u)) (hl_rep A (hl_UNIONS A u)) (hl_rep A l3) (eq_sym_i (hl_rep A (hl_UNIONS A u)) (Union (hl_rep2 A u)) (hl_UNIONS_compat A HA u Hu)) (f_equal (fun w => hl_rep A w) (hl_UNIONS A u) l3 Heq)).
+- assume H. apply H. let U. assume HU0. apply HU0. assume HU Hc. apply Hc. assume Hc12 Heq. apply Hc12. assume HP1 Hall.
+  claim Hu: hl_chi2 A U :e 2 :^: (2 :^: A). { exact (hl_chi2_Pi A U). }
+  claim Hr2: hl_rep2 A (hl_chi2 A U) = U. { exact (hl_rep2_chi2 A U HU). }
+  witness (hl_chi2 A U). apply andI.
+  + exact Hu.
+  + apply andI.
+    * apply (Hp1 (hl_chi2 A U) Hu). assume _ H4. apply H4. exact ((eq_sym_i (hl_rep2 A (hl_chi2 A U)) U Hr2) (fun hl__u hl__v => P1 hl__u) HP1).
+    * apply andI.
+      { let c. assume HcA. assume Hin.
+        claim Hmem: hl_rep A c :e U. { apply (hl_IN_compat_pow A HA c HcA (hl_chi2 A U) Hu). assume H5 _. exact (Hr2 (fun hl__u hl__v => hl_rep A c :e hl__u) (H5 Hin)). }
+        apply (Hp2 c HcA). assume _ H5. exact (H5 (Hall (hl_rep A c) Hmem)). }
+      { claim HIu: hl_UNIONS A (hl_chi2 A U) :e 2 :^: A. { exact (setexp_ap (2 :^: (2 :^: A)) (2 :^: A) (hl_UNIONS A) (hl_UNIONS_in A HA) (hl_chi2 A U) Hu). }
+        apply (hl_rep_inj A (hl_UNIONS A (hl_chi2 A U)) l3 HIu H3).
+        exact (eq_trans_i (hl_rep A (hl_UNIONS A (hl_chi2 A U))) (Union (hl_rep2 A (hl_chi2 A U))) (hl_rep A l3) (hl_UNIONS_compat A HA (hl_chi2 A U) Hu) (eq_trans_i (Union (hl_rep2 A (hl_chi2 A U))) (Union U) (hl_rep A l3) (f_equal (fun w => (Union w)) (hl_rep2 A (hl_chi2 A U)) U Hr2) Heq)). }
+Qed.
+
+Theorem hl_INTERSECTION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 (hl_rep2 A x)) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 (hl_rep A x)) -> forall l3 :e 2 :^: A, hl_INTERSECTION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ {x :e A | forall Y :e u, x :e Y} = hl_rep A l3.
+let A. assume HA. let l1. assume H1. let P1. assume Hp1. let l2. assume H2. let P2. assume Hp2. let l3. assume H3.
+claim H2ne: 2 :^: A <> Empty. { exact (setexp_nonempty A 2 two_nonempty). }
+apply (iff_eq1_l (hl_INTERSECTION_OF A l1 l2 l3) (if (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_INTERS A u = l3)) then 1 else 0) (hl_INTERSECTION_OF_unfold A l1 H1 l2 H2 l3 H3) (exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ ({x :e A | forall Y :e u, x :e Y}) = hl_rep A l3)).
+apply (iff_trans ((if (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_INTERS A u = l3)) then 1 else 0) = 1) (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_INTERS A u = l3)) (exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ ({x :e A | forall Y :e u, x :e Y}) = hl_rep A l3) (If_1_iff (exists u :e 2 :^: (2 :^: A), l1 u = 1 /\ ((forall c :e 2 :^: A, hl_IN (2 :^: A) c u = 1 -> l2 c = 1) /\ hl_INTERS A u = l3)))).
+apply iffI.
+- assume H. apply H. let u. assume Hu0. apply Hu0. assume Hu Hc. apply Hc. assume Hl1 Hc2. apply Hc2. assume Hall Heq.
+  witness (hl_rep2 A u). apply andI.
+  + exact (hl_rep2_Subq A u).
+  + apply andI.
+    * apply andI.
+      { apply (Hp1 u Hu). assume H4 _. exact (H4 Hl1). }
+      { let c. assume Hc'. apply (ReplE_impred (hl_rep (2 :^: A) u) (fun v => hl_rep A v) c Hc'). let v. assume Hv Hcv.
+        claim HvA: v :e 2 :^: A. { exact (hl_rep_Subq (2 :^: A) u v Hv). }
+        claim Hin: hl_IN (2 :^: A) v u = 1. { apply (hl_IN_compat (2 :^: A) H2ne v HvA u Hu). assume _ H5. exact (H5 Hv). }
+        claim HP: P2 (hl_rep A v). { apply (Hp2 v HvA). assume H5 _. exact (H5 (Hall v HvA Hin)). }
+        exact ((eq_sym_i c (hl_rep A v) Hcv) (fun hl__u hl__v => P2 hl__u) HP). }
+    * exact (eq_trans_i ({x :e A | forall Y :e (hl_rep2 A u), x :e Y}) (hl_rep A (hl_INTERS A u)) (hl_rep A l3) (eq_sym_i (hl_rep A (hl_INTERS A u)) ({x :e A | forall Y :e (hl_rep2 A u), x :e Y}) (hl_INTERS_compat A HA u Hu)) (f_equal (fun w => hl_rep A w) (hl_INTERS A u) l3 Heq)).
+- assume H. apply H. let U. assume HU0. apply HU0. assume HU Hc. apply Hc. assume Hc12 Heq. apply Hc12. assume HP1 Hall.
+  claim Hu: hl_chi2 A U :e 2 :^: (2 :^: A). { exact (hl_chi2_Pi A U). }
+  claim Hr2: hl_rep2 A (hl_chi2 A U) = U. { exact (hl_rep2_chi2 A U HU). }
+  witness (hl_chi2 A U). apply andI.
+  + exact Hu.
+  + apply andI.
+    * apply (Hp1 (hl_chi2 A U) Hu). assume _ H4. apply H4. exact ((eq_sym_i (hl_rep2 A (hl_chi2 A U)) U Hr2) (fun hl__u hl__v => P1 hl__u) HP1).
+    * apply andI.
+      { let c. assume HcA. assume Hin.
+        claim Hmem: hl_rep A c :e U. { apply (hl_IN_compat_pow A HA c HcA (hl_chi2 A U) Hu). assume H5 _. exact (Hr2 (fun hl__u hl__v => hl_rep A c :e hl__u) (H5 Hin)). }
+        apply (Hp2 c HcA). assume _ H5. exact (H5 (Hall (hl_rep A c) Hmem)). }
+      { claim HIu: hl_INTERS A (hl_chi2 A U) :e 2 :^: A. { exact (setexp_ap (2 :^: (2 :^: A)) (2 :^: A) (hl_INTERS A) (hl_INTERS_in A HA) (hl_chi2 A U) Hu). }
+        apply (hl_rep_inj A (hl_INTERS A (hl_chi2 A U)) l3 HIu H3).
+        exact (eq_trans_i (hl_rep A (hl_INTERS A (hl_chi2 A U))) ({x :e A | forall Y :e (hl_rep2 A (hl_chi2 A U)), x :e Y}) (hl_rep A l3) (hl_INTERS_compat A HA (hl_chi2 A U) Hu) (eq_trans_i ({x :e A | forall Y :e (hl_rep2 A (hl_chi2 A U)), x :e Y}) ({x :e A | forall Y :e U, x :e Y}) (hl_rep A l3) (f_equal (fun w => ({x :e A | forall Y :e w, x :e Y})) (hl_rep2 A (hl_chi2 A U)) U Hr2) Heq)). }
+Qed.

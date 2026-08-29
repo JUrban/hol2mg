@@ -1122,7 +1122,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, forall x :e A, x :e s :\/: t <-> x :e s \/ x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_UNION A s t) = 1 <-> hl_IN A x s = 1 \/ hl_IN A x t = 1
 bridge: IN_UNION_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_INTER   [sets: membership, algebra, comprehensions, images, families]
 hash: 2ac4b17df4e14a7c514df10344e203a5
@@ -1131,7 +1131,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, forall x :e A, x :e s :/\: t <-> x :e s /\ x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_INTER A s t) = 1 <-> hl_IN A x s = 1 /\ hl_IN A x t = 1
 bridge: IN_INTER_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### EXTENSION   [sets: membership, algebra, comprehensions, images, families]
 hash: f7141c939edd744d7d6f135168a24813
@@ -1140,7 +1140,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, s = t <-> forall x :e A, hl_IN A x s = 1 <-> hl_IN A x t = 1
 bridge: EXTENSION_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### SUBSET_TRANS   [sets: membership, algebra, comprehensions, images, families]
 hash: 018f8b838b2251133932e492a7b563c9
@@ -1149,7 +1149,7 @@ status: generalization_required
 statement: forall A:set, forall s t u c= A, s c= t /\ t c= u -> s c= u
 literal: forall A:set, A <> Empty -> forall s t u :e 2 :^: A, hl_SUBSET A s t = 1 /\ hl_SUBSET A t u = 1 -> hl_SUBSET A s u = 1
 bridge: SUBSET_TRANS_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### EMPTY_SUBSET   [sets: membership, algebra, comprehensions, images, families]
 hash: ac5fdc02e4441a076caae461078fbdcc
@@ -1158,7 +1158,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, Empty c= s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SUBSET A (hl_EMPTY A) s = 1
 bridge: EMPTY_SUBSET_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### UNIV_SUBSET   [sets: membership, algebra, comprehensions, images, families]
 hash: b3d14bc364eb0f572d7bf080c2756639
@@ -1167,7 +1167,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, A c= s <-> s = A
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SUBSET A (hl_UNIV A) s = 1 <-> s = hl_UNIV A
 bridge: UNIV_SUBSET_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_IMAGE   [sets: membership, algebra, comprehensions, images, families]
 hash: c1c230701c50cc179850f00e47d436dd
@@ -1176,7 +1176,7 @@ status: generalization_required
 statement: forall A B:set, forall y :e B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (y :e {f x | x :e s} <-> exists x :e A, y = f x /\ x :e s)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall y :e B, forall s :e 2 :^: A, forall f :e B :^: A, hl_IN B y (hl_IMAGE A B f s) = 1 <-> exists x :e A, y = f x /\ hl_IN A x s = 1
 bridge: IN_IMAGE_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IMAGE_o   [sets: membership, algebra, comprehensions, images, families]
 hash: 9666e7022fca9e70698bca3379b4251d
@@ -1193,7 +1193,7 @@ status: generalization_required
 statement: forall A:set, forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s
 literal: forall A:set, A <> Empty -> forall x y :e A, forall s :e 2 :^: A, hl_IN A x (hl_INSERT A y s) = 1 <-> x = y \/ hl_IN A x s = 1
 bridge: IN_INSERT_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### INSERT_SUBSET   [sets: membership, algebra, comprehensions, images, families]
 hash: 5a05c6364a30b639bab502c24188f136
@@ -1202,7 +1202,7 @@ status: generalization_required
 statement: forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t
 literal: forall A:set, A <> Empty -> forall x :e A, forall s t :e 2 :^: A, hl_SUBSET A (hl_INSERT A x s) t = 1 <-> hl_IN A x t = 1 /\ hl_SUBSET A s t = 1
 bridge: INSERT_SUBSET_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_DIFF   [sets: membership, algebra, comprehensions, images, families]
 hash: b5cd0dac99fd349231cf6297ee30479a
@@ -1211,7 +1211,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, forall x :e A, x :e s :\: t <-> x :e s /\ ~ x :e t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, forall x :e A, hl_IN A x (hl_DIFF A s t) = 1 <-> hl_IN A x s = 1 /\ ~ hl_IN A x t = 1
 bridge: IN_DIFF_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### DIFF_EMPTY   [sets: membership, algebra, comprehensions, images, families]
 hash: b5e5e5858b7fee878ce9b37b99ebfbca
@@ -1220,7 +1220,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, s :\: Empty = s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_DIFF A s (hl_EMPTY A) = s
 bridge: DIFF_EMPTY_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### UNIONS_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: de1ef5f54205563dbbf8b94ab8d271e9
@@ -1229,7 +1229,7 @@ status: exact_native
 statement: forall A:set, A <> Empty -> forall s c= A, forall u c= Power A, Union (SetAdjoin u s) = s :\/: Union u
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall u :e 2 :^: (2 :^: A), hl_UNIONS A (hl_INSERT (2 :^: A) s u) = hl_UNION A s (hl_UNIONS A u)
 bridge: UNIONS_INSERT_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_UNIONS   [sets: membership, algebra, comprehensions, images, families]
 hash: c4eb1df88efda5987e140438f90f45d8
@@ -1238,7 +1238,7 @@ status: generalization_required
 statement: forall A:set, forall s c= Power A, forall x :e A, x :e Union s <-> exists t c= A, t :e s /\ x :e t
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall x :e A, hl_IN A x (hl_UNIONS A s) = 1 <-> exists t :e 2 :^: A, hl_IN (2 :^: A) t s = 1 /\ hl_IN A x t = 1
 bridge: IN_UNIONS_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_INTERS   [sets: membership, algebra, comprehensions, images, families]
 hash: 90f987e51ed1bea30a7181c0682ececf
@@ -1247,7 +1247,7 @@ status: generalization_required
 statement: forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: (2 :^: A), forall x :e A, hl_IN A x (hl_INTERS A s) = 1 <-> forall t :e 2 :^: A, hl_IN (2 :^: A) t s = 1 -> hl_IN A x t = 1
 bridge: IN_INTERS_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### INTERS_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: aa86287310a3119611b5759a859e7fa2
@@ -1256,7 +1256,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, forall u c= Power A, {x :e A | forall Y :e SetAdjoin u s, x :e Y} = s :/\: {x :e A | forall Y :e u, x :e Y}
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall u :e 2 :^: (2 :^: A), hl_INTERS A (hl_INSERT (2 :^: A) s u) = hl_INTER A s (hl_INTERS A u)
 bridge: INTERS_INSERT_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_ELIM_THM   [sets: membership, algebra, comprehensions, images, families]
 hash: f0b562a918d32513fbce399c8874d32d
@@ -1272,7 +1272,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, s c= Empty <-> s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SUBSET A s (hl_EMPTY A) = 1 <-> s = hl_EMPTY A
 bridge: SUBSET_EMPTY_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### NOT_IN_EMPTY   [sets: membership, algebra, comprehensions, images, families]
 hash: ebe8471d5c357b956cf0f5e515fe3511
@@ -1281,7 +1281,7 @@ status: generalization_required
 statement: forall A:set, forall x :e A, ~ x :e Empty
 literal: forall A:set, A <> Empty -> forall x :e A, ~ hl_IN A x (hl_EMPTY A) = 1
 bridge: NOT_IN_EMPTY_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### MEMBER_NOT_EMPTY   [sets: membership, algebra, comprehensions, images, families]
 hash: 034de37a8d42754ce2996a70f9091391
@@ -1290,7 +1290,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, (exists x :e A, x :e s) <-> ~ s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, (exists x :e A, hl_IN A x s = 1) <-> ~ s = hl_EMPTY A
 bridge: MEMBER_NOT_EMPTY_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### FORALL_IN_IMAGE   [sets: membership, algebra, comprehensions, images, families]
 hash: c7978b7e04133ab1326ae6b13e51b939
@@ -1299,7 +1299,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall y :e B, y :e {f x | x :e s} -> P y) <-> forall x :e A, x :e s -> P (f x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall s :e 2 :^: A, (forall y :e B, hl_IN B y (hl_IMAGE A B f s) = 1 -> P y = 1) <-> forall x :e A, hl_IN A x s = 1 -> P (f x) = 1
 bridge: FORALL_IN_IMAGE_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IMAGE_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
 hash: d971eba44eb36baa8624acc2c96acb14
@@ -1308,7 +1308,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, {f x | x :e Empty} = Empty /\ {f x0 | x0 :e SetAdjoin s x} = SetAdjoin {f x | x :e s} (f x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall x :e A, forall s :e 2 :^: A, hl_IMAGE A B f (hl_EMPTY A) = hl_EMPTY B /\ hl_IMAGE A B f (hl_INSERT A x s) = hl_INSERT B (f x) (hl_IMAGE A B f s)
 bridge: IMAGE_CLAUSES_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_DELETE   [sets: membership, algebra, comprehensions, images, families]
 hash: 9a7c37f71f31bb294187bc2cad212525
@@ -1317,7 +1317,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x y :e A, hl_IN A x (hl_DELETE A s y) = 1 <-> hl_IN A x s = 1 /\ ~ x = y
 bridge: IN_DELETE_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### DELETE_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: 1189cefe6e65ac793f83e648e9159f01
@@ -1334,7 +1334,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_DISJOINT A s t = 1 <-> hl_INTER A s t = hl_EMPTY A
 bridge: DISJOINT_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### IN_UNIV   [sets: membership, algebra, comprehensions, images, families]
 hash: eee80073ec9a8663b3ed94c2504d029b
@@ -1343,7 +1343,7 @@ status: native_reuse
 statement: forall A:set, forall x :e A, x :e A
 literal: forall A:set, A <> Empty -> forall x :e A, hl_IN A x (hl_UNIV A) = 1
 bridge: IN_UNIV_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### SUBSET_ANTISYM   [sets: membership, algebra, comprehensions, images, families]
 hash: 66de716356ea282ff6b32df51c0f0aeb
@@ -1352,7 +1352,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, s c= t /\ t c= s -> s = t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_SUBSET A s t = 1 /\ hl_SUBSET A t s = 1 -> s = t
 bridge: SUBSET_ANTISYM_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### CHOICE_DEF   [sets: membership, algebra, comprehensions, images, families]
 hash: 0b240c7b9a6613faa869add5bbe7dfb6
@@ -1385,7 +1385,7 @@ status: generalization_required
 statement: forall A:set, forall p q r c= A, p :\/: q = q :\/: p /\ (p :\/: q :\/: r = p :\/: (q :\/: r) /\ (p :\/: (q :\/: r) = q :\/: (p :\/: r) /\ (p :\/: p = p /\ p :\/: (p :\/: q) = p :\/: q)))
 literal: forall A:set, A <> Empty -> forall p q r :e 2 :^: A, hl_UNION A p q = hl_UNION A q p /\ (hl_UNION A (hl_UNION A p q) r = hl_UNION A p (hl_UNION A q r) /\ (hl_UNION A p (hl_UNION A q r) = hl_UNION A q (hl_UNION A p r) /\ (hl_UNION A p p = p /\ hl_UNION A p (hl_UNION A p q) = hl_UNION A p q)))
 bridge: UNION_ACI_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### POWERSET_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
 hash: 70a8a2d45d230cb1a42aaf9faab99fd3
@@ -1402,7 +1402,7 @@ status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IN (A :*: B) (hl_pair A B x y) (hl_CROSS A B s t) = 1 <-> hl_IN A x s = 1 /\ hl_IN B y t = 1
 bridge: IN_CROSS_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### FORALL_IN_GSPEC   [sets: membership, algebra, comprehensions, images, families]
 hash: 4e50b5eb28b9acf79387e641ba5fae71
@@ -1419,7 +1419,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall FINITE':set -> prop, FINITE' Empty /\ (forall x :e A, forall s c= A, FINITE' s -> FINITE' (SetAdjoin s x)) -> forall a c= A, finite a -> FINITE' a
 literal: forall A:set, A <> Empty -> forall FINITE' :e 2 :^: (2 :^: A), FINITE' (hl_EMPTY A) = 1 /\ (forall x :e A, forall s :e 2 :^: A, FINITE' s = 1 -> FINITE' (hl_INSERT A x s) = 1) -> forall a :e 2 :^: A, hl_FINITE A a = 1 -> FINITE' a = 1
 bridge: FINITE_INDUCT_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### FINITE_UNION   [finiteness, cardinality, functions between sets]
 hash: f8031a98ed188e3cff5f6de0823f5688
@@ -1428,7 +1428,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, finite (s :\/: t) <-> finite s /\ finite t
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A (hl_UNION A s t) = 1 <-> hl_FINITE A s = 1 /\ hl_FINITE A t = 1
 bridge: FINITE_UNION_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### FINITE_IMAGE   [finiteness, cardinality, functions between sets]
 hash: 432dfbca4344ace97e63aa457fdad110
@@ -1437,7 +1437,7 @@ status: generalization_required
 statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {f x | x :e s}
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_FINITE B (hl_IMAGE A B f s) = 1
 bridge: FINITE_IMAGE_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### FINITE_SUBSET   [finiteness, cardinality, functions between sets]
 hash: cbe809cab3573cf324dd84b560f89471
@@ -1446,7 +1446,7 @@ status: generalization_required
 statement: forall A:set, forall s t c= A, finite t /\ s c= t -> finite s
 literal: forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_FINITE A t = 1 /\ hl_SUBSET A s t = 1 -> hl_FINITE A s = 1
 bridge: FINITE_SUBSET_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### CARD_CLAUSES   [finiteness, cardinality, functions between sets]
 hash: b98042a9307e6eb5805ab458d8192980
@@ -1487,7 +1487,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, infinite s <-> ~ finite s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INFINITE A s = 1 <-> ~ hl_FINITE A s = 1
 bridge: INFINITE_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### num_FINITE   [finiteness, cardinality, functions between sets]
 hash: 1d72873b878bd3f30c51efe6dd52e975
@@ -1496,7 +1496,7 @@ status: transport_required
 statement: forall s c= omega, finite s <-> exists a :e omega, forall x :e omega, x :e s -> x <= a
 literal: forall s :e 2 :^: omega, hl_FINITE omega s = 1 <-> exists a :e omega, forall x :e omega, hl_IN omega x s = 1 -> hl_le x a = 1
 bridge: num_FINITE_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### SURJ   [finiteness, cardinality, functions between sets]
 hash: 0fa2b466a165ebb28e5dc0409866fdd5
@@ -1529,7 +1529,7 @@ status: generalization_required
 statement: forall A B:set, forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\ hl_FINITE B t = 1 -> hl_FINITE (A :*: B) (hl_CROSS A B s t) = 1
 bridge: FINITE_CROSS_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### CARD_CROSS   [finiteness, cardinality, functions between sets]
 hash: e98f492c84401357c81713e687de88e9
@@ -1546,7 +1546,7 @@ status: generalization_required
 statement: forall A:set, forall s c= A, equip s 0 <-> s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_HAS_SIZE A s (hl_NUMERAL hl_zero) = 1 <-> s = hl_EMPTY A
 bridge: HAS_SIZE_0_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### FINITE_POWERSET   [finiteness, cardinality, functions between sets]
 hash: 3ae71668592f92c8300210136b6c496e
@@ -1563,7 +1563,7 @@ status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, infinite s -> ~ s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INFINITE A s = 1 -> ~ s = hl_EMPTY A
 bridge: INFINITE_NONEMPTY_bridge
-cert_status: native_certified
+cert_status: bridge_failed
 
 ### NSUM_CLAUSES   [iteration, sums, number segments]
 hash: ea406f8293ce1f3be12e9bc950e8d8d6
