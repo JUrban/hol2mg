@@ -99,6 +99,56 @@ let nat_var_mem g (t : Mg.tm) : (Mg.tm * string) option =
         | _ -> None) g.vars
   | _ -> None
 
+(* structural derivation of `finite s` from the hypotheses in scope: finite hypotheses, singletons,
+   adjoined elements, unions, replacements, separations, differences, intersections, subsets of
+   finite sets (a `s c= t` hypothesis), bounded segments of omega *)
+let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
+  if depth > 6 then None
+  else
+    match List.assoc_opt (Mg.App (Mg.Cst "finite", s)) g.hyps with
+    | Some h -> Some h
+    | None ->
+        let sub = derive_finite g in
+        let r = (match s with
+          | Mg.Cst "Empty" | Mg.Num 0 -> Some "finite_Empty"
+          | Mg.Num n when n <= 2 -> Some (Printf.sprintf "(nat_finite %d nat_%d)" n n)
+          | Mg.SetEnum [ a ] -> Some (Printf.sprintf "(Sing_finite %s)" (ppp a))
+          | Mg.App (Mg.App (Mg.Cst "SetAdjoin", x), a) -> Option.map (fun p -> Printf.sprintf "(adjoin_finite %s %s %s)" (ppp x) (ppp a) p) (sub x (depth + 1))
+          | Mg.App (Mg.App (Mg.Cst "binunion", x), y) ->
+              (match sub x (depth + 1), sub y (depth + 1) with
+               | Some px, Some py -> Some (Printf.sprintf "(binunion_finite %s %s %s %s)" (ppp x) px (ppp y) py)
+               | _ -> None)
+          | Mg.Repl (v, x, f) -> Option.map (fun p -> Printf.sprintf "(Repl_finite (fun %s:set => %s) %s %s)" v (pp f) (ppp x) p) (sub x (depth + 1))
+          | Mg.Sep (v, Mg.Cst "omega", body) when (match body with
+                | Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v'), _) -> v' = v
+                | Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var v'), _) -> v' = v
+                | Mg.App (Mg.App (Mg.Cst "and", _), Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v'), _)) -> v' = v
+                | _ -> false) ->
+              (* {i :e omega | .. i <= n} c= {i :e omega | i <= n}, finite by segment_le_finite *)
+              let n, imp = (match body with
+                | Mg.App (Mg.App (Mg.Cst "SNoLe", _), n) -> (n, Printf.sprintf "(fun %s H%s H => H)" v v)
+                | Mg.App (Mg.App (Mg.Cst "SNoLt", _), n) -> (n, Printf.sprintf "(fun %s H%s H => (SNoLtLe %s %s H))" v v v (ppp n))
+                | Mg.App (Mg.App (Mg.Cst "and", a), (Mg.App (Mg.App (Mg.Cst "SNoLe", _), n) as b)) -> (n, Printf.sprintf "(fun %s H%s H => (andER (%s) (%s) H))" v v (pp a) (pp b))
+                | _ -> assert false) in
+              (match nat_var_mem g n with
+               | Some (Mg.Cst "omega", hn) ->
+                   let seg = Mg.Sep (v, Mg.Cst "omega", Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v), n)) in
+                   Some (Printf.sprintf "(Subq_finite %s (segment_le_finite %s %s) %s (Sep_Subq_Sep omega (fun %s:set => %s) (fun %s:set => %s <= %s) %s))" (ppp seg) (ppp n) hn (ppp s) v (pp body) v v (ppp n) imp)
+               | _ -> None)
+          | Mg.Sep (v, x, p) -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (Sep_Subq %s (fun %s:set => %s)))" (ppp x) pf (ppp s) (ppp x) v (pp p)) (sub x (depth + 1))
+          | Mg.App (Mg.App (Mg.Cst "setminus", x), y) -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (setminus_Subq %s %s))" (ppp x) pf (ppp s) (ppp x) (ppp y)) (sub x (depth + 1))
+          | Mg.App (Mg.App (Mg.Cst "binintersect", x), y) ->
+              (match sub x (depth + 1) with
+               | Some pf -> Some (Printf.sprintf "(Subq_finite %s %s %s (binintersect_Subq_1 %s %s))" (ppp x) pf (ppp s) (ppp x) (ppp y))
+               | None -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (binintersect_Subq_2 %s %s))" (ppp y) pf (ppp s) (ppp x) (ppp y)) (sub y (depth + 1)))
+          | _ -> None) in
+        (match r with
+         | Some _ -> r
+         | None ->
+             List.find_map (fun (h, hp) -> match h with
+               | Mg.App (Mg.App (Mg.Cst "Subq", s'), t) when s' = s && t <> s -> Option.map (fun pt -> Printf.sprintf "(Subq_finite %s %s %s %s)" (ppp t) pt (ppp s) hp) (sub t (depth + 1))
+               | _ -> None) g.hyps)
+
 (* the template parser only knows the God1 signature: literal-layer constants (hl_...) come back
    as variables; make them constants so that structural matching against generated terms works *)
 let rec cstify (t : Mg.tm) : Mg.tm =
@@ -1123,6 +1173,9 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                        else if lemma = "" then Some (Option.get (List.hd premises))
                        else Some (Printf.sprintf "(%s %s %s %s)" lemma (ppp s_nat) (Lazy.force hsub) (String.concat " " (List.map (fun p -> Option.get p) premises)))) rules
                  | _ -> None)) in
+          let derived () = (match derived () with
+            | Some p -> Some p
+            | None -> (match sc_nat with Mg.App (Mg.Cst "finite", s) -> derive_finite g s 0 | _ -> None)) in
           (match (match List.assoc_opt sc_nat g.hyps with Some h -> Some h | None -> derived ()) with
            | None -> unsupported "side condition %s not available from hypotheses [hyps: %s]" (pp sc_nat)
                        (String.concat ", " (List.map (fun (h, _) -> pp h) g.hyps))

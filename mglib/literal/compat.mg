@@ -4407,3 +4407,17 @@ claim Hstep: forall h :e A, forall t :e finseq A, (hl_PAIRWISE A r t = 1 <-> seq
   - exact (iff_sym (seq_pairwise P1 (seq_cons h t)) ((forall j :e seq_len t, P1 h (seq_nth t j)) /\ seq_pairwise P1 t) (seq_pairwise_cons A h Hh t Ht P1)). }
 exact (seq_induct A (fun t => hl_PAIRWISE A r t = 1 <-> seq_pairwise P1 t) Hbase Hstep l Hl).
 Qed.
+
+// ---- finiteness of structured sets (used to discharge side conditions) ----
+Theorem Sep_Subq_Sep : forall X:set, forall P Q:set -> prop, (forall x :e X, P x -> Q x) -> {x :e X | P x} c= {x :e X | Q x}.
+let X P Q. assume H. let x. assume Hx. apply (SepE X P x Hx). assume HxX HP. exact (SepI X Q x HxX (H x HxX HP)).
+Qed.
+Theorem segment_le_finite : forall n :e omega, finite {i :e omega | i <= n}.
+let n. assume Hn.
+claim Hsub: {i :e omega | i <= n} c= ordsucc n.
+{ let i. assume Hi. apply (SepE omega (fun i => i <= n) i Hi). assume Hio Hle.
+  apply (SNoLeE i n (omega_SNo i Hio) (omega_SNo n Hn) Hle).
+  - assume Hlt. exact (ordsuccI1 n i (omega_SNoLt_In n Hn i Hio Hlt)).
+  - assume Heq. exact (Heq (fun hl__u hl__v => hl__v :e ordsucc n) (ordsuccI2 n)). }
+exact (Subq_finite (ordsucc n) (nat_finite (ordsucc n) (nat_ordsucc n (omega_nat_p n Hn))) {i :e omega | i <= n} Hsub).
+Qed.
