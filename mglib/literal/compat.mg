@@ -1688,3 +1688,448 @@ apply (HS m Hm n Hn).
   apply (div_mod_unique n Hn (div_nat m n) Hd2 (hl_MOD m n) Hmod (div_nat m n) Hd2 (mod_nat m n) Hr2 H3' H6 (eq_trans_i (div_nat m n * n + hl_MOD m n) m (div_nat m n * n + mod_nat m n) (eq_sym_i m (div_nat m n * n + hl_MOD m n) H2') H5)).
   assume _ H7. exact H7.
 Qed.
+
+// ---- numeric segments ----
+Theorem hl_numseg_compat : forall l1 l2 :e omega, hl_rep omega (hl_numseg l1 l2) = {i :e omega | l1 <= i /\ i <= l2}.
+let m. assume Hm. let n. assume Hn.
+rewrite (hl_numseg_unfold m Hm n Hn).
+apply (eq_trans_i (hl_rep omega (hl_GSPEC omega (fun v :e omega => if exists x :e omega, hl_SETSPEC omega v (if hl_le m x = 1 /\ hl_le x n = 1 then 1 else 0) x = 1 then 1 else 0))) ({v :e omega | hl_le m v = 1 /\ hl_le v n = 1}) ({i :e omega | m <= i /\ i <= n}) (hl_gspec_sep omega (fun x => hl_le m x = 1 /\ hl_le x n = 1))).
+apply set_ext.
+- let v. assume Hv. apply (SepE omega (fun y => hl_le m y = 1 /\ hl_le y n = 1) v Hv). assume HvA H. apply H. assume H3 H4.
+  apply (SepI omega (fun i => m <= i /\ i <= n) v HvA). apply andI.
+  + apply (hl_le_compat m Hm v HvA). assume H5 _. exact (H5 H3).
+  + apply (hl_le_compat v HvA n Hn). assume H5 _. exact (H5 H4).
+- let v. assume Hv. apply (SepE omega (fun i => m <= i /\ i <= n) v Hv). assume HvA H. apply H. assume H3 H4.
+  apply (SepI omega (fun y => hl_le m y = 1 /\ hl_le y n = 1) v HvA). apply andI.
+  + apply (hl_le_compat m Hm v HvA). assume _ H5. exact (H5 H3).
+  + apply (hl_le_compat v HvA n Hn). assume _ H5. exact (H5 H4).
+Qed.
+
+// ---- integer powers ----
+Theorem hl_int_pow_compat : forall l1 :e int, forall l2 :e omega, hl_int_pow l1 l2 = l1 ^ l2.
+let x. assume Hx. let n. assume Hn.
+claim HxR: x :e R. { exact (int_Subq_R x Hx). }
+claim HxS: SNo x. { exact (int_SNo x Hx). }
+claim Hbase: x ^ 0 :e int. { exact ((eq_sym_i (x ^ 0) 1 (exp_SNo_nat_0 x HxS)) (fun hl__u hl__v => hl__u :e int) (Subq_omega_int 1 (nat_p_omega 1 nat_1))). }
+claim Hstep: forall k, nat_p k -> x ^ k :e int -> x ^ (ordsucc k) :e int.
+{ let k. assume Hk IH. exact ((eq_sym_i (x ^ ordsucc k) (x * x ^ k) (exp_SNo_nat_S x HxS k Hk)) (fun hl__u hl__v => hl__u :e int) (int_mul_SNo x Hx (x ^ k) IH)). }
+claim Hpow: x ^ n :e int. { exact (nat_ind (fun k => x ^ k :e int) Hbase Hstep n (omega_nat_p n Hn)). }
+exact (eq_trans_i (hl_int_pow x n) (hl_int_of_real (hl_real_pow (hl_real_of_int x) n)) (x ^ n) (hl_int_pow_unfold x (int_hl_ty x Hx) n Hn)
+  (eq_trans_i (hl_int_of_real (hl_real_pow (hl_real_of_int x) n)) (hl_int_of_real (x ^ n)) (x ^ n)
+    (f_equal (fun y => hl_int_of_real y) (hl_real_pow (hl_real_of_int x) n) (x ^ n)
+      (eq_trans_i (hl_real_pow (hl_real_of_int x) n) (hl_real_pow x n) (x ^ n) (f_equal (fun y => hl_real_pow y n) (hl_real_of_int x) x (hl_real_of_int_compat x Hx)) (hl_real_pow_compat x HxR n Hn)))
+    (hl_int_of_real_int (x ^ n) Hpow))).
+Qed.
+
+// ---- sign functions ----
+Theorem hl_real_of_num_zero : hl_real_of_num (hl_NUMERAL hl_zero) = 0.
+exact (eq_trans_i (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_of_num 0) 0 (f_equal (fun y => hl_real_of_num y) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (hl_real_of_num_ap 0 (nat_p_omega 0 nat_0))).
+Qed.
+
+Theorem hl_real_of_num_one : hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) = 1.
+exact (eq_trans_i (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_of_num 1) 1 (f_equal (fun y => hl_real_of_num y) (hl_NUMERAL (hl_BIT1 hl_zero)) 1 hl_one_numeral) (hl_real_of_num_ap 1 (nat_p_omega 1 nat_1))).
+Qed.
+
+Theorem hl_real_sgn_compat : forall l1 :e R, hl_real_sgn l1 = if 0 < l1 then 1 else if l1 < 0 then - 1 else 0.
+let x. assume Hx.
+rewrite (hl_real_sgn_unfold x Hx). rewrite hl_real_of_num_zero. rewrite hl_real_of_num_one. rewrite (hl_real_neg_ap 1 real_1).
+claim Hm1: - 1 :e R. { exact (real_minus_SNo 1 real_1). }
+claim Hinner: hl_COND R (hl_real_lt x 0) (- 1) 0 = if x < 0 then - 1 else 0.
+{ exact (hl_COND_if R (hl_real_lt x 0) (setexp2_ap R R 2 hl_real_lt hl_real_lt_in x Hx 0 real_0) (x < 0) (hl_real_lt_compat x Hx 0 real_0) (- 1) Hm1 0 real_0). }
+rewrite Hinner.
+exact (hl_COND_if R (hl_real_lt 0 x) (setexp2_ap R R 2 hl_real_lt hl_real_lt_in 0 real_0 x Hx) (0 < x) (hl_real_lt_compat 0 real_0 x Hx) 1 real_1 (if x < 0 then - 1 else 0) (If_i_in (x < 0) R (- 1) 0 Hm1 real_0)).
+Qed.
+
+Theorem hl_int_sgn_compat : forall l1 :e int, hl_int_sgn l1 = if 0 < l1 then 1 else if l1 < 0 then - 1 else 0.
+let x. assume Hx.
+rewrite (hl_int_sgn_unfold x (int_hl_ty x Hx)). rewrite (hl_real_of_int_compat x Hx). rewrite (hl_real_sgn_compat x (int_Subq_R x Hx)).
+claim H1I: 1 :e int. { exact (Subq_omega_int 1 (nat_p_omega 1 nat_1)). }
+apply (xm (0 < x)).
+- assume H. rewrite (If_i_1 (0 < x) 1 (if x < 0 then - 1 else 0) H). exact (hl_int_of_real_int 1 H1I).
+- assume H. rewrite (If_i_0 (0 < x) 1 (if x < 0 then - 1 else 0) H).
+  apply (xm (x < 0)).
+  + assume H2. rewrite (If_i_1 (x < 0) (- 1) 0 H2). exact (hl_int_of_real_int (- 1) (int_minus_SNo 1 H1I)).
+  + assume H2. rewrite (If_i_0 (x < 0) (- 1) 0 H2). exact (hl_int_of_real_int 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0))).
+Qed.
+
+Theorem hl_int_max_compat : forall l1 l2 :e int, hl_int_max l1 l2 = if l1 <= l2 then l2 else l1.
+let x. assume Hx. let y. assume Hy.
+rewrite (hl_int_max_unfold x (int_hl_ty x Hx) y (int_hl_ty y Hy)). rewrite (hl_real_of_int_compat x Hx). rewrite (hl_real_of_int_compat y Hy).
+rewrite (hl_real_max_compat x (int_Subq_R x Hx) y (int_Subq_R y Hy)).
+apply (xm (x <= y)).
+- assume H. rewrite (If_i_1 (x <= y) y x H). exact (hl_int_of_real_int y Hy).
+- assume H. rewrite (If_i_0 (x <= y) y x H). exact (hl_int_of_real_int x Hx).
+Qed.
+
+Theorem hl_int_min_compat : forall l1 l2 :e int, hl_int_min l1 l2 = if l1 <= l2 then l1 else l2.
+let x. assume Hx. let y. assume Hy.
+rewrite (hl_int_min_unfold x (int_hl_ty x Hx) y (int_hl_ty y Hy)). rewrite (hl_real_of_int_compat x Hx). rewrite (hl_real_of_int_compat y Hy).
+rewrite (hl_real_min_compat x (int_Subq_R x Hx) y (int_Subq_R y Hy)).
+apply (xm (x <= y)).
+- assume H. rewrite (If_i_1 (x <= y) x y H). exact (hl_int_of_real_int x Hx).
+- assume H. rewrite (If_i_0 (x <= y) x y H). exact (hl_int_of_real_int y Hy).
+Qed.
+
+// ---- set predicates ----
+Theorem hl_PSUBSET_compat : forall A:set, A <> Empty -> forall l1 l2 :e 2 :^: A, hl_PSUBSET A l1 l2 = 1 <-> hl_rep A l1 c= hl_rep A l2 /\ hl_rep A l1 <> hl_rep A l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+rewrite (hl_PSUBSET_unfold A l1 H1 l2 H2).
+apply (iff_trans ((if hl_SUBSET A l1 l2 = 1 /\ ~ l1 = l2 then 1 else 0) = 1) (hl_SUBSET A l1 l2 = 1 /\ ~ l1 = l2) (hl_rep A l1 c= hl_rep A l2 /\ hl_rep A l1 <> hl_rep A l2) (If_1_iff (hl_SUBSET A l1 l2 = 1 /\ ~ l1 = l2))).
+apply iffI.
+- assume H. apply H. assume H3 H4. apply andI.
+  + apply (hl_SUBSET_compat A HA l1 H1 l2 H2). assume H5 _. exact (H5 H3).
+  + assume H5. exact (H4 (hl_rep_inj A l1 l2 H1 H2 H5)).
+- assume H. apply H. assume H3 H4. apply andI.
+  + apply (hl_SUBSET_compat A HA l1 H1 l2 H2). assume _ H5. exact (H5 H3).
+  + assume H5. exact (H4 (f_equal (fun u => hl_rep A u) l1 l2 H5)).
+Qed.
+
+Theorem hl_INFINITE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_INFINITE A l1 = 1 <-> infinite (hl_rep A l1).
+let A. assume HA. let l1. assume H1.
+rewrite (hl_INFINITE_unfold A l1 H1).
+apply (iff_trans ((if ~ hl_FINITE A l1 = 1 then 1 else 0) = 1) (~ hl_FINITE A l1 = 1) (infinite (hl_rep A l1)) (If_1_iff (~ hl_FINITE A l1 = 1))).
+prove (~ hl_FINITE A l1 = 1) <-> ~ finite (hl_rep A l1).
+apply iffI.
+- assume H. assume H2. apply H. apply (hl_FINITE_compat A HA l1 H1). assume _ H3. exact (H3 H2).
+- assume H. assume H2. apply H. apply (hl_FINITE_compat A HA l1 H1). assume H3 _. exact (H3 H2).
+Qed.
+
+Theorem hl_pairwise_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> forall l2 :e 2 :^: A, hl_pairwise A l1 l2 = 1 <-> forall x y :e hl_rep A l2, x <> y -> P1 x y.
+let A. assume HA. let l1. assume H1. let P1. assume HP. let l2. assume H2.
+rewrite (hl_pairwise_unfold A l1 H1 l2 H2).
+apply (iff_trans ((if forall x y :e A, hl_IN A x l2 = 1 /\ (hl_IN A y l2 = 1 /\ ~ x = y) -> l1 x y = 1 then 1 else 0) = 1) (forall x y :e A, hl_IN A x l2 = 1 /\ (hl_IN A y l2 = 1 /\ ~ x = y) -> l1 x y = 1) (forall x y :e hl_rep A l2, x <> y -> P1 x y) (If_1_iff (forall x y :e A, hl_IN A x l2 = 1 /\ (hl_IN A y l2 = 1 /\ ~ x = y) -> l1 x y = 1))).
+apply iffI.
+- assume H. let x. assume Hx. let y. assume Hy. assume Hxy.
+  claim HxA: x :e A. { exact (hl_rep_Subq A l2 x Hx). }
+  claim HyA: y :e A. { exact (hl_rep_Subq A l2 y Hy). }
+  apply (HP x HxA y HyA). assume H3 _. apply H3. apply (H x HxA y HyA). apply andI.
+  + apply (hl_IN_compat A HA x HxA l2 H2). assume _ H4. exact (H4 Hx).
+  + apply andI.
+    * apply (hl_IN_compat A HA y HyA l2 H2). assume _ H4. exact (H4 Hy).
+    * exact Hxy.
+- assume H. let x. assume HxA. let y. assume HyA. assume Hc. apply Hc. assume Hx0 Hc2. apply Hc2. assume Hy0 Hxy.
+  claim Hx: x :e hl_rep A l2. { apply (hl_IN_compat A HA x HxA l2 H2). assume H4 _. exact (H4 Hx0). }
+  claim Hy: y :e hl_rep A l2. { apply (hl_IN_compat A HA y HyA l2 H2). assume H4 _. exact (H4 Hy0). }
+  apply (HP x HxA y HyA). assume _ H3. exact (H3 (H x Hx y Hy Hxy)).
+Qed.
+
+// ---- divisibility ----
+Theorem hl_int_divides_compat : forall l1 l2 :e int, hl_int_divides l1 l2 = 1 <-> divides_int l1 l2.
+let x. assume Hx. let y. assume Hy.
+claim Hiff: (if exists k :e hl_ty_int, y = hl_int_mul x k then 1 else 0) = 1 <-> divides_int x y.
+{ apply (iff_trans ((if exists k :e hl_ty_int, y = hl_int_mul x k then 1 else 0) = 1) (exists k :e hl_ty_int, y = hl_int_mul x k) (divides_int x y) (If_1_iff (exists k :e hl_ty_int, y = hl_int_mul x k))).
+  apply iffI.
+  - assume H. apply H. let k. assume Hk0. apply Hk0. assume Hk Hyk.
+    claim HkI: k :e int. { exact (hl_ty_int_native (fun hl__u hl__v => k :e hl__u) Hk). }
+    prove x :e int /\ y :e int /\ exists k :e int, x * k = y.
+    apply and3I.
+    + exact Hx.
+    + exact Hy.
+    + witness k. apply andI.
+      * exact HkI.
+      * exact (eq_sym_i y (x * k) (eq_trans_i y (hl_int_mul x k) (x * k) Hyk (hl_int_mul_compat x Hx k HkI))).
+  - assume H. apply H. assume _ H3. apply H3. let k. assume Hk0. apply Hk0. assume Hk Hxk.
+    witness k. apply andI.
+    + exact (int_hl_ty k Hk).
+    + exact (eq_sym_i (hl_int_mul x k) y (eq_trans_i (hl_int_mul x k) (x * k) y (hl_int_mul_compat x Hx k Hk) Hxk)). }
+exact (iff_eq1_l (hl_int_divides x y) (if exists k :e hl_ty_int, y = hl_int_mul x k then 1 else 0) (hl_int_divides_unfold x (int_hl_ty x Hx) y (int_hl_ty y Hy)) (divides_int x y) Hiff).
+Qed.
+
+Theorem hl_num_divides_compat : forall l1 l2 :e omega, hl_num_divides l1 l2 = 1 <-> divides_nat l1 l2.
+let m. assume Hm. let n. assume Hn.
+claim HmI: m :e int. { exact (Subq_omega_int m Hm). }
+claim HnI: n :e int. { exact (Subq_omega_int n Hn). }
+claim HmS: SNo m. { exact (omega_SNo m Hm). }
+claim Heq: hl_num_divides m n = hl_int_divides m n.
+{ exact (eq_trans_i (hl_num_divides m n) (hl_int_divides (hl_int_of_num m) (hl_int_of_num n)) (hl_int_divides m n) (hl_num_divides_unfold m Hm n Hn)
+    (f_equal2 (fun u v => hl_int_divides u v) (hl_int_of_num m) m (hl_int_of_num n) n (hl_int_of_num_compat m Hm) (hl_int_of_num_compat n Hn))). }
+claim Hcases: forall k :e int, m * k = n -> exists j :e omega, m * j = n.
+{ apply (int_SNo_cases (fun k => m * k = n -> exists j :e omega, m * j = n)).
+  - let k. assume Hk H. witness k. apply andI.
+    + exact Hk.
+    + exact H.
+  - let k. assume Hk H.
+    claim HkS: SNo k. { exact (omega_SNo k Hk). }
+    claim Hmk: m * k :e omega. { exact (mul_SNo_In_omega m Hm k Hk). }
+    claim HmkS: SNo (m * k). { exact (omega_SNo (m * k) Hmk). }
+    claim Hn1: n = - (m * k). { exact (eq_trans_i n (m * (- k)) (- (m * k)) (eq_sym_i (m * (- k)) n H) (mul_SNo_minus_distrR m k HmS HkS)). }
+    claim Hn0: n = 0.
+    { apply (SNoLe_antisym n 0 (omega_SNo n Hn) SNo_0).
+      - claim Hle: (- (m * k)) <= (- 0). { exact (minus_SNo_Le_contra 0 (m * k) SNo_0 HmkS (omega_nonneg (m * k) Hmk)). }
+        exact ((eq_sym_i n (- (m * k)) Hn1) (fun hl__u hl__v => hl__u <= 0) (minus_SNo_0 (fun hl__u hl__v => (- (m * k)) <= hl__u) Hle)).
+      - exact (omega_nonneg n Hn). }
+    witness 0. apply andI.
+    + exact (nat_p_omega 0 nat_0).
+    + exact (eq_trans_i (m * 0) 0 n (mul_SNo_zeroR m HmS) (eq_sym_i n 0 Hn0)). }
+claim Hiff: hl_int_divides m n = 1 <-> divides_nat m n.
+{ apply (iff_trans (hl_int_divides m n = 1) (divides_int m n) (divides_nat m n) (hl_int_divides_compat m HmI n HnI)).
+  apply iffI.
+  - assume H. apply H. assume _ H3. apply H3. let k. assume Hk0. apply Hk0. assume Hk Hmk.
+    prove m :e omega /\ n :e omega /\ exists j :e omega, mul_nat m j = n.
+    apply and3I.
+    + exact Hm.
+    + exact Hn.
+    + apply (Hcases k Hk Hmk). let j. assume Hj0. apply Hj0. assume Hj Hmj.
+      witness j. apply andI.
+      * exact Hj.
+      * exact (eq_trans_i (mul_nat m j) (m * j) n (mul_nat_mul_SNo m Hm j Hj) Hmj).
+  - assume H. apply H. assume _ H3. apply H3. let k. assume Hk0. apply Hk0. assume Hk Hmk.
+    prove m :e int /\ n :e int /\ exists j :e int, m * j = n.
+    apply and3I.
+    + exact HmI.
+    + exact HnI.
+    + witness k. apply andI.
+      * exact (Subq_omega_int k Hk).
+      * exact (eq_trans_i (m * k) (mul_nat m k) n (eq_sym_i (mul_nat m k) (m * k) (mul_nat_mul_SNo m Hm k Hk)) Hmk). }
+exact (iff_eq1_l (hl_num_divides m n) (hl_int_divides m n) Heq (divides_nat m n) Hiff).
+Qed.
+
+// ---- pairs and lists ----
+Theorem hl_pair_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, forall l2 :e B, hl_pair A B l1 l2 = (l1,l2).
+let A B. assume HA HB. let x. assume Hx. let y. assume Hy.
+prove (fun x :e A => fun y :e B => (x,y)) x y = (x,y).
+exact (lam2_beta A B (fun x y => (x,y)) x Hx y Hy).
+Qed.
+
+Theorem hl_NIL_compat : forall A:set, A <> Empty -> hl_NIL A = seq_nil.
+let A. assume HA. exact (fun q H => H).
+Qed.
+
+// ---- num_of_int on nonnegative integers ----
+Theorem hl_num_of_int_nonneg : forall n :e int, 0 <= n -> hl_num_of_int n = n.
+let n. assume Hn H0.
+claim Hno: n :e omega. { exact (int_nonneg_omega n Hn H0). }
+claim HP: (fun m :e omega => if hl_int_of_num m = n then 1 else 0) :e 2 :^: omega.
+{ prove (fun m :e omega => if hl_int_of_num m = n then 1 else 0) :e Pi_ m :e omega, 2.
+  apply (lam_Pi omega (fun _ => 2) (fun m => if hl_int_of_num m = n then 1 else 0)).
+  let m. assume _. exact (If_in_2 (hl_int_of_num m = n)). }
+claim Hval: forall m :e omega, (fun m :e omega => if hl_int_of_num m = n then 1 else 0) m = 1 <-> m = n.
+{ let m. assume Hm.
+  rewrite (beta omega (fun m => if hl_int_of_num m = n then 1 else 0) m Hm).
+  apply (iff_trans ((if hl_int_of_num m = n then 1 else 0) = 1) (hl_int_of_num m = n) (m = n) (If_1_iff (hl_int_of_num m = n))).
+  apply iffI.
+  - assume H. exact (eq_trans_i m (hl_int_of_num m) n (eq_sym_i (hl_int_of_num m) m (hl_int_of_num_compat m Hm)) H).
+  - assume H. exact (eq_trans_i (hl_int_of_num m) m n (hl_int_of_num_compat m Hm) H). }
+rewrite (hl_num_of_int_unfold n (int_hl_ty n Hn)).
+rewrite (hl_select_eq omega (fun m :e omega => if hl_int_of_num m = n then 1 else 0) HP).
+apply (choose_in_unique omega (fun m => (fun m :e omega => if hl_int_of_num m = n then 1 else 0) m = 1) n Hno).
+- apply (Hval n Hno). assume _ H. exact (H (fun q H => H)).
+- let y. assume Hy Hy1. apply (Hval y Hy). assume H _. exact (H Hy1).
+Qed.
+
+// ---- nonnegative integers are naturals ----
+
+Theorem hl_two_numeral : hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)) = 2.
+claim H1o: hl_BIT1 hl_zero :e omega. { exact (hl_BIT1_omega hl_zero hl_zero_omega). }
+claim H1: hl_BIT1 hl_zero = 1. { exact (eq_trans_i (hl_BIT1 hl_zero) (hl_NUMERAL (hl_BIT1 hl_zero)) 1 (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) (hl_NUMERAL_unfold (hl_BIT1 hl_zero) H1o)) hl_one_numeral). }
+exact (eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_unfold (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0_omega (hl_BIT1 hl_zero) H1o))
+  (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (2 * hl_BIT1 hl_zero) 2 (hl_BIT0_compat (hl_BIT1 hl_zero) H1o)
+    (eq_trans_i (2 * hl_BIT1 hl_zero) (2 * 1) 2 (f_equal (fun u => 2 * u) (hl_BIT1 hl_zero) 1 H1) (mul_SNo_oneR 2 SNo_2)))).
+Qed.
+
+// ---- integer powers of reals ----
+Theorem hl_real_zpow_compat : forall l1 :e R, forall l2 :e int, hl_real_zpow l1 l2 = if 0 <= l2 then l1 ^ l2 else recip_SNo (l1 ^ (- l2)).
+let x. assume Hx. let n. assume Hn.
+claim HnS: SNo n. { exact (int_SNo n Hn). }
+claim H0o: hl_NUMERAL hl_zero :e omega. { exact ((eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0)). }
+claim Hz: hl_int_of_num (hl_NUMERAL hl_zero) = 0. { exact (eq_trans_i (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_of_num 0) 0 (f_equal (fun y => hl_int_of_num y) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (hl_int_of_num_compat 0 (nat_p_omega 0 nat_0))). }
+claim H0I: 0 :e int. { exact (Subq_omega_int 0 (nat_p_omega 0 nat_0)). }
+claim Hc2: hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n :e 2. { exact (setexp2_ap int int 2 hl_int_le hl_int_le_in (hl_int_of_num (hl_NUMERAL hl_zero)) (setexp_ap omega int hl_int_of_num hl_int_of_num_in (hl_NUMERAL hl_zero) H0o) n Hn). }
+claim Hciff: hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 <-> 0 <= n.
+{ exact (iff_eq1_l (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n) (hl_int_le 0 n) (f_equal (fun y => hl_int_le y n) (hl_int_of_num (hl_NUMERAL hl_zero)) 0 Hz) (0 <= n) (hl_int_le_compat 0 H0I n Hn)). }
+claim HX: hl_real_pow x (hl_num_of_int n) :e R. { exact (setexp2_ap R omega R hl_real_pow hl_real_pow_in x Hx (hl_num_of_int n) (setexp_ap int omega hl_num_of_int hl_num_of_int_in n Hn)). }
+claim HnegI: hl_int_neg n :e int. { exact (setexp_ap int int hl_int_neg hl_int_neg_in n Hn). }
+claim HY: hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n))) :e R. { exact (setexp_ap R R hl_real_inv hl_real_inv_in (hl_real_pow x (hl_num_of_int (hl_int_neg n))) (setexp2_ap R omega R hl_real_pow hl_real_pow_in x Hx (hl_num_of_int (hl_int_neg n)) (setexp_ap int omega hl_num_of_int hl_num_of_int_in (hl_int_neg n) HnegI))). }
+claim Hstep: hl_real_zpow x n = if 0 <= n then hl_real_pow x (hl_num_of_int n) else hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n))).
+{ exact (eq_trans_i (hl_real_zpow x n) (hl_COND R (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n) (hl_real_pow x (hl_num_of_int n)) (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n))))) (if 0 <= n then hl_real_pow x (hl_num_of_int n) else hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (hl_real_zpow_unfold x Hx n (int_hl_ty n Hn)) (hl_COND_if R (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n) Hc2 (0 <= n) Hciff (hl_real_pow x (hl_num_of_int n)) HX (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) HY)). }
+apply (xm (0 <= n)).
+- assume H.
+  claim Hno: n :e omega. { exact (int_nonneg_omega n Hn H). }
+  exact (eq_trans_i (hl_real_zpow x n) (if 0 <= n then hl_real_pow x (hl_num_of_int n) else hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) Hstep
+    (eq_trans_i (if 0 <= n then hl_real_pow x (hl_num_of_int n) else hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (hl_real_pow x (hl_num_of_int n)) (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) (If_i_1 (0 <= n) (hl_real_pow x (hl_num_of_int n)) (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) H)
+      (eq_trans_i (hl_real_pow x (hl_num_of_int n)) (x ^ n) (if 0 <= n then x ^ n else recip_SNo (x ^ (- n)))
+        (eq_trans_i (hl_real_pow x (hl_num_of_int n)) (hl_real_pow x n) (x ^ n) (f_equal (fun y => hl_real_pow x y) (hl_num_of_int n) n (hl_num_of_int_nonneg n Hn H)) (hl_real_pow_compat x Hx n Hno))
+        (eq_sym_i (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) (x ^ n) (If_i_1 (0 <= n) (x ^ n) (recip_SNo (x ^ (- n))) H))))).
+- assume H.
+  claim Hlt: n < 0. { apply (SNoLtLe_or n 0 HnS SNo_0). - assume H1. exact H1. - assume H1. exact (FalseE (H H1) (n < 0)). }
+  claim Hpos: 0 < - n. { exact (minus_SNo_0 (fun hl__u hl__v => hl__u < - n) (minus_SNo_Lt_contra n 0 HnS SNo_0 Hlt)). }
+  claim Hnn: 0 <= - n. { exact (SNoLtLe 0 (- n) Hpos). }
+  claim HnegI': (- n) :e int. { exact (int_minus_SNo n Hn). }
+  claim Hnego: (- n) :e omega. { exact (int_nonneg_omega (- n) HnegI' Hnn). }
+  claim Hneg: hl_int_neg n = - n. { exact (hl_int_neg_compat n Hn). }
+  exact (eq_trans_i (hl_real_zpow x n) (if 0 <= n then hl_real_pow x (hl_num_of_int n) else hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) Hstep
+    (eq_trans_i (if 0 <= n then hl_real_pow x (hl_num_of_int n) else hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) (If_i_0 (0 <= n) (hl_real_pow x (hl_num_of_int n)) (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) H)
+      (eq_trans_i (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (recip_SNo (x ^ (- n))) (if 0 <= n then x ^ n else recip_SNo (x ^ (- n)))
+        (eq_trans_i (hl_real_inv (hl_real_pow x (hl_num_of_int (hl_int_neg n)))) (hl_real_inv (x ^ (- n))) (recip_SNo (x ^ (- n)))
+          (f_equal (fun y => hl_real_inv y) (hl_real_pow x (hl_num_of_int (hl_int_neg n))) (x ^ (- n))
+            (eq_trans_i (hl_real_pow x (hl_num_of_int (hl_int_neg n))) (hl_real_pow x (- n)) (x ^ (- n))
+              (f_equal (fun y => hl_real_pow x y) (hl_num_of_int (hl_int_neg n)) (- n)
+                (eq_trans_i (hl_num_of_int (hl_int_neg n)) (hl_num_of_int (- n)) (- n) (f_equal (fun y => hl_num_of_int y) (hl_int_neg n) (- n) Hneg) (hl_num_of_int_nonneg (- n) HnegI' Hnn)))
+              (hl_real_pow_compat x Hx (- n) Hnego)))
+          (hl_real_inv_compat (x ^ (- n)) (real_exp_SNo_nat x Hx (- n) Hnego)))
+        (eq_sym_i (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) (recip_SNo (x ^ (- n))) (If_i_0 (0 <= n) (x ^ n) (recip_SNo (x ^ (- n))) H))))).
+Qed.
+
+// ---- natural distance ----
+Theorem minus_nat_abs : forall a b :e omega, minus_nat a b + minus_nat b a = abs_SNo (a + - b).
+let a. assume Ha. let b. assume Hb.
+claim HaS: SNo a. { exact (omega_SNo a Ha). }
+claim HbS: SNo b. { exact (omega_SNo b Hb). }
+claim HaS': SNo (- a). { exact (SNo_minus_SNo a HaS). }
+claim HbS': SNo (- b). { exact (SNo_minus_SNo b HbS). }
+claim Hab: SNo (a + - b). { exact (SNo_add_SNo a (- b) HaS HbS'). }
+claim Hba: SNo (b + - a). { exact (SNo_add_SNo b (- a) HbS HaS'). }
+apply (SNoLtLe_or a b HaS HbS).
+- assume Hlt.
+  claim H1: minus_nat a b = 0.
+  { prove (if b <= a then a + - b else 0) = 0. apply (If_i_0 (b <= a) (a + - b) 0). assume Hle. exact (SNoLt_irref a (SNoLtLe_tra a b a HaS HbS HaS Hlt Hle)). }
+  claim H2: minus_nat b a = b + - a.
+  { prove (if a <= b then b + - a else 0) = b + - a. exact (If_i_1 (a <= b) (b + - a) 0 (SNoLtLe a b Hlt)). }
+  claim Hneg: a + - b < 0.
+  { exact ((add_SNo_minus_SNo_rinv b HbS) (fun hl__u hl__v => a + - b < hl__u) (add_SNo_Lt1 a (- b) b HaS HbS' HbS Hlt)). }
+  claim H3: abs_SNo (a + - b) = b + - a.
+  { exact (eq_trans_i (abs_SNo (a + - b)) (- (a + - b)) (b + - a) (neg_abs_SNo (a + - b) Hab Hneg)
+      (eq_trans_i (- (a + - b)) (- a + - - b) (b + - a) (minus_add_SNo_distr a (- b) HaS HbS')
+        (eq_trans_i (- a + - - b) (- a + b) (b + - a) (f_equal (fun u => - a + u) (- - b) b (minus_SNo_invol b HbS)) (add_SNo_com (- a) b HaS' HbS)))). }
+  rewrite H1. rewrite H2. rewrite H3. exact (add_SNo_0L (b + - a) Hba).
+- assume Hle.
+  claim H1: minus_nat a b = a + - b.
+  { prove (if b <= a then a + - b else 0) = a + - b. exact (If_i_1 (b <= a) (a + - b) 0 Hle). }
+  claim H2: minus_nat b a = 0.
+  { prove (if a <= b then b + - a else 0) = 0. apply (xm (a <= b)).
+    - assume H. rewrite (If_i_1 (a <= b) (b + - a) 0 H).
+      claim Heq: a = b. { exact (SNoLe_antisym a b HaS HbS H Hle). }
+      exact (eq_trans_i (b + - a) (b + - b) 0 (f_equal (fun u => b + - u) a b Heq) (add_SNo_minus_SNo_rinv b HbS)).
+    - assume H. exact (If_i_0 (a <= b) (b + - a) 0 H). }
+  claim Hnn: 0 <= a + - b.
+  { exact (add_SNo_minus_Le2b a b 0 HaS HbS SNo_0 ((eq_sym_i (0 + b) b (add_SNo_0L b HbS)) (fun hl__u hl__v => hl__u <= a) Hle)). }
+  claim H3: abs_SNo (a + - b) = a + - b. { exact (nonneg_abs_SNo (a + - b) Hnn). }
+  rewrite H1. rewrite H2. rewrite H3. exact (add_SNo_0R (a + - b) Hab).
+Qed.
+
+Theorem hl_dist_compat : forall l1 :e omega :*: omega, hl_dist l1 = abs_SNo (l1 0 + - l1 1).
+let p. assume Hp.
+claim Ha: p 0 :e omega. { exact (ap0_Sigma omega (fun _ => omega) p Hp). }
+claim Hb: p 1 :e omega. { exact (ap1_Sigma omega (fun _ => omega) p Hp). }
+claim HF: hl_FST omega omega p = p 0. { exact (hl_FST_compat omega omega omega_nonempty omega_nonempty p Hp). }
+claim HS: hl_SND omega omega p = p 1. { exact (hl_SND_compat omega omega omega_nonempty omega_nonempty p Hp). }
+claim Hs1: hl_sub (p 0) (p 1) :e omega. { exact (setexp2_ap omega omega omega hl_sub hl_sub_in (p 0) Ha (p 1) Hb). }
+claim Hs2: hl_sub (p 1) (p 0) :e omega. { exact (setexp2_ap omega omega omega hl_sub hl_sub_in (p 1) Hb (p 0) Ha). }
+exact (eq_trans_i (hl_dist p) (hl_add (hl_sub (hl_FST omega omega p) (hl_SND omega omega p)) (hl_sub (hl_SND omega omega p) (hl_FST omega omega p))) (abs_SNo (p 0 + - p 1)) (hl_dist_unfold p Hp)
+  (eq_trans_i (hl_add (hl_sub (hl_FST omega omega p) (hl_SND omega omega p)) (hl_sub (hl_SND omega omega p) (hl_FST omega omega p))) (hl_add (hl_sub (p 0) (p 1)) (hl_sub (p 1) (p 0))) (abs_SNo (p 0 + - p 1))
+    (f_equal2 (fun u v => hl_add (hl_sub u v) (hl_sub v u)) (hl_FST omega omega p) (p 0) (hl_SND omega omega p) (p 1) HF HS)
+    (eq_trans_i (hl_add (hl_sub (p 0) (p 1)) (hl_sub (p 1) (p 0))) (hl_sub (p 0) (p 1) + hl_sub (p 1) (p 0)) (abs_SNo (p 0 + - p 1)) (hl_add_compat (hl_sub (p 0) (p 1)) Hs1 (hl_sub (p 1) (p 0)) Hs2)
+      (eq_trans_i (hl_sub (p 0) (p 1) + hl_sub (p 1) (p 0)) (minus_nat (p 0) (p 1) + minus_nat (p 1) (p 0)) (abs_SNo (p 0 + - p 1))
+        (f_equal2 (fun u v => u + v) (hl_sub (p 0) (p 1)) (minus_nat (p 0) (p 1)) (hl_sub (p 1) (p 0)) (minus_nat (p 1) (p 0)) (hl_sub_compat (p 0) Ha (p 1) Hb) (hl_sub_compat (p 1) Hb (p 0) Ha))
+        (minus_nat_abs (p 0) Ha (p 1) Hb))))).
+Qed.
+
+// ---- well-founded relations ----
+Theorem hl_WF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_WF A l1 = 1 <-> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ P1 y x).
+let A. assume HA. let l1. assume H1. let P1. assume HP.
+rewrite (hl_WF_unfold A l1 H1).
+apply (iff_trans ((if (forall P :e 2 :^: A, (exists x :e A, P x = 1) -> exists x :e A, P x = 1 /\ forall y :e A, l1 y x = 1 -> ~ P y = 1) then 1 else 0) = 1) (forall P :e 2 :^: A, (exists x :e A, P x = 1) -> exists x :e A, P x = 1 /\ forall y :e A, l1 y x = 1 -> ~ P y = 1) (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ P1 y x) (If_1_iff (forall P :e 2 :^: A, (exists x :e A, P x = 1) -> exists x :e A, P x = 1 /\ forall y :e A, l1 y x = 1 -> ~ P y = 1))).
+apply iffI.
+- assume Hw. let P. assume HPA HPne.
+  claim Hex: exists x :e A, hl_chi A P x = 1.
+  { apply (xm (exists x, x :e P)).
+    - assume H. apply H. let x. assume Hx. witness x. apply andI.
+      + exact (HPA x Hx).
+      + apply (hl_chi_iff A P x (HPA x Hx)). assume _ H2. exact (H2 Hx).
+    - assume H.
+      claim HPE: P = Empty. { apply (Empty_eq P). let x. assume Hx. apply H. witness x. exact Hx. }
+      exact (FalseE (HPne HPE) (exists x :e A, hl_chi A P x = 1)). }
+  apply (Hw (hl_chi A P) (hl_chi_Pi A P) Hex). let x. assume Hx0. apply Hx0. assume HxA Hx1. apply Hx1. assume Hx2 Hmin.
+  claim HxP: x :e P. { apply (hl_chi_iff A P x HxA). assume H2 _. exact (H2 Hx2). }
+  witness x. apply andI.
+  + exact HxP.
+  + let y. assume HyP. assume Hyx.
+    claim HyA: y :e A. { exact (HPA y HyP). }
+    claim Hl: l1 y x = 1. { apply (HP y HyA x HxA). assume _ H2. exact (H2 Hyx). }
+    apply (Hmin y HyA Hl). apply (hl_chi_iff A P y HyA). assume _ H2. exact (H2 HyP).
+- assume Hn. let P. assume HPf. assume Hex.
+  claim Hsub: hl_rep A P c= A. { exact (hl_rep_Subq A P). }
+  claim Hne: hl_rep A P <> Empty.
+  { assume HE. apply Hex. let x. assume Hx0. apply Hx0. assume HxA Hx1.
+    claim HxR: x :e hl_rep A P. { apply (hl_rep_iff A P x HxA). assume H2 _. exact (H2 Hx1). }
+    exact (EmptyE x (HE (fun hl__u hl__v => x :e hl__u) HxR)). }
+  apply (Hn (hl_rep A P) Hsub Hne). let x. assume Hx0. apply Hx0. assume HxR Hmin.
+  claim HxA: x :e A. { exact (hl_rep_Subq A P x HxR). }
+  witness x. apply andI.
+  + exact HxA.
+  + apply andI.
+    * apply (hl_rep_iff A P x HxA). assume _ H2. exact (H2 HxR).
+    * let y. assume HyA. assume Hl. assume HyP.
+      claim HyR: y :e hl_rep A P. { apply (hl_rep_iff A P y HyA). assume H2 _. exact (H2 HyP). }
+      claim Hp: P1 y x. { apply (HP y HyA x HxA). assume H2 _. exact (H2 Hl). }
+      exact (Hmin y HyR Hp).
+Qed.
+
+// ---- (x == y) r  is  r x y ----
+Theorem hl_sym_3d3d_compat2 : forall A:set, A <> Empty -> forall l1 l2 :e A, forall l3 :e 2 :^: A :^: A, forall P3:set -> set -> prop, (forall x y :e A, l3 x y = 1 <-> P3 x y) -> (hl_sym_3d3d A l1 l2 l3 = 1 <-> P3 l1 l2).
+let A. assume HA. let x. assume Hx. let y. assume Hy. let r. assume Hr. let P3. assume HP.
+exact (iff_eq1_l (hl_sym_3d3d A x y r) (r x y) (hl_sym_3d3d_unfold A x Hx y Hy r Hr) (P3 x y) (HP x Hx y Hy)).
+Qed.
+
+Theorem hl_sym_3d3d_compat : forall l1 l2 :e int, forall l3 :e 2 :^: int :^: int, forall P3:set -> set -> prop, (forall x y :e int, l3 x y = 1 <-> P3 x y) -> (hl_sym_3d3d int l1 l2 l3 = 1 <-> P3 l1 l2).
+let x. assume Hx. let y. assume Hy. let r. assume Hr. let P3. assume HP.
+exact (iff_eq1_l (hl_sym_3d3d int x y r) (r x y) (hl_sym_3d3d_unfold int x Hx y Hy r Hr) (P3 x y) (HP x Hx y Hy)).
+Qed.
+
+Theorem hl_sym_3d3d_compat1 : forall l1 l2 :e omega, forall l3 :e 2 :^: omega :^: omega, forall P3:set -> set -> prop, (forall x y :e omega, l3 x y = 1 <-> P3 x y) -> (hl_sym_3d3d omega l1 l2 l3 = 1 <-> P3 l1 l2).
+let x. assume Hx. let y. assume Hy. let r. assume Hr. let P3. assume HP.
+exact (iff_eq1_l (hl_sym_3d3d omega x y r) (r x y) (hl_sym_3d3d_unfold omega x Hx y Hy r Hr) (P3 x y) (HP x Hx y Hy)).
+Qed.
+
+// ---- Cartesian products of sets ----
+Theorem hl_CROSS_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_rep (A :*: B) (hl_CROSS A B l1 l2) = hl_rep A l1 :*: hl_rep B l2.
+let A B. assume HA HB. let l1. assume H1. let l2. assume H2.
+claim HF: (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) :e 2 :^: (A :*: B).
+{ prove (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) :e Pi_ v :e A :*: B, 2.
+  apply (lam_Pi (A :*: B) (fun _ => 2) (fun v => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0)).
+  let v. assume _. exact (If_in_2 (exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1)). }
+rewrite (hl_CROSS_unfold A B l1 H1 l2 H2).
+rewrite (hl_GSPEC_unfold (A :*: B) (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) HF).
+claim Hmem: forall v :e A :*: B, (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) v = 1 <-> v :e hl_rep A l1 :*: hl_rep B l2.
+{ let v. assume Hv.
+  rewrite (beta (A :*: B) (fun v => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) v Hv).
+  apply (iff_trans ((if (exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1) then 1 else 0) = 1) (exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1) (v :e hl_rep A l1 :*: hl_rep B l2) (If_1_iff (exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1))).
+  apply iffI.
+  - assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Hs.
+    claim Hxy: hl_pair A B x y :e A :*: B. { exact ((eq_sym_i (hl_pair A B x y) (x,y) (hl_pair_compat A B HA HB x Hx y Hy)) (fun hl__u hl__v => hl__u :e A :*: B) (tuple_2_setprod A B x Hx y Hy)). }
+    claim Hs2: (if (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) = 1 /\ v = hl_pair A B x y then 1 else 0) = 1.
+    { exact ((hl_SETSPEC_unfold (A :*: B) v Hv (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (If_in_2 (hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1)) (hl_pair A B x y) Hxy) (fun hl__u hl__v => hl__u = 1) Hs). }
+    apply (If_1_iff ((if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) = 1 /\ v = hl_pair A B x y)). assume H3 _. apply (H3 Hs2). assume H4 H5.
+    apply (If_1_iff (hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1)). assume H6 _. apply (H6 H4). assume H7 H8.
+    claim HxR: x :e hl_rep A l1. { apply (hl_IN_compat A HA x Hx l1 H1). assume H9 _. exact (H9 H7). }
+    claim HyR: y :e hl_rep B l2. { apply (hl_IN_compat B HB y Hy l2 H2). assume H9 _. exact (H9 H8). }
+    claim Hv2: v = (x,y). { exact (eq_trans_i v (hl_pair A B x y) (x,y) H5 (hl_pair_compat A B HA HB x Hx y Hy)). }
+    exact ((eq_sym_i v (x,y) Hv2) (fun hl__u hl__v => hl__u :e hl_rep A l1 :*: hl_rep B l2) (tuple_2_setprod (hl_rep A l1) (hl_rep B l2) x HxR y HyR)).
+  - assume H.
+    claim Hx: v 0 :e hl_rep A l1. { exact (ap0_Sigma (hl_rep A l1) (fun _ => hl_rep B l2) v H). }
+    claim Hy: v 1 :e hl_rep B l2. { exact (ap1_Sigma (hl_rep A l1) (fun _ => hl_rep B l2) v H). }
+    claim HxA: v 0 :e A. { exact (hl_rep_Subq A l1 (v 0) Hx). }
+    claim HyB: v 1 :e B. { exact (hl_rep_Subq B l2 (v 1) Hy). }
+    claim Hveq: v = hl_pair A B (v 0) (v 1). { exact (eq_trans_i v (v 0, v 1) (hl_pair A B (v 0) (v 1)) (eq_sym_i (v 0, v 1) v (tuple_Sigma_eta A (fun _ => B) v Hv)) (eq_sym_i (hl_pair A B (v 0) (v 1)) (v 0, v 1) (hl_pair_compat A B HA HB (v 0) HxA (v 1) HyB))). }
+    claim Hxy: hl_pair A B (v 0) (v 1) :e A :*: B. { exact (Hveq (fun hl__u hl__v => hl__u :e A :*: B) Hv). }
+    witness (v 0). apply andI.
+    + exact HxA.
+    + witness (v 1). apply andI.
+      * exact HyB.
+      * rewrite (hl_SETSPEC_unfold (A :*: B) v Hv (if hl_IN A (v 0) l1 = 1 /\ hl_IN B (v 1) l2 = 1 then 1 else 0) (If_in_2 (hl_IN A (v 0) l1 = 1 /\ hl_IN B (v 1) l2 = 1)) (hl_pair A B (v 0) (v 1)) Hxy).
+        apply (If_i_1 ((if hl_IN A (v 0) l1 = 1 /\ hl_IN B (v 1) l2 = 1 then 1 else 0) = 1 /\ v = hl_pair A B (v 0) (v 1)) 1 0). apply andI.
+        { apply (If_i_1 (hl_IN A (v 0) l1 = 1 /\ hl_IN B (v 1) l2 = 1) 1 0). apply andI.
+          - apply (hl_IN_compat A HA (v 0) HxA l1 H1). assume _ H9. exact (H9 Hx).
+          - apply (hl_IN_compat B HB (v 1) HyB l2 H2). assume _ H9. exact (H9 Hy). }
+        { exact Hveq. } }
+apply set_ext.
+- let v. assume Hv.
+  claim HvA: v :e A :*: B. { exact (hl_rep_Subq (A :*: B) (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) v Hv). }
+  apply (Hmem v HvA). assume H3 _. apply H3.
+  apply (hl_rep_iff (A :*: B) (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) v HvA). assume _ H4. exact (H4 Hv).
+- let v. assume Hv.
+  claim HxA: v 0 :e A. { exact (hl_rep_Subq A l1 (v 0) (ap0_Sigma (hl_rep A l1) (fun _ => hl_rep B l2) v Hv)). }
+  claim HyB: v 1 :e B. { exact (hl_rep_Subq B l2 (v 1) (ap1_Sigma (hl_rep A l1) (fun _ => hl_rep B l2) v Hv)). }
+  claim HvA: v :e A :*: B. { exact ((tuple_Sigma_eta (hl_rep A l1) (fun _ => hl_rep B l2) v Hv) (fun hl__u hl__v => hl__u :e A :*: B) (tuple_2_setprod A B (v 0) HxA (v 1) HyB)). }
+  apply (hl_rep_iff (A :*: B) (fun v :e A :*: B => if exists x :e A, exists y :e B, hl_SETSPEC (A :*: B) v (if hl_IN A x l1 = 1 /\ hl_IN B y l2 = 1 then 1 else 0) (hl_pair A B x y) = 1 then 1 else 0) v HvA). assume H3 _. apply H3. apply (Hmem v HvA). assume _ H4. exact (H4 Hv).
+Qed.

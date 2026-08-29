@@ -364,7 +364,8 @@ source: !x:A. !y:B. !a:A. !b:B. x , y = a , b <=> x = a /\ y = b
 status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall a :e A, forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b
-cert_status: bridge_unsupported
+bridge: PAIR_EQ_bridge
+cert_status: native_certified
 
 ### PAIR_SURJECTIVE   [products]
 hash: 8a85c46beb474e1e63192937ada8908b
@@ -372,7 +373,8 @@ source: !p:A#B. ?x:A. ?y:B. p = x , y
 status: generalization_required
 statement: forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall p :e A :*: B, exists x :e A, exists y :e B, p = hl_pair A B x y
-cert_status: bridge_unsupported
+bridge: PAIR_SURJECTIVE_bridge
+cert_status: native_certified
 
 ### FST   [products]
 hash: e9c3a4a3164ca2f9e6fad2d535f8ab0f
@@ -396,7 +398,8 @@ source: !x:A#B. FST x , SND x = x
 status: generalization_required
 statement: forall A B:set, forall x :e A :*: B, (x 0,x 1) = x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A :*: B, hl_pair A B (hl_FST A B x) (hl_SND A B x) = x
-cert_status: bridge_unsupported
+bridge: PAIR_bridge
+cert_status: native_certified
 
 ### FORALL_PAIR_THM   [products]
 hash: 259d29f2f6087c2bd6a11a52412f4491
@@ -786,7 +789,8 @@ source: !<<:A->A->bool. WF << <=> (!P:A->bool. (?x:A. P x) ==> (?x:A. P x /\ (!y
 status: exact_native
 statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> forall P:set -> prop, (exists x :e A, P x) -> exists x :e A, P x /\ forall y :e A, lt y x -> ~ P y
 literal: forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> forall P :e 2 :^: A, (exists x :e A, P x = 1) -> exists x :e A, P x = 1 /\ forall y :e A, lt y x = 1 -> ~ P y = 1
-cert_status: bridge_unsupported
+bridge: WF_bridge
+cert_status: native_certified
 
 ### WF_IND   [well-founded relations]
 hash: 2f8fbdae1fc99fbb0282e91e4798be47
@@ -794,7 +798,8 @@ source: WF << <=> (!P:A->bool. (!x:A. (!y:A. << y x ==> P y) ==> P x) ==> (!x:A.
 status: exact_native
 statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> forall P:set -> prop, (forall x :e A, (forall y :e A, lt y x -> P y) -> P x) -> forall x :e A, P x
 literal: forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> forall P :e 2 :^: A, (forall x :e A, (forall y :e A, lt y x = 1 -> P y = 1) -> P x = 1) -> forall x :e A, P x = 1
-cert_status: bridge_unsupported
+bridge: WF_IND_bridge
+cert_status: native_certified
 
 ### WF_DCHAIN   [well-founded relations]
 hash: 0a202e079f28a6155304a3d694551c09
@@ -834,7 +839,8 @@ source: WF << ==> (!H:(A->B)->A->B. (!f:A->B. !g:A->B. !x:A. (!z:A. << z x ==> f
 status: generalization_required
 statement: forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 -> forall H :e B :^: A :^: (B :^: A), (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x = 1 -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x
-cert_status: bridge_unsupported
+bridge: WF_REC_bridge
+cert_status: native_certified
 
 ### MEASURE   [well-founded relations]
 hash: abb01e8d84ce430691bf20436f40529b
@@ -1365,7 +1371,8 @@ source: !x:A. !y:B. !s:A->bool. !t:B->bool. x , y IN CROSS s t <=> x IN s /\ y I
 status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_IN (A :*: B) (hl_pair A B x y) (hl_CROSS A B s t) = 1 <-> hl_IN A x s = 1 /\ hl_IN B y t = 1
-cert_status: bridge_unsupported
+bridge: IN_CROSS_bridge
+cert_status: native_certified
 
 ### FORALL_IN_GSPEC   [sets: membership, algebra, comprehensions, images, families]
 hash: 4e50b5eb28b9acf79387e641ba5fae71
@@ -1448,7 +1455,8 @@ source: !s:A->bool. INFINITE s <=> ~FINITE s
 status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, infinite s <-> ~ finite s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INFINITE A s = 1 <-> ~ hl_FINITE A s = 1
-cert_status: bridge_unsupported
+bridge: INFINITE_bridge
+cert_status: native_certified
 
 ### num_FINITE   [finiteness, cardinality, functions between sets]
 hash: 1d72873b878bd3f30c51efe6dd52e975
@@ -1489,7 +1497,8 @@ source: !s:A->bool. !t:B->bool. FINITE s /\ FINITE t ==> FINITE (CROSS s t)
 status: generalization_required
 statement: forall A B:set, forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\ hl_FINITE B t = 1 -> hl_FINITE (A :*: B) (hl_CROSS A B s t) = 1
-cert_status: bridge_unsupported
+bridge: FINITE_CROSS_bridge
+cert_status: native_certified
 
 ### CARD_CROSS   [finiteness, cardinality, functions between sets]
 hash: e98f492c84401357c81713e687de88e9
@@ -1522,7 +1531,8 @@ source: !s:A->bool. INFINITE s ==> ~(s = EMPTY)
 status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, infinite s -> ~ s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INFINITE A s = 1 -> ~ s = hl_EMPTY A
-cert_status: bridge_unsupported
+bridge: INFINITE_NONEMPTY_bridge
+cert_status: native_certified
 
 ### NSUM_CLAUSES   [iteration, sums, number segments]
 hash: ea406f8293ce1f3be12e9bc950e8d8d6
@@ -1930,7 +1940,8 @@ source: !a:int. !b:int. ?d:int. int_divides d a /\ int_divides d b /\ (?x:int. ?
 status: transport_required
 statement: forall a b :e int, exists d :e int, divides_int d a /\ (divides_int d b /\ exists x y :e int, d = a * x + b * y)
 literal: forall a b :e hl_ty_int, exists d :e hl_ty_int, hl_int_divides d a = 1 /\ (hl_int_divides d b = 1 /\ exists x y :e hl_ty_int, d = hl_int_add (hl_int_mul a x) (hl_int_mul b y))
-cert_status: bridge_unsupported
+bridge: INT_GCD_EXISTS_bridge
+cert_status: native_certified
 
 ### NUM_GCD   [integers]
 hash: 71b969f4ff9cc7292e8e593f142bdcc9
@@ -1954,7 +1965,8 @@ source: !x:int. !m:num. !n:num. x pow (m + n) = x pow m * x pow n
 status: transport_required
 statement: forall x :e int, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n
 literal: forall x :e hl_ty_int, forall m n :e omega, hl_int_pow x (hl_add m n) = hl_int_mul (hl_int_pow x m) (hl_int_pow x n)
-cert_status: bridge_unsupported
+bridge: INT_POW_ADD_bridge
+cert_status: native_certified
 
 ### INTEGER_REAL_OF_INT   [integers]
 hash: fd2f6c28a41c04c5ff22528384474bc8

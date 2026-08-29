@@ -214,7 +214,9 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
       let sub = List.mapi (fun i (_, _, _, t) -> (string_of_int (i + 1), t)) args
                 @ List.map (fun (a, n) -> (a, Mg.Var n)) tv_names in
       let rhs = Mg.normalize (Mg.inst sub e.R.c_template) in
-      let lhs = Mg.apps (Mg.Cst (L.mg_name_of_const e.R.c_hol)) (List.map (fun (_, n) -> Mg.Var n) tv_names @ List.map (fun (l, _, _, _) -> Mg.Var l) args) in
+      (* the literal constant applied to the carrier parameters of its *generic* type instantiated
+         at the entry's scheme (an instance entry such as `==` at int gets `hl_sym_3d3d int`) *)
+      let lhs = Mg.apps (L.const_ref lctx e.R.c_hol scheme) (List.map (fun (l, _, _, _) -> Mg.Var l) args) in
       let result = (match e.R.c_result with
         | R.RProp -> Some (L.mg_iff (L.mg_eq lhs L.one) rhs)
         | R.RSet -> Some (L.mg_eq lhs rhs)

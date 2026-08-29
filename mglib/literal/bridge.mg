@@ -608,3 +608,14 @@ let A F G. assume H. apply set_ext.
 - let y. assume Hy. apply (ReplE_impred A F y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite (H x Hx). exact (ReplI A G x Hx).
 - let y. assume Hy. apply (ReplE_impred A G y Hy). let x. assume Hx Hyx. rewrite Hyx. rewrite <- (H x Hx). exact (ReplI A F x Hx).
 Qed.
+
+// ---- choice with a unique witness; transport of `= 1` equivalences ----
+Theorem choose_in_unique : forall A:set, forall P:set -> prop, forall n :e A, P n -> (forall y :e A, P y -> y = n) -> choose_in A P = n.
+let A P n. assume Hn HPn Hu.
+claim Hex: exists x :e A, P x. { witness n. apply andI. - exact Hn. - exact HPn. }
+apply (choose_in_spec A P Hex). assume H1 H2. exact (Hu (choose_in A P) H1 H2).
+Qed.
+
+Theorem iff_eq1_l : forall a b:set, a = b -> forall p:prop, (b = 1 <-> p) -> (a = 1 <-> p).
+let a b. assume H. let p. assume Hp. exact ((eq_sym_i a b H) (fun hl__u hl__v => hl__u = 1 <-> p) Hp).
+Qed.
