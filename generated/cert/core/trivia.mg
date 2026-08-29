@@ -49,8 +49,13 @@ Theorem one_DEF : 0 = choose_in 1 (fun x:set => True).
 Admitted.
 
 // HOL Light: trivia.ml:60 / one   (hash md5:8221571543fa874800f76ce863e0cf84)
-// not bridged: 
+Theorem hlt_one : forall v :e 1, v = hl_one.
+Admitted.
+Theorem one_bridge : (forall v :e 1, v = hl_one) -> (forall v :e 1, v = 0).
+exact (fun H__top => (imp_forall_in (1) (fun v => v = hl_one) (fun v => v = 0) (fun v Hv => (imp_eq (v) (v) (hl_one) (0) (fun q H => H) ((hl_one_compat))))) H__top).
+Qed.
 Theorem one : forall v :e 1, v = 0.
+exact (one_bridge hlt_one).
 Admitted.
 
 // HOL Light: trivia.ml:67 / one_axiom   (hash md5:1d5dc2e3ae749e7020d13e448211d911)
@@ -64,28 +69,53 @@ exact (one_axiom_bridge hlt_one_axiom).
 Admitted.
 
 // HOL Light: trivia.ml:72 / one_INDUCT   (hash md5:0e4245b52b095218ca689907aa0d46a7)
-// not bridged: 
+Theorem hlt_one_INDUCT : forall P :e 2 :^: 1, P hl_one = 1 -> forall x :e 1, P x = 1.
+Admitted.
+Theorem one_INDUCT_bridge : (forall P :e 2 :^: 1, P hl_one = 1 -> forall x :e 1, P x = 1) -> (forall P:set -> prop, P 0 -> forall x :e 1, P x).
+exact (fun H__top => (imp_forall_pred (1) (fun P => P hl_one = 1 -> forall x :e 1, P x = 1) (fun P => P 0 -> forall x :e 1, P x) (fun P => (fun H__L : ((hl_chip 1 P hl_one = 1) -> (forall x :e 1, hl_chip 1 P x = 1)) => fun H__hyp1 : (P 0) => (imp_forall_in (1) (fun x => hl_chip 1 P x = 1) (fun x => P x) (fun x Hx => (iffEL (hl_chip 1 P x = 1) (P x) ((hl_chip_iff (1) P) (x) Hx)))) (H__L ((iffER (hl_chip 1 P hl_one = 1) (P 0) (((hl_one_compat)) (fun hl__u hl__v => hl_chip 1 P hl_one = 1 <-> P hl__u) ((hl_chip_iff (1) P) (hl_one) ((hl_one_in))))) H__hyp1))))) H__top).
+Qed.
 Theorem one_INDUCT : forall P:set -> prop, P 0 -> forall x :e 1, P x.
+exact (one_INDUCT_bridge hlt_one_INDUCT).
 Admitted.
 
 // HOL Light: trivia.ml:76 / one_RECURSION   (hash md5:eacc0c8048865239c11b49bfd682565d)
-// not bridged: 
+Theorem hlt_one_RECURSION : forall A:set, A <> Empty -> forall e1 :e A, exists fn :e A :^: 1, fn hl_one = e1.
+Admitted.
+Theorem one_RECURSION_bridge : (forall A:set, A <> Empty -> forall e1 :e A, exists fn :e A :^: 1, fn hl_one = e1) -> (forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0).
+exact (fun H__top A => (xm (A = Empty) (forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall e0 :e hl__u, exists fn:set -> set, (forall x :e 1, fn x :e hl__u) /\ fn 0 = e0) (forall_in_Empty (fun e0 => exists fn:set -> set, (forall x :e 1, fn x :e Empty) /\ fn 0 = e0)))) (fun HAne => (imp_forall_in (A) (fun e0 => exists fn :e A :^: 1, fn hl_one = e0) (fun e0 => exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0) (fun e0 He0 => (imp_exists_fun (1) (A) (fun fn => fn hl_one = e0) (fun fn => fn 0 = e0) (fun fn Hfn => (imp_eq (fn hl_one) (fn 0) (e0) (e0) (((hl_one_compat)) (fun hl__u hl__v => fn hl_one = fn hl__u) (fun q H => H)) (fun q H => H)))))) (H__top A HAne)))).
+Qed.
 Theorem one_RECURSION : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0.
+exact (one_RECURSION_bridge hlt_one_RECURSION).
 Admitted.
 
 // HOL Light: trivia.ml:80 / one_Axiom   (hash md5:ed14c7f387dfc73cd6603c753781f4bf)
-// not bridged: 
+Theorem hlt_one_Axiom : forall A:set, A <> Empty -> forall e1 :e A, hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e1 then 1 else 0) = 1.
+Admitted.
+Theorem one_Axiom_bridge : (forall A:set, A <> Empty -> forall e1 :e A, hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e1 then 1 else 0) = 1) -> (forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)).
+exact (fun H__top A => (xm (A = Empty) (forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall e0 :e hl__u, exists fn:set -> set, (forall x :e 1, fn x :e hl__u) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e hl__u) -> y 0 = e0 -> forall x :e 1, y x = fn x)) (forall_in_Empty (fun e0 => exists fn:set -> set, (forall x :e 1, fn x :e Empty) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e Empty) -> y 0 = e0 -> forall x :e 1, y x = fn x))))) (fun HAne => (imp_forall_in (A) (fun e0 => hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e0 then 1 else 0) = 1) (fun e0 => exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)) (fun e0 He0 => (imp_trans (hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e0 then 1 else 0) = 1) (exists fn :e A :^: 1, fn hl_one = e0 /\ forall y :e A :^: 1, y hl_one = e0 -> y = fn) (exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)) (andEL ((hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e0 then 1 else 0) = 1) -> (exists fn :e A :^: 1, fn hl_one = e0 /\ forall y :e A :^: 1, y hl_one = e0 -> y = fn)) ((exists fn :e A :^: 1, fn hl_one = e0 /\ forall y :e A :^: 1, y hl_one = e0 -> y = fn) -> (hl_exists_unique (A :^: 1) (fun fn :e A :^: 1 => if fn hl_one = e0 then 1 else 0) = 1)) (hl_exists_unique_lit (A :^: 1) (fun fn => fn hl_one = e0))) (imp_exists_fun (1) (A) (fun fn => fn hl_one = e0 /\ forall y :e A :^: 1, y hl_one = e0 -> y = fn) (fun fn => fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x) (fun fn Hfn => (imp_and (fn hl_one = e0) (fn 0 = e0) (forall y :e A :^: 1, y hl_one = e0 -> y = fn) (forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x) (imp_eq (fn hl_one) (fn 0) (e0) (e0) (((hl_one_compat)) (fun hl__u hl__v => fn hl_one = fn hl__u) (fun q H => H)) (fun q H => H)) (imp_forall_fun (1) (A) (fun y => y hl_one = e0 -> y = fn) (fun y => y 0 = e0 -> forall x :e 1, y x = fn x) (fun y Hyc => (fun H__L : ((hl_lam 1 y hl_one = e0) -> (hl_lam 1 y = fn)) => fun H__hyp4 : (y 0 = e0) => (imp_trans (hl_lam 1 y = fn) (forall x :e 1, hl_lam 1 y x = fn x) (forall x :e 1, y x = fn x) (iffEL (hl_lam 1 y = fn) (forall x :e 1, hl_lam 1 y x = fn x) (eq_Pi_pointwise (1) (A) (hl_lam 1 y) (fn) (hl_lam_Pi (1) (A) y Hyc) Hfn)) (imp_forall_in (1) (fun x => hl_lam 1 y x = fn x) (fun x => y x = fn x) (fun x Hx => (imp_eq (hl_lam 1 y x) (y x) (fn x) (fn x) ((hl_lam_ap (1) y) (x) Hx) (fun q H => H))))) (H__L ((imp_eq (y 0) (hl_lam 1 y hl_one) (e0) (e0) (eq_sym_i (hl_lam 1 y hl_one) (y 0) (((hl_one_compat)) (fun hl__u hl__v => hl_lam 1 y hl_one = y hl__u) ((hl_lam_ap (1) y) (hl_one) ((hl_one_in))))) (eq_sym_i (e0) (e0) (fun q H => H))) H__hyp4))))))))))) (H__top A HAne)))).
+Qed.
 Theorem one_Axiom : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x).
+exact (one_Axiom_bridge hlt_one_Axiom).
 Admitted.
 
 // HOL Light: trivia.ml:86 / FORALL_ONE_THM   (hash md5:71b389caed42f1429cd0e3335edc3b46)
-// not bridged: 
+Theorem hlt_FORALL_ONE_THM : forall P :e 2 :^: 1, (forall x :e 1, P x = 1) <-> P hl_one = 1.
+Admitted.
+Theorem FORALL_ONE_THM_bridge : (forall P :e 2 :^: 1, (forall x :e 1, P x = 1) <-> P hl_one = 1) -> (forall P:set -> prop, (forall x :e 1, P x) <-> P 0).
+exact (fun H__top => (imp_forall_pred (1) (fun P => (forall x :e 1, P x = 1) <-> P hl_one = 1) (fun P => (forall x :e 1, P x) <-> P 0) (fun P => (imp_iff (forall x :e 1, hl_chip 1 P x = 1) (forall x :e 1, P x) (hl_chip 1 P hl_one = 1) (P 0) (imp_forall_in (1) (fun x => hl_chip 1 P x = 1) (fun x => P x) (fun x Hx => (iffEL (hl_chip 1 P x = 1) (P x) ((hl_chip_iff (1) P) (x) Hx)))) (imp_forall_in (1) (fun x => P x) (fun x => hl_chip 1 P x = 1) (fun x Hx => (iffER (hl_chip 1 P x = 1) (P x) ((hl_chip_iff (1) P) (x) Hx)))) (iffEL (hl_chip 1 P hl_one = 1) (P 0) (((hl_one_compat)) (fun hl__u hl__v => hl_chip 1 P hl_one = 1 <-> P hl__u) ((hl_chip_iff (1) P) (hl_one) ((hl_one_in))))) (iffER (hl_chip 1 P hl_one = 1) (P 0) (((hl_one_compat)) (fun hl__u hl__v => hl_chip 1 P hl_one = 1 <-> P hl__u) ((hl_chip_iff (1) P) (hl_one) ((hl_one_in)))))))) H__top).
+Qed.
 Theorem FORALL_ONE_THM : forall P:set -> prop, (forall x :e 1, P x) <-> P 0.
+exact (FORALL_ONE_THM_bridge hlt_FORALL_ONE_THM).
 Admitted.
 
 // HOL Light: trivia.ml:90 / EXISTS_ONE_THM   (hash md5:daa3be611903bccb7d5aace9a4b9ba60)
-// not bridged: 
+Theorem hlt_EXISTS_ONE_THM : forall P :e 2 :^: 1, (exists x :e 1, P x = 1) <-> P hl_one = 1.
+Admitted.
+Theorem EXISTS_ONE_THM_bridge : (forall P :e 2 :^: 1, (exists x :e 1, P x = 1) <-> P hl_one = 1) -> (forall P:set -> prop, (exists x :e 1, P x) <-> P 0).
+exact (fun H__top => (imp_forall_pred (1) (fun P => (exists x :e 1, P x = 1) <-> P hl_one = 1) (fun P => (exists x :e 1, P x) <-> P 0) (fun P => (imp_iff (exists x :e 1, hl_chip 1 P x = 1) (exists x :e 1, P x) (hl_chip 1 P hl_one = 1) (P 0) (imp_exists_in (1) (fun x => hl_chip 1 P x = 1) (fun x => P x) (fun x Hx => (iffEL (hl_chip 1 P x = 1) (P x) ((hl_chip_iff (1) P) (x) Hx)))) (imp_exists_in (1) (fun x => P x) (fun x => hl_chip 1 P x = 1) (fun x Hx => (iffER (hl_chip 1 P x = 1) (P x) ((hl_chip_iff (1) P) (x) Hx)))) (iffEL (hl_chip 1 P hl_one = 1) (P 0) (((hl_one_compat)) (fun hl__u hl__v => hl_chip 1 P hl_one = 1 <-> P hl__u) ((hl_chip_iff (1) P) (hl_one) ((hl_one_in))))) (iffER (hl_chip 1 P hl_one = 1) (P 0) (((hl_one_compat)) (fun hl__u hl__v => hl_chip 1 P hl_one = 1 <-> P hl__u) ((hl_chip_iff (1) P) (hl_one) ((hl_one_in)))))))) H__top).
+Qed.
 Theorem EXISTS_ONE_THM : forall P:set -> prop, (exists x :e 1, P x) <-> P 0.
+exact (EXISTS_ONE_THM_bridge hlt_EXISTS_ONE_THM).
 Admitted.
 
 // HOL Light: trivia.ml:95 / ETA_ONE   (hash md5:6274a6897389394dd8d3a8b6deca86e1)

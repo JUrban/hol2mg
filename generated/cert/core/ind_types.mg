@@ -74,8 +74,13 @@ Theorem option_DISTINCT : forall A:set, forall a :e A, ~ Inj1 a = Inj0 0.
 Admitted.
 
 // HOL Light: ind_types.ml:1053 / option_INJ   (hash md5:4b1c51697077e7e6230974a578bf806c)
-// not bridged: 
+Theorem hlt_option_INJ : forall A:set, A <> Empty -> forall a b :e A, hl_SOME A a = hl_SOME A b <-> a = b.
+Admitted.
+Theorem option_INJ_bridge : (forall A:set, A <> Empty -> forall a b :e A, hl_SOME A a = hl_SOME A b <-> a = b) -> (forall A:set, forall a b :e A, Inj1 a = Inj1 b <-> a = b).
+exact (fun H__top A => (xm (A = Empty) (forall a b :e A, Inj1 a = Inj1 b <-> a = b) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall a b :e hl__u, Inj1 a = Inj1 b <-> a = b) (forall_in_Empty (fun a => forall b :e Empty, Inj1 a = Inj1 b <-> a = b)))) (fun HAne => (imp_forall_in (A) (fun a => forall b :e A, hl_SOME A a = hl_SOME A b <-> a = b) (fun a => forall b :e A, Inj1 a = Inj1 b <-> a = b) (fun a Ha => (imp_forall_in (A) (fun b => hl_SOME A a = hl_SOME A b <-> a = b) (fun b => Inj1 a = Inj1 b <-> a = b) (fun b Hb => (imp_iff (hl_SOME A a = hl_SOME A b) (Inj1 a = Inj1 b) (a = b) (a = b) (imp_eq (hl_SOME A a) (Inj1 a) (hl_SOME A b) (Inj1 b) ((hl_SOME_compat) (A) HAne (a) Ha) ((hl_SOME_compat) (A) HAne (b) Hb)) (imp_eq (Inj1 a) (hl_SOME A a) (Inj1 b) (hl_SOME A b) (eq_sym_i (hl_SOME A a) (Inj1 a) ((hl_SOME_compat) (A) HAne (a) Ha)) (eq_sym_i (hl_SOME A b) (Inj1 b) ((hl_SOME_compat) (A) HAne (b) Hb))) (imp_eq (a) (a) (b) (b) (fun q H => H) (fun q H => H)) (imp_eq (a) (a) (b) (b) (eq_sym_i (a) (a) (fun q H => H)) (eq_sym_i (b) (b) (fun q H => H)))))))) (H__top A HAne)))).
+Qed.
 Theorem option_INJ : forall A:set, forall a b :e A, Inj1 a = Inj1 b <-> a = b.
+exact (option_INJ_bridge hlt_option_INJ).
 Admitted.
 
 // HOL Light: ind_types.ml:1061 / ISO   (hash md5:3ba2a1ebc7dc10f5cd16b4b8c40e2eb7)

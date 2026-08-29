@@ -62,10 +62,6 @@ Admitted.
 Theorem hl_pairwise_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 x y) -> forall l2 :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) l1 l2 = 1 <-> forall x y :e hl_rep2 A l2, x <> y -> P1 x y.
 Admitted.
 
-// one : 1 (not in compat.mg)
-Theorem hl_one_compat : hl_one = 0.
-Admitted.
-
 // NUMSUM : bool->num->num (not in compat.mg)
 Theorem hl_NUMSUM_compat : hl_NUMSUM = Empty.
 Admitted.
@@ -102,16 +98,8 @@ Admitted.
 Theorem hl_iterato_compat : forall A K:set, A <> Empty -> K <> Empty -> hl_iterato A K = Empty.
 Admitted.
 
-// has_sup : (real->bool)->real->bool (not in compat.mg)
-Theorem hl_has_sup_compat : forall l1 :e 2 :^: R, forall l2 :e R, hl_has_sup l1 l2 = 1 <-> is_lub (hl_rep R l1) l2.
-Admitted.
-
 // FCONS : A->(num->A)->num->A (not in compat.mg)
 Theorem hl_FCONS_compat : forall A:set, A <> Empty -> hl_FCONS A = Empty.
-Admitted.
-
-// dimindex : (N->bool)->num (not in compat.mg)
-Theorem hl_dimindex_compat : forall N:set, N <> Empty -> forall l1 :e 2 :^: N, hl_dimindex N l1 = dimindex N.
 Admitted.
 
 // INJF : (num->num->A->bool)->num->A->bool (not in compat.mg)
@@ -120,10 +108,6 @@ Admitted.
 
 // iproduct : (A->bool)->(A->int)->int (not in compat.mg)
 Theorem hl_iproduct_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e int :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_iproduct A l1 l2 = finprod (hl_rep A l1) f2.
-Admitted.
-
-// int_gt : int->int->bool (not in compat.mg)
-Theorem hl_int_gt_compat : forall l1 l2 :e int, hl_int_gt l1 l2 = 1 <-> l2 < l1.
 Admitted.
 
 // COUNTABLE : (A->bool)->bool (not in compat.mg)
@@ -266,10 +250,6 @@ Admitted.
 Theorem hl_dest_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_diff A B, hl_dest_finite_diff A B l1 = l1.
 Admitted.
 
-// has_inf : (real->bool)->real->bool (not in compat.mg)
-Theorem hl_has_inf_compat : forall l1 :e 2 :^: R, forall l2 :e R, hl_has_inf l1 l2 = 1 <-> is_glb (hl_rep R l1) l2.
-Admitted.
-
 // DECIMAL : num->num->real (not in compat.mg)
 Theorem hl_DECIMAL_compat : forall l1 l2 :e omega, hl_DECIMAL l1 l2 = l1 :/: l2.
 Admitted.
@@ -354,10 +334,6 @@ Admitted.
 Theorem hl_REVERSE_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_REVERSE A l1 = seq_rev l1.
 Admitted.
 
-// SOME : A->A option (not in compat.mg)
-Theorem hl_SOME_compat : forall A:set, A <> Empty -> forall l1 :e A, hl_SOME A l1 = Inj1 l1.
-Admitted.
-
 // INL : A->(A,B)sum (not in compat.mg)
 Theorem hl_INL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, hl_INL A B l1 = Inj0 l1.
 Admitted.
@@ -408,10 +384,6 @@ Admitted.
 
 // ASSOC : A->(A#B) list->B (not in compat.mg)
 Theorem hl_ASSOC_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, forall l2 :e finseq (A :*: B), hl_ASSOC A B l1 l2 = seq_assoc l1 l2.
-Admitted.
-
-// minimal : (num->bool)->num (not in compat.mg)
-Theorem hl_minimal_compat : forall l1 :e 2 :^: omega, forall P1:set -> prop, (forall x :e omega, l1 x = 1 <-> P1 x) -> hl_minimal l1 = choose_in omega (fun n:set => P1 n /\ forall m :e omega, P1 m -> n <= m).
 Admitted.
 
 // LET : (A->B)->A->B (not in compat.mg)
@@ -496,10 +468,6 @@ Admitted.
 
 // real_mod : real->real->real->bool (not in compat.mg)
 Theorem hl_real_mod_compat : forall l1 l2 l3 :e R, hl_real_mod l1 l2 l3 = 1 <-> real_mod l1 l2 l3.
-Admitted.
-
-// ARBITRARY : ((A->bool)->bool)->bool (not in compat.mg)
-Theorem hl_ARBITRARY_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_ARBITRARY A l1 = 1 <-> True.
 Admitted.
 
 // LAST : A list->A (not in compat.mg)
