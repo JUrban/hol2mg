@@ -91,7 +91,7 @@ let sanitize_var s =
   let s' = Buffer.contents b in
   let alnum = String.exists (fun c -> c <> '_' && c <> '\'') s' in
   if not alnum then (match s with "<<" | "<<<" | "<" | "<=" | "<<=" -> "lt" | "op" -> "op" | "+" | "*" -> "op" | _ -> "rel")
-  else if s'.[0] >= '0' && s'.[0] <= '9' then "v" ^ s' else s'
+  else if (s'.[0] >= '0' && s'.[0] <= '9') || s'.[0] = '_' then "v" ^ s' else s'
 
 let fresh ctx base =
   let base = sanitize_var base in

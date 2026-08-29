@@ -1,0 +1,352 @@
+// hol2mg bridge library (docs/DESIGN.md §21.4–21.5): representation relations between the
+// literal layer and the native layer, and compatibility theorems for the HOL logical
+// constants.  Checked after mglib/native/*.mg and mglib/literal/model.mg (before _literal.mg,
+// so this file may only mention constants of model.mg, the native modules and God1).
+// Every theorem here is Qed; nothing is admitted.
+
+// ---- Booleans as data: members of 2 ----
+Theorem If_in_2 : forall p:prop, (if p then 1 else 0) :e 2.
+let p. apply (xm p).
+- assume Hp: p. rewrite (If_i_1 p 1 0 Hp). exact In_1_2.
+- assume Hnp: ~ p. rewrite (If_i_0 p 1 0 Hnp). exact In_0_2.
+Qed.
+
+Theorem If_1_iff : forall p:prop, (if p then 1 else 0) = 1 <-> p.
+let p. apply iffI.
+- assume H: (if p then 1 else 0) = 1. apply (xm p).
+  + assume Hp: p. exact Hp.
+  + assume Hnp: ~ p. prove False. apply neq_0_1. rewrite <- H at 1. rewrite (If_i_0 p 1 0 Hnp). exact (fun q H => H).
+- assume Hp: p. exact (If_i_1 p 1 0 Hp).
+Qed.
+
+Theorem In_2_cases : forall b :e 2, b = 1 \/ b = 0.
+let b. assume Hb: b :e 2.
+exact (cases_2 b Hb (fun b => b = 1 \/ b = 0) (orIR (0 = 1) (0 = 0) (fun q H => H)) (orIL (1 = 1) (1 = 0) (fun q H => H))).
+Qed.
+
+Theorem In_2_not_1 : forall b :e 2, b <> 1 -> b = 0.
+let b. assume Hb: b :e 2. assume Hn: b <> 1.
+apply (In_2_cases b Hb).
+- assume H1: b = 1. exact (FalseE (Hn H1) (b = 0)).
+- assume H0: b = 0. exact H0.
+Qed.
+
+// ---- subsets: the representation of a literal predicate F :e 2 :^: A, and the
+//      characteristic function of a native subset / meta-predicate ----
+Definition hl_rep : set -> set -> set := fun A F => {x :e A | F x = 1}.
+Definition hl_chi : set -> set -> set := fun A s => fun x :e A => if x :e s then 1 else 0.
+Definition hl_chip : set -> (set -> prop) -> set := fun A P => fun x :e A => if P x then 1 else 0.
+Definition hl_lam : set -> (set -> set) -> set := fun A f => fun x :e A => f x.
+
+Theorem hl_rep_Subq : forall A F:set, hl_rep A F c= A.
+let A F. exact (Sep_Subq A (fun x => F x = 1)).
+Qed.
+
+Theorem hl_rep_iff : forall A F:set, forall x :e A, F x = 1 <-> x :e hl_rep A F.
+let A F x. assume Hx: x :e A. apply iffI.
+- assume H: F x = 1. exact (SepI A (fun x => F x = 1) x Hx H).
+- assume H: x :e hl_rep A F. exact (SepE2 A (fun x => F x = 1) x H).
+Qed.
+
+Theorem hl_chi_Pi : forall A s:set, hl_chi A s :e 2 :^: A.
+let A s. prove (fun x :e A => if x :e s then 1 else 0) :e Pi_ x :e A, 2.
+apply (lam_Pi A (fun _ => 2) (fun x => if x :e s then 1 else 0)).
+let x. assume _. exact (If_in_2 (x :e s)).
+Qed.
+
+Theorem hl_chi_iff : forall A s:set, forall x :e A, hl_chi A s x = 1 <-> x :e s.
+let A s x. assume Hx: x :e A.
+prove (fun x :e A => if x :e s then 1 else 0) x = 1 <-> x :e s.
+rewrite (beta A (fun x => if x :e s then 1 else 0) x Hx).
+exact (If_1_iff (x :e s)).
+Qed.
+
+Theorem hl_rep_chi : forall A s:set, s c= A -> hl_rep A (hl_chi A s) = s.
+let A s. assume Hs: s c= A.
+apply set_ext.
+- let x. assume Hx: x :e hl_rep A (hl_chi A s).
+  claim HxA: x :e A. { exact (hl_rep_Subq A (hl_chi A s) x Hx). }
+  apply (hl_chi_iff A s x HxA).
+  assume H1: hl_chi A s x = 1 -> x :e s. assume _.
+  apply H1. apply (hl_rep_iff A (hl_chi A s) x HxA). assume _. assume H2: x :e hl_rep A (hl_chi A s) -> hl_chi A s x = 1. exact (H2 Hx).
+- let x. assume Hx: x :e s.
+  claim HxA: x :e A. { exact (Hs x Hx). }
+  apply (hl_rep_iff A (hl_chi A s) x HxA). assume H1: hl_chi A s x = 1 -> x :e hl_rep A (hl_chi A s). assume _.
+  apply H1. apply (hl_chi_iff A s x HxA). assume _. assume H2: x :e s -> hl_chi A s x = 1. exact (H2 Hx).
+Qed.
+
+Theorem hl_chip_Pi : forall A:set, forall P:set -> prop, hl_chip A P :e 2 :^: A.
+let A P. prove (fun x :e A => if P x then 1 else 0) :e Pi_ x :e A, 2.
+apply (lam_Pi A (fun _ => 2) (fun x => if P x then 1 else 0)).
+let x. assume _. exact (If_in_2 (P x)).
+Qed.
+
+Theorem hl_chip_iff : forall A:set, forall P:set -> prop, forall x :e A, hl_chip A P x = 1 <-> P x.
+let A P x. assume Hx: x :e A.
+prove (fun x :e A => if P x then 1 else 0) x = 1 <-> P x.
+rewrite (beta A (fun x => if P x then 1 else 0) x Hx).
+exact (If_1_iff (P x)).
+Qed.
+
+Theorem hl_lam_Pi : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> hl_lam A f :e B :^: A.
+let A B f. assume Hf: forall x :e A, f x :e B.
+prove (fun x :e A => f x) :e Pi_ x :e A, B.
+exact (lam_Pi A (fun _ => B) f Hf).
+Qed.
+
+Theorem hl_lam_ap : forall A:set, forall f:set -> set, forall x :e A, hl_lam A f x = f x.
+let A f x. assume Hx: x :e A. exact (beta A f x Hx).
+Qed.
+
+Theorem ap_Pi_2 : forall A F:set, F :e 2 :^: A -> forall x :e A, F x :e 2.
+let A F. assume HF: F :e 2 :^: A. let x. assume Hx: x :e A.
+exact (ap_Pi A (fun _ => 2) F x HF Hx).
+Qed.
+
+Theorem setexp_ap : forall A B F:set, F :e B :^: A -> forall x :e A, F x :e B.
+let A B F. assume HF: F :e B :^: A. let x. assume Hx: x :e A.
+exact (ap_Pi A (fun _ => B) F x HF Hx).
+Qed.
+
+// ---- equality and choice ----
+Theorem hl_eq_iff : forall A:set, forall x y :e A, hl_eq A x y = 1 <-> x = y.
+let A x. assume Hx: x :e A. let y. assume Hy: y :e A.
+prove (fun x :e A => fun y :e A => if x = y then 1 else 0) x y = 1 <-> x = y.
+rewrite (beta A (fun x => fun y :e A => if x = y then 1 else 0) x Hx).
+rewrite (beta A (fun y => if x = y then 1 else 0) y Hy).
+exact (If_1_iff (x = y)).
+Qed.
+
+Theorem hl_select_eq : forall A P:set, P :e 2 :^: A -> hl_select A P = choose_in A (fun x => P x = 1).
+let A P. assume HP: P :e 2 :^: A.
+prove (fun P :e 2 :^: A => choose_in A (fun x => P x = 1)) P = choose_in A (fun x => P x = 1).
+exact (beta (2 :^: A) (fun P => choose_in A (fun x => P x = 1)) P HP).
+Qed.
+
+// ---- implication congruences used by generated bridge proofs ----
+Theorem imp_and : forall a a' b b':prop, (a -> a') -> (b -> b') -> a /\ b -> a' /\ b'.
+let a a' b b'. assume Ha Hb H. apply H. assume H1 H2. exact (andI a' b' (Ha H1) (Hb H2)).
+Qed.
+Theorem imp_or : forall a a' b b':prop, (a -> a') -> (b -> b') -> a \/ b -> a' \/ b'.
+let a a' b b'. assume Ha Hb H. apply H.
+- assume H1. exact (orIL a' b' (Ha H1)).
+- assume H2. exact (orIR a' b' (Hb H2)).
+Qed.
+Theorem imp_imp : forall a a' b b':prop, (a' -> a) -> (b -> b') -> (a -> b) -> a' -> b'.
+let a a' b b'. assume Ha Hb H H1. exact (Hb (H (Ha H1))).
+Qed.
+Theorem imp_not : forall a a':prop, (a' -> a) -> ~ a -> ~ a'.
+let a a'. assume Ha H H1. exact (H (Ha H1)).
+Qed.
+Theorem imp_iff : forall a a' b b':prop, (a -> a') -> (a' -> a) -> (b -> b') -> (b' -> b) -> (a <-> b) -> (a' <-> b').
+let a a' b b'. assume Ha1 Ha2 Hb1 Hb2 H. apply H. assume H1 H2. apply iffI.
+- assume H3. exact (Hb1 (H1 (Ha2 H3))).
+- assume H3. exact (Ha1 (H2 (Hb2 H3))).
+Qed.
+Theorem imp_eq : forall a a' b b':set, a = a' -> b = b' -> a = b -> a' = b'.
+let a a' b b'. assume H1 H2 H3. rewrite <- H1. rewrite <- H2. exact H3.
+Qed.
+Theorem imp_forall_in : forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (forall x :e A, P x) -> forall x :e A, Q x.
+let A P Q. assume H H1. let x. assume Hx. exact (H x Hx (H1 x Hx)).
+Qed.
+Theorem imp_exists_in : forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (exists x :e A, P x) -> exists x :e A, Q x.
+let A P Q. assume H H1. apply H1. let x. assume Hx0. apply Hx0. assume Hx HP. witness x. exact (andI (x :e A) (Q x) Hx (H x Hx HP)).
+Qed.
+
+// quantifier domain changes: literal functions/predicates/subsets/Booleans versus native views
+Theorem imp_forall_pred : forall A:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall P:set -> prop, L (hl_chip A P) -> N P) -> (forall F :e 2 :^: A, L F) -> forall P:set -> prop, N P.
+let A L N. assume H H1. let P. exact (H P (H1 (hl_chip A P) (hl_chip_Pi A P))).
+Qed.
+Theorem imp_forall_pred_rev : forall A:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall F :e 2 :^: A, N (fun x => F x = 1) -> L F) -> (forall P:set -> prop, N P) -> forall F :e 2 :^: A, L F.
+let A L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun x => F x = 1))).
+Qed.
+Theorem imp_exists_pred : forall A:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall F :e 2 :^: A, L F -> N (fun x => F x = 1)) -> (exists F :e 2 :^: A, L F) -> exists P:set -> prop, N P.
+let A L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun x => F x = 1). exact (H F HF HL).
+Qed.
+Theorem imp_exists_pred_rev : forall A:set, forall L:set -> prop, forall N:(set -> prop) -> prop,
+  (forall P:set -> prop, N P -> L (hl_chip A P)) -> (exists P:set -> prop, N P) -> exists F :e 2 :^: A, L F.
+let A L N. assume H H1. apply H1. let P. assume HP. witness (hl_chip A P). exact (andI (hl_chip A P :e 2 :^: A) (L (hl_chip A P)) (hl_chip_Pi A P) (H P HP)).
+Qed.
+Theorem imp_forall_fun : forall A B:set, forall L:set -> prop, forall N:(set -> set) -> prop,
+  (forall f:set -> set, (forall x :e A, f x :e B) -> L (hl_lam A f) -> N f) -> (forall F :e B :^: A, L F) -> forall f:set -> set, (forall x :e A, f x :e B) -> N f.
+let A B L N. assume H H1. let f. assume Hf. exact (H f Hf (H1 (hl_lam A f) (hl_lam_Pi A B f Hf))).
+Qed.
+Theorem imp_forall_fun_rev : forall A B:set, forall L:set -> prop, forall N:(set -> set) -> prop,
+  (forall F :e B :^: A, N (fun x => F x) -> L F) -> (forall f:set -> set, (forall x :e A, f x :e B) -> N f) -> forall F :e B :^: A, L F.
+let A B L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun x => F x) (setexp_ap A B F HF))).
+Qed.
+Theorem imp_exists_fun : forall A B:set, forall L:set -> prop, forall N:(set -> set) -> prop,
+  (forall F :e B :^: A, L F -> N (fun x => F x)) -> (exists F :e B :^: A, L F) -> exists f:set -> set, (forall x :e A, f x :e B) /\ N f.
+let A B L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun x => F x).
+exact (andI (forall x :e A, F x :e B) (N (fun x => F x)) (setexp_ap A B F HF) (H F HF HL)).
+Qed.
+Theorem imp_exists_fun_rev : forall A B:set, forall L:set -> prop, forall N:(set -> set) -> prop,
+  (forall f:set -> set, (forall x :e A, f x :e B) -> N f -> L (hl_lam A f)) -> (exists f:set -> set, (forall x :e A, f x :e B) /\ N f) -> exists F :e B :^: A, L F.
+let A B L N. assume H H1. apply H1. let f. assume Hf0. apply Hf0. assume Hf HN. witness (hl_lam A f).
+exact (andI (hl_lam A f :e B :^: A) (L (hl_lam A f)) (hl_lam_Pi A B f Hf) (H f Hf HN)).
+Qed.
+Theorem imp_forall_sub : forall A:set, forall L N:set -> prop,
+  (forall s c= A, L (hl_chi A s) -> N s) -> (forall F :e 2 :^: A, L F) -> forall s c= A, N s.
+let A L N. assume H H1. let s. assume Hs. exact (H s Hs (H1 (hl_chi A s) (hl_chi_Pi A s))).
+Qed.
+Theorem imp_forall_sub_rev : forall A:set, forall L N:set -> prop,
+  (forall F :e 2 :^: A, N (hl_rep A F) -> L F) -> (forall s c= A, N s) -> forall F :e 2 :^: A, L F.
+let A L N. assume H H1. let F. assume HF. exact (H F HF (H1 (hl_rep A F) (hl_rep_Subq A F))).
+Qed.
+Theorem imp_exists_sub : forall A:set, forall L N:set -> prop,
+  (forall F :e 2 :^: A, L F -> N (hl_rep A F)) -> (exists F :e 2 :^: A, L F) -> exists s c= A, N s.
+let A L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (hl_rep A F).
+exact (andI (hl_rep A F c= A) (N (hl_rep A F)) (hl_rep_Subq A F) (H F HF HL)).
+Qed.
+Theorem imp_exists_sub_rev : forall A:set, forall L N:set -> prop,
+  (forall s c= A, N s -> L (hl_chi A s)) -> (exists s c= A, N s) -> exists F :e 2 :^: A, L F.
+let A L N. assume H H1. apply H1. let s. assume Hs0. apply Hs0. assume Hs HN. witness (hl_chi A s).
+exact (andI (hl_chi A s :e 2 :^: A) (L (hl_chi A s)) (hl_chi_Pi A s) (H s Hs HN)).
+Qed.
+Theorem imp_forall_bool : forall L:set -> prop, forall N:prop -> prop,
+  (forall p:prop, L (if p then 1 else 0) -> N p) -> (forall b :e 2, L b) -> forall p:prop, N p.
+let L N. assume H H1. let p. exact (H p (H1 (if p then 1 else 0) (If_in_2 p))).
+Qed.
+Theorem imp_forall_bool_rev : forall L:set -> prop, forall N:prop -> prop,
+  (forall b :e 2, N (b = 1) -> L b) -> (forall p:prop, N p) -> forall b :e 2, L b.
+let L N. assume H H1. let b. assume Hb. exact (H b Hb (H1 (b = 1))).
+Qed.
+Theorem imp_exists_bool : forall L:set -> prop, forall N:prop -> prop,
+  (forall b :e 2, L b -> N (b = 1)) -> (exists b :e 2, L b) -> exists p:prop, N p.
+let L N. assume H H1. apply H1. let b. assume Hb0. apply Hb0. assume Hb HL. witness (b = 1). exact (H b Hb HL).
+Qed.
+Theorem imp_exists_bool_rev : forall L:set -> prop, forall N:prop -> prop,
+  (forall p:prop, N p -> L (if p then 1 else 0)) -> (exists p:prop, N p) -> exists b :e 2, L b.
+let L N. assume H H1. apply H1. let p. assume Hp. witness (if p then 1 else 0). exact (andI ((if p then 1 else 0) :e 2) (L (if p then 1 else 0)) (If_in_2 p) (H p Hp)).
+Qed.
+
+// empty carriers
+Theorem forall_in_Empty : forall P:set -> prop, forall x :e Empty, P x.
+let P x. assume Hx. exact (FalseE (EmptyE x Hx) (P x)).
+Qed.
+Theorem not_exists_in_Empty : forall P:set -> prop, ~ exists x :e Empty, P x.
+let P. assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx _. exact (EmptyE x Hx).
+Qed.
+Theorem nonempty_of_In : forall A x:set, x :e A -> A <> Empty.
+let A x. assume Hx HA. apply (EmptyE x). rewrite <- HA. exact Hx.
+Qed.
+Theorem setexp_nonempty : forall A B:set, B <> Empty -> B :^: A <> Empty.
+let A B. assume HB. assume HE: B :^: A = Empty.
+claim Hex: exists y, y :e B.
+{ apply (xm (exists y, y :e B)).
+  - assume H. exact H.
+  - assume H. prove False. apply HB. apply Empty_eq. let y. assume Hy. apply H. witness y. exact Hy. }
+claim L: (fun x :e A => Eps_i (fun y => y :e B)) :e B :^: A.
+{ prove (fun x :e A => Eps_i (fun y => y :e B)) :e Pi_ x :e A, B.
+  apply (lam_Pi A (fun _ => B) (fun x => Eps_i (fun y => y :e B))).
+  let x. assume _. exact (Eps_i_ex (fun y => y :e B) Hex). }
+claim L2: (fun x :e A => Eps_i (fun y => y :e B)) :e Empty.
+{ rewrite <- HE. exact L. }
+exact (EmptyE (fun x :e A => Eps_i (fun y => y :e B)) L2).
+Qed.
+Theorem setprod_nonempty : forall A B:set, A <> Empty -> B <> Empty -> A :*: B <> Empty.
+let A B. assume HA HB.
+apply (xm (exists x, x :e A)).
+- assume H1. apply H1. let x. assume Hx.
+  apply (xm (exists y, y :e B)).
+  + assume H2. apply H2. let y. assume Hy.
+    apply (nonempty_of_In (A :*: B) (x, y)).
+    prove (x, y) :e Sigma_ x :e A, B.
+    rewrite <- (tuple_pair x y).
+    exact (pair_Sigma A (fun _ => B) x Hx y Hy).
+  + assume H2. prove False. apply HB. apply Empty_eq. let y. assume Hy. apply H2. witness y. exact Hy.
+- assume H1. prove False. apply HA. apply Empty_eq. let x. assume Hx. apply H1. witness x. exact Hx.
+Qed.
+Theorem omega_nonempty : omega <> Empty.
+exact (nonempty_of_In omega 0 (nat_p_omega 0 nat_0)).
+Qed.
+Theorem R_nonempty : R <> Empty.
+exact (nonempty_of_In R 0 real_0).
+Qed.
+Theorem two_nonempty : 2 <> Empty.
+exact (nonempty_of_In 2 0 In_0_2).
+Qed.
+Theorem one_nonempty : 1 <> Empty.
+exact (nonempty_of_In 1 0 In_0_1).
+Qed.
+Theorem finseq_nonempty : forall A:set, finseq A <> Empty.
+let A. exact (nonempty_of_In (finseq A) seq_nil (seq_nil_finseq A)).
+Qed.
+
+// ---- equality utilities for generated proof terms ----
+Theorem eq_sym_i : forall a b:set, a = b -> b = a.
+let a b. assume H. exact (H (fun u v => u = a) (fun q H => H)).
+Qed.
+Theorem imp_refl : forall a:prop, a -> a.
+let a. assume H. exact H.
+Qed.
+Theorem imp_trans : forall a b c:prop, (a -> b) -> (b -> c) -> a -> c.
+let a b c. assume H1 H2 H. exact (H2 (H1 H)).
+Qed.
+Theorem eq_to_pw : forall A F G:set, F = G -> forall x :e A, F x = G x.
+let A F G. assume H. let x. assume _. exact (H (fun u v => F x = u x) (fun q H => H)).
+Qed.
+Theorem rep_to_pw : forall A F s:set, F :e 2 :^: A -> hl_rep A F = s -> forall x :e A, F x = 1 <-> x :e s.
+let A F s. assume HF Hs. let x. assume Hx.
+exact (Hs (fun u v => F x = 1 <-> x :e u) (hl_rep_iff A F x Hx)).
+Qed.
+Theorem pw_to_eq : forall A B F:set, forall f:set -> set, F :e B :^: A -> (forall x :e A, F x = f x) -> F = hl_lam A f.
+let A B F f. assume HF H.
+claim Hl: hl_lam A f :e B :^: A.
+{ prove (fun x :e A => f x) :e Pi_ x :e A, B. apply (lam_Pi A (fun _ => B) f). let x. assume Hx. rewrite <- (H x Hx). exact (ap_Pi A (fun _ => B) F x HF Hx). }
+apply (Pi_ext A (fun _ => B) F HF (hl_lam A f) Hl).
+let x. assume Hx. rewrite (hl_lam_ap A f x Hx). exact (H x Hx).
+Qed.
+Theorem rep_eq_fwd : forall A F G s t:set, hl_rep A F = s -> hl_rep A G = t -> F = G -> s = t.
+let A F G s t. assume HF HG H.
+rewrite <- HF. rewrite <- HG. exact (H (fun u v => hl_rep A F = hl_rep A u) (fun q H => H)).
+Qed.
+Theorem hl_rep_inj : forall A F G:set, F :e 2 :^: A -> G :e 2 :^: A -> hl_rep A F = hl_rep A G -> F = G.
+let A F G. assume HF HG H.
+apply (Pi_ext A (fun _ => 2) F HF G HG).
+let x. assume Hx.
+claim HFx: F x :e 2. { exact (ap_Pi A (fun _ => 2) F x HF Hx). }
+claim HGx: G x :e 2. { exact (ap_Pi A (fun _ => 2) G x HG Hx). }
+claim L: F x = 1 <-> G x = 1.
+{ apply (iff_trans (F x = 1) (x :e hl_rep A F) (G x = 1) (hl_rep_iff A F x Hx)).
+  rewrite H. exact (iff_sym (G x = 1) (x :e hl_rep A G) (hl_rep_iff A G x Hx)). }
+apply L. assume L1 L2.
+apply (In_2_cases (F x) HFx).
+- assume H1: F x = 1. rewrite H1. exact (eq_sym_i (G x) 1 (L1 H1)).
+- assume H0: F x = 0. rewrite H0.
+  apply (In_2_cases (G x) HGx).
+  + assume H1: G x = 1. prove False. apply neq_0_1. exact (H0 (fun u v => u = 1) (L2 H1)).
+  + assume H1: G x = 0. exact (eq_sym_i (G x) 0 H1).
+Qed.
+Theorem rep_eq_bwd : forall A F G s t:set, F :e 2 :^: A -> G :e 2 :^: A -> hl_rep A F = s -> hl_rep A G = t -> s = t -> F = G.
+let A F G s t. assume HF HG Hs Ht H.
+apply (hl_rep_inj A F G HF HG). rewrite Hs. rewrite Ht. exact H.
+Qed.
+Theorem eq_Pi_pointwise : forall A B F G:set, F :e B :^: A -> G :e B :^: A -> (F = G <-> forall x :e A, F x = G x).
+let A B F G. assume HF HG. apply iffI.
+- assume H. exact (eq_to_pw A F G H).
+- assume H. exact (Pi_ext A (fun _ => B) F HF G HG H).
+Qed.
+Theorem If_i_in : forall p:prop, forall A x y:set, x :e A -> y :e A -> (if p then x else y) :e A.
+let p A x y. assume Hx Hy. apply (xm p).
+- assume Hp. rewrite (If_i_1 p x y Hp). exact Hx.
+- assume Hnp. rewrite (If_i_0 p x y Hnp). exact Hy.
+Qed.
+Theorem setsum_nonempty_L : forall A B:set, A <> Empty -> A :+: B <> Empty.
+let A B. assume HA. assume HE: A :+: B = Empty.
+claim Hex: exists x, x :e A.
+{ apply (xm (exists x, x :e A)).
+  - assume H. exact H.
+  - assume H. prove False. apply HA. apply Empty_eq. let x. assume Hx. apply H. witness x. exact Hx. }
+apply Hex. let x. assume Hx.
+claim L: Inj0 x :e A :+: B. { exact (Inj0_setsum A B x Hx). }
+apply (EmptyE (Inj0 x)). rewrite <- HE. exact L.
+Qed.
+
+Theorem hl_subtype_nonempty : forall A P:set, (exists x :e A, P x = 1) -> hl_subtype A P <> Empty.
+let A P. assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx HP.
+exact (nonempty_of_In (hl_subtype A P) x (SepI A (fun x => P x = 1) x Hx HP)).
+Qed.

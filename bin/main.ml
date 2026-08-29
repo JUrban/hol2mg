@@ -270,6 +270,7 @@ let () =
               Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" at.Elab.at_target (Mg.string_of_mty at.Elab.at_type) (Mg.to_string at.Elab.at_body)) order;
         close_out oc
       end else if Sys.file_exists def_file then Sys.remove def_file;
+      let literal_order = ref [] in
       (* ---- literal layer (docs/DESIGN.md §21): private definitions and admitted literal statements ---- *)
       let items = (match opt "--literal-out" with
         | None -> items
@@ -279,6 +280,7 @@ let () =
             let oc = open_out (Filename.concat ldir "_literal.mg") in
             Printf.fprintf oc "// hol2mg literal layer (private, docs/DESIGN.md §21.2): syntax-directed interpretation of the\n// HOL Light kernel definitions of profile %s (commit %s).  Checked after mglib/native/*.mg and\n// mglib/literal/model.mg.  Generated; do not edit.\n\n" profile hol_commit;
             let emitted = Hashtbl.create 512 and emitted_tys = Hashtbl.create 16 in
+            literal_order := [];
             let pending_tds = ref an.Literal.type_definitions in
             let flush_tds () =
               pending_tds := List.filter (fun ((td : type_definition), arity) ->
@@ -291,6 +293,7 @@ let () =
                      Printf.fprintf oc "// HOL Light type definition %s (abs %s, rep %s)\n" td.td_name td.td_abs td.td_rep;
                      List.iter (fun (n, mty, body) -> Printf.fprintf oc "Definition %s : %s :=\n  %s.\n" n (Mg.string_of_mty mty) (Mg.to_string body)) defs;
                      Printf.fprintf oc "\n";
+                     literal_order := `T (td, arity) :: !literal_order;
                      Hashtbl.replace emitted td.td_abs (); Hashtbl.replace emitted td.td_rep (); Hashtbl.replace emitted_tys td.td_name ()
                    with Literal.Literal_unsupported m ->
                      Hashtbl.replace an.Literal.supported td.td_abs false; Hashtbl.replace an.Literal.supported td.td_rep false;
@@ -305,6 +308,7 @@ let () =
                  Printf.fprintf oc "// HOL Light: %s : %s\n" c (Hol.string_of_ty cty);
                  Printf.fprintf oc "Definition %s : %s :=\n  %s.\n\n" n (Mg.string_of_mty mty) (Mg.to_string body);
                  Hashtbl.replace emitted c ();
+                 literal_order := `D (c, cty, rhs) :: !literal_order;
                  flush_tds ()
                with Literal.Literal_unsupported m ->
                  Hashtbl.replace an.Literal.supported c false; Hashtbl.replace an.Literal.reasons c m)) an.Literal.definitions;
@@ -337,6 +341,130 @@ let () =
               List.iter (fun ((i : Manifest.item), txt) ->
                 Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" i.Manifest.src_file (if i.Manifest.src_line > 0 then ":" ^ string_of_int i.Manifest.src_line else "") i.Manifest.source_name i.Manifest.hash;
                 Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n\n" i.Manifest.name txt) l;
+              close_out oc) by_shard;
+            items) in
+      (* ---- certification modules (docs/DESIGN.md §21.3/21.5): literal fact, bridge, derived theorem ---- *)
+      let items = (match opt "--cert-out" with
+        | None -> items
+        | Some cdir ->
+            mkdir_p cdir;
+            let an = Literal.analyse ex in
+            (* compatibility theorems available in mglib/literal/compat.mg: name -> statement text *)
+            let compat_file = (match opt "--compat" with Some f -> f | None -> "mglib/literal/compat.mg") in
+            let carriers_file = "mglib/literal/carriers.mg" in
+            let proved = Hashtbl.create 64 in
+            List.iter (fun compat_file -> if Sys.file_exists compat_file then begin
+              let ic = open_in compat_file in
+              let n = in_channel_length ic in
+              let txt = really_input_string ic n in close_in ic;
+              let re = Str.regexp "Theorem[ \n]+\([A-Za-z_0-9']+\)[ \n]*:\([^.]*\)\.[ \n]" in
+              let pos = ref 0 in
+              (try while true do
+                 let _ = Str.search_forward re txt !pos in
+                 let name = Str.matched_group 1 txt and body = Str.matched_group 2 txt in
+                 pos := Str.match_end ();
+                 let norm = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' (String.map (fun c -> if c = '\n' then ' ' else c) body))) in
+                 Hashtbl.replace proved name norm
+               done with Not_found -> ())
+            end) [ carriers_file; compat_file ];
+            (* expected statements for every registry entry *)
+            let compat = Hashtbl.create 256 in
+            let stubs = Buffer.create 4096 in
+            Hashtbl.iter (fun _ entries ->
+              List.iteri (fun idx (e : Registry.const_entry) ->
+                let name = Bridge.compat_name e idx in
+                match (try Bridge.compat_statement an e with _ -> None) with
+                | None -> Hashtbl.replace compat name ("", "no statement (unsupported roles)")
+                | Some st ->
+                    let txt = Mg.to_string st in
+                    let status = (match Hashtbl.find_opt proved name with
+                      | Some p when p = txt -> "ok"
+                      | Some _ -> "stated differently in compat.mg"
+                      | None -> "not in compat.mg") in
+                    Hashtbl.replace compat name (txt, status);
+                    if status <> "ok" then Buffer.add_string stubs (Printf.sprintf "// %s : %s (%s)\nTheorem %s : %s.\nAdmitted.\n\n" e.Registry.c_hol (Hol.string_of_ty e.Registry.c_scheme) status name txt)) entries) reg.Registry.consts;
+            (* typing lemmas of the literal definitions *)
+            let ocu = open_out (Filename.concat cdir "_literal_unfold.mg") in
+            Printf.fprintf ocu "// Unfolding lemmas of the literal definitions (generated with proofs; checked right after _literal.mg).\n\n";
+            let oc = open_out (Filename.concat cdir "_literal_typing.mg") in
+            Printf.fprintf oc "// Typing lemmas of the literal definitions (generated with proofs; checked after mglib/literal/carriers.mg).\n\n";
+            let typing_ok = Hashtbl.create 256 in
+            List.iter (function
+              | `D (c, cty, rhs) ->
+                  if Hashtbl.find_opt an.Literal.supported c = Some true then
+                    (match (try Some (Bridge.typing_lemma an typing_ok c cty rhs) with Bridge.Bridge_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("typing lemma " ^ c ^ ": " ^ m); None | Failure m -> prerr_endline ("typing lemma " ^ c ^ ": failure " ^ m); None) with
+                     | Some (name, st, pf) ->
+                         Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf; Hashtbl.replace typing_ok c ();
+                         (match (try Some (Bridge.unfold_lemma an c cty rhs) with _ -> None) with
+                          | Some (un, ust, upf) -> Printf.fprintf ocu "Theorem %s : %s.\n%s\nQed.\n\n" un ust upf
+                          | None -> ())
+                     | None -> ())
+              | `T (td, arity) ->
+                  (match (try Some (Bridge.tydef_lemmas an proved td arity) with Bridge.Bridge_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("type definition lemmas " ^ td.td_name ^ ": " ^ m); None) with
+                   | Some lemmas ->
+                       List.iter (fun (name, st, pf) ->
+                         if name = "" then Buffer.add_string stubs (Printf.sprintf "// nonemptiness of the carrier of type definition %s (prove in mglib/literal/carriers.mg)\nTheorem hl_ty_%s_nonempty : %s.\nAdmitted.\n\n" td.td_name (Elab.sanitize_var td.td_name) st)
+                         else begin
+                           Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf;
+                           if name = Literal.mg_name_of_const td.td_abs ^ "_in" then Hashtbl.replace typing_ok td.td_abs ()
+                           else Hashtbl.replace typing_ok td.td_rep ()
+                         end) lemmas
+                   | None -> ())) (List.rev !literal_order);
+            close_out oc; close_out ocu;
+            let oc = open_out (Filename.concat cdir "_compat_required.mg") in
+            Printf.fprintf oc "// Compatibility theorem statements generated from the mapping registry (docs/DESIGN.md §21.4)\n// that are not yet proved in mglib/literal/compat.mg (or are stated differently there), and\n// carrier nonemptiness theorems missing from mglib/literal/carriers.mg.\n\n%s" (Buffer.contents stubs);
+            close_out oc;
+            let by_shard = Hashtbl.create 32 in
+            let items = List.map (fun (i : Manifest.item) ->
+              if i.Manifest.cert_status <> "literal_emitted" || not (public i) then i
+              else begin
+                let th = Hashtbl.find thm_by_name i.Manifest.source_name in
+                let res = (try
+                    ignore (Unix.alarm 20);
+                    let o = Bridge.generate reg an compat typing_ok th.seq in
+                    ignore (Unix.alarm 0);
+                    let lit_txt = Mg.to_string o.Bridge.lit_stmt in
+                    if lit_txt <> i.Manifest.literal then Error ("bridge_mismatch: literal statement differs: " ^ lit_txt)
+                    else begin
+                      let nat, rewrites = Rewrite.run o.Bridge.nat_stmt in
+                      let nat, dropped = Emptycase.generalize nat (List.map snd (let tvs = List.sort compare (Hol.uniq (Hol.tyvars_of_tm th.seq.concl)) in List.map (fun a -> (a, a)) tvs)) in
+                      ignore nat;
+                      let pre = Mg.to_string o.Bridge.nat_stmt in
+                      if rewrites <> [] then Error ("bridge_unsupported: native rewrites " ^ String.concat "," rewrites)
+                      else if pre <> i.Manifest.statement then
+                        (if dropped <> [] || (String.length i.Manifest.statement < String.length pre) then Error ("bridge_unsupported: generalization (empty-carrier case) " ^ String.concat "," dropped)
+                         else Error ("bridge_mismatch: derived native statement differs: " ^ pre))
+                      else Ok o
+                    end
+                  with
+                  | Bridge.Bridge_unsupported m -> ignore (Unix.alarm 0); Error ("bridge_unsupported: " ^ m)
+                  | Literal.Literal_unsupported m -> ignore (Unix.alarm 0); Error ("bridge_unsupported: literal " ^ m)
+                  | Elab.Unsupported m | Elab.Elab_error m -> ignore (Unix.alarm 0); Error ("bridge_unsupported: elab " ^ m)
+                  | Timeout -> Error "bridge_unsupported: timeout"
+                  | Failure m -> ignore (Unix.alarm 0); Error ("bridge_failed: failure " ^ m)
+                  | Not_found -> ignore (Unix.alarm 0); Error "bridge_failed: Not_found"
+                  | Invalid_argument m -> ignore (Unix.alarm 0); Error ("bridge_failed: invalid_argument " ^ m)) in
+                let entry, i' = (match res with
+                  | Ok o -> ((i, Some o), { i with Manifest.cert_status = "bridge_emitted"; bridge = i.Manifest.name ^ "_bridge" })
+                  | Error m ->
+                      let st = (try String.sub m 0 (String.index m ':') with Not_found -> "bridge_failed") in
+                      ((i, None), { i with Manifest.cert_status = (if String.length st > 0 && st.[0] = 'b' then st else "bridge_failed"); cert_error = m })) in
+                Hashtbl.replace by_shard i.Manifest.shard (entry :: (try Hashtbl.find by_shard i.Manifest.shard with Not_found -> []));
+                i'
+              end) items in
+            Hashtbl.iter (fun shard l ->
+              let l = List.sort (fun ((a : Manifest.item), _) ((b : Manifest.item), _) -> compare (a.Manifest.src_line, a.Manifest.name) (b.Manifest.src_line, b.Manifest.name)) l in
+              let oc = open_out (Filename.concat cdir (shard ^ ".mg")) in
+              Printf.fprintf oc "// hol2mg certification module (private): shard %s of profile %s.\n// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),\n// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,\n// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.\n\n" shard profile;
+              List.iter (fun ((i : Manifest.item), o) ->
+                Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" i.Manifest.src_file (if i.Manifest.src_line > 0 then ":" ^ string_of_int i.Manifest.src_line else "") i.Manifest.source_name i.Manifest.hash;
+                match o with
+                | Some o ->
+                    Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal;
+                    Printf.fprintf oc "Theorem %s_bridge : (%s) -> (%s).\nexact %s.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.statement o.Bridge.proof;
+                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\nAdmitted.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name
+                | None ->
+                    Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement) l;
               close_out oc) by_shard;
             items) in
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in

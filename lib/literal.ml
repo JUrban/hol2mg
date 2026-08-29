@@ -83,7 +83,7 @@ type ctx = {
   consts : (string, ty) Hashtbl.t;                  (* generic types of constants *)
   supported : (string, bool) Hashtbl.t;             (* constant -> supported? *)
   tydefs : (string, string list) Hashtbl.t;         (* translated type definition -> tyvar order of the carrier *)
-  mutable vars : (string * string) list;            (* HOL free var -> Megalodon name *)
+  mutable vars : (string * Mg.tm) list;             (* HOL free var (key) -> literal term (usually a variable) *)
   mutable used : string list;
 }
 
@@ -91,8 +91,6 @@ let sanitize_var = Elab.sanitize_var
 
 let fresh ctx base =
   let base = sanitize_var base in
-  (* Megalodon identifiers start with a letter: HOL genvars (_123) get a prefix *)
-  let base = if base = "" || not (let c = base.[0] in (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) then "v" ^ base else base in
   let taken n = List.mem n ctx.used || Hashtbl.mem Mg.sig_names n || List.mem n Mg.reserved_words in
   let n = if taken base then (let rec go i = let n = base ^ string_of_int i in if taken n then go (i + 1) else n in go 1) else base in
   ctx.used <- n :: ctx.used; n
@@ -153,12 +151,12 @@ let rec lterm ctx (t : tm) : Mg.tm =
   else
     match t with
     | Bound _ -> failwith "lterm: bound variable"
-    | Free (s, _) -> Mg.Var (try List.assoc s ctx.vars with Not_found -> failwith ("lterm: unknown variable " ^ s))
+    | Free (s, _) -> (try List.assoc s ctx.vars with Not_found -> failwith ("lterm: unknown variable " ^ s))
     | Const (c, ty) -> const_ref ctx c ty
     | App (f, x) -> Mg.App (lterm ctx f, lterm ctx x)
     | Lam (x, ty, body) ->
         let n = fresh ctx x in
-        ctx.vars <- (x ^ "\000" ^ n, n) :: ctx.vars;
+        ctx.vars <- (x ^ "\000" ^ n, Mg.Var n) :: ctx.vars;
         let body' = open_with (Free (x ^ "\000" ^ n, ty)) body in
         let b = lterm ctx body' in
         ctx.vars <- List.remove_assoc (x ^ "\000" ^ n) ctx.vars; release ctx n;
@@ -185,7 +183,7 @@ and lprop ctx (t : tm) : Mg.tm =
 and lbinder ctx x ty body =
   let n = fresh ctx x in
   let key = x ^ "\000" ^ n in
-  ctx.vars <- (key, n) :: ctx.vars;
+  ctx.vars <- (key, Mg.Var n) :: ctx.vars;
   let b = lprop ctx (open_with (Free (key, ty)) body) in
   ctx.vars <- List.remove_assoc key ctx.vars; release ctx n;
   (n, b)
@@ -269,7 +267,7 @@ let statement consts supported tydefs (seq : sequent) : Mg.tm * (string * string
     end else (a, Elab.sanitize_tyvar a)) tvs in
   let ctx = new_ctx consts supported tydefs tv_names in
   let fvs = uniq (List.concat_map frees all) in
-  let decls = List.map (fun (s, ty) -> let n = fresh ctx s in ctx.vars <- (s, n) :: ctx.vars; (s, ty, n)) fvs in
+  let decls = List.map (fun (s, ty) -> let n = fresh ctx s in ctx.vars <- (s, Mg.Var n) :: ctx.vars; (s, ty, n)) fvs in
   let body = List.fold_right (fun h acc -> Mg.Imp (lprop ctx h, acc)) seq.hyps (lprop ctx seq.concl) in
   let body = List.fold_right (fun (_, ty, n) acc -> Mg.AllIn (n, carrier ctx ty, acc)) decls body in
   let body = List.fold_right (fun (_, n) acc -> Mg.Imp (mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) tv_names body in
