@@ -1567,3 +1567,124 @@ apply andI.
 - claim H2: q1 * n + r1 = q1 * n + r2. { exact (eq_trans_i (q1 * n + r1) (q2 * n + r2) (q1 * n + r2) H (f_equal (fun x => x * n + r2) q2 q1 (eq_sym_i q1 q2 Hqq))). }
   exact (add_SNo_cancel_L (q1 * n) r1 r2 (omega_SNo (q1 * n) (mul_SNo_In_omega q1 Hq1 n Hn)) (omega_SNo r1 Hr1) (omega_SNo r2 Hr2) H2).
 Qed.
+Theorem div_nat_0 : forall m :e omega, div_nat m 0 = 0.
+let m. assume Hm. prove (if 0 = 0 then 0 else Eps_i (fun q => q :e omega /\ exists r :e omega, r < 0 /\ m = q * 0 + r)) = 0.
+exact (If_i_1 (0 = 0) 0 (Eps_i (fun q => q :e omega /\ exists r :e omega, r < 0 /\ m = q * 0 + r)) (fun q H => H)).
+Qed.
+Theorem mod_nat_0 : forall m :e omega, mod_nat m 0 = m.
+let m. assume Hm. prove (if 0 = 0 then m else m + - div_nat m 0 * 0) = m.
+exact (If_i_1 (0 = 0) m (m + - div_nat m 0 * 0) (fun q H => H)).
+Qed.
+Theorem hl_DIV_compat : forall l1 l2 :e omega, hl_DIV l1 l2 = div_nat l1 l2.
+claim Hex: exists g r :e omega :^: omega :^: omega, forall m n :e omega, n = hl_NUMERAL hl_zero /\ (g m n = hl_NUMERAL hl_zero /\ r m n = m) \/ ~ n = hl_NUMERAL hl_zero /\ (m = hl_add (hl_mul (g m n) n) (r m n) /\ hl_lt (r m n) n = 1).
+{ witness (fun m :e omega => fun n :e omega => div_nat m n).
+  claim Hw: (fun m :e omega => fun n :e omega => div_nat m n) :e omega :^: omega :^: omega.
+  { exact (lam2_Pi omega omega omega (fun m n => div_nat m n) (fun m Hm n Hn => div_nat_omega m Hm n Hn)). }
+  apply andI.
+  - exact Hw.
+  - witness (fun m :e omega => fun n :e omega => mod_nat m n).
+    claim Hw2: (fun m :e omega => fun n :e omega => mod_nat m n) :e omega :^: omega :^: omega.
+    { exact (lam2_Pi omega omega omega (fun m n => mod_nat m n) (fun m Hm n Hn => mod_nat_omega m Hm n Hn)). }
+    apply andI.
+    + exact Hw2.
+    + let m. assume Hm. let n. assume Hn.
+      claim HG: (fun m :e omega => fun n :e omega => div_nat m n) m n = div_nat m n. { exact (lam2_beta omega omega (fun m n => div_nat m n) m Hm n Hn). }
+      claim HR: (fun m :e omega => fun n :e omega => mod_nat m n) m n = mod_nat m n. { exact (lam2_beta omega omega (fun m n => mod_nat m n) m Hm n Hn). }
+      claim Hd: div_nat m n :e omega. { exact (div_nat_omega m Hm n Hn). }
+      claim Hr: mod_nat m n :e omega. { exact (mod_nat_omega m Hm n Hn). }
+      apply (xm (n = 0)).
+      * assume H0. apply orIL. apply andI.
+        { exact (eq_trans_i n 0 (hl_NUMERAL hl_zero) H0 (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)). }
+        { apply andI.
+          - exact (eq_trans_i ((fun m :e omega => fun n :e omega => div_nat m n) m n) (div_nat m n) (hl_NUMERAL hl_zero) HG (eq_trans_i (div_nat m n) (div_nat m 0) (hl_NUMERAL hl_zero) (f_equal (fun x => div_nat m x) n 0 H0) (eq_trans_i (div_nat m 0) 0 (hl_NUMERAL hl_zero) (div_nat_0 m Hm) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)))).
+          - exact (eq_trans_i ((fun m :e omega => fun n :e omega => mod_nat m n) m n) (mod_nat m n) m HR (eq_trans_i (mod_nat m n) (mod_nat m 0) m (f_equal (fun x => mod_nat m x) n 0 H0) (mod_nat_0 m Hm))). }
+      * assume H0. apply orIR. apply andI.
+        { assume Hz. exact (H0 (eq_trans_i n (hl_NUMERAL hl_zero) 0 Hz hl_NUMERAL_zero)). }
+        { apply (div_mod_nat m Hm n Hn H0). assume H1 H2.
+          apply andI.
+          - exact (eq_trans_i m (div_nat m n * n + mod_nat m n) (hl_add (hl_mul ((fun m :e omega => fun n :e omega => div_nat m n) m n) n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n)) H1
+              (eq_sym_i (hl_add (hl_mul ((fun m :e omega => fun n :e omega => div_nat m n) m n) n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n)) (div_nat m n * n + mod_nat m n)
+                (eq_trans_i (hl_add (hl_mul ((fun m :e omega => fun n :e omega => div_nat m n) m n) n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n)) (hl_add (hl_mul (div_nat m n) n) (mod_nat m n)) (div_nat m n * n + mod_nat m n)
+                  (f_equal2 (fun p q => hl_add (hl_mul p n) q) ((fun m :e omega => fun n :e omega => div_nat m n) m n) (div_nat m n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n) (mod_nat m n) HG HR)
+                  (eq_trans_i (hl_add (hl_mul (div_nat m n) n) (mod_nat m n)) (hl_mul (div_nat m n) n + mod_nat m n) (div_nat m n * n + mod_nat m n)
+                    (hl_add_compat (hl_mul (div_nat m n) n) (setexp2_ap omega omega omega hl_mul hl_mul_in (div_nat m n) Hd n Hn) (mod_nat m n) Hr)
+                    (f_equal (fun x => x + mod_nat m n) (hl_mul (div_nat m n) n) (div_nat m n * n) (hl_mul_compat (div_nat m n) Hd n Hn)))))).
+          - claim H3: hl_lt (mod_nat m n) n = 1. { apply (hl_lt_compat (mod_nat m n) Hr n Hn). assume _ H4. exact (H4 H2). }
+            exact ((eq_sym_i ((fun m :e omega => fun n :e omega => mod_nat m n) m n) (mod_nat m n) HR) (fun hl__u hl__v => hl_lt hl__u n = 1) H3). } }
+apply (hl_DIV_spec Hex). assume HP Hg. apply HP. let r. assume Hr0. apply Hr0. assume Hr HS.
+let m. assume Hm. let n. assume Hn.
+claim Hd: hl_DIV m n :e omega. { exact (setexp2_ap omega omega omega hl_DIV Hg m Hm n Hn). }
+claim Hrmn: r m n :e omega. { exact (setexp2_ap omega omega omega r Hr m Hm n Hn). }
+apply (HS m Hm n Hn).
+- assume H. apply H. assume H0 H1. apply H1. assume H2 _.
+  claim Hn0: n = 0. { exact (eq_trans_i n (hl_NUMERAL hl_zero) 0 H0 hl_NUMERAL_zero). }
+  exact (eq_trans_i (hl_DIV m n) (hl_NUMERAL hl_zero) (div_nat m n) H2 (eq_trans_i (hl_NUMERAL hl_zero) 0 (div_nat m n) hl_NUMERAL_zero (eq_sym_i (div_nat m n) 0 (eq_trans_i (div_nat m n) (div_nat m 0) 0 (f_equal (fun x => div_nat m x) n 0 Hn0) (div_nat_0 m Hm))))).
+- assume H. apply H. assume H0 H1. apply H1. assume H2 H3.
+  claim Hn0: n <> 0. { assume Hz. apply H0. exact (eq_trans_i n 0 (hl_NUMERAL hl_zero) Hz (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)). }
+  claim H2': m = hl_DIV m n * n + r m n.
+  { exact (eq_trans_i m (hl_add (hl_mul (hl_DIV m n) n) (r m n)) (hl_DIV m n * n + r m n) H2
+      (eq_trans_i (hl_add (hl_mul (hl_DIV m n) n) (r m n)) (hl_mul (hl_DIV m n) n + r m n) (hl_DIV m n * n + r m n)
+        (hl_add_compat (hl_mul (hl_DIV m n) n) (setexp2_ap omega omega omega hl_mul hl_mul_in (hl_DIV m n) Hd n Hn) (r m n) Hrmn)
+        (f_equal (fun x => x + r m n) (hl_mul (hl_DIV m n) n) (hl_DIV m n * n) (hl_mul_compat (hl_DIV m n) Hd n Hn)))). }
+  claim H3': r m n < n. { apply (hl_lt_compat (r m n) Hrmn n Hn). assume H4 _. exact (H4 H3). }
+  apply (div_mod_nat m Hm n Hn Hn0). assume H5 H6.
+  claim Hd2: div_nat m n :e omega. { exact (div_nat_omega m Hm n Hn). }
+  claim Hr2: mod_nat m n :e omega. { exact (mod_nat_omega m Hm n Hn). }
+  apply (div_mod_unique n Hn (hl_DIV m n) Hd (r m n) Hrmn (div_nat m n) Hd2 (mod_nat m n) Hr2 H3' H6 (eq_trans_i (hl_DIV m n * n + r m n) m (div_nat m n * n + mod_nat m n) (eq_sym_i m (hl_DIV m n * n + r m n) H2') H5)).
+  assume H7 _. exact H7.
+Qed.
+Theorem hl_MOD_compat : forall l1 l2 :e omega, hl_MOD l1 l2 = mod_nat l1 l2.
+claim Hex: exists g :e omega :^: omega :^: omega, forall m n :e omega, n = hl_NUMERAL hl_zero /\ (hl_DIV m n = hl_NUMERAL hl_zero /\ g m n = m) \/ ~ n = hl_NUMERAL hl_zero /\ (m = hl_add (hl_mul (hl_DIV m n) n) (g m n) /\ hl_lt (g m n) n = 1).
+{ witness (fun m :e omega => fun n :e omega => mod_nat m n).
+  claim Hw: (fun m :e omega => fun n :e omega => mod_nat m n) :e omega :^: omega :^: omega.
+  { exact (lam2_Pi omega omega omega (fun m n => mod_nat m n) (fun m Hm n Hn => mod_nat_omega m Hm n Hn)). }
+  apply andI.
+  - exact Hw.
+  - let m. assume Hm. let n. assume Hn.
+    claim HR: (fun m :e omega => fun n :e omega => mod_nat m n) m n = mod_nat m n. { exact (lam2_beta omega omega (fun m n => mod_nat m n) m Hm n Hn). }
+    claim HD: hl_DIV m n = div_nat m n. { exact (hl_DIV_compat m Hm n Hn). }
+    claim Hd: div_nat m n :e omega. { exact (div_nat_omega m Hm n Hn). }
+    claim Hr: mod_nat m n :e omega. { exact (mod_nat_omega m Hm n Hn). }
+    claim HdD: hl_DIV m n :e omega. { exact (setexp2_ap omega omega omega hl_DIV hl_DIV_in m Hm n Hn). }
+    apply (xm (n = 0)).
+    + assume H0. apply orIL. apply andI.
+      * exact (eq_trans_i n 0 (hl_NUMERAL hl_zero) H0 (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)).
+      * apply andI.
+        { exact (eq_trans_i (hl_DIV m n) (div_nat m n) (hl_NUMERAL hl_zero) HD (eq_trans_i (div_nat m n) (div_nat m 0) (hl_NUMERAL hl_zero) (f_equal (fun x => div_nat m x) n 0 H0) (eq_trans_i (div_nat m 0) 0 (hl_NUMERAL hl_zero) (div_nat_0 m Hm) (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)))). }
+        { exact (eq_trans_i ((fun m :e omega => fun n :e omega => mod_nat m n) m n) (mod_nat m n) m HR (eq_trans_i (mod_nat m n) (mod_nat m 0) m (f_equal (fun x => mod_nat m x) n 0 H0) (mod_nat_0 m Hm))). }
+    + assume H0. apply orIR. apply andI.
+      * assume Hz. exact (H0 (eq_trans_i n (hl_NUMERAL hl_zero) 0 Hz hl_NUMERAL_zero)).
+      * apply (div_mod_nat m Hm n Hn H0). assume H1 H2.
+        apply andI.
+        { exact (eq_trans_i m (div_nat m n * n + mod_nat m n) (hl_add (hl_mul (hl_DIV m n) n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n)) H1
+            (eq_sym_i (hl_add (hl_mul (hl_DIV m n) n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n)) (div_nat m n * n + mod_nat m n)
+              (eq_trans_i (hl_add (hl_mul (hl_DIV m n) n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n)) (hl_add (hl_mul (div_nat m n) n) (mod_nat m n)) (div_nat m n * n + mod_nat m n)
+                (f_equal2 (fun p q => hl_add (hl_mul p n) q) (hl_DIV m n) (div_nat m n) ((fun m :e omega => fun n :e omega => mod_nat m n) m n) (mod_nat m n) HD HR)
+                (eq_trans_i (hl_add (hl_mul (div_nat m n) n) (mod_nat m n)) (hl_mul (div_nat m n) n + mod_nat m n) (div_nat m n * n + mod_nat m n)
+                  (hl_add_compat (hl_mul (div_nat m n) n) (setexp2_ap omega omega omega hl_mul hl_mul_in (div_nat m n) Hd n Hn) (mod_nat m n) Hr)
+                  (f_equal (fun x => x + mod_nat m n) (hl_mul (div_nat m n) n) (div_nat m n * n) (hl_mul_compat (div_nat m n) Hd n Hn)))))). }
+        { claim H3: hl_lt (mod_nat m n) n = 1. { apply (hl_lt_compat (mod_nat m n) Hr n Hn). assume _ H4. exact (H4 H2). }
+          exact ((eq_sym_i ((fun m :e omega => fun n :e omega => mod_nat m n) m n) (mod_nat m n) HR) (fun hl__u hl__v => hl_lt hl__u n = 1) H3). } }
+apply (hl_MOD_spec Hex). assume HS Hg.
+let m. assume Hm. let n. assume Hn.
+claim Hd: hl_DIV m n :e omega. { exact (setexp2_ap omega omega omega hl_DIV hl_DIV_in m Hm n Hn). }
+claim Hmod: hl_MOD m n :e omega. { exact (setexp2_ap omega omega omega hl_MOD Hg m Hm n Hn). }
+apply (HS m Hm n Hn).
+- assume H. apply H. assume H0 H1. apply H1. assume _ H2.
+  claim Hn0: n = 0. { exact (eq_trans_i n (hl_NUMERAL hl_zero) 0 H0 hl_NUMERAL_zero). }
+  exact (eq_trans_i (hl_MOD m n) m (mod_nat m n) H2 (eq_sym_i (mod_nat m n) m (eq_trans_i (mod_nat m n) (mod_nat m 0) m (f_equal (fun x => mod_nat m x) n 0 Hn0) (mod_nat_0 m Hm)))).
+- assume H. apply H. assume H0 H1. apply H1. assume H2 H3.
+  claim Hn0: n <> 0. { assume Hz. apply H0. exact (eq_trans_i n 0 (hl_NUMERAL hl_zero) Hz (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero)). }
+  claim H2': m = div_nat m n * n + hl_MOD m n.
+  { exact (eq_trans_i m (hl_add (hl_mul (hl_DIV m n) n) (hl_MOD m n)) (div_nat m n * n + hl_MOD m n) H2
+      (eq_trans_i (hl_add (hl_mul (hl_DIV m n) n) (hl_MOD m n)) (hl_mul (hl_DIV m n) n + hl_MOD m n) (div_nat m n * n + hl_MOD m n)
+        (hl_add_compat (hl_mul (hl_DIV m n) n) (setexp2_ap omega omega omega hl_mul hl_mul_in (hl_DIV m n) Hd n Hn) (hl_MOD m n) Hmod)
+        (f_equal (fun x => x + hl_MOD m n) (hl_mul (hl_DIV m n) n) (div_nat m n * n)
+          (eq_trans_i (hl_mul (hl_DIV m n) n) (hl_DIV m n * n) (div_nat m n * n) (hl_mul_compat (hl_DIV m n) Hd n Hn) (f_equal (fun x => x * n) (hl_DIV m n) (div_nat m n) (hl_DIV_compat m Hm n Hn)))))). }
+  claim H3': hl_MOD m n < n. { apply (hl_lt_compat (hl_MOD m n) Hmod n Hn). assume H4 _. exact (H4 H3). }
+  apply (div_mod_nat m Hm n Hn Hn0). assume H5 H6.
+  claim Hd2: div_nat m n :e omega. { exact (div_nat_omega m Hm n Hn). }
+  claim Hr2: mod_nat m n :e omega. { exact (mod_nat_omega m Hm n Hn). }
+  apply (div_mod_unique n Hn (div_nat m n) Hd2 (hl_MOD m n) Hmod (div_nat m n) Hd2 (mod_nat m n) Hr2 H3' H6 (eq_trans_i (div_nat m n * n + hl_MOD m n) m (div_nat m n * n + mod_nat m n) (eq_sym_i m (div_nat m n * n + hl_MOD m n) H2') H5)).
+  assume _ H7. exact H7.
+Qed.

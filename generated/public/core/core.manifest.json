@@ -6273,7 +6273,7 @@
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_MOD x n = hl_MOD y n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_sym_3d3d_compat1 (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -9722,7 +9722,7 @@
    "statement": "forall m n :e omega, divides_nat m n <-> div_nat n m * m = n",
    "literal": "forall m n :e omega, hl_num_divides m n = 1 <-> hl_mul (hl_DIV n m) m = n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_divides_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -9860,7 +9860,7 @@
    "statement": "forall m n :e omega, divides_nat m n <-> mod_nat n m = 0",
    "literal": "forall m n :e omega, hl_num_divides m n = 1 <-> hl_MOD n m = hl_NUMERAL hl_zero",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_divides_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -9916,9 +9916,9 @@
    "source": "!m:num. !n:num. ~(n = 0) ==> m = m DIV n * n + m MOD n /\\ m MOD n < n",
    "statement": "forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\\ mod_nat m n < n",
    "literal": "forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> m = hl_add (hl_mul (hl_DIV m n) n) (hl_MOD m n) /\\ hl_lt (hl_MOD m n) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIVISION_bridge"
   },
   {
    "name": "DIVISION_0",
@@ -9975,9 +9975,9 @@
    "source": "(!m:num. !n:num. m DIV n * n + m MOD n = m) /\\ (!m:num. !n:num. n * m DIV n + m MOD n = m)",
    "statement": "(forall m n :e omega, div_nat m n * n + mod_nat m n = m) /\\ forall m n :e omega, n * div_nat m n + mod_nat m n = m",
    "literal": "(forall m n :e omega, hl_add (hl_mul (hl_DIV m n) n) (hl_MOD m n) = m) /\\ forall m n :e omega, hl_add (hl_mul n (hl_DIV m n)) (hl_MOD m n) = m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIVISION_SIMP_bridge"
   },
   {
    "name": "DIVMOD_ELIM_THM",
@@ -10010,7 +10010,7 @@
    "statement": "forall P:set -> set -> prop, forall m n :e omega, P (div_nat m n) (mod_nat m n) <-> forall q r :e omega, n = 0 /\\ (q = 0 /\\ r = m) \\/ m = q * n + r /\\ r < n -> P q r",
    "literal": "forall P :e 2 :^: omega :^: omega, forall m n :e omega, P (hl_DIV m n) (hl_MOD m n) = 1 <-> forall q r :e omega, n = hl_NUMERAL hl_zero /\\ (q = hl_NUMERAL hl_zero /\\ r = m) \\/ m = hl_add (hl_mul q n) r /\\ hl_lt r n = 1 -> P q r = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: metapred2 applied to non-identical arguments",
    "bridge": ""
   },
   {
@@ -10044,7 +10044,7 @@
    "statement": "forall P:set -> set -> prop, forall m n :e omega, P (div_nat m n) (mod_nat m n) <-> exists q r :e omega, (n = 0 /\\ (q = 0 /\\ r = m) \\/ m = q * n + r /\\ r < n) /\\ P q r",
    "literal": "forall P :e 2 :^: omega :^: omega, forall m n :e omega, P (hl_DIV m n) (hl_MOD m n) = 1 <-> exists q r :e omega, (n = hl_NUMERAL hl_zero /\\ (q = hl_NUMERAL hl_zero /\\ r = m) \\/ m = hl_add (hl_mul q n) r /\\ hl_lt r n = 1) /\\ P q r = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: metapred2 applied to non-identical arguments",
    "bridge": ""
   },
   {
@@ -10133,9 +10133,9 @@
    "source": "!m:num. !n:num. !q:num. !r:num. m = q * n + r /\\ r < n ==> m DIV n = q /\\ m MOD n = r",
    "statement": "forall m n q r :e omega, m = q * n + r /\\ r < n -> div_nat m n = q /\\ mod_nat m n = r",
    "literal": "forall m n q r :e omega, m = hl_add (hl_mul q n) r /\\ hl_lt r n = 1 -> hl_DIV m n = q /\\ hl_MOD m n = r",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIVMOD_UNIQ_bridge"
   },
   {
    "name": "DIVMOD_UNIQ_LEMMA",
@@ -10190,9 +10190,9 @@
    "source": "!n:num. 0 DIV n = 0",
    "statement": "forall n :e omega, div_nat 0 n = 0",
    "literal": "forall n :e omega, hl_DIV (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_0_bridge"
   },
   {
    "name": "DIV_1",
@@ -10217,9 +10217,9 @@
    "source": "!n:num. n DIV 1 = n",
    "statement": "forall n :e omega, div_nat n 1 = n",
    "literal": "forall n :e omega, hl_DIV n (hl_NUMERAL (hl_BIT1 hl_zero)) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_1_bridge"
   },
   {
    "name": "DIV_ADD",
@@ -10274,9 +10274,9 @@
    "source": "!n:num. !x:num. !y:num. x MOD n + y MOD n < n ==> (x + y) DIV n = x DIV n + y DIV n",
    "statement": "forall n x y :e omega, mod_nat x n + mod_nat y n < n -> div_nat (x + y) n = div_nat x n + div_nat y n",
    "literal": "forall n x y :e omega, hl_lt (hl_add (hl_MOD x n) (hl_MOD y n)) n = 1 -> hl_DIV (hl_add x y) n = hl_add (hl_DIV x n) (hl_DIV y n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_ADD_EQ_bridge"
   },
   {
    "name": "DIV_ADD_EQ_EQ",
@@ -10303,9 +10303,9 @@
    "source": "!n:num. !x:num. !y:num. (x + y) DIV n = x DIV n + y DIV n <=> n = 0 \\/ x MOD n + y MOD n < n",
    "statement": "forall n x y :e omega, div_nat (x + y) n = div_nat x n + div_nat y n <-> n = 0 \\/ mod_nat x n + mod_nat y n < n",
    "literal": "forall n x y :e omega, hl_DIV (hl_add x y) n = hl_add (hl_DIV x n) (hl_DIV y n) <-> n = hl_NUMERAL hl_zero \\/ hl_lt (hl_add (hl_MOD x n) (hl_MOD y n)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_ADD_EQ_EQ_bridge"
   },
   {
    "name": "DIV_ADD_MOD",
@@ -10331,9 +10331,9 @@
    "source": "!a:num. !b:num. !n:num. ~(n = 0) ==> ((a + b) MOD n = a MOD n + b MOD n <=> (a + b) DIV n = a DIV n + b DIV n)",
    "statement": "forall a b n :e omega, ~ n = 0 -> (mod_nat (a + b) n = mod_nat a n + mod_nat b n <-> div_nat (a + b) n = div_nat a n + div_nat b n)",
    "literal": "forall a b n :e omega, ~ n = hl_NUMERAL hl_zero -> (hl_MOD (hl_add a b) n = hl_add (hl_MOD a n) (hl_MOD b n) <-> hl_DIV (hl_add a b) n = hl_add (hl_DIV a n) (hl_DIV b n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_ADD_MOD_bridge"
   },
   {
    "name": "DIV_BY_DIV",
@@ -10386,9 +10386,9 @@
    "source": "!m:num. !n:num. !p:num. m DIV n DIV p = m DIV (n * p)",
    "statement": "forall m n p :e omega, div_nat (div_nat m n) p = div_nat m (n * p)",
    "literal": "forall m n p :e omega, hl_DIV (hl_DIV m n) p = hl_DIV m (hl_mul n p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_DIV_bridge"
   },
   {
    "name": "DIV_EQ_0",
@@ -10414,9 +10414,9 @@
    "source": "!m:num. !n:num. ~(n = 0) ==> (m DIV n = 0 <=> m < n)",
    "statement": "forall m n :e omega, ~ n = 0 -> (div_nat m n = 0 <-> m < n)",
    "literal": "forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> (hl_DIV m n = hl_NUMERAL hl_zero <-> hl_lt m n = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_EQ_0_bridge"
   },
   {
    "name": "DIV_EQ_EXCLUSION",
@@ -10444,9 +10444,9 @@
    "source": "!a:num. !b:num. !c:num. !d:num. b * c < (a + 1) * d /\\ a * d < (c + 1) * b ==> a DIV b = c DIV d",
    "statement": "forall a b c d :e omega, b * c < (a + 1) * d /\\ a * d < (c + 1) * b -> div_nat a b = div_nat c d",
    "literal": "forall a b c d :e omega, hl_lt (hl_mul b c) (hl_mul (hl_add a (hl_NUMERAL (hl_BIT1 hl_zero))) d) = 1 /\\ hl_lt (hl_mul a d) (hl_mul (hl_add c (hl_NUMERAL (hl_BIT1 hl_zero))) b) = 1 -> hl_DIV a b = hl_DIV c d",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_EQ_EXCLUSION_bridge"
   },
   {
    "name": "DIV_EQ_SELF",
@@ -10471,9 +10471,9 @@
    "source": "!m:num. !n:num. m DIV n = m <=> m = 0 \\/ n = 1",
    "statement": "forall m n :e omega, div_nat m n = m <-> m = 0 \\/ n = 1",
    "literal": "forall m n :e omega, hl_DIV m n = m <-> m = hl_NUMERAL hl_zero \\/ n = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_EQ_SELF_bridge"
   },
   {
    "name": "DIV_EXP",
@@ -10501,7 +10501,7 @@
    "statement": "forall m n p :e omega, ~ m = 0 -> div_nat (m ^ n) (m ^ p) = if p <= n then m ^ minus_nat n p else if m = 1 then 1 else 0",
    "literal": "forall m n p :e omega, ~ m = hl_NUMERAL hl_zero -> hl_DIV (hl_EXP m n) (hl_EXP m p) = hl_COND omega (hl_le p n) (hl_EXP m (hl_sub n p)) (hl_COND omega (if m = hl_NUMERAL (hl_BIT1 hl_zero) then 1 else 0) (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_NUMERAL hl_zero))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -10528,9 +10528,9 @@
    "source": "!m:num. !n:num. m DIV n <= m",
    "statement": "forall m n :e omega, div_nat m n <= m",
    "literal": "forall m n :e omega, hl_le (hl_DIV m n) m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_LE_bridge"
   },
   {
    "name": "DIV_LE_EXCLUSION",
@@ -10559,9 +10559,9 @@
    "source": "!a:num. !b:num. !c:num. !d:num. ~(b = 0) /\\ b * c < (a + 1) * d ==> c DIV d <= a DIV b",
    "statement": "forall a b c d :e omega, ~ b = 0 /\\ b * c < (a + 1) * d -> div_nat c d <= div_nat a b",
    "literal": "forall a b c d :e omega, ~ b = hl_NUMERAL hl_zero /\\ hl_lt (hl_mul b c) (hl_mul (hl_add a (hl_NUMERAL (hl_BIT1 hl_zero))) d) = 1 -> hl_le (hl_DIV c d) (hl_DIV a b) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_LE_EXCLUSION_bridge"
   },
   {
    "name": "DIV_LT",
@@ -10587,9 +10587,9 @@
    "source": "!m:num. !n:num. m < n ==> m DIV n = 0",
    "statement": "forall m n :e omega, m < n -> div_nat m n = 0",
    "literal": "forall m n :e omega, hl_lt m n = 1 -> hl_DIV m n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_LT_bridge"
   },
   {
    "name": "DIV_MOD",
@@ -10615,9 +10615,9 @@
    "source": "!m:num. !n:num. !p:num. m DIV n MOD p = m MOD (n * p) DIV n",
    "statement": "forall m n p :e omega, mod_nat (div_nat m n) p = div_nat (mod_nat m (n * p)) n",
    "literal": "forall m n p :e omega, hl_MOD (hl_DIV m n) p = hl_DIV (hl_MOD m (hl_mul n p)) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MOD_bridge"
   },
   {
    "name": "DIV_MONO",
@@ -10643,9 +10643,9 @@
    "source": "!m:num. !n:num. !p:num. m <= n ==> m DIV p <= n DIV p",
    "statement": "forall m n p :e omega, m <= n -> div_nat m p <= div_nat n p",
    "literal": "forall m n p :e omega, hl_le m n = 1 -> hl_le (hl_DIV m p) (hl_DIV n p) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MONO_bridge"
   },
   {
    "name": "DIV_MONO2",
@@ -10671,9 +10671,9 @@
    "source": "!m:num. !n:num. !p:num. ~(p = 0) /\\ p <= m ==> n DIV m <= n DIV p",
    "statement": "forall m n p :e omega, ~ p = 0 /\\ p <= m -> div_nat n m <= div_nat n p",
    "literal": "forall m n p :e omega, ~ p = hl_NUMERAL hl_zero /\\ hl_le p m = 1 -> hl_le (hl_DIV n m) (hl_DIV n p) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MONO2_bridge"
   },
   {
    "name": "DIV_MONO_LT",
@@ -10701,9 +10701,9 @@
    "source": "!m:num. !n:num. !p:num. ~(p = 0) /\\ m + p <= n ==> m DIV p < n DIV p",
    "statement": "forall m n p :e omega, ~ p = 0 /\\ m + p <= n -> div_nat m p < div_nat n p",
    "literal": "forall m n p :e omega, ~ p = hl_NUMERAL hl_zero /\\ hl_le (hl_add m p) n = 1 -> hl_lt (hl_DIV m p) (hl_DIV n p) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MONO_LT_bridge"
   },
   {
    "name": "DIV_MULT",
@@ -10729,9 +10729,9 @@
    "source": "!m:num. !n:num. ~(m = 0) ==> (m * n) DIV m = n",
    "statement": "forall m n :e omega, ~ m = 0 -> div_nat (m * n) m = n",
    "literal": "forall m n :e omega, ~ m = hl_NUMERAL hl_zero -> hl_DIV (hl_mul m n) m = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MULT_bridge"
   },
   {
    "name": "DIV_MULT2",
@@ -10757,9 +10757,9 @@
    "source": "!m:num. !n:num. !p:num. ~(m = 0) ==> (m * n) DIV (m * p) = n DIV p",
    "statement": "forall m n p :e omega, ~ m = 0 -> div_nat (m * n) (m * p) = div_nat n p",
    "literal": "forall m n p :e omega, ~ m = hl_NUMERAL hl_zero -> hl_DIV (hl_mul m n) (hl_mul m p) = hl_DIV n p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MULT2_bridge"
   },
   {
    "name": "DIV_MULT_ADD",
@@ -10786,9 +10786,9 @@
    "source": "(!a:num. !b:num. !n:num. ~(n = 0) ==> (a * n + b) DIV n = a + b DIV n) /\\ (!a:num. !b:num. !n:num. ~(n = 0) ==> (n * a + b) DIV n = a + b DIV n) /\\ (!a:num. !b:num. !n:num. ~(n = 0) ==> (b + a * n) DIV n = b DIV n + a) /\\ (!a:num. !b:num. !n:num. ~(n = 0) ==> (b + n * a) DIV n = b DIV n + a)",
    "statement": "(forall a b n :e omega, ~ n = 0 -> div_nat (a * n + b) n = a + div_nat b n) /\\ ((forall a b n :e omega, ~ n = 0 -> div_nat (n * a + b) n = a + div_nat b n) /\\ ((forall a b n :e omega, ~ n = 0 -> div_nat (b + a * n) n = div_nat b n + a) /\\ forall a b n :e omega, ~ n = 0 -> div_nat (b + n * a) n = div_nat b n + a))",
    "literal": "(forall a b n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_DIV (hl_add (hl_mul a n) b) n = hl_add a (hl_DIV b n)) /\\ ((forall a b n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_DIV (hl_add (hl_mul n a) b) n = hl_add a (hl_DIV b n)) /\\ ((forall a b n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_DIV (hl_add b (hl_mul a n)) n = hl_add (hl_DIV b n) a) /\\ forall a b n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_DIV (hl_add b (hl_mul n a)) n = hl_add (hl_DIV b n) a))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MULT_ADD_bridge"
   },
   {
    "name": "DIV_MUL_LE",
@@ -10815,9 +10815,9 @@
    "source": "!m:num. !n:num. n * m DIV n <= m",
    "statement": "forall m n :e omega, n * div_nat m n <= m",
    "literal": "forall m n :e omega, hl_le (hl_mul n (hl_DIV m n)) m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_MUL_LE_bridge"
   },
   {
    "name": "DIV_REFL",
@@ -10842,9 +10842,9 @@
    "source": "!n:num. ~(n = 0) ==> n DIV n = 1",
    "statement": "forall n :e omega, ~ n = 0 -> div_nat n n = 1",
    "literal": "forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_DIV n n = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_REFL_bridge"
   },
   {
    "name": "DIV_UNIQ",
@@ -10872,9 +10872,9 @@
    "source": "!m:num. !n:num. !q:num. !r:num. m = q * n + r /\\ r < n ==> m DIV n = q",
    "statement": "forall m n q r :e omega, m = q * n + r /\\ r < n -> div_nat m n = q",
    "literal": "forall m n q r :e omega, m = hl_add (hl_mul q n) r /\\ hl_lt r n = 1 -> hl_DIV m n = q",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_UNIQ_bridge"
   },
   {
    "name": "DIV_ZERO",
@@ -10899,9 +10899,9 @@
    "source": "!n:num. n DIV 0 = 0",
    "statement": "forall n :e omega, div_nat n 0 = 0",
    "literal": "forall n :e omega, hl_DIV n (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIV_ZERO_bridge"
   },
   {
    "name": "DOUBLE_HALF",
@@ -10928,7 +10928,7 @@
    "statement": "(forall n :e omega, even_nat n -> 2 * div_nat n 2 = n) /\\ forall n :e omega, even_nat n -> div_nat n 2 * 2 = n",
    "literal": "(forall n :e omega, hl_EVEN n = 1 -> hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_DIV n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = n) /\\ forall n :e omega, hl_EVEN n = 1 -> hl_mul (hl_DIV n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native 2 * hl_DIV n 2 differs from elaborated 2 * div_nat n 2",
    "bridge": ""
   },
   {
@@ -11578,9 +11578,9 @@
    "source": "!p:num. !m:num. !n:num. m DIV p = n DIV p /\\ m MOD p = n MOD p <=> m = n",
    "statement": "forall p m n :e omega, div_nat m p = div_nat n p /\\ mod_nat m p = mod_nat n p <-> m = n",
    "literal": "forall p m n :e omega, hl_DIV m p = hl_DIV n p /\\ hl_MOD m p = hl_MOD n p <-> m = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EQ_DIVMOD_bridge"
   },
   {
    "name": "EQ_EXP",
@@ -12159,9 +12159,9 @@
    "source": "!n:num. EVEN n <=> n MOD 2 = 0",
    "statement": "forall n :e omega, even_nat n <-> mod_nat n 2 = 0",
    "literal": "forall n :e omega, hl_EVEN n = 1 <-> hl_MOD n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EVEN_MOD_bridge"
   },
   {
    "name": "EVEN_MOD_EVEN",
@@ -12186,9 +12186,9 @@
    "source": "!m:num. !n:num. EVEN n ==> (EVEN (m MOD n) <=> EVEN m)",
    "statement": "forall m n :e omega, even_nat n -> (even_nat (mod_nat m n) <-> even_nat m)",
    "literal": "forall m n :e omega, hl_EVEN n = 1 -> (hl_EVEN (hl_MOD m n) = 1 <-> hl_EVEN m = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EVEN_MOD_EVEN_bridge"
   },
   {
    "name": "EVEN_MULT",
@@ -12837,7 +12837,7 @@
    "statement": "forall P:set -> prop, forall n :e omega, (exists a :e omega, a < n /\\ P a) <-> ~ n = 0 /\\ exists a :e omega, P (mod_nat a n)",
    "literal": "forall P :e 2 :^: omega, forall n :e omega, (exists a :e omega, hl_lt a n = 1 /\\ P a = 1) <-> ~ n = hl_NUMERAL hl_zero /\\ exists a :e omega, P (hl_MOD a n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: metapred applied to non-identical argument",
    "bridge": ""
   },
   {
@@ -12865,7 +12865,7 @@
    "statement": "forall P:set -> prop, forall n :e omega, ~ n = 0 -> ((exists a :e omega, P (mod_nat a n)) <-> exists a :e omega, a < n /\\ P a)",
    "literal": "forall P :e 2 :^: omega, forall n :e omega, ~ n = hl_NUMERAL hl_zero -> ((exists a :e omega, P (hl_MOD a n) = 1) <-> exists a :e omega, hl_lt a n = 1 /\\ P a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: metapred applied to non-identical argument",
    "bridge": ""
   },
   {
@@ -18520,7 +18520,7 @@
    "statement": "forall P:set -> prop, forall n :e omega, (forall a :e omega, a < n -> P a) <-> n = 0 \\/ forall a :e omega, P (mod_nat a n)",
    "literal": "forall P :e 2 :^: omega, forall n :e omega, (forall a :e omega, hl_lt a n = 1 -> P a = 1) <-> n = hl_NUMERAL hl_zero \\/ forall a :e omega, P (hl_MOD a n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: metapred applied to non-identical argument",
    "bridge": ""
   },
   {
@@ -18548,7 +18548,7 @@
    "statement": "forall P:set -> prop, forall n :e omega, ~ n = 0 -> ((forall a :e omega, P (mod_nat a n)) <-> forall a :e omega, a < n -> P a)",
    "literal": "forall P :e 2 :^: omega, forall n :e omega, ~ n = hl_NUMERAL hl_zero -> ((forall a :e omega, P (hl_MOD a n) = 1) <-> forall a :e omega, hl_lt a n = 1 -> P a = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: metapred applied to non-identical argument",
    "bridge": ""
   },
   {
@@ -19668,9 +19668,9 @@
    "source": "(!n:num. (2 * n) DIV 2 = n) /\\ (!n:num. (n * 2) DIV 2 = n)",
    "statement": "(forall n :e omega, div_nat (2 * n) 2 = n) /\\ forall n :e omega, div_nat (n * 2) 2 = n",
    "literal": "(forall n :e omega, hl_DIV (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = n) /\\ forall n :e omega, hl_DIV (hl_mul n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HALF_DOUBLE_bridge"
   },
   {
    "name": "HAS_INF",
@@ -33725,9 +33725,9 @@
    "source": "!m:num. !n:num. int_of_num (m MOD n) = int_of_num m - int_of_num (m DIV n) * int_of_num n",
    "statement": "forall m n :e omega, mod_nat m n = m + - div_nat m n * n",
    "literal": "forall m n :e omega, hl_int_of_num (hl_MOD m n) = hl_int_sub (hl_int_of_num m) (hl_int_mul (hl_int_of_num (hl_DIV m n)) (hl_int_of_num n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_OF_NUM_MOD_bridge"
   },
   {
    "name": "INT_OF_NUM_MUL",
@@ -40308,9 +40308,9 @@
    "source": "!a:num. !b:num. !n:num. ~(a = 0) ==> (n < b DIV a <=> a * (n + 1) <= b)",
    "statement": "forall a b n :e omega, ~ a = 0 -> (n < div_nat b a <-> a * (n + 1) <= b)",
    "literal": "forall a b n :e omega, ~ a = hl_NUMERAL hl_zero -> (hl_lt n (hl_DIV b a) = 1 <-> hl_le (hl_mul a (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero)))) b = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LDIV_LT_EQ_bridge"
   },
   {
    "name": "LE",
@@ -41659,9 +41659,9 @@
    "source": "!a:num. !b:num. !n:num. ~(a = 0) /\\ b <= a * n ==> b DIV a <= n",
    "statement": "forall a b n :e omega, ~ a = 0 /\\ b <= a * n -> div_nat b a <= n",
    "literal": "forall a b n :e omega, ~ a = hl_NUMERAL hl_zero /\\ hl_le b (hl_mul a n) = 1 -> hl_le (hl_DIV b a) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LE_LDIV_bridge"
   },
   {
    "name": "LE_LDIV_EQ",
@@ -41690,9 +41690,9 @@
    "source": "!a:num. !b:num. !n:num. ~(a = 0) ==> (b DIV a <= n <=> b < a * (n + 1))",
    "statement": "forall a b n :e omega, ~ a = 0 -> (div_nat b a <= n <-> b < a * (n + 1))",
    "literal": "forall a b n :e omega, ~ a = hl_NUMERAL hl_zero -> (hl_le (hl_DIV b a) n = 1 <-> hl_lt b (hl_mul a (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero)))) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LE_LDIV_EQ_bridge"
   },
   {
    "name": "LE_LT",
@@ -41865,9 +41865,9 @@
    "source": "!a:num. !b:num. !n:num. ~(a = 0) ==> (n <= b DIV a <=> a * n <= b)",
    "statement": "forall a b n :e omega, ~ a = 0 -> (n <= div_nat b a <-> a * n <= b)",
    "literal": "forall a b n :e omega, ~ a = hl_NUMERAL hl_zero -> (hl_le n (hl_DIV b a) = 1 <-> hl_le (hl_mul a n) b = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LE_RDIV_EQ_bridge"
   },
   {
    "name": "LE_REFL",
@@ -44264,9 +44264,9 @@
    "source": "!n:num. 0 MOD n = 0",
    "statement": "forall n :e omega, mod_nat 0 n = 0",
    "literal": "forall n :e omega, hl_MOD (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_0_bridge"
   },
   {
    "name": "MOD_1",
@@ -44291,9 +44291,9 @@
    "source": "!n:num. n MOD 1 = 0",
    "statement": "forall n :e omega, mod_nat n 1 = 0",
    "literal": "forall n :e omega, hl_MOD n (hl_NUMERAL (hl_BIT1 hl_zero)) = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_1_bridge"
   },
   {
    "name": "MOD_2_CASES",
@@ -44318,9 +44318,9 @@
    "source": "!n:num. n MOD 2 = (if EVEN n then 0 else 1)",
    "statement": "forall n :e omega, mod_nat n 2 = if even_nat n then 0 else 1",
    "literal": "forall n :e omega, hl_MOD n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_COND omega (hl_EVEN n) (hl_NUMERAL hl_zero) (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_2_CASES_bridge"
   },
   {
    "name": "MOD_ADD_CASES",
@@ -44347,9 +44347,9 @@
    "source": "!m:num. !n:num. !p:num. m < p /\\ n < p ==> (m + n) MOD p = (if m + n < p then m + n else (m + n) - p)",
    "statement": "forall m n p :e omega, m < p /\\ n < p -> mod_nat (m + n) p = if m + n < p then m + n else minus_nat (m + n) p",
    "literal": "forall m n p :e omega, hl_lt m p = 1 /\\ hl_lt n p = 1 -> hl_MOD (hl_add m n) p = hl_COND omega (hl_lt (hl_add m n) p) (hl_add m n) (hl_sub (hl_add m n) p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_ADD_CASES_bridge"
   },
   {
    "name": "MOD_ADD_EQ",
@@ -44376,9 +44376,9 @@
    "source": "!n:num. !x:num. !y:num. x MOD n + y MOD n < n ==> (x + y) MOD n = x MOD n + y MOD n",
    "statement": "forall n x y :e omega, mod_nat x n + mod_nat y n < n -> mod_nat (x + y) n = mod_nat x n + mod_nat y n",
    "literal": "forall n x y :e omega, hl_lt (hl_add (hl_MOD x n) (hl_MOD y n)) n = 1 -> hl_MOD (hl_add x y) n = hl_add (hl_MOD x n) (hl_MOD y n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_ADD_EQ_bridge"
   },
   {
    "name": "MOD_ADD_EQ_EQ",
@@ -44405,9 +44405,9 @@
    "source": "!n:num. !x:num. !y:num. (x + y) MOD n = x MOD n + y MOD n <=> n = 0 \\/ x MOD n + y MOD n < n",
    "statement": "forall n x y :e omega, mod_nat (x + y) n = mod_nat x n + mod_nat y n <-> n = 0 \\/ mod_nat x n + mod_nat y n < n",
    "literal": "forall n x y :e omega, hl_MOD (hl_add x y) n = hl_add (hl_MOD x n) (hl_MOD y n) <-> n = hl_NUMERAL hl_zero \\/ hl_lt (hl_add (hl_MOD x n) (hl_MOD y n)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_ADD_EQ_EQ_bridge"
   },
   {
    "name": "MOD_ADD_MOD",
@@ -44433,9 +44433,9 @@
    "source": "!a:num. !b:num. !n:num. (a MOD n + b MOD n) MOD n = (a + b) MOD n",
    "statement": "forall a b n :e omega, mod_nat (mod_nat a n + mod_nat b n) n = mod_nat (a + b) n",
    "literal": "forall a b n :e omega, hl_MOD (hl_add (hl_MOD a n) (hl_MOD b n)) n = hl_MOD (hl_add a b) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_ADD_MOD_bridge"
   },
   {
    "name": "MOD_CASES",
@@ -44462,9 +44462,9 @@
    "source": "!n:num. !p:num. n < 2 * p ==> n MOD p = (if n < p then n else n - p)",
    "statement": "forall n p :e omega, n < 2 * p -> mod_nat n p = if n < p then n else minus_nat n p",
    "literal": "forall n p :e omega, hl_lt n (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) p) = 1 -> hl_MOD n p = hl_COND omega (hl_lt n p) n (hl_sub n p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_CASES_bridge"
   },
   {
    "name": "MOD_DIV_EQ_0",
@@ -44489,9 +44489,9 @@
    "source": "!m:num. !n:num. ~(n = 0) ==> m MOD n DIV n = 0",
    "statement": "forall m n :e omega, ~ n = 0 -> div_nat (mod_nat m n) n = 0",
    "literal": "forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_DIV (hl_MOD m n) n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_DIV_EQ_0_bridge"
   },
   {
    "name": "MOD_EQ",
@@ -44518,9 +44518,9 @@
    "source": "!m:num. !n:num. !p:num. !q:num. m = n + q * p ==> m MOD p = n MOD p",
    "statement": "forall m n p q :e omega, m = n + q * p -> mod_nat m p = mod_nat n p",
    "literal": "forall m n p q :e omega, m = hl_add n (hl_mul q p) -> hl_MOD m p = hl_MOD n p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_EQ_bridge"
   },
   {
    "name": "MOD_EQ_0",
@@ -44546,9 +44546,9 @@
    "source": "!m:num. !n:num. m MOD n = 0 <=> (?q:num. m = q * n)",
    "statement": "forall m n :e omega, mod_nat m n = 0 <-> exists q :e omega, m = q * n",
    "literal": "forall m n :e omega, hl_MOD m n = hl_NUMERAL hl_zero <-> exists q :e omega, m = hl_mul q n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_EQ_0_bridge"
   },
   {
    "name": "MOD_EQ_SELF",
@@ -44574,9 +44574,9 @@
    "source": "!m:num. !n:num. m MOD n = m <=> n = 0 \\/ m < n",
    "statement": "forall m n :e omega, mod_nat m n = m <-> n = 0 \\/ m < n",
    "literal": "forall m n :e omega, hl_MOD m n = m <-> n = hl_NUMERAL hl_zero \\/ hl_lt m n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_EQ_SELF_bridge"
   },
   {
    "name": "MOD_EVEN_2",
@@ -44601,9 +44601,9 @@
    "source": "!m:num. !n:num. EVEN n ==> m MOD n MOD 2 = m MOD 2",
    "statement": "forall m n :e omega, even_nat n -> mod_nat (mod_nat m n) 2 = mod_nat m 2",
    "literal": "forall m n :e omega, hl_EVEN n = 1 -> hl_MOD (hl_MOD m n) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_MOD m (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_EVEN_2_bridge"
   },
   {
    "name": "MOD_EXISTS",
@@ -44659,7 +44659,7 @@
    "statement": "forall m n p :e omega, ~ m = 0 -> mod_nat (m ^ n) (m ^ p) = if p <= n \\/ m = 1 then 0 else m ^ n",
    "literal": "forall m n p :e omega, ~ m = hl_NUMERAL hl_zero -> hl_MOD (hl_EXP m n) (hl_EXP m p) = hl_COND omega (if hl_le p n = 1 \\/ m = hl_NUMERAL (hl_BIT1 hl_zero) then 1 else 0) (hl_NUMERAL hl_zero) (hl_EXP m n)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -44686,9 +44686,9 @@
    "source": "!m:num. !n:num. !p:num. (m MOD n) EXP p MOD n = m EXP p MOD n",
    "statement": "forall m n p :e omega, mod_nat (mod_nat m n ^ p) n = mod_nat (m ^ p) n",
    "literal": "forall m n p :e omega, hl_MOD (hl_EXP (hl_MOD m n) p) n = hl_MOD (hl_EXP m p) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_EXP_MOD_bridge"
   },
   {
    "name": "MOD_LE",
@@ -44714,9 +44714,9 @@
    "source": "!m:num. !n:num. m MOD n <= m",
    "statement": "forall m n :e omega, mod_nat m n <= m",
    "literal": "forall m n :e omega, hl_le (hl_MOD m n) m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_LE_bridge"
   },
   {
    "name": "MOD_LE_TWICE",
@@ -44744,9 +44744,9 @@
    "source": "!m:num. !n:num. 0 < m /\\ m <= n ==> 2 * n MOD m <= n",
    "statement": "forall m n :e omega, 0 < m /\\ m <= n -> 2 * mod_nat n m <= n",
    "literal": "forall m n :e omega, hl_lt (hl_NUMERAL hl_zero) m = 1 /\\ hl_le m n = 1 -> hl_le (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_MOD n m)) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_LE_TWICE_bridge"
   },
   {
    "name": "MOD_LT",
@@ -44772,9 +44772,9 @@
    "source": "!m:num. !n:num. m < n ==> m MOD n = m",
    "statement": "forall m n :e omega, m < n -> mod_nat m n = m",
    "literal": "forall m n :e omega, hl_lt m n = 1 -> hl_MOD m n = m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_LT_bridge"
   },
   {
    "name": "MOD_LT_EQ",
@@ -44800,9 +44800,9 @@
    "source": "!m:num. !n:num. m MOD n < n <=> ~(n = 0)",
    "statement": "forall m n :e omega, mod_nat m n < n <-> ~ n = 0",
    "literal": "forall m n :e omega, hl_lt (hl_MOD m n) n = 1 <-> ~ n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_LT_EQ_bridge"
   },
   {
    "name": "MOD_LT_EQ_LT",
@@ -44828,9 +44828,9 @@
    "source": "!m:num. !n:num. m MOD n < n <=> 0 < n",
    "statement": "forall m n :e omega, mod_nat m n < n <-> 0 < n",
    "literal": "forall m n :e omega, hl_lt (hl_MOD m n) n = 1 <-> hl_lt (hl_NUMERAL hl_zero) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_LT_EQ_LT_bridge"
   },
   {
    "name": "MOD_MOD",
@@ -44856,9 +44856,9 @@
    "source": "!m:num. !n:num. !p:num. m MOD (n * p) MOD n = m MOD n",
    "statement": "forall m n p :e omega, mod_nat (mod_nat m (n * p)) n = mod_nat m n",
    "literal": "forall m n p :e omega, hl_MOD (hl_MOD m (hl_mul n p)) n = hl_MOD m n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MOD_bridge"
   },
   {
    "name": "MOD_MOD_EXP_MIN",
@@ -44885,9 +44885,9 @@
    "source": "!x:num. !p:num. !m:num. !n:num. x MOD p EXP m MOD p EXP n = x MOD p EXP MIN m n",
    "statement": "forall x p m n :e omega, mod_nat (mod_nat x (p ^ m)) (p ^ n) = mod_nat x (p ^ if m <= n then m else n)",
    "literal": "forall x p m n :e omega, hl_MOD (hl_MOD x (hl_EXP p m)) (hl_EXP p n) = hl_MOD x (hl_EXP p (hl_MIN m n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MOD_EXP_MIN_bridge"
   },
   {
    "name": "MOD_MOD_LE",
@@ -44913,9 +44913,9 @@
    "source": "!m:num. !n:num. !p:num. ~(n = 0) /\\ n <= p ==> m MOD n MOD p = m MOD n",
    "statement": "forall m n p :e omega, ~ n = 0 /\\ n <= p -> mod_nat (mod_nat m n) p = mod_nat m n",
    "literal": "forall m n p :e omega, ~ n = hl_NUMERAL hl_zero /\\ hl_le n p = 1 -> hl_MOD (hl_MOD m n) p = hl_MOD m n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MOD_LE_bridge"
   },
   {
    "name": "MOD_MOD_REFL",
@@ -44940,9 +44940,9 @@
    "source": "!m:num. !n:num. m MOD n MOD n = m MOD n",
    "statement": "forall m n :e omega, mod_nat (mod_nat m n) n = mod_nat m n",
    "literal": "forall m n :e omega, hl_MOD (hl_MOD m n) n = hl_MOD m n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MOD_REFL_bridge"
   },
   {
    "name": "MOD_MULT",
@@ -44968,9 +44968,9 @@
    "source": "!m:num. !n:num. (m * n) MOD m = 0",
    "statement": "forall m n :e omega, mod_nat (m * n) m = 0",
    "literal": "forall m n :e omega, hl_MOD (hl_mul m n) m = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT_bridge"
   },
   {
    "name": "MOD_MULT2",
@@ -44996,9 +44996,9 @@
    "source": "!m:num. !n:num. !p:num. (m * n) MOD (m * p) = m * n MOD p",
    "statement": "forall m n p :e omega, mod_nat (m * n) (m * p) = m * mod_nat n p",
    "literal": "forall m n p :e omega, hl_MOD (hl_mul m n) (hl_mul m p) = hl_mul m (hl_MOD n p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT2_bridge"
   },
   {
    "name": "MOD_MULT_ADD",
@@ -45025,9 +45025,9 @@
    "source": "(!m:num. !n:num. !p:num. (m * n + p) MOD n = p MOD n) /\\ (!m:num. !n:num. !p:num. (n * m + p) MOD n = p MOD n) /\\ (!m:num. !n:num. !p:num. (p + m * n) MOD n = p MOD n) /\\ (!m:num. !n:num. !p:num. (p + n * m) MOD n = p MOD n)",
    "statement": "(forall m n p :e omega, mod_nat (m * n + p) n = mod_nat p n) /\\ ((forall m n p :e omega, mod_nat (n * m + p) n = mod_nat p n) /\\ ((forall m n p :e omega, mod_nat (p + m * n) n = mod_nat p n) /\\ forall m n p :e omega, mod_nat (p + n * m) n = mod_nat p n))",
    "literal": "(forall m n p :e omega, hl_MOD (hl_add (hl_mul m n) p) n = hl_MOD p n) /\\ ((forall m n p :e omega, hl_MOD (hl_add (hl_mul n m) p) n = hl_MOD p n) /\\ ((forall m n p :e omega, hl_MOD (hl_add p (hl_mul m n)) n = hl_MOD p n) /\\ forall m n p :e omega, hl_MOD (hl_add p (hl_mul n m)) n = hl_MOD p n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT_ADD_bridge"
   },
   {
    "name": "MOD_MULT_LMOD",
@@ -45053,9 +45053,9 @@
    "source": "!m:num. !n:num. !p:num. (m MOD n * p) MOD n = (m * p) MOD n",
    "statement": "forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n",
    "literal": "forall m n p :e omega, hl_MOD (hl_mul (hl_MOD m n) p) n = hl_MOD (hl_mul m p) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT_LMOD_bridge"
   },
   {
    "name": "MOD_MULT_MOD",
@@ -45082,9 +45082,9 @@
    "source": "!m:num. !n:num. !p:num. m MOD (n * p) = n * m DIV n MOD p + m MOD n",
    "statement": "forall m n p :e omega, mod_nat m (n * p) = n * mod_nat (div_nat m n) p + mod_nat m n",
    "literal": "forall m n p :e omega, hl_MOD m (hl_mul n p) = hl_add (hl_mul n (hl_MOD (hl_DIV m n) p)) (hl_MOD m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT_MOD_bridge"
   },
   {
    "name": "MOD_MULT_MOD2",
@@ -45110,9 +45110,9 @@
    "source": "!m:num. !n:num. !p:num. (m MOD n * p MOD n) MOD n = (m * p) MOD n",
    "statement": "forall m n p :e omega, mod_nat (mod_nat m n * mod_nat p n) n = mod_nat (m * p) n",
    "literal": "forall m n p :e omega, hl_MOD (hl_mul (hl_MOD m n) (hl_MOD p n)) n = hl_MOD (hl_mul m p) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT_MOD2_bridge"
   },
   {
    "name": "MOD_MULT_RMOD",
@@ -45138,9 +45138,9 @@
    "source": "!m:num. !n:num. !p:num. (m * p MOD n) MOD n = (m * p) MOD n",
    "statement": "forall m n p :e omega, mod_nat (m * mod_nat p n) n = mod_nat (m * p) n",
    "literal": "forall m n p :e omega, hl_MOD (hl_mul m (hl_MOD p n)) n = hl_MOD (hl_mul m p) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_MULT_RMOD_bridge"
   },
   {
    "name": "MOD_NSUM_MOD",
@@ -45168,7 +45168,7 @@
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall n :e omega, forall s c= A, finite s -> mod_nat (finsum s f) n = mod_nat (finsum s (fun i:set => mod_nat (f i) n)) n",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall n :e omega, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_MOD (hl_nsum A s f) n = hl_MOD (hl_nsum A s (fun i :e A => hl_MOD (f i) n)) n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -45197,7 +45197,7 @@
    "statement": "forall f:set -> set, (forall x :e omega, f x :e omega) -> forall a b n :e omega, mod_nat (finsum {i :e omega | a <= i /\\ i <= b} f) n = mod_nat (finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => mod_nat (f i) n)) n",
    "literal": "forall f :e omega :^: omega, forall a b n :e omega, hl_MOD (hl_nsum omega (hl_numseg a b) f) n = hl_MOD (hl_nsum omega (hl_numseg a b) (fun i :e omega => hl_MOD (f i) n)) n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_nsum_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -45223,9 +45223,9 @@
    "source": "!n:num. n MOD n = 0",
    "statement": "forall n :e omega, mod_nat n n = 0",
    "literal": "forall n :e omega, hl_MOD n n = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_REFL_bridge"
   },
   {
    "name": "MOD_UNIQ",
@@ -45253,9 +45253,9 @@
    "source": "!m:num. !n:num. !q:num. !r:num. m = q * n + r /\\ r < n ==> m MOD n = r",
    "statement": "forall m n q r :e omega, m = q * n + r /\\ r < n -> mod_nat m n = r",
    "literal": "forall m n q r :e omega, m = hl_add (hl_mul q n) r /\\ hl_lt r n = 1 -> hl_MOD m n = r",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_UNIQ_bridge"
   },
   {
    "name": "MOD_ZERO",
@@ -45280,9 +45280,9 @@
    "source": "!n:num. n MOD 0 = n",
    "statement": "forall n :e omega, mod_nat n 0 = n",
    "literal": "forall n :e omega, hl_MOD n (hl_NUMERAL hl_zero) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_ZERO_bridge"
   },
   {
    "name": "MONOIDAL_AC",
@@ -45974,9 +45974,9 @@
    "source": "!m:num. !n:num. !p:num. m * n DIV p <= (m * n) DIV p",
    "statement": "forall m n p :e omega, m * div_nat n p <= div_nat (m * n) p",
    "literal": "forall m n p :e omega, hl_le (hl_mul m (hl_DIV n p)) (hl_DIV (hl_mul m n) p) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MULT_DIV_LE_bridge"
   },
   {
    "name": "MULT_EQ_0",
@@ -48695,7 +48695,7 @@
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> f x <= div_nat b (finite_cardinality s))) -> finsum s f <= b",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e omega :^: A, forall b :e omega, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> hl_le (f x) (hl_DIV b (hl_CARD A s)) = 1)) -> hl_le (hl_nsum A s f) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -48800,7 +48800,7 @@
    "statement": "forall A:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\\ (~ s = Empty /\\ (forall x :e A, x :e s -> f x < div_nat b (finite_cardinality s))) -> finsum s f < b",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e omega :^: A, forall b :e omega, hl_FINITE A s = 1 /\\ (~ s = hl_EMPTY A /\\ (forall x :e A, hl_IN A x s = 1 -> hl_lt (f x) (hl_DIV b (hl_CARD A s)) = 1)) -> hl_lt (hl_nsum A s f) b = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -52114,9 +52114,9 @@
    "source": "!n:num. ODD n <=> n MOD 2 = 1",
    "statement": "forall n :e omega, odd_nat n <-> mod_nat n 2 = 1",
    "literal": "forall n :e omega, hl_ODD n = 1 <-> hl_MOD n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ODD_MOD_bridge"
   },
   {
    "name": "ODD_MOD_EVEN",
@@ -52141,9 +52141,9 @@
    "source": "!m:num. !n:num. EVEN n ==> (ODD (m MOD n) <=> ODD m)",
    "statement": "forall m n :e omega, even_nat n -> (odd_nat (mod_nat m n) <-> odd_nat m)",
    "literal": "forall m n :e omega, hl_EVEN n = 1 -> (hl_ODD (hl_MOD m n) = 1 <-> hl_ODD m = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ODD_MOD_EVEN_bridge"
   },
   {
    "name": "ODD_MULT",
@@ -54705,9 +54705,9 @@
    "source": "!a:num. !b:num. !n:num. ~(a = 0) ==> (b DIV a < n <=> b < a * n)",
    "statement": "forall a b n :e omega, ~ a = 0 -> (div_nat b a < n <-> b < a * n)",
    "literal": "forall a b n :e omega, ~ a = hl_NUMERAL hl_zero -> (hl_lt (hl_DIV b a) n = 1 <-> hl_lt b (hl_mul a n) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "RDIV_LT_EQ_bridge"
   },
   {
    "name": "REAL_ABS_0",
@@ -63195,9 +63195,9 @@
    "source": "!m:num. !n:num. real_of_num (m DIV n) = real_of_num m / real_of_num n - real_of_num (m MOD n) / real_of_num n",
    "statement": "forall m n :e omega, div_nat m n = m :/: n + - mod_nat m n :/: n",
    "literal": "forall m n :e omega, hl_real_of_num (hl_DIV m n) = hl_real_sub (hl_real_div (hl_real_of_num m) (hl_real_of_num n)) (hl_real_div (hl_real_of_num (hl_MOD m n)) (hl_real_of_num n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DIV_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_OF_NUM_DIV_bridge"
   },
   {
    "name": "REAL_OF_NUM_EQ",
@@ -63433,9 +63433,9 @@
    "source": "!m:num. !n:num. real_of_num (m MOD n) = real_of_num m - real_of_num (m DIV n) * real_of_num n",
    "statement": "forall m n :e omega, mod_nat m n = m + - div_nat m n * n",
    "literal": "forall m n :e omega, hl_real_of_num (hl_MOD m n) = hl_real_sub (hl_real_of_num m) (hl_real_mul (hl_real_of_num (hl_DIV m n)) (hl_real_of_num n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_MOD_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_OF_NUM_MOD_bridge"
   },
   {
    "name": "REAL_OF_NUM_MUL",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1051
+  "native_certified": 1125
  }
 }

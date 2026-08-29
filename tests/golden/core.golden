@@ -654,7 +654,8 @@ source: !m:num. !n:num. ~(n = 0) ==> m = m DIV n * n + m MOD n /\ m MOD n < n
 status: transport_required
 statement: forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n
 literal: forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> m = hl_add (hl_mul (hl_DIV m n) n) (hl_MOD m n) /\ hl_lt (hl_MOD m n) n = 1
-cert_status: bridge_unsupported
+bridge: DIVISION_bridge
+cert_status: native_certified
 
 ### DIV_MULT   [naturals: constructors, induction, arithmetic, order, division]
 hash: 3a8beeb323ea04d1de30bfcba2c25ac4
@@ -662,7 +663,8 @@ source: !m:num. !n:num. ~(m = 0) ==> (m * n) DIV m = n
 status: transport_required
 statement: forall m n :e omega, ~ m = 0 -> div_nat (m * n) m = n
 literal: forall m n :e omega, ~ m = hl_NUMERAL hl_zero -> hl_DIV (hl_mul m n) m = n
-cert_status: bridge_unsupported
+bridge: DIV_MULT_bridge
+cert_status: native_certified
 
 ### MOD_LT   [naturals: constructors, induction, arithmetic, order, division]
 hash: d694ca4e2590b601d1d07f67592d876b
@@ -670,7 +672,8 @@ source: !m:num. !n:num. m < n ==> m MOD n = m
 status: transport_required
 statement: forall m n :e omega, m < n -> mod_nat m n = m
 literal: forall m n :e omega, hl_lt m n = 1 -> hl_MOD m n = m
-cert_status: bridge_unsupported
+bridge: MOD_LT_bridge
+cert_status: native_certified
 
 ### EVEN_ADD   [naturals: constructors, induction, arithmetic, order, division]
 hash: b97c6e33433a1b82c867029be0bf2e57
