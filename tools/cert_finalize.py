@@ -23,24 +23,27 @@ base_ok = 'base' in ok
 m = json.load(open(man_file))
 # statements in the certification modules
 cert_stmts = {}
+fully_proved = set()   # literal source fact proved by a model theorem: no admission remains
 for s in ok | set(fail):
     f = os.path.join(cert_dir, s + '.mg')
     if not os.path.exists(f): continue
     txt = open(f).read()
-    for mm in re.finditer(r'^Theorem ([A-Za-z_0-9\']+) : (.*)\.\nexact \(\1_bridge hlt_\1\)\.\nAdmitted\.', txt, re.M):
+    for mm in re.finditer(r'^Theorem ([A-Za-z_0-9\']+) : (.*)\.\nexact \(\1_bridge hlt_\1\)\.\n(Admitted|Qed)\.', txt, re.M):
         cert_stmts[mm.group(1)] = mm.group(2)
-n_cert = n_fail = n_mismatch = 0
+        if mm.group(3) == 'Qed': fully_proved.add(mm.group(1))
+n_cert = n_fail = n_mismatch = n_proved = 0
 for i in m['items']:
     if i.get('cert_status') != 'bridge_emitted': continue
     sh = i['shard']
     if base_ok and sh in ok:
         if cert_stmts.get(i['name']) == i['statement']:
             i['cert_status'] = 'native_certified'; n_cert += 1
+            if i['name'] in fully_proved and i.get('literal_proved'): n_proved += 1
         else:
             i['cert_status'] = 'bridge_mismatch'; i['cert_error'] = 'certified statement differs from the public statement'; n_mismatch += 1
     else:
         i['cert_status'] = 'bridge_failed'; i['cert_error'] = fail.get(sh, 'base failed' if not base_ok else 'not checked'); n_fail += 1
-m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'native_certified': n_cert}
+m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'native_certified': n_cert, 'native_proved': n_proved}
 json.dump(m, open(man_file, 'w'), indent=1)
-print(f'cert_finalize {prof}: {n_cert} native_certified, {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
+print(f'cert_finalize {prof}: {n_cert} native_certified ({n_proved} fully proved), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
 sys.exit(1 if fail or n_mismatch else 0)

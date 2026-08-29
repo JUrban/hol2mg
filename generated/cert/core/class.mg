@@ -5,13 +5,14 @@
 
 // HOL Light: class.ml:16 / ETA_AX   (hash md5:e20b11b91c226ce7c7fa8169d22798c6)
 Theorem hlt_ETA_AX : forall A B:set, A <> Empty -> B <> Empty -> forall t :e B :^: A, (fun x :e A => t x) = t.
-Admitted.
+exact hlt_ETA_AX_model.
+Qed.
 Theorem ETA_AX_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall t :e B :^: A, (fun x :e A => t x) = t) -> (forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x).
 exact (fun H__top A B => (xm (B = Empty) (forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall t:set -> set, (forall x :e A, t x :e hl__u) -> forall x :e A, t x = t x) (fun t => (fun H : forall x :e A, t x :e Empty => (fun x Hx => (fun q H => H)))))) (fun HBne => (xm (A = Empty) (forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall t:set -> set, (forall x :e hl__u, t x :e B) -> forall x :e hl__u, t x = t x) (fun t => (fun H : forall x :e Empty, t x :e B => (forall_in_Empty (fun x => t x = t x)))))) (fun HAne => ((imp_forall_fun (A) (B) (fun t => (fun x :e A => t x) = t) (fun t => forall x :e A, t x = t x) (fun t Htc => (imp_trans ((fun x :e A => hl_lam A t x) = hl_lam A t) (forall x :e A, hl_lam A t x = hl_lam A t x) (forall x :e A, t x = t x) (imp_trans ((fun x :e A => hl_lam A t x) = hl_lam A t) (forall hl__pw :e (A), (fun x :e A => hl_lam A t x) hl__pw = (hl_lam A t) hl__pw) (forall x :e A, hl_lam A t x = hl_lam A t x) (iffEL ((fun x :e A => hl_lam A t x) = hl_lam A t) (forall hl__pw :e (A), (fun x :e A => hl_lam A t x) hl__pw = (hl_lam A t) hl__pw) (eq_Pi_pointwise (A) (B) (fun x :e A => hl_lam A t x) (hl_lam A t) (lam_Pi (A) (fun _ => B) (fun x => hl_lam A t x) (fun x Hx => (setexp_ap (A) (B) (hl_lam A t) (hl_lam_Pi (A) (B) t Htc) (x) Hx))) (hl_lam_Pi (A) (B) t Htc))) (iffEL (forall hl__pw :e (A), (fun x :e A => hl_lam A t x) hl__pw = (hl_lam A t) hl__pw) (forall x :e A, hl_lam A t x = hl_lam A t x) (pw_app_conv (A) (fun x :e A => hl_lam A t x) (hl_lam A t) (fun x:set => hl_lam A t x) (fun hl__pw:set => (hl_lam A t) hl__pw) (fun x Hx => (beta (A) (fun x => hl_lam A t x) x Hx)) (fun hl__pw Hhl__pw => (fun q H => H))))) (imp_forall_in (A) (fun x => hl_lam A t x = hl_lam A t x) (fun x => t x = t x) (fun x Hx => (imp_eq (hl_lam A t x) (t x) (hl_lam A t x) (t x) ((hl_lam_ap (A) t) (x) Hx) ((hl_lam_ap (A) t) (x) Hx))))))) (H__top A B HAne HBne))))))).
 Qed.
 Theorem ETA_AX : forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x.
 exact (ETA_AX_bridge hlt_ETA_AX).
-Admitted.
+Qed.
 
 // HOL Light: class.ml:30 / EQ_EXT   (hash md5:74f6b9b467171dc186a2df9978244b58)
 Theorem hlt_EQ_EXT : forall A B:set, A <> Empty -> B <> Empty -> forall f g :e B :^: A, (forall x :e A, f x = g x) -> f = g.
@@ -70,13 +71,14 @@ Admitted.
 
 // HOL Light: class.ml:154 / BOOL_CASES_AX   (hash md5:2d73cf3d9340a07496060ebb19e89f36)
 Theorem hlt_BOOL_CASES_AX : forall t :e 2, (t = 1 <-> True) \/ (t = 1 <-> False).
-Admitted.
+exact hlt_BOOL_CASES_AX_model.
+Qed.
 Theorem BOOL_CASES_AX_bridge : (forall t :e 2, (t = 1 <-> True) \/ (t = 1 <-> False)) -> (forall t:prop, (t <-> True) \/ (t <-> False)).
 exact (fun H__top => ((imp_forall_bool (fun t => (t = 1 <-> True) \/ (t = 1 <-> False)) (fun t => (t <-> True) \/ (t <-> False)) (fun t => (imp_or ((if t then 1 else 0) = 1 <-> True) (t <-> True) ((if t then 1 else 0) = 1 <-> False) (t <-> False) (imp_iff ((if t then 1 else 0) = 1) (t) (True) (True) (iffEL ((if t then 1 else 0) = 1) (t) (If_1_iff t)) (iffER ((if t then 1 else 0) = 1) (t) (If_1_iff t)) (imp_refl True) (imp_refl True)) (imp_iff ((if t then 1 else 0) = 1) (t) (False) (False) (iffEL ((if t then 1 else 0) = 1) (t) (If_1_iff t)) (iffER ((if t then 1 else 0) = 1) (t) (If_1_iff t)) (imp_refl False) (imp_refl False))))) H__top)).
 Qed.
 Theorem BOOL_CASES_AX : forall t:prop, (t <-> True) \/ (t <-> False).
 exact (BOOL_CASES_AX_bridge hlt_BOOL_CASES_AX).
-Admitted.
+Qed.
 
 // HOL Light: class.ml:185 / DE_MORGAN_THM   (hash md5:8b8cb517996be6435d3c18d9fc7bbe23)
 Theorem hlt_DE_MORGAN_THM : forall t1 t2 :e 2, (~ (t1 = 1 /\ t2 = 1) <-> ~ t1 = 1 \/ ~ t2 = 1) /\ (~ (t1 = 1 \/ t2 = 1) <-> ~ t1 = 1 /\ ~ t2 = 1).

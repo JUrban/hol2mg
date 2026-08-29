@@ -25,33 +25,36 @@ Admitted.
 
 // HOL Light: nums.ml:75 / NOT_SUC   (hash md5:08c916fb9a846af5b7a22a1e10f97142)
 Theorem hlt_NOT_SUC : forall n :e omega, ~ hl_SUC n = hl_NUMERAL hl_zero.
-Admitted.
+exact hlt_NOT_SUC_model.
+Qed.
 Theorem NOT_SUC_bridge : (forall n :e omega, ~ hl_SUC n = hl_NUMERAL hl_zero) -> (forall n :e omega, ~ ordsucc n = 0).
 exact (fun H__top => ((imp_forall_in (omega) (fun n => ~ hl_SUC n = hl_NUMERAL hl_zero) (fun n => ~ ordsucc n = 0) (fun n Hn => (imp_not (hl_SUC n = hl_NUMERAL hl_zero) (ordsucc n = 0) (imp_eq (ordsucc n) (hl_SUC n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_SUC n) (ordsucc n) ((hl_SUC_compat) (n) Hn)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) H__top)).
 Qed.
 Theorem NOT_SUC : forall n :e omega, ~ ordsucc n = 0.
 exact (NOT_SUC_bridge hlt_NOT_SUC).
-Admitted.
+Qed.
 
 // HOL Light: nums.ml:80 / SUC_INJ   (hash md5:5224521fb640c43e425c96e6462ab6d0)
 Theorem hlt_SUC_INJ : forall m n :e omega, hl_SUC m = hl_SUC n <-> m = n.
-Admitted.
+exact hlt_SUC_INJ_model.
+Qed.
 Theorem SUC_INJ_bridge : (forall m n :e omega, hl_SUC m = hl_SUC n <-> m = n) -> (forall m n :e omega, ordsucc m = ordsucc n <-> m = n).
 exact (fun H__top => ((imp_forall_in (omega) (fun m => forall n :e omega, hl_SUC m = hl_SUC n <-> m = n) (fun m => forall n :e omega, ordsucc m = ordsucc n <-> m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_SUC m = hl_SUC n <-> m = n) (fun n => ordsucc m = ordsucc n <-> m = n) (fun n Hn => (imp_iff (hl_SUC m = hl_SUC n) (ordsucc m = ordsucc n) (m = n) (m = n) (imp_eq (hl_SUC m) (ordsucc m) (hl_SUC n) (ordsucc n) ((hl_SUC_compat) (m) Hm) ((hl_SUC_compat) (n) Hn)) (imp_eq (ordsucc m) (hl_SUC m) (ordsucc n) (hl_SUC n) (eq_sym_i (hl_SUC m) (ordsucc m) ((hl_SUC_compat) (m) Hm)) (eq_sym_i (hl_SUC n) (ordsucc n) ((hl_SUC_compat) (n) Hn))) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H)))))))) H__top)).
 Qed.
 Theorem SUC_INJ : forall m n :e omega, ordsucc m = ordsucc n <-> m = n.
 exact (SUC_INJ_bridge hlt_SUC_INJ).
-Admitted.
+Qed.
 
 // HOL Light: nums.ml:96 / num_INDUCTION   (hash md5:95f125bb90820dfc772fce4559903527)
 Theorem hlt_num_INDUCTION : forall P :e 2 :^: omega, P (hl_NUMERAL hl_zero) = 1 /\ (forall n :e omega, P n = 1 -> P (hl_SUC n) = 1) -> forall n :e omega, P n = 1.
-Admitted.
+exact hlt_num_INDUCTION_model.
+Qed.
 Theorem num_INDUCTION_bridge : (forall P :e 2 :^: omega, P (hl_NUMERAL hl_zero) = 1 /\ (forall n :e omega, P n = 1 -> P (hl_SUC n) = 1) -> forall n :e omega, P n = 1) -> (forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n).
 exact (fun H__top => ((imp_forall_pred (omega) (fun P => P (hl_NUMERAL hl_zero) = 1 /\ (forall n :e omega, P n = 1 -> P (hl_SUC n) = 1) -> forall n :e omega, P n = 1) (fun P => P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n) (fun P => (fun H__L : ((hl_chip omega P (hl_NUMERAL hl_zero) = 1 /\ forall n :e omega, hl_chip omega P n = 1 -> hl_chip omega P (hl_SUC n) = 1) -> (forall n :e omega, hl_chip omega P n = 1)) => fun H__hyp1 : (P 0 /\ forall n :e omega, P n -> P (ordsucc n)) => (imp_forall_in (omega) (fun n => hl_chip omega P n = 1) (fun n => P n) (fun n Hn => (iffEL (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn)))) (H__L ((imp_and_dep_bwd (hl_chip omega P (hl_NUMERAL hl_zero) = 1) (P 0) (forall n :e omega, hl_chip omega P n = 1 -> hl_chip omega P (hl_SUC n) = 1) (forall n :e omega, P n -> P (ordsucc n)) (iffER (hl_chip omega P (hl_NUMERAL hl_zero) = 1) (P 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_chip omega P (hl_NUMERAL hl_zero) = 1 <-> P hl__u) ((hl_chip_iff (omega) P) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (fun H__and2 : (P 0) => (imp_forall_in (omega) (fun n => P n -> P (ordsucc n)) (fun n => hl_chip omega P n = 1 -> hl_chip omega P (hl_SUC n) = 1) (fun n Hn => (fun H__N : ((P n) -> (P (ordsucc n))) => fun H__hyp4 : (hl_chip omega P n = 1) => (iffER (hl_chip omega P (hl_SUC n) = 1) (P (ordsucc n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_chip omega P (hl_SUC n) = 1 <-> P hl__u) ((hl_chip_iff (omega) P) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (H__N ((iffEL (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn)) H__hyp4))))))) H__hyp1))))) H__top)).
 Qed.
 Theorem num_INDUCTION : forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n.
 exact (num_INDUCTION_bridge hlt_num_INDUCTION).
-Admitted.
+Qed.
 
 // HOL Light: nums.ml:116 / num_Axiom   (hash md5:22351265077b01108064d138b673a797)
 Theorem hlt_num_Axiom : forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, hl_exists_unique (A :^: omega) (fun fn :e A :^: omega => if fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n then 1 else 0) = 1.

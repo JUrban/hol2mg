@@ -20,6 +20,7 @@ type item = {
   cert_status : string;       (* certification status (§21.6) *)
   cert_error : string;        (* reason for a quarantine status *)
   bridge : string;            (* bridge theorem name once generated *)
+  literal_proved : bool;      (* the literal source fact is proved by a model theorem (§21.4), no admission remains *)
 }
 
 let json_of_item (i : item) : Yojson.Safe.t =
@@ -35,7 +36,7 @@ let json_of_item (i : item) : Yojson.Safe.t =
            ("source", `String i.source);
            ("statement", `String i.statement);
            ("literal", `String i.literal); ("cert_status", `String i.cert_status);
-           ("cert_error", `String i.cert_error); ("bridge", `String i.bridge) ]
+           ("cert_error", `String i.cert_error); ("bridge", `String i.bridge); ("literal_proved", `Bool i.literal_proved) ]
 
 let write_manifest file (header : (string * Yojson.Safe.t) list) (items : item list) =
   let items = List.sort (fun a b -> compare a.name b.name) items in

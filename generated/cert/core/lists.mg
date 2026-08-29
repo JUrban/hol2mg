@@ -235,13 +235,14 @@ Admitted.
 
 // HOL Light: lists.ml:148 / NOT_CONS_NIL   (hash md5:77428f1d7d66f872892dab61338128c2)
 Theorem hlt_NOT_CONS_NIL : forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, ~ hl_CONS A h t = hl_NIL A.
-Admitted.
+exact hlt_NOT_CONS_NIL_model.
+Qed.
 Theorem NOT_CONS_NIL_bridge : (forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, ~ hl_CONS A h t = hl_NIL A) -> (forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil).
 exact (fun H__top A => (xm (A = Empty) (forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall h :e hl__u, forall t :e finseq hl__u, ~ seq_cons h t = seq_nil) (forall_in_Empty (fun h => forall t :e finseq Empty, ~ seq_cons h t = seq_nil)))) (fun HAne => ((imp_forall_in (A) (fun h => forall t :e finseq A, ~ hl_CONS A h t = hl_NIL A) (fun h => forall t :e finseq A, ~ seq_cons h t = seq_nil) (fun h Hh => (imp_forall_in (finseq A) (fun t => ~ hl_CONS A h t = hl_NIL A) (fun t => ~ seq_cons h t = seq_nil) (fun t Ht => (imp_not (hl_CONS A h t = hl_NIL A) (seq_cons h t = seq_nil) (imp_eq (seq_cons h t) (hl_CONS A h t) (seq_nil) (hl_NIL A) (eq_sym_i (hl_CONS A h t) (seq_cons h t) ((hl_CONS_compat) (A) HAne (h) Hh (t) Ht)) (eq_sym_i (hl_NIL A) (seq_nil) ((hl_NIL_compat) (A) HAne)))))))) (H__top A HAne))))).
 Qed.
 Theorem NOT_CONS_NIL : forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil.
 exact (NOT_CONS_NIL_bridge hlt_NOT_CONS_NIL).
-Admitted.
+Qed.
 
 // HOL Light: lists.ml:152 / LAST_CLAUSES   (hash md5:327d7c7a2dd7f193d5e0edf3faaf28a2)
 Theorem hlt_LAST_CLAUSES : forall A:set, A <> Empty -> forall h k :e A, forall t :e finseq A, hl_LAST A (hl_CONS A h (hl_NIL A)) = h /\ hl_LAST A (hl_CONS A h (hl_CONS A k t)) = hl_LAST A (hl_CONS A k t).
@@ -305,13 +306,14 @@ Admitted.
 
 // HOL Light: lists.ml:178 / CONS_11   (hash md5:50a941211ca5b773825052d4a811750c)
 Theorem hlt_CONS_11 : forall A:set, A <> Empty -> forall h1 h2 :e A, forall t1 t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2.
-Admitted.
+exact hlt_CONS_11_model.
+Qed.
 Theorem CONS_11_bridge : (forall A:set, A <> Empty -> forall h1 h2 :e A, forall t1 t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2) -> (forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2).
 exact (fun H__top A => (xm (A = Empty) (forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall h1 h2 :e hl__u, forall t1 t2 :e finseq hl__u, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2) (forall_in_Empty (fun h1 => forall h2 :e Empty, forall t1 t2 :e finseq Empty, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2)))) (fun HAne => ((imp_forall_in (A) (fun h1 => forall h2 :e A, forall t1 t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2) (fun h1 => forall h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2) (fun h1 Hh1 => (imp_forall_in (A) (fun h2 => forall t1 t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2) (fun h2 => forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2) (fun h2 Hh2 => (imp_forall_in (finseq A) (fun t1 => forall t2 :e finseq A, hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2) (fun t1 => forall t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2) (fun t1 Ht1 => (imp_forall_in (finseq A) (fun t2 => hl_CONS A h1 t1 = hl_CONS A h2 t2 <-> h1 = h2 /\ t1 = t2) (fun t2 => seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2) (fun t2 Ht2 => (imp_iff (hl_CONS A h1 t1 = hl_CONS A h2 t2) (seq_cons h1 t1 = seq_cons h2 t2) (h1 = h2 /\ t1 = t2) (h1 = h2 /\ t1 = t2) (imp_eq (hl_CONS A h1 t1) (seq_cons h1 t1) (hl_CONS A h2 t2) (seq_cons h2 t2) ((hl_CONS_compat) (A) HAne (h1) Hh1 (t1) Ht1) ((hl_CONS_compat) (A) HAne (h2) Hh2 (t2) Ht2)) (imp_eq (seq_cons h1 t1) (hl_CONS A h1 t1) (seq_cons h2 t2) (hl_CONS A h2 t2) (eq_sym_i (hl_CONS A h1 t1) (seq_cons h1 t1) ((hl_CONS_compat) (A) HAne (h1) Hh1 (t1) Ht1)) (eq_sym_i (hl_CONS A h2 t2) (seq_cons h2 t2) ((hl_CONS_compat) (A) HAne (h2) Hh2 (t2) Ht2))) (imp_and_dep (h1 = h2) (h1 = h2) (t1 = t2) (t1 = t2) (imp_eq (h1) (h1) (h2) (h2) (fun q H => H) (fun q H => H)) (fun H__and5 : (h1 = h2) => (imp_eq (t1) (t1) (t2) (t2) (fun q H => H) (fun q H => H)))) (imp_and_dep_bwd (h1 = h2) (h1 = h2) (t1 = t2) (t1 = t2) (imp_eq (h1) (h1) (h2) (h2) (eq_sym_i (h1) (h1) (fun q H => H)) (eq_sym_i (h2) (h2) (fun q H => H))) (fun H__and4 : (h1 = h2) => (imp_eq (t1) (t1) (t2) (t2) (eq_sym_i (t1) (t1) (fun q H => H)) (eq_sym_i (t2) (t2) (fun q H => H)))))))))))))) (H__top A HAne))))).
 Qed.
 Theorem CONS_11 : forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2.
 exact (CONS_11_bridge hlt_CONS_11).
-Admitted.
+Qed.
 
 // HOL Light: lists.ml:182 / list_CASES   (hash md5:6c9a307f18507870c827834056fdffa7)
 Theorem hlt_list_CASES : forall A:set, A <> Empty -> forall l :e finseq A, l = hl_NIL A \/ exists h :e A, exists t :e finseq A, l = hl_CONS A h t.

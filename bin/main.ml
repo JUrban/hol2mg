@@ -200,7 +200,7 @@ let () =
         let shard = if src_file = "" then "misc" else shard_of_file src_file in
         let base = { Manifest.name = sanitize_thm_name th.name; source_name = th.name; aliases = th.aliases; hash = th.hash;
                      status = ""; shard; src_file; src_line; classes = []; bridges = []; notes = []; var_views = [];
-                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = "";
+                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = ""; literal_proved = false;
                      source = String.concat ", " (List.map Hol.string_of_tm th.seq.hyps) ^ (if th.seq.hyps = [] then "" else " |- ") ^ Hol.string_of_tm th.seq.concl } in
         let verbose = List.mem "--verbose" args in
         if verbose then (prerr_string (th.name ^ " "); flush stderr);
@@ -375,6 +375,24 @@ let () =
                  Hashtbl.replace proved name norm
                done with Not_found -> ())
             end) [ carriers_file; compat_file ];
+            (* model-soundness theorems (§21.4): hlt_N_model with exactly the literal statement of N discharges hlt_N *)
+            let model = Hashtbl.create 64 in
+            let model_file = "mglib/literal/model_theorems.mg" in
+            if Sys.file_exists model_file then begin
+              let ic = open_in model_file in
+              let n = in_channel_length ic in
+              let txt = really_input_string ic n in close_in ic;
+              let re = Str.regexp "Theorem[ \n]+\\(hlt_[A-Za-z_0-9']+_model\\)[ \n]*:\\([^.]*\\)\\.[ \n]" in
+              let pos = ref 0 in
+              (try while true do
+                 let _ = Str.search_forward re txt !pos in
+                 let name = Str.matched_group 1 txt and body = Str.matched_group 2 txt in
+                 pos := Str.match_end ();
+                 let norm = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' (String.map (fun c -> if c = '\n' then ' ' else c) body))) in
+                 Hashtbl.replace model name norm
+               done with Not_found -> ())
+            end;
+            let lit_proved = Hashtbl.create 64 in
             Hashtbl.iter (fun t _ ->
               match Hashtbl.find_opt reg.Registry.types t with
               | Some te when te.Registry.t_arity = 0 && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native") && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native_nonempty") ->
@@ -488,13 +506,19 @@ let () =
                 Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" i.Manifest.src_file (if i.Manifest.src_line > 0 then ":" ^ string_of_int i.Manifest.src_line else "") i.Manifest.source_name i.Manifest.hash;
                 match o with
                 | Some o ->
-                    Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal;
+                    let norm_lit = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' i.Manifest.literal)) in
+                    let proved = (match Hashtbl.find_opt model ("hlt_" ^ i.Manifest.name ^ "_model") with Some st -> st = norm_lit | None -> false) in
+                    if proved then begin
+                      Hashtbl.replace lit_proved i.Manifest.name ();
+                      Printf.fprintf oc "Theorem hlt_%s : %s.\nexact hlt_%s_model.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.name
+                    end else
+                      Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal;
                     Printf.fprintf oc "Theorem %s_bridge : (%s) -> (%s).\nexact %s.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.statement o.Bridge.proof;
-                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\nAdmitted.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name
+                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\n%s.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name (if proved then "Qed" else "Admitted")
                 | None ->
                     Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement) l;
               close_out oc) by_shard;
-            items) in
+            List.map (fun (i : Manifest.item) -> if Hashtbl.mem lit_proved i.Manifest.name then { i with Manifest.literal_proved = true } else i) items) in
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in
       let header = [ ("schema", `Int 1); ("profile", `String profile); ("hol_light_commit", `String hol_commit);
                      ("auto_definitions", `List (List.map (fun ((ad : Elab.auto_def), (d : thm_record)) ->

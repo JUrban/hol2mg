@@ -35,23 +35,25 @@ Admitted.
 
 // HOL Light: pair.ml:73 / PAIR_EQ   (hash md5:71770245f4ddd568d85751053a9e5a6e)
 Theorem hlt_PAIR_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall a :e A, forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b.
-Admitted.
+exact hlt_PAIR_EQ_model.
+Qed.
 Theorem PAIR_EQ_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, forall a :e A, forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b) -> (forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b).
 exact (fun H__top A B => (xm (B = Empty) (forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall x :e A, forall y :e hl__u, forall a :e A, forall b :e hl__u, (x,y) = (a,b) <-> x = a /\ y = b) (fun x Hx => (forall_in_Empty (fun y => forall a :e A, forall b :e Empty, (x,y) = (a,b) <-> x = a /\ y = b))))) (fun HBne => (xm (A = Empty) (forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, forall y :e B, forall a :e hl__u, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b) (forall_in_Empty (fun x => forall y :e B, forall a :e Empty, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b)))) (fun HAne => ((imp_forall_in (A) (fun x => forall y :e B, forall a :e A, forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b) (fun x => forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b) (fun x Hx => (imp_forall_in (B) (fun y => forall a :e A, forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b) (fun y => forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b) (fun y Hy => (imp_forall_in (A) (fun a => forall b :e B, hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b) (fun a => forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b) (fun a Ha => (imp_forall_in (B) (fun b => hl_pair A B x y = hl_pair A B a b <-> x = a /\ y = b) (fun b => (x,y) = (a,b) <-> x = a /\ y = b) (fun b Hb => (imp_iff (hl_pair A B x y = hl_pair A B a b) ((x,y) = (a,b)) (x = a /\ y = b) (x = a /\ y = b) (imp_eq (hl_pair A B x y) ((x,y)) (hl_pair A B a b) ((a,b)) ((hl_pair_compat) (A) (B) HAne HBne (x) Hx (y) Hy) ((hl_pair_compat) (A) (B) HAne HBne (a) Ha (b) Hb)) (imp_eq ((x,y)) (hl_pair A B x y) ((a,b)) (hl_pair A B a b) (eq_sym_i (hl_pair A B x y) ((x,y)) ((hl_pair_compat) (A) (B) HAne HBne (x) Hx (y) Hy)) (eq_sym_i (hl_pair A B a b) ((a,b)) ((hl_pair_compat) (A) (B) HAne HBne (a) Ha (b) Hb))) (imp_and_dep (x = a) (x = a) (y = b) (y = b) (imp_eq (x) (x) (a) (a) (fun q H => H) (fun q H => H)) (fun H__and5 : (x = a) => (imp_eq (y) (y) (b) (b) (fun q H => H) (fun q H => H)))) (imp_and_dep_bwd (x = a) (x = a) (y = b) (y = b) (imp_eq (x) (x) (a) (a) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (a) (a) (fun q H => H))) (fun H__and4 : (x = a) => (imp_eq (y) (y) (b) (b) (eq_sym_i (y) (y) (fun q H => H)) (eq_sym_i (b) (b) (fun q H => H)))))))))))))) (H__top A B HAne HBne))))))).
 Qed.
 Theorem PAIR_EQ : forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b.
 exact (PAIR_EQ_bridge hlt_PAIR_EQ).
-Admitted.
+Qed.
 
 // HOL Light: pair.ml:82 / PAIR_SURJECTIVE   (hash md5:8a85c46beb474e1e63192937ada8908b)
 Theorem hlt_PAIR_SURJECTIVE : forall A B:set, A <> Empty -> B <> Empty -> forall p :e A :*: B, exists x :e A, exists y :e B, p = hl_pair A B x y.
-Admitted.
+exact hlt_PAIR_SURJECTIVE_model.
+Qed.
 Theorem PAIR_SURJECTIVE_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall p :e A :*: B, exists x :e A, exists y :e B, p = hl_pair A B x y) -> (forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y)).
 exact (fun H__top A B => (xm (B = Empty) (forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y)) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall p :e A :*: hl__u, exists x :e A, exists y :e hl__u, p = (x,y)) ((eq_sym_i (A :*: Empty) (Empty) (setprod_Empty_R (A))) (fun hl__u hl__v => forall p :e hl__u, exists x :e A, exists y :e Empty, p = (x,y)) (forall_in_Empty (fun p => exists x :e A, exists y :e Empty, p = (x,y)))))) (fun HBne => (xm (A = Empty) (forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y)) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall p :e hl__u :*: B, exists x :e hl__u, exists y :e B, p = (x,y)) ((eq_sym_i (Empty :*: B) (Empty) (setprod_Empty_L (B))) (fun hl__u hl__v => forall p :e hl__u, exists x :e Empty, exists y :e B, p = (x,y)) (forall_in_Empty (fun p => exists x :e Empty, exists y :e B, p = (x,y)))))) (fun HAne => ((imp_forall_in (A :*: B) (fun p => exists x :e A, exists y :e B, p = hl_pair A B x y) (fun p => exists x :e A, exists y :e B, p = (x,y)) (fun p Hp => (imp_exists_in (A) (fun x => exists y :e B, p = hl_pair A B x y) (fun x => exists y :e B, p = (x,y)) (fun x Hx => (imp_exists_in (B) (fun y => p = hl_pair A B x y) (fun y => p = (x,y)) (fun y Hy => (imp_eq (p) (p) (hl_pair A B x y) ((x,y)) (fun q H => H) ((hl_pair_compat) (A) (B) HAne HBne (x) Hx (y) Hy)))))))) (H__top A B HAne HBne))))))).
 Qed.
 Theorem PAIR_SURJECTIVE : forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y).
 exact (PAIR_SURJECTIVE_bridge hlt_PAIR_SURJECTIVE).
-Admitted.
+Qed.
 
 // HOL Light: pair.ml:92 / FST   (hash md5:e9c3a4a3164ca2f9e6fad2d535f8ab0f)
 Theorem hlt_FST : forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_FST A B (hl_pair A B x y) = x.

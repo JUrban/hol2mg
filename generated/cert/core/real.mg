@@ -55,13 +55,14 @@ Admitted.
 
 // HOL Light: real.ml:37 / REAL_OF_NUM_SUC   (hash md5:54dc57e66aeb4c39062a5b0df2ff68d2)
 Theorem hlt_REAL_OF_NUM_SUC : forall n :e omega, hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_SUC n).
-Admitted.
+exact hlt_REAL_OF_NUM_SUC_model.
+Qed.
 Theorem REAL_OF_NUM_SUC_bridge : (forall n :e omega, hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_SUC n)) -> (forall n :e omega, n + 1 = ordsucc n).
 exact (fun H__top => ((imp_forall_in (omega) (fun n => hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_SUC n)) (fun n => n + 1 = ordsucc n) (fun n Hn => (imp_eq (hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))) (n + 1) (hl_real_of_num (hl_SUC n)) (ordsucc n) (((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (fun hl__u hl__v => hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = n + hl__u) (((hl_real_of_num_compat) (n) Hn) (fun hl__u hl__v => hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl__u + hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) ((hl_real_add_compat) (hl_real_of_num n) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (n) Hn) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))))) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_real_of_num (hl_SUC n) = hl__u) ((hl_real_of_num_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))))) H__top)).
 Qed.
 Theorem REAL_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
 exact (REAL_OF_NUM_SUC_bridge hlt_REAL_OF_NUM_SUC).
-Admitted.
+Qed.
 
 // HOL Light: real.ml:41 / REAL_OF_NUM_SUB   (hash md5:5b5ff38e684439b10f02add17633150b)
 Theorem hlt_REAL_OF_NUM_SUB : forall m n :e omega, hl_le m n = 1 -> hl_real_sub (hl_real_of_num n) (hl_real_of_num m) = hl_real_of_num (hl_sub n m).
