@@ -955,3 +955,8 @@ let K A F P. assume H. let i. assume Hi.
 prove {a :e A | F i a = 1} = {a :e A | P i a}.
 apply (Sep_ext_iff A (fun a => F i a = 1) (fun a => P i a)). let a. assume Ha. exact (H i Hi a Ha).
 Qed.
+Theorem lam_subset_pw : forall K A:set, forall F:set -> set, forall S:set, forall i :e K, forall a :e A, hl_rep A (F i) = S -> ((fun i :e K => F i) i a = 1 <-> a :e S).
+let K A F S i. assume Hi. let a. assume Ha. assume HS.
+apply (iff_eq1_l ((fun i :e K => F i) i a) (F i a) (f_equal (fun u => u a) ((fun i :e K => F i) i) (F i) (beta K (fun i => F i) i Hi)) (a :e S)).
+exact (HS (fun hl__u hl__v => F i a = 1 <-> a :e hl__u) (hl_rep_iff A (F i) a Ha)).
+Qed.

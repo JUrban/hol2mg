@@ -1088,6 +1088,18 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | Mg.App (Mg.LamIn (xn, _, lb), la) ->
                 (lit, nat, KEq, Printf.sprintf "(eq_trans_i %s %s %s (beta %s (fun %s:set => %s) %s %s) %s)" (ppp lit) (ppp l2) (ppp n2) (ppp ca) xn (pp lb) (ppp la) (typ g a) (if p2 = "" then refl else p2))
             | _ -> unsupported "rel: applied lambda shape")
+       | Lam (x, xty, body), E.VMetaPred [ _; d ] when args = [] && (match type_of [] body with TyApp ("fun", [ _; TyApp ("bool", []) ]) -> true | _ -> false) ->
+           (* a lambda into subsets viewed as a binary predicate: lit i a = 1 <-> a :e N[body i] *)
+           let n, body', _, cleanup = open_lam g x xty body in
+           let r = (try
+             let cl = L.carrier g.lctx xty in
+             let lb, nb, kb, pb = rel g body' (Some (E.VSubset d)) in
+             (match kb with KRep _ -> () | _ -> unsupported "rel: lambda into subsets body relation");
+             let pb = if pb = "" then refl else pb in
+             let pw = Printf.sprintf "(fun %s H%s hl__a Hhl__a => (lam_subset_pw %s %s (fun %s:set => %s) %s %s H%s hl__a Hhl__a %s))" n n (ppp cl) (ppp d) n (pp lb) (ppp nb) n n pb in
+             (lit, nat, KPWP2 (cl, d), pw)
+             with e -> cleanup (); raise e) in
+           cleanup (); r
        | Lam _, _ ->
            let vs = (match nview with
              | E.VSet c -> "set(" ^ pp c ^ ")" | E.VSubset c -> "subset(" ^ pp c ^ ")" | E.VProp -> "prop"
