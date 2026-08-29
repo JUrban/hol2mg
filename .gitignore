@@ -11,3 +11,4 @@ build/
 generated/internal/*.jsonl
 !generated/internal/core.jsonl
 generated/reports/*.review.html
+generated/proofcert/

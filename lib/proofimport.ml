@@ -173,14 +173,14 @@ let rec uterm (ctx : L.ctx) (t : tm) : Mg.tm =
   match t with
   | Bound _ -> failwith "uterm: bound variable"
   | Free (s, _) -> (try List.assoc s ctx.L.vars with Not_found -> failwith ("uterm: unknown variable " ^ s))
+  | Const ("hl__choose", ty) -> Mg.apps (Mg.Cst "choose_in") [ L.carrier ctx ty; Mg.Lam ("hl__y", Mg.Set, Mg.Cst "True") ]
   | Const (c, ty) -> L.const_ref ctx c ty
   | App (f, x) -> Mg.App (uterm ctx f, uterm ctx x)
   | Lam (x, ty, body) ->
       let n = L.fresh ctx x in
-      let key = x ^ "\000" ^ n in
-      ctx.L.vars <- (key, Mg.Var n) :: ctx.L.vars;
-      let b = uterm ctx (open_with (Free (key, ty)) body) in
-      ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx n;
+      ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
+      let b = uterm ctx (open_with (Free (x, ty)) body) in
+      ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
       Mg.LamIn (n, L.carrier ctx ty, b)
 
 let ustmt_of (an : L.analysis) (sg : sg) : Mg.tm =
@@ -216,13 +216,31 @@ let rec ne (ctx : L.ctx) (ty : ty) : string =
   | TyApp (c, []) when Hashtbl.mem ctx.L.tydefs c -> Printf.sprintf "hl_ty_%s_nonempty" (Elab.sanitize_var c)
   | TyApp (c, _) -> unsupported "nonemptiness of the carrier of %s" c
 
+type env = {
+  an : L.analysis;
+  thm_name : string -> string;          (* HOL theorem name -> Megalodon name *)
+  leaves : (string, sg) Hashtbl.t;      (* named leaves referenced, with their signatures *)
+  mutable share : bool;                 (* typing derivations as shared claims (inside hltu_N) *)
+  tcl : (tm, string) Hashtbl.t;         (* canonical term -> typing claim name *)
+  pending : Buffer.t;                   (* typing claims to emit before the current node claim *)
+  mutable tcount : int;
+}
+
 let hyp_of_var (ctx : L.ctx) (s : string) : string =
   match List.assoc_opt s ctx.L.vars with Some (Mg.Var n) -> "H" ^ n | _ -> unsupported "variable %s not in scope [%s]" s (String.concat "," (List.map fst ctx.L.vars))
 
-let rec utyp (ctx : L.ctx) (t : tm) : string =
+let closed_stmt (an : L.analysis) (sg : sg) (body : Mg.tm) : Mg.tm =
+  let ctx = ctx_of an sg in
+  let body = List.fold_right (fun (_, ty, n) acc -> Mg.AllIn (n, L.carrier ctx ty, acc)) sg.vars body in
+  let body = List.fold_right (fun (_, n) acc -> Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) sg.tvs body in
+  List.fold_right (fun (_, n) acc -> Mg.All (n, Mg.Set, acc)) sg.tvs body
+
+let rec utyp (env : env) (ctx : L.ctx) (t : tm) : string =
   match t with
   | Bound _ -> failwith "utyp: bound variable"
   | Free (s, _) -> hyp_of_var ctx s
+  | (App _ | Lam _) when env.share -> apply_tclaim env ctx t
+  | Const ("hl__choose", ty) -> Printf.sprintf "(choose_in_in %s %s (fun hl__y:set => True))" (ppp (L.carrier ctx ty)) (ne ctx ty)
   | Const (c, ty) ->
       let generic = (try Hashtbl.find ctx.L.consts c with Not_found -> unsupported "constant %s has no generic type" c) in
       let sub = L.match_ty generic ty [] in
@@ -233,41 +251,75 @@ let rec utyp (ctx : L.ctx) (t : tm) : string =
              (String.concat " " (List.map (fun a -> ne ctx (List.assoc a sub)) tvs))
   | App (f, x) ->
       let a, b = dest_fun_ty (type_of [] f) in
-      Printf.sprintf "(setexp_ap %s %s %s %s %s %s)" (ppp (L.carrier ctx a)) (ppp (L.carrier ctx b)) (ppp (uterm ctx f)) (utyp ctx f) (ppp (uterm ctx x)) (utyp ctx x)
+      (try Printf.sprintf "(setexp_ap %s %s %s %s %s %s)" (ppp (L.carrier ctx a)) (ppp (L.carrier ctx b)) (ppp (uterm ctx f)) (utyp env ctx f) (ppp (uterm ctx x)) (utyp env ctx x)
+       with Import_unsupported m when String.length m < 400 -> unsupported "%s | in %s" m (String.concat " " (List.map (fun (s, _) -> s) (frees t))))
   | Lam (x, ty, body) ->
       let n = L.fresh ctx x in
-      let key = x ^ "\000" ^ n in
-      ctx.L.vars <- (key, Mg.Var n) :: ctx.L.vars;
-      let body' = open_with (Free (key, ty)) body in
+      ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
+      let body' = open_with (Free (x, ty)) body in
       let bty = type_of [] body' in
-      let r = Printf.sprintf "(u_lam_in %s %s (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx ty)) (ppp (L.carrier ctx bty)) n (pb (uterm ctx body')) n n (utyp ctx body') in
-      ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx n;
+      let r = Printf.sprintf "(u_lam_in %s %s (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx ty)) (ppp (L.carrier ctx bty)) n (pb (uterm ctx body')) n n (utyp env ctx body') in
+      ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
       r
+
+(* a shared typing claim for an application or abstraction: closed over the term's type variables
+   and free variables, emitted (with the claims it uses) before the node that first needs it *)
+and apply_tclaim (env : env) (ctx : L.ctx) (t : tm) : string =
+  let key = canon t in
+  let name = (match Hashtbl.find_opt env.tcl key with
+    | Some nm -> nm
+    | None ->
+        let nm = "t" ^ string_of_int env.tcount in
+        env.tcount <- env.tcount + 1;
+        Hashtbl.replace env.tcl key nm;
+        let sg = signature env.an [] t in
+        let ctx' = ctx_of env.an sg in
+        let stmt = closed_stmt env.an sg (L.mg_in (uterm ctx' t) (L.carrier ctx' (type_of [] t))) in
+        let body = (match t with
+          | App (f, x) ->
+              let a, b = dest_fun_ty (type_of [] f) in
+              Printf.sprintf "(setexp_ap %s %s %s %s %s %s)" (ppp (L.carrier ctx' a)) (ppp (L.carrier ctx' b)) (ppp (uterm ctx' f)) (utyp env ctx' f) (ppp (uterm ctx' x)) (utyp env ctx' x)
+          | Lam (x, ty, body) ->
+              let n = L.fresh ctx' x in
+              ctx'.L.vars <- (x, Mg.Var n) :: ctx'.L.vars;
+              let body' = open_with (Free (x, ty)) body in
+              let bty = type_of [] body' in
+              let r = Printf.sprintf "(u_lam_in %s %s (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx' ty)) (ppp (L.carrier ctx' bty)) n (pb (uterm ctx' body')) n n (utyp env ctx' body') in
+              ctx'.L.vars <- List.remove_assoc x ctx'.L.vars; L.release ctx' n;
+              r
+          | _ -> assert false) in
+        let pf = if binders sg = "" then body else Printf.sprintf "(fun %s => %s)" (binders sg) body in
+        Buffer.add_string env.pending (Printf.sprintf "claim %s : %s.\n{ exact %s. }\n" nm (pps stmt) pf);
+        nm) in
+  let sg = signature env.an [] t in
+  let tyargs = List.map (fun (a, _) -> ppp (L.carrier ctx (TyVar a))) sg.tvs @ List.map (fun (a, _) -> ne ctx (TyVar a)) sg.tvs in
+  let vargs = List.concat_map (fun (s, _, _) -> [ ppp (try List.assoc s ctx.L.vars with Not_found -> unsupported "typing claim of %s: variable %s not in scope" (Mg.to_string (uterm ctx t)) s); hyp_of_var ctx s ]) sg.vars in
+  let args = tyargs @ vargs in
+  if args = [] then name else Printf.sprintf "(%s %s)" name (String.concat " " args)
 
 (* ------------------------------------------------------------------------ *)
 (* Coherence between the deep literal translation and the uniform one.     *)
 (* ------------------------------------------------------------------------ *)
 
 (* coh t : L[t] = U[t];  cohp t : LP[t] <-> U[t] = 1 *)
-let rec coh (ctx : L.ctx) (t : tm) : string =
+let rec coh (env : env) (ctx : L.ctx) (t : tm) : string =
   if type_of [] t = bool_ty && L.is_logical t then
     Printf.sprintf "(eq_trans_i %s %s %s (If_i_iff_ext %s (%s = 1) %s) (If_eq1_self %s %s))"
       (ppp (L.lterm ctx t)) (ppp (Mg.If (L.mg_eq (uterm ctx t) one, one, Mg.Num 0))) (ppp (uterm ctx t))
-      (ppp (L.lprop ctx t)) (ppp (uterm ctx t)) (cohp ctx t) (ppp (uterm ctx t)) (utyp ctx t)
+      (ppp (L.lprop ctx t)) (ppp (uterm ctx t)) (cohp env ctx t) (ppp (uterm ctx t)) (utyp env ctx t)
   else
     match t with
     | Free _ | Const _ -> "(fun q H => H)"
     | App (f, x) ->
         if coh_trivial ctx f && coh_trivial ctx x then "(fun q H => H)"
-        else Printf.sprintf "(f_equal2 (fun u:set => fun v:set => u v) %s %s %s %s %s %s)" (ppp (L.lterm ctx f)) (ppp (uterm ctx f)) (ppp (L.lterm ctx x)) (ppp (uterm ctx x)) (coh ctx f) (coh ctx x)
+        else Printf.sprintf "(f_equal2 (fun u:set => fun v:set => u v) %s %s %s %s %s %s)" (ppp (L.lterm ctx f)) (ppp (uterm ctx f)) (ppp (L.lterm ctx x)) (ppp (uterm ctx x)) (coh env ctx f) (coh env ctx x)
     | Lam (x, ty, body) ->
         let n = L.fresh ctx x in
-        let key = x ^ "\000" ^ n in
-        ctx.L.vars <- (key, Mg.Var n) :: ctx.L.vars;
-        let body' = open_with (Free (key, ty)) body in
+        ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
+        let body' = open_with (Free (x, ty)) body in
         let r = if coh_trivial ctx body' then "(fun q H => H)"
-                else Printf.sprintf "(lam_ext_in %s (fun %s:set => %s) (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx ty)) n (pb (L.lterm ctx body')) n (pb (uterm ctx body')) n n (coh ctx body') in
-        ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx n;
+                else Printf.sprintf "(lam_ext_in %s (fun %s:set => %s) (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx ty)) n (pb (L.lterm ctx body')) n (pb (uterm ctx body')) n n (coh env ctx body') in
+        ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
         r
     | Bound _ -> failwith "coh: bound"
 
@@ -279,13 +331,12 @@ and coh_trivial (ctx : L.ctx) (t : tm) : bool =
     | App (f, x) -> coh_trivial ctx f && coh_trivial ctx x
     | Lam (x, ty, body) ->
         let n = L.fresh ctx x in
-        let key = x ^ "\000" ^ n in
-        ctx.L.vars <- (key, Mg.Var n) :: ctx.L.vars;
-        let r = coh_trivial ctx (open_with (Free (key, ty)) body) in
-        ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx n; r
+        ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
+        let r = coh_trivial ctx (open_with (Free (x, ty)) body) in
+        ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n; r
     | Bound _ -> false
 
-and cohp (ctx : L.ctx) (t : tm) : string =
+and cohp (env : env) (ctx : L.ctx) (t : tm) : string =
   let u x = ppp (uterm ctx x) and lp x = ppp (L.lprop ctx x) in
   let eq1 x = Printf.sprintf "(%s = 1)" (ppp (uterm ctx x)) in
   match head_and_args t with
@@ -293,60 +344,54 @@ and cohp (ctx : L.ctx) (t : tm) : string =
   | Const ("F", _), [] -> "hl_F_lit"
   | Const ("~", _), [ a ] ->
       Printf.sprintf "(iff_tra %s (~ %s) (%s = 1) (iff_not_cong %s %s %s) (iff_symm (%s = 1) (~ %s) (hl_not_char %s %s)))"
-        (ppp (L.lprop ctx t)) (eq1 a) (ppp (uterm ctx t)) (lp a) (eq1 a) (cohp ctx a) (ppp (uterm ctx t)) (eq1 a) (u a) (utyp ctx a)
+        (ppp (L.lprop ctx t)) (eq1 a) (ppp (uterm ctx t)) (lp a) (eq1 a) (cohp env ctx a) (ppp (uterm ctx t)) (eq1 a) (u a) (utyp env ctx a)
   | Const (("/\\" | "\\/" | "==>") as op, _), [ a; b ] ->
       let cong, conn, char = (match op with "/\\" -> "iff_and_cong", "/\\", "hl_and_char" | "\\/" -> "iff_or_cong", "\\/", "hl_or_char" | _ -> "iff_imp_cong", "->", "hl_imp_char") in
       let mid = Printf.sprintf "(%s %s %s)" (eq1 a) conn (eq1 b) in
       Printf.sprintf "(iff_tra %s %s (%s = 1) (%s %s %s %s %s %s %s) (iff_symm (%s = 1) %s (%s %s %s %s %s)))"
-        (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) cong (lp a) (eq1 a) (lp b) (eq1 b) (cohp ctx a) (cohp ctx b)
-        (ppp (uterm ctx t)) mid char (u a) (utyp ctx a) (u b) (utyp ctx b)
+        (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) cong (lp a) (eq1 a) (lp b) (eq1 b) (cohp env ctx a) (cohp env ctx b)
+        (ppp (uterm ctx t)) mid char (u a) (utyp env ctx a) (u b) (utyp env ctx b)
   | Const ("=", cty), [ a; b ] ->
       let ty, _ = dest_fun_ty cty in
       let car = ppp (L.carrier ctx ty) in
       if ty = bool_ty then
         let mid = Printf.sprintf "(%s <-> %s)" (eq1 a) (eq1 b) in
         Printf.sprintf "(iff_tra %s %s (%s = 1) (iff_iff_cong %s %s %s %s %s %s) (iff_symm (%s = 1) %s (iff_tra (%s = 1) (%s = %s) %s (hl_eq_iff 2 %s %s %s %s) (eq2_iff %s %s %s %s))))"
-          (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) (lp a) (eq1 a) (lp b) (eq1 b) (cohp ctx a) (cohp ctx b)
-          (ppp (uterm ctx t)) mid (ppp (uterm ctx t)) (ppp (uterm ctx a)) (ppp (uterm ctx b)) mid (u a) (utyp ctx a) (u b) (utyp ctx b) (u a) (utyp ctx a) (u b) (utyp ctx b)
+          (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) (lp a) (eq1 a) (lp b) (eq1 b) (cohp env ctx a) (cohp env ctx b)
+          (ppp (uterm ctx t)) mid (ppp (uterm ctx t)) (ppp (uterm ctx a)) (ppp (uterm ctx b)) mid (u a) (utyp env ctx a) (u b) (utyp env ctx b) (u a) (utyp env ctx a) (u b) (utyp env ctx b)
       else
         let mid = Printf.sprintf "(%s = %s)" (ppp (uterm ctx a)) (ppp (uterm ctx b)) in
         Printf.sprintf "(iff_tra %s %s (%s = 1) (eq_iff_of_eq %s %s %s %s %s %s) (iff_symm (%s = 1) %s (hl_eq_iff %s %s %s %s %s)))"
-          (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) (ppp (L.lterm ctx a)) (u a) (ppp (L.lterm ctx b)) (u b) (coh ctx a) (coh ctx b)
-          (ppp (uterm ctx t)) mid car (u a) (utyp ctx a) (u b) (utyp ctx b)
+          (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) (ppp (L.lterm ctx a)) (u a) (ppp (L.lterm ctx b)) (u b) (coh env ctx a) (coh env ctx b)
+          (ppp (uterm ctx t)) mid car (u a) (utyp env ctx a) (u b) (utyp env ctx b)
   | Const (("!" | "?") as q, _), [ Lam (x, ty, body) ] ->
       let n = L.fresh ctx x in
-      let key = x ^ "\000" ^ n in
-      ctx.L.vars <- (key, Mg.Var n) :: ctx.L.vars;
-      let body' = open_with (Free (key, ty)) body in
+      ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
+      let body' = open_with (Free (x, ty)) body in
       let car = ppp (L.carrier ctx ty) in
       let lam = Printf.sprintf "(fun %s :e %s => %s)" n (pp (L.carrier ctx ty)) (pb (uterm ctx body')) in
       let cong, quant, char = (match q with "!" -> "iff_forall_in_cong", "forall", "hl_forall_char" | _ -> "iff_exists_in_cong", "exists", "hl_exists_char") in
       let mid = Printf.sprintf "(%s %s :e %s, %s %s = 1)" quant n (pp (L.carrier ctx ty)) lam n in
       let r = Printf.sprintf "(iff_tra %s %s (%s = 1) (%s %s (fun %s:set => %s) (fun %s:set => %s %s = 1) (fun %s H%s => (iff_tra %s (%s = 1) (%s %s = 1) %s (eq_iff_eq1 %s (%s %s) (eq_sym_i (%s %s) %s (beta %s (fun %s:set => %s) %s H%s)))))) (iff_symm (%s = 1) %s (%s %s %s (u_lam_in %s 2 (fun %s:set => %s) (fun %s H%s => %s)))))"
         (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) cong car n (pp (L.lprop ctx body')) n lam n n n
-        (ppp (L.lprop ctx body')) (pp (uterm ctx body')) lam n (cohp ctx body') (ppp (uterm ctx body')) lam n lam n (ppp (uterm ctx body')) car n (pp (uterm ctx body')) n n
-        (ppp (uterm ctx t)) mid char car lam car n (pb (uterm ctx body')) n n (utyp ctx body') in
-      ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx n;
+        (ppp (L.lprop ctx body')) (pp (uterm ctx body')) lam n (cohp env ctx body') (ppp (uterm ctx body')) lam n lam n (ppp (uterm ctx body')) car n (pp (uterm ctx body')) n n
+        (ppp (uterm ctx t)) mid char car lam car n (pb (uterm ctx body')) n n (utyp env ctx body') in
+      ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
       r
   | Const ("COND", _), [ c; a; b ] when type_of [] t = bool_ty ->
       let mid = Printf.sprintf "((%s /\\ %s) \\/ (~ %s /\\ %s))" (eq1 c) (eq1 a) (eq1 c) (eq1 b) in
       Printf.sprintf "(iff_tra %s %s (%s = 1) (iff_or_cong (%s /\\ %s) (%s /\\ %s) (~ %s /\\ %s) (~ %s /\\ %s) (iff_and_cong %s %s %s %s %s %s) (iff_and_cong (~ %s) (~ %s) %s %s (iff_not_cong %s %s %s) %s)) (iff_symm (%s = 1) %s (hl_COND_char2 %s %s %s %s %s %s)))"
         (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t))
         (lp c) (lp a) (eq1 c) (eq1 a) (lp c) (lp b) (eq1 c) (eq1 b)
-        (lp c) (eq1 c) (lp a) (eq1 a) (cohp ctx c) (cohp ctx a)
-        (lp c) (eq1 c) (lp b) (eq1 b) (lp c) (eq1 c) (cohp ctx c) (cohp ctx b)
-        (ppp (uterm ctx t)) mid (u c) (utyp ctx c) (u a) (utyp ctx a) (u b) (utyp ctx b)
-  | _ -> Printf.sprintf "(eq_iff_eq1 %s %s %s)" (ppp (L.lterm ctx t)) (u t) (coh ctx t)
+        (lp c) (eq1 c) (lp a) (eq1 a) (cohp env ctx c) (cohp env ctx a)
+        (lp c) (eq1 c) (lp b) (eq1 b) (lp c) (eq1 c) (cohp env ctx c) (cohp env ctx b)
+        (ppp (uterm ctx t)) mid (u c) (utyp env ctx c) (u a) (utyp env ctx a) (u b) (utyp env ctx b)
+  | _ -> Printf.sprintf "(eq_iff_eq1 %s %s %s)" (ppp (L.lterm ctx t)) (u t) (coh env ctx t)
 
 (* ------------------------------------------------------------------------ *)
 (* Node proofs.                                                             *)
 (* ------------------------------------------------------------------------ *)
 
-type env = {
-  an : L.analysis;
-  thm_name : string -> string;          (* HOL theorem name -> Megalodon name *)
-  leaves : (string, sg) Hashtbl.t;      (* named leaves referenced, with their signatures *)
-}
 
 let dest_eq (t : tm) : ty * tm * tm =
   match head_and_args t with
@@ -366,7 +411,7 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
   let n = p.nodes.(i) in
   let sg = sgs.(i) in
   let ctx = ctx_of env.an sg in
-  let u t = ppp (uterm ctx t) and ty_ t = utyp ctx t and car ty = ppp (L.carrier ctx ty) in
+  let u t = ppp (uterm ctx t) and ty_ t = utyp env ctx t and car ty = ppp (L.carrier ctx ty) in
   let hyp_index (h : tm) = (let rec go k = function
     | [] -> unsupported "node %d (%s): hypothesis %s not in scope [%s]" i n.rule (Mg.to_string (uterm ctx h)) (String.concat "; " (List.map (fun x -> Mg.to_string (uterm ctx x)) sg.hyps))
     | x :: rest -> if alpha_eq x h then "Hh" ^ string_of_int k else go (k + 1) rest in go 0 sg.hyps) in
@@ -375,8 +420,17 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
   let tmmap_id (s, ty) =
     (match List.find_opt (fun (s', ty', _) -> s' = s && ty' = ty) sg.vars with
      | Some (_, _, nm) -> (Mg.Var nm, "H" ^ nm)
-     | None -> (Mg.apps (Mg.Cst "choose_in") [ L.carrier ctx ty; Mg.Lam ("hl__y", Mg.Set, Mg.Cst "True") ],
-                Printf.sprintf "(choose_in_in %s %s (fun hl__y:set => True))" (car ty) (ne ctx ty))) in
+     | None -> (uterm ctx (Const ("hl__choose", ty)), utyp env ctx (Const ("hl__choose", ty)))) in
+  (* variables and type variables of the premises that do not occur in this node's sequent are closed
+     consistently: lost type variables become 1, lost variables the pseudo-constant hl__choose *)
+  let prem_sgs = List.map (fun j -> sgs.(j)) n.prem in
+  let lost_ty = List.filter_map (fun (a, _) -> if List.mem_assoc a sg.tvs then None else Some (a, TyApp ("1", []))) (uniq (List.concat_map (fun (g : sg) -> g.tvs) prem_sgs)) in
+  let keep_var = ref [] in   (* variables bound locally by the rule (ABS) *)
+  let cl (t : tm) : tm =
+    let t = inst_tm lost_ty t in
+    let fv = uniq (frees t) in
+    let sub = List.filter_map (fun (s, ty) -> if List.exists (fun (s', ty', _) -> s' = s && ty' = ty) sg.vars || List.mem (s, ty) !keep_var then None else Some ((s, ty), Const ("hl__choose", ty))) fv in
+    subst_frees sub t in
   let prem k =
     let j = List.nth n.prem k in
     (match p.nodes.(j).leaf with
@@ -389,17 +443,18 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
         Printf.sprintf "(u_refl %s %s %s)" (car (type_of [] t)) (u t) (ty_ t)
     | "TRANS" ->
         let ty, a, _ = dest_eq n.concl in
-        let _, _, b = dest_eq p.nodes.(List.nth n.prem 0).concl in
+        let _, _, b = dest_eq (cl p.nodes.(List.nth n.prem 0).concl) in
         let _, _, c = dest_eq n.concl in
         Printf.sprintf "(u_trans %s %s %s %s %s %s %s %s %s)" (car ty) (u a) (ty_ a) (u b) (ty_ b) (u c) (ty_ c) (pre 0) (pre 1)
     | "MK_COMB" ->
-        let _, f, g = dest_eq p.nodes.(List.nth n.prem 0).concl in
-        let a_ty, x, y = dest_eq p.nodes.(List.nth n.prem 1).concl in
+        let _, f, g = dest_eq (cl p.nodes.(List.nth n.prem 0).concl) in
+        let a_ty, x, y = dest_eq (cl p.nodes.(List.nth n.prem 1).concl) in
         let _, b_ty = dest_fun_ty (type_of [] f) in
         Printf.sprintf "(u_mkcomb %s %s %s %s %s %s %s %s %s %s %s %s)" (car a_ty) (car b_ty) (u f) (ty_ f) (u g) (ty_ g) (u x) (ty_ x) (u y) (ty_ y) (pre 0) (pre 1)
     | "ABS" ->
         let v = (match n.tm with Some (Free (s, ty)) -> (s, ty) | _ -> unsupported "ABS variable") in
-        let _, l, r = dest_eq p.nodes.(List.nth n.prem 0).concl in
+        keep_var := [ v ];
+        let _, l, r = dest_eq (cl p.nodes.(List.nth n.prem 0).concl) in
         let vs, vty = v in
         let bty = type_of [] l in
         let nm = L.fresh ctx vs in
@@ -413,22 +468,22 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
     | "BETA" ->
         (match n.tm with
          | Some (App (Lam (x, ty, body), (Free (_, _) as arg))) ->
+             let uarg = u arg and targ = ty_ arg in   (* the argument is the free variable x: before opening the binder of the same name *)
              let nm = L.fresh ctx x in
-             let key = x ^ "\000" ^ nm in
-             ctx.L.vars <- (key, Mg.Var nm) :: ctx.L.vars;
-             let body' = open_with (Free (key, ty)) body in
+             ctx.L.vars <- (x, Mg.Var nm) :: ctx.L.vars;
+             let body' = open_with (Free (x, ty)) body in
              let bty = type_of [] body' in
-             let r = Printf.sprintf "(u_beta %s %s (fun %s:set => %s) (fun %s H%s => %s) %s %s)" (car ty) (car bty) nm (pb (uterm ctx body')) nm nm (ty_ body') (u arg) (ty_ arg) in
-             ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx nm;
+             let r = Printf.sprintf "(u_beta %s %s (fun %s:set => %s) (fun %s H%s => %s) %s %s)" (car ty) (car bty) nm (pb (uterm ctx body')) nm nm (ty_ body') uarg targ in
+             ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx nm;
              r
          | _ -> unsupported "BETA shape")
     | "ASSUME" -> hyp_index (Option.get n.tm)
     | "EQ_MP" ->
-        let _, a, b = dest_eq p.nodes.(List.nth n.prem 0).concl in
+        let _, a, b = dest_eq (cl p.nodes.(List.nth n.prem 0).concl) in
         Printf.sprintf "(u_eqmp %s %s %s %s %s %s)" (u a) (ty_ a) (u b) (ty_ b) (pre 0) (pre 1)
     | "DEDUCT_ANTISYM_RULE" ->
-        let c1 = p.nodes.(List.nth n.prem 0).concl and c2 = p.nodes.(List.nth n.prem 1).concl in
-        let hm1 h = if alpha_eq h c2 then "Hd__r" else hyp_index h and hm2 h = if alpha_eq h c1 then "Hd__l" else hyp_index h in
+        let c1 = cl p.nodes.(List.nth n.prem 0).concl and c2 = cl p.nodes.(List.nth n.prem 1).concl in
+        let hm1 h = if alpha_eq (cl h) c2 then "Hd__r" else hyp_index h and hm2 h = if alpha_eq (cl h) c1 then "Hd__l" else hyp_index h in
         let p1 = apply_prem ctx (prem 0) sgs.(List.nth n.prem 0) ~tymap:tymap_id ~tmmap:tmmap_id ~hypmap:hm1 in
         let p2 = apply_prem ctx (prem 1) sgs.(List.nth n.prem 1) ~tymap:tymap_id ~tmmap:tmmap_id ~hypmap:hm2 in
         Printf.sprintf "(u_deduct %s %s %s %s (fun Hd__r => %s) (fun Hd__l => %s))" (u c1) (ty_ c1) (u c2) (ty_ c2) p1 p2
@@ -455,7 +510,7 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
     | "DEFINITION" ->
         let ty, c, rhs = dest_eq n.concl in
         (match c with Const (cn, _) when List.mem_assoc cn L.primitive_consts -> unsupported "definition of the primitive constant %s" cn | _ -> ());
-        Printf.sprintf "(u_eq_intro %s %s %s %s %s %s)" (car ty) (u c) (ty_ c) (u rhs) (ty_ rhs) (coh ctx rhs)
+        Printf.sprintf "(u_eq_intro %s %s %s %s %s %s)" (car ty) (u c) (ty_ c) (u rhs) (ty_ rhs) (coh env ctx rhs)
     | r -> unsupported "rule %s" r) in
   if binders sg = "" then body else Printf.sprintf "(fun %s => %s)" (binders sg) body
 
@@ -472,7 +527,7 @@ type result = {
 }
 
 let import (an : L.analysis) (thm_name : string -> string) (p : proof) (seq : sequent) : result =
-  let env = { an; thm_name; leaves = Hashtbl.create 16 } in
+  let env = { an; thm_name; leaves = Hashtbl.create 16; share = true; tcl = Hashtbl.create 256; pending = Buffer.create 4096; tcount = 0 } in
   let sgs = Array.map (fun (n : pnode) -> signature an n.hyps n.concl) p.nodes in
   let buf = Buffer.create 65536 in
   let root_sg = sgs.(p.root) in
@@ -485,19 +540,22 @@ let import (an : L.analysis) (thm_name : string -> string) (p : proof) (seq : se
     if n.rule = "NAMED" then Hashtbl.replace env.leaves (Option.get n.leaf) sgs.(i)   (* leaves are theorems, referenced directly *)
     else begin
       let stmt = ustmt_of an sgs.(i) in
-      Buffer.add_string buf (Printf.sprintf "claim n%d : %s.\n{ exact %s. }\n" i (pps stmt) (node_proof env p sgs i))
+      let pf = (try node_proof env p sgs i with Import_unsupported m when String.length m < 600 -> unsupported "node %d (%s): %s" i n.rule m) in
+      Buffer.add_buffer buf env.pending; Buffer.clear env.pending;
+      Buffer.add_string buf (Printf.sprintf "claim n%d : %s.\n{ exact %s. }\n" i (pps stmt) pf)
     end) p.nodes;
   (* leaves referenced directly: give them node aliases? no: NAMED nodes are applied by name in node_proof *)
   Buffer.add_string buf (Printf.sprintf "exact n%d.\nQed.\n" p.root);
-  (* coherence: hlt_N from hltu_N *)
+  (* coherence: hlt_N from hltu_N (outside hltu_N: typing derivations inline) *)
+  env.share <- false;
   let ctx = ctx_of an root_sg in
   let binders_txt = String.concat " " (List.map (fun (_, n) -> n) root_sg.tvs @ List.map (fun (_, n) -> "H" ^ n ^ "ne") root_sg.tvs @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) root_sg.vars @ List.mapi (fun i _ -> "Hl" ^ string_of_int i) root_sg.hyps) in
-  let fwd h k = Printf.sprintf "(%s (%s -> %s = 1) (fun hl__f hl__b => hl__f) Hl%d)" (cohp ctx h) (ppp (L.lprop ctx h)) (ppp (uterm ctx h)) k in
+  let fwd h k = Printf.sprintf "(%s (%s -> %s = 1) (fun hl__f hl__b => hl__f) Hl%d)" (cohp env ctx h) (ppp (L.lprop ctx h)) (ppp (uterm ctx h)) k in
   let args = String.concat " " (List.map (fun (_, n) -> n) root_sg.tvs @ List.map (fun (_, n) -> "H" ^ n ^ "ne") root_sg.tvs @ List.concat_map (fun (_, _, n) -> [ n; "H" ^ n ]) root_sg.vars @ List.mapi (fun k h -> fwd h k) root_sg.hyps) in
   let applied = if args = "" then name else Printf.sprintf "(%s %s)" name args in
   let c = root_sg.concl in
-  let discharge = Printf.sprintf "(fun %s => (%s (%s = 1 -> %s) (fun hl__f hl__b => hl__b) %s))" binders_txt (cohp ctx c) (ppp (uterm ctx c)) (ppp (L.lprop ctx c)) applied in
-  let discharge = if binders_txt = "" then Printf.sprintf "(%s (%s = 1 -> %s) (fun hl__f hl__b => hl__b) %s)" (cohp ctx c) (ppp (uterm ctx c)) (ppp (L.lprop ctx c)) applied else discharge in
+  let discharge = Printf.sprintf "(fun %s => (%s (%s = 1 -> %s) (fun hl__f hl__b => hl__b) %s))" binders_txt (cohp env ctx c) (ppp (uterm ctx c)) (ppp (L.lprop ctx c)) applied in
+  let discharge = if binders_txt = "" then Printf.sprintf "(%s (%s = 1 -> %s) (fun hl__f hl__b => hl__b) %s)" (cohp env ctx c) (ppp (uterm ctx c)) (ppp (L.lprop ctx c)) applied else discharge in
   let leaf_names = Hashtbl.fold (fun k _ acc -> k :: acc) env.leaves [] in
   let leaf_stmts = Hashtbl.fold (fun k sg acc -> ("hltu_" ^ thm_name k, pps (ustmt_of an sg)) :: acc) env.leaves [] in
   { uniform = Buffer.contents buf; discharge; leaf_names; leaf_stmts; nodes = Array.length p.nodes }

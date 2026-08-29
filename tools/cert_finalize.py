@@ -14,6 +14,7 @@ here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 man_file = os.path.join(here, 'generated', 'public', prof, prof + '.manifest.json')
 if '--manifest' in sys.argv: man_file = sys.argv[sys.argv.index('--manifest') + 1]
 cert_dir = os.path.join(here, 'generated', 'cert', prof)
+if '--cert-dir' in sys.argv: cert_dir = sys.argv[sys.argv.index('--cert-dir') + 1]
 ok, fail = set(), {}
 for l in open(log):
     m = re.match(r'OK\s+(\S+)', l)
