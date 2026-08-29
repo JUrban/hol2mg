@@ -178,10 +178,6 @@ Admitted.
 Theorem hl_ZBOT_compat : forall A:set, A <> Empty -> hl_ZBOT A = Empty.
 Admitted.
 
-// iterate : (B->B->B)->(A->bool)->(A->B)->B (not in compat.mg)
-Theorem hl_iterate_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e B :^: B :^: B, forall f1:set -> set -> set, (forall x y :e B, l1 x y = f1 x y) -> forall l2 :e 2 :^: A, forall l3 :e B :^: A, forall f3:set -> set, (forall x :e A, l3 x = f3 x) -> hl_iterate B A l1 l2 l3 = iterate_op B (fun a:set => fun b:set => f1 a b) (hl_rep A l2) f3.
-Admitted.
-
 // dest_finite_sum : (A,B)finite_sum->num (not in compat.mg)
 Theorem hl_dest_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_sum A B, hl_dest_finite_sum A B l1 = l1.
 Admitted.

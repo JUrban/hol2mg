@@ -67,7 +67,9 @@ let side_conditions : (string * string list) list =
     ("num_of_int", [ "?1 :e omega" ]);
     ("HD", [ "~ ?1 = seq_nil" ]);
     ("TL", [ "~ ?1 = seq_nil" ]);
-    ("LAST", [ "~ ?1 = seq_nil" ]) ]
+    ("LAST", [ "~ ?1 = seq_nil" ]);
+    (* iterate is characterised only for monoidal operations (HOL Light's ITSET is a choice) *)
+    ("iterate", [ "(forall x y :e ?B, ?1 x y = ?1 y x) /\\ (forall x y z :e ?B, ?1 x (?1 y z) = ?1 (?1 x y) z) /\\ (forall x :e ?B, ?1 (neutral_of ?B (fun a b => ?1 a b)) x = x)" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
    argument (hl_rep .. / hl_rep2 ..) *)
 
