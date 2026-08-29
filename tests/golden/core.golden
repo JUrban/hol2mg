@@ -315,7 +315,8 @@ source: !x:A. I x = x
 status: native_reuse
 statement: forall A:set, forall x :e A, x = x
 literal: forall A:set, A <> Empty -> forall x :e A, hl_I A x = x
-cert_status: bridge_unsupported
+bridge: I_THM_bridge
+cert_status: native_certified
 
 ### I_O_ID   [polymorphic combinators]
 hash: dc7aa55a625b9a78c1fd4104e409969c
@@ -323,7 +324,8 @@ source: !f:A->B. I o f = f /\ f o I = f
 status: generalization_required
 statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\ hl_o A B A f (hl_I A) = f
-cert_status: bridge_unsupported
+bridge: I_O_ID_bridge
+cert_status: native_certified
 
 ### o_THM   [polymorphic combinators]
 hash: 5f35f2b84dbd2ff7d1a387066c77a57f
@@ -1042,7 +1044,8 @@ source: !P:A->bool. !l1:A list. !l2:A list. FILTER P (l1 APPEND l2) = FILTER P l
 status: transport_required
 statement: forall A:set, A <> Empty -> forall P:set -> prop, forall l1 l2 :e finseq A, seq_filter P (seq_append l1 l2) = seq_append (seq_filter P l1) (seq_filter P l2)
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l1 l2 :e finseq A, hl_FILTER A P (hl_APPEND A l1 l2) = hl_APPEND A (hl_FILTER A P l1) (hl_FILTER A P l2)
-cert_status: bridge_unsupported
+bridge: FILTER_APPEND_bridge
+cert_status: native_certified
 
 ### ITLIST_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 8a530b09bf93bfaa44eb3847190e9bde

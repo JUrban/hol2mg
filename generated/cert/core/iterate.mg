@@ -2669,8 +2669,13 @@ exact (POLYNOMIAL_FUNCTION_ID_bridge hlt_POLYNOMIAL_FUNCTION_ID).
 Admitted.
 
 // HOL Light: iterate.ml:2981 / POLYNOMIAL_FUNCTION_I   (hash md5:0586efeec066f40d33919a16849fbddb)
-// not bridged: 
+Theorem hlt_POLYNOMIAL_FUNCTION_I : hl_polynomial_function (hl_I R) = 1.
+Admitted.
+Theorem POLYNOMIAL_FUNCTION_I_bridge : (hl_polynomial_function (hl_I R) = 1) -> (polynomial_function_R (fun x:set => x)).
+exact (fun H__top => (iffEL (hl_polynomial_function (hl_I R) = 1) (polynomial_function_R (fun x:set => x)) ((hl_polynomial_function_compat) (hl_I R) ((hl_I_in) (R) R_nonempty) (fun x:set => x) (((hl_I_compat) (R) R_nonempty)))) H__top).
+Qed.
 Theorem POLYNOMIAL_FUNCTION_I : polynomial_function_R (fun x:set => x).
+exact (POLYNOMIAL_FUNCTION_I_bridge hlt_POLYNOMIAL_FUNCTION_I).
 Admitted.
 
 // HOL Light: iterate.ml:2985 / POLYNOMIAL_FUNCTION_ADD   (hash md5:5ecad3f3e5d693ee11065d465825c7a6)

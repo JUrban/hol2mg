@@ -14,8 +14,13 @@ exact (o_DEF_bridge hlt_o_DEF).
 Admitted.
 
 // HOL Light: trivia.ml:21 / I_DEF   (hash md5:98f75ab7f3aecd3890689464fdb13fda)
-// not bridged: 
+Theorem hlt_I_DEF : forall A:set, A <> Empty -> hl_I A = fun x :e A => x.
+Admitted.
+Theorem I_DEF_bridge : (forall A:set, A <> Empty -> hl_I A = fun x :e A => x) -> (forall A:set, forall x :e A, x = x).
+exact (fun H__top A => (xm (A = Empty) (forall x :e A, x = x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, x = x) (forall_in_Empty (fun x => x = x)))) (fun HAne => (imp_trans (hl_I A = fun x :e A => x) (forall x :e A, hl_I A x = x) (forall x :e A, x = x) (imp_trans (hl_I A = fun x :e A => x) (forall hl__pw :e (A), (hl_I A) hl__pw = (fun x :e A => x) hl__pw) (forall x :e A, hl_I A x = x) (iffEL (hl_I A = fun x :e A => x) (forall hl__pw :e (A), (hl_I A) hl__pw = (fun x :e A => x) hl__pw) (eq_Pi_pointwise (A) (A) (hl_I A) (fun x :e A => x) ((hl_I_in) (A) HAne) (lam_Pi (A) (fun _ => A) (fun x => x) (fun x Hx => Hx)))) (iffEL (forall hl__pw :e (A), (hl_I A) hl__pw = (fun x :e A => x) hl__pw) (forall x :e A, hl_I A x = x) (pw_app_conv (A) (hl_I A) (fun x :e A => x) (fun hl__pw:set => (hl_I A) hl__pw) (fun x:set => x) (fun hl__pw Hhl__pw => (fun q H => H)) (fun x Hx => (beta (A) (fun x => x) x Hx))))) (imp_forall_in (A) (fun x => hl_I A x = x) (fun x => x = x) (fun x Hx => (imp_eq (hl_I A x) (x) (x) (x) (((hl_I_compat) (A) HAne) (x) Hx) (fun q H => H))))) (H__top A HAne)))).
+Qed.
 Theorem I_DEF : forall A:set, forall x :e A, x = x.
+exact (I_DEF_bridge hlt_I_DEF).
 Admitted.
 
 // HOL Light: trivia.ml:24 / o_THM   (hash md5:5f35f2b84dbd2ff7d1a387066c77a57f)
@@ -39,13 +44,23 @@ exact (o_ASSOC_bridge hlt_o_ASSOC).
 Admitted.
 
 // HOL Light: trivia.ml:36 / I_THM   (hash md5:869bdf643ad8869e3e6c61189c7171c1)
-// not bridged: 
+Theorem hlt_I_THM : forall A:set, A <> Empty -> forall x :e A, hl_I A x = x.
+Admitted.
+Theorem I_THM_bridge : (forall A:set, A <> Empty -> forall x :e A, hl_I A x = x) -> (forall A:set, forall x :e A, x = x).
+exact (fun H__top A => (xm (A = Empty) (forall x :e A, x = x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, x = x) (forall_in_Empty (fun x => x = x)))) (fun HAne => (imp_forall_in (A) (fun x => hl_I A x = x) (fun x => x = x) (fun x Hx => (imp_eq (hl_I A x) (x) (x) (x) (((hl_I_compat) (A) HAne) (x) Hx) (fun q H => H)))) (H__top A HAne)))).
+Qed.
 Theorem I_THM : forall A:set, forall x :e A, x = x.
+exact (I_THM_bridge hlt_I_THM).
 Admitted.
 
 // HOL Light: trivia.ml:40 / I_O_ID   (hash md5:dc7aa55a625b9a78c1fd4104e409969c)
-// not bridged: 
+Theorem hlt_I_O_ID : forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\ hl_o A B A f (hl_I A) = f.
+Admitted.
+Theorem I_O_ID_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\ hl_o A B A f (hl_I A) = f) -> (forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x).
+exact (fun H__top A B => (xm (B = Empty) (forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall f:set -> set, (forall x :e A, f x :e hl__u) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x) (fun f => (fun H : forall x :e A, f x :e Empty => (andI (forall x :e A, f x = f x) (forall x :e A, f x = f x) (fun x Hx => (fun q H => H)) (fun x Hx => (fun q H => H))))))) (fun HBne => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e B) -> (forall x :e hl__u, f x = f x) /\ forall x :e hl__u, f x = f x) (fun f => (fun H : forall x :e Empty, f x :e B => (andI (forall x :e Empty, f x = f x) (forall x :e Empty, f x = f x) (forall_in_Empty (fun x => f x = f x)) (forall_in_Empty (fun x => f x = f x))))))) (fun HAne => (imp_forall_fun (A) (B) (fun f => hl_o B B A (hl_I B) f = f /\ hl_o A B A f (hl_I A) = f) (fun f => (forall x :e A, f x = f x) /\ forall x :e A, f x = f x) (fun f Hfc => (imp_and (hl_o B B A (hl_I B) (hl_lam A f) = hl_lam A f) (forall x :e A, f x = f x) (hl_o A B A (hl_lam A f) (hl_I A) = hl_lam A f) (forall x :e A, f x = f x) (imp_trans (hl_o B B A (hl_I B) (hl_lam A f) = hl_lam A f) (forall x :e A, hl_o B B A (hl_I B) (hl_lam A f) x = hl_lam A f x) (forall x :e A, f x = f x) (iffEL (hl_o B B A (hl_I B) (hl_lam A f) = hl_lam A f) (forall x :e A, hl_o B B A (hl_I B) (hl_lam A f) x = hl_lam A f x) (eq_Pi_pointwise (A) (B) (hl_o B B A (hl_I B) (hl_lam A f)) (hl_lam A f) (setexp_ap (B :^: A) (B :^: A) (hl_o B B A (hl_I B)) (setexp_ap (B :^: B) (B :^: A :^: (B :^: A)) (hl_o B B A) ((hl_o_in) (B) (B) (A) HBne HBne HAne) (hl_I B) ((hl_I_in) (B) HBne)) (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc)) (hl_lam_Pi (A) (B) f Hfc))) (imp_forall_in (A) (fun x => hl_o B B A (hl_I B) (hl_lam A f) x = hl_lam A f x) (fun x => f x = f x) (fun x Hx => (imp_eq (hl_o B B A (hl_I B) (hl_lam A f) x) (f x) (hl_lam A f x) (f x) ((pw_o_fun (B) (B) (A) (hl_I B) ((hl_I_in) (B) HBne) (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc) (fun x:set => f x) (fun x0 Hx0 => (eq_trans_i ((fun x1 :e A => hl_I B (hl_lam A f x1)) x0) (hl_I B (hl_lam A f x0)) (f x0) (beta (A) (fun x0:set => hl_I B (hl_lam A f x0)) x0 Hx0) (((hl_lam_ap (A) f) (x0) Hx0) (fun hl__u hl__v => hl_I B (hl_lam A f x0) = (fun x:set => x) hl__u) (((hl_I_compat) (B) HBne) (hl_lam A f x0) (setexp_ap (A) (B) (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc) (x0) Hx0)))))) (x) Hx) ((hl_lam_ap (A) f) (x) Hx))))) (imp_trans (hl_o A B A (hl_lam A f) (hl_I A) = hl_lam A f) (forall x :e A, hl_o A B A (hl_lam A f) (hl_I A) x = hl_lam A f x) (forall x :e A, f x = f x) (iffEL (hl_o A B A (hl_lam A f) (hl_I A) = hl_lam A f) (forall x :e A, hl_o A B A (hl_lam A f) (hl_I A) x = hl_lam A f x) (eq_Pi_pointwise (A) (B) (hl_o A B A (hl_lam A f) (hl_I A)) (hl_lam A f) (setexp_ap (A :^: A) (B :^: A) (hl_o A B A (hl_lam A f)) (setexp_ap (B :^: A) (B :^: A :^: (A :^: A)) (hl_o A B A) ((hl_o_in) (A) (B) (A) HAne HBne HAne) (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc)) (hl_I A) ((hl_I_in) (A) HAne)) (hl_lam_Pi (A) (B) f Hfc))) (imp_forall_in (A) (fun x => hl_o A B A (hl_lam A f) (hl_I A) x = hl_lam A f x) (fun x => f x = f x) (fun x Hx => (imp_eq (hl_o A B A (hl_lam A f) (hl_I A) x) (f x) (hl_lam A f x) (f x) ((pw_o_fun (A) (B) (A) (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc) (hl_I A) ((hl_I_in) (A) HAne) (fun x:set => f x) (fun x0 Hx0 => (eq_trans_i ((fun x1 :e A => hl_lam A f (hl_I A x1)) x0) (hl_lam A f (hl_I A x0)) (f x0) (beta (A) (fun x0:set => hl_lam A f (hl_I A x0)) x0 Hx0) ((((hl_I_compat) (A) HAne) (x0) Hx0) (fun hl__u hl__v => hl_lam A f (hl_I A x0) = f hl__u) ((hl_lam_ap (A) f) (hl_I A x0) (setexp_ap (A) (A) (hl_I A) ((hl_I_in) (A) HAne) (x0) Hx0)))))) (x) Hx) ((hl_lam_ap (A) f) (x) Hx)))))))) (H__top A B HAne HBne)))))).
+Qed.
 Theorem I_O_ID : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x.
+exact (I_O_ID_bridge hlt_I_O_ID).
 Admitted.
 
 // HOL Light: trivia.ml:49 / EXISTS_ONE_REP   (hash md5:333141743c1f0da979ec93730a80c4d4)

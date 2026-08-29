@@ -1347,9 +1347,9 @@
    "source": "!P:A->bool. !Q:A->bool. !l:A list. ALL P (FILTER Q l) <=> ALL (\\x:A. Q x ==> P x) l",
    "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall l :e finseq A, seq_all P (seq_filter Q l) <-> seq_all (fun x:set => Q x -> P x) l",
    "literal": "forall A:set, A <> Empty -> forall P Q :e 2 :^: A, forall l :e finseq A, hl_ALL A P (hl_FILTER A Q l) = 1 <-> hl_ALL A (fun x :e A => if Q x = 1 -> P x = 1 then 1 else 0) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_FILTER_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL_FILTER_bridge"
   },
   {
    "name": "ALL_IMP",
@@ -4769,7 +4769,7 @@
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, finite_cardinality (seq_set l) <= seq_len l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_le (hl_CARD A (hl_set_of_list A l)) (hl_LENGTH A l) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition finite (seq_set l) not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -14604,9 +14604,9 @@
    "source": "FILTER P NIL = NIL /\\ FILTER P (h CONS t) = (if P h then h CONS FILTER P t else FILTER P t)",
    "statement": "forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, seq_filter P seq_nil = seq_nil /\\ seq_filter P (seq_cons h t) = if P h then seq_cons h (seq_filter P t) else seq_filter P t",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall h :e A, forall t :e finseq A, hl_FILTER A P (hl_NIL A) = hl_NIL A /\\ hl_FILTER A P (hl_CONS A h t) = hl_COND (finseq A) (P h) (hl_CONS A h (hl_FILTER A P t)) (hl_FILTER A P t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_FILTER_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FILTER_bridge"
   },
   {
    "name": "FILTER_APPEND",
@@ -14631,9 +14631,9 @@
    "source": "!P:A->bool. !l1:A list. !l2:A list. FILTER P (l1 APPEND l2) = FILTER P l1 APPEND FILTER P l2",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l1 l2 :e finseq A, seq_filter P (seq_append l1 l2) = seq_append (seq_filter P l1) (seq_filter P l2)",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l1 l2 :e finseq A, hl_FILTER A P (hl_APPEND A l1 l2) = hl_APPEND A (hl_FILTER A P l1) (hl_FILTER A P l2)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_FILTER_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FILTER_APPEND_bridge"
   },
   {
    "name": "FILTER_MAP",
@@ -14659,9 +14659,9 @@
    "source": "!P:B->bool. !f:A->B. !l:A list. FILTER P (MAP f l) = MAP f (FILTER (P o f) l)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_filter P (seq_map f l) = seq_map f (seq_filter (fun x:set => P (f x)) l)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall l :e finseq A, hl_FILTER B P (hl_MAP A B f l) = hl_MAP A B f (hl_FILTER A (hl_o B 2 A P f) l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_FILTER_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FILTER_MAP_bridge"
   },
   {
    "name": "FINITE_1",
@@ -16902,9 +16902,9 @@
    "source": "!l:A list. FINITE (set_of_list l)",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, finite (seq_set l)",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_FINITE A (hl_set_of_list A l) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_SET_OF_LIST_bridge"
   },
   {
    "name": "FINITE_SING",
@@ -22281,7 +22281,7 @@
    "statement": "forall A:set, forall s c= A, s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (hl_I A) s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: native rewrites Repl_identity",
    "bridge": ""
   },
   {
@@ -28931,9 +28931,9 @@
    "source": "!x:int. !y:int. x >= y <=> y <= x",
    "statement": "forall x y :e int, y <= x <-> y <= x",
    "literal": "forall x y :e hl_ty_int, hl_int_ge x y = 1 <-> hl_int_le y x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_GE_bridge"
   },
   {
    "name": "INT_GT",
@@ -28987,9 +28987,9 @@
    "source": "!x:int. !y:int. x > y <=> x >= y + int_of_num 1",
    "statement": "forall x y :e int, y < x <-> y + 1 <= x",
    "literal": "forall x y :e hl_ty_int, hl_int_gt x y = 1 <-> hl_int_ge x (hl_int_add y (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_GT_DISCRETE_bridge"
   },
   {
    "name": "INT_IMAGE",
@@ -33431,9 +33431,9 @@
    "source": "(!m:num. !n:num. int_of_num m = int_of_num n <=> m = n) /\\ (!m:num. !n:num. int_of_num m >= int_of_num n <=> m >= n) /\\ (!m:num. !n:num. int_of_num m > int_of_num n <=> m > n) /\\ (!m:num. !n:num. int_of_num m <= int_of_num n <=> m <= n) /\\ (!m:num. !n:num. int_of_num m < int_of_num n <=> m < n) /\\ (!m:num. !n:num. int_max (int_of_num m) (int_of_num n) = int_of_num (MAX m n)) /\\ (!m:num. !n:num. int_min (int_of_num m) (int_of_num n) = int_of_num (MIN m n)) /\\ (!m:num. !n:num. int_of_num m + int_of_num n = int_of_num (m + n)) /\\ (!m:num. !n:num. int_of_num m * int_of_num n = int_of_num (m * n)) /\\ (!x:num. !n:num. int_of_num x pow n = int_of_num (x EXP n))",
    "statement": "(forall m n :e omega, m = n <-> m = n) /\\ ((forall m n :e omega, n <= m <-> n <= m) /\\ ((forall m n :e omega, n < m <-> n < m) /\\ ((forall m n :e omega, m <= n <-> m <= n) /\\ ((forall m n :e omega, m < n <-> m < n) /\\ ((forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m) /\\ ((forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n) /\\ ((forall m n :e omega, m + n = m + n) /\\ ((forall m n :e omega, m * n = m * n) /\\ forall x n :e omega, x ^ n = x ^ n))))))))",
    "literal": "(forall m n :e omega, hl_int_of_num m = hl_int_of_num n <-> m = n) /\\ ((forall m n :e omega, hl_int_ge (hl_int_of_num m) (hl_int_of_num n) = 1 <-> hl_ge m n = 1) /\\ ((forall m n :e omega, hl_int_gt (hl_int_of_num m) (hl_int_of_num n) = 1 <-> hl_gt m n = 1) /\\ ((forall m n :e omega, hl_int_le (hl_int_of_num m) (hl_int_of_num n) = 1 <-> hl_le m n = 1) /\\ ((forall m n :e omega, hl_int_lt (hl_int_of_num m) (hl_int_of_num n) = 1 <-> hl_lt m n = 1) /\\ ((forall m n :e omega, hl_int_max (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_MAX m n)) /\\ ((forall m n :e omega, hl_int_min (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_MIN m n)) /\\ ((forall m n :e omega, hl_int_add (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_add m n)) /\\ ((forall m n :e omega, hl_int_mul (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_mul m n)) /\\ forall x n :e omega, hl_int_pow (hl_int_of_num x) n = hl_int_of_num (hl_EXP x n)))))))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_OF_NUM_CLAUSES_bridge"
   },
   {
    "name": "INT_OF_NUM_DIV",
@@ -33548,9 +33548,9 @@
    "source": "!m:num. !n:num. int_of_num m >= int_of_num n <=> m >= n",
    "statement": "forall m n :e omega, n <= m <-> n <= m",
    "literal": "forall m n :e omega, hl_int_ge (hl_int_of_num m) (hl_int_of_num n) = 1 <-> hl_ge m n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_OF_NUM_GE_bridge"
   },
   {
    "name": "INT_OF_NUM_GT",
@@ -36296,9 +36296,9 @@
    "source": "(!x:int. int_of_num 0 <= int_sgn x <=> int_of_num 0 <= x) /\\ (!x:int. int_of_num 0 < int_sgn x <=> int_of_num 0 < x) /\\ (!x:int. int_of_num 0 >= int_sgn x <=> int_of_num 0 >= x) /\\ (!x:int. int_of_num 0 > int_sgn x <=> int_of_num 0 > x) /\\ (!x:int. int_of_num 0 = int_sgn x <=> int_of_num 0 = x) /\\ (!x:int. int_sgn x <= int_of_num 0 <=> x <= int_of_num 0) /\\ (!x:int. int_sgn x < int_of_num 0 <=> x < int_of_num 0) /\\ (!x:int. int_sgn x >= int_of_num 0 <=> x >= int_of_num 0) /\\ (!x:int. int_sgn x > int_of_num 0 <=> x > int_of_num 0) /\\ (!x:int. int_sgn x = int_of_num 0 <=> x = int_of_num 0)",
    "statement": "(forall x :e int, 0 <= (if 0 < x then 1 else if x < 0 then - 1 else 0) <-> 0 <= x) /\\ ((forall x :e int, 0 < (if 0 < x then 1 else if x < 0 then - 1 else 0) <-> 0 < x) /\\ ((forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) <= 0 <-> x <= 0) /\\ ((forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) < 0 <-> x < 0) /\\ ((forall x :e int, 0 = (if 0 < x then 1 else if x < 0 then - 1 else 0) <-> 0 = x) /\\ ((forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) <= 0 <-> x <= 0) /\\ ((forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) < 0 <-> x < 0) /\\ ((forall x :e int, 0 <= (if 0 < x then 1 else if x < 0 then - 1 else 0) <-> 0 <= x) /\\ ((forall x :e int, 0 < (if 0 < x then 1 else if x < 0 then - 1 else 0) <-> 0 < x) /\\ forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = 0 <-> x = 0))))))))",
    "literal": "(forall x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_sgn x) = 1 <-> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) /\\ ((forall x :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_sgn x) = 1 <-> hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) /\\ ((forall x :e hl_ty_int, hl_int_ge (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_sgn x) = 1 <-> hl_int_ge (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) /\\ ((forall x :e hl_ty_int, hl_int_gt (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_sgn x) = 1 <-> hl_int_gt (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) /\\ ((forall x :e hl_ty_int, hl_int_of_num (hl_NUMERAL hl_zero) = hl_int_sgn x <-> hl_int_of_num (hl_NUMERAL hl_zero) = x) /\\ ((forall x :e hl_ty_int, hl_int_le (hl_int_sgn x) (hl_int_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_int_le x (hl_int_of_num (hl_NUMERAL hl_zero)) = 1) /\\ ((forall x :e hl_ty_int, hl_int_lt (hl_int_sgn x) (hl_int_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_int_lt x (hl_int_of_num (hl_NUMERAL hl_zero)) = 1) /\\ ((forall x :e hl_ty_int, hl_int_ge (hl_int_sgn x) (hl_int_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_int_ge x (hl_int_of_num (hl_NUMERAL hl_zero)) = 1) /\\ ((forall x :e hl_ty_int, hl_int_gt (hl_int_sgn x) (hl_int_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_int_gt x (hl_int_of_num (hl_NUMERAL hl_zero)) = 1) /\\ forall x :e hl_ty_int, hl_int_sgn x = hl_int_of_num (hl_NUMERAL hl_zero) <-> x = hl_int_of_num (hl_NUMERAL hl_zero)))))))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_SGN_INEQS_bridge"
   },
   {
    "name": "INT_SGN_INT_SGN",
@@ -37806,9 +37806,9 @@
    "source": "!x:A. !l:A list. x IN set_of_list l <=> MEM x l",
    "statement": "forall A:set, forall x :e A, forall l :e finseq A, x :e seq_set l <-> seq_mem x l",
    "literal": "forall A:set, A <> Empty -> forall x :e A, forall l :e finseq A, hl_IN A x (hl_set_of_list A l) = 1 <-> hl_MEM A x l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IN_SET_OF_LIST_bridge"
   },
   {
    "name": "IN_SING",
@@ -39840,9 +39840,9 @@
    "source": "I = (\\x:A. x)",
    "statement": "forall A:set, forall x :e A, x = x",
    "literal": "forall A:set, A <> Empty -> hl_I A = fun x :e A => x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "I_DEF_bridge"
   },
   {
    "name": "I_O_ID",
@@ -39869,9 +39869,9 @@
    "source": "!f:A->B. I o f = f /\\ f o I = f",
    "statement": "forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\\ forall x :e A, f x = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\\ hl_o A B A f (hl_I A) = f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "I_O_ID_bridge"
   },
   {
    "name": "I_THM",
@@ -39897,9 +39897,9 @@
    "source": "!x:A. I x = x",
    "statement": "forall A:set, forall x :e A, x = x",
    "literal": "forall A:set, A <> Empty -> forall x :e A, hl_I A x = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "I_THM_bridge"
   },
   {
    "name": "LAMBDA_BETA",
@@ -40849,9 +40849,9 @@
    "source": "!P:A->bool. !l:A list. LENGTH (FILTER P l) <= LENGTH l",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall l :e finseq A, seq_len (seq_filter P l) <= seq_len l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l :e finseq A, hl_le (hl_LENGTH A (hl_FILTER A P l)) (hl_LENGTH A l) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_FILTER_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LENGTH_FILTER_bridge"
   },
   {
    "name": "LENGTH_LIST_OF_SEQ",
@@ -43356,9 +43356,9 @@
    "source": "MAP I = I",
    "statement": "forall A:set, A <> Empty -> forall x :e finseq A, seq_map (fun x:set => x) x = x",
    "literal": "forall A:set, A <> Empty -> hl_MAP A A (hl_I A) = hl_I (finseq A)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_I_bridge"
   },
   {
    "name": "MAP_ID",
@@ -43884,9 +43884,9 @@
    "source": "!P:A->bool. !l:A list. !x:A. MEM x (FILTER P l) <=> P x /\\ MEM x l",
    "statement": "forall A:set, forall P:set -> prop, forall l :e finseq A, forall x :e A, seq_mem x (seq_filter P l) <-> P x /\\ seq_mem x l",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, forall l :e finseq A, forall x :e A, hl_MEM A x (hl_FILTER A P l) = 1 <-> P x = 1 /\\ hl_MEM A x l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_FILTER_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MEM_FILTER_bridge"
   },
   {
    "name": "MEM_LIST_OF_SET",
@@ -53740,9 +53740,9 @@
    "source": "polynomial_function I",
    "statement": "polynomial_function_R (fun x:set => x)",
    "literal": "hl_polynomial_function (hl_I R) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POLYNOMIAL_FUNCTION_I_bridge"
   },
   {
    "name": "POLYNOMIAL_FUNCTION_ID",
@@ -63103,9 +63103,9 @@
    "source": "(!x:int. !y:int. real_of_int x = real_of_int y <=> x = y) /\\ (!x:int. !y:int. real_of_int x >= real_of_int y <=> x >= y) /\\ (!x:int. !y:int. real_of_int x > real_of_int y <=> x > y) /\\ (!x:int. !y:int. real_of_int x <= real_of_int y <=> x <= y) /\\ (!x:int. !y:int. real_of_int x < real_of_int y <=> x < y) /\\ (!x:int. !y:int. real_max (real_of_int x) (real_of_int y) = real_of_int (int_max x y)) /\\ (!x:int. !y:int. real_min (real_of_int x) (real_of_int y) = real_of_int (int_min x y)) /\\ (!n:num. real_of_num n = real_of_int (int_of_num n)) /\\ (!x:int. real_neg (real_of_int x) = real_of_int (int_neg x)) /\\ (!x:int. real_abs (real_of_int x) = real_of_int (int_abs x)) /\\ (!x:int. !y:int. real_max (real_of_int x) (real_of_int y) = real_of_int (int_max x y)) /\\ (!x:int. !y:int. real_min (real_of_int x) (real_of_int y) = real_of_int (int_min x y)) /\\ (!x:int. real_sgn (real_of_int x) = real_of_int (int_sgn x)) /\\ (!x:int. !y:int. real_of_int x + real_of_int y = real_of_int (x + y)) /\\ (!x:int. !y:int. real_of_int x - real_of_int y = real_of_int (x - y)) /\\ (!x:int. !y:int. real_of_int x * real_of_int y = real_of_int (x * y)) /\\ (!x:int. !n:num. real_of_int x pow n = real_of_int (x pow n))",
    "statement": "(forall x y :e int, x = y <-> x = y) /\\ ((forall x y :e int, y <= x <-> y <= x) /\\ ((forall x y :e int, y < x <-> y < x) /\\ ((forall x y :e int, x <= y <-> x <= y) /\\ ((forall x y :e int, x < y <-> x < y) /\\ ((forall x y :e int, (if x <= y then y else x) = if x <= y then y else x) /\\ ((forall x y :e int, (if x <= y then x else y) = if x <= y then x else y) /\\ ((forall n :e omega, n = n) /\\ ((forall x :e int, - x = - x) /\\ ((forall x :e int, abs_SNo x = abs_SNo x) /\\ ((forall x y :e int, (if x <= y then y else x) = if x <= y then y else x) /\\ ((forall x y :e int, (if x <= y then x else y) = if x <= y then x else y) /\\ ((forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0) /\\ ((forall x y :e int, x + y = x + y) /\\ ((forall x y :e int, x + - y = x + - y) /\\ ((forall x y :e int, x * y = x * y) /\\ forall x :e int, forall n :e omega, x ^ n = x ^ n)))))))))))))))",
    "literal": "(forall x y :e hl_ty_int, hl_real_of_int x = hl_real_of_int y <-> x = y) /\\ ((forall x y :e hl_ty_int, hl_real_ge (hl_real_of_int x) (hl_real_of_int y) = 1 <-> hl_int_ge x y = 1) /\\ ((forall x y :e hl_ty_int, hl_real_gt (hl_real_of_int x) (hl_real_of_int y) = 1 <-> hl_int_gt x y = 1) /\\ ((forall x y :e hl_ty_int, hl_real_le (hl_real_of_int x) (hl_real_of_int y) = 1 <-> hl_int_le x y = 1) /\\ ((forall x y :e hl_ty_int, hl_real_lt (hl_real_of_int x) (hl_real_of_int y) = 1 <-> hl_int_lt x y = 1) /\\ ((forall x y :e hl_ty_int, hl_real_max (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_max x y)) /\\ ((forall x y :e hl_ty_int, hl_real_min (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_min x y)) /\\ ((forall n :e omega, hl_real_of_num n = hl_real_of_int (hl_int_of_num n)) /\\ ((forall x :e hl_ty_int, hl_real_neg (hl_real_of_int x) = hl_real_of_int (hl_int_neg x)) /\\ ((forall x :e hl_ty_int, hl_real_abs (hl_real_of_int x) = hl_real_of_int (hl_int_abs x)) /\\ ((forall x y :e hl_ty_int, hl_real_max (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_max x y)) /\\ ((forall x y :e hl_ty_int, hl_real_min (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_min x y)) /\\ ((forall x :e hl_ty_int, hl_real_sgn (hl_real_of_int x) = hl_real_of_int (hl_int_sgn x)) /\\ ((forall x y :e hl_ty_int, hl_real_add (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_add x y)) /\\ ((forall x y :e hl_ty_int, hl_real_sub (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_sub x y)) /\\ ((forall x y :e hl_ty_int, hl_real_mul (hl_real_of_int x) (hl_real_of_int y) = hl_real_of_int (hl_int_mul x y)) /\\ forall x :e hl_ty_int, forall n :e omega, hl_real_pow (hl_real_of_int x) n = hl_real_of_int (hl_int_pow x n))))))))))))))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_OF_INT_CLAUSES_bridge"
   },
   {
    "name": "REAL_OF_NUM_ADD",
@@ -68802,9 +68802,9 @@
    "source": "!l1:A list. !l2:A list. set_of_list (l1 APPEND l2) = set_of_list l1 UNION set_of_list l2",
    "statement": "forall A:set, A <> Empty -> forall l1 l2 :e finseq A, seq_set (seq_append l1 l2) = seq_set l1 :\\/: seq_set l2",
    "literal": "forall A:set, A <> Empty -> forall l1 l2 :e finseq A, hl_set_of_list A (hl_APPEND A l1 l2) = hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SET_OF_LIST_APPEND_bridge"
   },
   {
    "name": "SET_OF_LIST_EQ_EMPTY",
@@ -68830,9 +68830,9 @@
    "source": "!l:A list. set_of_list l = EMPTY <=> l = NIL",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, seq_set l = Empty <-> l = seq_nil",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_set_of_list A l = hl_EMPTY A <-> l = hl_NIL A",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SET_OF_LIST_EQ_EMPTY_bridge"
   },
   {
    "name": "SET_OF_LIST_MAP",
@@ -68858,9 +68858,9 @@
    "source": "!f:A->B. !l:A list. set_of_list (MAP f l) = IMAGE f (set_of_list l)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_set (seq_map f l) = {f x | x :e seq_set l}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l :e finseq A, hl_set_of_list B (hl_MAP A B f l) = hl_IMAGE A B f (hl_set_of_list A l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SET_OF_LIST_MAP_bridge"
   },
   {
    "name": "SET_OF_LIST_OF_SET",
@@ -68889,7 +68889,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s -> seq_set (choose_in (finseq A) (fun l:set => seq_set l = s /\\ seq_len l = finite_cardinality s)) = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_set_of_list A (hl_list_of_set A s) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_list_of_set_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -80788,9 +80788,9 @@
    "source": "!x:int. !y:int. x >= y <=> real_of_int x >= real_of_int y",
    "statement": "forall x y :e int, y <= x <-> y <= x",
    "literal": "forall x y :e hl_ty_int, hl_int_ge x y = 1 <-> hl_real_ge (hl_real_of_int x) (hl_real_of_int y) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_ge_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "int_ge_bridge"
   },
   {
    "name": "int_gt",
@@ -84285,9 +84285,9 @@
    "source": "set_of_list NIL = EMPTY /\\ set_of_list (h CONS t) = h INSERT set_of_list t",
    "statement": "forall A:set, forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h",
    "literal": "forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_set_of_list A (hl_NIL A) = hl_EMPTY A /\\ hl_set_of_list A (hl_CONS A h t) = hl_INSERT A h (hl_set_of_list A t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_set_of_list_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "set_of_list_bridge"
   },
   {
    "name": "sndcart_thm",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2023
+  "native_certified": 2047
  }
 }

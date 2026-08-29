@@ -3979,8 +3979,13 @@ exact (INFINITE_ENUMERATE_SUBSET_bridge hlt_INFINITE_ENUMERATE_SUBSET).
 Admitted.
 
 // HOL Light: sets.ml:3790 / set_of_list   (hash md5:d3d631d275d67da22322de6660a5f072)
-// not bridged: 
+Theorem hlt_set_of_list : forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_set_of_list A (hl_NIL A) = hl_EMPTY A /\ hl_set_of_list A (hl_CONS A h t) = hl_INSERT A h (hl_set_of_list A t).
+Admitted.
+Theorem set_of_list_bridge : (forall A:set, A <> Empty -> forall h :e A, forall t :e finseq A, hl_set_of_list A (hl_NIL A) = hl_EMPTY A /\ hl_set_of_list A (hl_CONS A h t) = hl_INSERT A h (hl_set_of_list A t)) -> (forall A:set, forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h).
+exact (fun H__top A => (xm (A = Empty) (forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall h :e hl__u, forall t :e finseq hl__u, seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h) (forall_in_Empty (fun h => forall t :e finseq Empty, seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h)))) (fun HAne => (imp_forall_in (A) (fun h => forall t :e finseq A, hl_set_of_list A (hl_NIL A) = hl_EMPTY A /\ hl_set_of_list A (hl_CONS A h t) = hl_INSERT A h (hl_set_of_list A t)) (fun h => forall t :e finseq A, seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h) (fun h Hh => (imp_forall_in (finseq A) (fun t => hl_set_of_list A (hl_NIL A) = hl_EMPTY A /\ hl_set_of_list A (hl_CONS A h t) = hl_INSERT A h (hl_set_of_list A t)) (fun t => seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h) (fun t Ht => (imp_and (hl_set_of_list A (hl_NIL A) = hl_EMPTY A) (seq_set seq_nil = Empty) (hl_set_of_list A (hl_CONS A h t) = hl_INSERT A h (hl_set_of_list A t)) (seq_set (seq_cons h t) = SetAdjoin (seq_set t) h) (rep_eq_fwd (A) (hl_set_of_list A (hl_NIL A)) (hl_EMPTY A) (seq_set seq_nil) (Empty) (((hl_NIL_compat) (A) HAne) (fun hl__u hl__v => hl_rep A (hl_set_of_list A (hl_NIL A)) = seq_set hl__u) ((hl_set_of_list_compat) (A) HAne (hl_NIL A) ((hl_NIL_in) (A) HAne))) ((hl_EMPTY_compat) (A) HAne)) (rep_eq_fwd (A) (hl_set_of_list A (hl_CONS A h t)) (hl_INSERT A h (hl_set_of_list A t)) (seq_set (seq_cons h t)) (SetAdjoin (seq_set t) h) (((hl_CONS_compat) (A) HAne (h) Hh (t) Ht) (fun hl__u hl__v => hl_rep A (hl_set_of_list A (hl_CONS A h t)) = seq_set hl__u) ((hl_set_of_list_compat) (A) HAne (hl_CONS A h t) (setexp_ap (finseq A) (finseq A) (hl_CONS A h) (setexp_ap (A) (finseq A :^: finseq A) (hl_CONS A) ((hl_CONS_in) (A) HAne) (h) Hh) (t) Ht))) (((hl_set_of_list_compat) (A) HAne (t) Ht) (fun hl__u hl__v => hl_rep A (hl_INSERT A h (hl_set_of_list A t)) = SetAdjoin hl__u h) ((hl_INSERT_compat) (A) HAne (h) Hh (hl_set_of_list A t) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (t) Ht))))))))) (H__top A HAne)))).
+Qed.
 Theorem set_of_list : forall A:set, forall h :e A, forall t :e finseq A, seq_set seq_nil = Empty /\ seq_set (seq_cons h t) = SetAdjoin (seq_set t) h.
+exact (set_of_list_bridge hlt_set_of_list).
 Admitted.
 
 // HOL Light: sets.ml:3794 / list_of_set   (hash md5:8f405bc9630b9ef0a99fa9fabc53ce7e)
@@ -4009,28 +4014,53 @@ Theorem MEM_LIST_OF_SET : forall A:set, forall s c= A, finite s -> forall x :e A
 Admitted.
 
 // HOL Light: sets.ml:3828 / FINITE_SET_OF_LIST   (hash md5:38e0d51202b6da4a07d3459e13ad037e)
-// not bridged: 
+Theorem hlt_FINITE_SET_OF_LIST : forall A:set, A <> Empty -> forall l :e finseq A, hl_FINITE A (hl_set_of_list A l) = 1.
+Admitted.
+Theorem FINITE_SET_OF_LIST_bridge : (forall A:set, A <> Empty -> forall l :e finseq A, hl_FINITE A (hl_set_of_list A l) = 1) -> (forall A:set, A <> Empty -> forall l :e finseq A, finite (seq_set l)).
+exact (fun H__top A HAne => (imp_forall_in (finseq A) (fun l => hl_FINITE A (hl_set_of_list A l) = 1) (fun l => finite (seq_set l)) (fun l Hl => (iffEL (hl_FINITE A (hl_set_of_list A l) = 1) (finite (seq_set l)) (((hl_set_of_list_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_FINITE A (hl_set_of_list A l) = 1 <-> finite hl__u) ((hl_FINITE_compat) (A) HAne (hl_set_of_list A l) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l) Hl)))))) (H__top A HAne)).
+Qed.
 Theorem FINITE_SET_OF_LIST : forall A:set, A <> Empty -> forall l :e finseq A, finite (seq_set l).
+exact (FINITE_SET_OF_LIST_bridge hlt_FINITE_SET_OF_LIST).
 Admitted.
 
 // HOL Light: sets.ml:3832 / IN_SET_OF_LIST   (hash md5:e04f19a74d3f5a4a5d78af3e746c55df)
-// not bridged: 
+Theorem hlt_IN_SET_OF_LIST : forall A:set, A <> Empty -> forall x :e A, forall l :e finseq A, hl_IN A x (hl_set_of_list A l) = 1 <-> hl_MEM A x l = 1.
+Admitted.
+Theorem IN_SET_OF_LIST_bridge : (forall A:set, A <> Empty -> forall x :e A, forall l :e finseq A, hl_IN A x (hl_set_of_list A l) = 1 <-> hl_MEM A x l = 1) -> (forall A:set, forall x :e A, forall l :e finseq A, x :e seq_set l <-> seq_mem x l).
+exact (fun H__top A => (xm (A = Empty) (forall x :e A, forall l :e finseq A, x :e seq_set l <-> seq_mem x l) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, forall l :e finseq hl__u, x :e seq_set l <-> seq_mem x l) (forall_in_Empty (fun x => forall l :e finseq Empty, x :e seq_set l <-> seq_mem x l)))) (fun HAne => (imp_forall_in (A) (fun x => forall l :e finseq A, hl_IN A x (hl_set_of_list A l) = 1 <-> hl_MEM A x l = 1) (fun x => forall l :e finseq A, x :e seq_set l <-> seq_mem x l) (fun x Hx => (imp_forall_in (finseq A) (fun l => hl_IN A x (hl_set_of_list A l) = 1 <-> hl_MEM A x l = 1) (fun l => x :e seq_set l <-> seq_mem x l) (fun l Hl => (imp_iff (hl_IN A x (hl_set_of_list A l) = 1) (x :e seq_set l) (hl_MEM A x l = 1) (seq_mem x l) (iffEL (hl_IN A x (hl_set_of_list A l) = 1) (x :e seq_set l) (((hl_set_of_list_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_IN A x (hl_set_of_list A l) = 1 <-> x :e hl__u) ((hl_IN_compat) (A) HAne (x) Hx (hl_set_of_list A l) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l) Hl)))) (iffER (hl_IN A x (hl_set_of_list A l) = 1) (x :e seq_set l) (((hl_set_of_list_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_IN A x (hl_set_of_list A l) = 1 <-> x :e hl__u) ((hl_IN_compat) (A) HAne (x) Hx (hl_set_of_list A l) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l) Hl)))) (iffEL (hl_MEM A x l = 1) (seq_mem x l) ((hl_MEM_compat) (A) HAne (x) Hx (l) Hl)) (iffER (hl_MEM A x l = 1) (seq_mem x l) ((hl_MEM_compat) (A) HAne (x) Hx (l) Hl))))))) (H__top A HAne)))).
+Qed.
 Theorem IN_SET_OF_LIST : forall A:set, forall x :e A, forall l :e finseq A, x :e seq_set l <-> seq_mem x l.
+exact (IN_SET_OF_LIST_bridge hlt_IN_SET_OF_LIST).
 Admitted.
 
 // HOL Light: sets.ml:3838 / SET_OF_LIST_APPEND   (hash md5:71f78d782520f2945776ecaa9f66d3b9)
-// not bridged: 
+Theorem hlt_SET_OF_LIST_APPEND : forall A:set, A <> Empty -> forall l1 l2 :e finseq A, hl_set_of_list A (hl_APPEND A l1 l2) = hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2).
+Admitted.
+Theorem SET_OF_LIST_APPEND_bridge : (forall A:set, A <> Empty -> forall l1 l2 :e finseq A, hl_set_of_list A (hl_APPEND A l1 l2) = hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)) -> (forall A:set, A <> Empty -> forall l1 l2 :e finseq A, seq_set (seq_append l1 l2) = seq_set l1 :\/: seq_set l2).
+exact (fun H__top A HAne => (imp_forall_in (finseq A) (fun l1 => forall l2 :e finseq A, hl_set_of_list A (hl_APPEND A l1 l2) = hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)) (fun l1 => forall l2 :e finseq A, seq_set (seq_append l1 l2) = seq_set l1 :\/: seq_set l2) (fun l1 Hl1 => (imp_forall_in (finseq A) (fun l2 => hl_set_of_list A (hl_APPEND A l1 l2) = hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)) (fun l2 => seq_set (seq_append l1 l2) = seq_set l1 :\/: seq_set l2) (fun l2 Hl2 => (rep_eq_fwd (A) (hl_set_of_list A (hl_APPEND A l1 l2)) (hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)) (seq_set (seq_append l1 l2)) (seq_set l1 :\/: seq_set l2) (((hl_APPEND_compat) (A) HAne (l1) Hl1 (l2) Hl2) (fun hl__u hl__v => hl_rep A (hl_set_of_list A (hl_APPEND A l1 l2)) = seq_set hl__u) ((hl_set_of_list_compat) (A) HAne (hl_APPEND A l1 l2) (setexp_ap (finseq A) (finseq A) (hl_APPEND A l1) (setexp_ap (finseq A) (finseq A :^: finseq A) (hl_APPEND A) ((hl_APPEND_in) (A) HAne) (l1) Hl1) (l2) Hl2))) (((hl_set_of_list_compat) (A) HAne (l2) Hl2) (fun hl__u hl__v => hl_rep A (hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)) = seq_set l1 :\/: hl__u) (((hl_set_of_list_compat) (A) HAne (l1) Hl1) (fun hl__u hl__v => hl_rep A (hl_UNION A (hl_set_of_list A l1) (hl_set_of_list A l2)) = hl__u :\/: hl_rep A (hl_set_of_list A l2)) ((hl_UNION_compat) (A) HAne (hl_set_of_list A l1) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l1) Hl1) (hl_set_of_list A l2) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l2) Hl2))))))))) (H__top A HAne)).
+Qed.
 Theorem SET_OF_LIST_APPEND : forall A:set, A <> Empty -> forall l1 l2 :e finseq A, seq_set (seq_append l1 l2) = seq_set l1 :\/: seq_set l2.
+exact (SET_OF_LIST_APPEND_bridge hlt_SET_OF_LIST_APPEND).
 Admitted.
 
 // HOL Light: sets.ml:3843 / SET_OF_LIST_MAP   (hash md5:4f00d943be0bd84213704d69ec6f7b11)
-// not bridged: 
+Theorem hlt_SET_OF_LIST_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l :e finseq A, hl_set_of_list B (hl_MAP A B f l) = hl_IMAGE A B f (hl_set_of_list A l).
+Admitted.
+Theorem SET_OF_LIST_MAP_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall l :e finseq A, hl_set_of_list B (hl_MAP A B f l) = hl_IMAGE A B f (hl_set_of_list A l)) -> (forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_set (seq_map f l) = {f x | x :e seq_set l}).
+exact (fun H__top A B HAne HBne => (imp_forall_fun (A) (B) (fun f => forall l :e finseq A, hl_set_of_list B (hl_MAP A B f l) = hl_IMAGE A B f (hl_set_of_list A l)) (fun f => forall l :e finseq A, seq_set (seq_map f l) = {f x | x :e seq_set l}) (fun f Hfc => (imp_forall_in (finseq A) (fun l => hl_set_of_list B (hl_MAP A B (hl_lam A f) l) = hl_IMAGE A B (hl_lam A f) (hl_set_of_list A l)) (fun l => seq_set (seq_map f l) = {f x | x :e seq_set l}) (fun l Hl => (rep_eq_fwd (B) (hl_set_of_list B (hl_MAP A B (hl_lam A f) l)) (hl_IMAGE A B (hl_lam A f) (hl_set_of_list A l)) (seq_set (seq_map f l)) ({f x | x :e seq_set l}) (((hl_MAP_compat) (A) (B) HAne HBne (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)) (l) Hl) (fun hl__u hl__v => hl_rep B (hl_set_of_list B (hl_MAP A B (hl_lam A f) l)) = seq_set hl__u) ((hl_set_of_list_compat) (B) HBne (hl_MAP A B (hl_lam A f) l) (setexp_ap (finseq A) (finseq B) (hl_MAP A B (hl_lam A f)) (setexp_ap (B :^: A) (finseq B :^: finseq A) (hl_MAP A B) ((hl_MAP_in) (A) (B) HAne HBne) (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc)) (l) Hl))) (((hl_set_of_list_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_rep B (hl_IMAGE A B (hl_lam A f) (hl_set_of_list A l)) = {f x | x :e hl__u}) ((hl_IMAGE_compat) (A) (B) HAne HBne (hl_lam A f) (hl_lam_Pi (A) (B) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)) (hl_set_of_list A l) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l) Hl)))))))) (H__top A B HAne HBne)).
+Qed.
 Theorem SET_OF_LIST_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_set (seq_map f l) = {f x | x :e seq_set l}.
+exact (SET_OF_LIST_MAP_bridge hlt_SET_OF_LIST_MAP).
 Admitted.
 
 // HOL Light: sets.ml:3848 / SET_OF_LIST_EQ_EMPTY   (hash md5:3b95c74d1c8514bd39f4217cb7568a84)
-// not bridged: 
+Theorem hlt_SET_OF_LIST_EQ_EMPTY : forall A:set, A <> Empty -> forall l :e finseq A, hl_set_of_list A l = hl_EMPTY A <-> l = hl_NIL A.
+Admitted.
+Theorem SET_OF_LIST_EQ_EMPTY_bridge : (forall A:set, A <> Empty -> forall l :e finseq A, hl_set_of_list A l = hl_EMPTY A <-> l = hl_NIL A) -> (forall A:set, A <> Empty -> forall l :e finseq A, seq_set l = Empty <-> l = seq_nil).
+exact (fun H__top A HAne => (imp_forall_in (finseq A) (fun l => hl_set_of_list A l = hl_EMPTY A <-> l = hl_NIL A) (fun l => seq_set l = Empty <-> l = seq_nil) (fun l Hl => (imp_iff (hl_set_of_list A l = hl_EMPTY A) (seq_set l = Empty) (l = hl_NIL A) (l = seq_nil) (rep_eq_fwd (A) (hl_set_of_list A l) (hl_EMPTY A) (seq_set l) (Empty) ((hl_set_of_list_compat) (A) HAne (l) Hl) ((hl_EMPTY_compat) (A) HAne)) (rep_eq_bwd (A) (hl_set_of_list A l) (hl_EMPTY A) (seq_set l) (Empty) (setexp_ap (finseq A) (2 :^: A) (hl_set_of_list A) ((hl_set_of_list_in) (A) HAne) (l) Hl) ((hl_EMPTY_in) (A) HAne) ((hl_set_of_list_compat) (A) HAne (l) Hl) ((hl_EMPTY_compat) (A) HAne)) (imp_eq (l) (l) (hl_NIL A) (seq_nil) (fun q H => H) ((hl_NIL_compat) (A) HAne)) (imp_eq (l) (l) (seq_nil) (hl_NIL A) (eq_sym_i (l) (l) (fun q H => H)) (eq_sym_i (hl_NIL A) (seq_nil) ((hl_NIL_compat) (A) HAne)))))) (H__top A HAne)).
+Qed.
 Theorem SET_OF_LIST_EQ_EMPTY : forall A:set, A <> Empty -> forall l :e finseq A, seq_set l = Empty <-> l = seq_nil.
+exact (SET_OF_LIST_EQ_EMPTY_bridge hlt_SET_OF_LIST_EQ_EMPTY).
 Admitted.
 
 // HOL Light: sets.ml:3853 / LIST_OF_SET_EMPTY   (hash md5:77c8888341b38741f7d5f257b8ad4443)

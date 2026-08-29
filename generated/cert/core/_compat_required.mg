@@ -78,10 +78,6 @@ Admitted.
 Theorem hl_FINREC_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_FINREC A B = Empty.
 Admitted.
 
-// I : A->A (not in compat.mg)
-Theorem hl_I_compat : forall A:set, A <> Empty -> forall x :e A, hl_I A x = x.
-Admitted.
-
 // dest_finite_prod : (A,B)finite_prod->num (not in compat.mg)
 Theorem hl_dest_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_prod A B, hl_dest_finite_prod A B l1 = l1.
 Admitted.
@@ -298,10 +294,6 @@ Admitted.
 Theorem hl_int_gcd_compat : forall l1 :e int :*: int, hl_int_gcd l1 = gcd_int (l1 0) (l1 1).
 Admitted.
 
-// set_of_list : A list->A->bool (not in compat.mg)
-Theorem hl_set_of_list_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_rep A (hl_set_of_list A l1) = seq_set l1.
-Admitted.
-
 // num_lcm : num#num->num (not in compat.mg)
 Theorem hl_num_lcm_compat : forall l1 :e omega :*: omega, hl_num_lcm l1 = lcm_int (l1 0) (l1 1).
 Admitted.
@@ -324,10 +316,6 @@ Admitted.
 
 // _GUARDED_PATTERN : bool->bool->bool->bool (not in compat.mg)
 Theorem hl__GUARDED_PATTERN_compat : hl__GUARDED_PATTERN = Empty.
-Admitted.
-
-// int_ge : int->int->bool (not in compat.mg)
-Theorem hl_int_ge_compat : forall l1 l2 :e int, hl_int_ge l1 l2 = 1 <-> l2 <= l1.
 Admitted.
 
 // INJN : num->num->A->bool (not in compat.mg)
@@ -424,10 +412,6 @@ Admitted.
 
 // mk_finite_prod : num->(A,B)finite_prod (not in compat.mg)
 Theorem hl_mk_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_prod A B l1 = l1.
-Admitted.
-
-// FILTER : (A->bool)->A list->A list (not in compat.mg)
-Theorem hl_FILTER_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall P1:set -> prop, (forall x :e A, l1 x = 1 <-> P1 x) -> forall l2 :e finseq A, hl_FILTER A l1 l2 = seq_filter P1 l2.
 Admitted.
 
 // ALLPAIRS : (A->B->bool)->A list->B list->bool (not in compat.mg)
