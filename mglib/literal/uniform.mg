@@ -293,3 +293,86 @@ apply iffI.
 - assume H. exact (FalseE H (hl_F = 1)).
 - assume H. exact (neq_0_1 (eq_trans_i 0 hl_F 1 (eq_sym_i hl_F 0 hl_F_char) H)).
 Qed.
+
+// ---- the remaining HOL axioms in uniform form ----
+Theorem u_SELECT_AX : forall A:set, A <> Empty -> hl_forall (2 :^: A) (fun P :e 2 :^: A => hl_forall A (fun x :e A => hl_imp (P x) (P (hl_select A P)))) = 1.
+let A. assume HA.
+claim Hsel: forall P :e 2 :^: A, hl_select A P :e A. { let P. assume HP. exact (setexp_ap (2 :^: A) A (hl_select A) (hl_select_in A HA) P HP). }
+claim Hin: forall P :e 2 :^: A, (fun x :e A => hl_imp (P x) (P (hl_select A P))) :e 2 :^: A.
+{ let P. assume HP. exact (u_lam_in A 2 (fun x => hl_imp (P x) (P (hl_select A P))) (fun x Hx => setexp2_ap 2 2 2 hl_imp hl_imp_in (P x) (setexp_ap A 2 P HP x Hx) (P (hl_select A P)) (setexp_ap A 2 P HP (hl_select A P) (Hsel P HP)))). }
+claim Hout: (fun P :e 2 :^: A => hl_forall A (fun x :e A => hl_imp (P x) (P (hl_select A P)))) :e 2 :^: (2 :^: A).
+{ exact (u_lam_in (2 :^: A) 2 (fun P => hl_forall A (fun x :e A => hl_imp (P x) (P (hl_select A P)))) (fun P HP => setexp_ap (2 :^: A) 2 (hl_forall A) (hl_forall_in A HA) (fun x :e A => hl_imp (P x) (P (hl_select A P))) (Hin P HP))). }
+apply (hl_forall_char (2 :^: A) (fun P :e 2 :^: A => hl_forall A (fun x :e A => hl_imp (P x) (P (hl_select A P)))) Hout). assume _ Hb. apply Hb.
+let P. assume HP.
+rewrite (beta (2 :^: A) (fun P => hl_forall A (fun x :e A => hl_imp (P x) (P (hl_select A P)))) P HP).
+apply (hl_forall_char A (fun x :e A => hl_imp (P x) (P (hl_select A P))) (Hin P HP)). assume _ Hb2. apply Hb2.
+let x. assume Hx.
+rewrite (beta A (fun x => hl_imp (P x) (P (hl_select A P))) x Hx).
+apply (hl_imp_char (P x) (setexp_ap A 2 P HP x Hx) (P (hl_select A P)) (setexp_ap A 2 P HP (hl_select A P) (Hsel P HP))). assume _ Hb3. apply Hb3.
+assume HPx.
+claim Hs: hl_select A P = choose_in A (fun x => P x = 1). { exact (beta (2 :^: A) (fun P => choose_in A (fun x => P x = 1)) P HP). }
+claim Hex: exists x :e A, P x = 1. { witness x. apply andI. exact Hx. exact HPx. }
+rewrite Hs.
+apply (choose_in_spec A (fun x => P x = 1) Hex). assume _ H. exact H.
+Qed.
+Theorem u_INFINITY_AX : hl_exists (omega :^: omega) (fun f :e omega :^: omega => hl_and (hl_ONE_ONE omega omega f) (hl_not (hl_ONTO omega omega f))) = 1.
+claim Hf: (fun n :e omega => ordsucc n) :e omega :^: omega. { exact (u_lam_in omega omega (fun n => ordsucc n) (fun n Hn => omega_ordsucc n Hn)). }
+claim Hone: forall f :e omega :^: omega, hl_ONE_ONE omega omega f :e 2. { let f. assume Hf'. exact (setexp_ap (omega :^: omega) 2 (hl_ONE_ONE omega omega) (hl_ONE_ONE_in omega omega omega_nonempty omega_nonempty) f Hf'). }
+claim Honto: forall f :e omega :^: omega, hl_ONTO omega omega f :e 2. { let f. assume Hf'. exact (setexp_ap (omega :^: omega) 2 (hl_ONTO omega omega) (hl_ONTO_in omega omega omega_nonempty omega_nonempty) f Hf'). }
+claim Hin: (fun f :e omega :^: omega => hl_and (hl_ONE_ONE omega omega f) (hl_not (hl_ONTO omega omega f))) :e 2 :^: (omega :^: omega).
+{ exact (u_lam_in (omega :^: omega) 2 (fun f => hl_and (hl_ONE_ONE omega omega f) (hl_not (hl_ONTO omega omega f))) (fun f Hf' => setexp2_ap 2 2 2 hl_and hl_and_in (hl_ONE_ONE omega omega f) (Hone f Hf') (hl_not (hl_ONTO omega omega f)) (setexp_ap 2 2 hl_not hl_not_in (hl_ONTO omega omega f) (Honto f Hf')))). }
+apply (hl_exists_char (omega :^: omega) (fun f :e omega :^: omega => hl_and (hl_ONE_ONE omega omega f) (hl_not (hl_ONTO omega omega f))) Hin). assume _ Hb. apply Hb.
+witness (fun n :e omega => ordsucc n). apply andI. exact Hf.
+rewrite (beta (omega :^: omega) (fun f => hl_and (hl_ONE_ONE omega omega f) (hl_not (hl_ONTO omega omega f))) (fun n :e omega => ordsucc n) Hf).
+apply (hl_and_char (hl_ONE_ONE omega omega (fun n :e omega => ordsucc n)) (Hone (fun n :e omega => ordsucc n) Hf) (hl_not (hl_ONTO omega omega (fun n :e omega => ordsucc n))) (setexp_ap 2 2 hl_not hl_not_in (hl_ONTO omega omega (fun n :e omega => ordsucc n)) (Honto (fun n :e omega => ordsucc n) Hf))). assume _ Hb2. apply Hb2.
+apply andI.
+- rewrite (hl_ONE_ONE_unfold omega omega (fun n :e omega => ordsucc n) Hf).
+  claim HP: forall x1 x2 :e omega, (fun n :e omega => ordsucc n) x1 = (fun n :e omega => ordsucc n) x2 -> x1 = x2.
+  { let x1. assume H1. let x2. assume H2. assume H.
+    claim H': ordsucc x1 = ordsucc x2. { exact (eq_trans_i (ordsucc x1) ((fun n :e omega => ordsucc n) x1) (ordsucc x2) (eq_sym_i ((fun n :e omega => ordsucc n) x1) (ordsucc x1) (beta omega (fun n => ordsucc n) x1 H1)) (eq_trans_i ((fun n :e omega => ordsucc n) x1) ((fun n :e omega => ordsucc n) x2) (ordsucc x2) H (beta omega (fun n => ordsucc n) x2 H2))). }
+    exact (ordsucc_inj x1 x2 H'). }
+  exact (If_i_1 (forall x1 x2 :e omega, (fun n :e omega => ordsucc n) x1 = (fun n :e omega => ordsucc n) x2 -> x1 = x2) 1 0 HP).
+- apply (hl_not_char (hl_ONTO omega omega (fun n :e omega => ordsucc n)) (Honto (fun n :e omega => ordsucc n) Hf)). assume _ Hb3. apply Hb3.
+  assume H.
+  claim H1: (if forall y :e omega, exists x :e omega, y = (fun n :e omega => ordsucc n) x then 1 else 0) = 1. { exact ((hl_ONTO_unfold omega omega (fun n :e omega => ordsucc n) Hf) (fun hl__u hl__v => hl__u = 1) H). }
+  claim HP: forall y :e omega, exists x :e omega, y = (fun n :e omega => ordsucc n) x. { apply (If_1_iff (forall y :e omega, exists x :e omega, y = (fun n :e omega => ordsucc n) x)). assume Hf' _. exact (Hf' H1). }
+  apply (HP 0 (nat_p_omega 0 nat_0)). let x. assume Hx0. apply Hx0. assume Hx Heq.
+  claim Heq': 0 = ordsucc x. { exact (eq_trans_i 0 ((fun n :e omega => ordsucc n) x) (ordsucc x) Heq (beta omega (fun n => ordsucc n) x Hx)). }
+  exact (neq_ordsucc_0 x (eq_sym_i 0 (ordsucc x) Heq')).
+Qed.
+
+// ---- type definitions: the characterizing theorems of the generic subtype ----
+Theorem hl_subtype_abs_rep : forall A P:set, forall a :e hl_subtype A P, hl_subtype_abs A P (hl_subtype_rep A P a) = a.
+let A P a. assume Ha.
+claim HaA: a :e A. { exact (SepE1 A (fun x => P x = 1) a Ha). }
+claim Hr: hl_subtype_rep A P a = a. { exact (beta (hl_subtype A P) (fun x => x) a Ha). }
+claim Hb: hl_subtype_abs A P a = if a :e hl_subtype A P then a else if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True). { exact (beta A (fun x => if x :e hl_subtype A P then x else if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True)) a HaA). }
+exact (eq_trans_i (hl_subtype_abs A P (hl_subtype_rep A P a)) (hl_subtype_abs A P a) a (f_equal (fun u => hl_subtype_abs A P u) (hl_subtype_rep A P a) a Hr) (eq_trans_i (hl_subtype_abs A P a) (if a :e hl_subtype A P then a else if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True)) a Hb (If_i_1 (a :e hl_subtype A P) a (if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True)) Ha))).
+Qed.
+Theorem hl_subtype_rep_abs : forall A P:set, hl_subtype A P <> Empty -> forall r :e A, P r = 1 <-> hl_subtype_rep A P (hl_subtype_abs A P r) = r.
+let A P. assume Hne. let r. assume Hr.
+claim Hab: hl_subtype_abs A P r :e hl_subtype A P. { exact (setexp_ap A (hl_subtype A P) (hl_subtype_abs A P) (hl_subtype_abs_in A P Hne) r Hr). }
+claim Hrep: hl_subtype_rep A P (hl_subtype_abs A P r) = hl_subtype_abs A P r. { exact (beta (hl_subtype A P) (fun x => x) (hl_subtype_abs A P r) Hab). }
+claim Hb: hl_subtype_abs A P r = if r :e hl_subtype A P then r else if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True). { exact (beta A (fun x => if x :e hl_subtype A P then x else if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True)) r Hr). }
+apply iffI.
+- assume HP. claim Hin: r :e hl_subtype A P. { exact (SepI A (fun x => P x = 1) r Hr HP). }
+  exact (eq_trans_i (hl_subtype_rep A P (hl_subtype_abs A P r)) (hl_subtype_abs A P r) r Hrep (eq_trans_i (hl_subtype_abs A P r) (if r :e hl_subtype A P then r else if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True)) r Hb (If_i_1 (r :e hl_subtype A P) r (if 0 :e hl_subtype A P then 0 else choose_in (hl_subtype A P) (fun _ => True)) Hin))).
+- assume H.
+  claim Heq: hl_subtype_abs A P r = r. { exact (eq_trans_i (hl_subtype_abs A P r) (hl_subtype_rep A P (hl_subtype_abs A P r)) r (eq_sym_i (hl_subtype_rep A P (hl_subtype_abs A P r)) (hl_subtype_abs A P r) Hrep) H). }
+  claim Hin: r :e hl_subtype A P. { exact (Heq (fun hl__u hl__v => hl__u :e hl_subtype A P) Hab). }
+  exact (SepE2 A (fun x => P x = 1) r Hin).
+Qed.
+Theorem hl_subtype_nonempty_of : forall A P:set, forall t :e A, P t = 1 -> hl_subtype A P <> Empty.
+let A P t. assume Ht HP. exact (nonempty_of_In (hl_subtype A P) t (SepI A (fun x => P x = 1) t Ht HP)).
+Qed.
+Theorem u_tydef_rep : forall A P:set, hl_subtype A P <> Empty -> P :e 2 :^: A -> forall r :e A, hl_eq 2 (P r) (hl_eq A (hl_subtype_rep A P (hl_subtype_abs A P r)) r) = 1.
+let A P. assume Hne HP. let r. assume Hr.
+claim HPr: P r :e 2. { exact (setexp_ap A 2 P HP r Hr). }
+claim Hab: hl_subtype_abs A P r :e hl_subtype A P. { exact (setexp_ap A (hl_subtype A P) (hl_subtype_abs A P) (hl_subtype_abs_in A P Hne) r Hr). }
+claim Hra: hl_subtype_rep A P (hl_subtype_abs A P r) :e A. { exact (setexp_ap (hl_subtype A P) A (hl_subtype_rep A P) (hl_subtype_rep_in A P) (hl_subtype_abs A P r) Hab). }
+claim He: hl_eq A (hl_subtype_rep A P (hl_subtype_abs A P r)) r :e 2. { exact (setexp2_ap A A 2 (hl_eq A) (hl_eq_in A (nonempty_of_In A r Hr)) (hl_subtype_rep A P (hl_subtype_abs A P r)) Hra r Hr). }
+apply (hl_subtype_rep_abs A P Hne r Hr). assume Hf Hb.
+apply (u_deduct (P r) HPr (hl_eq A (hl_subtype_rep A P (hl_subtype_abs A P r)) r) He).
+- assume H1. exact (Hb (u_eq_elim A (hl_subtype_rep A P (hl_subtype_abs A P r)) Hra r Hr H1)).
+- assume H1. exact (u_eq_intro A (hl_subtype_rep A P (hl_subtype_abs A P r)) Hra r Hr (Hf H1)).
+Qed.

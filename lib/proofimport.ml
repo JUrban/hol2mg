@@ -17,6 +17,7 @@ type pnode = {
   theta_ty : (string * ty) list;           (* INST_TYPE: type variable -> type *)
   theta_tm : ((string * ty) * tm) list;    (* INST: variable -> term *)
   prem : int list; leaf : string option;   (* NAMED leaf: HOL name *)
+  tyn : string;                            (* TYDEF_*: the type name *)
   hyps : tm list; concl : tm }
 type proof = { pname : string; phash : string; root : int; nodes : pnode array }
 
@@ -71,6 +72,7 @@ let load (file : string) : proof list =
            { id = int (mem "id" nj); rule; tm = tmo; theta_ty; theta_tm;
              prem = List.map int (lst (mem "p" nj));
              leaf = (match mem "name" nj with `String s -> Some s | _ -> None);
+             tyn = (match mem "ty" nj with `String s -> s | _ -> "");
              hyps = List.map (fun h -> conv [] (int h)) (lst (mem "hyps" nj));
              concl = conv [] (int (mem "concl" nj)) }) (lst (mem "nodes" j)) in
          let arr = Array.of_list nodes in
@@ -245,7 +247,10 @@ let rec utyp (env : env) (ctx : L.ctx) (t : tm) : string =
       let generic = (try Hashtbl.find ctx.L.consts c with Not_found -> unsupported "constant %s has no generic type" c) in
       let sub = L.match_ty generic ty [] in
       let tvs = L.tyvars_ordered generic [] in
-      let name = L.mg_name_of_const c ^ "_in" in
+      (* typing lemmas of constants whose type mentions a translated type definition exist in the
+         literal-carrier form (_in_lit); the uniform terms use literal carriers *)
+      let lit = List.exists (fun k -> Hashtbl.mem ctx.L.tydefs k) (L.tycons_of_ty generic []) in
+      let name = L.mg_name_of_const c ^ (if lit then "_in_lit" else "_in") in
       if tvs = [] then name
       else Printf.sprintf "(%s %s %s)" name (String.concat " " (List.map (fun a -> ppp (L.carrier ctx (List.assoc a sub))) tvs))
              (String.concat " " (List.map (fun a -> ne ctx (List.assoc a sub)) tvs))
@@ -506,11 +511,53 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
         (match n.concl with
          | App (Const ("!", _), Lam (_, TyApp ("fun", [ a; b ]), App (App (Const ("=", _), Lam (_, _, App (Bound 1, Bound 0))), Bound 0))) ->
              Printf.sprintf "(u_ETA_AX %s %s %s %s)" (car a) (car b) (ne ctx a) (ne ctx b)
+         | App (Const ("!", _), Lam (_, TyApp ("fun", [ a; TyApp ("bool", []) ]), App (Const ("!", _), Lam (_, _, App (App (Const ("==>", _), _), _))))) ->
+             Printf.sprintf "(u_SELECT_AX %s %s)" (car a) (ne ctx a)
+         | App (Const ("?", _), Lam (_, TyApp ("fun", [ TyApp ("ind", []); TyApp ("ind", []) ]), _)) -> "u_INFINITY_AX"
          | _ -> unsupported "axiom %s" (Mg.to_string (uterm ctx n.concl)))
     | "DEFINITION" ->
         let ty, c, rhs = dest_eq n.concl in
         (match c with Const (cn, _) when List.mem_assoc cn L.primitive_consts -> unsupported "definition of the primitive constant %s" cn | _ -> ());
         Printf.sprintf "(u_eq_intro %s %s %s %s %s %s)" (car ty) (u c) (ty_ c) (u rhs) (ty_ rhs) (coh env ctx rhs)
+    | "TYDEF_ABS" | "TYDEF_REP" ->
+        let td = (match List.find_opt (fun ((td : type_definition), _) -> td.td_name = n.tyn) env.an.L.type_definitions with
+          | Some (td, _) -> td | None -> unsupported "type definition %s not translated" n.tyn) in
+        let rho, pf = L.dest_tydef_bij td in
+        let rcar = car rho and pred = u pf in
+        if n.rule = "TYDEF_ABS" then begin
+          (* abs (rep a) = a *)
+          let ty, lhs, a = dest_eq n.concl in
+          Printf.sprintf "(u_eq_intro %s %s %s %s %s (hl_subtype_abs_rep %s %s %s %s))" (car ty) (u lhs) (ty_ lhs) (u a) (ty_ a) rcar pred (u a) (ty_ a)
+        end else begin
+          (* P r = (rep (abs r) = r), with the nonemptiness theorem P t as premise *)
+          let _, lhs, _ = dest_eq n.concl in
+          let r = (match lhs with App (_, r) -> r | _ -> unsupported "TYDEF_REP shape") in
+          let pt = cl p.nodes.(List.nth n.prem 0).concl in
+          let p', t = (match pt with App (p', t) -> (p', t) | _ -> unsupported "TYDEF_REP premise shape") in
+          (* the nonemptiness theorem P' t: P' is the definition's predicate up to a beta step *)
+          let wit = (if alpha_eq p' pf then pre 0
+                     else match p' with
+                       | Lam (x, ty, b) when alpha_eq (open_with t b) (App (pf, t)) || alpha_eq (canon (open_with t b)) (canon (App (pf, t))) ->
+                           let nm = L.fresh ctx x in
+                           ctx.L.vars <- (x, Mg.Var nm) :: ctx.L.vars;
+                           let b' = open_with (Free (x, ty)) b in
+                           let lam = Printf.sprintf "(fun %s:set => %s)" nm (pb (uterm ctx b')) in
+                           ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx nm;
+                           Printf.sprintf "((beta %s %s %s %s) (fun hl__u hl__v => hl__u = 1) %s)" (car ty) lam (u t) (ty_ t) (pre 0)
+                       | _ -> unsupported "TYDEF_REP: predicate %s differs from the definition's" (Mg.to_string (uterm ctx p'))) in
+          let lem = Printf.sprintf "(u_tydef_rep %s %s (hl_subtype_nonempty_of %s %s %s %s %s) %s %s %s)" rcar pred rcar pred (u t) (ty_ t) wit (ty_ pf) (u r) (ty_ r) in
+          (* the theorem states P' r with P' the (possibly eta-expanded) predicate: beta step on the left *)
+          let _, _, rhs_t = dest_eq n.concl in
+          (match lhs with
+           | App ((Lam (x, ty, b) as p'), _) when not (alpha_eq p' pf) ->
+               let nm = L.fresh ctx x in
+               ctx.L.vars <- (x, Mg.Var nm) :: ctx.L.vars;
+               let b' = open_with (Free (x, ty)) b in
+               let lam = Printf.sprintf "(fun %s:set => %s)" nm (pb (uterm ctx b')) in
+               ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx nm;
+               Printf.sprintf "((eq_sym_i %s %s (beta %s %s %s %s)) (fun hl__u hl__v => hl_eq 2 hl__u %s = 1) %s)" (u lhs) (u (App (pf, r))) (car ty) lam (u r) (ty_ r) (u rhs_t) lem
+           | _ -> lem)
+        end
     | r -> unsupported "rule %s" r) in
   if binders sg = "" then body else Printf.sprintf "(fun %s => %s)" (binders sg) body
 
