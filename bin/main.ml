@@ -349,6 +349,8 @@ let () =
         | Some cdir ->
             mkdir_p cdir;
             let an = Literal.analyse ex in
+            (* native carriers of translated type definitions, usable once hl_ty_<T>_native is proved *)
+            Hashtbl.reset Literal.tydef_native;
             (* compatibility theorems available in mglib/literal/compat.mg: name -> statement text *)
             let compat_file = (match opt "--compat" with Some f -> f | None -> "mglib/literal/compat.mg") in
             let carriers_file = "mglib/literal/carriers.mg" in
@@ -367,6 +369,11 @@ let () =
                  Hashtbl.replace proved name norm
                done with Not_found -> ())
             end) [ carriers_file; compat_file ];
+            Hashtbl.iter (fun t _ ->
+              match Hashtbl.find_opt reg.Registry.types t with
+              | Some te when te.Registry.t_arity = 0 && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native") && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native_nonempty") ->
+                  Hashtbl.replace Literal.tydef_native t te.Registry.t_carrier
+              | _ -> ()) an.Literal.tydefs;
             (* expected statements for every registry entry *)
             let compat = Hashtbl.create 256 in
             let stubs = Buffer.create 4096 in
@@ -397,6 +404,9 @@ let () =
                          Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf; Hashtbl.replace typing_ok c ();
                          (match (try Some (Bridge.unfold_lemma an c cty rhs) with _ -> None) with
                           | Some (un, ust, upf) -> Printf.fprintf ocu "Theorem %s : %s.\n%s\nQed.\n\n" un ust upf
+                          | None -> ());
+                         (match (try Bridge.spec_lemma an c cty rhs with _ -> None) with
+                          | Some (sn, sst, spf) -> Printf.fprintf oc "Theorem %s : %s.\n%s\nQed.\n\n" sn sst spf
                           | None -> ())
                      | None -> ())
               | `T (td, arity) ->
@@ -405,7 +415,10 @@ let () =
                        List.iter (fun (name, st, pf) ->
                          if name = "" then Buffer.add_string stubs (Printf.sprintf "// nonemptiness of the carrier of type definition %s (prove in mglib/literal/carriers.mg)\nTheorem hl_ty_%s_nonempty : %s.\nAdmitted.\n\n" td.td_name (Elab.sanitize_var td.td_name) st)
                          else begin
-                           Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf;
+                           (* proofs may start with a rewrite (native carrier) followed by the proof term *)
+                           (match String.index_opt pf '(' with
+                            | Some i when i > 0 -> Printf.fprintf oc "Theorem %s : %s.\n%sexact %s.\nQed.\n\n" name st (String.sub pf 0 i) (String.sub pf i (String.length pf - i))
+                            | _ -> Printf.fprintf oc "Theorem %s : %s.\nexact %s.\nQed.\n\n" name st pf);
                            if name = Literal.mg_name_of_const td.td_abs ^ "_in" then Hashtbl.replace typing_ok td.td_abs ()
                            else Hashtbl.replace typing_ok td.td_rep ()
                          end) lemmas

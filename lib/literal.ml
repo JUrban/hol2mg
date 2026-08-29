@@ -78,8 +78,14 @@ let rec match_ty (pat : ty) (ty : ty) (sub : (string * ty) list) : (string * ty)
       List.fold_left2 (fun sub p t -> match_ty p t sub) sub ps ts
   | _ -> raise (Literal_unsupported "type matching: constructor mismatch")
 
+(* native carriers of translated type definitions (type name -> carrier term), used by the
+   bridge generator and the compatibility statements once hl_ty_T = carrier has been proved
+   (theorem hl_ty_<T>_native); the literal statements themselves always use hl_ty_T *)
+let tydef_native : (string, Mg.tm) Hashtbl.t = Hashtbl.create 8
+
 type ctx = {
   tyvar_names : (string * string) list;             (* HOL tyvar -> Megalodon parameter *)
+  mutable use_native_tydefs : bool;
   consts : (string, ty) Hashtbl.t;                  (* generic types of constants *)
   supported : (string, bool) Hashtbl.t;             (* constant -> supported? *)
   tydefs : (string, string list) Hashtbl.t;         (* translated type definition -> tyvar order of the carrier *)
@@ -105,7 +111,10 @@ let rec carrier ctx (ty : ty) : Mg.tm =
        | Some f -> f (List.map (carrier ctx) args)
        | None ->
            (match Hashtbl.find_opt ctx.tydefs c with
-            | Some _ -> Mg.apps (Mg.Cst ("hl_ty_" ^ sanitize_var c)) (List.map (carrier ctx) args)
+            | Some _ ->
+                (match (if ctx.use_native_tydefs && args = [] then Hashtbl.find_opt tydef_native c else None) with
+                 | Some nat -> nat
+                 | None -> Mg.apps (Mg.Cst ("hl_ty_" ^ sanitize_var c)) (List.map (carrier ctx) args))
             | None -> unsupported "type constructor %s has no literal carrier" c))
 
 (* ------------------------------------------------------------------------ *)
@@ -193,7 +202,7 @@ and lbinder ctx x ty body =
 (* ------------------------------------------------------------------------ *)
 
 let new_ctx consts supported tydefs tv_names =
-  { tyvar_names = tv_names; consts; supported; tydefs; vars = []; used = List.map snd tv_names }
+  { tyvar_names = tv_names; use_native_tydefs = false; consts; supported; tydefs; vars = []; used = List.map snd tv_names }
 
 let tyvar_params (tvs : string list) = List.map (fun a -> (a, Elab.sanitize_tyvar a)) tvs
 

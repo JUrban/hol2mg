@@ -350,3 +350,56 @@ Theorem hl_subtype_nonempty : forall A P:set, (exists x :e A, P x = 1) -> hl_sub
 let A P. assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx HP.
 exact (nonempty_of_In (hl_subtype A P) x (SepI A (fun x => P x = 1) x Hx HP)).
 Qed.
+
+// ---- HOL Light recursive definitions: c = (@f. forall tag, CLAUSES (f tag)) tag0 ----
+// The chosen function satisfies the clauses at every tag, in particular at tag0.
+Theorem hl_recdef : forall C T:set, forall P:set -> prop, forall tag0 :e T,
+  (exists g :e C, P g) ->
+  P (hl_select (C :^: T) (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) tag0)
+  /\ hl_select (C :^: T) (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) tag0 :e C.
+let C T P tag0. assume Ht0 Hex.
+claim HF: (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) :e 2 :^: (C :^: T).
+{ prove (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) :e Pi_ f :e C :^: T, 2.
+  apply (lam_Pi (C :^: T) (fun _ => 2) (fun f => if forall tag :e T, P (f tag) then 1 else 0)).
+  let f. assume _. exact (If_in_2 (forall tag :e T, P (f tag))). }
+rewrite (hl_select_eq (C :^: T) (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) HF).
+claim Hex2: exists f :e C :^: T, (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) f = 1.
+{ apply Hex. let g. assume Hg0. apply Hg0. assume Hg HPg.
+  claim Hconst: (fun tag :e T => g) :e C :^: T.
+  { prove (fun tag :e T => g) :e Pi_ tag :e T, C. apply (lam_Pi T (fun _ => C) (fun tag => g)). let tag. assume _. exact Hg. }
+  witness (fun tag :e T => g). apply andI.
+  - exact Hconst.
+  - rewrite (beta (C :^: T) (fun f => if forall tag :e T, P (f tag) then 1 else 0) (fun tag :e T => g) Hconst).
+    apply (If_i_1 (forall tag :e T, P ((fun tag :e T => g) tag)) 1 0).
+    let tag. assume Htag. rewrite (beta T (fun tag => g) tag Htag). exact HPg. }
+apply (choose_in_spec (C :^: T) (fun f => (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) f = 1) Hex2).
+assume Hc1 Hc2.
+claim Hall: forall tag :e T, P (choose_in (C :^: T) (fun f => (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) f = 1) tag).
+{ apply (If_1_iff (forall tag :e T, P (choose_in (C :^: T) (fun f => (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) f = 1) tag))).
+  assume H _. apply H.
+  exact ((beta (C :^: T) (fun f => if forall tag :e T, P (f tag) then 1 else 0) (choose_in (C :^: T) (fun f => (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) f = 1)) Hc1) (fun u v => u = 1) Hc2). }
+apply andI.
+- exact (Hall tag0 Ht0).
+- exact (ap_Pi T (fun _ => C) (choose_in (C :^: T) (fun f => (fun f :e C :^: T => if forall tag :e T, P (f tag) then 1 else 0) f = 1)) tag0 Hc1 Ht0).
+Qed.
+
+
+// variant without a tag argument
+Theorem hl_recdef0 : forall C:set, forall P:set -> prop,
+  (exists g :e C, P g) ->
+  P (hl_select C (fun f :e C => if P f then 1 else 0)) /\ hl_select C (fun f :e C => if P f then 1 else 0) :e C.
+let C P. assume Hex.
+claim HF: (fun f :e C => if P f then 1 else 0) :e 2 :^: C.
+{ prove (fun f :e C => if P f then 1 else 0) :e Pi_ f :e C, 2.
+  apply (lam_Pi C (fun _ => 2) (fun f => if P f then 1 else 0)). let f. assume _. exact (If_in_2 (P f)). }
+rewrite (hl_select_eq C (fun f :e C => if P f then 1 else 0) HF).
+claim Hex2: exists f :e C, (fun f :e C => if P f then 1 else 0) f = 1.
+{ apply Hex. let g. assume Hg0. apply Hg0. assume Hg HPg. witness g. apply andI.
+  - exact Hg.
+  - rewrite (beta C (fun f => if P f then 1 else 0) g Hg). exact (If_i_1 (P g) 1 0 HPg). }
+apply (choose_in_spec C (fun f => (fun f :e C => if P f then 1 else 0) f = 1) Hex2).
+assume Hc1 Hc2. apply andI.
+- apply (If_1_iff (P (choose_in C (fun f => (fun f :e C => if P f then 1 else 0) f = 1)))). assume H _. apply H.
+  exact ((beta C (fun f => if P f then 1 else 0) (choose_in C (fun f => (fun f :e C => if P f then 1 else 0) f = 1)) Hc1) (fun u v => u = 1) Hc2).
+- exact Hc1.
+Qed.
