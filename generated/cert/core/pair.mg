@@ -1,0 +1,190 @@
+// hol2mg certification module (private): shard pair of profile core.
+// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),
+// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,
+// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
+
+// HOL Light: pair.ml:17 / LET_DEF   (hash md5:b500f0ea638d009d27d0410e5045329f)
+// not bridged: 
+Theorem LET_DEF : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, f x = f x.
+Admitted.
+
+// HOL Light: pair.ml:20 / LET_END_DEF   (hash md5:3540107cfa54c763381fa257e545baa3)
+// not bridged: 
+Theorem LET_END_DEF : forall A:set, forall t :e A, t = t.
+Admitted.
+
+// HOL Light: pair.ml:67 / FST_DEF   (hash md5:085c9267477376ef68995b88baf72064)
+// not bridged: 
+Theorem FST_DEF : forall A B:set, forall p :e A :*: B, p 0 = choose_in A (fun x:set => exists y :e B, p = (x,y)).
+Admitted.
+
+// HOL Light: pair.ml:70 / SND_DEF   (hash md5:f00cacab114b37c19aba6b06c35bb916)
+// not bridged: 
+Theorem SND_DEF : forall A B:set, forall p :e A :*: B, p 1 = choose_in B (fun y:set => exists x :e A, p = (x,y)).
+Admitted.
+
+// HOL Light: pair.ml:73 / PAIR_EQ   (hash md5:71770245f4ddd568d85751053a9e5a6e)
+// not bridged: 
+Theorem PAIR_EQ : forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b.
+Admitted.
+
+// HOL Light: pair.ml:82 / PAIR_SURJECTIVE   (hash md5:8a85c46beb474e1e63192937ada8908b)
+// not bridged: 
+Theorem PAIR_SURJECTIVE : forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y).
+Admitted.
+
+// HOL Light: pair.ml:92 / FST   (hash md5:e9c3a4a3164ca2f9e6fad2d535f8ab0f)
+// not bridged: 
+Theorem FST : forall A B:set, forall x :e A, forall y :e B, x = x.
+Admitted.
+
+// HOL Light: pair.ml:100 / SND   (hash md5:e4ac88e20ba11cb060769e77dcb122fe)
+// not bridged: 
+Theorem SND : forall A B:set, forall x :e A, forall y :e B, y = y.
+Admitted.
+
+// HOL Light: pair.ml:108 / PAIR   (hash md5:23613fb98ddd9bc0b8abe81386bec32f)
+// not bridged: 
+Theorem PAIR : forall A B:set, forall x :e A :*: B, (x 0,x 1) = x.
+Admitted.
+
+// HOL Light: pair.ml:115 / pair_INDUCT   (hash md5:77b383354fddaa2478d8ab26c6548c60)
+// not bridged: 
+Theorem pair_INDUCT : forall A B:set, forall P:set -> prop, (forall x :e A, forall y :e B, P (x,y)) -> forall p :e A :*: B, P p.
+Admitted.
+
+// HOL Light: pair.ml:121 / pair_RECURSION   (hash md5:d319dfea4248978ad1e1ecfa13aee49a)
+// not bridged: 
+Theorem pair_RECURSION : forall A B C:set, C <> Empty -> forall PAIR':set -> set -> set, (forall x :e A, forall y :e B, PAIR' x y :e C) -> exists fn:set -> set, (forall x :e A :*: B, fn x :e C) /\ forall a0 :e A, forall a1 :e B, fn (a0,a1) = PAIR' a0 a1.
+Admitted.
+
+// HOL Light: pair.ml:187 / CURRY_DEF   (hash md5:cede113a4abd362ecff19b551d8931ed)
+// not bridged: 
+Theorem CURRY_DEF : forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y).
+Admitted.
+
+// HOL Light: pair.ml:190 / UNCURRY_DEF   (hash md5:3f03a0bbd511648cd075ac39bfcfc4bb)
+// not bridged: 
+Theorem UNCURRY_DEF : forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f x y = f x y.
+Admitted.
+
+// HOL Light: pair.ml:295 / FORALL_PAIR_THM   (hash md5:259d29f2f6087c2bd6a11a52412f4491)
+// not bridged: 
+Theorem FORALL_PAIR_THM : forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2).
+Admitted.
+
+// HOL Light: pair.ml:299 / EXISTS_PAIR_THM   (hash md5:64b789e52ff2b13a976b5610389dc69b)
+// not bridged: 
+Theorem EXISTS_PAIR_THM : forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2).
+Admitted.
+
+// HOL Light: pair.ml:303 / LAMBDA_PAIR_THM   (hash md5:5cd80d8f0fe05eb8b4cf070c629deed9)
+// not bridged: 
+Theorem LAMBDA_PAIR_THM : forall A B C:set, C <> Empty -> forall t:set -> set, (forall x :e A :*: B, t x :e C) -> forall p :e A :*: B, t p = t (p 0,p 1).
+Admitted.
+
+// HOL Light: pair.ml:307 / LAMBDA_PAIR   (hash md5:586467ad9feb215fbc9e08d6caadf6c7)
+// not bridged: 
+Theorem LAMBDA_PAIR : forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall p :e A :*: B, f (p 0) (p 1) = f (p 0) (p 1).
+Admitted.
+
+// HOL Light: pair.ml:311 / LAMBDA_TRIPLE_THM   (hash md5:85e4aaa45bf38442ceebb65097fe1b7d)
+// not bridged: 
+Theorem LAMBDA_TRIPLE_THM : forall A B C D:set, D <> Empty -> forall f:set -> set, (forall x :e A :*: (B :*: C), f x :e D) -> forall t :e A :*: (B :*: C), f t = f (t 0,(t 1 0,t 1 1)).
+Admitted.
+
+// HOL Light: pair.ml:315 / LAMBDA_TRIPLE   (hash md5:0cd632bb91bd111d0fb856a95916279d)
+// not bridged: 
+Theorem LAMBDA_TRIPLE : forall A B C D:set, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> forall t :e A :*: (B :*: C), f (t 0) (t 1 0) (t 1 1) = f (t 0) (t 1 0) (t 1 1).
+Admitted.
+
+// HOL Light: pair.ml:320 / PAIRED_ETA_THM   (hash md5:eabdd9bb450ee7e823a340945ab828f6)
+// not bridged: 
+Theorem PAIRED_ETA_THM : forall A B C D E:set, C <> Empty -> D <> Empty -> E <> Empty -> (forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A :*: B, f (x 0,x 1) = f x) /\ ((forall f:set -> set, (forall x :e A :*: (B :*: C), f x :e D) -> forall x :e A :*: (B :*: C), f (x 0,(x 1 0,x 1 1)) = f x) /\ forall f:set -> set, (forall x :e A :*: (B :*: (C :*: D)), f x :e E) -> forall x :e A :*: (B :*: (C :*: D)), f (x 0,(x 1 0,(x 1 1 0,x 1 1 1))) = f x).
+Admitted.
+
+// HOL Light: pair.ml:326 / FORALL_UNCURRY   (hash md5:3474782c5e2db898cde1d87c3d0177cc)
+// not bridged: 
+Theorem FORALL_UNCURRY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e C :^: B :^: A, P f) <-> forall f:set -> set, (forall x :e A :*: B, f x :e C) -> P (fun a :e A => fun b :e B => f (a,b)).
+Admitted.
+
+// HOL Light: pair.ml:332 / EXISTS_UNCURRY   (hash md5:506bf2c55fa053a1e1ca3b2230e04c52)
+// not bridged: 
+Theorem EXISTS_UNCURRY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set, (forall x :e A :*: B, f x :e C) /\ P (fun a :e A => fun b :e B => f (a,b)).
+Admitted.
+
+// HOL Light: pair.ml:337 / EXISTS_CURRY   (hash md5:84fdce56e74c0991a44307b28abf72bc)
+// not bridged: 
+Theorem EXISTS_CURRY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: (A :*: B), P f) <-> exists f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) /\ P (fun p :e A :*: B => f (p 0) (p 1)).
+Admitted.
+
+// HOL Light: pair.ml:341 / FORALL_CURRY   (hash md5:f2498f4182999751facb010e3dbfe0e1)
+// not bridged: 
+Theorem FORALL_CURRY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e C :^: (A :*: B), P f) <-> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> P (fun p :e A :*: B => f (p 0) (p 1)).
+Admitted.
+
+// HOL Light: pair.ml:345 / FORALL_UNPAIR_THM   (hash md5:2797620921562307b55cefd5730f67cd)
+// not bridged: 
+Theorem FORALL_UNPAIR_THM : forall A B:set, forall P:set -> set -> prop, (forall x :e A, forall y :e B, P x y) <-> forall z :e A :*: B, P (z 0) (z 1).
+Admitted.
+
+// HOL Light: pair.ml:349 / EXISTS_UNPAIR_THM   (hash md5:1887731dff3899ab41ca881b0c28956e)
+// not bridged: 
+Theorem EXISTS_UNPAIR_THM : forall A B:set, forall P:set -> set -> prop, (exists x :e A, exists y :e B, P x y) <-> exists z :e A :*: B, P (z 0) (z 1).
+Admitted.
+
+// HOL Light: pair.ml:353 / FORALL_PAIR_FUN_THM   (hash md5:3f44ed9f97562f42b653ea47012379e0)
+// not bridged: 
+Theorem FORALL_PAIR_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e (B :*: C) :^: A, P f) <-> forall g:set -> set, (forall x :e A, g x :e B) -> forall h:set -> set, (forall x :e A, h x :e C) -> P (fun a :e A => (g a,h a)).
+Admitted.
+
+// HOL Light: pair.ml:359 / EXISTS_PAIR_FUN_THM   (hash md5:5dc28a6866e08e1050ff02cae3d8934d)
+// not bridged: 
+Theorem EXISTS_PAIR_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e (B :*: C) :^: A, P f) <-> exists g:set -> set, (forall x :e A, g x :e B) /\ exists h:set -> set, (forall x :e A, h x :e C) /\ P (fun a :e A => (g a,h a)).
+Admitted.
+
+// HOL Light: pair.ml:364 / FORALL_UNPAIR_FUN_THM   (hash md5:1a6f72f877498c6aad1d2989bbd1132b)
+// not bridged: 
+Theorem FORALL_UNPAIR_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> prop, (forall f :e B :^: A, forall g :e C :^: A, P f g) <-> forall h:set -> set, (forall x :e A, h x :e B :*: C) -> P (fun x :e A => h x 0) (fun x :e A => h x 1).
+Admitted.
+
+// HOL Light: pair.ml:368 / EXISTS_UNPAIR_FUN_THM   (hash md5:93177ccf6056b9a0f9a555699cb99488)
+// not bridged: 
+Theorem EXISTS_UNPAIR_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> prop, (exists f :e B :^: A, exists g :e C :^: A, P f g) <-> exists h:set -> set, (forall x :e A, h x :e B :*: C) /\ P (fun x :e A => h x 0) (fun x :e A => h x 1).
+Admitted.
+
+// HOL Light: pair.ml:372 / EXISTS_SWAP_FUN_THM   (hash md5:9888ea217761e153767f9ad2147522e0)
+// not bridged: 
+Theorem EXISTS_SWAP_FUN_THM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e C) /\ P (fun a :e A => fun b :e B => f b a).
+Admitted.
+
+// HOL Light: pair.ml:385 / FORALL_PAIRED_THM   (hash md5:4ec8958129e197fc37c7dc4ea0662917)
+// not bridged: 
+Theorem FORALL_PAIRED_THM : forall A B:set, forall P:set -> set -> prop, (forall x :e A :*: B, P (x 0) (x 1)) <-> forall x :e A, forall y :e B, P x y.
+Admitted.
+
+// HOL Light: pair.ml:390 / EXISTS_PAIRED_THM   (hash md5:caae08eeb9bd820ce8e2117bbd7f2278)
+// not bridged: 
+Theorem EXISTS_PAIRED_THM : forall A B:set, forall P:set -> set -> prop, (exists x :e A :*: B, P (x 0) (x 1)) <-> exists x :e A, exists y :e B, P x y.
+Admitted.
+
+// HOL Light: pair.ml:399 / FORALL_TRIPLED_THM   (hash md5:be2c51f21777a9244c328b71b60faa85)
+// not bridged: 
+Theorem FORALL_TRIPLED_THM : forall A B C:set, forall P:set -> set -> set -> prop, (forall x :e A :*: (B :*: C), P (x 0) (x 1 0) (x 1 1)) <-> forall x :e A, forall y :e B, forall z :e C, P x y z.
+Admitted.
+
+// HOL Light: pair.ml:404 / EXISTS_TRIPLED_THM   (hash md5:67d23f67316ca5d0139bf32a88b9fd06)
+// not bridged: 
+Theorem EXISTS_TRIPLED_THM : forall A B C:set, forall P:set -> set -> set -> prop, (exists x :e A :*: (B :*: C), P (x 0) (x 1 0) (x 1 1)) <-> exists x :e A, exists y :e B, exists z :e C, P x y z.
+Admitted.
+
+// HOL Light: pair.ml:413 / CHOICE_UNPAIR_THM   (hash md5:356907205f7b241cfb4829881418d86c)
+// not bridged: 
+Theorem CHOICE_UNPAIR_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, choose_in (A :*: B) (fun x:set => P (x 0) (x 1)) = choose_in (A :*: B) (fun p:set => P (p 0) (p 1)).
+Admitted.
+
+// HOL Light: pair.ml:417 / CHOICE_PAIRED_THM   (hash md5:f624d3c57fe4a90f2981badf934bc650)
+// not bridged: 
+Theorem CHOICE_PAIRED_THM : forall A B:set, forall P:set -> set -> prop, forall Q:set -> prop, (exists x :e A, exists y :e B, P x y) /\ (forall x :e A, forall y :e B, P x y -> Q (x,y)) -> Q (choose_in (A :*: B) (fun x:set => P (x 0) (x 1))).
+Admitted.
+

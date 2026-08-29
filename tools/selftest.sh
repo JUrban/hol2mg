@@ -5,10 +5,10 @@ set -e
 HERE=$(cd "$(dirname "$0")/.." && pwd); cd "$HERE"
 make -s
 S=$(mktemp -d)
-run() { ./bin/hol2mg translate --export generated/internal/core.jsonl --sig mglib/God1.mgs --mappings mappings/core.json,mappings/lists.json --out "$1" --literal-out "$1/literal" --profile core --srcindex generated/internal/core.srcindex.json --timeout 10 --known-props generated/public/core/known_props.txt >/dev/null; }
+run() { ./bin/hol2mg translate --export generated/internal/core.jsonl --sig mglib/God1.mgs --mappings mappings/core.json,mappings/lists.json --out "$1" --literal-out "$1/literal" --cert-out "$1/cert" --profile core --srcindex generated/internal/core.srcindex.json --timeout 10 --known-props generated/public/core/known_props.txt >/dev/null; }
 run "$S/a"; run "$S/b"
 cmp -s "$S/a/core.manifest.json" "$S/b/core.manifest.json" && echo "determinism: OK" || { echo "determinism: FAIL"; exit 1; }
-for f in "$S/a"/*.mg "$S/a"/literal/*.mg; do cmp -s "$f" "${f/$S\/a/$S\/b}" || { echo "determinism: file differs $f"; exit 1; }; done
+for f in "$S/a"/*.mg "$S/a"/literal/*.mg "$S/a"/cert/*.mg; do cmp -s "$f" "${f/$S\/a/$S\/b}" || { echo "determinism: file differs $f"; exit 1; }; done
 python3 - "$S/a/core.manifest.json" <<'PY'
 import json,sys
 m=json.load(open(sys.argv[1])); bad=[i['source_name'] for i in m['items'] if i['status']=='error']
@@ -19,5 +19,15 @@ tools/check_public.sh "$S/a" | grep -v "^OK" || true
 tools/check_public.sh "$S/a" >/dev/null && echo "megalodon: all core shards OK"
 tools/check_literal.sh "$S/a/literal" | grep -v "^OK" || true
 tools/check_literal.sh "$S/a/literal" >/dev/null && echo "megalodon: all core literal modules OK"
+PUBDIR="$S/a" LITDIR="$S/a/literal" CERTDIR="$S/a/cert" tools/check_cert.sh core > "$S/cert.log" || { grep "^FAIL" "$S/cert.log"; echo "megalodon: certification FAIL"; exit 1; }
+python3 tools/cert_finalize.py core "$S/cert.log" --manifest "$S/a/core.manifest.json" | sed 's/^/certification: /'
+python3 - "$S/a/core.manifest.json" <<'PY'
+import json,sys
+m=json.load(open(sys.argv[1])); n=sum(1 for i in m['items'] if i['cert_status']=='native_certified')
+committed=json.load(open('generated/manifests/core.manifest.json'))
+c=sum(1 for i in committed['items'] if i.get('cert_status')=='native_certified')
+print(f'certification: {n} native_certified (committed manifest: {c})')
+if n < c: print('certification: REGRESSION'); sys.exit(1)
+PY
 rm -rf "$S"
 echo "selftest passed"

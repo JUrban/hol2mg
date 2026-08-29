@@ -1,0 +1,2110 @@
+// hol2mg certification module (private): shard arith of profile core.
+// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),
+// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,
+// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
+
+// HOL Light: arith.ml:40 / PRE   (hash md5:3ff80b99169ffd6a4390c5531f21b50a)
+Theorem hlt_PRE : hl_PRE (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\ forall n :e omega, hl_PRE (hl_SUC n) = n.
+Admitted.
+Theorem PRE_bridge : (hl_PRE (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\ forall n :e omega, hl_PRE (hl_SUC n) = n) -> (nat_pred 0 = 0 /\ forall n :e omega, nat_pred (ordsucc n) = n).
+exact (fun HL => (imp_and (hl_PRE (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) (nat_pred 0 = 0) (forall n :e omega, hl_PRE (hl_SUC n) = n) (forall n :e omega, nat_pred (ordsucc n) = n) (imp_eq (hl_PRE (hl_NUMERAL hl_zero)) (nat_pred 0) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_PRE (hl_NUMERAL hl_zero) = nat_pred hl__u) ((hl_PRE_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_forall_in (omega) (fun n => hl_PRE (hl_SUC n) = n) (fun n => nat_pred (ordsucc n) = n) (fun n Hn => (imp_eq (hl_PRE (hl_SUC n)) (nat_pred (ordsucc n)) (n) (n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_PRE (hl_SUC n) = nat_pred hl__u) ((hl_PRE_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (fun q H => H))))) HL).
+Qed.
+Theorem PRE : nat_pred 0 = 0 /\ forall n :e omega, nat_pred (ordsucc n) = n.
+exact (PRE_bridge hlt_PRE).
+Admitted.
+
+// HOL Light: arith.ml:48 / ADD   (hash md5:1f8f01fbee723861c7f85ddd9b79a210)
+Theorem hlt_ADD : (forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) /\ forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n).
+Admitted.
+Theorem ADD_bridge : ((forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) /\ forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) -> ((forall n :e omega, 0 + n = n) /\ forall m n :e omega, ordsucc m + n = ordsucc (m + n)).
+exact (fun HL => (imp_and (forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) (forall n :e omega, 0 + n = n) (forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) (forall m n :e omega, ordsucc m + n = ordsucc (m + n)) (imp_forall_in (omega) (fun n => hl_add (hl_NUMERAL hl_zero) n = n) (fun n => 0 + n = n) (fun n Hn => (imp_eq (hl_add (hl_NUMERAL hl_zero) n) (0 + n) (n) (n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_add (hl_NUMERAL hl_zero) n = hl__u + n) ((hl_add_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)) (fun q H => H)))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) (fun m => forall n :e omega, ordsucc m + n = ordsucc (m + n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) (fun n => ordsucc m + n = ordsucc (m + n)) (fun n Hn => (imp_eq (hl_add (hl_SUC m) n) (ordsucc m + n) (hl_SUC (hl_add m n)) (ordsucc (m + n)) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_add (hl_SUC m) n = hl__u + n) ((hl_add_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn)) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_SUC (hl_add m n) = ordsucc hl__u) ((hl_SUC_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn))))))))) HL).
+Qed.
+Theorem ADD : (forall n :e omega, 0 + n = n) /\ forall m n :e omega, ordsucc m + n = ordsucc (m + n).
+exact (ADD_bridge hlt_ADD).
+Admitted.
+
+// HOL Light: arith.ml:52 / ADD_0   (hash md5:16b4fd0a8548e0b4289e91620d77d9f2)
+Theorem hlt_ADD_0 : forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m.
+Admitted.
+Theorem ADD_0_bridge : (forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m) -> (forall m :e omega, m + 0 = m).
+exact (fun HL => (imp_forall_in (omega) (fun m => hl_add m (hl_NUMERAL hl_zero) = m) (fun m => m + 0 = m) (fun m Hm => (imp_eq (hl_add m (hl_NUMERAL hl_zero)) (m + 0) (m) (m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_add m (hl_NUMERAL hl_zero) = m + hl__u) ((hl_add_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun q H => H)))) HL).
+Qed.
+Theorem ADD_0 : forall m :e omega, m + 0 = m.
+exact (ADD_0_bridge hlt_ADD_0).
+Admitted.
+
+// HOL Light: arith.ml:56 / ADD_SUC   (hash md5:7ccc9d50841b340629a487dbe8cf4f39)
+Theorem hlt_ADD_SUC : forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n).
+Admitted.
+Theorem ADD_SUC_bridge : (forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) -> (forall m n :e omega, m + ordsucc n = ordsucc (m + n)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) (fun m => forall n :e omega, m + ordsucc n = ordsucc (m + n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) (fun n => m + ordsucc n = ordsucc (m + n)) (fun n Hn => (imp_eq (hl_add m (hl_SUC n)) (m + ordsucc n) (hl_SUC (hl_add m n)) (ordsucc (m + n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_add m (hl_SUC n) = m + hl__u) ((hl_add_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_SUC (hl_add m n) = ordsucc hl__u) ((hl_SUC_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))))))) HL).
+Qed.
+Theorem ADD_SUC : forall m n :e omega, m + ordsucc n = ordsucc (m + n).
+exact (ADD_SUC_bridge hlt_ADD_SUC).
+Admitted.
+
+// HOL Light: arith.ml:60 / ADD_CLAUSES   (hash md5:126d9cc9e3ac78967da56121163e2515)
+Theorem hlt_ADD_CLAUSES : (forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) /\ ((forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m) /\ ((forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) /\ forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n))).
+Admitted.
+Theorem ADD_CLAUSES_bridge : ((forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) /\ ((forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m) /\ ((forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) /\ forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)))) -> ((forall n :e omega, 0 + n = n) /\ ((forall m :e omega, m + 0 = m) /\ ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n)))).
+exact (fun HL => (imp_and (forall n :e omega, hl_add (hl_NUMERAL hl_zero) n = n) (forall n :e omega, 0 + n = n) ((forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m) /\ ((forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) /\ forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n))) ((forall m :e omega, m + 0 = m) /\ ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n))) (imp_forall_in (omega) (fun n => hl_add (hl_NUMERAL hl_zero) n = n) (fun n => 0 + n = n) (fun n Hn => (imp_eq (hl_add (hl_NUMERAL hl_zero) n) (0 + n) (n) (n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_add (hl_NUMERAL hl_zero) n = hl__u + n) ((hl_add_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)) (fun q H => H)))) (imp_and (forall m :e omega, hl_add m (hl_NUMERAL hl_zero) = m) (forall m :e omega, m + 0 = m) ((forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) /\ forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n)) (imp_forall_in (omega) (fun m => hl_add m (hl_NUMERAL hl_zero) = m) (fun m => m + 0 = m) (fun m Hm => (imp_eq (hl_add m (hl_NUMERAL hl_zero)) (m + 0) (m) (m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_add m (hl_NUMERAL hl_zero) = m + hl__u) ((hl_add_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun q H => H)))) (imp_and (forall m n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) (forall m n :e omega, ordsucc m + n = ordsucc (m + n)) (forall m n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) (forall m n :e omega, m + ordsucc n = ordsucc (m + n)) (imp_forall_in (omega) (fun m => forall n :e omega, hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) (fun m => forall n :e omega, ordsucc m + n = ordsucc (m + n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add (hl_SUC m) n = hl_SUC (hl_add m n)) (fun n => ordsucc m + n = ordsucc (m + n)) (fun n Hn => (imp_eq (hl_add (hl_SUC m) n) (ordsucc m + n) (hl_SUC (hl_add m n)) (ordsucc (m + n)) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_add (hl_SUC m) n = hl__u + n) ((hl_add_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn)) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_SUC (hl_add m n) = ordsucc hl__u) ((hl_SUC_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))))))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) (fun m => forall n :e omega, m + ordsucc n = ordsucc (m + n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add m (hl_SUC n) = hl_SUC (hl_add m n)) (fun n => m + ordsucc n = ordsucc (m + n)) (fun n Hn => (imp_eq (hl_add m (hl_SUC n)) (m + ordsucc n) (hl_SUC (hl_add m n)) (ordsucc (m + n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_add m (hl_SUC n) = m + hl__u) ((hl_add_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_SUC (hl_add m n) = ordsucc hl__u) ((hl_SUC_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn))))))))))) HL).
+Qed.
+Theorem ADD_CLAUSES : (forall n :e omega, 0 + n = n) /\ ((forall m :e omega, m + 0 = m) /\ ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n))).
+exact (ADD_CLAUSES_bridge hlt_ADD_CLAUSES).
+Admitted.
+
+// HOL Light: arith.ml:67 / ADD_SYM   (hash md5:7d864f1eb0ef77376b9bc72e88019c32)
+Theorem hlt_ADD_SYM : forall m n :e omega, hl_add m n = hl_add n m.
+Admitted.
+Theorem ADD_SYM_bridge : (forall m n :e omega, hl_add m n = hl_add n m) -> (forall m n :e omega, m + n = n + m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_add m n = hl_add n m) (fun m => forall n :e omega, m + n = n + m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add m n = hl_add n m) (fun n => m + n = n + m) (fun n Hn => (imp_eq (hl_add m n) (m + n) (hl_add n m) (n + m) ((hl_add_compat) (m) Hm (n) Hn) ((hl_add_compat) (n) Hn (m) Hm)))))) HL).
+Qed.
+Theorem ADD_SYM : forall m n :e omega, m + n = n + m.
+exact (ADD_SYM_bridge hlt_ADD_SYM).
+Admitted.
+
+// HOL Light: arith.ml:71 / ADD_ASSOC   (hash md5:b97e64f9ddf8b94f1c6e0e8c8b245bbd)
+Theorem hlt_ADD_ASSOC : forall m n p :e omega, hl_add m (hl_add n p) = hl_add (hl_add m n) p.
+Admitted.
+Theorem ADD_ASSOC_bridge : (forall m n p :e omega, hl_add m (hl_add n p) = hl_add (hl_add m n) p) -> (forall m n p :e omega, m + n + p = (m + n) + p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_add m (hl_add n p) = hl_add (hl_add m n) p) (fun m => forall n p :e omega, m + n + p = (m + n) + p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_add m (hl_add n p) = hl_add (hl_add m n) p) (fun n => forall p :e omega, m + n + p = (m + n) + p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_add m (hl_add n p) = hl_add (hl_add m n) p) (fun p => m + n + p = (m + n) + p) (fun p Hp => (imp_eq (hl_add m (hl_add n p)) (m + n + p) (hl_add (hl_add m n) p) ((m + n) + p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_add m (hl_add n p) = m + hl__u) ((hl_add_compat) (m) Hm (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add (hl_add m n) p = hl__u + p) ((hl_add_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (p) Hp))))))))) HL).
+Qed.
+Theorem ADD_ASSOC : forall m n p :e omega, m + n + p = (m + n) + p.
+exact (ADD_ASSOC_bridge hlt_ADD_ASSOC).
+Admitted.
+
+// HOL Light: arith.ml:75 / ADD_AC   (hash md5:986342ad66e066e99f66eb58c051f208)
+Theorem hlt_ADD_AC : forall m n p :e omega, hl_add m n = hl_add n m /\ (hl_add (hl_add m n) p = hl_add m (hl_add n p) /\ hl_add m (hl_add n p) = hl_add n (hl_add m p)).
+Admitted.
+Theorem ADD_AC_bridge : (forall m n p :e omega, hl_add m n = hl_add n m /\ (hl_add (hl_add m n) p = hl_add m (hl_add n p) /\ hl_add m (hl_add n p) = hl_add n (hl_add m p))) -> (forall m n p :e omega, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_add m n = hl_add n m /\ (hl_add (hl_add m n) p = hl_add m (hl_add n p) /\ hl_add m (hl_add n p) = hl_add n (hl_add m p))) (fun m => forall n p :e omega, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p)) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_add m n = hl_add n m /\ (hl_add (hl_add m n) p = hl_add m (hl_add n p) /\ hl_add m (hl_add n p) = hl_add n (hl_add m p))) (fun n => forall p :e omega, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p)) (fun n Hn => (imp_forall_in (omega) (fun p => hl_add m n = hl_add n m /\ (hl_add (hl_add m n) p = hl_add m (hl_add n p) /\ hl_add m (hl_add n p) = hl_add n (hl_add m p))) (fun p => m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p)) (fun p Hp => (imp_and (hl_add m n = hl_add n m) (m + n = n + m) (hl_add (hl_add m n) p = hl_add m (hl_add n p) /\ hl_add m (hl_add n p) = hl_add n (hl_add m p)) ((m + n) + p = m + n + p /\ m + n + p = n + m + p) (imp_eq (hl_add m n) (m + n) (hl_add n m) (n + m) ((hl_add_compat) (m) Hm (n) Hn) ((hl_add_compat) (n) Hn (m) Hm)) (imp_and (hl_add (hl_add m n) p = hl_add m (hl_add n p)) ((m + n) + p = m + n + p) (hl_add m (hl_add n p) = hl_add n (hl_add m p)) (m + n + p = n + m + p) (imp_eq (hl_add (hl_add m n) p) ((m + n) + p) (hl_add m (hl_add n p)) (m + n + p) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add (hl_add m n) p = hl__u + p) ((hl_add_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (p) Hp)) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_add m (hl_add n p) = m + hl__u) ((hl_add_compat) (m) Hm (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp)))) (imp_eq (hl_add m (hl_add n p)) (m + n + p) (hl_add n (hl_add m p)) (n + m + p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_add m (hl_add n p) = m + hl__u) ((hl_add_compat) (m) Hm (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_add n (hl_add m p) = n + hl__u) ((hl_add_compat) (n) Hn (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp)))))))))))) HL).
+Qed.
+Theorem ADD_AC : forall m n p :e omega, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p).
+exact (ADD_AC_bridge hlt_ADD_AC).
+Admitted.
+
+// HOL Light: arith.ml:81 / ADD_EQ_0   (hash md5:9b78bbcaf3f196403cda0263a3970934)
+Theorem hlt_ADD_EQ_0 : forall m n :e omega, hl_add m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem ADD_EQ_0_bridge : (forall m n :e omega, hl_add m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero) -> (forall m n :e omega, m + n = 0 <-> m = 0 /\ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_add m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero) (fun m => forall n :e omega, m + n = 0 <-> m = 0 /\ n = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero) (fun n => m + n = 0 <-> m = 0 /\ n = 0) (fun n Hn => (imp_iff (hl_add m n = hl_NUMERAL hl_zero) (m + n = 0) (m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero) (m = 0 /\ n = 0) (imp_eq (hl_add m n) (m + n) (hl_NUMERAL hl_zero) (0) ((hl_add_compat) (m) Hm (n) Hn) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (m + n) (hl_add m n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_add m n) (m + n) ((hl_add_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_and (m = hl_NUMERAL hl_zero) (m = 0) (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_and (m = 0) (m = hl_NUMERAL hl_zero) (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem ADD_EQ_0 : forall m n :e omega, m + n = 0 <-> m = 0 /\ n = 0.
+exact (ADD_EQ_0_bridge hlt_ADD_EQ_0).
+Admitted.
+
+// HOL Light: arith.ml:85 / EQ_ADD_LCANCEL   (hash md5:5b4fba1c352fe48a98f89b51b62bcc46)
+Theorem hlt_EQ_ADD_LCANCEL : forall m n p :e omega, hl_add m n = hl_add m p <-> n = p.
+Admitted.
+Theorem EQ_ADD_LCANCEL_bridge : (forall m n p :e omega, hl_add m n = hl_add m p <-> n = p) -> (forall m n p :e omega, m + n = m + p <-> n = p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_add m n = hl_add m p <-> n = p) (fun m => forall n p :e omega, m + n = m + p <-> n = p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_add m n = hl_add m p <-> n = p) (fun n => forall p :e omega, m + n = m + p <-> n = p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_add m n = hl_add m p <-> n = p) (fun p => m + n = m + p <-> n = p) (fun p Hp => (imp_iff (hl_add m n = hl_add m p) (m + n = m + p) (n = p) (n = p) (imp_eq (hl_add m n) (m + n) (hl_add m p) (m + p) ((hl_add_compat) (m) Hm (n) Hn) ((hl_add_compat) (m) Hm (p) Hp)) (imp_eq (m + n) (hl_add m n) (m + p) (hl_add m p) (eq_sym_i (hl_add m n) (m + n) ((hl_add_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_add m p) (m + p) ((hl_add_compat) (m) Hm (p) Hp))) (imp_eq (n) (n) (p) (p) (fun q H => H) (fun q H => H)) (imp_eq (n) (n) (p) (p) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (p) (p) (fun q H => H)))))))))) HL).
+Qed.
+Theorem EQ_ADD_LCANCEL : forall m n p :e omega, m + n = m + p <-> n = p.
+exact (EQ_ADD_LCANCEL_bridge hlt_EQ_ADD_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:89 / EQ_ADD_RCANCEL   (hash md5:06430763a15d98b7a40784460fae4f1d)
+Theorem hlt_EQ_ADD_RCANCEL : forall m n p :e omega, hl_add m p = hl_add n p <-> m = n.
+Admitted.
+Theorem EQ_ADD_RCANCEL_bridge : (forall m n p :e omega, hl_add m p = hl_add n p <-> m = n) -> (forall m n p :e omega, m + p = n + p <-> m = n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_add m p = hl_add n p <-> m = n) (fun m => forall n p :e omega, m + p = n + p <-> m = n) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_add m p = hl_add n p <-> m = n) (fun n => forall p :e omega, m + p = n + p <-> m = n) (fun n Hn => (imp_forall_in (omega) (fun p => hl_add m p = hl_add n p <-> m = n) (fun p => m + p = n + p <-> m = n) (fun p Hp => (imp_iff (hl_add m p = hl_add n p) (m + p = n + p) (m = n) (m = n) (imp_eq (hl_add m p) (m + p) (hl_add n p) (n + p) ((hl_add_compat) (m) Hm (p) Hp) ((hl_add_compat) (n) Hn (p) Hp)) (imp_eq (m + p) (hl_add m p) (n + p) (hl_add n p) (eq_sym_i (hl_add m p) (m + p) ((hl_add_compat) (m) Hm (p) Hp)) (eq_sym_i (hl_add n p) (n + p) ((hl_add_compat) (n) Hn (p) Hp))) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H)))))))))) HL).
+Qed.
+Theorem EQ_ADD_RCANCEL : forall m n p :e omega, m + p = n + p <-> m = n.
+exact (EQ_ADD_RCANCEL_bridge hlt_EQ_ADD_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:93 / EQ_ADD_LCANCEL_0   (hash md5:78d9c27522bd6ab37ab738cde3777789)
+Theorem hlt_EQ_ADD_LCANCEL_0 : forall m n :e omega, hl_add m n = m <-> n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EQ_ADD_LCANCEL_0_bridge : (forall m n :e omega, hl_add m n = m <-> n = hl_NUMERAL hl_zero) -> (forall m n :e omega, m + n = m <-> n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_add m n = m <-> n = hl_NUMERAL hl_zero) (fun m => forall n :e omega, m + n = m <-> n = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add m n = m <-> n = hl_NUMERAL hl_zero) (fun n => m + n = m <-> n = 0) (fun n Hn => (imp_iff (hl_add m n = m) (m + n = m) (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (hl_add m n) (m + n) (m) (m) ((hl_add_compat) (m) Hm (n) Hn) (fun q H => H)) (imp_eq (m + n) (hl_add m n) (m) (m) (eq_sym_i (hl_add m n) (m + n) ((hl_add_compat) (m) Hm (n) Hn)) (eq_sym_i (m) (m) (fun q H => H))) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))))) HL).
+Qed.
+Theorem EQ_ADD_LCANCEL_0 : forall m n :e omega, m + n = m <-> n = 0.
+exact (EQ_ADD_LCANCEL_0_bridge hlt_EQ_ADD_LCANCEL_0).
+Admitted.
+
+// HOL Light: arith.ml:97 / EQ_ADD_RCANCEL_0   (hash md5:2e29e6871e91a202a12f117e40301f84)
+Theorem hlt_EQ_ADD_RCANCEL_0 : forall m n :e omega, hl_add m n = n <-> m = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EQ_ADD_RCANCEL_0_bridge : (forall m n :e omega, hl_add m n = n <-> m = hl_NUMERAL hl_zero) -> (forall m n :e omega, m + n = n <-> m = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_add m n = n <-> m = hl_NUMERAL hl_zero) (fun m => forall n :e omega, m + n = n <-> m = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_add m n = n <-> m = hl_NUMERAL hl_zero) (fun n => m + n = n <-> m = 0) (fun n Hn => (imp_iff (hl_add m n = n) (m + n = n) (m = hl_NUMERAL hl_zero) (m = 0) (imp_eq (hl_add m n) (m + n) (n) (n) ((hl_add_compat) (m) Hm (n) Hn) (fun q H => H)) (imp_eq (m + n) (hl_add m n) (n) (n) (eq_sym_i (hl_add m n) (m + n) ((hl_add_compat) (m) Hm (n) Hn)) (eq_sym_i (n) (n) (fun q H => H))) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))))) HL).
+Qed.
+Theorem EQ_ADD_RCANCEL_0 : forall m n :e omega, m + n = n <-> m = 0.
+exact (EQ_ADD_RCANCEL_0_bridge hlt_EQ_ADD_RCANCEL_0).
+Admitted.
+
+// HOL Light: arith.ml:105 / BIT0   (hash md5:430d599f5e1293326bc126e234c8d908)
+Theorem hlt_BIT0 : forall n :e omega, hl_BIT0 n = hl_add n n.
+Admitted.
+Theorem BIT0_bridge : (forall n :e omega, hl_BIT0 n = hl_add n n) -> (forall n :e omega, 2 * n = n + n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_BIT0 n = hl_add n n) (fun n => 2 * n = n + n) (fun n Hn => (imp_eq (hl_BIT0 n) (2 * n) (hl_add n n) (n + n) ((hl_BIT0_compat) (n) Hn) ((hl_add_compat) (n) Hn (n) Hn)))) HL).
+Qed.
+Theorem BIT0 : forall n :e omega, 2 * n = n + n.
+exact (BIT0_bridge hlt_BIT0).
+Admitted.
+
+// HOL Light: arith.ml:109 / BIT1   (hash md5:f52a9257f8a571885f7a8e7cb5953364)
+Theorem hlt_BIT1 : forall n :e omega, hl_BIT1 n = hl_SUC (hl_add n n).
+Admitted.
+Theorem BIT1_bridge : (forall n :e omega, hl_BIT1 n = hl_SUC (hl_add n n)) -> (forall n :e omega, 2 * n + 1 = ordsucc (n + n)).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_BIT1 n = hl_SUC (hl_add n n)) (fun n => 2 * n + 1 = ordsucc (n + n)) (fun n Hn => (imp_eq (hl_BIT1 n) (2 * n + 1) (hl_SUC (hl_add n n)) (ordsucc (n + n)) ((hl_BIT1_compat) (n) Hn) (((hl_add_compat) (n) Hn (n) Hn) (fun hl__u hl__v => hl_SUC (hl_add n n) = ordsucc hl__u) ((hl_SUC_compat) (hl_add n n) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (n) Hn)))))) HL).
+Qed.
+Theorem BIT1 : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+exact (BIT1_bridge hlt_BIT1).
+Admitted.
+
+// HOL Light: arith.ml:113 / BIT0_THM   (hash md5:559c2f7303610dd8ed299cfea6532bed)
+Theorem hlt_BIT0_THM : forall n :e omega, hl_NUMERAL (hl_BIT0 n) = hl_add (hl_NUMERAL n) (hl_NUMERAL n).
+Admitted.
+Theorem BIT0_THM_bridge : (forall n :e omega, hl_NUMERAL (hl_BIT0 n) = hl_add (hl_NUMERAL n) (hl_NUMERAL n)) -> (forall n :e omega, 2 * n = n + n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_NUMERAL (hl_BIT0 n) = hl_add (hl_NUMERAL n) (hl_NUMERAL n)) (fun n => 2 * n = n + n) (fun n Hn => (imp_eq (hl_NUMERAL (hl_BIT0 n)) (2 * n) (hl_add (hl_NUMERAL n) (hl_NUMERAL n)) (n + n) (((hl_BIT0_compat) (n) Hn) (fun hl__u hl__v => hl_NUMERAL (hl_BIT0 n) = hl__u) ((hl_NUMERAL_compat) (hl_BIT0 n) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (n) Hn))) (((hl_NUMERAL_compat) (n) Hn) (fun hl__u hl__v => hl_add (hl_NUMERAL n) (hl_NUMERAL n) = n + n) (((hl_NUMERAL_compat) (n) Hn) (fun hl__u hl__v => hl_add (hl_NUMERAL n) (hl_NUMERAL n) = hl__u + hl__u) ((hl_add_compat) (hl_NUMERAL n) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (n) Hn) (hl_NUMERAL n) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (n) Hn))))))) HL).
+Qed.
+Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
+exact (BIT0_THM_bridge hlt_BIT0_THM).
+Admitted.
+
+// HOL Light: arith.ml:117 / BIT1_THM   (hash md5:5654419bb755d5c6a785a1195805b6b3)
+Theorem hlt_BIT1_THM : forall n :e omega, hl_NUMERAL (hl_BIT1 n) = hl_SUC (hl_add (hl_NUMERAL n) (hl_NUMERAL n)).
+Admitted.
+Theorem BIT1_THM_bridge : (forall n :e omega, hl_NUMERAL (hl_BIT1 n) = hl_SUC (hl_add (hl_NUMERAL n) (hl_NUMERAL n))) -> (forall n :e omega, 2 * n + 1 = ordsucc (n + n)).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_NUMERAL (hl_BIT1 n) = hl_SUC (hl_add (hl_NUMERAL n) (hl_NUMERAL n))) (fun n => 2 * n + 1 = ordsucc (n + n)) (fun n Hn => (imp_eq (hl_NUMERAL (hl_BIT1 n)) (2 * n + 1) (hl_SUC (hl_add (hl_NUMERAL n) (hl_NUMERAL n))) (ordsucc (n + n)) (((hl_BIT1_compat) (n) Hn) (fun hl__u hl__v => hl_NUMERAL (hl_BIT1 n) = hl__u) ((hl_NUMERAL_compat) (hl_BIT1 n) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (n) Hn))) ((((hl_NUMERAL_compat) (n) Hn) (fun hl__u hl__v => hl_add (hl_NUMERAL n) (hl_NUMERAL n) = n + n) (((hl_NUMERAL_compat) (n) Hn) (fun hl__u hl__v => hl_add (hl_NUMERAL n) (hl_NUMERAL n) = hl__u + hl__u) ((hl_add_compat) (hl_NUMERAL n) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (n) Hn) (hl_NUMERAL n) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (n) Hn)))) (fun hl__u hl__v => hl_SUC (hl_add (hl_NUMERAL n) (hl_NUMERAL n)) = ordsucc hl__u) ((hl_SUC_compat) (hl_add (hl_NUMERAL n) (hl_NUMERAL n)) (setexp_ap (omega) (omega) (hl_add (hl_NUMERAL n)) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (hl_NUMERAL n) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (n) Hn)) (hl_NUMERAL n) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (n) Hn))))))) HL).
+Qed.
+Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+exact (BIT1_THM_bridge hlt_BIT1_THM).
+Admitted.
+
+// HOL Light: arith.ml:125 / ONE   (hash md5:8296249074f69ba4d09cec1afc913c50)
+// not bridged: 
+Theorem ONE : 1 = 1.
+Admitted.
+
+// HOL Light: arith.ml:129 / TWO   (hash md5:0326ab129d5eb6c0d9f12e5b919e0e71)
+// not bridged: 
+Theorem TWO : 2 = 2.
+Admitted.
+
+// HOL Light: arith.ml:137 / ADD1   (hash md5:8e785bb94d248c4825a2f2f92a968d33)
+Theorem hlt_ADD1 : forall m :e omega, hl_SUC m = hl_add m (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+Theorem ADD1_bridge : (forall m :e omega, hl_SUC m = hl_add m (hl_NUMERAL (hl_BIT1 hl_zero))) -> (forall m :e omega, ordsucc m = m + 1).
+exact (fun HL => (imp_forall_in (omega) (fun m => hl_SUC m = hl_add m (hl_NUMERAL (hl_BIT1 hl_zero))) (fun m => ordsucc m = m + 1) (fun m Hm => (imp_eq (hl_SUC m) (ordsucc m) (hl_add m (hl_NUMERAL (hl_BIT1 hl_zero))) (m + 1) ((hl_SUC_compat) (m) Hm) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_add m (hl_NUMERAL (hl_BIT1 hl_zero)) = m + hl__u) ((hl_add_compat) (m) Hm (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))))))) HL).
+Qed.
+Theorem ADD1 : forall m :e omega, ordsucc m = m + 1.
+exact (ADD1_bridge hlt_ADD1).
+Admitted.
+
+// HOL Light: arith.ml:145 / MULT   (hash md5:1363aa619553a725237435daed5df58b)
+Theorem hlt_MULT : (forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) /\ forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n.
+Admitted.
+Theorem MULT_bridge : ((forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) /\ forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) -> ((forall n :e omega, 0 * n = 0) /\ forall m n :e omega, ordsucc m * n = m * n + n).
+exact (fun HL => (imp_and (forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) (forall n :e omega, 0 * n = 0) (forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) (forall m n :e omega, ordsucc m * n = m * n + n) (imp_forall_in (omega) (fun n => hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) (fun n => 0 * n = 0) (fun n Hn => (imp_eq (hl_mul (hl_NUMERAL hl_zero) n) (0 * n) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_mul (hl_NUMERAL hl_zero) n = hl__u * n) ((hl_mul_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) (fun m => forall n :e omega, ordsucc m * n = m * n + n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) (fun n => ordsucc m * n = m * n + n) (fun n Hn => (imp_eq (hl_mul (hl_SUC m) n) (ordsucc m * n) (hl_add (hl_mul m n) n) (m * n + n) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_mul (hl_SUC m) n = hl__u * n) ((hl_mul_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add (hl_mul m n) n = hl__u + n) ((hl_add_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (n) Hn)))))))) HL).
+Qed.
+Theorem MULT : (forall n :e omega, 0 * n = 0) /\ forall m n :e omega, ordsucc m * n = m * n + n.
+exact (MULT_bridge hlt_MULT).
+Admitted.
+
+// HOL Light: arith.ml:149 / MULT_0   (hash md5:3326845f7ea3ff59c385f3b0c8ad95ca)
+Theorem hlt_MULT_0 : forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero.
+Admitted.
+Theorem MULT_0_bridge : (forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) -> (forall m :e omega, m * 0 = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) (fun m => m * 0 = 0) (fun m Hm => (imp_eq (hl_mul m (hl_NUMERAL hl_zero)) (m * 0) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_mul m (hl_NUMERAL hl_zero) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) HL).
+Qed.
+Theorem MULT_0 : forall m :e omega, m * 0 = 0.
+exact (MULT_0_bridge hlt_MULT_0).
+Admitted.
+
+// HOL Light: arith.ml:153 / MULT_SUC   (hash md5:31a7b833a9ea33d4468ca3acf0bc397f)
+Theorem hlt_MULT_SUC : forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n).
+Admitted.
+Theorem MULT_SUC_bridge : (forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) -> (forall m n :e omega, m * ordsucc n = m + m * n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) (fun m => forall n :e omega, m * ordsucc n = m + m * n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) (fun n => m * ordsucc n = m + m * n) (fun n Hn => (imp_eq (hl_mul m (hl_SUC n)) (m * ordsucc n) (hl_add m (hl_mul m n)) (m + m * n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_mul m (hl_SUC n) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add m (hl_mul m n) = m + hl__u) ((hl_add_compat) (m) Hm (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn)))))))) HL).
+Qed.
+Theorem MULT_SUC : forall m n :e omega, m * ordsucc n = m + m * n.
+exact (MULT_SUC_bridge hlt_MULT_SUC).
+Admitted.
+
+// HOL Light: arith.ml:157 / MULT_CLAUSES   (hash md5:feb467b9ce3d44927a3c5047681ce915)
+Theorem hlt_MULT_CLAUSES : (forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) /\ ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n))))).
+Admitted.
+Theorem MULT_CLAUSES_bridge : ((forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) /\ ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)))))) -> ((forall n :e omega, 0 * n = 0) /\ ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n))))).
+exact (fun HL => (imp_and (forall n :e omega, hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) (forall n :e omega, 0 * n = 0) ((forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) /\ ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n))))) ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n)))) (imp_forall_in (omega) (fun n => hl_mul (hl_NUMERAL hl_zero) n = hl_NUMERAL hl_zero) (fun n => 0 * n = 0) (fun n Hn => (imp_eq (hl_mul (hl_NUMERAL hl_zero) n) (0 * n) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_mul (hl_NUMERAL hl_zero) n = hl__u * n) ((hl_mul_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_and (forall m :e omega, hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) (forall m :e omega, m * 0 = 0) ((forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) /\ ((forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) /\ ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)))) ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n))) (imp_forall_in (omega) (fun m => hl_mul m (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) (fun m => m * 0 = 0) (fun m Hm => (imp_eq (hl_mul m (hl_NUMERAL hl_zero)) (m * 0) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_mul m (hl_NUMERAL hl_zero) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_and (forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) (forall n :e omega, 1 * n = n) ((forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) /\ ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n))) ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n)) (imp_forall_in (omega) (fun n => hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = n) (fun n => 1 * n = n) (fun n Hn => (imp_eq (hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n) (1 * n) (n) (n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT1 hl_zero)) n = hl__u * n) ((hl_mul_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (n) Hn)) (fun q H => H)))) (imp_and (forall m :e omega, hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) (forall m :e omega, m * 1 = m) ((forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) /\ forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n) (imp_forall_in (omega) (fun m => hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m) (fun m => m * 1 = m) (fun m Hm => (imp_eq (hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero))) (m * 1) (m) (m) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_mul m (hl_NUMERAL (hl_BIT1 hl_zero)) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (fun q H => H)))) (imp_and (forall m n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) (forall m n :e omega, ordsucc m * n = m * n + n) (forall m n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) (forall m n :e omega, m * ordsucc n = m + m * n) (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) (fun m => forall n :e omega, ordsucc m * n = m * n + n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul (hl_SUC m) n = hl_add (hl_mul m n) n) (fun n => ordsucc m * n = m * n + n) (fun n Hn => (imp_eq (hl_mul (hl_SUC m) n) (ordsucc m * n) (hl_add (hl_mul m n) n) (m * n + n) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_mul (hl_SUC m) n = hl__u * n) ((hl_mul_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add (hl_mul m n) n = hl__u + n) ((hl_add_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (n) Hn))))))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) (fun m => forall n :e omega, m * ordsucc n = m + m * n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul m (hl_SUC n) = hl_add m (hl_mul m n)) (fun n => m * ordsucc n = m + m * n) (fun n Hn => (imp_eq (hl_mul m (hl_SUC n)) (m * ordsucc n) (hl_add m (hl_mul m n)) (m + m * n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_mul m (hl_SUC n) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add m (hl_mul m n) = m + hl__u) ((hl_add_compat) (m) Hm (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn))))))))))))) HL).
+Qed.
+Theorem MULT_CLAUSES : (forall n :e omega, 0 * n = 0) /\ ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n)))).
+exact (MULT_CLAUSES_bridge hlt_MULT_CLAUSES).
+Admitted.
+
+// HOL Light: arith.ml:166 / MULT_SYM   (hash md5:7103233ece91e4b797b0f67782824327)
+Theorem hlt_MULT_SYM : forall m n :e omega, hl_mul m n = hl_mul n m.
+Admitted.
+Theorem MULT_SYM_bridge : (forall m n :e omega, hl_mul m n = hl_mul n m) -> (forall m n :e omega, m * n = n * m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul m n = hl_mul n m) (fun m => forall n :e omega, m * n = n * m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul m n = hl_mul n m) (fun n => m * n = n * m) (fun n Hn => (imp_eq (hl_mul m n) (m * n) (hl_mul n m) (n * m) ((hl_mul_compat) (m) Hm (n) Hn) ((hl_mul_compat) (n) Hn (m) Hm)))))) HL).
+Qed.
+Theorem MULT_SYM : forall m n :e omega, m * n = n * m.
+exact (MULT_SYM_bridge hlt_MULT_SYM).
+Admitted.
+
+// HOL Light: arith.ml:170 / LEFT_ADD_DISTRIB   (hash md5:95fb7903cf74df59ac85cd362dabe182)
+Theorem hlt_LEFT_ADD_DISTRIB : forall m n p :e omega, hl_mul m (hl_add n p) = hl_add (hl_mul m n) (hl_mul m p).
+Admitted.
+Theorem LEFT_ADD_DISTRIB_bridge : (forall m n p :e omega, hl_mul m (hl_add n p) = hl_add (hl_mul m n) (hl_mul m p)) -> (forall m n p :e omega, m * (n + p) = m * n + m * p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul m (hl_add n p) = hl_add (hl_mul m n) (hl_mul m p)) (fun m => forall n p :e omega, m * (n + p) = m * n + m * p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul m (hl_add n p) = hl_add (hl_mul m n) (hl_mul m p)) (fun n => forall p :e omega, m * (n + p) = m * n + m * p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul m (hl_add n p) = hl_add (hl_mul m n) (hl_mul m p)) (fun p => m * (n + p) = m * n + m * p) (fun p Hp => (imp_eq (hl_mul m (hl_add n p)) (m * (n + p)) (hl_add (hl_mul m n) (hl_mul m p)) (m * n + m * p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_mul m (hl_add n p) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_add (hl_mul m n) (hl_mul m p) = m * n + hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add (hl_mul m n) (hl_mul m p) = hl__u + hl_mul m p) ((hl_add_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp))))))))))) HL).
+Qed.
+Theorem LEFT_ADD_DISTRIB : forall m n p :e omega, m * (n + p) = m * n + m * p.
+exact (LEFT_ADD_DISTRIB_bridge hlt_LEFT_ADD_DISTRIB).
+Admitted.
+
+// HOL Light: arith.ml:174 / RIGHT_ADD_DISTRIB   (hash md5:2ee7dfe27ea7de6c31efbe4fa277f1a1)
+Theorem hlt_RIGHT_ADD_DISTRIB : forall m n p :e omega, hl_mul (hl_add m n) p = hl_add (hl_mul m p) (hl_mul n p).
+Admitted.
+Theorem RIGHT_ADD_DISTRIB_bridge : (forall m n p :e omega, hl_mul (hl_add m n) p = hl_add (hl_mul m p) (hl_mul n p)) -> (forall m n p :e omega, (m + n) * p = m * p + n * p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul (hl_add m n) p = hl_add (hl_mul m p) (hl_mul n p)) (fun m => forall n p :e omega, (m + n) * p = m * p + n * p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul (hl_add m n) p = hl_add (hl_mul m p) (hl_mul n p)) (fun n => forall p :e omega, (m + n) * p = m * p + n * p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul (hl_add m n) p = hl_add (hl_mul m p) (hl_mul n p)) (fun p => (m + n) * p = m * p + n * p) (fun p Hp => (imp_eq (hl_mul (hl_add m n) p) ((m + n) * p) (hl_add (hl_mul m p) (hl_mul n p)) (m * p + n * p) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_mul (hl_add m n) p = hl__u * p) ((hl_mul_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (p) Hp)) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_add (hl_mul m p) (hl_mul n p) = m * p + hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_add (hl_mul m p) (hl_mul n p) = hl__u + hl_mul n p) ((hl_add_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))))))))))) HL).
+Qed.
+Theorem RIGHT_ADD_DISTRIB : forall m n p :e omega, (m + n) * p = m * p + n * p.
+exact (RIGHT_ADD_DISTRIB_bridge hlt_RIGHT_ADD_DISTRIB).
+Admitted.
+
+// HOL Light: arith.ml:178 / MULT_ASSOC   (hash md5:94cf93020d8a503bb6e41afb0cc57313)
+Theorem hlt_MULT_ASSOC : forall m n p :e omega, hl_mul m (hl_mul n p) = hl_mul (hl_mul m n) p.
+Admitted.
+Theorem MULT_ASSOC_bridge : (forall m n p :e omega, hl_mul m (hl_mul n p) = hl_mul (hl_mul m n) p) -> (forall m n p :e omega, m * n * p = (m * n) * p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul m (hl_mul n p) = hl_mul (hl_mul m n) p) (fun m => forall n p :e omega, m * n * p = (m * n) * p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul m (hl_mul n p) = hl_mul (hl_mul m n) p) (fun n => forall p :e omega, m * n * p = (m * n) * p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul m (hl_mul n p) = hl_mul (hl_mul m n) p) (fun p => m * n * p = (m * n) * p) (fun p Hp => (imp_eq (hl_mul m (hl_mul n p)) (m * n * p) (hl_mul (hl_mul m n) p) ((m * n) * p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_mul m (hl_mul n p) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_mul (hl_mul m n) p = hl__u * p) ((hl_mul_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (p) Hp))))))))) HL).
+Qed.
+Theorem MULT_ASSOC : forall m n p :e omega, m * n * p = (m * n) * p.
+exact (MULT_ASSOC_bridge hlt_MULT_ASSOC).
+Admitted.
+
+// HOL Light: arith.ml:182 / MULT_AC   (hash md5:533f0ad0b78c23e472c2cbcad79fe15c)
+Theorem hlt_MULT_AC : forall m n p :e omega, hl_mul m n = hl_mul n m /\ (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p) /\ hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p)).
+Admitted.
+Theorem MULT_AC_bridge : (forall m n p :e omega, hl_mul m n = hl_mul n m /\ (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p) /\ hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p))) -> (forall m n p :e omega, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul m n = hl_mul n m /\ (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p) /\ hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p))) (fun m => forall n p :e omega, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p)) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul m n = hl_mul n m /\ (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p) /\ hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p))) (fun n => forall p :e omega, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p)) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul m n = hl_mul n m /\ (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p) /\ hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p))) (fun p => m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p)) (fun p Hp => (imp_and (hl_mul m n = hl_mul n m) (m * n = n * m) (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p) /\ hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p)) ((m * n) * p = m * n * p /\ m * n * p = n * m * p) (imp_eq (hl_mul m n) (m * n) (hl_mul n m) (n * m) ((hl_mul_compat) (m) Hm (n) Hn) ((hl_mul_compat) (n) Hn (m) Hm)) (imp_and (hl_mul (hl_mul m n) p = hl_mul m (hl_mul n p)) ((m * n) * p = m * n * p) (hl_mul m (hl_mul n p) = hl_mul n (hl_mul m p)) (m * n * p = n * m * p) (imp_eq (hl_mul (hl_mul m n) p) ((m * n) * p) (hl_mul m (hl_mul n p)) (m * n * p) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_mul (hl_mul m n) p = hl__u * p) ((hl_mul_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (p) Hp)) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_mul m (hl_mul n p) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp)))) (imp_eq (hl_mul m (hl_mul n p)) (m * n * p) (hl_mul n (hl_mul m p)) (n * m * p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_mul m (hl_mul n p) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_mul n (hl_mul m p) = n * hl__u) ((hl_mul_compat) (n) Hn (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp)))))))))))) HL).
+Qed.
+Theorem MULT_AC : forall m n p :e omega, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p).
+exact (MULT_AC_bridge hlt_MULT_AC).
+Admitted.
+
+// HOL Light: arith.ml:188 / MULT_EQ_0   (hash md5:d2c8d3697871de5ec75407210bed3147)
+Theorem hlt_MULT_EQ_0 : forall m n :e omega, hl_mul m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem MULT_EQ_0_bridge : (forall m n :e omega, hl_mul m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) -> (forall m n :e omega, m * n = 0 <-> m = 0 \/ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) (fun m => forall n :e omega, m * n = 0 <-> m = 0 \/ n = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) (fun n => m * n = 0 <-> m = 0 \/ n = 0) (fun n Hn => (imp_iff (hl_mul m n = hl_NUMERAL hl_zero) (m * n = 0) (m = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) (m = 0 \/ n = 0) (imp_eq (hl_mul m n) (m * n) (hl_NUMERAL hl_zero) (0) ((hl_mul_compat) (m) Hm (n) Hn) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (m * n) (hl_mul m n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_mul m n) (m * n) ((hl_mul_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (m = hl_NUMERAL hl_zero) (m = 0) (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (m = 0) (m = hl_NUMERAL hl_zero) (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem MULT_EQ_0 : forall m n :e omega, m * n = 0 <-> m = 0 \/ n = 0.
+exact (MULT_EQ_0_bridge hlt_MULT_EQ_0).
+Admitted.
+
+// HOL Light: arith.ml:192 / EQ_MULT_LCANCEL   (hash md5:51da4c7d79c6b1277495df6bcee7b900)
+Theorem hlt_EQ_MULT_LCANCEL : forall m n p :e omega, hl_mul m n = hl_mul m p <-> m = hl_NUMERAL hl_zero \/ n = p.
+Admitted.
+Theorem EQ_MULT_LCANCEL_bridge : (forall m n p :e omega, hl_mul m n = hl_mul m p <-> m = hl_NUMERAL hl_zero \/ n = p) -> (forall m n p :e omega, m * n = m * p <-> m = 0 \/ n = p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul m n = hl_mul m p <-> m = hl_NUMERAL hl_zero \/ n = p) (fun m => forall n p :e omega, m * n = m * p <-> m = 0 \/ n = p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul m n = hl_mul m p <-> m = hl_NUMERAL hl_zero \/ n = p) (fun n => forall p :e omega, m * n = m * p <-> m = 0 \/ n = p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul m n = hl_mul m p <-> m = hl_NUMERAL hl_zero \/ n = p) (fun p => m * n = m * p <-> m = 0 \/ n = p) (fun p Hp => (imp_iff (hl_mul m n = hl_mul m p) (m * n = m * p) (m = hl_NUMERAL hl_zero \/ n = p) (m = 0 \/ n = p) (imp_eq (hl_mul m n) (m * n) (hl_mul m p) (m * p) ((hl_mul_compat) (m) Hm (n) Hn) ((hl_mul_compat) (m) Hm (p) Hp)) (imp_eq (m * n) (hl_mul m n) (m * p) (hl_mul m p) (eq_sym_i (hl_mul m n) (m * n) ((hl_mul_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_mul m p) (m * p) ((hl_mul_compat) (m) Hm (p) Hp))) (imp_or (m = hl_NUMERAL hl_zero) (m = 0) (n = p) (n = p) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (n) (n) (p) (p) (fun q H => H) (fun q H => H))) (imp_or (m = 0) (m = hl_NUMERAL hl_zero) (n = p) (n = p) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_eq (n) (n) (p) (p) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (p) (p) (fun q H => H))))))))))) HL).
+Qed.
+Theorem EQ_MULT_LCANCEL : forall m n p :e omega, m * n = m * p <-> m = 0 \/ n = p.
+exact (EQ_MULT_LCANCEL_bridge hlt_EQ_MULT_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:199 / EQ_MULT_RCANCEL   (hash md5:b0b6632633c6cc3999bb29b53a4787f9)
+Theorem hlt_EQ_MULT_RCANCEL : forall m n p :e omega, hl_mul m p = hl_mul n p <-> m = n \/ p = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EQ_MULT_RCANCEL_bridge : (forall m n p :e omega, hl_mul m p = hl_mul n p <-> m = n \/ p = hl_NUMERAL hl_zero) -> (forall m n p :e omega, m * p = n * p <-> m = n \/ p = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul m p = hl_mul n p <-> m = n \/ p = hl_NUMERAL hl_zero) (fun m => forall n p :e omega, m * p = n * p <-> m = n \/ p = 0) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul m p = hl_mul n p <-> m = n \/ p = hl_NUMERAL hl_zero) (fun n => forall p :e omega, m * p = n * p <-> m = n \/ p = 0) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul m p = hl_mul n p <-> m = n \/ p = hl_NUMERAL hl_zero) (fun p => m * p = n * p <-> m = n \/ p = 0) (fun p Hp => (imp_iff (hl_mul m p = hl_mul n p) (m * p = n * p) (m = n \/ p = hl_NUMERAL hl_zero) (m = n \/ p = 0) (imp_eq (hl_mul m p) (m * p) (hl_mul n p) (n * p) ((hl_mul_compat) (m) Hm (p) Hp) ((hl_mul_compat) (n) Hn (p) Hp)) (imp_eq (m * p) (hl_mul m p) (n * p) (hl_mul n p) (eq_sym_i (hl_mul m p) (m * p) ((hl_mul_compat) (m) Hm (p) Hp)) (eq_sym_i (hl_mul n p) (n * p) ((hl_mul_compat) (n) Hn (p) Hp))) (imp_or (m = n) (m = n) (p = hl_NUMERAL hl_zero) (p = 0) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)) (imp_eq (p) (p) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (m = n) (m = n) (p = 0) (p = hl_NUMERAL hl_zero) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H))) (imp_eq (p) (p) (0) (hl_NUMERAL hl_zero) (eq_sym_i (p) (p) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))) HL).
+Qed.
+Theorem EQ_MULT_RCANCEL : forall m n p :e omega, m * p = n * p <-> m = n \/ p = 0.
+exact (EQ_MULT_RCANCEL_bridge hlt_EQ_MULT_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:203 / MULT_2   (hash md5:aefb67ed10cad5150806e529a2aa3bae)
+Theorem hlt_MULT_2 : forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl_add n n.
+Admitted.
+Theorem MULT_2_bridge : (forall n :e omega, hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl_add n n) -> (forall n :e omega, 2 * n = n + n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl_add n n) (fun n => 2 * n = n + n) (fun n Hn => (imp_eq (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (2 * n) (hl_add n n) (n + n) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl__u * n) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (n) Hn)) ((hl_add_compat) (n) Hn (n) Hn)))) HL).
+Qed.
+Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
+exact (MULT_2_bridge hlt_MULT_2).
+Admitted.
+
+// HOL Light: arith.ml:207 / MULT_EQ_1   (hash md5:97b70f4fd951132f2f6772a1745544f6)
+Theorem hlt_MULT_EQ_1 : forall m n :e omega, hl_mul m n = hl_NUMERAL (hl_BIT1 hl_zero) <-> m = hl_NUMERAL (hl_BIT1 hl_zero) /\ n = hl_NUMERAL (hl_BIT1 hl_zero).
+Admitted.
+Theorem MULT_EQ_1_bridge : (forall m n :e omega, hl_mul m n = hl_NUMERAL (hl_BIT1 hl_zero) <-> m = hl_NUMERAL (hl_BIT1 hl_zero) /\ n = hl_NUMERAL (hl_BIT1 hl_zero)) -> (forall m n :e omega, m * n = 1 <-> m = 1 /\ n = 1).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_mul m n = hl_NUMERAL (hl_BIT1 hl_zero) <-> m = hl_NUMERAL (hl_BIT1 hl_zero) /\ n = hl_NUMERAL (hl_BIT1 hl_zero)) (fun m => forall n :e omega, m * n = 1 <-> m = 1 /\ n = 1) (fun m Hm => (imp_forall_in (omega) (fun n => hl_mul m n = hl_NUMERAL (hl_BIT1 hl_zero) <-> m = hl_NUMERAL (hl_BIT1 hl_zero) /\ n = hl_NUMERAL (hl_BIT1 hl_zero)) (fun n => m * n = 1 <-> m = 1 /\ n = 1) (fun n Hn => (imp_iff (hl_mul m n = hl_NUMERAL (hl_BIT1 hl_zero)) (m * n = 1) (m = hl_NUMERAL (hl_BIT1 hl_zero) /\ n = hl_NUMERAL (hl_BIT1 hl_zero)) (m = 1 /\ n = 1) (imp_eq (hl_mul m n) (m * n) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) ((hl_mul_compat) (m) Hm (n) Hn) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))) (imp_eq (m * n) (hl_mul m n) (1) (hl_NUMERAL (hl_BIT1 hl_zero)) (eq_sym_i (hl_mul m n) (m * n) ((hl_mul_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))))) (imp_and (m = hl_NUMERAL (hl_BIT1 hl_zero)) (m = 1) (n = hl_NUMERAL (hl_BIT1 hl_zero)) (n = 1) (imp_eq (m) (m) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (fun q H => H) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))) (imp_eq (n) (n) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (fun q H => H) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))))) (imp_and (m = 1) (m = hl_NUMERAL (hl_BIT1 hl_zero)) (n = 1) (n = hl_NUMERAL (hl_BIT1 hl_zero)) (imp_eq (m) (m) (1) (hl_NUMERAL (hl_BIT1 hl_zero)) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))))) (imp_eq (n) (n) (1) (hl_NUMERAL (hl_BIT1 hl_zero)) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))))))))))) HL).
+Qed.
+Theorem MULT_EQ_1 : forall m n :e omega, m * n = 1 <-> m = 1 /\ n = 1.
+exact (MULT_EQ_1_bridge hlt_MULT_EQ_1).
+Admitted.
+
+// HOL Light: arith.ml:218 / EXP   (hash md5:f0b2e89bd72b2ed4f06143255e61c5ee)
+Theorem hlt_EXP : (forall m :e omega, hl_EXP m (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero)) /\ forall m n :e omega, hl_EXP m (hl_SUC n) = hl_mul m (hl_EXP m n).
+Admitted.
+Theorem EXP_bridge : ((forall m :e omega, hl_EXP m (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero)) /\ forall m n :e omega, hl_EXP m (hl_SUC n) = hl_mul m (hl_EXP m n)) -> ((forall m :e omega, m ^ 0 = 1) /\ forall m n :e omega, m ^ ordsucc n = m * m ^ n).
+exact (fun HL => (imp_and (forall m :e omega, hl_EXP m (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero)) (forall m :e omega, m ^ 0 = 1) (forall m n :e omega, hl_EXP m (hl_SUC n) = hl_mul m (hl_EXP m n)) (forall m n :e omega, m ^ ordsucc n = m * m ^ n) (imp_forall_in (omega) (fun m => hl_EXP m (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero)) (fun m => m ^ 0 = 1) (fun m Hm => (imp_eq (hl_EXP m (hl_NUMERAL hl_zero)) (m ^ 0) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_EXP m (hl_NUMERAL hl_zero) = m ^ hl__u) ((hl_EXP_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_EXP m (hl_SUC n) = hl_mul m (hl_EXP m n)) (fun m => forall n :e omega, m ^ ordsucc n = m * m ^ n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EXP m (hl_SUC n) = hl_mul m (hl_EXP m n)) (fun n => m ^ ordsucc n = m * m ^ n) (fun n Hn => (imp_eq (hl_EXP m (hl_SUC n)) (m ^ ordsucc n) (hl_mul m (hl_EXP m n)) (m * m ^ n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_EXP m (hl_SUC n) = m ^ hl__u) ((hl_EXP_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_mul m (hl_EXP m n) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn))))))))) HL).
+Qed.
+Theorem EXP : (forall m :e omega, m ^ 0 = 1) /\ forall m n :e omega, m ^ ordsucc n = m * m ^ n.
+exact (EXP_bridge hlt_EXP).
+Admitted.
+
+// HOL Light: arith.ml:222 / EXP_EQ_0   (hash md5:200ce7eb2e9d1e4094a26e883f454e19)
+Theorem hlt_EXP_EQ_0 : forall m n :e omega, hl_EXP m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ ~ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EXP_EQ_0_bridge : (forall m n :e omega, hl_EXP m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ ~ n = hl_NUMERAL hl_zero) -> (forall m n :e omega, m ^ n = 0 <-> m = 0 /\ ~ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EXP m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ ~ n = hl_NUMERAL hl_zero) (fun m => forall n :e omega, m ^ n = 0 <-> m = 0 /\ ~ n = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EXP m n = hl_NUMERAL hl_zero <-> m = hl_NUMERAL hl_zero /\ ~ n = hl_NUMERAL hl_zero) (fun n => m ^ n = 0 <-> m = 0 /\ ~ n = 0) (fun n Hn => (imp_iff (hl_EXP m n = hl_NUMERAL hl_zero) (m ^ n = 0) (m = hl_NUMERAL hl_zero /\ ~ n = hl_NUMERAL hl_zero) (m = 0 /\ ~ n = 0) (imp_eq (hl_EXP m n) (m ^ n) (hl_NUMERAL hl_zero) (0) ((hl_EXP_compat) (m) Hm (n) Hn) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (m ^ n) (hl_EXP m n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_EXP m n) (m ^ n) ((hl_EXP_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_and (m = hl_NUMERAL hl_zero) (m = 0) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))) (imp_and (m = 0) (m = hl_NUMERAL hl_zero) (~ n = 0) (~ n = hl_NUMERAL hl_zero) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem EXP_EQ_0 : forall m n :e omega, m ^ n = 0 <-> m = 0 /\ ~ n = 0.
+exact (EXP_EQ_0_bridge hlt_EXP_EQ_0).
+Admitted.
+
+// HOL Light: arith.ml:227 / EXP_EQ_1   (hash md5:b056dde8dc164a58dd4be9c2bea6eac5)
+Theorem hlt_EXP_EQ_1 : forall x n :e omega, hl_EXP x n = hl_NUMERAL (hl_BIT1 hl_zero) <-> x = hl_NUMERAL (hl_BIT1 hl_zero) \/ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EXP_EQ_1_bridge : (forall x n :e omega, hl_EXP x n = hl_NUMERAL (hl_BIT1 hl_zero) <-> x = hl_NUMERAL (hl_BIT1 hl_zero) \/ n = hl_NUMERAL hl_zero) -> (forall x n :e omega, x ^ n = 1 <-> x = 1 \/ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall n :e omega, hl_EXP x n = hl_NUMERAL (hl_BIT1 hl_zero) <-> x = hl_NUMERAL (hl_BIT1 hl_zero) \/ n = hl_NUMERAL hl_zero) (fun x => forall n :e omega, x ^ n = 1 <-> x = 1 \/ n = 0) (fun x Hx => (imp_forall_in (omega) (fun n => hl_EXP x n = hl_NUMERAL (hl_BIT1 hl_zero) <-> x = hl_NUMERAL (hl_BIT1 hl_zero) \/ n = hl_NUMERAL hl_zero) (fun n => x ^ n = 1 <-> x = 1 \/ n = 0) (fun n Hn => (imp_iff (hl_EXP x n = hl_NUMERAL (hl_BIT1 hl_zero)) (x ^ n = 1) (x = hl_NUMERAL (hl_BIT1 hl_zero) \/ n = hl_NUMERAL hl_zero) (x = 1 \/ n = 0) (imp_eq (hl_EXP x n) (x ^ n) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) ((hl_EXP_compat) (x) Hx (n) Hn) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))) (imp_eq (x ^ n) (hl_EXP x n) (1) (hl_NUMERAL (hl_BIT1 hl_zero)) (eq_sym_i (hl_EXP x n) (x ^ n) ((hl_EXP_compat) (x) Hx (n) Hn)) (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))))) (imp_or (x = hl_NUMERAL (hl_BIT1 hl_zero)) (x = 1) (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (x) (x) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (fun q H => H) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (x = 1) (x = hl_NUMERAL (hl_BIT1 hl_zero)) (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (x) (x) (1) (hl_NUMERAL (hl_BIT1 hl_zero)) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) (1) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))))) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem EXP_EQ_1 : forall x n :e omega, x ^ n = 1 <-> x = 1 \/ n = 0.
+exact (EXP_EQ_1_bridge hlt_EXP_EQ_1).
+Admitted.
+
+// HOL Light: arith.ml:232 / EXP_ZERO   (hash md5:e41b5acfcf148c786fceee7c43efbdf6)
+// not bridged: 
+Theorem EXP_ZERO : forall n :e omega, 0 ^ n = if n = 0 then 1 else 0.
+Admitted.
+
+// HOL Light: arith.ml:236 / EXP_ADD   (hash md5:5354063bdd0efd0e1ad534d027f52f61)
+Theorem hlt_EXP_ADD : forall m n p :e omega, hl_EXP m (hl_add n p) = hl_mul (hl_EXP m n) (hl_EXP m p).
+Admitted.
+Theorem EXP_ADD_bridge : (forall m n p :e omega, hl_EXP m (hl_add n p) = hl_mul (hl_EXP m n) (hl_EXP m p)) -> (forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_EXP m (hl_add n p) = hl_mul (hl_EXP m n) (hl_EXP m p)) (fun m => forall n p :e omega, m ^ (n + p) = m ^ n * m ^ p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_EXP m (hl_add n p) = hl_mul (hl_EXP m n) (hl_EXP m p)) (fun n => forall p :e omega, m ^ (n + p) = m ^ n * m ^ p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_EXP m (hl_add n p) = hl_mul (hl_EXP m n) (hl_EXP m p)) (fun p => m ^ (n + p) = m ^ n * m ^ p) (fun p Hp => (imp_eq (hl_EXP m (hl_add n p)) (m ^ (n + p)) (hl_mul (hl_EXP m n) (hl_EXP m p)) (m ^ n * m ^ p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_EXP m (hl_add n p) = m ^ hl__u) ((hl_EXP_compat) (m) Hm (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))) (((hl_EXP_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_mul (hl_EXP m n) (hl_EXP m p) = m ^ n * hl__u) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_mul (hl_EXP m n) (hl_EXP m p) = hl__u * hl_EXP m p) ((hl_mul_compat) (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn) (hl_EXP m p) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (p) Hp))))))))))) HL).
+Qed.
+Theorem EXP_ADD : forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p.
+exact (EXP_ADD_bridge hlt_EXP_ADD).
+Admitted.
+
+// HOL Light: arith.ml:241 / EXP_ONE   (hash md5:eb2015c8843538f921a09b3810597c78)
+Theorem hlt_EXP_ONE : forall n :e omega, hl_EXP (hl_NUMERAL (hl_BIT1 hl_zero)) n = hl_NUMERAL (hl_BIT1 hl_zero).
+Admitted.
+Theorem EXP_ONE_bridge : (forall n :e omega, hl_EXP (hl_NUMERAL (hl_BIT1 hl_zero)) n = hl_NUMERAL (hl_BIT1 hl_zero)) -> (forall n :e omega, 1 ^ n = 1).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_EXP (hl_NUMERAL (hl_BIT1 hl_zero)) n = hl_NUMERAL (hl_BIT1 hl_zero)) (fun n => 1 ^ n = 1) (fun n Hn => (imp_eq (hl_EXP (hl_NUMERAL (hl_BIT1 hl_zero)) n) (1 ^ n) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_EXP (hl_NUMERAL (hl_BIT1 hl_zero)) n = hl__u ^ n) ((hl_EXP_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (n) Hn)) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))))) HL).
+Qed.
+Theorem EXP_ONE : forall n :e omega, 1 ^ n = 1.
+exact (EXP_ONE_bridge hlt_EXP_ONE).
+Admitted.
+
+// HOL Light: arith.ml:245 / EXP_1   (hash md5:13e12a99724092a45e7e5ba9ec0db7a5)
+Theorem hlt_EXP_1 : forall n :e omega, hl_EXP n (hl_NUMERAL (hl_BIT1 hl_zero)) = n.
+Admitted.
+Theorem EXP_1_bridge : (forall n :e omega, hl_EXP n (hl_NUMERAL (hl_BIT1 hl_zero)) = n) -> (forall n :e omega, n ^ 1 = n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_EXP n (hl_NUMERAL (hl_BIT1 hl_zero)) = n) (fun n => n ^ 1 = n) (fun n Hn => (imp_eq (hl_EXP n (hl_NUMERAL (hl_BIT1 hl_zero))) (n ^ 1) (n) (n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_EXP n (hl_NUMERAL (hl_BIT1 hl_zero)) = n ^ hl__u) ((hl_EXP_compat) (n) Hn (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (fun q H => H)))) HL).
+Qed.
+Theorem EXP_1 : forall n :e omega, n ^ 1 = n.
+exact (EXP_1_bridge hlt_EXP_1).
+Admitted.
+
+// HOL Light: arith.ml:249 / EXP_2   (hash md5:05f1dff086cab35962a1461215ab3f8f)
+Theorem hlt_EXP_2 : forall n :e omega, hl_EXP n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_mul n n.
+Admitted.
+Theorem EXP_2_bridge : (forall n :e omega, hl_EXP n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_mul n n) -> (forall n :e omega, n ^ 2 = n * n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_EXP n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_mul n n) (fun n => n ^ 2 = n * n) (fun n Hn => (imp_eq (hl_EXP n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (n ^ 2) (hl_mul n n) (n * n) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_EXP n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = n ^ hl__u) ((hl_EXP_compat) (n) Hn (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))))) ((hl_mul_compat) (n) Hn (n) Hn)))) HL).
+Qed.
+Theorem EXP_2 : forall n :e omega, n ^ 2 = n * n.
+exact (EXP_2_bridge hlt_EXP_2).
+Admitted.
+
+// HOL Light: arith.ml:253 / MULT_EXP   (hash md5:90917163fc1cdf47d2f56b2b640a09a7)
+Theorem hlt_MULT_EXP : forall p m n :e omega, hl_EXP (hl_mul m n) p = hl_mul (hl_EXP m p) (hl_EXP n p).
+Admitted.
+Theorem MULT_EXP_bridge : (forall p m n :e omega, hl_EXP (hl_mul m n) p = hl_mul (hl_EXP m p) (hl_EXP n p)) -> (forall p m n :e omega, (m * n) ^ p = m ^ p * n ^ p).
+exact (fun HL => (imp_forall_in (omega) (fun p => forall m n :e omega, hl_EXP (hl_mul m n) p = hl_mul (hl_EXP m p) (hl_EXP n p)) (fun p => forall m n :e omega, (m * n) ^ p = m ^ p * n ^ p) (fun p Hp => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EXP (hl_mul m n) p = hl_mul (hl_EXP m p) (hl_EXP n p)) (fun m => forall n :e omega, (m * n) ^ p = m ^ p * n ^ p) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EXP (hl_mul m n) p = hl_mul (hl_EXP m p) (hl_EXP n p)) (fun n => (m * n) ^ p = m ^ p * n ^ p) (fun n Hn => (imp_eq (hl_EXP (hl_mul m n) p) ((m * n) ^ p) (hl_mul (hl_EXP m p) (hl_EXP n p)) (m ^ p * n ^ p) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EXP (hl_mul m n) p = hl__u ^ p) ((hl_EXP_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (p) Hp)) (((hl_EXP_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_mul (hl_EXP m p) (hl_EXP n p) = m ^ p * hl__u) (((hl_EXP_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_mul (hl_EXP m p) (hl_EXP n p) = hl__u * hl_EXP n p) ((hl_mul_compat) (hl_EXP m p) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (p) Hp) (hl_EXP n p) (setexp_ap (omega) (omega) (hl_EXP n) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (n) Hn) (p) Hp))))))))))) HL).
+Qed.
+Theorem MULT_EXP : forall p m n :e omega, (m * n) ^ p = m ^ p * n ^ p.
+exact (MULT_EXP_bridge hlt_MULT_EXP).
+Admitted.
+
+// HOL Light: arith.ml:257 / EXP_MULT   (hash md5:942e645b4b8a8ecb7bee540dc39c83ea)
+Theorem hlt_EXP_MULT : forall m n p :e omega, hl_EXP m (hl_mul n p) = hl_EXP (hl_EXP m n) p.
+Admitted.
+Theorem EXP_MULT_bridge : (forall m n p :e omega, hl_EXP m (hl_mul n p) = hl_EXP (hl_EXP m n) p) -> (forall m n p :e omega, m ^ (n * p) = (m ^ n) ^ p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_EXP m (hl_mul n p) = hl_EXP (hl_EXP m n) p) (fun m => forall n p :e omega, m ^ (n * p) = (m ^ n) ^ p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_EXP m (hl_mul n p) = hl_EXP (hl_EXP m n) p) (fun n => forall p :e omega, m ^ (n * p) = (m ^ n) ^ p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_EXP m (hl_mul n p) = hl_EXP (hl_EXP m n) p) (fun p => m ^ (n * p) = (m ^ n) ^ p) (fun p Hp => (imp_eq (hl_EXP m (hl_mul n p)) (m ^ (n * p)) (hl_EXP (hl_EXP m n) p) ((m ^ n) ^ p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_EXP m (hl_mul n p) = m ^ hl__u) ((hl_EXP_compat) (m) Hm (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EXP (hl_EXP m n) p = hl__u ^ p) ((hl_EXP_compat) (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn) (p) Hp))))))))) HL).
+Qed.
+Theorem EXP_MULT : forall m n p :e omega, m ^ (n * p) = (m ^ n) ^ p.
+exact (EXP_MULT_bridge hlt_EXP_MULT).
+Admitted.
+
+// HOL Light: arith.ml:265 / EXP_EXP   (hash md5:0cbc6f672beba3e26d81d4c5418d278f)
+Theorem hlt_EXP_EXP : forall x m n :e omega, hl_EXP (hl_EXP x m) n = hl_EXP x (hl_mul m n).
+Admitted.
+Theorem EXP_EXP_bridge : (forall x m n :e omega, hl_EXP (hl_EXP x m) n = hl_EXP x (hl_mul m n)) -> (forall x m n :e omega, (x ^ m) ^ n = x ^ (m * n)).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall m n :e omega, hl_EXP (hl_EXP x m) n = hl_EXP x (hl_mul m n)) (fun x => forall m n :e omega, (x ^ m) ^ n = x ^ (m * n)) (fun x Hx => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EXP (hl_EXP x m) n = hl_EXP x (hl_mul m n)) (fun m => forall n :e omega, (x ^ m) ^ n = x ^ (m * n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EXP (hl_EXP x m) n = hl_EXP x (hl_mul m n)) (fun n => (x ^ m) ^ n = x ^ (m * n)) (fun n Hn => (imp_eq (hl_EXP (hl_EXP x m) n) ((x ^ m) ^ n) (hl_EXP x (hl_mul m n)) (x ^ (m * n)) (((hl_EXP_compat) (x) Hx (m) Hm) (fun hl__u hl__v => hl_EXP (hl_EXP x m) n = hl__u ^ n) ((hl_EXP_compat) (hl_EXP x m) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (m) Hm) (n) Hn)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EXP x (hl_mul m n) = x ^ hl__u) ((hl_EXP_compat) (x) Hx (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn)))))))))) HL).
+Qed.
+Theorem EXP_EXP : forall x m n :e omega, (x ^ m) ^ n = x ^ (m * n).
+exact (EXP_EXP_bridge hlt_EXP_EXP).
+Admitted.
+
+// HOL Light: arith.ml:273 / LE   (hash md5:faba27e5932bc554f7f404897a05b278)
+Theorem hlt_LE : (forall m :e omega, hl_le m (hl_NUMERAL hl_zero) = 1 <-> m = hl_NUMERAL hl_zero) /\ forall m n :e omega, hl_le m (hl_SUC n) = 1 <-> m = hl_SUC n \/ hl_le m n = 1.
+Admitted.
+Theorem LE_bridge : ((forall m :e omega, hl_le m (hl_NUMERAL hl_zero) = 1 <-> m = hl_NUMERAL hl_zero) /\ forall m n :e omega, hl_le m (hl_SUC n) = 1 <-> m = hl_SUC n \/ hl_le m n = 1) -> ((forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n).
+exact (fun HL => (imp_and (forall m :e omega, hl_le m (hl_NUMERAL hl_zero) = 1 <-> m = hl_NUMERAL hl_zero) (forall m :e omega, m <= 0 <-> m = 0) (forall m n :e omega, hl_le m (hl_SUC n) = 1 <-> m = hl_SUC n \/ hl_le m n = 1) (forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n) (imp_forall_in (omega) (fun m => hl_le m (hl_NUMERAL hl_zero) = 1 <-> m = hl_NUMERAL hl_zero) (fun m => m <= 0 <-> m = 0) (fun m Hm => (imp_iff (hl_le m (hl_NUMERAL hl_zero) = 1) (m <= 0) (m = hl_NUMERAL hl_zero) (m = 0) (iffEL (hl_le m (hl_NUMERAL hl_zero) = 1) (m <= 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_le m (hl_NUMERAL hl_zero) = 1 <-> m <= hl__u) ((hl_le_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (iffER (hl_le m (hl_NUMERAL hl_zero) = 1) (m <= 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_le m (hl_NUMERAL hl_zero) = 1 <-> m <= hl__u) ((hl_le_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m (hl_SUC n) = 1 <-> m = hl_SUC n \/ hl_le m n = 1) (fun m => forall n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m (hl_SUC n) = 1 <-> m = hl_SUC n \/ hl_le m n = 1) (fun n => m <= ordsucc n <-> m = ordsucc n \/ m <= n) (fun n Hn => (imp_iff (hl_le m (hl_SUC n) = 1) (m <= ordsucc n) (m = hl_SUC n \/ hl_le m n = 1) (m = ordsucc n \/ m <= n) (iffEL (hl_le m (hl_SUC n) = 1) (m <= ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_le m (hl_SUC n) = 1 <-> m <= hl__u) ((hl_le_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (iffER (hl_le m (hl_SUC n) = 1) (m <= ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_le m (hl_SUC n) = 1 <-> m <= hl__u) ((hl_le_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (imp_or (m = hl_SUC n) (m = ordsucc n) (hl_le m n = 1) (m <= n) (imp_eq (m) (m) (hl_SUC n) (ordsucc n) (fun q H => H) ((hl_SUC_compat) (n) Hn)) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))) (imp_or (m = ordsucc n) (m = hl_SUC n) (m <= n) (hl_le m n = 1) (imp_eq (m) (m) (ordsucc n) (hl_SUC n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_SUC n) (ordsucc n) ((hl_SUC_compat) (n) Hn))) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))))) HL).
+Qed.
+Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
+exact (LE_bridge hlt_LE).
+Admitted.
+
+// HOL Light: arith.ml:277 / LT   (hash md5:7e2059e249b42a196a46a83ca219490a)
+Theorem hlt_LT : (forall m :e omega, hl_lt m (hl_NUMERAL hl_zero) = 1 <-> False) /\ forall m n :e omega, hl_lt m (hl_SUC n) = 1 <-> m = n \/ hl_lt m n = 1.
+Admitted.
+Theorem LT_bridge : ((forall m :e omega, hl_lt m (hl_NUMERAL hl_zero) = 1 <-> False) /\ forall m n :e omega, hl_lt m (hl_SUC n) = 1 <-> m = n \/ hl_lt m n = 1) -> ((forall m :e omega, m < 0 <-> False) /\ forall m n :e omega, m < ordsucc n <-> m = n \/ m < n).
+exact (fun HL => (imp_and (forall m :e omega, hl_lt m (hl_NUMERAL hl_zero) = 1 <-> False) (forall m :e omega, m < 0 <-> False) (forall m n :e omega, hl_lt m (hl_SUC n) = 1 <-> m = n \/ hl_lt m n = 1) (forall m n :e omega, m < ordsucc n <-> m = n \/ m < n) (imp_forall_in (omega) (fun m => hl_lt m (hl_NUMERAL hl_zero) = 1 <-> False) (fun m => m < 0 <-> False) (fun m Hm => (imp_iff (hl_lt m (hl_NUMERAL hl_zero) = 1) (m < 0) (False) (False) (iffEL (hl_lt m (hl_NUMERAL hl_zero) = 1) (m < 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt m (hl_NUMERAL hl_zero) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (iffER (hl_lt m (hl_NUMERAL hl_zero) = 1) (m < 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt m (hl_NUMERAL hl_zero) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (imp_refl False) (imp_refl False)))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m (hl_SUC n) = 1 <-> m = n \/ hl_lt m n = 1) (fun m => forall n :e omega, m < ordsucc n <-> m = n \/ m < n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m (hl_SUC n) = 1 <-> m = n \/ hl_lt m n = 1) (fun n => m < ordsucc n <-> m = n \/ m < n) (fun n Hn => (imp_iff (hl_lt m (hl_SUC n) = 1) (m < ordsucc n) (m = n \/ hl_lt m n = 1) (m = n \/ m < n) (iffEL (hl_lt m (hl_SUC n) = 1) (m < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt m (hl_SUC n) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (iffER (hl_lt m (hl_SUC n) = 1) (m < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt m (hl_SUC n) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (imp_or (m = n) (m = n) (hl_lt m n = 1) (m < n) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))) (imp_or (m = n) (m = n) (m < n) (hl_lt m n = 1) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H))) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))))))))) HL).
+Qed.
+Theorem LT : (forall m :e omega, m < 0 <-> False) /\ forall m n :e omega, m < ordsucc n <-> m = n \/ m < n.
+exact (LT_bridge hlt_LT).
+Admitted.
+
+// HOL Light: arith.ml:281 / GE   (hash md5:eb4cce02a75248e9a4da989b61be86cf)
+Theorem hlt_GE : forall n m :e omega, hl_ge m n = 1 <-> hl_le n m = 1.
+Admitted.
+Theorem GE_bridge : (forall n m :e omega, hl_ge m n = 1 <-> hl_le n m = 1) -> (forall n m :e omega, n <= m <-> n <= m).
+exact (fun HL => (imp_forall_in (omega) (fun n => forall m :e omega, hl_ge m n = 1 <-> hl_le n m = 1) (fun n => forall m :e omega, n <= m <-> n <= m) (fun n Hn => (imp_forall_in (omega) (fun m => hl_ge m n = 1 <-> hl_le n m = 1) (fun m => n <= m <-> n <= m) (fun m Hm => (imp_iff (hl_ge m n = 1) (n <= m) (hl_le n m = 1) (n <= m) (iffEL (hl_ge m n = 1) (n <= m) ((hl_ge_compat) (m) Hm (n) Hn)) (iffER (hl_ge m n = 1) (n <= m) ((hl_ge_compat) (m) Hm (n) Hn)) (iffEL (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm)) (iffER (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem GE : forall n m :e omega, n <= m <-> n <= m.
+exact (GE_bridge hlt_GE).
+Admitted.
+
+// HOL Light: arith.ml:284 / GT   (hash md5:cf5cd2515d0dc3275295a791b645d774)
+Theorem hlt_GT : forall n m :e omega, hl_gt m n = 1 <-> hl_lt n m = 1.
+Admitted.
+Theorem GT_bridge : (forall n m :e omega, hl_gt m n = 1 <-> hl_lt n m = 1) -> (forall n m :e omega, n < m <-> n < m).
+exact (fun HL => (imp_forall_in (omega) (fun n => forall m :e omega, hl_gt m n = 1 <-> hl_lt n m = 1) (fun n => forall m :e omega, n < m <-> n < m) (fun n Hn => (imp_forall_in (omega) (fun m => hl_gt m n = 1 <-> hl_lt n m = 1) (fun m => n < m <-> n < m) (fun m Hm => (imp_iff (hl_gt m n = 1) (n < m) (hl_lt n m = 1) (n < m) (iffEL (hl_gt m n = 1) (n < m) ((hl_gt_compat) (m) Hm (n) Hn)) (iffER (hl_gt m n = 1) (n < m) ((hl_gt_compat) (m) Hm (n) Hn)) (iffEL (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)) (iffER (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem GT : forall n m :e omega, n < m <-> n < m.
+exact (GT_bridge hlt_GT).
+Admitted.
+
+// HOL Light: arith.ml:291 / MAX   (hash md5:dec7206fd153d46948a1a7573a250572)
+Theorem hlt_MAX : forall m n :e omega, hl_MAX m n = hl_COND omega (hl_le m n) n m.
+Admitted.
+Theorem MAX_bridge : (forall m n :e omega, hl_MAX m n = hl_COND omega (hl_le m n) n m) -> (forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_MAX m n = hl_COND omega (hl_le m n) n m) (fun m => forall n :e omega, (if m <= n then n else m) = if m <= n then n else m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_MAX m n = hl_COND omega (hl_le m n) n m) (fun n => (if m <= n then n else m) = if m <= n then n else m) (fun n Hn => (imp_eq (hl_MAX m n) (if m <= n then n else m) (hl_COND omega (hl_le m n) n m) (if m <= n then n else m) ((hl_MAX_compat) (m) Hm (n) Hn) (hl_COND_if (omega) (hl_le m n) (setexp_ap (omega) (2) (hl_le m) (setexp_ap (omega) (2 :^: omega) (hl_le) ((hl_le_in)) (m) Hm) (n) Hn) (m <= n) ((hl_le_compat) (m) Hm (n) Hn) (n) Hn (m) Hm)))))) HL).
+Qed.
+Theorem MAX : forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m.
+exact (MAX_bridge hlt_MAX).
+Admitted.
+
+// HOL Light: arith.ml:294 / MIN   (hash md5:cac117c9eae33edc6db6da231d420222)
+Theorem hlt_MIN : forall m n :e omega, hl_MIN m n = hl_COND omega (hl_le m n) m n.
+Admitted.
+Theorem MIN_bridge : (forall m n :e omega, hl_MIN m n = hl_COND omega (hl_le m n) m n) -> (forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_MIN m n = hl_COND omega (hl_le m n) m n) (fun m => forall n :e omega, (if m <= n then m else n) = if m <= n then m else n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_MIN m n = hl_COND omega (hl_le m n) m n) (fun n => (if m <= n then m else n) = if m <= n then m else n) (fun n Hn => (imp_eq (hl_MIN m n) (if m <= n then m else n) (hl_COND omega (hl_le m n) m n) (if m <= n then m else n) ((hl_MIN_compat) (m) Hm (n) Hn) (hl_COND_if (omega) (hl_le m n) (setexp_ap (omega) (2) (hl_le m) (setexp_ap (omega) (2 :^: omega) (hl_le) ((hl_le_in)) (m) Hm) (n) Hn) (m <= n) ((hl_le_compat) (m) Hm (n) Hn) (m) Hm (n) Hn)))))) HL).
+Qed.
+Theorem MIN : forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n.
+exact (MIN_bridge hlt_MIN).
+Admitted.
+
+// HOL Light: arith.ml:301 / LE_SUC_LT   (hash md5:a059e9b50769a59dbd1b228f22a762b2)
+Theorem hlt_LE_SUC_LT : forall m n :e omega, hl_le (hl_SUC m) n = 1 <-> hl_lt m n = 1.
+Admitted.
+Theorem LE_SUC_LT_bridge : (forall m n :e omega, hl_le (hl_SUC m) n = 1 <-> hl_lt m n = 1) -> (forall m n :e omega, ordsucc m <= n <-> m < n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le (hl_SUC m) n = 1 <-> hl_lt m n = 1) (fun m => forall n :e omega, ordsucc m <= n <-> m < n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le (hl_SUC m) n = 1 <-> hl_lt m n = 1) (fun n => ordsucc m <= n <-> m < n) (fun n Hn => (imp_iff (hl_le (hl_SUC m) n = 1) (ordsucc m <= n) (hl_lt m n = 1) (m < n) (iffEL (hl_le (hl_SUC m) n = 1) (ordsucc m <= n) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_le (hl_SUC m) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn))) (iffER (hl_le (hl_SUC m) n = 1) (ordsucc m <= n) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_le (hl_SUC m) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn))) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem LE_SUC_LT : forall m n :e omega, ordsucc m <= n <-> m < n.
+exact (LE_SUC_LT_bridge hlt_LE_SUC_LT).
+Admitted.
+
+// HOL Light: arith.ml:305 / LT_SUC_LE   (hash md5:d61ceddf7a050227ee90dd8409e8a238)
+Theorem hlt_LT_SUC_LE : forall m n :e omega, hl_lt m (hl_SUC n) = 1 <-> hl_le m n = 1.
+Admitted.
+Theorem LT_SUC_LE_bridge : (forall m n :e omega, hl_lt m (hl_SUC n) = 1 <-> hl_le m n = 1) -> (forall m n :e omega, m < ordsucc n <-> m <= n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m (hl_SUC n) = 1 <-> hl_le m n = 1) (fun m => forall n :e omega, m < ordsucc n <-> m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m (hl_SUC n) = 1 <-> hl_le m n = 1) (fun n => m < ordsucc n <-> m <= n) (fun n Hn => (imp_iff (hl_lt m (hl_SUC n) = 1) (m < ordsucc n) (hl_le m n = 1) (m <= n) (iffEL (hl_lt m (hl_SUC n) = 1) (m < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt m (hl_SUC n) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (iffER (hl_lt m (hl_SUC n) = 1) (m < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt m (hl_SUC n) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem LT_SUC_LE : forall m n :e omega, m < ordsucc n <-> m <= n.
+exact (LT_SUC_LE_bridge hlt_LT_SUC_LE).
+Admitted.
+
+// HOL Light: arith.ml:310 / LE_SUC   (hash md5:187b9d45a918e4fc6193ef7883f75c60)
+Theorem hlt_LE_SUC : forall m n :e omega, hl_le (hl_SUC m) (hl_SUC n) = 1 <-> hl_le m n = 1.
+Admitted.
+Theorem LE_SUC_bridge : (forall m n :e omega, hl_le (hl_SUC m) (hl_SUC n) = 1 <-> hl_le m n = 1) -> (forall m n :e omega, ordsucc m <= ordsucc n <-> m <= n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le (hl_SUC m) (hl_SUC n) = 1 <-> hl_le m n = 1) (fun m => forall n :e omega, ordsucc m <= ordsucc n <-> m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le (hl_SUC m) (hl_SUC n) = 1 <-> hl_le m n = 1) (fun n => ordsucc m <= ordsucc n <-> m <= n) (fun n Hn => (imp_iff (hl_le (hl_SUC m) (hl_SUC n) = 1) (ordsucc m <= ordsucc n) (hl_le m n = 1) (m <= n) (iffEL (hl_le (hl_SUC m) (hl_SUC n) = 1) (ordsucc m <= ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_le (hl_SUC m) (hl_SUC n) = 1 <-> ordsucc m <= hl__u) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_le (hl_SUC m) (hl_SUC n) = 1 <-> hl__u <= hl_SUC n) ((hl_le_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))))) (iffER (hl_le (hl_SUC m) (hl_SUC n) = 1) (ordsucc m <= ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_le (hl_SUC m) (hl_SUC n) = 1 <-> ordsucc m <= hl__u) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_le (hl_SUC m) (hl_SUC n) = 1 <-> hl__u <= hl_SUC n) ((hl_le_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))))) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem LE_SUC : forall m n :e omega, ordsucc m <= ordsucc n <-> m <= n.
+exact (LE_SUC_bridge hlt_LE_SUC).
+Admitted.
+
+// HOL Light: arith.ml:314 / LT_SUC   (hash md5:0ccebf58f2904b230f897cb4a149c0d0)
+Theorem hlt_LT_SUC : forall m n :e omega, hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> hl_lt m n = 1.
+Admitted.
+Theorem LT_SUC_bridge : (forall m n :e omega, hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> hl_lt m n = 1) -> (forall m n :e omega, ordsucc m < ordsucc n <-> m < n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> hl_lt m n = 1) (fun m => forall n :e omega, ordsucc m < ordsucc n <-> m < n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> hl_lt m n = 1) (fun n => ordsucc m < ordsucc n <-> m < n) (fun n Hn => (imp_iff (hl_lt (hl_SUC m) (hl_SUC n) = 1) (ordsucc m < ordsucc n) (hl_lt m n = 1) (m < n) (iffEL (hl_lt (hl_SUC m) (hl_SUC n) = 1) (ordsucc m < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> ordsucc m < hl__u) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> hl__u < hl_SUC n) ((hl_lt_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))))) (iffER (hl_lt (hl_SUC m) (hl_SUC n) = 1) (ordsucc m < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> ordsucc m < hl__u) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_lt (hl_SUC m) (hl_SUC n) = 1 <-> hl__u < hl_SUC n) ((hl_lt_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))))) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem LT_SUC : forall m n :e omega, ordsucc m < ordsucc n <-> m < n.
+exact (LT_SUC_bridge hlt_LT_SUC).
+Admitted.
+
+// HOL Light: arith.ml:322 / LE_0   (hash md5:31dc48e876d64098aef66243629de91c)
+Theorem hlt_LE_0 : forall n :e omega, hl_le (hl_NUMERAL hl_zero) n = 1.
+Admitted.
+Theorem LE_0_bridge : (forall n :e omega, hl_le (hl_NUMERAL hl_zero) n = 1) -> (forall n :e omega, 0 <= n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_le (hl_NUMERAL hl_zero) n = 1) (fun n => 0 <= n) (fun n Hn => (iffEL (hl_le (hl_NUMERAL hl_zero) n = 1) (0 <= n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_le (hl_NUMERAL hl_zero) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))))) HL).
+Qed.
+Theorem LE_0 : forall n :e omega, 0 <= n.
+exact (LE_0_bridge hlt_LE_0).
+Admitted.
+
+// HOL Light: arith.ml:326 / LT_0   (hash md5:8f8b430afef3f06700473ea3f3647503)
+Theorem hlt_LT_0 : forall n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_SUC n) = 1.
+Admitted.
+Theorem LT_0_bridge : (forall n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_SUC n) = 1) -> (forall n :e omega, 0 < ordsucc n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_lt (hl_NUMERAL hl_zero) (hl_SUC n) = 1) (fun n => 0 < ordsucc n) (fun n Hn => (iffEL (hl_lt (hl_NUMERAL hl_zero) (hl_SUC n) = 1) (0 < ordsucc n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_SUC n) = 1 <-> 0 < hl__u) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_SUC n) = 1 <-> hl__u < hl_SUC n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))))))) HL).
+Qed.
+Theorem LT_0 : forall n :e omega, 0 < ordsucc n.
+exact (LT_0_bridge hlt_LT_0).
+Admitted.
+
+// HOL Light: arith.ml:334 / LE_REFL   (hash md5:1b16a90917428cf3f87995a218f16789)
+Theorem hlt_LE_REFL : forall n :e omega, hl_le n n = 1.
+Admitted.
+Theorem LE_REFL_bridge : (forall n :e omega, hl_le n n = 1) -> (forall n :e omega, n <= n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_le n n = 1) (fun n => n <= n) (fun n Hn => (iffEL (hl_le n n = 1) (n <= n) ((hl_le_compat) (n) Hn (n) Hn)))) HL).
+Qed.
+Theorem LE_REFL : forall n :e omega, n <= n.
+exact (LE_REFL_bridge hlt_LE_REFL).
+Admitted.
+
+// HOL Light: arith.ml:338 / LT_REFL   (hash md5:7819f1e250c885a3217b6e30017a6c3a)
+Theorem hlt_LT_REFL : forall n :e omega, ~ hl_lt n n = 1.
+Admitted.
+Theorem LT_REFL_bridge : (forall n :e omega, ~ hl_lt n n = 1) -> (forall n :e omega, ~ n < n).
+exact (fun HL => (imp_forall_in (omega) (fun n => ~ hl_lt n n = 1) (fun n => ~ n < n) (fun n Hn => (imp_not (hl_lt n n = 1) (n < n) (iffER (hl_lt n n = 1) (n < n) ((hl_lt_compat) (n) Hn (n) Hn))))) HL).
+Qed.
+Theorem LT_REFL : forall n :e omega, ~ n < n.
+exact (LT_REFL_bridge hlt_LT_REFL).
+Admitted.
+
+// HOL Light: arith.ml:342 / LT_IMP_NE   (hash md5:a139a253e154048d708fd7993a4641bd)
+Theorem hlt_LT_IMP_NE : forall m n :e omega, hl_lt m n = 1 -> ~ m = n.
+Admitted.
+Theorem LT_IMP_NE_bridge : (forall m n :e omega, hl_lt m n = 1 -> ~ m = n) -> (forall m n :e omega, m < n -> ~ m = n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m n = 1 -> ~ m = n) (fun m => forall n :e omega, m < n -> ~ m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m n = 1 -> ~ m = n) (fun n => m < n -> ~ m = n) (fun n Hn => (imp_imp (hl_lt m n = 1) (m < n) (~ m = n) (~ m = n) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_not (m = n) (m = n) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H))))))))) HL).
+Qed.
+Theorem LT_IMP_NE : forall m n :e omega, m < n -> ~ m = n.
+exact (LT_IMP_NE_bridge hlt_LT_IMP_NE).
+Admitted.
+
+// HOL Light: arith.ml:350 / LE_ANTISYM   (hash md5:92cfc4f4d9868c364256f8b2facfa1c3)
+Theorem hlt_LE_ANTISYM : forall m n :e omega, hl_le m n = 1 /\ hl_le n m = 1 <-> m = n.
+Admitted.
+Theorem LE_ANTISYM_bridge : (forall m n :e omega, hl_le m n = 1 /\ hl_le n m = 1 <-> m = n) -> (forall m n :e omega, m <= n /\ n <= m <-> m = n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m n = 1 /\ hl_le n m = 1 <-> m = n) (fun m => forall n :e omega, m <= n /\ n <= m <-> m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m n = 1 /\ hl_le n m = 1 <-> m = n) (fun n => m <= n /\ n <= m <-> m = n) (fun n Hn => (imp_iff (hl_le m n = 1 /\ hl_le n m = 1) (m <= n /\ n <= m) (m = n) (m = n) (imp_and (hl_le m n = 1) (m <= n) (hl_le n m = 1) (n <= m) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffEL (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm))) (imp_and (m <= n) (hl_le m n = 1) (n <= m) (hl_le n m = 1) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm))) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H)))))))) HL).
+Qed.
+Theorem LE_ANTISYM : forall m n :e omega, m <= n /\ n <= m <-> m = n.
+exact (LE_ANTISYM_bridge hlt_LE_ANTISYM).
+Admitted.
+
+// HOL Light: arith.ml:355 / LT_ANTISYM   (hash md5:3099ea5ceef206eb8d09eb669f29afae)
+Theorem hlt_LT_ANTISYM : forall m n :e omega, ~ (hl_lt m n = 1 /\ hl_lt n m = 1).
+Admitted.
+Theorem LT_ANTISYM_bridge : (forall m n :e omega, ~ (hl_lt m n = 1 /\ hl_lt n m = 1)) -> (forall m n :e omega, ~ (m < n /\ n < m)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, ~ (hl_lt m n = 1 /\ hl_lt n m = 1)) (fun m => forall n :e omega, ~ (m < n /\ n < m)) (fun m Hm => (imp_forall_in (omega) (fun n => ~ (hl_lt m n = 1 /\ hl_lt n m = 1)) (fun n => ~ (m < n /\ n < m)) (fun n Hn => (imp_not (hl_lt m n = 1 /\ hl_lt n m = 1) (m < n /\ n < m) (imp_and (m < n) (hl_lt m n = 1) (n < m) (hl_lt n m = 1) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)))))))) HL).
+Qed.
+Theorem LT_ANTISYM : forall m n :e omega, ~ (m < n /\ n < m).
+exact (LT_ANTISYM_bridge hlt_LT_ANTISYM).
+Admitted.
+
+// HOL Light: arith.ml:359 / LET_ANTISYM   (hash md5:5e8d12fb5ec4377fdad2b612f422fbe1)
+Theorem hlt_LET_ANTISYM : forall m n :e omega, ~ (hl_le m n = 1 /\ hl_lt n m = 1).
+Admitted.
+Theorem LET_ANTISYM_bridge : (forall m n :e omega, ~ (hl_le m n = 1 /\ hl_lt n m = 1)) -> (forall m n :e omega, ~ (m <= n /\ n < m)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, ~ (hl_le m n = 1 /\ hl_lt n m = 1)) (fun m => forall n :e omega, ~ (m <= n /\ n < m)) (fun m Hm => (imp_forall_in (omega) (fun n => ~ (hl_le m n = 1 /\ hl_lt n m = 1)) (fun n => ~ (m <= n /\ n < m)) (fun n Hn => (imp_not (hl_le m n = 1 /\ hl_lt n m = 1) (m <= n /\ n < m) (imp_and (m <= n) (hl_le m n = 1) (n < m) (hl_lt n m = 1) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)))))))) HL).
+Qed.
+Theorem LET_ANTISYM : forall m n :e omega, ~ (m <= n /\ n < m).
+exact (LET_ANTISYM_bridge hlt_LET_ANTISYM).
+Admitted.
+
+// HOL Light: arith.ml:364 / LTE_ANTISYM   (hash md5:af0f9ca6550d589f1648c2894b374069)
+Theorem hlt_LTE_ANTISYM : forall m n :e omega, ~ (hl_lt m n = 1 /\ hl_le n m = 1).
+Admitted.
+Theorem LTE_ANTISYM_bridge : (forall m n :e omega, ~ (hl_lt m n = 1 /\ hl_le n m = 1)) -> (forall m n :e omega, ~ (m < n /\ n <= m)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, ~ (hl_lt m n = 1 /\ hl_le n m = 1)) (fun m => forall n :e omega, ~ (m < n /\ n <= m)) (fun m Hm => (imp_forall_in (omega) (fun n => ~ (hl_lt m n = 1 /\ hl_le n m = 1)) (fun n => ~ (m < n /\ n <= m)) (fun n Hn => (imp_not (hl_lt m n = 1 /\ hl_le n m = 1) (m < n /\ n <= m) (imp_and (m < n) (hl_lt m n = 1) (n <= m) (hl_le n m = 1) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm)))))))) HL).
+Qed.
+Theorem LTE_ANTISYM : forall m n :e omega, ~ (m < n /\ n <= m).
+exact (LTE_ANTISYM_bridge hlt_LTE_ANTISYM).
+Admitted.
+
+// HOL Light: arith.ml:372 / LE_TRANS   (hash md5:b00bbaad61f29417226e4ac6eab95845)
+Theorem hlt_LE_TRANS : forall m n p :e omega, hl_le m n = 1 /\ hl_le n p = 1 -> hl_le m p = 1.
+Admitted.
+Theorem LE_TRANS_bridge : (forall m n p :e omega, hl_le m n = 1 /\ hl_le n p = 1 -> hl_le m p = 1) -> (forall m n p :e omega, m <= n /\ n <= p -> m <= p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_le m n = 1 /\ hl_le n p = 1 -> hl_le m p = 1) (fun m => forall n p :e omega, m <= n /\ n <= p -> m <= p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_le m n = 1 /\ hl_le n p = 1 -> hl_le m p = 1) (fun n => forall p :e omega, m <= n /\ n <= p -> m <= p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_le m n = 1 /\ hl_le n p = 1 -> hl_le m p = 1) (fun p => m <= n /\ n <= p -> m <= p) (fun p Hp => (imp_imp (hl_le m n = 1 /\ hl_le n p = 1) (m <= n /\ n <= p) (hl_le m p = 1) (m <= p) (imp_and (m <= n) (hl_le m n = 1) (n <= p) (hl_le n p = 1) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le n p = 1) (n <= p) ((hl_le_compat) (n) Hn (p) Hp))) (iffEL (hl_le m p = 1) (m <= p) ((hl_le_compat) (m) Hm (p) Hp))))))))) HL).
+Qed.
+Theorem LE_TRANS : forall m n p :e omega, m <= n /\ n <= p -> m <= p.
+exact (LE_TRANS_bridge hlt_LE_TRANS).
+Admitted.
+
+// HOL Light: arith.ml:377 / LT_TRANS   (hash md5:b1d4795a239cf0b833ba1123d70dc41d)
+Theorem hlt_LT_TRANS : forall m n p :e omega, hl_lt m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1.
+Admitted.
+Theorem LT_TRANS_bridge : (forall m n p :e omega, hl_lt m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) -> (forall m n p :e omega, m < n /\ n < p -> m < p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_lt m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) (fun m => forall n p :e omega, m < n /\ n < p -> m < p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_lt m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) (fun n => forall p :e omega, m < n /\ n < p -> m < p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_lt m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) (fun p => m < n /\ n < p -> m < p) (fun p Hp => (imp_imp (hl_lt m n = 1 /\ hl_lt n p = 1) (m < n /\ n < p) (hl_lt m p = 1) (m < p) (imp_and (m < n) (hl_lt m n = 1) (n < p) (hl_lt n p = 1) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp))) (iffEL (hl_lt m p = 1) (m < p) ((hl_lt_compat) (m) Hm (p) Hp))))))))) HL).
+Qed.
+Theorem LT_TRANS : forall m n p :e omega, m < n /\ n < p -> m < p.
+exact (LT_TRANS_bridge hlt_LT_TRANS).
+Admitted.
+
+// HOL Light: arith.ml:382 / LET_TRANS   (hash md5:14ba2504db894f01b0234794b010713c)
+Theorem hlt_LET_TRANS : forall m n p :e omega, hl_le m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1.
+Admitted.
+Theorem LET_TRANS_bridge : (forall m n p :e omega, hl_le m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) -> (forall m n p :e omega, m <= n /\ n < p -> m < p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_le m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) (fun m => forall n p :e omega, m <= n /\ n < p -> m < p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_le m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) (fun n => forall p :e omega, m <= n /\ n < p -> m < p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_le m n = 1 /\ hl_lt n p = 1 -> hl_lt m p = 1) (fun p => m <= n /\ n < p -> m < p) (fun p Hp => (imp_imp (hl_le m n = 1 /\ hl_lt n p = 1) (m <= n /\ n < p) (hl_lt m p = 1) (m < p) (imp_and (m <= n) (hl_le m n = 1) (n < p) (hl_lt n p = 1) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp))) (iffEL (hl_lt m p = 1) (m < p) ((hl_lt_compat) (m) Hm (p) Hp))))))))) HL).
+Qed.
+Theorem LET_TRANS : forall m n p :e omega, m <= n /\ n < p -> m < p.
+exact (LET_TRANS_bridge hlt_LET_TRANS).
+Admitted.
+
+// HOL Light: arith.ml:387 / LTE_TRANS   (hash md5:3ca846af73949857fc9f6ed7116412a9)
+Theorem hlt_LTE_TRANS : forall m n p :e omega, hl_lt m n = 1 /\ hl_le n p = 1 -> hl_lt m p = 1.
+Admitted.
+Theorem LTE_TRANS_bridge : (forall m n p :e omega, hl_lt m n = 1 /\ hl_le n p = 1 -> hl_lt m p = 1) -> (forall m n p :e omega, m < n /\ n <= p -> m < p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_lt m n = 1 /\ hl_le n p = 1 -> hl_lt m p = 1) (fun m => forall n p :e omega, m < n /\ n <= p -> m < p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_lt m n = 1 /\ hl_le n p = 1 -> hl_lt m p = 1) (fun n => forall p :e omega, m < n /\ n <= p -> m < p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_lt m n = 1 /\ hl_le n p = 1 -> hl_lt m p = 1) (fun p => m < n /\ n <= p -> m < p) (fun p Hp => (imp_imp (hl_lt m n = 1 /\ hl_le n p = 1) (m < n /\ n <= p) (hl_lt m p = 1) (m < p) (imp_and (m < n) (hl_lt m n = 1) (n <= p) (hl_le n p = 1) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_le n p = 1) (n <= p) ((hl_le_compat) (n) Hn (p) Hp))) (iffEL (hl_lt m p = 1) (m < p) ((hl_lt_compat) (m) Hm (p) Hp))))))))) HL).
+Qed.
+Theorem LTE_TRANS : forall m n p :e omega, m < n /\ n <= p -> m < p.
+exact (LTE_TRANS_bridge hlt_LTE_TRANS).
+Admitted.
+
+// HOL Light: arith.ml:396 / LE_CASES   (hash md5:26689a7db69e89c438744524cb7b50c4)
+Theorem hlt_LE_CASES : forall m n :e omega, hl_le m n = 1 \/ hl_le n m = 1.
+Admitted.
+Theorem LE_CASES_bridge : (forall m n :e omega, hl_le m n = 1 \/ hl_le n m = 1) -> (forall m n :e omega, m <= n \/ n <= m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m n = 1 \/ hl_le n m = 1) (fun m => forall n :e omega, m <= n \/ n <= m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m n = 1 \/ hl_le n m = 1) (fun n => m <= n \/ n <= m) (fun n Hn => (imp_or (hl_le m n = 1) (m <= n) (hl_le n m = 1) (n <= m) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffEL (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem LE_CASES : forall m n :e omega, m <= n \/ n <= m.
+exact (LE_CASES_bridge hlt_LE_CASES).
+Admitted.
+
+// HOL Light: arith.ml:400 / LT_CASES   (hash md5:e26bbc5bf349bbecc826423c1773ea1f)
+Theorem hlt_LT_CASES : forall m n :e omega, hl_lt m n = 1 \/ (hl_lt n m = 1 \/ m = n).
+Admitted.
+Theorem LT_CASES_bridge : (forall m n :e omega, hl_lt m n = 1 \/ (hl_lt n m = 1 \/ m = n)) -> (forall m n :e omega, m < n \/ (n < m \/ m = n)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m n = 1 \/ (hl_lt n m = 1 \/ m = n)) (fun m => forall n :e omega, m < n \/ (n < m \/ m = n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m n = 1 \/ (hl_lt n m = 1 \/ m = n)) (fun n => m < n \/ (n < m \/ m = n)) (fun n Hn => (imp_or (hl_lt m n = 1) (m < n) (hl_lt n m = 1 \/ m = n) (n < m \/ m = n) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_or (hl_lt n m = 1) (n < m) (m = n) (m = n) (iffEL (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)))))))) HL).
+Qed.
+Theorem LT_CASES : forall m n :e omega, m < n \/ (n < m \/ m = n).
+exact (LT_CASES_bridge hlt_LT_CASES).
+Admitted.
+
+// HOL Light: arith.ml:407 / LET_CASES   (hash md5:67a81a3a6553e8d9a9228a2dcd4bd896)
+Theorem hlt_LET_CASES : forall m n :e omega, hl_le m n = 1 \/ hl_lt n m = 1.
+Admitted.
+Theorem LET_CASES_bridge : (forall m n :e omega, hl_le m n = 1 \/ hl_lt n m = 1) -> (forall m n :e omega, m <= n \/ n < m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m n = 1 \/ hl_lt n m = 1) (fun m => forall n :e omega, m <= n \/ n < m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m n = 1 \/ hl_lt n m = 1) (fun n => m <= n \/ n < m) (fun n Hn => (imp_or (hl_le m n = 1) (m <= n) (hl_lt n m = 1) (n < m) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffEL (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem LET_CASES : forall m n :e omega, m <= n \/ n < m.
+exact (LET_CASES_bridge hlt_LET_CASES).
+Admitted.
+
+// HOL Light: arith.ml:411 / LTE_CASES   (hash md5:fd3ac78a80446b1c4612541c2b636917)
+Theorem hlt_LTE_CASES : forall m n :e omega, hl_lt m n = 1 \/ hl_le n m = 1.
+Admitted.
+Theorem LTE_CASES_bridge : (forall m n :e omega, hl_lt m n = 1 \/ hl_le n m = 1) -> (forall m n :e omega, m < n \/ n <= m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m n = 1 \/ hl_le n m = 1) (fun m => forall n :e omega, m < n \/ n <= m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m n = 1 \/ hl_le n m = 1) (fun n => m < n \/ n <= m) (fun n Hn => (imp_or (hl_lt m n = 1) (m < n) (hl_le n m = 1) (n <= m) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffEL (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem LTE_CASES : forall m n :e omega, m < n \/ n <= m.
+exact (LTE_CASES_bridge hlt_LTE_CASES).
+Admitted.
+
+// HOL Light: arith.ml:419 / LE_LT   (hash md5:6140d6b3b95f4fd84a26710124a9d8ab)
+Theorem hlt_LE_LT : forall m n :e omega, hl_le m n = 1 <-> hl_lt m n = 1 \/ m = n.
+Admitted.
+Theorem LE_LT_bridge : (forall m n :e omega, hl_le m n = 1 <-> hl_lt m n = 1 \/ m = n) -> (forall m n :e omega, m <= n <-> m < n \/ m = n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m n = 1 <-> hl_lt m n = 1 \/ m = n) (fun m => forall n :e omega, m <= n <-> m < n \/ m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m n = 1 <-> hl_lt m n = 1 \/ m = n) (fun n => m <= n <-> m < n \/ m = n) (fun n Hn => (imp_iff (hl_le m n = 1) (m <= n) (hl_lt m n = 1 \/ m = n) (m < n \/ m = n) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_or (hl_lt m n = 1) (m < n) (m = n) (m = n) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H))) (imp_or (m < n) (hl_lt m n = 1) (m = n) (m = n) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H))))))))) HL).
+Qed.
+Theorem LE_LT : forall m n :e omega, m <= n <-> m < n \/ m = n.
+exact (LE_LT_bridge hlt_LE_LT).
+Admitted.
+
+// HOL Light: arith.ml:425 / LT_LE   (hash md5:5815fc366cdba65f86ca1533c12dfa30)
+Theorem hlt_LT_LE : forall m n :e omega, hl_lt m n = 1 <-> hl_le m n = 1 /\ ~ m = n.
+Admitted.
+Theorem LT_LE_bridge : (forall m n :e omega, hl_lt m n = 1 <-> hl_le m n = 1 /\ ~ m = n) -> (forall m n :e omega, m < n <-> m <= n /\ ~ m = n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m n = 1 <-> hl_le m n = 1 /\ ~ m = n) (fun m => forall n :e omega, m < n <-> m <= n /\ ~ m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m n = 1 <-> hl_le m n = 1 /\ ~ m = n) (fun n => m < n <-> m <= n /\ ~ m = n) (fun n Hn => (imp_iff (hl_lt m n = 1) (m < n) (hl_le m n = 1 /\ ~ m = n) (m <= n /\ ~ m = n) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_and (hl_le m n = 1) (m <= n) (~ m = n) (~ m = n) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_not (m = n) (m = n) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H))))) (imp_and (m <= n) (hl_le m n = 1) (~ m = n) (~ m = n) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_not (m = n) (m = n) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H))))))))) HL).
+Qed.
+Theorem LT_LE : forall m n :e omega, m < n <-> m <= n /\ ~ m = n.
+exact (LT_LE_bridge hlt_LT_LE).
+Admitted.
+
+// HOL Light: arith.ml:433 / NOT_LE   (hash md5:2b6bcbd0da941a0d69352fddce245478)
+Theorem hlt_NOT_LE : forall m n :e omega, ~ hl_le m n = 1 <-> hl_lt n m = 1.
+Admitted.
+Theorem NOT_LE_bridge : (forall m n :e omega, ~ hl_le m n = 1 <-> hl_lt n m = 1) -> (forall m n :e omega, ~ m <= n <-> n < m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, ~ hl_le m n = 1 <-> hl_lt n m = 1) (fun m => forall n :e omega, ~ m <= n <-> n < m) (fun m Hm => (imp_forall_in (omega) (fun n => ~ hl_le m n = 1 <-> hl_lt n m = 1) (fun n => ~ m <= n <-> n < m) (fun n Hn => (imp_iff (~ hl_le m n = 1) (~ m <= n) (hl_lt n m = 1) (n < m) (imp_not (hl_le m n = 1) (m <= n) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))) (imp_not (m <= n) (hl_le m n = 1) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))) (iffEL (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)) (iffER (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem NOT_LE : forall m n :e omega, ~ m <= n <-> n < m.
+exact (NOT_LE_bridge hlt_NOT_LE).
+Admitted.
+
+// HOL Light: arith.ml:440 / NOT_LT   (hash md5:7cff267ecb6a5da7fb22cc74b9054892)
+Theorem hlt_NOT_LT : forall m n :e omega, ~ hl_lt m n = 1 <-> hl_le n m = 1.
+Admitted.
+Theorem NOT_LT_bridge : (forall m n :e omega, ~ hl_lt m n = 1 <-> hl_le n m = 1) -> (forall m n :e omega, ~ m < n <-> n <= m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, ~ hl_lt m n = 1 <-> hl_le n m = 1) (fun m => forall n :e omega, ~ m < n <-> n <= m) (fun m Hm => (imp_forall_in (omega) (fun n => ~ hl_lt m n = 1 <-> hl_le n m = 1) (fun n => ~ m < n <-> n <= m) (fun n Hn => (imp_iff (~ hl_lt m n = 1) (~ m < n) (hl_le n m = 1) (n <= m) (imp_not (hl_lt m n = 1) (m < n) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))) (imp_not (m < n) (hl_lt m n = 1) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))) (iffEL (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm)) (iffER (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm))))))) HL).
+Qed.
+Theorem NOT_LT : forall m n :e omega, ~ m < n <-> n <= m.
+exact (NOT_LT_bridge hlt_NOT_LT).
+Admitted.
+
+// HOL Light: arith.ml:447 / LT_IMP_LE   (hash md5:9d37ee0a53cd1e33d7e8d532e5abe711)
+Theorem hlt_LT_IMP_LE : forall m n :e omega, hl_lt m n = 1 -> hl_le m n = 1.
+Admitted.
+Theorem LT_IMP_LE_bridge : (forall m n :e omega, hl_lt m n = 1 -> hl_le m n = 1) -> (forall m n :e omega, m < n -> m <= n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m n = 1 -> hl_le m n = 1) (fun m => forall n :e omega, m < n -> m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m n = 1 -> hl_le m n = 1) (fun n => m < n -> m <= n) (fun n Hn => (imp_imp (hl_lt m n = 1) (m < n) (hl_le m n = 1) (m <= n) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem LT_IMP_LE : forall m n :e omega, m < n -> m <= n.
+exact (LT_IMP_LE_bridge hlt_LT_IMP_LE).
+Admitted.
+
+// HOL Light: arith.ml:451 / EQ_IMP_LE   (hash md5:262c4f6f42a248b8f4fa0198836befeb)
+Theorem hlt_EQ_IMP_LE : forall m n :e omega, m = n -> hl_le m n = 1.
+Admitted.
+Theorem EQ_IMP_LE_bridge : (forall m n :e omega, m = n -> hl_le m n = 1) -> (forall m n :e omega, m = n -> m <= n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, m = n -> hl_le m n = 1) (fun m => forall n :e omega, m = n -> m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => m = n -> hl_le m n = 1) (fun n => m = n -> m <= n) (fun n Hn => (imp_imp (m = n) (m = n) (hl_le m n = 1) (m <= n) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H))) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem EQ_IMP_LE : forall m n :e omega, m = n -> m <= n.
+exact (EQ_IMP_LE_bridge hlt_EQ_IMP_LE).
+Admitted.
+
+// HOL Light: arith.ml:459 / LT_NZ   (hash md5:44fb2896bb81711114737091050171b2)
+Theorem hlt_LT_NZ : forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 <-> ~ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem LT_NZ_bridge : (forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 <-> ~ n = hl_NUMERAL hl_zero) -> (forall n :e omega, 0 < n <-> ~ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> ~ n = hl_NUMERAL hl_zero) (fun n => 0 < n <-> ~ n = 0) (fun n Hn => (imp_iff (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (iffEL (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))) (iffER (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) HL).
+Qed.
+Theorem LT_NZ : forall n :e omega, 0 < n <-> ~ n = 0.
+exact (LT_NZ_bridge hlt_LT_NZ).
+Admitted.
+
+// HOL Light: arith.ml:464 / LE_1   (hash md5:53332fbfbd5458191f309a947caf8233)
+Theorem hlt_LE_1 : (forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ ((forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> ~ n = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero)))).
+Admitted.
+Theorem LE_1_bridge : ((forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ ((forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> ~ n = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero))))) -> ((forall n :e omega, ~ n = 0 -> 0 < n) /\ ((forall n :e omega, ~ n = 0 -> 1 <= n) /\ ((forall n :e omega, 0 < n -> ~ n = 0) /\ ((forall n :e omega, 0 < n -> 1 <= n) /\ ((forall n :e omega, 1 <= n -> 0 < n) /\ forall n :e omega, 1 <= n -> ~ n = 0))))).
+exact (fun HL => (imp_and (forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_NUMERAL hl_zero) n = 1) (forall n :e omega, ~ n = 0 -> 0 < n) ((forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> ~ n = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero)))) ((forall n :e omega, ~ n = 0 -> 1 <= n) /\ ((forall n :e omega, 0 < n -> ~ n = 0) /\ ((forall n :e omega, 0 < n -> 1 <= n) /\ ((forall n :e omega, 1 <= n -> 0 < n) /\ forall n :e omega, 1 <= n -> ~ n = 0)))) (imp_forall_in (omega) (fun n => ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_NUMERAL hl_zero) n = 1) (fun n => ~ n = 0 -> 0 < n) (fun n Hn => (imp_imp (~ n = hl_NUMERAL hl_zero) (~ n = 0) (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (iffEL (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)))))) (imp_and (forall n :e omega, ~ n = hl_NUMERAL hl_zero -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (forall n :e omega, ~ n = 0 -> 1 <= n) ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> ~ n = hl_NUMERAL hl_zero) /\ ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero))) ((forall n :e omega, 0 < n -> ~ n = 0) /\ ((forall n :e omega, 0 < n -> 1 <= n) /\ ((forall n :e omega, 1 <= n -> 0 < n) /\ forall n :e omega, 1 <= n -> ~ n = 0))) (imp_forall_in (omega) (fun n => ~ n = hl_NUMERAL hl_zero -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (fun n => ~ n = 0 -> 1 <= n) (fun n Hn => (imp_imp (~ n = hl_NUMERAL hl_zero) (~ n = 0) (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (iffEL (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (n) Hn)))))) (imp_and (forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> ~ n = hl_NUMERAL hl_zero) (forall n :e omega, 0 < n -> ~ n = 0) ((forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) /\ ((forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero)) ((forall n :e omega, 0 < n -> 1 <= n) /\ ((forall n :e omega, 1 <= n -> 0 < n) /\ forall n :e omega, 1 <= n -> ~ n = 0)) (imp_forall_in (omega) (fun n => hl_lt (hl_NUMERAL hl_zero) n = 1 -> ~ n = hl_NUMERAL hl_zero) (fun n => 0 < n -> ~ n = 0) (fun n Hn => (imp_imp (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (iffER (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))) (imp_and (forall n :e omega, hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (forall n :e omega, 0 < n -> 1 <= n) ((forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) /\ forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero) ((forall n :e omega, 1 <= n -> 0 < n) /\ forall n :e omega, 1 <= n -> ~ n = 0) (imp_forall_in (omega) (fun n => hl_lt (hl_NUMERAL hl_zero) n = 1 -> hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (fun n => 0 < n -> 1 <= n) (fun n Hn => (imp_imp (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) (iffER (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))) (iffEL (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (n) Hn)))))) (imp_and (forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) (forall n :e omega, 1 <= n -> 0 < n) (forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero) (forall n :e omega, 1 <= n -> ~ n = 0) (imp_forall_in (omega) (fun n => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_lt (hl_NUMERAL hl_zero) n = 1) (fun n => 1 <= n -> 0 < n) (fun n Hn => (imp_imp (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (iffER (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (n) Hn))) (iffEL (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)))))) (imp_forall_in (omega) (fun n => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> ~ n = hl_NUMERAL hl_zero) (fun n => 1 <= n -> ~ n = 0) (fun n Hn => (imp_imp (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (iffER (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1) (1 <= n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 <-> hl__u <= n) ((hl_le_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (n) Hn))) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))))))))) HL).
+Qed.
+Theorem LE_1 : (forall n :e omega, ~ n = 0 -> 0 < n) /\ ((forall n :e omega, ~ n = 0 -> 1 <= n) /\ ((forall n :e omega, 0 < n -> ~ n = 0) /\ ((forall n :e omega, 0 < n -> 1 <= n) /\ ((forall n :e omega, 1 <= n -> 0 < n) /\ forall n :e omega, 1 <= n -> ~ n = 0)))).
+exact (LE_1_bridge hlt_LE_1).
+Admitted.
+
+// HOL Light: arith.ml:477 / LE_EXISTS   (hash md5:fc24da01a419be1c250ebb180c054ce7)
+Theorem hlt_LE_EXISTS : forall m n :e omega, hl_le m n = 1 <-> exists d :e omega, n = hl_add m d.
+Admitted.
+Theorem LE_EXISTS_bridge : (forall m n :e omega, hl_le m n = 1 <-> exists d :e omega, n = hl_add m d) -> (forall m n :e omega, m <= n <-> exists d :e omega, n = m + d).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m n = 1 <-> exists d :e omega, n = hl_add m d) (fun m => forall n :e omega, m <= n <-> exists d :e omega, n = m + d) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m n = 1 <-> exists d :e omega, n = hl_add m d) (fun n => m <= n <-> exists d :e omega, n = m + d) (fun n Hn => (imp_iff (hl_le m n = 1) (m <= n) (exists d :e omega, n = hl_add m d) (exists d :e omega, n = m + d) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_exists_in (omega) (fun d => n = hl_add m d) (fun d => n = m + d) (fun d Hd => (imp_eq (n) (n) (hl_add m d) (m + d) (fun q H => H) ((hl_add_compat) (m) Hm (d) Hd)))) (imp_exists_in (omega) (fun d => n = m + d) (fun d => n = hl_add m d) (fun d Hd => (imp_eq (n) (n) (m + d) (hl_add m d) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_add m d) (m + d) ((hl_add_compat) (m) Hm (d) Hd)))))))))) HL).
+Qed.
+Theorem LE_EXISTS : forall m n :e omega, m <= n <-> exists d :e omega, n = m + d.
+exact (LE_EXISTS_bridge hlt_LE_EXISTS).
+Admitted.
+
+// HOL Light: arith.ml:492 / LT_EXISTS   (hash md5:fceb9b438eb7a0d431cb8377b206b932)
+Theorem hlt_LT_EXISTS : forall m n :e omega, hl_lt m n = 1 <-> exists d :e omega, n = hl_add m (hl_SUC d).
+Admitted.
+Theorem LT_EXISTS_bridge : (forall m n :e omega, hl_lt m n = 1 <-> exists d :e omega, n = hl_add m (hl_SUC d)) -> (forall m n :e omega, m < n <-> exists d :e omega, n = m + ordsucc d).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m n = 1 <-> exists d :e omega, n = hl_add m (hl_SUC d)) (fun m => forall n :e omega, m < n <-> exists d :e omega, n = m + ordsucc d) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m n = 1 <-> exists d :e omega, n = hl_add m (hl_SUC d)) (fun n => m < n <-> exists d :e omega, n = m + ordsucc d) (fun n Hn => (imp_iff (hl_lt m n = 1) (m < n) (exists d :e omega, n = hl_add m (hl_SUC d)) (exists d :e omega, n = m + ordsucc d) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_exists_in (omega) (fun d => n = hl_add m (hl_SUC d)) (fun d => n = m + ordsucc d) (fun d Hd => (imp_eq (n) (n) (hl_add m (hl_SUC d)) (m + ordsucc d) (fun q H => H) (((hl_SUC_compat) (d) Hd) (fun hl__u hl__v => hl_add m (hl_SUC d) = m + hl__u) ((hl_add_compat) (m) Hm (hl_SUC d) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (d) Hd)))))) (imp_exists_in (omega) (fun d => n = m + ordsucc d) (fun d => n = hl_add m (hl_SUC d)) (fun d Hd => (imp_eq (n) (n) (m + ordsucc d) (hl_add m (hl_SUC d)) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_add m (hl_SUC d)) (m + ordsucc d) (((hl_SUC_compat) (d) Hd) (fun hl__u hl__v => hl_add m (hl_SUC d) = m + hl__u) ((hl_add_compat) (m) Hm (hl_SUC d) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (d) Hd)))))))))))) HL).
+Qed.
+Theorem LT_EXISTS : forall m n :e omega, m < n <-> exists d :e omega, n = m + ordsucc d.
+exact (LT_EXISTS_bridge hlt_LT_EXISTS).
+Admitted.
+
+// HOL Light: arith.ml:509 / LE_ADD   (hash md5:c840eadf57a06b476726b6575f1ed37c)
+Theorem hlt_LE_ADD : forall m n :e omega, hl_le m (hl_add m n) = 1.
+Admitted.
+Theorem LE_ADD_bridge : (forall m n :e omega, hl_le m (hl_add m n) = 1) -> (forall m n :e omega, m <= m + n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m (hl_add m n) = 1) (fun m => forall n :e omega, m <= m + n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m (hl_add m n) = 1) (fun n => m <= m + n) (fun n Hn => (iffEL (hl_le m (hl_add m n) = 1) (m <= m + n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le m (hl_add m n) = 1 <-> m <= hl__u) ((hl_le_compat) (m) Hm (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))))))) HL).
+Qed.
+Theorem LE_ADD : forall m n :e omega, m <= m + n.
+exact (LE_ADD_bridge hlt_LE_ADD).
+Admitted.
+
+// HOL Light: arith.ml:514 / LE_ADDR   (hash md5:388d6384219669f49ee02ea2d3eb0b8c)
+Theorem hlt_LE_ADDR : forall m n :e omega, hl_le n (hl_add m n) = 1.
+Admitted.
+Theorem LE_ADDR_bridge : (forall m n :e omega, hl_le n (hl_add m n) = 1) -> (forall m n :e omega, n <= m + n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le n (hl_add m n) = 1) (fun m => forall n :e omega, n <= m + n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le n (hl_add m n) = 1) (fun n => n <= m + n) (fun n Hn => (iffEL (hl_le n (hl_add m n) = 1) (n <= m + n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le n (hl_add m n) = 1 <-> n <= hl__u) ((hl_le_compat) (n) Hn (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))))))) HL).
+Qed.
+Theorem LE_ADDR : forall m n :e omega, n <= m + n.
+exact (LE_ADDR_bridge hlt_LE_ADDR).
+Admitted.
+
+// HOL Light: arith.ml:518 / LT_ADD   (hash md5:2e1e52e6c3f1a6ac0ab9e2d91fa5ff5a)
+Theorem hlt_LT_ADD : forall m n :e omega, hl_lt m (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) n = 1.
+Admitted.
+Theorem LT_ADD_bridge : (forall m n :e omega, hl_lt m (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) n = 1) -> (forall m n :e omega, m < m + n <-> 0 < n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt m (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) n = 1) (fun m => forall n :e omega, m < m + n <-> 0 < n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt m (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) n = 1) (fun n => m < m + n <-> 0 < n) (fun n Hn => (imp_iff (hl_lt m (hl_add m n) = 1) (m < m + n) (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (iffEL (hl_lt m (hl_add m n) = 1) (m < m + n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt m (hl_add m n) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (iffER (hl_lt m (hl_add m n) = 1) (m < m + n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt m (hl_add m n) = 1 <-> m < hl__u) ((hl_lt_compat) (m) Hm (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (iffEL (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))) (iffER (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)))))))) HL).
+Qed.
+Theorem LT_ADD : forall m n :e omega, m < m + n <-> 0 < n.
+exact (LT_ADD_bridge hlt_LT_ADD).
+Admitted.
+
+// HOL Light: arith.ml:522 / LT_ADDR   (hash md5:32fb71504c2d65304e145e5dabaf6fd1)
+Theorem hlt_LT_ADDR : forall m n :e omega, hl_lt n (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1.
+Admitted.
+Theorem LT_ADDR_bridge : (forall m n :e omega, hl_lt n (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1) -> (forall m n :e omega, n < m + n <-> 0 < m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt n (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1) (fun m => forall n :e omega, n < m + n <-> 0 < m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt n (hl_add m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1) (fun n => n < m + n <-> 0 < m) (fun n Hn => (imp_iff (hl_lt n (hl_add m n) = 1) (n < m + n) (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < m) (iffEL (hl_lt n (hl_add m n) = 1) (n < m + n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt n (hl_add m n) = 1 <-> n < hl__u) ((hl_lt_compat) (n) Hn (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (iffER (hl_lt n (hl_add m n) = 1) (n < m + n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt n (hl_add m n) = 1 <-> n < hl__u) ((hl_lt_compat) (n) Hn (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (iffEL (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) m = 1 <-> hl__u < m) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (m) Hm))) (iffER (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) m = 1 <-> hl__u < m) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (m) Hm)))))))) HL).
+Qed.
+Theorem LT_ADDR : forall m n :e omega, n < m + n <-> 0 < m.
+exact (LT_ADDR_bridge hlt_LT_ADDR).
+Admitted.
+
+// HOL Light: arith.ml:526 / LE_ADD_LCANCEL   (hash md5:6949599388ac43ea08036b19ef3b235c)
+Theorem hlt_LE_ADD_LCANCEL : forall m n p :e omega, hl_le (hl_add m n) (hl_add m p) = 1 <-> hl_le n p = 1.
+Admitted.
+Theorem LE_ADD_LCANCEL_bridge : (forall m n p :e omega, hl_le (hl_add m n) (hl_add m p) = 1 <-> hl_le n p = 1) -> (forall m n p :e omega, m + n <= m + p <-> n <= p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_le (hl_add m n) (hl_add m p) = 1 <-> hl_le n p = 1) (fun m => forall n p :e omega, m + n <= m + p <-> n <= p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_le (hl_add m n) (hl_add m p) = 1 <-> hl_le n p = 1) (fun n => forall p :e omega, m + n <= m + p <-> n <= p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_le (hl_add m n) (hl_add m p) = 1 <-> hl_le n p = 1) (fun p => m + n <= m + p <-> n <= p) (fun p Hp => (imp_iff (hl_le (hl_add m n) (hl_add m p) = 1) (m + n <= m + p) (hl_le n p = 1) (n <= p) (iffEL (hl_le (hl_add m n) (hl_add m p) = 1) (m + n <= m + p) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_add m n) (hl_add m p) = 1 <-> m + n <= hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le (hl_add m n) (hl_add m p) = 1 <-> hl__u <= hl_add m p) ((hl_le_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp))))) (iffER (hl_le (hl_add m n) (hl_add m p) = 1) (m + n <= m + p) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_add m n) (hl_add m p) = 1 <-> m + n <= hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le (hl_add m n) (hl_add m p) = 1 <-> hl__u <= hl_add m p) ((hl_le_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp))))) (iffEL (hl_le n p = 1) (n <= p) ((hl_le_compat) (n) Hn (p) Hp)) (iffER (hl_le n p = 1) (n <= p) ((hl_le_compat) (n) Hn (p) Hp))))))))) HL).
+Qed.
+Theorem LE_ADD_LCANCEL : forall m n p :e omega, m + n <= m + p <-> n <= p.
+exact (LE_ADD_LCANCEL_bridge hlt_LE_ADD_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:530 / LE_ADD_RCANCEL   (hash md5:fa1ba3595f41a7ff0b64db1a981cc64a)
+Theorem hlt_LE_ADD_RCANCEL : forall m n p :e omega, hl_le (hl_add m p) (hl_add n p) = 1 <-> hl_le m n = 1.
+Admitted.
+Theorem LE_ADD_RCANCEL_bridge : (forall m n p :e omega, hl_le (hl_add m p) (hl_add n p) = 1 <-> hl_le m n = 1) -> (forall m n p :e omega, m + p <= n + p <-> m <= n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_le (hl_add m p) (hl_add n p) = 1 <-> hl_le m n = 1) (fun m => forall n p :e omega, m + p <= n + p <-> m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_le (hl_add m p) (hl_add n p) = 1 <-> hl_le m n = 1) (fun n => forall p :e omega, m + p <= n + p <-> m <= n) (fun n Hn => (imp_forall_in (omega) (fun p => hl_le (hl_add m p) (hl_add n p) = 1 <-> hl_le m n = 1) (fun p => m + p <= n + p <-> m <= n) (fun p Hp => (imp_iff (hl_le (hl_add m p) (hl_add n p) = 1) (m + p <= n + p) (hl_le m n = 1) (m <= n) (iffEL (hl_le (hl_add m p) (hl_add n p) = 1) (m + p <= n + p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_le (hl_add m p) (hl_add n p) = 1 <-> m + p <= hl__u) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_add m p) (hl_add n p) = 1 <-> hl__u <= hl_add n p) ((hl_le_compat) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp) (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))))) (iffER (hl_le (hl_add m p) (hl_add n p) = 1) (m + p <= n + p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_le (hl_add m p) (hl_add n p) = 1 <-> m + p <= hl__u) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_add m p) (hl_add n p) = 1 <-> hl__u <= hl_add n p) ((hl_le_compat) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp) (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))))) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))))) HL).
+Qed.
+Theorem LE_ADD_RCANCEL : forall m n p :e omega, m + p <= n + p <-> m <= n.
+exact (LE_ADD_RCANCEL_bridge hlt_LE_ADD_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:534 / LT_ADD_LCANCEL   (hash md5:22e15eb8f48632119400254608722b14)
+Theorem hlt_LT_ADD_LCANCEL : forall m n p :e omega, hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl_lt n p = 1.
+Admitted.
+Theorem LT_ADD_LCANCEL_bridge : (forall m n p :e omega, hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl_lt n p = 1) -> (forall m n p :e omega, m + n < m + p <-> n < p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl_lt n p = 1) (fun m => forall n p :e omega, m + n < m + p <-> n < p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl_lt n p = 1) (fun n => forall p :e omega, m + n < m + p <-> n < p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl_lt n p = 1) (fun p => m + n < m + p <-> n < p) (fun p Hp => (imp_iff (hl_lt (hl_add m n) (hl_add m p) = 1) (m + n < m + p) (hl_lt n p = 1) (n < p) (iffEL (hl_lt (hl_add m n) (hl_add m p) = 1) (m + n < m + p) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add m p) = 1 <-> m + n < hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl__u < hl_add m p) ((hl_lt_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp))))) (iffER (hl_lt (hl_add m n) (hl_add m p) = 1) (m + n < m + p) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add m p) = 1 <-> m + n < hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add m p) = 1 <-> hl__u < hl_add m p) ((hl_lt_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp))))) (iffEL (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp)) (iffER (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp))))))))) HL).
+Qed.
+Theorem LT_ADD_LCANCEL : forall m n p :e omega, m + n < m + p <-> n < p.
+exact (LT_ADD_LCANCEL_bridge hlt_LT_ADD_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:538 / LT_ADD_RCANCEL   (hash md5:ffcde4693946774f17e195ed51beb542)
+Theorem hlt_LT_ADD_RCANCEL : forall m n p :e omega, hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl_lt m n = 1.
+Admitted.
+Theorem LT_ADD_RCANCEL_bridge : (forall m n p :e omega, hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl_lt m n = 1) -> (forall m n p :e omega, m + p < n + p <-> m < n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl_lt m n = 1) (fun m => forall n p :e omega, m + p < n + p <-> m < n) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl_lt m n = 1) (fun n => forall p :e omega, m + p < n + p <-> m < n) (fun n Hn => (imp_forall_in (omega) (fun p => hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl_lt m n = 1) (fun p => m + p < n + p <-> m < n) (fun p Hp => (imp_iff (hl_lt (hl_add m p) (hl_add n p) = 1) (m + p < n + p) (hl_lt m n = 1) (m < n) (iffEL (hl_lt (hl_add m p) (hl_add n p) = 1) (m + p < n + p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_lt (hl_add m p) (hl_add n p) = 1 <-> m + p < hl__u) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl__u < hl_add n p) ((hl_lt_compat) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp) (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))))) (iffER (hl_lt (hl_add m p) (hl_add n p) = 1) (m + p < n + p) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_lt (hl_add m p) (hl_add n p) = 1 <-> m + p < hl__u) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_add m p) (hl_add n p) = 1 <-> hl__u < hl_add n p) ((hl_lt_compat) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp) (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp))))) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))))))))) HL).
+Qed.
+Theorem LT_ADD_RCANCEL : forall m n p :e omega, m + p < n + p <-> m < n.
+exact (LT_ADD_RCANCEL_bridge hlt_LT_ADD_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:542 / LE_ADD2   (hash md5:199e7302a6920e8a106f4669706b742c)
+Theorem hlt_LE_ADD2 : forall m n p q :e omega, hl_le m p = 1 /\ hl_le n q = 1 -> hl_le (hl_add m n) (hl_add p q) = 1.
+Admitted.
+Theorem LE_ADD2_bridge : (forall m n p q :e omega, hl_le m p = 1 /\ hl_le n q = 1 -> hl_le (hl_add m n) (hl_add p q) = 1) -> (forall m n p q :e omega, m <= p /\ n <= q -> m + n <= p + q).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p q :e omega, hl_le m p = 1 /\ hl_le n q = 1 -> hl_le (hl_add m n) (hl_add p q) = 1) (fun m => forall n p q :e omega, m <= p /\ n <= q -> m + n <= p + q) (fun m Hm => (imp_forall_in (omega) (fun n => forall p q :e omega, hl_le m p = 1 /\ hl_le n q = 1 -> hl_le (hl_add m n) (hl_add p q) = 1) (fun n => forall p q :e omega, m <= p /\ n <= q -> m + n <= p + q) (fun n Hn => (imp_forall_in (omega) (fun p => forall q :e omega, hl_le m p = 1 /\ hl_le n q = 1 -> hl_le (hl_add m n) (hl_add p q) = 1) (fun p => forall q :e omega, m <= p /\ n <= q -> m + n <= p + q) (fun p Hp => (imp_forall_in (omega) (fun q => hl_le m p = 1 /\ hl_le n q = 1 -> hl_le (hl_add m n) (hl_add p q) = 1) (fun q => m <= p /\ n <= q -> m + n <= p + q) (fun q Hq => (imp_imp (hl_le m p = 1 /\ hl_le n q = 1) (m <= p /\ n <= q) (hl_le (hl_add m n) (hl_add p q) = 1) (m + n <= p + q) (imp_and (m <= p) (hl_le m p = 1) (n <= q) (hl_le n q = 1) (iffER (hl_le m p = 1) (m <= p) ((hl_le_compat) (m) Hm (p) Hp)) (iffER (hl_le n q = 1) (n <= q) ((hl_le_compat) (n) Hn (q) Hq))) (iffEL (hl_le (hl_add m n) (hl_add p q) = 1) (m + n <= p + q) (((hl_add_compat) (p) Hp (q) Hq) (fun hl__u hl__v => hl_le (hl_add m n) (hl_add p q) = 1 <-> m + n <= hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le (hl_add m n) (hl_add p q) = 1 <-> hl__u <= hl_add p q) ((hl_le_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add p q) (setexp_ap (omega) (omega) (hl_add p) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (p) Hp) (q) Hq)))))))))))))) HL).
+Qed.
+Theorem LE_ADD2 : forall m n p q :e omega, m <= p /\ n <= q -> m + n <= p + q.
+exact (LE_ADD2_bridge hlt_LE_ADD2).
+Admitted.
+
+// HOL Light: arith.ml:549 / LET_ADD2   (hash md5:ab3a628a9fdaf57ebebc8a891a9f7283)
+Theorem hlt_LET_ADD2 : forall m n p q :e omega, hl_le m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1.
+Admitted.
+Theorem LET_ADD2_bridge : (forall m n p q :e omega, hl_le m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) -> (forall m n p q :e omega, m <= p /\ n < q -> m + n < p + q).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p q :e omega, hl_le m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun m => forall n p q :e omega, m <= p /\ n < q -> m + n < p + q) (fun m Hm => (imp_forall_in (omega) (fun n => forall p q :e omega, hl_le m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun n => forall p q :e omega, m <= p /\ n < q -> m + n < p + q) (fun n Hn => (imp_forall_in (omega) (fun p => forall q :e omega, hl_le m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun p => forall q :e omega, m <= p /\ n < q -> m + n < p + q) (fun p Hp => (imp_forall_in (omega) (fun q => hl_le m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun q => m <= p /\ n < q -> m + n < p + q) (fun q Hq => (imp_imp (hl_le m p = 1 /\ hl_lt n q = 1) (m <= p /\ n < q) (hl_lt (hl_add m n) (hl_add p q) = 1) (m + n < p + q) (imp_and (m <= p) (hl_le m p = 1) (n < q) (hl_lt n q = 1) (iffER (hl_le m p = 1) (m <= p) ((hl_le_compat) (m) Hm (p) Hp)) (iffER (hl_lt n q = 1) (n < q) ((hl_lt_compat) (n) Hn (q) Hq))) (iffEL (hl_lt (hl_add m n) (hl_add p q) = 1) (m + n < p + q) (((hl_add_compat) (p) Hp (q) Hq) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add p q) = 1 <-> m + n < hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add p q) = 1 <-> hl__u < hl_add p q) ((hl_lt_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add p q) (setexp_ap (omega) (omega) (hl_add p) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (p) Hp) (q) Hq)))))))))))))) HL).
+Qed.
+Theorem LET_ADD2 : forall m n p q :e omega, m <= p /\ n < q -> m + n < p + q.
+exact (LET_ADD2_bridge hlt_LET_ADD2).
+Admitted.
+
+// HOL Light: arith.ml:556 / LTE_ADD2   (hash md5:eca59434b3f60565d8696ea7f890e41b)
+Theorem hlt_LTE_ADD2 : forall m n p q :e omega, hl_lt m p = 1 /\ hl_le n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1.
+Admitted.
+Theorem LTE_ADD2_bridge : (forall m n p q :e omega, hl_lt m p = 1 /\ hl_le n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) -> (forall m n p q :e omega, m < p /\ n <= q -> m + n < p + q).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p q :e omega, hl_lt m p = 1 /\ hl_le n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun m => forall n p q :e omega, m < p /\ n <= q -> m + n < p + q) (fun m Hm => (imp_forall_in (omega) (fun n => forall p q :e omega, hl_lt m p = 1 /\ hl_le n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun n => forall p q :e omega, m < p /\ n <= q -> m + n < p + q) (fun n Hn => (imp_forall_in (omega) (fun p => forall q :e omega, hl_lt m p = 1 /\ hl_le n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun p => forall q :e omega, m < p /\ n <= q -> m + n < p + q) (fun p Hp => (imp_forall_in (omega) (fun q => hl_lt m p = 1 /\ hl_le n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun q => m < p /\ n <= q -> m + n < p + q) (fun q Hq => (imp_imp (hl_lt m p = 1 /\ hl_le n q = 1) (m < p /\ n <= q) (hl_lt (hl_add m n) (hl_add p q) = 1) (m + n < p + q) (imp_and (m < p) (hl_lt m p = 1) (n <= q) (hl_le n q = 1) (iffER (hl_lt m p = 1) (m < p) ((hl_lt_compat) (m) Hm (p) Hp)) (iffER (hl_le n q = 1) (n <= q) ((hl_le_compat) (n) Hn (q) Hq))) (iffEL (hl_lt (hl_add m n) (hl_add p q) = 1) (m + n < p + q) (((hl_add_compat) (p) Hp (q) Hq) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add p q) = 1 <-> m + n < hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add p q) = 1 <-> hl__u < hl_add p q) ((hl_lt_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add p q) (setexp_ap (omega) (omega) (hl_add p) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (p) Hp) (q) Hq)))))))))))))) HL).
+Qed.
+Theorem LTE_ADD2 : forall m n p q :e omega, m < p /\ n <= q -> m + n < p + q.
+exact (LTE_ADD2_bridge hlt_LTE_ADD2).
+Admitted.
+
+// HOL Light: arith.ml:561 / LT_ADD2   (hash md5:4598367f7af7148a02f8286759aef625)
+Theorem hlt_LT_ADD2 : forall m n p q :e omega, hl_lt m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1.
+Admitted.
+Theorem LT_ADD2_bridge : (forall m n p q :e omega, hl_lt m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) -> (forall m n p q :e omega, m < p /\ n < q -> m + n < p + q).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p q :e omega, hl_lt m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun m => forall n p q :e omega, m < p /\ n < q -> m + n < p + q) (fun m Hm => (imp_forall_in (omega) (fun n => forall p q :e omega, hl_lt m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun n => forall p q :e omega, m < p /\ n < q -> m + n < p + q) (fun n Hn => (imp_forall_in (omega) (fun p => forall q :e omega, hl_lt m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun p => forall q :e omega, m < p /\ n < q -> m + n < p + q) (fun p Hp => (imp_forall_in (omega) (fun q => hl_lt m p = 1 /\ hl_lt n q = 1 -> hl_lt (hl_add m n) (hl_add p q) = 1) (fun q => m < p /\ n < q -> m + n < p + q) (fun q Hq => (imp_imp (hl_lt m p = 1 /\ hl_lt n q = 1) (m < p /\ n < q) (hl_lt (hl_add m n) (hl_add p q) = 1) (m + n < p + q) (imp_and (m < p) (hl_lt m p = 1) (n < q) (hl_lt n q = 1) (iffER (hl_lt m p = 1) (m < p) ((hl_lt_compat) (m) Hm (p) Hp)) (iffER (hl_lt n q = 1) (n < q) ((hl_lt_compat) (n) Hn (q) Hq))) (iffEL (hl_lt (hl_add m n) (hl_add p q) = 1) (m + n < p + q) (((hl_add_compat) (p) Hp (q) Hq) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add p q) = 1 <-> m + n < hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_add m n) (hl_add p q) = 1 <-> hl__u < hl_add p q) ((hl_lt_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add p q) (setexp_ap (omega) (omega) (hl_add p) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (p) Hp) (q) Hq)))))))))))))) HL).
+Qed.
+Theorem LT_ADD2 : forall m n p q :e omega, m < p /\ n < q -> m + n < p + q.
+exact (LT_ADD2_bridge hlt_LT_ADD2).
+Admitted.
+
+// HOL Light: arith.ml:571 / LT_MULT   (hash md5:00d2cb47234fe80ebae2754a216082c5)
+Theorem hlt_LT_MULT : forall m n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1 /\ hl_lt (hl_NUMERAL hl_zero) n = 1.
+Admitted.
+Theorem LT_MULT_bridge : (forall m n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1 /\ hl_lt (hl_NUMERAL hl_zero) n = 1) -> (forall m n :e omega, 0 < m * n <-> 0 < m /\ 0 < n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1 /\ hl_lt (hl_NUMERAL hl_zero) n = 1) (fun m => forall n :e omega, 0 < m * n <-> 0 < m /\ 0 < n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> hl_lt (hl_NUMERAL hl_zero) m = 1 /\ hl_lt (hl_NUMERAL hl_zero) n = 1) (fun n => 0 < m * n <-> 0 < m /\ 0 < n) (fun n Hn => (imp_iff (hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1) (0 < m * n) (hl_lt (hl_NUMERAL hl_zero) m = 1 /\ hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < m /\ 0 < n) (iffEL (hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1) (0 < m * n) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> 0 < hl__u) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> hl__u < hl_mul m n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn))))) (iffER (hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1) (0 < m * n) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> 0 < hl__u) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_mul m n) = 1 <-> hl__u < hl_mul m n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn))))) (imp_and (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < m) (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) (iffEL (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) m = 1 <-> hl__u < m) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (m) Hm))) (iffEL (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn)))) (imp_and (0 < m) (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < n) (hl_lt (hl_NUMERAL hl_zero) n = 1) (iffER (hl_lt (hl_NUMERAL hl_zero) m = 1) (0 < m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) m = 1 <-> hl__u < m) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (m) Hm))) (iffER (hl_lt (hl_NUMERAL hl_zero) n = 1) (0 < n) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) n = 1 <-> hl__u < n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (n) Hn))))))))) HL).
+Qed.
+Theorem LT_MULT : forall m n :e omega, 0 < m * n <-> 0 < m /\ 0 < n.
+exact (LT_MULT_bridge hlt_LT_MULT).
+Admitted.
+
+// HOL Light: arith.ml:575 / LE_MULT2   (hash md5:61fb834e583250adccf9c6f2a434a5af)
+Theorem hlt_LE_MULT2 : forall m n p q :e omega, hl_le m n = 1 /\ hl_le p q = 1 -> hl_le (hl_mul m p) (hl_mul n q) = 1.
+Admitted.
+Theorem LE_MULT2_bridge : (forall m n p q :e omega, hl_le m n = 1 /\ hl_le p q = 1 -> hl_le (hl_mul m p) (hl_mul n q) = 1) -> (forall m n p q :e omega, m <= n /\ p <= q -> m * p <= n * q).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p q :e omega, hl_le m n = 1 /\ hl_le p q = 1 -> hl_le (hl_mul m p) (hl_mul n q) = 1) (fun m => forall n p q :e omega, m <= n /\ p <= q -> m * p <= n * q) (fun m Hm => (imp_forall_in (omega) (fun n => forall p q :e omega, hl_le m n = 1 /\ hl_le p q = 1 -> hl_le (hl_mul m p) (hl_mul n q) = 1) (fun n => forall p q :e omega, m <= n /\ p <= q -> m * p <= n * q) (fun n Hn => (imp_forall_in (omega) (fun p => forall q :e omega, hl_le m n = 1 /\ hl_le p q = 1 -> hl_le (hl_mul m p) (hl_mul n q) = 1) (fun p => forall q :e omega, m <= n /\ p <= q -> m * p <= n * q) (fun p Hp => (imp_forall_in (omega) (fun q => hl_le m n = 1 /\ hl_le p q = 1 -> hl_le (hl_mul m p) (hl_mul n q) = 1) (fun q => m <= n /\ p <= q -> m * p <= n * q) (fun q Hq => (imp_imp (hl_le m n = 1 /\ hl_le p q = 1) (m <= n /\ p <= q) (hl_le (hl_mul m p) (hl_mul n q) = 1) (m * p <= n * q) (imp_and (m <= n) (hl_le m n = 1) (p <= q) (hl_le p q = 1) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le p q = 1) (p <= q) ((hl_le_compat) (p) Hp (q) Hq))) (iffEL (hl_le (hl_mul m p) (hl_mul n q) = 1) (m * p <= n * q) (((hl_mul_compat) (n) Hn (q) Hq) (fun hl__u hl__v => hl_le (hl_mul m p) (hl_mul n q) = 1 <-> m * p <= hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m p) (hl_mul n q) = 1 <-> hl__u <= hl_mul n q) ((hl_le_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n q) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (q) Hq)))))))))))))) HL).
+Qed.
+Theorem LE_MULT2 : forall m n p q :e omega, m <= n /\ p <= q -> m * p <= n * q.
+exact (LE_MULT2_bridge hlt_LE_MULT2).
+Admitted.
+
+// HOL Light: arith.ml:584 / LT_LMULT   (hash md5:5dcee080a2851fb186a6dd59f8b365f3)
+Theorem hlt_LT_LMULT : forall m n p :e omega, ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1 -> hl_lt (hl_mul m n) (hl_mul m p) = 1.
+Admitted.
+Theorem LT_LMULT_bridge : (forall m n p :e omega, ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1 -> hl_lt (hl_mul m n) (hl_mul m p) = 1) -> (forall m n p :e omega, ~ m = 0 /\ n < p -> m * n < m * p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1 -> hl_lt (hl_mul m n) (hl_mul m p) = 1) (fun m => forall n p :e omega, ~ m = 0 /\ n < p -> m * n < m * p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1 -> hl_lt (hl_mul m n) (hl_mul m p) = 1) (fun n => forall p :e omega, ~ m = 0 /\ n < p -> m * n < m * p) (fun n Hn => (imp_forall_in (omega) (fun p => ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1 -> hl_lt (hl_mul m n) (hl_mul m p) = 1) (fun p => ~ m = 0 /\ n < p -> m * n < m * p) (fun p Hp => (imp_imp (~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1) (~ m = 0 /\ n < p) (hl_lt (hl_mul m n) (hl_mul m p) = 1) (m * n < m * p) (imp_and (~ m = 0) (~ m = hl_NUMERAL hl_zero) (n < p) (hl_lt n p = 1) (imp_not (m = 0) (m = hl_NUMERAL hl_zero) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (iffER (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp))) (iffEL (hl_lt (hl_mul m n) (hl_mul m p) = 1) (m * n < m * p) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> m * n < hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> hl__u < hl_mul m p) ((hl_lt_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp)))))))))))) HL).
+Qed.
+Theorem LT_LMULT : forall m n p :e omega, ~ m = 0 /\ n < p -> m * n < m * p.
+exact (LT_LMULT_bridge hlt_LT_LMULT).
+Admitted.
+
+// HOL Light: arith.ml:590 / LE_MULT_LCANCEL   (hash md5:8c8353caf459eb2e8bd8beddecc8bb62)
+Theorem hlt_LE_MULT_LCANCEL : forall m n p :e omega, hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m = hl_NUMERAL hl_zero \/ hl_le n p = 1.
+Admitted.
+Theorem LE_MULT_LCANCEL_bridge : (forall m n p :e omega, hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m = hl_NUMERAL hl_zero \/ hl_le n p = 1) -> (forall m n p :e omega, m * n <= m * p <-> m = 0 \/ n <= p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m = hl_NUMERAL hl_zero \/ hl_le n p = 1) (fun m => forall n p :e omega, m * n <= m * p <-> m = 0 \/ n <= p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m = hl_NUMERAL hl_zero \/ hl_le n p = 1) (fun n => forall p :e omega, m * n <= m * p <-> m = 0 \/ n <= p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m = hl_NUMERAL hl_zero \/ hl_le n p = 1) (fun p => m * n <= m * p <-> m = 0 \/ n <= p) (fun p Hp => (imp_iff (hl_le (hl_mul m n) (hl_mul m p) = 1) (m * n <= m * p) (m = hl_NUMERAL hl_zero \/ hl_le n p = 1) (m = 0 \/ n <= p) (iffEL (hl_le (hl_mul m n) (hl_mul m p) = 1) (m * n <= m * p) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m * n <= hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le (hl_mul m n) (hl_mul m p) = 1 <-> hl__u <= hl_mul m p) ((hl_le_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp))))) (iffER (hl_le (hl_mul m n) (hl_mul m p) = 1) (m * n <= m * p) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m n) (hl_mul m p) = 1 <-> m * n <= hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_le (hl_mul m n) (hl_mul m p) = 1 <-> hl__u <= hl_mul m p) ((hl_le_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp))))) (imp_or (m = hl_NUMERAL hl_zero) (m = 0) (hl_le n p = 1) (n <= p) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (iffEL (hl_le n p = 1) (n <= p) ((hl_le_compat) (n) Hn (p) Hp))) (imp_or (m = 0) (m = hl_NUMERAL hl_zero) (n <= p) (hl_le n p = 1) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (iffER (hl_le n p = 1) (n <= p) ((hl_le_compat) (n) Hn (p) Hp)))))))))) HL).
+Qed.
+Theorem LE_MULT_LCANCEL : forall m n p :e omega, m * n <= m * p <-> m = 0 \/ n <= p.
+exact (LE_MULT_LCANCEL_bridge hlt_LE_MULT_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:598 / LE_MULT_RCANCEL   (hash md5:e879f0f88234a269219be70f19933ef4)
+Theorem hlt_LE_MULT_RCANCEL : forall m n p :e omega, hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl_le m n = 1 \/ p = hl_NUMERAL hl_zero.
+Admitted.
+Theorem LE_MULT_RCANCEL_bridge : (forall m n p :e omega, hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl_le m n = 1 \/ p = hl_NUMERAL hl_zero) -> (forall m n p :e omega, m * p <= n * p <-> m <= n \/ p = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl_le m n = 1 \/ p = hl_NUMERAL hl_zero) (fun m => forall n p :e omega, m * p <= n * p <-> m <= n \/ p = 0) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl_le m n = 1 \/ p = hl_NUMERAL hl_zero) (fun n => forall p :e omega, m * p <= n * p <-> m <= n \/ p = 0) (fun n Hn => (imp_forall_in (omega) (fun p => hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl_le m n = 1 \/ p = hl_NUMERAL hl_zero) (fun p => m * p <= n * p <-> m <= n \/ p = 0) (fun p Hp => (imp_iff (hl_le (hl_mul m p) (hl_mul n p) = 1) (m * p <= n * p) (hl_le m n = 1 \/ p = hl_NUMERAL hl_zero) (m <= n \/ p = 0) (iffEL (hl_le (hl_mul m p) (hl_mul n p) = 1) (m * p <= n * p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m p) (hl_mul n p) = 1 <-> m * p <= hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl__u <= hl_mul n p) ((hl_le_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))))) (iffER (hl_le (hl_mul m p) (hl_mul n p) = 1) (m * p <= n * p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m p) (hl_mul n p) = 1 <-> m * p <= hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_le (hl_mul m p) (hl_mul n p) = 1 <-> hl__u <= hl_mul n p) ((hl_le_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))))) (imp_or (hl_le m n = 1) (m <= n) (p = hl_NUMERAL hl_zero) (p = 0) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_eq (p) (p) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (m <= n) (hl_le m n = 1) (p = 0) (p = hl_NUMERAL hl_zero) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_eq (p) (p) (0) (hl_NUMERAL hl_zero) (eq_sym_i (p) (p) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))) HL).
+Qed.
+Theorem LE_MULT_RCANCEL : forall m n p :e omega, m * p <= n * p <-> m <= n \/ p = 0.
+exact (LE_MULT_RCANCEL_bridge hlt_LE_MULT_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:603 / LT_MULT_LCANCEL   (hash md5:13c9c14490d8af402a1f801304f274d0)
+Theorem hlt_LT_MULT_LCANCEL : forall m n p :e omega, hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1.
+Admitted.
+Theorem LT_MULT_LCANCEL_bridge : (forall m n p :e omega, hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1) -> (forall m n p :e omega, m * n < m * p <-> ~ m = 0 /\ n < p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1) (fun m => forall n p :e omega, m * n < m * p <-> ~ m = 0 /\ n < p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1) (fun n => forall p :e omega, m * n < m * p <-> ~ m = 0 /\ n < p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> ~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1) (fun p => m * n < m * p <-> ~ m = 0 /\ n < p) (fun p Hp => (imp_iff (hl_lt (hl_mul m n) (hl_mul m p) = 1) (m * n < m * p) (~ m = hl_NUMERAL hl_zero /\ hl_lt n p = 1) (~ m = 0 /\ n < p) (iffEL (hl_lt (hl_mul m n) (hl_mul m p) = 1) (m * n < m * p) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> m * n < hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> hl__u < hl_mul m p) ((hl_lt_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp))))) (iffER (hl_lt (hl_mul m n) (hl_mul m p) = 1) (m * n < m * p) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> m * n < hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_lt (hl_mul m n) (hl_mul m p) = 1 <-> hl__u < hl_mul m p) ((hl_lt_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp))))) (imp_and (~ m = hl_NUMERAL hl_zero) (~ m = 0) (hl_lt n p = 1) (n < p) (imp_not (m = hl_NUMERAL hl_zero) (m = 0) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (iffEL (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp))) (imp_and (~ m = 0) (~ m = hl_NUMERAL hl_zero) (n < p) (hl_lt n p = 1) (imp_not (m = 0) (m = hl_NUMERAL hl_zero) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (iffER (hl_lt n p = 1) (n < p) ((hl_lt_compat) (n) Hn (p) Hp)))))))))) HL).
+Qed.
+Theorem LT_MULT_LCANCEL : forall m n p :e omega, m * n < m * p <-> ~ m = 0 /\ n < p.
+exact (LT_MULT_LCANCEL_bridge hlt_LT_MULT_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:611 / LT_MULT_RCANCEL   (hash md5:cfc72f0045fc06bba0b3d54f667b0ced)
+Theorem hlt_LT_MULT_RCANCEL : forall m n p :e omega, hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl_lt m n = 1 /\ ~ p = hl_NUMERAL hl_zero.
+Admitted.
+Theorem LT_MULT_RCANCEL_bridge : (forall m n p :e omega, hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl_lt m n = 1 /\ ~ p = hl_NUMERAL hl_zero) -> (forall m n p :e omega, m * p < n * p <-> m < n /\ ~ p = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl_lt m n = 1 /\ ~ p = hl_NUMERAL hl_zero) (fun m => forall n p :e omega, m * p < n * p <-> m < n /\ ~ p = 0) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl_lt m n = 1 /\ ~ p = hl_NUMERAL hl_zero) (fun n => forall p :e omega, m * p < n * p <-> m < n /\ ~ p = 0) (fun n Hn => (imp_forall_in (omega) (fun p => hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl_lt m n = 1 /\ ~ p = hl_NUMERAL hl_zero) (fun p => m * p < n * p <-> m < n /\ ~ p = 0) (fun p Hp => (imp_iff (hl_lt (hl_mul m p) (hl_mul n p) = 1) (m * p < n * p) (hl_lt m n = 1 /\ ~ p = hl_NUMERAL hl_zero) (m < n /\ ~ p = 0) (iffEL (hl_lt (hl_mul m p) (hl_mul n p) = 1) (m * p < n * p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> m * p < hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl__u < hl_mul n p) ((hl_lt_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))))) (iffER (hl_lt (hl_mul m p) (hl_mul n p) = 1) (m * p < n * p) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> m * p < hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m p) (hl_mul n p) = 1 <-> hl__u < hl_mul n p) ((hl_lt_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))))) (imp_and (hl_lt m n = 1) (m < n) (~ p = hl_NUMERAL hl_zero) (~ p = 0) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_not (p = hl_NUMERAL hl_zero) (p = 0) (imp_eq (p) (p) (0) (hl_NUMERAL hl_zero) (eq_sym_i (p) (p) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))) (imp_and (m < n) (hl_lt m n = 1) (~ p = 0) (~ p = hl_NUMERAL hl_zero) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_not (p = 0) (p = hl_NUMERAL hl_zero) (imp_eq (p) (p) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))) HL).
+Qed.
+Theorem LT_MULT_RCANCEL : forall m n p :e omega, m * p < n * p <-> m < n /\ ~ p = 0.
+exact (LT_MULT_RCANCEL_bridge hlt_LT_MULT_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:616 / LT_MULT2   (hash md5:081abee57d32773858c249239a70dab0)
+Theorem hlt_LT_MULT2 : forall m n p q :e omega, hl_lt m n = 1 /\ hl_lt p q = 1 -> hl_lt (hl_mul m p) (hl_mul n q) = 1.
+Admitted.
+Theorem LT_MULT2_bridge : (forall m n p q :e omega, hl_lt m n = 1 /\ hl_lt p q = 1 -> hl_lt (hl_mul m p) (hl_mul n q) = 1) -> (forall m n p q :e omega, m < n /\ p < q -> m * p < n * q).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p q :e omega, hl_lt m n = 1 /\ hl_lt p q = 1 -> hl_lt (hl_mul m p) (hl_mul n q) = 1) (fun m => forall n p q :e omega, m < n /\ p < q -> m * p < n * q) (fun m Hm => (imp_forall_in (omega) (fun n => forall p q :e omega, hl_lt m n = 1 /\ hl_lt p q = 1 -> hl_lt (hl_mul m p) (hl_mul n q) = 1) (fun n => forall p q :e omega, m < n /\ p < q -> m * p < n * q) (fun n Hn => (imp_forall_in (omega) (fun p => forall q :e omega, hl_lt m n = 1 /\ hl_lt p q = 1 -> hl_lt (hl_mul m p) (hl_mul n q) = 1) (fun p => forall q :e omega, m < n /\ p < q -> m * p < n * q) (fun p Hp => (imp_forall_in (omega) (fun q => hl_lt m n = 1 /\ hl_lt p q = 1 -> hl_lt (hl_mul m p) (hl_mul n q) = 1) (fun q => m < n /\ p < q -> m * p < n * q) (fun q Hq => (imp_imp (hl_lt m n = 1 /\ hl_lt p q = 1) (m < n /\ p < q) (hl_lt (hl_mul m p) (hl_mul n q) = 1) (m * p < n * q) (imp_and (m < n) (hl_lt m n = 1) (p < q) (hl_lt p q = 1) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_lt p q = 1) (p < q) ((hl_lt_compat) (p) Hp (q) Hq))) (iffEL (hl_lt (hl_mul m p) (hl_mul n q) = 1) (m * p < n * q) (((hl_mul_compat) (n) Hn (q) Hq) (fun hl__u hl__v => hl_lt (hl_mul m p) (hl_mul n q) = 1 <-> m * p < hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_lt (hl_mul m p) (hl_mul n q) = 1 <-> hl__u < hl_mul n q) ((hl_lt_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n q) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (q) Hq)))))))))))))) HL).
+Qed.
+Theorem LT_MULT2 : forall m n p q :e omega, m < n /\ p < q -> m * p < n * q.
+exact (LT_MULT2_bridge hlt_LT_MULT2).
+Admitted.
+
+// HOL Light: arith.ml:623 / LE_SQUARE_REFL   (hash md5:39d69f4ed6fd8f70098b2c85f5801823)
+Theorem hlt_LE_SQUARE_REFL : forall n :e omega, hl_le n (hl_mul n n) = 1.
+Admitted.
+Theorem LE_SQUARE_REFL_bridge : (forall n :e omega, hl_le n (hl_mul n n) = 1) -> (forall n :e omega, n <= n * n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_le n (hl_mul n n) = 1) (fun n => n <= n * n) (fun n Hn => (iffEL (hl_le n (hl_mul n n) = 1) (n <= n * n) (((hl_mul_compat) (n) Hn (n) Hn) (fun hl__u hl__v => hl_le n (hl_mul n n) = 1 <-> n <= hl__u) ((hl_le_compat) (n) Hn (hl_mul n n) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (n) Hn)))))) HL).
+Qed.
+Theorem LE_SQUARE_REFL : forall n :e omega, n <= n * n.
+exact (LE_SQUARE_REFL_bridge hlt_LE_SQUARE_REFL).
+Admitted.
+
+// HOL Light: arith.ml:627 / LT_POW2_REFL   (hash md5:62e3e29f8fa4b8ef7383e76cf1ba436b)
+Theorem hlt_LT_POW2_REFL : forall n :e omega, hl_lt n (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1.
+Admitted.
+Theorem LT_POW2_REFL_bridge : (forall n :e omega, hl_lt n (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1) -> (forall n :e omega, n < 2 ^ n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_lt n (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1) (fun n => n < 2 ^ n) (fun n Hn => (iffEL (hl_lt n (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1) (n < 2 ^ n) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl__u ^ n) ((hl_EXP_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (n) Hn)) (fun hl__u hl__v => hl_lt n (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1 <-> n < hl__u) ((hl_lt_compat) (n) Hn (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (setexp_ap (omega) (omega) (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (n) Hn)))))) HL).
+Qed.
+Theorem LT_POW2_REFL : forall n :e omega, n < 2 ^ n.
+exact (LT_POW2_REFL_bridge hlt_LT_POW2_REFL).
+Admitted.
+
+// HOL Light: arith.ml:638 / WLOG_LE   (hash md5:22c2c6603c7056b533e4c8dd2b677170)
+Theorem hlt_WLOG_LE : forall P :e 2 :^: omega :^: omega, (forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_le m n = 1 -> P m n = 1) -> forall m n :e omega, P m n = 1.
+Admitted.
+Theorem WLOG_LE_bridge : (forall P :e 2 :^: omega :^: omega, (forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_le m n = 1 -> P m n = 1) -> forall m n :e omega, P m n = 1) -> (forall P:set -> set -> prop, (forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m <= n -> P m n) -> forall m n :e omega, P m n).
+exact (fun HL => (imp_forall_pred2 (omega) (omega) (fun P => (forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_le m n = 1 -> P m n = 1) -> forall m n :e omega, P m n = 1) (fun P => (forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m <= n -> P m n) -> forall m n :e omega, P m n) (fun P => (imp_imp ((forall m n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) /\ forall m n :e omega, hl_le m n = 1 -> hl_chip2 omega omega P m n = 1) ((forall m n :e omega, P m n <-> P n m) /\ forall m n :e omega, m <= n -> P m n) (forall m n :e omega, hl_chip2 omega omega P m n = 1) (forall m n :e omega, P m n) (imp_and (forall m n :e omega, P m n <-> P n m) (forall m n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) (forall m n :e omega, m <= n -> P m n) (forall m n :e omega, hl_le m n = 1 -> hl_chip2 omega omega P m n = 1) (imp_forall_in (omega) (fun m => forall n :e omega, P m n <-> P n m) (fun m => forall n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) (fun m Hm => (imp_forall_in (omega) (fun n => P m n <-> P n m) (fun n => hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) (fun n Hn => (imp_iff (P m n) (hl_chip2 omega omega P m n = 1) (P n m) (hl_chip2 omega omega P n m = 1) (iffER (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn)) (iffEL (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn)) (iffER (hl_chip2 omega omega P n m = 1) (P n m) ((hl_chip2_iff (omega) (omega) P) (n) Hn (m) Hm)) (iffEL (hl_chip2 omega omega P n m = 1) (P n m) ((hl_chip2_iff (omega) (omega) P) (n) Hn (m) Hm))))))) (imp_forall_in (omega) (fun m => forall n :e omega, m <= n -> P m n) (fun m => forall n :e omega, hl_le m n = 1 -> hl_chip2 omega omega P m n = 1) (fun m Hm => (imp_forall_in (omega) (fun n => m <= n -> P m n) (fun n => hl_le m n = 1 -> hl_chip2 omega omega P m n = 1) (fun n Hn => (imp_imp (m <= n) (hl_le m n = 1) (P m n) (hl_chip2 omega omega P m n = 1) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn)))))))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_chip2 omega omega P m n = 1) (fun m => forall n :e omega, P m n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_chip2 omega omega P m n = 1) (fun n => P m n) (fun n Hn => (iffEL (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn))))))))) HL).
+Qed.
+Theorem WLOG_LE : forall P:set -> set -> prop, (forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m <= n -> P m n) -> forall m n :e omega, P m n.
+exact (WLOG_LE_bridge hlt_WLOG_LE).
+Admitted.
+
+// HOL Light: arith.ml:642 / WLOG_LT   (hash md5:aeb3f364a35f142a7c600d190963b020)
+Theorem hlt_WLOG_LT : forall P :e 2 :^: omega :^: omega, (forall m :e omega, P m m = 1) /\ ((forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_lt m n = 1 -> P m n = 1)) -> forall m y :e omega, P m y = 1.
+Admitted.
+Theorem WLOG_LT_bridge : (forall P :e 2 :^: omega :^: omega, (forall m :e omega, P m m = 1) /\ ((forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_lt m n = 1 -> P m n = 1)) -> forall m y :e omega, P m y = 1) -> (forall P:set -> set -> prop, (forall m :e omega, P m m) /\ ((forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m < n -> P m n)) -> forall m y :e omega, P m y).
+exact (fun HL => (imp_forall_pred2 (omega) (omega) (fun P => (forall m :e omega, P m m = 1) /\ ((forall m n :e omega, P m n = 1 <-> P n m = 1) /\ (forall m n :e omega, hl_lt m n = 1 -> P m n = 1)) -> forall m y :e omega, P m y = 1) (fun P => (forall m :e omega, P m m) /\ ((forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m < n -> P m n)) -> forall m y :e omega, P m y) (fun P => (imp_imp ((forall m :e omega, hl_chip2 omega omega P m m = 1) /\ ((forall m n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) /\ forall m n :e omega, hl_lt m n = 1 -> hl_chip2 omega omega P m n = 1)) ((forall m :e omega, P m m) /\ ((forall m n :e omega, P m n <-> P n m) /\ forall m n :e omega, m < n -> P m n)) (forall m y :e omega, hl_chip2 omega omega P m y = 1) (forall m y :e omega, P m y) (imp_and (forall m :e omega, P m m) (forall m :e omega, hl_chip2 omega omega P m m = 1) ((forall m n :e omega, P m n <-> P n m) /\ forall m n :e omega, m < n -> P m n) ((forall m n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) /\ forall m n :e omega, hl_lt m n = 1 -> hl_chip2 omega omega P m n = 1) (imp_forall_in (omega) (fun m => P m m) (fun m => hl_chip2 omega omega P m m = 1) (fun m Hm => (iffER (hl_chip2 omega omega P m m = 1) (P m m) ((hl_chip2_iff (omega) (omega) P) (m) Hm (m) Hm)))) (imp_and (forall m n :e omega, P m n <-> P n m) (forall m n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) (forall m n :e omega, m < n -> P m n) (forall m n :e omega, hl_lt m n = 1 -> hl_chip2 omega omega P m n = 1) (imp_forall_in (omega) (fun m => forall n :e omega, P m n <-> P n m) (fun m => forall n :e omega, hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) (fun m Hm => (imp_forall_in (omega) (fun n => P m n <-> P n m) (fun n => hl_chip2 omega omega P m n = 1 <-> hl_chip2 omega omega P n m = 1) (fun n Hn => (imp_iff (P m n) (hl_chip2 omega omega P m n = 1) (P n m) (hl_chip2 omega omega P n m = 1) (iffER (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn)) (iffEL (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn)) (iffER (hl_chip2 omega omega P n m = 1) (P n m) ((hl_chip2_iff (omega) (omega) P) (n) Hn (m) Hm)) (iffEL (hl_chip2 omega omega P n m = 1) (P n m) ((hl_chip2_iff (omega) (omega) P) (n) Hn (m) Hm))))))) (imp_forall_in (omega) (fun m => forall n :e omega, m < n -> P m n) (fun m => forall n :e omega, hl_lt m n = 1 -> hl_chip2 omega omega P m n = 1) (fun m Hm => (imp_forall_in (omega) (fun n => m < n -> P m n) (fun n => hl_lt m n = 1 -> hl_chip2 omega omega P m n = 1) (fun n Hn => (imp_imp (m < n) (hl_lt m n = 1) (P m n) (hl_chip2 omega omega P m n = 1) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffER (hl_chip2 omega omega P m n = 1) (P m n) ((hl_chip2_iff (omega) (omega) P) (m) Hm (n) Hn))))))))) (imp_forall_in (omega) (fun m => forall y :e omega, hl_chip2 omega omega P m y = 1) (fun m => forall y :e omega, P m y) (fun m Hm => (imp_forall_in (omega) (fun y => hl_chip2 omega omega P m y = 1) (fun y => P m y) (fun y Hy => (iffEL (hl_chip2 omega omega P m y = 1) (P m y) ((hl_chip2_iff (omega) (omega) P) (m) Hm (y) Hy))))))))) HL).
+Qed.
+Theorem WLOG_LT : forall P:set -> set -> prop, (forall m :e omega, P m m) /\ ((forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m < n -> P m n)) -> forall m y :e omega, P m y.
+exact (WLOG_LT_bridge hlt_WLOG_LT).
+Admitted.
+
+// HOL Light: arith.ml:647 / WLOG_LE_3   (hash md5:b76bd331cefde9dcfa7d477ddf0293d3)
+// not bridged: 
+Theorem WLOG_LE_3 : forall P:set -> set -> set -> prop, (forall x y z :e omega, P x y z -> P y x z /\ P x z y) /\ (forall x y z :e omega, x <= y /\ y <= z -> P x y z) -> forall x y z :e omega, P x y z.
+Admitted.
+
+// HOL Light: arith.ml:657 / num_WF   (hash md5:c8e9e8a8b44e66cefba87747759d198f)
+Theorem hlt_num_WF : forall P :e 2 :^: omega, (forall n :e omega, (forall m :e omega, hl_lt m n = 1 -> P m = 1) -> P n = 1) -> forall n :e omega, P n = 1.
+Admitted.
+Theorem num_WF_bridge : (forall P :e 2 :^: omega, (forall n :e omega, (forall m :e omega, hl_lt m n = 1 -> P m = 1) -> P n = 1) -> forall n :e omega, P n = 1) -> (forall P:set -> prop, (forall n :e omega, (forall m :e omega, m < n -> P m) -> P n) -> forall n :e omega, P n).
+exact (fun HL => (imp_forall_pred (omega) (fun P => (forall n :e omega, (forall m :e omega, hl_lt m n = 1 -> P m = 1) -> P n = 1) -> forall n :e omega, P n = 1) (fun P => (forall n :e omega, (forall m :e omega, m < n -> P m) -> P n) -> forall n :e omega, P n) (fun P => (imp_imp (forall n :e omega, (forall m :e omega, hl_lt m n = 1 -> hl_chip omega P m = 1) -> hl_chip omega P n = 1) (forall n :e omega, (forall m :e omega, m < n -> P m) -> P n) (forall n :e omega, hl_chip omega P n = 1) (forall n :e omega, P n) (imp_forall_in (omega) (fun n => (forall m :e omega, m < n -> P m) -> P n) (fun n => (forall m :e omega, hl_lt m n = 1 -> hl_chip omega P m = 1) -> hl_chip omega P n = 1) (fun n Hn => (imp_imp (forall m :e omega, m < n -> P m) (forall m :e omega, hl_lt m n = 1 -> hl_chip omega P m = 1) (P n) (hl_chip omega P n = 1) (imp_forall_in (omega) (fun m => hl_lt m n = 1 -> hl_chip omega P m = 1) (fun m => m < n -> P m) (fun m Hm => (imp_imp (hl_lt m n = 1) (m < n) (hl_chip omega P m = 1) (P m) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (iffEL (hl_chip omega P m = 1) (P m) ((hl_chip_iff (omega) P) (m) Hm))))) (iffER (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn))))) (imp_forall_in (omega) (fun n => hl_chip omega P n = 1) (fun n => P n) (fun n Hn => (iffEL (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn))))))) HL).
+Qed.
+Theorem num_WF : forall P:set -> prop, (forall n :e omega, (forall m :e omega, m < n -> P m) -> P n) -> forall n :e omega, P n.
+exact (num_WF_bridge hlt_num_WF).
+Admitted.
+
+// HOL Light: arith.ml:662 / num_WOP   (hash md5:aadd83c4dc20de824ef5d48ce4fd83e4)
+Theorem hlt_num_WOP : forall P :e 2 :^: omega, (exists n :e omega, P n = 1) <-> exists n :e omega, P n = 1 /\ forall m :e omega, hl_lt m n = 1 -> ~ P m = 1.
+Admitted.
+Theorem num_WOP_bridge : (forall P :e 2 :^: omega, (exists n :e omega, P n = 1) <-> exists n :e omega, P n = 1 /\ forall m :e omega, hl_lt m n = 1 -> ~ P m = 1) -> (forall P:set -> prop, (exists n :e omega, P n) <-> exists n :e omega, P n /\ forall m :e omega, m < n -> ~ P m).
+exact (fun HL => (imp_forall_pred (omega) (fun P => (exists n :e omega, P n = 1) <-> exists n :e omega, P n = 1 /\ forall m :e omega, hl_lt m n = 1 -> ~ P m = 1) (fun P => (exists n :e omega, P n) <-> exists n :e omega, P n /\ forall m :e omega, m < n -> ~ P m) (fun P => (imp_iff (exists n :e omega, hl_chip omega P n = 1) (exists n :e omega, P n) (exists n :e omega, hl_chip omega P n = 1 /\ forall m :e omega, hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (exists n :e omega, P n /\ forall m :e omega, m < n -> ~ P m) (imp_exists_in (omega) (fun n => hl_chip omega P n = 1) (fun n => P n) (fun n Hn => (iffEL (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn)))) (imp_exists_in (omega) (fun n => P n) (fun n => hl_chip omega P n = 1) (fun n Hn => (iffER (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn)))) (imp_exists_in (omega) (fun n => hl_chip omega P n = 1 /\ forall m :e omega, hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (fun n => P n /\ forall m :e omega, m < n -> ~ P m) (fun n Hn => (imp_and (hl_chip omega P n = 1) (P n) (forall m :e omega, hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (forall m :e omega, m < n -> ~ P m) (iffEL (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn)) (imp_forall_in (omega) (fun m => hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (fun m => m < n -> ~ P m) (fun m Hm => (imp_imp (hl_lt m n = 1) (m < n) (~ hl_chip omega P m = 1) (~ P m) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_not (hl_chip omega P m = 1) (P m) (iffER (hl_chip omega P m = 1) (P m) ((hl_chip_iff (omega) P) (m) Hm))))))))) (imp_exists_in (omega) (fun n => P n /\ forall m :e omega, m < n -> ~ P m) (fun n => hl_chip omega P n = 1 /\ forall m :e omega, hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (fun n Hn => (imp_and (P n) (hl_chip omega P n = 1) (forall m :e omega, m < n -> ~ P m) (forall m :e omega, hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (iffER (hl_chip omega P n = 1) (P n) ((hl_chip_iff (omega) P) (n) Hn)) (imp_forall_in (omega) (fun m => m < n -> ~ P m) (fun m => hl_lt m n = 1 -> ~ hl_chip omega P m = 1) (fun m Hm => (imp_imp (m < n) (hl_lt m n = 1) (~ P m) (~ hl_chip omega P m = 1) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn)) (imp_not (P m) (hl_chip omega P m = 1) (iffEL (hl_chip omega P m = 1) (P m) ((hl_chip_iff (omega) P) (m) Hm)))))))))))) HL).
+Qed.
+Theorem num_WOP : forall P:set -> prop, (exists n :e omega, P n) <-> exists n :e omega, P n /\ forall m :e omega, m < n -> ~ P m.
+exact (num_WOP_bridge hlt_num_WOP).
+Admitted.
+
+// HOL Light: arith.ml:668 / num_MAX   (hash md5:c8685b053a9c358dd0c8097ab0840890)
+Theorem hlt_num_MAX : forall P :e 2 :^: omega, (exists x :e omega, P x = 1) /\ (exists M :e omega, forall x :e omega, P x = 1 -> hl_le x M = 1) <-> exists m :e omega, P m = 1 /\ forall x :e omega, P x = 1 -> hl_le x m = 1.
+Admitted.
+Theorem num_MAX_bridge : (forall P :e 2 :^: omega, (exists x :e omega, P x = 1) /\ (exists M :e omega, forall x :e omega, P x = 1 -> hl_le x M = 1) <-> exists m :e omega, P m = 1 /\ forall x :e omega, P x = 1 -> hl_le x m = 1) -> (forall P:set -> prop, (exists x :e omega, P x) /\ (exists M :e omega, forall x :e omega, P x -> x <= M) <-> exists m :e omega, P m /\ forall x :e omega, P x -> x <= m).
+exact (fun HL => (imp_forall_pred (omega) (fun P => (exists x :e omega, P x = 1) /\ (exists M :e omega, forall x :e omega, P x = 1 -> hl_le x M = 1) <-> exists m :e omega, P m = 1 /\ forall x :e omega, P x = 1 -> hl_le x m = 1) (fun P => (exists x :e omega, P x) /\ (exists M :e omega, forall x :e omega, P x -> x <= M) <-> exists m :e omega, P m /\ forall x :e omega, P x -> x <= m) (fun P => (imp_iff ((exists x :e omega, hl_chip omega P x = 1) /\ exists M :e omega, forall x :e omega, hl_chip omega P x = 1 -> hl_le x M = 1) ((exists x :e omega, P x) /\ exists M :e omega, forall x :e omega, P x -> x <= M) (exists m :e omega, hl_chip omega P m = 1 /\ forall x :e omega, hl_chip omega P x = 1 -> hl_le x m = 1) (exists m :e omega, P m /\ forall x :e omega, P x -> x <= m) (imp_and (exists x :e omega, hl_chip omega P x = 1) (exists x :e omega, P x) (exists M :e omega, forall x :e omega, hl_chip omega P x = 1 -> hl_le x M = 1) (exists M :e omega, forall x :e omega, P x -> x <= M) (imp_exists_in (omega) (fun x => hl_chip omega P x = 1) (fun x => P x) (fun x Hx => (iffEL (hl_chip omega P x = 1) (P x) ((hl_chip_iff (omega) P) (x) Hx)))) (imp_exists_in (omega) (fun M => forall x :e omega, hl_chip omega P x = 1 -> hl_le x M = 1) (fun M => forall x :e omega, P x -> x <= M) (fun M HM => (imp_forall_in (omega) (fun x => hl_chip omega P x = 1 -> hl_le x M = 1) (fun x => P x -> x <= M) (fun x Hx => (imp_imp (hl_chip omega P x = 1) (P x) (hl_le x M = 1) (x <= M) (iffER (hl_chip omega P x = 1) (P x) ((hl_chip_iff (omega) P) (x) Hx)) (iffEL (hl_le x M = 1) (x <= M) ((hl_le_compat) (x) Hx (M) HM)))))))) (imp_and (exists x :e omega, P x) (exists x :e omega, hl_chip omega P x = 1) (exists M :e omega, forall x :e omega, P x -> x <= M) (exists M :e omega, forall x :e omega, hl_chip omega P x = 1 -> hl_le x M = 1) (imp_exists_in (omega) (fun x => P x) (fun x => hl_chip omega P x = 1) (fun x Hx => (iffER (hl_chip omega P x = 1) (P x) ((hl_chip_iff (omega) P) (x) Hx)))) (imp_exists_in (omega) (fun M => forall x :e omega, P x -> x <= M) (fun M => forall x :e omega, hl_chip omega P x = 1 -> hl_le x M = 1) (fun M HM => (imp_forall_in (omega) (fun x => P x -> x <= M) (fun x => hl_chip omega P x = 1 -> hl_le x M = 1) (fun x Hx => (imp_imp (P x) (hl_chip omega P x = 1) (x <= M) (hl_le x M = 1) (iffEL (hl_chip omega P x = 1) (P x) ((hl_chip_iff (omega) P) (x) Hx)) (iffER (hl_le x M = 1) (x <= M) ((hl_le_compat) (x) Hx (M) HM)))))))) (imp_exists_in (omega) (fun m => hl_chip omega P m = 1 /\ forall x :e omega, hl_chip omega P x = 1 -> hl_le x m = 1) (fun m => P m /\ forall x :e omega, P x -> x <= m) (fun m Hm => (imp_and (hl_chip omega P m = 1) (P m) (forall x :e omega, hl_chip omega P x = 1 -> hl_le x m = 1) (forall x :e omega, P x -> x <= m) (iffEL (hl_chip omega P m = 1) (P m) ((hl_chip_iff (omega) P) (m) Hm)) (imp_forall_in (omega) (fun x => hl_chip omega P x = 1 -> hl_le x m = 1) (fun x => P x -> x <= m) (fun x Hx => (imp_imp (hl_chip omega P x = 1) (P x) (hl_le x m = 1) (x <= m) (iffER (hl_chip omega P x = 1) (P x) ((hl_chip_iff (omega) P) (x) Hx)) (iffEL (hl_le x m = 1) (x <= m) ((hl_le_compat) (x) Hx (m) Hm)))))))) (imp_exists_in (omega) (fun m => P m /\ forall x :e omega, P x -> x <= m) (fun m => hl_chip omega P m = 1 /\ forall x :e omega, hl_chip omega P x = 1 -> hl_le x m = 1) (fun m Hm => (imp_and (P m) (hl_chip omega P m = 1) (forall x :e omega, P x -> x <= m) (forall x :e omega, hl_chip omega P x = 1 -> hl_le x m = 1) (iffER (hl_chip omega P m = 1) (P m) ((hl_chip_iff (omega) P) (m) Hm)) (imp_forall_in (omega) (fun x => P x -> x <= m) (fun x => hl_chip omega P x = 1 -> hl_le x m = 1) (fun x Hx => (imp_imp (P x) (hl_chip omega P x = 1) (x <= m) (hl_le x m = 1) (iffEL (hl_chip omega P x = 1) (P x) ((hl_chip_iff (omega) P) (x) Hx)) (iffER (hl_le x m = 1) (x <= m) ((hl_le_compat) (x) Hx (m) Hm))))))))))) HL).
+Qed.
+Theorem num_MAX : forall P:set -> prop, (exists x :e omega, P x) /\ (exists M :e omega, forall x :e omega, P x -> x <= M) <-> exists m :e omega, P m /\ forall x :e omega, P x -> x <= m.
+exact (num_MAX_bridge hlt_num_MAX).
+Admitted.
+
+// HOL Light: arith.ml:690 / LE_INDUCT   (hash md5:0a1da1e21b34b49815b79c9aaf3e847a)
+// not bridged: 
+Theorem LE_INDUCT : forall P:set -> set -> prop, (forall m :e omega, P m m) /\ (forall m n :e omega, m <= n /\ P m n -> P m (ordsucc n)) -> forall m n :e omega, m <= n -> P m n.
+Admitted.
+
+// HOL Light: arith.ml:699 / num_INDUCTION_DOWN   (hash md5:8f6733e9701d766ab5608bbd87d7b6fa)
+// not bridged: 
+Theorem num_INDUCTION_DOWN : forall P:set -> prop, forall m :e omega, (forall n :e omega, m <= n -> P n) /\ (forall n :e omega, n < m /\ P (n + 1) -> P n) -> forall n :e omega, P n.
+Admitted.
+
+// HOL Light: arith.ml:716 / EVEN   (hash md5:042754ef93062b568529b3c88d4528d5)
+Theorem hlt_EVEN : (hl_EVEN (hl_NUMERAL hl_zero) = 1 <-> True) /\ forall n :e omega, hl_EVEN (hl_SUC n) = 1 <-> ~ hl_EVEN n = 1.
+Admitted.
+Theorem EVEN_bridge : ((hl_EVEN (hl_NUMERAL hl_zero) = 1 <-> True) /\ forall n :e omega, hl_EVEN (hl_SUC n) = 1 <-> ~ hl_EVEN n = 1) -> ((even_nat 0 <-> True) /\ forall n :e omega, even_nat (ordsucc n) <-> ~ even_nat n).
+exact (fun HL => (imp_and (hl_EVEN (hl_NUMERAL hl_zero) = 1 <-> True) (even_nat 0 <-> True) (forall n :e omega, hl_EVEN (hl_SUC n) = 1 <-> ~ hl_EVEN n = 1) (forall n :e omega, even_nat (ordsucc n) <-> ~ even_nat n) (imp_iff (hl_EVEN (hl_NUMERAL hl_zero) = 1) (even_nat 0) (True) (True) (iffEL (hl_EVEN (hl_NUMERAL hl_zero) = 1) (even_nat 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_EVEN (hl_NUMERAL hl_zero) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (iffER (hl_EVEN (hl_NUMERAL hl_zero) = 1) (even_nat 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_EVEN (hl_NUMERAL hl_zero) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (imp_refl True) (imp_refl True)) (imp_forall_in (omega) (fun n => hl_EVEN (hl_SUC n) = 1 <-> ~ hl_EVEN n = 1) (fun n => even_nat (ordsucc n) <-> ~ even_nat n) (fun n Hn => (imp_iff (hl_EVEN (hl_SUC n) = 1) (even_nat (ordsucc n)) (~ hl_EVEN n = 1) (~ even_nat n) (iffEL (hl_EVEN (hl_SUC n) = 1) (even_nat (ordsucc n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_SUC n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (iffER (hl_EVEN (hl_SUC n) = 1) (even_nat (ordsucc n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_SUC n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (imp_not (hl_EVEN n = 1) (even_nat n) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))) (imp_not (even_nat n) (hl_EVEN n = 1) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))))))) HL).
+Qed.
+Theorem EVEN : (even_nat 0 <-> True) /\ forall n :e omega, even_nat (ordsucc n) <-> ~ even_nat n.
+exact (EVEN_bridge hlt_EVEN).
+Admitted.
+
+// HOL Light: arith.ml:720 / ODD   (hash md5:c105a6929490a222b6b0ce5bd1c9de43)
+Theorem hlt_ODD : (hl_ODD (hl_NUMERAL hl_zero) = 1 <-> False) /\ forall n :e omega, hl_ODD (hl_SUC n) = 1 <-> ~ hl_ODD n = 1.
+Admitted.
+Theorem ODD_bridge : ((hl_ODD (hl_NUMERAL hl_zero) = 1 <-> False) /\ forall n :e omega, hl_ODD (hl_SUC n) = 1 <-> ~ hl_ODD n = 1) -> ((odd_nat 0 <-> False) /\ forall n :e omega, odd_nat (ordsucc n) <-> ~ odd_nat n).
+exact (fun HL => (imp_and (hl_ODD (hl_NUMERAL hl_zero) = 1 <-> False) (odd_nat 0 <-> False) (forall n :e omega, hl_ODD (hl_SUC n) = 1 <-> ~ hl_ODD n = 1) (forall n :e omega, odd_nat (ordsucc n) <-> ~ odd_nat n) (imp_iff (hl_ODD (hl_NUMERAL hl_zero) = 1) (odd_nat 0) (False) (False) (iffEL (hl_ODD (hl_NUMERAL hl_zero) = 1) (odd_nat 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_ODD (hl_NUMERAL hl_zero) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (iffER (hl_ODD (hl_NUMERAL hl_zero) = 1) (odd_nat 0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_ODD (hl_NUMERAL hl_zero) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (imp_refl False) (imp_refl False)) (imp_forall_in (omega) (fun n => hl_ODD (hl_SUC n) = 1 <-> ~ hl_ODD n = 1) (fun n => odd_nat (ordsucc n) <-> ~ odd_nat n) (fun n Hn => (imp_iff (hl_ODD (hl_SUC n) = 1) (odd_nat (ordsucc n)) (~ hl_ODD n = 1) (~ odd_nat n) (iffEL (hl_ODD (hl_SUC n) = 1) (odd_nat (ordsucc n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_ODD (hl_SUC n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (iffER (hl_ODD (hl_SUC n) = 1) (odd_nat (ordsucc n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_ODD (hl_SUC n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) (imp_not (hl_ODD n = 1) (odd_nat n) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))) (imp_not (odd_nat n) (hl_ODD n = 1) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))))))) HL).
+Qed.
+Theorem ODD : (odd_nat 0 <-> False) /\ forall n :e omega, odd_nat (ordsucc n) <-> ~ odd_nat n.
+exact (ODD_bridge hlt_ODD).
+Admitted.
+
+// HOL Light: arith.ml:724 / NOT_EVEN   (hash md5:81b33199298138f3effba7c6605e5fdc)
+Theorem hlt_NOT_EVEN : forall n :e omega, ~ hl_EVEN n = 1 <-> hl_ODD n = 1.
+Admitted.
+Theorem NOT_EVEN_bridge : (forall n :e omega, ~ hl_EVEN n = 1 <-> hl_ODD n = 1) -> (forall n :e omega, ~ even_nat n <-> odd_nat n).
+exact (fun HL => (imp_forall_in (omega) (fun n => ~ hl_EVEN n = 1 <-> hl_ODD n = 1) (fun n => ~ even_nat n <-> odd_nat n) (fun n Hn => (imp_iff (~ hl_EVEN n = 1) (~ even_nat n) (hl_ODD n = 1) (odd_nat n) (imp_not (hl_EVEN n = 1) (even_nat n) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))) (imp_not (even_nat n) (hl_EVEN n = 1) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))))) HL).
+Qed.
+Theorem NOT_EVEN : forall n :e omega, ~ even_nat n <-> odd_nat n.
+exact (NOT_EVEN_bridge hlt_NOT_EVEN).
+Admitted.
+
+// HOL Light: arith.ml:728 / NOT_ODD   (hash md5:c1eb2dc93bf829fc21b22bf5347d4d8b)
+Theorem hlt_NOT_ODD : forall n :e omega, ~ hl_ODD n = 1 <-> hl_EVEN n = 1.
+Admitted.
+Theorem NOT_ODD_bridge : (forall n :e omega, ~ hl_ODD n = 1 <-> hl_EVEN n = 1) -> (forall n :e omega, ~ odd_nat n <-> even_nat n).
+exact (fun HL => (imp_forall_in (omega) (fun n => ~ hl_ODD n = 1 <-> hl_EVEN n = 1) (fun n => ~ odd_nat n <-> even_nat n) (fun n Hn => (imp_iff (~ hl_ODD n = 1) (~ odd_nat n) (hl_EVEN n = 1) (even_nat n) (imp_not (hl_ODD n = 1) (odd_nat n) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))) (imp_not (odd_nat n) (hl_ODD n = 1) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))))) HL).
+Qed.
+Theorem NOT_ODD : forall n :e omega, ~ odd_nat n <-> even_nat n.
+exact (NOT_ODD_bridge hlt_NOT_ODD).
+Admitted.
+
+// HOL Light: arith.ml:732 / EVEN_OR_ODD   (hash md5:de0b9e761db913184af2149b2552baa1)
+Theorem hlt_EVEN_OR_ODD : forall n :e omega, hl_EVEN n = 1 \/ hl_ODD n = 1.
+Admitted.
+Theorem EVEN_OR_ODD_bridge : (forall n :e omega, hl_EVEN n = 1 \/ hl_ODD n = 1) -> (forall n :e omega, even_nat n \/ odd_nat n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_EVEN n = 1 \/ hl_ODD n = 1) (fun n => even_nat n \/ odd_nat n) (fun n Hn => (imp_or (hl_EVEN n = 1) (even_nat n) (hl_ODD n = 1) (odd_nat n) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))))) HL).
+Qed.
+Theorem EVEN_OR_ODD : forall n :e omega, even_nat n \/ odd_nat n.
+exact (EVEN_OR_ODD_bridge hlt_EVEN_OR_ODD).
+Admitted.
+
+// HOL Light: arith.ml:737 / EVEN_AND_ODD   (hash md5:61d5128a8e0035b5a8c236911efdb5bd)
+Theorem hlt_EVEN_AND_ODD : forall n :e omega, ~ (hl_EVEN n = 1 /\ hl_ODD n = 1).
+Admitted.
+Theorem EVEN_AND_ODD_bridge : (forall n :e omega, ~ (hl_EVEN n = 1 /\ hl_ODD n = 1)) -> (forall n :e omega, ~ (even_nat n /\ odd_nat n)).
+exact (fun HL => (imp_forall_in (omega) (fun n => ~ (hl_EVEN n = 1 /\ hl_ODD n = 1)) (fun n => ~ (even_nat n /\ odd_nat n)) (fun n Hn => (imp_not (hl_EVEN n = 1 /\ hl_ODD n = 1) (even_nat n /\ odd_nat n) (imp_and (even_nat n) (hl_EVEN n = 1) (odd_nat n) (hl_ODD n = 1) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)))))) HL).
+Qed.
+Theorem EVEN_AND_ODD : forall n :e omega, ~ (even_nat n /\ odd_nat n).
+exact (EVEN_AND_ODD_bridge hlt_EVEN_AND_ODD).
+Admitted.
+
+// HOL Light: arith.ml:741 / EVEN_ADD   (hash md5:b97c6e33433a1b82c867029be0bf2e57)
+Theorem hlt_EVEN_ADD : forall m n :e omega, hl_EVEN (hl_add m n) = 1 <-> (hl_EVEN m = 1 <-> hl_EVEN n = 1).
+Admitted.
+Theorem EVEN_ADD_bridge : (forall m n :e omega, hl_EVEN (hl_add m n) = 1 <-> (hl_EVEN m = 1 <-> hl_EVEN n = 1)) -> (forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EVEN (hl_add m n) = 1 <-> (hl_EVEN m = 1 <-> hl_EVEN n = 1)) (fun m => forall n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EVEN (hl_add m n) = 1 <-> (hl_EVEN m = 1 <-> hl_EVEN n = 1)) (fun n => even_nat (m + n) <-> (even_nat m <-> even_nat n)) (fun n Hn => (imp_iff (hl_EVEN (hl_add m n) = 1) (even_nat (m + n)) (hl_EVEN m = 1 <-> hl_EVEN n = 1) (even_nat m <-> even_nat n) (iffEL (hl_EVEN (hl_add m n) = 1) (even_nat (m + n)) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_add m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (iffER (hl_EVEN (hl_add m n) = 1) (even_nat (m + n)) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_add m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (imp_iff (hl_EVEN m = 1) (even_nat m) (hl_EVEN n = 1) (even_nat n) (iffEL (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffER (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))) (imp_iff (even_nat m) (hl_EVEN m = 1) (even_nat n) (hl_EVEN n = 1) (iffER (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffEL (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)))))))) HL).
+Qed.
+Theorem EVEN_ADD : forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n).
+exact (EVEN_ADD_bridge hlt_EVEN_ADD).
+Admitted.
+
+// HOL Light: arith.ml:750 / EVEN_MULT   (hash md5:0fbaae8611372953bf1896ba201fd510)
+Theorem hlt_EVEN_MULT : forall m n :e omega, hl_EVEN (hl_mul m n) = 1 <-> hl_EVEN m = 1 \/ hl_EVEN n = 1.
+Admitted.
+Theorem EVEN_MULT_bridge : (forall m n :e omega, hl_EVEN (hl_mul m n) = 1 <-> hl_EVEN m = 1 \/ hl_EVEN n = 1) -> (forall m n :e omega, even_nat (m * n) <-> even_nat m \/ even_nat n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EVEN (hl_mul m n) = 1 <-> hl_EVEN m = 1 \/ hl_EVEN n = 1) (fun m => forall n :e omega, even_nat (m * n) <-> even_nat m \/ even_nat n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EVEN (hl_mul m n) = 1 <-> hl_EVEN m = 1 \/ hl_EVEN n = 1) (fun n => even_nat (m * n) <-> even_nat m \/ even_nat n) (fun n Hn => (imp_iff (hl_EVEN (hl_mul m n) = 1) (even_nat (m * n)) (hl_EVEN m = 1 \/ hl_EVEN n = 1) (even_nat m \/ even_nat n) (iffEL (hl_EVEN (hl_mul m n) = 1) (even_nat (m * n)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_mul m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn)))) (iffER (hl_EVEN (hl_mul m n) = 1) (even_nat (m * n)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_mul m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn)))) (imp_or (hl_EVEN m = 1) (even_nat m) (hl_EVEN n = 1) (even_nat n) (iffEL (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))) (imp_or (even_nat m) (hl_EVEN m = 1) (even_nat n) (hl_EVEN n = 1) (iffER (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)))))))) HL).
+Qed.
+Theorem EVEN_MULT : forall m n :e omega, even_nat (m * n) <-> even_nat m \/ even_nat n.
+exact (EVEN_MULT_bridge hlt_EVEN_MULT).
+Admitted.
+
+// HOL Light: arith.ml:759 / EVEN_EXP   (hash md5:b04db5ebd41c85a7b94bf0f8080a989d)
+Theorem hlt_EVEN_EXP : forall m n :e omega, hl_EVEN (hl_EXP m n) = 1 <-> hl_EVEN m = 1 /\ ~ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EVEN_EXP_bridge : (forall m n :e omega, hl_EVEN (hl_EXP m n) = 1 <-> hl_EVEN m = 1 /\ ~ n = hl_NUMERAL hl_zero) -> (forall m n :e omega, even_nat (m ^ n) <-> even_nat m /\ ~ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EVEN (hl_EXP m n) = 1 <-> hl_EVEN m = 1 /\ ~ n = hl_NUMERAL hl_zero) (fun m => forall n :e omega, even_nat (m ^ n) <-> even_nat m /\ ~ n = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EVEN (hl_EXP m n) = 1 <-> hl_EVEN m = 1 /\ ~ n = hl_NUMERAL hl_zero) (fun n => even_nat (m ^ n) <-> even_nat m /\ ~ n = 0) (fun n Hn => (imp_iff (hl_EVEN (hl_EXP m n) = 1) (even_nat (m ^ n)) (hl_EVEN m = 1 /\ ~ n = hl_NUMERAL hl_zero) (even_nat m /\ ~ n = 0) (iffEL (hl_EVEN (hl_EXP m n) = 1) (even_nat (m ^ n)) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_EXP m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn)))) (iffER (hl_EVEN (hl_EXP m n) = 1) (even_nat (m ^ n)) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_EXP m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn)))) (imp_and (hl_EVEN m = 1) (even_nat m) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (iffEL (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))) (imp_and (even_nat m) (hl_EVEN m = 1) (~ n = 0) (~ n = hl_NUMERAL hl_zero) (iffER (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem EVEN_EXP : forall m n :e omega, even_nat (m ^ n) <-> even_nat m /\ ~ n = 0.
+exact (EVEN_EXP_bridge hlt_EVEN_EXP).
+Admitted.
+
+// HOL Light: arith.ml:765 / ODD_ADD   (hash md5:85b50e207bff537349929a26ca720c76)
+Theorem hlt_ODD_ADD : forall m n :e omega, hl_ODD (hl_add m n) = 1 <-> ~ (hl_ODD m = 1 <-> hl_ODD n = 1).
+Admitted.
+Theorem ODD_ADD_bridge : (forall m n :e omega, hl_ODD (hl_add m n) = 1 <-> ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) -> (forall m n :e omega, odd_nat (m + n) <-> ~ (odd_nat m <-> odd_nat n)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_ODD (hl_add m n) = 1 <-> ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (fun m => forall n :e omega, odd_nat (m + n) <-> ~ (odd_nat m <-> odd_nat n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_ODD (hl_add m n) = 1 <-> ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (fun n => odd_nat (m + n) <-> ~ (odd_nat m <-> odd_nat n)) (fun n Hn => (imp_iff (hl_ODD (hl_add m n) = 1) (odd_nat (m + n)) (~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (~ (odd_nat m <-> odd_nat n)) (iffEL (hl_ODD (hl_add m n) = 1) (odd_nat (m + n)) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_add m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (iffER (hl_ODD (hl_add m n) = 1) (odd_nat (m + n)) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_add m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn)))) (imp_not (hl_ODD m = 1 <-> hl_ODD n = 1) (odd_nat m <-> odd_nat n) (imp_iff (odd_nat m) (hl_ODD m = 1) (odd_nat n) (hl_ODD n = 1) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)))) (imp_not (odd_nat m <-> odd_nat n) (hl_ODD m = 1 <-> hl_ODD n = 1) (imp_iff (hl_ODD m = 1) (odd_nat m) (hl_ODD n = 1) (odd_nat n) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))))))))) HL).
+Qed.
+Theorem ODD_ADD : forall m n :e omega, odd_nat (m + n) <-> ~ (odd_nat m <-> odd_nat n).
+exact (ODD_ADD_bridge hlt_ODD_ADD).
+Admitted.
+
+// HOL Light: arith.ml:770 / ODD_MULT   (hash md5:4d0b87b1b46bc6ab933f56d6ee5c130f)
+Theorem hlt_ODD_MULT : forall m n :e omega, hl_ODD (hl_mul m n) = 1 <-> hl_ODD m = 1 /\ hl_ODD n = 1.
+Admitted.
+Theorem ODD_MULT_bridge : (forall m n :e omega, hl_ODD (hl_mul m n) = 1 <-> hl_ODD m = 1 /\ hl_ODD n = 1) -> (forall m n :e omega, odd_nat (m * n) <-> odd_nat m /\ odd_nat n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_ODD (hl_mul m n) = 1 <-> hl_ODD m = 1 /\ hl_ODD n = 1) (fun m => forall n :e omega, odd_nat (m * n) <-> odd_nat m /\ odd_nat n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_ODD (hl_mul m n) = 1 <-> hl_ODD m = 1 /\ hl_ODD n = 1) (fun n => odd_nat (m * n) <-> odd_nat m /\ odd_nat n) (fun n Hn => (imp_iff (hl_ODD (hl_mul m n) = 1) (odd_nat (m * n)) (hl_ODD m = 1 /\ hl_ODD n = 1) (odd_nat m /\ odd_nat n) (iffEL (hl_ODD (hl_mul m n) = 1) (odd_nat (m * n)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_mul m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn)))) (iffER (hl_ODD (hl_mul m n) = 1) (odd_nat (m * n)) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_mul m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn)))) (imp_and (hl_ODD m = 1) (odd_nat m) (hl_ODD n = 1) (odd_nat n) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))) (imp_and (odd_nat m) (hl_ODD m = 1) (odd_nat n) (hl_ODD n = 1) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)))))))) HL).
+Qed.
+Theorem ODD_MULT : forall m n :e omega, odd_nat (m * n) <-> odd_nat m /\ odd_nat n.
+exact (ODD_MULT_bridge hlt_ODD_MULT).
+Admitted.
+
+// HOL Light: arith.ml:775 / ODD_EXP   (hash md5:fb98ceb9019986e72bd5a691041b0598)
+Theorem hlt_ODD_EXP : forall m n :e omega, hl_ODD (hl_EXP m n) = 1 <-> hl_ODD m = 1 \/ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem ODD_EXP_bridge : (forall m n :e omega, hl_ODD (hl_EXP m n) = 1 <-> hl_ODD m = 1 \/ n = hl_NUMERAL hl_zero) -> (forall m n :e omega, odd_nat (m ^ n) <-> odd_nat m \/ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_ODD (hl_EXP m n) = 1 <-> hl_ODD m = 1 \/ n = hl_NUMERAL hl_zero) (fun m => forall n :e omega, odd_nat (m ^ n) <-> odd_nat m \/ n = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_ODD (hl_EXP m n) = 1 <-> hl_ODD m = 1 \/ n = hl_NUMERAL hl_zero) (fun n => odd_nat (m ^ n) <-> odd_nat m \/ n = 0) (fun n Hn => (imp_iff (hl_ODD (hl_EXP m n) = 1) (odd_nat (m ^ n)) (hl_ODD m = 1 \/ n = hl_NUMERAL hl_zero) (odd_nat m \/ n = 0) (iffEL (hl_ODD (hl_EXP m n) = 1) (odd_nat (m ^ n)) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_EXP m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn)))) (iffER (hl_ODD (hl_EXP m n) = 1) (odd_nat (m ^ n)) (((hl_EXP_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_EXP m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_EXP m n) (setexp_ap (omega) (omega) (hl_EXP m) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (m) Hm) (n) Hn)))) (imp_or (hl_ODD m = 1) (odd_nat m) (n = hl_NUMERAL hl_zero) (n = 0) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (odd_nat m) (hl_ODD m = 1) (n = 0) (n = hl_NUMERAL hl_zero) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem ODD_EXP : forall m n :e omega, odd_nat (m ^ n) <-> odd_nat m \/ n = 0.
+exact (ODD_EXP_bridge hlt_ODD_EXP).
+Admitted.
+
+// HOL Light: arith.ml:781 / EVEN_DOUBLE   (hash md5:f8bdc0efbfadf167ba7811ce8538978e)
+Theorem hlt_EVEN_DOUBLE : forall n :e omega, hl_EVEN (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1.
+Admitted.
+Theorem EVEN_DOUBLE_bridge : (forall n :e omega, hl_EVEN (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1) -> (forall n :e omega, even_nat (2 * n)).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_EVEN (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1) (fun n => even_nat (2 * n)) (fun n Hn => (iffEL (hl_EVEN (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1) (even_nat (2 * n)) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl__u * n) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (n) Hn)) (fun hl__u hl__v => hl_EVEN (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (setexp_ap (omega) (omega) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (n) Hn)))))) HL).
+Qed.
+Theorem EVEN_DOUBLE : forall n :e omega, even_nat (2 * n).
+exact (EVEN_DOUBLE_bridge hlt_EVEN_DOUBLE).
+Admitted.
+
+// HOL Light: arith.ml:786 / ODD_DOUBLE   (hash md5:4fb6aed950b2d928b15ac734317b0f2c)
+Theorem hlt_ODD_DOUBLE : forall n :e omega, hl_ODD (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n)) = 1.
+Admitted.
+Theorem ODD_DOUBLE_bridge : (forall n :e omega, hl_ODD (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n)) = 1) -> (forall n :e omega, odd_nat (ordsucc (2 * n))).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_ODD (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n)) = 1) (fun n => odd_nat (ordsucc (2 * n))) (fun n Hn => (iffEL (hl_ODD (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n)) = 1) (odd_nat (ordsucc (2 * n))) ((((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n = hl__u * n) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (n) Hn)) (fun hl__u hl__v => hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) = ordsucc hl__u) ((hl_SUC_compat) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (setexp_ap (omega) (omega) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (n) Hn))) (fun hl__u hl__v => hl_ODD (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n)) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n)) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (setexp_ap (omega) (omega) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (n) Hn))))))) HL).
+Qed.
+Theorem ODD_DOUBLE : forall n :e omega, odd_nat (ordsucc (2 * n)).
+exact (ODD_DOUBLE_bridge hlt_ODD_DOUBLE).
+Admitted.
+
+// HOL Light: arith.ml:790 / EVEN_EXISTS_LEMMA   (hash md5:f582748738f2b2aa91af89ea3d145db2)
+Theorem hlt_EVEN_EXISTS_LEMMA : forall n :e omega, (hl_EVEN n = 1 -> (exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) /\ (~ hl_EVEN n = 1 -> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)).
+Admitted.
+Theorem EVEN_EXISTS_LEMMA_bridge : (forall n :e omega, (hl_EVEN n = 1 -> (exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) /\ (~ hl_EVEN n = 1 -> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m))) -> (forall n :e omega, (even_nat n -> (exists m :e omega, n = 2 * m)) /\ (~ even_nat n -> exists m :e omega, n = ordsucc (2 * m))).
+exact (fun HL => (imp_forall_in (omega) (fun n => (hl_EVEN n = 1 -> (exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) /\ (~ hl_EVEN n = 1 -> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m))) (fun n => (even_nat n -> (exists m :e omega, n = 2 * m)) /\ (~ even_nat n -> exists m :e omega, n = ordsucc (2 * m))) (fun n Hn => (imp_and (hl_EVEN n = 1 -> exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (even_nat n -> exists m :e omega, n = 2 * m) (~ hl_EVEN n = 1 -> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (~ even_nat n -> exists m :e omega, n = ordsucc (2 * m)) (imp_imp (hl_EVEN n = 1) (even_nat n) (exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (exists m :e omega, n = 2 * m) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (imp_exists_in (omega) (fun m => n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (fun m => n = 2 * m) (fun m Hm => (imp_eq (n) (n) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (2 * m) (fun q H => H) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m = hl__u * m) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (m) Hm)))))) (imp_imp (~ hl_EVEN n = 1) (~ even_nat n) (exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (exists m :e omega, n = ordsucc (2 * m)) (imp_not (even_nat n) (hl_EVEN n = 1) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))) (imp_exists_in (omega) (fun m => n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (fun m => n = ordsucc (2 * m)) (fun m Hm => (imp_eq (n) (n) (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (ordsucc (2 * m)) (fun q H => H) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m = hl__u * m) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (m) Hm)) (fun hl__u hl__v => hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) = ordsucc hl__u) ((hl_SUC_compat) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (setexp_ap (omega) (omega) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (m) Hm)))))))))) HL).
+Qed.
+Theorem EVEN_EXISTS_LEMMA : forall n :e omega, (even_nat n -> (exists m :e omega, n = 2 * m)) /\ (~ even_nat n -> exists m :e omega, n = ordsucc (2 * m)).
+exact (EVEN_EXISTS_LEMMA_bridge hlt_EVEN_EXISTS_LEMMA).
+Admitted.
+
+// HOL Light: arith.ml:801 / EVEN_EXISTS   (hash md5:9cc8169477b7b3ed89a982e64dda058e)
+Theorem hlt_EVEN_EXISTS : forall n :e omega, hl_EVEN n = 1 <-> exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m.
+Admitted.
+Theorem EVEN_EXISTS_bridge : (forall n :e omega, hl_EVEN n = 1 <-> exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) -> (forall n :e omega, even_nat n <-> exists m :e omega, n = 2 * m).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_EVEN n = 1 <-> exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (fun n => even_nat n <-> exists m :e omega, n = 2 * m) (fun n Hn => (imp_iff (hl_EVEN n = 1) (even_nat n) (exists m :e omega, n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (exists m :e omega, n = 2 * m) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (imp_exists_in (omega) (fun m => n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (fun m => n = 2 * m) (fun m Hm => (imp_eq (n) (n) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (2 * m) (fun q H => H) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m = hl__u * m) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (m) Hm))))) (imp_exists_in (omega) (fun m => n = 2 * m) (fun m => n = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (fun m Hm => (imp_eq (n) (n) (2 * m) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (2 * m) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m = hl__u * m) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (m) Hm))))))))) HL).
+Qed.
+Theorem EVEN_EXISTS : forall n :e omega, even_nat n <-> exists m :e omega, n = 2 * m.
+exact (EVEN_EXISTS_bridge hlt_EVEN_EXISTS).
+Admitted.
+
+// HOL Light: arith.ml:807 / ODD_EXISTS   (hash md5:c1a418611be28e0324dca044d0aa1bb2)
+Theorem hlt_ODD_EXISTS : forall n :e omega, hl_ODD n = 1 <-> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m).
+Admitted.
+Theorem ODD_EXISTS_bridge : (forall n :e omega, hl_ODD n = 1 <-> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) -> (forall n :e omega, odd_nat n <-> exists m :e omega, n = ordsucc (2 * m)).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_ODD n = 1 <-> exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (fun n => odd_nat n <-> exists m :e omega, n = ordsucc (2 * m)) (fun n Hn => (imp_iff (hl_ODD n = 1) (odd_nat n) (exists m :e omega, n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (exists m :e omega, n = ordsucc (2 * m)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (imp_exists_in (omega) (fun m => n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (fun m => n = ordsucc (2 * m)) (fun m Hm => (imp_eq (n) (n) (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (ordsucc (2 * m)) (fun q H => H) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m = hl__u * m) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (m) Hm)) (fun hl__u hl__v => hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) = ordsucc hl__u) ((hl_SUC_compat) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (setexp_ap (omega) (omega) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (m) Hm)))))) (imp_exists_in (omega) (fun m => n = ordsucc (2 * m)) (fun m => n = hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (fun m Hm => (imp_eq (n) (n) (ordsucc (2 * m)) (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m)) (ordsucc (2 * m)) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m = hl__u * m) ((hl_mul_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (m) Hm)) (fun hl__u hl__v => hl_SUC (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) = ordsucc hl__u) ((hl_SUC_compat) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (setexp_ap (omega) (omega) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (m) Hm)))))))))) HL).
+Qed.
+Theorem ODD_EXISTS : forall n :e omega, odd_nat n <-> exists m :e omega, n = ordsucc (2 * m).
+exact (ODD_EXISTS_bridge hlt_ODD_EXISTS).
+Admitted.
+
+// HOL Light: arith.ml:814 / EVEN_ODD_DECOMPOSITION   (hash md5:b2d9d5503420a2b34e9706bc97261e82)
+Theorem hlt_EVEN_ODD_DECOMPOSITION : forall n :e omega, (exists k m :e omega, hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) <-> ~ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EVEN_ODD_DECOMPOSITION_bridge : (forall n :e omega, (exists k m :e omega, hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) <-> ~ n = hl_NUMERAL hl_zero) -> (forall n :e omega, (exists k m :e omega, odd_nat m /\ n = 2 ^ k * m) <-> ~ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun n => (exists k m :e omega, hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) <-> ~ n = hl_NUMERAL hl_zero) (fun n => (exists k m :e omega, odd_nat m /\ n = 2 ^ k * m) <-> ~ n = 0) (fun n Hn => (imp_iff (exists k m :e omega, hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (exists k m :e omega, odd_nat m /\ n = 2 ^ k * m) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (imp_exists_in (omega) (fun k => exists m :e omega, hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (fun k => exists m :e omega, odd_nat m /\ n = 2 ^ k * m) (fun k Hk => (imp_exists_in (omega) (fun m => hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (fun m => odd_nat m /\ n = 2 ^ k * m) (fun m Hm => (imp_and (hl_ODD m = 1) (odd_nat m) (n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (n = 2 ^ k * m) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (imp_eq (n) (n) (hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (2 ^ k * m) (fun q H => H) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k = hl__u ^ k) ((hl_EXP_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (k) Hk)) (fun hl__u hl__v => hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m = hl__u * m) ((hl_mul_compat) (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) (setexp_ap (omega) (omega) (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (k) Hk) (m) Hm)))))))) (imp_exists_in (omega) (fun k => exists m :e omega, odd_nat m /\ n = 2 ^ k * m) (fun k => exists m :e omega, hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (fun k Hk => (imp_exists_in (omega) (fun m => odd_nat m /\ n = 2 ^ k * m) (fun m => hl_ODD m = 1 /\ n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (fun m Hm => (imp_and (odd_nat m) (hl_ODD m = 1) (n = 2 ^ k * m) (n = hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (imp_eq (n) (n) (2 ^ k * m) (hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m) (2 ^ k * m) (((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k = hl__u ^ k) ((hl_EXP_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (k) Hk)) (fun hl__u hl__v => hl_mul (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) m = hl__u * m) ((hl_mul_compat) (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) k) (setexp_ap (omega) (omega) (hl_EXP (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))) (k) Hk) (m) Hm))))))))) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) HL).
+Qed.
+Theorem EVEN_ODD_DECOMPOSITION : forall n :e omega, (exists k m :e omega, odd_nat m /\ n = 2 ^ k * m) <-> ~ n = 0.
+exact (EVEN_ODD_DECOMPOSITION_bridge hlt_EVEN_ODD_DECOMPOSITION).
+Admitted.
+
+// HOL Light: arith.ml:841 / SUB   (hash md5:63dc004a637ab090e9d7756a0d7e0028)
+Theorem hlt_SUB : (forall m :e omega, hl_sub m (hl_NUMERAL hl_zero) = m) /\ forall m n :e omega, hl_sub m (hl_SUC n) = hl_PRE (hl_sub m n).
+Admitted.
+Theorem SUB_bridge : ((forall m :e omega, hl_sub m (hl_NUMERAL hl_zero) = m) /\ forall m n :e omega, hl_sub m (hl_SUC n) = hl_PRE (hl_sub m n)) -> ((forall m :e omega, minus_nat m 0 = m) /\ forall m n :e omega, minus_nat m (ordsucc n) = nat_pred (minus_nat m n)).
+exact (fun HL => (imp_and (forall m :e omega, hl_sub m (hl_NUMERAL hl_zero) = m) (forall m :e omega, minus_nat m 0 = m) (forall m n :e omega, hl_sub m (hl_SUC n) = hl_PRE (hl_sub m n)) (forall m n :e omega, minus_nat m (ordsucc n) = nat_pred (minus_nat m n)) (imp_forall_in (omega) (fun m => hl_sub m (hl_NUMERAL hl_zero) = m) (fun m => minus_nat m 0 = m) (fun m Hm => (imp_eq (hl_sub m (hl_NUMERAL hl_zero)) (minus_nat m 0) (m) (m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_sub m (hl_NUMERAL hl_zero) = minus_nat m hl__u) ((hl_sub_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun q H => H)))) (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub m (hl_SUC n) = hl_PRE (hl_sub m n)) (fun m => forall n :e omega, minus_nat m (ordsucc n) = nat_pred (minus_nat m n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub m (hl_SUC n) = hl_PRE (hl_sub m n)) (fun n => minus_nat m (ordsucc n) = nat_pred (minus_nat m n)) (fun n Hn => (imp_eq (hl_sub m (hl_SUC n)) (minus_nat m (ordsucc n)) (hl_PRE (hl_sub m n)) (nat_pred (minus_nat m n)) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_sub m (hl_SUC n) = minus_nat m hl__u) ((hl_sub_compat) (m) Hm (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_PRE (hl_sub m n) = nat_pred hl__u) ((hl_PRE_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn))))))))) HL).
+Qed.
+Theorem SUB : (forall m :e omega, minus_nat m 0 = m) /\ forall m n :e omega, minus_nat m (ordsucc n) = nat_pred (minus_nat m n).
+exact (SUB_bridge hlt_SUB).
+Admitted.
+
+// HOL Light: arith.ml:845 / SUB_0   (hash md5:533b88c32d6d67d4698f922841e53724)
+Theorem hlt_SUB_0 : forall m :e omega, hl_sub (hl_NUMERAL hl_zero) m = hl_NUMERAL hl_zero /\ hl_sub m (hl_NUMERAL hl_zero) = m.
+Admitted.
+Theorem SUB_0_bridge : (forall m :e omega, hl_sub (hl_NUMERAL hl_zero) m = hl_NUMERAL hl_zero /\ hl_sub m (hl_NUMERAL hl_zero) = m) -> (forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m).
+exact (fun HL => (imp_forall_in (omega) (fun m => hl_sub (hl_NUMERAL hl_zero) m = hl_NUMERAL hl_zero /\ hl_sub m (hl_NUMERAL hl_zero) = m) (fun m => minus_nat 0 m = 0 /\ minus_nat m 0 = m) (fun m Hm => (imp_and (hl_sub (hl_NUMERAL hl_zero) m = hl_NUMERAL hl_zero) (minus_nat 0 m = 0) (hl_sub m (hl_NUMERAL hl_zero) = m) (minus_nat m 0 = m) (imp_eq (hl_sub (hl_NUMERAL hl_zero) m) (minus_nat 0 m) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_sub (hl_NUMERAL hl_zero) m = minus_nat hl__u m) ((hl_sub_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (m) Hm)) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (hl_sub m (hl_NUMERAL hl_zero)) (minus_nat m 0) (m) (m) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_sub m (hl_NUMERAL hl_zero) = minus_nat m hl__u) ((hl_sub_compat) (m) Hm (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun q H => H))))) HL).
+Qed.
+Theorem SUB_0 : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
+exact (SUB_0_bridge hlt_SUB_0).
+Admitted.
+
+// HOL Light: arith.ml:849 / SUB_PRESUC   (hash md5:a5079a26282b7054790fd007d87d2b2e)
+Theorem hlt_SUB_PRESUC : forall m n :e omega, hl_PRE (hl_sub (hl_SUC m) n) = hl_sub m n.
+Admitted.
+Theorem SUB_PRESUC_bridge : (forall m n :e omega, hl_PRE (hl_sub (hl_SUC m) n) = hl_sub m n) -> (forall m n :e omega, nat_pred (minus_nat (ordsucc m) n) = minus_nat m n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_PRE (hl_sub (hl_SUC m) n) = hl_sub m n) (fun m => forall n :e omega, nat_pred (minus_nat (ordsucc m) n) = minus_nat m n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_PRE (hl_sub (hl_SUC m) n) = hl_sub m n) (fun n => nat_pred (minus_nat (ordsucc m) n) = minus_nat m n) (fun n Hn => (imp_eq (hl_PRE (hl_sub (hl_SUC m) n)) (nat_pred (minus_nat (ordsucc m) n)) (hl_sub m n) (minus_nat m n) ((((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_sub (hl_SUC m) n = minus_nat hl__u n) ((hl_sub_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (n) Hn)) (fun hl__u hl__v => hl_PRE (hl_sub (hl_SUC m) n) = nat_pred hl__u) ((hl_PRE_compat) (hl_sub (hl_SUC m) n) (setexp_ap (omega) (omega) (hl_sub (hl_SUC m)) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm)) (n) Hn))) ((hl_sub_compat) (m) Hm (n) Hn)))))) HL).
+Qed.
+Theorem SUB_PRESUC : forall m n :e omega, nat_pred (minus_nat (ordsucc m) n) = minus_nat m n.
+exact (SUB_PRESUC_bridge hlt_SUB_PRESUC).
+Admitted.
+
+// HOL Light: arith.ml:853 / SUB_SUC   (hash md5:69260c51e4311efc1cb831f28a1f7069)
+Theorem hlt_SUB_SUC : forall m n :e omega, hl_sub (hl_SUC m) (hl_SUC n) = hl_sub m n.
+Admitted.
+Theorem SUB_SUC_bridge : (forall m n :e omega, hl_sub (hl_SUC m) (hl_SUC n) = hl_sub m n) -> (forall m n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus_nat m n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub (hl_SUC m) (hl_SUC n) = hl_sub m n) (fun m => forall n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus_nat m n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub (hl_SUC m) (hl_SUC n) = hl_sub m n) (fun n => minus_nat (ordsucc m) (ordsucc n) = minus_nat m n) (fun n Hn => (imp_eq (hl_sub (hl_SUC m) (hl_SUC n)) (minus_nat (ordsucc m) (ordsucc n)) (hl_sub m n) (minus_nat m n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_sub (hl_SUC m) (hl_SUC n) = minus_nat (ordsucc m) hl__u) (((hl_SUC_compat) (m) Hm) (fun hl__u hl__v => hl_sub (hl_SUC m) (hl_SUC n) = minus_nat hl__u (hl_SUC n)) ((hl_sub_compat) (hl_SUC m) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (m) Hm) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn)))) ((hl_sub_compat) (m) Hm (n) Hn)))))) HL).
+Qed.
+Theorem SUB_SUC : forall m n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus_nat m n.
+exact (SUB_SUC_bridge hlt_SUB_SUC).
+Admitted.
+
+// HOL Light: arith.ml:857 / SUB_REFL   (hash md5:b82c8da4d002065b76e1b7ea3c8ae4b1)
+Theorem hlt_SUB_REFL : forall n :e omega, hl_sub n n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem SUB_REFL_bridge : (forall n :e omega, hl_sub n n = hl_NUMERAL hl_zero) -> (forall n :e omega, minus_nat n n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_sub n n = hl_NUMERAL hl_zero) (fun n => minus_nat n n = 0) (fun n Hn => (imp_eq (hl_sub n n) (minus_nat n n) (hl_NUMERAL hl_zero) (0) ((hl_sub_compat) (n) Hn (n) Hn) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) HL).
+Qed.
+Theorem SUB_REFL : forall n :e omega, minus_nat n n = 0.
+exact (SUB_REFL_bridge hlt_SUB_REFL).
+Admitted.
+
+// HOL Light: arith.ml:861 / ADD_SUB   (hash md5:6d341e49a1f1c582891836f5c89dba36)
+Theorem hlt_ADD_SUB : forall m n :e omega, hl_sub (hl_add m n) n = m.
+Admitted.
+Theorem ADD_SUB_bridge : (forall m n :e omega, hl_sub (hl_add m n) n = m) -> (forall m n :e omega, minus_nat (m + n) n = m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub (hl_add m n) n = m) (fun m => forall n :e omega, minus_nat (m + n) n = m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub (hl_add m n) n = m) (fun n => minus_nat (m + n) n = m) (fun n Hn => (imp_eq (hl_sub (hl_add m n) n) (minus_nat (m + n) n) (m) (m) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_sub (hl_add m n) n = minus_nat hl__u n) ((hl_sub_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (n) Hn)) (fun q H => H)))))) HL).
+Qed.
+Theorem ADD_SUB : forall m n :e omega, minus_nat (m + n) n = m.
+exact (ADD_SUB_bridge hlt_ADD_SUB).
+Admitted.
+
+// HOL Light: arith.ml:865 / ADD_SUB2   (hash md5:fded8a3febfff115683ebeef0d44f517)
+Theorem hlt_ADD_SUB2 : forall m n :e omega, hl_sub (hl_add m n) m = n.
+Admitted.
+Theorem ADD_SUB2_bridge : (forall m n :e omega, hl_sub (hl_add m n) m = n) -> (forall m n :e omega, minus_nat (m + n) m = n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub (hl_add m n) m = n) (fun m => forall n :e omega, minus_nat (m + n) m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub (hl_add m n) m = n) (fun n => minus_nat (m + n) m = n) (fun n Hn => (imp_eq (hl_sub (hl_add m n) m) (minus_nat (m + n) m) (n) (n) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_sub (hl_add m n) m = minus_nat hl__u m) ((hl_sub_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (m) Hm)) (fun q H => H)))))) HL).
+Qed.
+Theorem ADD_SUB2 : forall m n :e omega, minus_nat (m + n) m = n.
+exact (ADD_SUB2_bridge hlt_ADD_SUB2).
+Admitted.
+
+// HOL Light: arith.ml:869 / SUB_EQ_0   (hash md5:e64d68168f7bbad2ee434f90a4ec9ed4)
+Theorem hlt_SUB_EQ_0 : forall m n :e omega, hl_sub m n = hl_NUMERAL hl_zero <-> hl_le m n = 1.
+Admitted.
+Theorem SUB_EQ_0_bridge : (forall m n :e omega, hl_sub m n = hl_NUMERAL hl_zero <-> hl_le m n = 1) -> (forall m n :e omega, minus_nat m n = 0 <-> m <= n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub m n = hl_NUMERAL hl_zero <-> hl_le m n = 1) (fun m => forall n :e omega, minus_nat m n = 0 <-> m <= n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub m n = hl_NUMERAL hl_zero <-> hl_le m n = 1) (fun n => minus_nat m n = 0 <-> m <= n) (fun n Hn => (imp_iff (hl_sub m n = hl_NUMERAL hl_zero) (minus_nat m n = 0) (hl_le m n = 1) (m <= n) (imp_eq (hl_sub m n) (minus_nat m n) (hl_NUMERAL hl_zero) (0) ((hl_sub_compat) (m) Hm (n) Hn) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_eq (minus_nat m n) (hl_sub m n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_sub m n) (minus_nat m n) ((hl_sub_compat) (m) Hm (n) Hn)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn))))))) HL).
+Qed.
+Theorem SUB_EQ_0 : forall m n :e omega, minus_nat m n = 0 <-> m <= n.
+exact (SUB_EQ_0_bridge hlt_SUB_EQ_0).
+Admitted.
+
+// HOL Light: arith.ml:874 / ADD_SUBR2   (hash md5:6c9c42570f9d049e00a417c36d14e1d4)
+Theorem hlt_ADD_SUBR2 : forall m n :e omega, hl_sub m (hl_add m n) = hl_NUMERAL hl_zero.
+Admitted.
+Theorem ADD_SUBR2_bridge : (forall m n :e omega, hl_sub m (hl_add m n) = hl_NUMERAL hl_zero) -> (forall m n :e omega, minus_nat m (m + n) = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub m (hl_add m n) = hl_NUMERAL hl_zero) (fun m => forall n :e omega, minus_nat m (m + n) = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub m (hl_add m n) = hl_NUMERAL hl_zero) (fun n => minus_nat m (m + n) = 0) (fun n Hn => (imp_eq (hl_sub m (hl_add m n)) (minus_nat m (m + n)) (hl_NUMERAL hl_zero) (0) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_sub m (hl_add m n) = minus_nat m hl__u) ((hl_sub_compat) (m) Hm (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) HL).
+Qed.
+Theorem ADD_SUBR2 : forall m n :e omega, minus_nat m (m + n) = 0.
+exact (ADD_SUBR2_bridge hlt_ADD_SUBR2).
+Admitted.
+
+// HOL Light: arith.ml:878 / ADD_SUBR   (hash md5:0b66514f75173feaca31fb0ff9ea74cc)
+Theorem hlt_ADD_SUBR : forall m n :e omega, hl_sub n (hl_add m n) = hl_NUMERAL hl_zero.
+Admitted.
+Theorem ADD_SUBR_bridge : (forall m n :e omega, hl_sub n (hl_add m n) = hl_NUMERAL hl_zero) -> (forall m n :e omega, minus_nat n (m + n) = 0).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_sub n (hl_add m n) = hl_NUMERAL hl_zero) (fun m => forall n :e omega, minus_nat n (m + n) = 0) (fun m Hm => (imp_forall_in (omega) (fun n => hl_sub n (hl_add m n) = hl_NUMERAL hl_zero) (fun n => minus_nat n (m + n) = 0) (fun n Hn => (imp_eq (hl_sub n (hl_add m n)) (minus_nat n (m + n)) (hl_NUMERAL hl_zero) (0) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_sub n (hl_add m n) = minus_nat n hl__u) ((hl_sub_compat) (n) Hn (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) HL).
+Qed.
+Theorem ADD_SUBR : forall m n :e omega, minus_nat n (m + n) = 0.
+exact (ADD_SUBR_bridge hlt_ADD_SUBR).
+Admitted.
+
+// HOL Light: arith.ml:882 / SUB_ADD   (hash md5:0a5b1061c758157ba0232b8361b301a2)
+Theorem hlt_SUB_ADD : forall m n :e omega, hl_le n m = 1 -> hl_add (hl_sub m n) n = m.
+Admitted.
+Theorem SUB_ADD_bridge : (forall m n :e omega, hl_le n m = 1 -> hl_add (hl_sub m n) n = m) -> (forall m n :e omega, n <= m -> minus_nat m n + n = m).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le n m = 1 -> hl_add (hl_sub m n) n = m) (fun m => forall n :e omega, n <= m -> minus_nat m n + n = m) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le n m = 1 -> hl_add (hl_sub m n) n = m) (fun n => n <= m -> minus_nat m n + n = m) (fun n Hn => (imp_imp (hl_le n m = 1) (n <= m) (hl_add (hl_sub m n) n = m) (minus_nat m n + n = m) (iffER (hl_le n m = 1) (n <= m) ((hl_le_compat) (n) Hn (m) Hm)) (imp_eq (hl_add (hl_sub m n) n) (minus_nat m n + n) (m) (m) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_add (hl_sub m n) n = hl__u + n) ((hl_add_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn) (n) Hn)) (fun q H => H))))))) HL).
+Qed.
+Theorem SUB_ADD : forall m n :e omega, n <= m -> minus_nat m n + n = m.
+exact (SUB_ADD_bridge hlt_SUB_ADD).
+Admitted.
+
+// HOL Light: arith.ml:888 / SUB_ADD_LCANCEL   (hash md5:ff83e90d7a1fc7da870abbdb60a0f3cf)
+Theorem hlt_SUB_ADD_LCANCEL : forall m n p :e omega, hl_sub (hl_add m n) (hl_add m p) = hl_sub n p.
+Admitted.
+Theorem SUB_ADD_LCANCEL_bridge : (forall m n p :e omega, hl_sub (hl_add m n) (hl_add m p) = hl_sub n p) -> (forall m n p :e omega, minus_nat (m + n) (m + p) = minus_nat n p).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_sub (hl_add m n) (hl_add m p) = hl_sub n p) (fun m => forall n p :e omega, minus_nat (m + n) (m + p) = minus_nat n p) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_sub (hl_add m n) (hl_add m p) = hl_sub n p) (fun n => forall p :e omega, minus_nat (m + n) (m + p) = minus_nat n p) (fun n Hn => (imp_forall_in (omega) (fun p => hl_sub (hl_add m n) (hl_add m p) = hl_sub n p) (fun p => minus_nat (m + n) (m + p) = minus_nat n p) (fun p Hp => (imp_eq (hl_sub (hl_add m n) (hl_add m p)) (minus_nat (m + n) (m + p)) (hl_sub n p) (minus_nat n p) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_sub (hl_add m n) (hl_add m p) = minus_nat (m + n) hl__u) (((hl_add_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_sub (hl_add m n) (hl_add m p) = minus_nat hl__u (hl_add m p)) ((hl_sub_compat) (hl_add m n) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (n) Hn) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp)))) ((hl_sub_compat) (n) Hn (p) Hp)))))))) HL).
+Qed.
+Theorem SUB_ADD_LCANCEL : forall m n p :e omega, minus_nat (m + n) (m + p) = minus_nat n p.
+exact (SUB_ADD_LCANCEL_bridge hlt_SUB_ADD_LCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:892 / SUB_ADD_RCANCEL   (hash md5:0c9e0de95ca656a0a24abcd4b4560f25)
+Theorem hlt_SUB_ADD_RCANCEL : forall m n p :e omega, hl_sub (hl_add m p) (hl_add n p) = hl_sub m n.
+Admitted.
+Theorem SUB_ADD_RCANCEL_bridge : (forall m n p :e omega, hl_sub (hl_add m p) (hl_add n p) = hl_sub m n) -> (forall m n p :e omega, minus_nat (m + p) (n + p) = minus_nat m n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_sub (hl_add m p) (hl_add n p) = hl_sub m n) (fun m => forall n p :e omega, minus_nat (m + p) (n + p) = minus_nat m n) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_sub (hl_add m p) (hl_add n p) = hl_sub m n) (fun n => forall p :e omega, minus_nat (m + p) (n + p) = minus_nat m n) (fun n Hn => (imp_forall_in (omega) (fun p => hl_sub (hl_add m p) (hl_add n p) = hl_sub m n) (fun p => minus_nat (m + p) (n + p) = minus_nat m n) (fun p Hp => (imp_eq (hl_sub (hl_add m p) (hl_add n p)) (minus_nat (m + p) (n + p)) (hl_sub m n) (minus_nat m n) (((hl_add_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_sub (hl_add m p) (hl_add n p) = minus_nat (m + p) hl__u) (((hl_add_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_sub (hl_add m p) (hl_add n p) = minus_nat hl__u (hl_add n p)) ((hl_sub_compat) (hl_add m p) (setexp_ap (omega) (omega) (hl_add m) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (m) Hm) (p) Hp) (hl_add n p) (setexp_ap (omega) (omega) (hl_add n) (setexp_ap (omega) (omega :^: omega) (hl_add) ((hl_add_in)) (n) Hn) (p) Hp)))) ((hl_sub_compat) (m) Hm (n) Hn)))))))) HL).
+Qed.
+Theorem SUB_ADD_RCANCEL : forall m n p :e omega, minus_nat (m + p) (n + p) = minus_nat m n.
+exact (SUB_ADD_RCANCEL_bridge hlt_SUB_ADD_RCANCEL).
+Admitted.
+
+// HOL Light: arith.ml:896 / LEFT_SUB_DISTRIB   (hash md5:49b856e55db126122c82af1cf054995d)
+Theorem hlt_LEFT_SUB_DISTRIB : forall m n p :e omega, hl_mul m (hl_sub n p) = hl_sub (hl_mul m n) (hl_mul m p).
+Admitted.
+Theorem LEFT_SUB_DISTRIB_bridge : (forall m n p :e omega, hl_mul m (hl_sub n p) = hl_sub (hl_mul m n) (hl_mul m p)) -> (forall m n p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul m (hl_sub n p) = hl_sub (hl_mul m n) (hl_mul m p)) (fun m => forall n p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p)) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul m (hl_sub n p) = hl_sub (hl_mul m n) (hl_mul m p)) (fun n => forall p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p)) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul m (hl_sub n p) = hl_sub (hl_mul m n) (hl_mul m p)) (fun p => m * minus_nat n p = minus_nat (m * n) (m * p)) (fun p Hp => (imp_eq (hl_mul m (hl_sub n p)) (m * minus_nat n p) (hl_sub (hl_mul m n) (hl_mul m p)) (minus_nat (m * n) (m * p)) (((hl_sub_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_mul m (hl_sub n p) = m * hl__u) ((hl_mul_compat) (m) Hm (hl_sub n p) (setexp_ap (omega) (omega) (hl_sub n) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (n) Hn) (p) Hp))) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_sub (hl_mul m n) (hl_mul m p) = minus_nat (m * n) hl__u) (((hl_mul_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_sub (hl_mul m n) (hl_mul m p) = minus_nat hl__u (hl_mul m p)) ((hl_sub_compat) (hl_mul m n) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (n) Hn) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp))))))))))) HL).
+Qed.
+Theorem LEFT_SUB_DISTRIB : forall m n p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p).
+exact (LEFT_SUB_DISTRIB_bridge hlt_LEFT_SUB_DISTRIB).
+Admitted.
+
+// HOL Light: arith.ml:906 / RIGHT_SUB_DISTRIB   (hash md5:ad1cb55d6a3ff598e4b02b87dcb37398)
+Theorem hlt_RIGHT_SUB_DISTRIB : forall m n p :e omega, hl_mul (hl_sub m n) p = hl_sub (hl_mul m p) (hl_mul n p).
+Admitted.
+Theorem RIGHT_SUB_DISTRIB_bridge : (forall m n p :e omega, hl_mul (hl_sub m n) p = hl_sub (hl_mul m p) (hl_mul n p)) -> (forall m n p :e omega, minus_nat m n * p = minus_nat (m * p) (n * p)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n p :e omega, hl_mul (hl_sub m n) p = hl_sub (hl_mul m p) (hl_mul n p)) (fun m => forall n p :e omega, minus_nat m n * p = minus_nat (m * p) (n * p)) (fun m Hm => (imp_forall_in (omega) (fun n => forall p :e omega, hl_mul (hl_sub m n) p = hl_sub (hl_mul m p) (hl_mul n p)) (fun n => forall p :e omega, minus_nat m n * p = minus_nat (m * p) (n * p)) (fun n Hn => (imp_forall_in (omega) (fun p => hl_mul (hl_sub m n) p = hl_sub (hl_mul m p) (hl_mul n p)) (fun p => minus_nat m n * p = minus_nat (m * p) (n * p)) (fun p Hp => (imp_eq (hl_mul (hl_sub m n) p) (minus_nat m n * p) (hl_sub (hl_mul m p) (hl_mul n p)) (minus_nat (m * p) (n * p)) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_mul (hl_sub m n) p = hl__u * p) ((hl_mul_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn) (p) Hp)) (((hl_mul_compat) (n) Hn (p) Hp) (fun hl__u hl__v => hl_sub (hl_mul m p) (hl_mul n p) = minus_nat (m * p) hl__u) (((hl_mul_compat) (m) Hm (p) Hp) (fun hl__u hl__v => hl_sub (hl_mul m p) (hl_mul n p) = minus_nat hl__u (hl_mul n p)) ((hl_sub_compat) (hl_mul m p) (setexp_ap (omega) (omega) (hl_mul m) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (m) Hm) (p) Hp) (hl_mul n p) (setexp_ap (omega) (omega) (hl_mul n) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (n) Hn) (p) Hp))))))))))) HL).
+Qed.
+Theorem RIGHT_SUB_DISTRIB : forall m n p :e omega, minus_nat m n * p = minus_nat (m * p) (n * p).
+exact (RIGHT_SUB_DISTRIB_bridge hlt_RIGHT_SUB_DISTRIB).
+Admitted.
+
+// HOL Light: arith.ml:910 / SUC_SUB1   (hash md5:5d55500d869088c39adcdd6b57dba95a)
+Theorem hlt_SUC_SUB1 : forall n :e omega, hl_sub (hl_SUC n) (hl_NUMERAL (hl_BIT1 hl_zero)) = n.
+Admitted.
+Theorem SUC_SUB1_bridge : (forall n :e omega, hl_sub (hl_SUC n) (hl_NUMERAL (hl_BIT1 hl_zero)) = n) -> (forall n :e omega, minus_nat (ordsucc n) 1 = n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_sub (hl_SUC n) (hl_NUMERAL (hl_BIT1 hl_zero)) = n) (fun n => minus_nat (ordsucc n) 1 = n) (fun n Hn => (imp_eq (hl_sub (hl_SUC n) (hl_NUMERAL (hl_BIT1 hl_zero))) (minus_nat (ordsucc n) 1) (n) (n) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_sub (hl_SUC n) (hl_NUMERAL (hl_BIT1 hl_zero)) = minus_nat (ordsucc n) hl__u) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_sub (hl_SUC n) (hl_NUMERAL (hl_BIT1 hl_zero)) = minus_nat hl__u (hl_NUMERAL (hl_BIT1 hl_zero))) ((hl_sub_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))))) (fun q H => H)))) HL).
+Qed.
+Theorem SUC_SUB1 : forall n :e omega, minus_nat (ordsucc n) 1 = n.
+exact (SUC_SUB1_bridge hlt_SUC_SUB1).
+Admitted.
+
+// HOL Light: arith.ml:914 / EVEN_SUB   (hash md5:d225d13df4e75f319620916c9f1f4964)
+Theorem hlt_EVEN_SUB : forall m n :e omega, hl_EVEN (hl_sub m n) = 1 <-> hl_le m n = 1 \/ (hl_EVEN m = 1 <-> hl_EVEN n = 1).
+Admitted.
+Theorem EVEN_SUB_bridge : (forall m n :e omega, hl_EVEN (hl_sub m n) = 1 <-> hl_le m n = 1 \/ (hl_EVEN m = 1 <-> hl_EVEN n = 1)) -> (forall m n :e omega, even_nat (minus_nat m n) <-> m <= n \/ (even_nat m <-> even_nat n)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_EVEN (hl_sub m n) = 1 <-> hl_le m n = 1 \/ (hl_EVEN m = 1 <-> hl_EVEN n = 1)) (fun m => forall n :e omega, even_nat (minus_nat m n) <-> m <= n \/ (even_nat m <-> even_nat n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_EVEN (hl_sub m n) = 1 <-> hl_le m n = 1 \/ (hl_EVEN m = 1 <-> hl_EVEN n = 1)) (fun n => even_nat (minus_nat m n) <-> m <= n \/ (even_nat m <-> even_nat n)) (fun n Hn => (imp_iff (hl_EVEN (hl_sub m n) = 1) (even_nat (minus_nat m n)) (hl_le m n = 1 \/ (hl_EVEN m = 1 <-> hl_EVEN n = 1)) (m <= n \/ (even_nat m <-> even_nat n)) (iffEL (hl_EVEN (hl_sub m n) = 1) (even_nat (minus_nat m n)) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_sub m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn)))) (iffER (hl_EVEN (hl_sub m n) = 1) (even_nat (minus_nat m n)) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_EVEN (hl_sub m n) = 1 <-> even_nat hl__u) ((hl_EVEN_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn)))) (imp_or (hl_le m n = 1) (m <= n) (hl_EVEN m = 1 <-> hl_EVEN n = 1) (even_nat m <-> even_nat n) (iffEL (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_iff (hl_EVEN m = 1) (even_nat m) (hl_EVEN n = 1) (even_nat n) (iffEL (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffER (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)))) (imp_or (m <= n) (hl_le m n = 1) (even_nat m <-> even_nat n) (hl_EVEN m = 1 <-> hl_EVEN n = 1) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (imp_iff (even_nat m) (hl_EVEN m = 1) (even_nat n) (hl_EVEN n = 1) (iffER (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffEL (hl_EVEN m = 1) (even_nat m) ((hl_EVEN_compat) (m) Hm)) (iffER (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn)) (iffEL (hl_EVEN n = 1) (even_nat n) ((hl_EVEN_compat) (n) Hn))))))))) HL).
+Qed.
+Theorem EVEN_SUB : forall m n :e omega, even_nat (minus_nat m n) <-> m <= n \/ (even_nat m <-> even_nat n).
+exact (EVEN_SUB_bridge hlt_EVEN_SUB).
+Admitted.
+
+// HOL Light: arith.ml:922 / ODD_SUB   (hash md5:56a7d11a9a320d0785c16800d51adbff)
+Theorem hlt_ODD_SUB : forall m n :e omega, hl_ODD (hl_sub m n) = 1 <-> hl_lt n m = 1 /\ ~ (hl_ODD m = 1 <-> hl_ODD n = 1).
+Admitted.
+Theorem ODD_SUB_bridge : (forall m n :e omega, hl_ODD (hl_sub m n) = 1 <-> hl_lt n m = 1 /\ ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) -> (forall m n :e omega, odd_nat (minus_nat m n) <-> n < m /\ ~ (odd_nat m <-> odd_nat n)).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_ODD (hl_sub m n) = 1 <-> hl_lt n m = 1 /\ ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (fun m => forall n :e omega, odd_nat (minus_nat m n) <-> n < m /\ ~ (odd_nat m <-> odd_nat n)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_ODD (hl_sub m n) = 1 <-> hl_lt n m = 1 /\ ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (fun n => odd_nat (minus_nat m n) <-> n < m /\ ~ (odd_nat m <-> odd_nat n)) (fun n Hn => (imp_iff (hl_ODD (hl_sub m n) = 1) (odd_nat (minus_nat m n)) (hl_lt n m = 1 /\ ~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (n < m /\ ~ (odd_nat m <-> odd_nat n)) (iffEL (hl_ODD (hl_sub m n) = 1) (odd_nat (minus_nat m n)) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_sub m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn)))) (iffER (hl_ODD (hl_sub m n) = 1) (odd_nat (minus_nat m n)) (((hl_sub_compat) (m) Hm (n) Hn) (fun hl__u hl__v => hl_ODD (hl_sub m n) = 1 <-> odd_nat hl__u) ((hl_ODD_compat) (hl_sub m n) (setexp_ap (omega) (omega) (hl_sub m) (setexp_ap (omega) (omega :^: omega) (hl_sub) ((hl_sub_in)) (m) Hm) (n) Hn)))) (imp_and (hl_lt n m = 1) (n < m) (~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (~ (odd_nat m <-> odd_nat n)) (iffEL (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)) (imp_not (hl_ODD m = 1 <-> hl_ODD n = 1) (odd_nat m <-> odd_nat n) (imp_iff (odd_nat m) (hl_ODD m = 1) (odd_nat n) (hl_ODD n = 1) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn))))) (imp_and (n < m) (hl_lt n m = 1) (~ (odd_nat m <-> odd_nat n)) (~ (hl_ODD m = 1 <-> hl_ODD n = 1)) (iffER (hl_lt n m = 1) (n < m) ((hl_lt_compat) (n) Hn (m) Hm)) (imp_not (odd_nat m <-> odd_nat n) (hl_ODD m = 1 <-> hl_ODD n = 1) (imp_iff (hl_ODD m = 1) (odd_nat m) (hl_ODD n = 1) (odd_nat n) (iffEL (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffER (hl_ODD m = 1) (odd_nat m) ((hl_ODD_compat) (m) Hm)) (iffEL (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)) (iffER (hl_ODD n = 1) (odd_nat n) ((hl_ODD_compat) (n) Hn)))))))))) HL).
+Qed.
+Theorem ODD_SUB : forall m n :e omega, odd_nat (minus_nat m n) <-> n < m /\ ~ (odd_nat m <-> odd_nat n).
+exact (ODD_SUB_bridge hlt_ODD_SUB).
+Admitted.
+
+// HOL Light: arith.ml:931 / FACT   (hash md5:38477b123ecad41d640fd5a871e22d04)
+Theorem hlt_FACT : hl_FACT (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero) /\ forall n :e omega, hl_FACT (hl_SUC n) = hl_mul (hl_SUC n) (hl_FACT n).
+Admitted.
+Theorem FACT_bridge : (hl_FACT (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero) /\ forall n :e omega, hl_FACT (hl_SUC n) = hl_mul (hl_SUC n) (hl_FACT n)) -> (factorial 0 = 1 /\ forall n :e omega, factorial (ordsucc n) = ordsucc n * factorial n).
+exact (fun HL => (imp_and (hl_FACT (hl_NUMERAL hl_zero) = hl_NUMERAL (hl_BIT1 hl_zero)) (factorial 0 = 1) (forall n :e omega, hl_FACT (hl_SUC n) = hl_mul (hl_SUC n) (hl_FACT n)) (forall n :e omega, factorial (ordsucc n) = ordsucc n * factorial n) (imp_eq (hl_FACT (hl_NUMERAL hl_zero)) (factorial 0) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_FACT (hl_NUMERAL hl_zero) = factorial hl__u) ((hl_FACT_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))) (imp_forall_in (omega) (fun n => hl_FACT (hl_SUC n) = hl_mul (hl_SUC n) (hl_FACT n)) (fun n => factorial (ordsucc n) = ordsucc n * factorial n) (fun n Hn => (imp_eq (hl_FACT (hl_SUC n)) (factorial (ordsucc n)) (hl_mul (hl_SUC n) (hl_FACT n)) (ordsucc n * factorial n) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_FACT (hl_SUC n) = factorial hl__u) ((hl_FACT_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) (((hl_FACT_compat) (n) Hn) (fun hl__u hl__v => hl_mul (hl_SUC n) (hl_FACT n) = ordsucc n * hl__u) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_mul (hl_SUC n) (hl_FACT n) = hl__u * hl_FACT n) ((hl_mul_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn) (hl_FACT n) (setexp_ap (omega) (omega) (hl_FACT) ((hl_FACT_in)) (n) Hn)))))))) HL).
+Qed.
+Theorem FACT : factorial 0 = 1 /\ forall n :e omega, factorial (ordsucc n) = ordsucc n * factorial n.
+exact (FACT_bridge hlt_FACT).
+Admitted.
+
+// HOL Light: arith.ml:935 / FACT_LT   (hash md5:050e25d4c8007df2182d34ae82e12b0a)
+Theorem hlt_FACT_LT : forall n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1.
+Admitted.
+Theorem FACT_LT_bridge : (forall n :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1) -> (forall n :e omega, 0 < factorial n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1) (fun n => 0 < factorial n) (fun n Hn => (iffEL (hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1) (0 < factorial n) (((hl_FACT_compat) (n) Hn) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1 <-> 0 < hl__u) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_FACT n) = 1 <-> hl__u < hl_FACT n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (hl_FACT n) (setexp_ap (omega) (omega) (hl_FACT) ((hl_FACT_in)) (n) Hn))))))) HL).
+Qed.
+Theorem FACT_LT : forall n :e omega, 0 < factorial n.
+exact (FACT_LT_bridge hlt_FACT_LT).
+Admitted.
+
+// HOL Light: arith.ml:940 / FACT_LE   (hash md5:40e5dd987e027bbd7af507ff199921ef)
+Theorem hlt_FACT_LE : forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_FACT n) = 1.
+Admitted.
+Theorem FACT_LE_bridge : (forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_FACT n) = 1) -> (forall n :e omega, 1 <= factorial n).
+exact (fun HL => (imp_forall_in (omega) (fun n => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_FACT n) = 1) (fun n => 1 <= factorial n) (fun n Hn => (iffEL (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_FACT n) = 1) (1 <= factorial n) (((hl_FACT_compat) (n) Hn) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_FACT n) = 1 <-> 1 <= hl__u) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_FACT n) = 1 <-> hl__u <= hl_FACT n) ((hl_le_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))) (hl_FACT n) (setexp_ap (omega) (omega) (hl_FACT) ((hl_FACT_in)) (n) Hn))))))) HL).
+Qed.
+Theorem FACT_LE : forall n :e omega, 1 <= factorial n.
+exact (FACT_LE_bridge hlt_FACT_LE).
+Admitted.
+
+// HOL Light: arith.ml:944 / FACT_NZ   (hash md5:32780acb6415a8b42e1c483479b49a7d)
+Theorem hlt_FACT_NZ : forall n :e omega, ~ hl_FACT n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem FACT_NZ_bridge : (forall n :e omega, ~ hl_FACT n = hl_NUMERAL hl_zero) -> (forall n :e omega, ~ factorial n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun n => ~ hl_FACT n = hl_NUMERAL hl_zero) (fun n => ~ factorial n = 0) (fun n Hn => (imp_not (hl_FACT n = hl_NUMERAL hl_zero) (factorial n = 0) (imp_eq (factorial n) (hl_FACT n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (hl_FACT n) (factorial n) ((hl_FACT_compat) (n) Hn)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))))) HL).
+Qed.
+Theorem FACT_NZ : forall n :e omega, ~ factorial n = 0.
+exact (FACT_NZ_bridge hlt_FACT_NZ).
+Admitted.
+
+// HOL Light: arith.ml:948 / FACT_MONO   (hash md5:644d0516be3256d133e1f19b06420cab)
+Theorem hlt_FACT_MONO : forall m n :e omega, hl_le m n = 1 -> hl_le (hl_FACT m) (hl_FACT n) = 1.
+Admitted.
+Theorem FACT_MONO_bridge : (forall m n :e omega, hl_le m n = 1 -> hl_le (hl_FACT m) (hl_FACT n) = 1) -> (forall m n :e omega, m <= n -> factorial m <= factorial n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, hl_le m n = 1 -> hl_le (hl_FACT m) (hl_FACT n) = 1) (fun m => forall n :e omega, m <= n -> factorial m <= factorial n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_le m n = 1 -> hl_le (hl_FACT m) (hl_FACT n) = 1) (fun n => m <= n -> factorial m <= factorial n) (fun n Hn => (imp_imp (hl_le m n = 1) (m <= n) (hl_le (hl_FACT m) (hl_FACT n) = 1) (factorial m <= factorial n) (iffER (hl_le m n = 1) (m <= n) ((hl_le_compat) (m) Hm (n) Hn)) (iffEL (hl_le (hl_FACT m) (hl_FACT n) = 1) (factorial m <= factorial n) (((hl_FACT_compat) (n) Hn) (fun hl__u hl__v => hl_le (hl_FACT m) (hl_FACT n) = 1 <-> factorial m <= hl__u) (((hl_FACT_compat) (m) Hm) (fun hl__u hl__v => hl_le (hl_FACT m) (hl_FACT n) = 1 <-> hl__u <= hl_FACT n) ((hl_le_compat) (hl_FACT m) (setexp_ap (omega) (omega) (hl_FACT) ((hl_FACT_in)) (m) Hm) (hl_FACT n) (setexp_ap (omega) (omega) (hl_FACT) ((hl_FACT_in)) (n) Hn)))))))))) HL).
+Qed.
+Theorem FACT_MONO : forall m n :e omega, m <= n -> factorial m <= factorial n.
+exact (FACT_MONO_bridge hlt_FACT_MONO).
+Admitted.
+
+// HOL Light: arith.ml:965 / EXP_LT_0   (hash md5:83fd48ee94380d69a3893937f85e52c4)
+Theorem hlt_EXP_LT_0 : forall n x :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> ~ x = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EXP_LT_0_bridge : (forall n x :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> ~ x = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) -> (forall n x :e omega, 0 < x ^ n <-> ~ x = 0 \/ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun n => forall x :e omega, hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> ~ x = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) (fun n => forall x :e omega, 0 < x ^ n <-> ~ x = 0 \/ n = 0) (fun n Hn => (imp_forall_in (omega) (fun x => hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> ~ x = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) (fun x => 0 < x ^ n <-> ~ x = 0 \/ n = 0) (fun x Hx => (imp_iff (hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1) (0 < x ^ n) (~ x = hl_NUMERAL hl_zero \/ n = hl_NUMERAL hl_zero) (~ x = 0 \/ n = 0) (iffEL (hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1) (0 < x ^ n) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> 0 < hl__u) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> hl__u < hl_EXP x n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn))))) (iffER (hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1) (0 < x ^ n) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> 0 < hl__u) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_lt (hl_NUMERAL hl_zero) (hl_EXP x n) = 1 <-> hl__u < hl_EXP x n) ((hl_lt_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn))))) (imp_or (~ x = hl_NUMERAL hl_zero) (~ x = 0) (n = hl_NUMERAL hl_zero) (n = 0) (imp_not (x = hl_NUMERAL hl_zero) (x = 0) (imp_eq (x) (x) (0) (hl_NUMERAL hl_zero) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (~ x = 0) (~ x = hl_NUMERAL hl_zero) (n = 0) (n = hl_NUMERAL hl_zero) (imp_not (x = 0) (x = hl_NUMERAL hl_zero) (imp_eq (x) (x) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))) HL).
+Qed.
+Theorem EXP_LT_0 : forall n x :e omega, 0 < x ^ n <-> ~ x = 0 \/ n = 0.
+exact (EXP_LT_0_bridge hlt_EXP_LT_0).
+Admitted.
+
+// HOL Light: arith.ml:969 / LT_EXP   (hash md5:f6bf4822e9ea6b851f61cecf191851c6)
+Theorem hlt_LT_EXP : forall x m n :e omega, hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 \/ x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero).
+Admitted.
+Theorem LT_EXP_bridge : (forall x m n :e omega, hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 \/ x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) -> (forall x m n :e omega, x ^ m < x ^ n <-> 2 <= x /\ m < n \/ x = 0 /\ (~ m = 0 /\ n = 0)).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall m n :e omega, hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 \/ x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) (fun x => forall m n :e omega, x ^ m < x ^ n <-> 2 <= x /\ m < n \/ x = 0 /\ (~ m = 0 /\ n = 0)) (fun x Hx => (imp_forall_in (omega) (fun m => forall n :e omega, hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 \/ x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) (fun m => forall n :e omega, x ^ m < x ^ n <-> 2 <= x /\ m < n \/ x = 0 /\ (~ m = 0 /\ n = 0)) (fun m Hm => (imp_forall_in (omega) (fun n => hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 \/ x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) (fun n => x ^ m < x ^ n <-> 2 <= x /\ m < n \/ x = 0 /\ (~ m = 0 /\ n = 0)) (fun n Hn => (imp_iff (hl_lt (hl_EXP x m) (hl_EXP x n) = 1) (x ^ m < x ^ n) (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 \/ x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) (2 <= x /\ m < n \/ x = 0 /\ (~ m = 0 /\ n = 0)) (iffEL (hl_lt (hl_EXP x m) (hl_EXP x n) = 1) (x ^ m < x ^ n) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> x ^ m < hl__u) (((hl_EXP_compat) (x) Hx (m) Hm) (fun hl__u hl__v => hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl__u < hl_EXP x n) ((hl_lt_compat) (hl_EXP x m) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (m) Hm) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn))))) (iffER (hl_lt (hl_EXP x m) (hl_EXP x n) = 1) (x ^ m < x ^ n) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> x ^ m < hl__u) (((hl_EXP_compat) (x) Hx (m) Hm) (fun hl__u hl__v => hl_lt (hl_EXP x m) (hl_EXP x n) = 1 <-> hl__u < hl_EXP x n) ((hl_lt_compat) (hl_EXP x m) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (m) Hm) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn))))) (imp_or (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1) (2 <= x /\ m < n) (x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) (x = 0 /\ (~ m = 0 /\ n = 0)) (imp_and (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1) (2 <= x) (hl_lt m n = 1) (m < n) (iffEL (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1) (2 <= x) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 <-> hl__u <= x) ((hl_le_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (x) Hx))) (iffEL (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))) (imp_and (x = hl_NUMERAL hl_zero) (x = 0) (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero) (~ m = 0 /\ n = 0) (imp_eq (x) (x) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (imp_and (~ m = hl_NUMERAL hl_zero) (~ m = 0) (n = hl_NUMERAL hl_zero) (n = 0) (imp_not (m = hl_NUMERAL hl_zero) (m = 0) (imp_eq (m) (m) (0) (hl_NUMERAL hl_zero) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))) (imp_or (2 <= x /\ m < n) (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1) (x = 0 /\ (~ m = 0 /\ n = 0)) (x = hl_NUMERAL hl_zero /\ (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero)) (imp_and (2 <= x) (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1) (m < n) (hl_lt m n = 1) (iffER (hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1) (2 <= x) ((eq_trans_i (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_BIT0 (hl_BIT1 hl_zero)) 2 (hl_NUMERAL_compat (hl_BIT0 (hl_BIT1 hl_zero)) ((eq_sym_i (hl_BIT0 (hl_BIT1 hl_zero)) 2 (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 2 (nat_ordsucc 1 (omega_nat_p 1 (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0))))))))) (eq_trans_i (hl_BIT0 (hl_BIT1 hl_zero)) (hl_BIT0 1) 2 (f_equal (fun x => hl_BIT0 x) (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (eq_trans_i (hl_BIT0 1) (ordsucc (ordsucc (hl_BIT0 0))) 2 (hl_BIT0_S 0 (nat_p_omega 0 nat_0)) (f_equal (fun x => ordsucc (ordsucc x)) (hl_BIT0 0) 0 hl_BIT0_0)))) (fun hl__u hl__v => hl_le (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) x = 1 <-> hl__u <= x) ((hl_le_compat) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT0 (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))) (x) Hx))) (iffER (hl_lt m n = 1) (m < n) ((hl_lt_compat) (m) Hm (n) Hn))) (imp_and (x = 0) (x = hl_NUMERAL hl_zero) (~ m = 0 /\ n = 0) (~ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero) (imp_eq (x) (x) (0) (hl_NUMERAL hl_zero) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_and (~ m = 0) (~ m = hl_NUMERAL hl_zero) (n = 0) (n = hl_NUMERAL hl_zero) (imp_not (m = 0) (m = hl_NUMERAL hl_zero) (imp_eq (m) (m) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))))) HL).
+Qed.
+Theorem LT_EXP : forall x m n :e omega, x ^ m < x ^ n <-> 2 <= x /\ m < n \/ x = 0 /\ (~ m = 0 /\ n = 0).
+exact (LT_EXP_bridge hlt_LT_EXP).
+Admitted.
+
+// HOL Light: arith.ml:1017 / LE_EXP   (hash md5:e8b7d60891c774a867e9bc2c87fe840c)
+// not bridged: 
+Theorem LE_EXP : forall x m n :e omega, x ^ m <= x ^ n <-> (x = 0 -> m = 0 -> n = 0) /\ (~ x = 0 -> x = 1 \/ m <= n).
+Admitted.
+
+// HOL Light: arith.ml:1025 / EQ_EXP   (hash md5:31cfe6c281f242a660f890b78a58547c)
+// not bridged: 
+Theorem EQ_EXP : forall x m n :e omega, x ^ m = x ^ n <-> (x = 0 -> (m = 0 <-> n = 0)) /\ (~ x = 0 -> x = 1 \/ m = n).
+Admitted.
+
+// HOL Light: arith.ml:1033 / EXP_MONO_LE_IMP   (hash md5:7e1ed0a1cce702d8843cb265a32e4a77)
+Theorem hlt_EXP_MONO_LE_IMP : forall x y n :e omega, hl_le x y = 1 -> hl_le (hl_EXP x n) (hl_EXP y n) = 1.
+Admitted.
+Theorem EXP_MONO_LE_IMP_bridge : (forall x y n :e omega, hl_le x y = 1 -> hl_le (hl_EXP x n) (hl_EXP y n) = 1) -> (forall x y n :e omega, x <= y -> x ^ n <= y ^ n).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall y n :e omega, hl_le x y = 1 -> hl_le (hl_EXP x n) (hl_EXP y n) = 1) (fun x => forall y n :e omega, x <= y -> x ^ n <= y ^ n) (fun x Hx => (imp_forall_in (omega) (fun y => forall n :e omega, hl_le x y = 1 -> hl_le (hl_EXP x n) (hl_EXP y n) = 1) (fun y => forall n :e omega, x <= y -> x ^ n <= y ^ n) (fun y Hy => (imp_forall_in (omega) (fun n => hl_le x y = 1 -> hl_le (hl_EXP x n) (hl_EXP y n) = 1) (fun n => x <= y -> x ^ n <= y ^ n) (fun n Hn => (imp_imp (hl_le x y = 1) (x <= y) (hl_le (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n <= y ^ n) (iffER (hl_le x y = 1) (x <= y) ((hl_le_compat) (x) Hx (y) Hy)) (iffEL (hl_le (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n <= y ^ n) (((hl_EXP_compat) (y) Hy (n) Hn) (fun hl__u hl__v => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> x ^ n <= hl__u) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl__u <= hl_EXP y n) ((hl_le_compat) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn) (hl_EXP y n) (setexp_ap (omega) (omega) (hl_EXP y) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (y) Hy) (n) Hn)))))))))))) HL).
+Qed.
+Theorem EXP_MONO_LE_IMP : forall x y n :e omega, x <= y -> x ^ n <= y ^ n.
+exact (EXP_MONO_LE_IMP_bridge hlt_EXP_MONO_LE_IMP).
+Admitted.
+
+// HOL Light: arith.ml:1039 / EXP_MONO_LT_IMP   (hash md5:b2a145b17cd42327ed23d97761d60611)
+Theorem hlt_EXP_MONO_LT_IMP : forall x y n :e omega, hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_EXP x n) (hl_EXP y n) = 1.
+Admitted.
+Theorem EXP_MONO_LT_IMP_bridge : (forall x y n :e omega, hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_EXP x n) (hl_EXP y n) = 1) -> (forall x y n :e omega, x < y /\ ~ n = 0 -> x ^ n < y ^ n).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall y n :e omega, hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (fun x => forall y n :e omega, x < y /\ ~ n = 0 -> x ^ n < y ^ n) (fun x Hx => (imp_forall_in (omega) (fun y => forall n :e omega, hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (fun y => forall n :e omega, x < y /\ ~ n = 0 -> x ^ n < y ^ n) (fun y Hy => (imp_forall_in (omega) (fun n => hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero -> hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (fun n => x < y /\ ~ n = 0 -> x ^ n < y ^ n) (fun n Hn => (imp_imp (hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero) (x < y /\ ~ n = 0) (hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n < y ^ n) (imp_and (x < y) (hl_lt x y = 1) (~ n = 0) (~ n = hl_NUMERAL hl_zero) (iffER (hl_lt x y = 1) (x < y) ((hl_lt_compat) (x) Hx (y) Hy)) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)))) (iffEL (hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n < y ^ n) (((hl_EXP_compat) (y) Hy (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> x ^ n < hl__u) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl__u < hl_EXP y n) ((hl_lt_compat) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn) (hl_EXP y n) (setexp_ap (omega) (omega) (hl_EXP y) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (y) Hy) (n) Hn)))))))))))) HL).
+Qed.
+Theorem EXP_MONO_LT_IMP : forall x y n :e omega, x < y /\ ~ n = 0 -> x ^ n < y ^ n.
+exact (EXP_MONO_LT_IMP_bridge hlt_EXP_MONO_LT_IMP).
+Admitted.
+
+// HOL Light: arith.ml:1047 / EXP_MONO_LE   (hash md5:4daf3d1183137a0beed7aa52e5e0f97a)
+Theorem hlt_EXP_MONO_LE : forall x y n :e omega, hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_le x y = 1 \/ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EXP_MONO_LE_bridge : (forall x y n :e omega, hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_le x y = 1 \/ n = hl_NUMERAL hl_zero) -> (forall x y n :e omega, x ^ n <= y ^ n <-> x <= y \/ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall y n :e omega, hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_le x y = 1 \/ n = hl_NUMERAL hl_zero) (fun x => forall y n :e omega, x ^ n <= y ^ n <-> x <= y \/ n = 0) (fun x Hx => (imp_forall_in (omega) (fun y => forall n :e omega, hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_le x y = 1 \/ n = hl_NUMERAL hl_zero) (fun y => forall n :e omega, x ^ n <= y ^ n <-> x <= y \/ n = 0) (fun y Hy => (imp_forall_in (omega) (fun n => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_le x y = 1 \/ n = hl_NUMERAL hl_zero) (fun n => x ^ n <= y ^ n <-> x <= y \/ n = 0) (fun n Hn => (imp_iff (hl_le (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n <= y ^ n) (hl_le x y = 1 \/ n = hl_NUMERAL hl_zero) (x <= y \/ n = 0) (iffEL (hl_le (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n <= y ^ n) (((hl_EXP_compat) (y) Hy (n) Hn) (fun hl__u hl__v => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> x ^ n <= hl__u) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl__u <= hl_EXP y n) ((hl_le_compat) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn) (hl_EXP y n) (setexp_ap (omega) (omega) (hl_EXP y) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (y) Hy) (n) Hn))))) (iffER (hl_le (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n <= y ^ n) (((hl_EXP_compat) (y) Hy (n) Hn) (fun hl__u hl__v => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> x ^ n <= hl__u) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_le (hl_EXP x n) (hl_EXP y n) = 1 <-> hl__u <= hl_EXP y n) ((hl_le_compat) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn) (hl_EXP y n) (setexp_ap (omega) (omega) (hl_EXP y) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (y) Hy) (n) Hn))))) (imp_or (hl_le x y = 1) (x <= y) (n = hl_NUMERAL hl_zero) (n = 0) (iffEL (hl_le x y = 1) (x <= y) ((hl_le_compat) (x) Hx (y) Hy)) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (x <= y) (hl_le x y = 1) (n = 0) (n = hl_NUMERAL hl_zero) (iffER (hl_le x y = 1) (x <= y) ((hl_le_compat) (x) Hx (y) Hy)) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))) HL).
+Qed.
+Theorem EXP_MONO_LE : forall x y n :e omega, x ^ n <= y ^ n <-> x <= y \/ n = 0.
+exact (EXP_MONO_LE_bridge hlt_EXP_MONO_LE).
+Admitted.
+
+// HOL Light: arith.ml:1053 / EXP_MONO_LT   (hash md5:843814ff63301a25806de636e3484b8e)
+Theorem hlt_EXP_MONO_LT : forall x y n :e omega, hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EXP_MONO_LT_bridge : (forall x y n :e omega, hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero) -> (forall x y n :e omega, x ^ n < y ^ n <-> x < y /\ ~ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall y n :e omega, hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero) (fun x => forall y n :e omega, x ^ n < y ^ n <-> x < y /\ ~ n = 0) (fun x Hx => (imp_forall_in (omega) (fun y => forall n :e omega, hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero) (fun y => forall n :e omega, x ^ n < y ^ n <-> x < y /\ ~ n = 0) (fun y Hy => (imp_forall_in (omega) (fun n => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero) (fun n => x ^ n < y ^ n <-> x < y /\ ~ n = 0) (fun n Hn => (imp_iff (hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n < y ^ n) (hl_lt x y = 1 /\ ~ n = hl_NUMERAL hl_zero) (x < y /\ ~ n = 0) (iffEL (hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n < y ^ n) (((hl_EXP_compat) (y) Hy (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> x ^ n < hl__u) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl__u < hl_EXP y n) ((hl_lt_compat) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn) (hl_EXP y n) (setexp_ap (omega) (omega) (hl_EXP y) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (y) Hy) (n) Hn))))) (iffER (hl_lt (hl_EXP x n) (hl_EXP y n) = 1) (x ^ n < y ^ n) (((hl_EXP_compat) (y) Hy (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> x ^ n < hl__u) (((hl_EXP_compat) (x) Hx (n) Hn) (fun hl__u hl__v => hl_lt (hl_EXP x n) (hl_EXP y n) = 1 <-> hl__u < hl_EXP y n) ((hl_lt_compat) (hl_EXP x n) (setexp_ap (omega) (omega) (hl_EXP x) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (x) Hx) (n) Hn) (hl_EXP y n) (setexp_ap (omega) (omega) (hl_EXP y) (setexp_ap (omega) (omega :^: omega) (hl_EXP) ((hl_EXP_in)) (y) Hy) (n) Hn))))) (imp_and (hl_lt x y = 1) (x < y) (~ n = hl_NUMERAL hl_zero) (~ n = 0) (iffEL (hl_lt x y = 1) (x < y) ((hl_lt_compat) (x) Hx (y) Hy)) (imp_not (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))) (imp_and (x < y) (hl_lt x y = 1) (~ n = 0) (~ n = hl_NUMERAL hl_zero) (iffER (hl_lt x y = 1) (x < y) ((hl_lt_compat) (x) Hx (y) Hy)) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))) HL).
+Qed.
+Theorem EXP_MONO_LT : forall x y n :e omega, x ^ n < y ^ n <-> x < y /\ ~ n = 0.
+exact (EXP_MONO_LT_bridge hlt_EXP_MONO_LT).
+Admitted.
+
+// HOL Light: arith.ml:1057 / EXP_MONO_EQ   (hash md5:59ff0fc2fc63529863d64148ebfac457)
+Theorem hlt_EXP_MONO_EQ : forall x y n :e omega, hl_EXP x n = hl_EXP y n <-> x = y \/ n = hl_NUMERAL hl_zero.
+Admitted.
+Theorem EXP_MONO_EQ_bridge : (forall x y n :e omega, hl_EXP x n = hl_EXP y n <-> x = y \/ n = hl_NUMERAL hl_zero) -> (forall x y n :e omega, x ^ n = y ^ n <-> x = y \/ n = 0).
+exact (fun HL => (imp_forall_in (omega) (fun x => forall y n :e omega, hl_EXP x n = hl_EXP y n <-> x = y \/ n = hl_NUMERAL hl_zero) (fun x => forall y n :e omega, x ^ n = y ^ n <-> x = y \/ n = 0) (fun x Hx => (imp_forall_in (omega) (fun y => forall n :e omega, hl_EXP x n = hl_EXP y n <-> x = y \/ n = hl_NUMERAL hl_zero) (fun y => forall n :e omega, x ^ n = y ^ n <-> x = y \/ n = 0) (fun y Hy => (imp_forall_in (omega) (fun n => hl_EXP x n = hl_EXP y n <-> x = y \/ n = hl_NUMERAL hl_zero) (fun n => x ^ n = y ^ n <-> x = y \/ n = 0) (fun n Hn => (imp_iff (hl_EXP x n = hl_EXP y n) (x ^ n = y ^ n) (x = y \/ n = hl_NUMERAL hl_zero) (x = y \/ n = 0) (imp_eq (hl_EXP x n) (x ^ n) (hl_EXP y n) (y ^ n) ((hl_EXP_compat) (x) Hx (n) Hn) ((hl_EXP_compat) (y) Hy (n) Hn)) (imp_eq (x ^ n) (hl_EXP x n) (y ^ n) (hl_EXP y n) (eq_sym_i (hl_EXP x n) (x ^ n) ((hl_EXP_compat) (x) Hx (n) Hn)) (eq_sym_i (hl_EXP y n) (y ^ n) ((hl_EXP_compat) (y) Hy (n) Hn))) (imp_or (x = y) (x = y) (n = hl_NUMERAL hl_zero) (n = 0) (imp_eq (x) (x) (y) (y) (fun q H => H) (fun q H => H)) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_or (x = y) (x = y) (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (x) (x) (y) (y) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (y) (y) (fun q H => H))) (imp_eq (n) (n) (0) (hl_NUMERAL hl_zero) (eq_sym_i (n) (n) (fun q H => H)) (eq_sym_i (hl_NUMERAL hl_zero) (0) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))))))))))) HL).
+Qed.
+Theorem EXP_MONO_EQ : forall x y n :e omega, x ^ n = y ^ n <-> x = y \/ n = 0.
+exact (EXP_MONO_EQ_bridge hlt_EXP_MONO_EQ).
+Admitted.
+
+// HOL Light: arith.ml:1065 / DIVMOD_EXIST   (hash md5:505d039010e6691c5d52c24fc3ac9cc6)
+Theorem hlt_DIVMOD_EXIST : forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> exists q r :e omega, m = hl_add (hl_mul q n) r /\ hl_lt r n = 1.
+Admitted.
+Theorem DIVMOD_EXIST_bridge : (forall m n :e omega, ~ n = hl_NUMERAL hl_zero -> exists q r :e omega, m = hl_add (hl_mul q n) r /\ hl_lt r n = 1) -> (forall m n :e omega, ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n :e omega, ~ n = hl_NUMERAL hl_zero -> exists q r :e omega, m = hl_add (hl_mul q n) r /\ hl_lt r n = 1) (fun m => forall n :e omega, ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n) (fun m Hm => (imp_forall_in (omega) (fun n => ~ n = hl_NUMERAL hl_zero -> exists q r :e omega, m = hl_add (hl_mul q n) r /\ hl_lt r n = 1) (fun n => ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n) (fun n Hn => (imp_imp (~ n = hl_NUMERAL hl_zero) (~ n = 0) (exists q r :e omega, m = hl_add (hl_mul q n) r /\ hl_lt r n = 1) (exists q r :e omega, m = q * n + r /\ r < n) (imp_not (n = 0) (n = hl_NUMERAL hl_zero) (imp_eq (n) (n) (hl_NUMERAL hl_zero) (0) (fun q H => H) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat))) (imp_exists_in (omega) (fun q => exists r :e omega, m = hl_add (hl_mul q n) r /\ hl_lt r n = 1) (fun q => exists r :e omega, m = q * n + r /\ r < n) (fun q Hq => (imp_exists_in (omega) (fun r => m = hl_add (hl_mul q n) r /\ hl_lt r n = 1) (fun r => m = q * n + r /\ r < n) (fun r Hr => (imp_and (m = hl_add (hl_mul q n) r) (m = q * n + r) (hl_lt r n = 1) (r < n) (imp_eq (m) (m) (hl_add (hl_mul q n) r) (q * n + r) (fun q H => H) (((hl_mul_compat) (q) Hq (n) Hn) (fun hl__u hl__v => hl_add (hl_mul q n) r = hl__u + r) ((hl_add_compat) (hl_mul q n) (setexp_ap (omega) (omega) (hl_mul q) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (q) Hq) (n) Hn) (r) Hr))) (iffEL (hl_lt r n = 1) (r < n) ((hl_lt_compat) (r) Hr (n) Hn)))))))))))) HL).
+Qed.
+Theorem DIVMOD_EXIST : forall m n :e omega, ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n.
+exact (DIVMOD_EXIST_bridge hlt_DIVMOD_EXIST).
+Admitted.
+
+// HOL Light: arith.ml:1085 / DIVMOD_EXIST_0   (hash md5:5f7772a1ff424cc9936518ad8c4474f3)
+// not bridged: 
+Theorem DIVMOD_EXIST_0 : forall m n :e omega, exists q r :e omega, (n = 0 -> q = 0 /\ r = m) /\ (~ n = 0 -> m = q * n + r /\ r < n).
+Admitted.
+
+// HOL Light: arith.ml:1091 / DIVISION_0   (hash md5:4d62f93e321c9a6c4063524ca0db99cc)
+// not bridged: 
+Theorem DIVISION_0 : forall m n :e omega, (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) /\ (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n).
+Admitted.
+
+// HOL Light: arith.ml:1094 / DIVISION   (hash md5:b59e2104560227deeca73507054e0663)
+// not bridged: 
+Theorem DIVISION : forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
+Admitted.
+
+// HOL Light: arith.ml:1098 / DIV_ZERO   (hash md5:fffca388349f8cf72b76018fd969603f)
+// not bridged: 
+Theorem DIV_ZERO : forall n :e omega, div_nat n 0 = 0.
+Admitted.
+
+// HOL Light: arith.ml:1102 / MOD_ZERO   (hash md5:938d8f28a97891aabbf2c8a0abc4ff5b)
+// not bridged: 
+Theorem MOD_ZERO : forall n :e omega, mod_nat n 0 = n.
+Admitted.
+
+// HOL Light: arith.ml:1106 / DIVISION_SIMP   (hash md5:901b98beaf280ff178890c22675d5f82)
+// not bridged: 
+Theorem DIVISION_SIMP : (forall m n :e omega, div_nat m n * n + mod_nat m n = m) /\ forall m n :e omega, n * div_nat m n + mod_nat m n = m.
+Admitted.
+
+// HOL Light: arith.ml:1113 / EQ_DIVMOD   (hash md5:93cea4fcb42a3a08455a37ff33313dc5)
+// not bridged: 
+Theorem EQ_DIVMOD : forall p m n :e omega, div_nat m p = div_nat n p /\ mod_nat m p = mod_nat n p <-> m = n.
+Admitted.
+
+// HOL Light: arith.ml:1117 / MOD_LT_EQ   (hash md5:d3f9eaa88f8b7e835faa923fd3775622)
+// not bridged: 
+Theorem MOD_LT_EQ : forall m n :e omega, mod_nat m n < n <-> ~ n = 0.
+Admitted.
+
+// HOL Light: arith.ml:1121 / MOD_LT_EQ_LT   (hash md5:0bba73e717068929738c68fef39f9109)
+// not bridged: 
+Theorem MOD_LT_EQ_LT : forall m n :e omega, mod_nat m n < n <-> 0 < n.
+Admitted.
+
+// HOL Light: arith.ml:1125 / DIVMOD_UNIQ_LEMMA   (hash md5:47c8935d0ad689bcaeb3475178ef9faf)
+Theorem hlt_DIVMOD_UNIQ_LEMMA : forall m n q1 r1 q2 r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2.
+Admitted.
+Theorem DIVMOD_UNIQ_LEMMA_bridge : (forall m n q1 r1 q2 r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) -> (forall m n q1 r1 q2 r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2).
+exact (fun HL => (imp_forall_in (omega) (fun m => forall n q1 r1 q2 r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) (fun m => forall n q1 r1 q2 r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2) (fun m Hm => (imp_forall_in (omega) (fun n => forall q1 r1 q2 r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) (fun n => forall q1 r1 q2 r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2) (fun n Hn => (imp_forall_in (omega) (fun q1 => forall r1 q2 r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) (fun q1 => forall r1 q2 r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2) (fun q1 Hq1 => (imp_forall_in (omega) (fun r1 => forall q2 r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) (fun r1 => forall q2 r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2) (fun r1 Hr1 => (imp_forall_in (omega) (fun q2 => forall r2 :e omega, m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) (fun q2 => forall r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2) (fun q2 Hq2 => (imp_forall_in (omega) (fun r2 => m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) -> q1 = q2 /\ r1 = r2) (fun r2 => m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2) (fun r2 Hr2 => (imp_imp (m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1 /\ (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1)) (m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n)) (q1 = q2 /\ r1 = r2) (q1 = q2 /\ r1 = r2) (imp_and (m = q1 * n + r1 /\ r1 < n) (m = hl_add (hl_mul q1 n) r1 /\ hl_lt r1 n = 1) (m = q2 * n + r2 /\ r2 < n) (m = hl_add (hl_mul q2 n) r2 /\ hl_lt r2 n = 1) (imp_and (m = q1 * n + r1) (m = hl_add (hl_mul q1 n) r1) (r1 < n) (hl_lt r1 n = 1) (imp_eq (m) (m) (q1 * n + r1) (hl_add (hl_mul q1 n) r1) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_add (hl_mul q1 n) r1) (q1 * n + r1) (((hl_mul_compat) (q1) Hq1 (n) Hn) (fun hl__u hl__v => hl_add (hl_mul q1 n) r1 = hl__u + r1) ((hl_add_compat) (hl_mul q1 n) (setexp_ap (omega) (omega) (hl_mul q1) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (q1) Hq1) (n) Hn) (r1) Hr1)))) (iffER (hl_lt r1 n = 1) (r1 < n) ((hl_lt_compat) (r1) Hr1 (n) Hn))) (imp_and (m = q2 * n + r2) (m = hl_add (hl_mul q2 n) r2) (r2 < n) (hl_lt r2 n = 1) (imp_eq (m) (m) (q2 * n + r2) (hl_add (hl_mul q2 n) r2) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (hl_add (hl_mul q2 n) r2) (q2 * n + r2) (((hl_mul_compat) (q2) Hq2 (n) Hn) (fun hl__u hl__v => hl_add (hl_mul q2 n) r2 = hl__u + r2) ((hl_add_compat) (hl_mul q2 n) (setexp_ap (omega) (omega) (hl_mul q2) (setexp_ap (omega) (omega :^: omega) (hl_mul) ((hl_mul_in)) (q2) Hq2) (n) Hn) (r2) Hr2)))) (iffER (hl_lt r2 n = 1) (r2 < n) ((hl_lt_compat) (r2) Hr2 (n) Hn)))) (imp_and (q1 = q2) (q1 = q2) (r1 = r2) (r1 = r2) (imp_eq (q1) (q1) (q2) (q2) (fun q H => H) (fun q H => H)) (imp_eq (r1) (r1) (r2) (r2) (fun q H => H) (fun q H => H)))))))))))))))) HL).
+Qed.
+Theorem DIVMOD_UNIQ_LEMMA : forall m n q1 r1 q2 r2 :e omega, m = q1 * n + r1 /\ r1 < n /\ (m = q2 * n + r2 /\ r2 < n) -> q1 = q2 /\ r1 = r2.
+exact (DIVMOD_UNIQ_LEMMA_bridge hlt_DIVMOD_UNIQ_LEMMA).
+Admitted.
+
+// HOL Light: arith.ml:1149 / DIVMOD_UNIQ   (hash md5:29b11a223969eccd153f46182a0afc4f)
+// not bridged: 
+Theorem DIVMOD_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q /\ mod_nat m n = r.
+Admitted.
+
+// HOL Light: arith.ml:1158 / MOD_UNIQ   (hash md5:16ed5e1f63bbda47186e23caa2fdaab3)
+// not bridged: 
+Theorem MOD_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> mod_nat m n = r.
+Admitted.
+
+// HOL Light: arith.ml:1163 / DIV_UNIQ   (hash md5:03d3f8fe0608fede7fe54b37733e7d96)
+// not bridged: 
+Theorem DIV_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q.
+Admitted.
+
+// HOL Light: arith.ml:1168 / DIV_0   (hash md5:21468dd00b62ee403ed635ebbcf16770)
+// not bridged: 
+Theorem DIV_0 : forall n :e omega, div_nat 0 n = 0.
+Admitted.
+
+// HOL Light: arith.ml:1168 / MOD_0   (hash md5:59d2eea9d1d94d71402abff29261e900)
+// not bridged: 
+Theorem MOD_0 : forall n :e omega, mod_nat 0 n = 0.
+Admitted.
+
+// HOL Light: arith.ml:1175 / DIV_MULT   (hash md5:3a8beeb323ea04d1de30bfcba2c25ac4)
+// not bridged: 
+Theorem DIV_MULT : forall m n :e omega, ~ m = 0 -> div_nat (m * n) m = n.
+Admitted.
+
+// HOL Light: arith.ml:1175 / MOD_MULT   (hash md5:5991802979c0db5f606c6d16f53103f7)
+// not bridged: 
+Theorem MOD_MULT : forall m n :e omega, mod_nat (m * n) m = 0.
+Admitted.
+
+// HOL Light: arith.ml:1183 / MOD_LT   (hash md5:d694ca4e2590b601d1d07f67592d876b)
+// not bridged: 
+Theorem MOD_LT : forall m n :e omega, m < n -> mod_nat m n = m.
+Admitted.
+
+// HOL Light: arith.ml:1188 / MOD_EQ_SELF   (hash md5:6c1801b171f5f339a5b2becc7349dd4a)
+// not bridged: 
+Theorem MOD_EQ_SELF : forall m n :e omega, mod_nat m n = m <-> n = 0 \/ m < n.
+Admitted.
+
+// HOL Light: arith.ml:1192 / MOD_CASES   (hash md5:cf8db2698257dd21c7873312014080bb)
+// not bridged: 
+Theorem MOD_CASES : forall n p :e omega, n < 2 * p -> mod_nat n p = if n < p then n else minus_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1200 / MOD_ADD_CASES   (hash md5:ec1f35453b76a045b01bea2807187811)
+// not bridged: 
+Theorem MOD_ADD_CASES : forall m n p :e omega, m < p /\ n < p -> mod_nat (m + n) p = if m + n < p then m + n else minus_nat (m + n) p.
+Admitted.
+
+// HOL Light: arith.ml:1207 / MOD_EQ   (hash md5:5cc679121cbb2dfc6d326dfb62631dac)
+// not bridged: 
+Theorem MOD_EQ : forall m n p q :e omega, m = n + q * p -> mod_nat m p = mod_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1220 / DIV_LE   (hash md5:ed213853e53733fccb8b2667dd52f482)
+// not bridged: 
+Theorem DIV_LE : forall m n :e omega, div_nat m n <= m.
+Admitted.
+
+// HOL Light: arith.ml:1228 / DIV_MUL_LE   (hash md5:4fed25034ac18ccd018890c87a003320)
+// not bridged: 
+Theorem DIV_MUL_LE : forall m n :e omega, n * div_nat m n <= m.
+Admitted.
+
+// HOL Light: arith.ml:1236 / MOD_LE_TWICE   (hash md5:730f9da100bafb4d4b0dc52750f97092)
+// not bridged: 
+Theorem MOD_LE_TWICE : forall m n :e omega, 0 < m /\ m <= n -> 2 * mod_nat n m <= n.
+Admitted.
+
+// HOL Light: arith.ml:1253 / DIV_1   (hash md5:0364c7d6acc5ef4b29c10ae89c62a57d)
+// not bridged: 
+Theorem DIV_1 : forall n :e omega, div_nat n 1 = n.
+Admitted.
+
+// HOL Light: arith.ml:1253 / MOD_1   (hash md5:4574a55e550a5c3d838e5f78a21b084c)
+// not bridged: 
+Theorem MOD_1 : forall n :e omega, mod_nat n 1 = 0.
+Admitted.
+
+// HOL Light: arith.ml:1258 / DIV_LT   (hash md5:4a091fb00f45a151f3880d15cb96bf8e)
+// not bridged: 
+Theorem DIV_LT : forall m n :e omega, m < n -> div_nat m n = 0.
+Admitted.
+
+// HOL Light: arith.ml:1263 / MOD_MOD   (hash md5:5d35549a814a60da8bd0106133cf0f31)
+// not bridged: 
+Theorem MOD_MOD : forall m n p :e omega, mod_nat (mod_nat m (n * p)) n = mod_nat m n.
+Admitted.
+
+// HOL Light: arith.ml:1274 / MOD_MOD_REFL   (hash md5:59a2ab0da640b5acdd5e4b29b28b9388)
+// not bridged: 
+Theorem MOD_MOD_REFL : forall m n :e omega, mod_nat (mod_nat m n) n = mod_nat m n.
+Admitted.
+
+// HOL Light: arith.ml:1281 / MOD_MOD_LE   (hash md5:17678102c781da9ad305c99d791e36cc)
+// not bridged: 
+Theorem MOD_MOD_LE : forall m n p :e omega, ~ n = 0 /\ n <= p -> mod_nat (mod_nat m n) p = mod_nat m n.
+Admitted.
+
+// HOL Light: arith.ml:1286 / MOD_EVEN_2   (hash md5:85ee14bdd17872f3b8374623cd5bd155)
+// not bridged: 
+Theorem MOD_EVEN_2 : forall m n :e omega, even_nat n -> mod_nat (mod_nat m n) 2 = mod_nat m 2.
+Admitted.
+
+// HOL Light: arith.ml:1290 / DIV_MULT2   (hash md5:2f975930ffa0d66acdc0b55970fc24a6)
+// not bridged: 
+Theorem DIV_MULT2 : forall m n p :e omega, ~ m = 0 -> div_nat (m * n) (m * p) = div_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1300 / MOD_MULT2   (hash md5:0ed1899caed8dbfcfab09c1b4da6551f)
+// not bridged: 
+Theorem MOD_MULT2 : forall m n p :e omega, mod_nat (m * n) (m * p) = m * mod_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1311 / MOD_EXISTS   (hash md5:c640f5dd37f9e8824fd01d2f1d645498)
+// not bridged: 
+Theorem MOD_EXISTS : forall m n :e omega, (exists q :e omega, m = n * q) <-> (n = 0 -> m = 0) /\ (~ n = 0 -> mod_nat m n = 0).
+Admitted.
+
+// HOL Light: arith.ml:1320 / LE_RDIV_EQ   (hash md5:d91e3aafd6df87ba0f249930d933059d)
+// not bridged: 
+Theorem LE_RDIV_EQ : forall a b n :e omega, ~ a = 0 -> (n <= div_nat b a <-> a * n <= b).
+Admitted.
+
+// HOL Light: arith.ml:1332 / RDIV_LT_EQ   (hash md5:5d9fe95be245809b299d0460bbdca6ba)
+// not bridged: 
+Theorem RDIV_LT_EQ : forall a b n :e omega, ~ a = 0 -> (div_nat b a < n <-> b < a * n).
+Admitted.
+
+// HOL Light: arith.ml:1336 / LE_LDIV_EQ   (hash md5:14c3168b2bc01dc35421fd16e7aa28e1)
+// not bridged: 
+Theorem LE_LDIV_EQ : forall a b n :e omega, ~ a = 0 -> (div_nat b a <= n <-> b < a * (n + 1)).
+Admitted.
+
+// HOL Light: arith.ml:1342 / LDIV_LT_EQ   (hash md5:a85ee1274ccb75b9be8df682fdb33679)
+// not bridged: 
+Theorem LDIV_LT_EQ : forall a b n :e omega, ~ a = 0 -> (n < div_nat b a <-> a * (n + 1) <= b).
+Admitted.
+
+// HOL Light: arith.ml:1346 / LE_LDIV   (hash md5:a17fdcbd8dbf74732098c91da7be65ed)
+// not bridged: 
+Theorem LE_LDIV : forall a b n :e omega, ~ a = 0 /\ b <= a * n -> div_nat b a <= n.
+Admitted.
+
+// HOL Light: arith.ml:1351 / DIV_MONO   (hash md5:9eb007956651a1ca37e4ec414ad5c6cb)
+// not bridged: 
+Theorem DIV_MONO : forall m n p :e omega, m <= n -> div_nat m p <= div_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1358 / DIV_MONO_LT   (hash md5:10fb5b9d047bbeeed209997522d0f9ab)
+// not bridged: 
+Theorem DIV_MONO_LT : forall m n p :e omega, ~ p = 0 /\ m + p <= n -> div_nat m p < div_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1365 / DIV_EQ_0   (hash md5:306a98471790220ff10092c9a0168706)
+// not bridged: 
+Theorem DIV_EQ_0 : forall m n :e omega, ~ n = 0 -> (div_nat m n = 0 <-> m < n).
+Admitted.
+
+// HOL Light: arith.ml:1373 / MOD_DIV_EQ_0   (hash md5:748296bbc584b4d5f0103ef2aaccb108)
+// not bridged: 
+Theorem MOD_DIV_EQ_0 : forall m n :e omega, ~ n = 0 -> div_nat (mod_nat m n) n = 0.
+Admitted.
+
+// HOL Light: arith.ml:1378 / MOD_EQ_0   (hash md5:45a52f7e68782d889128eae64fbe3ef1)
+// not bridged: 
+Theorem MOD_EQ_0 : forall m n :e omega, mod_nat m n = 0 <-> exists q :e omega, m = q * n.
+Admitted.
+
+// HOL Light: arith.ml:1388 / DIV_EQ_SELF   (hash md5:6ea3d861c9d0ab53ce1841c135c76ff7)
+// not bridged: 
+Theorem DIV_EQ_SELF : forall m n :e omega, div_nat m n = m <-> m = 0 \/ n = 1.
+Admitted.
+
+// HOL Light: arith.ml:1398 / MOD_REFL   (hash md5:b4cac09b69fe095854b50d5743b613f3)
+// not bridged: 
+Theorem MOD_REFL : forall n :e omega, mod_nat n n = 0.
+Admitted.
+
+// HOL Light: arith.ml:1402 / EVEN_MOD   (hash md5:d3e6ae390a320ac5b2d9397279646bdc)
+// not bridged: 
+Theorem EVEN_MOD : forall n :e omega, even_nat n <-> mod_nat n 2 = 0.
+Admitted.
+
+// HOL Light: arith.ml:1406 / ODD_MOD   (hash md5:1ee917931692294cdae37b0b7ebd7673)
+// not bridged: 
+Theorem ODD_MOD : forall n :e omega, odd_nat n <-> mod_nat n 2 = 1.
+Admitted.
+
+// HOL Light: arith.ml:1414 / MOD_2_CASES   (hash md5:dcbbe8c697e98478d718ea117fbf4e1a)
+// not bridged: 
+Theorem MOD_2_CASES : forall n :e omega, mod_nat n 2 = if even_nat n then 0 else 1.
+Admitted.
+
+// HOL Light: arith.ml:1418 / EVEN_MOD_EVEN   (hash md5:c6a9c4756bd24fa6e1e9a0e8b199e577)
+// not bridged: 
+Theorem EVEN_MOD_EVEN : forall m n :e omega, even_nat n -> (even_nat (mod_nat m n) <-> even_nat m).
+Admitted.
+
+// HOL Light: arith.ml:1423 / ODD_MOD_EVEN   (hash md5:38945393baa9c8aa0cb7f5ddfe020f66)
+// not bridged: 
+Theorem ODD_MOD_EVEN : forall m n :e omega, even_nat n -> (odd_nat (mod_nat m n) <-> odd_nat m).
+Admitted.
+
+// HOL Light: arith.ml:1427 / HALF_DOUBLE   (hash md5:d9ecb44213ec8321b42e2a1934890fda)
+// not bridged: 
+Theorem HALF_DOUBLE : (forall n :e omega, div_nat (2 * n) 2 = n) /\ forall n :e omega, div_nat (n * 2) 2 = n.
+Admitted.
+
+// HOL Light: arith.ml:1432 / DOUBLE_HALF   (hash md5:099da6d77326c410a449082900ed57a9)
+// not bridged: 
+Theorem DOUBLE_HALF : (forall n :e omega, even_nat n -> 2 * div_nat n 2 = n) /\ forall n :e omega, even_nat n -> div_nat n 2 * 2 = n.
+Admitted.
+
+// HOL Light: arith.ml:1438 / MOD_MULT_RMOD   (hash md5:e15d4fa7273b2a2eca9839b4f6ffb7b5)
+// not bridged: 
+Theorem MOD_MULT_RMOD : forall m n p :e omega, mod_nat (m * mod_nat p n) n = mod_nat (m * p) n.
+Admitted.
+
+// HOL Light: arith.ml:1446 / MOD_MULT_LMOD   (hash md5:4c8570d754ae89c7e88ddec10c9f7206)
+// not bridged: 
+Theorem MOD_MULT_LMOD : forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n.
+Admitted.
+
+// HOL Light: arith.ml:1450 / MOD_MULT_MOD2   (hash md5:c5a54ef5572ff00b7cd4c4d3551bcb01)
+// not bridged: 
+Theorem MOD_MULT_MOD2 : forall m n p :e omega, mod_nat (mod_nat m n * mod_nat p n) n = mod_nat (m * p) n.
+Admitted.
+
+// HOL Light: arith.ml:1454 / MOD_EXP_MOD   (hash md5:28b3493150202ac9277f424c385bb313)
+// not bridged: 
+Theorem MOD_EXP_MOD : forall m n p :e omega, mod_nat (mod_nat m n ^ p) n = mod_nat (m ^ p) n.
+Admitted.
+
+// HOL Light: arith.ml:1464 / MOD_MULT_ADD   (hash md5:9851f9c31c63b1fe675d2b37190959e2)
+// not bridged: 
+Theorem MOD_MULT_ADD : (forall m n p :e omega, mod_nat (m * n + p) n = mod_nat p n) /\ ((forall m n p :e omega, mod_nat (n * m + p) n = mod_nat p n) /\ ((forall m n p :e omega, mod_nat (p + m * n) n = mod_nat p n) /\ forall m n p :e omega, mod_nat (p + n * m) n = mod_nat p n)).
+Admitted.
+
+// HOL Light: arith.ml:1475 / DIV_MULT_ADD   (hash md5:b1e8b791341790f15e70380e247e13f0)
+// not bridged: 
+Theorem DIV_MULT_ADD : (forall a b n :e omega, ~ n = 0 -> div_nat (a * n + b) n = a + div_nat b n) /\ ((forall a b n :e omega, ~ n = 0 -> div_nat (n * a + b) n = a + div_nat b n) /\ ((forall a b n :e omega, ~ n = 0 -> div_nat (b + a * n) n = div_nat b n + a) /\ forall a b n :e omega, ~ n = 0 -> div_nat (b + n * a) n = div_nat b n + a)).
+Admitted.
+
+// HOL Light: arith.ml:1486 / MOD_ADD_MOD   (hash md5:28ae29d41a5d74a927840bd61b3200e2)
+// not bridged: 
+Theorem MOD_ADD_MOD : forall a b n :e omega, mod_nat (mod_nat a n + mod_nat b n) n = mod_nat (a + b) n.
+Admitted.
+
+// HOL Light: arith.ml:1495 / DIV_ADD_MOD   (hash md5:23e85c371dd115eecdaa32f1b99bc396)
+// not bridged: 
+Theorem DIV_ADD_MOD : forall a b n :e omega, ~ n = 0 -> (mod_nat (a + b) n = mod_nat a n + mod_nat b n <-> div_nat (a + b) n = div_nat a n + div_nat b n).
+Admitted.
+
+// HOL Light: arith.ml:1511 / MOD_ADD_EQ_EQ   (hash md5:5d3898e2beb527872be5a465145f285c)
+// not bridged: 
+Theorem MOD_ADD_EQ_EQ : forall n x y :e omega, mod_nat (x + y) n = mod_nat x n + mod_nat y n <-> n = 0 \/ mod_nat x n + mod_nat y n < n.
+Admitted.
+
+// HOL Light: arith.ml:1516 / DIV_ADD_EQ_EQ   (hash md5:21b94ca808f65136ae1a225b248b71eb)
+// not bridged: 
+Theorem DIV_ADD_EQ_EQ : forall n x y :e omega, div_nat (x + y) n = div_nat x n + div_nat y n <-> n = 0 \/ mod_nat x n + mod_nat y n < n.
+Admitted.
+
+// HOL Light: arith.ml:1521 / DIV_ADD_EQ   (hash md5:613357b77fee5782e65b9aa1dd452472)
+// not bridged: 
+Theorem DIV_ADD_EQ : forall n x y :e omega, mod_nat x n + mod_nat y n < n -> div_nat (x + y) n = div_nat x n + div_nat y n.
+Admitted.
+
+// HOL Light: arith.ml:1525 / MOD_ADD_EQ   (hash md5:145cee719d20f5e2dfff72f80ceea299)
+// not bridged: 
+Theorem MOD_ADD_EQ : forall n x y :e omega, mod_nat x n + mod_nat y n < n -> mod_nat (x + y) n = mod_nat x n + mod_nat y n.
+Admitted.
+
+// HOL Light: arith.ml:1529 / DIV_REFL   (hash md5:ff0d4f51279ff8cc1ed6eaba570496c1)
+// not bridged: 
+Theorem DIV_REFL : forall n :e omega, ~ n = 0 -> div_nat n n = 1.
+Admitted.
+
+// HOL Light: arith.ml:1536 / MOD_LE   (hash md5:29addf46cecf9afb3a5899bb2a98f27a)
+// not bridged: 
+Theorem MOD_LE : forall m n :e omega, mod_nat m n <= m.
+Admitted.
+
+// HOL Light: arith.ml:1544 / DIV_MONO2   (hash md5:746c6a719d398773fb5fcf4ae3aea7cf)
+// not bridged: 
+Theorem DIV_MONO2 : forall m n p :e omega, ~ p = 0 /\ p <= m -> div_nat n m <= div_nat n p.
+Admitted.
+
+// HOL Light: arith.ml:1551 / DIV_LE_EXCLUSION   (hash md5:3fbd9160c1bdf7e62d8312a2a4aeeff6)
+// not bridged: 
+Theorem DIV_LE_EXCLUSION : forall a b c d :e omega, ~ b = 0 /\ b * c < (a + 1) * d -> div_nat c d <= div_nat a b.
+Admitted.
+
+// HOL Light: arith.ml:1563 / DIV_EQ_EXCLUSION   (hash md5:f41362c09f3ad3b4a62c98569b7f9184)
+// not bridged: 
+Theorem DIV_EQ_EXCLUSION : forall a b c d :e omega, b * c < (a + 1) * d /\ a * d < (c + 1) * b -> div_nat a b = div_nat c d.
+Admitted.
+
+// HOL Light: arith.ml:1571 / MULT_DIV_LE   (hash md5:3ebb680fbc3ff0ccd04461a9e12870c2)
+// not bridged: 
+Theorem MULT_DIV_LE : forall m n p :e omega, m * div_nat n p <= div_nat (m * n) p.
+Admitted.
+
+// HOL Light: arith.ml:1581 / DIV_DIV   (hash md5:6dfe9236d9139fb96c9696fc598f11b5)
+// not bridged: 
+Theorem DIV_DIV : forall m n p :e omega, div_nat (div_nat m n) p = div_nat m (n * p).
+Admitted.
+
+// HOL Light: arith.ml:1591 / DIV_MOD   (hash md5:4518bfdf2a4c972c78eec623c0ff5641)
+// not bridged: 
+Theorem DIV_MOD : forall m n p :e omega, mod_nat (div_nat m n) p = div_nat (mod_nat m (n * p)) n.
+Admitted.
+
+// HOL Light: arith.ml:1605 / MOD_MULT_MOD   (hash md5:b8d472aabcd98d55dfded78447678248)
+// not bridged: 
+Theorem MOD_MULT_MOD : forall m n p :e omega, mod_nat m (n * p) = n * mod_nat (div_nat m n) p + mod_nat m n.
+Admitted.
+
+// HOL Light: arith.ml:1620 / MOD_MOD_EXP_MIN   (hash md5:785d2743a260c73c61ea8732c4008e0f)
+// not bridged: 
+Theorem MOD_MOD_EXP_MIN : forall x p m n :e omega, mod_nat (mod_nat x (p ^ m)) (p ^ n) = mod_nat x (p ^ if m <= n then m else n).
+Admitted.
+
+// HOL Light: arith.ml:1637 / DIV_EXP   (hash md5:eb3021a717bdd705676b6c96588a556d)
+// not bridged: 
+Theorem DIV_EXP : forall m n p :e omega, ~ m = 0 -> div_nat (m ^ n) (m ^ p) = if p <= n then m ^ minus_nat n p else if m = 1 then 1 else 0.
+Admitted.
+
+// HOL Light: arith.ml:1637 / MOD_EXP   (hash md5:c9d9ab53434e15841461fb4613e56d35)
+// not bridged: 
+Theorem MOD_EXP : forall m n p :e omega, ~ m = 0 -> mod_nat (m ^ n) (m ^ p) = if p <= n \/ m = 1 then 0 else m ^ n.
+Admitted.
+
+// HOL Light: arith.ml:1655 / FORALL_LT_MOD_THM   (hash md5:478000a01ba70a5dd6ea3ca5bb491c69)
+// not bridged: 
+Theorem FORALL_LT_MOD_THM : forall P:set -> prop, forall n :e omega, (forall a :e omega, a < n -> P a) <-> n = 0 \/ forall a :e omega, P (mod_nat a n).
+Admitted.
+
+// HOL Light: arith.ml:1659 / FORALL_MOD_THM   (hash md5:0f6979a8ce0ac4c8a65cfb58d3c6ec3f)
+// not bridged: 
+Theorem FORALL_MOD_THM : forall P:set -> prop, forall n :e omega, ~ n = 0 -> ((forall a :e omega, P (mod_nat a n)) <-> forall a :e omega, a < n -> P a).
+Admitted.
+
+// HOL Light: arith.ml:1663 / EXISTS_LT_MOD_THM   (hash md5:f35337850c43809d3d7bbeecd44440dd)
+// not bridged: 
+Theorem EXISTS_LT_MOD_THM : forall P:set -> prop, forall n :e omega, (exists a :e omega, a < n /\ P a) <-> ~ n = 0 /\ exists a :e omega, P (mod_nat a n).
+Admitted.
+
+// HOL Light: arith.ml:1667 / EXISTS_MOD_THM   (hash md5:a82820cd7479a4e1d9d8fed33d3e0c26)
+// not bridged: 
+Theorem EXISTS_MOD_THM : forall P:set -> prop, forall n :e omega, ~ n = 0 -> ((exists a :e omega, P (mod_nat a n)) <-> exists a :e omega, a < n /\ P a).
+Admitted.
+
+// HOL Light: arith.ml:1676 / PRE_ELIM_THM   (hash md5:54ad4be8bef9fd2931b15c2c9d1fa3e1)
+// not bridged: 
+Theorem PRE_ELIM_THM : forall P:set -> prop, forall n :e omega, P (nat_pred n) <-> forall m :e omega, n = ordsucc m \/ m = 0 /\ n = 0 -> P m.
+Admitted.
+
+// HOL Light: arith.ml:1681 / PRE_ELIM_THM'   (hash md5:dbb3c7fbd9a85480c09c4d41ee9d080f)
+// not bridged: 
+Theorem PRE_ELIM_THM' : forall P:set -> prop, forall n :e omega, P (nat_pred n) <-> exists m :e omega, (n = ordsucc m \/ m = 0 /\ n = 0) /\ P m.
+Admitted.
+
+// HOL Light: arith.ml:1685 / SUB_ELIM_THM   (hash md5:d0fa11fd66be88eb72f42b8fcd4537a0)
+// not bridged: 
+Theorem SUB_ELIM_THM : forall P:set -> prop, forall a b :e omega, P (minus_nat a b) <-> forall d :e omega, a = b + d \/ a < b /\ d = 0 -> P d.
+Admitted.
+
+// HOL Light: arith.ml:1692 / SUB_ELIM_THM'   (hash md5:a687fb2fa9130ebc7133f1d2cc6c1841)
+// not bridged: 
+Theorem SUB_ELIM_THM' : forall P:set -> prop, forall a b :e omega, P (minus_nat a b) <-> exists d :e omega, (a = b + d \/ a < b /\ d = 0) /\ P d.
+Admitted.
+
+// HOL Light: arith.ml:1696 / DIVMOD_ELIM_THM   (hash md5:539f32f224d06c037b60e8e8c7d1c5cc)
+// not bridged: 
+Theorem DIVMOD_ELIM_THM : forall P:set -> set -> prop, forall m n :e omega, P (div_nat m n) (mod_nat m n) <-> forall q r :e omega, n = 0 /\ (q = 0 /\ r = m) \/ m = q * n + r /\ r < n -> P q r.
+Admitted.
+
+// HOL Light: arith.ml:1703 / DIVMOD_ELIM_THM'   (hash md5:8c0514cd156891dd6934f8ed51a22ffe)
+// not bridged: 
+Theorem DIVMOD_ELIM_THM' : forall P:set -> set -> prop, forall m n :e omega, P (div_nat m n) (mod_nat m n) <-> exists q r :e omega, (n = 0 /\ (q = 0 /\ r = m) \/ m = q * n + r /\ r < n) /\ P q r.
+Admitted.
+
+// HOL Light: arith.ml:1772 / minimal   (hash md5:39b7c042a9dafffe68ba4e3c451eb36e)
+// not bridged: 
+Theorem minimal : forall P:set -> prop, choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) = choose_in omega (fun n:set => P n /\ forall m :e omega, m < n -> ~ P m).
+Admitted.
+
+// HOL Light: arith.ml:1775 / MINIMAL   (hash md5:443e384aa0f6d3a39950416d1cd74f27)
+// not bridged: 
+Theorem MINIMAL : forall P:set -> prop, (exists n :e omega, P n) <-> P (choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m)) /\ forall m :e omega, m < choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) -> ~ P m.
+Admitted.
+
+// HOL Light: arith.ml:1780 / MINIMAL_UNIQUE   (hash md5:4cba49bcdc66400e324e8d06ff4b57ba)
+// not bridged: 
+Theorem MINIMAL_UNIQUE : forall P:set -> prop, forall n :e omega, P n /\ (forall m :e omega, m < n -> ~ P m) -> choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) = n.
+Admitted.
+
+// HOL Light: arith.ml:1785 / LE_MINIMAL   (hash md5:857592873447dcd95d14c0a7dc63810f)
+// not bridged: 
+Theorem LE_MINIMAL : forall P:set -> prop, forall n :e omega, (exists r :e omega, P r) -> (n <= choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) <-> forall i :e omega, P i -> n <= i).
+Admitted.
+
+// HOL Light: arith.ml:1791 / MINIMAL_LE   (hash md5:bc581b8fea242f2f051eba5656f3e2a1)
+// not bridged: 
+Theorem MINIMAL_LE : forall P:set -> prop, forall n :e omega, (exists r :e omega, P r) -> (choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) <= n <-> exists i :e omega, i <= n /\ P i).
+Admitted.
+
+// HOL Light: arith.ml:1796 / MINIMAL_UBOUND   (hash md5:fd602fc9c1759ce80d1e23ef3e1f694e)
+// not bridged: 
+Theorem MINIMAL_UBOUND : forall P:set -> prop, forall n :e omega, P n -> choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) <= n.
+Admitted.
+
+// HOL Light: arith.ml:1800 / MINIMAL_LBOUND   (hash md5:b66754f9ef0fa0f22da8e7a6eea20c17)
+// not bridged: 
+Theorem MINIMAL_LBOUND : forall P:set -> prop, forall n :e omega, (exists r :e omega, P r) /\ (forall m :e omega, m < n -> ~ P m) -> n <= choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m).
+Admitted.
+
+// HOL Light: arith.ml:1804 / MINIMAL_MONO   (hash md5:37a4d003aaeb8261b9bba67682d91af2)
+// not bridged: 
+Theorem MINIMAL_MONO : forall P Q:set -> prop, (exists n :e omega, P n) /\ (forall n :e omega, P n -> Q n) -> choose_in omega (fun n:set => Q n /\ forall m :e omega, Q m -> n <= m) <= choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m).
+Admitted.
+
+// HOL Light: arith.ml:1816 / TRANSITIVE_STEPWISE_LT_EQ   (hash md5:ded2819246b8c6833d275d1c7a7b0ca9)
+// not bridged: 
+Theorem TRANSITIVE_STEPWISE_LT_EQ : forall R0:set -> set -> prop, (forall x y z :e omega, R0 x y /\ R0 y z -> R0 x z) -> ((forall m n :e omega, m < n -> R0 m n) <-> forall n :e omega, R0 n (ordsucc n)).
+Admitted.
+
+// HOL Light: arith.ml:1825 / TRANSITIVE_STEPWISE_LT   (hash md5:86373e11f22ddba7e0f62924a5ae255e)
+// not bridged: 
+Theorem TRANSITIVE_STEPWISE_LT : forall R0:set -> set -> prop, (forall x y z :e omega, R0 x y /\ R0 y z -> R0 x z) /\ (forall n :e omega, R0 n (ordsucc n)) -> forall m n :e omega, m < n -> R0 m n.
+Admitted.
+
+// HOL Light: arith.ml:1832 / TRANSITIVE_STEPWISE_LE_EQ   (hash md5:01d5f67909d4fc2fa68d463065b565ca)
+// not bridged: 
+Theorem TRANSITIVE_STEPWISE_LE_EQ : forall R0:set -> set -> prop, (forall x :e omega, R0 x x) /\ (forall x y z :e omega, R0 x y /\ R0 y z -> R0 x z) -> ((forall m n :e omega, m <= n -> R0 m n) <-> forall n :e omega, R0 n (ordsucc n)).
+Admitted.
+
+// HOL Light: arith.ml:1842 / TRANSITIVE_STEPWISE_LE   (hash md5:b839daa1ebc178a99eeb7516fda5e5d1)
+// not bridged: 
+Theorem TRANSITIVE_STEPWISE_LE : forall R0:set -> set -> prop, (forall x :e omega, R0 x x) /\ ((forall x y z :e omega, R0 x y /\ R0 y z -> R0 x z) /\ (forall n :e omega, R0 n (ordsucc n))) -> forall m n :e omega, m <= n -> R0 m n.
+Admitted.
+
+// HOL Light: arith.ml:1854 / DEPENDENT_CHOICE_FIXED   (hash md5:57a7a1455b081281c9fda7ee7dc71191)
+// not bridged: 
+Theorem DEPENDENT_CHOICE_FIXED : forall A:set, forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, forall a :e A, P 0 a /\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\ (f 0 = a /\ ((forall n :e omega, P n (f n)) /\ forall n :e omega, R0 n (f n) (f (ordsucc n)))).
+Admitted.
+
+// HOL Light: arith.ml:1866 / DEPENDENT_CHOICE   (hash md5:fe491beb38266f87210359427a13584f)
+// not bridged: 
+Theorem DEPENDENT_CHOICE : forall A:set, forall P:set -> set -> prop, forall R0:set -> set -> set -> prop, (exists a :e A, P 0 a) /\ (forall n :e omega, forall x :e A, P n x -> exists y :e A, P (ordsucc n) y /\ R0 n x y) -> exists f:set -> set, (forall x :e omega, f x :e A) /\ ((forall n :e omega, P n (f n)) /\ forall n :e omega, R0 n (f n) (f (ordsucc n))).
+Admitted.
+
