@@ -27564,9 +27564,9 @@
    "source": "!m:int. !n:int. !d:int. int_divides d (int_lcm (m , n)) <=> int_divides (d * int_gcd (m , n)) (m * n)",
    "statement": "forall m n d :e int, divides_int d (lcm_int m n) <-> divides_int (d * gcd_int m n) (m * n)",
    "literal": "forall m n d :e hl_ty_int, hl_int_divides d (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = 1 <-> hl_int_divides (hl_int_mul d (hl_int_gcd (hl_pair hl_ty_int hl_ty_int m n))) (hl_int_mul m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVIDES_LCM_GCD_bridge"
   },
   {
    "name": "INT_DIVIDES_LE",
@@ -29047,9 +29047,9 @@
    "source": "!m:int. !n:int. int_divides m (int_lcm (m , n)) /\\ int_divides n (int_lcm (m , n)) /\\ (!d:int. int_divides m d /\\ int_divides n d ==> int_divides (int_lcm (m , n)) d)",
    "statement": "forall m n :e int, divides_int m (lcm_int m n) /\\ (divides_int n (lcm_int m n) /\\ forall d :e int, divides_int m d /\\ divides_int n d -> divides_int (lcm_int m n) d)",
    "literal": "forall m n :e hl_ty_int, hl_int_divides m (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = 1 /\\ (hl_int_divides n (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = 1 /\\ forall d :e hl_ty_int, hl_int_divides m d = 1 /\\ hl_int_divides n d = 1 -> hl_int_divides (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) d = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LCM_bridge"
   },
   {
    "name": "INT_LCM_DIVIDES",
@@ -29078,9 +29078,9 @@
    "source": "!m:int. !n:int. !d:int. int_divides (int_lcm (m , n)) d <=> int_divides m d /\\ int_divides n d",
    "statement": "forall m n d :e int, divides_int (lcm_int m n) d <-> divides_int m d /\\ divides_int n d",
    "literal": "forall m n d :e hl_ty_int, hl_int_divides (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) d = 1 <-> hl_int_divides m d = 1 /\\ hl_int_divides n d = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LCM_DIVIDES_bridge"
   },
   {
    "name": "INT_LCM_POS",
@@ -29111,9 +29111,9 @@
    "source": "!m:int. !n:int. int_of_num 0 <= int_lcm (m , n)",
    "statement": "forall m n :e int, 0 <= lcm_int m n",
    "literal": "forall m n :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LCM_POS_bridge"
   },
   {
    "name": "INT_LET_ADD",
@@ -32553,9 +32553,9 @@
    "source": "!m:int. !n:int. int_gcd (m , n) * int_lcm (m , n) = int_abs (m * n)",
    "statement": "forall m n :e int, gcd_int m n * lcm_int m n = abs_SNo (m * n)",
    "literal": "forall m n :e hl_ty_int, hl_int_mul (hl_int_gcd (hl_pair hl_ty_int hl_ty_int m n)) (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = hl_int_abs (hl_int_mul m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_MUL_GCD_LCM_bridge"
   },
   {
    "name": "INT_MUL_LCM_GCD",
@@ -32584,9 +32584,9 @@
    "source": "!m:int. !n:int. int_lcm (m , n) * int_gcd (m , n) = int_abs (m * n)",
    "statement": "forall m n :e int, lcm_int m n * gcd_int m n = abs_SNo (m * n)",
    "literal": "forall m n :e hl_ty_int, hl_int_mul (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) (hl_int_gcd (hl_pair hl_ty_int hl_ty_int m n)) = hl_int_abs (hl_int_mul m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_MUL_LCM_GCD_bridge"
   },
   {
    "name": "INT_MUL_LID",
@@ -51728,9 +51728,9 @@
    "source": "!a:num. !b:num. int_of_num (num_lcm (a , b)) = int_lcm (int_of_num a , int_of_num b)",
    "statement": "forall a b :e omega, lcm_int a b = lcm_int a b",
    "literal": "forall a b :e omega, hl_int_of_num (hl_num_lcm (hl_pair omega omega a b)) = hl_int_lcm (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUM_LCM_bridge"
   },
   {
    "name": "NUM_OF_INT",
@@ -80850,9 +80850,9 @@
    "source": "!m:int. !n:int. int_lcm (m , n) = (if m * n = int_of_num 0 then int_of_num 0 else div (int_abs (m * n)) (int_gcd (m , n)))",
    "statement": "forall m n :e int, lcm_int m n = if m * n = 0 then 0 else div_int (abs_SNo (m * n)) (gcd_int m n)",
    "literal": "forall m n :e hl_ty_int, hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n) = hl_COND hl_ty_int (if hl_int_mul m n = hl_int_of_num (hl_NUMERAL hl_zero) then 1 else 0) (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_div (hl_int_abs (hl_int_mul m n)) (hl_int_gcd (hl_pair hl_ty_int hl_ty_int m n)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "int_lcm_bridge"
   },
   {
    "name": "int_le",
@@ -82855,7 +82855,7 @@
    "statement": "forall a b :e omega, lcm_int a b = if lcm_int a b :e omega then lcm_int a b else 0",
    "literal": "forall a b :e omega, hl_num_lcm (hl_pair omega omega a b) = hl_num_of_int (hl_int_lcm (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_lcm_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition lcm_int a b :e omega not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2324
+  "native_certified": 2332
  }
 }
