@@ -1402,9 +1402,9 @@
    "source": "!P:B->bool. !f:A->B. !l:A list. ALL P (MAP f l) <=> ALL (P o f) l",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all P (seq_map f l) <-> seq_all (fun x:set => P (f x)) l",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall l :e finseq A, hl_ALL B P (hl_MAP A B f l) = 1 <-> hl_ALL A (hl_o B 2 A P f) l = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ALL_MAP_bridge"
   },
   {
    "name": "ALL_MEM",
@@ -4274,7 +4274,7 @@
    "statement": "forall A:set, A <> Empty -> forall s c= A, finite s /\\ finite_cardinality s <= 1 <-> exists a :e A, s c= {a}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ hl_le (hl_CARD A s) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1 <-> exists a :e A, hl_SUBSET A s (hl_INSERT A a (hl_EMPTY A)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
+   "cert_error": "bridge_unsupported: side condition finite s not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -4305,7 +4305,7 @@
    "statement": "forall A:set, forall a b :e A, finite_cardinality {a,b} <= 2",
    "literal": "forall A:set, A <> Empty -> forall a b :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_EMPTY A)))) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty b differs from elaborated {b}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {b} a differs from elaborated {a,b}",
    "bridge": ""
   },
   {
@@ -4336,7 +4336,7 @@
    "statement": "forall A:set, forall a b c :e A, finite_cardinality {a,b,c} <= 3",
    "literal": "forall A:set, A <> Empty -> forall a b c :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_INSERT A c (hl_EMPTY A))))) (hl_NUMERAL (hl_BIT1 (hl_BIT1 hl_zero))) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty c differs from elaborated {c}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {c} b differs from elaborated {b,c}",
    "bridge": ""
   },
   {
@@ -4367,7 +4367,7 @@
    "statement": "forall A:set, forall a b c d :e A, finite_cardinality {a,b,c,d} <= 4",
    "literal": "forall A:set, A <> Empty -> forall a b c d :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_INSERT A c (hl_INSERT A d (hl_EMPTY A)))))) (hl_NUMERAL (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty d differs from elaborated {d}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {d} c differs from elaborated {c,d}",
    "bridge": ""
   },
   {
@@ -4797,7 +4797,7 @@
    "statement": "forall A:set, forall a :e A, finite_cardinality {a} = 1",
    "literal": "forall A:set, A <> Empty -> forall a :e A, hl_CARD A (hl_INSERT A a (hl_EMPTY A)) = hl_NUMERAL (hl_BIT1 hl_zero)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
+   "cert_error": "bridge_unsupported: side condition finite {a} not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -7052,9 +7052,9 @@
    "source": "!x:A. !y:B. CROSS (x INSERT EMPTY) (y INSERT EMPTY) = (x , y) INSERT EMPTY",
    "statement": "forall A B:set, forall x :e A, forall y :e B, {x} :*: {y} = {(x,y)}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_CROSS A B (hl_INSERT A x (hl_EMPTY A)) (hl_INSERT B y (hl_EMPTY B)) = hl_INSERT (A :*: B) (hl_pair A B x y) (hl_EMPTY (A :*: B))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CROSS_SING_bridge"
   },
   {
    "name": "CROSS_UNION",
@@ -8751,9 +8751,9 @@
    "source": "(!s:A->bool. !a:A. DISJOINT s (a INSERT EMPTY) <=> ~(a IN s)) /\\ (!s:A->bool. !a:A. DISJOINT (a INSERT EMPTY) s <=> ~(a IN s))",
    "statement": "forall A:set, (forall s c= A, forall a :e A, s :/\\: {a} = Empty <-> ~ a :e s) /\\ forall s c= A, forall a :e A, {a} :/\\: s = Empty <-> ~ a :e s",
    "literal": "forall A:set, A <> Empty -> (forall s :e 2 :^: A, forall a :e A, hl_DISJOINT A s (hl_INSERT A a (hl_EMPTY A)) = 1 <-> ~ hl_IN A a s = 1) /\\ forall s :e 2 :^: A, forall a :e A, hl_DISJOINT A (hl_INSERT A a (hl_EMPTY A)) s = 1 <-> ~ hl_IN A a s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DISJOINT_SING_bridge"
   },
   {
    "name": "DISJOINT_SYM",
@@ -13641,7 +13641,7 @@
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> prop, (exists f :e B :^: A, exists g :e C :^: A, P f g) <-> exists h:set -> set, (forall x :e A, h x :e B :*: C) /\\ P (fun x :e A => h x 0) (fun x :e A => h x 1)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: A) :^: (B :^: A), (exists f :e B :^: A, exists g :e C :^: A, P f g = 1) <-> exists h :e (B :*: C) :^: A, P (hl_o (B :*: C) B A (hl_FST B C) h) (hl_o (B :*: C) C A (hl_SND B C) h) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: coerce_rel: set(B :^: A)",
    "bridge": ""
   },
   {
@@ -16929,9 +16929,9 @@
    "source": "!a:A. FINITE (a INSERT EMPTY)",
    "statement": "forall A:set, forall a :e A, finite {a}",
    "literal": "forall A:set, A <> Empty -> forall a :e A, hl_FINITE A (hl_INSERT A a (hl_EMPTY A)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FINITE_SING_bridge"
   },
   {
    "name": "FINITE_SUBSET",
@@ -19064,7 +19064,7 @@
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> set -> prop, (forall f :e B :^: A, forall g :e C :^: A, P f g) <-> forall h:set -> set, (forall x :e A, h x :e B :*: C) -> P (fun x :e A => h x 0) (fun x :e A => h x 1)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: A) :^: (B :^: A), (forall f :e B :^: A, forall g :e C :^: A, P f g = 1) <-> forall h :e (B :*: C) :^: A, P (hl_o (B :*: C) B A (hl_FST B C) h) (hl_o (B :*: C) C A (hl_SND B C) h) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: coerce_rel: set(B :^: A)",
    "bridge": ""
   },
   {
@@ -22904,9 +22904,9 @@
    "source": "!f:B->C. !g:A->B. !s:A->bool. IMAGE (f o g) s = IMAGE f (IMAGE g s)",
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall s :e 2 :^: A, hl_IMAGE A C (hl_o B C A f g) s = hl_IMAGE B C f (hl_IMAGE A B g s)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IMAGE_o_bridge"
   },
   {
    "name": "IMP_CLAUSES",
@@ -23810,7 +23810,7 @@
    "statement": "forall a :e R, inf {a} = a",
    "literal": "forall a :e R, hl_inf (hl_INSERT R a (hl_EMPTY R)) = a",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb {a} x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -24899,9 +24899,9 @@
    "source": "!P:((A->bool)->bool)->bool. !Q:(A->bool)->bool. !s:A->bool. P (s INSERT EMPTY) /\\ Q s ==> INTERSECTION_OF P Q s",
    "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, P {s} /\\ Q s -> exists u c= Power A, P u /\\ (forall c :e u, Q c) /\\ {x :e A | forall Y :e u, x :e Y} = s",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: (2 :^: A)), forall Q :e 2 :^: (2 :^: A), forall s :e 2 :^: A, P (hl_INSERT (2 :^: A) s (hl_EMPTY (2 :^: A))) = 1 /\\ Q s = 1 -> hl_INTERSECTION_OF A P Q s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty s differs from elaborated {s}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTERSECTION_OF_INC_bridge"
   },
   {
    "name": "INTERSECTION_OF_MONO",
@@ -24980,9 +24980,9 @@
    "source": "!s:A->bool. INTERS (s INSERT EMPTY) = s",
    "statement": "forall A:set, forall s c= A, {x :e A | forall Y :e {s}, x :e Y} = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_INTERS A (hl_INSERT (2 :^: A) s (hl_EMPTY (2 :^: A))) = s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty s differs from elaborated {s}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTERS_1_bridge"
   },
   {
    "name": "INTERS_2",
@@ -25009,7 +25009,7 @@
    "statement": "forall A:set, forall s t c= A, {x :e A | forall Y :e {s,t}, x :e Y} = s :/\\: t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_INTERS A (hl_INSERT (2 :^: A) s (hl_INSERT (2 :^: A) t (hl_EMPTY (2 :^: A)))) = hl_INTER A s t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty t differs from elaborated {t}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {t} s differs from elaborated {s,t}",
    "bridge": ""
   },
   {
@@ -37832,9 +37832,9 @@
    "source": "!x:A. !y:A. x IN y INSERT EMPTY <=> x = y",
    "statement": "forall A:set, forall x y :e A, x :e {y} <-> x = y",
    "literal": "forall A:set, A <> Empty -> forall x y :e A, hl_IN A x (hl_INSERT A y (hl_EMPTY A)) = 1 <-> x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty y differs from elaborated {y}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "IN_SING_bridge"
   },
   {
    "name": "IN_SUPPORT",
@@ -43499,9 +43499,9 @@
    "source": "!f:A->B. !g:B->C. !l:A list. MAP (g o f) l = MAP g (MAP f l)",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall l :e finseq A, hl_MAP A C (hl_o B C A g f) l = hl_MAP B C g (hl_MAP A B f l)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MAP_o_bridge"
   },
   {
    "name": "MATCH_SEQPATTERN",
@@ -48627,9 +48627,9 @@
    "source": "!f:A->num. !p:A->A. !s:A->bool. (!x:A. x IN s ==> p x IN s) /\\ (!y:A. y IN s ==> (?!x:A. x IN s /\\ p x = y)) ==> nsum s f = nsum s (f o p)",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\\ (forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x))",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall p :e A :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall y :e A, hl_IN A y s = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ p x = y then 1 else 0) = 1) -> hl_nsum A s f = hl_nsum A s (hl_o A omega A f p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_BIJECTION_bridge"
   },
   {
    "name": "NSUM_BOUND",
@@ -49633,9 +49633,9 @@
    "source": "!f:A->B. !g:B->num. !s:A->bool. (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) ==> nsum (IMAGE f s) g = nsum s (g o f)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e omega) -> forall s c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e omega :^: B, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) -> hl_nsum B (hl_IMAGE A B f s) g = hl_nsum A s (hl_o B omega A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_IMAGE_bridge"
   },
   {
    "name": "NSUM_IMAGE_GEN",
@@ -49693,9 +49693,9 @@
    "source": "!d:B->num. !i:A->B. !s:A->bool. FINITE s /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ ~(x = y) /\\ i x = i y ==> d (i x) = 0) ==> nsum (IMAGE i s) d = nsum s (d o i)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set, (forall x :e B, d x :e omega) -> forall i:set -> set, (forall x :e A, i x :e B) -> forall s c= A, finite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ (~ x = y /\\ i x = i y)) -> d (i x) = 0) -> finsum {i x | x :e s} d = finsum s (fun x:set => d (i x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e omega :^: B, forall i :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ (~ x = y /\\ i x = i y)) -> d (i x) = hl_NUMERAL hl_zero) -> hl_nsum B (hl_IMAGE A B i s) d = hl_nsum A s (hl_o B omega A d i)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_IMAGE_NONZERO_bridge"
   },
   {
    "name": "NSUM_INCL_EXCL",
@@ -49756,9 +49756,9 @@
    "source": "!f:A->num. !p:A->A. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> p x IN s) /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ p x = p y ==> x = y) ==> nsum s (f o p) = nsum s f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\\ ((forall x :e A, x :e s -> p x :e s) /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ p x = p y) -> x = y)) -> finsum s (fun x:set => f (p x)) = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall p :e A :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ p x = p y) -> x = y)) -> hl_nsum A s (hl_o A omega A f p) = hl_nsum A s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_INJECTION_bridge"
   },
   {
    "name": "NSUM_LE",
@@ -50508,9 +50508,9 @@
    "source": "!f:A->num. !x:A. nsum (x INSERT EMPTY) f = f x",
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall x :e A, finsum {x} f = f x",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall x :e A, hl_nsum A (hl_INSERT A x (hl_EMPTY A)) f = f x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_SING_bridge"
   },
   {
    "name": "NSUM_SING_NUMSEG",
@@ -51211,9 +51211,9 @@
    "source": "GSPEC (\\GEN%PVAR%187:num. ?i:num. SETSPEC GEN%PVAR%187 (i <= 0) i) = 0 INSERT EMPTY /\\ (!k:num. GSPEC (\\GEN%PVAR%188:num. ?i:num. SETSPEC GEN%PVAR%188 (i <= SUC k) i) = SUC k INSERT GSPEC (\\GEN%PVAR%189:num. ?i:num. SETSPEC GEN%PVAR%189 (i <= k) i))",
    "statement": "{i :e omega | i <= 0} = {0} /\\ forall k :e omega, {i :e omega | i <= ordsucc k} = SetAdjoin {i :e omega | i <= k} (ordsucc k)",
    "literal": "hl_GSPEC omega (fun GEN_PVAR_187 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_187 (hl_le i (hl_NUMERAL hl_zero)) i = 1 then 1 else 0) = hl_INSERT omega (hl_NUMERAL hl_zero) (hl_EMPTY omega) /\\ forall k :e omega, hl_GSPEC omega (fun GEN_PVAR_188 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_188 (hl_le i (hl_SUC k)) i = 1 then 1 else 0) = hl_INSERT omega (hl_SUC k) (hl_GSPEC omega (fun GEN_PVAR_189 :e omega => if exists i :e omega, hl_SETSPEC omega GEN_PVAR_189 (hl_le i k) i = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty 0 differs from elaborated {0}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUMSEG_CLAUSES_LE_bridge"
   },
   {
    "name": "NUMSEG_CLAUSES_LT",
@@ -51562,9 +51562,9 @@
    "source": "!n:num. .. n n = n INSERT EMPTY",
    "statement": "forall n :e omega, {i :e omega | n <= i /\\ i <= n} = {n}",
    "literal": "forall n :e omega, hl_numseg n n = hl_INSERT omega n (hl_EMPTY omega)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty n differs from elaborated {n}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUMSEG_SING_bridge"
   },
   {
    "name": "NUMSUM",
@@ -52910,9 +52910,9 @@
    "source": "!r:A->A->bool. !x:A. pairwise r (x INSERT EMPTY) <=> T",
    "statement": "forall A:set, forall r:set -> set -> prop, forall x :e A, (forall x0 y :e {x}, x0 <> y -> r x0 y) <-> True",
    "literal": "forall A:set, A <> Empty -> forall r :e 2 :^: A :^: A, forall x :e A, hl_pairwise A r (hl_INSERT A x (hl_EMPTY A)) = 1 <-> True",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_SING_bridge"
   },
   {
    "name": "PAIRWISE_TRANSITIVE",
@@ -61882,7 +61882,7 @@
    "statement": "forall x y :e R, (if x <= y then y else x) = sup {x,y}",
    "literal": "forall x y :e R, hl_real_max x y = hl_sup (hl_INSERT R x (hl_INSERT R y (hl_EMPTY R)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty y differs from elaborated {y}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {y} x differs from elaborated {x,y}",
    "bridge": ""
   },
   {
@@ -61998,7 +61998,7 @@
    "statement": "forall x y :e R, (if x <= y then x else y) = inf {x,y}",
    "literal": "forall x y :e R, hl_real_min x y = hl_inf (hl_INSERT R x (hl_INSERT R y (hl_EMPTY R)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty y differs from elaborated {y}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {y} x differs from elaborated {x,y}",
    "bridge": ""
   },
   {
@@ -66723,7 +66723,7 @@
    "statement": "forall s c= R, ~ s = Empty /\\ (exists B :e R, forall x :e R, x :e s -> abs_SNo x <= B) -> (sup s = inf s <-> exists a :e R, s = {a})",
    "literal": "forall s :e 2 :^: R, ~ s = hl_EMPTY R /\\ (exists B :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_real_abs x) B = 1) -> (hl_sup s = hl_inf s <-> exists a :e R, s = hl_INSERT R a (hl_EMPTY R))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: exists B :e R, forall x :e R, x :e s -> abs_SNo x <= B, ~ s = Empty]",
    "bridge": ""
   },
   {
@@ -69057,7 +69057,7 @@
    "statement": "forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, s = {x}",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_SING A s = 1 <-> exists x :e A, s = hl_INSERT A x (hl_EMPTY A)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
+   "cert_error": "bridge_unsupported: compat_missing: hl_SING_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -69111,9 +69111,9 @@
    "source": "(!a:A. GSPEC (\\GEN%PVAR%50:A. ?x:A. SETSPEC GEN%PVAR%50 (x = a) x) = a INSERT EMPTY) /\\ (!a:A. GSPEC (\\GEN%PVAR%51:A. ?x:A. SETSPEC GEN%PVAR%51 (a = x) x) = a INSERT EMPTY)",
    "statement": "forall A:set, (forall a :e A, {x :e A | x = a} = {a}) /\\ forall a :e A, {x :e A | a = x} = {a}",
    "literal": "forall A:set, A <> Empty -> (forall a :e A, hl_GSPEC A (fun GEN_PVAR_50 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_50 (if x = a then 1 else 0) x = 1 then 1 else 0) = hl_INSERT A a (hl_EMPTY A)) /\\ forall a :e A, hl_GSPEC A (fun GEN_PVAR_51 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_51 (if a = x then 1 else 0) x = 1 then 1 else 0) = hl_INSERT A a (hl_EMPTY A)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SING_GSPEC_bridge"
   },
   {
    "name": "SING_SUBSET",
@@ -69139,9 +69139,9 @@
    "source": "!s:A->bool. !x:A. x INSERT EMPTY SUBSET s <=> x IN s",
    "statement": "forall A:set, forall s c= A, forall x :e A, {x} c= s <-> x :e s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, forall x :e A, hl_SUBSET A (hl_INSERT A x (hl_EMPTY A)) s = 1 <-> hl_IN A x s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SING_SUBSET_bridge"
   },
   {
    "name": "SKOLEM_THM",
@@ -71487,9 +71487,9 @@
    "source": "!f:A->real. !p:A->A. !s:A->bool. (!x:A. x IN s ==> p x IN s) /\\ (!y:A. y IN s ==> (?!x:A. x IN s /\\ p x = y)) ==> sum s f = sum s (f o p)",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, (forall x :e A, x :e s -> p x :e s) /\\ (forall y :e A, y :e s -> exists x :e A, x :e s /\\ p x = y /\\ forall y0 :e A, y0 :e s /\\ p y0 = y -> y0 = x) -> finsum s f = finsum s (fun x:set => f (p x))",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall p :e A :^: A, forall s :e 2 :^: A, (forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall y :e A, hl_IN A y s = 1 -> hl_exists_unique A (fun x :e A => if hl_IN A x s = 1 /\\ p x = y then 1 else 0) = 1) -> hl_sum A s f = hl_sum A s (hl_o A R A f p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_BIJECTION_bridge"
   },
   {
    "name": "SUM_BOUND",
@@ -72649,9 +72649,9 @@
    "source": "!f:A->B. !g:B->real. !s:A->bool. (!x:A. !y:A. x IN s /\\ y IN s /\\ f x = f y ==> x = y) ==> sum (IMAGE f s) g = sum s (g o f)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, (forall x y :e A, x :e s /\\ (y :e s /\\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: B, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ f x = f y) -> x = y) -> hl_sum B (hl_IMAGE A B f s) g = hl_sum A s (hl_o B R A g f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_IMAGE_bridge"
   },
   {
    "name": "SUM_IMAGE_GEN",
@@ -72711,9 +72711,9 @@
    "source": "!f:A->B. !g:B->real. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> real_of_num 0 <= g (f x)) ==> sum (IMAGE f s) g <= sum s (g o f)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> 0 <= g (f x)) -> finsum {f x | x :e s} g <= finsum s (fun x:set => g (f x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: B, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (g (f x)) = 1) -> hl_real_le (hl_sum B (hl_IMAGE A B f s) g) (hl_sum A s (hl_o B R A g f)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_IMAGE_LE_bridge"
   },
   {
    "name": "SUM_IMAGE_NONZERO",
@@ -72743,9 +72743,9 @@
    "source": "!d:B->real. !i:A->B. !s:A->bool. FINITE s /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ ~(x = y) /\\ i x = i y ==> d (i x) = real_of_num 0) ==> sum (IMAGE i s) d = sum s (d o i)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set, (forall x :e B, d x :e R) -> forall i:set -> set, (forall x :e A, i x :e B) -> forall s c= A, finite s /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ (~ x = y /\\ i x = i y)) -> d (i x) = 0) -> finsum {i x | x :e s} d = finsum s (fun x:set => d (i x))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall d :e R :^: B, forall i :e B :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ (~ x = y /\\ i x = i y)) -> d (i x) = hl_real_of_num (hl_NUMERAL hl_zero)) -> hl_sum B (hl_IMAGE A B i s) d = hl_sum A s (hl_o B R A d i)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_IMAGE_NONZERO_bridge"
   },
   {
    "name": "SUM_INCL_EXCL",
@@ -72805,9 +72805,9 @@
    "source": "!f:A->real. !p:A->A. !s:A->bool. FINITE s /\\ (!x:A. x IN s ==> p x IN s) /\\ (!x:A. !y:A. x IN s /\\ y IN s /\\ p x = p y ==> x = y) ==> sum s (f o p) = sum s f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s c= A, finite s /\\ ((forall x :e A, x :e s -> p x :e s) /\\ (forall x y :e A, x :e s /\\ (y :e s /\\ p x = p y) -> x = y)) -> finsum s (fun x:set => f (p x)) = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall p :e A :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ ((forall x :e A, hl_IN A x s = 1 -> hl_IN A (p x) s = 1) /\\ (forall x y :e A, hl_IN A x s = 1 /\\ (hl_IN A y s = 1 /\\ p x = p y) -> x = y)) -> hl_sum A s (hl_o A R A f p) = hl_sum A s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_INJECTION_bridge"
   },
   {
    "name": "SUM_LE",
@@ -73730,9 +73730,9 @@
    "source": "!f:A->real. !x:A. sum (x INSERT EMPTY) f = f x",
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall x :e A, finsum {x} f = f x",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall x :e A, hl_sum A (hl_INSERT A x (hl_EMPTY A)) f = f x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_SING_bridge"
   },
   {
    "name": "SUM_SING_NUMSEG",
@@ -74584,7 +74584,7 @@
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall f:set -> set, (forall x :e A, f x :e C) -> {x :e Empty | f x <> neutral_of C op} = Empty) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e SetAdjoin s x | f x0 <> neutral_of C op} = if f x = neutral_of C op then {x :e s | f x <> neutral_of C op} else SetAdjoin {x :e s | f x <> neutral_of C op} x) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall x :e A, forall s c= A, {x0 :e s :\\: {x} | f x0 <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\\: {x}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\/: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\\/: {x :e t | f x <> neutral_of C op}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :/\\: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :/\\: {x :e t | f x <> neutral_of C op}) /\\ ((forall f:set -> set, (forall x :e A, f x :e C) -> forall s t c= A, {x :e s :\\: t | f x <> neutral_of C op} = {x :e s | f x <> neutral_of C op} :\\: {x :e t | f x <> neutral_of C op}) /\\ forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, {x :e {f x | x :e s} | g x <> neutral_of C op} = {f x | x :e {x :e s | g (f x) <> neutral_of C op}})))))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, (forall f :e C :^: A, hl_support C A op f (hl_EMPTY A) = hl_EMPTY A) /\\ ((forall f :e C :^: A, forall x :e A, forall s :e 2 :^: A, hl_support C A op f (hl_INSERT A x s) = hl_COND (2 :^: A) (if f x = hl_neutral C op then 1 else 0) (hl_support C A op f s) (hl_INSERT A x (hl_support C A op f s))) /\\ ((forall f :e C :^: A, forall x :e A, forall s :e 2 :^: A, hl_support C A op f (hl_DELETE A s x) = hl_DELETE A (hl_support C A op f s) x) /\\ ((forall f :e C :^: A, forall s t :e 2 :^: A, hl_support C A op f (hl_UNION A s t) = hl_UNION A (hl_support C A op f s) (hl_support C A op f t)) /\\ ((forall f :e C :^: A, forall s t :e 2 :^: A, hl_support C A op f (hl_INTER A s t) = hl_INTER A (hl_support C A op f s) (hl_support C A op f t)) /\\ ((forall f :e C :^: A, forall s t :e 2 :^: A, hl_support C A op f (hl_DIFF A s t) = hl_DIFF A (hl_support C A op f s) (hl_support C A op f t)) /\\ forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, hl_support C B op g (hl_IMAGE A B f s) = hl_IMAGE A B f (hl_support C A op (hl_o B C A g f) s))))))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_o_compat1 (no statement (unsupported roles))",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -74930,7 +74930,7 @@
    "statement": "forall a :e R, sup {a} = a",
    "literal": "forall a :e R, hl_sup (hl_INSERT R a (hl_EMPTY R)) = a",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty a differs from elaborated {a}",
+   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub {a} x not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -76792,9 +76792,9 @@
    "source": "!s:A->bool. UNIONS (s INSERT EMPTY) = s",
    "statement": "forall A:set, A <> Empty -> forall s c= A, Union {s} = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_UNIONS A (hl_INSERT (2 :^: A) s (hl_EMPTY (2 :^: A))) = s",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty s differs from elaborated {s}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_1_bridge"
   },
   {
    "name": "UNIONS_2",
@@ -76818,7 +76818,7 @@
    "statement": "forall A:set, A <> Empty -> forall s t c= A, Union {s,t} = s :\\/: t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_UNIONS A (hl_INSERT (2 :^: A) s (hl_INSERT (2 :^: A) t (hl_EMPTY (2 :^: A)))) = hl_UNION A s t",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty t differs from elaborated {t}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {t} s differs from elaborated {s,t}",
    "bridge": ""
   },
   {
@@ -76892,9 +76892,9 @@
    "source": "!f:(A->bool)->bool. UNIONS f = INTERS f <=> (?s:A->bool. f = s INSERT EMPTY)",
    "statement": "forall A:set, A <> Empty -> forall f c= Power A, Union f = {x :e A | forall Y :e f, x :e Y} <-> exists s c= A, f = {s}",
    "literal": "forall A:set, A <> Empty -> forall f :e 2 :^: (2 :^: A), hl_UNIONS A f = hl_INTERS A f <-> exists s :e 2 :^: A, f = hl_INSERT (2 :^: A) s (hl_EMPTY (2 :^: A))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty s differs from elaborated {s}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_EQ_INTERS_bridge"
   },
   {
    "name": "UNIONS_GSPEC",
@@ -77184,7 +77184,7 @@
    "statement": "forall A:set, forall s c= A, Union {{x} | x :e A, x :e s} = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_63 :e 2 :^: A => if exists x :e A, hl_SETSPEC (2 :^: A) GEN_PVAR_63 (hl_IN A x s) (hl_INSERT A x (hl_EMPTY A)) = 1 then 1 else 0)) = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
    "bridge": ""
   },
   {
@@ -77212,7 +77212,7 @@
    "statement": "forall A:set, forall P:set -> prop, Union {{x} | x :e A, P x} = {x :e A | P x}",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_61 :e 2 :^: A => if exists x :e A, hl_SETSPEC (2 :^: A) GEN_PVAR_61 (P x) (hl_INSERT A x (hl_EMPTY A)) = 1 then 1 else 0)) = hl_GSPEC A (fun GEN_PVAR_62 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_62 (P x) x = 1 then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty x differs from elaborated {x}",
+   "cert_error": "bridge_unsupported: coerce_rel: set(2 :^: A)",
    "bridge": ""
   },
   {
@@ -77536,9 +77536,9 @@
    "source": "!P:((A->bool)->bool)->bool. !Q:(A->bool)->bool. !s:A->bool. P (s INSERT EMPTY) /\\ Q s ==> UNION_OF P Q s",
    "statement": "forall A:set, A <> Empty -> forall P Q:set -> prop, forall s c= A, P {s} /\\ Q s -> exists u c= Power A, P u /\\ (forall c :e u, Q c) /\\ Union u = s",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: (2 :^: A)), forall Q :e 2 :^: (2 :^: A), forall s :e 2 :^: A, P (hl_INSERT (2 :^: A) s (hl_EMPTY (2 :^: A))) = 1 /\\ Q s = 1 -> hl_UNION_OF A P Q s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty s differs from elaborated {s}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNION_OF_INC_bridge"
   },
   {
    "name": "UNION_OF_MONO",
@@ -77779,9 +77779,9 @@
    "source": "UNIV = one INSERT EMPTY",
    "statement": "1 = {0}",
    "literal": "hl_UNIV 1 = hl_INSERT 1 hl_one (hl_EMPTY 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin Empty 0 differs from elaborated {0}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIV_1_bridge"
   },
   {
    "name": "UNIV_GSPEC",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1860
+  "native_certified": 1889
  }
 }

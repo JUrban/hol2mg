@@ -622,6 +622,22 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                  | Mg.App (Mg.App (Mg.Cst "eq", _), r) when r <> nat -> unsupported "rel: conditional derived %s differs from %s" (pp r) (pp nat)
                  | _ -> ());
                 (lit, nat, KEq, pf2)
+            | "o" when (match args, nview with [ _; _ ], (E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ]) -> true | _ -> false) ->
+                (* composition as a meta function/predicate: relate the lambda \x. f (g x) and go back
+                   to the literal hl_o with pw_o_pred / pw_o_fun *)
+                let f, gg = (match args with [ f; gg ] -> (f, gg) | _ -> assert false) in
+                let dom, _ = dest_fun_ty (type_of [] gg) in
+                let t' = Lam ("x", dom, App (Hol.lift 1 0 f, App (Hol.lift 1 0 gg, Bound 0))) in
+                let _, _, k', pf' = rel g t' (Some nview) in
+                let cs = const_carriers g "o" cty in
+                let carr = String.concat " " (List.map (fun (c, _) -> ppp c) cs) in
+                let typs = String.concat " " (List.map (fun a -> Printf.sprintf "%s %s" (ppp (lterm g a)) (typ g a)) [ f; gg ]) in
+                let rx = nat_of_lit g.lctx dom (Mg.Var "hl__x") in
+                let m = if rx = Mg.Var "hl__x" then ppp nat else Printf.sprintf "(fun hl__x:set => %s %s)" (ppp nat) (ppp rx) in
+                (match k' with
+                 | KPWP _ -> (lit, nat, k', Printf.sprintf "(pw_o_pred %s %s %s %s)" carr typs m pf')
+                 | KPW _ -> (lit, nat, k', Printf.sprintf "(pw_o_fun %s %s %s %s)" carr typs m pf')
+                 | _ -> unsupported "rel: composition relation")
             | "@" when (match args, nview with [ Lam _ ], E.VSet _ -> true | _ -> false) ->
                 (* the chosen object: hl_select A F = choose_in A (fun x => F x = 1) = choose_in A N pointwise *)
                 let p = List.hd args in
@@ -894,7 +910,27 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     let ctx = rebuild (replace_tm l (Mg.Var "hl__u") b) in
     let prop' = rebuild (replace_tm l n b) in
     (prop', leibniz pe (pp ctx) pf)) (prop0, pf0) (List.rev !rewrites) in
-  ignore prop;
+  (* replay the elaborator's singleton normalisation SetAdjoin Empty a = {a} on the native side *)
+  let rec find_adjoin_empty t = (match t with
+    | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Cst "Empty"), a) -> Some (t, a)
+    | Mg.App (f, x) -> (match find_adjoin_empty f with Some r -> Some r | None -> find_adjoin_empty x)
+    | Mg.Sep (_, a, p) -> (match find_adjoin_empty a with Some r -> Some r | None -> find_adjoin_empty p)
+    | Mg.If (c, a, b) -> (match find_adjoin_empty c with Some r -> Some r | None -> (match find_adjoin_empty a with Some r -> Some r | None -> find_adjoin_empty b))
+    | _ -> None) in
+  let split_rhs prop = (match prop with
+    | Mg.App (Mg.App (Mg.Cst "iff", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "iff", a), b')), b
+    | Mg.App (Mg.App (Mg.Cst "eq", a), b) -> (fun b' -> Mg.App (Mg.App (Mg.Cst "eq", a), b')), b
+    | _ -> (fun b' -> b'), prop) in
+  let rec normalize_singletons (prop, pf) =
+    let rebuild, b = split_rhs prop in
+    (match find_adjoin_empty b with
+     | None -> (prop, pf)
+     | Some (l, a) ->
+         let n = Mg.SetEnum [ a ] in
+         let ctx = rebuild (replace_tm l (Mg.Var "hl__u") b) in
+         let prop' = rebuild (replace_tm l n b) in
+         normalize_singletons (prop', leibniz (Printf.sprintf "(binunion_idl %s)" (ppp n)) (pp ctx) pf)) in
+  let prop, pf = normalize_singletons (prop, pf) in
   let kind = (match e.R.c_result with
     | R.RProp -> KIff | R.RSet -> KEq
     | R.RSubset -> (match nview with E.VSubset (Mg.App (Mg.Cst "Power", a)) -> KRep2 a | E.VSubset a -> KRep a | _ -> KRep (Mg.Var "?"))

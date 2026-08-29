@@ -3730,3 +3730,13 @@ apply iffI.
         apply (hl_rep_inj A (hl_INTERS A (hl_chi2 A U)) l3 HIu H3).
         exact (eq_trans_i (hl_rep A (hl_INTERS A (hl_chi2 A U))) ({x :e A | forall Y :e (hl_rep2 A (hl_chi2 A U)), x :e Y}) (hl_rep A l3) (hl_INTERS_compat A HA (hl_chi2 A U) Hu) (eq_trans_i ({x :e A | forall Y :e (hl_rep2 A (hl_chi2 A U)), x :e Y}) ({x :e A | forall Y :e U, x :e Y}) (hl_rep A l3) (f_equal (fun w => ({x :e A | forall Y :e w, x :e Y})) (hl_rep2 A (hl_chi2 A U)) U Hr2) Heq)). }
 Qed.
+
+// ---- function composition in meta positions: pointwise through hl_o_unfold ----
+Theorem pw_o_pred : forall B C A:set, forall f :e C :^: B, forall g :e B :^: A, forall N:set -> prop, (forall x :e A, (fun x :e A => f (g x)) x = 1 <-> N x) -> forall x :e A, hl_o B C A f g x = 1 <-> N x.
+let B C A f. assume Hf. let g. assume Hg. let N. assume H. let x. assume Hx.
+exact (iff_eq1_l (hl_o B C A f g x) ((fun x :e A => f (g x)) x) (eq_trans_i (hl_o B C A f g x) (f (g x)) ((fun x :e A => f (g x)) x) (hl_o_unfold B C A f Hf g Hg x Hx) (eq_sym_i ((fun x :e A => f (g x)) x) (f (g x)) (beta A (fun x => f (g x)) x Hx))) (N x) (H x Hx)).
+Qed.
+Theorem pw_o_fun : forall B C A:set, forall f :e C :^: B, forall g :e B :^: A, forall N:set -> set, (forall x :e A, (fun x :e A => f (g x)) x = N x) -> forall x :e A, hl_o B C A f g x = N x.
+let B C A f. assume Hf. let g. assume Hg. let N. assume H. let x. assume Hx.
+exact (eq_trans_i (hl_o B C A f g x) ((fun x :e A => f (g x)) x) (N x) (eq_trans_i (hl_o B C A f g x) (f (g x)) ((fun x :e A => f (g x)) x) (hl_o_unfold B C A f Hf g Hg x Hx) (eq_sym_i ((fun x :e A => f (g x)) x) (f (g x)) (beta A (fun x => f (g x)) x Hx))) (H x Hx)).
+Qed.

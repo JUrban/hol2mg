@@ -957,7 +957,8 @@ source: !f:A->B. !g:B->C. !l:A list. MAP (g o f) l = MAP g (MAP f l)
 status: transport_required
 statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall l :e finseq A, hl_MAP A C (hl_o B C A g f) l = hl_MAP B C g (hl_MAP A B f l)
-cert_status: bridge_unsupported
+bridge: MAP_o_bridge
+cert_status: native_certified
 
 ### MEM_APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 65331249734eb4cc4e9441c91b6a2d51
@@ -1007,7 +1008,8 @@ source: !P:B->bool. !f:A->B. !l:A list. ALL P (MAP f l) <=> ALL (P o f) l
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all P (seq_map f l) <-> seq_all (fun x:set => P (f x)) l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall l :e finseq A, hl_ALL B P (hl_MAP A B f l) = 1 <-> hl_ALL A (hl_o B 2 A P f) l = 1
-cert_status: bridge_unsupported
+bridge: ALL_MAP_bridge
+cert_status: native_certified
 
 ### EL   [lists (finite sequences), including higher-order mapped operations]
 hash: 90e8be5936c40bee20461b9eb5985f6a
@@ -1185,7 +1187,8 @@ source: !f:B->C. !g:A->B. !s:A->bool. IMAGE (f o g) s = IMAGE f (IMAGE g s)
 status: generalization_required
 statement: forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall s :e 2 :^: A, hl_IMAGE A C (hl_o B C A f g) s = hl_IMAGE B C f (hl_IMAGE A B g s)
-cert_status: bridge_unsupported
+bridge: IMAGE_o_bridge
+cert_status: native_certified
 
 ### IN_INSERT   [sets: membership, algebra, comprehensions, images, families]
 hash: 62243c550f1aaf57081e91ad62c42ada
@@ -1624,7 +1627,8 @@ source: !f:A->real. !x:A. sum (x INSERT EMPTY) f = f x
 status: generalization_required
 statement: forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall x :e A, finsum {x} f = f x
 literal: forall A:set, A <> Empty -> forall f :e R :^: A, forall x :e A, hl_sum A (hl_INSERT A x (hl_EMPTY A)) f = f x
-cert_status: bridge_unsupported
+bridge: SUM_SING_bridge
+cert_status: native_certified
 
 ### CARD_NUMSEG   [iteration, sums, number segments]
 hash: 603fc98d20552313cb229eb8c9fd1ab3
@@ -1665,7 +1669,8 @@ source: !f:A->B. !g:B->real. !s:A->bool. (!x:A. !y:A. x IN s /\ y IN s /\ f x = 
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x))
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: B, forall s :e 2 :^: A, (forall x y :e A, hl_IN A x s = 1 /\ (hl_IN A y s = 1 /\ f x = f y) -> x = y) -> hl_sum B (hl_IMAGE A B f s) g = hl_sum A s (hl_o B R A g f)
-cert_status: bridge_unsupported
+bridge: SUM_IMAGE_bridge
+cert_status: native_certified
 
 ### NSUM_BOUND   [iteration, sums, number segments]
 hash: 822f18b79cadf3f9e39fe32c88d6727e
