@@ -960,7 +960,8 @@ source: !x:A. !l1:A list. !l2:A list. MEM x (l1 APPEND l2) <=> MEM x l1 \/ MEM x
 status: generalization_required
 statement: forall A:set, forall x :e A, forall l1 l2 :e finseq A, seq_mem x (seq_append l1 l2) <-> seq_mem x l1 \/ seq_mem x l2
 literal: forall A:set, A <> Empty -> forall x :e A, forall l1 l2 :e finseq A, hl_MEM A x (hl_APPEND A l1 l2) = 1 <-> hl_MEM A x l1 = 1 \/ hl_MEM A x l2 = 1
-cert_status: bridge_unsupported
+bridge: MEM_APPEND_bridge
+cert_status: native_certified
 
 ### HD   [lists (finite sequences), including higher-order mapped operations]
 hash: e48111d0d8d0854a2e64b2dfd1f92b7e
@@ -1041,7 +1042,8 @@ source: !f:A->B. !y:B. !l:A list. MEM y (MAP f l) <=> (?x:A. MEM x l /\ y = f x)
 status: generalization_required
 statement: forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e B, forall l :e finseq A, seq_mem y (seq_map f l) <-> exists x :e A, seq_mem x l /\ y = f x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e B, forall l :e finseq A, hl_MEM B y (hl_MAP A B f l) = 1 <-> exists x :e A, hl_MEM A x l = 1 /\ y = f x
-cert_status: bridge_unsupported
+bridge: MEM_MAP_bridge
+cert_status: native_certified
 
 ### EXISTS_EX   [lists (finite sequences), including higher-order mapped operations]
 hash: d49b9f16d9da009544ebd72dd5849c7e
@@ -1098,7 +1100,8 @@ source: !f:A->B. !g:A->B. !l:A list. ALL (\x:A. f x = g x) l ==> MAP f l = MAP g
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall l :e finseq A, seq_all (fun x:set => f x = g x) l -> seq_map f l = seq_map g l
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f g :e B :^: A, forall l :e finseq A, hl_ALL A (fun x :e A => if f x = g x then 1 else 0) l = 1 -> hl_MAP A B f l = hl_MAP A B g l
-cert_status: bridge_unsupported
+bridge: MAP_EQ_bridge
+cert_status: native_certified
 
 ### ITLIST_EXTRA   [lists (finite sequences), including higher-order mapped operations]
 hash: d13c7903e336f50874d6fbb2e0e01efa

@@ -3395,3 +3395,133 @@ claim Hstep: forall h :e A, forall t :e finseq A, hl_MAP A B f t = seq_map f1 t 
           (eq_trans_i (seq_cons (f h) (seq_map f1 t)) (seq_cons (f1 h) (seq_map f1 t)) (seq_map f1 (seq_cons h t)) (f_equal (fun u => seq_cons u (seq_map f1 t)) (f h) (f1 h) (Hf1 h Hh)) (eq_sym_i (seq_map f1 (seq_cons h t)) (seq_cons (f1 h) (seq_map f1 t)) (seq_map_cons A f1 h Hh t Ht))))))). }
 exact (seq_induct A (fun l => hl_MAP A B f l = seq_map f1 l) Hbase Hstep).
 Qed.
+
+// ---- recursion equations for membership and universal predicates on sequences ----
+Theorem seq_mem_nil : forall x:set, ~ seq_mem x seq_nil.
+let x. assume H. apply H. let i. assume Hi0. apply Hi0. assume Hi _.
+exact (EmptyE i (seq_len_nil (fun hl__u hl__v => i :e hl__u) Hi)).
+Qed.
+
+Theorem seq_mem_cons : forall A:set, forall a :e A, forall l :e finseq A, forall x:set, seq_mem x (seq_cons a l) <-> x = a \/ seq_mem x l.
+let A a. assume Ha. let l. assume Hl. let x.
+claim Hlen: seq_len (seq_cons a l) = ordsucc (seq_len l). { exact (seq_len_cons A a Ha l Hl). }
+claim HlenN: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+apply iffI.
+- assume H. apply H. let i. assume Hi0. apply Hi0. assume Hi Hnth.
+  claim Hi': i :e ordsucc (seq_len l). { exact (Hlen (fun hl__u hl__v => i :e hl__u) Hi). }
+  claim HiN: nat_p i. { exact (omega_nat_p i (omega_TransSet (ordsucc (seq_len l)) (omega_ordsucc (seq_len l) (seq_len_omega A l Hl)) i Hi')). }
+  apply (nat_inv i HiN).
+  + assume Hi0'. apply orIL.
+    exact (eq_trans_i x (seq_nth (seq_cons a l) i) a (eq_sym_i (seq_nth (seq_cons a l) i) x Hnth) (eq_trans_i (seq_nth (seq_cons a l) i) (seq_nth (seq_cons a l) 0) a (f_equal (fun u => seq_nth (seq_cons a l) u) i 0 Hi0') (seq_nth_cons_0 A a Ha l Hl))).
+  + assume Hex. apply Hex. let j. assume Hj0. apply Hj0. assume Hjn Hij. apply orIR.
+    claim Hjl: j :e seq_len l. { exact (ordsucc_in_ordsucc_inv (seq_len l) HlenN j (Hij (fun hl__u hl__v => hl__u :e ordsucc (seq_len l)) Hi')). }
+    prove exists i :e seq_len l, seq_nth l i = x. witness j. apply andI.
+    * exact Hjl.
+    * exact (eq_trans_i (seq_nth l j) (seq_nth (seq_cons a l) (ordsucc j)) x (eq_sym_i (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth l j) (seq_nth_cons_S A a Ha l Hl j Hjl)) (eq_trans_i (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth (seq_cons a l) i) x (f_equal (fun u => seq_nth (seq_cons a l) u) (ordsucc j) i (eq_sym_i i (ordsucc j) Hij)) Hnth)).
+- assume H. apply H.
+  + assume Hxa. prove exists i :e seq_len (seq_cons a l), seq_nth (seq_cons a l) i = x. witness 0. apply andI.
+    * exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => 0 :e hl__u) (nat_0_in_ordsucc (seq_len l) HlenN)).
+    * exact (eq_trans_i (seq_nth (seq_cons a l) 0) a x (seq_nth_cons_0 A a Ha l Hl) (eq_sym_i x a Hxa)).
+  + assume Hm. apply Hm. let j. assume Hj0. apply Hj0. assume Hjl Hnth. prove exists i :e seq_len (seq_cons a l), seq_nth (seq_cons a l) i = x. witness (ordsucc j). apply andI.
+    * exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => ordsucc j :e hl__u) (nat_ordsucc_in_ordsucc (seq_len l) HlenN j Hjl)).
+    * exact (eq_trans_i (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth l j) x (seq_nth_cons_S A a Ha l Hl j Hjl) Hnth).
+Qed.
+
+Theorem seq_all_nil : forall P:set -> prop, seq_all P seq_nil.
+let P. prove forall i :e seq_len seq_nil, P (seq_nth seq_nil i). let i. assume Hi. exact (FalseE (EmptyE i (seq_len_nil (fun hl__u hl__v => i :e hl__u) Hi)) (P (seq_nth seq_nil i))).
+Qed.
+
+Theorem seq_all_cons : forall A:set, forall a :e A, forall l :e finseq A, forall P:set -> prop, seq_all P (seq_cons a l) <-> P a /\ seq_all P l.
+let A a. assume Ha. let l. assume Hl. let P.
+claim Hlen: seq_len (seq_cons a l) = ordsucc (seq_len l). { exact (seq_len_cons A a Ha l Hl). }
+claim HlenN: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) (seq_len_omega A l Hl)). }
+apply iffI.
+- assume H. apply andI.
+  + claim H0: 0 :e seq_len (seq_cons a l). { exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => 0 :e hl__u) (nat_0_in_ordsucc (seq_len l) HlenN)). }
+    exact ((seq_nth_cons_0 A a Ha l Hl) (fun hl__u hl__v => P hl__u) (H 0 H0)).
+  + prove forall j :e seq_len l, P (seq_nth l j). let j. assume Hjl.
+    claim Hj: ordsucc j :e seq_len (seq_cons a l). { exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => ordsucc j :e hl__u) (nat_ordsucc_in_ordsucc (seq_len l) HlenN j Hjl)). }
+    exact ((seq_nth_cons_S A a Ha l Hl j Hjl) (fun hl__u hl__v => P hl__u) (H (ordsucc j) Hj)).
+- assume H. apply H. assume HPa Hall. prove forall i :e seq_len (seq_cons a l), P (seq_nth (seq_cons a l) i). let i. assume Hi.
+  claim Hi': i :e ordsucc (seq_len l). { exact (Hlen (fun hl__u hl__v => i :e hl__u) Hi). }
+  claim HiN: nat_p i. { exact (omega_nat_p i (omega_TransSet (ordsucc (seq_len l)) (omega_ordsucc (seq_len l) (seq_len_omega A l Hl)) i Hi')). }
+  apply (nat_inv i HiN).
+  + assume Hi0. exact ((eq_sym_i (seq_nth (seq_cons a l) i) a (eq_trans_i (seq_nth (seq_cons a l) i) (seq_nth (seq_cons a l) 0) a (f_equal (fun u => seq_nth (seq_cons a l) u) i 0 Hi0) (seq_nth_cons_0 A a Ha l Hl))) (fun hl__u hl__v => P hl__u) HPa).
+  + assume Hex. apply Hex. let j. assume Hj0. apply Hj0. assume Hjn Hij.
+    claim Hjl: j :e seq_len l. { exact (ordsucc_in_ordsucc_inv (seq_len l) HlenN j (Hij (fun hl__u hl__v => hl__u :e ordsucc (seq_len l)) Hi')). }
+    exact ((eq_sym_i (seq_nth (seq_cons a l) i) (seq_nth l j) (eq_trans_i (seq_nth (seq_cons a l) i) (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth l j) (f_equal (fun u => seq_nth (seq_cons a l) u) i (ordsucc j) Hij) (seq_nth_cons_S A a Ha l Hl j Hjl))) (fun hl__u hl__v => P hl__u) (Hall j Hjl)).
+Qed.
+
+Theorem hl_MEM_compat : forall A:set, A <> Empty -> forall l1 :e A, forall l2 :e finseq A, hl_MEM A l1 l2 = 1 <-> seq_mem l1 l2.
+let A. assume HA.
+claim Hex: exists g :e 2 :^: finseq A :^: A, (forall x :e A, g x (hl_NIL A) = 1 <-> False) /\ forall h x :e A, forall t :e finseq A, g x (hl_CONS A h t) = 1 <-> x = h \/ g x t = 1.
+{ witness (fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0). apply andI.
+  - exact (lam2_Pi A (finseq A) 2 (fun x l => if seq_mem x l then 1 else 0) (fun x Hx l Hl => If_in_2 (seq_mem x l))).
+  - apply andI.
+    + let x. assume Hx.
+      apply (iff_eq1_l ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x (hl_NIL A)) (if seq_mem x seq_nil then 1 else 0) (lam2_beta A (finseq A) (fun x l => if seq_mem x l then 1 else 0) x Hx seq_nil (seq_nil_finseq A)) False).
+      apply (iff_trans ((if seq_mem x seq_nil then 1 else 0) = 1) (seq_mem x seq_nil) False (If_1_iff (seq_mem x seq_nil))).
+      apply iffI.
+      * assume H. exact (seq_mem_nil x H).
+      * assume H. exact (FalseE H (seq_mem x seq_nil)).
+    + let h. assume Hh. let x. assume Hx. let t. assume Ht.
+      claim Hct: hl_CONS A h t = seq_cons h t. { exact (hl_CONS_compat A HA h Hh t Ht). }
+      claim Hcf: seq_cons h t :e finseq A. { exact (seq_cons_finseq A h Hh t Ht). }
+      claim Hwt: (fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t = 1 <-> seq_mem x t.
+      { exact (iff_eq1_l ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t) (if seq_mem x t then 1 else 0) (lam2_beta A (finseq A) (fun x l => if seq_mem x l then 1 else 0) x Hx t Ht) (seq_mem x t) (If_1_iff (seq_mem x t))). }
+      apply (iff_eq1_l ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x (hl_CONS A h t)) (if seq_mem x (seq_cons h t) then 1 else 0) (eq_trans_i ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x (hl_CONS A h t)) ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x (seq_cons h t)) (if seq_mem x (seq_cons h t) then 1 else 0) (f_equal (fun u => (fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x u) (hl_CONS A h t) (seq_cons h t) Hct) (lam2_beta A (finseq A) (fun x l => if seq_mem x l then 1 else 0) x Hx (seq_cons h t) Hcf)) (x = h \/ (fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t = 1)).
+      apply (iff_trans ((if seq_mem x (seq_cons h t) then 1 else 0) = 1) (seq_mem x (seq_cons h t)) (x = h \/ (fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t = 1) (If_1_iff (seq_mem x (seq_cons h t)))).
+      apply (iff_trans (seq_mem x (seq_cons h t)) (x = h \/ seq_mem x t) (x = h \/ (fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t = 1) (seq_mem_cons A h Hh t Ht x)).
+      exact (or_iff_cong (x = h) (x = h) (seq_mem x t) ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t = 1) (iff_refl (x = h)) (iff_sym ((fun x :e A => fun l :e finseq A => if seq_mem x l then 1 else 0) x t = 1) (seq_mem x t) Hwt)). }
+apply (hl_MEM_spec A HA Hex). assume H12 Hin. apply H12. assume Hnil Hcons.
+claim Hbase: forall x :e A, hl_MEM A x seq_nil = 1 <-> seq_mem x seq_nil.
+{ let x. assume Hx. apply iffI.
+  - assume H. apply (Hnil x Hx). assume Hf _. exact (FalseE (Hf H) (seq_mem x seq_nil)).
+  - assume H. exact (FalseE (seq_mem_nil x H) (hl_MEM A x seq_nil = 1)). }
+claim Hstep: forall h :e A, forall t :e finseq A, (forall x :e A, hl_MEM A x t = 1 <-> seq_mem x t) -> forall x :e A, hl_MEM A x (seq_cons h t) = 1 <-> seq_mem x (seq_cons h t).
+{ let h. assume Hh. let t. assume Ht IH. let x. assume Hx.
+  claim Hct: hl_CONS A h t = seq_cons h t. { exact (hl_CONS_compat A HA h Hh t Ht). }
+  apply (iff_eq1_l (hl_MEM A x (seq_cons h t)) (hl_MEM A x (hl_CONS A h t)) (f_equal (fun u => hl_MEM A x u) (seq_cons h t) (hl_CONS A h t) (eq_sym_i (hl_CONS A h t) (seq_cons h t) Hct)) (seq_mem x (seq_cons h t))).
+  apply (iff_trans (hl_MEM A x (hl_CONS A h t) = 1) (x = h \/ hl_MEM A x t = 1) (seq_mem x (seq_cons h t)) (Hcons h Hh x Hx t Ht)).
+  apply (iff_trans (x = h \/ hl_MEM A x t = 1) (x = h \/ seq_mem x t) (seq_mem x (seq_cons h t)) (or_iff_cong (x = h) (x = h) (hl_MEM A x t = 1) (seq_mem x t) (iff_refl (x = h)) (IH x Hx))).
+  exact (iff_sym (seq_mem x (seq_cons h t)) (x = h \/ seq_mem x t) (seq_mem_cons A h Hh t Ht x)). }
+let x. assume Hx. let l. assume Hl.
+exact (seq_induct A (fun l => forall x :e A, hl_MEM A x l = 1 <-> seq_mem x l) Hbase Hstep l Hl x Hx).
+Qed.
+
+Theorem hl_ALL_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall P1:set -> prop, (forall x :e A, l1 x = 1 <-> P1 x) -> forall l2 :e finseq A, hl_ALL A l1 l2 = 1 <-> seq_all P1 l2.
+let A. assume HA.
+claim Hex: exists g :e 2 :^: finseq A :^: (2 :^: A), (forall P :e 2 :^: A, g P (hl_NIL A) = 1 <-> True) /\ forall h :e A, forall P :e 2 :^: A, forall t :e finseq A, g P (hl_CONS A h t) = 1 <-> P h = 1 /\ g P t = 1.
+{ witness (fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0). apply andI.
+  - exact (lam2_Pi (2 :^: A) (finseq A) 2 (fun P l => if seq_all (fun x => P x = 1) l then 1 else 0) (fun P HP l Hl => If_in_2 (seq_all (fun x => P x = 1) l))).
+  - apply andI.
+    + let P. assume HP.
+      apply (iff_eq1_l ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P (hl_NIL A)) (if seq_all (fun x => P x = 1) seq_nil then 1 else 0) (lam2_beta (2 :^: A) (finseq A) (fun P l => if seq_all (fun x => P x = 1) l then 1 else 0) P HP seq_nil (seq_nil_finseq A)) True).
+      apply (iff_trans ((if seq_all (fun x => P x = 1) seq_nil then 1 else 0) = 1) (seq_all (fun x => P x = 1) seq_nil) True (If_1_iff (seq_all (fun x => P x = 1) seq_nil))).
+      apply iffI.
+      * assume _. exact (fun p H => H).
+      * assume _. exact (seq_all_nil (fun x => P x = 1)).
+    + let h. assume Hh. let P. assume HP. let t. assume Ht.
+      claim Hct: hl_CONS A h t = seq_cons h t. { exact (hl_CONS_compat A HA h Hh t Ht). }
+      claim Hcf: seq_cons h t :e finseq A. { exact (seq_cons_finseq A h Hh t Ht). }
+      claim Hwt: (fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t = 1 <-> seq_all (fun x => P x = 1) t.
+      { exact (iff_eq1_l ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t) (if seq_all (fun x => P x = 1) t then 1 else 0) (lam2_beta (2 :^: A) (finseq A) (fun P l => if seq_all (fun x => P x = 1) l then 1 else 0) P HP t Ht) (seq_all (fun x => P x = 1) t) (If_1_iff (seq_all (fun x => P x = 1) t))). }
+      apply (iff_eq1_l ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P (hl_CONS A h t)) (if seq_all (fun x => P x = 1) (seq_cons h t) then 1 else 0) (eq_trans_i ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P (hl_CONS A h t)) ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P (seq_cons h t)) (if seq_all (fun x => P x = 1) (seq_cons h t) then 1 else 0) (f_equal (fun u => (fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P u) (hl_CONS A h t) (seq_cons h t) Hct) (lam2_beta (2 :^: A) (finseq A) (fun P l => if seq_all (fun x => P x = 1) l then 1 else 0) P HP (seq_cons h t) Hcf)) (P h = 1 /\ (fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t = 1)).
+      apply (iff_trans ((if seq_all (fun x => P x = 1) (seq_cons h t) then 1 else 0) = 1) (seq_all (fun x => P x = 1) (seq_cons h t)) (P h = 1 /\ (fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t = 1) (If_1_iff (seq_all (fun x => P x = 1) (seq_cons h t)))).
+      apply (iff_trans (seq_all (fun x => P x = 1) (seq_cons h t)) (P h = 1 /\ seq_all (fun x => P x = 1) t) (P h = 1 /\ (fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t = 1) (seq_all_cons A h Hh t Ht (fun x => P x = 1))).
+      exact (and_iff_cong (P h = 1) (P h = 1) (seq_all (fun x => P x = 1) t) ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t = 1) (iff_refl (P h = 1)) (iff_sym ((fun P :e 2 :^: A => fun l :e finseq A => if seq_all (fun x => P x = 1) l then 1 else 0) P t = 1) (seq_all (fun x => P x = 1) t) Hwt)). }
+apply (hl_ALL_spec A HA Hex). assume H12 Hin. apply H12. assume Hnil Hcons.
+let l1. assume H1. let P1. assume Hp.
+claim Hbase: hl_ALL A l1 seq_nil = 1 <-> seq_all P1 seq_nil.
+{ apply iffI.
+  - assume _. exact (seq_all_nil P1).
+  - assume _. apply (Hnil l1 H1). assume _ Hb. exact (Hb (fun p H => H)). }
+claim Hstep: forall h :e A, forall t :e finseq A, (hl_ALL A l1 t = 1 <-> seq_all P1 t) -> (hl_ALL A l1 (seq_cons h t) = 1 <-> seq_all P1 (seq_cons h t)).
+{ let h. assume Hh. let t. assume Ht IH.
+  claim Hct: hl_CONS A h t = seq_cons h t. { exact (hl_CONS_compat A HA h Hh t Ht). }
+  apply (iff_eq1_l (hl_ALL A l1 (seq_cons h t)) (hl_ALL A l1 (hl_CONS A h t)) (f_equal (fun u => hl_ALL A l1 u) (seq_cons h t) (hl_CONS A h t) (eq_sym_i (hl_CONS A h t) (seq_cons h t) Hct)) (seq_all P1 (seq_cons h t))).
+  apply (iff_trans (hl_ALL A l1 (hl_CONS A h t) = 1) (l1 h = 1 /\ hl_ALL A l1 t = 1) (seq_all P1 (seq_cons h t)) (Hcons h Hh l1 H1 t Ht)).
+  apply (iff_trans (l1 h = 1 /\ hl_ALL A l1 t = 1) (P1 h /\ seq_all P1 t) (seq_all P1 (seq_cons h t)) (and_iff_cong (l1 h = 1) (P1 h) (hl_ALL A l1 t = 1) (seq_all P1 t) (Hp h Hh) IH)).
+  exact (iff_sym (seq_all P1 (seq_cons h t)) (P1 h /\ seq_all P1 t) (seq_all_cons A h Hh t Ht P1)). }
+exact (seq_induct A (fun l => hl_ALL A l1 l = 1 <-> seq_all P1 l) Hbase Hstep).
+Qed.

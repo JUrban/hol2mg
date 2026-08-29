@@ -62,10 +62,6 @@ Admitted.
 Theorem hl_pairwise_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 x y) -> forall l2 :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) l1 l2 = 1 <-> forall x y :e hl_rep2 A l2, x <> y -> P1 x y.
 Admitted.
 
-// ALL : (A->bool)->A list->bool (not in compat.mg)
-Theorem hl_ALL_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall P1:set -> prop, (forall x :e A, l1 x = 1 <-> P1 x) -> forall l2 :e finseq A, hl_ALL A l1 l2 = 1 <-> seq_all P1 l2.
-Admitted.
-
 // one : 1 (not in compat.mg)
 Theorem hl_one_compat : hl_one = 0.
 Admitted.
@@ -100,10 +96,6 @@ Admitted.
 
 // dest_finite_prod : (A,B)finite_prod->num (not in compat.mg)
 Theorem hl_dest_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_prod A B, hl_dest_finite_prod A B l1 = l1.
-Admitted.
-
-// MEM : A->A list->bool (not in compat.mg)
-Theorem hl_MEM_compat : forall A:set, A <> Empty -> forall l1 :e A, forall l2 :e finseq A, hl_MEM A l1 l2 = 1 <-> seq_mem l1 l2.
 Admitted.
 
 // iterato : (A->bool)->A->(A->A->A)->(K->K->bool)->(K->bool)->(K->A)->A (not in compat.mg)
