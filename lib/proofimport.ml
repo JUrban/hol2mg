@@ -126,8 +126,8 @@ type sg = { tvs : (string * string) list; vars : (string * ty * string) list; hy
    hl_id (convertible).  Statements are printed plainly. *)
 let rec guard (t : Mg.tm) : Mg.tm =
   match t with
-  | Mg.LamIn (x, a, Mg.Var y) -> Mg.LamIn (x, guard a, Mg.App (Mg.Cst "hl_id", Mg.Var y))
-  | Mg.Lam (x, ty, Mg.Var y) -> Mg.Lam (x, ty, Mg.App (Mg.Cst "hl_id", Mg.Var y))
+  | Mg.LamIn (x, a, Mg.Var y) -> Mg.LamIn (x, guard a, Mg.App (Mg.Cst "hl_id", Mg.App (Mg.Cst "hl_id", Mg.Var y)))
+  | Mg.Lam (x, ty, Mg.Var y) -> Mg.Lam (x, ty, Mg.App (Mg.Cst "hl_id", Mg.App (Mg.Cst "hl_id", Mg.Var y)))
   | Mg.LamIn (x, a, b) -> Mg.LamIn (x, guard a, guard b)
   | Mg.Lam (x, ty, b) -> Mg.Lam (x, ty, guard b)
   | Mg.App (f, x) -> Mg.App (guard f, guard x)
@@ -142,7 +142,9 @@ let pps t = Mg.to_string t                       (* statements *)
 let pp t = Mg.to_string (guard t)                (* inside proof terms *)
 let ppp t = "(" ^ pp t ^ ")"
 (* the body of a printed meta-lambda: a bare variable goes through hl_id *)
-let pb t = (match t with Mg.Var _ -> "hl_id " ^ pp t | _ -> pp t)
+(* not eta-reducible (hl_id (hl_id x)): Megalodon eta-reduces lambda arguments before comparing and
+   would then not unfold hl_id; at body level the comparison with x unfolds it *)
+let pb t = (match t with Mg.Var _ -> "hl_id (hl_id " ^ pp t ^ ")" | _ -> pp t)
 
 (* the same conventions as Literal.statement: sorted type variables, free variables in order *)
 let tyvar_names (hyps : tm list) (concl : tm) : (string * string) list =
@@ -171,6 +173,20 @@ let ctx_of (an : L.analysis) (sg : sg) : L.ctx =
 
 let one = Mg.Num 1
 
+(* Opening a binder: the bound variable becomes the pseudo-free variable hl__b<depth> (never a HOL
+   name, so a free variable of the same HOL name inside the body is not captured); its Megalodon
+   name is fresh from the HOL binder name.  Canonical per structure, so alpha-equivalent subterms
+   open identically and share typing claims. *)
+let open_lam (ctx : L.ctx) (x : string) (ty : ty) (body : tm) : string * string * tm =
+  let depth = List.fold_left (fun m (k, _) ->
+    if String.length k > 5 && String.sub k 0 5 = "hl__b" then (try max m (1 + int_of_string (String.sub k 5 (String.length k - 5))) with _ -> m) else m) 0 ctx.L.vars in
+  let key = "hl__b" ^ string_of_int depth in
+  let n = L.fresh ctx x in
+  ctx.L.vars <- (key, Mg.Var n) :: ctx.L.vars;
+  (n, key, open_with (Free (key, ty)) body)
+let close_lam (ctx : L.ctx) (key : string) (n : string) =
+  ctx.L.vars <- List.remove_assoc key ctx.L.vars; L.release ctx n
+
 let rec uterm (ctx : L.ctx) (t : tm) : Mg.tm =
   match t with
   | Bound _ -> failwith "uterm: bound variable"
@@ -179,10 +195,9 @@ let rec uterm (ctx : L.ctx) (t : tm) : Mg.tm =
   | Const (c, ty) -> L.const_ref ctx c ty
   | App (f, x) -> Mg.App (uterm ctx f, uterm ctx x)
   | Lam (x, ty, body) ->
-      let n = L.fresh ctx x in
-      ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
-      let b = uterm ctx (open_with (Free (x, ty)) body) in
-      ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
+      let n, key, body' = open_lam ctx x ty body in
+      let b = uterm ctx body' in
+      close_lam ctx key n;
       Mg.LamIn (n, L.carrier ctx ty, b)
 
 let ustmt_of (an : L.analysis) (sg : sg) : Mg.tm =
@@ -259,12 +274,10 @@ let rec utyp (env : env) (ctx : L.ctx) (t : tm) : string =
       (try Printf.sprintf "(setexp_ap %s %s %s %s %s %s)" (ppp (L.carrier ctx a)) (ppp (L.carrier ctx b)) (ppp (uterm ctx f)) (utyp env ctx f) (ppp (uterm ctx x)) (utyp env ctx x)
        with Import_unsupported m when String.length m < 400 -> unsupported "%s | in %s" m (String.concat " " (List.map (fun (s, _) -> s) (frees t))))
   | Lam (x, ty, body) ->
-      let n = L.fresh ctx x in
-      ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
-      let body' = open_with (Free (x, ty)) body in
+      let n, key, body' = open_lam ctx x ty body in
       let bty = type_of [] body' in
       let r = Printf.sprintf "(u_lam_in %s %s (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx ty)) (ppp (L.carrier ctx bty)) n (pb (uterm ctx body')) n n (utyp env ctx body') in
-      ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
+      close_lam ctx key n;
       r
 
 (* a shared typing claim for an application or abstraction: closed over the term's type variables
@@ -285,12 +298,10 @@ and apply_tclaim (env : env) (ctx : L.ctx) (t : tm) : string =
               let a, b = dest_fun_ty (type_of [] f) in
               Printf.sprintf "(setexp_ap %s %s %s %s %s %s)" (ppp (L.carrier ctx' a)) (ppp (L.carrier ctx' b)) (ppp (uterm ctx' f)) (utyp env ctx' f) (ppp (uterm ctx' x)) (utyp env ctx' x)
           | Lam (x, ty, body) ->
-              let n = L.fresh ctx' x in
-              ctx'.L.vars <- (x, Mg.Var n) :: ctx'.L.vars;
-              let body' = open_with (Free (x, ty)) body in
+              let n, key, body' = open_lam ctx' x ty body in
               let bty = type_of [] body' in
               let r = Printf.sprintf "(u_lam_in %s %s (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx' ty)) (ppp (L.carrier ctx' bty)) n (pb (uterm ctx' body')) n n (utyp env ctx' body') in
-              ctx'.L.vars <- List.remove_assoc x ctx'.L.vars; L.release ctx' n;
+              close_lam ctx' key n;
               r
           | _ -> assert false) in
         let pf = if binders sg = "" then body else Printf.sprintf "(fun %s => %s)" (binders sg) body in
@@ -319,12 +330,10 @@ let rec coh (env : env) (ctx : L.ctx) (t : tm) : string =
         if coh_trivial ctx f && coh_trivial ctx x then "(fun q H => H)"
         else Printf.sprintf "(f_equal2 (fun u:set => fun v:set => u v) %s %s %s %s %s %s)" (ppp (L.lterm ctx f)) (ppp (uterm ctx f)) (ppp (L.lterm ctx x)) (ppp (uterm ctx x)) (coh env ctx f) (coh env ctx x)
     | Lam (x, ty, body) ->
-        let n = L.fresh ctx x in
-        ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
-        let body' = open_with (Free (x, ty)) body in
+        let n, key, body' = open_lam ctx x ty body in
         let r = if coh_trivial ctx body' then "(fun q H => H)"
                 else Printf.sprintf "(lam_ext_in %s (fun %s:set => %s) (fun %s:set => %s) (fun %s H%s => %s))" (ppp (L.carrier ctx ty)) n (pb (L.lterm ctx body')) n (pb (uterm ctx body')) n n (coh env ctx body') in
-        ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
+        close_lam ctx key n;
         r
     | Bound _ -> failwith "coh: bound"
 
@@ -335,10 +344,9 @@ and coh_trivial (ctx : L.ctx) (t : tm) : bool =
     | Free _ | Const _ -> true
     | App (f, x) -> coh_trivial ctx f && coh_trivial ctx x
     | Lam (x, ty, body) ->
-        let n = L.fresh ctx x in
-        ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
-        let r = coh_trivial ctx (open_with (Free (x, ty)) body) in
-        ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n; r
+        let n, key, body' = open_lam ctx x ty body in
+        let r = coh_trivial ctx body' in
+        close_lam ctx key n; r
     | Bound _ -> false
 
 and cohp (env : env) (ctx : L.ctx) (t : tm) : string =
@@ -370,9 +378,7 @@ and cohp (env : env) (ctx : L.ctx) (t : tm) : string =
           (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) (ppp (L.lterm ctx a)) (u a) (ppp (L.lterm ctx b)) (u b) (coh env ctx a) (coh env ctx b)
           (ppp (uterm ctx t)) mid car (u a) (utyp env ctx a) (u b) (utyp env ctx b)
   | Const (("!" | "?") as q, _), [ Lam (x, ty, body) ] ->
-      let n = L.fresh ctx x in
-      ctx.L.vars <- (x, Mg.Var n) :: ctx.L.vars;
-      let body' = open_with (Free (x, ty)) body in
+      let n, key, body' = open_lam ctx x ty body in
       let car = ppp (L.carrier ctx ty) in
       let lam = Printf.sprintf "(fun %s :e %s => %s)" n (pp (L.carrier ctx ty)) (pb (uterm ctx body')) in
       let cong, quant, char = (match q with "!" -> "iff_forall_in_cong", "forall", "hl_forall_char" | _ -> "iff_exists_in_cong", "exists", "hl_exists_char") in
@@ -381,7 +387,7 @@ and cohp (env : env) (ctx : L.ctx) (t : tm) : string =
         (ppp (L.lprop ctx t)) mid (ppp (uterm ctx t)) cong car n (pp (L.lprop ctx body')) n lam n n n
         (ppp (L.lprop ctx body')) (pp (uterm ctx body')) lam n (cohp env ctx body') (ppp (uterm ctx body')) lam n lam n (ppp (uterm ctx body')) car n (pp (uterm ctx body')) n n
         (ppp (uterm ctx t)) mid char car lam car n (pb (uterm ctx body')) n n (utyp env ctx body') in
-      ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx n;
+      close_lam ctx key n;
       r
   | Const ("COND", _), [ c; a; b ] when type_of [] t = bool_ty ->
       let mid = Printf.sprintf "((%s /\\ %s) \\/ (~ %s /\\ %s))" (eq1 c) (eq1 a) (eq1 c) (eq1 b) in
@@ -474,12 +480,10 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
         (match n.tm with
          | Some (App (Lam (x, ty, body), (Free (_, _) as arg))) ->
              let uarg = u arg and targ = ty_ arg in   (* the argument is the free variable x: before opening the binder of the same name *)
-             let nm = L.fresh ctx x in
-             ctx.L.vars <- (x, Mg.Var nm) :: ctx.L.vars;
-             let body' = open_with (Free (x, ty)) body in
+             let nm, key, body' = open_lam ctx x ty body in
              let bty = type_of [] body' in
              let r = Printf.sprintf "(u_beta %s %s (fun %s:set => %s) (fun %s H%s => %s) %s %s)" (car ty) (car bty) nm (pb (uterm ctx body')) nm nm (ty_ body') uarg targ in
-             ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx nm;
+             close_lam ctx key nm;
              r
          | _ -> unsupported "BETA shape")
     | "ASSUME" -> hyp_index (Option.get n.tm)
@@ -538,11 +542,9 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
           let wit = (if alpha_eq p' pf then pre 0
                      else match p' with
                        | Lam (x, ty, b) when alpha_eq (open_with t b) (App (pf, t)) || alpha_eq (canon (open_with t b)) (canon (App (pf, t))) ->
-                           let nm = L.fresh ctx x in
-                           ctx.L.vars <- (x, Mg.Var nm) :: ctx.L.vars;
-                           let b' = open_with (Free (x, ty)) b in
+                           let nm, key, b' = open_lam ctx x ty b in
                            let lam = Printf.sprintf "(fun %s:set => %s)" nm (pb (uterm ctx b')) in
-                           ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx nm;
+                           close_lam ctx key nm;
                            Printf.sprintf "((beta %s %s %s %s) (fun hl__u hl__v => hl__u = 1) %s)" (car ty) lam (u t) (ty_ t) (pre 0)
                        | _ -> unsupported "TYDEF_REP: predicate %s differs from the definition's" (Mg.to_string (uterm ctx p'))) in
           let lem = Printf.sprintf "(u_tydef_rep %s %s (hl_subtype_nonempty_of %s %s %s %s %s) %s %s %s)" rcar pred rcar pred (u t) (ty_ t) wit (ty_ pf) (u r) (ty_ r) in
@@ -550,11 +552,9 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
           let _, _, rhs_t = dest_eq n.concl in
           (match lhs with
            | App ((Lam (x, ty, b) as p'), _) when not (alpha_eq p' pf) ->
-               let nm = L.fresh ctx x in
-               ctx.L.vars <- (x, Mg.Var nm) :: ctx.L.vars;
-               let b' = open_with (Free (x, ty)) b in
+               let nm, key, b' = open_lam ctx x ty b in
                let lam = Printf.sprintf "(fun %s:set => %s)" nm (pb (uterm ctx b')) in
-               ctx.L.vars <- List.remove_assoc x ctx.L.vars; L.release ctx nm;
+               close_lam ctx key nm;
                Printf.sprintf "((eq_sym_i %s %s (beta %s %s %s %s)) (fun hl__u hl__v => hl_eq 2 hl__u %s = 1) %s)" (u lhs) (u (App (pf, r))) (car ty) lam (u r) (ty_ r) (u rhs_t) lem
            | _ -> lem)
         end
