@@ -85245,7 +85245,7 @@
    "cert_status": "native_certified",
    "cert_error": "",
    "bridge": "num_Axiom_bridge",
-   "literal_proved": false
+   "literal_proved": true
   },
   {
    "name": "num_CASES",
@@ -86211,7 +86211,7 @@
    "cert_status": "native_certified",
    "cert_error": "",
    "bridge": "option_INDUCT_bridge",
-   "literal_proved": false
+   "literal_proved": true
   },
   {
    "name": "option_INJ",
@@ -86271,7 +86271,7 @@
    "cert_status": "native_certified",
    "cert_error": "",
    "bridge": "option_RECURSION_bridge",
-   "literal_proved": false
+   "literal_proved": true
   },
   {
    "name": "pair_INDUCT",
@@ -87892,6 +87892,6 @@
   ],
   "failed_shards": {},
   "native_certified": 2415,
-  "native_proved": 33
+  "native_proved": 36
  }
 }

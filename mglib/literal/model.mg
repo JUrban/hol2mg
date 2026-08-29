@@ -36,7 +36,8 @@ Definition hl_CONS : set -> set := fun A => fun x :e A => fun l :e finseq A => s
 Definition hl_NONE : set -> set := fun A => Inj0 0.
 Definition hl_SOME : set -> set := fun A => fun x :e A => Inj1 x.
 Definition hl_INL : set -> set -> set := fun A B => fun x :e A => Inj0 x.
-Definition hl_INR : set -> set -> set := fun A B => fun y :e B => Inj1 y.
+// carrier parameters in the order of first occurrence in INR : B -> (A,B)sum (design 21.2)
+Definition hl_INR : set -> set -> set := fun B A => fun y :e B => Inj1 y.
 
 // ---- reals: real = R ----
 Definition hl_real_of_num : set := fun n :e omega => n.
@@ -99,8 +100,8 @@ Theorem hl_INL_in : forall A B:set, A <> Empty -> B <> Empty -> hl_INL A B :e (A
 let A B. assume _ _. prove (fun x :e A => Inj0 x) :e Pi_ x :e A, A :+: B.
 apply (lam_Pi A (fun _ => A :+: B) (fun x => Inj0 x)). let x. assume Hx. exact (Inj0_setsum A B x Hx).
 Qed.
-Theorem hl_INR_in : forall A B:set, A <> Empty -> B <> Empty -> hl_INR A B :e (A :+: B) :^: B.
-let A B. assume _ _. prove (fun y :e B => Inj1 y) :e Pi_ y :e B, A :+: B.
+Theorem hl_INR_in : forall B A:set, B <> Empty -> A <> Empty -> hl_INR B A :e (A :+: B) :^: B.
+let B A. assume _ _. prove (fun y :e B => Inj1 y) :e Pi_ y :e B, A :+: B.
 apply (lam_Pi B (fun _ => A :+: B) (fun y => Inj1 y)). let y. assume Hy. exact (Inj1_setsum A B y Hy).
 Qed.
 Theorem hl_real_of_num_in : hl_real_of_num :e R :^: omega.

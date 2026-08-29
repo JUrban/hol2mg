@@ -236,3 +236,154 @@ claim Hf0: f x = 0. { exact (cases_1 (f x) (setexp_ap A 1 f Hf x Hx) (fun u => u
 claim Hg0: g x = 0. { exact (cases_1 (g x) (setexp_ap A 1 g Hg x Hx) (fun u => u = 0) (fun q H => H)). }
 exact (eq_trans_i (f x) 0 (g x) Hf0 (eq_sym_i (g x) 0 Hg0)).
 Qed.
+
+// ---- infinity, primitive recursion on omega, list recursion ----
+Theorem hlt_INFINITY_AX_model : exists f :e omega :^: omega, hl_ONE_ONE omega omega f = 1 /\ ~ hl_ONTO omega omega f = 1.
+claim Hf: (fun n :e omega => ordsucc n) :e omega :^: omega. { prove (fun n :e omega => ordsucc n) :e Pi_ n :e omega, omega. exact (lam_Pi omega (fun _ => omega) (fun n => ordsucc n) (fun n Hn => omega_ordsucc n Hn)). }
+witness (fun n :e omega => ordsucc n). apply andI. exact Hf. apply andI.
+- rewrite (hl_ONE_ONE_unfold omega omega (fun n :e omega => ordsucc n) Hf).
+  claim HP: forall x1 x2 :e omega, (fun n :e omega => ordsucc n) x1 = (fun n :e omega => ordsucc n) x2 -> x1 = x2.
+  { let x1. assume H1. let x2. assume H2. assume H.
+    claim H': ordsucc x1 = ordsucc x2. { exact (eq_trans_i (ordsucc x1) ((fun n :e omega => ordsucc n) x1) (ordsucc x2) (eq_sym_i ((fun n :e omega => ordsucc n) x1) (ordsucc x1) (beta omega (fun n => ordsucc n) x1 H1)) (eq_trans_i ((fun n :e omega => ordsucc n) x1) ((fun n :e omega => ordsucc n) x2) (ordsucc x2) H (beta omega (fun n => ordsucc n) x2 H2))). }
+    exact (ordsucc_inj x1 x2 H'). }
+  exact (If_i_1 (forall x1 x2 :e omega, (fun n :e omega => ordsucc n) x1 = (fun n :e omega => ordsucc n) x2 -> x1 = x2) 1 0 HP).
+- assume H.
+  claim H1: (if forall y :e omega, exists x :e omega, y = (fun n :e omega => ordsucc n) x then 1 else 0) = 1. { exact ((hl_ONTO_unfold omega omega (fun n :e omega => ordsucc n) Hf) (fun hl__u hl__v => hl__u = 1) H). }
+  claim HP: forall y :e omega, exists x :e omega, y = (fun n :e omega => ordsucc n) x. { apply (If_1_iff (forall y :e omega, exists x :e omega, y = (fun n :e omega => ordsucc n) x)). assume Hf' _. exact (Hf' H1). }
+  apply (HP 0 (nat_p_omega 0 nat_0)). let x. assume Hx0. apply Hx0. assume Hx Heq.
+  claim Heq': 0 = ordsucc x. { exact (eq_trans_i 0 ((fun n :e omega => ordsucc n) x) (ordsucc x) Heq (beta omega (fun n => ordsucc n) x Hx)). }
+  exact (neq_ordsucc_0 x (eq_sym_i 0 (ordsucc x) Heq')).
+Qed.
+Theorem hlt_num_Axiom_model : forall A:set, A <> Empty -> forall e1 :e A, forall f :e A :^: omega :^: A, hl_exists_unique (A :^: omega) (fun fn :e A :^: omega => if fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n then 1 else 0) = 1.
+let A. assume HA. let e1. assume He. let f. assume Hf.
+claim Hfa: forall r :e A, forall n :e omega, f r n :e A. { let r. assume Hr. let n. assume Hn. exact (setexp2_ap A omega A f Hf r Hr n Hn). }
+claim Hval: forall n, nat_p n -> nat_primrec e1 (fun n r => f r n) n :e A.
+{ claim Hb: nat_primrec e1 (fun n r => f r n) 0 :e A. { exact ((eq_sym_i (nat_primrec e1 (fun n r => f r n) 0) e1 (nat_primrec_0 e1 (fun n r => f r n))) (fun hl__u hl__v => hl__u :e A) He). }
+  claim Hs: forall m, nat_p m -> nat_primrec e1 (fun n r => f r n) m :e A -> nat_primrec e1 (fun n r => f r n) (ordsucc m) :e A.
+  { let m. assume Hm IH. exact ((eq_sym_i (nat_primrec e1 (fun n r => f r n) (ordsucc m)) (f (nat_primrec e1 (fun n r => f r n) m) m) (nat_primrec_S e1 (fun n r => f r n) m Hm)) (fun hl__u hl__v => hl__u :e A) (Hfa (nat_primrec e1 (fun n r => f r n) m) IH m (nat_p_omega m Hm))). }
+  exact (nat_ind (fun n => nat_primrec e1 (fun n r => f r n) n :e A) Hb Hs). }
+claim HF: (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) :e A :^: omega. { prove (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) :e Pi_ n :e omega, A. exact (lam_Pi omega (fun _ => A) (fun n => nat_primrec e1 (fun n r => f r n) n) (fun n Hn => Hval n (omega_nat_p n Hn))). }
+claim Hbeta: forall n :e omega, (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n = nat_primrec e1 (fun n r => f r n) n. { let n. assume Hn. exact (beta omega (fun n => nat_primrec e1 (fun n r => f r n) n) n Hn). }
+apply (hl_exists_unique_lit (A :^: omega) (fun fn => fn (hl_NUMERAL hl_zero) = e1 /\ forall n :e omega, fn (hl_SUC n) = f (fn n) n)). assume _ Hb. apply Hb.
+witness (fun n :e omega => nat_primrec e1 (fun n r => f r n) n). apply andI. exact HF. apply andI.
+- apply andI.
+  + claim H0: (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) 0 = e1. { exact (eq_trans_i ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) 0) (nat_primrec e1 (fun n r => f r n) 0) e1 (Hbeta 0 (nat_p_omega 0 nat_0)) (nat_primrec_0 e1 (fun n r => f r n))). }
+    exact ((eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (fun hl__u hl__v => (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) hl__u = e1) H0).
+  + let n. assume Hn.
+    claim HS: (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) (ordsucc n) = f ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) n.
+    { exact (eq_trans_i ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) (ordsucc n)) (nat_primrec e1 (fun n r => f r n) (ordsucc n)) (f ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) n) (Hbeta (ordsucc n) (omega_ordsucc n Hn)) (eq_trans_i (nat_primrec e1 (fun n r => f r n) (ordsucc n)) (f (nat_primrec e1 (fun n r => f r n) n) n) (f ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) n) (nat_primrec_S e1 (fun n r => f r n) n (omega_nat_p n Hn)) (f_equal (fun u => f u n) (nat_primrec e1 (fun n r => f r n) n) ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) (eq_sym_i ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) (nat_primrec e1 (fun n r => f r n) n) (Hbeta n Hn))))). }
+    exact ((eq_sym_i (hl_SUC n) (ordsucc n) (hl_SUC_compat n Hn)) (fun hl__u hl__v => (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) hl__u = f ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) n) HS).
+- let fn. assume Hfn Hp. apply Hp. assume Hp0 HpS.
+  claim Hp0': fn 0 = e1. { exact (hl_NUMERAL_zero (fun hl__u hl__v => fn hl__u = e1) Hp0). }
+  claim HpS': forall n :e omega, fn (ordsucc n) = f (fn n) n. { let n. assume Hn. exact ((hl_SUC_compat n Hn) (fun hl__u hl__v => fn hl__u = f (fn n) n) (HpS n Hn)). }
+  claim Hall: forall n, nat_p n -> fn n = nat_primrec e1 (fun n r => f r n) n.
+  { claim Hb: fn 0 = nat_primrec e1 (fun n r => f r n) 0. { exact (eq_trans_i (fn 0) e1 (nat_primrec e1 (fun n r => f r n) 0) Hp0' (eq_sym_i (nat_primrec e1 (fun n r => f r n) 0) e1 (nat_primrec_0 e1 (fun n r => f r n)))). }
+    claim Hs: forall m, nat_p m -> fn m = nat_primrec e1 (fun n r => f r n) m -> fn (ordsucc m) = nat_primrec e1 (fun n r => f r n) (ordsucc m).
+    { let m. assume Hm IH. exact (eq_trans_i (fn (ordsucc m)) (f (fn m) m) (nat_primrec e1 (fun n r => f r n) (ordsucc m)) (HpS' m (nat_p_omega m Hm)) (eq_trans_i (f (fn m) m) (f (nat_primrec e1 (fun n r => f r n) m) m) (nat_primrec e1 (fun n r => f r n) (ordsucc m)) (f_equal (fun u => f u m) (fn m) (nat_primrec e1 (fun n r => f r n) m) IH) (eq_sym_i (nat_primrec e1 (fun n r => f r n) (ordsucc m)) (f (nat_primrec e1 (fun n r => f r n) m) m) (nat_primrec_S e1 (fun n r => f r n) m Hm)))). }
+    exact (nat_ind (fun n => fn n = nat_primrec e1 (fun n r => f r n) n) Hb Hs). }
+  apply (Pi_ext omega (fun _ => A) fn Hfn (fun n :e omega => nat_primrec e1 (fun n r => f r n) n) HF). let n. assume Hn.
+  exact (eq_trans_i (fn n) (nat_primrec e1 (fun n r => f r n) n) ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) (Hall n (omega_nat_p n Hn)) (eq_sym_i ((fun n :e omega => nat_primrec e1 (fun n r => f r n) n) n) (nat_primrec e1 (fun n r => f r n) n) (Hbeta n Hn))).
+Qed.
+
+// ---- list recursion (paramorphism through pairs (tail, value)), option and sum ----
+Theorem hlt_list_RECURSION_model : forall A Z:set, A <> Empty -> Z <> Empty -> forall NIL' :e Z, forall CONS' :e Z :^: Z :^: finseq A :^: A, exists fn :e Z :^: finseq A, fn (hl_NIL A) = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (hl_CONS A a0 a1) = CONS' a0 a1 (fn a1).
+let A Z. assume HA HZ. let NIL'. assume HN. let CONS'. assume HC.
+claim HCa: forall a :e A, forall t :e finseq A, forall r :e Z, CONS' a t r :e Z. { let a. assume Ha. let t. assume Ht. let r. assume Hr. exact (setexp_ap Z Z (CONS' a t) (setexp2_ap A (finseq A) (Z :^: Z) CONS' HC a Ha t Ht) r Hr). }
+claim Hg: forall l :e finseq A, seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 0 = l /\ seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1 :e Z.
+{ claim Hb: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 0 = seq_nil /\ seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 1 :e Z.
+  { claim H0: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') = (seq_nil, NIL'). { exact (seq_foldr_nil (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_nil, NIL')). }
+    apply andI.
+    - exact (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 0) ((seq_nil, NIL') 0) seq_nil (f_equal (fun u => u 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL')) (seq_nil, NIL') H0) (tuple_2_0_eq seq_nil NIL')).
+    - exact ((eq_sym_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 1) NIL' (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 1) ((seq_nil, NIL') 1) NIL' (f_equal (fun u => u 1) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL')) (seq_nil, NIL') H0) (tuple_2_1_eq seq_nil NIL'))) (fun hl__u hl__v => hl__u :e Z) HN). }
+  claim Hs: forall a :e A, forall t :e finseq A, (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0 = t /\ seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1 :e Z) -> (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 0 = seq_cons a t /\ seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1 :e Z).
+  { let a. assume Ha. let t. assume Ht IH. apply IH. assume IH0 IH1.
+    claim Hc: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') = (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)). { exact (seq_foldr_cons A (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) a Ha t Ht (seq_nil, NIL')). }
+    apply andI.
+    - exact (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 0) (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0)) (seq_cons a t) (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 0) ((seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) 0) (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0)) (f_equal (fun u => u 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL')) (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) Hc) (tuple_2_0_eq (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0)) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)))) (f_equal (fun u => seq_cons a u) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) t IH0)).
+    - claim H1: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1 = CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1). { exact (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1) ((seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) 1) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) (f_equal (fun u => u 1) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL')) (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) Hc) (tuple_2_1_eq (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0)) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)))). }
+      claim Ht0: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0 :e finseq A. { exact (IH0 (fun hl__u hl__v => hl__v :e finseq A) Ht). }
+      exact ((eq_sym_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) H1) (fun hl__u hl__v => hl__u :e Z) (HCa a Ha (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) Ht0 (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1) IH1)). }
+  exact (seq_induct A (fun l => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 0 = l /\ seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1 :e Z) Hb Hs). }
+claim HF: (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) :e Z :^: finseq A. { prove (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) :e Pi_ l :e finseq A, Z. exact (lam_Pi (finseq A) (fun _ => Z) (fun l => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) (fun l Hl => (Hg l Hl) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1 :e Z) (fun _ H => H))). }
+claim Hbeta: forall l :e finseq A, (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) l = seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1. { let l. assume Hl. exact (beta (finseq A) (fun l => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) l Hl). }
+witness (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1). apply andI. exact HF. apply andI.
+- claim H0: (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) seq_nil = NIL'. { exact (eq_trans_i ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) seq_nil) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 1) NIL' (Hbeta seq_nil (seq_nil_finseq A)) (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL') 1) ((seq_nil, NIL') 1) NIL' (f_equal (fun u => u 1) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) seq_nil (seq_nil, NIL')) (seq_nil, NIL') (seq_foldr_nil (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_nil, NIL'))) (tuple_2_1_eq seq_nil NIL'))). }
+  exact ((eq_sym_i (hl_NIL A) seq_nil (hl_NIL_compat A HA)) (fun hl__u hl__v => (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) hl__u = NIL') H0).
+- let a. assume Ha. let t. assume Ht.
+  claim Ht0: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0 = t. { exact ((Hg t Ht) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0 = t) (fun H _ => H)). }
+  claim Hc: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') = (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)). { exact (seq_foldr_cons A (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) a Ha t Ht (seq_nil, NIL')). }
+  claim H1: seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1 = CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1). { exact (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1) ((seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) 1) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) (f_equal (fun u => u 1) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL')) (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0), CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) Hc) (tuple_2_1_eq (seq_cons a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0)) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)))). }
+  claim H2: (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) (seq_cons a t) = CONS' a t ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) t).
+  { exact (eq_trans_i ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) (seq_cons a t)) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1) (CONS' a t ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) t)) (Hbeta (seq_cons a t) (seq_cons_finseq A a Ha t Ht)) (eq_trans_i (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) (seq_cons a t) (seq_nil, NIL') 1) (CONS' a (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1)) (CONS' a t ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) t)) H1 (f_equal2 (fun u v => CONS' a u v) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 0) t (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1) ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) t) Ht0 (eq_sym_i ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) t) (seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) t (seq_nil, NIL') 1) (Hbeta t Ht))))). }
+  exact ((eq_sym_i (hl_CONS A a t) (seq_cons a t) (hl_CONS_compat A HA a Ha t Ht)) (fun hl__u hl__v => (fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) hl__u = CONS' a t ((fun l :e finseq A => seq_foldr (fun a p => (seq_cons a (p 0), CONS' a (p 0) (p 1))) l (seq_nil, NIL') 1) t)) H2).
+Qed.
+Theorem hlt_option_INDUCT_model : forall A:set, A <> Empty -> forall P :e 2 :^: (1 :+: A), P (hl_NONE A) = 1 /\ (forall a :e A, P (hl_SOME A a) = 1) -> forall x :e 1 :+: A, P x = 1.
+let A. assume HA. let P. assume HP. assume H. apply H. assume H0 HS. let x. assume Hx.
+apply (setsum_Inj_inv 1 A x Hx).
+- assume H1. apply H1. let u. assume Hu0. apply Hu0. assume Hu Hxu.
+  claim Hu0': u = 0. { exact (cases_1 u Hu (fun v => v = 0) (fun q H => H)). }
+  claim Hx0: x = Inj0 0. { exact (eq_trans_i x (Inj0 u) (Inj0 0) Hxu (f_equal (fun v => Inj0 v) u 0 Hu0')). }
+  exact ((eq_sym_i x (Inj0 0) Hx0) (fun hl__u hl__v => P hl__u = 1) H0).
+- assume H1. apply H1. let a. assume Ha0. apply Ha0. assume Ha Hxa.
+  claim Hs: hl_SOME A a = Inj1 a. { exact (beta A (fun a => Inj1 a) a Ha). }
+  exact ((eq_sym_i x (Inj1 a) Hxa) (fun hl__u hl__v => P hl__u = 1) (Hs (fun hl__u hl__v => P hl__u = 1) (HS a Ha))).
+Qed.
+Theorem hlt_sum_INDUCT_model : forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :+: B), (forall a :e A, P (hl_INL A B a) = 1) /\ (forall a :e B, P (hl_INR B A a) = 1) -> forall x :e A :+: B, P x = 1.
+let A B. assume HA HB. let P. assume HP. assume H. apply H. assume HL HR. let x. assume Hx.
+apply (setsum_Inj_inv A B x Hx).
+- assume H1. apply H1. let a. assume Ha0. apply Ha0. assume Ha Hxa.
+  claim Hl: hl_INL A B a = Inj0 a. { exact (beta A (fun a => Inj0 a) a Ha). }
+  exact ((eq_sym_i x (Inj0 a) Hxa) (fun hl__u hl__v => P hl__u = 1) (Hl (fun hl__u hl__v => P hl__u = 1) (HL a Ha))).
+- assume H1. apply H1. let b. assume Hb0. apply Hb0. assume Hb Hxb.
+  claim Hr: hl_INR B A b = Inj1 b. { exact (beta B (fun b => Inj1 b) b Hb). }
+  exact ((eq_sym_i x (Inj1 b) Hxb) (fun hl__u hl__v => P hl__u = 1) (Hr (fun hl__u hl__v => P hl__u = 1) (HR b Hb))).
+Qed.
+
+// ---- option and sum recursion ----
+Theorem hlt_option_RECURSION_model : forall A Z:set, A <> Empty -> Z <> Empty -> forall NONE' :e Z, forall SOME' :e Z :^: A, exists fn :e Z :^: (1 :+: A), fn (hl_NONE A) = NONE' /\ forall a :e A, fn (hl_SOME A a) = SOME' a.
+let A Z. assume HA HZ. let NONE'. assume HN. let SOME'. assume HS.
+claim Hv0: (if Inj0 0 = Inj0 0 then NONE' else SOME' (Unj (Inj0 0))) = NONE'. { exact (If_i_1 (Inj0 0 = Inj0 0) NONE' (SOME' (Unj (Inj0 0))) (fun q H => H)). }
+claim Hv1: forall a :e A, (if Inj1 a = Inj0 0 then NONE' else SOME' (Unj (Inj1 a))) = SOME' a.
+{ let a. assume Ha. claim Hne: ~ Inj1 a = Inj0 0. { assume H. exact (Inj0_Inj1_neq 0 a (eq_sym_i (Inj1 a) (Inj0 0) H)). }
+  exact (eq_trans_i (if Inj1 a = Inj0 0 then NONE' else SOME' (Unj (Inj1 a))) (SOME' (Unj (Inj1 a))) (SOME' a) (If_i_0 (Inj1 a = Inj0 0) NONE' (SOME' (Unj (Inj1 a))) Hne) (f_equal (fun u => SOME' u) (Unj (Inj1 a)) a (Unj_Inj1_eq a))). }
+claim Hty: forall z :e 1 :+: A, (if z = Inj0 0 then NONE' else SOME' (Unj z)) :e Z.
+{ let z. assume Hz. apply (setsum_Inj_inv 1 A z Hz).
+  - assume H1. apply H1. let u. assume Hu0. apply Hu0. assume Hu Hzu.
+    claim Hz0: z = Inj0 0. { exact (eq_trans_i z (Inj0 u) (Inj0 0) Hzu (f_equal (fun v => Inj0 v) u 0 (cases_1 u Hu (fun v => v = 0) (fun q H => H)))). }
+    exact ((eq_sym_i z (Inj0 0) Hz0) (fun hl__u hl__v => (if hl__u = Inj0 0 then NONE' else SOME' (Unj hl__u)) :e Z) (Hv0 (fun hl__u hl__v => hl__v :e Z) HN)).
+  - assume H1. apply H1. let a. assume Ha0. apply Ha0. assume Ha Hza.
+    exact ((eq_sym_i z (Inj1 a) Hza) (fun hl__u hl__v => (if hl__u = Inj0 0 then NONE' else SOME' (Unj hl__u)) :e Z) ((Hv1 a Ha) (fun hl__u hl__v => hl__v :e Z) (setexp_ap A Z SOME' HS a Ha))). }
+claim HF: (fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) :e Z :^: (1 :+: A). { prove (fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) :e Pi_ z :e 1 :+: A, Z. exact (lam_Pi (1 :+: A) (fun _ => Z) (fun z => if z = Inj0 0 then NONE' else SOME' (Unj z)) Hty). }
+witness (fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)). apply andI. exact HF. apply andI.
+- prove (fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) (Inj0 0) = NONE'.
+  exact (eq_trans_i ((fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) (Inj0 0)) (if Inj0 0 = Inj0 0 then NONE' else SOME' (Unj (Inj0 0))) NONE' (beta (1 :+: A) (fun z => if z = Inj0 0 then NONE' else SOME' (Unj z)) (Inj0 0) (Inj0_setsum 1 A 0 In_0_1)) Hv0).
+- let a. assume Ha.
+  claim Hs: hl_SOME A a = Inj1 a. { exact (beta A (fun a => Inj1 a) a Ha). }
+  claim H1: (fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) (Inj1 a) = SOME' a. { exact (eq_trans_i ((fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) (Inj1 a)) (if Inj1 a = Inj0 0 then NONE' else SOME' (Unj (Inj1 a))) (SOME' a) (beta (1 :+: A) (fun z => if z = Inj0 0 then NONE' else SOME' (Unj z)) (Inj1 a) (Inj1_setsum 1 A a Ha)) (Hv1 a Ha)). }
+  exact ((eq_sym_i (hl_SOME A a) (Inj1 a) Hs) (fun hl__u hl__v => (fun z :e 1 :+: A => if z = Inj0 0 then NONE' else SOME' (Unj z)) hl__u = SOME' a) H1).
+Qed.
+Theorem hlt_sum_RECURSION_model : forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL' :e Z :^: A, forall INR' :e Z :^: B, exists fn :e Z :^: (A :+: B), (forall a :e A, fn (hl_INL A B a) = INL' a) /\ forall a :e B, fn (hl_INR B A a) = INR' a.
+let A B Z. assume HA HB HZ. let INL'. assume HL. let INR'. assume HR.
+claim Hv0: forall a :e A, (if Inj0 a :e {Inj0 a | a :e A} then INL' (Unj (Inj0 a)) else INR' (Unj (Inj0 a))) = INL' a.
+{ let a. assume Ha. exact (eq_trans_i (if Inj0 a :e {Inj0 a | a :e A} then INL' (Unj (Inj0 a)) else INR' (Unj (Inj0 a))) (INL' (Unj (Inj0 a))) (INL' a) (If_i_1 (Inj0 a :e {Inj0 a | a :e A}) (INL' (Unj (Inj0 a))) (INR' (Unj (Inj0 a))) (ReplI A (fun a => Inj0 a) a Ha)) (f_equal (fun u => INL' u) (Unj (Inj0 a)) a (Unj_Inj0_eq a))). }
+claim Hv1: forall b :e B, (if Inj1 b :e {Inj0 a | a :e A} then INL' (Unj (Inj1 b)) else INR' (Unj (Inj1 b))) = INR' b.
+{ let b. assume Hb.
+  claim Hne: ~ Inj1 b :e {Inj0 a | a :e A}. { assume H. apply (ReplE_impred A (fun a => Inj0 a) (Inj1 b) H). let a. assume Ha Heq. exact (Inj0_Inj1_neq a b (eq_sym_i (Inj1 b) (Inj0 a) Heq)). }
+  exact (eq_trans_i (if Inj1 b :e {Inj0 a | a :e A} then INL' (Unj (Inj1 b)) else INR' (Unj (Inj1 b))) (INR' (Unj (Inj1 b))) (INR' b) (If_i_0 (Inj1 b :e {Inj0 a | a :e A}) (INL' (Unj (Inj1 b))) (INR' (Unj (Inj1 b))) Hne) (f_equal (fun u => INR' u) (Unj (Inj1 b)) b (Unj_Inj1_eq b))). }
+claim Hty: forall z :e A :+: B, (if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) :e Z.
+{ let z. assume Hz. apply (setsum_Inj_inv A B z Hz).
+  - assume H1. apply H1. let a. assume Ha0. apply Ha0. assume Ha Hza.
+    exact ((eq_sym_i z (Inj0 a) Hza) (fun hl__u hl__v => (if hl__u :e {Inj0 a | a :e A} then INL' (Unj hl__u) else INR' (Unj hl__u)) :e Z) ((Hv0 a Ha) (fun hl__u hl__v => hl__v :e Z) (setexp_ap A Z INL' HL a Ha))).
+  - assume H1. apply H1. let b. assume Hb0. apply Hb0. assume Hb Hzb.
+    exact ((eq_sym_i z (Inj1 b) Hzb) (fun hl__u hl__v => (if hl__u :e {Inj0 a | a :e A} then INL' (Unj hl__u) else INR' (Unj hl__u)) :e Z) ((Hv1 b Hb) (fun hl__u hl__v => hl__v :e Z) (setexp_ap B Z INR' HR b Hb))). }
+claim HF: (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) :e Z :^: (A :+: B). { prove (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) :e Pi_ z :e A :+: B, Z. exact (lam_Pi (A :+: B) (fun _ => Z) (fun z => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) Hty). }
+witness (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)). apply andI. exact HF. apply andI.
+- let a. assume Ha.
+  claim Hl: hl_INL A B a = Inj0 a. { exact (beta A (fun a => Inj0 a) a Ha). }
+  claim H1: (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj0 a) = INL' a. { exact (eq_trans_i ((fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj0 a)) (if Inj0 a :e {Inj0 a | a :e A} then INL' (Unj (Inj0 a)) else INR' (Unj (Inj0 a))) (INL' a) (beta (A :+: B) (fun z => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj0 a) (Inj0_setsum A B a Ha)) (Hv0 a Ha)). }
+  exact ((eq_sym_i (hl_INL A B a) (Inj0 a) Hl) (fun hl__u hl__v => (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) hl__u = INL' a) H1).
+- let b. assume Hb.
+  claim Hr: hl_INR B A b = Inj1 b. { exact (beta B (fun b => Inj1 b) b Hb). }
+  claim H1: (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj1 b) = INR' b. { exact (eq_trans_i ((fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj1 b)) (if Inj1 b :e {Inj0 a | a :e A} then INL' (Unj (Inj1 b)) else INR' (Unj (Inj1 b))) (INR' b) (beta (A :+: B) (fun z => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj1 b) (Inj1_setsum A B b Hb)) (Hv1 b Hb)). }
+  exact ((eq_sym_i (hl_INR B A b) (Inj1 b) Hr) (fun hl__u hl__v => (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) hl__u = INR' b) H1).
+Qed.
