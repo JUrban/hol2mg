@@ -201,6 +201,15 @@ let rec alpha_canon depth (t : Mg.tm) : Mg.tm =
 
 let alpha_eq a b = alpha_canon 0 a = alpha_canon 0 b
 
+(* the membership hypothesis of a variable given by its (literal = native) name *)
+let nat_var_mem_pf g (t : Mg.tm) : string =
+  match t with
+  | Mg.Var n ->
+      (match List.find_map (fun (_, v) -> if v.lit = Mg.Var n then Some v.mem else None) g.vars with
+       | Some h -> h
+       | None -> unsupported "typing of variable %s" n)
+  | _ -> unsupported "typing of a non-variable"
+
 (* a hypothesis by proposition, up to alpha-equivalence, rebuilding conjunctions from their
    conjuncts (hypotheses are registered split into conjuncts) *)
 let rec find_hyp g (prop : Mg.tm) : string option =
@@ -1652,11 +1661,19 @@ and bridge_eq g dir ty a b =
                   if L.is_logical body' then begin
                     let lp = ltext g body' in
                     let h, hargs = head_and_args s in
-                    let data_arg p = (match lterm g p with Mg.If _ -> unsupported "bridge_eq: logical head applied to a formula" | l -> ppp l) in
+                    (* the argument's literal is either a data term p or `if p = 1 then 1 else 0` (a
+                       Boolean variable used as data): the _if lemma variants take care of the latter *)
+                    let data_arg p = (match lterm g p with
+                      | Mg.If (Mg.App (Mg.App (Mg.Cst "eq", (Mg.Var _ as v)), Mg.Num 1), Mg.Num 1, Mg.Num 0) -> (ppp v, "_if")
+                      | Mg.If _ -> unsupported "bridge_eq: logical head applied to a formula"
+                      | l -> (ppp l, "")) in
+                    let typ_arg p = (match lterm g p with
+                      | Mg.If (Mg.App (Mg.App (Mg.Cst "eq", (Mg.Var _ as v)), Mg.Num 1), Mg.Num 1, Mg.Num 0) -> nat_var_mem_pf g v
+                      | _ -> typ g p) in
                     let pf = (match h, hargs with
-                      | Const ("==>", _), [ p ] -> Printf.sprintf "(hl_imp_eq1 %s %s %s H%s)" (data_arg p) (typ g p) n n
-                      | Const ("/\\", _), [ p ] -> Printf.sprintf "(hl_and_eq1 %s %s %s H%s)" (data_arg p) (typ g p) n n
-                      | Const ("\\/", _), [ p ] -> Printf.sprintf "(hl_or_eq1 %s %s %s H%s)" (data_arg p) (typ g p) n n
+                      | Const ("==>", _), [ p ] -> let a, sfx = data_arg p in Printf.sprintf "(hl_imp_eq1%s %s %s %s H%s)" sfx a (typ_arg p) n n
+                      | Const ("/\\", _), [ p ] -> let a, sfx = data_arg p in Printf.sprintf "(hl_and_eq1%s %s %s %s H%s)" sfx a (typ_arg p) n n
+                      | Const ("\\/", _), [ p ] -> let a, sfx = data_arg p in Printf.sprintf "(hl_or_eq1%s %s %s %s H%s)" sfx a (typ_arg p) n n
                       | Const ("~", _), [] -> Printf.sprintf "(hl_not_eq1 %s H%s)" n n
                       | _ -> unsupported "bridge_eq: logical head %s" (match h with Const (c, _) -> c | _ -> "?")) in
                     (Printf.sprintf "(fun %s:set => %s)" n lp, Printf.sprintf "(fun %s H%s => %s)" n n pf)

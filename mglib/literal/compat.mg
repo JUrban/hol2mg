@@ -5863,3 +5863,19 @@ claim Hstep: forall h :e A, forall t :e finseq A, (forall m :e finseq B, seq_len
 let l1. assume Hl1.
 exact (seq_induct A (fun l => forall m :e finseq B, seq_len l = seq_len m -> hl_ZIP A B l m = seq_zip l m) Hbase Hstep l1 Hl1).
 Qed.
+
+// ---- Boolean variables as data: `if p = 1 then 1 else 0` is p on 2 ----
+Theorem if_eq1_id : forall p :e 2, (if p = 1 then 1 else 0) = p.
+let p. assume Hp. apply (cases_2 p Hp (fun u => (if u = 1 then 1 else 0) = u)).
+- exact (If_i_0 (0 = 1) 1 0 neq_0_1).
+- exact (If_i_1 (1 = 1) 1 0 (fun q H => H)).
+Qed.
+Theorem hl_imp_eq1_if : forall p q :e 2, hl_imp (if p = 1 then 1 else 0) q = 1 <-> (p = 1 -> q = 1).
+let p. assume Hp. let q. assume Hq. exact ((eq_sym_i (if p = 1 then 1 else 0) p (if_eq1_id p Hp)) (fun hl__u hl__v => hl_imp hl__u q = 1 <-> (p = 1 -> q = 1)) (hl_imp_eq1 p Hp q Hq)).
+Qed.
+Theorem hl_and_eq1_if : forall p q :e 2, hl_and (if p = 1 then 1 else 0) q = 1 <-> (p = 1 /\ q = 1).
+let p. assume Hp. let q. assume Hq. exact ((eq_sym_i (if p = 1 then 1 else 0) p (if_eq1_id p Hp)) (fun hl__u hl__v => hl_and hl__u q = 1 <-> (p = 1 /\ q = 1)) (hl_and_eq1 p Hp q Hq)).
+Qed.
+Theorem hl_or_eq1_if : forall p q :e 2, hl_or (if p = 1 then 1 else 0) q = 1 <-> (p = 1 \/ q = 1).
+let p. assume Hp. let q. assume Hq. exact ((eq_sym_i (if p = 1 then 1 else 0) p (if_eq1_id p Hp)) (fun hl__u hl__v => hl_or hl__u q = 1 <-> (p = 1 \/ q = 1)) (hl_or_eq1 p Hp q Hq)).
+Qed.
