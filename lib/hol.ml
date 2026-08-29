@@ -50,17 +50,26 @@ let rec string_of_ty ?(prec = 0) ty =
 (* Type checking.                                                           *)
 (* ------------------------------------------------------------------------ *)
 
+(* term printer for diagnostics; set below once string_of_tm is defined *)
+let tm_printer : (tm -> string) ref = ref (fun _ -> "<term>")
+
+(* Source-IR type checking.  Every node's type is recomputed; a failure names the
+   offending subterm together with the expected and actual types. *)
 let rec type_of ctx tm =
   match tm with
   | Bound i ->
-      (try List.nth ctx i with _ -> raise (Type_error (Printf.sprintf "unbound index %d" i)))
+      (try List.nth ctx i with _ -> raise (Type_error (Printf.sprintf "unbound de Bruijn index %d (depth %d)" i (List.length ctx))))
   | Free (_, ty) | Const (_, ty) -> ty
   | App (f, x) ->
-      let a, b = dest_fun_ty (type_of ctx f) in
+      let ft = type_of ctx f in
+      let a, b = (match ft with
+        | TyApp ("fun", [a; b]) -> (a, b)
+        | _ -> raise (Type_error (Printf.sprintf "application of a non-function in `%s`: head `%s` has type %s"
+                                    (!tm_printer tm) (!tm_printer f) (string_of_ty ft)))) in
       let xt = type_of ctx x in
       if xt = a then b
-      else raise (Type_error (Printf.sprintf "application type mismatch: expected %s, got %s"
-                                 (string_of_ty a) (string_of_ty xt)))
+      else raise (Type_error (Printf.sprintf "application type mismatch in `%s`: argument `%s` expected %s, got %s"
+                                 (!tm_printer tm) (!tm_printer x) (string_of_ty a) (string_of_ty xt)))
   | Lam (_, ty, b) -> fun_ty ty (type_of (ty :: ctx) b)
 
 let is_prop ctx tm = (type_of ctx tm = bool_ty)
@@ -264,6 +273,8 @@ let string_of_tm tm =
   in
   pr [] 0 tm
 
+let () = tm_printer := string_of_tm
+
 (* ------------------------------------------------------------------------ *)
 (* JSON decoding of exporter records.                                       *)
 (* ------------------------------------------------------------------------ *)
@@ -380,5 +391,11 @@ let read_export file =
 (* ------------------------------------------------------------------------ *)
 
 let check_sequent (s : sequent) =
-  List.iter (fun h -> if type_of [] h <> bool_ty then raise (Type_error "hypothesis is not boolean")) s.hyps;
-  if type_of [] s.concl <> bool_ty then raise (Type_error "conclusion is not boolean")
+  List.iter (fun h -> let t = type_of [] h in
+              if t <> bool_ty then raise (Type_error (Printf.sprintf "hypothesis `%s` has type %s, not bool" (!tm_printer h) (string_of_ty t)))) s.hyps;
+  let t = type_of [] s.concl in
+  if t <> bool_ty then raise (Type_error (Printf.sprintf "conclusion `%s` has type %s, not bool" (!tm_printer s.concl) (string_of_ty t)))
+
+let check_term_bool what tm =
+  let t = type_of [] tm in
+  if t <> bool_ty then raise (Type_error (Printf.sprintf "%s `%s` has type %s, not bool" what (!tm_printer tm) (string_of_ty t)))

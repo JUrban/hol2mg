@@ -436,8 +436,8 @@ Admitted.
 
 // HOL Light: cart.ml:483 / FINITE_CART
 // Source hash: md5:a0034d785932cd5307e955f10e16d620
-// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem FINITE_CART : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> set -> prop, (forall i :e omega, 1 <= i /\ i <= dimindex N -> finite {x :e A | P i x}) -> finite {v :e A :^: idx N | forall i :e omega, 1 <= i /\ i <= dimindex N -> P i (v i)}.
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_CART : forall A N:set, N <> Empty -> forall P:set -> set -> prop, (forall i :e omega, 1 <= i /\ i <= dimindex N -> finite {x :e A | P i x}) -> finite {v :e A :^: idx N | forall i :e omega, 1 <= i /\ i <= dimindex N -> P i (v i)}.
 Admitted.
 
 // HOL Light: cart.ml:528 / HAS_SIZE_CART_UNIV
@@ -544,14 +544,14 @@ Admitted.
 
 // HOL Light: cart.ml:639 / FINITE_PCROSS
 // Source hash: md5:6330f1a0852138ff0ef9250236a93770
-// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx)
-Theorem FINITE_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, finite s /\ finite t -> finite (\/_ x :e s, {pastecart M N x y | y :e t}).
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx)
+Theorem FINITE_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, finite s /\ finite t -> finite (\/_ x :e s, {pastecart M N x y | y :e t}).
 Admitted.
 
 // HOL Light: cart.ml:644 / FINITE_PCROSS_EQ
 // Source hash: md5:5e0e0f2a85a22b1a0a2c43839d5d2131
-// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx)
-Theorem FINITE_PCROSS_EQ : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, finite (\/_ x :e s, {pastecart M N x y | y :e t}) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
+// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite, hol_finite_sum_idx)
+Theorem FINITE_PCROSS_EQ : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, finite (\/_ x :e s, {pastecart M N x y | y :e t}) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
 Admitted.
 
 // HOL Light: cart.ml:658 / IMAGE_FSTCART_PCROSS

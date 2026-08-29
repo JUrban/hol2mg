@@ -88,6 +88,22 @@ let () =
            close_in ic
        | _ -> ());
       let items = ref [] in
+      (* ---- source-IR gate (B1): every exported sequent, definition, axiom and type definition is
+         re-typechecked; failures are fatal (exit 3 after the manifest is written) and the affected
+         items are quarantined with status source_type_error / not used for automatic definitions. ---- *)
+      let source_errors = ref [] in
+      let gate kind name f = (try f () with Hol.Type_error m ->
+        source_errors := (kind, name, m) :: !source_errors;
+        prerr_endline (Printf.sprintf "source-IR type error [%s %s]: %s" kind name m)) in
+      List.iter (fun (t : thm_record) -> gate "theorem" t.name (fun () -> check_sequent t.seq)) ex.theorems;
+      List.iter (fun (t : thm_record) -> gate "definition" t.name (fun () -> check_sequent t.seq)) ex.basic_definitions;
+      List.iter (fun (t : thm_record) -> gate "axiom" t.name (fun () -> check_sequent t.seq)) ex.axioms;
+      List.iter (fun (t : type_definition) -> gate "type_definition" t.td_name (fun () ->
+        Hol.check_term_bool "nonemptiness theorem" t.td_nonempty; Hol.check_term_bool "bijection theorem" t.td_bij)) ex.type_definitions;
+      let source_errors = List.rev !source_errors in
+      let has_source_error kind name = List.exists (fun (k, n, _) -> k = kind && n = name) source_errors in
+      let ex = { ex with basic_definitions = List.filter (fun (t : thm_record) -> not (has_source_error "definition" t.name)) ex.basic_definitions;
+                         type_definitions = List.filter (fun (t : type_definition) -> not (has_source_error "type_definition" t.td_name)) ex.type_definitions } in
       (* ---- automatic native definitions (constants by new_definition, types by new_type_definition) ---- *)
       let auto_defs = ref [] and auto_tydefs = ref [] and auto_failed = ref [] in
       let order = ref [] in
@@ -170,15 +186,19 @@ let () =
       let auto_defs = List.rev !auto_defs in
       let thms = if only = [] then ex.theorems else List.filter (fun t -> List.mem t.name only || List.exists (fun a -> List.mem a only) t.aliases) ex.theorems in
       List.iter (fun (th : thm_record) ->
-        (try check_sequent th.seq with Type_error m -> prerr_endline ("type error in " ^ th.name ^ ": " ^ m));
         let src_file, src_line = (try Hashtbl.find srcindex th.name with Not_found -> ("", 0)) in
         let shard = if src_file = "" then "misc" else shard_of_file src_file in
         let base = { Manifest.name = sanitize_thm_name th.name; source_name = th.name; aliases = th.aliases; hash = th.hash;
                      status = ""; shard; src_file; src_line; classes = []; bridges = []; notes = []; var_views = [];
-                     error = ""; statement = "" } in
+                     error = ""; statement = "";
+                     source = String.concat ", " (List.map Hol.string_of_tm th.seq.hyps) ^ (if th.seq.hyps = [] then "" else " |- ") ^ Hol.string_of_tm th.seq.concl } in
         let verbose = List.mem "--verbose" args in
         if verbose then (prerr_string (th.name ^ " "); flush stderr);
         let item =
+          if has_source_error "theorem" th.name then
+            { base with Manifest.status = "source_type_error";
+                        error = (let (_, _, m) = List.find (fun (k, n, _) -> k = "theorem" && n = th.name) source_errors in m) }
+          else
           (try
              ignore (Unix.alarm (match opt "--timeout" with Some s -> int_of_string s | None -> 10));
              let r = Elab.elab_sequent reg th.seq in
@@ -253,6 +273,7 @@ let () =
                      ("auto_type_definitions", `List (List.map (fun (at : Elab.auto_tydef) ->
                         `Assoc [ ("hol", `String at.Elab.at_hol); ("target", `String at.Elab.at_target); ("definition", `String (Mg.to_string at.Elab.at_body)) ]) auto_tydefs));
                      ("auto_definition_failures", `List (List.map (fun (c, m) -> `List [ `String c; `String m ]) (List.rev !auto_failed)));
+                     ("source_type_errors", `List (List.map (fun (k, n, m) -> `Assoc [ ("kind", `String k); ("name", `String n); ("error", `String m) ]) source_errors));
                      ("mapping_files", `List (List.map (fun (f, d) -> `List [ `String f; `String d ]) reg.Registry.files));
                      ("signature", `String (Filename.basename sig_file)) ] in
       Manifest.write_manifest manifest_file header items;
@@ -267,5 +288,9 @@ let () =
           Printf.sprintf "- mapping files: %s" (String.concat ", " (List.map fst reg.Registry.files)) ] items;
       Printf.printf "hol2mg: %d theorems, %d public (%d pending, %d errors); shards in %s\n" n np
         (List.length (List.filter (fun i -> i.Manifest.status = "pending_mapping") items))
-        (List.length (List.filter (fun i -> i.Manifest.status = "error") items)) out_dir
+        (List.length (List.filter (fun i -> i.Manifest.status = "error") items)) out_dir;
+      if source_errors <> [] then begin
+        Printf.eprintf "hol2mg: %d source-IR type error(s); the run is not valid (use --allow-source-errors to override)\n" (List.length source_errors);
+        if not (List.mem "--allow-source-errors" args) then exit 3
+      end
   | _ -> prerr_endline usage; exit 2

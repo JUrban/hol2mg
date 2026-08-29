@@ -82,6 +82,9 @@ and simp1 t =
       let x = simp x and y = simp y in
       if is_empty x then empty else if is_empty y then x else App (App (Cst "setminus", x), y)
   | App (Cst "finseq", a) -> let a = simp a in if is_empty a then SetEnum [ empty ] else App (Cst "finseq", a)
+  | App (Cst "finite", a) -> let a = simp a in if is_empty a then tru else App (Cst "finite", a)
+  | App (Cst "finite_cardinality", a) -> let a = simp a in if is_empty a then Num 0 else App (Cst "finite_cardinality", a)
+  | App (App (Cst "equip", a), b) -> let a = simp a and b = simp b in if is_empty a && (is_empty b || b = Num 0) then tru else App (App (Cst "equip", a), b)
   | App (f, x) ->
       let f = simp f and x = simp x in
       (match f with
@@ -114,9 +117,6 @@ and simp1 t =
   | Sep (x, a, p) ->
       let a = simp a in
       if is_empty a then empty else (let p = simp p in if p = fls then empty else Sep (x, a, p))
-  | App (Cst "finite", a) -> let a = simp a in if is_empty a then tru else App (Cst "finite", a)
-  | App (Cst "finite_cardinality", a) -> let a = simp a in if is_empty a then Num 0 else App (Cst "finite_cardinality", a)
-  | App (App (Cst "equip", a), b) -> let a = simp a and b = simp b in if is_empty a && (is_empty b || b = Num 0) then tru else App (App (Cst "equip", a), b)
   | Repl (x, a, b) -> let a = simp a in if is_empty a then empty else Repl (x, a, simp b)
   | ReplSep (x, a, p, b) -> let a = simp a in if is_empty a then empty else ReplSep (x, a, simp p, simp b)
   | SetEnum l -> SetEnum (List.map simp l)

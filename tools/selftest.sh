@@ -14,7 +14,7 @@ import json,sys
 m=json.load(open(sys.argv[1])); bad=[i['source_name'] for i in m['items'] if i['status']=='error']
 print('internal errors:', len(bad), bad[:5]); sys.exit(1 if bad else 0)
 PY
-tools/golden.sh core
+python3 tools/golden.py core --manifest "$S/a/core.manifest.json"
 tools/check_public.sh "$S/a" | grep -v "^OK" || true
 tools/check_public.sh "$S/a" >/dev/null && echo "megalodon: all core shards OK"
 rm -rf "$S"

@@ -1,0 +1,1504 @@
+# Golden fixtures for profile core: 251 theorems.  Regenerate with tools/golden.py core --update after reviewing the statements.
+
+### AND_CLAUSES   [logic: connectives, quantifiers, equality, extensionality]
+hash: 984c7e9a6a57999089ad22b53f6a110e
+source: !t:bool. (T /\ t <=> t) /\ (t /\ T <=> t) /\ (F /\ t <=> F) /\ (t /\ F <=> F) /\ (t /\ t <=> t)
+status: exact_native
+statement: forall t:prop, (True /\ t <-> t) /\ ((t /\ True <-> t) /\ ((False /\ t <-> False) /\ ((t /\ False <-> False) /\ (t /\ t <-> t))))
+
+### CONJ_ASSOC   [logic: connectives, quantifiers, equality, extensionality]
+hash: 68b444512171831dd562fcbd5b2c97dc
+source: !t1:bool. !t2:bool. !t3:bool. t1 /\ t2 /\ t3 <=> (t1 /\ t2) /\ t3
+status: exact_native
+statement: forall t1 t2 t3:prop, t1 /\ (t2 /\ t3) <-> t1 /\ t2 /\ t3
+
+### FORALL_AND_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: 75e6b56a5e3738f48b8fb06a01e01c5c
+source: !P:A->bool. !Q:A->bool. (!x:A. P x /\ Q x) <=> (!x:A. P x) /\ (!x:A. Q x)
+status: generalization_required
+statement: forall A:set, forall P Q:set -> prop, (forall x :e A, P x /\ Q x) <-> (forall x :e A, P x) /\ forall x :e A, Q x
+
+### EXISTS_OR_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: 4d21283ecdaa6cc6acfad8726c3265d6
+source: !P:A->bool. !Q:A->bool. (?x:A. P x \/ Q x) <=> (?x:A. P x) \/ (?x:A. Q x)
+status: generalization_required
+statement: forall A:set, forall P Q:set -> prop, (exists x :e A, P x \/ Q x) <-> (exists x :e A, P x) \/ exists x :e A, Q x
+
+### NOT_FORALL_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: 2ea21d2081aa28f6bd8bb8c2f039cb31
+source: !P:A->bool. ~(!x:A. P x) <=> (?x:A. ~P x)
+status: generalization_required
+statement: forall A:set, forall P:set -> prop, ~ (forall x :e A, P x) <-> exists x :e A, ~ P x
+
+### LEFT_IMP_EXISTS_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: d793fa8a6744565ded8518fb3f09de3c
+source: !P:A->bool. !Q:bool. (?x:A. P x) ==> Q <=> (!x:A. P x ==> Q)
+status: generalization_required
+statement: forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x) -> Q <-> forall x :e A, P x -> Q
+
+### EXISTS_REFL   [logic: connectives, quantifiers, equality, extensionality]
+hash: e372b30f99349efa111d83e2f360fb61
+source: !a:A. ?x:A. x = a
+status: generalization_required
+statement: forall A:set, forall a :e A, exists x :e A, x = a
+
+### EXISTS_UNIQUE_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: 60b7bbfee72d562d12f567ea88549b0b
+source: !P:A->bool. (?!x:A. P x) <=> (?x:A. P x) /\ (!x:A. !x':A. P x /\ P x' ==> x = x')
+status: generalization_required
+statement: forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x x' :e A, P x /\ P x' -> x = x'
+
+### SWAP_FORALL_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: df4989caae04c5ecc3e98a343479c369
+source: !P:A->B->bool. (!x:A. !y:B. P x y) <=> (!y:B. !x:A. P x y)
+status: generalization_required
+statement: forall A B:set, forall P:set -> set -> prop, (forall x :e A, forall y :e B, P x y) <-> forall y :e B, forall x :e A, P x y
+
+### TRIV_FORALL_IMP_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: fc1e6c9b012c86ee3eb169faba899404
+source: !P:bool. !Q:bool. (!x:A. P ==> Q) <=> (?x:A. P) ==> (!x:A. Q)
+status: generalization_required
+statement: forall A:set, forall P Q:prop, (forall x :e A, P -> Q) <-> (exists x :e A, P) -> forall x :e A, Q
+
+### FORALL_SIMP   [logic: connectives, quantifiers, equality, extensionality]
+hash: 5b2bbb121df4deed7a734bfc92ca8777
+source: !t:bool. (!x:A. t) <=> t
+status: exact_native
+statement: forall A:set, A <> Empty -> forall t:prop, (forall x :e A, t) <-> t
+
+### EXISTS_SIMP   [logic: connectives, quantifiers, equality, extensionality]
+hash: b5ababf3666ca1bcaccce45441156521
+source: !t:bool. (?x:A. t) <=> t
+status: exact_native
+statement: forall A:set, A <> Empty -> forall t:prop, (exists x :e A, t) <-> t
+
+### BETA_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: 014410de6c67ffec5a76c8993197b426
+source: !f:A->B. !y:A. (\x:A. f x) y = f y
+status: generalization_required
+statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y
+
+### ABS_SIMP   [logic: connectives, quantifiers, equality, extensionality]
+hash: 60035b0f6aaa54e21e40375b2cfc2b87
+source: !t1:A. !t2:B. (\x:B. t1) t2 = t1
+status: generalization_required
+statement: forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1
+
+### EQ_EXT   [logic: connectives, quantifiers, equality, extensionality]
+hash: 74f6b9b467171dc186a2df9978244b58
+source: !f:A->B. !g:A->B. (!x:A. f x = g x) ==> f = g
+status: generalization_required
+statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x
+
+### FUN_EQ_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: f5a914b29ff3ffb2975dadfdab697414
+source: !f:A->B. !g:A->B. f = g <=> (!x:A. f x = g x)
+status: generalization_required
+statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x)
+
+### MONO_FORALL   [logic: connectives, quantifiers, equality, extensionality]
+hash: 32c8690ef1e35ecb9a776a51c3db2049
+source: (!x:A. P x ==> Q x) ==> (!x:A. P x) ==> (!x:A. Q x)
+status: generalization_required
+statement: forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (forall x :e A, P x) -> forall x :e A, Q x
+
+### MONO_EXISTS   [logic: connectives, quantifiers, equality, extensionality]
+hash: 4025fabd3eb4e3c1e0e82ec526e01240
+source: (!x:A. P x ==> Q x) ==> (?x:A. P x) ==> (?x:A. Q x)
+status: generalization_required
+statement: forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (exists x :e A, P x) -> exists x :e A, Q x
+
+### EQ_SYM   [logic: connectives, quantifiers, equality, extensionality]
+hash: b9d6fe477bd3d7fa5366b65298ff2a45
+source: !x:A. !y:A. x = y ==> y = x
+status: generalization_required
+statement: forall A:set, forall x y :e A, x = y -> y = x
+
+### EQ_TRANS   [logic: connectives, quantifiers, equality, extensionality]
+hash: a433f46488d631f19c0671432eca45a2
+source: !x:A. !y:A. !z:A. x = y /\ y = z ==> x = z
+status: generalization_required
+statement: forall A:set, forall x y z :e A, x = y /\ y = z -> x = z
+
+### SKOLEM_THM   [logic: connectives, quantifiers, equality, extensionality]
+hash: 7032340324a1a8ad7909cb040961f738
+source: !P:A->B->bool. (!x:A. ?y:B. P x y) <=> (?y:A->B. !x:A. P x (y x))
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x)
+
+### UNIQUE_SKOLEM_ALT   [logic: connectives, quantifiers, equality, extensionality]
+hash: a0be667b32ad906a5f23194afc353c19
+source: !P:A->B->bool. (!x:A. ?!y:B. P x y) <=> (?f:A->B. !x:A. !y:B. P x y <=> f x = y)
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y
+
+### EXCLUDED_MIDDLE   [logic: connectives, quantifiers, equality, extensionality]
+hash: 24badd25546afe87d42d86a1339bd39d
+source: !t:bool. t \/ ~t
+status: native_reuse
+statement: forall t:prop, t \/ ~ t
+
+### BOOL_CASES_AX   [logic: connectives, quantifiers, equality, extensionality]
+hash: 2d73cf3d9340a07496060ebb19e89f36
+source: !t:bool. (t <=> T) \/ (t <=> F)
+status: exact_native
+statement: forall t:prop, (t <-> True) \/ (t <-> False)
+
+### ETA_AX   [logic: connectives, quantifiers, equality, extensionality]
+hash: e20b11b91c226ce7c7fa8169d22798c6
+source: !t:A->B. (\x:A. t x) = t
+status: generalization_required
+statement: forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x
+
+### SELECT_REFL   [choice, conditionals, Booleans as data]
+hash: 5d89ddfdd48e07285ef4152ba2f87957
+source: !x:A. (@y:A. y = x) = x
+status: generalization_required
+statement: forall A:set, forall x :e A, choose_in A (fun y:set => y = x) = x
+
+### SELECT_UNIQUE   [choice, conditionals, Booleans as data]
+hash: a3ab62395ef165d333cfc84d6aa0b583
+source: !P:A->bool. !x:A. (!y:A. P y <=> y = x) ==> @ P = x
+status: generalization_required
+statement: forall A:set, forall P:set -> prop, forall x :e A, (forall y :e A, P y <-> y = x) -> choose_in A P = x
+
+### SELECT_AX   [choice, conditionals, Booleans as data]
+hash: 4e877f34f5dc642b1b50fc1ef7367fcd
+source: !P:A->bool. !x:A. P x ==> P (@ P)
+status: generalization_required
+statement: forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A P)
+
+### COND_CLAUSES   [choice, conditionals, Booleans as data]
+hash: 0917c6f97e746313156fb948ae4a0a66
+source: !t1:A. !t2:A. (if T then t1 else t2) = t1 /\ (if F then t1 else t2) = t2
+status: generalization_required
+statement: forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2
+
+### COND_EXPAND   [choice, conditionals, Booleans as data]
+hash: a0ffc58d882ed08bb9ceb976d7d87a07
+source: !b:bool. !t1:bool. !t2:bool. (if b then t1 else t2) <=> (~b \/ t1) /\ (b \/ t2)
+status: exact_native
+statement: forall b t1 t2:prop, (b -> t1) /\ (~ b -> t2) <-> (~ b \/ t1) /\ (b \/ t2)
+
+### COND_ABS   [choice, conditionals, Booleans as data]
+hash: 1ff110853c4fd6318c48220aea045eda
+source: !b:bool. !f:A->B. !g:A->B. (\x:A. if b then f x else g x) = (if b then f else g)
+status: generalization_required
+statement: forall A B:set, forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, (if b then f x else g x) = if b then f x else g x
+
+### COND_RAND   [choice, conditionals, Booleans as data]
+hash: abd733d2ca6bac4ed355d508eb6d38ff
+source: !b:bool. !f:A->B. !x:A. !y:A. f (if b then x else y) = (if b then f x else f y)
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y
+
+### COND_RATOR   [choice, conditionals, Booleans as data]
+hash: daf8a0139729304ef354db21fe53723a
+source: !b:bool. !f:A->B. !g:A->B. !x:A. (if b then f else g) x = (if b then f x else g x)
+status: generalization_required
+statement: forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x
+
+### EQ_CLAUSES   [choice, conditionals, Booleans as data]
+hash: a45d7c9d85285642cfa3024e621fd5c5
+source: !t:bool. ((T <=> t) <=> t) /\ ((t <=> T) <=> t) /\ ((F <=> t) <=> ~t) /\ ((t <=> F) <=> ~t)
+status: exact_native
+statement: forall t:prop, ((True <-> t) <-> t) /\ (((t <-> True) <-> t) /\ (((False <-> t) <-> ~ t) /\ ((t <-> False) <-> ~ t)))
+
+### NOT_CLAUSES   [choice, conditionals, Booleans as data]
+hash: 3b3c3e9efdbcbcbfc4b0cad619ffceaa
+source: (!t:bool. ~~t <=> t) /\ (~T <=> F) /\ (~F <=> T)
+status: exact_native
+statement: (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True))
+
+### I_THM   [polymorphic combinators]
+hash: 869bdf643ad8869e3e6c61189c7171c1
+source: !x:A. I x = x
+status: native_reuse
+statement: forall A:set, forall x :e A, x = x
+
+### I_O_ID   [polymorphic combinators]
+hash: dc7aa55a625b9a78c1fd4104e409969c
+source: !f:A->B. I o f = f /\ f o I = f
+status: generalization_required
+statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x
+
+### o_THM   [polymorphic combinators]
+hash: 5f35f2b84dbd2ff7d1a387066c77a57f
+source: !f:B->C. !g:A->B. !x:A. (f o g) x = f (g x)
+status: native_reuse
+statement: forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x)
+
+### o_ASSOC   [polymorphic combinators]
+hash: f22ad52a4382071def526afc8c38a995
+source: !f:C->D. !g:B->C. !h:A->B. f o g o h = (f o g) o h
+status: generalization_required
+statement: forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x))
+
+### FORALL_ONE_THM   [polymorphic combinators]
+hash: 71b389caed42f1429cd0e3335edc3b46
+source: (!x:1. P x) <=> P one
+status: transport_required
+statement: forall P:set -> prop, (forall x :e 1, P x) <-> P 0
+
+### EXISTS_ONE_THM   [polymorphic combinators]
+hash: daa3be611903bccb7d5aace9a4b9ba60
+source: (?x:1. P x) <=> P one
+status: transport_required
+statement: forall P:set -> prop, (exists x :e 1, P x) <-> P 0
+
+### one   [polymorphic combinators]
+hash: 8221571543fa874800f76ce863e0cf84
+source: !v:1. v = one
+status: transport_required
+statement: forall v :e 1, v = 0
+
+### PAIR_EQ   [products]
+hash: 71770245f4ddd568d85751053a9e5a6e
+source: !x:A. !y:B. !a:A. !b:B. x , y = a , b <=> x = a /\ y = b
+status: generalization_required
+statement: forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b
+
+### PAIR_SURJECTIVE   [products]
+hash: 8a85c46beb474e1e63192937ada8908b
+source: !p:A#B. ?x:A. ?y:B. p = x , y
+status: generalization_required
+statement: forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y)
+
+### FST   [products]
+hash: e9c3a4a3164ca2f9e6fad2d535f8ab0f
+source: !x:A. !y:B. FST (x , y) = x
+status: generalization_required
+statement: forall A B:set, forall x :e A, forall y :e B, x = x
+
+### SND   [products]
+hash: e4ac88e20ba11cb060769e77dcb122fe
+source: !x:A. !y:B. SND (x , y) = y
+status: generalization_required
+statement: forall A B:set, forall x :e A, forall y :e B, y = y
+
+### PAIR   [products]
+hash: 23613fb98ddd9bc0b8abe81386bec32f
+source: !x:A#B. FST x , SND x = x
+status: generalization_required
+statement: forall A B:set, forall x :e A :*: B, (x 0,x 1) = x
+
+### FORALL_PAIR_THM   [products]
+hash: 259d29f2f6087c2bd6a11a52412f4491
+source: !P:A#B->bool. (!p:A#B. P p) <=> (!p1:A. !p2:B. P (p1 , p2))
+status: generalization_required
+statement: forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2)
+
+### EXISTS_PAIR_THM   [products]
+hash: 64b789e52ff2b13a976b5610389dc69b
+source: !P:A#B->bool. (?p:A#B. P p) <=> (?p1:A. ?p2:B. P (p1 , p2))
+status: generalization_required
+statement: forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2)
+
+### LAMBDA_PAIR_THM   [products]
+hash: 5cd80d8f0fe05eb8b4cf070c629deed9
+source: !t:A#B->C. (\p:A#B. t p) = GABS (\f:A#B->C. !x:A. !y:B. GEQ (f (x , y)) (t (x , y)))
+status: generalization_required
+statement: forall A B C:set, C <> Empty -> forall t:set -> set, (forall x :e A :*: B, t x :e C) -> forall p :e A :*: B, t p = t (p 0,p 1)
+
+### CURRY_DEF   [products]
+hash: cede113a4abd362ecff19b551d8931ed
+source: !f:A#B->C. !x:A. !y:B. CURRY f x y = f (x , y)
+status: generalization_required
+statement: forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y)
+
+### UNCURRY_DEF   [products]
+hash: 3f03a0bbd511648cd075ac39bfcfc4bb
+source: !f:A->B->C. !x:A. !y:B. UNCURRY f (x , y) = f x y
+status: generalization_required
+statement: forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f x y = f x y
+
+### PASSOC_DEF   [products]
+hash: 9c161349298da1eba1ac9e3d2bbf725f
+source: !f:(A#B)#C->D. !x:A. !y:B. !z:C. PASSOC f (x , y , z) = f ((x , y) , z)
+status: pending_mapping
+
+### FORALL_UNCURRY   [products]
+hash: 3474782c5e2db898cde1d87c3d0177cc
+source: !P:(A->B->C)->bool. (!f:A->B->C. P f) <=> (!f:A#B->C. P (\a:A. \b:B. f (a , b)))
+status: transport_required
+statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e C :^: B :^: A, P f) <-> forall f:set -> set, (forall x :e A :*: B, f x :e C) -> P (fun a :e A => fun b :e B => f (a,b))
+
+### FORALL_PAIRED_THM   [products]
+hash: 4ec8958129e197fc37c7dc4ea0662917
+source: !P:A->B->bool. ! (GABS (\f:A#B->bool. !x:A. !y:B. GEQ (f (x , y)) (P x y))) <=> (!x:A. !y:B. P x y)
+status: generalization_required
+statement: forall A B:set, forall P:set -> set -> prop, (forall x :e A :*: B, P (x 0) (x 1)) <-> forall x :e A, forall y :e B, P x y
+
+### NOT_SUC   [naturals: constructors, induction, arithmetic, order, division]
+hash: 08c916fb9a846af5b7a22a1e10f97142
+source: !n:num. ~(SUC n = 0)
+status: transport_required
+statement: forall n :e omega, ~ ordsucc n = 0
+
+### SUC_INJ   [naturals: constructors, induction, arithmetic, order, division]
+hash: 5224521fb640c43e425c96e6462ab6d0
+source: !m:num. !n:num. SUC m = SUC n <=> m = n
+status: transport_required
+statement: forall m n :e omega, ordsucc m = ordsucc n <-> m = n
+
+### num_INDUCTION   [naturals: constructors, induction, arithmetic, order, division]
+hash: 95f125bb90820dfc772fce4559903527
+source: !P:num->bool. P 0 /\ (!n:num. P n ==> P (SUC n)) ==> (!n:num. P n)
+status: transport_required
+statement: forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n
+
+### num_Axiom   [naturals: constructors, induction, arithmetic, order, division]
+hash: 22351265077b01108064d138b673a797
+source: !e:A. !f:A->num->A. ?!fn:num->A. fn 0 = e /\ (!n:num. fn (SUC n) = f (fn n) n)
+status: generalization_required
+statement: forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ (forall n :e omega, fn (ordsucc n) = f (fn n) n) /\ forall y:set -> set, (forall x :e omega, y x :e A) -> y 0 = e0 /\ (forall n :e omega, y (ordsucc n) = f (y n) n) -> forall x :e omega, y x = fn x)
+
+### num_RECURSION   [naturals: constructors, induction, arithmetic, order, division]
+hash: b287304fbed4be3d30468df5802532bb
+source: !e:A. !f:A->num->A. ?fn:num->A. fn 0 = e /\ (!n:num. fn (SUC n) = f (fn n) n)
+status: generalization_required
+statement: forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n)
+
+### num_CASES   [naturals: constructors, induction, arithmetic, order, division]
+hash: f202972a2e9786d2257c90d475eac48a
+source: !m:num. m = 0 \/ (?n:num. m = SUC n)
+status: transport_required
+statement: forall m :e omega, m = 0 \/ exists n :e omega, m = ordsucc n
+
+### num_WF   [naturals: constructors, induction, arithmetic, order, division]
+hash: c8e9e8a8b44e66cefba87747759d198f
+source: !P:num->bool. (!n:num. (!m:num. m < n ==> P m) ==> P n) ==> (!n:num. P n)
+status: transport_required
+statement: forall P:set -> prop, (forall n :e omega, (forall m :e omega, m < n -> P m) -> P n) -> forall n :e omega, P n
+
+### ADD_CLAUSES   [naturals: constructors, induction, arithmetic, order, division]
+hash: 126d9cc9e3ac78967da56121163e2515
+source: (!n:num. 0 + n = n) /\ (!m:num. m + 0 = m) /\ (!m:num. !n:num. SUC m + n = SUC (m + n)) /\ (!m:num. !n:num. m + SUC n = SUC (m + n))
+status: transport_required
+statement: (forall n :e omega, 0 + n = n) /\ ((forall m :e omega, m + 0 = m) /\ ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n)))
+
+### ADD_SYM   [naturals: constructors, induction, arithmetic, order, division]
+hash: 7d864f1eb0ef77376b9bc72e88019c32
+source: !m:num. !n:num. m + n = n + m
+status: transport_required
+statement: forall m n :e omega, m + n = n + m
+
+### ADD_ASSOC   [naturals: constructors, induction, arithmetic, order, division]
+hash: b97e64f9ddf8b94f1c6e0e8c8b245bbd
+source: !m:num. !n:num. !p:num. m + n + p = (m + n) + p
+status: transport_required
+statement: forall m n p :e omega, m + n + p = (m + n) + p
+
+### MULT_CLAUSES   [naturals: constructors, induction, arithmetic, order, division]
+hash: feb467b9ce3d44927a3c5047681ce915
+source: (!n:num. 0 * n = 0) /\ (!m:num. m * 0 = 0) /\ (!n:num. 1 * n = n) /\ (!m:num. m * 1 = m) /\ (!m:num. !n:num. SUC m * n = m * n + n) /\ (!m:num. !n:num. m * SUC n = m + m * n)
+status: transport_required
+statement: (forall n :e omega, 0 * n = 0) /\ ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n))))
+
+### MULT_SYM   [naturals: constructors, induction, arithmetic, order, division]
+hash: 7103233ece91e4b797b0f67782824327
+source: !m:num. !n:num. m * n = n * m
+status: transport_required
+statement: forall m n :e omega, m * n = n * m
+
+### LEFT_ADD_DISTRIB   [naturals: constructors, induction, arithmetic, order, division]
+hash: 95fb7903cf74df59ac85cd362dabe182
+source: !m:num. !n:num. !p:num. m * (n + p) = m * n + m * p
+status: transport_required
+statement: forall m n p :e omega, m * (n + p) = m * n + m * p
+
+### LE_SUC_LT   [naturals: constructors, induction, arithmetic, order, division]
+hash: a059e9b50769a59dbd1b228f22a762b2
+source: !m:num. !n:num. SUC m <= n <=> m < n
+status: transport_required
+statement: forall m n :e omega, ordsucc m <= n <-> m < n
+
+### LT_SUC_LE   [naturals: constructors, induction, arithmetic, order, division]
+hash: d61ceddf7a050227ee90dd8409e8a238
+source: !m:num. !n:num. m < SUC n <=> m <= n
+status: transport_required
+statement: forall m n :e omega, m < ordsucc n <-> m <= n
+
+### LE_ANTISYM   [naturals: constructors, induction, arithmetic, order, division]
+hash: 92cfc4f4d9868c364256f8b2facfa1c3
+source: !m:num. !n:num. m <= n /\ n <= m <=> m = n
+status: transport_required
+statement: forall m n :e omega, m <= n /\ n <= m <-> m = n
+
+### LT_TRANS   [naturals: constructors, induction, arithmetic, order, division]
+hash: b1d4795a239cf0b833ba1123d70dc41d
+source: !m:num. !n:num. !p:num. m < n /\ n < p ==> m < p
+status: transport_required
+statement: forall m n p :e omega, m < n /\ n < p -> m < p
+
+### LE_EXISTS   [naturals: constructors, induction, arithmetic, order, division]
+hash: fc24da01a419be1c250ebb180c054ce7
+source: !m:num. !n:num. m <= n <=> (?d:num. n = m + d)
+status: transport_required
+statement: forall m n :e omega, m <= n <-> exists d :e omega, n = m + d
+
+### LT_NZ   [naturals: constructors, induction, arithmetic, order, division]
+hash: 44fb2896bb81711114737091050171b2
+source: !n:num. 0 < n <=> ~(n = 0)
+status: transport_required
+statement: forall n :e omega, 0 < n <-> ~ n = 0
+
+### EXP_ADD   [naturals: constructors, induction, arithmetic, order, division]
+hash: 5354063bdd0efd0e1ad534d027f52f61
+source: !m:num. !n:num. !p:num. m EXP (n + p) = m EXP n * m EXP p
+status: transport_required
+statement: forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p
+
+### SUB_ADD   [naturals: constructors, induction, arithmetic, order, division]
+hash: 0a5b1061c758157ba0232b8361b301a2
+source: !m:num. !n:num. n <= m ==> m - n + n = m
+status: transport_required
+statement: forall m n :e omega, n <= m -> minus_nat m n + n = m
+
+### DIVISION   [naturals: constructors, induction, arithmetic, order, division]
+hash: b59e2104560227deeca73507054e0663
+source: !m:num. !n:num. ~(n = 0) ==> m = m DIV n * n + m MOD n /\ m MOD n < n
+status: transport_required
+statement: forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n
+
+### DIV_MULT   [naturals: constructors, induction, arithmetic, order, division]
+hash: 3a8beeb323ea04d1de30bfcba2c25ac4
+source: !m:num. !n:num. ~(m = 0) ==> (m * n) DIV m = n
+status: transport_required
+statement: forall m n :e omega, ~ m = 0 -> div_nat (m * n) m = n
+
+### MOD_LT   [naturals: constructors, induction, arithmetic, order, division]
+hash: d694ca4e2590b601d1d07f67592d876b
+source: !m:num. !n:num. m < n ==> m MOD n = m
+status: transport_required
+statement: forall m n :e omega, m < n -> mod_nat m n = m
+
+### EVEN_ADD   [naturals: constructors, induction, arithmetic, order, division]
+hash: b97c6e33433a1b82c867029be0bf2e57
+source: !m:num. !n:num. EVEN (m + n) <=> EVEN m <=> EVEN n
+status: transport_required
+statement: forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n)
+
+### ODD_MULT   [naturals: constructors, induction, arithmetic, order, division]
+hash: 4d0b87b1b46bc6ab933f56d6ee5c130f
+source: !m:num. !n:num. ODD (m * n) <=> ODD m /\ ODD n
+status: transport_required
+statement: forall m n :e omega, odd_nat (m * n) <-> odd_nat m /\ odd_nat n
+
+### FACT_LT   [naturals: constructors, induction, arithmetic, order, division]
+hash: 050e25d4c8007df2182d34ae82e12b0a
+source: !n:num. 0 < FACT n
+status: native_reuse
+statement: forall n :e omega, 0 < factorial n
+
+### MAX   [naturals: constructors, induction, arithmetic, order, division]
+hash: dec7206fd153d46948a1a7573a250572
+source: !m:num. !n:num. MAX m n = (if m <= n then n else m)
+status: transport_required
+statement: forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m
+
+### MIN   [naturals: constructors, induction, arithmetic, order, division]
+hash: cac117c9eae33edc6db6da231d420222
+source: !m:num. !n:num. MIN m n = (if m <= n then m else n)
+status: transport_required
+statement: forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n
+
+### MINIMAL   [naturals: constructors, induction, arithmetic, order, division]
+hash: 443e384aa0f6d3a39950416d1cd74f27
+source: !P:num->bool. (?n:num. P n) <=> P (minimal P) /\ (!m:num. m < minimal P ==> ~P m)
+status: transport_required
+statement: forall P:set -> prop, (exists n :e omega, P n) <-> P (choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m)) /\ forall m :e omega, m < choose_in omega (fun n:set => P n /\ forall m :e omega, P m -> n <= m) -> ~ P m
+
+### PRE_ELIM_THM   [naturals: constructors, induction, arithmetic, order, division]
+hash: 54ad4be8bef9fd2931b15c2c9d1fa3e1
+source: P (PRE n) <=> (!m:num. n = SUC m \/ m = 0 /\ n = 0 ==> P m)
+status: transport_required
+statement: forall P:set -> prop, forall n :e omega, P (nat_pred n) <-> forall m :e omega, n = ordsucc m \/ m = 0 /\ n = 0 -> P m
+
+### WLOG_LE   [naturals: constructors, induction, arithmetic, order, division]
+hash: 22c2c6603c7056b533e4c8dd2b677170
+source: (!m:num. !n:num. P m n <=> P n m) /\ (!m:num. !n:num. m <= n ==> P m n) ==> (!m:num. !n:num. P m n)
+status: transport_required
+statement: forall P:set -> set -> prop, (forall m n :e omega, P m n <-> P n m) /\ (forall m n :e omega, m <= n -> P m n) -> forall m n :e omega, P m n
+
+### num_MAX   [naturals: constructors, induction, arithmetic, order, division]
+hash: c8685b053a9c358dd0c8097ab0840890
+source: !P:num->bool. (?x:num. P x) /\ (?M:num. !x:num. P x ==> x <= M) <=> (?m:num. P m /\ (!x:num. P x ==> x <= m))
+status: transport_required
+statement: forall P:set -> prop, (exists x :e omega, P x) /\ (exists M :e omega, forall x :e omega, P x -> x <= M) <-> exists m :e omega, P m /\ forall x :e omega, P x -> x <= m
+
+### ARITH_ADD   [naturals: constructors, induction, arithmetic, order, division]
+hash: 2e4fc31d7a7c1e3570c442349f6dc373
+source: (!m:num. !n:num. NUMERAL m + NUMERAL n = NUMERAL (m + n)) /\ _0 + _0 = _0 /\ (!n:num. _0 + BIT0 n = BIT0 n) /\ (!n:num. _0 + BIT1 n = BIT1 n) /\ (!n:num. BIT0 n + _0 = BIT0 n) /\ (!n:num. BIT1 n + _0 = BIT1 n) /\ (!m:num. !n:num. BIT0 m + BIT0 n = BIT0 (m + n)) /\ (!m:num. !n:num. BIT0 m + BIT1 n = BIT1 (m + n)) /\ (!m:num. !n:num. BIT1 m + BIT0 n = BIT1 (m + n)) /\ (!m:num. !n:num. BIT1 m + BIT1 n = BIT0 (SUC (m + n)))
+status: transport_required
+statement: (forall m n :e omega, m + n = m + n) /\ (0 = 0 /\ ((forall n :e omega, 0 + 2 * n = 2 * n) /\ ((forall n :e omega, 0 + 2 * n + 1 = 2 * n + 1) /\ ((forall n :e omega, 2 * n + 0 = 2 * n) /\ ((forall n :e omega, (2 * n + 1) + 0 = 2 * n + 1) /\ ((forall m n :e omega, 2 * m + 2 * n = 2 * (m + n)) /\ ((forall m n :e omega, 2 * m + 2 * n + 1 = 2 * (m + n) + 1) /\ ((forall m n :e omega, (2 * m + 1) + 2 * n = 2 * (m + n) + 1) /\ forall m n :e omega, (2 * m + 1) + 2 * n + 1 = 2 * ordsucc (m + n)))))))))
+
+### BIT0_THM   [naturals: constructors, induction, arithmetic, order, division]
+hash: 559c2f7303610dd8ed299cfea6532bed
+source: !n:num. NUMERAL (BIT0 n) = NUMERAL n + NUMERAL n
+status: native_reuse
+statement: forall n :e omega, 2 * n = n + n
+
+### BIT1_THM   [naturals: constructors, induction, arithmetic, order, division]
+hash: 5654419bb755d5c6a785a1195805b6b3
+source: !n:num. NUMERAL (BIT1 n) = SUC (NUMERAL n + NUMERAL n)
+status: native_reuse
+statement: forall n :e omega, 2 * n + 1 = ordsucc (n + n)
+
+### WF   [well-founded relations]
+hash: 7cfe48218a6cd8da521c969693569484
+source: !<<:A->A->bool. WF << <=> (!P:A->bool. (?x:A. P x) ==> (?x:A. P x /\ (!y:A. << y x ==> ~P y)))
+status: exact_native
+statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> forall P:set -> prop, (exists x :e A, P x) -> exists x :e A, P x /\ forall y :e A, lt y x -> ~ P y
+
+### WF_IND   [well-founded relations]
+hash: 2f8fbdae1fc99fbb0282e91e4798be47
+source: WF << <=> (!P:A->bool. (!x:A. (!y:A. << y x ==> P y) ==> P x) ==> (!x:A. P x))
+status: exact_native
+statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> forall P:set -> prop, (forall x :e A, (forall y :e A, lt y x -> P y) -> P x) -> forall x :e A, P x
+
+### WF_DCHAIN   [well-founded relations]
+hash: 0a202e079f28a6155304a3d694551c09
+source: WF << <=> ~(?s:num->A. !n:num. << (s (SUC n)) (s n))
+status: transport_required
+statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> ~ exists s:set -> set, (forall x :e omega, s x :e A) /\ forall n :e omega, lt (s (ordsucc n)) (s n)
+
+### WF_MEASURE   [well-founded relations]
+hash: 5d1b43ae387330061cca4c569f00754a
+source: !m:A->num. WF (MEASURE m)
+status: transport_required
+statement: forall A:set, A <> Empty -> forall m:set -> set, (forall x :e A, m x :e omega) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ m y < m x
+
+### WF_LEX   [well-founded relations]
+hash: ab5a867a79f9dbbf98e3fa352b9392b0
+source: !R:A->A->bool. !S:B->B->bool. WF R /\ WF S ==> WF (GABS (\f:A#B->A#B->bool. !r1:A. !s1:B. GEQ (f (r1 , s1)) (GABS (\f1:A#B->bool. !r2:A. !s2:B. GEQ (f1 (r2 , s2)) (R r1 r2 \/ r1 = r2 /\ S s1 s2)))))
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall R0 S:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ R0 y x) /\ (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ S y x) -> forall P c= A :*: B, P <> Empty -> exists x :e P, forall y :e P, ~ (R0 (y 0) (x 0) \/ y 0 = x 0 /\ S (y 1) (x 1))
+
+### WF_num   [well-founded relations]
+hash: 207314b216600b64e25f3b0fea660db9
+source: WF <
+status: transport_required
+statement: forall P c= omega, P <> Empty -> exists x :e P, forall y :e P, ~ y < x
+
+### WF_REC   [well-founded relations]
+hash: c2b6c542214ace7a599099af99d8943e
+source: WF << ==> (!H:(A->B)->A->B. (!f:A->B. !g:A->B. !x:A. (!z:A. << z x ==> f z = g z) ==> H f x = H g x) ==> (?f:A->B. !x:A. f x = H f x))
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall H:set -> set -> set, (forall x :e B :^: A, forall y :e A, H x y :e B) -> (forall f g :e B :^: A, forall x :e A, (forall z :e A, lt z x -> f z = g z) -> H f x = H g x) -> exists f :e B :^: A, forall x :e A, f x = H f x
+
+### MEASURE   [well-founded relations]
+hash: abb01e8d84ce430691bf20436f40529b
+source: !m:A->num. MEASURE m = (\x:A. \y:A. m x < m y)
+status: generalization_required
+statement: forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y
+
+### NOT_CONS_NIL   [lists (finite sequences), including higher-order mapped operations]
+hash: 77428f1d7d66f872892dab61338128c2
+source: !h:A. !t:A list. ~(h CONS t = NIL)
+status: generalization_required
+statement: forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil
+
+### CONS_11   [lists (finite sequences), including higher-order mapped operations]
+hash: 50a941211ca5b773825052d4a811750c
+source: !h1:A. !h2:A. !t1:A list. !t2:A list. h1 CONS t1 = h2 CONS t2 <=> h1 = h2 /\ t1 = t2
+status: generalization_required
+statement: forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2
+
+### list_INDUCT   [lists (finite sequences), including higher-order mapped operations]
+hash: e24a8b3534d12615232f89c947dd6ab3
+source: !P:A list->bool. P NIL /\ (!a0:A. !a1:A list. P a1 ==> P (a0 CONS a1)) ==> (!x:A list. P x)
+status: transport_required
+statement: forall A:set, A <> Empty -> forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x
+
+### list_CASES   [lists (finite sequences), including higher-order mapped operations]
+hash: 6c9a307f18507870c827834056fdffa7
+source: !l:A list. l = NIL \/ (?h:A. ?t:A list. l = h CONS t)
+status: native_reuse
+statement: forall A:set, A <> Empty -> forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t
+
+### list_RECURSION   [lists (finite sequences), including higher-order mapped operations]
+hash: 21b923915525c3b3ed6c44a773a64671
+source: !NIL':Z. !CONS':A->A list->Z->Z. ?fn:A list->Z. fn NIL = NIL' /\ (!a0:A. !a1:A list. fn (a0 CONS a1) = CONS' a0 a1 (fn a1))
+status: generalization_required
+statement: forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1))
+
+### APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: 3ef027801213877da04628f269452000
+source: (!l:A list. NIL APPEND l = l) /\ (!h:A. !t:A list. !l:A list. h CONS t APPEND l = h CONS (t APPEND l))
+status: transport_required
+statement: forall A:set, A <> Empty -> (forall l :e finseq A, seq_append seq_nil l = l) /\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l)
+
+### APPEND_ASSOC   [lists (finite sequences), including higher-order mapped operations]
+hash: 595245cd5d4fe352684d336877239fe8
+source: !l:A list. !m:A list. !n:A list. l APPEND m APPEND n = (l APPEND m) APPEND n
+status: transport_required
+statement: forall A:set, A <> Empty -> forall l m n :e finseq A, seq_append l (seq_append m n) = seq_append (seq_append l m) n
+
+### APPEND_NIL   [lists (finite sequences), including higher-order mapped operations]
+hash: 34e676cda4ec75f03b52d6a0a1fe6783
+source: !l:A list. l APPEND NIL = l
+status: transport_required
+statement: forall A:set, A <> Empty -> forall l :e finseq A, seq_append l seq_nil = l
+
+### LENGTH_APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: 87d5d63471bb0040381d1296f836489b
+source: !l:A list. !m:A list. LENGTH (l APPEND m) = LENGTH l + LENGTH m
+status: transport_required
+statement: forall A:set, A <> Empty -> forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m
+
+### MAP_APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: e005972551ddebaef8cd43f82996650d
+source: !f:A->B. !l1:A list. !l2:A list. MAP f (l1 APPEND l2) = MAP f l1 APPEND MAP f l2
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall l1 l2 :e finseq A, seq_map f (seq_append l1 l2) = seq_append (seq_map f l1) (seq_map f l2)
+
+### MAP_o   [lists (finite sequences), including higher-order mapped operations]
+hash: 21dca6e4b2bded73c4144e9ca5c0eb7e
+source: !f:A->B. !g:B->C. !l:A list. MAP (g o f) l = MAP g (MAP f l)
+status: transport_required
+statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall l :e finseq A, seq_map (fun x:set => g (f x)) l = seq_map g (seq_map f l)
+
+### MEM_APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: 65331249734eb4cc4e9441c91b6a2d51
+source: !x:A. !l1:A list. !l2:A list. MEM x (l1 APPEND l2) <=> MEM x l1 \/ MEM x l2
+status: generalization_required
+statement: forall A:set, forall x :e A, forall l1 l2 :e finseq A, seq_mem x (seq_append l1 l2) <-> seq_mem x l1 \/ seq_mem x l2
+
+### HD   [lists (finite sequences), including higher-order mapped operations]
+hash: e48111d0d8d0854a2e64b2dfd1f92b7e
+source: HD (h CONS t) = h
+status: generalization_required
+statement: forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h
+
+### TL   [lists (finite sequences), including higher-order mapped operations]
+hash: a461f6927361fce88089ebdcecc03cd9
+source: TL (h CONS t) = t
+status: generalization_required
+statement: forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t
+
+### LENGTH_MAP   [lists (finite sequences), including higher-order mapped operations]
+hash: 46b98d7ca2f174c0346df14d00117beb
+source: !l:A list. !f:A->B. LENGTH (MAP f l) = LENGTH l
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall l :e finseq A, forall f:set -> set, (forall x :e A, f x :e B) -> seq_len (seq_map f l) = seq_len l
+
+### REVERSE_APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: 45852b5237ddc4ffb91f94da5306964d
+source: !l:A list. !m:A list. REVERSE (l APPEND m) = REVERSE m APPEND REVERSE l
+status: transport_required
+statement: forall A:set, A <> Empty -> forall l m :e finseq A, seq_rev (seq_append l m) = seq_append (seq_rev m) (seq_rev l)
+
+### ALL_MAP   [lists (finite sequences), including higher-order mapped operations]
+hash: 0f6eaa20955e61ecced785b2b67da0a9
+source: !P:B->bool. !f:A->B. !l:A list. ALL P (MAP f l) <=> ALL (P o f) l
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all P (seq_map f l) <-> seq_all (fun x:set => P (f x)) l
+
+### EL   [lists (finite sequences), including higher-order mapped operations]
+hash: 90e8be5936c40bee20461b9eb5985f6a
+source: EL 0 l = HD l /\ EL (SUC n) l = EL n (TL l)
+status: generalization_required
+statement: forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth l 0 = seq_hd l /\ seq_nth l (ordsucc n) = seq_nth (seq_tl l) n
+
+### LAST   [lists (finite sequences), including higher-order mapped operations]
+hash: 8ceaa343a4f12fbf270147102b54e937
+source: LAST (h CONS t) = (if t = NIL then h else LAST t)
+status: generalization_required
+statement: forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t
+
+### FILTER_APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: d4d93b5f36ebb171c6fddf63d85463d1
+source: !P:A->bool. !l1:A list. !l2:A list. FILTER P (l1 APPEND l2) = FILTER P l1 APPEND FILTER P l2
+status: transport_required
+statement: forall A:set, A <> Empty -> forall P:set -> prop, forall l1 l2 :e finseq A, seq_filter P (seq_append l1 l2) = seq_append (seq_filter P l1) (seq_filter P l2)
+
+### ITLIST_APPEND   [lists (finite sequences), including higher-order mapped operations]
+hash: 8a530b09bf93bfaa44eb3847190e9bde
+source: !f:A->B->B. !a:B. !l1:A list. !l2:A list. ITLIST f (l1 APPEND l2) a = ITLIST f l1 (ITLIST f l2 a)
+status: generalization_required
+statement: forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall a :e B, forall l1 l2 :e finseq A, seq_foldr f (seq_append l1 l2) a = seq_foldr f l1 (seq_foldr f l2 a)
+
+### MEM_MAP   [lists (finite sequences), including higher-order mapped operations]
+hash: efcc0ae65a5073ec9a7e1049fea67bdc
+source: !f:A->B. !y:B. !l:A list. MEM y (MAP f l) <=> (?x:A. MEM x l /\ y = f x)
+status: generalization_required
+statement: forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e B, forall l :e finseq A, seq_mem y (seq_map f l) <-> exists x :e A, seq_mem x l /\ y = f x
+
+### EXISTS_EX   [lists (finite sequences), including higher-order mapped operations]
+hash: d49b9f16d9da009544ebd72dd5849c7e
+source: !P:A->B->bool. !l:B list. (?x:A. EX (P x) l) <=> EX (\s:B. ?x:A. P x s) l
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq B, (exists x :e A, seq_ex (P x) l) <-> seq_ex (fun s:set => exists x :e A, P x s) l
+
+### ALL2_MAP   [lists (finite sequences), including higher-order mapped operations]
+hash: e2caf4faab982154814cddd9f86ed0f1
+source: !P:B->A->bool. !f:A->B. !l:A list. ALL2 P (MAP f l) l <=> ALL (\a:A. P (f a) a) l
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall l :e finseq A, seq_all2 P (seq_map f l) l <-> seq_all (fun a:set => P (f a) a) l
+
+### LENGTH_EQ_NIL   [lists (finite sequences), including higher-order mapped operations]
+hash: a50730425650e431b90f58c470a41521
+source: !l:A list. LENGTH l = 0 <=> l = NIL
+status: transport_required
+statement: forall A:set, A <> Empty -> forall l :e finseq A, seq_len l = 0 <-> l = seq_nil
+
+### LIST_EQ   [lists (finite sequences), including higher-order mapped operations]
+hash: e80393494d2381101e2f9fdd59b8a934
+source: !l1:A list. !l2:A list. l1 = l2 <=> LENGTH l1 = LENGTH l2 /\ (!n:num. n < LENGTH l2 ==> EL n l1 = EL n l2)
+status: generalization_required
+statement: forall A:set, forall l1 l2 :e finseq A, l1 = l2 <-> seq_len l1 = seq_len l2 /\ forall n :e omega, n < seq_len l2 -> seq_nth l1 n = seq_nth l2 n
+
+### LENGTH_REPLICATE   [lists (finite sequences), including higher-order mapped operations]
+hash: ea436d6e3dda4edef3e9c33e1650e12c
+source: !n:num. !x:A. LENGTH (REPLICATE n x) = n
+status: generalization_required
+statement: forall A:set, forall n :e omega, forall x :e A, seq_len (seq_replicate n x) = n
+
+### ZIP   [lists (finite sequences), including higher-order mapped operations]
+hash: fd4494788599018ac29f29b4f2822be0
+source: ZIP NIL NIL = NIL /\ ZIP (h1 CONS t1) (h2 CONS t2) = (h1 , h2) CONS ZIP t1 t2
+status: generalization_required
+statement: forall A B:set, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_zip seq_nil seq_nil = seq_nil /\ seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2)
+
+### MAP_EQ   [lists (finite sequences), including higher-order mapped operations]
+hash: ed81072fd7af91838cbb0ef3425ceb39
+source: !f:A->B. !g:A->B. !l:A list. ALL (\x:A. f x = g x) l ==> MAP f l = MAP g l
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall l :e finseq A, seq_all (fun x:set => f x = g x) l -> seq_map f l = seq_map g l
+
+### ITLIST_EXTRA   [lists (finite sequences), including higher-order mapped operations]
+hash: d13c7903e336f50874d6fbb2e0e01efa
+source: !f:A->B->B. !l:A list. ITLIST f (l APPEND a CONS NIL) b = ITLIST f l (f a b)
+status: generalization_required
+statement: forall A B:set, forall a :e A, forall b :e B, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall l :e finseq A, seq_foldr f (seq_append l (seq_cons a seq_nil)) b = seq_foldr f l (f a b)
+
+### IN_UNION   [sets: membership, algebra, comprehensions, images, families]
+hash: 53bfd4012ecbf824436fdec1d98ef00d
+source: !s:A->bool. !t:A->bool. !x:A. x IN s UNION t <=> x IN s \/ x IN t
+status: generalization_required
+statement: forall A:set, forall s t c= A, forall x :e A, x :e s :\/: t <-> x :e s \/ x :e t
+
+### IN_INTER   [sets: membership, algebra, comprehensions, images, families]
+hash: 2ac4b17df4e14a7c514df10344e203a5
+source: !s:A->bool. !t:A->bool. !x:A. x IN s INTER t <=> x IN s /\ x IN t
+status: generalization_required
+statement: forall A:set, forall s t c= A, forall x :e A, x :e s :/\: t <-> x :e s /\ x :e t
+
+### EXTENSION   [sets: membership, algebra, comprehensions, images, families]
+hash: f7141c939edd744d7d6f135168a24813
+source: !s:A->bool. !t:A->bool. s = t <=> (!x:A. x IN s <=> x IN t)
+status: generalization_required
+statement: forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t
+
+### SUBSET_TRANS   [sets: membership, algebra, comprehensions, images, families]
+hash: 018f8b838b2251133932e492a7b563c9
+source: !s:A->bool. !t:A->bool. !u:A->bool. s SUBSET t /\ t SUBSET u ==> s SUBSET u
+status: generalization_required
+statement: forall A:set, forall s t u c= A, s c= t /\ t c= u -> s c= u
+
+### EMPTY_SUBSET   [sets: membership, algebra, comprehensions, images, families]
+hash: ac5fdc02e4441a076caae461078fbdcc
+source: !s:A->bool. EMPTY SUBSET s
+status: generalization_required
+statement: forall A:set, forall s c= A, Empty c= s
+
+### UNIV_SUBSET   [sets: membership, algebra, comprehensions, images, families]
+hash: b3d14bc364eb0f572d7bf080c2756639
+source: !s:A->bool. UNIV SUBSET s <=> s = UNIV
+status: generalization_required
+statement: forall A:set, forall s c= A, A c= s <-> s = A
+
+### IN_IMAGE   [sets: membership, algebra, comprehensions, images, families]
+hash: c1c230701c50cc179850f00e47d436dd
+source: !y:B. !s:A->bool. !f:A->B. y IN IMAGE f s <=> (?x:A. y = f x /\ x IN s)
+status: generalization_required
+statement: forall A B:set, forall y :e B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (y :e {f x | x :e s} <-> exists x :e A, y = f x /\ x :e s)
+
+### IMAGE_o   [sets: membership, algebra, comprehensions, images, families]
+hash: 9666e7022fca9e70698bca3379b4251d
+source: !f:B->C. !g:A->B. !s:A->bool. IMAGE (f o g) s = IMAGE f (IMAGE g s)
+status: generalization_required
+statement: forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s c= A, {f (g x) | x :e s} = {f x | x :e {g x | x :e s}}
+
+### IN_INSERT   [sets: membership, algebra, comprehensions, images, families]
+hash: 62243c550f1aaf57081e91ad62c42ada
+source: !x:A. !y:A. !s:A->bool. x IN y INSERT s <=> x = y \/ x IN s
+status: generalization_required
+statement: forall A:set, forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s
+
+### INSERT_SUBSET   [sets: membership, algebra, comprehensions, images, families]
+hash: 5a05c6364a30b639bab502c24188f136
+source: !x:A. !s:A->bool. !t:A->bool. x INSERT s SUBSET t <=> x IN t /\ s SUBSET t
+status: generalization_required
+statement: forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t
+
+### IN_DIFF   [sets: membership, algebra, comprehensions, images, families]
+hash: b5cd0dac99fd349231cf6297ee30479a
+source: !s:A->bool. !t:A->bool. !x:A. x IN s DIFF t <=> x IN s /\ ~(x IN t)
+status: generalization_required
+statement: forall A:set, forall s t c= A, forall x :e A, x :e s :\: t <-> x :e s /\ ~ x :e t
+
+### DIFF_EMPTY   [sets: membership, algebra, comprehensions, images, families]
+hash: b5e5e5858b7fee878ce9b37b99ebfbca
+source: !s:A->bool. s DIFF EMPTY = s
+status: generalization_required
+statement: forall A:set, forall s c= A, s :\: Empty = s
+
+### UNIONS_INSERT   [sets: membership, algebra, comprehensions, images, families]
+hash: de1ef5f54205563dbbf8b94ab8d271e9
+source: !s:A->bool. !u:(A->bool)->bool. UNIONS (s INSERT u) = s UNION UNIONS u
+status: exact_native
+statement: forall A:set, A <> Empty -> forall s c= A, forall u c= Power A, Union (SetAdjoin u s) = s :\/: Union u
+
+### IN_UNIONS   [sets: membership, algebra, comprehensions, images, families]
+hash: c4eb1df88efda5987e140438f90f45d8
+source: !s:(A->bool)->bool. !x:A. x IN UNIONS s <=> (?t:A->bool. t IN s /\ x IN t)
+status: generalization_required
+statement: forall A:set, forall s c= Power A, forall x :e A, x :e Union s <-> exists t c= A, t :e s /\ x :e t
+
+### IN_INTERS   [sets: membership, algebra, comprehensions, images, families]
+hash: 90f987e51ed1bea30a7181c0682ececf
+source: !s:(A->bool)->bool. !x:A. x IN INTERS s <=> (!t:A->bool. t IN s ==> x IN t)
+status: generalization_required
+statement: forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t
+
+### INTERS_INSERT   [sets: membership, algebra, comprehensions, images, families]
+hash: aa86287310a3119611b5759a859e7fa2
+source: !s:A->bool. !u:(A->bool)->bool. INTERS (s INSERT u) = s INTER INTERS u
+status: generalization_required
+statement: forall A:set, forall s c= A, forall u c= Power A, {x :e A | forall Y :e SetAdjoin u s, x :e Y} = s :/\: {x :e A | forall Y :e u, x :e Y}
+
+### IN_ELIM_THM   [sets: membership, algebra, comprehensions, images, families]
+hash: f0b562a918d32513fbce399c8874d32d
+source: (!P:(bool->A->bool)->bool. !x:A. x IN GSPEC (\v:A. P (SETSPEC v)) <=> P (\p:bool. \t:A. p /\ x = t)) /\ (!p:A->bool. !x:A. x IN GSPEC (\v:A. ?y:A. SETSPEC v (p y) y) <=> p x) /\ (!P:(bool->A->bool)->bool. !x:A. GSPEC (\v:A. P (SETSPEC v)) x <=> P (\p:bool. \t:A. p /\ x = t)) /\ (!p:A->bool. !x:A. GSPEC (\v:A. ?y:A. SETSPEC v (p y) y) x <=> p x) /\ (!p:A->bool. !x:A. x IN (\y:A. p y) <=> p x)
+status: pending_mapping
+
+### SUBSET_EMPTY   [sets: membership, algebra, comprehensions, images, families]
+hash: 493907018ceb1d85891186aae6223bef
+source: !s:A->bool. s SUBSET EMPTY <=> s = EMPTY
+status: generalization_required
+statement: forall A:set, forall s c= A, s c= Empty <-> s = Empty
+
+### NOT_IN_EMPTY   [sets: membership, algebra, comprehensions, images, families]
+hash: ebe8471d5c357b956cf0f5e515fe3511
+source: !x:A. ~(x IN EMPTY)
+status: generalization_required
+statement: forall A:set, forall x :e A, ~ x :e Empty
+
+### MEMBER_NOT_EMPTY   [sets: membership, algebra, comprehensions, images, families]
+hash: 034de37a8d42754ce2996a70f9091391
+source: !s:A->bool. (?x:A. x IN s) <=> ~(s = EMPTY)
+status: generalization_required
+statement: forall A:set, forall s c= A, (exists x :e A, x :e s) <-> ~ s = Empty
+
+### FORALL_IN_IMAGE   [sets: membership, algebra, comprehensions, images, families]
+hash: c7978b7e04133ab1326ae6b13e51b939
+source: !f:A->B. !s:A->bool. (!y:B. y IN IMAGE f s ==> P y) <=> (!x:A. x IN s ==> P (f x))
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall y :e B, y :e {f x | x :e s} -> P y) <-> forall x :e A, x :e s -> P (f x)
+
+### IMAGE_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
+hash: d971eba44eb36baa8624acc2c96acb14
+source: IMAGE f EMPTY = EMPTY /\ IMAGE f (x INSERT s) = f x INSERT IMAGE f s
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x0 :e A, f x0 :e B) -> forall x :e A, forall s c= A, {f x | x :e Empty} = Empty /\ {f x0 | x0 :e SetAdjoin s x} = SetAdjoin {f x | x :e s} (f x)
+
+### IN_DELETE   [sets: membership, algebra, comprehensions, images, families]
+hash: 9a7c37f71f31bb294187bc2cad212525
+source: !s:A->bool. !x:A. !y:A. x IN s DELETE y <=> x IN s /\ ~(x = y)
+status: generalization_required
+statement: forall A:set, forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y
+
+### DELETE_INSERT   [sets: membership, algebra, comprehensions, images, families]
+hash: 1189cefe6e65ac793f83e648e9159f01
+source: !x:A. !y:A. !s:A->bool. x INSERT s DELETE y = (if x = y then s DELETE y else x INSERT s DELETE y)
+status: generalization_required
+statement: forall A:set, forall x y :e A, forall s c= A, SetAdjoin s x :\: {y} = if x = y then s :\: {y} else SetAdjoin (s :\: {y}) x
+
+### DISJOINT   [sets: membership, algebra, comprehensions, images, families]
+hash: 06faad16c446a9a1f851e720b49c06e3
+source: !s:A->bool. !t:A->bool. DISJOINT s t <=> s INTER t = EMPTY
+status: generalization_required
+statement: forall A:set, forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty
+
+### IN_UNIV   [sets: membership, algebra, comprehensions, images, families]
+hash: eee80073ec9a8663b3ed94c2504d029b
+source: !x:A. x IN UNIV
+status: native_reuse
+statement: forall A:set, forall x :e A, x :e A
+
+### SUBSET_ANTISYM   [sets: membership, algebra, comprehensions, images, families]
+hash: 66de716356ea282ff6b32df51c0f0aeb
+source: !s:A->bool. !t:A->bool. s SUBSET t /\ t SUBSET s ==> s = t
+status: generalization_required
+statement: forall A:set, forall s t c= A, s c= t /\ t c= s -> s = t
+
+### CHOICE_DEF   [sets: membership, algebra, comprehensions, images, families]
+hash: 0b240c7b9a6613faa869add5bbe7dfb6
+source: !s:A->bool. ~(s = EMPTY) ==> CHOICE s IN s
+status: generalization_required
+statement: forall A:set, forall s c= A, ~ s = Empty -> choose_in A (fun x:set => x :e s) :e s
+
+### REST   [sets: membership, algebra, comprehensions, images, families]
+hash: e0f633a0788602734c7ec5f0f8e48f26
+source: !s:A->bool. REST s = s DELETE CHOICE s
+status: generalization_required
+statement: forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :e s)} = s :\: {choose_in A (fun x:set => x :e s)}
+
+### ARB   [sets: membership, algebra, comprehensions, images, families]
+hash: b453496b4bba3b6602eb4a8f4e4f7fa5
+source: ARB = (@x:A. F)
+status: exact_native
+statement: forall A:set, A <> Empty -> choose_in A (fun x:set => True) = choose_in A (fun x:set => False)
+
+### UNION_ACI   [sets: membership, algebra, comprehensions, images, families]
+hash: 07377596f3694561ea113c5efaff1cef
+source: p UNION q = q UNION p /\ (p UNION q) UNION r = p UNION q UNION r /\ p UNION q UNION r = q UNION p UNION r /\ p UNION p = p /\ p UNION p UNION q = p UNION q
+status: generalization_required
+statement: forall A:set, forall p q r c= A, p :\/: q = q :\/: p /\ (p :\/: q :\/: r = p :\/: (q :\/: r) /\ (p :\/: (q :\/: r) = q :\/: (p :\/: r) /\ (p :\/: p = p /\ p :\/: (p :\/: q) = p :\/: q)))
+
+### POWERSET_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
+hash: 70a8a2d45d230cb1a42aaf9faab99fd3
+source: GSPEC (\GEN%PVAR%163:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%163 (s SUBSET EMPTY) s) = EMPTY INSERT EMPTY /\ (!a:A. !t:A->bool. GSPEC (\GEN%PVAR%164:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%164 (s SUBSET a INSERT t) s) = GSPEC (\GEN%PVAR%165:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%165 (s SUBSET t) s) UNION IMAGE (\s:A->bool. a INSERT s) (GSPEC (\GEN%PVAR%166:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%166 (s SUBSET t) s)))
+status: exact_native
+statement: forall A:set, A <> Empty -> {s :e Power A | s c= Empty} = {Empty} /\ forall a :e A, forall t c= A, {s :e Power A | s c= SetAdjoin t a} = {s :e Power A | s c= t} :\/: {{x0 :e A | x0 :e SetAdjoin x a} | x :e {s :e Power A | s c= t}}
+
+### IN_CROSS   [sets: membership, algebra, comprehensions, images, families]
+hash: ed960ab7f490ac67ee857ac89ae420d6
+source: !x:A. !y:B. !s:A->bool. !t:B->bool. x , y IN CROSS s t <=> x IN s /\ y IN t
+status: generalization_required
+statement: forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t
+
+### FORALL_IN_GSPEC   [sets: membership, algebra, comprehensions, images, families]
+hash: 4e50b5eb28b9acf79387e641ba5fae71
+source: (!P:A->bool. !Q:B->bool. !f:A->B. (!z:B. z IN GSPEC (\GEN%PVAR%8:B. ?x:A. SETSPEC GEN%PVAR%8 (P x) (f x)) ==> Q z) <=> (!x:A. P x ==> Q (f x))) /\ (!P:A->B->bool. !Q:C->bool. !f:A->B->C. (!z:C. z IN GSPEC (\GEN%PVAR%9:C. ?x:A. ?y:B. SETSPEC GEN%PVAR%9 (P x y) (f x y)) ==> Q z) <=> (!x:A. !y:B. P x y ==> Q (f x y))) /\ (!P:A->B->C->bool. !Q:D->bool. !f:A->B->C->D. (!z:D. z IN GSPEC (\GEN%PVAR%10:D. ?w:A. ?x:B. ?y:C. SETSPEC GEN%PVAR%10 (P w x y) (f w x y)) ==> Q z) <=> (!w:A. !x:B. !y:C. P w x y ==> Q (f w x y))) /\ (!P:A->B->C->D->bool. !Q:E->bool. !f:A->B->C->D->E. (!z:E. z IN GSPEC (\GEN%PVAR%11:E. ?v:A. ?w:B. ?x:C. ?y:D. SETSPEC GEN%PVAR%11 (P v w x y) (f v w x y)) ==> Q z) <=> (!v:A. !w:B. !x:C. !y:D. P v w x y ==> Q (f v w x y)))
+status: generalization_required
+statement: forall A B C D E:set, B <> Empty -> C <> Empty -> D <> Empty -> E <> Empty -> (forall P Q:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall z :e B, z :e {f x | x :e A, P x} -> Q z) <-> forall x :e A, P x -> Q (f x))) /\ ((forall P:set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> ((forall z :e C, z :e (\/_ x :e A, {f x y | y :e B, P x y}) -> Q z) <-> forall x :e A, forall y :e B, P x y -> Q (f x y))) /\ ((forall P:set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> ((forall z :e D, z :e (\/_ w :e A, \/_ x :e B, {f w x y | y :e C, P w x y}) -> Q z) <-> forall w :e A, forall x :e B, forall y :e C, P w x y -> Q (f w x y))) /\ forall P:set -> set -> set -> set -> prop, forall Q:set -> prop, forall f:set -> set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, forall w :e D, f x y z w :e E) -> ((forall z :e E, z :e (\/_ v :e A, \/_ w :e B, \/_ x :e C, {f v w x y | y :e D, P v w x y}) -> Q z) <-> forall v :e A, forall w :e B, forall x :e C, forall y :e D, P v w x y -> Q (f v w x y))))
+
+### FINITE_INDUCT   [finiteness, cardinality, functions between sets]
+hash: 2b3f81cf880be7cfb71f4b7eec60c37a
+source: !FINITE':(A->bool)->bool. FINITE' EMPTY /\ (!x:A. !s:A->bool. FINITE' s ==> FINITE' (x INSERT s)) ==> (!a:A->bool. FINITE a ==> FINITE' a)
+status: generalization_required
+statement: forall A:set, forall FINITE':set -> prop, FINITE' Empty /\ (forall x :e A, forall s c= A, FINITE' s -> FINITE' (SetAdjoin s x)) -> forall a c= A, finite a -> FINITE' a
+
+### FINITE_UNION   [finiteness, cardinality, functions between sets]
+hash: f8031a98ed188e3cff5f6de0823f5688
+source: !s:A->bool. !t:A->bool. FINITE (s UNION t) <=> FINITE s /\ FINITE t
+status: generalization_required
+statement: forall A:set, forall s t c= A, finite (s :\/: t) <-> finite s /\ finite t
+
+### FINITE_IMAGE   [finiteness, cardinality, functions between sets]
+hash: 432dfbca4344ace97e63aa457fdad110
+source: !f:A->B. !s:A->bool. FINITE s ==> FINITE (IMAGE f s)
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {f x | x :e s}
+
+### FINITE_SUBSET   [finiteness, cardinality, functions between sets]
+hash: cbe809cab3573cf324dd84b560f89471
+source: !s:A->bool. !t:A->bool. FINITE t /\ s SUBSET t ==> FINITE s
+status: generalization_required
+statement: forall A:set, forall s t c= A, finite t /\ s c= t -> finite s
+
+### CARD_CLAUSES   [finiteness, cardinality, functions between sets]
+hash: b98042a9307e6eb5805ab458d8192980
+source: CARD EMPTY = 0 /\ (!x:A. !s:A->bool. FINITE s ==> CARD (x INSERT s) = (if x IN s then CARD s else SUC (CARD s)))
+status: generalization_required
+statement: forall A:set, finite_cardinality Empty = 0 /\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s)
+
+### CARD_UNION   [finiteness, cardinality, functions between sets]
+hash: dec93797888a7880b4682d0323169b96
+source: !s:A->bool. !t:A->bool. FINITE s /\ FINITE t /\ s INTER t = EMPTY ==> CARD (s UNION t) = CARD s + CARD t
+status: generalization_required
+statement: forall A:set, forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t
+
+### CARD_IMAGE_INJ   [finiteness, cardinality, functions between sets]
+hash: f399386eea1d58d0a78436c2e48d108e
+source: !f:A->B. !s:A->bool. (!x:A. !y:A. x IN s /\ y IN s /\ f x = f y ==> x = y) /\ FINITE s ==> CARD (IMAGE f s) = CARD s
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite s -> finite_cardinality {f x | x :e s} = finite_cardinality s
+
+### HAS_SIZE   [finiteness, cardinality, functions between sets]
+hash: d40bb36d555c16b9e0d80663db5ee75c
+source: !s:A->bool. !n:num. HAS_SIZE s n <=> FINITE s /\ CARD s = n
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s c= A, forall n :e omega, equip s n <-> finite s /\ finite_cardinality s = n
+
+### INFINITE   [finiteness, cardinality, functions between sets]
+hash: 7c9d659d5cdcc1d82c3e2e38114de923
+source: !s:A->bool. INFINITE s <=> ~FINITE s
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s c= A, infinite s <-> ~ finite s
+
+### num_FINITE   [finiteness, cardinality, functions between sets]
+hash: 1d72873b878bd3f30c51efe6dd52e975
+source: !s:num->bool. FINITE s <=> (?a:num. !x:num. x IN s ==> x <= a)
+status: transport_required
+statement: forall s c= omega, finite s <-> exists a :e omega, forall x :e omega, x :e s -> x <= a
+
+### SURJ   [finiteness, cardinality, functions between sets]
+hash: 0fa2b466a165ebb28e5dc0409866fdd5
+source: !t:B->bool. !s:A->bool. !f:A->B. SURJ f s t <=> (!x:A. x IN s ==> f x IN t) /\ (!x:B. x IN t ==> (?y:A. y IN s /\ f y = x))
+status: exact_native
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e s, f x :e t) /\ (forall y :e t, exists x :e s, f x = y) <-> (forall x :e A, x :e s -> f x :e t) /\ forall x :e B, x :e t -> exists y :e A, y :e s /\ f y = x)
+
+### INJ   [finiteness, cardinality, functions between sets]
+hash: dfd4aee509198cc43c03d54f1ad412fc
+source: !t:B->bool. !s:A->bool. !f:A->B. INJ f s t <=> (!x:A. x IN s ==> f x IN t) /\ (!x:A. !y:A. x IN s /\ y IN s /\ f x = f y ==> x = y)
+status: exact_native
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> (inj s t f <-> (forall x :e A, x :e s -> f x :e t) /\ forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y)
+
+### BIJ   [finiteness, cardinality, functions between sets]
+hash: e7c76a8cde9eadacde88eed045681195
+source: !f:A->B. !s:A->bool. !t:B->bool. BIJ f s t <=> INJ f s t /\ SURJ f s t
+status: exact_native
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, bij s t f <-> inj s t f /\ ((forall x :e s, f x :e t) /\ forall y :e t, exists x :e s, f x = y)
+
+### FINITE_CROSS   [finiteness, cardinality, functions between sets]
+hash: 12892b449bb0cf81d2a595538cee5069
+source: !s:A->bool. !t:B->bool. FINITE s /\ FINITE t ==> FINITE (CROSS s t)
+status: generalization_required
+statement: forall A B:set, forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t)
+
+### CARD_CROSS   [finiteness, cardinality, functions between sets]
+hash: e98f492c84401357c81713e687de88e9
+source: !s:A->bool. !t:B->bool. FINITE s /\ FINITE t ==> CARD (CROSS s t) = CARD s * CARD t
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite_cardinality (s :*: t) = finite_cardinality s * finite_cardinality t
+
+### HAS_SIZE_0   [finiteness, cardinality, functions between sets]
+hash: b315301e53d95a91c880c6bafbea05e1
+source: !s:A->bool. HAS_SIZE s 0 <=> s = EMPTY
+status: generalization_required
+statement: forall A:set, forall s c= A, equip s 0 <-> s = Empty
+
+### FINITE_POWERSET   [finiteness, cardinality, functions between sets]
+hash: 3ae71668592f92c8300210136b6c496e
+source: !s:A->bool. FINITE s ==> FINITE (GSPEC (\GEN%PVAR%157:A->bool. ?t:A->bool. SETSPEC GEN%PVAR%157 (t SUBSET s) t))
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s c= A, finite s -> finite {t :e Power A | t c= s}
+
+### INFINITE_NONEMPTY   [finiteness, cardinality, functions between sets]
+hash: f4ba7868f4290b5f0e224feedf2de23e
+source: !s:A->bool. INFINITE s ==> ~(s = EMPTY)
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s c= A, infinite s -> ~ s = Empty
+
+### NSUM_CLAUSES   [iteration, sums, number segments]
+hash: ea406f8293ce1f3be12e9bc950e8d8d6
+source: (!f:A->num. nsum EMPTY f = 0) /\ (!x:B. !f:B->num. !s:B->bool. FINITE s ==> nsum (x INSERT s) f = (if x IN s then nsum s f else f x + nsum s f))
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e omega) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e omega) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f
+
+### SUM_CLAUSES   [iteration, sums, number segments]
+hash: 203f6a0710932fdee70420e4b7f58758
+source: (!f:A->real. sum EMPTY f = real_of_num 0) /\ (!x:B. !f:B->real. !s:B->bool. FINITE s ==> sum (x INSERT s) f = (if x IN s then sum s f else f x + sum s f))
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e R) -> finsum Empty f = 0) /\ forall x :e B, forall f:set -> set, (forall x0 :e B, f x0 :e R) -> forall s c= B, finite s -> finsum (SetAdjoin s x) f = if x :e s then finsum s f else f x + finsum s f
+
+### SUM_ADD   [iteration, sums, number segments]
+hash: 7b4b78190b429e4506561b3032353a91
+source: !f:A->real. !g:A->real. !s:A->bool. FINITE s ==> sum s (\x:A. f x + g x) = sum s f + sum s g
+status: transport_required
+statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g
+
+### NSUM_EQ   [iteration, sums, number segments]
+hash: 7b56acbfdcba2de9bb221054d9ae675c
+source: !f:A->num. !g:A->num. !s:A->bool. (!x:A. x IN s ==> f x = g x) ==> nsum s f = nsum s g
+status: transport_required
+statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, (forall x :e A, x :e s -> f x = g x) -> finsum s f = finsum s g
+
+### ITERATE_CLAUSES   [iteration, sums, number segments]
+hash: fa9418c5d51eff616d0781182d319b2d
+source: !op:C->C->C. monoidal op ==> (!f:A->C. iterate op EMPTY f = neutral op) /\ (!f:B->C. !x:B. !s:B->bool. FINITE s ==> iterate op (x INSERT s) f = (if x IN s then iterate op s f else op (f x) (iterate op s f)))
+status: transport_required
+statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\ (forall x :e C, op (neutral_of C op) x = x) -> (forall f:set -> set, (forall x :e A, f x :e C) -> iterate_op C op Empty f = neutral_of C op) /\ forall f:set -> set, (forall x :e B, f x :e C) -> forall x :e B, forall s c= B, finite s -> iterate_op C op (SetAdjoin s x) f = if x :e s then iterate_op C op s f else op (f x) (iterate_op C op s f)
+
+### NUMSEG_CLAUSES   [iteration, sums, number segments]
+hash: aaec3d7bc1b903fbed446dba31debe52
+source: (!m:num. .. m 0 = (if m = 0 then 0 INSERT EMPTY else EMPTY)) /\ (!m:num. !n:num. .. m (SUC n) = (if m <= SUC n then SUC n INSERT .. m n else .. m n))
+status: transport_required
+statement: (forall m :e omega, {i :e omega | m <= i /\ i <= 0} = if m = 0 then {0} else Empty) /\ forall m n :e omega, {i :e omega | m <= i /\ i <= ordsucc n} = if m <= ordsucc n then SetAdjoin {i :e omega | m <= i /\ i <= n} (ordsucc n) else {i :e omega | m <= i /\ i <= n}
+
+### SUM_SING   [iteration, sums, number segments]
+hash: dbf2c5eb44671fdd1484486c9cfb2ed3
+source: !f:A->real. !x:A. sum (x INSERT EMPTY) f = f x
+status: generalization_required
+statement: forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall x :e A, finsum {x} f = f x
+
+### CARD_NUMSEG   [iteration, sums, number segments]
+hash: 603fc98d20552313cb229eb8c9fd1ab3
+source: !m:num. !n:num. CARD (.. m n) = (n + 1) - m
+status: transport_required
+statement: forall m n :e omega, finite_cardinality {i :e omega | m <= i /\ i <= n} = minus_nat (n + 1) m
+
+### NSUM_UNION   [iteration, sums, number segments]
+hash: 254da9a0342a265c00884ab83c6b0037
+source: !f:A->num. !s:A->bool. !t:A->bool. FINITE s /\ FINITE t /\ DISJOINT s t ==> nsum (s UNION t) f = nsum s f + nsum t f
+status: transport_required
+statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finsum (s :\/: t) f = finsum s f + finsum t f
+
+### neutral   [iteration, sums, number segments]
+hash: a8873aaeb854cfc680774eff00267039
+source: !op:A->A->A. neutral op = (@x:A. !y:A. op x y = y /\ op y x = y)
+status: exact_native
+statement: forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> neutral_of A op = choose_in A (fun x:set => forall y :e A, op x y = y /\ op y x = y)
+
+### support   [iteration, sums, number segments]
+hash: db57a04db49d84b327ec80e8d4024bb4
+source: !s:A->bool. !f:A->B. !op:B->B->B. support op f s = GSPEC (\GEN%PVAR%239:A. ?x:A. SETSPEC GEN%PVAR%239 (x IN s /\ ~(f x = neutral op)) x)
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B op} = {x :e A | x :e s /\ ~ f x = neutral_of B op}
+
+### SUM_IMAGE   [iteration, sums, number segments]
+hash: ad177bf18ca1c44876fd0f53adc1ddbc
+source: !f:A->B. !g:B->real. !s:A->bool. (!x:A. !y:A. x IN s /\ y IN s /\ f x = f y ==> x = y) ==> sum (IMAGE f s) g = sum s (g o f)
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e R) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> finsum {f x | x :e s} g = finsum s (fun x:set => g (f x))
+
+### NSUM_BOUND   [iteration, sums, number segments]
+hash: 822f18b79cadf3f9e39fe32c88d6727e
+source: !s:A->bool. !f:A->num. !b:num. FINITE s /\ (!x:A. x IN s ==> f x <= b) ==> nsum s f <= CARD s * b
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (forall x :e A, x :e s -> f x <= b) -> finsum s f <= finite_cardinality s * b
+
+### CART_EQ   [Cartesian powers and finite index types]
+hash: 12d2a2739958dbd8cafb139a4bfa94c3
+source: !x:(A,B)cart. !y:(A,B)cart. x = y <=> (!i:num. 1 <= i /\ i <= dimindex UNIV ==> x $ i = y $ i)
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall x y :e A :^: idx B, x = y <-> forall i :e omega, 1 <= i /\ i <= dimindex B -> x i = y i
+
+### LAMBDA_BETA   [Cartesian powers and finite index types]
+hash: a1b73e7882037b5a6a9034c65eb72d73
+source: !i:num. 1 <= i /\ i <= dimindex UNIV ==> lambda g $ i = g i
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e omega, g x :e A) -> forall i :e omega, 1 <= i /\ i <= dimindex B -> (fun i :e idx B => g i) i = g i
+
+### DIMINDEX_1   [Cartesian powers and finite index types]
+hash: 49a9d44c0dac1fb1c010affe48096fff
+source: dimindex UNIV = 1
+status: transport_required
+statement: 1 = 1
+
+### DIMINDEX_2   [Cartesian powers and finite index types]
+hash: d0a8da4f2034656bd4d9e0714a4c82f2
+source: dimindex UNIV = 2
+status: transport_required
+statement: 2 = 2
+
+### FORALL_FINITE_INDEX   [Cartesian powers and finite index types]
+hash: 43ac0aa393472f102dd0f56823d962d3
+source: (!k:N finite_image. P k) <=> (!i:num. 1 <= i /\ i <= dimindex UNIV ==> P (finite_index i))
+status: generalization_required
+statement: forall N:set, N <> Empty -> forall P:set -> prop, (forall k :e idx N, P k) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> P i
+
+### DIMINDEX_FINITE_SUM   [Cartesian powers and finite index types]
+hash: 9c92b496f688797b7d7b3bea395b3a9d
+source: dimindex UNIV = dimindex UNIV + dimindex UNIV
+status: generalization_required
+statement: forall M N:set, dimindex M + dimindex N = dimindex M + dimindex N
+
+### DIMINDEX_GE_1   [Cartesian powers and finite index types]
+hash: 6330d948a4ade390789c61f4944f6861
+source: !s:A->bool. 1 <= dimindex s
+status: native_reuse
+statement: forall A:set, A <> Empty -> 1 <= dimindex A
+
+### FINITE_INDEX_INJ   [Cartesian powers and finite index types]
+hash: ed3f2b168a80aa1187743fa433a8d6e6
+source: !i:num. !j:num. 1 <= i /\ i <= dimindex UNIV /\ 1 <= j /\ j <= dimindex UNIV ==> (finite_index i = finite_index j <=> i = j)
+status: generalization_required
+statement: forall A:set, forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j)
+
+### LAMBDA_ETA   [Cartesian powers and finite index types]
+hash: bf7a9034dc52575b2f124f169fb89276
+source: !g:(A,B)cart. lambda (\i:num. g $ i) = g
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall g :e A :^: idx B, (fun i :e idx B => g i) = g
+
+### CART_EQ_FULL   [Cartesian powers and finite index types]
+hash: 955cf716b47b18c6a131edcb1725c1c6
+source: !x:(A,N)cart. !y:(A,N)cart. x = y <=> (!i:num. x $ i = y $ i)
+status: generalization_required
+statement: forall A N:set, N <> Empty -> forall x y :e A :^: idx N, x = y <-> forall i :e omega, x i = y i
+
+### REAL_ADD_SYM   [reals: field axioms, order, derived operations]
+hash: 69f4343bec6bd235a399ba23a38d19cf
+source: !x:real. !y:real. x + y = y + x
+status: native_reuse
+statement: forall x y :e R, x + y = y + x
+
+### REAL_MUL_ASSOC   [reals: field axioms, order, derived operations]
+hash: 9ea7c36e21183fa79ec8bfdc791ec8c6
+source: !x:real. !y:real. !z:real. x * y * z = (x * y) * z
+status: native_reuse
+statement: forall x y z :e R, x * y * z = (x * y) * z
+
+### REAL_LE_TRANS   [reals: field axioms, order, derived operations]
+hash: 650af3c1406ad5babc239cd1e46503bc
+source: !x:real. !y:real. !z:real. x <= y /\ y <= z ==> x <= z
+status: transport_required
+statement: forall x y z :e R, x <= y /\ y <= z -> x <= z
+
+### REAL_LT_TOTAL   [reals: field axioms, order, derived operations]
+hash: ac4b52bab10f3ed1a46e76f849ba562b
+source: !x:real. !y:real. x = y \/ x < y \/ y < x
+status: transport_required
+statement: forall x y :e R, x = y \/ (x < y \/ y < x)
+
+### REAL_ADD_LINV   [reals: field axioms, order, derived operations]
+hash: 69b62ed94b5a39a5cb6b939e9fd25fcf
+source: !x:real. real_neg x + x = real_of_num 0
+status: native_reuse
+statement: forall x :e R, - x + x = 0
+
+### REAL_MUL_LINV   [reals: field axioms, order, derived operations]
+hash: a9878dfb3f8f4e0493a76e9de2ddf29c
+source: !x:real. ~(x = real_of_num 0) ==> real_inv x * x = real_of_num 1
+status: transport_required
+statement: forall x :e R, ~ x = 0 -> recip_SNo x * x = 1
+
+### REAL_OF_NUM_ADD   [reals: field axioms, order, derived operations]
+hash: 783dde967a79844cda42d3f3e75c41ad
+source: !m:num. !n:num. real_of_num m + real_of_num n = real_of_num (m + n)
+status: transport_required
+statement: forall m n :e omega, m + n = m + n
+
+### REAL_ABS_TRIANGLE   [reals: field axioms, order, derived operations]
+hash: 8a6e90a0968c0c940616841569612a35
+source: !x:real. !y:real. real_abs (x + y) <= real_abs x + real_abs y
+status: native_reuse
+statement: forall x y :e R, abs_SNo (x + y) <= abs_SNo x + abs_SNo y
+
+### REAL_POW_ADD   [reals: field axioms, order, derived operations]
+hash: 7444b9839b1bd878ee901b5bf4897d75
+source: !x:real. !m:num. !n:num. x pow (m + n) = x pow m * x pow n
+status: transport_required
+statement: forall x :e R, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n
+
+### REAL_INV_INV   [reals: field axioms, order, derived operations]
+hash: 15378ada745a2d9d74f5b75bb47f417d
+source: !x:real. real_inv (real_inv x) = x
+status: transport_required
+statement: forall x :e R, recip_SNo (recip_SNo x) = x
+
+### REAL_DIV_REFL   [reals: field axioms, order, derived operations]
+hash: fc6ed5898d96f0fdd75da1bcc15992a9
+source: !x:real. ~(x = real_of_num 0) ==> x / x = real_of_num 1
+status: transport_required
+statement: forall x :e R, ~ x = 0 -> x :/: x = 1
+
+### REAL_LE_SQUARE   [reals: field axioms, order, derived operations]
+hash: dc0d07c4fc09a788c2ef40abf97ab583
+source: !x:real. real_of_num 0 <= x * x
+status: transport_required
+statement: forall x :e R, 0 <= x * x
+
+### REAL_ARCH   [reals: field axioms, order, derived operations]
+hash: abad9d45e11f20c4544fb1dbe61c24fa
+source: !x:real. real_of_num 0 < x ==> (!y:real. ?n:num. y < real_of_num n * x)
+status: transport_required
+statement: forall x :e R, 0 < x -> forall y :e R, exists n :e omega, y < n * x
+
+### REAL_COMPLETE   [reals: field axioms, order, derived operations]
+hash: ed89d1373d628a31ea8fceb7aa11825a
+source: !P:real->bool. (?x:real. P x) /\ (?M:real. !x:real. P x ==> x <= M) ==> (?M:real. (!x:real. P x ==> x <= M) /\ (!M':real. (!x:real. P x ==> x <= M') ==> M <= M'))
+status: transport_required
+statement: forall P:set -> prop, (exists x :e R, P x) /\ (exists M :e R, forall x :e R, P x -> x <= M) -> exists M :e R, (forall x :e R, P x -> x <= M) /\ forall M' :e R, (forall x :e R, P x -> x <= M') -> M <= M'
+
+### REAL_MAX_MIN   [reals: field axioms, order, derived operations]
+hash: 123f2fec7036c9c21403a85b57953fa0
+source: !x:real. !y:real. real_max x y = real_neg (real_min (real_neg x) (real_neg y))
+status: transport_required
+statement: forall x y :e R, (if x <= y then y else x) = - if - x <= - y then - x else - y
+
+### REAL_LT_LADD_IMP   [reals: field axioms, order, derived operations]
+hash: c540e203a0aead265ae133df5ac2300d
+source: !x:real. !y:real. !z:real. y < z ==> x + y < x + z
+status: transport_required
+statement: forall x y z :e R, y < z -> x + y < x + z
+
+### REAL_ABS_POS   [reals: field axioms, order, derived operations]
+hash: e8a555b35bac915447922d0b3b8edb07
+source: !x:real. real_of_num 0 <= real_abs x
+status: native_reuse
+statement: forall x :e R, 0 <= abs_SNo x
+
+### REAL_INV_0   [reals: field axioms, order, derived operations]
+hash: 58bc73bd1864f8ac755987a82d6740f3
+source: real_inv (real_of_num 0) = real_of_num 0
+status: native_reuse
+statement: recip_SNo 0 = 0
+
+### REAL_POW_2   [reals: field axioms, order, derived operations]
+hash: 6a96774983d9221fa9d194a897100854
+source: !x:real. x pow 2 = x * x
+status: transport_required
+statement: forall x :e R, x ^ 2 = x * x
+
+### REAL_LE_ANTISYM   [reals: field axioms, order, derived operations]
+hash: 2a36fae7a764e7b6f8d1470ecbd9d3be
+source: !x:real. !y:real. x <= y /\ y <= x <=> x = y
+status: transport_required
+statement: forall x y :e R, x <= y /\ y <= x <-> x = y
+
+### INT_ADD_SYM   [integers]
+hash: 823efccaab8f8c65707f8d2a529cd7e1
+source: !x:int. !y:int. x + y = y + x
+status: transport_required
+statement: forall x y :e int, x + y = y + x
+
+### INT_OF_NUM_ADD   [integers]
+hash: 51a2e415bbd755081b9c29ecbf28821f
+source: !m:num. !n:num. int_of_num m + int_of_num n = int_of_num (m + n)
+status: transport_required
+statement: forall m n :e omega, m + n = m + n
+
+### INT_LE_TRANS   [integers]
+hash: ab3a6aadc863a3552c806ad6a6f29b78
+source: !x:int. !y:int. !z:int. x <= y /\ y <= z ==> x <= z
+status: transport_required
+statement: forall x y z :e int, x <= y /\ y <= z -> x <= z
+
+### INT_ABS_POS   [integers]
+hash: 52755ebb3b6de706dd592efa6b16d25d
+source: !x:int. int_of_num 0 <= int_abs x
+status: transport_required
+statement: forall x :e int, 0 <= abs_SNo x
+
+### INT_DIVISION   [integers]
+hash: f0a1be36963cfff364e042a398f6c10d
+source: !m:int. !n:int. ~(n = int_of_num 0) ==> m = div m n * n + rem m n /\ int_of_num 0 <= rem m n /\ rem m n < int_abs n
+status: transport_required
+statement: forall m n :e int, ~ n = 0 -> m = div_int m n * n + rem_int m n /\ (0 <= rem_int m n /\ rem_int m n < abs_SNo n)
+
+### INT_GCD_EXISTS   [integers]
+hash: 1fd3791a36b29532c3099944ac467d39
+source: !a:int. !b:int. ?d:int. int_divides d a /\ int_divides d b /\ (?x:int. ?y:int. d = a * x + b * y)
+status: transport_required
+statement: forall a b :e int, exists d :e int, divides_int d a /\ (divides_int d b /\ exists x y :e int, d = a * x + b * y)
+
+### NUM_GCD   [integers]
+hash: 71b969f4ff9cc7292e8e593f142bdcc9
+source: !a:num. !b:num. int_of_num (num_gcd (a , b)) = int_gcd (int_of_num a , int_of_num b)
+status: transport_required
+statement: forall a b :e omega, gcd_int a b = gcd_int a b
+
+### CONG   [integers]
+hash: 724c7646174213ceafea3e62084f528f
+source: !x:num. !y:num. !n:num. == x y (num_mod n) <=> x MOD n = y MOD n
+status: transport_required
+statement: forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n
+
+### INT_POW_ADD   [integers]
+hash: 9fd0e6e0611a65097f4817e3221bc72b
+source: !x:int. !m:num. !n:num. x pow (m + n) = x pow m * x pow n
+status: transport_required
+statement: forall x :e int, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n
+
+### INTEGER_REAL_OF_INT   [integers]
+hash: fd2f6c28a41c04c5ff22528384474bc8
+source: !x:int. integer (real_of_int x)
+status: transport_required
+statement: forall x :e int, x :e int
+
+### INT_FORALL_POS   [integers]
+hash: 85a59e4ef2440743785ab04d2db8ad7b
+source: !P:int->bool. (!n:num. P (int_of_num n)) <=> (!i:int. int_of_num 0 <= i ==> P i)
+status: transport_required
+statement: forall P:set -> prop, (forall n :e omega, P n) <-> forall i :e int, 0 <= i -> P i
+
+### INT_ARCH   [integers]
+hash: 351ee14a8335eb82d4a884a47e45ad53
+source: !x:int. !d:int. ~(d = int_of_num 0) ==> (?c:int. x < c * d)
+status: transport_required
+statement: forall x d :e int, ~ d = 0 -> exists c :e int, x < c * d
+
+### num_gcd   [integers]
+hash: 88962877646a99de9617e2dde9640448
+source: !a:num. !b:num. num_gcd (a , b) = num_of_int (int_gcd (int_of_num a , int_of_num b))
+status: generalization_required
+statement: forall a b :e omega, gcd_int a b = if gcd_int a b :e omega then gcd_int a b else 0
+
+### INT_DIVMOD_UNIQ   [integers]
+hash: a59cba60f1a515ec1b3002d354da584b
+source: !m:int. !n:int. !q:int. !r:int. m = q * n + r /\ int_of_num 0 <= r /\ r < int_abs n ==> div m n = q /\ rem m n = r
+status: transport_required
+statement: forall m n q r :e int, m = q * n + r /\ (0 <= r /\ r < abs_SNo n) -> div_int m n = q /\ rem_int m n = r
+
+### OUTL   [option and sum types]
+hash: c31d1bada798b3a79e21ff4f54d61c5b
+source: OUTL (INL x) = x
+status: generalization_required
+statement: forall A B:set, B <> Empty -> forall x :e A, OUTL A B (Inj0 x) = x
+
+### OUTR   [option and sum types]
+hash: 7d0e05a613fcdc794c952d7ab6306a50
+source: OUTR (INR y) = y
+status: generalization_required
+statement: forall A B:set, A <> Empty -> forall y :e B, OUTR A B (Inj1 y) = y
+
+### option_INDUCT   [option and sum types]
+hash: e4c8e92bde030ec48006c86c6a04e07e
+source: !P:A option->bool. P NONE /\ (!a:A. P (SOME a)) ==> (!x:A option. P x)
+status: transport_required
+statement: forall A:set, A <> Empty -> forall P:set -> prop, P (Inj0 0) /\ (forall a :e A, P (Inj1 a)) -> forall x :e 1 :+: A, P x
+
+### option_DISTINCT   [option and sum types]
+hash: e7925affd10224458b2c0632786b20c3
+source: !a:A. ~(SOME a = NONE)
+status: generalization_required
+statement: forall A:set, forall a :e A, ~ Inj1 a = Inj0 0
+
+### option_INJ   [option and sum types]
+hash: 4b1c51697077e7e6230974a578bf806c
+source: !a:A. !b:A. SOME a = SOME b <=> a = b
+status: generalization_required
+statement: forall A:set, forall a b :e A, Inj1 a = Inj1 b <-> a = b
+
+### sum_INDUCT   [option and sum types]
+hash: de2725f07074fc50f47627403a63ffd9
+source: !P:(A,B)sum->bool. (!a:A. P (INL a)) /\ (!a:B. P (INR a)) ==> (!x:(A,B)sum. P x)
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, (forall a :e A, P (Inj0 a)) /\ (forall a :e B, P (Inj1 a)) -> forall x :e A :+: B, P x
+
+### sum_RECURSION   [option and sum types]
+hash: a693dd783d6aeace677183d17ed78fbe
+source: !INL':A->Z. !INR':B->Z. ?fn:(A,B)sum->Z. (!a:A. fn (INL a) = INL' a) /\ (!a:B. fn (INR a) = INR' a)
+status: transport_required
+statement: forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\ ((forall a :e A, fn (Inj0 a) = INL' a) /\ forall a :e B, fn (Inj1 a) = INR' a)
+
+### DECIMAL   [rationals and decimals]
+hash: fa6361200beb01135fbf6c305ca1bb33
+source: !x:num. !y:num. DECIMAL x y = real_of_num x / real_of_num y
+status: transport_required
+statement: forall x y :e omega, x :/: y = x :/: y
+
+### RAT_LEMMA1   [rationals and decimals]
+hash: e8393a3cd1be553aa7c60366fca81f84
+source: ~(y1 = real_of_num 0) /\ ~(y2 = real_of_num 0) ==> x1 / y1 + x2 / y2 = (x1 * y2 + x2 * y1) * real_inv y1 * real_inv y2
+status: transport_required
+statement: forall y1 y2 x1 x2 :e R, ~ y1 = 0 /\ ~ y2 = 0 -> x1 :/: y1 + x2 :/: y2 = (x1 * y2 + x2 * y1) * recip_SNo y1 * recip_SNo y2
+
+### IND_SUC_0_EXISTS   [type definitions and construction internals (quarantined statuses)]
+hash: 76d6532182ac1531dac8208b34be6e12
+source: ?f:ind->ind. ?z:ind. (!x1:ind. !x2:ind. f x1 = f x2 <=> x1 = x2) /\ (!x:ind. ~(f x = z))
+status: pending_mapping
+
+### one_axiom   [type definitions and construction internals (quarantined statuses)]
+hash: 1d5dc2e3ae749e7020d13e448211d911
+source: !f:A->1. !g:A->1. f = g
+status: generalization_required
+statement: forall A:set, forall f:set -> set, (forall x :e A, f x :e 1) -> forall g:set -> set, (forall x :e A, g x :e 1) -> forall x :e A, f x = g x
+
+### one_tydef   [type definitions and construction internals (quarantined statuses)]
+hash: 738e5db9b52bb8ffb3de40701e289d23
+source: (!a:1. one_ABS (one_REP a) = a) /\ (!r:bool. r <=> one_REP (one_ABS r) <=> r)
+status: pending_mapping
+
+### one_Axiom   [type definitions and construction internals (quarantined statuses)]
+hash: ed14c7f387dfc73cd6603c753781f4bf
+source: !e:A. ?!fn:1->A. fn one = e
+status: generalization_required
+statement: forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ (fn 0 = e0 /\ forall y:set -> set, (forall x :e 1, y x :e A) -> y 0 = e0 -> forall x :e 1, y x = fn x)
+

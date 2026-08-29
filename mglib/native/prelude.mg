@@ -334,14 +334,160 @@ Definition finprod : set -> (set -> set) -> set :=
              then group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i))
                     (finite_cardinality {x :e s | f x <> 1}) else 1.
 
+// Closure of iterated products under a set K that need not be the structure carrier G.
+Theorem gwp_closed : forall G K:set, forall mul:set -> set -> set, forall f:set -> set,
+  group_identity G mul :e K -> (forall x y :e K, mul x y :e K) ->
+  forall n:set, nat_p n -> (forall i :e n, f i :e K) -> group_word_product G mul f n :e K.
+let G K mul f. assume He: group_identity G mul :e K. assume Hc: forall x y :e K, mul x y :e K.
+apply (nat_ind (fun n => (forall i :e n, f i :e K) -> group_word_product G mul f n :e K)).
+- assume _. rewrite (god1_group_word_product_zero G mul f). exact He.
+- let n. assume Hn: nat_p n. assume IH: (forall i :e n, f i :e K) -> group_word_product G mul f n :e K.
+  assume Hf: forall i :e ordsucc n, f i :e K.
+  rewrite (god1_group_word_product_successor G mul f n Hn).
+  apply Hc.
+  + apply IH. let i. assume Hi: i :e n. exact (Hf i (ordsuccI1 n i Hi)).
+  + exact (Hf n (ordsuccI2 n)).
+Qed.
+
+// The additive and multiplicative identities of the real structure are 0 and 1.
+Theorem group_identity_R_add : group_identity R add_SNo = 0.
+claim L0: neutral_element R add_SNo 0.
+{ prove 0 :e R /\ forall x :e R, x + 0 = x /\ 0 + x = x.
+  apply andI.
+  - exact real_0.
+  - let x. assume Hx: x :e R. apply andI.
+    + exact (add_SNo_0R x (real_SNo x Hx)).
+    + exact (add_SNo_0L x (real_SNo x Hx)). }
+claim L1: neutral_element R add_SNo (group_identity R add_SNo).
+{ prove neutral_element R add_SNo (Eps_i (fun e => neutral_element R add_SNo e)).
+  exact (Eps_i_ax (fun e => neutral_element R add_SNo e) 0 L0). }
+apply L1.
+assume He: group_identity R add_SNo :e R.
+assume Hn: forall x :e R, x + group_identity R add_SNo = x /\ group_identity R add_SNo + x = x.
+claim L2: group_identity R add_SNo + 0 = 0.
+{ exact (andER (0 + group_identity R add_SNo = 0) (group_identity R add_SNo + 0 = 0) (Hn 0 real_0)). }
+rewrite <- (add_SNo_0R (group_identity R add_SNo) (real_SNo (group_identity R add_SNo) He)) at 1.
+exact L2.
+Qed.
+
+Theorem group_identity_R_mul : group_identity R mul_SNo = 1.
+claim L0: neutral_element R mul_SNo 1.
+{ prove 1 :e R /\ forall x :e R, x * 1 = x /\ 1 * x = x.
+  apply andI.
+  - exact real_1.
+  - let x. assume Hx: x :e R. apply andI.
+    + exact (mul_SNo_oneR x (real_SNo x Hx)).
+    + exact (mul_SNo_oneL x (real_SNo x Hx)). }
+claim L1: neutral_element R mul_SNo (group_identity R mul_SNo).
+{ prove neutral_element R mul_SNo (Eps_i (fun e => neutral_element R mul_SNo e)).
+  exact (Eps_i_ax (fun e => neutral_element R mul_SNo e) 1 L0). }
+apply L1.
+assume He: group_identity R mul_SNo :e R.
+assume Hn: forall x :e R, x * group_identity R mul_SNo = x /\ group_identity R mul_SNo * x = x.
+claim L2: group_identity R mul_SNo * 1 = 1.
+{ exact (andER (1 * group_identity R mul_SNo = 1) (group_identity R mul_SNo * 1 = 1) (Hn 1 real_1)). }
+rewrite <- (mul_SNo_oneR (group_identity R mul_SNo) (real_SNo (group_identity R mul_SNo) He)) at 1.
+exact L2.
+Qed.
+
+// Members of a finite enumeration lie in the enumerated set.
+Theorem finite_enumeration_In : forall X:set, finite X -> forall i :e finite_cardinality X, finite_enumeration X i :e X.
+let X. assume HX: finite X. let i. assume Hi: i :e finite_cardinality X.
+apply (god1_finite_enumeration_specification X HX).
+assume H1: finite_enumeration X :e X :^: finite_cardinality X.
+assume _.
+exact (ap_Pi (finite_cardinality X) (fun _ => X) (finite_enumeration X) i H1 Hi).
+Qed.
+
 Theorem finsum_R : forall s:set, forall f:set -> set, (forall x :e s, f x :e R) -> finsum s f :e R.
-Admitted.
+let s f. assume Hf: forall x :e s, f x :e R.
+prove (if finite {x :e s | f x <> 0} then ring_finite_sum R add_SNo {x :e s | f x <> 0} f else 0) :e R.
+apply (xm (finite {x :e s | f x <> 0})).
+- assume H1: finite {x :e s | f x <> 0}.
+  rewrite (If_i_1 (finite {x :e s | f x <> 0}) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) 0 H1).
+  prove group_word_product R add_SNo (fun i => f (finite_enumeration {x :e s | f x <> 0} i)) (finite_cardinality {x :e s | f x <> 0}) :e R.
+  apply (gwp_closed R R add_SNo (fun i => f (finite_enumeration {x :e s | f x <> 0} i))).
+  + rewrite group_identity_R_add. exact real_0.
+  + exact real_add_SNo.
+  + apply (god1_finite_cardinality_specification {x :e s | f x <> 0} H1).
+    assume Hc: finite_cardinality {x :e s | f x <> 0} :e omega. assume _.
+    exact (omega_nat_p (finite_cardinality {x :e s | f x <> 0}) Hc).
+  + let i. assume Hi: i :e finite_cardinality {x :e s | f x <> 0}.
+    prove f (finite_enumeration {x :e s | f x <> 0} i) :e R.
+    apply Hf.
+    exact (SepE1 s (fun x => f x <> 0) (finite_enumeration {x :e s | f x <> 0} i) (finite_enumeration_In {x :e s | f x <> 0} H1 i Hi)).
+- assume H1: ~ finite {x :e s | f x <> 0}.
+  rewrite (If_i_0 (finite {x :e s | f x <> 0}) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) 0 H1).
+  exact real_0.
+Qed.
+
 Theorem finsum_omega : forall s:set, forall f:set -> set, (forall x :e s, f x :e omega) -> finsum s f :e omega.
-Admitted.
+let s f. assume Hf: forall x :e s, f x :e omega.
+prove (if finite {x :e s | f x <> 0} then ring_finite_sum R add_SNo {x :e s | f x <> 0} f else 0) :e omega.
+apply (xm (finite {x :e s | f x <> 0})).
+- assume H1: finite {x :e s | f x <> 0}.
+  rewrite (If_i_1 (finite {x :e s | f x <> 0}) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) 0 H1).
+  prove group_word_product R add_SNo (fun i => f (finite_enumeration {x :e s | f x <> 0} i)) (finite_cardinality {x :e s | f x <> 0}) :e omega.
+  apply (gwp_closed R omega add_SNo (fun i => f (finite_enumeration {x :e s | f x <> 0} i))).
+  + rewrite group_identity_R_add. exact (nat_p_omega 0 nat_0).
+  + exact add_SNo_In_omega.
+  + apply (god1_finite_cardinality_specification {x :e s | f x <> 0} H1).
+    assume Hc: finite_cardinality {x :e s | f x <> 0} :e omega. assume _.
+    exact (omega_nat_p (finite_cardinality {x :e s | f x <> 0}) Hc).
+  + let i. assume Hi: i :e finite_cardinality {x :e s | f x <> 0}.
+    prove f (finite_enumeration {x :e s | f x <> 0} i) :e omega.
+    apply Hf.
+    exact (SepE1 s (fun x => f x <> 0) (finite_enumeration {x :e s | f x <> 0} i) (finite_enumeration_In {x :e s | f x <> 0} H1 i Hi)).
+- assume H1: ~ finite {x :e s | f x <> 0}.
+  rewrite (If_i_0 (finite {x :e s | f x <> 0}) (ring_finite_sum R add_SNo {x :e s | f x <> 0} f) 0 H1).
+  exact (nat_p_omega 0 nat_0).
+Qed.
+
 Theorem finprod_R : forall s:set, forall f:set -> set, (forall x :e s, f x :e R) -> finprod s f :e R.
-Admitted.
+let s f. assume Hf: forall x :e s, f x :e R.
+prove (if finite {x :e s | f x <> 1}
+       then group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i)) (finite_cardinality {x :e s | f x <> 1})
+       else 1) :e R.
+apply (xm (finite {x :e s | f x <> 1})).
+- assume H1: finite {x :e s | f x <> 1}.
+  rewrite (If_i_1 (finite {x :e s | f x <> 1}) (group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i)) (finite_cardinality {x :e s | f x <> 1})) 1 H1).
+  apply (gwp_closed R R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i))).
+  + rewrite group_identity_R_mul. exact real_1.
+  + exact real_mul_SNo.
+  + apply (god1_finite_cardinality_specification {x :e s | f x <> 1} H1).
+    assume Hc: finite_cardinality {x :e s | f x <> 1} :e omega. assume _.
+    exact (omega_nat_p (finite_cardinality {x :e s | f x <> 1}) Hc).
+  + let i. assume Hi: i :e finite_cardinality {x :e s | f x <> 1}.
+    prove f (finite_enumeration {x :e s | f x <> 1} i) :e R.
+    apply Hf.
+    exact (SepE1 s (fun x => f x <> 1) (finite_enumeration {x :e s | f x <> 1} i) (finite_enumeration_In {x :e s | f x <> 1} H1 i Hi)).
+- assume H1: ~ finite {x :e s | f x <> 1}.
+  rewrite (If_i_0 (finite {x :e s | f x <> 1}) (group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i)) (finite_cardinality {x :e s | f x <> 1})) 1 H1).
+  exact real_1.
+Qed.
+
 Theorem finprod_omega : forall s:set, forall f:set -> set, (forall x :e s, f x :e omega) -> finprod s f :e omega.
-Admitted.
+let s f. assume Hf: forall x :e s, f x :e omega.
+prove (if finite {x :e s | f x <> 1}
+       then group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i)) (finite_cardinality {x :e s | f x <> 1})
+       else 1) :e omega.
+apply (xm (finite {x :e s | f x <> 1})).
+- assume H1: finite {x :e s | f x <> 1}.
+  rewrite (If_i_1 (finite {x :e s | f x <> 1}) (group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i)) (finite_cardinality {x :e s | f x <> 1})) 1 H1).
+  apply (gwp_closed R omega mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i))).
+  + rewrite group_identity_R_mul. exact (nat_p_omega 1 nat_1).
+  + exact mul_SNo_In_omega.
+  + apply (god1_finite_cardinality_specification {x :e s | f x <> 1} H1).
+    assume Hc: finite_cardinality {x :e s | f x <> 1} :e omega. assume _.
+    exact (omega_nat_p (finite_cardinality {x :e s | f x <> 1}) Hc).
+  + let i. assume Hi: i :e finite_cardinality {x :e s | f x <> 1}.
+    prove f (finite_enumeration {x :e s | f x <> 1} i) :e omega.
+    apply Hf.
+    exact (SepE1 s (fun x => f x <> 1) (finite_enumeration {x :e s | f x <> 1} i) (finite_enumeration_In {x :e s | f x <> 1} H1 i Hi)).
+- assume H1: ~ finite {x :e s | f x <> 1}.
+  rewrite (If_i_0 (finite {x :e s | f x <> 1}) (group_word_product R mul_SNo (fun i => f (finite_enumeration {x :e s | f x <> 1} i)) (finite_cardinality {x :e s | f x <> 1})) 1 H1).
+  exact (nat_p_omega 1 nat_1).
+Qed.
 
 // gcd and lcm on integers (HOL Light int_gcd/num_gcd take a pair).
 Definition gcd_int : set -> set -> set :=
@@ -503,8 +649,111 @@ Definition sndcart : set -> set -> set -> set := fun M N z => fun i :e idx N => 
 
 // floor of a real number as the integer n with n <= x < n + 1
 Definition floor_R : set -> set := fun x => choose_in int (fun n => n <= x /\ x < n + 1).
+// Every nonnegative real lies in a unit interval [n, n+1) with n natural.
+Theorem floor_omega_ex : forall x :e R, 0 <= x -> exists n :e omega, n <= x /\ x < n + 1.
+let x. assume Hx: x :e R. assume H0: 0 <= x.
+claim HxS: SNo x. { exact (real_SNo x Hx). }
+claim L1: exists m :e omega, x < m.
+{ apply (real_Archimedean 1 real_1 x Hx SNoLt_0_1 H0).
+  let m. assume Hm0: m :e omega /\ x <= m * 1. apply Hm0. assume Hm: m :e omega. assume Hxm: x <= m * 1.
+  witness (ordsucc m). apply andI.
+  - exact (omega_ordsucc m Hm).
+  - rewrite <- (add_SNo_1_ordsucc m Hm).
+    apply (SNoLeLt_tra x m (m + 1) HxS (omega_SNo m Hm) (SNo_add_SNo m 1 (omega_SNo m Hm) SNo_1)).
+    + rewrite <- (mul_SNo_oneR m (omega_SNo m Hm)) at 1. exact Hxm.
+    + rewrite <- (add_SNo_0R m (omega_SNo m Hm)) at 1.
+      exact (add_SNo_Lt2 m 0 1 (omega_SNo m Hm) SNo_0 SNo_1 SNoLt_0_1). }
+claim L2: exists a, ordinal a /\ (a :e omega /\ x < a).
+{ apply L1. let m. assume Hm0: m :e omega /\ x < m. apply Hm0. assume Hm: m :e omega. assume Hxm: x < m.
+  witness m. apply andI.
+  - exact (nat_p_ordinal m (omega_nat_p m Hm)).
+  - exact (andI (m :e omega) (x < m) Hm Hxm). }
+apply (least_ordinal_ex (fun a => a :e omega /\ x < a) L2).
+let a. assume Ha: ordinal a /\ (a :e omega /\ x < a) /\ forall b :e a, ~ (b :e omega /\ x < b).
+apply Ha. assume Ha1: ordinal a /\ (a :e omega /\ x < a). assume Hleast: forall b :e a, ~ (b :e omega /\ x < b).
+apply Ha1. assume _. assume Ha2: a :e omega /\ x < a.
+apply Ha2. assume Hao: a :e omega. assume Hxa: x < a.
+apply (nat_inv a (omega_nat_p a Hao)).
+- assume Ha0: a = 0.
+  prove False.
+  apply (SNoLt_irref x).
+  apply (SNoLtLe_tra x 0 x HxS SNo_0 HxS).
+  + prove x < 0. rewrite <- Ha0. exact Hxa.
+  + exact H0.
+- assume H1: exists k, nat_p k /\ a = ordsucc k.
+  apply (exandE_i nat_p (fun k => a = ordsucc k) H1).
+  let k. assume Hk: nat_p k. assume Hak: a = ordsucc k.
+  claim Hko: k :e omega. { exact (nat_p_omega k Hk). }
+  claim HkS: SNo k. { exact (nat_p_SNo k Hk). }
+  witness k. apply andI.
+  + exact Hko.
+  + apply andI.
+    * apply (SNoLtLe_or x k HxS HkS).
+      { assume Hxk: x < k. prove False.
+        apply (Hleast k).
+        - rewrite Hak. exact (ordsuccI2 k).
+        - exact (andI (k :e omega) (x < k) Hko Hxk). }
+      { assume Hkx: k <= x. exact Hkx. }
+    * rewrite (add_SNo_1_ordsucc k Hko). rewrite <- Hak. exact Hxa.
+Qed.
+
+// Every real lies in a unit interval [n, n+1) with n an integer.
+Theorem floor_int_ex : forall x :e R, exists n :e int, n <= x /\ x < n + 1.
+let x. assume Hx: x :e R.
+claim HxS: SNo x. { exact (real_SNo x Hx). }
+apply (SNoLtLe_or x 0 HxS SNo_0).
+- assume Hx0: x < 0.
+  claim Hmx: - x :e R. { exact (real_minus_SNo x Hx). }
+  claim HmxS: SNo (- x). { exact (SNo_minus_SNo x HxS). }
+  claim H0mx: 0 <= - x.
+  { rewrite <- minus_SNo_0. exact (minus_SNo_Le_contra x 0 HxS SNo_0 (SNoLtLe x 0 Hx0)). }
+  apply (floor_omega_ex (- x) Hmx H0mx).
+  let k. assume Hk0: k :e omega /\ (k <= - x /\ - x < k + 1). apply Hk0. assume Hk: k :e omega. assume Hk2: k <= - x /\ - x < k + 1.
+  apply Hk2. assume Hk3: k <= - x. assume Hk4: - x < k + 1.
+  claim HkS: SNo k. { exact (omega_SNo k Hk). }
+  claim Hki: k :e int. { exact (Subq_omega_int k Hk). }
+  apply (SNoLeE k (- x) HkS HmxS Hk3).
+  + assume Hk5: k < - x.
+    witness (- (k + 1)). apply andI.
+    * apply int_minus_SNo. apply Subq_omega_int. rewrite (add_SNo_1_ordsucc k Hk). exact (omega_ordsucc k Hk).
+    * claim Hk1S: SNo (k + 1). { exact (SNo_add_SNo k 1 HkS SNo_1). }
+      apply andI.
+      { apply SNoLtLe. rewrite <- (minus_SNo_invol x HxS) at 1.
+        exact (minus_SNo_Lt_contra (- x) (k + 1) HmxS Hk1S Hk4). }
+      { claim L: - (k + 1) + 1 = - k.
+        { rewrite (minus_add_SNo_distr k 1 HkS SNo_1).
+          rewrite <- (add_SNo_assoc (- k) (- 1) 1 (SNo_minus_SNo k HkS) (SNo_minus_SNo 1 SNo_1) SNo_1).
+          rewrite (add_SNo_minus_SNo_linv 1 SNo_1).
+          exact (add_SNo_0R (- k) (SNo_minus_SNo k HkS)). }
+        rewrite L. rewrite <- (minus_SNo_invol x HxS) at 1.
+        exact (minus_SNo_Lt_contra k (- x) HkS HmxS Hk5). }
+  + assume Hk5: k = - x.
+    witness (- k). apply andI.
+    * exact (int_minus_SNo k Hki).
+    * rewrite Hk5. rewrite (minus_SNo_invol x HxS).
+      apply andI.
+      { exact (SNoLe_ref x). }
+      { rewrite <- (add_SNo_0R x HxS) at 1. exact (add_SNo_Lt2 x 0 1 HxS SNo_0 SNo_1 SNoLt_0_1). }
+- assume Hx0: 0 <= x.
+  apply (floor_omega_ex x Hx Hx0).
+  let k. assume Hk0: k :e omega /\ (k <= x /\ x < k + 1). apply Hk0. assume Hk: k :e omega. assume Hk2: k <= x /\ x < k + 1.
+  witness k. apply andI.
+  + exact (Subq_omega_int k Hk).
+  + exact Hk2.
+Qed.
+
 Theorem floor_R_int : forall x :e R, floor_R x :e int /\ floor_R x <= x /\ x < floor_R x + 1.
-Admitted.
+let x. assume Hx: x :e R.
+prove choose_in int (fun n => n <= x /\ x < n + 1) :e int
+      /\ choose_in int (fun n => n <= x /\ x < n + 1) <= x /\ x < choose_in int (fun n => n <= x /\ x < n + 1) + 1.
+apply (choose_in_spec int (fun n => n <= x /\ x < n + 1) (floor_int_ex x Hx)).
+assume H1: choose_in int (fun n => n <= x /\ x < n + 1) :e int.
+assume H2: choose_in int (fun n => n <= x /\ x < n + 1) <= x /\ x < choose_in int (fun n => n <= x /\ x < n + 1) + 1.
+apply H2. assume H2a: choose_in int (fun n => n <= x /\ x < n + 1) <= x. assume H2b: x < choose_in int (fun n => n <= x /\ x < n + 1) + 1.
+apply andI.
+- exact (andI (choose_in int (fun n => n <= x /\ x < n + 1) :e int) (choose_in int (fun n => n <= x /\ x < n + 1) <= x) H1 H2a).
+- exact H2b.
+Qed.
 
 // iteration of a function (HOL Light ITER n f x = f^n x)
 Definition iter_fun : set -> (set -> set) -> set -> set := fun n f x => nat_primrec x (fun _ r => f r) n.

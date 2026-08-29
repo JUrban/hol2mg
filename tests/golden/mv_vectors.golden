@@ -1,0 +1,87 @@
+# Golden fixtures for profile mv_vectors: 17 theorems.  Regenerate with tools/golden.py mv_vectors --update after reviewing the statements.
+
+### VECTOR_ADD_SYM   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: c46c544694035afa1b3adf36e9200ac4
+status: transport_required
+statement: forall N:set, N <> Empty -> forall x y :e R :^: idx N, vector_add N x y = vector_add N y x
+
+### DOT_SYM   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: e9adc86bbcb4c9ca445188cb92bfdcc1
+status: transport_required
+statement: forall A:set, A <> Empty -> forall x y :e R :^: idx A, dot A x y = dot A y x
+
+### NORM_TRIANGLE   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: ef6fc4fbee0886f6797c0875c1aca463
+status: transport_required
+statement: forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_norm A (vector_add A x y) <= vector_norm A x + vector_norm A y
+
+### LINEAR_ADD   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 80767b008813f5a667ce3d3fa0d64983
+status: transport_required
+statement: forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall x y :e R :^: idx A, linear A B f -> f (vector_add A x y) = vector_add B (f x) (f y)
+
+### SUBSPACE_SPAN   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 4b4984f489e13f264fb2a9b5c4d5ea7c
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s c= R :^: idx A, subspace A (span A s)
+
+### SPAN_MONO   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 0f66674127a4086a037e096b3845b6db
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s t c= R :^: idx A, s c= t -> span A s c= span A t
+
+### INDEPENDENT_MONO   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: f75c17b0ea118187b9d512a86e17f1d7
+status: transport_required
+statement: forall A:set, A <> Empty -> forall s t c= R :^: idx A, independent A t /\ s c= t -> independent A s
+
+### DIM_SUBSET   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 55ed459645382ebaaee7f5abf75c1bef
+status: transport_required
+statement: forall N:set, N <> Empty -> forall s t c= R :^: idx N, s c= t -> dim N s <= dim N t
+
+### ORTHOGONAL_SYM   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 3dc1f2e6f320341a551942d24d8203f2
+status: transport_required
+statement: forall A:set, A <> Empty -> forall x y :e R :^: idx A, orthogonal A x y <-> orthogonal A y x
+
+### LINEAR_COMPOSE   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: e0b9f07b4aaa811debbf91e705f242a1
+status: transport_required
+statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx B) -> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx C) -> linear A B f /\ linear B C g -> linear A C (fun x:set => g (f x))
+
+### VECTOR_SUB_EQ   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 24d31beb31c888fe0050bb222ae9932d
+status: transport_required
+statement: forall A:set, A <> Empty -> forall x y :e R :^: idx A, vector_sub A x y = vec A 0 <-> x = y
+
+### NORM_EQ_0   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 85262430d413f9519032f359ab28f502
+status: transport_required
+statement: forall A:set, A <> Empty -> forall x :e R :^: idx A, vector_norm A x = 0 <-> x = vec A 0
+
+### BASIS_INJ   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 52544faf0e2d9ff93a164e17870f8759
+status: transport_required
+statement: forall N:set, N <> Empty -> forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ (j <= dimindex N /\ basis N i = basis N j))) -> i = j
+
+### FORALL_VECTOR_1   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: df95b93b6850d33a9247d6c5dee481f1
+status: generalization_required
+statement: forall A:set, forall P:set -> prop, (forall v :e A :^: idx 1, P v) <-> forall x :e A, P (vector A 1 (seq_cons x seq_nil))
+
+### DOT_LMUL   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: a687d19cb435e24ba90e1af45f99a0e9
+status: transport_required
+statement: forall A:set, A <> Empty -> forall c :e R, forall x y :e R :^: idx A, dot A (vector_mul A c x) y = c * dot A x y
+
+### MATRIX_MUL_ASSOC   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 0dbd79888848d9a6caf2f19c9a94c790
+status: transport_required
+statement: forall M N P Q:set, M <> Empty -> N <> Empty -> P <> Empty -> Q <> Empty -> forall A :e R :^: idx N :^: idx M, forall B :e R :^: idx P :^: idx N, forall C :e R :^: idx Q :^: idx P, matrix_mul M N Q A (matrix_mul N P Q B C) = matrix_mul M P Q (matrix_mul M N P A B) C
+
+### DIST_TRIANGLE   [Multivariate/vectors.ml statements requiring transport and generalization]
+hash: 23c27deb7bdc7b5d364ba00af4c2cb58
+status: transport_required
+statement: forall N:set, N <> Empty -> forall x y z :e R :^: idx N, distance N (x,z) <= distance N (x,y) + distance N (y,z)
+

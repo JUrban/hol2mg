@@ -1,0 +1,40 @@
+name: ci
+on:
+  push:
+    branches: [ main, 'dev/**' ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      MEGALODON_COMMIT: e0fba57
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OCaml toolchain and libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ocaml ocaml-findlib libyojson-ocaml-dev python3
+          ocaml -version; ocamlfind list | grep -E '^(yojson|str|unix)'
+      - name: Build hol2mg
+        run: make
+      - name: Cache Megalodon
+        id: cache-megalodon
+        uses: actions/cache@v4
+        with:
+          path: ../repos/Megalodon/bin/megalodon
+          key: megalodon-${{ env.MEGALODON_COMMIT }}-ubuntu-24.04-${{ hashFiles('.github/workflows/ci.yml') }}
+      - name: Build Megalodon (pinned commit)
+        if: steps.cache-megalodon.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ../repos && cd ../repos
+          git clone https://github.com/ai4reason/Megalodon.git
+          cd Megalodon && git checkout "$MEGALODON_COMMIT" && ./makeopt
+          ls -l bin/megalodon
+      - name: Lint (no Axiom, no hand edits, manifest/doc consistency)
+        run: tools/lint.sh
+      - name: Self test (build, determinism, gates, golden fixtures, Megalodon core shards)
+        run: make test
+      - name: Native infrastructure proofs (prelude/finseq/order check, admission count)
+        run: tools/check_native.sh

@@ -1,1 +1,0 @@
-# name [status]: statement   (regenerate with tools/golden.sh PROFILE --update after review)

@@ -15,6 +15,7 @@ type item = {
   var_views : (string * string) list;
   error : string;
   statement : string;
+  source : string;            (* HOL Light statement (pretty-printed typed source IR) *)
 }
 
 let json_of_item (i : item) : Yojson.Safe.t =
@@ -27,6 +28,7 @@ let json_of_item (i : item) : Yojson.Safe.t =
            ("notes", `List (List.map (fun s -> `String s) (List.sort compare i.notes)));
            ("var_views", `Assoc (List.map (fun (k, v) -> (k, `String v)) i.var_views));
            ("error", `String i.error);
+           ("source", `String i.source);
            ("statement", `String i.statement) ]
 
 let write_manifest file (header : (string * Yojson.Safe.t) list) (items : item list) =

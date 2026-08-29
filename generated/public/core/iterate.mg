@@ -268,8 +268,8 @@ Admitted.
 
 // HOL Light: iterate.ml:368 / ITERATE_EXPAND_CASES
 // Source hash: md5:ab2f925a2f6da5a2ba0afd8fe42aa902
-// Status: transport_required (bridges: hol_finite_finite, hol_iterate)
-Theorem ITERATE_EXPAND_CASES : forall A B:set, A <> Empty -> B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B op s f = if finite {x :e s | f x <> neutral_of B op} then iterate_op B op {x :e s | f x <> neutral_of B op} f else neutral_of B op.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_iterate)
+Theorem ITERATE_EXPAND_CASES : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, iterate_op B op s f = if finite {x :e s | f x <> neutral_of B op} then iterate_op B op {x :e s | f x <> neutral_of B op} f else neutral_of B op.
 Admitted.
 
 // HOL Light: iterate.ml:375 / ITERATE_CLAUSES_GEN
@@ -610,8 +610,8 @@ Admitted.
 
 // HOL Light: iterate.ml:1300 / NSUM_DEGENERATE
 // Source hash: md5:c1df488542489eef5bbd5fb998960ec3
-// Status: transport_required (bridges: hol_finite_finite, hol_nsum_finsum, hol_num_omega)
-Theorem NSUM_DEGENERATE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, ~ finite {x :e A | x :e s /\ ~ f x = 0} -> finsum s f = 0.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega)
+Theorem NSUM_DEGENERATE : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, ~ finite {x :e A | x :e s /\ ~ f x = 0} -> finsum s f = 0.
 Admitted.
 
 // HOL Light: iterate.ml:1305 / NSUM_CLAUSES
@@ -1150,8 +1150,8 @@ Admitted.
 
 // HOL Light: iterate.ml:1996 / SUM_DEGENERATE
 // Source hash: md5:cf2bc0c49dfb27c1270078e50a73d766
-// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem SUM_DEGENERATE : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, ~ finite {x :e A | x :e s /\ ~ f x = 0} -> finsum s f = 0.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
+Theorem SUM_DEGENERATE : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, ~ finite {x :e A | x :e s /\ ~ f x = 0} -> finsum s f = 0.
 Admitted.
 
 // HOL Light: iterate.ml:2001 / SUM_CLAUSES

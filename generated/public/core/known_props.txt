@@ -6,6 +6,8 @@ EQ_IMP
 EQ_REFL
 EXCLUDED_MIDDLE
 FACT_LT
+group_identity_R_add
+group_identity_R_mul
 HAS_SIZE_NUMSEG_1
 I_DEF
 IMAGE_I

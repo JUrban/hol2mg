@@ -10,8 +10,8 @@
 
 | status | count |
 |---|---|
-| transport_required | 1792 |
-| generalization_required | 662 |
+| transport_required | 1758 |
+| generalization_required | 696 |
 | pending_mapping | 299 |
 | exact_native | 156 |
 | native_reuse | 75 |
@@ -105,7 +105,7 @@
 
 - hol_num_omega (1324)
 - hol_real_R (692)
-- empty_case:A (578)
+- empty_case:A (614)
 - hol_int_int (485)
 - hol_finite_finite (335)
 - omega_Subq_R (315)
@@ -117,8 +117,8 @@
 - mul_nat_mul_SNo (144)
 - hol_prod_setprod (135)
 - hol_sum_finsum (118)
+- empty_case:B (102)
 - hol_card_finite_cardinality (98)
-- empty_case:B (97)
 - hol_nsum_finsum (91)
 - choose_in_spec (71)
 - hol_cart_setexp (54)

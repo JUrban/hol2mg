@@ -100,20 +100,20 @@ Admitted.
 
 // HOL Light: sets.ml:132 / FINITE_CASES
 // Source hash: md5:0fbfbcb380f92d787b57d378756085a4
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_CASES : forall A:set, A <> Empty -> forall a c= A, finite a <-> a = Empty \/ exists x :e A, exists s c= A, a = SetAdjoin s x /\ finite s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_CASES : forall A:set, forall a c= A, finite a <-> a = Empty \/ exists x :e A, exists s c= A, a = SetAdjoin s x /\ finite s.
 Admitted.
 
 // HOL Light: sets.ml:132 / FINITE_INDUCT
 // Source hash: md5:2b3f81cf880be7cfb71f4b7eec60c37a
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INDUCT : forall A:set, A <> Empty -> forall FINITE':set -> prop, FINITE' Empty /\ (forall x :e A, forall s c= A, FINITE' s -> FINITE' (SetAdjoin s x)) -> forall a c= A, finite a -> FINITE' a.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_INDUCT : forall A:set, forall FINITE':set -> prop, FINITE' Empty /\ (forall x :e A, forall s c= A, FINITE' s -> FINITE' (SetAdjoin s x)) -> forall a c= A, finite a -> FINITE' a.
 Admitted.
 
 // HOL Light: sets.ml:132 / FINITE_RULES
 // Source hash: md5:ef48fb6935c79f467f87c85fe2194b14
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_RULES : forall A:set, A <> Empty -> finite Empty /\ forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_RULES : forall A:set, finite Empty /\ forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x).
 Admitted.
 
 // HOL Light: sets.ml:137 / INFINITE
@@ -1354,8 +1354,8 @@ Admitted.
 
 // HOL Light: sets.ml:1259 / FINITE_INDUCT_STRONG
 // Source hash: md5:b3640f262534389f3932ad19b762be35
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INDUCT_STRONG : forall A:set, A <> Empty -> forall P:set -> prop, P Empty /\ (forall x :e A, forall s c= A, P s /\ (~ x :e s /\ finite s) -> P (SetAdjoin s x)) -> forall s c= A, finite s -> P s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_INDUCT_STRONG : forall A:set, forall P:set -> prop, P Empty /\ (forall x :e A, forall s c= A, P s /\ (~ x :e s /\ finite s) -> P (SetAdjoin s x)) -> forall s c= A, finite s -> P s.
 Admitted.
 
 // HOL Light: sets.ml:1276 / INJECTIVE_ON_ALT
@@ -1456,8 +1456,8 @@ Admitted.
 
 // HOL Light: sets.ml:1386 / FINITE_EMPTY
 // Source hash: md5:63b9756b3dc363d57c2ba5dd2500a8b7
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_EMPTY : forall A:set, A <> Empty -> finite Empty.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_EMPTY : forall A:set, finite Empty.
 Admitted.
 
 // HOL Light: sets.ml:1390 / FINITE_SUBSET
@@ -1474,20 +1474,20 @@ Admitted.
 
 // HOL Light: sets.ml:1413 / FINITE_UNION_IMP
 // Source hash: md5:c1da4a995c5e1824f08dd83e394e7344
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION_IMP : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> finite (s :\/: t).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_UNION_IMP : forall A:set, forall s t c= A, finite s /\ finite t -> finite (s :\/: t).
 Admitted.
 
 // HOL Light: sets.ml:1422 / FINITE_UNION
 // Source hash: md5:f8031a98ed188e3cff5f6de0823f5688
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_UNION : forall A:set, A <> Empty -> forall s t c= A, finite (s :\/: t) <-> finite s /\ finite t.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_UNION : forall A:set, forall s t c= A, finite (s :\/: t) <-> finite s /\ finite t.
 Admitted.
 
 // HOL Light: sets.ml:1429 / FINITE_INTER
 // Source hash: md5:94f495d91343ff60841a0a7b9bc4043f
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INTER : forall A:set, A <> Empty -> forall s t c= A, finite s \/ finite t -> finite (s :/\: t).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_INTER : forall A:set, forall s t c= A, finite s \/ finite t -> finite (s :/\: t).
 Admitted.
 
 // HOL Light: sets.ml:1433 / FINITE_INSERT
@@ -1522,8 +1522,8 @@ Admitted.
 
 // HOL Light: sets.ml:1467 / FINITE_IMAGE_EXPAND
 // Source hash: md5:dc943a7d6b3d6b1eb9fc0dd986c272fd
-// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
-Theorem FINITE_IMAGE_EXPAND : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {y :e B | exists x :e A, x :e s /\ y = f x}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite)
+Theorem FINITE_IMAGE_EXPAND : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite {y :e B | exists x :e A, x :e s /\ y = f x}.
 Admitted.
 
 // HOL Light: sets.ml:1479 / FINITE_IMAGE
@@ -1534,20 +1534,20 @@ Admitted.
 
 // HOL Light: sets.ml:1483 / FINITE_IMAGE_INJ_GENERAL
 // Source hash: md5:1082bb9502e3538b8ca48326bb488245
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_IMAGE_INJ_GENERAL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall A0 c= B, forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite A0 -> finite {x :e A | x :e s /\ f x :e A0}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite)
+Theorem FINITE_IMAGE_INJ_GENERAL : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall A0 c= B, forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ finite A0 -> finite {x :e A | x :e s /\ f x :e A0}.
 Admitted.
 
 // HOL Light: sets.ml:1494 / FINITE_FINITE_PREIMAGE_GENERAL
 // Source hash: md5:c1fff981a855cb59204f69a678ca6455
-// Status: generalization_required (bridges: empty_case:B, hol_finite_finite)
-Theorem FINITE_FINITE_PREIMAGE_GENERAL : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\ (forall y :e B, y :e t -> finite {x :e A | x :e s /\ f x = y}) -> finite {x :e A | x :e s /\ f x :e t}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite)
+Theorem FINITE_FINITE_PREIMAGE_GENERAL : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= B, finite t /\ (forall y :e B, y :e t -> finite {x :e A | x :e s /\ f x = y}) -> finite {x :e A | x :e s /\ f x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:1508 / FINITE_FINITE_PREIMAGE
 // Source hash: md5:30d5cc8c2c8496c85c91845bfdfcdc2e
-// Status: generalization_required (bridges: empty_case:B, hol_finite_finite)
-Theorem FINITE_FINITE_PREIMAGE : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, finite t /\ (forall y :e B, y :e t -> finite {x :e A | f x = y}) -> finite {x :e A | f x :e t}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite)
+Theorem FINITE_FINITE_PREIMAGE : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, finite t /\ (forall y :e B, y :e t -> finite {x :e A | f x = y}) -> finite {x :e A | f x :e t}.
 Admitted.
 
 // HOL Light: sets.ml:1517 / FINITE_IMAGE_INJ_EQ
@@ -1558,14 +1558,14 @@ Admitted.
 
 // HOL Light: sets.ml:1526 / FINITE_IMAGE_INJ
 // Source hash: md5:571581d51928c9e04baf59f9a6321a07
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_IMAGE_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall A0 c= B, (forall x y :e A, f x = f y -> x = y) /\ finite A0 -> finite {x :e A | f x :e A0}.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite)
+Theorem FINITE_IMAGE_INJ : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall A0 c= B, (forall x y :e A, f x = f y -> x = y) /\ finite A0 -> finite {x :e A | f x :e A0}.
 Admitted.
 
 // HOL Light: sets.ml:1534 / FINITE_IMAGE_GEN
 // Source hash: md5:cfcea95eae514750535e794ccdb02ba6
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_IMAGE_GEN : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t /\ (finite t /\ (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> g x = g y)) -> finite {g x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_IMAGE_GEN : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t /\ (finite t /\ (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> g x = g y)) -> finite {g x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:1545 / INFINITE_IMAGE
@@ -1588,8 +1588,8 @@ Admitted.
 
 // HOL Light: sets.ml:1564 / INFINITE_DIFF_FINITE
 // Source hash: md5:e66cdd1dc9fb179c46019a840fb59c20
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem INFINITE_DIFF_FINITE : forall A:set, A <> Empty -> forall s t c= A, infinite s /\ finite t -> infinite (s :\: t).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem INFINITE_DIFF_FINITE : forall A:set, forall s t c= A, infinite s /\ finite t -> infinite (s :\: t).
 Admitted.
 
 // HOL Light: sets.ml:1573 / SUBSET_IMAGE_INJ
@@ -1780,14 +1780,14 @@ Admitted.
 
 // HOL Light: sets.ml:1995 / CARD_CLAUSES
 // Source hash: md5:b98042a9307e6eb5805ab458d8192980
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
-Theorem CARD_CLAUSES : forall A:set, A <> Empty -> finite_cardinality Empty = 0 /\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_CLAUSES : forall A:set, finite_cardinality Empty = 0 /\ forall x :e A, forall s c= A, finite s -> finite_cardinality (SetAdjoin s x) = if x :e s then finite_cardinality s else ordsucc (finite_cardinality s).
 Admitted.
 
 // HOL Light: sets.ml:2003 / CARD_UNION
 // Source hash: md5:dec93797888a7880b4682d0323169b96
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION : forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t.
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION : forall A:set, forall s t c= A, finite s /\ (finite t /\ s :/\: t = Empty) -> finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2029 / CARD_DELETE
@@ -1798,8 +1798,8 @@ Admitted.
 
 // HOL Light: sets.ml:2039 / CARD_UNION_EQ
 // Source hash: md5:f11091f2efcd011c5160b24c75d16853
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION_EQ : forall A:set, A <> Empty -> forall s t u c= A, finite u /\ (s :/\: t = Empty /\ s :\/: t = u) -> finite_cardinality s + finite_cardinality t = finite_cardinality u.
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION_EQ : forall A:set, forall s t u c= A, finite u /\ (s :/\: t = Empty /\ s :\/: t = u) -> finite_cardinality s + finite_cardinality t = finite_cardinality u.
 Admitted.
 
 // HOL Light: sets.ml:2045 / CARD_DIFF
@@ -1810,8 +1810,8 @@ Admitted.
 
 // HOL Light: sets.ml:2051 / CARD_EQ_0
 // Source hash: md5:e552414b14dd33cbb2da9b752e0f5159
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
-Theorem CARD_EQ_0 : forall A:set, A <> Empty -> forall s c= A, finite s -> (finite_cardinality s = 0 <-> s = Empty).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_EQ_0 : forall A:set, forall s c= A, finite s -> (finite_cardinality s = 0 <-> s = Empty).
 Admitted.
 
 // HOL Light: sets.ml:2056 / CARD_SING
@@ -1840,8 +1840,8 @@ Admitted.
 
 // HOL Light: sets.ml:2082 / FINITE_INDUCT_DELETE
 // Source hash: md5:96514f677601df5dcf44fdc7a4853c2f
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem FINITE_INDUCT_DELETE : forall A:set, A <> Empty -> forall P:set -> prop, P Empty /\ (forall s c= A, finite s /\ ~ s = Empty -> exists x :e A, x :e s /\ (P (s :\: {x}) -> P s)) -> forall s c= A, finite s -> P s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem FINITE_INDUCT_DELETE : forall A:set, forall P:set -> prop, P Empty /\ (forall s c= A, finite s /\ ~ s = Empty -> exists x :e A, x :e s /\ (P (s :\: {x}) -> P s)) -> forall s c= A, finite s -> P s.
 Admitted.
 
 // HOL Light: sets.ml:2100 / HAS_SIZE
@@ -1858,8 +1858,8 @@ Admitted.
 
 // HOL Light: sets.ml:2107 / HAS_SIZE_0
 // Source hash: md5:b315301e53d95a91c880c6bafbea05e1
-// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega)
-Theorem HAS_SIZE_0 : forall A:set, A <> Empty -> forall s c= A, equip s 0 <-> s = Empty.
+// Status: generalization_required (bridges: empty_case:A, hol_has_size_equip, hol_num_omega)
+Theorem HAS_SIZE_0 : forall A:set, forall s c= A, equip s 0 <-> s = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2121 / HAS_SIZE_SUC
@@ -1888,8 +1888,8 @@ Admitted.
 
 // HOL Light: sets.ml:2184 / FINITE_HAS_SIZE
 // Source hash: md5:b03e1bd1f91f455b7aacfd4eab13743f
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega)
-Theorem FINITE_HAS_SIZE : forall A:set, A <> Empty -> forall s c= A, finite s <-> equip s (finite_cardinality s).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega)
+Theorem FINITE_HAS_SIZE : forall A:set, forall s c= A, finite s <-> equip s (finite_cardinality s).
 Admitted.
 
 // HOL Light: sets.ml:2192 / HAS_SIZE_CLAUSES
@@ -1906,8 +1906,8 @@ Admitted.
 
 // HOL Light: sets.ml:2268 / CARD_SUBSET
 // Source hash: md5:7cea7af217cad47358d0dc993c0a5150
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_SUBSET : forall A:set, A <> Empty -> forall a b c= A, a c= b /\ finite b -> finite_cardinality a <= finite_cardinality b.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_SUBSET : forall A:set, forall a b c= A, a c= b /\ finite b -> finite_cardinality a <= finite_cardinality b.
 Admitted.
 
 // HOL Light: sets.ml:2284 / CARD_SUBSET_LE
@@ -1948,8 +1948,8 @@ Admitted.
 
 // HOL Light: sets.ml:2317 / CARD_UNION_LE
 // Source hash: md5:107cc5a68e3867d8c14aa218160638ad
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_UNION_LE : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> finite_cardinality (s :\/: t) <= finite_cardinality s + finite_cardinality t.
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_UNION_LE : forall A:set, forall s t c= A, finite s /\ finite t -> finite_cardinality (s :\/: t) <= finite_cardinality s + finite_cardinality t.
 Admitted.
 
 // HOL Light: sets.ml:2327 / FINITE_CARD_LE_UNION
@@ -1972,14 +1972,14 @@ Admitted.
 
 // HOL Light: sets.ml:2369 / CARD_UNION_OVERLAP_EQ
 // Source hash: md5:8d4e6ce44b1578ccdcbd520382d59ca1
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
-Theorem CARD_UNION_OVERLAP_EQ : forall A:set, A <> Empty -> forall s t c= A, finite s /\ finite t -> (finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t <-> s :/\: t = Empty).
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega)
+Theorem CARD_UNION_OVERLAP_EQ : forall A:set, forall s t c= A, finite s /\ finite t -> (finite_cardinality (s :\/: t) = finite_cardinality s + finite_cardinality t <-> s :/\: t = Empty).
 Admitted.
 
 // HOL Light: sets.ml:2378 / CARD_UNION_OVERLAP
 // Source hash: md5:f037066e94018aea161c1e679e79b4de
-// Status: transport_required (bridges: add_nat_add_SNo, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
-Theorem CARD_UNION_OVERLAP : forall A:set, A <> Empty -> forall s t c= A, finite s /\ (finite t /\ finite_cardinality (s :\/: t) < finite_cardinality s + finite_cardinality t) -> ~ s :/\: t = Empty.
+// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_lt_SNoLt)
+Theorem CARD_UNION_OVERLAP : forall A:set, forall s t c= A, finite s /\ (finite t /\ finite_cardinality (s :\/: t) < finite_cardinality s + finite_cardinality t) -> ~ s :/\: t = Empty.
 Admitted.
 
 // HOL Light: sets.ml:2388 / CARD_IMAGE_INJ
@@ -1996,8 +1996,8 @@ Admitted.
 
 // HOL Light: sets.ml:2405 / CARD_IMAGE_LE
 // Source hash: md5:f6bc77e8dcc60ec0ccb1436757e287b1
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_IMAGE_LE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite_cardinality {f x | x :e s} <= finite_cardinality s.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_IMAGE_LE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, finite s -> finite_cardinality {f x | x :e s} <= finite_cardinality s.
 Admitted.
 
 // HOL Light: sets.ml:2412 / FINITE_CARD_LE_IMAGE
@@ -2056,8 +2056,8 @@ Admitted.
 
 // HOL Light: sets.ml:2505 / CARD_IMAGE_LE2
 // Source hash: md5:f2aed9bb1bf3f6f35526e736852691c9
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
-Theorem CARD_IMAGE_LE2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ g x = g y) -> f x = f y) -> finite_cardinality {f x | x :e s} <= finite_cardinality {g x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, nat_le_SNoLe)
+Theorem CARD_IMAGE_LE2 : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, finite s /\ (forall x y :e A, x :e s /\ (y :e s /\ g x = g y) -> f x = f y) -> finite_cardinality {f x | x :e s} <= finite_cardinality {g x | x :e s}.
 Admitted.
 
 // HOL Light: sets.ml:2516 / CARD_IMAGE_LT2
@@ -2128,8 +2128,8 @@ Admitted.
 
 // HOL Light: sets.ml:2711 / FINITE_PRODUCT
 // Source hash: md5:93c20fc474eef987c39cfcffb984136e
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite (\/_ x :e A, {(x,y) | y :e B, x :e s /\ y :e t}).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_prod_setprod)
+Theorem FINITE_PRODUCT : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite (\/_ x :e A, {(x,y) | y :e B, x :e s /\ y :e t}).
 Admitted.
 
 // HOL Light: sets.ml:2715 / CARD_PRODUCT
@@ -2164,8 +2164,8 @@ Admitted.
 
 // HOL Light: sets.ml:2746 / FINITE_CROSS
 // Source hash: md5:12892b449bb0cf81d2a595538cee5069
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_CROSS : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite, hol_prod_setprod)
+Theorem FINITE_CROSS : forall A B:set, forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t).
 Admitted.
 
 // HOL Light: sets.ml:2750 / CARD_CROSS
@@ -2200,8 +2200,8 @@ Admitted.
 
 // HOL Light: sets.ml:2771 / FINITE_CROSS_EQ
 // Source hash: md5:12a659d68de9aa50de346ff179cd4a23
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem FINITE_CROSS_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite (s :*: t) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite, hol_prod_setprod)
+Theorem FINITE_CROSS_EQ : forall A B:set, forall s c= A, forall t c= B, finite (s :*: t) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
 Admitted.
 
 // HOL Light: sets.ml:2786 / INFINITE_CROSS_EQ

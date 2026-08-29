@@ -44,9 +44,9 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 
 | profile | HOL theorems | public statements | notes |
 |---|---|---|---|
-| core (`hol.ml`) | 2984 | 2684 | pending = quarantined construction internals |
+| core (`hol.ml`) | 2984 | 2685 | pending = quarantined construction internals |
 | standard (+11 `Library/` files) | 4590 | 4290 | number theory, cardinals, orders, closures |
-| mv_vectors (+`Multivariate/vectors.ml`) | 5084 | 4783 | 79 automatic definitions |
+| mv_vectors (+`Multivariate/vectors.ml`) | 5084 | 4784 | 79 automatic definitions |
 | multivariate (`Multivariate/make.ml`) | 17526 | 17138 | 480 automatic definitions + 7 automatic types |
 
 Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are
