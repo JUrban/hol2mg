@@ -82,10 +82,6 @@ Admitted.
 Theorem hl_EXTENSIONAL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> (hl_EXTENSIONAL A B l1 l2 = 1 <-> forall x :e A, ~ x :e hl_rep A l1 -> f2 x = choose_in B (fun y:set => True)).
 Admitted.
 
-// nsum : (A->bool)->(A->num)->num (not in compat.mg)
-Theorem hl_nsum_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e omega :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_nsum A l1 l2 = finsum (hl_rep A l1) f2.
-Admitted.
-
 // BIJ : (A->B)->(A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_BIJ_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e 2 :^: A, forall l3 :e 2 :^: B, hl_BIJ A B l1 l2 l3 = 1 <-> bij (hl_rep A l2) (hl_rep B l3) f1.
 Admitted.
@@ -402,10 +398,6 @@ Admitted.
 Theorem hl_INJN_compat : forall A:set, A <> Empty -> hl_INJN A = Empty.
 Admitted.
 
-// neutral : (A->A->A)->A (not in compat.mg)
-Theorem hl_neutral_compat : forall A:set, A <> Empty -> forall l1 :e A :^: A :^: A, forall f1:set -> set -> set, (forall x y :e A, l1 x y = f1 x y) -> hl_neutral A l1 = neutral_of A (fun a:set => fun b:set => f1 a b).
-Admitted.
-
 // list_of_seq : (num->A)->num->A list (not in compat.mg)
 Theorem hl_list_of_seq_compat : forall A:set, A <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e omega, l1 x = f1 x) -> forall l2 :e omega, hl_list_of_seq A l1 l2 = seq_mk l2 f1.
 Admitted.
@@ -424,10 +416,6 @@ Admitted.
 
 // dest_finite_image : N finite_image->num (not in compat.mg)
 Theorem hl_dest_finite_image_compat : forall N:set, N <> Empty -> forall l1 :e hl_ty_finite_image N, hl_dest_finite_image N l1 = l1.
-Admitted.
-
-// sum : (A->bool)->(A->real)->real (not in compat.mg)
-Theorem hl_sum_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e R :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> hl_sum A l1 l2 = finsum (hl_rep A l1) f2.
 Admitted.
 
 // sup : (real->bool)->real (not in compat.mg)
@@ -468,10 +456,6 @@ Admitted.
 
 // =_c : (A->bool)->(B->bool)->bool (not in compat.mg)
 Theorem hl_sym_3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3d5f63 A B l1 l2 = 1 <-> equip (hl_rep A l1) (hl_rep B l2).
-Admitted.
-
-// monoidal : (A->A->A)->bool (not in compat.mg)
-Theorem hl_monoidal_compat : forall A:set, A <> Empty -> forall l1 :e A :^: A :^: A, forall f1:set -> set -> set, (forall x y :e A, l1 x y = f1 x y) -> (hl_monoidal A l1 = 1 <-> (forall x y :e A, f1 x y = f1 y x) /\ (forall x y z :e A, f1 x (f1 y z) = f1 (f1 x y) z) /\ forall x :e A, f1 (neutral_of A (fun a:set => fun b:set => f1 a b)) x = x).
 Admitted.
 
 // list_of_set : (A->bool)->A list (not in compat.mg)
@@ -524,10 +508,6 @@ Admitted.
 
 // BUTLAST : A list->A list (not in compat.mg)
 Theorem hl_BUTLAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_BUTLAST A l1 = seq_butlast l1.
-Admitted.
-
-// support : (B->B->B)->(A->B)->(A->bool)->A->bool (not in compat.mg)
-Theorem hl_support_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e B :^: B :^: B, forall f1:set -> set -> set, (forall x y :e B, l1 x y = f1 x y) -> forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> forall l3 :e 2 :^: A, hl_rep A (hl_support B A l1 l2 l3) = {x :e hl_rep A l3 | f2 x <> neutral_of B (fun a:set => fun b:set => f1 a b)}.
 Admitted.
 
 // MAP : (A->B)->A list->B list (not in compat.mg)

@@ -619,3 +619,37 @@ Qed.
 Theorem iff_eq1_l : forall a b:set, a = b -> forall p:prop, (b = 1 <-> p) -> (a = 1 <-> p).
 let a b. assume H. let p. assume Hp. exact ((eq_sym_i a b H) (fun hl__u hl__v => hl__u = 1 <-> p) Hp).
 Qed.
+
+Theorem choose_in_ext : forall A:set, forall P Q:set -> prop, (forall x :e A, P x <-> Q x) -> choose_in A P = choose_in A Q.
+let A P Q. assume H.
+claim Hex: (exists x :e A, P x) <-> (exists x :e A, Q x).
+{ apply iffI.
+  - assume H1. apply H1. let x. assume Hx0. apply Hx0. assume Hx HP. witness x. apply andI.
+    + exact Hx.
+    + apply (H x Hx). assume H2 _. exact (H2 HP).
+  - assume H1. apply H1. let x. assume Hx0. apply Hx0. assume Hx HQ. witness x. apply andI.
+    + exact Hx.
+    + apply (H x Hx). assume _ H2. exact (H2 HQ). }
+claim Hiff: forall x:set, (x :e A /\ P x) <-> (x :e A /\ Q x).
+{ let x. apply iffI.
+  - assume H1. apply H1. assume Hx HP. apply andI.
+    + exact Hx.
+    + apply (H x Hx). assume H2 _. exact (H2 HP).
+  - assume H1. apply H1. assume Hx HQ. apply andI.
+    + exact Hx.
+    + apply (H x Hx). assume _ H2. exact (H2 HQ). }
+claim Hpe: (fun x:set => x :e A /\ P x) = (fun x:set => x :e A /\ Q x).
+{ exact (pred_ext (fun x:set => x :e A /\ P x) (fun x:set => x :e A /\ Q x) Hiff). }
+prove (if (exists x :e A, P x) then Eps_i (fun x:set => x :e A /\ P x) else Eps_i (fun x:set => x :e A)) = (if (exists x :e A, Q x) then Eps_i (fun x:set => x :e A /\ Q x) else Eps_i (fun x:set => x :e A)).
+apply (xm (exists x :e A, P x)).
+- assume H1.
+  claim H2: exists x :e A, Q x. { apply Hex. assume H3 _. exact (H3 H1). }
+  rewrite (If_i_1 (exists x :e A, P x) (Eps_i (fun x:set => x :e A /\ P x)) (Eps_i (fun x:set => x :e A)) H1).
+  rewrite (If_i_1 (exists x :e A, Q x) (Eps_i (fun x:set => x :e A /\ Q x)) (Eps_i (fun x:set => x :e A)) H2).
+  exact (eq_sym_i (Eps_i (fun x:set => x :e A /\ Q x)) (Eps_i (fun x:set => x :e A /\ P x)) (Hpe (fun hl__u hl__v => Eps_i hl__u = Eps_i (fun x:set => x :e A /\ P x)) (fun q H => H))).
+- assume H1.
+  claim H2: ~ exists x :e A, Q x. { assume H3. apply H1. apply Hex. assume _ H4. exact (H4 H3). }
+  rewrite (If_i_0 (exists x :e A, P x) (Eps_i (fun x:set => x :e A /\ P x)) (Eps_i (fun x:set => x :e A)) H1).
+  rewrite (If_i_0 (exists x :e A, Q x) (Eps_i (fun x:set => x :e A /\ Q x)) (Eps_i (fun x:set => x :e A)) H2).
+  exact (fun q H => H).
+Qed.
