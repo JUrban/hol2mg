@@ -44,7 +44,21 @@ for i in m['items']:
             i['cert_status'] = 'bridge_mismatch'; i['cert_error'] = 'certified statement differs from the public statement'; n_mismatch += 1
     else:
         i['cert_status'] = 'bridge_failed'; i['cert_error'] = fail.get(sh, 'base failed' if not base_ok else 'not checked'); n_fail += 1
-m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'transport_checked': n_cert, 'literal_proved': n_proved, 'fully_proved': 0}
+# fully_proved: imported proof, shard checked, and every named leaf fully proved (transitively) or literal_proved
+by_hol = {i['source_name']: i for i in m['items']}
+def ok_item(i): return i.get('cert_status') == 'transport_checked' and i['name'] in fully_proved
+fp = set(i['name'] for i in m['items'] if ok_item(i) and i.get('literal_proved') and not i.get('proof_imported'))
+changed = True
+while changed:
+    changed = False
+    for i in m['items']:
+        if i['name'] in fp or not (ok_item(i) and i.get('proof_imported')): continue
+        leaves = [by_hol.get(l) for l in i.get('proof_leaves', [])]
+        if all(l is not None and l['name'] in fp for l in leaves):
+            fp.add(i['name']); changed = True
+n_full = sum(1 for i in m['items'] if i['name'] in fp and i.get('proof_imported'))
+for i in m['items']: i['fully_proved'] = (i['name'] in fp and bool(i.get('proof_imported')))
+m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'transport_checked': n_cert, 'literal_proved': n_proved, 'fully_proved': n_full}
 json.dump(m, open(man_file, 'w'), indent=1)
-print(f'cert_finalize {prof}: {n_cert} transport_checked ({n_proved} literal_proved, 0 fully_proved), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
+print(f'cert_finalize {prof}: {n_cert} transport_checked ({n_proved} literal_proved, {n_full} fully_proved), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
 sys.exit(1 if fail or n_mismatch else 0)

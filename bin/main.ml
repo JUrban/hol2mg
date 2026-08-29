@@ -200,7 +200,7 @@ let () =
         let shard = if src_file = "" then "misc" else shard_of_file src_file in
         let base = { Manifest.name = sanitize_thm_name th.name; source_name = th.name; aliases = th.aliases; hash = th.hash;
                      status = ""; shard; src_file; src_line; classes = []; bridges = []; notes = []; var_views = [];
-                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = ""; literal_proved = false;
+                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = ""; literal_proved = false; proof_imported = false; proof_leaves = [];
                      source = String.concat ", " (List.map Hol.string_of_tm th.seq.hyps) ^ (if th.seq.hyps = [] then "" else " |- ") ^ Hol.string_of_tm th.seq.concl } in
         let verbose = List.mem "--verbose" args in
         if verbose then (prerr_string (th.name ^ " "); flush stderr);
@@ -393,6 +393,16 @@ let () =
                done with Not_found -> ())
             end;
             let lit_proved = Hashtbl.create 64 in
+            (* proof import (docs/DESIGN.md 22): recorded kernel proofs of the theorems, by HOL name *)
+            let proof_by_name = Hashtbl.create 1024 in
+            (match opt "--proofs" with
+             | Some f -> List.iter (fun (p : Proofimport.proof) -> Hashtbl.replace proof_by_name p.Proofimport.pname p) (Proofimport.load f)
+             | None -> ());
+            let import_only = (match Sys.getenv_opt "HOL2MG_IMPORT_ONLY" with Some s -> String.split_on_char ',' s | None -> []) in
+            let mg_of_hol = Hashtbl.create 4096 in
+            List.iter (fun (i : Manifest.item) -> Hashtbl.replace mg_of_hol i.Manifest.source_name i.Manifest.name) items;
+            let thm_name_fn h = (try Hashtbl.find mg_of_hol h with Not_found -> Elab.sanitize_var h) in
+            let imported_tbl = Hashtbl.create 64 in
             Hashtbl.iter (fun t _ ->
               match Hashtbl.find_opt reg.Registry.types t with
               | Some te when te.Registry.t_arity = 0 && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native") && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native_nonempty") ->
@@ -501,24 +511,51 @@ let () =
             Hashtbl.iter (fun shard l ->
               let l = List.sort (fun ((a : Manifest.item), _) ((b : Manifest.item), _) -> compare (a.Manifest.src_line, a.Manifest.name) (b.Manifest.src_line, b.Manifest.name)) l in
               let oc = open_out (Filename.concat cdir (shard ^ ".mg")) in
+              let declared = Hashtbl.create 64 in
               Printf.fprintf oc "// hol2mg certification module (private): shard %s of profile %s.\n// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),\n// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,\n// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.\n\n" shard profile;
               List.iter (fun ((i : Manifest.item), o) ->
                 Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" i.Manifest.src_file (if i.Manifest.src_line > 0 then ":" ^ string_of_int i.Manifest.src_line else "") i.Manifest.source_name i.Manifest.hash;
                 match o with
                 | Some o ->
                     let norm_lit = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' i.Manifest.literal)) in
-                    let proved = (match Hashtbl.find_opt model ("hlt_" ^ i.Manifest.name ^ "_model") with Some st -> st = norm_lit | None -> false) in
-                    if proved then begin
-                      Hashtbl.replace lit_proved i.Manifest.name ();
-                      Printf.fprintf oc "Theorem hlt_%s : %s.\nexact hlt_%s_model.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.name
-                    end else
-                      Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal;
+                    let proved_model = (match Hashtbl.find_opt model ("hlt_" ^ i.Manifest.name ^ "_model") with Some st -> st = norm_lit | None -> false) in
+                    let imported = (match Hashtbl.find_opt proof_by_name i.Manifest.source_name with
+                      | Some pr when (import_only = [] || List.mem i.Manifest.source_name import_only) && not (Hashtbl.mem declared ("hltu_" ^ i.Manifest.name)) ->
+                          (match Hashtbl.find_opt thm_by_name i.Manifest.source_name with
+                           | Some th -> (try Some (Proofimport.import an thm_name_fn pr th.seq)
+                                         with Proofimport.Import_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": " ^ m); None
+                                            | Failure m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": failure " ^ m); None)
+                           | None -> None)
+                      | _ -> None) in
+                    let proved = ref proved_model in
+                    (match imported with
+                     | Some r ->
+                         (* leaves: declared in this shard as proved (imported earlier) or admitted *)
+                         List.iter (fun (ln, st) -> if not (Hashtbl.mem declared ln) then begin Hashtbl.replace declared ln false; Printf.fprintf oc "Theorem %s : %s.\nAdmitted.\n" ln st end) r.Proofimport.leaf_stmts;
+                         let all_proved = List.for_all (fun (ln, _) -> Hashtbl.find declared ln) r.Proofimport.leaf_stmts in
+                         Hashtbl.replace declared ("hltu_" ^ i.Manifest.name) all_proved;
+                         Hashtbl.replace imported_tbl i.Manifest.name r.Proofimport.leaf_names;
+                         (* Megalodon refuses Qed for a proof depending on an admitted leaf: the checked derivation is then admitted *)
+                         proved := all_proved;
+                         let ending = if all_proved then "Qed" else "Admitted" in
+                         Printf.fprintf oc "%s" (if all_proved then r.Proofimport.uniform else Str.global_replace (Str.regexp_string "\nQed.\n") "\nAdmitted.\n" r.Proofimport.uniform);
+                         Printf.fprintf oc "Theorem hlt_%s : %s.\nexact %s.\n%s.\n" i.Manifest.name i.Manifest.literal r.Proofimport.discharge ending
+                     | None ->
+                         if proved_model then begin
+                           Hashtbl.replace lit_proved i.Manifest.name ();
+                           Printf.fprintf oc "Theorem hlt_%s : %s.\nexact hlt_%s_model.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.name
+                         end else
+                           Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal);
                     Printf.fprintf oc "Theorem %s_bridge : (%s) -> (%s).\nexact %s.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.statement o.Bridge.proof;
-                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\n%s.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name (if proved then "Qed" else "Admitted")
+                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\n%s.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name (if !proved then "Qed" else "Admitted")
                 | None ->
                     Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement) l;
               close_out oc) by_shard;
-            List.map (fun (i : Manifest.item) -> if Hashtbl.mem lit_proved i.Manifest.name then { i with Manifest.literal_proved = true } else i) items) in
+            List.map (fun (i : Manifest.item) ->
+              let i = if Hashtbl.mem lit_proved i.Manifest.name then { i with Manifest.literal_proved = true } else i in
+              match Hashtbl.find_opt imported_tbl i.Manifest.name with
+              | Some leaves -> { i with Manifest.proof_imported = true; proof_leaves = List.sort compare leaves }
+              | None -> i) items) in
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in
       let header = [ ("schema", `Int 1); ("profile", `String profile); ("hol_light_commit", `String hol_commit);
                      ("auto_definitions", `List (List.map (fun ((ad : Elab.auto_def), (d : thm_record)) ->

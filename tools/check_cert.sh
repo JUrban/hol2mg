@@ -17,6 +17,7 @@ cat "$lit/_literal.mg" "$cert/_literal_unfold.mg" >> "$base"
 cat "$cert/_literal_typing.mg" >> "$base"
 [ -s "$HERE/mglib/literal/compat.mg" ] && cat "$HERE/mglib/literal/compat.mg" >> "$base"
 [ -s "$HERE/mglib/literal/model_theorems.mg" ] && cat "$HERE/mglib/literal/model_theorems.mg" >> "$base"
+[ -s "$HERE/mglib/literal/uniform.mg" ] && cat "$HERE/mglib/literal/uniform.mg" >> "$base"
 off=$(wc -l < "$base")
 out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces "$base" 2>&1)
 if ! echo "$out" | grep -q "Everything looks good"; then echo "FAIL base: $(echo "$out" | grep -v '^$' | head -3)"; rm -rf "$tmp"; exit 1; fi

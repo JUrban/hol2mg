@@ -76,7 +76,7 @@ let export_theorem named_ph name th =
   let rec visit t =
     if ph_mem local t then ph_find local t else begin
       let p = proof_of t in
-      let is_leaf = ph_mem named_ph t && not (t == th) in
+      let is_leaf = ph_mem named_ph t && not (t == th) && (match p with Pdefinition _ | Paxiom _ -> false | _ -> true) in
       let args =
         if is_leaf then ["rule", jstr "NAMED"; "name", jstr (ph_find named_ph t)]
         else match p with
