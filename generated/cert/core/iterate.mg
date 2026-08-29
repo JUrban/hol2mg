@@ -579,13 +579,23 @@ Theorem nproduct : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> s
 Admitted.
 
 // HOL Light: iterate.ml:1197 / NEUTRAL_MUL   (hash md5:810748ee9f5255bf9d8c183d3d4d0a1c)
-// not bridged: 
+Theorem hlt_NEUTRAL_MUL : hl_neutral omega hl_mul = hl_NUMERAL (hl_BIT1 hl_zero).
+Admitted.
+Theorem NEUTRAL_MUL_bridge : (hl_neutral omega hl_mul = hl_NUMERAL (hl_BIT1 hl_zero)) -> (neutral_of omega (fun a:set => fun b:set => a * b) = 1).
+exact (fun H__top => (imp_eq (hl_neutral omega hl_mul) (neutral_of omega (fun a:set => fun b:set => a * b)) (hl_NUMERAL (hl_BIT1 hl_zero)) (1) ((hl_neutral_compat) (omega) omega_nonempty (hl_mul) ((hl_mul_in)) (fun x:set => fun x0:set => x * x0) ((pw_eta_fun2 (omega) (omega) (hl_mul) (fun x:set => fun x0:set => x * x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_mul x y) x y) (hl_mul x y) (x * y) (lam2_beta (omega) (omega) (fun x y => hl_mul x y) x Hx y Hy) ((hl_mul_compat) (x) Hx (y) Hy)))))) (eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0))))) H__top).
+Qed.
 Theorem NEUTRAL_MUL : neutral_of omega (fun a:set => fun b:set => a * b) = 1.
+exact (NEUTRAL_MUL_bridge hlt_NEUTRAL_MUL).
 Admitted.
 
 // HOL Light: iterate.ml:1202 / MONOIDAL_MUL   (hash md5:b7daf5e6de14117b12e7346fc47f02cb)
-// not bridged: 
+Theorem hlt_MONOIDAL_MUL : hl_monoidal omega hl_mul = 1.
+Admitted.
+Theorem MONOIDAL_MUL_bridge : (hl_monoidal omega hl_mul = 1) -> ((forall x y :e omega, x * y = y * x) /\ (forall x y z :e omega, x * y * z = (x * y) * z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x).
+exact (fun H__top => (iffEL (hl_monoidal omega hl_mul = 1) ((forall x y :e omega, x * y = y * x) /\ (forall x y z :e omega, x * y * z = (x * y) * z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x) ((hl_monoidal_compat) (omega) omega_nonempty (hl_mul) ((hl_mul_in)) (fun x:set => fun x0:set => x * x0) ((pw_eta_fun2 (omega) (omega) (hl_mul) (fun x:set => fun x0:set => x * x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_mul x y) x y) (hl_mul x y) (x * y) (lam2_beta (omega) (omega) (fun x y => hl_mul x y) x Hx y Hy) ((hl_mul_compat) (x) Hx (y) Hy))))))) H__top).
+Qed.
 Theorem MONOIDAL_MUL : (forall x y :e omega, x * y = y * x) /\ (forall x y z :e omega, x * y * z = (x * y) * z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x.
+exact (MONOIDAL_MUL_bridge hlt_MONOIDAL_MUL).
 Admitted.
 
 // HOL Light: iterate.ml:1206 / NPRODUCT_CLAUSES   (hash md5:f1fa1970dcb71c0ea266b2d511ff08c9)
@@ -599,13 +609,23 @@ Theorem iproduct : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> s
 Admitted.
 
 // HOL Light: iterate.ml:1219 / NEUTRAL_INT_MUL   (hash md5:61f7c53ce7ec94316ac2a1a6b59a71ac)
-// not bridged: 
+Theorem hlt_NEUTRAL_INT_MUL : hl_neutral hl_ty_int hl_int_mul = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+Theorem NEUTRAL_INT_MUL_bridge : (hl_neutral hl_ty_int hl_int_mul = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) -> (neutral_of int (fun a:set => fun b:set => a * b) = 1).
+exact (fun H__top => (imp_eq (hl_neutral int hl_int_mul) (neutral_of int (fun a:set => fun b:set => a * b)) (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (1) ((hl_neutral_compat) (int) hl_ty_int_native_nonempty (hl_int_mul) ((hl_int_mul_in)) (fun x:set => fun x0:set => x * x0) ((pw_eta_fun2 (int) (int) (hl_int_mul) (fun x:set => fun x0:set => x * x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e int => fun y :e int => hl_int_mul x y) x y) (hl_int_mul x y) (x * y) (lam2_beta (int) (int) (fun x y => hl_int_mul x y) x Hx y Hy) ((hl_int_mul_compat) (x) Hx (y) Hy)))))) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) = hl__u) ((hl_int_of_num_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))))) (hl_ty_int_native (fun hl__u hl__v => hl_neutral hl__u hl_int_mul = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) H__top)).
+Qed.
 Theorem NEUTRAL_INT_MUL : neutral_of int (fun a:set => fun b:set => a * b) = 1.
+exact (NEUTRAL_INT_MUL_bridge hlt_NEUTRAL_INT_MUL).
 Admitted.
 
 // HOL Light: iterate.ml:1224 / MONOIDAL_INT_MUL   (hash md5:5e8744703f62ab0f3fdb1e85e68450f5)
-// not bridged: 
+Theorem hlt_MONOIDAL_INT_MUL : hl_monoidal hl_ty_int hl_int_mul = 1.
+Admitted.
+Theorem MONOIDAL_INT_MUL_bridge : (hl_monoidal hl_ty_int hl_int_mul = 1) -> ((forall x y :e int, x * y = y * x) /\ (forall x y z :e int, x * y * z = (x * y) * z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x).
+exact (fun H__top => (iffEL (hl_monoidal int hl_int_mul = 1) ((forall x y :e int, x * y = y * x) /\ (forall x y z :e int, x * y * z = (x * y) * z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x) ((hl_monoidal_compat) (int) hl_ty_int_native_nonempty (hl_int_mul) ((hl_int_mul_in)) (fun x:set => fun x0:set => x * x0) ((pw_eta_fun2 (int) (int) (hl_int_mul) (fun x:set => fun x0:set => x * x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e int => fun y :e int => hl_int_mul x y) x y) (hl_int_mul x y) (x * y) (lam2_beta (int) (int) (fun x y => hl_int_mul x y) x Hx y Hy) ((hl_int_mul_compat) (x) Hx (y) Hy))))))) (hl_ty_int_native (fun hl__u hl__v => hl_monoidal hl__u hl_int_mul = 1) H__top)).
+Qed.
 Theorem MONOIDAL_INT_MUL : (forall x y :e int, x * y = y * x) /\ (forall x y z :e int, x * y * z = (x * y) * z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x.
+exact (MONOIDAL_INT_MUL_bridge hlt_MONOIDAL_INT_MUL).
 Admitted.
 
 // HOL Light: iterate.ml:1228 / IPRODUCT_CLAUSES   (hash md5:7a84ac9ba428d5078aedcd9bf6acf02d)
@@ -619,13 +639,23 @@ Theorem product : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> se
 Admitted.
 
 // HOL Light: iterate.ml:1241 / NEUTRAL_REAL_MUL   (hash md5:35a5b388fe177bf7ad7f7ac5dfb7e915)
-// not bridged: 
+Theorem hlt_NEUTRAL_REAL_MUL : hl_neutral R hl_real_mul = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+Theorem NEUTRAL_REAL_MUL_bridge : (hl_neutral R hl_real_mul = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) -> (neutral_of R (fun a:set => fun b:set => a * b) = 1).
+exact (fun H__top => (imp_eq (hl_neutral R hl_real_mul) (neutral_of R (fun a:set => fun b:set => a * b)) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (1) ((hl_neutral_compat) (R) R_nonempty (hl_real_mul) ((hl_real_mul_in)) (fun x:set => fun x0:set => x * x0) ((pw_eta_fun2 (R) (R) (hl_real_mul) (fun x:set => fun x0:set => x * x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_mul x y) x y) (hl_real_mul x y) (x * y) (lam2_beta (R) (R) (fun x y => hl_real_mul x y) x Hx y Hy) ((hl_real_mul_compat) (x) Hx (y) Hy)))))) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in))))))) H__top).
+Qed.
 Theorem NEUTRAL_REAL_MUL : neutral_of R (fun a:set => fun b:set => a * b) = 1.
+exact (NEUTRAL_REAL_MUL_bridge hlt_NEUTRAL_REAL_MUL).
 Admitted.
 
 // HOL Light: iterate.ml:1246 / MONOIDAL_REAL_MUL   (hash md5:006f2e19ec12ee3f4dcbd4c7830721aa)
-// not bridged: 
+Theorem hlt_MONOIDAL_REAL_MUL : hl_monoidal R hl_real_mul = 1.
+Admitted.
+Theorem MONOIDAL_REAL_MUL_bridge : (hl_monoidal R hl_real_mul = 1) -> ((forall x y :e R, x * y = y * x) /\ (forall x y z :e R, x * y * z = (x * y) * z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x).
+exact (fun H__top => (iffEL (hl_monoidal R hl_real_mul = 1) ((forall x y :e R, x * y = y * x) /\ (forall x y z :e R, x * y * z = (x * y) * z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x) ((hl_monoidal_compat) (R) R_nonempty (hl_real_mul) ((hl_real_mul_in)) (fun x:set => fun x0:set => x * x0) ((pw_eta_fun2 (R) (R) (hl_real_mul) (fun x:set => fun x0:set => x * x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_mul x y) x y) (hl_real_mul x y) (x * y) (lam2_beta (R) (R) (fun x y => hl_real_mul x y) x Hx y Hy) ((hl_real_mul_compat) (x) Hx (y) Hy))))))) H__top).
+Qed.
 Theorem MONOIDAL_REAL_MUL : (forall x y :e R, x * y = y * x) /\ (forall x y z :e R, x * y * z = (x * y) * z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x.
+exact (MONOIDAL_REAL_MUL_bridge hlt_MONOIDAL_REAL_MUL).
 Admitted.
 
 // HOL Light: iterate.ml:1250 / PRODUCT_CLAUSES   (hash md5:464ca9b59ba521206c4856747fb68cbe)
@@ -639,13 +669,23 @@ Theorem isum : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, 
 Admitted.
 
 // HOL Light: iterate.ml:1263 / NEUTRAL_INT_ADD   (hash md5:0ccfd02cd45039656e3be405510c78c1)
-// not bridged: 
+Theorem hlt_NEUTRAL_INT_ADD : hl_neutral hl_ty_int hl_int_add = hl_int_of_num (hl_NUMERAL hl_zero).
+Admitted.
+Theorem NEUTRAL_INT_ADD_bridge : (hl_neutral hl_ty_int hl_int_add = hl_int_of_num (hl_NUMERAL hl_zero)) -> (neutral_of int (fun a:set => fun b:set => a + b) = 0).
+exact (fun H__top => (imp_eq (hl_neutral int hl_int_add) (neutral_of int (fun a:set => fun b:set => a + b)) (hl_int_of_num (hl_NUMERAL hl_zero)) (0) ((hl_neutral_compat) (int) hl_ty_int_native_nonempty (hl_int_add) ((hl_int_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (int) (int) (hl_int_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e int => fun y :e int => hl_int_add x y) x y) (hl_int_add x y) (x + y) (lam2_beta (int) (int) (fun x y => hl_int_add x y) x Hx y Hy) ((hl_int_add_compat) (x) Hx (y) Hy)))))) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_int_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_int_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (hl_ty_int_native (fun hl__u hl__v => hl_neutral hl__u hl_int_add = hl_int_of_num (hl_NUMERAL hl_zero)) H__top)).
+Qed.
 Theorem NEUTRAL_INT_ADD : neutral_of int (fun a:set => fun b:set => a + b) = 0.
+exact (NEUTRAL_INT_ADD_bridge hlt_NEUTRAL_INT_ADD).
 Admitted.
 
 // HOL Light: iterate.ml:1268 / MONOIDAL_INT_ADD   (hash md5:00b4745143ee30bfdceaf4696bd1d02a)
-// not bridged: 
+Theorem hlt_MONOIDAL_INT_ADD : hl_monoidal hl_ty_int hl_int_add = 1.
+Admitted.
+Theorem MONOIDAL_INT_ADD_bridge : (hl_monoidal hl_ty_int hl_int_add = 1) -> ((forall x y :e int, x + y = y + x) /\ (forall x y z :e int, x + y + z = (x + y) + z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a + b) + x = x).
+exact (fun H__top => (iffEL (hl_monoidal int hl_int_add = 1) ((forall x y :e int, x + y = y + x) /\ (forall x y z :e int, x + y + z = (x + y) + z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a + b) + x = x) ((hl_monoidal_compat) (int) hl_ty_int_native_nonempty (hl_int_add) ((hl_int_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (int) (int) (hl_int_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e int => fun y :e int => hl_int_add x y) x y) (hl_int_add x y) (x + y) (lam2_beta (int) (int) (fun x y => hl_int_add x y) x Hx y Hy) ((hl_int_add_compat) (x) Hx (y) Hy))))))) (hl_ty_int_native (fun hl__u hl__v => hl_monoidal hl__u hl_int_add = 1) H__top)).
+Qed.
 Theorem MONOIDAL_INT_ADD : (forall x y :e int, x + y = y + x) /\ (forall x y z :e int, x + y + z = (x + y) + z) /\ forall x :e int, neutral_of int (fun a:set => fun b:set => a + b) + x = x.
+exact (MONOIDAL_INT_ADD_bridge hlt_MONOIDAL_INT_ADD).
 Admitted.
 
 // HOL Light: iterate.ml:1272 / ISUM_CLAUSES   (hash md5:1dde04b783c90d448930f9979cf21ae7)
@@ -659,13 +699,23 @@ Theorem nsum : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, 
 Admitted.
 
 // HOL Light: iterate.ml:1291 / NEUTRAL_ADD   (hash md5:06c9ed2e4a3b17c780a3883291e889fb)
-// not bridged: 
+Theorem hlt_NEUTRAL_ADD : hl_neutral omega hl_add = hl_NUMERAL hl_zero.
+Admitted.
+Theorem NEUTRAL_ADD_bridge : (hl_neutral omega hl_add = hl_NUMERAL hl_zero) -> (neutral_of omega (fun a:set => fun b:set => a + b) = 0).
+exact (fun H__top => (imp_eq (hl_neutral omega hl_add) (neutral_of omega (fun a:set => fun b:set => a + b)) (hl_NUMERAL hl_zero) (0) ((hl_neutral_compat) (omega) omega_nonempty (hl_add) ((hl_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (omega) (omega) (hl_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_add x y) x y) (hl_add x y) (x + y) (lam2_beta (omega) (omega) (fun x y => hl_add x y) x Hx y Hy) ((hl_add_compat) (x) Hx (y) Hy)))))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) H__top).
+Qed.
 Theorem NEUTRAL_ADD : neutral_of omega (fun a:set => fun b:set => a + b) = 0.
+exact (NEUTRAL_ADD_bridge hlt_NEUTRAL_ADD).
 Admitted.
 
 // HOL Light: iterate.ml:1296 / MONOIDAL_ADD   (hash md5:bba9deba271dae756a54baac1be666fc)
-// not bridged: 
+Theorem hlt_MONOIDAL_ADD : hl_monoidal omega hl_add = 1.
+Admitted.
+Theorem MONOIDAL_ADD_bridge : (hl_monoidal omega hl_add = 1) -> ((forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x).
+exact (fun H__top => (iffEL (hl_monoidal omega hl_add = 1) ((forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x) ((hl_monoidal_compat) (omega) omega_nonempty (hl_add) ((hl_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (omega) (omega) (hl_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_add x y) x y) (hl_add x y) (x + y) (lam2_beta (omega) (omega) (fun x y => hl_add x y) x Hx y Hy) ((hl_add_compat) (x) Hx (y) Hy))))))) H__top).
+Qed.
 Theorem MONOIDAL_ADD : (forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x.
+exact (MONOIDAL_ADD_bridge hlt_MONOIDAL_ADD).
 Admitted.
 
 // HOL Light: iterate.ml:1300 / NSUM_DEGENERATE   (hash md5:c1df488542489eef5bbd5fb998960ec3)
@@ -719,8 +769,13 @@ exact (NSUM_INCL_EXCL_bridge hlt_NSUM_INCL_EXCL).
 Admitted.
 
 // HOL Light: iterate.ml:1336 / NSUM_SUPPORT   (hash md5:878f2fcb54b45c8f479a08840e977d87)
-// not bridged: 
+Theorem hlt_NSUM_SUPPORT : forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_nsum A (hl_support omega A hl_add f s) f = hl_nsum A s f.
+Admitted.
+Theorem NSUM_SUPPORT_bridge : (forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_nsum A (hl_support omega A hl_add f s) f = hl_nsum A s f) -> (forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f).
+exact (fun H__top A => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e omega) -> forall s c= hl__u, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f) (fun f => (fun H : forall x :e Empty, f x :e omega => (forall_Sub_Empty (fun s => finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f) (f_equal (fun hl__u => finsum hl__u f) ({x :e Empty | f x <> neutral_of omega (fun a:set => fun b:set => a + b)}) (Empty) (Sep_Empty (fun x => f x <> neutral_of omega (fun a:set => fun b:set => a + b))))))))) (fun HAne => (imp_forall_fun (A) (omega) (fun f => forall s :e 2 :^: A, hl_nsum A (hl_support omega A hl_add f s) f = hl_nsum A s f) (fun f => forall s c= A, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f) (fun f Hfc => (imp_forall_sub (A) (fun s => hl_nsum A (hl_support omega A hl_add (hl_lam A f) s) (hl_lam A f) = hl_nsum A s (hl_lam A f)) (fun s => finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f) (fun s Hss => (imp_eq (hl_nsum A (hl_support omega A hl_add (hl_lam A f) (hl_chi A s)) (hl_lam A f)) (finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f) (hl_nsum A (hl_chi A s) (hl_lam A f)) (finsum s f) (((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_rep A (hl_support omega A hl_add (hl_lam A f) (hl_chi A s)) = {x :e hl__u | f x <> neutral_of omega (fun a:set => fun b:set => a + b)}) ((hl_support_compat) (omega) (A) omega_nonempty HAne (hl_add) ((hl_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (omega) (omega) (hl_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_add x y) x y) (hl_add x y) (x + y) (lam2_beta (omega) (omega) (fun x y => hl_add x y) x Hx y Hy) ((hl_add_compat) (x) Hx (y) Hy))))) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)) (hl_chi A s) (hl_chi_Pi (A) s))) (fun hl__u hl__v => hl_nsum A (hl_support omega A hl_add (hl_lam A f) (hl_chi A s)) (hl_lam A f) = finsum hl__u f) ((hl_nsum_compat) (A) HAne (hl_support omega A hl_add (hl_lam A f) (hl_chi A s)) (setexp_ap (2 :^: A) (2 :^: A) (hl_support omega A hl_add (hl_lam A f)) (setexp_ap (omega :^: A) (2 :^: A :^: (2 :^: A)) (hl_support omega A hl_add) (setexp_ap (omega :^: omega :^: omega) (2 :^: A :^: (2 :^: A) :^: (omega :^: A)) (hl_support omega A) ((hl_support_in) (omega) (A) omega_nonempty HAne) (hl_add) ((hl_add_in))) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc)) (hl_chi A s) (hl_chi_Pi (A) s)) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)))) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_nsum A (hl_chi A s) (hl_lam A f) = finsum hl__u f) ((hl_nsum_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f))))))))) (H__top A HAne)))).
+Qed.
 Theorem NSUM_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f.
+exact (NSUM_SUPPORT_bridge hlt_NSUM_SUPPORT).
 Admitted.
 
 // HOL Light: iterate.ml:1340 / NSUM_ADD   (hash md5:7d4456c4f64050e05c81b0253a214728)
@@ -929,8 +984,13 @@ exact (NSUM_SUPERSET_bridge hlt_NSUM_SUPERSET).
 Admitted.
 
 // HOL Light: iterate.ml:1475 / NSUM_UNIV   (hash md5:35925a523b9ef709bfeed127741691c2)
-// not bridged: 
+Theorem hlt_NSUM_UNIV : forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support omega A hl_add f (hl_UNIV A)) s = 1 -> hl_nsum A s f = hl_nsum A (hl_UNIV A) f.
+Admitted.
+Theorem NSUM_UNIV_bridge : (forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support omega A hl_add f (hl_UNIV A)) s = 1 -> hl_nsum A s f = hl_nsum A (hl_UNIV A) f) -> (forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f).
+exact (fun H__top A => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e omega) -> forall s c= hl__u, {x :e hl__u | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum hl__u f) (fun f => (fun H : forall x :e Empty, f x :e omega => (forall_Sub_Empty (fun s => {x :e Empty | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum Empty f) (fun H : {x :e Empty | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= Empty => (fun q H => H))))))) (fun HAne => (imp_forall_fun (A) (omega) (fun f => forall s :e 2 :^: A, hl_SUBSET A (hl_support omega A hl_add f (hl_UNIV A)) s = 1 -> hl_nsum A s f = hl_nsum A (hl_UNIV A) f) (fun f => forall s c= A, {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f) (fun f Hfc => (imp_forall_sub (A) (fun s => hl_SUBSET A (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) s = 1 -> hl_nsum A s (hl_lam A f) = hl_nsum A (hl_UNIV A) (hl_lam A f)) (fun s => {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f) (fun s Hss => (fun H__L : ((hl_SUBSET A (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1) -> (hl_nsum A (hl_chi A s) (hl_lam A f) = hl_nsum A (hl_UNIV A) (hl_lam A f))) => fun H__hyp2 : ({x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s) => (imp_eq (hl_nsum A (hl_chi A s) (hl_lam A f)) (finsum s f) (hl_nsum A (hl_UNIV A) (hl_lam A f)) (finsum A f) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_nsum A (hl_chi A s) (hl_lam A f) = finsum hl__u f) ((hl_nsum_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)))) (((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_nsum A (hl_UNIV A) (hl_lam A f) = finsum hl__u f) ((hl_nsum_compat) (A) HAne (hl_UNIV A) ((hl_UNIV_in) (A) HAne) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f))))) (H__L ((iffER (hl_SUBSET A (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1) ({x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_SUBSET A (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1 <-> {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= hl__u) ((((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_rep A (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) = {x :e hl__u | f x <> neutral_of omega (fun a:set => fun b:set => a + b)}) ((hl_support_compat) (omega) (A) omega_nonempty HAne (hl_add) ((hl_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (omega) (omega) (hl_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_add x y) x y) (hl_add x y) (x + y) (lam2_beta (omega) (omega) (fun x y => hl_add x y) x Hx y Hy) ((hl_add_compat) (x) Hx (y) Hy))))) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)) (hl_UNIV A) ((hl_UNIV_in) (A) HAne))) (fun hl__u hl__v => hl_SUBSET A (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1 <-> hl__u c= hl_rep A (hl_chi A s)) ((hl_SUBSET_compat) (A) HAne (hl_support omega A hl_add (hl_lam A f) (hl_UNIV A)) (setexp_ap (2 :^: A) (2 :^: A) (hl_support omega A hl_add (hl_lam A f)) (setexp_ap (omega :^: A) (2 :^: A :^: (2 :^: A)) (hl_support omega A hl_add) (setexp_ap (omega :^: omega :^: omega) (2 :^: A :^: (2 :^: A) :^: (omega :^: A)) (hl_support omega A) ((hl_support_in) (omega) (A) omega_nonempty HAne) (hl_add) ((hl_add_in))) (hl_lam A f) (hl_lam_Pi (A) (omega) f Hfc)) (hl_UNIV A) ((hl_UNIV_in) (A) HAne)) (hl_chi A s) (hl_chi_Pi (A) s))))) H__hyp2))))))) (H__top A HAne)))).
+Qed.
 Theorem NSUM_UNIV : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f.
+exact (NSUM_UNIV_bridge hlt_NSUM_UNIV).
 Admitted.
 
 // HOL Light: iterate.ml:1480 / NSUM_UNION_RZERO   (hash md5:0fee949aaa70b39ee07feb0a7c1d807d)
@@ -1479,13 +1539,23 @@ Theorem sum : forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (
 Admitted.
 
 // HOL Light: iterate.ml:1987 / NEUTRAL_REAL_ADD   (hash md5:1e3accec9aefb529760ca0411db5fa95)
-// not bridged: 
+Theorem hlt_NEUTRAL_REAL_ADD : hl_neutral R hl_real_add = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+Theorem NEUTRAL_REAL_ADD_bridge : (hl_neutral R hl_real_add = hl_real_of_num (hl_NUMERAL hl_zero)) -> (neutral_of R (fun a:set => fun b:set => a + b) = 0).
+exact (fun H__top => (imp_eq (hl_neutral R hl_real_add) (neutral_of R (fun a:set => fun b:set => a + b)) (hl_real_of_num (hl_NUMERAL hl_zero)) (0) ((hl_neutral_compat) (R) R_nonempty (hl_real_add) ((hl_real_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (R) (R) (hl_real_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_add x y) x y) (hl_real_add x y) (x + y) (lam2_beta (R) (R) (fun x y => hl_real_add x y) x Hx y Hy) ((hl_real_add_compat) (x) Hx (y) Hy)))))) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) H__top).
+Qed.
 Theorem NEUTRAL_REAL_ADD : neutral_of R (fun a:set => fun b:set => a + b) = 0.
+exact (NEUTRAL_REAL_ADD_bridge hlt_NEUTRAL_REAL_ADD).
 Admitted.
 
 // HOL Light: iterate.ml:1992 / MONOIDAL_REAL_ADD   (hash md5:56f4a58acc8d9b328a62928ef674af6d)
-// not bridged: 
+Theorem hlt_MONOIDAL_REAL_ADD : hl_monoidal R hl_real_add = 1.
+Admitted.
+Theorem MONOIDAL_REAL_ADD_bridge : (hl_monoidal R hl_real_add = 1) -> ((forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x).
+exact (fun H__top => (iffEL (hl_monoidal R hl_real_add = 1) ((forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x) ((hl_monoidal_compat) (R) R_nonempty (hl_real_add) ((hl_real_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (R) (R) (hl_real_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_add x y) x y) (hl_real_add x y) (x + y) (lam2_beta (R) (R) (fun x y => hl_real_add x y) x Hx y Hy) ((hl_real_add_compat) (x) Hx (y) Hy))))))) H__top).
+Qed.
 Theorem MONOIDAL_REAL_ADD : (forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x.
+exact (MONOIDAL_REAL_ADD_bridge hlt_MONOIDAL_REAL_ADD).
 Admitted.
 
 // HOL Light: iterate.ml:1996 / SUM_DEGENERATE   (hash md5:cf2bc0c49dfb27c1270078e50a73d766)
@@ -1539,8 +1609,13 @@ exact (SUM_INCL_EXCL_bridge hlt_SUM_INCL_EXCL).
 Admitted.
 
 // HOL Light: iterate.ml:2028 / SUM_SUPPORT   (hash md5:57b0be054e27b9f99a4b2ab72a68ad82)
-// not bridged: 
+Theorem hlt_SUM_SUPPORT : forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_sum A (hl_support R A hl_real_add f s) f = hl_sum A s f.
+Admitted.
+Theorem SUM_SUPPORT_bridge : (forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_sum A (hl_support R A hl_real_add f s) f = hl_sum A s f) -> (forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f).
+exact (fun H__top A => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e R) -> forall s c= hl__u, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f) (fun f => (fun H : forall x :e Empty, f x :e R => (forall_Sub_Empty (fun s => finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f) (f_equal (fun hl__u => finsum hl__u f) ({x :e Empty | f x <> neutral_of R (fun a:set => fun b:set => a + b)}) (Empty) (Sep_Empty (fun x => f x <> neutral_of R (fun a:set => fun b:set => a + b))))))))) (fun HAne => (imp_forall_fun (A) (R) (fun f => forall s :e 2 :^: A, hl_sum A (hl_support R A hl_real_add f s) f = hl_sum A s f) (fun f => forall s c= A, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f) (fun f Hfc => (imp_forall_sub (A) (fun s => hl_sum A (hl_support R A hl_real_add (hl_lam A f) s) (hl_lam A f) = hl_sum A s (hl_lam A f)) (fun s => finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f) (fun s Hss => (imp_eq (hl_sum A (hl_support R A hl_real_add (hl_lam A f) (hl_chi A s)) (hl_lam A f)) (finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f) (hl_sum A (hl_chi A s) (hl_lam A f)) (finsum s f) (((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_rep A (hl_support R A hl_real_add (hl_lam A f) (hl_chi A s)) = {x :e hl__u | f x <> neutral_of R (fun a:set => fun b:set => a + b)}) ((hl_support_compat) (R) (A) R_nonempty HAne (hl_real_add) ((hl_real_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (R) (R) (hl_real_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_add x y) x y) (hl_real_add x y) (x + y) (lam2_beta (R) (R) (fun x y => hl_real_add x y) x Hx y Hy) ((hl_real_add_compat) (x) Hx (y) Hy))))) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)) (hl_chi A s) (hl_chi_Pi (A) s))) (fun hl__u hl__v => hl_sum A (hl_support R A hl_real_add (hl_lam A f) (hl_chi A s)) (hl_lam A f) = finsum hl__u f) ((hl_sum_compat) (A) HAne (hl_support R A hl_real_add (hl_lam A f) (hl_chi A s)) (setexp_ap (2 :^: A) (2 :^: A) (hl_support R A hl_real_add (hl_lam A f)) (setexp_ap (R :^: A) (2 :^: A :^: (2 :^: A)) (hl_support R A hl_real_add) (setexp_ap (R :^: R :^: R) (2 :^: A :^: (2 :^: A) :^: (R :^: A)) (hl_support R A) ((hl_support_in) (R) (A) R_nonempty HAne) (hl_real_add) ((hl_real_add_in))) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc)) (hl_chi A s) (hl_chi_Pi (A) s)) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)))) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_sum A (hl_chi A s) (hl_lam A f) = finsum hl__u f) ((hl_sum_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f))))))))) (H__top A HAne)))).
+Qed.
 Theorem SUM_SUPPORT : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f.
+exact (SUM_SUPPORT_bridge hlt_SUM_SUPPORT).
 Admitted.
 
 // HOL Light: iterate.ml:2032 / SUM_ADD   (hash md5:7b4b78190b429e4506561b3032353a91)
@@ -1819,8 +1894,13 @@ exact (SUM_SUPERSET_bridge hlt_SUM_SUPERSET).
 Admitted.
 
 // HOL Light: iterate.ml:2232 / SUM_UNIV   (hash md5:44fb035f34f7ec4e8b74faf1dc401597)
-// not bridged: 
+Theorem hlt_SUM_UNIV : forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support R A hl_real_add f (hl_UNIV A)) s = 1 -> hl_sum A s f = hl_sum A (hl_UNIV A) f.
+Admitted.
+Theorem SUM_UNIV_bridge : (forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support R A hl_real_add f (hl_UNIV A)) s = 1 -> hl_sum A s f = hl_sum A (hl_UNIV A) f) -> (forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f).
+exact (fun H__top A => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e R) -> forall s c= hl__u, {x :e hl__u | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum hl__u f) (fun f => (fun H : forall x :e Empty, f x :e R => (forall_Sub_Empty (fun s => {x :e Empty | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum Empty f) (fun H : {x :e Empty | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= Empty => (fun q H => H))))))) (fun HAne => (imp_forall_fun (A) (R) (fun f => forall s :e 2 :^: A, hl_SUBSET A (hl_support R A hl_real_add f (hl_UNIV A)) s = 1 -> hl_sum A s f = hl_sum A (hl_UNIV A) f) (fun f => forall s c= A, {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f) (fun f Hfc => (imp_forall_sub (A) (fun s => hl_SUBSET A (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) s = 1 -> hl_sum A s (hl_lam A f) = hl_sum A (hl_UNIV A) (hl_lam A f)) (fun s => {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f) (fun s Hss => (fun H__L : ((hl_SUBSET A (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1) -> (hl_sum A (hl_chi A s) (hl_lam A f) = hl_sum A (hl_UNIV A) (hl_lam A f))) => fun H__hyp2 : ({x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s) => (imp_eq (hl_sum A (hl_chi A s) (hl_lam A f)) (finsum s f) (hl_sum A (hl_UNIV A) (hl_lam A f)) (finsum A f) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_sum A (hl_chi A s) (hl_lam A f) = finsum hl__u f) ((hl_sum_compat) (A) HAne (hl_chi A s) (hl_chi_Pi (A) s) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)))) (((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_sum A (hl_UNIV A) (hl_lam A f) = finsum hl__u f) ((hl_sum_compat) (A) HAne (hl_UNIV A) ((hl_UNIV_in) (A) HAne) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f))))) (H__L ((iffER (hl_SUBSET A (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1) ({x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_SUBSET A (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1 <-> {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= hl__u) ((((hl_UNIV_compat) (A) HAne) (fun hl__u hl__v => hl_rep A (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) = {x :e hl__u | f x <> neutral_of R (fun a:set => fun b:set => a + b)}) ((hl_support_compat) (R) (A) R_nonempty HAne (hl_real_add) ((hl_real_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (R) (R) (hl_real_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_add x y) x y) (hl_real_add x y) (x + y) (lam2_beta (R) (R) (fun x y => hl_real_add x y) x Hx y Hy) ((hl_real_add_compat) (x) Hx (y) Hy))))) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc) (fun hl__x:set => (f) hl__x) ((hl_lam_ap (A) f)) (hl_UNIV A) ((hl_UNIV_in) (A) HAne))) (fun hl__u hl__v => hl_SUBSET A (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) (hl_chi A s) = 1 <-> hl__u c= hl_rep A (hl_chi A s)) ((hl_SUBSET_compat) (A) HAne (hl_support R A hl_real_add (hl_lam A f) (hl_UNIV A)) (setexp_ap (2 :^: A) (2 :^: A) (hl_support R A hl_real_add (hl_lam A f)) (setexp_ap (R :^: A) (2 :^: A :^: (2 :^: A)) (hl_support R A hl_real_add) (setexp_ap (R :^: R :^: R) (2 :^: A :^: (2 :^: A) :^: (R :^: A)) (hl_support R A) ((hl_support_in) (R) (A) R_nonempty HAne) (hl_real_add) ((hl_real_add_in))) (hl_lam A f) (hl_lam_Pi (A) (R) f Hfc)) (hl_UNIV A) ((hl_UNIV_in) (A) HAne)) (hl_chi A s) (hl_chi_Pi (A) s))))) H__hyp2))))))) (H__top A HAne)))).
+Qed.
 Theorem SUM_UNIV : forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f.
+exact (SUM_UNIV_bridge hlt_SUM_UNIV).
 Admitted.
 
 // HOL Light: iterate.ml:2237 / SUM_UNION_RZERO   (hash md5:ec172d9a16f0b8604b74e1941603a05e)

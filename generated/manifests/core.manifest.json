@@ -6273,7 +6273,7 @@
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> mod_nat x n = mod_nat y n",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_MOD x n = hl_MOD y n",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant num_mod (view metapred(omega,omega), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -6302,7 +6302,7 @@
    "statement": "forall a b m n :e omega, (exists q1 q2 :e omega, a + (m * n) * q1 = b + (m * n) * q2) -> exists q1 q2 :e omega, div_nat a m + n * q1 = div_nat b m + n * q2",
    "literal": "forall a b m n :e omega, hl_sym_3d3d omega a b (hl_num_mod (hl_mul m n)) = 1 -> hl_sym_3d3d omega (hl_DIV a m) (hl_DIV b m) (hl_num_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant num_mod (view metapred(omega,omega), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -6330,7 +6330,7 @@
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, mod_nat x n + n * q1 = y + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega (hl_MOD x n) y (hl_num_mod n) = 1 <-> hl_sym_3d3d omega x y (hl_num_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant num_mod (view metapred(omega,omega), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -6360,7 +6360,7 @@
    "statement": "forall A:set, A <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s /\\ (forall x :e A, x :e s -> exists q1 q2 :e omega, f x + n * q1 = g x + n * q2) -> exists q1 q2 :e omega, finsum s f + n * q1 = finsum s g + n * q2",
    "literal": "forall A:set, A <> Empty -> forall n :e omega, forall f g :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall x :e A, hl_IN A x s = 1 -> hl_sym_3d3d omega (f x) (g x) (hl_num_mod n) = 1) -> hl_sym_3d3d omega (hl_nsum A s f) (hl_nsum A s g) (hl_num_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant num_mod (view metapred(omega,omega), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -6388,7 +6388,7 @@
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = mod_nat y n + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x (hl_MOD y n) (hl_num_mod n) = 1 <-> hl_sym_3d3d omega x y (hl_num_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant num_mod (view metapred(omega,omega), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_num_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -19301,9 +19301,9 @@
    "source": "!f:A->B. !g:A->C. (!x:A. !y:A. g x = g y ==> f x = f y) <=> (?h:C->B. f = h o g)",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> ((forall x y :e A, g x = g y -> f x = f y) <-> exists h:set -> set, (forall x :e C, h x :e B) /\\ forall x :e A, f x = h (g x))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: A, (forall x y :e A, g x = g y -> f x = f y) <-> exists h :e B :^: C, f = hl_o C B A h g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant o (view set(B), 3 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FUNCTION_FACTORS_LEFT_bridge"
   },
   {
    "name": "FUNCTION_FACTORS_LEFT_GEN",
@@ -19351,9 +19351,9 @@
    "source": "!f:A->C. !g:B->C. (!x:A. ?y:B. g y = f x) <=> (?h:A->B. f = g o h)",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e C) -> forall g:set -> set, (forall x :e B, g x :e C) -> ((forall x :e A, exists y :e B, g y = f x) <-> exists h:set -> set, (forall x :e A, h x :e B) /\\ forall x :e A, f x = g (h x))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: A, forall g :e C :^: B, (forall x :e A, exists y :e B, g y = f x) <-> exists h :e B :^: A, f = hl_o B C A g h",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant o (view set(C), 3 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FUNCTION_FACTORS_RIGHT_bridge"
   },
   {
    "name": "FUNCTION_FACTORS_RIGHT_GEN",
@@ -27197,7 +27197,7 @@
    "statement": "forall a b m n :e int, divides_int (m * n) (a + - b) -> divides_int n (div_int a m + - div_int b m)",
    "literal": "forall a b m n :e hl_ty_int, hl_sym_3d3d hl_ty_int a b (hl_int_mod (hl_int_mul m n)) = 1 -> hl_sym_3d3d hl_ty_int (hl_div a m) (hl_div b m) (hl_int_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -27225,7 +27225,7 @@
    "statement": "forall x y n :e int, abs_SNo (x + - y) < n /\\ divides_int n (x + - y) -> x = y",
    "literal": "forall x y n :e hl_ty_int, hl_int_lt (hl_int_abs (hl_int_sub x y)) n = 1 /\\ hl_sym_3d3d hl_ty_int x y (hl_int_mod n) = 1 -> x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -27253,7 +27253,7 @@
    "statement": "forall x y n :e int, divides_int n (rem_int x n + - y) <-> divides_int n (x + - y)",
    "literal": "forall x y n :e hl_ty_int, hl_sym_3d3d hl_ty_int (hl_rem x n) y (hl_int_mod n) = 1 <-> hl_sym_3d3d hl_ty_int x y (hl_int_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -27283,7 +27283,7 @@
    "statement": "forall x y :e int, (y = 0 -> 0 <= x) -> exists n :e omega, divides_int y (n + - x)",
    "literal": "forall x y :e hl_ty_int, (y = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1) -> exists n :e omega, hl_sym_3d3d hl_ty_int (hl_int_of_num n) x (hl_int_mod y) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -27311,7 +27311,7 @@
    "statement": "forall x y n :e int, divides_int n (x + - rem_int y n) <-> divides_int n (x + - y)",
    "literal": "forall x y n :e hl_ty_int, hl_sym_3d3d hl_ty_int x (hl_rem y n) (hl_int_mod n) = 1 <-> hl_sym_3d3d hl_ty_int x y (hl_int_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -27341,7 +27341,7 @@
    "statement": "forall a n :e int, ~ n = 0 -> exists x :e int, 0 <= x /\\ (x < abs_SNo n /\\ divides_int n (x + - a))",
    "literal": "forall a n :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> exists x :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) x = 1 /\\ (hl_int_lt x (hl_int_abs n) = 1 /\\ hl_sym_3d3d hl_ty_int x a (hl_int_mod n) = 1)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -35315,7 +35315,7 @@
    "statement": "forall m n p :e int, rem_int m p = rem_int n p <-> divides_int p (m + - n)",
    "literal": "forall m n p :e hl_ty_int, hl_rem m p = hl_rem n p <-> hl_sym_3d3d hl_ty_int m n (hl_int_mod p) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -35517,7 +35517,7 @@
    "statement": "forall m n :e int, divides_int n (rem_int m n + - m)",
    "literal": "forall m n :e hl_ty_int, hl_sym_3d3d hl_ty_int (hl_rem m n) m (hl_int_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -35943,7 +35943,7 @@
    "statement": "forall m n p :e int, rem_int m n = p <-> (n = 0 /\\ m = p \\/ 0 <= p /\\ p < abs_SNo n) /\\ divides_int n (m + - p)",
    "literal": "forall m n p :e hl_ty_int, hl_rem m n = p <-> (n = hl_int_of_num (hl_NUMERAL hl_zero) /\\ m = p \\/ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) p = 1 /\\ hl_int_lt p (hl_int_abs n) = 1) /\\ hl_sym_3d3d hl_ty_int m p (hl_int_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -39868,7 +39868,7 @@
    "statement": "forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\\ forall x :e A, f x = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_o B B A (hl_I B) f = f /\\ hl_o A B A f (hl_I A) = f",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant o (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -39896,7 +39896,7 @@
    "statement": "forall A:set, forall x :e A, x = x",
    "literal": "forall A:set, A <> Empty -> forall x :e A, hl_I A x = x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant I (view set(A), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_I_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -45339,9 +45339,9 @@
    "source": "monoidal +",
    "statement": "(forall x y :e omega, x + y = y + x) /\\ (forall x y z :e omega, x + y + z = (x + y) + z) /\\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x",
    "literal": "hl_monoidal omega hl_add = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant + (view metafun(omega,omega -> omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONOIDAL_ADD_bridge"
   },
   {
    "name": "MONOIDAL_INT_ADD",
@@ -45367,9 +45367,9 @@
    "source": "monoidal int_add",
    "statement": "(forall x y :e int, x + y = y + x) /\\ (forall x y z :e int, x + y + z = (x + y) + z) /\\ forall x :e int, neutral_of int (fun a:set => fun b:set => a + b) + x = x",
    "literal": "hl_monoidal hl_ty_int hl_int_add = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_add (view metafun(int,int -> int), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONOIDAL_INT_ADD_bridge"
   },
   {
    "name": "MONOIDAL_INT_MUL",
@@ -45395,9 +45395,9 @@
    "source": "monoidal int_mul",
    "statement": "(forall x y :e int, x * y = y * x) /\\ (forall x y z :e int, x * y * z = (x * y) * z) /\\ forall x :e int, neutral_of int (fun a:set => fun b:set => a * b) * x = x",
    "literal": "hl_monoidal hl_ty_int hl_int_mul = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mul (view metafun(int,int -> int), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONOIDAL_INT_MUL_bridge"
   },
   {
    "name": "MONOIDAL_MUL",
@@ -45424,9 +45424,9 @@
    "source": "monoidal *",
    "statement": "(forall x y :e omega, x * y = y * x) /\\ (forall x y z :e omega, x * y * z = (x * y) * z) /\\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a * b) * x = x",
    "literal": "hl_monoidal omega hl_mul = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant * (view metafun(omega,omega -> omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONOIDAL_MUL_bridge"
   },
   {
    "name": "MONOIDAL_REAL_ADD",
@@ -45452,9 +45452,9 @@
    "source": "monoidal real_add",
    "statement": "(forall x y :e R, x + y = y + x) /\\ (forall x y z :e R, x + y + z = (x + y) + z) /\\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x",
    "literal": "hl_monoidal R hl_real_add = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant real_add (view metafun(R,R -> R), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONOIDAL_REAL_ADD_bridge"
   },
   {
    "name": "MONOIDAL_REAL_MUL",
@@ -45480,9 +45480,9 @@
    "source": "monoidal real_mul",
    "statement": "(forall x y :e R, x * y = y * x) /\\ (forall x y z :e R, x * y * z = (x * y) * z) /\\ forall x :e R, neutral_of R (fun a:set => fun b:set => a * b) * x = x",
    "literal": "hl_monoidal R hl_real_mul = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant real_mul (view metafun(R,R -> R), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MONOIDAL_REAL_MUL_bridge"
   },
   {
    "name": "MONO_ALL",
@@ -47709,9 +47709,9 @@
    "source": "neutral + = 0",
    "statement": "neutral_of omega (fun a:set => fun b:set => a + b) = 0",
    "literal": "hl_neutral omega hl_add = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant + (view metafun(omega,omega -> omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NEUTRAL_ADD_bridge"
   },
   {
    "name": "NEUTRAL_INT_ADD",
@@ -47739,9 +47739,9 @@
    "source": "neutral int_add = int_of_num 0",
    "statement": "neutral_of int (fun a:set => fun b:set => a + b) = 0",
    "literal": "hl_neutral hl_ty_int hl_int_add = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_add (view metafun(int,int -> int), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NEUTRAL_INT_ADD_bridge"
   },
   {
    "name": "NEUTRAL_INT_MUL",
@@ -47769,9 +47769,9 @@
    "source": "neutral int_mul = int_of_num 1",
    "statement": "neutral_of int (fun a:set => fun b:set => a * b) = 1",
    "literal": "hl_neutral hl_ty_int hl_int_mul = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mul (view metafun(int,int -> int), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NEUTRAL_INT_MUL_bridge"
   },
   {
    "name": "NEUTRAL_MUL",
@@ -47798,9 +47798,9 @@
    "source": "neutral * = 1",
    "statement": "neutral_of omega (fun a:set => fun b:set => a * b) = 1",
    "literal": "hl_neutral omega hl_mul = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant * (view metafun(omega,omega -> omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NEUTRAL_MUL_bridge"
   },
   {
    "name": "NEUTRAL_REAL_ADD",
@@ -47828,9 +47828,9 @@
    "source": "neutral real_add = real_of_num 0",
    "statement": "neutral_of R (fun a:set => fun b:set => a + b) = 0",
    "literal": "hl_neutral R hl_real_add = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant real_add (view metafun(R,R -> R), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NEUTRAL_REAL_ADD_bridge"
   },
   {
    "name": "NEUTRAL_REAL_MUL",
@@ -47858,9 +47858,9 @@
    "source": "neutral real_mul = real_of_num 1",
    "statement": "neutral_of R (fun a:set => fun b:set => a * b) = 1",
    "literal": "hl_neutral R hl_real_mul = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant real_mul (view metafun(R,R -> R), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NEUTRAL_REAL_MUL_bridge"
   },
   {
    "name": "NOT_ALL",
@@ -50662,9 +50662,9 @@
    "source": "!f:A->num. !s:A->bool. nsum (support + f s) f = nsum s f",
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finsum {x :e s | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} f = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_nsum A (hl_support omega A hl_add f s) f = hl_nsum A s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant + (view metafun(omega,omega -> omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_SUPPORT_bridge"
   },
   {
    "name": "NSUM_SWAP",
@@ -50971,9 +50971,9 @@
    "source": "!f:A->num. !s:A->bool. support + f UNIV SUBSET s ==> nsum s f = nsum UNIV f",
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, {x :e A | f x <> neutral_of omega (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support omega A hl_add f (hl_UNIV A)) s = 1 -> hl_nsum A s f = hl_nsum A (hl_UNIV A) f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant + (view metafun(omega,omega -> omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_UNIV_bridge"
   },
   {
    "name": "NULL",
@@ -52606,9 +52606,9 @@
    "source": "!R:A->A->bool. !R':A->A->bool. !s:A->bool. pairwise R s /\\ pairwise R' s <=> pairwise (\\x:A. \\y:A. R x y /\\ R' x y) s",
    "statement": "forall A:set, forall R0 R':set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> R0 x y) /\\ (forall x y :e s, x <> y -> R' x y) <-> forall x y :e s, x <> y -> R0 x y /\\ R' x y",
    "literal": "forall A:set, A <> Empty -> forall R1 R' :e 2 :^: A :^: A, forall s :e 2 :^: A, hl_pairwise A R1 s = 1 /\\ hl_pairwise A R' s = 1 <-> hl_pairwise A (fun x :e A => fun y :e A => if R1 x y = 1 /\\ R' x y = 1 then 1 else 0) s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_AND_bridge"
   },
   {
    "name": "PAIRWISE_APPEND",
@@ -52716,9 +52716,9 @@
    "source": "!r:B->B->bool. !f:A->B. pairwise r (IMAGE f s) <=> pairwise (\\x:A. \\y:A. ~(f x = f y) ==> r (f x) (f y)) s",
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall r:set -> set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e {f x | x :e s}, x <> y -> r x y) <-> forall x y :e s, x <> y -> ~ f x = f y -> r (f x) (f y))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall r :e 2 :^: B :^: B, forall f :e B :^: A, hl_pairwise B r (hl_IMAGE A B f s) = 1 <-> hl_pairwise A (fun x :e A => fun y :e A => if ~ f x = f y -> r (f x) (f y) = 1 then 1 else 0) s = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PAIRWISE_IMAGE_bridge"
   },
   {
    "name": "PAIRWISE_IMP",
@@ -67723,7 +67723,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun x:set => True)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, hl_RESTRICTION A B s f x = hl_COND B (hl_IN A x s) (f x) (hl_ARB B)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67752,7 +67752,7 @@
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t -> forall x :e A, (if x :e s then if (if x :e s then f x else choose_in B (fun y:set => True)) :e t then g (if x :e s then f x else choose_in B (fun y:set => True)) else choose_in C (fun y:set => True) else choose_in C (fun y:set => True)) = if x :e s then g (f x) else choose_in C (fun y:set => True)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_SUBSET B (hl_IMAGE A B f s) t = 1 -> hl_RESTRICTION A C s (hl_o B C A (hl_RESTRICTION B C t g) (hl_RESTRICTION A B s f)) = hl_RESTRICTION A C s (hl_o B C A g f)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(C), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67781,7 +67781,7 @@
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall t c= B, {f x | x :e s} c= t -> forall x :e A, (if x :e s then if f x :e t then g (f x) else choose_in C (fun y:set => True) else choose_in C (fun y:set => True)) = if x :e s then g (f x) else choose_in C (fun y:set => True)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_SUBSET B (hl_IMAGE A B f s) t = 1 -> hl_RESTRICTION A C s (hl_o B C A (hl_RESTRICTION B C t g) f) = hl_RESTRICTION A C s (hl_o B C A g f)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(C), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67810,7 +67810,7 @@
    "statement": "forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall x :e A, (if x :e s then g (if x :e s then f x else choose_in B (fun y:set => True)) else choose_in C (fun y:set => True)) = if x :e s then g (f x) else choose_in C (fun y:set => True)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e B :^: A, forall g :e C :^: B, forall s :e 2 :^: A, hl_RESTRICTION A C s (hl_o B C A g (hl_RESTRICTION A B s f)) = hl_RESTRICTION A C s (hl_o B C A g f)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(C), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67839,7 +67839,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, x :e s -> (if x :e s then f x else choose_in B (fun y:set => True)) = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, hl_IN A x s = 1 -> hl_RESTRICTION A B s f x = f x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67869,7 +67869,7 @@
    "statement": "forall A B:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall y :e B, x :e s /\\ f x = y -> (if x :e s then f x else choose_in B (fun y:set => True)) = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, forall y :e B, hl_IN A x s = 1 /\\ f x = y -> hl_RESTRICTION A B s f x = y",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67898,7 +67898,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, (if x :e s then f x else choose_in B (fun y:set => True)) = if x :e s then g x else choose_in B (fun y:set => True)) <-> forall x :e A, x :e s -> f x = g x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f g :e B :^: A, hl_RESTRICTION A B s f = hl_RESTRICTION A B s g <-> forall x :e A, hl_IN A x s = 1 -> f x = g x",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -67954,7 +67954,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then if x :e s then f x else choose_in B (fun y:set => True) else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun y:set => True)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, hl_RESTRICTION A B s (hl_RESTRICTION A B s f) = hl_RESTRICTION A B s f",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -68039,7 +68039,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s t c= A, forall f:set -> set, (forall x :e A, f x :e B) -> s c= t -> forall x :e A, (if x :e s then if x :e t then f x else choose_in B (fun y:set => True) else choose_in B (fun y:set => True)) = if x :e s then f x else choose_in B (fun y:set => True)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s t :e 2 :^: A, forall f :e B :^: A, hl_SUBSET A s t = 1 -> hl_RESTRICTION A B s (hl_RESTRICTION A B t f) = hl_RESTRICTION A B s f",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -68097,7 +68097,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e s -> (if x :e s then f x else choose_in B (fun y:set => True)) = choose_in B (fun x:set => True)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall f :e B :^: A, forall x :e A, ~ hl_IN A x s = 1 -> hl_RESTRICTION A B s f x = hl_ARB B",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -68184,7 +68184,7 @@
    "statement": "forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e A then f x else choose_in B (fun y:set => True)) = f x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, hl_RESTRICTION A B (hl_UNIV A) f = f",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant RESTRICTION (view set(B), 3 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_RESTRICTION_compat (no statement (unsupported roles))",
    "bridge": ""
   },
   {
@@ -74012,9 +74012,9 @@
    "source": "!f:A->real. !s:A->bool. sum (support real_add f s) f = sum s f",
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum {x :e s | f x <> neutral_of R (fun a:set => fun b:set => a + b)} f = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_sum A (hl_support R A hl_real_add f s) f = hl_sum A s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant real_add (view metafun(R,R -> R), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_SUPPORT_bridge"
   },
   {
    "name": "SUM_SWAP",
@@ -74328,9 +74328,9 @@
    "source": "!f:A->real. !s:A->bool. support real_add f UNIV SUBSET s ==> sum s f = sum UNIV f",
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, {x :e A | f x <> neutral_of R (fun a:set => fun b:set => a + b)} c= s -> finsum s f = finsum A f",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_SUBSET A (hl_support R A hl_real_add f (hl_UNIV A)) s = 1 -> hl_sum A s f = hl_sum A (hl_UNIV A) f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant real_add (view metafun(R,R -> R), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_UNIV_bridge"
   },
   {
    "name": "SUM_ZERO_EXISTS",
@@ -78171,9 +78171,9 @@
    "source": "WF (\\x:A. \\y:A. F)",
    "statement": "forall A:set, A <> Empty -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ False",
    "literal": "forall A:set, A <> Empty -> hl_WF A (fun x :e A => fun y :e A => if False then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_FALSE_bridge"
   },
   {
    "name": "WF_FINITE",
@@ -78380,7 +78380,7 @@
    "statement": "forall A:set, A <> Empty -> forall m:set -> set, (forall x :e A, m x :e omega) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ m y < m x",
    "literal": "forall A:set, A <> Empty -> forall m :e omega :^: A, hl_WF A (hl_MEASURE A m) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant MEASURE (view metapred(A,A), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_MEASURE_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -78404,9 +78404,9 @@
    "source": "!<<:B->B->bool. !m:A->B. WF << ==> WF (\\x:A. \\x':A. << (m x) (m x'))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall lt:set -> set -> prop, forall m:set -> set, (forall x :e A, m x :e B) -> (forall P c= B, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt (m y) (m x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall lt :e 2 :^: B :^: B, forall m :e B :^: A, hl_WF B lt = 1 -> hl_WF A (fun x :e A => fun x' :e A => lt (m x) (m x')) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_MEASURE_GEN_bridge"
   },
   {
    "name": "WF_POINTWISE",
@@ -78802,9 +78802,9 @@
    "source": "!<<:A->A->bool. !P:A->bool. WF << ==> WF (\\x:A. \\y:A. P x /\\ P y /\\ << x y)",
    "statement": "forall A:set, forall lt:set -> set -> prop, forall P:set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) -> forall P0 c= A, P0 <> Empty -> exists x :e P0, forall y :e P0, ~ (P y /\\ (P x /\\ lt y x))",
    "literal": "forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, forall P :e 2 :^: A, hl_WF A lt = 1 -> hl_WF A (fun x :e A => fun y :e A => if P x = 1 /\\ (P y = 1 /\\ lt x y = 1) then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_RESTRICT_bridge"
   },
   {
    "name": "WF_SUBSET",
@@ -78916,9 +78916,9 @@
    "source": "WF <",
    "statement": "forall P c= omega, P <> Empty -> exists x :e P, forall y :e P, ~ y < x",
    "literal": "hl_WF omega hl_lt = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant < (view metapred(omega,omega), 0 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "WF_num_bridge"
   },
   {
    "name": "WLOG_LE",
@@ -80636,7 +80636,7 @@
    "statement": "forall x y n :e int, divides_int n (x + - y) <-> exists d :e int, x + - y = n * d",
    "literal": "forall x y n :e hl_ty_int, hl_sym_3d3d hl_ty_int x y (hl_int_mod n) = 1 <-> exists d :e hl_ty_int, hl_int_sub x y = hl_int_mul n d",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -82723,7 +82723,7 @@
    "statement": "forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> divides_int n (x + - y)",
    "literal": "forall x y n :e omega, hl_sym_3d3d omega x y (hl_num_mod n) = 1 <-> hl_sym_3d3d hl_ty_int (hl_int_of_num x) (hl_int_of_num y) (hl_int_mod (hl_int_of_num n)) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod (view metapred(int,int), 1 args)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_mod_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -82973,9 +82973,9 @@
    "source": "!f:C->D. !g:B->C. !h:A->B. f o g o h = (f o g) o h",
    "statement": "forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x))",
    "literal": "forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall f :e D :^: C, forall g :e C :^: B, forall h :e B :^: A, hl_o C D A f (hl_o B C A g h) = hl_o B D A (hl_o C D B f g) h",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant o (view set(D), 3 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "o_ASSOC_bridge"
   },
   {
    "name": "o_DEF",
@@ -83033,9 +83033,9 @@
    "source": "!f:B->C. !g:A->B. !x:A. (f o g) x = f (g x)",
    "statement": "forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall x :e A, hl_o B C A f g x = f (g x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: partial application of mapped constant o (view set(C), 3 args)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "o_THM_bridge"
   },
   {
    "name": "one",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1938
+  "native_certified": 1964
  }
 }

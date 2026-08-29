@@ -3814,3 +3814,13 @@ Theorem hl_num_of_int_compat : forall l1 :e int, l1 :e omega -> hl_num_of_int l1
 let x. assume Hx Ho.
 exact (eq_trans_i (hl_num_of_int x) x (if x :e omega then x else 0) (hl_num_of_int_nonneg x Hx (omega_nonneg x Ho)) (eq_sym_i (if x :e omega then x else 0) x (If_i_1 (x :e omega) x 0 Ho))).
 Qed.
+
+// ---- pointwise relations of doubly eta-expanded literal functions ----
+Theorem pw_eta_pred2 : forall D1 D2 F:set, forall N:set -> set -> prop, (forall x :e D1, forall y :e D2, (fun x :e D1 => fun y :e D2 => F x y) x y = 1 <-> N x y) -> forall x :e D1, forall y :e D2, F x y = 1 <-> N x y.
+let D1 D2 F N. assume H. let x. assume Hx. let y. assume Hy.
+exact (iff_eq1_l (F x y) ((fun x :e D1 => fun y :e D2 => F x y) x y) (eq_sym_i ((fun x :e D1 => fun y :e D2 => F x y) x y) (F x y) (lam2_beta D1 D2 (fun x y => F x y) x Hx y Hy)) (N x y) (H x Hx y Hy)).
+Qed.
+Theorem pw_eta_fun2 : forall D1 D2 F:set, forall N:set -> set -> set, (forall x :e D1, forall y :e D2, (fun x :e D1 => fun y :e D2 => F x y) x y = N x y) -> forall x :e D1, forall y :e D2, F x y = N x y.
+let D1 D2 F N. assume H. let x. assume Hx. let y. assume Hy.
+exact (eq_trans_i (F x y) ((fun x :e D1 => fun y :e D2 => F x y) x y) (N x y) (eq_sym_i ((fun x :e D1 => fun y :e D2 => F x y) x y) (F x y) (lam2_beta D1 D2 (fun x y => F x y) x Hx y Hy)) (H x Hx y Hy)).
+Qed.

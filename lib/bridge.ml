@@ -708,6 +708,44 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | _ ->
                 (match mapped_entry g c cty with
                  | Some (e, _) when List.length args = List.length e.R.c_args -> rel_mapped g e c cty args lit nat nview
+                 | Some (e, _) when List.length args + 2 = List.length e.R.c_args && (match nview with E.VMetaFun ([ _; _ ], _) | E.VMetaPred [ _; _ ] -> true | _ -> false) ->
+                     (* two missing arguments: eta-expand twice and relate the arity-2 lambda *)
+                     let rem_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty args in
+                     let d1, ty2 = dest_fun_ty rem_ty in
+                     let d2, _ = dest_fun_ty ty2 in
+                     let t' = Lam ("x", d1, Lam ("y", d2, App (App (Hol.lift 2 0 t, Bound 1), Bound 0))) in
+                     let _, _, k', pf' = rel g t' (Some nview) in
+                     let c1 = L.carrier g.lctx d1 and c2 = L.carrier g.lctx d2 in
+                     let r1 = nat_of_lit g.lctx d1 (Mg.Var "hl__x") and r2 = nat_of_lit g.lctx d2 (Mg.Var "hl__y") in
+                     let m = if r1 = Mg.Var "hl__x" && r2 = Mg.Var "hl__y" then ppp nat else Printf.sprintf "(fun hl__x:set => fun hl__y:set => %s %s %s)" (ppp nat) (ppp r1) (ppp r2) in
+                     (match k' with
+                      | KPWP2 _ -> (lit, nat, k', Printf.sprintf "(pw_eta_pred2 %s %s %s %s %s)" (ppp c1) (ppp c2) (ppp lit) m pf')
+                      | KPW2 _ -> (lit, nat, k', Printf.sprintf "(pw_eta_fun2 %s %s %s %s %s)" (ppp c1) (ppp c2) (ppp lit) m pf')
+                      | _ -> unsupported "rel: partial application (arity 2) shape")
+                 | Some (e, _) when List.length args = List.length e.R.c_args + 1 && (match e.R.c_result with R.RMetaFun _ | R.RMetaPred _ -> true | _ -> false) ->
+                     (* over-application of a constant with a meta-function/predicate result: relate the
+                        application to the registry's arguments pointwise, then apply to the extra argument *)
+                     let n = List.length e.R.c_args in
+                     let base_args = List.filteri (fun i _ -> i < n) args and x = List.nth args n in
+                     let t0 = List.fold_left (fun acc a -> App (acc, a)) h base_args in
+                     let rem_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty base_args in
+                     let dom, cod = dest_fun_ty rem_ty in
+                     let cd = L.carrier g.lctx dom in
+                     let want0 = (match e.R.c_result with R.RMetaPred _ -> E.VMetaPred [ cd ] | _ -> E.VMetaFun ([ cd ], L.carrier g.lctx cod)) in
+                     let l0, n0, k0, p0 = rel g t0 (Some want0) in
+                     let lx, nx, kx, px = rel g x (Some (E.VSet cd)) in
+                     if kx <> KEq then unsupported "rel: over-application argument relation";
+                     ignore l0;
+                     (match k0 with
+                      | KPW _ ->
+                          let pf0 = Printf.sprintf "(%s %s %s)" p0 (ppp lx) (typ g x) in
+                          if lx = nx then (lit, nat, KEq, pf0)
+                          else (lit, nat, KEq, leibniz (if px = "" then refl else px) (pp (L.mg_eq lit (Mg.App (n0, Mg.Var "hl__u")))) pf0)
+                      | KPWP _ ->
+                          let pf0 = Printf.sprintf "(%s %s %s)" p0 (ppp lx) (typ g x) in
+                          if lx = nx then (lit, nat, KIff, pf0)
+                          else (lit, nat, KIff, leibniz (if px = "" then refl else px) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.App (n0, Mg.Var "hl__u")))) pf0)
+                      | _ -> unsupported "rel: over-application relation")
                  | Some (e, _) when List.length args < List.length e.R.c_args && (match nview with E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ] -> true | _ -> false) ->
                      (* partial application in a meta position: eta-expand and relate the lambda; the
                         literal of the original term is the unexpanded application, evaluated with beta *)
@@ -786,6 +824,43 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
              end
            with e -> finish (); raise e) in
            finish (); result
+       | Lam (x, xty, body), (E.VMetaFun ([ _; _ ], _) | E.VMetaPred [ _; _ ]) when args = [] && (match body with Lam _ -> true | _ -> false) ->
+           (* a lambda of arity 2 in a meta position: pointwise on both arguments via lam2_beta *)
+           let is_pred = (match nview with E.VMetaPred _ -> true | _ -> false) in
+           let n1, body1, _, cleanup1 = open_lam g x xty body in
+           let result = (try
+             (match body1 with
+              | Lam (y, yty, body2) ->
+                  let n2, body', _, cleanup2 = open_lam g y yty body2 in
+                  let c1 = L.carrier g.lctx xty and c2 = L.carrier g.lctx yty in
+                  let r = (try
+                    if is_pred then begin
+                      let lp = ltext g body' and np = ntext g body' in
+                      let fwd = bridge g Fwd body' and bwd = bridge g Bwd body' in
+                      let lbt = lterm g body' in
+                      let pw = (match lbt with
+                        | Mg.If (_, Mg.Num 1, Mg.Num 0) ->
+                            let lb = Printf.sprintf "(if %s then 1 else 0)" lp in
+                            Printf.sprintf "(fun %s H%s %s H%s => (iff_eq1_l (%s %s %s) %s (lam2_beta %s %s (fun %s %s => %s) %s H%s %s H%s) (%s) (iff_trans (%s = 1) (%s) (%s) (If_1_iff (%s)) (iffI (%s) (%s) %s %s))))"
+                              n1 n1 n2 n2 (ppp lit) n1 n2 lb (ppp c1) (ppp c2) n1 n2 lb n1 n1 n2 n2 np lb lp np lp lp np fwd bwd
+                        | _ ->
+                            let lb = ppp lbt in
+                            Printf.sprintf "(fun %s H%s %s H%s => (iff_eq1_l (%s %s %s) %s (lam2_beta %s %s (fun %s %s => %s) %s H%s %s H%s) (%s) (iffI (%s) (%s) %s %s)))"
+                              n1 n1 n2 n2 (ppp lit) n1 n2 lb (ppp c1) (ppp c2) n1 n2 lb n1 n1 n2 n2 np lp np fwd bwd) in
+                      (lit, nat, KPWP2 (c1, c2), pw)
+                    end else begin
+                      let d = (match nview with E.VMetaFun (_, d) -> d | _ -> assert false) in
+                      let lb, nb, kb, pb = rel g body' (Some (E.VSet d)) in
+                      if kb <> KEq then unsupported "rel: lambda body relation";
+                      let pw = if pb = "" then Printf.sprintf "(fun %s H%s %s H%s => (lam2_beta %s %s (fun %s %s => %s) %s H%s %s H%s))" n1 n1 n2 n2 (ppp c1) (ppp c2) n1 n2 (pp lb) n1 n1 n2 n2
+                        else Printf.sprintf "(fun %s H%s %s H%s => (eq_trans_i (%s %s %s) %s %s (lam2_beta %s %s (fun %s %s => %s) %s H%s %s H%s) %s))" n1 n1 n2 n2 (ppp lit) n1 n2 (ppp lb) (ppp nb) (ppp c1) (ppp c2) n1 n2 (pp lb) n1 n1 n2 n2 pb in
+                      (lit, nat, KPW2 (c1, c2), pw)
+                    end
+                  with e -> cleanup2 (); raise e) in
+                  cleanup2 (); r
+              | _ -> unsupported "rel: lambda arity")
+           with e -> cleanup1 (); raise e) in
+           cleanup1 (); result
        | Lam (x, xty, body), (E.VSet _ | E.VSubset _) when args = [] ->
            (* a lambda as data: a set-level function (extensionality) or a comprehension *)
            let n, body', _, cleanup = open_lam g x xty body in

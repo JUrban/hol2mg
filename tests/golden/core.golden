@@ -329,7 +329,8 @@ source: !f:B->C. !g:A->B. !x:A. (f o g) x = f (g x)
 status: native_reuse
 statement: forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B, forall g :e B :^: A, forall x :e A, hl_o B C A f g x = f (g x)
-cert_status: bridge_unsupported
+bridge: o_THM_bridge
+cert_status: native_certified
 
 ### o_ASSOC   [polymorphic combinators]
 hash: f22ad52a4382071def526afc8c38a995
@@ -337,7 +338,8 @@ source: !f:C->D. !g:B->C. !h:A->B. f o g o h = (f o g) o h
 status: generalization_required
 statement: forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x))
 literal: forall A B C D:set, A <> Empty -> B <> Empty -> C <> Empty -> D <> Empty -> forall f :e D :^: C, forall g :e C :^: B, forall h :e B :^: A, hl_o C D A f (hl_o B C A g h) = hl_o B D A (hl_o C D B f g) h
-cert_status: bridge_unsupported
+bridge: o_ASSOC_bridge
+cert_status: native_certified
 
 ### FORALL_ONE_THM   [polymorphic combinators]
 hash: 71b389caed42f1429cd0e3335edc3b46
@@ -847,7 +849,8 @@ source: WF <
 status: transport_required
 statement: forall P c= omega, P <> Empty -> exists x :e P, forall y :e P, ~ y < x
 literal: hl_WF omega hl_lt = 1
-cert_status: bridge_unsupported
+bridge: WF_num_bridge
+cert_status: native_certified
 
 ### WF_REC   [well-founded relations]
 hash: c2b6c542214ace7a599099af99d8943e
