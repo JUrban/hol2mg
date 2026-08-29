@@ -246,10 +246,6 @@ Admitted.
 Theorem hl_OUTL_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTL A B = OUTL A B.
 Admitted.
 
-// int_gcd : int#int->int (not in compat.mg)
-Theorem hl_int_gcd_compat : forall l1 :e int :*: int, hl_int_gcd l1 = gcd_int (l1 0) (l1 1).
-Admitted.
-
 // num_lcm : num#num->num (not in compat.mg)
 Theorem hl_num_lcm_compat : forall l1 :e omega :*: omega, hl_num_lcm l1 = lcm_int (l1 0) (l1 1).
 Admitted.

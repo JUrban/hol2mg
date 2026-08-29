@@ -6093,3 +6093,133 @@ apply iffI.
 - assume H. let x. assume Hx. exact (eq_trans_i (P x) ((fun x :e A => if True then 1 else 0) x) 1 (f_equal (fun u => u x) P (fun x :e A => if True then 1 else 0) H) (eq_trans_i ((fun x :e A => if True then 1 else 0) x) (if True then 1 else 0) 1 (beta A (fun x => if True then 1 else 0) x Hx) H1)).
 - assume H. apply (Pi_ext A (fun _ => 2) P HP (fun x :e A => if True then 1 else 0) HL). let x. assume Hx. exact (eq_trans_i (P x) 1 ((fun x :e A => if True then 1 else 0) x) (H x Hx) (eq_sym_i ((fun x :e A => if True then 1 else 0) x) 1 (eq_trans_i ((fun x :e A => if True then 1 else 0) x) (if True then 1 else 0) 1 (beta A (fun x => if True then 1 else 0) x Hx) H1))).
 Qed.
+
+// ---- greatest common divisors: HOL Light's Bezout specification versus the native gcd_int ----
+Theorem gcd_int_00 : gcd_int 0 0 = 0.
+prove (if 0 = 0 /\ 0 = 0 then 0 else choose_in int (fun d => 0 <= d /\ gcd_reln 0 0 d)) = 0.
+exact (If_i_1 (0 = 0 /\ 0 = 0) 0 (choose_in int (fun d => 0 <= d /\ gcd_reln 0 0 d)) (andI (0 = 0) (0 = 0) (fun q H => H) (fun q H => H))).
+Qed.
+Theorem gcd_int_spec : forall a b :e int, ~ (a = 0 /\ b = 0) -> gcd_int a b :e int /\ 0 <= gcd_int a b /\ gcd_reln a b (gcd_int a b).
+let a. assume Ha. let b. assume Hb. assume Hne.
+claim Hunf: gcd_int a b = (choose_in int (fun d => 0 <= d /\ gcd_reln a b d)). { prove (if a = 0 /\ b = 0 then 0 else (choose_in int (fun d => 0 <= d /\ gcd_reln a b d))) = (choose_in int (fun d => 0 <= d /\ gcd_reln a b d)). exact (If_i_0 (a = 0 /\ b = 0) 0 (choose_in int (fun d => 0 <= d /\ gcd_reln a b d)) Hne). }
+claim Hex: exists d :e int, 0 <= d /\ gcd_reln a b d.
+{ apply (least_pos_int_lin_comb_ex a Ha b Hb Hne). let c. assume Hc0. apply Hc0. assume Hc12 Hmin. apply Hc12. assume Hlc Hpos.
+  witness c. apply andI.
+  - exact (int_lin_comb_E3 a b c Hlc).
+  - exact (andI (0 <= c) (gcd_reln a b c) (SNoLtLe 0 c Hpos) (least_pos_int_lin_comb_gcd a b c Hlc Hpos Hmin)). }
+apply (choose_in_spec int (fun d => 0 <= d /\ gcd_reln a b d) Hex). assume Hin Hp. apply Hp. assume Hnn Hg.
+apply andI.
+- apply andI.
+  + exact ((eq_sym_i (gcd_int a b) (choose_in int (fun d => 0 <= d /\ gcd_reln a b d)) Hunf) (fun hl__u hl__v => hl__u :e int) Hin).
+  + exact ((eq_sym_i (gcd_int a b) (choose_in int (fun d => 0 <= d /\ gcd_reln a b d)) Hunf) (fun hl__u hl__v => 0 <= hl__u) Hnn).
+- exact ((eq_sym_i (gcd_int a b) (choose_in int (fun d => 0 <= d /\ gcd_reln a b d)) Hunf) (fun hl__u hl__v => gcd_reln a b hl__u) Hg).
+Qed.
+Theorem gcd_reln_of_bezout : forall a b d :e int, divides_int d a -> divides_int d b -> 0 <= d -> ~ (a = 0 /\ b = 0) -> (exists x y :e int, d = a * x + b * y) -> gcd_reln a b d.
+let a. assume Ha. let b. assume Hb. let d. assume Hd. assume Hda Hdb Hnn Hne Hbez.
+apply Hbez. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Heq.
+claim Hdpos: 0 < d.
+{ apply (SNoLeE 0 d SNo_0 (int_SNo d Hd) Hnn).
+  - assume H. exact H.
+  - assume H0. apply Hne.
+    claim Hd0: d = 0. { exact (eq_sym_i 0 d H0). }
+    claim Hda0: divides_int 0 a. { exact (Hd0 (fun hl__u hl__v => divides_int hl__u a) Hda). }
+    claim Hdb0: divides_int 0 b. { exact (Hd0 (fun hl__u hl__v => divides_int hl__u b) Hdb). }
+    exact (andI (a = 0) (b = 0) (god1_zero_divides_integer_only_zero a Ha Hda0) (god1_zero_divides_integer_only_zero b Hb Hdb0)). }
+prove divides_int d a /\ divides_int d b /\ forall d', divides_int d' a -> divides_int d' b -> d' <= d.
+apply andI.
+- exact (andI (divides_int d a) (divides_int d b) Hda Hdb).
+- let d'. assume H1 H2.
+  claim Hdiv: divides_int d' d. { exact ((eq_sym_i d (a * x + b * y) Heq) (fun hl__u hl__v => divides_int d' hl__u) (divides_int_add_SNo d' (a * x) (b * y) (divides_int_mul_SNo_L d' a x Hx H1) (divides_int_mul_SNo_L d' b y Hy H2))). }
+  exact (divides_int_pos_Le d' d Hdiv Hdpos).
+Qed.
+Theorem hl_int_gcd_compat : forall l1 :e int :*: int, hl_int_gcd l1 = gcd_int (l1 0) (l1 1).
+claim Hspec: (exists g :e int :^: (int :*: int), (forall a b :e int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (g (hl_pair int int a b)) = 1 /\ (hl_int_divides (g (hl_pair int int a b)) a = 1 /\ (hl_int_divides (g (hl_pair int int a b)) b = 1 /\ exists x y :e int, g (hl_pair int int a b) = hl_int_add (hl_int_mul a x) (hl_int_mul b y))))) -> (forall a b :e int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_gcd (hl_pair int int a b)) = 1 /\ (hl_int_divides (hl_int_gcd (hl_pair int int a b)) a = 1 /\ (hl_int_divides (hl_int_gcd (hl_pair int int a b)) b = 1 /\ exists x y :e int, hl_int_gcd (hl_pair int int a b) = hl_int_add (hl_int_mul a x) (hl_int_mul b y)))) /\ hl_int_gcd :e int :^: (int :*: int). { exact (hl_ty_int_native (fun hl__u hl__v => (exists g :e hl__u :^: (hl__u :*: hl__u), (forall a b :e hl__u, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (g (hl_pair hl__u hl__u a b)) = 1 /\ (hl_int_divides (g (hl_pair hl__u hl__u a b)) a = 1 /\ (hl_int_divides (g (hl_pair hl__u hl__u a b)) b = 1 /\ exists x y :e hl__u, g (hl_pair hl__u hl__u a b) = hl_int_add (hl_int_mul a x) (hl_int_mul b y))))) -> (forall a b :e hl__u, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_gcd (hl_pair hl__u hl__u a b)) = 1 /\ (hl_int_divides (hl_int_gcd (hl_pair hl__u hl__u a b)) a = 1 /\ (hl_int_divides (hl_int_gcd (hl_pair hl__u hl__u a b)) b = 1 /\ exists x y :e hl__u, hl_int_gcd (hl_pair hl__u hl__u a b) = hl_int_add (hl_int_mul a x) (hl_int_mul b y)))) /\ hl_int_gcd :e hl__u :^: (hl__u :*: hl__u)) hl_int_gcd_spec). }
+claim H0: hl_int_of_num (hl_NUMERAL hl_zero) = 0. { exact (eq_trans_i (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_of_num 0) 0 (f_equal (fun u => hl_int_of_num u) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (hl_int_of_num_compat 0 (nat_p_omega 0 nat_0))). }
+claim HgcdI: forall a b :e int, gcd_int a b :e int.
+{ let a. assume Ha. let b. assume Hb. apply (xm (a = 0 /\ b = 0)).
+  - assume H. apply H. assume Ha0 Hb0. exact ((eq_sym_i (gcd_int a b) 0 (eq_trans_i (gcd_int a b) (gcd_int 0 0) 0 (f_equal2 (fun u v => gcd_int u v) a 0 b 0 Ha0 Hb0) gcd_int_00)) (fun hl__u hl__v => hl__u :e int) (Subq_omega_int 0 (nat_p_omega 0 nat_0))).
+  - assume Hne. apply (gcd_int_spec a Ha b Hb Hne). assume H12 _. apply H12. assume H1 _. exact H1. }
+claim Hg: exists g :e int :^: (int :*: int), (forall a b :e int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (g (hl_pair int int a b)) = 1 /\ (hl_int_divides (g (hl_pair int int a b)) a = 1 /\ (hl_int_divides (g (hl_pair int int a b)) b = 1 /\ exists x y :e int, g (hl_pair int int a b) = hl_int_add (hl_int_mul a x) (hl_int_mul b y)))).
+{ witness (fun p :e int :*: int => gcd_int (p 0) (p 1)). apply andI.
+  - prove (fun p :e int :*: int => gcd_int (p 0) (p 1)) :e Pi_ p :e int :*: int, int. apply (lam_Pi (int :*: int) (fun _ => int) (fun p => gcd_int (p 0) (p 1))). let p. assume Hp. exact (HgcdI (p 0) (ap0_Sigma int (fun _ => int) p Hp) (p 1) (ap1_Sigma int (fun _ => int) p Hp)).
+  - let a. assume Ha. let b. assume Hb.
+    claim Hpab: (a,b) :e int :*: int. { exact (tuple_2_setprod int int a Ha b Hb). }
+    claim Hpair: hl_pair int int a b = (a,b). { exact (hl_pair_compat int int hl_ty_int_native_nonempty hl_ty_int_native_nonempty a Ha b Hb). }
+    claim HG: (fun p :e int :*: int => gcd_int (p 0) (p 1)) (hl_pair int int a b) = gcd_int a b.
+    { exact (eq_trans_i ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (hl_pair int int a b)) ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (a,b)) (gcd_int a b) (f_equal (fun u => (fun p :e int :*: int => gcd_int (p 0) (p 1)) u) (hl_pair int int a b) (a,b) Hpair) (eq_trans_i ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (a,b)) (gcd_int ((a,b) 0) ((a,b) 1)) (gcd_int a b) (beta (int :*: int) (fun p => gcd_int (p 0) (p 1)) (a,b) Hpab) (f_equal2 (fun u v => gcd_int u v) ((a,b) 0) a ((a,b) 1) b (tuple_2_0_eq a b) (tuple_2_1_eq a b)))). }
+    claim HdI: gcd_int a b :e int. { exact (HgcdI a Ha b Hb). }
+    claim Hfacts: 0 <= gcd_int a b /\ divides_int (gcd_int a b) a /\ divides_int (gcd_int a b) b /\ exists x y :e int, gcd_int a b = a * x + b * y.
+    { apply (xm (a = 0 /\ b = 0)).
+      - assume H. apply H. assume Ha0 Hb0.
+        claim Hg0: gcd_int a b = 0. { exact (eq_trans_i (gcd_int a b) (gcd_int 0 0) 0 (f_equal2 (fun u v => gcd_int u v) a 0 b 0 Ha0 Hb0) gcd_int_00). }
+        claim Hbez0: a * 0 + b * 0 = 0. { exact (eq_trans_i (a * 0 + b * 0) (0 + 0) 0 (f_equal2 (fun u v => u + v) (a * 0) 0 (b * 0) 0 (mul_SNo_zeroR a (int_SNo a Ha)) (mul_SNo_zeroR b (int_SNo b Hb))) (add_SNo_0L 0 SNo_0)). }
+        apply andI.
+        + apply andI.
+          * apply andI.
+            - exact ((eq_sym_i (gcd_int a b) 0 Hg0) (fun hl__u hl__v => 0 <= hl__u) (SNoLe_ref 0)).
+            - exact ((eq_sym_i (gcd_int a b) 0 Hg0) (fun hl__u hl__v => divides_int hl__u a) ((eq_sym_i a 0 Ha0) (fun hl__u hl__v => divides_int 0 hl__u) (divides_int_0 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0))))).
+          * exact ((eq_sym_i (gcd_int a b) 0 Hg0) (fun hl__u hl__v => divides_int hl__u b) ((eq_sym_i b 0 Hb0) (fun hl__u hl__v => divides_int 0 hl__u) (divides_int_0 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0))))).
+        + witness 0. apply andI.
+          * exact (Subq_omega_int 0 (nat_p_omega 0 nat_0)).
+          * witness 0. apply andI.
+            - exact (Subq_omega_int 0 (nat_p_omega 0 nat_0)).
+            - exact (eq_trans_i (gcd_int a b) 0 (a * 0 + b * 0) Hg0 (eq_sym_i (a * 0 + b * 0) 0 Hbez0)).
+      - assume Hne. apply (gcd_int_spec a Ha b Hb Hne). assume H12 Hgr. apply H12. assume HdI' Hnn.
+        claim Hlc: exists c, int_lin_comb a b c /\ 0 < c /\ forall c', int_lin_comb a b c' -> 0 < c' -> c <= c'. { exact (least_pos_int_lin_comb_ex a Ha b Hb Hne). }
+        apply Hlc. let c. assume Hc0. apply Hc0. assume Hc12 Hmin. apply Hc12. assume Hlin Hpos.
+        claim Hgc: gcd_reln a b c. { exact (least_pos_int_lin_comb_gcd a b c Hlin Hpos Hmin). }
+        claim Hdc: gcd_int a b = c. { exact (gcd_reln_uniq a b (gcd_int a b) c Hgr Hgc). }
+        apply Hgr. assume Hg12 _. apply Hg12. assume Hda Hdb.
+        apply andI.
+        + apply andI.
+          * exact (andI (0 <= gcd_int a b) (divides_int (gcd_int a b) a) Hnn Hda).
+          * exact Hdb.
+        + apply (int_lin_comb_E4 a b c Hlin). let m. assume Hm. let n. assume Hn. assume Hmn.
+          witness m. apply andI.
+          * exact Hm.
+          * witness n. apply andI.
+            - exact Hn.
+            - exact (eq_trans_i (gcd_int a b) c (a * m + b * n) Hdc (eq_trans_i c (m * a + n * b) (a * m + b * n) (eq_sym_i (m * a + n * b) c Hmn) (f_equal2 (fun u v => u + v) (m * a) (a * m) (n * b) (b * n) (mul_SNo_com m a (int_SNo m Hm) (int_SNo a Ha)) (mul_SNo_com n b (int_SNo n Hn) (int_SNo b Hb))))). }
+    apply Hfacts. assume H123 Hbez. apply H123. assume H12 Hdb. apply H12. assume Hnn Hda.
+    apply andI.
+    + exact ((eq_sym_i ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (hl_pair int int a b)) (gcd_int a b) HG) (fun hl__u hl__v => hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) hl__u = 1) ((eq_sym_i (hl_int_of_num (hl_NUMERAL hl_zero)) 0 H0) (fun hl__u hl__v => hl_int_le hl__u (gcd_int a b) = 1) (iffER (hl_int_le 0 (gcd_int a b) = 1) (0 <= gcd_int a b) (hl_int_le_compat 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0)) (gcd_int a b) HdI) Hnn))).
+    + apply andI.
+      * exact ((eq_sym_i ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (hl_pair int int a b)) (gcd_int a b) HG) (fun hl__u hl__v => hl_int_divides hl__u a = 1) (iffER (hl_int_divides (gcd_int a b) a = 1) (divides_int (gcd_int a b) a) (hl_int_divides_compat (gcd_int a b) HdI a Ha) Hda)).
+      * apply andI.
+        - exact ((eq_sym_i ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (hl_pair int int a b)) (gcd_int a b) HG) (fun hl__u hl__v => hl_int_divides hl__u b = 1) (iffER (hl_int_divides (gcd_int a b) b = 1) (divides_int (gcd_int a b) b) (hl_int_divides_compat (gcd_int a b) HdI b Hb) Hdb)).
+        - apply Hbez. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Heq.
+          witness x. apply andI.
+          + exact Hx.
+          + witness y. apply andI.
+            * exact Hy.
+            * exact (eq_trans_i ((fun p :e int :*: int => gcd_int (p 0) (p 1)) (hl_pair int int a b)) (gcd_int a b) (hl_int_add (hl_int_mul a x) (hl_int_mul b y)) HG (eq_trans_i (gcd_int a b) (a * x + b * y) (hl_int_add (hl_int_mul a x) (hl_int_mul b y)) Heq (eq_sym_i (hl_int_add (hl_int_mul a x) (hl_int_mul b y)) (a * x + b * y) (eq_trans_i (hl_int_add (hl_int_mul a x) (hl_int_mul b y)) (hl_int_mul a x + hl_int_mul b y) (a * x + b * y) (hl_int_add_compat (hl_int_mul a x) ((eq_sym_i (hl_int_mul a x) (a * x) (hl_int_mul_compat a Ha x Hx)) (fun hl__u hl__v => hl__u :e int) (int_mul_SNo a Ha x Hx)) (hl_int_mul b y) ((eq_sym_i (hl_int_mul b y) (b * y) (hl_int_mul_compat b Hb y Hy)) (fun hl__u hl__v => hl__u :e int) (int_mul_SNo b Hb y Hy))) (f_equal2 (fun u v => u + v) (hl_int_mul a x) (a * x) (hl_int_mul b y) (b * y) (hl_int_mul_compat a Ha x Hx) (hl_int_mul_compat b Hb y Hy)))))). }
+apply (Hspec Hg). assume Hc Hin.
+let p. assume Hp.
+claim Ha: p 0 :e int. { exact (ap0_Sigma int (fun _ => int) p Hp). }
+claim Hb: p 1 :e int. { exact (ap1_Sigma int (fun _ => int) p Hp). }
+claim Hpe: p = hl_pair int int (p 0) (p 1). { exact (eq_sym_i (hl_pair int int (p 0) (p 1)) p (eq_trans_i (hl_pair int int (p 0) (p 1)) (p 0, p 1) p (hl_pair_compat int int hl_ty_int_native_nonempty hl_ty_int_native_nonempty (p 0) Ha (p 1) Hb) (tuple_Sigma_eta int (fun _ => int) p Hp))). }
+claim HD: hl_int_gcd (hl_pair int int (p 0) (p 1)) :e int. { exact (setexp_ap (int :*: int) int hl_int_gcd Hin (hl_pair int int (p 0) (p 1)) (Hpe (fun hl__u hl__v => hl__u :e int :*: int) Hp)). }
+apply (Hc (p 0) Ha (p 1) Hb). assume Hle H2. apply H2. assume Hda H3. apply H3. assume Hdb Hbez.
+claim Hnn: 0 <= hl_int_gcd (hl_pair int int (p 0) (p 1)). { apply (hl_int_le_compat 0 (Subq_omega_int 0 (nat_p_omega 0 nat_0)) (hl_int_gcd (hl_pair int int (p 0) (p 1))) HD). assume H4 _. apply H4. exact (H0 (fun hl__u hl__v => hl_int_le hl__u (hl_int_gcd (hl_pair int int (p 0) (p 1))) = 1) Hle). }
+claim Hda': divides_int (hl_int_gcd (hl_pair int int (p 0) (p 1))) (p 0). { apply (hl_int_divides_compat (hl_int_gcd (hl_pair int int (p 0) (p 1))) HD (p 0) Ha). assume H4 _. exact (H4 Hda). }
+claim Hdb': divides_int (hl_int_gcd (hl_pair int int (p 0) (p 1))) (p 1). { apply (hl_int_divides_compat (hl_int_gcd (hl_pair int int (p 0) (p 1))) HD (p 1) Hb). assume H4 _. exact (H4 Hdb). }
+claim Hbez': exists x y :e int, hl_int_gcd (hl_pair int int (p 0) (p 1)) = p 0 * x + p 1 * y.
+{ apply Hbez. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Heq.
+  witness x. apply andI.
+  - exact Hx.
+  - witness y. apply andI.
+    + exact Hy.
+    + exact (eq_trans_i (hl_int_gcd (hl_pair int int (p 0) (p 1))) (hl_int_add (hl_int_mul (p 0) x) (hl_int_mul (p 1) y)) (p 0 * x + p 1 * y) Heq (eq_trans_i (hl_int_add (hl_int_mul (p 0) x) (hl_int_mul (p 1) y)) (hl_int_mul (p 0) x + hl_int_mul (p 1) y) (p 0 * x + p 1 * y) (hl_int_add_compat (hl_int_mul (p 0) x) ((eq_sym_i (hl_int_mul (p 0) x) (p 0 * x) (hl_int_mul_compat (p 0) Ha x Hx)) (fun hl__u hl__v => hl__u :e int) (int_mul_SNo (p 0) Ha x Hx)) (hl_int_mul (p 1) y) ((eq_sym_i (hl_int_mul (p 1) y) (p 1 * y) (hl_int_mul_compat (p 1) Hb y Hy)) (fun hl__u hl__v => hl__u :e int) (int_mul_SNo (p 1) Hb y Hy))) (f_equal2 (fun u v => u + v) (hl_int_mul (p 0) x) (p 0 * x) (hl_int_mul (p 1) y) (p 1 * y) (hl_int_mul_compat (p 0) Ha x Hx) (hl_int_mul_compat (p 1) Hb y Hy)))). }
+claim Hmain: hl_int_gcd (hl_pair int int (p 0) (p 1)) = gcd_int (p 0) (p 1).
+{ apply (xm (p 0 = 0 /\ p 1 = 0)).
+  - assume H. apply H. assume Ha0 Hb0.
+    claim Hg0: gcd_int (p 0) (p 1) = 0. { exact (eq_trans_i (gcd_int (p 0) (p 1)) (gcd_int 0 0) 0 (f_equal2 (fun u v => gcd_int u v) (p 0) 0 (p 1) 0 Ha0 Hb0) gcd_int_00). }
+    apply Hbez'. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Heq.
+    claim Hz: p 0 * x + p 1 * y = 0. { exact (eq_trans_i (p 0 * x + p 1 * y) (0 * x + 0 * y) 0 (f_equal2 (fun u v => u * x + v * y) (p 0) 0 (p 1) 0 Ha0 Hb0) (eq_trans_i (0 * x + 0 * y) (0 + 0) 0 (f_equal2 (fun u v => u + v) (0 * x) 0 (0 * y) 0 (mul_SNo_zeroL x (int_SNo x Hx)) (mul_SNo_zeroL y (int_SNo y Hy))) (add_SNo_0L 0 SNo_0))). }
+    exact (eq_trans_i (hl_int_gcd (hl_pair int int (p 0) (p 1))) 0 (gcd_int (p 0) (p 1)) (eq_trans_i (hl_int_gcd (hl_pair int int (p 0) (p 1))) (p 0 * x + p 1 * y) 0 Heq Hz) (eq_sym_i (gcd_int (p 0) (p 1)) 0 Hg0)).
+  - assume Hne.
+    claim HgrD: gcd_reln (p 0) (p 1) (hl_int_gcd (hl_pair int int (p 0) (p 1))). { exact (gcd_reln_of_bezout (p 0) Ha (p 1) Hb (hl_int_gcd (hl_pair int int (p 0) (p 1))) HD Hda' Hdb' Hnn Hne Hbez'). }
+    apply (gcd_int_spec (p 0) Ha (p 1) Hb Hne). assume _ Hgr.
+    exact (gcd_reln_uniq (p 0) (p 1) (hl_int_gcd (hl_pair int int (p 0) (p 1))) (gcd_int (p 0) (p 1)) HgrD Hgr). }
+exact (eq_trans_i (hl_int_gcd p) (hl_int_gcd (hl_pair int int (p 0) (p 1))) (gcd_int (p 0) (p 1)) (f_equal (fun u => hl_int_gcd u) p (hl_pair int int (p 0) (p 1)) Hpe) Hmain).
+Qed.

@@ -27565,7 +27565,7 @@
    "statement": "forall m n d :e int, divides_int d (lcm_int m n) <-> divides_int (d * gcd_int m n) (m * n)",
    "literal": "forall m n d :e hl_ty_int, hl_int_divides d (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = 1 <-> hl_int_divides (hl_int_mul d (hl_int_gcd (hl_pair hl_ty_int hl_ty_int m n))) (hl_int_mul m n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_gcd_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -32554,7 +32554,7 @@
    "statement": "forall m n :e int, gcd_int m n * lcm_int m n = abs_SNo (m * n)",
    "literal": "forall m n :e hl_ty_int, hl_int_mul (hl_int_gcd (hl_pair hl_ty_int hl_ty_int m n)) (hl_int_lcm (hl_pair hl_ty_int hl_ty_int m n)) = hl_int_abs (hl_int_mul m n)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_gcd_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: compat_missing: hl_int_lcm_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -80759,9 +80759,9 @@
    "source": "!a:int. !b:int. int_of_num 0 <= int_gcd (a , b) /\\ int_divides (int_gcd (a , b)) a /\\ int_divides (int_gcd (a , b)) b /\\ (?x:int. ?y:int. int_gcd (a , b) = a * x + b * y)",
    "statement": "forall a b :e int, 0 <= gcd_int a b /\\ (divides_int (gcd_int a b) a /\\ (divides_int (gcd_int a b) b /\\ exists x y :e int, gcd_int a b = a * x + b * y))",
    "literal": "forall a b :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_gcd (hl_pair hl_ty_int hl_ty_int a b)) = 1 /\\ (hl_int_divides (hl_int_gcd (hl_pair hl_ty_int hl_ty_int a b)) a = 1 /\\ (hl_int_divides (hl_int_gcd (hl_pair hl_ty_int hl_ty_int a b)) b = 1 /\\ exists x y :e hl_ty_int, hl_int_gcd (hl_pair hl_ty_int hl_ty_int a b) = hl_int_add (hl_int_mul a x) (hl_int_mul b y)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_gcd_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "int_gcd_bridge"
   },
   {
    "name": "int_ge",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2314
+  "native_certified": 2315
  }
 }
