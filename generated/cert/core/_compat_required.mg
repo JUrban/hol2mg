@@ -378,10 +378,6 @@ Admitted.
 Theorem hl_mk_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_prod A B l1 = l1.
 Admitted.
 
-// BUTLAST : A list->A list (not in compat.mg)
-Theorem hl_BUTLAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_BUTLAST A l1 = seq_butlast l1.
-Admitted.
-
 // _FALSITY_ : bool (not in compat.mg)
 Theorem hl__FALSITY__compat : hl__FALSITY_ = Empty.
 Admitted.
@@ -396,10 +392,6 @@ Admitted.
 
 // real_mod : real->real->real->bool (not in compat.mg)
 Theorem hl_real_mod_compat : forall l1 l2 l3 :e R, hl_real_mod l1 l2 l3 = 1 <-> real_mod l1 l2 l3.
-Admitted.
-
-// LAST : A list->A (not in compat.mg)
-Theorem hl_LAST_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, ~ l1 = seq_nil -> hl_LAST A l1 = seq_last l1.
 Admitted.
 
 // HAS_SIZE : (A->bool)->num->bool at A := A -> bool (not in compat.mg)
