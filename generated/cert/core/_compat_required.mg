@@ -54,10 +54,6 @@ Admitted.
 Theorem hl_UNION_OF_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: A)), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: A), l1 x = 1 <-> P1 x) -> forall l2 :e 2 :^: (2 :^: A), forall P2:set -> prop, (forall x :e 2 :^: A, l2 x = 1 <-> P2 x) -> forall l3 :e 2 :^: A, hl_UNION_OF A l1 l2 l3 = 1 <-> exists u c= Power A, P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep A l3.
 Admitted.
 
-// CARD : (A->bool)->num (not in compat.mg)
-Theorem hl_CARD_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_CARD A l1 = finite_cardinality (hl_rep A l1).
-Admitted.
-
 // nadd_mul : nadd->nadd->nadd (not in compat.mg)
 Theorem hl_nadd_mul_compat : hl_nadd_mul = Empty.
 Admitted.
@@ -784,10 +780,6 @@ Admitted.
 
 // REP_prod : A#B->A->B->bool (not in compat.mg)
 Theorem hl_REP_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_REP_prod A B = Empty.
-Admitted.
-
-// HAS_SIZE : (A->bool)->num->bool (not in compat.mg)
-Theorem hl_HAS_SIZE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e omega, hl_HAS_SIZE A l1 l2 = 1 <-> equip (hl_rep A l1) l2.
 Admitted.
 
 // treal_eq : hreal#hreal->hreal#hreal->bool (not in compat.mg)

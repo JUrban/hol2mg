@@ -34,8 +34,13 @@ Theorem UNIV_HAS_SIZE_DIMINDEX : forall N:set, N <> Empty -> (equip N (dimindex 
 Admitted.
 
 // HOL Light: cart.ml:38 / HAS_SIZE_1   (hash md5:3db80a1713101542583ad1c917c7c9ae)
-// not bridged: 
+Theorem hlt_HAS_SIZE_1 : hl_HAS_SIZE 1 (hl_UNIV 1) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1.
+Admitted.
+Theorem HAS_SIZE_1_bridge : (hl_HAS_SIZE 1 (hl_UNIV 1) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1) -> (equip 1 1).
+exact (fun H__top => (iffEL (hl_HAS_SIZE 1 (hl_UNIV 1) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1) (equip 1 1) ((eq_trans_i (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_BIT1 hl_zero) 1 (hl_NUMERAL_compat (hl_BIT1 hl_zero) ((eq_sym_i (hl_BIT1 hl_zero) 1 (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 1 (nat_ordsucc 0 (omega_nat_p 0 (nat_p_omega 0 nat_0)))))) (eq_trans_i (hl_BIT1 hl_zero) (ordsucc (hl_BIT0 (hl_zero))) 1 (hl_BIT1_S (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) (f_equal (fun x => ordsucc x) (hl_BIT0 (hl_zero)) 0 (eq_trans_i (hl_BIT0 (hl_zero)) (hl_BIT0 0) 0 (f_equal (fun x => hl_BIT0 x) (hl_zero) 0 hl_zero_compat) hl_BIT0_0)))) (fun hl__u hl__v => hl_HAS_SIZE 1 (hl_UNIV 1) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1 <-> equip 1 hl__u) (((hl_UNIV_compat) (1) one_nonempty) (fun hl__u hl__v => hl_HAS_SIZE 1 (hl_UNIV 1) (hl_NUMERAL (hl_BIT1 hl_zero)) = 1 <-> equip hl__u (hl_NUMERAL (hl_BIT1 hl_zero))) ((hl_HAS_SIZE_compat) (1) one_nonempty (hl_UNIV 1) ((hl_UNIV_in) (1) one_nonempty) (hl_NUMERAL (hl_BIT1 hl_zero)) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_BIT1 hl_zero) (setexp_ap (omega) (omega) (hl_BIT1) ((hl_BIT1_in)) (hl_zero) ((hl_zero_in)))))))) H__top).
+Qed.
 Theorem HAS_SIZE_1 : equip 1 1.
+exact (HAS_SIZE_1_bridge hlt_HAS_SIZE_1).
 Admitted.
 
 // HOL Light: cart.ml:44 / NUMSEG_LT_DIMINDEX   (hash md5:ab5eb52dade02e50e59e1fda3e75b94a)
@@ -52,7 +57,7 @@ Admitted.
 Theorem hlt_FINITE_1 : hl_FINITE 1 (hl_UNIV 1) = 1.
 Admitted.
 Theorem FINITE_1_bridge : (hl_FINITE 1 (hl_UNIV 1) = 1) -> (finite 1).
-exact (fun HL => (iffEL (hl_FINITE 1 (hl_UNIV 1) = 1) (finite 1) (((hl_UNIV_compat) (1) one_nonempty) (fun hl__u hl__v => hl_FINITE 1 (hl_UNIV 1) = 1 <-> finite hl__u) ((hl_FINITE_compat) (1) one_nonempty (hl_UNIV 1) ((hl_UNIV_in) (1) one_nonempty)))) HL).
+exact (fun H__top => (iffEL (hl_FINITE 1 (hl_UNIV 1) = 1) (finite 1) (((hl_UNIV_compat) (1) one_nonempty) (fun hl__u hl__v => hl_FINITE 1 (hl_UNIV 1) = 1 <-> finite hl__u) ((hl_FINITE_compat) (1) one_nonempty (hl_UNIV 1) ((hl_UNIV_in) (1) one_nonempty)))) H__top).
 Qed.
 Theorem FINITE_1 : finite 1.
 exact (FINITE_1_bridge hlt_FINITE_1).

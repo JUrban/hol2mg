@@ -1340,3 +1340,112 @@ apply iffI.
           { exact (IH (hl_chi A X) Hchi (hl_rep_chi A X HXA)). } }
   exact (Hind (hl_rep A a) Hfin a Ha (fun q H => H)).
 Qed.
+
+// ---- cardinality (CARD is underspecified on infinite sets: conditional compatibility) ----
+Theorem adjoin_In_eq : forall X x:set, x :e X -> X :\/: {x} = X.
+let X x. assume Hx. apply set_ext.
+- let z. assume Hz. apply (binunionE X {x} z Hz).
+  + assume H. exact H.
+  + assume H. rewrite (SingE x z H). exact Hx.
+- let z. assume Hz. exact (binunionI1 X {x} z Hz).
+Qed.
+Theorem finite_cardinality_omega : forall X:set, finite X -> finite_cardinality X :e omega.
+let X. assume H. apply (god1_finite_cardinality_specification X H). assume H1 _. exact H1.
+Qed.
+Theorem hl_CARD_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, finite (hl_rep A l1) -> hl_CARD A l1 = finite_cardinality (hl_rep A l1).
+let A. assume HA. let a. assume Ha Hfin.
+rewrite (hl_CARD_unfold A a Ha).
+claim HFin: (fun x :e A => fun n :e omega => hl_SUC n) :e omega :^: omega :^: A.
+{ exact (lam2_Pi A omega omega (fun x n => hl_SUC n) (fun x Hx n Hn => hl_SUC_omega n Hn)). }
+rewrite (hl_ITSET_unfold A omega (fun x :e A => fun n :e omega => hl_SUC n) HFin a Ha (hl_NUMERAL hl_zero) (hl_numeral_omega hl_zero hl_zero_omega)).
+claim Hcard0: forall s :e 2 :^: A, (if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0) :e omega.
+{ let s. assume Hs. apply (xm (finite (hl_rep A s))).
+  - assume H. rewrite (If_i_1 (finite (hl_rep A s)) (finite_cardinality (hl_rep A s)) 0 H). exact (finite_cardinality_omega (hl_rep A s) H).
+  - assume H. rewrite (If_i_0 (finite (hl_rep A s)) (finite_cardinality (hl_rep A s)) 0 H). exact (nat_p_omega 0 nat_0). }
+claim Hex: exists g :e omega :^: (2 :^: A), g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)).
+{ witness (fun s :e 2 :^: A => if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0).
+  claim Hw: (fun s :e 2 :^: A => if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0) :e omega :^: (2 :^: A).
+  { exact (hl_lam_Pi (2 :^: A) omega (fun s => if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0) Hcard0). }
+  apply andI.
+  - exact Hw.
+  - apply andI.
+    + rewrite (beta (2 :^: A) (fun s => if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0) (hl_EMPTY A) (hl_EMPTY_in A HA)).
+      rewrite (hl_EMPTY_compat A HA). rewrite (If_i_1 (finite Empty) (finite_cardinality Empty) 0 finite_Empty).
+      rewrite finite_cardinality_Empty. exact (eq_sym_i (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero).
+    + let x. assume Hx. let s. assume Hs. assume HFs.
+      claim Hfs: finite (hl_rep A s). { apply (hl_FINITE_compat A HA s Hs). assume H _. exact (H HFs). }
+      claim HIs: hl_INSERT A x s :e 2 :^: A. { exact (setexp2_ap A (2 :^: A) (2 :^: A) (hl_INSERT A) (hl_INSERT_in A HA) x Hx s Hs). }
+      claim Hfi: finite (hl_rep A (hl_INSERT A x s)).
+      { rewrite (hl_INSERT_compat A HA x Hx s Hs). prove finite (hl_rep A s :\/: {x}). exact (adjoin_finite (hl_rep A s) x Hfs). }
+      rewrite (beta (2 :^: A) (fun s => if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0) (hl_INSERT A x s) HIs).
+      rewrite (beta (2 :^: A) (fun s => if finite (hl_rep A s) then finite_cardinality (hl_rep A s) else 0) s Hs).
+      rewrite (If_i_1 (finite (hl_rep A (hl_INSERT A x s))) (finite_cardinality (hl_rep A (hl_INSERT A x s))) 0 Hfi).
+      rewrite (If_i_1 (finite (hl_rep A s)) (finite_cardinality (hl_rep A s)) 0 Hfs).
+      claim Hc: finite_cardinality (hl_rep A s) :e omega. { exact (finite_cardinality_omega (hl_rep A s) Hfs). }
+      claim HF: (fun x :e A => fun n :e omega => hl_SUC n) x (finite_cardinality (hl_rep A s)) = ordsucc (finite_cardinality (hl_rep A s)).
+      { exact (eq_trans_i ((fun x :e A => fun n :e omega => hl_SUC n) x (finite_cardinality (hl_rep A s))) (hl_SUC (finite_cardinality (hl_rep A s))) (ordsucc (finite_cardinality (hl_rep A s)))
+          (lam2_beta A omega (fun x n => hl_SUC n) x Hx (finite_cardinality (hl_rep A s)) Hc) (hl_SUC_ap (finite_cardinality (hl_rep A s)) Hc)). }
+      rewrite HF.
+      claim HI2: hl_IN A x s :e 2. { exact (ap_Pi_2 (2 :^: A) (hl_IN A x) (setexp_ap A (2 :^: (2 :^: A)) (hl_IN A) (hl_IN_in A HA) x Hx) s Hs). }
+      rewrite (hl_COND_if omega (hl_IN A x s) HI2 (x :e hl_rep A s) (hl_IN_compat A HA x Hx s Hs) (finite_cardinality (hl_rep A s)) Hc (ordsucc (finite_cardinality (hl_rep A s))) (omega_ordsucc (finite_cardinality (hl_rep A s)) Hc)).
+      rewrite (hl_INSERT_compat A HA x Hx s Hs).
+      apply (xm (x :e hl_rep A s)).
+      * assume H. rewrite (If_i_1 (x :e hl_rep A s) (finite_cardinality (hl_rep A s)) (ordsucc (finite_cardinality (hl_rep A s))) H).
+        prove finite_cardinality (hl_rep A s :\/: {x}) = finite_cardinality (hl_rep A s).
+        rewrite (adjoin_In_eq (hl_rep A s) x H). exact (fun q H => H).
+      * assume H. rewrite (If_i_0 (x :e hl_rep A s) (finite_cardinality (hl_rep A s)) (ordsucc (finite_cardinality (hl_rep A s))) H).
+        prove finite_cardinality (hl_rep A s :\/: {x}) = ordsucc (finite_cardinality (hl_rep A s)).
+        exact (god1_finite_cardinality_adjoin (hl_rep A s) x Hfs H). }
+apply (hl_recdef0 (omega :^: (2 :^: A)) (fun g => g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s))) Hex).
+assume HP Hg. apply HP. assume H0 HS.
+claim Hind: forall X, finite X -> forall b :e 2 :^: A, hl_rep A b = X -> hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0) b = finite_cardinality X.
+{ apply (finite_ind (fun X => forall b :e 2 :^: A, hl_rep A b = X -> hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0) b = finite_cardinality X)).
+  - let b. assume Hb Hrb.
+    claim HbE: b = hl_EMPTY A.
+    { apply (hl_rep_inj A b (hl_EMPTY A) Hb (hl_EMPTY_in A HA)). rewrite Hrb. exact (eq_sym_i (hl_rep A (hl_EMPTY A)) Empty (hl_EMPTY_compat A HA)). }
+    rewrite HbE. rewrite finite_cardinality_Empty. rewrite H0. exact hl_NUMERAL_zero.
+  - let X y. assume HX Hy IH. let b. assume Hb Hrb.
+    claim HrbA: X :\/: {y} c= A. { rewrite <- Hrb. exact (hl_rep_Subq A b). }
+    claim HXA: X c= A. { let z. assume Hz. exact (HrbA z (binunionI1 X {y} z Hz)). }
+    claim HyA: y :e A. { exact (HrbA y (binunionI2 X {y} y (SingI y))). }
+    claim Hchi: hl_chi A X :e 2 :^: A. { exact (hl_chi_Pi A X). }
+    claim Hbi: b = hl_INSERT A y (hl_chi A X).
+    { apply (hl_rep_inj A b (hl_INSERT A y (hl_chi A X)) Hb (setexp2_ap A (2 :^: A) (2 :^: A) (hl_INSERT A) (hl_INSERT_in A HA) y HyA (hl_chi A X) Hchi)).
+      rewrite (hl_INSERT_compat A HA y HyA (hl_chi A X) Hchi). rewrite (hl_rep_chi A X HXA). prove hl_rep A b = X :\/: {y}. exact Hrb. }
+    claim HFchi: hl_FINITE A (hl_chi A X) = 1. { apply (hl_FINITE_compat A HA (hl_chi A X) Hchi). assume _ H. apply H. rewrite (hl_rep_chi A X HXA). exact HX. }
+    claim HIH: hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0) (hl_chi A X) = finite_cardinality X.
+    { exact (IH (hl_chi A X) Hchi (hl_rep_chi A X HXA)). }
+    claim Hgc: finite_cardinality X :e omega. { exact (finite_cardinality_omega X HX). }
+    rewrite Hbi. rewrite (HS y HyA (hl_chi A X) Hchi HFchi).
+    claim HF: (fun x :e A => fun n :e omega => hl_SUC n) y (finite_cardinality X) = ordsucc (finite_cardinality X).
+    { exact (eq_trans_i ((fun x :e A => fun n :e omega => hl_SUC n) y (finite_cardinality X)) (hl_SUC (finite_cardinality X)) (ordsucc (finite_cardinality X))
+        (lam2_beta A omega (fun x n => hl_SUC n) y HyA (finite_cardinality X) Hgc) (hl_SUC_ap (finite_cardinality X) Hgc)). }
+    claim HI2: hl_IN A y (hl_chi A X) :e 2. { exact (ap_Pi_2 (2 :^: A) (hl_IN A y) (setexp_ap A (2 :^: (2 :^: A)) (hl_IN A) (hl_IN_in A HA) y HyA) (hl_chi A X) Hchi). }
+    claim HnotIn: ~ (y :e hl_rep A (hl_chi A X)). { rewrite (hl_rep_chi A X HXA). exact Hy. }
+    exact (eq_trans_i (hl_COND omega (hl_IN A y (hl_chi A X)) ((hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0)) (hl_chi A X)) ((fun x :e A => fun n :e omega => hl_SUC n) y ((hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0)) (hl_chi A X)))) (hl_COND omega (hl_IN A y (hl_chi A X)) (finite_cardinality X) (ordsucc (finite_cardinality X))) (finite_cardinality (X :\/: {y}))
+      (f_equal2 (fun p q => hl_COND omega (hl_IN A y (hl_chi A X)) p q) ((hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0)) (hl_chi A X)) (finite_cardinality X) ((fun x :e A => fun n :e omega => hl_SUC n) y ((hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0)) (hl_chi A X))) (ordsucc (finite_cardinality X)) HIH
+         (eq_trans_i ((fun x :e A => fun n :e omega => hl_SUC n) y ((hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0)) (hl_chi A X))) ((fun x :e A => fun n :e omega => hl_SUC n) y (finite_cardinality X)) (ordsucc (finite_cardinality X)) (f_equal (fun z => (fun x :e A => fun n :e omega => hl_SUC n) y z) ((hl_select (omega :^: (2 :^: A)) (fun g :e omega :^: (2 :^: A) => if g (hl_EMPTY A) = hl_NUMERAL hl_zero /\ forall x :e A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> g (hl_INSERT A x s) = hl_COND omega (hl_IN A x s) (g s) ((fun x :e A => fun n :e omega => hl_SUC n) x (g s)) then 1 else 0)) (hl_chi A X)) (finite_cardinality X) HIH) HF))
+      (eq_trans_i (hl_COND omega (hl_IN A y (hl_chi A X)) (finite_cardinality X) (ordsucc (finite_cardinality X))) (if y :e hl_rep A (hl_chi A X) then finite_cardinality X else ordsucc (finite_cardinality X)) (finite_cardinality (X :\/: {y}))
+         (hl_COND_if omega (hl_IN A y (hl_chi A X)) HI2 (y :e hl_rep A (hl_chi A X)) (hl_IN_compat A HA y HyA (hl_chi A X) Hchi) (finite_cardinality X) Hgc (ordsucc (finite_cardinality X)) (omega_ordsucc (finite_cardinality X) Hgc))
+         (eq_trans_i (if y :e hl_rep A (hl_chi A X) then finite_cardinality X else ordsucc (finite_cardinality X)) (ordsucc (finite_cardinality X)) (finite_cardinality (X :\/: {y}))
+            (If_i_0 (y :e hl_rep A (hl_chi A X)) (finite_cardinality X) (ordsucc (finite_cardinality X)) HnotIn)
+            (eq_sym_i (finite_cardinality (X :\/: {y})) (ordsucc (finite_cardinality X)) (god1_finite_cardinality_adjoin X y HX Hy))))). }
+exact (Hind (hl_rep A a) Hfin a Ha (fun q H => H)).
+Qed.
+Theorem hl_HAS_SIZE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, forall l2 :e omega, hl_HAS_SIZE A l1 l2 = 1 <-> equip (hl_rep A l1) l2.
+let A. assume HA. let s. assume Hs. let n. assume Hn.
+rewrite (hl_HAS_SIZE_unfold A s Hs n Hn).
+apply (iff_trans ((if hl_FINITE A s = 1 /\ hl_CARD A s = n then 1 else 0) = 1) (hl_FINITE A s = 1 /\ hl_CARD A s = n) (equip (hl_rep A s) n) (If_1_iff (hl_FINITE A s = 1 /\ hl_CARD A s = n))).
+apply iffI.
+- assume H. apply H. assume H1 H2.
+  claim Hfin: finite (hl_rep A s). { apply (hl_FINITE_compat A HA s Hs). assume H3 _. exact (H3 H1). }
+  claim Hc: finite_cardinality (hl_rep A s) = n. { rewrite <- (hl_CARD_compat A HA s Hs Hfin). exact H2. }
+  apply (god1_finite_cardinality_specification (hl_rep A s) Hfin). assume _ H4. rewrite <- Hc. exact H4.
+- assume H.
+  claim Hfin: finite (hl_rep A s). { prove exists m :e omega, equip (hl_rep A s) m. witness n. exact (andI (n :e omega) (equip (hl_rep A s) n) Hn H). }
+  apply andI.
+  + apply (hl_FINITE_compat A HA s Hs). assume _ H3. exact (H3 Hfin).
+  + rewrite (hl_CARD_compat A HA s Hs Hfin).
+    rewrite (god1_finite_cardinality_equip_eq (hl_rep A s) n Hfin (nat_finite n (omega_nat_p n Hn)) H).
+    exact (god1_finite_cardinality_natural n Hn).
+Qed.

@@ -51,7 +51,15 @@ type genv = {
   mutable counter : int;
   mutable used_compat : string list;
   mutable lit_typing : bool;                        (* refer to the literal-carrier typing lemmas (_in_lit) *)
+  mutable hyps : (Mg.tm * string) list;             (* native hypotheses in scope: proposition, proof term *)
 }
+
+(* side conditions of compatibility theorems (docs/DESIGN.md §21.4): constants whose HOL
+   meaning is underspecified outside a domain get a hypothesis on the literal arguments;
+   the bridge discharges it from the hypotheses in scope.  Templates use ?1.. for the literal
+   arguments and ?A.. for carriers. *)
+let side_conditions : (string * string list) list =
+  [ ("CARD", [ "finite (hl_rep ?A ?1)" ]) ]
 
 let paren s = "(" ^ s ^ ")"
 let pp t = Mg.to_string t
@@ -217,6 +225,11 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
       match result with
       | None -> None
       | Some body ->
+          let lit_sub = List.mapi (fun i (l, _, _, _) -> (string_of_int (i + 1), Mg.Var l)) args @ List.map (fun (a, n) -> (a, Mg.Var n)) tv_names in
+          let sides = (match List.assoc_opt e.R.c_hol side_conditions with
+            | Some l -> List.map (fun t -> Mg.normalize (Mg.inst lit_sub (Mg.parse_template t))) l
+            | None -> []) in
+          let body = List.fold_right (fun sc acc -> Mg.Imp (sc, acc)) sides body in
           let body = List.fold_right (fun (l, ca, k, _) acc ->
             let acc = (match k with
               | `Fun (f, a) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Set), Mg.Imp (Mg.AllIn ("x", a, L.mg_eq (Mg.App (Mg.Var l, Mg.Var "x")) (Mg.App (Mg.Var f, Mg.Var "x"))), acc))
@@ -513,6 +526,25 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else unsupported "rel_mapped: metapred arity %d" k) (List.combine e.R.c_args (List.filteri (fun i _ -> i < List.length e.R.c_args) args));
   let pf0 = paren (String.concat " " (List.rev !parts)) in
+  (* side conditions: instantiate with the literal arguments, find their native form among the
+     hypotheses in scope, and transport the hypothesis back to the literal form *)
+  let pf0 = (match List.assoc_opt e.R.c_hol side_conditions with
+    | None -> pf0
+    | Some scs ->
+        let lit_sub = List.mapi (fun i (_, _, _, _) -> ()) [] in ignore lit_sub;
+        List.fold_left (fun pf sc_t ->
+          let sc = Mg.normalize (Mg.inst !tsub (Mg.parse_template sc_t)) in
+          (* native form after the pending rewrites *)
+          let sc_nat = List.fold_left (fun t (l, n, _) -> replace_tm l n t) sc (List.rev !rewrites) in
+          (match List.assoc_opt sc_nat g.hyps with
+           | None -> unsupported "side condition %s not available from hypotheses" (pp sc_nat)
+           | Some h ->
+               (* transport h : sc_nat back to sc: reverse rewrites one by one *)
+               let h' = List.fold_left (fun (cur_prop, h) (l, n, pe) ->
+                 let ctx = replace_tm n (Mg.Var "hl__u") cur_prop in
+                 let prop' = replace_tm n l cur_prop in
+                 (prop', Printf.sprintf "((eq_sym_i %s %s %s) (fun hl__u hl__v => %s) %s)" (ppp l) (ppp n) pe (pp ctx) h)) (sc_nat, h) !rewrites in
+               Printf.sprintf "(%s %s)" pf (snd h'))) pf0 scs) in
   let rhs0 = Mg.normalize (Mg.inst !tsub e.R.c_template) in
   let lhs = lit in
   let prop0 = (match e.R.c_result with
@@ -583,8 +615,26 @@ let rec bridge g (dir : dir) (t : tm) : string =
   | Const ("\\/", _), [ a; b ] ->
       imp_lemma dir "imp_or" (paren (ltext g a)) (paren (ntext g a)) (paren (ltext g b)) (paren (ntext g b)) (bridge g dir a) (bridge g dir b)
   | Const ("==>", _), [ a; b ] ->
-      let flip = (match dir with Fwd -> Bwd | Bwd -> Fwd) in
-      imp_lemma dir "imp_imp" (paren (ltext g a)) (paren (ntext g a)) (paren (ltext g b)) (paren (ntext g b)) (bridge g flip a) (bridge g dir b)
+      let la = ltext g a and na = ntext g a and lb = ltext g b and nb = ntext g b in
+      let na_t = nprop g a in
+      let rec conjuncts (t : Mg.tm) (h : string) acc =
+        (match t with
+         | Mg.App (Mg.App (Mg.Cst "and", p), q) -> conjuncts q (Printf.sprintf "(andER %s %s %s)" (ppp p) (ppp q) h) (conjuncts p (Printf.sprintf "(andEL %s %s %s)" (ppp p) (ppp q) h) acc)
+         | _ -> (t, h) :: acc) in
+      let saved = g.hyps in
+      (match dir with
+       | Fwd ->
+           let pa = bridge g Bwd a in
+           g.hyps <- conjuncts na_t "H__hyp" g.hyps;
+           let pb = (try bridge g Fwd b with e -> g.hyps <- saved; raise e) in
+           g.hyps <- saved;
+           Printf.sprintf "(fun H__L : ((%s) -> (%s)) => fun H__hyp : (%s) => %s (H__L (%s H__hyp)))" la lb na pb pa
+       | Bwd ->
+           let pa = bridge g Fwd a in
+           g.hyps <- conjuncts na_t (Printf.sprintf "(%s H__hyp)" pa) g.hyps;
+           let pb = (try bridge g Bwd b with e -> g.hyps <- saved; raise e) in
+           g.hyps <- saved;
+           Printf.sprintf "(fun H__N : ((%s) -> (%s)) => fun H__hyp : (%s) => %s (H__N (%s H__hyp)))" na nb la pb pa)
   | Const ("=", cty), [ a; b ] ->
       let ty, _ = dest_fun_ty cty in
       if ty = bool_ty then begin
@@ -838,7 +888,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
     end else (a, E.sanitize_tyvar a)) tvs in
   let nctx = { E.reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { E.classes = []; bridges = []; notes = [] } } in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
-  let g = { lctx; nctx; an; compat; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = false } in
+  let g = { lctx; nctx; an; compat; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = false; hyps = [] } in
   (* free variables, first occurrence order, native views as Elab *)
   let fvs = uniq (List.concat_map frees all) in
   let decls = List.map (fun (s, ty) ->
@@ -877,7 +927,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let inner = bridge g Fwd seq.concl in
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
-  let hl_inst = if params = [] then "HL" else Printf.sprintf "(HL %s)" (String.concat " " (params @ hyps)) in
+  let hl_inst = if params = [] then "H__top" else Printf.sprintf "(H__top %s)" (String.concat " " (params @ hyps)) in
   let converted = if wrap_hl = "HL0" then hl_inst else Str.global_replace (Str.regexp_string "HL0") hl_inst wrap_hl in
   (* native post-processing: approved rewrites (not yet replayed) and empty-carrier generalization *)
   let _, rewrites = Rewrite.run nat_stmt in
@@ -894,8 +944,8 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
     let ctx = Mg.subst [ (d, Mg.Var "hl__u") ] nat_body in
     let transported = Printf.sprintf "((eq_sym_i %s Empty H%se) (fun hl__u hl__v => %s) %s)" d d (pp ctx) pf_empty in
     Printf.sprintf "(xm (%s = Empty) (%s) (fun H%se => %s) (fun H%sne => %s))" d body_text d transported d acc) final dropped in
-  let proof = if params = [] then Printf.sprintf "(fun HL => %s)" split
-              else Printf.sprintf "(fun HL %s => %s)" (String.concat " " (params @ kept_hyps)) split in
+  let proof = if params = [] then Printf.sprintf "(fun H__top => %s)" split
+              else Printf.sprintf "(fun H__top %s => %s)" (String.concat " " (params @ kept_hyps)) split in
   { lit_stmt; nat_stmt = nat_gen; proof; compat_used = List.rev g.used_compat }
 
 (* typing lemma of a generated literal definition: forall A..:set, A <> Empty -> .. -> hl_c A.. :e L[sigma] *)
@@ -912,7 +962,7 @@ let typing_lemma (an : L.analysis) (typing_ok : (string, unit) Hashtbl.t) (c : s
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
   let dummy_reg = { R.types = Hashtbl.create 1; consts = Hashtbl.create 1; files = []; empty_rules = []; rewrite_rules = []; names = [] } in
   let nctx = { E.reg = dummy_reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { E.classes = []; bridges = []; notes = [] } } in
-  let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = true } in
+  let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = true; hyps = [] } in
   (* every constant used must have its typing lemma already *)
   List.iter (fun k -> if k <> c && not (List.mem_assoc k L.primitive_consts) && not (Hashtbl.mem typing_ok k) then unsupported "typing lemma of %s needs %s" c k) (L.consts_of_tm rhs []);
   let pf = typ g rhs in
@@ -1024,7 +1074,7 @@ let spec_lemma (an : L.analysis) (c : string) (cty : ty) (rhs : tm) : (string * 
   else begin
     let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs [] in
     let nctx = { E.reg = { R.types = Hashtbl.create 1; consts = Hashtbl.create 1; files = []; empty_rules = []; rewrite_rules = []; names = [] }; tyvar_names = []; vars = []; used = []; st = { E.classes = []; bridges = []; notes = [] } } in
-    let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = []; counter = 0; used_compat = []; lit_typing = false } in
+    let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = []; counter = 0; used_compat = []; lit_typing = false; hyps = [] } in
     let name = L.mg_name_of_const c in
     let hd = Mg.Cst name in
     (* replace the de Bruijn pattern by the free variable g and check nothing else is bound *)

@@ -1500,7 +1500,8 @@ source: !s:A->bool. HAS_SIZE s 0 <=> s = EMPTY
 status: generalization_required
 statement: forall A:set, forall s c= A, equip s 0 <-> s = Empty
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_HAS_SIZE A s (hl_NUMERAL hl_zero) = 1 <-> s = hl_EMPTY A
-cert_status: bridge_unsupported
+bridge: HAS_SIZE_0_bridge
+cert_status: native_certified
 
 ### FINITE_POWERSET   [finiteness, cardinality, functions between sets]
 hash: 3ae71668592f92c8300210136b6c496e

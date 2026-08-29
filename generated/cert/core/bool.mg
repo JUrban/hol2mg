@@ -12,7 +12,7 @@ Admitted.
 Theorem hlt_TRUTH : True.
 Admitted.
 Theorem TRUTH_bridge : (True) -> (True).
-exact (fun HL => (imp_refl True) HL).
+exact (fun H__top => (imp_refl True) H__top).
 Qed.
 Theorem TRUTH : True.
 exact (TRUTH_bridge hlt_TRUTH).
@@ -47,7 +47,7 @@ Admitted.
 Theorem hlt_F_DEF : False <-> forall p :e 2, p = 1.
 Admitted.
 Theorem F_DEF_bridge : (False <-> forall p :e 2, p = 1) -> (False <-> forall p:prop, p).
-exact (fun HL => (imp_iff (False) (False) (forall p :e 2, p = 1) (forall p:prop, p) (imp_refl False) (imp_refl False) (imp_forall_bool (fun p => p = 1) (fun p => p) (fun p => (iffEL ((if p then 1 else 0) = 1) (p) (If_1_iff p)))) (imp_forall_bool_rev (fun p => p = 1) (fun p => p) (fun p Hp => (iffER (p = 1) (p = 1) (iff_refl (p = 1)))))) HL).
+exact (fun H__top => (imp_iff (False) (False) (forall p :e 2, p = 1) (forall p:prop, p) (imp_refl False) (imp_refl False) (imp_forall_bool (fun p => p = 1) (fun p => p) (fun p => (iffEL ((if p then 1 else 0) = 1) (p) (If_1_iff p)))) (imp_forall_bool_rev (fun p => p = 1) (fun p => p) (fun p Hp => (iffER (p = 1) (p = 1) (iff_refl (p = 1)))))) H__top).
 Qed.
 Theorem F_DEF : False <-> forall p:prop, p.
 exact (F_DEF_bridge hlt_F_DEF).
