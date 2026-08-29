@@ -8975,9 +8975,9 @@
    "source": "!m:num. !n:num. !p:num. !q:num. dist (m + n , p + q) <= dist (m , p) + dist (n , q)",
    "statement": "forall m n p q :e omega, abs_SNo ((m + n) + - (p + q)) <= abs_SNo (m + - p) + abs_SNo (n + - q)",
    "literal": "forall m n p q :e omega, hl_le (hl_dist (hl_pair omega omega (hl_add m n) (hl_add p q))) (hl_add (hl_dist (hl_pair omega omega m p)) (hl_dist (hl_pair omega omega n q))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo ((m + n) + - (p + q)) differs from elaborated abs_SNo ((m + n,p + q) 0 + - (m + n,p + q) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_ADD2_bridge"
   },
   {
    "name": "DIST_ADD2_REV",
@@ -9008,9 +9008,9 @@
    "source": "!m:num. !n:num. !p:num. !q:num. dist (m , p) <= dist (m + n , p + q) + dist (n , q)",
    "statement": "forall m n p q :e omega, abs_SNo (m + - p) <= abs_SNo ((m + n) + - (p + q)) + abs_SNo (n + - q)",
    "literal": "forall m n p q :e omega, hl_le (hl_dist (hl_pair omega omega m p)) (hl_add (hl_dist (hl_pair omega omega (hl_add m n) (hl_add p q))) (hl_dist (hl_pair omega omega n q))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - p) differs from elaborated abs_SNo ((m,p) 0 + - (m,p) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_ADD2_REV_bridge"
   },
   {
    "name": "DIST_ADDBOUND",
@@ -9041,9 +9041,9 @@
    "source": "!m:num. !n:num. dist (m , n) <= m + n",
    "statement": "forall m n :e omega, abs_SNo (m + - n) <= m + n",
    "literal": "forall m n :e omega, hl_le (hl_dist (hl_pair omega omega m n)) (hl_add m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_ADDBOUND_bridge"
   },
   {
    "name": "DIST_ELIM_THM",
@@ -9077,9 +9077,9 @@
    "source": "P (dist (x , y)) <=> (!d:num. (x = y + d ==> P d) /\\ (y = x + d ==> P d))",
    "statement": "forall P:set -> prop, forall x y :e omega, P (abs_SNo (x + - y)) <-> forall d :e omega, (x = y + d -> P d) /\\ (y = x + d -> P d)",
    "literal": "forall P :e 2 :^: omega, forall x y :e omega, P (hl_dist (hl_pair omega omega x y)) = 1 <-> forall d :e omega, (x = hl_add y d -> P d = 1) /\\ (y = hl_add x d -> P d = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (x + - y) differs from elaborated abs_SNo ((x,y) 0 + - (x,y) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_ELIM_THM_bridge"
   },
   {
    "name": "DIST_EQ_0",
@@ -9108,9 +9108,9 @@
    "source": "!m:num. !n:num. dist (m , n) = 0 <=> m = n",
    "statement": "forall m n :e omega, abs_SNo (m + - n) = 0 <-> m = n",
    "literal": "forall m n :e omega, hl_dist (hl_pair omega omega m n) = hl_NUMERAL hl_zero <-> m = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_EQ_0_bridge"
   },
   {
    "name": "DIST_LADD",
@@ -9140,9 +9140,9 @@
    "source": "!m:num. !p:num. !n:num. dist (m + n , m + p) = dist (n , p)",
    "statement": "forall m p n :e omega, abs_SNo ((m + n) + - (m + p)) = abs_SNo (n + - p)",
    "literal": "forall m p n :e omega, hl_dist (hl_pair omega omega (hl_add m n) (hl_add m p)) = hl_dist (hl_pair omega omega n p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo ((m + n) + - (m + p)) differs from elaborated abs_SNo ((m + n,m + p) 0 + - (m + n,m + p) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_LADD_bridge"
   },
   {
    "name": "DIST_LADD_0",
@@ -9172,9 +9172,9 @@
    "source": "!m:num. !n:num. dist (m + n , m) = n",
    "statement": "forall m n :e omega, abs_SNo ((m + n) + - m) = n",
    "literal": "forall m n :e omega, hl_dist (hl_pair omega omega (hl_add m n) m) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo ((m + n) + - m) differs from elaborated abs_SNo ((m + n,m) 0 + - (m + n,m) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_LADD_0_bridge"
   },
   {
    "name": "DIST_LE_CASES",
@@ -9205,9 +9205,9 @@
    "source": "!m:num. !n:num. !p:num. dist (m , n) <= p <=> m <= n + p /\\ n <= m + p",
    "statement": "forall m n p :e omega, abs_SNo (m + - n) <= p <-> m <= n + p /\\ n <= m + p",
    "literal": "forall m n p :e omega, hl_le (hl_dist (hl_pair omega omega m n)) p = 1 <-> hl_le m (hl_add n p) = 1 /\\ hl_le n (hl_add m p) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_LE_CASES_bridge"
   },
   {
    "name": "DIST_LMUL",
@@ -9237,9 +9237,9 @@
    "source": "!m:num. !n:num. !p:num. m * dist (n , p) = dist (m * n , m * p)",
    "statement": "forall m n p :e omega, m * abs_SNo (n + - p) = abs_SNo (m * n + - m * p)",
    "literal": "forall m n p :e omega, hl_mul m (hl_dist (hl_pair omega omega n p)) = hl_dist (hl_pair omega omega (hl_mul m n) (hl_mul m p))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (n + - p) differs from elaborated abs_SNo ((n,p) 0 + - (n,p) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_LMUL_bridge"
   },
   {
    "name": "DIST_LZERO",
@@ -9268,9 +9268,9 @@
    "source": "!n:num. dist (0 , n) = n",
    "statement": "forall n :e omega, abs_SNo (0 + - n) = n",
    "literal": "forall n :e omega, hl_dist (hl_pair omega omega (hl_NUMERAL hl_zero) n) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (0 + - n) differs from elaborated abs_SNo ((0,n) 0 + - (0,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_LZERO_bridge"
   },
   {
    "name": "DIST_RADD",
@@ -9300,9 +9300,9 @@
    "source": "!m:num. !p:num. !n:num. dist (m + p , n + p) = dist (m , n)",
    "statement": "forall m p n :e omega, abs_SNo ((m + p) + - (n + p)) = abs_SNo (m + - n)",
    "literal": "forall m p n :e omega, hl_dist (hl_pair omega omega (hl_add m p) (hl_add n p)) = hl_dist (hl_pair omega omega m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo ((m + p) + - (n + p)) differs from elaborated abs_SNo ((m + p,n + p) 0 + - (m + p,n + p) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_RADD_bridge"
   },
   {
    "name": "DIST_RADD_0",
@@ -9332,9 +9332,9 @@
    "source": "!m:num. !n:num. dist (m , m + n) = n",
    "statement": "forall m n :e omega, abs_SNo (m + - (m + n)) = n",
    "literal": "forall m n :e omega, hl_dist (hl_pair omega omega m (hl_add m n)) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - (m + n)) differs from elaborated abs_SNo ((m,m + n) 0 + - (m,m + n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_RADD_0_bridge"
   },
   {
    "name": "DIST_REFL",
@@ -9363,9 +9363,9 @@
    "source": "!n:num. dist (n , n) = 0",
    "statement": "forall n :e omega, abs_SNo (n + - n) = 0",
    "literal": "forall n :e omega, hl_dist (hl_pair omega omega n n) = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (n + - n) differs from elaborated abs_SNo ((n,n) 0 + - (n,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_REFL_bridge"
   },
   {
    "name": "DIST_RMUL",
@@ -9395,9 +9395,9 @@
    "source": "!m:num. !n:num. !p:num. dist (m , n) * p = dist (m * p , n * p)",
    "statement": "forall m n p :e omega, abs_SNo (m + - n) * p = abs_SNo (m * p + - n * p)",
    "literal": "forall m n p :e omega, hl_mul (hl_dist (hl_pair omega omega m n)) p = hl_dist (hl_pair omega omega (hl_mul m p) (hl_mul n p))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_RMUL_bridge"
   },
   {
    "name": "DIST_RZERO",
@@ -9426,9 +9426,9 @@
    "source": "!n:num. dist (n , 0) = n",
    "statement": "forall n :e omega, abs_SNo (n + - 0) = n",
    "literal": "forall n :e omega, hl_dist (hl_pair omega omega n (hl_NUMERAL hl_zero)) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (n + - 0) differs from elaborated abs_SNo ((n,0) 0 + - (n,0) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_RZERO_bridge"
   },
   {
    "name": "DIST_SYM",
@@ -9457,9 +9457,9 @@
    "source": "!m:num. !n:num. dist (m , n) = dist (n , m)",
    "statement": "forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m)",
    "literal": "forall m n :e omega, hl_dist (hl_pair omega omega m n) = hl_dist (hl_pair omega omega n m)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_SYM_bridge"
   },
   {
    "name": "DIST_TRIANGLE",
@@ -9490,9 +9490,9 @@
    "source": "!m:num. !n:num. !p:num. dist (m , p) <= dist (m , n) + dist (n , p)",
    "statement": "forall m n p :e omega, abs_SNo (m + - p) <= abs_SNo (m + - n) + abs_SNo (n + - p)",
    "literal": "forall m n p :e omega, hl_le (hl_dist (hl_pair omega omega m p)) (hl_add (hl_dist (hl_pair omega omega m n)) (hl_dist (hl_pair omega omega n p))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - p) differs from elaborated abs_SNo ((m,p) 0 + - (m,p) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_TRIANGLE_bridge"
   },
   {
    "name": "DIST_TRIANGLES_LE",
@@ -9523,9 +9523,9 @@
    "source": "!m:num. !n:num. !p:num. !q:num. !r:num. !s:num. dist (m , n) <= r /\\ dist (p , q) <= s ==> dist (m , p) <= dist (n , q) + r + s",
    "statement": "forall m n p q r s :e omega, abs_SNo (m + - n) <= r /\\ abs_SNo (p + - q) <= s -> abs_SNo (m + - p) <= abs_SNo (n + - q) + r + s",
    "literal": "forall m n p q r s :e omega, hl_le (hl_dist (hl_pair omega omega m n)) r = 1 /\\ hl_le (hl_dist (hl_pair omega omega p q)) s = 1 -> hl_le (hl_dist (hl_pair omega omega m p)) (hl_add (hl_dist (hl_pair omega omega n q)) (hl_add r s)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (p + - q) differs from elaborated abs_SNo ((p,q) 0 + - (p,q) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_TRIANGLES_LE_bridge"
   },
   {
    "name": "DIST_TRIANGLE_LE",
@@ -9556,9 +9556,9 @@
    "source": "!m:num. !n:num. !p:num. !q:num. dist (m , n) + dist (n , p) <= q ==> dist (m , p) <= q",
    "statement": "forall m n p q :e omega, abs_SNo (m + - n) + abs_SNo (n + - p) <= q -> abs_SNo (m + - p) <= q",
    "literal": "forall m n p q :e omega, hl_le (hl_add (hl_dist (hl_pair omega omega m n)) (hl_dist (hl_pair omega omega n p))) q = 1 -> hl_le (hl_dist (hl_pair omega omega m p)) q = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIST_TRIANGLE_LE_bridge"
   },
   {
    "name": "DIVIDES_ANTISYM",
@@ -19181,9 +19181,9 @@
    "source": "!x:A. !y:B. FST (x , y) = x",
    "statement": "forall A B:set, forall x :e A, forall y :e B, x = x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_FST A B (hl_pair A B x y) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native x differs from elaborated (x,y) 0",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FST_bridge"
   },
   {
    "name": "FSTCART_COMPONENT",
@@ -69223,9 +69223,9 @@
    "source": "!x:A. !y:B. SND (x , y) = y",
    "statement": "forall A B:set, forall x :e A, forall y :e B, y = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_SND A B (hl_pair A B x y) = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native y differs from elaborated (x,y) 1",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SND_bridge"
   },
   {
    "name": "SNDCART_COMPONENT",
@@ -79827,9 +79827,9 @@
    "source": "!n:num. !m:num. dist (m , n) = m - n + n - m",
    "statement": "forall n m :e omega, abs_SNo (m + - n) = minus_nat m n + minus_nat n m",
    "literal": "forall n m :e omega, hl_dist (hl_pair omega omega m n) = hl_add (hl_sub m n) (hl_sub n m)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native abs_SNo (m + - n) differs from elaborated abs_SNo ((m,n) 0 + - (m,n) 1)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "dist_bridge"
   },
   {
    "name": "divides",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2074
+  "native_certified": 2096
  }
 }

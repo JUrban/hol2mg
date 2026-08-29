@@ -133,7 +133,38 @@ let nat_subst g =
     | Some t, Some (_, _, n) -> Some (n, t)
     | _ -> None) g.vars
 
-let nprop g t = Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx t E.VProp))
+(* pair projections of explicit tuples, (a,b) 0 = a and (a,b) 1 = b, reduced everywhere: the
+   elaborator's statement-level rewrite pass does the same (rules tuple_2_0_eq/tuple_2_1_eq), and
+   the relation of a mapped constant replays them on the derived side (normalize_singletons) *)
+let rec reduce_tuples (t : Mg.tm) : Mg.tm =
+  match t with
+  | Mg.App (a, b) ->
+      let a' = reduce_tuples a and b' = reduce_tuples b in
+      (match a', b' with
+       | Mg.Tuple [ x; _ ], Mg.Num 0 -> x
+       | Mg.Tuple [ _; y ], Mg.Num 1 -> y
+       | _ -> Mg.App (a', b'))
+  | Mg.Lam (x, ty, b) -> Mg.Lam (x, ty, reduce_tuples b)
+  | Mg.LamIn (x, a, b) -> Mg.LamIn (x, reduce_tuples a, reduce_tuples b)
+  | Mg.All (x, ty, b) -> Mg.All (x, ty, reduce_tuples b)
+  | Mg.AllIn (x, a, b) -> Mg.AllIn (x, reduce_tuples a, reduce_tuples b)
+  | Mg.AllSub (x, a, b) -> Mg.AllSub (x, reduce_tuples a, reduce_tuples b)
+  | Mg.Ex (x, ty, b) -> Mg.Ex (x, ty, reduce_tuples b)
+  | Mg.ExIn (x, a, b) -> Mg.ExIn (x, reduce_tuples a, reduce_tuples b)
+  | Mg.ExSub (x, a, b) -> Mg.ExSub (x, reduce_tuples a, reduce_tuples b)
+  | Mg.Imp (a, b) -> Mg.Imp (reduce_tuples a, reduce_tuples b)
+  | Mg.Sep (x, a, p) -> Mg.Sep (x, reduce_tuples a, reduce_tuples p)
+  | Mg.Repl (x, a, b) -> Mg.Repl (x, reduce_tuples a, reduce_tuples b)
+  | Mg.ReplSep (x, a, p, b) -> Mg.ReplSep (x, reduce_tuples a, reduce_tuples p, reduce_tuples b)
+  | Mg.SetEnum l -> Mg.SetEnum (List.map reduce_tuples l)
+  | Mg.If (c, a, b) -> Mg.If (reduce_tuples c, reduce_tuples a, reduce_tuples b)
+  | Mg.Tuple l -> Mg.Tuple (List.map reduce_tuples l)
+  | Mg.SigmaIn (x, a, b) -> Mg.SigmaIn (x, reduce_tuples a, reduce_tuples b)
+  | Mg.PiIn (x, a, b) -> Mg.PiIn (x, reduce_tuples a, reduce_tuples b)
+  | Mg.FamUnion (x, a, b) -> Mg.FamUnion (x, reduce_tuples a, reduce_tuples b)
+  | _ -> t
+
+let nprop g t = reduce_tuples (Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx t E.VProp)))
 let ntext g t = pp (nprop g t)
 let lprop g t = L.lprop g.lctx t
 let ltext g t = pp (lprop g t)
@@ -446,7 +477,7 @@ let open_lam g x xty body =
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
   let nat, nview = E.elab_nat g.nctx t want in
-  let nat = Mg.normalize (Mg.subst (nat_subst g) nat) in
+  let nat = reduce_tuples (Mg.normalize (Mg.subst (nat_subst g) nat)) in
   let lit = lterm g t in
   let r = rel_nat g t lit nat nview in
   match want with
@@ -1633,7 +1664,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
               lctx.L.vars <- List.remove_assoc s lctx.L.vars; lctx.L.used <- List.filter (( <> ) n) lctx.L.used) decls;
   let concl = List.fold_right (fun (s, ty, _, _) acc -> E.mk_forall s ty (abstract_free s acc)) decls seq.concl in
   let lit_body = L.lprop lctx concl in
-  let nat_body = E.elab nctx concl E.VProp in
+  let nat_body = reduce_tuples (E.elab nctx concl E.VProp) in
   let seq = { seq with concl } in
   let close_lit body = List.fold_right (fun (_, n) acc -> Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) tv_names body
                        |> fun b -> List.fold_right (fun (_, n) acc -> Mg.All (n, Mg.Set, acc)) tv_names b in

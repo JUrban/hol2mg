@@ -54,13 +54,23 @@ exact (PAIR_SURJECTIVE_bridge hlt_PAIR_SURJECTIVE).
 Admitted.
 
 // HOL Light: pair.ml:92 / FST   (hash md5:e9c3a4a3164ca2f9e6fad2d535f8ab0f)
-// not bridged: 
+Theorem hlt_FST : forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_FST A B (hl_pair A B x y) = x.
+Admitted.
+Theorem FST_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_FST A B (hl_pair A B x y) = x) -> (forall A B:set, forall x :e A, forall y :e B, x = x).
+exact (fun H__top A B => (xm (B = Empty) (forall x :e A, forall y :e B, x = x) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall x :e A, forall y :e hl__u, x = x) (fun x Hx => (forall_in_Empty (fun y => x = x))))) (fun HBne => (xm (A = Empty) (forall x :e A, forall y :e B, x = x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, forall y :e B, x = x) (forall_in_Empty (fun x => forall y :e B, x = x)))) (fun HAne => (imp_forall_in (A) (fun x => forall y :e B, hl_FST A B (hl_pair A B x y) = x) (fun x => forall y :e B, x = x) (fun x Hx => (imp_forall_in (B) (fun y => hl_FST A B (hl_pair A B x y) = x) (fun y => x = x) (fun y Hy => (imp_eq (hl_FST A B (hl_pair A B x y)) (x) (x) (x) ((tuple_2_0_eq (x) (y)) (fun hl__u hl__v => hl_FST A B (hl_pair A B x y) = hl__u) (((hl_pair_compat) (A) (B) HAne HBne (x) Hx (y) Hy) (fun hl__u hl__v => hl_FST A B (hl_pair A B x y) = hl__u 0) ((hl_FST_compat) (A) (B) HAne HBne (hl_pair A B x y) (setexp_ap (B) (A :*: B) (hl_pair A B x) (setexp_ap (A) ((A :*: B) :^: B) (hl_pair A B) ((hl_pair_in) (A) (B) HAne HBne) (x) Hx) (y) Hy)))) (fun q H => H)))))) (H__top A B HAne HBne)))))).
+Qed.
 Theorem FST : forall A B:set, forall x :e A, forall y :e B, x = x.
+exact (FST_bridge hlt_FST).
 Admitted.
 
 // HOL Light: pair.ml:100 / SND   (hash md5:e4ac88e20ba11cb060769e77dcb122fe)
-// not bridged: 
+Theorem hlt_SND : forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_SND A B (hl_pair A B x y) = y.
+Admitted.
+Theorem SND_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_SND A B (hl_pair A B x y) = y) -> (forall A B:set, forall x :e A, forall y :e B, y = y).
+exact (fun H__top A B => (xm (B = Empty) (forall x :e A, forall y :e B, y = y) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall x :e A, forall y :e hl__u, y = y) (fun x Hx => (forall_in_Empty (fun y => y = y))))) (fun HBne => (xm (A = Empty) (forall x :e A, forall y :e B, y = y) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, forall y :e B, y = y) (forall_in_Empty (fun x => forall y :e B, y = y)))) (fun HAne => (imp_forall_in (A) (fun x => forall y :e B, hl_SND A B (hl_pair A B x y) = y) (fun x => forall y :e B, y = y) (fun x Hx => (imp_forall_in (B) (fun y => hl_SND A B (hl_pair A B x y) = y) (fun y => y = y) (fun y Hy => (imp_eq (hl_SND A B (hl_pair A B x y)) (y) (y) (y) ((tuple_2_1_eq (x) (y)) (fun hl__u hl__v => hl_SND A B (hl_pair A B x y) = hl__u) (((hl_pair_compat) (A) (B) HAne HBne (x) Hx (y) Hy) (fun hl__u hl__v => hl_SND A B (hl_pair A B x y) = hl__u 1) ((hl_SND_compat) (A) (B) HAne HBne (hl_pair A B x y) (setexp_ap (B) (A :*: B) (hl_pair A B x) (setexp_ap (A) ((A :*: B) :^: B) (hl_pair A B) ((hl_pair_in) (A) (B) HAne HBne) (x) Hx) (y) Hy)))) (fun q H => H)))))) (H__top A B HAne HBne)))))).
+Qed.
 Theorem SND : forall A B:set, forall x :e A, forall y :e B, y = y.
+exact (SND_bridge hlt_SND).
 Admitted.
 
 // HOL Light: pair.ml:108 / PAIR   (hash md5:23613fb98ddd9bc0b8abe81386bec32f)

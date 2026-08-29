@@ -396,7 +396,8 @@ source: !x:A. !y:B. FST (x , y) = x
 status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, x = x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_FST A B (hl_pair A B x y) = x
-cert_status: bridge_unsupported
+bridge: FST_bridge
+cert_status: native_certified
 
 ### SND   [products]
 hash: e4ac88e20ba11cb060769e77dcb122fe
@@ -404,7 +405,8 @@ source: !x:A. !y:B. SND (x , y) = y
 status: generalization_required
 statement: forall A B:set, forall x :e A, forall y :e B, y = y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x :e A, forall y :e B, hl_SND A B (hl_pair A B x y) = y
-cert_status: bridge_unsupported
+bridge: SND_bridge
+cert_status: native_certified
 
 ### PAIR   [products]
 hash: 23613fb98ddd9bc0b8abe81386bec32f
