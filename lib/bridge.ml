@@ -298,6 +298,9 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
           | Mg.Num n when n <= 2 -> Some (Printf.sprintf "(nat_finite %d nat_%d)" n n)
           | Mg.SetEnum [ a ] -> Some (Printf.sprintf "(Sing_finite %s)" (ppp a))
           | Mg.SetEnum [ a; b ] -> Some (Printf.sprintf "(finite_UPair %s %s)" (ppp a) (ppp b))
+          | Mg.SetEnum l when List.length l >= 3 ->
+              let init = List.filteri (fun i _ -> i < List.length l - 1) l and last = List.nth l (List.length l - 1) in
+              Option.map (fun p -> Printf.sprintf "(adjoin_finite %s %s %s)" (ppp (Mg.SetEnum init)) (ppp last) p) (sub (Mg.SetEnum init) (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "SetAdjoin", x), a) -> Option.map (fun p -> Printf.sprintf "(adjoin_finite %s %s %s)" (ppp x) (ppp a) p) (sub x (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "binunion", x), y) ->
               (match sub x (depth + 1), sub y (depth + 1) with
@@ -308,6 +311,10 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
                | Some px, Some py -> Some (Printf.sprintf "(god1_setprod_finite %s %s %s %s)" (ppp x) (ppp y) px py)
                | _ -> None)
           | Mg.App (Mg.Cst "Power", x) -> Option.map (fun p -> Printf.sprintf "(god1_power_finite %s %s)" (ppp x) p) (sub x (depth + 1))
+          | Mg.App (Mg.Cst "seq_set", l) ->
+              (match nat_var_mem g l with
+               | Some (Mg.App (Mg.Cst "finseq", a), hl) -> Some (Printf.sprintf "(seq_set_finite %s %s %s)" (ppp a) (ppp l) hl)
+               | _ -> None)
           | Mg.Repl (v, x, f) -> Option.map (fun p -> Printf.sprintf "(Repl_finite (fun %s:set => %s) %s %s)" v (pp f) (ppp x) p) (sub x (depth + 1))
           | Mg.Sep (v, Mg.Cst "omega", body) when (match body with
                 | Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v'), _) -> v' = v
@@ -1546,6 +1553,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let rec find_adjoin_empty t = (match t with
     | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Cst "Empty"), a) -> Some (t, Mg.SetEnum [ a ], Printf.sprintf "(binunion_idl %s)" (ppp (Mg.SetEnum [ a ])))
     | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.SetEnum [ b ]), a) -> Some (t, Mg.SetEnum [ a; b ], Printf.sprintf "(SetAdjoin_Sing_UPair %s %s)" (ppp a) (ppp b))
+    | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.SetEnum [ b; c ]), a) -> Some (t, Mg.SetEnum [ a; b; c ], Printf.sprintf "(SetAdjoin_UPair_3 %s %s %s)" (ppp a) (ppp b) (ppp c))
+    | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.SetEnum [ b; c; d ]), a) -> Some (t, Mg.SetEnum [ a; b; c; d ], Printf.sprintf "(SetAdjoin_UPair_4 %s %s %s %s)" (ppp a) (ppp b) (ppp c) (ppp d))
     | Mg.App (Mg.Tuple [ a; b ], Mg.Num 0) -> Some (t, a, Printf.sprintf "(tuple_2_0_eq %s %s)" (ppp a) (ppp b))
     | Mg.App (Mg.Tuple [ a; b ], Mg.Num 1) -> Some (t, b, Printf.sprintf "(tuple_2_1_eq %s %s)" (ppp a) (ppp b))
     | Mg.App (f, x) -> (match find_adjoin_empty f with Some r -> Some r | None -> find_adjoin_empty x)
@@ -2140,11 +2149,11 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let _, rewrites = Rewrite.run nat_stmt in
   (* idx_n_def / idx_def unfold definitions of the native prelude: the rewritten statement is convertible *)
   let convertible = [ "eta"; "idx_n_def"; "idx_def" ] in
-  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall" ] @ convertible in
+  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one" ] @ convertible in
   (match List.filter (fun r -> not (List.mem r replayable)) rewrites with
    | [] -> ()
    | l -> unsupported "native rewrites %s" (String.concat "," l));
-  let final = Printf.sprintf "%s %s" inner converted in
+  let final = Printf.sprintf "(%s %s)" inner converted in
   (* replay of vacuous bounded binders (the elaborator drops `forall x :e a, P` with x not in P over an
      inhabited a): instantiate the proved body at a canonical inhabitant *)
   let nat_body, final =
@@ -2187,6 +2196,12 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
       if not (alpha_eq t' target) then unsupported "vacuous binder replay: %s vs %s" (pp t') (pp target);
       (t', pf')
     end in
+  (* replay of the closed equation dimindex 1 = 1 by a Leibniz step on the proved body *)
+  let nat_body, final =
+    let d1 = Mg.App (Mg.Cst "dimindex", Mg.Num 1) in
+    if List.mem "dimindex_one" rewrites && replace_tm d1 (Mg.Var "hl__u") nat_body <> nat_body then
+      (replace_tm d1 (Mg.Num 1) nat_body, Printf.sprintf "(dimindex_one (fun hl__u hl__v => %s) %s)" (pp (replace_tm d1 (Mg.Var "hl__u") nat_body)) final)
+    else (nat_body, final) in
   let nat_body = if List.exists (fun r -> List.mem r convertible) rewrites then fst (Rewrite.run nat_body) else nat_body in
   let nat_stmt = close_lit nat_body in
   let nat_gen, dropped = Emptycase.generalize nat_stmt params in

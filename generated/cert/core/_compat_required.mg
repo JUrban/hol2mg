@@ -142,10 +142,6 @@ Admitted.
 Theorem hl_dest_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_diff A B, hl_dest_finite_diff A B l1 = l1.
 Admitted.
 
-// DECIMAL : num->num->real (not in compat.mg)
-Theorem hl_DECIMAL_compat : forall l1 l2 :e omega, hl_DECIMAL l1 l2 = l1 :/: l2.
-Admitted.
-
 // MAP2 : (A->B->C)->A list->B list->C list (not in compat.mg)
 Theorem hl_MAP2_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e finseq A, forall l3 :e finseq B, hl_MAP2 A B C l1 l2 l3 = seq_map2 f1 l2 l3.
 Admitted.
@@ -280,10 +276,6 @@ Admitted.
 
 // GEQ : A->A->bool (not in compat.mg)
 Theorem hl_GEQ_compat : forall A:set, A <> Empty -> hl_GEQ A = Empty.
-Admitted.
-
-// CURRY : (A#B->C)->A->B->C (not in compat.mg)
-Theorem hl_CURRY_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: (A :*: B), forall f1:set -> set, (forall x :e A :*: B, l1 x = f1 x) -> forall l2 :e A, forall l3 :e B, hl_CURRY A B C l1 l2 l3 = f1 (l2,l3).
 Admitted.
 
 // INR : B->(A,B)sum (not in compat.mg)

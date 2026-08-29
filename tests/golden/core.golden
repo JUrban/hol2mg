@@ -451,7 +451,8 @@ source: !f:A#B->C. !x:A. !y:B. CURRY f x y = f (x , y)
 status: generalization_required
 statement: forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: (A :*: B), forall x :e A, forall y :e B, hl_CURRY A B C f x y = f (hl_pair A B x y)
-cert_status: bridge_unsupported
+bridge: CURRY_DEF_bridge
+cert_status: native_certified
 
 ### UNCURRY_DEF   [products]
 hash: 3f03a0bbd511648cd075ac39bfcfc4bb
@@ -1746,7 +1747,8 @@ source: dimindex UNIV = 1
 status: transport_required
 statement: 1 = 1
 literal: hl_dimindex 1 (hl_UNIV 1) = hl_NUMERAL (hl_BIT1 hl_zero)
-cert_status: bridge_unsupported
+bridge: DIMINDEX_1_bridge
+cert_status: native_certified
 
 ### DIMINDEX_2   [Cartesian powers and finite index types]
 hash: d0a8da4f2034656bd4d9e0714a4c82f2
@@ -2169,7 +2171,8 @@ source: !x:num. !y:num. DECIMAL x y = real_of_num x / real_of_num y
 status: transport_required
 statement: forall x y :e omega, x :/: y = x :/: y
 literal: forall x y :e omega, hl_DECIMAL x y = hl_real_div (hl_real_of_num x) (hl_real_of_num y)
-cert_status: bridge_unsupported
+bridge: DECIMAL_bridge
+cert_status: native_certified
 
 ### RAT_LEMMA1   [rationals and decimals]
 hash: e8393a3cd1be553aa7c60366fca81f84

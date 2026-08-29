@@ -7103,3 +7103,53 @@ claim H1: seq_len (seq_rev l) = 0. { exact (eq_trans_i (seq_len (seq_rev l)) (se
 claim H2: seq_len l = 0. { exact (eq_trans_i (seq_len l) (seq_len (seq_rev l)) 0 (eq_sym_i (seq_len (seq_rev l)) (seq_len l) (seq_len_rev l)) H1). }
 exact (seq_len_0_nil A l Hl H2).
 Qed.
+
+// ---- three- and four-element enumerations; finiteness of the set of a sequence ----
+Theorem SetAdjoin_UPair_3 : forall a b c:set, SetAdjoin {b,c} a = {a,b,c}.
+let a b c. apply set_ext.
+- let z. assume Hz. apply (SetAdjoinE {b,c} a z Hz).
+  + assume H1. apply (UPairE z b c H1).
+    * assume H2. exact (SetAdjoinI1 {a,b} c z ((eq_sym_i z b H2) (fun hl__u hl__v => hl__u :e {a,b}) (UPairI2 a b))).
+    * assume H2. exact (SetAdjoinI2 {a,b} c z ((eq_sym_i z c H2) (fun hl__u hl__v => hl__u :e {c}) (SingI c))).
+  + assume H1. exact (SetAdjoinI1 {a,b} c z ((eq_sym_i z a (SingE a z H1)) (fun hl__u hl__v => hl__u :e {a,b}) (UPairI1 a b))).
+- let z. assume Hz. apply (SetAdjoinE {a,b} c z Hz).
+  + assume H1. apply (UPairE z a b H1).
+    * assume H2. exact (SetAdjoinI2 {b,c} a z ((eq_sym_i z a H2) (fun hl__u hl__v => hl__u :e {a}) (SingI a))).
+    * assume H2. exact (SetAdjoinI1 {b,c} a z ((eq_sym_i z b H2) (fun hl__u hl__v => hl__u :e {b,c}) (UPairI1 b c))).
+  + assume H1. exact (SetAdjoinI1 {b,c} a z ((eq_sym_i z c (SingE c z H1)) (fun hl__u hl__v => hl__u :e {b,c}) (UPairI2 b c))).
+Qed.
+Theorem SetAdjoin_UPair_4 : forall a b c d:set, SetAdjoin {b,c,d} a = {a,b,c,d}.
+let a b c d.
+claim L3: SetAdjoin {b,c} a = {a,b,c}. { exact (SetAdjoin_UPair_3 a b c). }
+apply set_ext.
+- let z. assume Hz. apply (SetAdjoinE {b,c,d} a z Hz).
+  + assume H1. apply (SetAdjoinE {b,c} d z H1).
+    * assume H2. exact (SetAdjoinI1 {a,b,c} d z (L3 (fun hl__u hl__v => z :e hl__u) (SetAdjoinI1 {b,c} a z H2))).
+    * assume H2. exact (SetAdjoinI2 {a,b,c} d z H2).
+  + assume H1. exact (SetAdjoinI1 {a,b,c} d z (L3 (fun hl__u hl__v => z :e hl__u) (SetAdjoinI2 {b,c} a z H1))).
+- let z. assume Hz. apply (SetAdjoinE {a,b,c} d z Hz).
+  + assume H1.
+    claim H1': z :e SetAdjoin {b,c} a. { exact ((eq_sym_i (SetAdjoin {b,c} a) {a,b,c} L3) (fun hl__u hl__v => z :e hl__u) H1). }
+    apply (SetAdjoinE {b,c} a z H1').
+    * assume H2. exact (SetAdjoinI1 {b,c,d} a z (SetAdjoinI1 {b,c} d z H2)).
+    * assume H2. exact (SetAdjoinI2 {b,c,d} a z H2).
+  + assume H1. exact (SetAdjoinI1 {b,c,d} a z (SetAdjoinI2 {b,c} d z H1)).
+Qed.
+Theorem seq_set_finite : forall A:set, forall l :e finseq A, finite (seq_set l).
+let A l. assume Hl.
+prove finite {seq_nth l i | i :e seq_len l}.
+exact (Repl_finite (fun i:set => seq_nth l i) (seq_len l) (nat_finite (seq_len l) (omega_nat_p (seq_len l) (seq_len_omega A l Hl)))).
+Qed.
+
+// ---- compat: CURRY, DECIMAL ----
+Theorem hl_CURRY_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: (A :*: B), forall f1:set -> set, (forall x :e A :*: B, l1 x = f1 x) -> forall l2 :e A, forall l3 :e B, hl_CURRY A B C l1 l2 l3 = f1 (l2,l3).
+let A B C. assume HA HB HC. let l1. assume Hl1. let f1. assume Hf1. let l2. assume Hl2. let l3. assume Hl3.
+claim Hp: (l2,l3) :e A :*: B. { exact (tuple_2_setprod A B l2 Hl2 l3 Hl3). }
+exact (eq_trans_i (hl_CURRY A B C l1 l2 l3) (l1 (hl_pair A B l2 l3)) (f1 (l2,l3)) (hl_CURRY_unfold A B C l1 Hl1 l2 Hl2 l3 Hl3) (eq_trans_i (l1 (hl_pair A B l2 l3)) (l1 (l2,l3)) (f1 (l2,l3)) (f_equal (fun u => l1 u) (hl_pair A B l2 l3) (l2,l3) (hl_pair_compat A B HA HB l2 Hl2 l3 Hl3)) (Hf1 (l2,l3) Hp))).
+Qed.
+Theorem hl_DECIMAL_compat : forall l1 l2 :e omega, hl_DECIMAL l1 l2 = l1 :/: l2.
+let l1. assume H1. let l2. assume H2.
+claim R1: l1 :e R. { exact (omega_subq_R l1 H1). }
+claim R2: l2 :e R. { exact (omega_subq_R l2 H2). }
+exact (eq_trans_i (hl_DECIMAL l1 l2) (hl_real_div (hl_real_of_num l1) (hl_real_of_num l2)) (l1 :/: l2) (hl_DECIMAL_unfold l1 H1 l2 H2) (eq_trans_i (hl_real_div (hl_real_of_num l1) (hl_real_of_num l2)) (hl_real_div l1 l2) (l1 :/: l2) (f_equal2 (fun u v => hl_real_div u v) (hl_real_of_num l1) l1 (hl_real_of_num l2) l2 (hl_real_of_num_compat l1 H1) (hl_real_of_num_compat l2 H2)) (hl_real_div_compat l1 R1 l2 R2))).
+Qed.

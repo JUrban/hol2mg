@@ -4337,9 +4337,9 @@
    "source": "!a:A. !b:A. !c:A. CARD (a INSERT b INSERT c INSERT EMPTY) <= 3",
    "statement": "forall A:set, forall a b c :e A, finite_cardinality {a,b,c} <= 3",
    "literal": "forall A:set, A <> Empty -> forall a b c :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_INSERT A c (hl_EMPTY A))))) (hl_NUMERAL (hl_BIT1 (hl_BIT1 hl_zero))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {b,c} a differs from elaborated {a,b,c}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_LE_3_bridge"
   },
   {
    "name": "CARD_LE_4",
@@ -4368,9 +4368,9 @@
    "source": "!a:A. !b:A. !c:A. !d:A. CARD (a INSERT b INSERT c INSERT d INSERT EMPTY) <= 4",
    "statement": "forall A:set, forall a b c d :e A, finite_cardinality {a,b,c,d} <= 4",
    "literal": "forall A:set, A <> Empty -> forall a b c d :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_INSERT A c (hl_INSERT A d (hl_EMPTY A)))))) (hl_NUMERAL (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {c,d} b differs from elaborated {b,c,d}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_LE_4_bridge"
   },
   {
    "name": "CARD_LE_INJ",
@@ -4768,9 +4768,9 @@
    "source": "!l:A list. CARD (set_of_list l) <= LENGTH l",
    "statement": "forall A:set, A <> Empty -> forall l :e finseq A, finite_cardinality (seq_set l) <= seq_len l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, hl_le (hl_CARD A (hl_set_of_list A l)) (hl_LENGTH A l) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (seq_set l) not available from hypotheses [hyps: ]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_SET_OF_LIST_LE_bridge"
   },
   {
    "name": "CARD_SING",
@@ -7203,9 +7203,9 @@
    "source": "!f:A#B->C. !x:A. !y:B. CURRY f x y = f (x , y)",
    "statement": "forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: (A :*: B), forall x :e A, forall y :e B, hl_CURRY A B C f x y = f (hl_pair A B x y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_CURRY_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CURRY_DEF_bridge"
   },
   {
    "name": "DECIMAL",
@@ -7232,9 +7232,9 @@
    "source": "!x:num. !y:num. DECIMAL x y = real_of_num x / real_of_num y",
    "statement": "forall x y :e omega, x :/: y = x :/: y",
    "literal": "forall x y :e omega, hl_DECIMAL x y = hl_real_div (hl_real_of_num x) (hl_real_of_num y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_DECIMAL_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DECIMAL_bridge"
   },
   {
    "name": "DECOMPOSITION",
@@ -7894,9 +7894,9 @@
    "source": "dimindex UNIV = 1",
    "statement": "1 = 1",
    "literal": "hl_dimindex 1 (hl_UNIV 1) = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: native rewrites dimindex_one",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "DIMINDEX_1_bridge"
   },
   {
    "name": "DIMINDEX_2",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2405
+  "native_certified": 2411
  }
 }
