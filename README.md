@@ -39,3 +39,18 @@ then `tools/diff_manifests.py` between the previous and the new manifest gives t
 Every generated theorem is `Admitted` (never an axiom), carries its HOL source, hash and
 status (`exact_native`, `transport_required`, `generalization_required`, `native_reuse`,
 `pending_mapping`), and all shards must print `Everything looks good.` under Megalodon.
+
+## Coverage (2026-08-29)
+
+| profile | HOL theorems | public statements | notes |
+|---|---|---|---|
+| core (`hol.ml`) | 2984 | 2684 | pending = quarantined construction internals |
+| standard (+11 `Library/` files) | 4590 | 4290 | number theory, cardinals, orders, closures |
+| mv_vectors (+`Multivariate/vectors.ml`) | 5084 | 4783 | 79 automatic definitions |
+| multivariate (`Multivariate/make.ml`) | 17526 | 17138 | 480 automatic definitions + 7 automatic types |
+
+Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are
+translated automatically into `generated/public/<profile>/_definitions.mg` (status `auto`,
+listed in the report and review page; a reviewed hand mapping or `override` always wins).
+Native infrastructure (`mglib/native/`): `prelude.mg`, `finseq.mg`, `order.mg`; 58 of its 64
+theorems are proved (`Qed`), the rest are `Admitted` and listed in the reports.

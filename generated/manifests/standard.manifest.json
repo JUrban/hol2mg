@@ -40,7 +40,10 @@
   "auto_definition_failures": [
     [ "NUM_REP", "internal construction type ind" ],
     [ "_22943", "no carrier mapping for type constructor char (in char)" ],
-    [ "ASCII", "no carrier mapping for type constructor char (in char)" ],
+    [
+      "ASCII",
+      "unmapped constant _22943 : bool->bool->bool->bool->bool->bool->bool->bool->char"
+    ],
     [
       "_100512",
       "unmapped constant _mk_tybit0 : (A,A)finite_sum recspace->A tybit0"
@@ -51,7 +54,7 @@
     ]
   ],
   "mapping_files": [
-    [ "mappings/core.json", "3103ffca6d4cc5827ee63ad4e8283557" ],
+    [ "mappings/core.json", "e413bf239320d66b5911818b2f8afe03" ],
     [ "mappings/lists.json", "7f592ce979022c3402a2bf4802d5e7bf" ],
     [ "mappings/library.json", "bafb8c20dcb9d7fe5f6badb63103ccf2" ]
   ],
