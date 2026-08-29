@@ -412,6 +412,32 @@ let imp_lemma dir name la na lb nb pa pb =
   | Fwd -> Printf.sprintf "(%s %s %s %s %s %s %s)" name la na lb nb pa pb
   | Bwd -> Printf.sprintf "(%s %s %s %s %s %s %s)" name na la nb lb pa pb
 
+(* open a lambda binder exactly as the elaborator does; returns the native name, the opened body,
+   the variable's view and a cleanup function (the variable is registered in all contexts) *)
+let open_lam g x xty body =
+  let n = E.fresh g.nctx x in
+  let key = x ^ "\000" ^ n ^ "#" ^ string_of_int g.counter in
+  g.counter <- g.counter + 1;
+  let body' = open_with (Free (key, xty)) body in
+  let xview = (match E.choose_view g.nctx (key, xty) [ body' ] with
+    | E.VMetaFun _ | E.VMetaPred _ -> E.data_view g.nctx xty
+    | E.VProp -> E.VSet (Mg.Num 2)
+    | v -> v) in
+  g.nctx.E.vars <- (key, (xty, xview, n)) :: g.nctx.E.vars;
+  if not (List.mem n g.lctx.L.used) then g.lctx.L.used <- n :: g.lctx.L.used;
+  g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars;
+  let plain = (match xview with
+    | E.VSubset (Mg.App (Mg.Cst "Power", cs)) -> { vty = xty; view = xview; lit = Mg.Var n; nat = Some (Mg.apps (Mg.Cst "hl_rep2") [ cs; Mg.Var n ]); mem = "H" ^ n; rel = ""; kind = KRep2 cs; hyp = "" }
+    | E.VSubset cs -> { vty = xty; view = xview; lit = Mg.Var n; nat = Some (Mg.apps (Mg.Cst "hl_rep") [ cs; Mg.Var n ]); mem = "H" ^ n; rel = ""; kind = KRep cs; hyp = "" }
+    | _ -> { vty = xty; view = xview; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) in
+  g.vars <- (key, plain) :: g.vars;
+  let cleanup () =
+    g.nctx.E.vars <- List.remove_assoc key g.nctx.E.vars;
+    g.lctx.L.vars <- List.remove_assoc key g.lctx.L.vars;
+    g.vars <- List.remove_assoc key g.vars;
+    E.release g.nctx n; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used in
+  (n, body', xview, cleanup)
+
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
   let nat, nview = E.elab_nat g.nctx t want in
@@ -760,6 +786,35 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
              end
            with e -> finish (); raise e) in
            finish (); result
+       | Lam (x, xty, body), (E.VSet _ | E.VSubset _) when args = [] ->
+           (* a lambda as data: a set-level function (extensionality) or a comprehension *)
+           let n, body', _, cleanup = open_lam g x xty body in
+           let ca = L.carrier g.lctx xty in
+           let result = (try
+             if type_of [] body' = bool_ty then begin
+               let lp = ltext g body' and np = ntext g body' in
+               let fwd = bridge g Fwd body' and bwd = bridge g Bwd body' in
+               (match nat with
+                | Mg.Sep _ -> (lit, nat, KRep ca, Printf.sprintf "(hl_rep_chip_sep %s (fun %s:set => %s) (fun %s:set => %s) (fun %s H%s => (iffI (%s) (%s) %s %s)))" (ppp ca) n lp n np n n lp np fwd bwd)
+                | _ -> unsupported "rel: lambda as data (native %s)" (pp nat))
+             end else begin
+               let lb, nb, kb, pb = rel g body' (Some (E.VSet (L.carrier g.lctx (type_of [] body')))) in
+               if kb <> KEq then unsupported "rel: lambda body relation";
+               (lit, nat, KEq, Printf.sprintf "(lam_ext_in %s (fun %s:set => %s) (fun %s:set => %s) (fun %s H%s => %s))" (ppp ca) n (pp lb) n (pp nb) n n (if pb = "" then refl else pb))
+             end
+           with e -> cleanup (); raise e) in
+           cleanup (); result
+       | Lam (x, xty, body), E.VSet _ when List.length args = 1 ->
+           (* an applied lambda: beta on the literal side, the elaborator has reduced the native side *)
+           let a = List.hd args in
+           let red = beta (Lam (x, xty, body)) a in
+           let l2, n2, k2, p2 = rel g red (Some nview) in
+           if k2 <> KEq then unsupported "rel: applied lambda relation";
+           let ca = L.carrier g.lctx xty in
+           (match lit with
+            | Mg.App (Mg.LamIn (xn, _, lb), la) ->
+                (lit, nat, KEq, Printf.sprintf "(eq_trans_i %s %s %s (beta %s (fun %s:set => %s) %s %s) %s)" (ppp lit) (ppp l2) (ppp n2) (ppp ca) xn (pp lb) (ppp la) (typ g a) (if p2 = "" then refl else p2))
+            | _ -> unsupported "rel: applied lambda shape")
        | Lam _, _ -> unsupported "rel: lambda"
        | _ -> unsupported "rel: head")
 

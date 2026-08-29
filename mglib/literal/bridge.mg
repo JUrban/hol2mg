@@ -876,3 +876,21 @@ let S x. assume Hx H. witness x. apply andI.
 - exact Hx.
 - exact H.
 Qed.
+
+// ---- lambdas as data: extensionality of set-level lambdas and comprehensions ----
+Theorem lam_ext_in : forall A:set, forall F G:set -> set, (forall x :e A, F x = G x) -> (fun x :e A => F x) = (fun x :e A => G x).
+let A F G. assume H.
+claim HF: (fun x :e A => F x) :e Pi_ x :e A, {F x}. { exact (lam_Pi A (fun x => {F x}) F (fun x Hx => SingI (F x))). }
+claim HG: (fun x :e A => G x) :e Pi_ x :e A, {F x}. { exact (lam_Pi A (fun x => {F x}) G (fun x Hx => (H x Hx) (fun hl__u hl__v => hl__u :e {F x}) (SingI (F x)))). }
+exact (Pi_ext A (fun x => {F x}) (fun x :e A => F x) HF (fun x :e A => G x) HG (fun x Hx => eq_trans_i ((fun x :e A => F x) x) (F x) ((fun x :e A => G x) x) (beta A F x Hx) (eq_trans_i (F x) (G x) ((fun x :e A => G x) x) (H x Hx) (eq_sym_i ((fun x :e A => G x) x) (G x) (beta A G x Hx))))).
+Qed.
+
+Theorem hl_rep_chip_sep : forall A:set, forall P Q:set -> prop, (forall x :e A, P x <-> Q x) -> hl_rep A (hl_chip A P) = {x :e A | Q x}.
+let A P Q. assume H. apply set_ext.
+- let x. assume Hx.
+  claim HxA: x :e A. { exact (hl_rep_Subq A (hl_chip A P) x Hx). }
+  claim HP: P x. { apply (hl_chip_iff A P x HxA). assume H1 _. apply H1. apply (hl_rep_iff A (hl_chip A P) x HxA). assume _ H2. exact (H2 Hx). }
+  apply (SepI A Q x HxA). apply (H x HxA). assume H3 _. exact (H3 HP).
+- let x. assume Hx. apply (SepE A Q x Hx). assume HxA HQ.
+  apply (hl_rep_iff A (hl_chip A P) x HxA). assume H1 _. apply H1. apply (hl_chip_iff A P x HxA). assume _ H2. apply H2. apply (H x HxA). assume _ H3. exact (H3 HQ).
+Qed.

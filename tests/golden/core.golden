@@ -113,7 +113,8 @@ source: !f:A->B. !y:A. (\x:A. f x) y = f y
 status: generalization_required
 statement: forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e A, (fun x :e A => f x) y = f y
-cert_status: bridge_unsupported
+bridge: BETA_THM_bridge
+cert_status: native_certified
 
 ### ABS_SIMP   [logic: connectives, quantifiers, equality, extensionality]
 hash: 60035b0f6aaa54e21e40375b2cfc2b87
@@ -121,7 +122,8 @@ source: !t1:A. !t2:B. (\x:B. t1) t2 = t1
 status: generalization_required
 statement: forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall t1 :e A, forall t2 :e B, (fun x :e B => t1) t2 = t1
-cert_status: bridge_unsupported
+bridge: ABS_SIMP_bridge
+cert_status: native_certified
 
 ### EQ_EXT   [logic: connectives, quantifiers, equality, extensionality]
 hash: 74f6b9b467171dc186a2df9978244b58
@@ -462,7 +464,8 @@ source: !P:(A->B->C)->bool. (!f:A->B->C. P f) <=> (!f:A#B->C. P (\a:A. \b:B. f (
 status: transport_required
 statement: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e C :^: B :^: A, P f) <-> forall f:set -> set, (forall x :e A :*: B, f x :e C) -> P (fun a :e A => fun b :e B => f (a,b))
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: B :^: A), (forall f :e C :^: B :^: A, P f = 1) <-> forall f :e C :^: (A :*: B), P (fun a :e A => fun b :e B => f (hl_pair A B a b)) = 1
-cert_status: bridge_unsupported
+bridge: FORALL_UNCURRY_bridge
+cert_status: native_certified
 
 ### FORALL_PAIRED_THM   [products]
 hash: 4ec8958129e197fc37c7dc4ea0662917

@@ -54,13 +54,23 @@ exact (EQ_TRANS_bridge hlt_EQ_TRANS).
 Admitted.
 
 // HOL Light: theorems.ml:47 / BETA_THM   (hash md5:014410de6c67ffec5a76c8993197b426)
-// not bridged: 
+Theorem hlt_BETA_THM : forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e A, (fun x :e A => f x) y = f y.
+Admitted.
+Theorem BETA_THM_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e A, (fun x :e A => f x) y = f y) -> (forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y).
+exact (fun H__top A B => (xm (B = Empty) (forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall f:set -> set, (forall x :e A, f x :e hl__u) -> forall y :e A, f y = f y) (fun f => (fun H : forall x :e A, f x :e Empty => (fun y Hy => (fun q H => H)))))) (fun HBne => (xm (A = Empty) (forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall f:set -> set, (forall x :e hl__u, f x :e B) -> forall y :e hl__u, f y = f y) (fun f => (fun H : forall x :e Empty, f x :e B => (forall_in_Empty (fun y => f y = f y)))))) (fun HAne => (imp_forall_fun (A) (B) (fun f => forall y :e A, (fun x :e A => f x) y = f y) (fun f => forall y :e A, f y = f y) (fun f Hfc => (imp_forall_in (A) (fun y => (fun x :e A => hl_lam A f x) y = hl_lam A f y) (fun y => f y = f y) (fun y Hy => (imp_eq ((fun x :e A => hl_lam A f x) y) (f y) (hl_lam A f y) (f y) (eq_trans_i ((fun x :e A => hl_lam A f x) y) (hl_lam A f y) (f y) (beta (A) (fun x:set => hl_lam A f x) (y) Hy) ((hl_lam_ap (A) f) (y) Hy)) ((hl_lam_ap (A) f) (y) Hy)))))) (H__top A B HAne HBne)))))).
+Qed.
 Theorem BETA_THM : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y.
+exact (BETA_THM_bridge hlt_BETA_THM).
 Admitted.
 
 // HOL Light: theorems.ml:51 / ABS_SIMP   (hash md5:60035b0f6aaa54e21e40375b2cfc2b87)
-// not bridged: 
+Theorem hlt_ABS_SIMP : forall A B:set, A <> Empty -> B <> Empty -> forall t1 :e A, forall t2 :e B, (fun x :e B => t1) t2 = t1.
+Admitted.
+Theorem ABS_SIMP_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall t1 :e A, forall t2 :e B, (fun x :e B => t1) t2 = t1) -> (forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1).
+exact (fun H__top A B => (xm (B = Empty) (forall t1 :e A, forall t2 :e B, t1 = t1) (fun HBe => ((eq_sym_i B Empty HBe) (fun hl__u hl__v => forall t1 :e A, forall t2 :e hl__u, t1 = t1) (fun t1 Ht1 => (forall_in_Empty (fun t2 => t1 = t1))))) (fun HBne => (xm (A = Empty) (forall t1 :e A, forall t2 :e B, t1 = t1) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall t1 :e hl__u, forall t2 :e B, t1 = t1) (forall_in_Empty (fun t1 => forall t2 :e B, t1 = t1)))) (fun HAne => (imp_forall_in (A) (fun t1 => forall t2 :e B, (fun x :e B => t1) t2 = t1) (fun t1 => forall t2 :e B, t1 = t1) (fun t1 Ht1 => (imp_forall_in (B) (fun t2 => (fun x :e B => t1) t2 = t1) (fun t2 => t1 = t1) (fun t2 Ht2 => (imp_eq ((fun x :e B => t1) t2) (t1) (t1) (t1) (eq_trans_i ((fun x :e B => t1) t2) (t1) (t1) (beta (B) (fun x:set => t1) (t2) Ht2) (fun q H => H)) (fun q H => H)))))) (H__top A B HAne HBne)))))).
+Qed.
 Theorem ABS_SIMP : forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1.
+exact (ABS_SIMP_bridge hlt_ABS_SIMP).
 Admitted.
 
 // HOL Light: theorems.ml:59 / CONJ_ASSOC   (hash md5:68b444512171831dd562fcbd5b2c97dc)

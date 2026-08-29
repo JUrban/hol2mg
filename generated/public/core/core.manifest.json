@@ -130,9 +130,9 @@
    "source": "!t1:A. !t2:B. (\\x:B. t1) t2 = t1",
    "statement": "forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall t1 :e A, forall t2 :e B, (fun x :e B => t1) t2 = t1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ABS_SIMP_bridge"
   },
   {
    "name": "ADD",
@@ -2843,9 +2843,9 @@
    "source": "!f:A->B. !y:A. (\\x:A. f x) y = f y",
    "statement": "forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall y :e A, (fun x :e A => f x) y = f y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "BETA_THM_bridge"
   },
   {
    "name": "BIJ",
@@ -13056,9 +13056,9 @@
    "source": "!P:(A->B#C)->bool. (?f:A->B#C. P f) <=> (?g:A->B. ?h:A->C. P (\\a:A. g a , h a))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e (B :*: C) :^: A, P f) <-> exists g:set -> set, (forall x :e A, g x :e B) /\\ exists h:set -> set, (forall x :e A, h x :e C) /\\ P (fun a :e A => (g a,h a))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: ((B :*: C) :^: A), (exists f :e (B :*: C) :^: A, P f = 1) <-> exists g :e B :^: A, exists h :e C :^: A, P (fun a :e A => hl_pair B C (g a) (h a)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_PAIR_FUN_THM_bridge"
   },
   {
    "name": "EXISTS_PAIR_THM",
@@ -13363,9 +13363,9 @@
    "source": "!P:(A->B->C)->bool. (?f:A->B->C. P f) <=> (?f:B->A->C. P (\\a:A. \\b:B. f b a))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set -> set, (forall x :e B, forall y :e A, f x y :e C) /\\ P (fun a :e A => fun b :e B => f b a)",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: B :^: A), (exists f :e C :^: B :^: A, P f = 1) <-> exists f :e C :^: A :^: B, P (fun a :e A => fun b :e B => f b a) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_SWAP_FUN_THM_bridge"
   },
   {
    "name": "EXISTS_THM",
@@ -13452,9 +13452,9 @@
    "source": "!P:(A->B->C)->bool. (?f:A->B->C. P f) <=> (?f:A#B->C. P (\\a:A. \\b:B. f (a , b)))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists f :e C :^: B :^: A, P f) <-> exists f:set -> set, (forall x :e A :*: B, f x :e C) /\\ P (fun a :e A => fun b :e B => f (a,b))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: B :^: A), (exists f :e C :^: B :^: A, P f = 1) <-> exists f :e C :^: (A :*: B), P (fun a :e A => fun b :e B => f (hl_pair A B a b)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_UNCURRY_bridge"
   },
   {
    "name": "EXISTS_UNIQUE",
@@ -18689,9 +18689,9 @@
    "source": "!P:(A->B#C)->bool. (!f:A->B#C. P f) <=> (!g:A->B. !h:A->C. P (\\a:A. g a , h a))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e (B :*: C) :^: A, P f) <-> forall g:set -> set, (forall x :e A, g x :e B) -> forall h:set -> set, (forall x :e A, h x :e C) -> P (fun a :e A => (g a,h a))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: ((B :*: C) :^: A), (forall f :e (B :*: C) :^: A, P f = 1) <-> forall g :e B :^: A, forall h :e C :^: A, P (fun a :e A => hl_pair B C (g a) (h a)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_PAIR_FUN_THM_bridge"
   },
   {
    "name": "FORALL_PAIR_THM",
@@ -19006,9 +19006,9 @@
    "source": "!P:(A->B->C)->bool. (!f:A->B->C. P f) <=> (!f:A#B->C. P (\\a:A. \\b:B. f (a , b)))",
    "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall f :e C :^: B :^: A, P f) <-> forall f:set -> set, (forall x :e A :*: B, f x :e C) -> P (fun a :e A => fun b :e B => f (a,b))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: (C :^: B :^: A), (forall f :e C :^: B :^: A, P f = 1) <-> forall f :e C :^: (A :*: B), P (fun a :e A => fun b :e B => f (hl_pair A B a b)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "FORALL_UNCURRY_bridge"
   },
   {
    "name": "FORALL_UNION_OF",
@@ -53793,7 +53793,7 @@
    "statement": "forall P:set -> prop, P (fun x :e R => x) /\\ ((forall c :e R, P (fun x :e R => c)) /\\ ((forall p q :e R :^: R, P p /\\ P q -> P (fun x :e R => p x + q x)) /\\ (forall p q :e R :^: R, P p /\\ P q -> P (fun x :e R => p x * q x)))) -> forall p :e R :^: R, polynomial_function_R (fun x:set => p x) -> P p",
    "literal": "forall P :e 2 :^: (R :^: R), P (fun x :e R => x) = 1 /\\ ((forall c :e R, P (fun x :e R => c) = 1) /\\ ((forall p q :e R :^: R, P p = 1 /\\ P q = 1 -> P (fun x :e R => hl_real_add (p x) (q x)) = 1) /\\ (forall p q :e R :^: R, P p = 1 /\\ P q = 1 -> P (fun x :e R => hl_real_mul (p x) (q x)) = 1))) -> forall p :e R :^: R, hl_polynomial_function p = 1 -> P p = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1931
+  "native_certified": 1938
  }
 }
