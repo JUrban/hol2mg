@@ -183,7 +183,8 @@ source: !P:A->B->bool. (!x:A. ?y:B. P x y) <=> (?y:A->B. !x:A. P x (y x))
 status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, exists y :e B, P x y = 1) <-> exists y :e B :^: A, forall x :e A, P x (y x) = 1
-cert_status: bridge_unsupported
+bridge: SKOLEM_THM_bridge
+cert_status: native_certified
 
 ### UNIQUE_SKOLEM_ALT   [logic: connectives, quantifiers, equality, extensionality]
 hash: a0be667b32ad906a5f23194afc353c19
@@ -407,7 +408,8 @@ source: !P:A#B->bool. (!p:A#B. P p) <=> (!p1:A. !p2:B. P (p1 , p2))
 status: generalization_required
 statement: forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :*: B), (forall p :e A :*: B, P p = 1) <-> forall p1 :e A, forall p2 :e B, P (hl_pair A B p1 p2) = 1
-cert_status: bridge_unsupported
+bridge: FORALL_PAIR_THM_bridge
+cert_status: native_certified
 
 ### EXISTS_PAIR_THM   [products]
 hash: 64b789e52ff2b13a976b5610389dc69b
@@ -415,7 +417,8 @@ source: !P:A#B->bool. (?p:A#B. P p) <=> (?p1:A. ?p2:B. P (p1 , p2))
 status: generalization_required
 statement: forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :*: B), (exists p :e A :*: B, P p = 1) <-> exists p1 :e A, exists p2 :e B, P (hl_pair A B p1 p2) = 1
-cert_status: bridge_unsupported
+bridge: EXISTS_PAIR_THM_bridge
+cert_status: native_certified
 
 ### LAMBDA_PAIR_THM   [products]
 hash: 5cd80d8f0fe05eb8b4cf070c629deed9
@@ -488,7 +491,8 @@ source: !P:num->bool. P 0 /\ (!n:num. P n ==> P (SUC n)) ==> (!n:num. P n)
 status: transport_required
 statement: forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n
 literal: forall P :e 2 :^: omega, P (hl_NUMERAL hl_zero) = 1 /\ (forall n :e omega, P n = 1 -> P (hl_SUC n) = 1) -> forall n :e omega, P n = 1
-cert_status: bridge_unsupported
+bridge: num_INDUCTION_bridge
+cert_status: native_certified
 
 ### num_Axiom   [naturals: constructors, induction, arithmetic, order, division]
 hash: 22351265077b01108064d138b673a797
@@ -737,7 +741,8 @@ source: P (PRE n) <=> (!m:num. n = SUC m \/ m = 0 /\ n = 0 ==> P m)
 status: transport_required
 statement: forall P:set -> prop, forall n :e omega, P (nat_pred n) <-> forall m :e omega, n = ordsucc m \/ m = 0 /\ n = 0 -> P m
 literal: forall P :e 2 :^: omega, forall n :e omega, P (hl_PRE n) = 1 <-> forall m :e omega, n = hl_SUC m \/ m = hl_NUMERAL hl_zero /\ n = hl_NUMERAL hl_zero -> P m = 1
-cert_status: bridge_unsupported
+bridge: PRE_ELIM_THM_bridge
+cert_status: native_certified
 
 ### WLOG_LE   [naturals: constructors, induction, arithmetic, order, division]
 hash: 22c2c6603c7056b533e4c8dd2b677170
@@ -807,7 +812,8 @@ source: WF << <=> ~(?s:num->A. !n:num. << (s (SUC n)) (s n))
 status: transport_required
 statement: forall A:set, A <> Empty -> forall lt:set -> set -> prop, (forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ lt y x) <-> ~ exists s:set -> set, (forall x :e omega, s x :e A) /\ forall n :e omega, lt (s (ordsucc n)) (s n)
 literal: forall A:set, A <> Empty -> forall lt :e 2 :^: A :^: A, hl_WF A lt = 1 <-> ~ exists s :e A :^: omega, forall n :e omega, lt (s (hl_SUC n)) (s n) = 1
-cert_status: bridge_unsupported
+bridge: WF_DCHAIN_bridge
+cert_status: native_certified
 
 ### WF_MEASURE   [well-founded relations]
 hash: 5d1b43ae387330061cca4c569f00754a
@@ -1269,7 +1275,8 @@ source: !f:A->B. !s:A->bool. (!y:B. y IN IMAGE f s ==> P y) <=> (!x:A. x IN s ==
 status: generalization_required
 statement: forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall y :e B, y :e {f x | x :e s} -> P y) <-> forall x :e A, x :e s -> P (f x)
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B, forall f :e B :^: A, forall s :e 2 :^: A, (forall y :e B, hl_IN B y (hl_IMAGE A B f s) = 1 -> P y = 1) <-> forall x :e A, hl_IN A x s = 1 -> P (f x) = 1
-cert_status: bridge_unsupported
+bridge: FORALL_IN_IMAGE_bridge
+cert_status: native_certified
 
 ### IMAGE_CLAUSES   [sets: membership, algebra, comprehensions, images, families]
 hash: d971eba44eb36baa8624acc2c96acb14
@@ -1641,7 +1648,8 @@ source: !s:A->bool. !f:A->num. !b:num. FINITE s /\ (!x:A. x IN s ==> f x <= b) =
 status: transport_required
 statement: forall A:set, A <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> forall b :e omega, finite s /\ (forall x :e A, x :e s -> f x <= b) -> finsum s f <= finite_cardinality s * b
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, forall f :e omega :^: A, forall b :e omega, hl_FINITE A s = 1 /\ (forall x :e A, hl_IN A x s = 1 -> hl_le (f x) b = 1) -> hl_le (hl_nsum A s f) (hl_mul (hl_CARD A s) b) = 1
-cert_status: bridge_unsupported
+bridge: NSUM_BOUND_bridge
+cert_status: native_certified
 
 ### CART_EQ   [Cartesian powers and finite index types]
 hash: 12d2a2739958dbd8cafb139a4bfa94c3
@@ -1988,7 +1996,8 @@ source: !P:int->bool. (!n:num. P (int_of_num n)) <=> (!i:int. int_of_num 0 <= i 
 status: transport_required
 statement: forall P:set -> prop, (forall n :e omega, P n) <-> forall i :e int, 0 <= i -> P i
 literal: forall P :e 2 :^: hl_ty_int, (forall n :e omega, P (hl_int_of_num n) = 1) <-> forall i :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) i = 1 -> P i = 1
-cert_status: bridge_unsupported
+bridge: INT_FORALL_POS_bridge
+cert_status: native_certified
 
 ### INT_ARCH   [integers]
 hash: 351ee14a8335eb82d4a884a47e45ad53

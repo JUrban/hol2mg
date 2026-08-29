@@ -61,6 +61,23 @@ type genv = {
 let side_conditions : (string * string list) list =
   [ ("CARD", [ "finite (hl_rep ?A ?1)" ]) ]
 
+(* the template parser only knows the God1 signature: literal-layer constants (hl_...) come back
+   as variables; make them constants so that structural matching against generated terms works *)
+let rec cstify (t : Mg.tm) : Mg.tm =
+  match t with
+  | Mg.Var v when String.length v > 3 && String.sub v 0 3 = "hl_" -> Mg.Cst v
+  | Mg.App (a, b) -> Mg.App (cstify a, cstify b)
+  | Mg.Lam (x, ty, b) -> Mg.Lam (x, ty, cstify b)
+  | Mg.LamIn (x, a, b) -> Mg.LamIn (x, cstify a, cstify b)
+  | Mg.All (x, ty, b) -> Mg.All (x, ty, cstify b)
+  | Mg.AllIn (x, a, b) -> Mg.AllIn (x, cstify a, cstify b)
+  | Mg.Ex (x, ty, b) -> Mg.Ex (x, ty, cstify b)
+  | Mg.ExIn (x, a, b) -> Mg.ExIn (x, cstify a, cstify b)
+  | Mg.Imp (a, b) -> Mg.Imp (cstify a, cstify b)
+  | Mg.Sep (x, a, p) -> Mg.Sep (x, cstify a, cstify p)
+  | Mg.If (c, a, b) -> Mg.If (cstify c, cstify a, cstify b)
+  | _ -> t
+
 let paren s = "(" ^ s ^ ")"
 let pp t = Mg.to_string t
 let ppp t = paren (Mg.to_string t)
@@ -229,7 +246,7 @@ let compat_statement (an : L.analysis) (e : R.const_entry) : Mg.tm option =
       | Some body ->
           let lit_sub = List.mapi (fun i (l, _, _, _) -> (string_of_int (i + 1), Mg.Var l)) args @ List.map (fun (a, n) -> (a, Mg.Var n)) tv_names in
           let sides = (match List.assoc_opt e.R.c_hol side_conditions with
-            | Some l -> List.map (fun t -> Mg.normalize (Mg.inst lit_sub (Mg.parse_template t))) l
+            | Some l -> List.map (fun t -> Mg.normalize (Mg.inst lit_sub (cstify (Mg.parse_template t)))) l
             | None -> []) in
           let body = List.fold_right (fun sc acc -> Mg.Imp (sc, acc)) sides body in
           let body = List.fold_right (fun (l, ca, k, _) acc ->
@@ -368,11 +385,16 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   (lit, nat, KEq, leibniz (if px = "" then refl else px) (pp ctx) pf0)
                 end
             | KPWP a, [ x ] ->
-                let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
+                let lx, nx, kx, px = rel g x (Some (E.VSet a)) in
                 if kx <> KEq then unsupported "rel: metapred argument";
-                if lx <> nx then unsupported "rel: metapred applied to non-identical argument";
-                if v.rel = "" then (lit, nat, KIff, Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)))
-                else (lit, nat, KIff, Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x))
+                let pf0 = if v.rel = "" then Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)) else Printf.sprintf "(%s %s %s)" v.rel (ppp lx) (typ g x) in
+                if lx = nx then (lit, nat, KIff, pf0)
+                else begin
+                  (* rewrite the argument lx -> nx on the native side only *)
+                  let head = (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                  let ctx = L.mg_iff (L.mg_eq lit L.one) (Mg.App (head, Mg.Var "hl__u")) in
+                  (lit, nat, KIff, leibniz (if px = "" then refl else px) (pp ctx) pf0)
+                end
             | KPW2 (a, b), [ x; y ] ->
                 let lx, nx, kx, px = rel g x (Some (E.VSet a)) and ly, ny, ky, py = rel g y (Some (E.VSet b)) in
                 if kx <> KEq || ky <> KEq then unsupported "rel: metafun2 argument";
@@ -382,11 +404,13 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_eq lit (Mg.apps head [ nx; Mg.Var "hl__u" ]))) pf1 in
                 (lit, nat, KEq, pf2)
             | KPWP2 (a, b), [ x; y ] ->
-                let lx, nx, kx, _ = rel g x (Some (E.VSet a)) and ly, ny, ky, _ = rel g y (Some (E.VSet b)) in
+                let lx, nx, kx, px = rel g x (Some (E.VSet a)) and ly, ny, ky, py = rel g y (Some (E.VSet b)) in
                 if kx <> KEq || ky <> KEq then unsupported "rel: metapred2 argument";
-                if lx <> nx || ly <> ny then unsupported "rel: metapred2 applied to non-identical arguments";
-                if v.rel = "" then (lit, nat, KIff, Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)))
-                else (lit, nat, KIff, Printf.sprintf "(%s %s %s %s %s)" v.rel (ppp lx) (typ g x) (ppp ly) (typ g y))
+                let pf0 = if v.rel = "" then Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit L.one)) else Printf.sprintf "(%s %s %s %s %s)" v.rel (ppp lx) (typ g x) (ppp ly) (typ g y) in
+                let head = (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf1 = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ Mg.Var "hl__u"; ly ]))) pf0 in
+                let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.apps head [ nx; Mg.Var "hl__u" ]))) pf1 in
+                (lit, nat, KIff, pf2)
             | KRep a, [ x ] ->
                 (* subset variable applied: native x :e s; literal S x = 1 *)
                 let lx, nx, kx, _ = rel g x (Some (E.VSet a)) in
@@ -574,6 +598,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let sub = L.match_ty generic cty [] in
   let inst = List.map (fun a -> (a, L.carrier g.lctx (List.assoc a sub))) tvs in
   let tsub = ref (List.map (fun (a, ca) -> (a, ca)) inst) in
+  let lsub = ref (List.map (fun (a, ca) -> (a, ca)) inst) in   (* literal arguments, for side conditions *)
   let rewrites = ref [] in     (* (literal subterm, native subterm, proof) to apply to the RHS *)
   List.iteri (fun i (role, a) ->
     let aty = List.nth doms i in
@@ -583,6 +608,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         if ka <> KEq then unsupported "rel_mapped: set argument relation";
         parts := typ g a :: ppp la :: !parts;
         tsub := (string_of_int (i + 1), la) :: !tsub;
+        lsub := (string_of_int (i + 1), la) :: !lsub;
         if la <> na then rewrites := (la, na, pa) :: !rewrites
     | R.RSubset ->
         let ca = (match aty with TyApp ("fun", [ d; _ ]) -> L.carrier g.lctx d | _ -> unsupported "subset role") in
@@ -590,6 +616,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         (match ka with KRep _ -> () | _ -> unsupported "rel_mapped: subset argument relation");
         parts := typ g a :: ppp la :: !parts;
         tsub := (string_of_int (i + 1), Mg.apps (Mg.Cst "hl_rep") [ ca; la ]) :: !tsub;
+        lsub := (string_of_int (i + 1), la) :: !lsub;
         let repl = Mg.apps (Mg.Cst "hl_rep") [ ca; la ] in
         if repl <> na then rewrites := (repl, na, (if pa = "" then refl else pa)) :: !rewrites
     | R.RProp ->
@@ -645,11 +672,12 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     | Some scs ->
         let lit_sub = List.mapi (fun i (_, _, _, _) -> ()) [] in ignore lit_sub;
         List.fold_left (fun pf sc_t ->
-          let sc = Mg.normalize (Mg.inst !tsub (Mg.parse_template sc_t)) in
+          let sc = Mg.normalize (Mg.inst !lsub (cstify (Mg.parse_template sc_t))) in
           (* native form after the pending rewrites *)
           let sc_nat = List.fold_left (fun t (l, n, _) -> replace_tm l n t) sc (List.rev !rewrites) in
           (match List.assoc_opt sc_nat g.hyps with
-           | None -> unsupported "side condition %s not available from hypotheses" (pp sc_nat)
+           | None -> unsupported "side condition %s not available from hypotheses [hyps: %s]" (pp sc_nat)
+                       (String.concat ", " (List.map (fun (h, _) -> pp h) g.hyps))
            | Some h ->
                (* transport h : sc_nat back to sc: reverse rewrites one by one *)
                let h' = List.fold_left (fun (cur_prop, h) (l, n, pe) ->
@@ -729,19 +757,23 @@ and bridge g (dir : dir) (t : tm) : string =
          | Mg.App (Mg.App (Mg.Cst "and", p), q) -> conjuncts q (Printf.sprintf "(andER %s %s %s)" (ppp p) (ppp q) h) (conjuncts p (Printf.sprintf "(andEL %s %s %s)" (ppp p) (ppp q) h) acc)
          | _ -> (t, h) :: acc) in
       let saved = g.hyps in
+      (* hypothesis names are unique per implication: nested premises must not shadow outer ones
+         (side conditions refer to hypotheses by name) *)
+      let hn = Printf.sprintf "H__hyp%d" g.counter in
+      g.counter <- g.counter + 1;
       (match dir with
        | Fwd ->
            let pa = bridge g Bwd a in
-           g.hyps <- conjuncts na_t "H__hyp" g.hyps;
+           g.hyps <- conjuncts na_t hn g.hyps;
            let pb = (try bridge g Fwd b with e -> g.hyps <- saved; raise e) in
            g.hyps <- saved;
-           Printf.sprintf "(fun H__L : ((%s) -> (%s)) => fun H__hyp : (%s) => %s (H__L (%s H__hyp)))" la lb na pb pa
+           Printf.sprintf "(fun H__L : ((%s) -> (%s)) => fun %s : (%s) => %s (H__L (%s %s)))" la lb hn na pb pa hn
        | Bwd ->
            let pa = bridge g Fwd a in
-           g.hyps <- conjuncts na_t (Printf.sprintf "(%s H__hyp)" pa) g.hyps;
+           g.hyps <- conjuncts na_t (Printf.sprintf "(%s %s)" pa hn) g.hyps;
            let pb = (try bridge g Bwd b with e -> g.hyps <- saved; raise e) in
            g.hyps <- saved;
-           Printf.sprintf "(fun H__N : ((%s) -> (%s)) => fun H__hyp : (%s) => %s (H__N (%s H__hyp)))" na nb la pb pa)
+           Printf.sprintf "(fun H__N : ((%s) -> (%s)) => fun %s : (%s) => %s (H__N (%s %s)))" na nb hn la pb pa hn)
   | Const ("=", cty), [ a; b ] ->
       let ty, _ = dest_fun_ty cty in
       if ty = bool_ty then begin
