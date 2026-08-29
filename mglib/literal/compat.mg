@@ -7178,3 +7178,11 @@ apply set_ext.
 - let w. assume Hw. apply (ReplSepE_impred A (fun x => True) (fun x => F' x) w Hw). let x. assume Hx _ Hwx. exact ((eq_sym_i w (F' x) Hwx) (fun hl__u hl__v => hl__u :e {F' x | x :e A}) (ReplI A (fun x => F' x) x Hx)).
 - let w. assume Hw. apply (ReplE_impred A (fun x => F' x) w Hw). let x. assume Hx Hwx. exact ((eq_sym_i w (F' x) Hwx) (fun hl__u hl__v => hl__u :e {F' x | x :e A, True}) (ReplSepI A (fun x => True) (fun x => F' x) x Hx (fun p H => H))).
 Qed.
+
+// ---- compat: INL, INR ----
+Theorem hl_INL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, hl_INL A B l1 = Inj0 l1.
+let A B. assume HA HB. let l1. assume H1. exact (beta A (fun x => Inj0 x) l1 H1).
+Qed.
+Theorem hl_INR_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e B, hl_INR B A l1 = Inj1 l1.
+let B A. assume HB HA. let l1. assume H1. exact (beta B (fun y => Inj1 y) l1 H1).
+Qed.

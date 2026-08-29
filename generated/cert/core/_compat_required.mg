@@ -190,10 +190,6 @@ Admitted.
 Theorem hl_UNCURRY_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e A :*: B, hl_UNCURRY A B C l1 l2 = f1 (l2 0) (l2 1).
 Admitted.
 
-// INL : A->(A,B)sum (not in compat.mg)
-Theorem hl_INL_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, hl_INL A B l1 = Inj0 l1.
-Admitted.
-
 // _GUARDED_PATTERN : bool->bool->bool->bool (not in compat.mg)
 Theorem hl__GUARDED_PATTERN_compat : hl__GUARDED_PATTERN = Empty.
 Admitted.
@@ -276,9 +272,5 @@ Admitted.
 
 // GEQ : A->A->bool (not in compat.mg)
 Theorem hl_GEQ_compat : forall A:set, A <> Empty -> hl_GEQ A = Empty.
-Admitted.
-
-// INR : B->(A,B)sum (not in compat.mg)
-Theorem hl_INR_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e B, hl_INR B A l1 = Inj1 l1.
 Admitted.
 

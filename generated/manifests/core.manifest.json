@@ -87395,10 +87395,10 @@
    "source": "!P:(A,B)sum->bool. (!a:A. P (INL a)) /\\ (!a:B. P (INR a)) ==> (!x:(A,B)sum. P x)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, (forall a :e A, P (Inj0 a)) /\\ (forall a :e B, P (Inj1 a)) -> forall x :e A :+: B, P x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :+: B), (forall a :e A, P (hl_INL A B a) = 1) /\\ (forall a :e B, P (hl_INR B A a) = 1) -> forall x :e A :+: B, P x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INL_compat (not in compat.mg)",
-   "bridge": "",
-   "literal_proved": false
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "sum_INDUCT_bridge",
+   "literal_proved": true
   },
   {
    "name": "sum_RECURSION",
@@ -87423,10 +87423,10 @@
    "source": "!INL':A->Z. !INR':B->Z. ?fn:(A,B)sum->Z. (!a:A. fn (INL a) = INL' a) /\\ (!a:B. fn (INR a) = INR' a)",
    "statement": "forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL':set -> set, (forall x :e A, INL' x :e Z) -> forall INR':set -> set, (forall x :e B, INR' x :e Z) -> exists fn:set -> set, (forall x :e A :+: B, fn x :e Z) /\\ ((forall a :e A, fn (Inj0 a) = INL' a) /\\ forall a :e B, fn (Inj1 a) = INR' a)",
    "literal": "forall A B Z:set, A <> Empty -> B <> Empty -> Z <> Empty -> forall INL' :e Z :^: A, forall INR' :e Z :^: B, exists fn :e Z :^: (A :+: B), (forall a :e A, fn (hl_INL A B a) = INL' a) /\\ forall a :e B, fn (hl_INR B A a) = INR' a",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_INL_compat (not in compat.mg)",
-   "bridge": "",
-   "literal_proved": false
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "sum_RECURSION_bridge",
+   "literal_proved": true
   },
   {
    "name": "sup_thm",
@@ -87891,7 +87891,7 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2415,
-  "native_proved": 36
+  "native_certified": 2417,
+  "native_proved": 38
  }
 }
