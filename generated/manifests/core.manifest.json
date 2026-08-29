@@ -5481,7 +5481,7 @@
    "var_views": {},
    "error": "",
    "source": "!k:K->bool. !x:K->A. cartesian_product k (\\i:K. x i INSERT EMPTY) = RESTRICTION k x INSERT EMPTY",
-   "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x :e K, x x :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => True)}",
+   "statement": "forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => True)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall x :e A :^: K, hl_cartesian_product K A k (fun i :e K => hl_INSERT A (x i) (hl_EMPTY A)) = hl_INSERT (A :^: K) (hl_RESTRICTION K A k x) (hl_EMPTY (A :^: K))",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
@@ -17260,7 +17260,7 @@
    "statement": "forall A B:set, B <> Empty -> forall s c= A, forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, finite {x :e s | (if x = a then f x else neutral_of B op) <> neutral_of B op}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall op :e B :^: B :^: B, forall f :e B :^: A, forall a :e A, hl_FINITE A (hl_support B A op (fun x :e A => hl_COND B (if x = a then 1 else 0) (f x) (hl_neutral B op)) s) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -22021,7 +22021,7 @@
    "statement": "forall A B:set, forall s c= A, forall c :e B, {c | x :e s} = if s = Empty then Empty else {c}",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall c :e B, hl_IMAGE A B (fun x :e A => c) s = hl_COND (2 :^: B) (if s = hl_EMPTY A then 1 else 0) (hl_EMPTY B) (hl_INSERT B c (hl_EMPTY B))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -22309,7 +22309,7 @@
    "statement": "forall A:set, forall s c= A, s = s",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (fun x :e A => x) s = s",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites Repl_identity",
    "bridge": ""
   },
   {
@@ -22707,7 +22707,7 @@
    "statement": "forall A K:set, A <> Empty -> forall k c= K, forall s :e Power A :^: K, forall i :e K, {x i | x :e {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}} = if {f :e A :^: K | (forall i :e k, f i :e s i) /\\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = Empty then Empty else if i :e k then s i else {choose_in A (fun x:set => True)}",
    "literal": "forall A K:set, A <> Empty -> K <> Empty -> forall k :e 2 :^: K, forall s :e 2 :^: A :^: K, forall i :e K, hl_IMAGE (A :^: K) A (fun x :e A :^: K => x i) (hl_cartesian_product K A k s) = hl_COND (2 :^: A) (if hl_cartesian_product K A k s = hl_EMPTY (A :^: K) then 1 else 0) (hl_EMPTY A) (hl_COND (2 :^: A) (hl_IN K i k) (s i) (hl_INSERT A (hl_ARB A) (hl_EMPTY A)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: compat_missing: hl_cartesian_product_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -38878,7 +38878,7 @@
    "var_views": {},
    "error": "",
    "source": "!op:C->C->C. monoidal op ==> (!s:A->bool. !t:A->B->bool. !x:A->B->C. FINITE s /\\ (!i:A. i IN s ==> FINITE (t i)) ==> iterate op s (\\i:A. iterate op (t i) (x i)) = iterate op (GSPEC (\\GEN%PVAR%243:A#B. ?i:A. ?j:B. SETSPEC GEN%PVAR%243 (i IN s /\\ j IN t i) (i , j))) (GABS (\\f:A#B->C. !i:A. !j:B. GEQ (f (i , j)) (x i j))))",
-   "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e C) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> iterate_op C op s (fun i:set => iterate_op C op (t i) (x i)) = iterate_op C op (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
+   "statement": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op:set -> set -> set, (forall x y :e C, op x y :e C) -> (forall x y :e C, op x y = op y x) /\\ (forall x y z :e C, op x (op y z) = op (op x y) z) /\\ (forall x :e C, op (neutral_of C op) x = x) -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e C) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> iterate_op C op s (fun i:set => iterate_op C op (t i) (x i)) = iterate_op C op (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall op :e C :^: C :^: C, hl_monoidal C op = 1 -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e C :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_iterate C A op s (fun i :e A => hl_iterate C B op (t i) (x i)) = hl_iterate C (A :*: B) op (hl_GSPEC (A :*: B) (fun GEN_PVAR_243 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_243 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (C :^: (A :*: B)) (fun f :e C :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ C (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
@@ -39005,7 +39005,7 @@
    "var_views": {},
    "error": "",
    "source": "!op:A->A->A. monoidal op ==> (!x:num->A. !m:num. !n:num. iterate op (.. m n) x = (if n < m then neutral op else iterate op (.. 0 (n - m)) (\\i:num. x (n - i))))",
-   "statement": "forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> forall x:set -> set, (forall x :e omega, x x :e A) -> forall m n :e omega, iterate_op A op {i :e omega | m <= i /\\ i <= n} x = if n < m then neutral_of A op else iterate_op A op {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
+   "statement": "forall A:set, A <> Empty -> forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> (forall x y :e A, op x y = op y x) /\\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\\ (forall x :e A, op (neutral_of A op) x = x) -> forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> forall m n :e omega, iterate_op A op {i :e omega | m <= i /\\ i <= n} x = if n < m then neutral_of A op else iterate_op A op {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
    "literal": "forall A:set, A <> Empty -> forall op :e A :^: A :^: A, hl_monoidal A op = 1 -> forall x :e A :^: omega, forall m n :e omega, hl_iterate A omega op (hl_numseg m n) x = hl_COND A (hl_lt n m) (hl_neutral A op) (hl_iterate A omega op (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n m)) (fun i :e omega => x (hl_sub n i)))",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_iterate_compat (not in compat.mg)",
@@ -45167,9 +45167,9 @@
    "source": "!f:A->num. !n:num. !s:A->bool. FINITE s ==> nsum s f MOD n = nsum s (\\i:A. f i MOD n) MOD n",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall n :e omega, forall s c= A, finite s -> mod_nat (finsum s f) n = mod_nat (finsum s (fun i:set => mod_nat (f i) n)) n",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall n :e omega, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_MOD (hl_nsum A s f) n = hl_MOD (hl_nsum A s (fun i :e A => hl_MOD (f i) n)) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_NSUM_MOD_bridge"
   },
   {
    "name": "MOD_NSUM_MOD_NUMSEG",
@@ -45196,9 +45196,9 @@
    "source": "!f:num->num. !a:num. !b:num. !n:num. nsum (.. a b) f MOD n = nsum (.. a b) (\\i:num. f i MOD n) MOD n",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e omega) -> forall a b n :e omega, mod_nat (finsum {i :e omega | a <= i /\\ i <= b} f) n = mod_nat (finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => mod_nat (f i) n)) n",
    "literal": "forall f :e omega :^: omega, forall a b n :e omega, hl_MOD (hl_nsum omega (hl_numseg a b) f) n = hl_MOD (hl_nsum omega (hl_numseg a b) (fun i :e omega => hl_MOD (f i) n)) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "MOD_NSUM_MOD_NUMSEG_bridge"
   },
   {
    "name": "MOD_REFL",
@@ -48476,9 +48476,9 @@
    "source": "!s:A->bool. nsum s (\\n:A. 0) = 0",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finsum s (fun n:set => 0) = 0",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_nsum A s (fun n :e A => hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_0_bridge"
   },
   {
    "name": "NSUM_ADD",
@@ -48506,9 +48506,9 @@
    "source": "!f:A->num. !g:A->num. !s:A->bool. FINITE s ==> nsum s (\\x:A. f x + g x) = nsum s f + nsum s g",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_nsum A s (fun x :e A => hl_add (f x) (g x)) = hl_add (hl_nsum A s f) (hl_nsum A s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_ADD_bridge"
   },
   {
    "name": "NSUM_ADD_GEN",
@@ -48537,9 +48537,9 @@
    "source": "!f:A->num. !g:A->num. !s:A->bool. FINITE (GSPEC (\\GEN%PVAR%287:A. ?x:A. SETSPEC GEN%PVAR%287 (x IN s /\\ ~(f x = 0)) x)) /\\ FINITE (GSPEC (\\GEN%PVAR%288:A. ?x:A. SETSPEC GEN%PVAR%288 (x IN s /\\ ~(g x = 0)) x)) ==> nsum s (\\x:A. f x + g x) = nsum s f + nsum s g",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite {x :e A | x :e s /\\ ~ f x = 0} /\\ finite {x :e A | x :e s /\\ ~ g x = 0} -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_287 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_287 (if hl_IN A x s = 1 /\\ ~ f x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 /\\ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_288 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_288 (if hl_IN A x s = 1 /\\ ~ g x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_nsum A s (fun x :e A => hl_add (f x) (g x)) = hl_add (hl_nsum A s f) (hl_nsum A s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_ADD_GEN_bridge"
   },
   {
    "name": "NSUM_ADD_NUMSEG",
@@ -48567,9 +48567,9 @@
    "source": "!f:num->num. !g:num->num. !m:num. !n:num. nsum (.. m n) (\\i:num. f i + g i) = nsum (.. m n) f + nsum (.. m n) g",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e omega) -> forall g:set -> set, (forall x :e omega, g x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f i + g i) = finsum {i :e omega | m <= i /\\ i <= n} f + finsum {i :e omega | m <= i /\\ i <= n} g",
    "literal": "forall f g :e omega :^: omega, forall m n :e omega, hl_nsum omega (hl_numseg m n) (fun i :e omega => hl_add (f i) (g i)) = hl_add (hl_nsum omega (hl_numseg m n) f) (hl_nsum omega (hl_numseg m n) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_ADD_NUMSEG_bridge"
   },
   {
    "name": "NSUM_ADD_SPLIT",
@@ -48830,9 +48830,9 @@
    "source": "!s:A->bool. !P:A->bool. !f:A->num. !g:A->num. FINITE s ==> nsum s (\\x:A. if P x then f x else g x) = nsum (GSPEC (\\GEN%PVAR%303:A. ?x:A. SETSPEC GEN%PVAR%303 (x IN s /\\ P x) x)) f + nsum (GSPEC (\\GEN%PVAR%304:A. ?x:A. SETSPEC GEN%PVAR%304 (x IN s /\\ ~P x) x)) g",
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e omega) -> forall g:set -> set, (forall x :e A, g x :e omega) -> finite s -> finsum s (fun x:set => if P x then f x else g x) = finsum {x :e A | x :e s /\\ P x} f + finsum {x :e A | x :e s /\\ ~ P x} g",
    "literal": "forall A:set, A <> Empty -> forall s P :e 2 :^: A, forall f g :e omega :^: A, hl_FINITE A s = 1 -> hl_nsum A s (fun x :e A => hl_COND omega (P x) (f x) (g x)) = hl_add (hl_nsum A (hl_GSPEC A (fun GEN_PVAR_303 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_303 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) f) (hl_nsum A (hl_GSPEC A (fun GEN_PVAR_304 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_304 (if hl_IN A x s = 1 /\\ ~ P x = 1 then 1 else 0) x = 1 then 1 else 0)) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_CASES_bridge"
   },
   {
    "name": "NSUM_CLAUSES",
@@ -49116,7 +49116,7 @@
    "statement": "forall A:set, A <> Empty -> forall c :e omega, forall s c= A, finite s -> finsum s (fun n:set => c) = finite_cardinality s * c",
    "literal": "forall A:set, A <> Empty -> forall c :e omega, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_nsum A s (fun n :e A => c) = hl_mul (hl_CARD A s) c",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -49146,9 +49146,9 @@
    "source": "!c:num. !m:num. !n:num. nsum (.. m n) (\\n1:num. c) = ((n + 1) - m) * c",
    "statement": "forall c m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun n0:set => c) = minus_nat (n + 1) m * c",
    "literal": "forall c m n :e omega, hl_nsum omega (hl_numseg m n) (fun n1 :e omega => c) = hl_mul (hl_sub (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) m) c",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_CONST_NUMSEG_bridge"
   },
   {
    "name": "NSUM_DEGENERATE",
@@ -49245,7 +49245,7 @@
    "statement": "forall A:set, forall b :e omega, forall s c= A, forall a :e A, finsum s (fun x:set => if x = a then b else 0) = if a :e s then b else 0",
    "literal": "forall A:set, A <> Empty -> forall b :e omega, forall s :e 2 :^: A, forall a :e A, hl_nsum A s (fun x :e A => hl_COND omega (if x = a then 1 else 0) b (hl_NUMERAL hl_zero)) = hl_COND omega (hl_IN A a s) b (hl_NUMERAL hl_zero)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -49574,9 +49574,9 @@
    "source": "!f:A->B. !g:A->num. !s:A->bool. !t:B->bool. FINITE s /\\ IMAGE f s SUBSET t ==> nsum t (\\y:B. nsum (GSPEC (\\GEN%PVAR%298:A. ?x:A. SETSPEC GEN%PVAR%298 (x IN s /\\ f x = y) x)) g) = nsum s g",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, forall t c= B, finite s /\\ {f x | x :e s} c= t -> finsum t (fun y:set => finsum {x :e A | x :e s /\\ f x = y} g) = finsum s g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e omega :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_SUBSET B (hl_IMAGE A B f s) t = 1 -> hl_nsum B t (fun y :e B => hl_nsum A (hl_GSPEC A (fun GEN_PVAR_298 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_298 (if hl_IN A x s = 1 /\\ f x = y then 1 else 0) x = 1 then 1 else 0)) g) = hl_nsum A s g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_GROUP_bridge"
   },
   {
    "name": "NSUM_GROUP_RELATION",
@@ -49663,9 +49663,9 @@
    "source": "!f:A->B. !g:A->num. !s:A->bool. FINITE s ==> nsum s g = nsum (IMAGE f s) (\\y:B. nsum (GSPEC (\\GEN%PVAR%297:A. ?x:A. SETSPEC GEN%PVAR%297 (x IN s /\\ f x = y) x)) g)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e omega) -> forall s c= A, finite s -> finsum s g = finsum {f x | x :e s} (fun y:set => finsum {x :e A | x :e s /\\ f x = y} g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_nsum A s g = hl_nsum B (hl_IMAGE A B f s) (fun y :e B => hl_nsum A (hl_GSPEC A (fun GEN_PVAR_297 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_297 (if hl_IN A x s = 1 /\\ f x = y then 1 else 0) x = 1 then 1 else 0)) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_IMAGE_GEN_bridge"
   },
   {
    "name": "NSUM_IMAGE_NONZERO",
@@ -49877,9 +49877,9 @@
    "source": "!f:A->num. !c:num. !s:A->bool. nsum s (\\x:A. c * f x) = c * nsum s f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall c :e omega, forall s c= A, finsum s (fun x:set => c * f x) = c * finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall c :e omega, forall s :e 2 :^: A, hl_nsum A s (fun x :e A => hl_mul c (f x)) = hl_mul c (hl_nsum A s f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_LMUL_bridge"
   },
   {
    "name": "NSUM_LT",
@@ -50040,9 +50040,9 @@
    "source": "!a:A->num. !b:A->num. !s:A->bool. FINITE s ==> nsum s (\\i:A. a i * b i) <= nsum s a * nsum s b",
    "statement": "forall A:set, A <> Empty -> forall a:set -> set, (forall x :e A, a x :e omega) -> forall b:set -> set, (forall x :e A, b x :e omega) -> forall s c= A, finite s -> finsum s (fun i:set => a i * b i) <= finsum s a * finsum s b",
    "literal": "forall A:set, A <> Empty -> forall a b :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_le (hl_nsum A s (fun i :e A => hl_mul (a i) (b i))) (hl_mul (hl_nsum A s a) (hl_nsum A s b)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_MUL_BOUND_bridge"
   },
   {
    "name": "NSUM_NSUM_PRODUCT",
@@ -50071,7 +50071,7 @@
    "var_views": {},
    "error": "",
    "source": "!s:A->bool. !t:A->B->bool. !x:A->B->num. FINITE s /\\ (!i:A. i IN s ==> FINITE (t i)) ==> nsum s (\\i:A. nsum (t i) (x i)) = nsum (GSPEC (\\GEN%PVAR%302:A#B. ?i:A. ?j:B. SETSPEC GEN%PVAR%302 (i IN s /\\ j IN t i) (i , j))) (GABS (\\f:A#B->num. !i:A. !j:B. GEQ (f (i , j)) (x i j)))",
-   "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e omega) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
+   "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e omega) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e omega :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_nsum A s (fun i :e A => hl_nsum B (t i) (x i)) = hl_nsum (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_302 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_302 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (omega :^: (A :*: B)) (fun f :e omega :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ omega (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
@@ -50106,7 +50106,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\\ R0 x y} (f x)) = finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} (fun x:set => f x y))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall f :e omega :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_nsum A s (fun x :e A => hl_nsum B (hl_GSPEC B (fun GEN_PVAR_290 :e B => if exists y :e B, hl_SETSPEC B GEN_PVAR_290 (if hl_IN B y t = 1 /\\ R1 x y = 1 then 1 else 0) y = 1 then 1 else 0)) (fun y :e B => f x y)) = hl_nsum B t (fun y :e B => hl_nsum A (hl_GSPEC A (fun GEN_PVAR_291 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_291 (if hl_IN A x s = 1 /\\ R1 x y = 1 then 1 else 0) x = 1 then 1 else 0)) (fun x :e A => f x y))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites eta",
    "bridge": ""
   },
   {
@@ -50135,9 +50135,9 @@
    "source": "!p:num. !f:num->num. !m:num. !n:num. nsum (.. (m + p) (n + p)) f = nsum (.. m n) (\\i:num. f (i + p))",
    "statement": "forall p :e omega, forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m + p <= i /\\ i <= n + p} f = finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f (i + p))",
    "literal": "forall p :e omega, forall f :e omega :^: omega, forall m n :e omega, hl_nsum omega (hl_numseg (hl_add m p) (hl_add n p)) f = hl_nsum omega (hl_numseg m n) (fun i :e omega => f (hl_add i p))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_OFFSET_bridge"
   },
   {
    "name": "NSUM_OFFSET_0",
@@ -50166,9 +50166,9 @@
    "source": "!f:num->num. !m:num. !n:num. m <= n ==> nsum (.. m n) f = nsum (.. 0 (n - m)) (\\i:num. f (i + m))",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, m <= n -> finsum {i :e omega | m <= i /\\ i <= n} f = finsum {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => f (i + m))",
    "literal": "forall f :e omega :^: omega, forall m n :e omega, hl_le m n = 1 -> hl_nsum omega (hl_numseg m n) f = hl_nsum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n m)) (fun i :e omega => f (hl_add i m))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_OFFSET_0_bridge"
   },
   {
    "name": "NSUM_PAIR",
@@ -50197,9 +50197,9 @@
    "source": "!f:num->num. !m:num. !n:num. nsum (.. (2 * m) (2 * n + 1)) f = nsum (.. m n) (\\i:num. f (2 * i) + f (2 * i + 1))",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | 2 * m <= i /\\ i <= 2 * n + 1} f = finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f (2 * i) + f (2 * i + 1))",
    "literal": "forall f :e omega :^: omega, forall m n :e omega, hl_nsum omega (hl_numseg (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (hl_NUMERAL (hl_BIT1 hl_zero)))) f = hl_nsum omega (hl_numseg m n) (fun i :e omega => hl_add (f (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) i)) (f (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) i) (hl_NUMERAL (hl_BIT1 hl_zero)))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_PAIR_bridge"
   },
   {
    "name": "NSUM_POS_BOUND",
@@ -50324,11 +50324,11 @@
    "var_views": {},
    "error": "",
    "source": "!x:num->num. !m:num. !n:num. nsum (.. m n) x = (if n < m then 0 else nsum (.. 0 (n - m)) (\\i:num. x (n - i)))",
-   "statement": "forall x:set -> set, (forall x :e omega, x x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} x = if n < m then 0 else finsum {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
+   "statement": "forall x:set -> set, (forall x0 :e omega, x x0 :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} x = if n < m then 0 else finsum {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
    "literal": "forall x :e omega :^: omega, forall m n :e omega, hl_nsum omega (hl_numseg m n) x = hl_COND omega (hl_lt n m) (hl_NUMERAL hl_zero) (hl_nsum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n m)) (fun i :e omega => x (hl_sub n i)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_REFLECT_bridge"
   },
   {
    "name": "NSUM_RELATED",
@@ -50420,9 +50420,9 @@
    "source": "!f:A->num. !s:A->bool. FINITE s ==> nsum s (\\x:A. if x IN s then f x else 0) = nsum s f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s (fun x:set => if x :e s then f x else 0) = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_nsum A s (fun x :e A => hl_COND omega (hl_IN A x s) (f x) (hl_NUMERAL hl_zero)) = hl_nsum A s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_RESTRICT_bridge"
   },
   {
    "name": "NSUM_RESTRICT_SET",
@@ -50449,9 +50449,9 @@
    "source": "!P:A->bool. !s:A->bool. !f:A->num. nsum (GSPEC (\\GEN%PVAR%289:A. ?x:A. SETSPEC GEN%PVAR%289 (x IN s /\\ P x) x)) f = nsum s (\\x:A. if P x then f x else 0)",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e omega) -> finsum {x :e A | x :e s /\\ P x} f = finsum s (fun x:set => if P x then f x else 0)",
    "literal": "forall A:set, A <> Empty -> forall P s :e 2 :^: A, forall f :e omega :^: A, hl_nsum A (hl_GSPEC A (fun GEN_PVAR_289 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_289 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) f = hl_nsum A s (fun x :e A => hl_COND omega (P x) (f x) (hl_NUMERAL hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_RESTRICT_SET_bridge"
   },
   {
    "name": "NSUM_RMUL",
@@ -50478,9 +50478,9 @@
    "source": "!f:A->num. !c:num. !s:A->bool. nsum s (\\x:A. f x * c) = nsum s f * c",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e omega) -> forall c :e omega, forall s c= A, finsum s (fun x:set => f x * c) = finsum s f * c",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall c :e omega, forall s :e 2 :^: A, hl_nsum A s (fun x :e A => hl_mul (f x) c) = hl_mul (hl_nsum A s f) c",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NSUM_RMUL_bridge"
   },
   {
    "name": "NSUM_SING",
@@ -50692,7 +50692,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e omega) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun i:set => finsum t (f i)) = finsum t (fun j:set => finsum s (fun i:set => f i j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e omega :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_nsum A s (fun i :e A => hl_nsum B t (f i)) = hl_nsum B t (fun j :e B => hl_nsum A s (fun i :e A => f i j))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -50721,7 +50721,7 @@
    "statement": "forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e omega) -> finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\\ i <= d} (f i)) = finsum {i :e omega | c <= i /\\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => f i j))",
    "literal": "forall a b c d :e omega, forall f :e omega :^: omega :^: omega, hl_nsum omega (hl_numseg a b) (fun i :e omega => hl_nsum omega (hl_numseg c d) (f i)) = hl_nsum omega (hl_numseg c d) (fun j :e omega => hl_nsum omega (hl_numseg a b) (fun i :e omega => f i j))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -51476,9 +51476,9 @@
    "source": "!m:num. !n:num. !p:num. .. (m + p) (n + p) = IMAGE (\\i:num. i + p) (.. m n)",
    "statement": "forall m n p :e omega, {i :e omega | m + p <= i /\\ i <= n + p} = {i + p | i :e {i :e omega | m <= i /\\ i <= n}}",
    "literal": "forall m n p :e omega, hl_numseg (hl_add m p) (hl_add n p) = hl_IMAGE omega omega (fun i :e omega => hl_add i p) (hl_numseg m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUMSEG_OFFSET_IMAGE_bridge"
   },
   {
    "name": "NUMSEG_REC",
@@ -54067,9 +54067,9 @@
    "source": "!x:real. real_of_num 0 <= x ==> sqrt (x pow 2) = x",
    "statement": "forall x :e R, 0 <= x -> (if 0 <= x ^ 2 then sqrt_SNo_nonneg (x ^ 2) else - sqrt_SNo_nonneg (- x ^ 2)) = x",
    "literal": "forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_sqrt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POW_2_SQRT_bridge"
   },
   {
    "name": "POW_2_SQRT_ABS",
@@ -54095,9 +54095,9 @@
    "source": "!x:real. sqrt (x pow 2) = real_abs x",
    "statement": "forall x :e R, (if 0 <= x ^ 2 then sqrt_SNo_nonneg (x ^ 2) else - sqrt_SNo_nonneg (- x ^ 2)) = abs_SNo x",
    "literal": "forall x :e R, hl_sqrt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_real_abs x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "POW_2_SQRT_ABS_bridge"
   },
   {
    "name": "PRE",
@@ -54272,7 +54272,7 @@
    "var_views": {},
    "error": "",
    "source": "!f:K->A->B. !k:K->bool. !x:K->A. product_map k f (RESTRICTION k x) = RESTRICTION k (\\i:K. f i (x i))",
-   "statement": "forall A B K:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall x:set -> set, (forall x :e K, x x :e A) -> forall x0 :e K, (if x0 :e k then f x0 ((fun x1 :e K => if x1 :e k then x x1 else choose_in A (fun y:set => True)) x0) else choose_in B (fun y:set => True)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)",
+   "statement": "forall A B K:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> forall x0 :e K, (if x0 :e k then f x0 ((fun x1 :e K => if x1 :e k then x x1 else choose_in A (fun y:set => True)) x0) else choose_in B (fun y:set => True)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)",
    "literal": "forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f :e B :^: A :^: K, forall k :e 2 :^: K, forall x :e A :^: K, hl_product_map K A B k f (hl_RESTRICTION K A k x) = hl_RESTRICTION K B k (fun i :e K => f i (x i))",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: rel: partial application of mapped constant product_map",
@@ -55123,9 +55123,9 @@
    "source": "!x:real. !y:real. real_abs (sqrt x - sqrt y) <= sqrt (real_of_num 2 * real_abs (x - y))",
    "statement": "forall x y :e R, abs_SNo ((if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) + - if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)) <= if 0 <= 2 * abs_SNo (x + - y) then sqrt_SNo_nonneg (2 * abs_SNo (x + - y)) else - sqrt_SNo_nonneg (- 2 * abs_SNo (x + - y))",
    "literal": "forall x y :e R, hl_real_le (hl_real_abs (hl_real_sub (hl_sqrt x) (hl_sqrt y))) (hl_sqrt (hl_real_mul (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_abs (hl_real_sub x y)))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_ABS_LE_SQRT_bridge"
   },
   {
    "name": "REAL_ABS_LE_SQRT_POS",
@@ -55152,9 +55152,9 @@
    "source": "!x:real. !y:real. real_of_num 0 <= x /\\ real_of_num 0 <= y ==> real_abs (sqrt x - sqrt y) <= sqrt (real_abs (x - y))",
    "statement": "forall x y :e R, 0 <= x /\\ 0 <= y -> abs_SNo ((if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) + - if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)) <= if 0 <= abs_SNo (x + - y) then sqrt_SNo_nonneg (abs_SNo (x + - y)) else - sqrt_SNo_nonneg (- abs_SNo (x + - y))",
    "literal": "forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\\ hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_real_le (hl_real_abs (hl_real_sub (hl_sqrt x) (hl_sqrt y))) (hl_sqrt (hl_real_abs (hl_real_sub x y))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_ABS_LE_SQRT_POS_bridge"
   },
   {
    "name": "REAL_ABS_MUL",
@@ -55463,9 +55463,9 @@
    "source": "!x:real. real_abs (sqrt x) = sqrt (real_abs x)",
    "statement": "forall x :e R, abs_SNo (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = if 0 <= abs_SNo x then sqrt_SNo_nonneg (abs_SNo x) else - sqrt_SNo_nonneg (- abs_SNo x)",
    "literal": "forall x :e R, hl_real_abs (hl_sqrt x) = hl_sqrt (hl_real_abs x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_ABS_SQRT_bridge"
   },
   {
    "name": "REAL_ABS_STILLNZ",
@@ -56887,9 +56887,9 @@
    "source": "!x:real. real_of_num 0 <= x ==> x / sqrt x = sqrt x",
    "statement": "forall x :e R, 0 <= x -> x :/: (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)",
    "literal": "forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_div x (hl_sqrt x) = hl_sqrt x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_DIV_SQRT_bridge"
   },
   {
    "name": "REAL_DOWN",
@@ -59001,9 +59001,9 @@
    "source": "!x:real. !y:real. real_of_num 0 <= y /\\ x <= y pow 2 ==> sqrt x <= y",
    "statement": "forall x y :e R, 0 <= y /\\ x <= y ^ 2 -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) <= y",
    "literal": "forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\\ hl_real_le x (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1 -> hl_real_le (hl_sqrt x) y = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LE_LSQRT_bridge"
   },
   {
    "name": "REAL_LE_LT",
@@ -59599,9 +59599,9 @@
    "source": "!x:real. !y:real. x pow 2 <= y ==> x <= sqrt y",
    "statement": "forall x y :e R, x ^ 2 <= y -> x <= if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)",
    "literal": "forall x y :e R, hl_real_le (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) y = 1 -> hl_real_le x (hl_sqrt y) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LE_RSQRT_bridge"
   },
   {
    "name": "REAL_LE_SQUARE",
@@ -59960,9 +59960,9 @@
    "source": "!x:real. !y:real. real_of_num 0 <= x /\\ sqrt x <= y ==> x <= y pow 2",
    "statement": "forall x y :e R, 0 <= x /\\ (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) <= y -> x <= y ^ 2",
    "literal": "forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\\ hl_real_le (hl_sqrt x) y = 1 -> hl_real_le x (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LSQRT_LE_bridge"
   },
   {
    "name": "REAL_LTE_ADD",
@@ -60945,9 +60945,9 @@
    "source": "!x:real. !y:real. real_of_num 0 <= y /\\ x < y pow 2 ==> sqrt x < y",
    "statement": "forall x y :e R, 0 <= y /\\ x < y ^ 2 -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) < y",
    "literal": "forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\\ hl_real_lt x (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1 -> hl_real_lt (hl_sqrt x) y = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LT_LSQRT_bridge"
   },
   {
    "name": "REAL_LT_MAX",
@@ -61487,9 +61487,9 @@
    "source": "!x:real. !y:real. x pow 2 < y ==> x < sqrt y",
    "statement": "forall x y :e R, x ^ 2 < y -> x < if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)",
    "literal": "forall x y :e R, hl_real_lt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) y = 1 -> hl_real_lt x (hl_sqrt y) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LT_RSQRT_bridge"
   },
   {
    "name": "REAL_LT_SQUARE",
@@ -63619,7 +63619,7 @@
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s f = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_real_of_num (hl_nsum A s f) = hl_sum A s (fun x :e A => hl_real_of_num (f x))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites eta",
    "bridge": ""
   },
   {
@@ -63656,7 +63656,7 @@
    "statement": "forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite {i :e A | i :e s /\\ ~ f i = 0} -> finsum s f = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_335 :e A => if exists i :e A, hl_SETSPEC A GEN_PVAR_335 (if hl_IN A i s = 1 /\\ ~ f i = hl_NUMERAL hl_zero then 1 else 0) i = 1 then 1 else 0)) = 1 -> hl_real_of_num (hl_nsum A s f) = hl_sum A s (fun x :e A => hl_real_of_num (f x))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites eta",
    "bridge": ""
   },
   {
@@ -63690,7 +63690,7 @@
    "statement": "forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} f = finsum {i :e omega | m <= i /\\ i <= n} f",
    "literal": "forall f :e omega :^: omega, forall m n :e omega, hl_real_of_num (hl_nsum omega (hl_numseg m n) f) = hl_sum omega (hl_numseg m n) (fun i :e omega => hl_real_of_num (f i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites eta",
    "bridge": ""
   },
   {
@@ -63720,9 +63720,9 @@
    "source": "!n:num. !c:num->real. (!x:real. sum (.. 0 n) (\\i:num. c i * x pow i) = real_of_num 0) <=> (!i:num. i IN .. 0 n ==> c i = real_of_num 0)",
    "statement": "forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> ((forall x :e R, finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0) <-> forall i :e omega, i :e {i :e omega | 0 <= i /\\ i <= n} -> c i = 0)",
    "literal": "forall n :e omega, forall c :e R :^: omega, (forall x :e R, hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = hl_real_of_num (hl_NUMERAL hl_zero)) <-> forall i :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL hl_zero) n) = 1 -> c i = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_POLYFUN_EQ_0_bridge"
   },
   {
    "name": "REAL_POLYFUN_EQ_CONST",
@@ -63754,7 +63754,7 @@
    "statement": "forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> forall k :e R, (forall x :e R, finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = k) <-> c 0 = k /\\ forall i :e omega, i :e idx_n n -> c i = 0",
    "literal": "forall n :e omega, forall c :e R :^: omega, forall k :e R, (forall x :e R, hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = k) <-> c (hl_NUMERAL hl_zero) = k /\\ forall i :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) n) = 1 -> c i = hl_real_of_num (hl_NUMERAL hl_zero)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites idx_n_def",
    "bridge": ""
   },
   {
@@ -63785,9 +63785,9 @@
    "source": "!n:num. !c:num->real. FINITE (GSPEC (\\GEN%PVAR%350:real. ?x:real. SETSPEC GEN%PVAR%350 (sum (.. 0 n) (\\i:num. c i * x pow i) = real_of_num 0) x)) <=> (?i:num. i IN .. 0 n /\\ ~(c i = real_of_num 0))",
    "statement": "forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> (finite {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0} <-> exists i :e omega, i :e {i :e omega | 0 <= i /\\ i <= n} /\\ ~ c i = 0)",
    "literal": "forall n :e omega, forall c :e R :^: omega, hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_350 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_350 (if hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 <-> exists i :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL hl_zero) n) = 1 /\\ ~ c i = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_POLYFUN_FINITE_ROOTS_bridge"
   },
   {
    "name": "REAL_POLYFUN_ROOTBOUND",
@@ -63820,7 +63820,7 @@
    "statement": "forall n :e omega, forall c:set -> set, (forall x :e omega, c x :e R) -> ~ (forall i :e omega, i :e {i :e omega | 0 <= i /\\ i <= n} -> c i = 0) -> finite {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0} /\\ finite_cardinality {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0} <= n",
    "literal": "forall n :e omega, forall c :e R :^: omega, ~ (forall i :e omega, hl_IN omega i (hl_numseg (hl_NUMERAL hl_zero) n) = 1 -> c i = hl_real_of_num (hl_NUMERAL hl_zero)) -> hl_FINITE R (hl_GSPEC R (fun GEN_PVAR_347 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_347 (if hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 /\\ hl_le (hl_CARD R (hl_GSPEC R (fun GEN_PVAR_348 :e R => if exists x :e R, hl_SETSPEC R GEN_PVAR_348 (if hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i)) = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0))) n = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep R {x :e R | finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => c i * x ^ i) = 0}) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -65172,9 +65172,9 @@
    "source": "!x:real. !y:real. real_of_num 0 <= x /\\ real_of_num 0 <= y /\\ x <= sqrt y ==> x pow 2 <= y",
    "statement": "forall x y :e R, 0 <= x /\\ (0 <= y /\\ x <= (if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y))) -> x ^ 2 <= y",
    "literal": "forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\\ hl_real_le x (hl_sqrt y) = 1) -> hl_real_le (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) y = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_RSQRT_LE_bridge"
   },
   {
    "name": "REAL_SGN",
@@ -65690,9 +65690,9 @@
    "source": "!x:real. real_sgn (sqrt x) = real_sgn x",
    "statement": "forall x :e R, (if 0 < if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x) then 1 else if (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0",
    "literal": "forall x :e R, hl_real_sgn (hl_sqrt x) = hl_real_sgn x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SGN_SQRT_bridge"
   },
   {
    "name": "REAL_SGN_ZPOW",
@@ -65979,9 +65979,9 @@
    "source": "!x:real. sqrt x pow 2 = real_abs x",
    "statement": "forall x :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) ^ 2 = abs_SNo x",
    "literal": "forall x :e R, hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SQRT_POW_2_bridge"
   },
   {
    "name": "REAL_SUB_0",
@@ -66318,9 +66318,9 @@
    "source": "!a:num->real. !x:real. !y:real. !n:num. 1 <= n ==> sum (.. 0 n) (\\i:num. a i * x pow i) - sum (.. 0 n) (\\i:num. a i * y pow i) = (x - y) * sum (.. 0 (n - 1)) (\\j:num. sum (.. (j + 1) n) (\\i:num. a i * y pow (i - j - 1)) * x pow j)",
    "statement": "forall a:set -> set, (forall x :e omega, a x :e R) -> forall x y :e R, forall n :e omega, 1 <= n -> finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => a i * x ^ i) + - finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => a i * y ^ i) = (x + - y) * finsum {i :e omega | 0 <= i /\\ i <= minus_nat n 1} (fun j:set => finsum {i :e omega | j + 1 <= i /\\ i <= n} (fun i:set => a i * y ^ minus_nat (minus_nat i j) 1) * x ^ j)",
    "literal": "forall a :e R :^: omega, forall x y :e R, forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_real_sub (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (a i) (hl_real_pow x i))) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (a i) (hl_real_pow y i))) = hl_real_mul (hl_real_sub x y) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero)))) (fun j :e omega => hl_real_mul (hl_sum omega (hl_numseg (hl_add j (hl_NUMERAL (hl_BIT1 hl_zero))) n) (fun i :e omega => hl_real_mul (a i) (hl_real_pow y (hl_sub (hl_sub i j) (hl_NUMERAL (hl_BIT1 hl_zero)))))) (hl_real_pow x j)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUB_POLYFUN_bridge"
   },
   {
    "name": "REAL_SUB_POLYFUN_ALT",
@@ -66350,9 +66350,9 @@
    "source": "!a:num->real. !x:real. !y:real. !n:num. 1 <= n ==> sum (.. 0 n) (\\i:num. a i * x pow i) - sum (.. 0 n) (\\i:num. a i * y pow i) = (x - y) * sum (.. 0 (n - 1)) (\\j:num. sum (.. 0 (n - j - 1)) (\\k:num. a (j + k + 1) * y pow k) * x pow j)",
    "statement": "forall a:set -> set, (forall x :e omega, a x :e R) -> forall x y :e R, forall n :e omega, 1 <= n -> finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => a i * x ^ i) + - finsum {i :e omega | 0 <= i /\\ i <= n} (fun i:set => a i * y ^ i) = (x + - y) * finsum {i :e omega | 0 <= i /\\ i <= minus_nat n 1} (fun j:set => finsum {i :e omega | 0 <= i /\\ i <= minus_nat (minus_nat n j) 1} (fun k:set => a (j + k + 1) * y ^ k) * x ^ j)",
    "literal": "forall a :e R :^: omega, forall x y :e R, forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_real_sub (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (a i) (hl_real_pow x i))) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) n) (fun i :e omega => hl_real_mul (a i) (hl_real_pow y i))) = hl_real_mul (hl_real_sub x y) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero)))) (fun j :e omega => hl_real_mul (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub (hl_sub n j) (hl_NUMERAL (hl_BIT1 hl_zero)))) (fun k :e omega => hl_real_mul (a (hl_add j (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero))))) (hl_real_pow y k))) (hl_real_pow x j)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUB_POLYFUN_ALT_bridge"
   },
   {
    "name": "REAL_SUB_POW",
@@ -66381,9 +66381,9 @@
    "source": "!x:real. !y:real. !n:num. 1 <= n ==> x pow n - y pow n = (x - y) * sum (.. 0 (n - 1)) (\\i:num. x pow i * y pow (n - 1 - i))",
    "statement": "forall x y :e R, forall n :e omega, 1 <= n -> x ^ n + - y ^ n = (x + - y) * finsum {i :e omega | 0 <= i /\\ i <= minus_nat n 1} (fun i:set => x ^ i * y ^ minus_nat (minus_nat n 1) i)",
    "literal": "forall x y :e R, forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_real_sub (hl_real_pow x n) (hl_real_pow y n) = hl_real_mul (hl_real_sub x y) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero)))) (fun i :e omega => hl_real_mul (hl_real_pow x i) (hl_real_pow y (hl_sub (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero))) i))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUB_POW_bridge"
   },
   {
    "name": "REAL_SUB_POW_L1",
@@ -66413,9 +66413,9 @@
    "source": "!x:real. !n:num. 1 <= n ==> real_of_num 1 - x pow n = (real_of_num 1 - x) * sum (.. 0 (n - 1)) (\\i:num. x pow i)",
    "statement": "forall x :e R, forall n :e omega, 1 <= n -> 1 + - x ^ n = (1 + - x) * finsum {i :e omega | 0 <= i /\\ i <= minus_nat n 1} (fun i:set => x ^ i)",
    "literal": "forall x :e R, forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_real_sub (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_pow x n) = hl_real_mul (hl_real_sub (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero)))) (fun i :e omega => hl_real_pow x i))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUB_POW_L1_bridge"
   },
   {
    "name": "REAL_SUB_POW_R1",
@@ -66445,9 +66445,9 @@
    "source": "!x:real. !n:num. 1 <= n ==> x pow n - real_of_num 1 = (x - real_of_num 1) * sum (.. 0 (n - 1)) (\\i:num. x pow i)",
    "statement": "forall x :e R, forall n :e omega, 1 <= n -> x ^ n + - 1 = (x + - 1) * finsum {i :e omega | 0 <= i /\\ i <= minus_nat n 1} (fun i:set => x ^ i)",
    "literal": "forall x :e R, forall n :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) n = 1 -> hl_real_sub (hl_real_pow x n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_mul (hl_real_sub x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n (hl_NUMERAL (hl_BIT1 hl_zero)))) (fun i :e omega => hl_real_pow x i))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUB_POW_R1_bridge"
   },
   {
    "name": "REAL_SUB_RDISTRIB",
@@ -69348,9 +69348,9 @@
    "source": "sqrt (real_of_num 0) = real_of_num 0",
    "statement": "(if 0 <= 0 then sqrt_SNo_nonneg 0 else - sqrt_SNo_nonneg (- 0)) = 0",
    "literal": "hl_sqrt (hl_real_of_num (hl_NUMERAL hl_zero)) = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_0_bridge"
   },
   {
    "name": "SQRT_1",
@@ -69377,9 +69377,9 @@
    "source": "sqrt (real_of_num 1) = real_of_num 1",
    "statement": "(if 0 <= 1 then sqrt_SNo_nonneg 1 else - sqrt_SNo_nonneg (- 1)) = 1",
    "literal": "hl_sqrt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_1_bridge"
   },
   {
    "name": "SQRT_DIV",
@@ -69404,9 +69404,9 @@
    "source": "!x:real. !y:real. sqrt (x / y) = sqrt x / sqrt y",
    "statement": "forall x y :e R, (if 0 <= x :/: y then sqrt_SNo_nonneg (x :/: y) else - sqrt_SNo_nonneg (- x :/: y)) = (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) :/: if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)",
    "literal": "forall x y :e R, hl_sqrt (hl_real_div x y) = hl_real_div (hl_sqrt x) (hl_sqrt y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_DIV_bridge"
   },
   {
    "name": "SQRT_EQ_0",
@@ -69433,9 +69433,9 @@
    "source": "!x:real. sqrt x = real_of_num 0 <=> x = real_of_num 0",
    "statement": "forall x :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = 0 <-> x = 0",
    "literal": "forall x :e R, hl_sqrt x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_EQ_0_bridge"
   },
   {
    "name": "SQRT_EQ_1",
@@ -69462,9 +69462,9 @@
    "source": "!x:real. sqrt x = real_of_num 1 <=> x = real_of_num 1",
    "statement": "forall x :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = 1 <-> x = 1",
    "literal": "forall x :e R, hl_sqrt x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_EQ_1_bridge"
   },
   {
    "name": "SQRT_EVEN_POW2",
@@ -69491,9 +69491,9 @@
    "source": "!n:num. EVEN n ==> sqrt (real_of_num 2 pow n) = real_of_num 2 pow (n DIV 2)",
    "statement": "forall n :e omega, even_nat n -> (if 0 <= 2 ^ n then sqrt_SNo_nonneg (2 ^ n) else - sqrt_SNo_nonneg (- 2 ^ n)) = 2 ^ div_nat n 2",
    "literal": "forall n :e omega, hl_EVEN n = 1 -> hl_sqrt (hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n) = hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_DIV n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_EVEN_POW2_bridge"
   },
   {
    "name": "SQRT_INJ",
@@ -69518,9 +69518,9 @@
    "source": "!x:real. !y:real. sqrt x = sqrt y <=> x = y",
    "statement": "forall x y :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = (if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)) <-> x = y",
    "literal": "forall x y :e R, hl_sqrt x = hl_sqrt y <-> x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_INJ_bridge"
   },
   {
    "name": "SQRT_INV",
@@ -69545,9 +69545,9 @@
    "source": "!x:real. sqrt (real_inv x) = real_inv (sqrt x)",
    "statement": "forall x :e R, (if 0 <= recip_SNo x then sqrt_SNo_nonneg (recip_SNo x) else - sqrt_SNo_nonneg (- recip_SNo x)) = recip_SNo (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x))",
    "literal": "forall x :e R, hl_sqrt (hl_real_inv x) = hl_real_inv (hl_sqrt x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_INV_bridge"
   },
   {
    "name": "SQRT_LE_0",
@@ -69574,9 +69574,9 @@
    "source": "!x:real. real_of_num 0 <= sqrt x <=> real_of_num 0 <= x",
    "statement": "forall x :e R, 0 <= (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) <-> 0 <= x",
    "literal": "forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_LE_0_bridge"
   },
   {
    "name": "SQRT_LT_0",
@@ -69603,9 +69603,9 @@
    "source": "!x:real. real_of_num 0 < sqrt x <=> real_of_num 0 < x",
    "statement": "forall x :e R, 0 < (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) <-> 0 < x",
    "literal": "forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_LT_0_bridge"
   },
   {
    "name": "SQRT_MONO_LE",
@@ -69630,9 +69630,9 @@
    "source": "!x:real. !y:real. x <= y ==> sqrt x <= sqrt y",
    "statement": "forall x y :e R, x <= y -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) <= if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)",
    "literal": "forall x y :e R, hl_real_le x y = 1 -> hl_real_le (hl_sqrt x) (hl_sqrt y) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_MONO_LE_bridge"
   },
   {
    "name": "SQRT_MONO_LE_EQ",
@@ -69657,9 +69657,9 @@
    "source": "!x:real. !y:real. sqrt x <= sqrt y <=> x <= y",
    "statement": "forall x y :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) <= (if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)) <-> x <= y",
    "literal": "forall x y :e R, hl_real_le (hl_sqrt x) (hl_sqrt y) = 1 <-> hl_real_le x y = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_MONO_LE_EQ_bridge"
   },
   {
    "name": "SQRT_MONO_LT",
@@ -69684,9 +69684,9 @@
    "source": "!x:real. !y:real. x < y ==> sqrt x < sqrt y",
    "statement": "forall x y :e R, x < y -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) < if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)",
    "literal": "forall x y :e R, hl_real_lt x y = 1 -> hl_real_lt (hl_sqrt x) (hl_sqrt y) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_MONO_LT_bridge"
   },
   {
    "name": "SQRT_MONO_LT_EQ",
@@ -69711,9 +69711,9 @@
    "source": "!x:real. !y:real. sqrt x < sqrt y <=> x < y",
    "statement": "forall x y :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) < (if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)) <-> x < y",
    "literal": "forall x y :e R, hl_real_lt (hl_sqrt x) (hl_sqrt y) = 1 <-> hl_real_lt x y = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_MONO_LT_EQ_bridge"
   },
   {
    "name": "SQRT_MUL",
@@ -69738,9 +69738,9 @@
    "source": "!x:real. !y:real. sqrt (x * y) = sqrt x * sqrt y",
    "statement": "forall x y :e R, (if 0 <= x * y then sqrt_SNo_nonneg (x * y) else - sqrt_SNo_nonneg (- x * y)) = (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) * if 0 <= y then sqrt_SNo_nonneg y else - sqrt_SNo_nonneg (- y)",
    "literal": "forall x y :e R, hl_sqrt (hl_real_mul x y) = hl_real_mul (hl_sqrt x) (hl_sqrt y)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_MUL_bridge"
   },
   {
    "name": "SQRT_NEG",
@@ -69765,9 +69765,9 @@
    "source": "!x:real. sqrt (real_neg x) = real_neg (sqrt x)",
    "statement": "forall x :e R, (if 0 <= - x then sqrt_SNo_nonneg (- x) else - sqrt_SNo_nonneg (- - x)) = - if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)",
    "literal": "forall x :e R, hl_sqrt (hl_real_neg x) = hl_real_neg (hl_sqrt x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_NEG_bridge"
   },
   {
    "name": "SQRT_POS_LE",
@@ -69794,9 +69794,9 @@
    "source": "!x:real. real_of_num 0 <= x ==> real_of_num 0 <= sqrt x",
    "statement": "forall x :e R, 0 <= x -> 0 <= if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)",
    "literal": "forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_POS_LE_bridge"
   },
   {
    "name": "SQRT_POS_LT",
@@ -69823,9 +69823,9 @@
    "source": "!x:real. real_of_num 0 < x ==> real_of_num 0 < sqrt x",
    "statement": "forall x :e R, 0 < x -> 0 < if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)",
    "literal": "forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_POS_LT_bridge"
   },
   {
    "name": "SQRT_POW2",
@@ -69852,9 +69852,9 @@
    "source": "!x:real. sqrt x pow 2 = x <=> real_of_num 0 <= x",
    "statement": "forall x :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) ^ 2 = x <-> 0 <= x",
    "literal": "forall x :e R, hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_POW2_bridge"
   },
   {
    "name": "SQRT_POW_2",
@@ -69881,9 +69881,9 @@
    "source": "!x:real. real_of_num 0 <= x ==> sqrt x pow 2 = x",
    "statement": "forall x :e R, 0 <= x -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) ^ 2 = x",
    "literal": "forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_POW_2_bridge"
   },
   {
    "name": "SQRT_UNIQUE",
@@ -69910,9 +69910,9 @@
    "source": "!x:real. !y:real. real_of_num 0 <= y /\\ y pow 2 = x ==> sqrt x = y",
    "statement": "forall x y :e R, 0 <= y /\\ y ^ 2 = x -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = y",
    "literal": "forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x -> hl_sqrt x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_UNIQUE_bridge"
   },
   {
    "name": "SQRT_UNIQUE_GEN",
@@ -69939,9 +69939,9 @@
    "source": "!x:real. !y:real. real_sgn y = real_sgn x /\\ y pow 2 = real_abs x ==> sqrt x = y",
    "statement": "forall x y :e R, (if 0 < y then 1 else if y < 0 then - 1 else 0) = (if 0 < x then 1 else if x < 0 then - 1 else 0) /\\ y ^ 2 = abs_SNo x -> (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = y",
    "literal": "forall x y :e R, hl_real_sgn y = hl_real_sgn x /\\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x -> hl_sqrt x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_UNIQUE_GEN_bridge"
   },
   {
    "name": "SQRT_WORKS",
@@ -69968,9 +69968,9 @@
    "source": "!x:real. real_of_num 0 <= x ==> real_of_num 0 <= sqrt x /\\ sqrt x pow 2 = x",
    "statement": "forall x :e R, 0 <= x -> 0 <= (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) /\\ (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) ^ 2 = x",
    "literal": "forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1 /\\ hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_WORKS_bridge"
   },
   {
    "name": "SQRT_WORKS_GEN",
@@ -69997,9 +69997,9 @@
    "source": "!x:real. real_sgn (sqrt x) = real_sgn x /\\ sqrt x pow 2 = real_abs x",
    "statement": "forall x :e R, (if 0 < if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x) then 1 else if (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) < 0 then - 1 else 0) = (if 0 < x then 1 else if x < 0 then - 1 else 0) /\\ (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) ^ 2 = abs_SNo x",
    "literal": "forall x :e R, hl_real_sgn (hl_sqrt x) = hl_real_sgn x /\\ hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SQRT_WORKS_GEN_bridge"
   },
   {
    "name": "SUB",
@@ -71213,9 +71213,9 @@
    "source": "!s:A->bool. sum s (\\n:A. real_of_num 0) = real_of_num 0",
    "statement": "forall A:set, A <> Empty -> forall s c= A, finsum s (fun n:set => 0) = 0",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_sum A s (fun n :e A => hl_real_of_num (hl_NUMERAL hl_zero)) = hl_real_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_0_bridge"
   },
   {
    "name": "SUM_ABS",
@@ -71242,9 +71242,9 @@
    "source": "!f:A->real. !s:A->bool. FINITE s ==> real_abs (sum s f) <= sum s (\\x:A. real_abs (f x))",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> abs_SNo (finsum s f) <= finsum s (fun x:set => abs_SNo (f x))",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_real_le (hl_real_abs (hl_sum A s f)) (hl_sum A s (fun x :e A => hl_real_abs (f x))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_ABS_bridge"
   },
   {
    "name": "SUM_ABS_BOUND",
@@ -71335,9 +71335,9 @@
    "source": "!f:num->real. !m:num. !n:num. real_abs (sum (.. m n) f) <= sum (.. m n) (\\i:num. real_abs (f i))",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, abs_SNo (finsum {i :e omega | m <= i /\\ i <= n} f) <= finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => abs_SNo (f i))",
    "literal": "forall f :e R :^: omega, forall m n :e omega, hl_real_le (hl_real_abs (hl_sum omega (hl_numseg m n) f)) (hl_sum omega (hl_numseg m n) (fun i :e omega => hl_real_abs (f i))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_ABS_NUMSEG_bridge"
   },
   {
    "name": "SUM_ADD",
@@ -71364,9 +71364,9 @@
    "source": "!f:A->real. !g:A->real. !s:A->bool. FINITE s ==> sum s (\\x:A. f x + g x) = sum s f + sum s g",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun x :e A => hl_real_add (f x) (g x)) = hl_real_add (hl_sum A s f) (hl_sum A s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_ADD_bridge"
   },
   {
    "name": "SUM_ADD_GEN",
@@ -71396,9 +71396,9 @@
    "source": "!f:A->real. !g:A->real. !s:A->bool. FINITE (GSPEC (\\GEN%PVAR%314:A. ?x:A. SETSPEC GEN%PVAR%314 (x IN s /\\ ~(f x = real_of_num 0)) x)) /\\ FINITE (GSPEC (\\GEN%PVAR%315:A. ?x:A. SETSPEC GEN%PVAR%315 (x IN s /\\ ~(g x = real_of_num 0)) x)) ==> sum s (\\x:A. f x + g x) = sum s f + sum s g",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite {x :e A | x :e s /\\ ~ f x = 0} /\\ finite {x :e A | x :e s /\\ ~ g x = 0} -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_314 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_314 (if hl_IN A x s = 1 /\\ ~ f x = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 /\\ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_315 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_315 (if hl_IN A x s = 1 /\\ ~ g x = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_sum A s (fun x :e A => hl_real_add (f x) (g x)) = hl_real_add (hl_sum A s f) (hl_sum A s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_ADD_GEN_bridge"
   },
   {
    "name": "SUM_ADD_NUMSEG",
@@ -71426,9 +71426,9 @@
    "source": "!f:num->real. !g:num->real. !m:num. !n:num. sum (.. m n) (\\i:num. f i + g i) = sum (.. m n) f + sum (.. m n) g",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f i + g i) = finsum {i :e omega | m <= i /\\ i <= n} f + finsum {i :e omega | m <= i /\\ i <= n} g",
    "literal": "forall f g :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun i :e omega => hl_real_add (f i) (g i)) = hl_real_add (hl_sum omega (hl_numseg m n) f) (hl_sum omega (hl_numseg m n) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_ADD_NUMSEG_bridge"
   },
   {
    "name": "SUM_ADD_SPLIT",
@@ -71690,9 +71690,9 @@
    "source": "!s:A->bool. !P:A->bool. !f:A->real. !g:A->real. FINITE s ==> sum s (\\x:A. if P x then f x else g x) = sum (GSPEC (\\GEN%PVAR%330:A. ?x:A. SETSPEC GEN%PVAR%330 (x IN s /\\ P x) x)) f + sum (GSPEC (\\GEN%PVAR%331:A. ?x:A. SETSPEC GEN%PVAR%331 (x IN s /\\ ~P x) x)) g",
    "statement": "forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> finite s -> finsum s (fun x:set => if P x then f x else g x) = finsum {x :e A | x :e s /\\ P x} f + finsum {x :e A | x :e s /\\ ~ P x} g",
    "literal": "forall A:set, A <> Empty -> forall s P :e 2 :^: A, forall f g :e R :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun x :e A => hl_COND R (P x) (f x) (g x)) = hl_real_add (hl_sum A (hl_GSPEC A (fun GEN_PVAR_330 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_330 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) f) (hl_sum A (hl_GSPEC A (fun GEN_PVAR_331 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_331 (if hl_IN A x s = 1 /\\ ~ P x = 1 then 1 else 0) x = 1 then 1 else 0)) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_CASES_bridge"
   },
   {
    "name": "SUM_CASES_1",
@@ -71726,7 +71726,7 @@
    "statement": "forall A:set, forall y :e R, forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, forall a :e A, finite s /\\ a :e s -> finsum s (fun x:set => if x = a then y else f x) = finsum s f + y + - f a",
    "literal": "forall A:set, A <> Empty -> forall y :e R, forall f :e R :^: A, forall s :e 2 :^: A, forall a :e A, hl_FINITE A s = 1 /\\ hl_IN A a s = 1 -> hl_sum A s (fun x :e A => hl_COND R (if x = a then 1 else 0) y (f x)) = hl_real_add (hl_sum A s f) (hl_real_sub y (f a))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -72081,7 +72081,7 @@
    "statement": "forall A:set, A <> Empty -> forall c :e R, forall s c= A, finite s -> finsum s (fun n:set => c) = finite_cardinality s * c",
    "literal": "forall A:set, A <> Empty -> forall c :e R, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun n :e A => c) = hl_real_mul (hl_real_of_num (hl_CARD A s)) c",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: side condition finite (hl_rep A s) not available from hypotheses",
    "bridge": ""
   },
   {
@@ -72112,9 +72112,9 @@
    "source": "!c:real. !m:num. !n:num. sum (.. m n) (\\n1:num. c) = real_of_num ((n + 1) - m) * c",
    "statement": "forall c :e R, forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun n0:set => c) = minus_nat (n + 1) m * c",
    "literal": "forall c :e R, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun n1 :e omega => c) = hl_real_mul (hl_real_of_num (hl_sub (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))) m)) c",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_CONST_NUMSEG_bridge"
   },
   {
    "name": "SUM_DEGENERATE",
@@ -72246,7 +72246,7 @@
    "statement": "forall A:set, forall b :e R, forall s c= A, forall a :e A, finsum s (fun x:set => if x = a then b else 0) = if a :e s then b else 0",
    "literal": "forall A:set, A <> Empty -> forall b :e R, forall s :e 2 :^: A, forall a :e A, hl_sum A s (fun x :e A => hl_COND R (if x = a then 1 else 0) b (hl_real_of_num (hl_NUMERAL hl_zero))) = hl_COND R (hl_IN A a s) b (hl_real_of_num (hl_NUMERAL hl_zero))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -72310,9 +72310,9 @@
    "source": "!m:num. !n:num. sum (.. m n) (\\k:num. f k - f (k + 1)) = (if m <= n then f m - f (n + 1) else real_of_num 0)",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun k:set => f k + - f (k + 1)) = if m <= n then f m + - f (n + 1) else 0",
    "literal": "forall f :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun k :e omega => hl_real_sub (f k) (f (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero))))) = hl_COND R (hl_le m n) (hl_real_sub (f m) (f (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))))) (hl_real_of_num (hl_NUMERAL hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_DIFFS_bridge"
   },
   {
    "name": "SUM_DIFFS_ALT",
@@ -72345,9 +72345,9 @@
    "source": "!m:num. !n:num. sum (.. m n) (\\k:num. f (k + 1) - f k) = (if m <= n then f (n + 1) - f m else real_of_num 0)",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun k:set => f (k + 1) + - f k) = if m <= n then f (n + 1) + - f m else 0",
    "literal": "forall f :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun k :e omega => hl_real_sub (f (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero)))) (f k)) = hl_COND R (hl_le m n) (hl_real_sub (f (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero)))) (f m)) (hl_real_of_num (hl_NUMERAL hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_DIFFS_ALT_bridge"
   },
   {
    "name": "SUM_EQ",
@@ -72590,9 +72590,9 @@
    "source": "!f:A->B. !g:A->real. !s:A->bool. !t:B->bool. FINITE s /\\ IMAGE f s SUBSET t ==> sum t (\\y:B. sum (GSPEC (\\GEN%PVAR%327:A. ?x:A. SETSPEC GEN%PVAR%327 (x IN s /\\ f x = y) x)) g) = sum s g",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, forall t c= B, finite s /\\ {f x | x :e s} c= t -> finsum t (fun y:set => finsum {x :e A | x :e s /\\ f x = y} g) = finsum s g",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_SUBSET B (hl_IMAGE A B f s) t = 1 -> hl_sum B t (fun y :e B => hl_sum A (hl_GSPEC A (fun GEN_PVAR_327 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_327 (if hl_IN A x s = 1 /\\ f x = y then 1 else 0) x = 1 then 1 else 0)) g) = hl_sum A s g",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_GROUP_bridge"
   },
   {
    "name": "SUM_GROUP_RELATION",
@@ -72679,9 +72679,9 @@
    "source": "!f:A->B. !g:A->real. !s:A->bool. FINITE s ==> sum s g = sum (IMAGE f s) (\\y:B. sum (GSPEC (\\GEN%PVAR%326:A. ?x:A. SETSPEC GEN%PVAR%326 (x IN s /\\ f x = y) x)) g)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s g = finsum {f x | x :e s} (fun y:set => finsum {x :e A | x :e s /\\ f x = y} g)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e B :^: A, forall g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s g = hl_sum B (hl_IMAGE A B f s) (fun y :e B => hl_sum A (hl_GSPEC A (fun GEN_PVAR_326 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_326 (if hl_IN A x s = 1 /\\ f x = y then 1 else 0) x = 1 then 1 else 0)) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_IMAGE_GEN_bridge"
   },
   {
    "name": "SUM_IMAGE_LE",
@@ -72926,9 +72926,9 @@
    "source": "!f:A->real. !c:real. !s:A->bool. sum s (\\x:A. c * f x) = c * sum s f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall c :e R, forall s c= A, finsum s (fun x:set => c * f x) = c * finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall c :e R, forall s :e 2 :^: A, hl_sum A s (fun x :e A => hl_real_mul c (f x)) = hl_real_mul c (hl_sum A s f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_LMUL_bridge"
   },
   {
    "name": "SUM_LT",
@@ -73091,9 +73091,9 @@
    "source": "!a:A->real. !b:A->real. !s:A->bool. FINITE s /\\ (!i:A. i IN s ==> real_of_num 0 <= a i /\\ real_of_num 0 <= b i) ==> sum s (\\i:A. a i * b i) <= sum s a * sum s b",
    "statement": "forall A:set, A <> Empty -> forall a:set -> set, (forall x :e A, a x :e R) -> forall b:set -> set, (forall x :e A, b x :e R) -> forall s c= A, finite s /\\ (forall i :e A, i :e s -> 0 <= a i /\\ 0 <= b i) -> finsum s (fun i:set => a i * b i) <= finsum s a * finsum s b",
    "literal": "forall A:set, A <> Empty -> forall a b :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (a i) = 1 /\\ hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (b i) = 1) -> hl_real_le (hl_sum A s (fun i :e A => hl_real_mul (a i) (b i))) (hl_real_mul (hl_sum A s a) (hl_sum A s b)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_MUL_BOUND_bridge"
   },
   {
    "name": "SUM_NEG",
@@ -73119,9 +73119,9 @@
    "source": "!f:A->real. !s:A->bool. sum s (\\x:A. real_neg (f x)) = real_neg (sum s f)",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finsum s (fun x:set => - f x) = - finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_sum A s (fun x :e A => hl_real_neg (f x)) = hl_real_neg (hl_sum A s f)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_NEG_bridge"
   },
   {
    "name": "SUM_OFFSET",
@@ -73150,9 +73150,9 @@
    "source": "!p:num. !f:num->real. !m:num. !n:num. sum (.. (m + p) (n + p)) f = sum (.. m n) (\\i:num. f (i + p))",
    "statement": "forall p :e omega, forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | m + p <= i /\\ i <= n + p} f = finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f (i + p))",
    "literal": "forall p :e omega, forall f :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg (hl_add m p) (hl_add n p)) f = hl_sum omega (hl_numseg m n) (fun i :e omega => f (hl_add i p))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_OFFSET_bridge"
   },
   {
    "name": "SUM_OFFSET_0",
@@ -73182,9 +73182,9 @@
    "source": "!f:num->real. !m:num. !n:num. m <= n ==> sum (.. m n) f = sum (.. 0 (n - m)) (\\i:num. f (i + m))",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, m <= n -> finsum {i :e omega | m <= i /\\ i <= n} f = finsum {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => f (i + m))",
    "literal": "forall f :e R :^: omega, forall m n :e omega, hl_le m n = 1 -> hl_sum omega (hl_numseg m n) f = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n m)) (fun i :e omega => f (hl_add i m))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_OFFSET_0_bridge"
   },
   {
    "name": "SUM_PAIR",
@@ -73214,9 +73214,9 @@
    "source": "!f:num->real. !m:num. !n:num. sum (.. (2 * m) (2 * n + 1)) f = sum (.. m n) (\\i:num. f (2 * i) + f (2 * i + 1))",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall m n :e omega, finsum {i :e omega | 2 * m <= i /\\ i <= 2 * n + 1} f = finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f (2 * i) + f (2 * i + 1))",
    "literal": "forall f :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) m) (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) n) (hl_NUMERAL (hl_BIT1 hl_zero)))) f = hl_sum omega (hl_numseg m n) (fun i :e omega => hl_real_add (f (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) i)) (f (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) i) (hl_NUMERAL (hl_BIT1 hl_zero)))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_PAIR_bridge"
   },
   {
    "name": "SUM_PARTIAL_PRE",
@@ -73247,9 +73247,9 @@
    "source": "!f:num->real. !g:num->real. !m:num. !n:num. sum (.. m n) (\\k:num. f k * (g k - g (k - 1))) = (if m <= n then f (n + 1) * g n - f m * g (m - 1) - sum (.. m n) (\\k:num. g k * (f (k + 1) - f k)) else real_of_num 0)",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun k:set => f k * (g k + - g (minus_nat k 1))) = if m <= n then (f (n + 1) * g n + - f m * g (minus_nat m 1)) + - finsum {i :e omega | m <= i /\\ i <= n} (fun k:set => g k * (f (k + 1) + - f k)) else 0",
    "literal": "forall f g :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun k :e omega => hl_real_mul (f k) (hl_real_sub (g k) (g (hl_sub k (hl_NUMERAL (hl_BIT1 hl_zero)))))) = hl_COND R (hl_le m n) (hl_real_sub (hl_real_sub (hl_real_mul (f (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero)))) (g n)) (hl_real_mul (f m) (g (hl_sub m (hl_NUMERAL (hl_BIT1 hl_zero)))))) (hl_sum omega (hl_numseg m n) (fun k :e omega => hl_real_mul (g k) (hl_real_sub (f (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero)))) (f k))))) (hl_real_of_num (hl_NUMERAL hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_PARTIAL_PRE_bridge"
   },
   {
    "name": "SUM_PARTIAL_SUC",
@@ -73280,9 +73280,9 @@
    "source": "!f:num->real. !g:num->real. !m:num. !n:num. sum (.. m n) (\\k:num. f k * (g (k + 1) - g k)) = (if m <= n then f (n + 1) * g (n + 1) - f m * g m - sum (.. m n) (\\k:num. g (k + 1) * (f (k + 1) - f k)) else real_of_num 0)",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun k:set => f k * (g (k + 1) + - g k)) = if m <= n then (f (n + 1) * g (n + 1) + - f m * g m) + - finsum {i :e omega | m <= i /\\ i <= n} (fun k:set => g (k + 1) * (f (k + 1) + - f k)) else 0",
    "literal": "forall f g :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun k :e omega => hl_real_mul (f k) (hl_real_sub (g (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero)))) (g k))) = hl_COND R (hl_le m n) (hl_real_sub (hl_real_sub (hl_real_mul (f (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero)))) (g (hl_add n (hl_NUMERAL (hl_BIT1 hl_zero))))) (hl_real_mul (f m) (g m))) (hl_sum omega (hl_numseg m n) (fun k :e omega => hl_real_mul (g (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero)))) (hl_real_sub (f (hl_add k (hl_NUMERAL (hl_BIT1 hl_zero)))) (f k))))) (hl_real_of_num (hl_NUMERAL hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_PARTIAL_SUC_bridge"
   },
   {
    "name": "SUM_POS_BOUND",
@@ -73543,11 +73543,11 @@
    "var_views": {},
    "error": "",
    "source": "!x:num->real. !m:num. !n:num. sum (.. m n) x = (if n < m then real_of_num 0 else sum (.. 0 (n - m)) (\\i:num. x (n - i)))",
-   "statement": "forall x:set -> set, (forall x :e omega, x x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} x = if n < m then 0 else finsum {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
+   "statement": "forall x:set -> set, (forall x0 :e omega, x x0 :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} x = if n < m then 0 else finsum {i :e omega | 0 <= i /\\ i <= minus_nat n m} (fun i:set => x (minus_nat n i))",
    "literal": "forall x :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) x = hl_COND R (hl_lt n m) (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) (hl_sub n m)) (fun i :e omega => x (hl_sub n i)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_REFLECT_bridge"
   },
   {
    "name": "SUM_RELATED",
@@ -73641,9 +73641,9 @@
    "source": "!f:A->real. !s:A->bool. FINITE s ==> sum s (\\x:A. if x IN s then f x else real_of_num 0) = sum s f",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => if x :e s then f x else 0) = finsum s f",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun x :e A => hl_COND R (hl_IN A x s) (f x) (hl_real_of_num (hl_NUMERAL hl_zero))) = hl_sum A s f",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_RESTRICT_bridge"
   },
   {
    "name": "SUM_RESTRICT_SET",
@@ -73672,9 +73672,9 @@
    "source": "!P:A->bool. !s:A->bool. !f:A->real. sum (GSPEC (\\GEN%PVAR%318:A. ?x:A. SETSPEC GEN%PVAR%318 (x IN s /\\ P x) x)) f = sum s (\\x:A. if P x then f x else real_of_num 0)",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, forall f:set -> set, (forall x :e A, f x :e R) -> finsum {x :e A | x :e s /\\ P x} f = finsum s (fun x:set => if P x then f x else 0)",
    "literal": "forall A:set, A <> Empty -> forall P s :e 2 :^: A, forall f :e R :^: A, hl_sum A (hl_GSPEC A (fun GEN_PVAR_318 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_318 (if hl_IN A x s = 1 /\\ P x = 1 then 1 else 0) x = 1 then 1 else 0)) f = hl_sum A s (fun x :e A => hl_COND R (P x) (f x) (hl_real_of_num (hl_NUMERAL hl_zero)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_RESTRICT_SET_bridge"
   },
   {
    "name": "SUM_RMUL",
@@ -73700,9 +73700,9 @@
    "source": "!f:A->real. !c:real. !s:A->bool. sum s (\\x:A. f x * c) = sum s f * c",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall c :e R, forall s c= A, finsum s (fun x:set => f x * c) = finsum s f * c",
    "literal": "forall A:set, A <> Empty -> forall f :e R :^: A, forall c :e R, forall s :e 2 :^: A, hl_sum A s (fun x :e A => hl_real_mul (f x) c) = hl_real_mul (hl_sum A s f) c",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_RMUL_bridge"
   },
   {
    "name": "SUM_SING",
@@ -73789,9 +73789,9 @@
    "source": "!f:A->real. !g:A->real. !s:A->bool. FINITE s ==> sum s (\\x:A. f x - g x) = sum s f - sum s g",
    "statement": "forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + - g x) = finsum s f + - finsum s g",
    "literal": "forall A:set, A <> Empty -> forall f g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun x :e A => hl_real_sub (f x) (g x)) = hl_real_sub (hl_sum A s f) (hl_sum A s g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_SUB_bridge"
   },
   {
    "name": "SUM_SUBSET",
@@ -73883,9 +73883,9 @@
    "source": "!f:num->real. !g:num->real. !m:num. !n:num. sum (.. m n) (\\i:num. f i - g i) = sum (.. m n) f - sum (.. m n) g",
    "statement": "forall f:set -> set, (forall x :e omega, f x :e R) -> forall g:set -> set, (forall x :e omega, g x :e R) -> forall m n :e omega, finsum {i :e omega | m <= i /\\ i <= n} (fun i:set => f i + - g i) = finsum {i :e omega | m <= i /\\ i <= n} f + - finsum {i :e omega | m <= i /\\ i <= n} g",
    "literal": "forall f g :e R :^: omega, forall m n :e omega, hl_sum omega (hl_numseg m n) (fun i :e omega => hl_real_sub (f i) (g i)) = hl_real_sub (hl_sum omega (hl_numseg m n) f) (hl_sum omega (hl_numseg m n) g)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUM_SUB_NUMSEG_bridge"
   },
   {
    "name": "SUM_SUM_PRODUCT",
@@ -73914,7 +73914,7 @@
    "var_views": {},
    "error": "",
    "source": "!s:A->bool. !t:A->B->bool. !x:A->B->real. FINITE s /\\ (!i:A. i IN s ==> FINITE (t i)) ==> sum s (\\i:A. sum (t i) (x i)) = sum (GSPEC (\\GEN%PVAR%329:A#B. ?i:A. ?j:B. SETSPEC GEN%PVAR%329 (i IN s /\\ j IN t i) (i , j))) (GABS (\\f:A#B->real. !i:A. !j:B. GEQ (f (i , j)) (x i j)))",
-   "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e R) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
+   "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e R) -> finite s /\\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\\/_ i :e A, {(i,j) | j :e B, i :e s /\\ j :e t i}) (fun p:set => x (p 0) (p 1))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B :^: A, forall x :e R :^: B :^: A, hl_FINITE A s = 1 /\\ (forall i :e A, hl_IN A i s = 1 -> hl_FINITE B (t i) = 1) -> hl_sum A s (fun i :e A => hl_sum B (t i) (x i)) = hl_sum (A :*: B) (hl_GSPEC (A :*: B) (fun GEN_PVAR_329 :e A :*: B => if exists i :e A, exists j :e B, hl_SETSPEC (A :*: B) GEN_PVAR_329 (if hl_IN A i s = 1 /\\ hl_IN B j (t i) = 1 then 1 else 0) (hl_pair A B i j) = 1 then 1 else 0)) (hl_GABS (R :^: (A :*: B)) (fun f :e R :^: (A :*: B) => if forall i :e A, forall j :e B, hl_GEQ R (f (hl_pair A B i j)) (x i j) = 1 then 1 else 0))",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: coerce_rel: subset(B)",
@@ -73949,7 +73949,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall R0:set -> set -> prop, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun x:set => finsum {y :e B | y :e t /\\ R0 x y} (f x)) = finsum t (fun y:set => finsum {x :e A | x :e s /\\ R0 x y} (fun x:set => f x y))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall R1 :e 2 :^: B :^: A, forall f :e R :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_sum A s (fun x :e A => hl_sum B (hl_GSPEC B (fun GEN_PVAR_319 :e B => if exists y :e B, hl_SETSPEC B GEN_PVAR_319 (if hl_IN B y t = 1 /\\ R1 x y = 1 then 1 else 0) y = 1 then 1 else 0)) (fun y :e B => f x y)) = hl_sum B t (fun y :e B => hl_sum A (hl_GSPEC A (fun GEN_PVAR_320 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_320 (if hl_IN A x s = 1 /\\ R1 x y = 1 then 1 else 0) x = 1 then 1 else 0)) (fun x :e A => f x y))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: native rewrites eta",
    "bridge": ""
   },
   {
@@ -74042,7 +74042,7 @@
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e R) -> forall s c= A, forall t c= B, finite s /\\ finite t -> finsum s (fun i:set => finsum t (f i)) = finsum t (fun j:set => finsum s (fun i:set => f i j))",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall f :e R :^: B :^: A, forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_sum A s (fun i :e A => hl_sum B t (f i)) = hl_sum B t (fun j :e B => hl_sum A s (fun i :e A => f i j))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -74072,7 +74072,7 @@
    "statement": "forall a b c d :e omega, forall f:set -> set -> set, (forall x y :e omega, f x y :e R) -> finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => finsum {i :e omega | c <= i /\\ i <= d} (f i)) = finsum {i :e omega | c <= i /\\ i <= d} (fun j:set => finsum {i :e omega | a <= i /\\ i <= b} (fun i:set => f i j))",
    "literal": "forall a b c d :e omega, forall f :e R :^: omega :^: omega, hl_sum omega (hl_numseg a b) (fun i :e omega => hl_sum omega (hl_numseg c d) (f i)) = hl_sum omega (hl_numseg c d) (fun j :e omega => hl_sum omega (hl_numseg a b) (fun i :e omega => f i j))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: variable application with this view/arity",
    "bridge": ""
   },
   {
@@ -74614,7 +74614,7 @@
    "statement": "forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall a :e A, {x :e s | (if x = a then f x else neutral_of B op) <> neutral_of B op} = if a :e s then {x :e {a} | f x <> neutral_of B op} else Empty",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall op :e B :^: B :^: B, forall s :e 2 :^: A, forall f :e B :^: A, forall a :e A, hl_support B A op (fun x :e A => hl_COND B (if x = a then 1 else 0) (f x) (hl_neutral B op)) s = hl_COND (2 :^: A) (hl_IN A a s) (hl_support B A op f (hl_INSERT A a (hl_EMPTY A))) (hl_EMPTY A)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -81537,7 +81537,7 @@
    "var_views": {},
    "error": "",
    "source": "iproduct = iterate int_mul",
-   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e int) -> finprod x x0 = iterate_op int (fun a:set => fun b:set => a * b) x x0",
+   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e int) -> finprod x x0 = iterate_op int (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_iproduct A = hl_iterate hl_ty_int A hl_int_mul",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_iproduct_compat (not in compat.mg)",
@@ -81644,7 +81644,7 @@
    "var_views": {},
    "error": "",
    "source": "isum = iterate int_add",
-   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e int) -> finsum x x0 = iterate_op int (fun a:set => fun b:set => a + b) x x0",
+   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e int) -> finsum x x0 = iterate_op int (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_isum A = hl_iterate hl_ty_int A hl_int_add",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_isum_compat (not in compat.mg)",
@@ -82287,7 +82287,7 @@
    "var_views": {},
    "error": "",
    "source": "nproduct = iterate *",
-   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e omega) -> finprod x x0 = iterate_op omega (fun a:set => fun b:set => a * b) x x0",
+   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e omega) -> finprod x x0 = iterate_op omega (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_nproduct A = hl_iterate omega A hl_mul",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_nproduct_compat (not in compat.mg)",
@@ -82317,7 +82317,7 @@
    "var_views": {},
    "error": "",
    "source": "nsum = iterate +",
-   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e omega) -> finsum x x0 = iterate_op omega (fun a:set => fun b:set => a + b) x x0",
+   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e omega) -> finsum x x0 = iterate_op omega (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_nsum A = hl_iterate omega A hl_add",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_iterate_compat (not in compat.mg)",
@@ -83493,7 +83493,7 @@
    "statement": "forall p:set -> set, (forall x :e R, p x :e R) -> (polynomial_function_R p <-> exists m :e omega, exists c:set -> set, (forall x :e omega, c x :e R) /\\ forall x :e R, p x = finsum {i :e omega | 0 <= i /\\ i <= m} (fun i:set => c i * x ^ i))",
    "literal": "forall p :e R :^: R, hl_polynomial_function p = 1 <-> exists m :e omega, exists c :e R :^: omega, forall x :e R, p x = hl_sum omega (hl_numseg (hl_NUMERAL hl_zero) m) (fun i :e omega => hl_real_mul (c i) (hl_real_pow x i))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: lambda",
+   "cert_error": "bridge_unsupported: compat_missing: hl_polynomial_function_compat (not in compat.mg)",
    "bridge": ""
   },
   {
@@ -83569,7 +83569,7 @@
    "var_views": {},
    "error": "",
    "source": "product = iterate real_mul",
-   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e R) -> finprod x x0 = iterate_op R (fun a:set => fun b:set => a * b) x x0",
+   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e R) -> finprod x x0 = iterate_op R (fun a:set => fun b:set => a * b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_product A = hl_iterate R A hl_real_mul",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_product_compat (not in compat.mg)",
@@ -84349,7 +84349,7 @@
    "statement": "forall x :e R, (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = choose_in R (fun y:set => (if 0 < y then 1 else if y < 0 then - 1 else 0) = (if 0 < x then 1 else if x < 0 then - 1 else 0) /\\ y ^ 2 = abs_SNo x)",
    "literal": "forall x :e R, hl_sqrt x = hl_select R (fun y :e R => if hl_real_sgn y = hl_real_sgn x /\\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x then 1 else 0)",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_sqrt_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: unmapped constant @",
    "bridge": ""
   },
   {
@@ -84398,7 +84398,7 @@
    "var_views": {},
    "error": "",
    "source": "sum = iterate real_add",
-   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x0 :e A, x0 x0 :e R) -> finsum x x0 = iterate_op R (fun a:set => fun b:set => a + b) x x0",
+   "statement": "forall A:set, A <> Empty -> forall x c= A, forall x0:set -> set, (forall x1 :e A, x0 x1 :e R) -> finsum x x0 = iterate_op R (fun a:set => fun b:set => a + b) x x0",
    "literal": "forall A:set, A <> Empty -> hl_sum A = hl_iterate R A hl_real_add",
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: compat_missing: hl_iterate_compat (not in compat.mg)",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1445
+  "native_certified": 1536
  }
 }

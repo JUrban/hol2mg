@@ -1558,7 +1558,8 @@ source: !f:A->real. !g:A->real. !s:A->bool. FINITE s ==> sum s (\x:A. f x + g x)
 status: transport_required
 statement: forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e R) -> forall g:set -> set, (forall x :e A, g x :e R) -> forall s c= A, finite s -> finsum s (fun x:set => f x + g x) = finsum s f + finsum s g
 literal: forall A:set, A <> Empty -> forall f g :e R :^: A, forall s :e 2 :^: A, hl_FINITE A s = 1 -> hl_sum A s (fun x :e A => hl_real_add (f x) (g x)) = hl_real_add (hl_sum A s f) (hl_sum A s g)
-cert_status: bridge_unsupported
+bridge: SUM_ADD_bridge
+cert_status: native_certified
 
 ### NSUM_EQ   [iteration, sums, number segments]
 hash: 7b56acbfdcba2de9bb221054d9ae675c

@@ -3130,7 +3130,7 @@ Admitted.
 
 // HOL Light: sets.ml:3175 / CARTESIAN_PRODUCT_SINGS_GEN   (hash md5:a6ace1fa44c7a74ba22f96ca3dd717a4)
 // not bridged: 
-Theorem CARTESIAN_PRODUCT_SINGS_GEN : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x :e K, x x :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => True)}.
+Theorem CARTESIAN_PRODUCT_SINGS_GEN : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e {x i}}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {fun x0 :e K => if x0 :e k then x x0 else choose_in A (fun y:set => True)}.
 Admitted.
 
 // HOL Light: sets.ml:3181 / IMAGE_PROJECTION_CARTESIAN_PRODUCT   (hash md5:526fc84464225062ad0d6c6d6c98b5e1)
@@ -3160,7 +3160,7 @@ Admitted.
 
 // HOL Light: sets.ml:3244 / PRODUCT_MAP_RESTRICTION   (hash md5:97d0d0213691a97fc9748f7a4a89c3fa)
 // not bridged: 
-Theorem PRODUCT_MAP_RESTRICTION : forall A B K:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall x:set -> set, (forall x :e K, x x :e A) -> forall x0 :e K, (if x0 :e k then f x0 ((fun x1 :e K => if x1 :e k then x x1 else choose_in A (fun y:set => True)) x0) else choose_in B (fun y:set => True)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True).
+Theorem PRODUCT_MAP_RESTRICTION : forall A B K:set, A <> Empty -> B <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> forall x0 :e K, (if x0 :e k then f x0 ((fun x1 :e K => if x1 :e k then x x1 else choose_in A (fun y:set => True)) x0) else choose_in B (fun y:set => True)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True).
 Admitted.
 
 // HOL Light: sets.ml:3249 / IMAGE_PRODUCT_MAP   (hash md5:30510513348359e5bd1e182743211b03)

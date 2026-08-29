@@ -404,7 +404,9 @@ and elab_binder ctx (kind : [ `All | `Ex ]) (x : string) (ty : ty) (body : tm) :
   let xview = choose_view ctx (n, ty) [ body' ] in
   ctx.vars <- (n, (ty, xview, n)) :: ctx.vars;
   let b = elab ctx body' VProp in
-  ctx.vars <- List.remove_assoc n ctx.vars; release ctx n;
+  ctx.vars <- List.remove_assoc n ctx.vars;
+  (* the closure premise is generated while n is still reserved: its bound variables must not
+     capture the function variable (a function named x once produced `forall x :e A, x x :e B`) *)
   let closure = (match xview with
     | VMetaFun (ds, c) ->
         let xs = fresh_seq ctx (List.length ds) in
@@ -412,6 +414,7 @@ and elab_binder ctx (kind : [ `All | `Ex ]) (x : string) (ty : ty) (body : tm) :
         let cl = List.fold_right2 (fun y d acc -> Mg.AllIn (y, d, acc)) xs ds (mg_in app c) in
         List.iter (release ctx) xs; Some cl
     | _ -> None) in
+  release ctx n;
   match kind, xview with
   | `All, VSet c -> Mg.AllIn (n, c, b)
   | `All, VSubset c -> Mg.AllSub (n, c, b)

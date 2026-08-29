@@ -298,10 +298,6 @@ Admitted.
 Theorem hl_SETSPEC_compat : forall A:set, A <> Empty -> hl_SETSPEC A = Empty.
 Admitted.
 
-// sqrt : real->real (not in compat.mg)
-Theorem hl_sqrt_compat : forall l1 :e R, hl_sqrt l1 = if 0 <= l1 then sqrt_SNo_nonneg l1 else - sqrt_SNo_nonneg (- l1).
-Admitted.
-
 // REPLICATE : num->A->A list (not in compat.mg)
 Theorem hl_REPLICATE_compat : forall A:set, A <> Empty -> forall l1 :e omega, forall l2 :e A, hl_REPLICATE A l1 l2 = seq_replicate l1 l2.
 Admitted.

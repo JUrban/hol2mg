@@ -2458,3 +2458,130 @@ apply (xm (finite {x :e hl_rep A l1 | f2 x <> 0})).
       (eq_trans_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (hl_ITSET A omega (fun x :e A => fun a :e omega => hl_add (l2 x) a) (hl_support omega A hl_add l2 l1) (hl_neutral omega hl_add)) else (hl_neutral omega hl_add)) (hl_neutral omega hl_add) (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) (If_i_0 (finite {x :e hl_rep A l1 | f2 x <> 0}) (hl_ITSET A omega (fun x :e A => fun a :e omega => hl_add (l2 x) a) (hl_support omega A hl_add l2 l1) (hl_neutral omega hl_add)) (hl_neutral omega hl_add) Hnfin)
         (eq_trans_i (hl_neutral omega hl_add) 0 (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) Hn (eq_sym_i (if finite {x :e hl_rep A l1 | f2 x <> 0} then (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) else 0) 0 (If_i_0 (finite {x :e hl_rep A l1 | f2 x <> 0}) (ring_finite_sum R add_SNo {x :e hl_rep A l1 | f2 x <> 0} f2) 0 Hnfin)))))).
 Qed.
+
+// ---- real square roots: the unique root with the sign of the argument ----
+Theorem hl_sqrt_compat : forall l1 :e R, hl_sqrt l1 = if 0 <= l1 then sqrt_SNo_nonneg l1 else - sqrt_SNo_nonneg (- l1).
+let x. assume Hx.
+claim HxS: SNo x. { exact (real_SNo x Hx). }
+claim H2o: 2 :e omega. { exact (nat_p_omega 2 nat_2). }
+claim Hm1S: SNo (- 1). { exact (SNo_minus_SNo 1 SNo_1). }
+claim Hm1lt0: (- 1) < 0. { exact (minus_SNo_0 (fun hl__u hl__v => (- 1) < hl__u) (minus_SNo_Lt_contra 0 1 SNo_0 SNo_1 SNoLt_0_1)). }
+claim H1m1: 1 = - 1 -> False. { assume H. exact (SNoLt_irref 0 (SNoLt_tra 0 (- 1) 0 SNo_0 Hm1S SNo_0 (H (fun hl__u hl__v => 0 < hl__u) SNoLt_0_1) Hm1lt0)). }
+claim Hm11: - 1 = 1 -> False. { assume H. exact (H1m1 (eq_sym_i (- 1) 1 H)). }
+claim H0m1: 0 = - 1 -> False. { assume H. exact (SNoLt_irref 0 (H (fun hl__u hl__v => hl__v < 0) Hm1lt0)). }
+claim Hm10: - 1 = 0 -> False. { assume H. exact (H0m1 (eq_sym_i (- 1) 0 H)). }
+claim HSpos: forall z, 0 < z -> (if 0 < z then 1 else if z < 0 then - 1 else 0) = 1. { let z. assume H. exact (If_i_1 (0 < z) 1 (if z < 0 then - 1 else 0) H). }
+claim HSneg: forall z, SNo z -> z < 0 -> (if 0 < z then 1 else if z < 0 then - 1 else 0) = - 1.
+{ let z. assume HzS H.
+  claim Hn: ~ 0 < z. { assume H2. exact (SNoLt_irref 0 (SNoLt_tra 0 z 0 SNo_0 HzS SNo_0 H2 H)). }
+  exact (eq_trans_i (if 0 < z then 1 else if z < 0 then - 1 else 0) (if z < 0 then - 1 else 0) (- 1) (If_i_0 (0 < z) 1 (if z < 0 then - 1 else 0) Hn) (If_i_1 (z < 0) (- 1) 0 H)). }
+claim HS0: (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0.
+{ exact (eq_trans_i (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) (if 0 < 0 then - 1 else 0) 0 (If_i_0 (0 < 0) 1 (if 0 < 0 then - 1 else 0) (SNoLt_irref 0)) (If_i_0 (0 < 0) (- 1) 0 (SNoLt_irref 0))). }
+claim HF: (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) :e 2 :^: R.
+{ prove (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) :e Pi_ y :e R, 2.
+  apply (lam_Pi R (fun _ => 2) (fun y => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0)).
+  let y. assume _. exact (If_in_2 (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x)). }
+claim HQ: forall y :e R, (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1 <-> ((if 0 < y then 1 else if y < 0 then - 1 else 0) = (if 0 < x then 1 else if x < 0 then - 1 else 0) /\ y * y = abs_SNo x).
+{ let y. assume Hy.
+  claim HyS: SNo y. { exact (real_SNo y Hy). }
+  claim Hp: hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = y * y.
+  { exact (eq_trans_i (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_pow y 2) (y * y) (f_equal (fun n => hl_real_pow y n) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) 2 hl_two_numeral) (eq_trans_i (hl_real_pow y 2) (y ^ 2) (y * y) (hl_real_pow_compat y Hy 2 H2o) (exp_SNo_nat_2 y HyS))). }
+  apply (iff_eq1_l ((fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y) (if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) (beta R (fun y => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y Hy) ((if 0 < y then 1 else if y < 0 then - 1 else 0) = (if 0 < x then 1 else if x < 0 then - 1 else 0) /\ y * y = abs_SNo x)).
+  apply (iff_trans ((if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) = 1) (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) ((if 0 < y then 1 else if y < 0 then - 1 else 0) = (if 0 < x then 1 else if x < 0 then - 1 else 0) /\ y * y = abs_SNo x) (If_1_iff (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x))).
+  apply iffI.
+  - assume H. apply H. assume H1 H2. apply andI.
+    + exact (eq_trans_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (hl_real_sgn y) (if 0 < x then 1 else if x < 0 then - 1 else 0) (eq_sym_i (hl_real_sgn y) (if 0 < y then 1 else if y < 0 then - 1 else 0) (hl_real_sgn_compat y Hy)) (eq_trans_i (hl_real_sgn y) (hl_real_sgn x) (if 0 < x then 1 else if x < 0 then - 1 else 0) H1 (hl_real_sgn_compat x Hx))).
+    + exact (eq_trans_i (y * y) (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (abs_SNo x) (eq_sym_i (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (y * y) Hp) (eq_trans_i (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_abs x) (abs_SNo x) H2 (hl_real_abs_compat x Hx))).
+  - assume H. apply H. assume H1 H2. apply andI.
+    + exact (eq_trans_i (hl_real_sgn y) (if 0 < y then 1 else if y < 0 then - 1 else 0) (hl_real_sgn x) (hl_real_sgn_compat y Hy) (eq_trans_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (if 0 < x then 1 else if x < 0 then - 1 else 0) (hl_real_sgn x) H1 (eq_sym_i (hl_real_sgn x) (if 0 < x then 1 else if x < 0 then - 1 else 0) (hl_real_sgn_compat x Hx)))).
+    + exact (eq_trans_i (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (y * y) (hl_real_abs x) Hp (eq_trans_i (y * y) (abs_SNo x) (hl_real_abs x) H2 (eq_sym_i (hl_real_abs x) (abs_SNo x) (hl_real_abs_compat x Hx)))). }
+claim Hmain: choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1) = (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)).
+{ apply (SNoLtLe_or x 0 HxS SNo_0).
+  - assume Hlt.
+    claim Hnle: ~ 0 <= x. { assume H. exact (SNoLt_irref x (SNoLtLe_tra x 0 x HxS SNo_0 HxS Hlt H)). }
+    claim HN: (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = - (sqrt_SNo_nonneg (- x)). { exact (If_i_0 (0 <= x) (sqrt_SNo_nonneg x) (- sqrt_SNo_nonneg (- x)) Hnle). }
+    claim HmxR: (- x) :e R. { exact (real_minus_SNo x Hx). }
+    claim HmxS: SNo (- x). { exact (SNo_minus_SNo x HxS). }
+    claim Hpos: 0 < - x. { exact (minus_SNo_0 (fun hl__u hl__v => hl__u < - x) (minus_SNo_Lt_contra x 0 HxS SNo_0 Hlt)). }
+    claim Hnn: 0 <= - x. { exact (SNoLtLe 0 (- x) Hpos). }
+    claim HsR: (sqrt_SNo_nonneg (- x)) :e R. { exact (sqrt_SNo_nonneg_real (- x) HmxR Hnn). }
+    claim HsS: SNo (sqrt_SNo_nonneg (- x)). { exact (real_SNo (sqrt_SNo_nonneg (- x)) HsR). }
+    claim Hs0: 0 <= (sqrt_SNo_nonneg (- x)). { exact (sqrt_SNo_nonneg_nonneg (- x) HmxS Hnn). }
+    claim Hss: (sqrt_SNo_nonneg (- x)) * (sqrt_SNo_nonneg (- x)) = - x. { exact (sqrt_SNo_nonneg_sqr (- x) HmxS Hnn). }
+    claim Hspos: 0 < (sqrt_SNo_nonneg (- x)).
+    { apply (SNoLeE 0 (sqrt_SNo_nonneg (- x)) SNo_0 HsS Hs0).
+      - assume H. exact H.
+      - assume H.
+        claim Hz: - x = 0. { exact (eq_trans_i (- x) ((sqrt_SNo_nonneg (- x)) * (sqrt_SNo_nonneg (- x))) 0 (eq_sym_i ((sqrt_SNo_nonneg (- x)) * (sqrt_SNo_nonneg (- x))) (- x) Hss) (H (fun hl__u hl__v => hl__u * hl__u = 0) (mul_SNo_zeroR 0 SNo_0))). }
+        exact (FalseE (SNoLt_irref 0 (Hz (fun hl__u hl__v => 0 < hl__u) Hpos)) (0 < (sqrt_SNo_nonneg (- x)))). }
+    claim HNlt: (- (sqrt_SNo_nonneg (- x))) < 0. { exact (minus_SNo_0 (fun hl__u hl__v => (- (sqrt_SNo_nonneg (- x))) < hl__u) (minus_SNo_Lt_contra 0 (sqrt_SNo_nonneg (- x)) SNo_0 HsS Hspos)). }
+    claim HNR: (- (sqrt_SNo_nonneg (- x))) :e R. { exact (real_minus_SNo (sqrt_SNo_nonneg (- x)) HsR). }
+    claim HNS: SNo (- (sqrt_SNo_nonneg (- x))). { exact (SNo_minus_SNo (sqrt_SNo_nonneg (- x)) HsS). }
+    claim Habs: abs_SNo x = - x. { exact (neg_abs_SNo x HxS Hlt). }
+    claim HSx: (if 0 < x then 1 else if x < 0 then - 1 else 0) = - 1. { exact (HSneg x HxS Hlt). }
+    claim HPN: (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) (- (sqrt_SNo_nonneg (- x))) = 1.
+    { apply (HQ (- (sqrt_SNo_nonneg (- x))) HNR). assume _ H. apply H. apply andI.
+      - exact (eq_trans_i (if 0 < (- (sqrt_SNo_nonneg (- x))) then 1 else if (- (sqrt_SNo_nonneg (- x))) < 0 then - 1 else 0) (- 1) (if 0 < x then 1 else if x < 0 then - 1 else 0) (HSneg (- (sqrt_SNo_nonneg (- x))) HNS HNlt) (eq_sym_i (if 0 < x then 1 else if x < 0 then - 1 else 0) (- 1) HSx)).
+      - exact (eq_trans_i ((- (sqrt_SNo_nonneg (- x))) * (- (sqrt_SNo_nonneg (- x)))) ((sqrt_SNo_nonneg (- x)) * (sqrt_SNo_nonneg (- x))) (abs_SNo x) (mul_SNo_minus_minus (sqrt_SNo_nonneg (- x)) (sqrt_SNo_nonneg (- x)) HsS HsS) (eq_trans_i ((sqrt_SNo_nonneg (- x)) * (sqrt_SNo_nonneg (- x))) (- x) (abs_SNo x) Hss (eq_sym_i (abs_SNo x) (- x) Habs))). }
+    claim Huniq: forall y :e R, (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1 -> y = - (sqrt_SNo_nonneg (- x)).
+    { let y. assume Hy Hy1.
+      claim HyS: SNo y. { exact (real_SNo y Hy). }
+      apply (HQ y Hy). assume H _. apply (H Hy1). assume HS1 HS2.
+      claim HSy: (if 0 < y then 1 else if y < 0 then - 1 else 0) = - 1. { exact (eq_trans_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (if 0 < x then 1 else if x < 0 then - 1 else 0) (- 1) HS1 HSx). }
+      claim Hylt: y < 0.
+      { apply (SNoLt_trichotomy_or_impred y 0 HyS SNo_0 (y < 0)).
+        - assume H. exact H.
+        - assume H. exact (FalseE (H0m1 (eq_trans_i 0 (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) (- 1) (eq_sym_i (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) 0 HS0) (H (fun hl__u hl__v => (if 0 < hl__u then 1 else if hl__u < 0 then - 1 else 0) = - 1) HSy))) (y < 0)).
+        - assume H. exact (FalseE (H1m1 (eq_trans_i 1 (if 0 < y then 1 else if y < 0 then - 1 else 0) (- 1) (eq_sym_i (if 0 < y then 1 else if y < 0 then - 1 else 0) 1 (HSpos y H)) HSy)) (y < 0)). }
+      claim HmyS: SNo (- y). { exact (SNo_minus_SNo y HyS). }
+      claim Hmy0: 0 <= - y. { exact (SNoLtLe 0 (- y) (minus_SNo_0 (fun hl__u hl__v => hl__u < - y) (minus_SNo_Lt_contra y 0 HyS SNo_0 Hylt))). }
+      claim Hyy: (- y) * (- y) = - x. { exact (eq_trans_i ((- y) * (- y)) (y * y) (- x) (mul_SNo_minus_minus y y HyS HyS) (eq_trans_i (y * y) (abs_SNo x) (- x) HS2 Habs)). }
+      claim Hsq: sqrt_SNo_nonneg ((- y) ^ 2) = - y. { exact (sqrt_SNo_nonneg_sqr_id (- y) HmyS Hmy0). }
+      claim Hs_eq: (sqrt_SNo_nonneg (- x)) = - y.
+      { exact (eq_trans_i (sqrt_SNo_nonneg (- x)) (sqrt_SNo_nonneg ((- y) ^ 2)) (- y) (f_equal (fun u => sqrt_SNo_nonneg u) (- x) ((- y) ^ 2) (eq_sym_i ((- y) ^ 2) (- x) (eq_trans_i ((- y) ^ 2) ((- y) * (- y)) (- x) (exp_SNo_nat_2 (- y) HmyS) Hyy))) Hsq). }
+      exact (eq_trans_i y (- - y) (- (sqrt_SNo_nonneg (- x))) (eq_sym_i (- - y) y (minus_SNo_invol y HyS)) (f_equal (fun u => - u) (- y) (sqrt_SNo_nonneg (- x)) (eq_sym_i (sqrt_SNo_nonneg (- x)) (- y) Hs_eq))). }
+    exact (eq_trans_i (choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1)) (- (sqrt_SNo_nonneg (- x))) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (choose_in_unique R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1) (- (sqrt_SNo_nonneg (- x))) HNR HPN Huniq) (eq_sym_i (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (- (sqrt_SNo_nonneg (- x))) HN)).
+  - assume Hle.
+    claim HN: (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) = (sqrt_SNo_nonneg x). { exact (If_i_1 (0 <= x) (sqrt_SNo_nonneg x) (- sqrt_SNo_nonneg (- x)) Hle). }
+    claim HsR: (sqrt_SNo_nonneg x) :e R. { exact (sqrt_SNo_nonneg_real x Hx Hle). }
+    claim HsS: SNo (sqrt_SNo_nonneg x). { exact (real_SNo (sqrt_SNo_nonneg x) HsR). }
+    claim Hs0: 0 <= (sqrt_SNo_nonneg x). { exact (sqrt_SNo_nonneg_nonneg x HxS Hle). }
+    claim Hss: (sqrt_SNo_nonneg x) * (sqrt_SNo_nonneg x) = x. { exact (sqrt_SNo_nonneg_sqr x HxS Hle). }
+    claim Habs: abs_SNo x = x. { exact (nonneg_abs_SNo x Hle). }
+    claim HPN: (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) (sqrt_SNo_nonneg x) = 1.
+    { apply (HQ (sqrt_SNo_nonneg x) HsR). assume _ H. apply H. apply andI.
+      - apply (SNoLeE 0 x SNo_0 HxS Hle).
+        + assume Hxpos.
+          claim Hspos: 0 < (sqrt_SNo_nonneg x).
+          { apply (SNoLeE 0 (sqrt_SNo_nonneg x) SNo_0 HsS Hs0).
+            - assume H2. exact H2.
+            - assume H2. exact (FalseE (SNoLt_irref 0 ((eq_trans_i x ((sqrt_SNo_nonneg x) * (sqrt_SNo_nonneg x)) 0 (eq_sym_i ((sqrt_SNo_nonneg x) * (sqrt_SNo_nonneg x)) x Hss) (H2 (fun hl__u hl__v => hl__u * hl__u = 0) (mul_SNo_zeroR 0 SNo_0))) (fun hl__u hl__v => 0 < hl__u) Hxpos)) (0 < (sqrt_SNo_nonneg x))). }
+          exact (eq_trans_i (if 0 < (sqrt_SNo_nonneg x) then 1 else if (sqrt_SNo_nonneg x) < 0 then - 1 else 0) 1 (if 0 < x then 1 else if x < 0 then - 1 else 0) (HSpos (sqrt_SNo_nonneg x) Hspos) (eq_sym_i (if 0 < x then 1 else if x < 0 then - 1 else 0) 1 (HSpos x Hxpos))).
+        + assume H0.
+          claim Hs_eq0: (sqrt_SNo_nonneg x) = 0. { exact (eq_trans_i (sqrt_SNo_nonneg x) (sqrt_SNo_nonneg 0) 0 (f_equal (fun u => sqrt_SNo_nonneg u) x 0 (eq_sym_i 0 x H0)) sqrt_SNo_nonneg_0). }
+          exact (f_equal (fun u => (if 0 < u then 1 else if u < 0 then - 1 else 0)) (sqrt_SNo_nonneg x) x (eq_trans_i (sqrt_SNo_nonneg x) 0 x Hs_eq0 H0)).
+      - exact (eq_trans_i ((sqrt_SNo_nonneg x) * (sqrt_SNo_nonneg x)) x (abs_SNo x) Hss (eq_sym_i (abs_SNo x) x Habs)). }
+    claim Huniq: forall y :e R, (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1 -> y = (sqrt_SNo_nonneg x).
+    { let y. assume Hy Hy1.
+      claim HyS: SNo y. { exact (real_SNo y Hy). }
+      apply (HQ y Hy). assume H _. apply (H Hy1). assume HS1 HS2.
+      claim Hyy: y * y = x. { exact (eq_trans_i (y * y) (abs_SNo x) x HS2 Habs). }
+      claim Hy0: 0 <= y.
+      { apply (SNoLeE 0 x SNo_0 HxS Hle).
+        + assume Hxpos.
+          claim HSy: (if 0 < y then 1 else if y < 0 then - 1 else 0) = 1. { exact (eq_trans_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (if 0 < x then 1 else if x < 0 then - 1 else 0) 1 HS1 (HSpos x Hxpos)). }
+          apply (SNoLt_trichotomy_or_impred y 0 HyS SNo_0 (0 <= y)).
+          * assume H. exact (FalseE (Hm11 (eq_trans_i (- 1) (if 0 < y then 1 else if y < 0 then - 1 else 0) 1 (eq_sym_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (- 1) (HSneg y HyS H)) HSy)) (0 <= y)).
+          * assume H. exact ((eq_sym_i y 0 H) (fun hl__u hl__v => 0 <= hl__u) (SNoLe_ref 0)).
+          * assume H. exact (SNoLtLe 0 y H).
+        + assume H0.
+          claim HSy: (if 0 < y then 1 else if y < 0 then - 1 else 0) = 0. { exact (eq_trans_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (if 0 < x then 1 else if x < 0 then - 1 else 0) 0 HS1 (eq_trans_i (if 0 < x then 1 else if x < 0 then - 1 else 0) (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) 0 (f_equal (fun u => (if 0 < u then 1 else if u < 0 then - 1 else 0)) x 0 (eq_sym_i 0 x H0)) HS0)). }
+          apply (SNoLt_trichotomy_or_impred y 0 HyS SNo_0 (0 <= y)).
+          * assume H. exact (FalseE (Hm10 (eq_trans_i (- 1) (if 0 < y then 1 else if y < 0 then - 1 else 0) 0 (eq_sym_i (if 0 < y then 1 else if y < 0 then - 1 else 0) (- 1) (HSneg y HyS H)) HSy)) (0 <= y)).
+          * assume H. exact ((eq_sym_i y 0 H) (fun hl__u hl__v => 0 <= hl__u) (SNoLe_ref 0)).
+          * assume H. exact (SNoLtLe 0 y H). }
+      claim Hsq: sqrt_SNo_nonneg (y ^ 2) = y. { exact (sqrt_SNo_nonneg_sqr_id y HyS Hy0). }
+      exact (eq_sym_i (sqrt_SNo_nonneg x) y (eq_trans_i (sqrt_SNo_nonneg x) (sqrt_SNo_nonneg (y ^ 2)) y (f_equal (fun u => sqrt_SNo_nonneg u) x (y ^ 2) (eq_sym_i (y ^ 2) x (eq_trans_i (y ^ 2) (y * y) x (exp_SNo_nat_2 y HyS) Hyy))) Hsq)). }
+    exact (eq_trans_i (choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1)) (sqrt_SNo_nonneg x) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (choose_in_unique R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1) (sqrt_SNo_nonneg x) HsR HPN Huniq) (eq_sym_i (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (sqrt_SNo_nonneg x) HN)). }
+exact (eq_trans_i (hl_sqrt x) (hl_select R (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0)) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (hl_sqrt_unfold x Hx) (eq_trans_i (hl_select R (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0)) (choose_in R (fun y => (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) y = 1)) (if 0 <= x then sqrt_SNo_nonneg x else - sqrt_SNo_nonneg (- x)) (hl_select_eq R (fun y :e R => if (hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x) then 1 else 0) HF) Hmain)).
+Qed.

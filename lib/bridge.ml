@@ -514,6 +514,48 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                  | Some (e, _) when List.length args = List.length e.R.c_args -> rel_mapped g e c cty args lit nat nview
                  | Some _ -> unsupported "rel: partial application of mapped constant %s" c
                  | None -> unsupported "rel: unmapped constant %s" c))
+       | Lam (x, xty, body), (E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ]) ->
+           (* a lambda in meta position: open the binder exactly as Elab does and relate pointwise;
+              the literal side is a set-level lambda, evaluated with `beta` *)
+           let c, dopt = (match nview with E.VMetaFun ([ c ], d) -> (c, Some d) | E.VMetaPred [ c ] -> (c, None) | _ -> assert false) in
+           let is_pred = (dopt = None) in
+           let d = (match dopt with Some d -> d | None -> Mg.Num 2) in
+           let n = E.fresh g.nctx x in
+           let key = x ^ "\000" ^ n ^ "#" ^ string_of_int g.counter in
+           g.counter <- g.counter + 1;
+           let body' = open_with (Free (key, xty)) body in
+           let xview = (match E.choose_view g.nctx (key, xty) [ body' ] with
+             | E.VMetaFun _ | E.VMetaPred _ -> E.data_view g.nctx xty
+             | E.VProp -> E.VSet (Mg.Num 2)
+             | v -> v) in
+           g.nctx.E.vars <- (key, (xty, xview, n)) :: g.nctx.E.vars;
+           if not (List.mem n g.lctx.L.used) then g.lctx.L.used <- n :: g.lctx.L.used;
+           g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars;
+           let plain = { vty = xty; view = xview; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" } in
+           g.vars <- (key, plain) :: g.vars;
+           let finish () =
+             g.nctx.E.vars <- List.remove_assoc key g.nctx.E.vars;
+             g.lctx.L.vars <- List.remove_assoc key g.lctx.L.vars;
+             g.vars <- List.remove_assoc key g.vars;
+             E.release g.nctx n; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used in
+           let hn = "H" ^ n in
+           let result = (try
+             if is_pred then begin
+               let lp = ltext g body' and np = ntext g body' in
+               let fwd = bridge g Fwd body' and bwd = bridge g Bwd body' in
+               let lb = Printf.sprintf "(if %s then 1 else 0)" lp in
+               let pw = Printf.sprintf "(fun %s %s => (iff_eq1_l (%s %s) %s (beta %s (fun %s => %s) %s %s) (%s) (iff_trans (%s = 1) (%s) (%s) (If_1_iff (%s)) (iffI (%s) (%s) %s %s))))"
+                 n hn (ppp lit) n lb (ppp c) n lb n hn np lb lp np lp lp np fwd bwd in
+               (lit, nat, KPWP c, pw)
+             end else begin
+               let lb, nb, kb, pb = rel g body' (Some (E.VSet d)) in
+               if kb <> KEq then unsupported "rel: lambda body relation";
+               let pw = if pb = "" then Printf.sprintf "(fun %s %s => (beta %s (fun %s => %s) %s %s))" n hn (ppp c) n (pp lb) n hn
+                 else Printf.sprintf "(fun %s %s => (eq_trans_i (%s %s) %s %s (beta %s (fun %s => %s) %s %s) %s))" n hn (ppp lit) n (ppp lb) (ppp nb) (ppp c) n (pp lb) n hn pb in
+               (lit, nat, KPW c, pw)
+             end
+           with e -> finish (); raise e) in
+           finish (); result
        | Lam _, _ -> unsupported "rel: lambda"
        | _ -> unsupported "rel: head")
 
