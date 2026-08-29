@@ -678,3 +678,41 @@ claim Hnonempty: nonempty S.
 claim Hbounded: bounded_below S. { exact Hb. }
 exact (glb_exists_R_of_lub_exists_R R_has_lub_property S HS Hnonempty Hbounded).
 Qed.
+
+Theorem bound_above_of_guarded : forall S:set, S c= R -> (exists b :e R, forall x :e R, x :e S -> x <= b) -> exists b :e R, forall x :e S, x <= b.
+let S. assume HS H. apply H. let b. assume Hb0. apply Hb0. assume HbR Hg. witness b. apply andI.
+- exact HbR.
+- let x. assume Hx. exact (Hg x (HS x Hx) Hx).
+Qed.
+
+Theorem bound_below_of_guarded : forall S:set, S c= R -> (exists b :e R, forall x :e R, x :e S -> b <= x) -> exists b :e R, forall x :e S, b <= x.
+let S. assume HS H. apply H. let b. assume Hb0. apply Hb0. assume HbR Hg. witness b. apply andI.
+- exact HbR.
+- let x. assume Hx. exact (Hg x (HS x Hx) Hx).
+Qed.
+
+Theorem neq_Empty_of_mem : forall S x:set, x :e S -> ~ S = Empty.
+let S x. assume Hx HE. exact (EmptyE x (HE (fun hl__u hl__v => x :e hl__u) Hx)).
+Qed.
+
+Theorem lub_of_finite : forall S:set, S c= R -> ~ S = Empty -> finite S -> exists x :e R, is_lub S x.
+let S. assume HS Hne Hfin.
+claim HSNo: forall x :e S, SNo x. { let x. assume Hx. exact (real_SNo x (HS x Hx)). }
+apply (finite_max_exists S HSNo Hfin Hne). let m. assume Hm. apply Hm. assume Hm1 Hm2. apply Hm1. assume HmS HmSNo.
+witness m. apply andI.
+- exact (HS m HmS).
+- prove upper_bound S m /\ forall y :e R, upper_bound S y -> m <= y. apply andI.
+  + prove forall s :e S, s <= m. let y. assume Hy. exact (Hm2 y Hy (HSNo y Hy)).
+  + let y. assume Hy Hub. exact (Hub m HmS).
+Qed.
+
+Theorem glb_of_finite : forall S:set, S c= R -> ~ S = Empty -> finite S -> exists x :e R, is_glb S x.
+let S. assume HS Hne Hfin.
+claim HSNo: forall x :e S, SNo x. { let x. assume Hx. exact (real_SNo x (HS x Hx)). }
+apply (finite_min_exists S HSNo Hfin Hne). let m. assume Hm. apply Hm. assume Hm1 Hm2. apply Hm1. assume HmS HmSNo.
+witness m. apply andI.
+- exact (HS m HmS).
+- prove lower_bound S m /\ forall y :e R, lower_bound S y -> y <= m. apply andI.
+  + prove forall s :e S, m <= s. let y. assume Hy. exact (Hm2 y Hy (HSNo y Hy)).
+  + let y. assume Hy Hlb. exact (Hlb m HmS).
+Qed.

@@ -63,14 +63,19 @@ let side_conditions : (string * string list) list =
     ("sup", [ "exists x :e R, is_lub (hl_rep R ?1) x" ]);
     ("inf", [ "exists x :e R, is_glb (hl_rep R ?1) x" ]) ]
 
-(* derived side conditions: (condition template, (premise templates — alternatives per slot —,
-   lemma)); premises are matched among the hypotheses in their native form, `?1` denoting the
-   native set; the lemma takes the set, its `c= R` proof and the premises in order *)
-let side_derivations : (string * (string list list * string)) list =
+(* derived side conditions: condition template -> alternative rules (premise slots, lemma).
+   Each slot lists alternative premise templates with a wrapper lemma ("" = use the hypothesis as
+   is; "mem" = the template `?x :e ?1`, turned into nonemptiness by neq_Empty_of_mem; otherwise
+   `wrapper S Hsub h`).  Premises are matched among the hypotheses in native form, `?1` denoting
+   the native set; the rule's lemma takes the set, its `c= R` proof and the slot proofs in order. *)
+let nonempty_alts = [ ("~ ?1 = Empty", ""); ("?1 <> Empty", ""); ("?x :e ?1", "mem") ]
+let side_derivations : (string * ((string * string) list list * string) list) list =
   [ ("exists x :e R, is_lub (hl_rep R ?1) x",
-     ([ [ "~ ?1 = Empty"; "?1 <> Empty" ]; [ "exists b :e R, forall x :e ?1, x <= b" ] ], "lub_of_bounds"));
+     [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, x <= b", ""); ("exists b :e R, forall x :e R, x :e ?1 -> x <= b", "bound_above_of_guarded") ] ], "lub_of_bounds");
+       ([ nonempty_alts; [ ("finite ?1", "") ] ], "lub_of_finite") ]);
     ("exists x :e R, is_glb (hl_rep R ?1) x",
-     ([ [ "~ ?1 = Empty"; "?1 <> Empty" ]; [ "exists b :e R, forall x :e ?1, b <= x" ] ], "glb_of_bounds")) ]
+     [ ([ nonempty_alts; [ ("exists b :e R, forall x :e ?1, b <= x", ""); ("exists b :e R, forall x :e R, x :e ?1 -> b <= x", "bound_below_of_guarded") ] ], "glb_of_bounds");
+       ([ nonempty_alts; [ ("finite ?1", "") ] ], "glb_of_finite") ]) ]
 
 (* the template parser only knows the God1 signature: literal-layer constants (hl_...) come back
    as variables; make them constants so that structural matching against generated terms works *)
@@ -693,20 +698,27 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
             else (replace_tm l n cur, Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm l (Mg.Var "hl__u") cur)) pf)) (prop, pf) (List.rev !rewrites) in
           let derived () = (match List.assoc_opt sc_t side_derivations with
             | None -> None
-            | Some (slots, lemma) ->
+            | Some rules ->
                 (match List.assoc_opt "1" !lsub, List.assoc_opt "1" !tsub with
                  | Some la, Some s_lit ->
                      let s_nat = nat_of s_lit in
-                     let find_slot alts = List.find_map (fun tpl ->
-                       let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
-                       List.assoc_opt p g.hyps) alts in
-                     let premises = List.map find_slot slots in
-                     if List.exists (fun p -> p = None) premises then None
-                     else begin
-                       let ca = (match s_lit with Mg.App (Mg.App (Mg.Cst "hl_rep", ca), _) -> ca | _ -> Mg.Cst "R") in
-                       let _, hsub = transport_fwd (Mg.App (Mg.App (Mg.Cst "Subq", s_lit), ca), Printf.sprintf "(hl_rep_Subq %s %s)" (ppp ca) (ppp la)) in
-                       Some (Printf.sprintf "(%s %s %s %s)" lemma (ppp s_nat) hsub (String.concat " " (List.map (fun p -> Option.get p) premises)))
-                     end
+                     let ca = (match s_lit with Mg.App (Mg.App (Mg.Cst "hl_rep", ca), _) -> ca | _ -> Mg.Cst "R") in
+                     let hsub = lazy (snd (transport_fwd (Mg.App (Mg.App (Mg.Cst "Subq", s_lit), ca), Printf.sprintf "(hl_rep_Subq %s %s)" (ppp ca) (ppp la)))) in
+                     let find_slot alts = List.find_map (fun (tpl, wrap) ->
+                       if wrap = "mem" then
+                         List.find_map (fun (h, pf) -> match h with
+                           | Mg.App (Mg.App (Mg.Cst "In", e), s) when s = s_nat -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s %s)" (ppp s_nat) (ppp e) pf)
+                           | _ -> None) g.hyps
+                       else begin
+                         let p = Mg.normalize (Mg.inst [ ("1", s_nat) ] (cstify (Mg.parse_template tpl))) in
+                         match List.assoc_opt p g.hyps with
+                         | None -> None
+                         | Some h -> Some (if wrap = "" then h else Printf.sprintf "(%s %s %s %s)" wrap (ppp s_nat) (Lazy.force hsub) h)
+                       end) alts in
+                     List.find_map (fun (slots, lemma) ->
+                       let premises = List.map find_slot slots in
+                       if List.exists (fun p -> p = None) premises then None
+                       else Some (Printf.sprintf "(%s %s %s %s)" lemma (ppp s_nat) (Lazy.force hsub) (String.concat " " (List.map (fun p -> Option.get p) premises)))) rules
                  | _ -> None)) in
           (match (match List.assoc_opt sc_nat g.hyps with Some h -> Some h | None -> derived ()) with
            | None -> unsupported "side condition %s not available from hypotheses [hyps: %s]" (pp sc_nat)

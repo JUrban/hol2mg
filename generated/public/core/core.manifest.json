@@ -10987,9 +10987,9 @@
    "source": "!s:real->bool. !a:real. (?b:real. !x:real. x IN s ==> x <= b) /\\ a IN s ==> a <= sup s",
    "statement": "forall s c= R, forall a :e R, (exists b :e R, forall x :e R, x :e s -> x <= b) /\\ a :e s -> a <= sup s",
    "literal": "forall s :e 2 :^: R, forall a :e R, (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) /\\ hl_IN R a s = 1 -> hl_real_le a (hl_sup s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: a :e s, exists b :e R, forall x :e R, x :e s -> x <= b]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ELEMENT_LE_SUP_bridge"
   },
   {
    "name": "EL_APPEND",
@@ -23179,9 +23179,9 @@
    "source": "!s:real->bool. ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> b <= x) ==> (!x:real. x IN s ==> inf s <= x) /\\ (!b:real. (!x:real. x IN s ==> b <= x) ==> b <= inf s)",
    "statement": "forall s c= R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> b <= x) -> (forall x :e R, x :e s -> inf s <= x) /\\ forall b :e R, (forall x :e R, x :e s -> b <= x) -> b <= inf s",
    "literal": "forall s :e 2 :^: R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> (forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_inf s) x = 1) /\\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> hl_real_le b (hl_inf s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: forall x :e R, x :e s -> b <= x, exists b :e R, forall x :e R, x :e s -> b <= x, ~ s = Empty]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_bridge"
   },
   {
    "name": "INFINITE",
@@ -23668,9 +23668,9 @@
    "source": "!s:real->bool. FINITE s /\\ ~(s = EMPTY) ==> inf s IN s /\\ (!x:real. x IN s ==> inf s <= x)",
    "statement": "forall s c= R, finite s /\\ ~ s = Empty -> inf s :e s /\\ forall x :e R, x :e s -> inf s <= x",
    "literal": "forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> hl_IN R (hl_inf s) s = 1 /\\ forall x :e R, hl_IN R x s = 1 -> hl_real_le (hl_inf s) x = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: x :e s, ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_FINITE_bridge"
   },
   {
    "name": "INF_FINITE_LEMMA",
@@ -23782,9 +23782,9 @@
    "source": "!s:real->bool. !a:real. (?b:real. !x:real. x IN s ==> b <= x) /\\ a IN s ==> inf s <= a",
    "statement": "forall s c= R, forall a :e R, (exists b :e R, forall x :e R, x :e s -> b <= x) /\\ a :e s -> inf s <= a",
    "literal": "forall s :e 2 :^: R, forall a :e R, (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) /\\ hl_IN R a s = 1 -> hl_real_le (hl_inf s) a = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: a :e s, exists b :e R, forall x :e R, x :e s -> b <= x]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_LE_ELEMENT_bridge"
   },
   {
    "name": "INF_SING",
@@ -23896,9 +23896,9 @@
    "source": "!s:real->bool. FINITE s /\\ ~(s = EMPTY) ==> (inf s = a <=> a IN s /\\ (!y:real. y IN s ==> a <= y))",
    "statement": "forall a :e R, forall s c= R, finite s /\\ ~ s = Empty -> (inf s = a <-> a :e s /\\ forall y :e R, y :e s -> a <= y)",
    "literal": "forall a :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_inf s = a <-> hl_IN R a s = 1 /\\ forall y :e R, hl_IN R y s = 1 -> hl_real_le a y = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INF_UNIQUE_FINITE_bridge"
   },
   {
    "name": "INJ",
@@ -57667,9 +57667,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (inf s <= a <=> (?x:real. x IN s /\\ x <= a))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (inf s <= a <-> exists x :e R, x :e s /\\ x <= a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le (hl_inf s) a = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_le x a = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_INF_LE_FINITE_bridge"
   },
   {
    "name": "REAL_INF_LT_FINITE",
@@ -57696,9 +57696,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (inf s < a <=> (?x:real. x IN s /\\ x < a))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (inf s < a <-> exists x :e R, x :e s /\\ x < a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt (hl_inf s) a = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt x a = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_INF_LT_FINITE_bridge"
   },
   {
    "name": "REAL_INF_UNIQUE",
@@ -58600,9 +58600,9 @@
    "source": "!s:real->bool. !y:real. ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> b <= x) ==> (y <= inf s <=> (!x:real. x IN s ==> y <= x))",
    "statement": "forall s c= R, forall y :e R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> b <= x) -> (y <= inf s <-> forall x :e R, x :e s -> y <= x)",
    "literal": "forall s :e 2 :^: R, forall y :e R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le b x = 1) -> (hl_real_le y (hl_inf s) = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le y x = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: exists b :e R, forall x :e R, x :e s -> b <= x, ~ s = Empty]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LE_INF_EQ_bridge"
   },
   {
    "name": "REAL_LE_INF_FINITE",
@@ -58629,9 +58629,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (a <= inf s <=> (!x:real. x IN s ==> a <= x))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a <= inf s <-> forall x :e R, x :e s -> a <= x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le a (hl_inf s) = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le a x = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LE_INF_FINITE_bridge"
   },
   {
    "name": "REAL_LE_INF_SUBSET",
@@ -59767,9 +59767,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (a <= sup s <=> (?x:real. x IN s /\\ a <= x))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a <= sup s <-> exists x :e R, x :e s /\\ a <= x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le a (hl_sup s) = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_le a x = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LE_SUP_FINITE_bridge"
   },
   {
    "name": "REAL_LE_TOTAL",
@@ -60574,9 +60574,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (a < inf s <=> (!x:real. x IN s ==> a < x))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a < inf s <-> forall x :e R, x :e s -> a < x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt a (hl_inf s) = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_lt a x = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_glb s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LT_INF_FINITE_bridge"
   },
   {
    "name": "REAL_LT_INV",
@@ -61627,9 +61627,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (a < sup s <=> (?x:real. x IN s /\\ a < x))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (a < sup s <-> exists x :e R, x :e s /\\ a < x)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt a (hl_sup s) = 1 <-> exists x :e R, hl_IN R x s = 1 /\\ hl_real_lt a x = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_LT_SUP_FINITE_bridge"
   },
   {
    "name": "REAL_LT_TOTAL",
@@ -66780,9 +66780,9 @@
    "source": "!s:real->bool. !y:real. ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> x <= b) ==> (sup s <= y <=> (!x:real. x IN s ==> x <= y))",
    "statement": "forall s c= R, forall y :e R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> x <= b) -> (sup s <= y <-> forall x :e R, x :e s -> x <= y)",
    "literal": "forall s :e 2 :^: R, forall y :e R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> (hl_real_le (hl_sup s) y = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le x y = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: exists b :e R, forall x :e R, x :e s -> x <= b, ~ s = Empty]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUP_LE_EQ_bridge"
   },
   {
    "name": "REAL_SUP_LE_FINITE",
@@ -66809,9 +66809,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (sup s <= a <=> (!x:real. x IN s ==> x <= a))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (sup s <= a <-> forall x :e R, x :e s -> x <= a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_le (hl_sup s) a = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_le x a = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUP_LE_FINITE_bridge"
   },
   {
    "name": "REAL_SUP_LE_SUBSET",
@@ -66866,9 +66866,9 @@
    "source": "!s:real->bool. !a:real. FINITE s /\\ ~(s = EMPTY) ==> (sup s < a <=> (!x:real. x IN s ==> x < a))",
    "statement": "forall s c= R, forall a :e R, finite s /\\ ~ s = Empty -> (sup s < a <-> forall x :e R, x :e s -> x < a)",
    "literal": "forall s :e 2 :^: R, forall a :e R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_real_lt (hl_sup s) a = 1 <-> forall x :e R, hl_IN R x s = 1 -> hl_real_lt x a = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_SUP_LT_FINITE_bridge"
   },
   {
    "name": "REAL_SUP_UNIQUE",
@@ -74390,9 +74390,9 @@
    "source": "!s:real->bool. ~(s = EMPTY) /\\ (?b:real. !x:real. x IN s ==> x <= b) ==> (!x:real. x IN s ==> x <= sup s) /\\ (!b:real. (!x:real. x IN s ==> x <= b) ==> sup s <= b)",
    "statement": "forall s c= R, ~ s = Empty /\\ (exists b :e R, forall x :e R, x :e s -> x <= b) -> (forall x :e R, x :e s -> x <= sup s) /\\ forall b :e R, (forall x :e R, x :e s -> x <= b) -> sup s <= b",
    "literal": "forall s :e 2 :^: R, ~ s = hl_EMPTY R /\\ (exists b :e R, forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> (forall x :e R, hl_IN R x s = 1 -> hl_real_le x (hl_sup s) = 1) /\\ forall b :e R, (forall x :e R, hl_IN R x s = 1 -> hl_real_le x b = 1) -> hl_real_le (hl_sup s) b = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: forall x :e R, x :e s -> x <= b, exists b :e R, forall x :e R, x :e s -> x <= b, ~ s = Empty]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUP_bridge"
   },
   {
    "name": "SUPERADMISSIBLE_COND",
@@ -74816,9 +74816,9 @@
    "source": "!s:real->bool. FINITE s /\\ ~(s = EMPTY) ==> sup s IN s /\\ (!x:real. x IN s ==> x <= sup s)",
    "statement": "forall s c= R, finite s /\\ ~ s = Empty -> sup s :e s /\\ forall x :e R, x :e s -> x <= sup s",
    "literal": "forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> hl_IN R (hl_sup s) s = 1 /\\ forall x :e R, hl_IN R x s = 1 -> hl_real_le x (hl_sup s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: x :e s, ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUP_FINITE_bridge"
   },
   {
    "name": "SUP_FINITE_LEMMA",
@@ -75016,9 +75016,9 @@
    "source": "!s:real->bool. FINITE s /\\ ~(s = EMPTY) ==> (sup s = a <=> a IN s /\\ (!y:real. y IN s ==> y <= a))",
    "statement": "forall a :e R, forall s c= R, finite s /\\ ~ s = Empty -> (sup s = a <-> a :e s /\\ forall y :e R, y :e s -> y <= a)",
    "literal": "forall a :e R, forall s :e 2 :^: R, hl_FINITE R s = 1 /\\ ~ s = hl_EMPTY R -> (hl_sup s = a <-> hl_IN R a s = 1 /\\ forall y :e R, hl_IN R y s = 1 -> hl_real_le y a = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition exists x :e R, is_lub s x not available from hypotheses [hyps: ~ s = Empty, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SUP_UNIQUE_FINITE_bridge"
   },
   {
    "name": "SURJ",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1612
+  "native_certified": 1630
  }
 }
