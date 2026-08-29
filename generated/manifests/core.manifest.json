@@ -26946,9 +26946,9 @@
    "source": "!m:int. !n:int. !p:int. rem (rem m p + rem n p) p = rem (m + n) p",
    "statement": "forall m n p :e int, rem_int (rem_int m p + rem_int n p) p = rem_int (m + n) p",
    "literal": "forall m n p :e hl_ty_int, hl_rem (hl_int_add (hl_rem m p) (hl_rem n p)) p = hl_rem (hl_int_add m n) p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_ADD_REM_bridge"
   },
   {
    "name": "INT_ADD_RID",
@@ -27421,9 +27421,9 @@
    "source": "!n:int. !d:int. !e:int. int_divides d n ==> (int_divides e (div n d) <=> int_divides (d * e) n)",
    "statement": "forall n d e0 :e int, divides_int d n -> (divides_int e0 (div_int n d) <-> divides_int (d * e0) n)",
    "literal": "forall n d e1 :e hl_ty_int, hl_int_divides d n = 1 -> (hl_int_divides e1 (hl_div n d) = 1 <-> hl_int_divides (hl_int_mul d e1) n = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVIDES_DIVIDES_DIV_bridge"
   },
   {
    "name": "INT_DIVIDES_DIVIDES_DIV_EQ",
@@ -27448,9 +27448,9 @@
    "source": "!n:int. !d:int. !e:int. int_divides d n /\\ int_divides e (div n d) <=> int_divides (d * e) n",
    "statement": "forall n d e0 :e int, divides_int d n /\\ divides_int e0 (div_int n d) <-> divides_int (d * e0) n",
    "literal": "forall n d e1 :e hl_ty_int, hl_int_divides d n = 1 /\\ hl_int_divides e1 (hl_div n d) = 1 <-> hl_int_divides (hl_int_mul d e1) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVIDES_DIVIDES_DIV_EQ_bridge"
   },
   {
    "name": "INT_DIVIDES_DIV_DIVIDES",
@@ -27477,9 +27477,9 @@
    "source": "!n:int. !d:int. !e:int. int_divides d n /\\ (n = int_of_num 0 ==> e = int_of_num 0) ==> (int_divides (div n d) e <=> int_divides n (d * e))",
    "statement": "forall n d e0 :e int, divides_int d n /\\ (n = 0 -> e0 = 0) -> (divides_int (div_int n d) e0 <-> divides_int n (d * e0))",
    "literal": "forall n d e1 :e hl_ty_int, hl_int_divides d n = 1 /\\ (n = hl_int_of_num (hl_NUMERAL hl_zero) -> e1 = hl_int_of_num (hl_NUMERAL hl_zero)) -> (hl_int_divides (hl_div n d) e1 = 1 <-> hl_int_divides n (hl_int_mul d e1) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVIDES_DIV_DIVIDES_bridge"
   },
   {
    "name": "INT_DIVIDES_DIV_SELF",
@@ -27504,9 +27504,9 @@
    "source": "!n:int. !d:int. int_divides d n ==> int_divides (div n d) n",
    "statement": "forall n d :e int, divides_int d n -> divides_int (div_int n d) n",
    "literal": "forall n d :e hl_ty_int, hl_int_divides d n = 1 -> hl_int_divides (hl_div n d) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVIDES_DIV_SELF_bridge"
   },
   {
    "name": "INT_DIVIDES_LABS",
@@ -27647,9 +27647,9 @@
    "source": "!m:int. !n:int. ~(n = int_of_num 0) ==> m = div m n * n + rem m n /\\ int_of_num 0 <= rem m n /\\ rem m n < int_abs n",
    "statement": "forall m n :e int, ~ n = 0 -> m = div_int m n * n + rem_int m n /\\ (0 <= rem_int m n /\\ rem_int m n < abs_SNo n)",
    "literal": "forall m n :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> m = hl_int_add (hl_int_mul (hl_div m n) n) (hl_rem m n) /\\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_rem m n) = 1 /\\ hl_int_lt (hl_rem m n) (hl_int_abs n) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVISION_bridge"
   },
   {
    "name": "INT_DIVISION_0",
@@ -27703,9 +27703,9 @@
    "source": "!m:int. !n:int. div m n * n + rem m n = m",
    "statement": "forall m n :e int, div_int m n * n + rem_int m n = m",
    "literal": "forall m n :e hl_ty_int, hl_int_add (hl_int_mul (hl_div m n) n) (hl_rem m n) = m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVISION_SIMP_bridge"
   },
   {
    "name": "INT_DIVMOD_EXIST_0",
@@ -27761,9 +27761,9 @@
    "source": "!m:int. !n:int. !q:int. !r:int. m = q * n + r /\\ int_of_num 0 <= r /\\ r < int_abs n ==> div m n = q /\\ rem m n = r",
    "statement": "forall m n q r :e int, m = q * n + r /\\ (0 <= r /\\ r < abs_SNo n) -> div_int m n = q /\\ rem_int m n = r",
    "literal": "forall m n q r :e hl_ty_int, m = hl_int_add (hl_int_mul q n) r /\\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) r = 1 /\\ hl_int_lt r (hl_int_abs n) = 1) -> hl_div m n = q /\\ hl_rem m n = r",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIVMOD_UNIQ_bridge"
   },
   {
    "name": "INT_DIV_0",
@@ -27790,9 +27790,9 @@
    "source": "!m:int. div m (int_of_num 0) = int_of_num 0",
    "statement": "forall m :e int, div_int m 0 = 0",
    "literal": "forall m :e hl_ty_int, hl_div m (hl_int_of_num (hl_NUMERAL hl_zero)) = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_0_bridge"
   },
   {
    "name": "INT_DIV_1",
@@ -27819,9 +27819,9 @@
    "source": "!n:int. div n (int_of_num 1) = n",
    "statement": "forall n :e int, div_int n 1 = n",
    "literal": "forall n :e hl_ty_int, hl_div n (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_1_bridge"
   },
   {
    "name": "INT_DIV_BY_DIV",
@@ -27848,9 +27848,9 @@
    "source": "!m:int. !n:int. ~(n = int_of_num 0) /\\ int_divides m n ==> div n (div n m) = m",
    "statement": "forall m n :e int, ~ n = 0 /\\ divides_int m n -> div_int n (div_int n m) = m",
    "literal": "forall m n :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) /\\ hl_int_divides m n = 1 -> hl_div n (hl_div n m) = m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_BY_DIV_bridge"
   },
   {
    "name": "INT_DIV_DIV",
@@ -27877,9 +27877,9 @@
    "source": "!m:int. !n:int. !p:int. int_of_num 0 <= n ==> div (div m n) p = div m (n * p)",
    "statement": "forall m n p :e int, 0 <= n -> div_int (div_int m n) p = div_int m (n * p)",
    "literal": "forall m n p :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 -> hl_div (hl_div m n) p = hl_div m (hl_int_mul n p)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_DIV_bridge"
   },
   {
    "name": "INT_DIV_EQ_0",
@@ -27906,9 +27906,9 @@
    "source": "!m:int. !n:int. div m n = int_of_num 0 <=> n = int_of_num 0 \\/ int_of_num 0 <= m /\\ m < int_abs n",
    "statement": "forall m n :e int, div_int m n = 0 <-> n = 0 \\/ 0 <= m /\\ m < abs_SNo n",
    "literal": "forall m n :e hl_ty_int, hl_div m n = hl_int_of_num (hl_NUMERAL hl_zero) <-> n = hl_int_of_num (hl_NUMERAL hl_zero) \\/ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1 /\\ hl_int_lt m (hl_int_abs n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_EQ_0_bridge"
   },
   {
    "name": "INT_DIV_LE",
@@ -27933,9 +27933,9 @@
    "source": "!m:int. !n:int. int_abs (div m n) <= int_abs m",
    "statement": "forall m n :e int, abs_SNo (div_int m n) <= abs_SNo m",
    "literal": "forall m n :e hl_ty_int, hl_int_le (hl_int_abs (hl_div m n)) (hl_int_abs m) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_LE_bridge"
   },
   {
    "name": "INT_DIV_LE_EQ",
@@ -27962,9 +27962,9 @@
    "source": "!a:int. !b:int. !c:int. int_of_num 0 < a ==> (div b a <= c <=> b < a * (c + int_of_num 1))",
    "statement": "forall a b c :e int, 0 < a -> (div_int b a <= c <-> b < a * (c + 1))",
    "literal": "forall a b c :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) a = 1 -> (hl_int_le (hl_div b a) c = 1 <-> hl_int_lt b (hl_int_mul a (hl_int_add c (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_LE_EQ_bridge"
   },
   {
    "name": "INT_DIV_LNEG",
@@ -27993,7 +27993,7 @@
    "statement": "forall m n :e int, div_int (- m) n = if rem_int m n = 0 then - div_int m n else - div_int m n + - if 0 < n then 1 else if n < 0 then - 1 else 0",
    "literal": "forall m n :e hl_ty_int, hl_div (hl_int_neg m) n = hl_COND hl_ty_int (if hl_rem m n = hl_int_of_num (hl_NUMERAL hl_zero) then 1 else 0) (hl_int_neg (hl_div m n)) (hl_int_sub (hl_int_neg (hl_div m n)) (hl_int_sgn n))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -28021,9 +28021,9 @@
    "source": "!m:int. !n:int. (~(n = int_of_num 0) ==> int_of_num 0 <= m) /\\ m < n ==> div m n = int_of_num 0",
    "statement": "forall m n :e int, (~ n = 0 -> 0 <= m) /\\ m < n -> div_int m n = 0",
    "literal": "forall m n :e hl_ty_int, (~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1) /\\ hl_int_lt m n = 1 -> hl_div m n = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_LT_bridge"
   },
   {
    "name": "INT_DIV_LT_EQ",
@@ -28050,9 +28050,9 @@
    "source": "!a:int. !b:int. !c:int. int_of_num 0 < a ==> (div b a < c <=> b < a * c)",
    "statement": "forall a b c :e int, 0 < a -> (div_int b a < c <-> b < a * c)",
    "literal": "forall a b c :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) a = 1 -> (hl_int_lt (hl_div b a) c = 1 <-> hl_int_lt b (hl_int_mul a c) = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_LT_EQ_bridge"
   },
   {
    "name": "INT_DIV_MUL",
@@ -28079,9 +28079,9 @@
    "source": "(!m:int. !n:int. ~(n = int_of_num 0) ==> div (m * n) n = m) /\\ (!m:int. !n:int. ~(m = int_of_num 0) ==> div (m * n) m = n)",
    "statement": "(forall m n :e int, ~ n = 0 -> div_int (m * n) n = m) /\\ forall m n :e int, ~ m = 0 -> div_int (m * n) m = n",
    "literal": "(forall m n :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_div (hl_int_mul m n) n = m) /\\ forall m n :e hl_ty_int, ~ m = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_div (hl_int_mul m n) m = n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_MUL_bridge"
   },
   {
    "name": "INT_DIV_MUL_ADD",
@@ -28108,9 +28108,9 @@
    "source": "(!m:int. !n:int. !p:int. ~(n = int_of_num 0) ==> div (m * n + p) n = m + div p n) /\\ (!m:int. !n:int. !p:int. ~(n = int_of_num 0) ==> div (n * m + p) n = m + div p n) /\\ (!m:int. !n:int. !p:int. ~(n = int_of_num 0) ==> div (p + m * n) n = div p n + m) /\\ (!m:int. !n:int. !p:int. ~(n = int_of_num 0) ==> div (p + n * m) n = div p n + m)",
    "statement": "(forall m n p :e int, ~ n = 0 -> div_int (m * n + p) n = m + div_int p n) /\\ ((forall m n p :e int, ~ n = 0 -> div_int (n * m + p) n = m + div_int p n) /\\ ((forall m n p :e int, ~ n = 0 -> div_int (p + m * n) n = div_int p n + m) /\\ forall m n p :e int, ~ n = 0 -> div_int (p + n * m) n = div_int p n + m))",
    "literal": "(forall m n p :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_div (hl_int_add (hl_int_mul m n) p) n = hl_int_add m (hl_div p n)) /\\ ((forall m n p :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_div (hl_int_add (hl_int_mul n m) p) n = hl_int_add m (hl_div p n)) /\\ ((forall m n p :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_div (hl_int_add p (hl_int_mul m n)) n = hl_int_add (hl_div p n) m) /\\ forall m n p :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_div (hl_int_add p (hl_int_mul n m)) n = hl_int_add (hl_div p n) m))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_MUL_ADD_bridge"
   },
   {
    "name": "INT_DIV_NEG2",
@@ -28139,7 +28139,7 @@
    "statement": "forall m n :e int, div_int (- m) (- n) = if rem_int m n = 0 then div_int m n else div_int m n + if 0 < n then 1 else if n < 0 then - 1 else 0",
    "literal": "forall m n :e hl_ty_int, hl_div (hl_int_neg m) (hl_int_neg n) = hl_COND hl_ty_int (if hl_rem m n = hl_int_of_num (hl_NUMERAL hl_zero) then 1 else 0) (hl_div m n) (hl_int_add (hl_div m n) (hl_int_sgn n))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -28168,7 +28168,7 @@
    "statement": "forall n :e int, div_int n n = if n = 0 then 0 else 1",
    "literal": "forall n :e hl_ty_int, hl_div n n = hl_COND hl_ty_int (if n = hl_int_of_num (hl_NUMERAL hl_zero) then 1 else 0) (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -28196,9 +28196,9 @@
    "source": "!m:int. !n:int. !p:int. int_of_num 0 <= n ==> rem (div m n) p = div (rem m (n * p)) n",
    "statement": "forall m n p :e int, 0 <= n -> rem_int (div_int m n) p = div_int (rem_int m (n * p)) n",
    "literal": "forall m n p :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 -> hl_rem (hl_div m n) p = hl_div (hl_rem m (hl_int_mul n p)) n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_REM_bridge"
   },
   {
    "name": "INT_DIV_RNEG",
@@ -28223,9 +28223,9 @@
    "source": "!m:int. !n:int. div m (int_neg n) = int_neg (div m n)",
    "statement": "forall m n :e int, div_int m (- n) = - div_int m n",
    "literal": "forall m n :e hl_ty_int, hl_div m (hl_int_neg n) = hl_int_neg (hl_div m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_RNEG_bridge"
   },
   {
    "name": "INT_DIV_UNIQ",
@@ -28252,9 +28252,9 @@
    "source": "!m:int. !n:int. !q:int. !r:int. m = q * n + r /\\ int_of_num 0 <= r /\\ r < int_abs n ==> div m n = q",
    "statement": "forall m n q r :e int, m = q * n + r /\\ (0 <= r /\\ r < abs_SNo n) -> div_int m n = q",
    "literal": "forall m n q r :e hl_ty_int, m = hl_int_add (hl_int_mul q n) r /\\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) r = 1 /\\ hl_int_lt r (hl_int_abs n) = 1) -> hl_div m n = q",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_UNIQ_bridge"
   },
   {
    "name": "INT_DIV_ZERO",
@@ -28281,9 +28281,9 @@
    "source": "!n:int. div (int_of_num 0) n = int_of_num 0",
    "statement": "forall n :e int, div_int 0 n = 0",
    "literal": "forall n :e hl_ty_int, hl_div (hl_int_of_num (hl_NUMERAL hl_zero)) n = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_DIV_ZERO_bridge"
   },
   {
    "name": "INT_ENTIRE",
@@ -29474,9 +29474,9 @@
    "source": "!m:int. !n:int. int_of_num 0 <= m /\\ int_of_num 0 <= n ==> int_of_num 0 <= div m n",
    "statement": "forall m n :e int, 0 <= m /\\ 0 <= n -> 0 <= div_int m n",
    "literal": "forall m n :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1 /\\ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 -> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_div m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LE_DIV_bridge"
   },
   {
    "name": "INT_LE_DIV_EQ",
@@ -29503,9 +29503,9 @@
    "source": "!a:int. !b:int. !c:int. int_of_num 0 < a ==> (c <= div b a <=> a * c <= b)",
    "statement": "forall a b c :e int, 0 < a -> (c <= div_int b a <-> a * c <= b)",
    "literal": "forall a b c :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) a = 1 -> (hl_int_le c (hl_div b a) = 1 <-> hl_int_le (hl_int_mul a c) b = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LE_DIV_EQ_bridge"
   },
   {
    "name": "INT_LE_DOUBLE",
@@ -30964,9 +30964,9 @@
    "source": "!m:int. !n:int. int_of_num 0 < n /\\ n <= m ==> int_of_num 0 < div m n",
    "statement": "forall m n :e int, 0 < n /\\ n <= m -> 0 < div_int m n",
    "literal": "forall m n :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 /\\ hl_int_le n m = 1 -> hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_div m n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LT_DIV_bridge"
   },
   {
    "name": "INT_LT_DIV_EQ",
@@ -30993,9 +30993,9 @@
    "source": "!a:int. !b:int. !c:int. int_of_num 0 < a ==> (c < div b a <=> a * (c + int_of_num 1) <= b)",
    "statement": "forall a b c :e int, 0 < a -> (c < div_int b a <-> a * (c + 1) <= b)",
    "literal": "forall a b c :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) a = 1 -> (hl_int_lt c (hl_div b a) = 1 <-> hl_int_le (hl_int_mul a (hl_int_add c (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) b = 1)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LT_DIV_EQ_bridge"
   },
   {
    "name": "INT_LT_GT",
@@ -31640,9 +31640,9 @@
    "source": "!x:int. !n:int. int_of_num 0 < n ==> rem x n < n",
    "statement": "forall x n :e int, 0 < n -> rem_int x n < n",
    "literal": "forall x n :e hl_ty_int, hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 -> hl_int_lt (hl_rem x n) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LT_REM_bridge"
   },
   {
    "name": "INT_LT_REM_EQ",
@@ -31669,9 +31669,9 @@
    "source": "!m:int. !n:int. rem m n < n <=> int_of_num 0 < n \\/ n = int_of_num 0 /\\ m < int_of_num 0",
    "statement": "forall m n :e int, rem_int m n < n <-> 0 < n \\/ n = 0 /\\ m < 0",
    "literal": "forall m n :e hl_ty_int, hl_int_lt (hl_rem m n) n = 1 <-> hl_int_lt (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 \\/ n = hl_int_of_num (hl_NUMERAL hl_zero) /\\ hl_int_lt m (hl_int_of_num (hl_NUMERAL hl_zero)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_LT_REM_EQ_bridge"
   },
   {
    "name": "INT_LT_RMUL",
@@ -32491,9 +32491,9 @@
    "source": "(!m:int. !n:int. n * div m n = m <=> int_divides n m) /\\ (!m:int. !n:int. div m n * n = m <=> int_divides n m)",
    "statement": "(forall m n :e int, n * div_int m n = m <-> divides_int n m) /\\ forall m n :e int, div_int m n * n = m <-> divides_int n m",
    "literal": "(forall m n :e hl_ty_int, hl_int_mul n (hl_div m n) = m <-> hl_int_divides n m = 1) /\\ forall m n :e hl_ty_int, hl_int_mul (hl_div m n) n = m <-> hl_int_divides n m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_MUL_DIV_EQ_bridge"
   },
   {
    "name": "INT_MUL_EQ_1",
@@ -32752,9 +32752,9 @@
    "source": "!m:int. !n:int. !p:int. rem (rem m p * rem n p) p = rem (m * n) p",
    "statement": "forall m n p :e int, rem_int (rem_int m p * rem_int n p) p = rem_int (m * n) p",
    "literal": "forall m n p :e hl_ty_int, hl_rem (hl_int_mul (hl_rem m p) (hl_rem n p)) p = hl_rem (hl_int_mul m n) p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_MUL_REM_bridge"
   },
   {
    "name": "INT_MUL_RID",
@@ -33229,9 +33229,9 @@
    "source": "!n:int. !p:int. rem (int_neg (rem n p)) p = rem (int_neg n) p",
    "statement": "forall n p :e int, rem_int (- rem_int n p) p = rem_int (- n) p",
    "literal": "forall n p :e hl_ty_int, hl_rem (hl_int_neg (hl_rem n p)) p = hl_rem (hl_int_neg n) p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_NEG_REM_bridge"
   },
   {
    "name": "INT_NEG_RMUL",
@@ -33458,9 +33458,9 @@
    "source": "!m:num. !n:num. div (int_of_num m) (int_of_num n) = int_of_num (m DIV n)",
    "statement": "forall m n :e omega, div_int m n = div_nat m n",
    "literal": "forall m n :e omega, hl_div (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_DIV m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_div_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_OF_NUM_DIV_bridge"
   },
   {
    "name": "INT_OF_NUM_EQ",
@@ -33844,9 +33844,9 @@
    "source": "!m:num. !n:num. rem (int_of_num m) (int_of_num n) = int_of_num (m MOD n)",
    "statement": "forall m n :e omega, rem_int m n = mod_nat m n",
    "literal": "forall m n :e omega, hl_rem (hl_int_of_num m) (hl_int_of_num n) = hl_int_of_num (hl_MOD m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_OF_NUM_REM_bridge"
   },
   {
    "name": "INT_OF_NUM_SUB",
@@ -35056,9 +35056,9 @@
    "source": "!m:int. !n:num. !p:int. rem (rem m p pow n) p = rem (m pow n) p",
    "statement": "forall m :e int, forall n :e omega, forall p :e int, rem_int (rem_int m p ^ n) p = rem_int (m ^ n) p",
    "literal": "forall m :e hl_ty_int, forall n :e omega, forall p :e hl_ty_int, hl_rem (hl_int_pow (hl_rem m p) n) p = hl_rem (hl_int_pow m n) p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_POW_REM_bridge"
   },
   {
    "name": "INT_POW_ZERO",
@@ -35114,9 +35114,9 @@
    "source": "!m:int. rem m (int_of_num 0) = m",
    "statement": "forall m :e int, rem_int m 0 = m",
    "literal": "forall m :e hl_ty_int, hl_rem m (hl_int_of_num (hl_NUMERAL hl_zero)) = m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_0_bridge"
   },
   {
    "name": "INT_REM_1",
@@ -35143,9 +35143,9 @@
    "source": "!n:int. rem n (int_of_num 1) = int_of_num 0",
    "statement": "forall n :e int, rem_int n 1 = 0",
    "literal": "forall n :e hl_ty_int, hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_1_bridge"
   },
   {
    "name": "INT_REM_2_CASES",
@@ -35172,9 +35172,9 @@
    "source": "!n:int. rem n (int_of_num 2) = int_of_num 0 \\/ rem n (int_of_num 2) = int_of_num 1",
    "statement": "forall n :e int, rem_int n 2 = 0 \\/ rem_int n 2 = 1",
    "literal": "forall n :e hl_ty_int, hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL hl_zero) \\/ hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_2_CASES_bridge"
   },
   {
    "name": "INT_REM_2_DIVIDES",
@@ -35201,9 +35201,9 @@
    "source": "(!n:int. rem n (int_of_num 2) = int_of_num 0 <=> int_divides (int_of_num 2) n) /\\ (!n:int. rem n (int_of_num 2) = int_of_num 1 <=> ~int_divides (int_of_num 2) n)",
    "statement": "(forall n :e int, rem_int n 2 = 0 <-> divides_int 2 n) /\\ forall n :e int, rem_int n 2 = 1 <-> ~ divides_int 2 n",
    "literal": "(forall n :e hl_ty_int, hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL hl_zero) <-> hl_int_divides (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n = 1) /\\ forall n :e hl_ty_int, hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> ~ hl_int_divides (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_2_DIVIDES_bridge"
   },
   {
    "name": "INT_REM_2_EXPAND",
@@ -35230,9 +35230,9 @@
    "source": "!x:int. rem x (int_of_num 2) = (if int_divides (int_of_num 2) x then int_of_num 0 else int_of_num 1)",
    "statement": "forall x :e int, rem_int x 2 = if divides_int 2 x then 0 else 1",
    "literal": "forall x :e hl_ty_int, hl_rem x (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_COND hl_ty_int (hl_int_divides (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) x) (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_2_EXPAND_bridge"
   },
   {
    "name": "INT_REM_2_NEG",
@@ -35259,9 +35259,9 @@
    "source": "!x:int. rem (int_neg x) (int_of_num 2) = rem x (int_of_num 2)",
    "statement": "forall x :e int, rem_int (- x) 2 = rem_int x 2",
    "literal": "forall x :e hl_ty_int, hl_rem (hl_int_neg x) (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_rem x (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_2_NEG_bridge"
   },
   {
    "name": "INT_REM_DIV",
@@ -35286,9 +35286,9 @@
    "source": "!m:int. !n:int. rem m n = m - div m n * n",
    "statement": "forall m n :e int, rem_int m n = m + - div_int m n * n",
    "literal": "forall m n :e hl_ty_int, hl_rem m n = hl_int_sub m (hl_int_mul (hl_div m n) n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_DIV_bridge"
   },
   {
    "name": "INT_REM_EQ",
@@ -35343,9 +35343,9 @@
    "source": "!m:int. !n:int. rem m n = int_of_num 0 <=> int_divides n m",
    "statement": "forall m n :e int, rem_int m n = 0 <-> divides_int n m",
    "literal": "forall m n :e hl_ty_int, hl_rem m n = hl_int_of_num (hl_NUMERAL hl_zero) <-> hl_int_divides n m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_EQ_0_bridge"
   },
   {
    "name": "INT_REM_EQ_SELF",
@@ -35372,9 +35372,9 @@
    "source": "!m:int. !n:int. rem m n = m <=> n = int_of_num 0 \\/ int_of_num 0 <= m /\\ m < int_abs n",
    "statement": "forall m n :e int, rem_int m n = m <-> n = 0 \\/ 0 <= m /\\ m < abs_SNo n",
    "literal": "forall m n :e hl_ty_int, hl_rem m n = m <-> n = hl_int_of_num (hl_NUMERAL hl_zero) \\/ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1 /\\ hl_int_lt m (hl_int_abs n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_EQ_SELF_bridge"
   },
   {
    "name": "INT_REM_LE",
@@ -35401,9 +35401,9 @@
    "source": "!m:int. !n:int. !p:int. (n = int_of_num 0 \\/ int_of_num 0 <= m) /\\ m <= p ==> rem m n <= p",
    "statement": "forall m n p :e int, (n = 0 \\/ 0 <= m) /\\ m <= p -> rem_int m n <= p",
    "literal": "forall m n p :e hl_ty_int, (n = hl_int_of_num (hl_NUMERAL hl_zero) \\/ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1) /\\ hl_int_le m p = 1 -> hl_int_le (hl_rem m n) p = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_LE_bridge"
   },
   {
    "name": "INT_REM_LE_EQ",
@@ -35430,9 +35430,9 @@
    "source": "!m:int. !n:int. rem m n <= m <=> n = int_of_num 0 \\/ int_of_num 0 <= m",
    "statement": "forall m n :e int, rem_int m n <= m <-> n = 0 \\/ 0 <= m",
    "literal": "forall m n :e hl_ty_int, hl_int_le (hl_rem m n) m = 1 <-> n = hl_int_of_num (hl_NUMERAL hl_zero) \\/ hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_LE_EQ_bridge"
   },
   {
    "name": "INT_REM_LNEG",
@@ -35460,7 +35460,7 @@
    "statement": "forall m n :e int, rem_int (- m) n = if rem_int m n = 0 then 0 else abs_SNo n + - rem_int m n",
    "literal": "forall m n :e hl_ty_int, hl_rem (hl_int_neg m) n = hl_COND hl_ty_int (if hl_rem m n = hl_int_of_num (hl_NUMERAL hl_zero) then 1 else 0) (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_sub (hl_int_abs n) (hl_rem m n))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -35488,9 +35488,9 @@
    "source": "!m:int. !n:int. (~(n = int_of_num 0) ==> int_of_num 0 <= m) /\\ m < n ==> rem m n = m",
    "statement": "forall m n :e int, (~ n = 0 -> 0 <= m) /\\ m < n -> rem_int m n = m",
    "literal": "forall m n :e hl_ty_int, (~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1) /\\ hl_int_lt m n = 1 -> hl_rem m n = m",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_LT_bridge"
   },
   {
    "name": "INT_REM_MOD_SELF",
@@ -35517,7 +35517,7 @@
    "statement": "forall m n :e int, divides_int n (rem_int m n + - m)",
    "literal": "forall m n :e hl_ty_int, hl_sym_3d3d hl_ty_int (hl_rem m n) m (hl_int_mod n) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: partial application of mapped constant int_mod",
    "bridge": ""
   },
   {
@@ -35545,9 +35545,9 @@
    "source": "(!m:int. !n:int. rem (m * n) n = int_of_num 0) /\\ (!m:int. !n:int. rem (m * n) m = int_of_num 0)",
    "statement": "(forall m n :e int, rem_int (m * n) n = 0) /\\ forall m n :e int, rem_int (m * n) m = 0",
    "literal": "(forall m n :e hl_ty_int, hl_rem (hl_int_mul m n) n = hl_int_of_num (hl_NUMERAL hl_zero)) /\\ forall m n :e hl_ty_int, hl_rem (hl_int_mul m n) m = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_MUL_bridge"
   },
   {
    "name": "INT_REM_MUL_ADD",
@@ -35572,9 +35572,9 @@
    "source": "(!m:int. !n:int. !p:int. rem (m * n + p) n = rem p n) /\\ (!m:int. !n:int. !p:int. rem (n * m + p) n = rem p n) /\\ (!m:int. !n:int. !p:int. rem (p + m * n) n = rem p n) /\\ (!m:int. !n:int. !p:int. rem (p + n * m) n = rem p n)",
    "statement": "(forall m n p :e int, rem_int (m * n + p) n = rem_int p n) /\\ ((forall m n p :e int, rem_int (n * m + p) n = rem_int p n) /\\ ((forall m n p :e int, rem_int (p + m * n) n = rem_int p n) /\\ forall m n p :e int, rem_int (p + n * m) n = rem_int p n))",
    "literal": "(forall m n p :e hl_ty_int, hl_rem (hl_int_add (hl_int_mul m n) p) n = hl_rem p n) /\\ ((forall m n p :e hl_ty_int, hl_rem (hl_int_add (hl_int_mul n m) p) n = hl_rem p n) /\\ ((forall m n p :e hl_ty_int, hl_rem (hl_int_add p (hl_int_mul m n)) n = hl_rem p n) /\\ forall m n p :e hl_ty_int, hl_rem (hl_int_add p (hl_int_mul n m)) n = hl_rem p n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_MUL_ADD_bridge"
   },
   {
    "name": "INT_REM_MUL_REM",
@@ -35601,9 +35601,9 @@
    "source": "!m:int. !n:int. !p:int. int_of_num 0 <= n ==> rem m (n * p) = n * rem (div m n) p + rem m n",
    "statement": "forall m n p :e int, 0 <= n -> rem_int m (n * p) = n * rem_int (div_int m n) p + rem_int m n",
    "literal": "forall m n p :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) n = 1 -> hl_rem m (hl_int_mul n p) = hl_int_add (hl_int_mul n (hl_rem (hl_div m n) p)) (hl_rem m n)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_MUL_REM_bridge"
   },
   {
    "name": "INT_REM_NEG2",
@@ -35631,7 +35631,7 @@
    "statement": "forall m n :e int, rem_int (- m) (- n) = if rem_int m n = 0 then 0 else abs_SNo n + - rem_int m n",
    "literal": "forall m n :e hl_ty_int, hl_rem (hl_int_neg m) (hl_int_neg n) = hl_COND hl_ty_int (if hl_rem m n = hl_int_of_num (hl_NUMERAL hl_zero) then 1 else 0) (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_int_sub (hl_int_abs n) (hl_rem m n))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: rel: formula as data",
    "bridge": ""
   },
   {
@@ -35659,9 +35659,9 @@
    "source": "!a:int. !b:int. ~(b = int_of_num 0) ==> int_of_num 0 <= rem a b",
    "statement": "forall a b :e int, ~ b = 0 -> 0 <= rem_int a b",
    "literal": "forall a b :e hl_ty_int, ~ b = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_rem a b) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_POS_bridge"
   },
   {
    "name": "INT_REM_POS_EQ",
@@ -35688,9 +35688,9 @@
    "source": "!m:int. !n:int. int_of_num 0 <= rem m n <=> n = int_of_num 0 ==> int_of_num 0 <= m",
    "statement": "forall m n :e int, 0 <= rem_int m n <-> n = 0 -> 0 <= m",
    "literal": "forall m n :e hl_ty_int, hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_rem m n) = 1 <-> n = hl_int_of_num (hl_NUMERAL hl_zero) -> hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) m = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_POS_EQ_bridge"
   },
   {
    "name": "INT_REM_RABS",
@@ -35715,9 +35715,9 @@
    "source": "!x:int. !y:int. rem x (int_abs y) = rem x y",
    "statement": "forall x y :e int, rem_int x (abs_SNo y) = rem_int x y",
    "literal": "forall x y :e hl_ty_int, hl_rem x (hl_int_abs y) = hl_rem x y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_RABS_bridge"
   },
   {
    "name": "INT_REM_REFL",
@@ -35744,9 +35744,9 @@
    "source": "!n:int. rem n n = int_of_num 0",
    "statement": "forall n :e int, rem_int n n = 0",
    "literal": "forall n :e hl_ty_int, hl_rem n n = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_REFL_bridge"
   },
   {
    "name": "INT_REM_REM",
@@ -35771,9 +35771,9 @@
    "source": "!m:int. !n:int. rem (rem m n) n = rem m n",
    "statement": "forall m n :e int, rem_int (rem_int m n) n = rem_int m n",
    "literal": "forall m n :e hl_ty_int, hl_rem (hl_rem m n) n = hl_rem m n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_REM_bridge"
   },
   {
    "name": "INT_REM_REM_LE",
@@ -35800,9 +35800,9 @@
    "source": "!m:int. !n:int. !p:int. ~(n = int_of_num 0) /\\ int_abs n <= int_abs p ==> rem (rem m n) p = rem m n",
    "statement": "forall m n p :e int, ~ n = 0 /\\ abs_SNo n <= abs_SNo p -> rem_int (rem_int m n) p = rem_int m n",
    "literal": "forall m n p :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) /\\ hl_int_le (hl_int_abs n) (hl_int_abs p) = 1 -> hl_rem (hl_rem m n) p = hl_rem m n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_REM_LE_bridge"
   },
   {
    "name": "INT_REM_REM_MUL",
@@ -35827,9 +35827,9 @@
    "source": "(!m:int. !n:int. !p:int. rem (rem m (n * p)) n = rem m n) /\\ (!m:int. !n:int. !p:int. rem (rem m (n * p)) p = rem m p)",
    "statement": "(forall m n p :e int, rem_int (rem_int m (n * p)) n = rem_int m n) /\\ forall m n p :e int, rem_int (rem_int m (n * p)) p = rem_int m p",
    "literal": "(forall m n p :e hl_ty_int, hl_rem (hl_rem m (hl_int_mul n p)) n = hl_rem m n) /\\ forall m n p :e hl_ty_int, hl_rem (hl_rem m (hl_int_mul n p)) p = hl_rem m p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_REM_MUL_bridge"
   },
   {
    "name": "INT_REM_REM_POW_MIN",
@@ -35856,9 +35856,9 @@
    "source": "!x:int. !p:int. !m:num. !n:num. rem (rem x (p pow m)) (p pow n) = rem x (p pow MIN m n)",
    "statement": "forall x p :e int, forall m n :e omega, rem_int (rem_int x (p ^ m)) (p ^ n) = rem_int x (p ^ if m <= n then m else n)",
    "literal": "forall x p :e hl_ty_int, forall m n :e omega, hl_rem (hl_rem x (hl_int_pow p m)) (hl_int_pow p n) = hl_rem x (hl_int_pow p (hl_MIN m n))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_REM_POW_MIN_bridge"
   },
   {
    "name": "INT_REM_RNEG",
@@ -35883,9 +35883,9 @@
    "source": "!m:int. !n:int. rem m (int_neg n) = rem m n",
    "statement": "forall m n :e int, rem_int m (- n) = rem_int m n",
    "literal": "forall m n :e hl_ty_int, hl_rem m (hl_int_neg n) = hl_rem m n",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_RNEG_bridge"
   },
   {
    "name": "INT_REM_UNIQ",
@@ -35912,9 +35912,9 @@
    "source": "!m:int. !n:int. !q:int. !r:int. m = q * n + r /\\ int_of_num 0 <= r /\\ r < int_abs n ==> rem m n = r",
    "statement": "forall m n q r :e int, m = q * n + r /\\ (0 <= r /\\ r < abs_SNo n) -> rem_int m n = r",
    "literal": "forall m n q r :e hl_ty_int, m = hl_int_add (hl_int_mul q n) r /\\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) r = 1 /\\ hl_int_lt r (hl_int_abs n) = 1) -> hl_rem m n = r",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_UNIQ_bridge"
   },
   {
    "name": "INT_REM_UNIQUE",
@@ -35971,9 +35971,9 @@
    "source": "!n:int. rem (int_of_num 0) n = int_of_num 0",
    "statement": "forall n :e int, rem_int 0 n = 0",
    "literal": "forall n :e hl_ty_int, hl_rem (hl_int_of_num (hl_NUMERAL hl_zero)) n = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_REM_ZERO_bridge"
   },
   {
    "name": "INT_RNEG_UNIQ",
@@ -36853,9 +36853,9 @@
    "source": "!m:int. !n:int. !p:int. rem (rem m p - rem n p) p = rem (m - n) p",
    "statement": "forall m n p :e int, rem_int (rem_int m p + - rem_int n p) p = rem_int (m + - n) p",
    "literal": "forall m n p :e hl_ty_int, hl_rem (hl_int_sub (hl_rem m p) (hl_rem n p)) p = hl_rem (hl_int_sub m n) p",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INT_SUB_REM_bridge"
   },
   {
    "name": "INT_SUB_RNEG",
@@ -48227,9 +48227,9 @@
    "source": "(!n:int. ~(rem n (int_of_num 2) = int_of_num 0) <=> rem n (int_of_num 2) = int_of_num 1) /\\ (!n:int. ~(rem n (int_of_num 2) = int_of_num 1) <=> rem n (int_of_num 2) = int_of_num 0)",
    "statement": "(forall n :e int, ~ rem_int n 2 = 0 <-> rem_int n 2 = 1) /\\ forall n :e int, ~ rem_int n 2 = 1 <-> rem_int n 2 = 0",
    "literal": "(forall n :e hl_ty_int, ~ hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL hl_zero) <-> hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) /\\ forall n :e hl_ty_int, ~ hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> hl_rem n (hl_int_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_int_of_num (hl_NUMERAL hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_rem_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NOT_INT_REM_2_bridge"
   },
   {
    "name": "NOT_IN_EMPTY",
@@ -84905,6 +84905,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 1664
+  "native_certified": 1727
  }
 }

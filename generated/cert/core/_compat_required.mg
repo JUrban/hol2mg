@@ -54,10 +54,6 @@ Admitted.
 Theorem hl_ARB_compat : forall A:set, A <> Empty -> hl_ARB A = choose_in A (fun x:set => True).
 Admitted.
 
-// div : int->int->int (not in compat.mg)
-Theorem hl_div_compat : forall l1 l2 :e int, hl_div l1 l2 = div_int l1 l2.
-Admitted.
-
 // EL : num->A list->A (not in compat.mg)
 Theorem hl_EL_compat : forall A:set, A <> Empty -> forall l1 :e omega, forall l2 :e finseq A, hl_EL A l1 l2 = seq_nth l2 l1.
 Admitted.
@@ -460,10 +456,6 @@ Admitted.
 
 // list_of_set : (A->bool)->A list (not in compat.mg)
 Theorem hl_list_of_set_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_list_of_set A l1 = choose_in (finseq A) (fun l:set => seq_set l = hl_rep A l1 /\ seq_len l = finite_cardinality (hl_rep A l1)).
-Admitted.
-
-// rem : int->int->int (not in compat.mg)
-Theorem hl_rem_compat : forall l1 l2 :e int, hl_rem l1 l2 = rem_int l1 l2.
 Admitted.
 
 // int_lcm : int#int->int (not in compat.mg)

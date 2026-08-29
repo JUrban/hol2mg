@@ -304,12 +304,12 @@ apply (nat_inv n Hn).
   let i. assume Hi: i :e x. exact (nat_ordsucc_in_ordsucc x Hx i Hi).
 Qed.
 
-// Integer division and remainder with HOL Light's conventions:
-// x div y rounds toward negative infinity, rem is nonnegative for y <> 0,
-// and both are 0 when y = 0.
+// Integer division and remainder with HOL Light's conventions (INT_DIVISION, INT_DIVISION_0):
+// for y <> 0 the remainder satisfies 0 <= rem < |y| and x = div * y + rem; for y = 0 the
+// quotient is 0 and the remainder is x.
 Definition div_int : set -> set -> set :=
   fun x y => if y = 0 then 0 else Eps_i (fun q => q :e int /\ exists r :e int, 0 <= r /\ r < abs_SNo y /\ x = q * y + r).
-Definition rem_int : set -> set -> set := fun x y => if y = 0 then 0 else x + - div_int x y * y.
+Definition rem_int : set -> set -> set := fun x y => if y = 0 then x else x + - div_int x y * y.
 
 // The neutral element of a binary operation on a carrier (HOL Light neutral).
 Definition neutral_of : set -> (set -> set -> set) -> set :=

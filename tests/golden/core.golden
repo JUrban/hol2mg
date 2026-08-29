@@ -1950,7 +1950,8 @@ source: !m:int. !n:int. ~(n = int_of_num 0) ==> m = div m n * n + rem m n /\ int
 status: transport_required
 statement: forall m n :e int, ~ n = 0 -> m = div_int m n * n + rem_int m n /\ (0 <= rem_int m n /\ rem_int m n < abs_SNo n)
 literal: forall m n :e hl_ty_int, ~ n = hl_int_of_num (hl_NUMERAL hl_zero) -> m = hl_int_add (hl_int_mul (hl_div m n) n) (hl_rem m n) /\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) (hl_rem m n) = 1 /\ hl_int_lt (hl_rem m n) (hl_int_abs n) = 1)
-cert_status: bridge_unsupported
+bridge: INT_DIVISION_bridge
+cert_status: native_certified
 
 ### INT_GCD_EXISTS   [integers]
 hash: 1fd3791a36b29532c3099944ac467d39
@@ -2027,7 +2028,8 @@ source: !m:int. !n:int. !q:int. !r:int. m = q * n + r /\ int_of_num 0 <= r /\ r 
 status: transport_required
 statement: forall m n q r :e int, m = q * n + r /\ (0 <= r /\ r < abs_SNo n) -> div_int m n = q /\ rem_int m n = r
 literal: forall m n q r :e hl_ty_int, m = hl_int_add (hl_int_mul q n) r /\ (hl_int_le (hl_int_of_num (hl_NUMERAL hl_zero)) r = 1 /\ hl_int_lt r (hl_int_abs n) = 1) -> hl_div m n = q /\ hl_rem m n = r
-cert_status: bridge_unsupported
+bridge: INT_DIVMOD_UNIQ_bridge
+cert_status: native_certified
 
 ### OUTL   [option and sum types]
 hash: c31d1bada798b3a79e21ff4f54d61c5b
