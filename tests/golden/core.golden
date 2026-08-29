@@ -1385,7 +1385,8 @@ source: !s:A->bool. ~(s = EMPTY) ==> CHOICE s IN s
 status: generalization_required
 statement: forall A:set, forall s c= A, ~ s = Empty -> choose_in A (fun x:set => x :e s) :e s
 literal: forall A:set, A <> Empty -> forall s :e 2 :^: A, ~ s = hl_EMPTY A -> hl_IN A (hl_CHOICE A s) s = 1
-cert_status: bridge_unsupported
+bridge: CHOICE_DEF_bridge
+cert_status: native_certified
 
 ### REST   [sets: membership, algebra, comprehensions, images, families]
 hash: e0f633a0788602734c7ec5f0f8e48f26

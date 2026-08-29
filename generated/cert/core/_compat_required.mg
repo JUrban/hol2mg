@@ -18,10 +18,6 @@ Admitted.
 Theorem hl_INJP_compat : forall A:set, A <> Empty -> hl_INJP A = Empty.
 Admitted.
 
-// <=_c : (A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_sym_3c3d5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3c3d5f63 A B l1 l2 = 1 <-> atleastp (hl_rep A l1) (hl_rep B l2).
-Admitted.
-
 // mk_finite_diff : num->(A,B)finite_diff (not in compat.mg)
 Theorem hl_mk_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_diff A B l1 = l1.
 Admitted.
@@ -46,16 +42,8 @@ Admitted.
 Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: hl_ty_cart A M, forall l2 :e 2 :^: hl_ty_cart A N, hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (hl_ty_cart A M) l1, {pastecart M N x y | y :e hl_rep (hl_ty_cart A N) l2}.
 Admitted.
 
-// pairwise : (A->A->bool)->(A->bool)->bool at A := A -> bool (not in compat.mg)
-Theorem hl_pairwise_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> forall l2 :e 2 :^: (2 :^: A), hl_pairwise (2 :^: A) l1 l2 = 1 <-> forall x y :e hl_rep2 A l2, x <> y -> P1 x y.
-Admitted.
-
 // NUMSUM : bool->num->num (not in compat.mg)
 Theorem hl_NUMSUM_compat : hl_NUMSUM = Empty.
-Admitted.
-
-// CHOICE : (A->bool)->A (not in compat.mg)
-Theorem hl_CHOICE_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_CHOICE A l1 = choose_in A (fun x:set => x :e hl_rep A l1).
 Admitted.
 
 // CHOICE : (A->bool)->A at A := A -> bool (not in compat.mg)
@@ -226,10 +214,6 @@ Admitted.
 Theorem hl_is_nadd_compat : hl_is_nadd = Empty.
 Admitted.
 
-// prime : num->bool (not in compat.mg)
-Theorem hl_prime_compat : forall l1 :e omega, hl_prime l1 = 1 <-> prime_nat l1.
-Admitted.
-
 // IND_SUC : ind->ind (not in compat.mg)
 Theorem hl_IND_SUC_compat : hl_IND_SUC = Empty.
 Admitted.
@@ -304,10 +288,6 @@ Admitted.
 
 // dest_finite_image : N finite_image->num (not in compat.mg)
 Theorem hl_dest_finite_image_compat : forall N:set, N <> Empty -> forall l1 :e hl_ty_finite_image N, hl_dest_finite_image N l1 = l1.
-Admitted.
-
-// ISO : (A->B)->(B->A)->bool (not in compat.mg)
-Theorem hl_ISO_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e A :^: B, forall f2:set -> set, (forall x :e B, l2 x = f2 x) -> (hl_ISO A B l1 l2 = 1 <-> (forall x :e B, f1 (f2 x) = x) /\ forall y :e A, f2 (f1 y) = y).
 Admitted.
 
 // o : (B->bool)->(A->B)->A->bool (not in compat.mg)
