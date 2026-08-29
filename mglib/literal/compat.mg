@@ -7085,3 +7085,21 @@ apply andI.
   + let x. assume Hx. let y. assume Hy. let z. assume Hz. exact (add_SNo_assoc x y z (int_SNo x Hx) (int_SNo y Hy) (int_SNo z Hz)).
 - let x. assume Hx. exact ((eq_sym_i (neutral_of int (fun a:set => fun b:set => a + b)) 0 neutral_of_int_add) (fun hl__u hl__v => hl__u + x = x) (add_SNo_0L x (int_SNo x Hx))).
 Qed.
+
+// ---- two-element enumerations: the derived SetAdjoin {t} s is the elaborated {s,t}; reversal preserves non-emptiness ----
+Theorem SetAdjoin_Sing_UPair : forall s t:set, SetAdjoin {t} s = {s,t}.
+let s t. apply set_ext.
+- let z. assume Hz. apply (SetAdjoinE {t} s z Hz).
+  + assume H1. exact ((SingE t z H1) (fun hl__u hl__v => hl__v :e {s,t}) (UPairI2 s t)).
+  + assume H1. exact ((SingE s z H1) (fun hl__u hl__v => hl__v :e {s,t}) (UPairI1 s t)).
+- let z. assume Hz. apply (UPairE z s t Hz).
+  + assume H1. exact ((eq_sym_i z s H1) (fun hl__u hl__v => hl__u :e SetAdjoin {t} s) (SetAdjoinI2 {t} s s (SingI s))).
+  + assume H1. exact ((eq_sym_i z t H1) (fun hl__u hl__v => hl__u :e SetAdjoin {t} s) (SetAdjoinI1 {t} s t (SingI t))).
+Qed.
+Theorem seq_rev_neq_nil : forall A:set, forall l :e finseq A, ~ l = seq_nil -> ~ seq_rev l = seq_nil.
+let A l. assume Hl Hne H.
+apply Hne.
+claim H1: seq_len (seq_rev l) = 0. { exact (eq_trans_i (seq_len (seq_rev l)) (seq_len seq_nil) 0 (f_equal (fun u => seq_len u) (seq_rev l) seq_nil H) seq_len_nil). }
+claim H2: seq_len l = 0. { exact (eq_trans_i (seq_len l) (seq_len (seq_rev l)) 0 (eq_sym_i (seq_len (seq_rev l)) (seq_len l) (seq_len_rev l)) H1). }
+exact (seq_len_0_nil A l Hl H2).
+Qed.

@@ -69,7 +69,8 @@ source: !P:A->bool. (?!x:A. P x) <=> (?x:A. P x) /\ (!x:A. !x':A. P x /\ P x' ==
 status: generalization_required
 statement: forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x x' :e A, P x /\ P x' -> x = x'
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> (exists x :e A, P x = 1) /\ forall x x' :e A, P x = 1 /\ P x' = 1 -> x = x'
-cert_status: bridge_unsupported
+bridge: EXISTS_UNIQUE_THM_bridge
+cert_status: native_certified
 
 ### SWAP_FORALL_THM   [logic: connectives, quantifiers, equality, extensionality]
 hash: df4989caae04c5ecc3e98a343479c369
@@ -194,7 +195,8 @@ source: !P:A->B->bool. (!x:A. ?!y:B. P x y) <=> (?f:A->B. !x:A. !y:B. P x y <=> 
 status: exact_native
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> exists f :e B :^: A, forall x :e A, forall y :e B, P x y = 1 <-> f x = y
-cert_status: bridge_unsupported
+bridge: UNIQUE_SKOLEM_ALT_bridge
+cert_status: native_certified
 
 ### EXCLUDED_MIDDLE   [logic: connectives, quantifiers, equality, extensionality]
 hash: 24badd25546afe87d42d86a1339bd39d
@@ -1577,7 +1579,8 @@ source: !s:A->bool. !t:B->bool. FINITE s /\ FINITE t ==> CARD (CROSS s t) = CARD
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite_cardinality (s :*: t) = finite_cardinality s * finite_cardinality t
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\ hl_FINITE B t = 1 -> hl_CARD (A :*: B) (hl_CROSS A B s t) = hl_mul (hl_CARD A s) (hl_CARD B t)
-cert_status: bridge_unsupported
+bridge: CARD_CROSS_bridge
+cert_status: native_certified
 
 ### HAS_SIZE_0   [finiteness, cardinality, functions between sets]
 hash: b315301e53d95a91c880c6bafbea05e1

@@ -3703,9 +3703,9 @@
    "source": "!s:A->bool. !t:B->bool. FINITE s /\\ FINITE t ==> CARD (CROSS s t) = CARD s * CARD t",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\\ finite t -> finite_cardinality (s :*: t) = finite_cardinality s * finite_cardinality t",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall s :e 2 :^: A, forall t :e 2 :^: B, hl_FINITE A s = 1 /\\ hl_FINITE B t = 1 -> hl_CARD (A :*: B) (hl_CROSS A B s t) = hl_mul (hl_CARD A s) (hl_CARD B t)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition finite (s :*: t) not available from hypotheses [hyps: finite t, finite s]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_CROSS_bridge"
   },
   {
    "name": "CARD_DELETE",
@@ -4306,9 +4306,9 @@
    "source": "!a:A. !b:A. CARD (a INSERT b INSERT EMPTY) <= 2",
    "statement": "forall A:set, forall a b :e A, finite_cardinality {a,b} <= 2",
    "literal": "forall A:set, A <> Empty -> forall a b :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_EMPTY A)))) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {b} a differs from elaborated {a,b}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "CARD_LE_2_bridge"
   },
   {
    "name": "CARD_LE_3",
@@ -4338,7 +4338,7 @@
    "statement": "forall A:set, forall a b c :e A, finite_cardinality {a,b,c} <= 3",
    "literal": "forall A:set, A <> Empty -> forall a b c :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_INSERT A c (hl_EMPTY A))))) (hl_NUMERAL (hl_BIT1 (hl_BIT1 hl_zero))) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {c} b differs from elaborated {b,c}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {b,c} a differs from elaborated {a,b,c}",
    "bridge": ""
   },
   {
@@ -4369,7 +4369,7 @@
    "statement": "forall A:set, forall a b c d :e A, finite_cardinality {a,b,c,d} <= 4",
    "literal": "forall A:set, A <> Empty -> forall a b c d :e A, hl_le (hl_CARD A (hl_INSERT A a (hl_INSERT A b (hl_INSERT A c (hl_INSERT A d (hl_EMPTY A)))))) (hl_NUMERAL (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))) = 1",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {d} c differs from elaborated {c,d}",
+   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {c,d} b differs from elaborated {b,c,d}",
    "bridge": ""
   },
   {
@@ -13481,9 +13481,9 @@
    "source": "!P:A->bool. (?!x:A. P x) <=> (?x:A. P x /\\ (!y:A. P y ==> y = x))",
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> exists x :e A, P x /\\ forall y :e A, P y -> y = x",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> exists x :e A, P x = 1 /\\ forall y :e A, P y = 1 -> y = x",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#9",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_UNIQUE_bridge"
   },
   {
    "name": "EXISTS_UNIQUE_ALT",
@@ -13508,9 +13508,9 @@
    "source": "!P:A->bool. (?!x:A. P x) <=> (?x:A. !y:A. P y <=> x = y)",
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> exists x :e A, forall y :e A, P y <-> x = y",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> exists x :e A, forall y :e A, P y = 1 <-> x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#5",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_UNIQUE_ALT_bridge"
   },
   {
    "name": "EXISTS_UNIQUE_DEF",
@@ -13589,9 +13589,9 @@
    "source": "!P:A->bool. (?!x:A. P x) <=> (?x:A. P x) /\\ (!x:A. !x':A. P x /\\ P x' ==> x = x')",
    "statement": "forall A:set, forall P:set -> prop, (exists x :e A, P x /\\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\\ forall x x' :e A, P x /\\ P x' -> x = x'",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: A, hl_exists_unique A (fun x :e A => P x) = 1 <-> (exists x :e A, P x = 1) /\\ forall x x' :e A, P x = 1 /\\ P x' = 1 -> x = x'",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#13",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_UNIQUE_THM_bridge"
   },
   {
    "name": "EXISTS_UNIQUE_UNIONS_INTERS",
@@ -13614,9 +13614,9 @@
    "source": "!P:(A->bool)->bool. (?!s:A->bool. P s) <=> UNIONS (GSPEC (\\GEN%PVAR%82:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%82 (P s) s)) = INTERS (GSPEC (\\GEN%PVAR%83:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%83 (P s) s))",
    "statement": "forall A:set, A <> Empty -> forall P:set -> prop, (exists s c= A, P s /\\ forall y c= A, P y -> y = s) <-> Union {s :e Power A | P s} = {x :e A | forall Y :e {s :e Power A | P s}, x :e Y}",
    "literal": "forall A:set, A <> Empty -> forall P :e 2 :^: (2 :^: A), hl_exists_unique (2 :^: A) (fun s :e 2 :^: A => P s) = 1 <-> hl_UNIONS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_82 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_82 (P s) s = 1 then 1 else 0)) = hl_INTERS A (hl_GSPEC (2 :^: A) (fun GEN_PVAR_83 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_83 (P s) s = 1 then 1 else 0))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable s\u0000s#11",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "EXISTS_UNIQUE_UNIONS_INTERS_bridge"
   },
   {
    "name": "EXISTS_UNPAIR_FUN_THM",
@@ -21060,9 +21060,9 @@
    "source": "!l:A list. ~(l = NIL) ==> HD (REVERSE l) = LAST l",
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_HD A (hl_REVERSE A l) = hl_LAST A l",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition ~ seq_rev l = seq_nil not available from hypotheses [hyps: ~ l = seq_nil]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "HD_REVERSE_bridge"
   },
   {
    "name": "HREAL_ADD_AC",
@@ -25010,9 +25010,9 @@
    "source": "!s:A->bool. !t:A->bool. INTERS (s INSERT t INSERT EMPTY) = s INTER t",
    "statement": "forall A:set, forall s t c= A, {x :e A | forall Y :e {s,t}, x :e Y} = s :/\\: t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_INTERS A (hl_INSERT (2 :^: A) s (hl_INSERT (2 :^: A) t (hl_EMPTY (2 :^: A)))) = hl_INTER A s t",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {t} s differs from elaborated {s,t}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "INTERS_2_bridge"
   },
   {
    "name": "INTERS_ANTIMONO",
@@ -40279,9 +40279,9 @@
    "source": "!l:A list. ~(l = NIL) ==> LAST (REVERSE l) = HD l",
    "statement": "forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l",
    "literal": "forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LAST A (hl_REVERSE A l) = hl_HD A l",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition ~ seq_rev l = seq_nil not available from hypotheses [hyps: ~ l = seq_nil]",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "LAST_REVERSE_bridge"
   },
   {
    "name": "LDIV_LT_EQ",
@@ -61883,9 +61883,9 @@
    "source": "!x:real. !y:real. real_max x y = sup (x INSERT y INSERT EMPTY)",
    "statement": "forall x y :e R, (if x <= y then y else x) = sup {x,y}",
    "literal": "forall x y :e R, hl_real_max x y = hl_sup (hl_INSERT R x (hl_INSERT R y (hl_EMPTY R)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {y} x differs from elaborated {x,y}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_MAX_SUP_bridge"
   },
   {
    "name": "REAL_MAX_SYM",
@@ -61999,9 +61999,9 @@
    "source": "!x:real. !y:real. real_min x y = inf (x INSERT y INSERT EMPTY)",
    "statement": "forall x y :e R, (if x <= y then x else y) = inf {x,y}",
    "literal": "forall x y :e R, hl_real_min x y = hl_inf (hl_INSERT R x (hl_INSERT R y (hl_EMPTY R)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {y} x differs from elaborated {x,y}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "REAL_MIN_INF_bridge"
   },
   {
    "name": "REAL_MIN_LE",
@@ -69086,9 +69086,9 @@
    "source": "!s:A->bool. (?x:A. s = x INSERT EMPTY) <=> (?!x:A. x IN s)",
    "statement": "forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, x :e s /\\ forall y :e A, y :e s -> y = x",
    "literal": "forall A:set, A <> Empty -> forall s :e 2 :^: A, (exists x :e A, s = hl_INSERT A x (hl_EMPTY A)) <-> hl_exists_unique A (fun x :e A => hl_IN A x s) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable x\u0000x#1",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "SING_ALT_bridge"
   },
   {
    "name": "SING_GSPEC",
@@ -76819,9 +76819,9 @@
    "source": "!s:A->bool. !t:A->bool. UNIONS (s INSERT t INSERT EMPTY) = s UNION t",
    "statement": "forall A:set, A <> Empty -> forall s t c= A, Union {s,t} = s :\\/: t",
    "literal": "forall A:set, A <> Empty -> forall s t :e 2 :^: A, hl_UNIONS A (hl_INSERT (2 :^: A) s (hl_INSERT (2 :^: A) t (hl_EMPTY (2 :^: A)))) = hl_UNION A s t",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel_mapped: derived native SetAdjoin {t} s differs from elaborated {s,t}",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIONS_2_bridge"
   },
   {
    "name": "UNIONS_DELETE_EMPTY",
@@ -77700,9 +77700,9 @@
    "source": "!P:A->B->bool. (!x:A. ?!y:B. P x y) <=> (?f:A->B. !x:A. !y:B. P x y <=> f x = y)",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ forall x :e A, forall y :e B, P x y <-> f x = y",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> exists f :e B :^: A, forall x :e A, forall y :e B, P x y = 1 <-> f x = y",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable y\u0000y#8",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIQUE_SKOLEM_ALT_bridge"
   },
   {
    "name": "UNIQUE_SKOLEM_THM",
@@ -77725,9 +77725,9 @@
    "source": "!P:A->B->bool. (!x:A. ?!y:B. P x y) <=> (?!f:A->B. !x:A. P x (f x))",
    "statement": "forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\\ ((forall x :e A, P x (f x)) /\\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (y x)) -> forall x :e A, y x = f x)",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, (forall x :e A, hl_exists_unique B (fun y :e B => P x y) = 1) <-> hl_exists_unique (B :^: A) (fun f :e B :^: A => if forall x :e A, P x (f x) = 1 then 1 else 0) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: typing: unknown variable y\u0000y#18",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "UNIQUE_SKOLEM_THM_bridge"
   },
   {
    "name": "UNIV",
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2390
+  "native_certified": 2405
  }
 }

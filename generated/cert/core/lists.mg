@@ -969,13 +969,23 @@ exact (LENGTH_TL_bridge hlt_LENGTH_TL).
 Admitted.
 
 // HOL Light: lists.ml:554 / LAST_REVERSE   (hash md5:c75a8f7488d5cca7950ef0e9cc55247c)
-// not bridged: 
+Theorem hlt_LAST_REVERSE : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LAST A (hl_REVERSE A l) = hl_HD A l.
+Admitted.
+Theorem LAST_REVERSE_bridge : (forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_LAST A (hl_REVERSE A l) = hl_HD A l) -> (forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l).
+exact (fun H__top A => (xm (A = Empty) (forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall l :e finseq hl__u, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l) ((eq_sym_i (finseq Empty) ({seq_nil}) finseq_Empty) (fun hl__u hl__v => forall l :e hl__u, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l) (forall_Sing (seq_nil) (fun l => ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l) (fun H : ~ seq_nil = seq_nil => FalseE ((fun H : ~ seq_nil = seq_nil => H (fun q H => H)) H) (seq_last (seq_rev seq_nil) = seq_hd seq_nil)))))) (fun HAne => (imp_forall_in (finseq A) (fun l => ~ l = hl_NIL A -> hl_LAST A (hl_REVERSE A l) = hl_HD A l) (fun l => ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l) (fun l Hl => (fun H__L : ((~ l = hl_NIL A) -> (hl_LAST A (hl_REVERSE A l) = hl_HD A l)) => fun H__hyp1 : (~ l = seq_nil) => (imp_eq (hl_LAST A (hl_REVERSE A l)) (seq_last (seq_rev l)) (hl_HD A l) (seq_hd l) (((hl_REVERSE_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_LAST A (hl_REVERSE A l) = seq_last hl__u) (((hl_LAST_compat) (A) HAne (hl_REVERSE A l) (setexp_ap (finseq A) (finseq A) (hl_REVERSE A) ((hl_REVERSE_in) (A) HAne) (l) Hl)) ((eq_sym_i (hl_REVERSE A l) (seq_rev l) ((hl_REVERSE_compat) (A) HAne (l) Hl)) (fun hl__u hl__v => ~ hl__u = seq_nil) (seq_rev_neq_nil (A) (l) Hl H__hyp1)))) (((hl_HD_compat) (A) HAne (l) Hl) H__hyp1)) (H__L ((imp_not (l = seq_nil) (l = hl_NIL A) (imp_eq (l) (l) (hl_NIL A) (seq_nil) (fun q H => H) ((hl_NIL_compat) (A) HAne))) H__hyp1))))) (H__top A HAne)))).
+Qed.
 Theorem LAST_REVERSE : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_last (seq_rev l) = seq_hd l.
+exact (LAST_REVERSE_bridge hlt_LAST_REVERSE).
 Admitted.
 
 // HOL Light: lists.ml:559 / HD_REVERSE   (hash md5:ab3ea9bf8f9519ab0c9869a62f24e123)
-// not bridged: 
+Theorem hlt_HD_REVERSE : forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_HD A (hl_REVERSE A l) = hl_LAST A l.
+Admitted.
+Theorem HD_REVERSE_bridge : (forall A:set, A <> Empty -> forall l :e finseq A, ~ l = hl_NIL A -> hl_HD A (hl_REVERSE A l) = hl_LAST A l) -> (forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l).
+exact (fun H__top A => (xm (A = Empty) (forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall l :e finseq hl__u, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l) ((eq_sym_i (finseq Empty) ({seq_nil}) finseq_Empty) (fun hl__u hl__v => forall l :e hl__u, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l) (forall_Sing (seq_nil) (fun l => ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l) (fun H : ~ seq_nil = seq_nil => FalseE ((fun H : ~ seq_nil = seq_nil => H (fun q H => H)) H) (seq_hd (seq_rev seq_nil) = seq_last seq_nil)))))) (fun HAne => (imp_forall_in (finseq A) (fun l => ~ l = hl_NIL A -> hl_HD A (hl_REVERSE A l) = hl_LAST A l) (fun l => ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l) (fun l Hl => (fun H__L : ((~ l = hl_NIL A) -> (hl_HD A (hl_REVERSE A l) = hl_LAST A l)) => fun H__hyp1 : (~ l = seq_nil) => (imp_eq (hl_HD A (hl_REVERSE A l)) (seq_hd (seq_rev l)) (hl_LAST A l) (seq_last l) (((hl_REVERSE_compat) (A) HAne (l) Hl) (fun hl__u hl__v => hl_HD A (hl_REVERSE A l) = seq_hd hl__u) (((hl_HD_compat) (A) HAne (hl_REVERSE A l) (setexp_ap (finseq A) (finseq A) (hl_REVERSE A) ((hl_REVERSE_in) (A) HAne) (l) Hl)) ((eq_sym_i (hl_REVERSE A l) (seq_rev l) ((hl_REVERSE_compat) (A) HAne (l) Hl)) (fun hl__u hl__v => ~ hl__u = seq_nil) (seq_rev_neq_nil (A) (l) Hl H__hyp1)))) (((hl_LAST_compat) (A) HAne (l) Hl) H__hyp1)) (H__L ((imp_not (l = seq_nil) (l = hl_NIL A) (imp_eq (l) (l) (hl_NIL A) (seq_nil) (fun q H => H) ((hl_NIL_compat) (A) HAne))) H__hyp1))))) (H__top A HAne)))).
+Qed.
 Theorem HD_REVERSE : forall A:set, forall l :e finseq A, ~ l = seq_nil -> seq_hd (seq_rev l) = seq_last l.
+exact (HD_REVERSE_bridge hlt_HD_REVERSE).
 Admitted.
 
 // HOL Light: lists.ml:563 / EL_APPEND   (hash md5:748e8eba07efd541bbb8f4cee28509db)

@@ -297,11 +297,17 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
           | Mg.Cst "Empty" | Mg.Num 0 -> Some "finite_Empty"
           | Mg.Num n when n <= 2 -> Some (Printf.sprintf "(nat_finite %d nat_%d)" n n)
           | Mg.SetEnum [ a ] -> Some (Printf.sprintf "(Sing_finite %s)" (ppp a))
+          | Mg.SetEnum [ a; b ] -> Some (Printf.sprintf "(finite_UPair %s %s)" (ppp a) (ppp b))
           | Mg.App (Mg.App (Mg.Cst "SetAdjoin", x), a) -> Option.map (fun p -> Printf.sprintf "(adjoin_finite %s %s %s)" (ppp x) (ppp a) p) (sub x (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "binunion", x), y) ->
               (match sub x (depth + 1), sub y (depth + 1) with
                | Some px, Some py -> Some (Printf.sprintf "(binunion_finite %s %s %s %s)" (ppp x) px (ppp y) py)
                | _ -> None)
+          | Mg.App (Mg.App (Mg.Cst "setprod", x), y) ->
+              (match sub x (depth + 1), sub y (depth + 1) with
+               | Some px, Some py -> Some (Printf.sprintf "(god1_setprod_finite %s %s %s %s)" (ppp x) (ppp y) px py)
+               | _ -> None)
+          | Mg.App (Mg.Cst "Power", x) -> Option.map (fun p -> Printf.sprintf "(god1_power_finite %s %s)" (ppp x) p) (sub x (depth + 1))
           | Mg.Repl (v, x, f) -> Option.map (fun p -> Printf.sprintf "(Repl_finite (fun %s:set => %s) %s %s)" v (pp f) (ppp x) p) (sub x (depth + 1))
           | Mg.Sep (v, Mg.Cst "omega", body) when (match body with
                 | Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v'), _) -> v' = v
@@ -1441,6 +1447,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                               (* structural nonemptiness: singletons and adjoined elements *)
                               (match s_nat with
                                | Mg.SetEnum [ a ] -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s (SingI %s))" (ppp s_nat) (ppp a) (ppp a))
+                               | Mg.SetEnum [ a; b ] -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s (UPairI1 %s %s))" (ppp s_nat) (ppp a) (ppp a) (ppp b))
                                | Mg.App (Mg.App (Mg.Cst "SetAdjoin", x), a) -> Some (Printf.sprintf "(neq_Empty_of_mem %s %s (binunionI2 %s %s %s (SingI %s)))" (ppp s_nat) (ppp a) (ppp x) (ppp (Mg.SetEnum [ a ])) (ppp a) (ppp a))
                                | _ -> None))
                        else if wrap = "lub" || wrap = "glb" then
@@ -1465,6 +1472,10 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                              else if tpl = "~ ?1 = seq_nil" then
                                (match s_nat with
                                 | Mg.App (Mg.App (Mg.Cst "seq_cons", h), t) -> Some (Printf.sprintf "(seq_cons_neq_nil %s %s)" (ppp h) (ppp t))
+                                | Mg.App (Mg.Cst "seq_rev", l) ->
+                                    (match nat_var_mem g l, List.assoc_opt (Mg.normalize (Mg.inst [ ("1", l) ] (cstify (Mg.parse_template tpl)))) g.hyps with
+                                     | Some (Mg.App (Mg.Cst "finseq", a), hl), Some h -> Some (Printf.sprintf "(seq_rev_neq_nil %s %s %s %s)" (ppp a) (ppp l) hl h)
+                                     | _ -> None)
                                 | _ -> None)
                              else None
                          | Some h -> Some (if wrap = "" then h else Printf.sprintf "(%s %s %s %s)" wrap (ppp s_nat) (Lazy.force hsub) h)
@@ -1534,6 +1545,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   (* replay the elaborator's singleton normalisation SetAdjoin Empty a = {a} on the native side *)
   let rec find_adjoin_empty t = (match t with
     | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Cst "Empty"), a) -> Some (t, Mg.SetEnum [ a ], Printf.sprintf "(binunion_idl %s)" (ppp (Mg.SetEnum [ a ])))
+    | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.SetEnum [ b ]), a) -> Some (t, Mg.SetEnum [ a; b ], Printf.sprintf "(SetAdjoin_Sing_UPair %s %s)" (ppp a) (ppp b))
     | Mg.App (Mg.Tuple [ a; b ], Mg.Num 0) -> Some (t, a, Printf.sprintf "(tuple_2_0_eq %s %s)" (ppp a) (ppp b))
     | Mg.App (Mg.Tuple [ a; b ], Mg.Num 1) -> Some (t, b, Printf.sprintf "(tuple_2_1_eq %s %s)" (ppp a) (ppp b))
     | Mg.App (f, x) -> (match find_adjoin_empty f with Some r -> Some r | None -> find_adjoin_empty x)
@@ -1627,8 +1639,10 @@ and bridge g (dir : dir) (t : tm) : string =
            let body' = open_with (Free (key, ty)) body in
            if not (List.mem n g.lctx.L.used) then g.lctx.L.used <- n :: g.lctx.L.used;
            g.lctx.L.vars <- (key, Mg.Var n) :: g.lctx.L.vars;
+           g.vars <- (key, { vty = ty; view = E.VSet (L.carrier g.lctx ty); lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
            let cleanup () =
              g.lctx.L.vars <- List.remove_assoc key g.lctx.L.vars; E.release g.nctx n;
+             g.vars <- List.remove_assoc key g.vars;
              g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used in
            (* the literal body is either `if LP then 1 else 0` (logical body) or a set term of 2 *)
            let lb, lp, tb = (try (lterm g body', ltext g body', typ g body') with e -> cleanup (); raise e) in
