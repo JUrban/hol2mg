@@ -2,6 +2,12 @@
 
 open Hol
 
+let rec mkdir_p d =
+  if d <> "" && d <> "." && d <> "/" && not (Sys.file_exists d) then begin
+    mkdir_p (Filename.dirname d);
+    (try Unix.mkdir d 0o755 with Unix.Unix_error (Unix.EEXIST, _, _) -> ())
+  end
+
 let usage = "hol2mg translate --export FILE --sig FILE --mappings F1,F2 --out DIR --profile NAME [--srcindex FILE] [--only N1,N2] [--manifest FILE] [--report FILE]"
 
 let args = Array.to_list Sys.argv
@@ -223,7 +229,7 @@ let () =
         items := item :: !items) thms;
       let items = List.rev !items in
       (* write shards *)
-      (try Unix.mkdir out_dir 0o755 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
+      mkdir_p out_dir;
       let shards = List.sort_uniq compare (List.map (fun i -> i.Manifest.shard) items) in
       let meta = ex.meta in
       let hol_commit = (match Yojson.Safe.Util.member "hol_light_commit" meta with `String s -> s | _ -> "?") in
@@ -268,7 +274,7 @@ let () =
       let items = (match opt "--literal-out" with
         | None -> items
         | Some ldir ->
-            (try Unix.mkdir ldir 0o755 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
+            mkdir_p ldir;
             let an = Literal.analyse ex in
             let oc = open_out (Filename.concat ldir "_literal.mg") in
             Printf.fprintf oc "// hol2mg literal layer (private, docs/DESIGN.md §21.2): syntax-directed interpretation of the\n// HOL Light kernel definitions of profile %s (commit %s).  Checked after mglib/native/*.mg and\n// mglib/literal/model.mg.  Generated; do not edit.\n\n" profile hol_commit;
