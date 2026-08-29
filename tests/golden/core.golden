@@ -2025,7 +2025,8 @@ source: !a:num. !b:num. int_of_num (num_gcd (a , b)) = int_gcd (int_of_num a , i
 status: transport_required
 statement: forall a b :e omega, gcd_int a b = gcd_int a b
 literal: forall a b :e omega, hl_int_of_num (hl_num_gcd (hl_pair omega omega a b)) = hl_int_gcd (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b))
-cert_status: bridge_unsupported
+bridge: NUM_GCD_bridge
+cert_status: native_certified
 
 ### CONG   [integers]
 hash: 724c7646174213ceafea3e62084f528f

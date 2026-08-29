@@ -146,10 +146,6 @@ Admitted.
 Theorem hl_mk_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_sum A B l1 = l1.
 Admitted.
 
-// num_coprime : num#num->bool (not in compat.mg)
-Theorem hl_num_coprime_compat : forall l1 :e omega :*: omega, hl_num_coprime l1 = 1 <-> gcd_int (l1 0) (l1 1) = 1.
-Admitted.
-
 // OUTR : (A,B)sum->B (not in compat.mg)
 Theorem hl_OUTR_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTR A B = OUTR A B.
 Admitted.
@@ -184,10 +180,6 @@ Admitted.
 
 // superadmissible : (A->A->bool)->((A->B)->P->bool)->(P->A)->((A->B)->P->B)->bool (not in compat.mg)
 Theorem hl_superadmissible_compat : forall A B P:set, A <> Empty -> B <> Empty -> P <> Empty -> hl_superadmissible A B P = Empty.
-Admitted.
-
-// int_coprime : int#int->bool (not in compat.mg)
-Theorem hl_int_coprime_compat : forall l1 :e int :*: int, hl_int_coprime l1 = 1 <-> gcd_int (l1 0) (l1 1) = 1.
 Admitted.
 
 // dest_finite_diff : (A,B)finite_diff->num (not in compat.mg)
@@ -252,10 +244,6 @@ Admitted.
 
 // UNCURRY : (A->B->C)->A#B->C (not in compat.mg)
 Theorem hl_UNCURRY_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e A :*: B, hl_UNCURRY A B C l1 l2 = f1 (l2 0) (l2 1).
-Admitted.
-
-// num_gcd : num#num->num (not in compat.mg)
-Theorem hl_num_gcd_compat : forall l1 :e omega :*: omega, hl_num_gcd l1 = gcd_int (l1 0) (l1 1).
 Admitted.
 
 // INL : A->(A,B)sum (not in compat.mg)

@@ -6689,9 +6689,9 @@
    "source": "!a:num. !n:num. num_coprime (a MOD n , n) <=> num_coprime (a , n)",
    "statement": "forall a n :e omega, gcd_int (mod_nat a n) n = 1 <-> gcd_int a n = 1",
    "literal": "forall a n :e omega, hl_num_coprime (hl_pair omega omega (hl_MOD a n) n) = 1 <-> hl_num_coprime (hl_pair omega omega a n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "COPRIME_LMOD_bridge"
   },
   {
    "name": "COPRIME_RMOD",
@@ -6720,9 +6720,9 @@
    "source": "!a:num. !n:num. num_coprime (n , a MOD n) <=> num_coprime (n , a)",
    "statement": "forall a n :e omega, gcd_int n (mod_nat a n) = 1 <-> gcd_int n a = 1",
    "literal": "forall a n :e omega, hl_num_coprime (hl_pair omega omega n (hl_MOD a n)) = 1 <-> hl_num_coprime (hl_pair omega omega n a) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "COPRIME_RMOD_bridge"
   },
   {
    "name": "COUNTABLE",
@@ -19512,9 +19512,9 @@
    "source": "!a:num. !b:num. (num_divides (num_gcd (a , b)) a /\\ num_divides (num_gcd (a , b)) b) /\\ (!e:num. num_divides e a /\\ num_divides e b ==> num_divides e (num_gcd (a , b)))",
    "statement": "forall a b :e omega, divides_nat (gcd_int a b) a /\\ divides_nat (gcd_int a b) b /\\ forall e0 :e omega, divides_nat e0 a /\\ divides_nat e0 b -> divides_nat e0 (gcd_int a b)",
    "literal": "forall a b :e omega, hl_num_divides (hl_num_gcd (hl_pair omega omega a b)) a = 1 /\\ hl_num_divides (hl_num_gcd (hl_pair omega omega a b)) b = 1 /\\ forall e1 :e omega, hl_num_divides e1 a = 1 /\\ hl_num_divides e1 b = 1 -> hl_num_divides e1 (hl_num_gcd (hl_pair omega omega a b)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_gcd_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "GCD_bridge"
   },
   {
    "name": "GE",
@@ -51695,9 +51695,9 @@
    "source": "!a:num. !b:num. int_of_num (num_gcd (a , b)) = int_gcd (int_of_num a , int_of_num b)",
    "statement": "forall a b :e omega, gcd_int a b = gcd_int a b",
    "literal": "forall a b :e omega, hl_int_of_num (hl_num_gcd (hl_pair omega omega a b)) = hl_int_gcd (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_gcd_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "NUM_GCD_bridge"
   },
   {
    "name": "NUM_LCM",
@@ -52314,9 +52314,9 @@
    "source": "!p:num. p = 1 \\/ prime p <=> (!n:num. num_divides p n \\/ num_coprime (p , n))",
    "statement": "forall p :e omega, p = 1 \\/ prime_nat p <-> forall n :e omega, divides_nat p n \\/ gcd_int p n = 1",
    "literal": "forall p :e omega, p = hl_NUMERAL (hl_BIT1 hl_zero) \\/ hl_prime p = 1 <-> forall n :e omega, hl_num_divides p n = 1 \\/ hl_num_coprime (hl_pair omega omega p n) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "ONE_OR_PRIME_DIVIDES_OR_COPRIME_bridge"
   },
   {
    "name": "ONTO",
@@ -54215,9 +54215,9 @@
    "source": "!p:num. prime p <=> (!n:num. num_coprime (p , n) <=> ~num_divides p n)",
    "statement": "forall p :e omega, prime_nat p <-> forall n :e omega, gcd_int p n = 1 <-> ~ divides_nat p n",
    "literal": "forall p :e omega, hl_prime p = 1 <-> forall n :e omega, hl_num_coprime (hl_pair omega omega p n) = 1 <-> ~ hl_num_divides p n = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "PRIME_COPRIME_EQ_NONDIVISIBLE_bridge"
   },
   {
    "name": "PRODUCT_CLAUSES",
@@ -79701,9 +79701,9 @@
    "source": "num_coprime (a , b) <=> (!d:num. num_divides d a /\\ num_divides d b ==> d = 1)",
    "statement": "forall a b :e omega, gcd_int a b = 1 <-> forall d :e omega, divides_nat d a /\\ divides_nat d b -> d = 1",
    "literal": "forall a b :e omega, hl_num_coprime (hl_pair omega omega a b) = 1 <-> forall d :e omega, hl_num_divides d a = 1 /\\ hl_num_divides d b = 1 -> d = hl_NUMERAL (hl_BIT1 hl_zero)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "coprime_bridge"
   },
   {
    "name": "dest_int_rep",
@@ -80670,9 +80670,9 @@
    "source": "!a:int. !b:int. int_coprime (a , b) <=> (?x:int. ?y:int. a * x + b * y = int_of_num 1)",
    "statement": "forall a b :e int, gcd_int a b = 1 <-> exists x y :e int, a * x + b * y = 1",
    "literal": "forall a b :e hl_ty_int, hl_int_coprime (hl_pair hl_ty_int hl_ty_int a b) = 1 <-> exists x y :e hl_ty_int, hl_int_add (hl_int_mul a x) (hl_int_mul b y) = hl_int_of_num (hl_NUMERAL (hl_BIT1 hl_zero))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "int_coprime_bridge"
   },
   {
    "name": "int_divides",
@@ -82757,9 +82757,9 @@
    "source": "!a:num. !b:num. num_coprime (a , b) <=> int_coprime (int_of_num a , int_of_num b)",
    "statement": "forall a b :e omega, gcd_int a b = 1 <-> gcd_int a b = 1",
    "literal": "forall a b :e omega, hl_num_coprime (hl_pair omega omega a b) = 1 <-> hl_int_coprime (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b)) = 1",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_int_coprime_compat (not in compat.mg)",
-   "bridge": ""
+   "cert_status": "native_certified",
+   "cert_error": "",
+   "bridge": "num_coprime_bridge"
   },
   {
    "name": "num_divides",
@@ -82821,7 +82821,7 @@
    "statement": "forall a b :e omega, gcd_int a b = if gcd_int a b :e omega then gcd_int a b else 0",
    "literal": "forall a b :e omega, hl_num_gcd (hl_pair omega omega a b) = hl_num_of_int (hl_int_gcd (hl_pair hl_ty_int hl_ty_int (hl_int_of_num a) (hl_int_of_num b)))",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: compat_missing: hl_num_gcd_compat (not in compat.mg)",
+   "cert_error": "bridge_unsupported: side condition gcd_int a b :e omega not available from hypotheses [hyps: ]",
    "bridge": ""
   },
   {
@@ -84907,6 +84907,6 @@
    "wf"
   ],
   "failed_shards": {},
-  "native_certified": 2315
+  "native_certified": 2324
  }
 }
