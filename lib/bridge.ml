@@ -622,17 +622,48 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                  | Mg.App (Mg.App (Mg.Cst "eq", _), r) when r <> nat -> unsupported "rel: conditional derived %s differs from %s" (pp r) (pp nat)
                  | _ -> ());
                 (lit, nat, KEq, pf2)
+            | "@" when (match args, nview with [ Lam _ ], E.VSet _ -> true | _ -> false) ->
+                (* the chosen object: hl_select A F = choose_in A (fun x => F x = 1) = choose_in A N pointwise *)
+                let p = List.hd args in
+                let ca = (match nview with E.VSet ca -> ca | _ -> assert false) in
+                let lp, np, kp, pw = rel g p (Some (E.VMetaPred [ ca ])) in
+                (match kp with KPWP _ -> () | _ -> unsupported "rel: choice body relation");
+                let mid = Mg.App (Mg.App (Mg.Cst "choose_in", ca), Mg.Lam ("hl__x", Mg.Set, L.mg_eq (Mg.App (lp, Mg.Var "hl__x")) L.one)) in
+                let pf = Printf.sprintf "(eq_trans_i %s %s %s (hl_select_eq %s %s %s) (choose_in_ext %s (fun hl__x:set => %s hl__x = 1) %s %s))"
+                  (ppp lit) (ppp mid) (ppp nat) (ppp ca) (ppp lp) (typ g p) (ppp ca) (ppp lp) (ppp np) pw in
+                (lit, nat, KEq, pf)
             | _ ->
                 (match mapped_entry g c cty with
                  | Some (e, _) when List.length args = List.length e.R.c_args -> rel_mapped g e c cty args lit nat nview
-                 | Some _ -> unsupported "rel: partial application of mapped constant %s" c
-                 | None -> unsupported "rel: unmapped constant %s" c))
+                 | Some (e, _) when List.length args < List.length e.R.c_args && (match nview with E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ] -> true | _ -> false) ->
+                     (* partial application in a meta position: eta-expand and relate the lambda; the
+                        literal of the original term is the unexpanded application, evaluated with beta *)
+                     let rem_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty args in
+                     let dom, _ = dest_fun_ty rem_ty in
+                     let t' = E.eta_expand "x" t rem_ty in
+                     let l', n', k', pf' = rel g t' (Some nview) in
+                     ignore n';
+                     let ca = L.carrier g.lctx dom in
+                     (match k', l' with
+                      | KPWP _, Mg.LamIn (xn, _, body) ->
+                          (* lit z = (fun x :e D => lit x) z  by beta (the body at z is literally lit z) *)
+                          let pw = Printf.sprintf "(fun hl__z hl__Hz => (iff_eq1_l (%s hl__z) (%s hl__z) (eq_sym_i (%s hl__z) (%s hl__z) (beta %s (fun %s:set => %s) hl__z hl__Hz)) (%s hl__z) (%s hl__z hl__Hz)))"
+                            (ppp lit) (ppp l') (ppp l') (ppp lit) (ppp ca) xn (pp body) (ppp nat) pf' in
+                          (lit, nat, k', pw)
+                      | KPW _, Mg.LamIn (xn, _, body) ->
+                          let pw = Printf.sprintf "(fun hl__z hl__Hz => (eq_trans_i (%s hl__z) (%s hl__z) (%s hl__z) (eq_sym_i (%s hl__z) (%s hl__z) (beta %s (fun %s:set => %s) hl__z hl__Hz)) (%s hl__z hl__Hz)))"
+                            (ppp lit) (ppp l') (ppp nat) (ppp l') (ppp lit) (ppp ca) xn (pp body) pf' in
+                          (lit, nat, k', pw)
+                      | _ -> unsupported "rel: partial application shape")
+                 | Some _ -> unsupported "rel: partial application of mapped constant %s (view %s, %d args)" c (E.string_of_view nview) (List.length args)
+                 | None -> unsupported "rel: unmapped constant %s (view %s, %d args)" c (E.string_of_view nview) (List.length args)))
        | Lam (x, xty, body), (E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ]) ->
            (* a lambda in meta position: open the binder exactly as Elab does and relate pointwise;
               the literal side is a set-level lambda, evaluated with `beta` *)
            let c, dopt = (match nview with E.VMetaFun ([ c ], d) -> (c, Some d) | E.VMetaPred [ c ] -> (c, None) | _ -> assert false) in
            (* the literal lambda binds over the literal carrier: 2 :^: c' for a native carrier Power c' *)
-           let c = (match c with Mg.App (Mg.Cst "Power", c') -> Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), c') | _ -> c) in
+           let rec lit_carrier c = (match c with Mg.App (Mg.Cst "Power", c') -> Mg.App (Mg.App (Mg.Cst "setexp", Mg.Num 2), lit_carrier c') | _ -> c) in
+           let c = lit_carrier c in
            let is_pred = (dopt = None) in
            let d = (match dopt with Some d -> d | None -> Mg.Num 2) in
            let n = E.fresh g.nctx x in
@@ -662,14 +693,14 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                let lp = ltext g body' and np = ntext g body' in
                let fwd = bridge g Fwd body' and bwd = bridge g Bwd body' in
                let lb = Printf.sprintf "(if %s then 1 else 0)" lp in
-               let pw = Printf.sprintf "(fun %s %s => (iff_eq1_l (%s %s) %s (beta %s (fun %s => %s) %s %s) (%s) (iff_trans (%s = 1) (%s) (%s) (If_1_iff (%s)) (iffI (%s) (%s) %s %s))))"
+               let pw = Printf.sprintf "(fun %s %s => (iff_eq1_l (%s %s) %s (beta %s (fun %s:set => %s) %s %s) (%s) (iff_trans (%s = 1) (%s) (%s) (If_1_iff (%s)) (iffI (%s) (%s) %s %s))))"
                  n hn (ppp lit) n lb (ppp c) n lb n hn np lb lp np lp lp np fwd bwd in
                (lit, nat, KPWP c, pw)
              end else begin
                let lb, nb, kb, pb = rel g body' (Some (E.VSet d)) in
                if kb <> KEq then unsupported "rel: lambda body relation";
-               let pw = if pb = "" then Printf.sprintf "(fun %s %s => (beta %s (fun %s => %s) %s %s))" n hn (ppp c) n (pp lb) n hn
-                 else Printf.sprintf "(fun %s %s => (eq_trans_i (%s %s) %s %s (beta %s (fun %s => %s) %s %s) %s))" n hn (ppp lit) n (ppp lb) (ppp nb) (ppp c) n (pp lb) n hn pb in
+               let pw = if pb = "" then Printf.sprintf "(fun %s %s => (beta %s (fun %s:set => %s) %s %s))" n hn (ppp c) n (pp lb) n hn
+                 else Printf.sprintf "(fun %s %s => (eq_trans_i (%s %s) %s %s (beta %s (fun %s:set => %s) %s %s) %s))" n hn (ppp lit) n (ppp lb) (ppp nb) (ppp c) n (pp lb) n hn pb in
                (lit, nat, KPW c, pw)
              end
            with e -> finish (); raise e) in
@@ -680,8 +711,8 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
 (* mapped constant application: use its compatibility lemma *)
 and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let tvs = L.tyvars_ordered e.R.c_scheme [] in
-  let generic = Hashtbl.find g.an.L.consts c in
-  let sub = L.match_ty generic cty [] in
+  (* the entry's scheme has its own type-variable names: instantiate it against the occurrence type *)
+  let sub = (try L.match_ty e.R.c_scheme cty [] with _ -> unsupported "rel_mapped: scheme %s does not match %s" (string_of_ty e.R.c_scheme) (string_of_ty cty)) in
   (* a single type variable instantiated to a subset type: the nested instance (_pow lemma), whose
      carrier parameter is the inner carrier *)
   let nested = (match tvs with
@@ -750,7 +781,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d ], L.carrier g.lctx cod))) in
           (match ka with KPW _ -> () | _ -> unsupported "rel_mapped: metafun argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx => (fun q H => H))" else pa in
-          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x => %s hl__x)" (ppp na)) in
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp na)) in
           parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else if k = 2 then begin
@@ -759,7 +790,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d1; L.carrier g.lctx d2 ], L.carrier g.lctx cod))) in
           (match ka with KPW2 _ -> () | _ -> unsupported "rel_mapped: metafun2 argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx y Hy => (fun q H => H))" else pa in
-          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x hl__y => %s hl__x hl__y)" (ppp na)) in
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x:set => fun hl__y:set => %s hl__x hl__y)" (ppp na)) in
           parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else unsupported "rel_mapped: metafun arity %d" k
@@ -770,7 +801,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaPred [ L.carrier g.lctx d ])) in
           (match ka with KPWP _ -> () | _ -> unsupported "rel_mapped: metapred argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx => iff_refl (%s x = 1))" (ppp la) else pa in
-          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x => %s hl__x)" (ppp na)) in
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp na)) in
           parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else if k = 2 then begin
@@ -779,7 +810,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaPred [ L.carrier g.lctx d1; L.carrier g.lctx d2 ])) in
           (match ka with KPWP2 _ -> () | _ -> unsupported "rel_mapped: metapred2 argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx y Hy => iff_refl (%s x y = 1))" (ppp la) else pa in
-          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x hl__y => %s hl__x hl__y)" (ppp na)) in
+          let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x:set => fun hl__y:set => %s hl__x hl__y)" (ppp na)) in
           parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else unsupported "rel_mapped: metapred arity %d" k) (List.combine e.R.c_args (List.filteri (fun i _ -> i < List.length e.R.c_args) args));
@@ -1095,7 +1126,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         | Mg.App (Mg.Cst "Power", c') -> (c', "hl_rep2", "hl_chi2")
         | _ -> (c, "hl_rep", "hl_chi")) in
       let d = (match c with Mg.App (Mg.Cst "Power", c') -> two_pow (two_pow c') | _ -> two_pow c) in
-      let r = Printf.sprintf "(fun hl__x => %s %s hl__x)" rep_c (ppp c') and ch = Printf.sprintf "(fun hl__T => %s %s hl__T)" chi_c (ppp c') in
+      let r = Printf.sprintf "(fun hl__x:set => %s %s hl__x)" rep_c (ppp c') and ch = Printf.sprintf "(fun hl__T:set => %s %s hl__T)" chi_c (ppp c') in
       if fwd_first then begin
         let comp = Mg.Lam ("hl__x", Mg.Set, Mg.App (Mg.Var n, Mg.apps (Mg.Cst rep_c) [ c'; Mg.Var "hl__x" ])) in
         let v = { plain with lit = Mg.apps (Mg.Cst "hl_chip") [ d; comp ]; mem = Printf.sprintf "(hl_chip_Pi %s %s)" (ppp d) (ppp comp);

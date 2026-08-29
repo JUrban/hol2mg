@@ -465,8 +465,13 @@ let () =
                   | Elab.Unsupported m | Elab.Elab_error m -> ignore (Unix.alarm 0); Error ("bridge_unsupported: elab " ^ m)
                   | Timeout -> Error "bridge_unsupported: timeout"
                   | Failure m -> ignore (Unix.alarm 0); Error ("bridge_failed: failure " ^ m)
-                  | Not_found -> ignore (Unix.alarm 0); Error "bridge_failed: Not_found"
-                  | Invalid_argument m -> ignore (Unix.alarm 0); Error ("bridge_failed: invalid_argument " ^ m)) in
+                  | Not_found -> ignore (Unix.alarm 0);
+                      let bt = String.concat " | " (List.filteri (fun i _ -> i < 5) (String.split_on_char '\n' (Printexc.get_backtrace ()))) in
+                      Error ("bridge_failed: Not_found [" ^ bt ^ "]")
+                  | Invalid_argument m -> ignore (Unix.alarm 0); Error ("bridge_failed: invalid_argument " ^ m)
+                  | e -> ignore (Unix.alarm 0);
+                      let bt = String.concat " | " (List.filteri (fun i _ -> i < 4) (String.split_on_char '\n' (Printexc.get_backtrace ()))) in
+                      Error ("bridge_failed: " ^ Printexc.to_string e ^ " [" ^ bt ^ "]")) in
                 let entry, i' = (match res with
                   | Ok o -> ((i, Some o), { i with Manifest.cert_status = "bridge_emitted"; bridge = i.Manifest.name ^ "_bridge" })
                   | Error m ->

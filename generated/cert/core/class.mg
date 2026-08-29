@@ -39,8 +39,13 @@ Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x
 Admitted.
 
 // HOL Light: class.ml:102 / SELECT_REFL   (hash md5:5d89ddfdd48e07285ef4152ba2f87957)
-// not bridged: 
+Theorem hlt_SELECT_REFL : forall A:set, A <> Empty -> forall x :e A, hl_select A (fun y :e A => if y = x then 1 else 0) = x.
+Admitted.
+Theorem SELECT_REFL_bridge : (forall A:set, A <> Empty -> forall x :e A, hl_select A (fun y :e A => if y = x then 1 else 0) = x) -> (forall A:set, forall x :e A, choose_in A (fun y:set => y = x) = x).
+exact (fun H__top A => (xm (A = Empty) (forall x :e A, choose_in A (fun y:set => y = x) = x) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall x :e hl__u, choose_in hl__u (fun y:set => y = x) = x) (forall_in_Empty (fun x => choose_in Empty (fun y:set => y = x) = x)))) (fun HAne => (imp_forall_in (A) (fun x => hl_select A (fun y :e A => if y = x then 1 else 0) = x) (fun x => choose_in A (fun y:set => y = x) = x) (fun x Hx => (imp_eq (hl_select A (fun y :e A => if y = x then 1 else 0)) (choose_in A (fun y:set => y = x)) (x) (x) (eq_trans_i (hl_select A (fun y :e A => if y = x then 1 else 0)) (choose_in A (fun hl__x:set => (fun y :e A => if y = x then 1 else 0) hl__x = 1)) (choose_in A (fun y:set => y = x)) (hl_select_eq (A) (fun y :e A => if y = x then 1 else 0) (lam_Pi (A) (fun _ => 2) (fun y => if y = x then 1 else 0) (fun y Hy => (If_in_2 (y = x))))) (choose_in_ext (A) (fun hl__x:set => (fun y :e A => if y = x then 1 else 0) hl__x = 1) (fun y:set => y = x) (fun y Hy => (iff_eq1_l ((fun y :e A => if y = x then 1 else 0) y) (if y = x then 1 else 0) (beta (A) (fun y:set => (if y = x then 1 else 0)) y Hy) (y = x) (iff_trans ((if y = x then 1 else 0) = 1) (y = x) (y = x) (If_1_iff (y = x)) (iffI (y = x) (y = x) (imp_eq (y) (y) (x) (x) (fun q H => H) (fun q H => H)) (imp_eq (y) (y) (x) (x) (eq_sym_i (y) (y) (fun q H => H)) (eq_sym_i (x) (x) (fun q H => H))))))))) (fun q H => H)))) (H__top A HAne)))).
+Qed.
 Theorem SELECT_REFL : forall A:set, forall x :e A, choose_in A (fun y:set => y = x) = x.
+exact (SELECT_REFL_bridge hlt_SELECT_REFL).
 Admitted.
 
 // HOL Light: class.ml:107 / SELECT_UNIQUE   (hash md5:a3ab62395ef165d333cfc84d6aa0b583)
