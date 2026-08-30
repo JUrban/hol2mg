@@ -7381,3 +7381,132 @@ prove {hl_rep B u | u :e hl_rep (2 :^: B) (hl_IMAGE (2 :^: A) (2 :^: B) l1 l2)} 
 rewrite Hrep.
 exact (eq_trans_i {hl_rep B u | u :e {l1 x | x :e hl_rep (2 :^: A) l2}} {hl_rep B (l1 x) | x :e hl_rep (2 :^: A) l2} {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} (Repl_Repl (hl_rep (2 :^: A) l2) (fun x => l1 x) (fun u => hl_rep B u)) (eq_trans_i {hl_rep B (l1 x) | x :e hl_rep (2 :^: A) l2} {f1 (hl_rep A x) | x :e hl_rep (2 :^: A) l2} {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} (Repl_ext_pw (hl_rep (2 :^: A) l2) (fun x => hl_rep B (l1 x)) (fun x => f1 (hl_rep A x)) (fun x Hx => Hf x (hl_rep_Subq (2 :^: A) l2 x Hx))) (eq_sym_i {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} {f1 (hl_rep A x) | x :e hl_rep (2 :^: A) l2} (Repl_Repl (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) f1)))).
 Qed.
+
+// ---- CARD / HAS_SIZE at the nested instance A := A -> bool (through the bijection hl_rep A) ----
+Theorem rep2_equip : forall A X:set, X c= 2 :^: A -> equip X {hl_rep A u | u :e X}.
+let A X. assume HX. prove exists f:set -> set, bij X {hl_rep A u | u :e X} f.
+witness (fun u => hl_rep A u).
+prove (forall u :e X, hl_rep A u :e {hl_rep A u | u :e X}) /\ (forall u v :e X, hl_rep A u = hl_rep A v -> u = v) /\ (forall w :e {hl_rep A u | u :e X}, exists u :e X, hl_rep A u = w).
+apply andI.
+apply andI.
+let u. assume Hu. exact (ReplI X (fun u => hl_rep A u) u Hu).
+let u. assume Hu. let v. assume Hv. assume H. exact (hl_rep_inj A u v (HX u Hu) (HX v Hv) H).
+let w. assume Hw. apply (ReplE_impred X (fun u => hl_rep A u) w Hw). let u. assume Hu Hwu. witness u. apply andI. exact Hu. exact (eq_sym_i w (hl_rep A u) Hwu).
+Qed.
+Theorem hl_CARD_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), finite (hl_rep2 A l1) -> hl_CARD (2 :^: A) l1 = finite_cardinality (hl_rep2 A l1).
+let A. assume HA. let l1. assume H1 Hfin.
+claim HS: hl_rep (2 :^: A) l1 c= 2 :^: A. { exact (hl_rep_Subq (2 :^: A) l1). }
+claim Hfin1: finite (hl_rep (2 :^: A) l1). { apply (rep2_finite_iff A (hl_rep (2 :^: A) l1) HS). assume _ H3. exact (H3 Hfin). }
+prove hl_CARD (2 :^: A) l1 = finite_cardinality {hl_rep A u | u :e hl_rep (2 :^: A) l1}.
+exact (eq_trans_i (hl_CARD (2 :^: A) l1) (finite_cardinality (hl_rep (2 :^: A) l1)) (finite_cardinality {hl_rep A u | u :e hl_rep (2 :^: A) l1}) (hl_CARD_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 Hfin1) (god1_finite_cardinality_equip_eq (hl_rep (2 :^: A) l1) {hl_rep A u | u :e hl_rep (2 :^: A) l1} Hfin1 Hfin (rep2_equip A (hl_rep (2 :^: A) l1) HS))).
+Qed.
+Theorem hl_HAS_SIZE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e omega, hl_HAS_SIZE (2 :^: A) l1 l2 = 1 <-> equip (hl_rep2 A l1) l2.
+let A. assume HA. let l1. assume H1. let l2. assume H2.
+claim HS: hl_rep (2 :^: A) l1 c= 2 :^: A. { exact (hl_rep_Subq (2 :^: A) l1). }
+claim HE: equip (hl_rep (2 :^: A) l1) (hl_rep2 A l1). { exact (rep2_equip A (hl_rep (2 :^: A) l1) HS). }
+apply (iff_trans (hl_HAS_SIZE (2 :^: A) l1 l2 = 1) (equip (hl_rep (2 :^: A) l1) l2) (equip (hl_rep2 A l1) l2) (hl_HAS_SIZE_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1 l2 H2)).
+apply iffI.
+- assume H. exact (equip_tra (hl_rep2 A l1) (hl_rep (2 :^: A) l1) l2 (equip_sym (hl_rep (2 :^: A) l1) (hl_rep2 A l1) HE) H).
+- assume H. exact (equip_tra (hl_rep (2 :^: A) l1) (hl_rep2 A l1) l2 HE H).
+Qed.
+
+// ---- comprehensions with two or three pattern variables and subset-valued bodies (nested representation) ----
+Theorem gspec_famunion_form_rep2 : forall A B C:set, forall q:set -> set -> set, forall F:set -> set -> set, forall P:set -> set -> prop, forall F':set -> set -> set, (forall x :e A, forall y :e B, F x y :e 2 :^: C) -> (forall x :e A, forall y :e B, q x y = 1 <-> P x y) -> (forall x :e A, forall y :e B, hl_rep C (F x y) = F' x y) -> {hl_rep C v | v :e {v :e 2 :^: C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y}} = \/_ x :e A, {F' x y | y :e B, P x y}.
+let A B C q F P F'. assume HFC HP HF. apply set_ext.
+- let w. assume Hw. apply (ReplE_impred {v :e 2 :^: C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y} (fun v => hl_rep C v) w Hw). let v. assume Hv Hwv.
+  apply (SepE (2 :^: C) (fun v => exists x :e A, exists y :e B, q x y = 1 /\ v = F x y) v Hv). assume HvC H.
+  apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy H2. apply H2. assume Hq Hvx.
+  claim HPxy: P x y. { apply (HP x Hx y Hy). assume H3 _. exact (H3 Hq). }
+  claim Hweq: w = F' x y. { exact (eq_trans_i w (hl_rep C v) (F' x y) Hwv (eq_trans_i (hl_rep C v) (hl_rep C (F x y)) (F' x y) (f_equal (fun u => hl_rep C u) v (F x y) Hvx) (HF x Hx y Hy))). }
+  apply (famunionI A (fun x => {F' x y | y :e B, P x y}) x w Hx).
+  exact ((eq_sym_i w (F' x y) Hweq) (fun hl__u hl__v => hl__u :e {F' x y | y :e B, P x y}) (ReplSepI B (fun y => P x y) (fun y => F' x y) y Hy HPxy)).
+- let w. assume Hw. apply (famunionE_impred A (fun x => {F' x y | y :e B, P x y}) w Hw). let x. assume Hx Hwx.
+  apply (ReplSepE_impred B (fun y => P x y) (fun y => F' x y) w Hwx). let y. assume Hy HPxy Hw'.
+  claim Hq: q x y = 1. { apply (HP x Hx y Hy). assume _ H3. exact (H3 HPxy). }
+  claim Hex: exists x' :e A, exists y' :e B, q x' y' = 1 /\ F x y = F x' y'. { witness x. apply andI. exact Hx. witness y. apply andI. exact Hy. apply andI. exact Hq. exact (fun p H => H). }
+  claim Hin: F x y :e {v :e 2 :^: C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y}. { exact (SepI (2 :^: C) (fun v => exists x :e A, exists y :e B, q x y = 1 /\ v = F x y) (F x y) (HFC x Hx y Hy) Hex). }
+  claim Hweq: hl_rep C (F x y) = w. { exact (eq_trans_i (hl_rep C (F x y)) (F' x y) w (HF x Hx y Hy) (eq_sym_i w (F' x y) Hw')). }
+  exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep C v | v :e {v :e 2 :^: C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y}}) (ReplI {v :e 2 :^: C | exists x :e A, exists y :e B, q x y = 1 /\ v = F x y} (fun v => hl_rep C v) (F x y) Hin)).
+Qed.
+Theorem hl_gspec_generic3 : forall A B C D:set, forall q F:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, q x y z :e 2) -> hl_rep D (hl_GSPEC D (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0)) = {v :e D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z}.
+let A B C D q F. assume Hq.
+claim HG: (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) :e 2 :^: D.
+{ prove (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) :e Pi_ v :e D, 2. apply (lam_Pi D (fun _ => 2) (fun v => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0)). let v. assume _. exact (If_in_2 (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1)). }
+rewrite (hl_GSPEC_unfold D (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) HG).
+apply set_ext.
+- let v. assume Hv.
+  claim HvD: v :e D. { exact (hl_rep_Subq D (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) v Hv). }
+  claim H1: (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) v = 1. { apply (hl_rep_iff D (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) v HvD). assume _ H. exact (H Hv). }
+  claim H2: (if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) = 1. { exact ((beta D (fun v => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) v HvD) (fun hl__u hl__v => hl__u = 1) H1). }
+  apply (SepI D (fun v => exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z) v HvD).
+  apply (If_1_iff (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1)). assume H3 _. apply (H3 H2). let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Hz0. apply Hz0. let z. assume Hz1. apply Hz1. assume Hz Hs.
+  claim HFx: F x y z :e D.
+  { apply (xm (F x y z :e D)).
+    - assume H. exact H.
+    - assume H. prove False.
+      claim Hs2: hl_SETSPEC D v (q x y z) (F x y z) = 0.
+      { prove (fun v_32420 :e D => fun v_32421 :e 2 => fun v_32422 :e D => if v_32421 = 1 /\ v_32420 = v_32422 then 1 else 0) v (q x y z) (F x y z) = 0.
+        rewrite (beta D (fun v_32420 => fun v_32421 :e 2 => fun v_32422 :e D => if v_32421 = 1 /\ v_32420 = v_32422 then 1 else 0) v HvD).
+        rewrite (beta 2 (fun v_32421 => fun v_32422 :e D => if v_32421 = 1 /\ v = v_32422 then 1 else 0) (q x y z) (Hq x Hx y Hy z Hz)).
+        exact (beta0 D (fun v_32422 => if q x y z = 1 /\ v = v_32422 then 1 else 0) (F x y z) H). }
+      apply neq_0_1. rewrite <- Hs2 at 1. exact Hs. }
+  claim Hs3: (if q x y z = 1 /\ v = F x y z then 1 else 0) = 1.
+  { exact ((hl_SETSPEC_unfold D v HvD (q x y z) (Hq x Hx y Hy z Hz) (F x y z) HFx) (fun hl__u hl__v => hl__u = 1) Hs). }
+  witness x. apply andI.
+  + exact Hx.
+  + witness y. apply andI.
+    * exact Hy.
+    * witness z. apply andI. exact Hz. apply (If_1_iff (q x y z = 1 /\ v = F x y z)). assume H4 _. exact (H4 Hs3).
+- let v. assume Hv. apply (SepE D (fun v => exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z) v Hv). assume HvD H.
+  apply (hl_rep_iff D (fun v :e D => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) v HvD). assume H1 _. apply H1.
+  rewrite (beta D (fun v => if (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) then 1 else 0) v HvD).
+  apply (If_i_1 (exists x :e A, exists y :e B, exists z :e C, hl_SETSPEC D v (q x y z) (F x y z) = 1) 1 0).
+  apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Hz0. apply Hz0. let z. assume Hz1. apply Hz1. assume Hz H2. apply H2. assume Hqx Hvx.
+  claim HFx: F x y z :e D. { rewrite <- Hvx. exact HvD. }
+  witness x. apply andI.
+  + exact Hx.
+  + witness y. apply andI.
+    * exact Hy.
+    * witness z. apply andI. exact Hz. rewrite (hl_SETSPEC_unfold D v HvD (q x y z) (Hq x Hx y Hy z Hz) (F x y z) HFx). apply (If_i_1 (q x y z = 1 /\ v = F x y z) 1 0). exact (andI (q x y z = 1) (v = F x y z) Hqx Hvx).
+Qed.
+Theorem gspec_famunion3_form : forall A B C D:set, forall q:set -> set -> set -> set, forall F F':set -> set -> set -> set, forall P:set -> set -> set -> prop, (forall x :e A, forall y :e B, forall z :e C, F x y z :e D) -> (forall x :e A, forall y :e B, forall z :e C, F x y z = F' x y z) -> (forall x :e A, forall y :e B, forall z :e C, q x y z = 1 <-> P x y z) -> {v :e D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z} = \/_ x :e A, \/_ y :e B, {F' x y z | z :e C, P x y z}.
+let A B C D q F F' P. assume HF HFF HP. apply set_ext.
+- let v. assume Hv. apply (SepE D (fun v => exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z) v Hv). assume HvD H.
+  apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Hz0. apply Hz0. let z. assume Hz1. apply Hz1. assume Hz H2. apply H2. assume Hq Hvx.
+  claim HPxyz: P x y z. { apply (HP x Hx y Hy z Hz). assume H3 _. exact (H3 Hq). }
+  claim Hv': v = F' x y z. { exact (eq_trans_i v (F x y z) (F' x y z) Hvx (HFF x Hx y Hy z Hz)). }
+  apply (famunionI A (fun x => \/_ y :e B, {F' x y z | z :e C, P x y z}) x v Hx).
+  apply (famunionI B (fun y => {F' x y z | z :e C, P x y z}) y v Hy).
+  exact ((eq_sym_i v (F' x y z) Hv') (fun hl__u hl__v => hl__u :e {F' x y z | z :e C, P x y z}) (ReplSepI C (fun z => P x y z) (fun z => F' x y z) z Hz HPxyz)).
+- let v. assume Hv. apply (famunionE_impred A (fun x => \/_ y :e B, {F' x y z | z :e C, P x y z}) v Hv). let x. assume Hx Hvx.
+  apply (famunionE_impred B (fun y => {F' x y z | z :e C, P x y z}) v Hvx). let y. assume Hy Hvy.
+  apply (ReplSepE_impred C (fun z => P x y z) (fun z => F' x y z) v Hvy). let z. assume Hz HPxyz Hv'.
+  claim Hvx': v = F x y z. { exact (eq_trans_i v (F' x y z) (F x y z) Hv' (eq_sym_i (F x y z) (F' x y z) (HFF x Hx y Hy z Hz))). }
+  claim HvD: v :e D. { exact ((eq_sym_i v (F x y z) Hvx') (fun hl__u hl__v => hl__u :e D) (HF x Hx y Hy z Hz)). }
+  claim Hq: q x y z = 1. { apply (HP x Hx y Hy z Hz). assume _ H3. exact (H3 HPxyz). }
+  apply (SepI D (fun v => exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z) v HvD).
+  witness x. apply andI.
+  + exact Hx.
+  + witness y. apply andI.
+    * exact Hy.
+    * witness z. apply andI. exact Hz. exact (andI (q x y z = 1) (v = F x y z) Hq Hvx').
+Qed.
+Theorem gspec_famunion3_form_rep2 : forall A B C D:set, forall q:set -> set -> set -> set, forall F:set -> set -> set -> set, forall P:set -> set -> set -> prop, forall F':set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, F x y z :e 2 :^: D) -> (forall x :e A, forall y :e B, forall z :e C, q x y z = 1 <-> P x y z) -> (forall x :e A, forall y :e B, forall z :e C, hl_rep D (F x y z) = F' x y z) -> {hl_rep D v | v :e {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z}} = \/_ x :e A, \/_ y :e B, {F' x y z | z :e C, P x y z}.
+let A B C D q F P F'. assume HFD HP HF. apply set_ext.
+- let w. assume Hw. apply (ReplE_impred {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z} (fun v => hl_rep D v) w Hw). let v. assume Hv Hwv.
+  apply (SepE (2 :^: D) (fun v => exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z) v Hv). assume HvD H.
+  apply H. let x. assume Hx0. apply Hx0. assume Hx Hy0. apply Hy0. let y. assume Hy1. apply Hy1. assume Hy Hz0. apply Hz0. let z. assume Hz1. apply Hz1. assume Hz H2. apply H2. assume Hq Hvx.
+  claim HPxyz: P x y z. { apply (HP x Hx y Hy z Hz). assume H3 _. exact (H3 Hq). }
+  claim Hweq: w = F' x y z. { exact (eq_trans_i w (hl_rep D v) (F' x y z) Hwv (eq_trans_i (hl_rep D v) (hl_rep D (F x y z)) (F' x y z) (f_equal (fun u => hl_rep D u) v (F x y z) Hvx) (HF x Hx y Hy z Hz))). }
+  apply (famunionI A (fun x => \/_ y :e B, {F' x y z | z :e C, P x y z}) x w Hx).
+  apply (famunionI B (fun y => {F' x y z | z :e C, P x y z}) y w Hy).
+  exact ((eq_sym_i w (F' x y z) Hweq) (fun hl__u hl__v => hl__u :e {F' x y z | z :e C, P x y z}) (ReplSepI C (fun z => P x y z) (fun z => F' x y z) z Hz HPxyz)).
+- let w. assume Hw. apply (famunionE_impred A (fun x => \/_ y :e B, {F' x y z | z :e C, P x y z}) w Hw). let x. assume Hx Hwx.
+  apply (famunionE_impred B (fun y => {F' x y z | z :e C, P x y z}) w Hwx). let y. assume Hy Hwy.
+  apply (ReplSepE_impred C (fun z => P x y z) (fun z => F' x y z) w Hwy). let z. assume Hz HPxyz Hw'.
+  claim Hq: q x y z = 1. { apply (HP x Hx y Hy z Hz). assume _ H3. exact (H3 HPxyz). }
+  claim Hex: exists x' :e A, exists y' :e B, exists z' :e C, q x' y' z' = 1 /\ F x y z = F x' y' z'. { witness x. apply andI. exact Hx. witness y. apply andI. exact Hy. witness z. apply andI. exact Hz. apply andI. exact Hq. exact (fun p H => H). }
+  claim Hin: F x y z :e {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z}. { exact (SepI (2 :^: D) (fun v => exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z) (F x y z) (HFD x Hx y Hy z Hz) Hex). }
+  claim Hweq: hl_rep D (F x y z) = w. { exact (eq_trans_i (hl_rep D (F x y z)) (F' x y z) w (HF x Hx y Hy z Hz) (eq_sym_i w (F' x y z) Hw')). }
+  exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep D v | v :e {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z}}) (ReplI {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z} (fun v => hl_rep D v) (F x y z) Hin)).
+Qed.

@@ -1320,6 +1320,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (p) | 2697 / 2697 | 2547 / 2685 public (42 literal_proved; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 26 + 15 carrier lemmas, 170 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (q) | 2697 / 2697 | 2547 / 2685 public (51 literal_proved: + tybit0/1 INDUCT/RECURSION, int_add_th, int_mul_th, int_sgn_th, MONOIDAL_ADD, MONOIDAL_REAL_ADD; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 53 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (r) | 2697 / 2697 | 2547 / 2685 public (54 literal_proved: + REAL_EQ_NEG2, REAL_LE_LMUL, REAL_EQ_MUL_LCANCEL; pilot round 6: 682 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 56 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (s) | 2697 / 2697 | 2558 / 2685 public (54 literal_proved; pilot round 6: 682 fully_proved; + `IMAGE` over sets of subsets, curried functions into subsets, triple-pattern comprehensions, `CARD`/`HAS_SIZE_POWERSET`) | 457 + 22 stage-2 (+ 41 carrier lemmas, 193 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1438,12 +1439,24 @@ entries (`<compat>_pow<k>`, the scheme with type variable `k` instantiated to a 
 `hl_IMAGE_compat_pow2` for `IMAGE` with a subset-valued function, whose premise is
 `hl_rep B (l1 x) = f1 x` and whose result is `hl_rep2`; `UNIONS_IMAGE`, `INTERS_IMAGE`,
 `UNIONS_MONO_IMAGE`), with the metafun slot arity taken from the registry scheme everywhere.
-Still open in that direction: `IMAGE (IMAGE f) s` (`IMAGE_INTERS*`, 6), where both type
-variables are nested and the function argument's relation goes through the representation
-(`hl_rep B (l1 x) = f1 (hl_rep A x)`), a variant the statement generator does not produce yet.  The 141 remaining `bridge_unsupported` public theorems are a long
-tail: `CARD`/`sup`/`inf` side conditions without hypotheses (18), `IMAGE` over `Power` (9),
-nested subset arguments (4), `MAP2`/`ITSET`/`ASSOC` conditional compat (9), 3-ary binders (5),
-the index-range cases of cart.ml (20), definitional theorems of `iterate` (3), and singletons.
+Closed next (commits `00bc8c5` and the following checkpoint): `IMAGE (IMAGE f) s`
+(`IMAGE_INTERS*`, `IMAGE_UNIONS`, `POWERSET_CLAUSES`) — a partial application of a subset-valued
+constant in a meta position is eta-expanded and related as a function into subsets
+(`pw_eta_repfun`), the compat premise for a subset-typed domain is stated through the
+representation (`hl_rep B (l1 x) = f1 (hl_rep A x)`; `hl_IMAGE_compat_pow1`/`_pow12`), and the
+`rep_of_pw2` coercion instantiates its predicate through the representation as well; curried
+functions into subsets are bound with pointwise hypotheses (`KRepFunN`,
+`imp_forall_repfun2`/`_repfun3` and their `_rev` forms), comprehensions with three pattern
+variables (`hl_gspec_generic3`, `gspec_famunion3_form`) and nested pair/triple comprehensions
+with subset-valued bodies (`gspec_famunion_form_rep2`, `gspec_famunion3_form_rep2`) give
+`INTERS_GSPEC`/`UNIONS_GSPEC`; `CARD`/`HAS_SIZE` at the nested instance follow from the base
+lemmas through the bijection `hl_rep A` (`rep2_equip`, `god1_finite_cardinality_equip_eq`), with
+`Power_finite` deriving the side condition of `CARD_POWERSET`.  The 127 remaining
+`bridge_unsupported` public theorems are a long tail: `CARD`/`sup`/`inf` side conditions without
+hypotheses (18), pair patterns over subsets (`CROSS`/`PCROSS_INTERS_INTERS`, `*_UNIONS_UNIONS`,
+4), function-typed pattern variables (`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`),
+`MAP2`/`ITSET`/`ASSOC` conditional compat (9), 3-ary binders (5), the index-range cases of
+cart.ml (20), definitional theorems of `iterate` (3), and singletons.
 
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 

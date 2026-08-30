@@ -10,10 +10,6 @@ Admitted.
 Theorem hl_INJP_compat : forall A:set, A <> Empty -> hl_INJP A = Empty.
 Admitted.
 
-// CARD : (A->bool)->num at A := A -> bool (not in compat.mg)
-Theorem hl_CARD_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), finite (hl_rep2 A l1) -> hl_CARD (2 :^: A) l1 = finite_cardinality (hl_rep2 A l1).
-Admitted.
-
 // NUMSUM : bool->num->num (not in compat.mg)
 Theorem hl_NUMSUM_compat : hl_NUMSUM = Empty.
 Admitted.
@@ -196,10 +192,6 @@ Admitted.
 
 // real_mod : real->real->real->bool (not in compat.mg)
 Theorem hl_real_mod_compat : forall l1 l2 l3 :e R, hl_real_mod l1 l2 l3 = 1 <-> real_mod l1 l2 l3.
-Admitted.
-
-// HAS_SIZE : (A->bool)->num->bool at A := A -> bool (not in compat.mg)
-Theorem hl_HAS_SIZE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e omega, hl_HAS_SIZE (2 :^: A) l1 l2 = 1 <-> equip (hl_rep2 A l1) l2.
 Admitted.
 
 // vector : A list->(A,N)cart (not in compat.mg)

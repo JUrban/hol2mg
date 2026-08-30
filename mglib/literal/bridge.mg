@@ -1064,3 +1064,60 @@ let A F y. assume Hy. apply iffI.
 - assume H. exact (SepI A (fun x => F x = 1) y Hy H).
 - assume H. exact (SepE2 A (fun x => F x = 1) y H).
 Qed.
+
+// ---- finiteness of power sets; binary and ternary functions into subsets ----
+Theorem Power_finite : forall X:set, finite X -> finite (Power X).
+let X. assume H. apply H. let n. assume Hn0. apply Hn0. assume Hn HXn.
+prove exists m :e omega, equip (Power X) m.
+witness (exp_nat 2 n). apply andI.
+- exact (nat_p_omega (exp_nat 2 n) (exp_nat_p 2 nat_2 n (omega_nat_p n Hn))).
+- exact (equip_finite_Power n (omega_nat_p n Hn) X HXn).
+Qed.
+Theorem repfun2_rep_Pi : forall K1 K2 A f:set, (fun x :e K1 => fun y :e K2 => hl_rep A (f x y)) :e Power A :^: K2 :^: K1.
+let K1 K2 A f. prove (fun x :e K1 => fun y :e K2 => hl_rep A (f x y)) :e Pi_ x :e K1, Power A :^: K2. apply (lam_Pi K1 (fun _ => Power A :^: K2) (fun x => fun y :e K2 => hl_rep A (f x y))). let x. assume _. exact (repfun_rep_Pi K2 A (f x)).
+Qed.
+Theorem repfun2_chi_Pi : forall K1 K2 A f:set, (fun x :e K1 => fun y :e K2 => hl_chi A (f x y)) :e 2 :^: A :^: K2 :^: K1.
+let K1 K2 A f. prove (fun x :e K1 => fun y :e K2 => hl_chi A (f x y)) :e Pi_ x :e K1, 2 :^: A :^: K2. apply (lam_Pi K1 (fun _ => 2 :^: A :^: K2) (fun x => fun y :e K2 => hl_chi A (f x y))). let x. assume _. exact (repfun_chi_Pi K2 A (f x)).
+Qed.
+Theorem repfun2_rep_pw : forall K1 K2 A f:set, forall x :e K1, forall y :e K2, hl_rep A (f x y) = (fun x :e K1 => fun y :e K2 => hl_rep A (f x y)) x y.
+let K1 K2 A f x. assume Hx. let y. assume Hy.
+claim H1: (fun x :e K1 => fun y :e K2 => hl_rep A (f x y)) x = (fun y :e K2 => hl_rep A (f x y)). { exact (beta K1 (fun x => fun y :e K2 => hl_rep A (f x y)) x Hx). }
+rewrite H1. exact (repfun_rep_pw K2 A (f x) y Hy).
+Qed.
+Theorem repfun2_chi_pw : forall K1 K2 A f:set, f :e Power A :^: K2 :^: K1 -> forall x :e K1, forall y :e K2, hl_rep A ((fun x :e K1 => fun y :e K2 => hl_chi A (f x y)) x y) = f x y.
+let K1 K2 A f. assume Hf. let x. assume Hx. let y. assume Hy.
+claim H1: (fun x :e K1 => fun y :e K2 => hl_chi A (f x y)) x = (fun y :e K2 => hl_chi A (f x y)). { exact (beta K1 (fun x => fun y :e K2 => hl_chi A (f x y)) x Hx). }
+rewrite H1. exact (repfun_chi_pw K2 A (f x) (setexp_ap K1 (Power A :^: K2) f Hf x Hx) y Hy).
+Qed.
+Theorem imp_forall_repfun2 : forall K1 K2 A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K2 :^: K1, forall g :e Power A :^: K2 :^: K1, (forall x :e K1, forall y :e K2, hl_rep A (f x y) = g x y) -> L f -> N g) -> (forall f :e 2 :^: A :^: K2 :^: K1, L f) -> forall g :e Power A :^: K2 :^: K1, N g.
+let K1 K2 A L N. assume H HL. let g. assume Hg.
+exact (H (fun x :e K1 => fun y :e K2 => hl_chi A (g x y)) (repfun2_chi_Pi K1 K2 A g) g Hg (repfun2_chi_pw K1 K2 A g Hg) (HL (fun x :e K1 => fun y :e K2 => hl_chi A (g x y)) (repfun2_chi_Pi K1 K2 A g))).
+Qed.
+Theorem imp_forall_repfun2_rev : forall K1 K2 A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K2 :^: K1, forall g :e Power A :^: K2 :^: K1, (forall x :e K1, forall y :e K2, hl_rep A (f x y) = g x y) -> N g -> L f) -> (forall g :e Power A :^: K2 :^: K1, N g) -> forall f :e 2 :^: A :^: K2 :^: K1, L f.
+let K1 K2 A L N. assume H HN. let f. assume Hf.
+exact (H f Hf (fun x :e K1 => fun y :e K2 => hl_rep A (f x y)) (repfun2_rep_Pi K1 K2 A f) (repfun2_rep_pw K1 K2 A f) (HN (fun x :e K1 => fun y :e K2 => hl_rep A (f x y)) (repfun2_rep_Pi K1 K2 A f))).
+Qed.
+Theorem repfun3_rep_Pi : forall K1 K2 K3 A f:set, (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) :e Power A :^: K3 :^: K2 :^: K1.
+let K1 K2 K3 A f. prove (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) :e Pi_ x :e K1, Power A :^: K3 :^: K2. apply (lam_Pi K1 (fun _ => Power A :^: K3 :^: K2) (fun x => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z))). let x. assume _. exact (repfun2_rep_Pi K2 K3 A (f x)).
+Qed.
+Theorem repfun3_chi_Pi : forall K1 K2 K3 A f:set, (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_chi A (f x y z)) :e 2 :^: A :^: K3 :^: K2 :^: K1.
+let K1 K2 K3 A f. prove (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_chi A (f x y z)) :e Pi_ x :e K1, 2 :^: A :^: K3 :^: K2. apply (lam_Pi K1 (fun _ => 2 :^: A :^: K3 :^: K2) (fun x => fun y :e K2 => fun z :e K3 => hl_chi A (f x y z))). let x. assume _. exact (repfun2_chi_Pi K2 K3 A (f x)).
+Qed.
+Theorem repfun3_rep_pw : forall K1 K2 K3 A f:set, forall x :e K1, forall y :e K2, forall z :e K3, hl_rep A (f x y z) = (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) x y z.
+let K1 K2 K3 A f x. assume Hx. let y. assume Hy. let z. assume Hz.
+claim H1: (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) x = (fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)). { exact (beta K1 (fun x => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) x Hx). }
+rewrite H1. exact (repfun2_rep_pw K2 K3 A (f x) y Hy z Hz).
+Qed.
+Theorem repfun3_chi_pw : forall K1 K2 K3 A f:set, f :e Power A :^: K3 :^: K2 :^: K1 -> forall x :e K1, forall y :e K2, forall z :e K3, hl_rep A ((fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_chi A (f x y z)) x y z) = f x y z.
+let K1 K2 K3 A f. assume Hf. let x. assume Hx. let y. assume Hy. let z. assume Hz.
+claim H1: (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_chi A (f x y z)) x = (fun y :e K2 => fun z :e K3 => hl_chi A (f x y z)). { exact (beta K1 (fun x => fun y :e K2 => fun z :e K3 => hl_chi A (f x y z)) x Hx). }
+rewrite H1. exact (repfun2_chi_pw K2 K3 A (f x) (setexp_ap K1 (Power A :^: K3 :^: K2) f Hf x Hx) y Hy z Hz).
+Qed.
+Theorem imp_forall_repfun3 : forall K1 K2 K3 A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K3 :^: K2 :^: K1, forall g :e Power A :^: K3 :^: K2 :^: K1, (forall x :e K1, forall y :e K2, forall z :e K3, hl_rep A (f x y z) = g x y z) -> L f -> N g) -> (forall f :e 2 :^: A :^: K3 :^: K2 :^: K1, L f) -> forall g :e Power A :^: K3 :^: K2 :^: K1, N g.
+let K1 K2 K3 A L N. assume H HL. let g. assume Hg.
+exact (H (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_chi A (g x y z)) (repfun3_chi_Pi K1 K2 K3 A g) g Hg (repfun3_chi_pw K1 K2 K3 A g Hg) (HL (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_chi A (g x y z)) (repfun3_chi_Pi K1 K2 K3 A g))).
+Qed.
+Theorem imp_forall_repfun3_rev : forall K1 K2 K3 A:set, forall L N:set -> prop, (forall f :e 2 :^: A :^: K3 :^: K2 :^: K1, forall g :e Power A :^: K3 :^: K2 :^: K1, (forall x :e K1, forall y :e K2, forall z :e K3, hl_rep A (f x y z) = g x y z) -> N g -> L f) -> (forall g :e Power A :^: K3 :^: K2 :^: K1, N g) -> forall f :e 2 :^: A :^: K3 :^: K2 :^: K1, L f.
+let K1 K2 K3 A L N. assume H HN. let f. assume Hf.
+exact (H f Hf (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) (repfun3_rep_Pi K1 K2 K3 A f) (repfun3_rep_pw K1 K2 K3 A f) (HN (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) (repfun3_rep_Pi K1 K2 K3 A f))).
+Qed.

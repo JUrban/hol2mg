@@ -28,6 +28,7 @@ type relkind =
   | KPW of Mg.tm                 (* forall x :e A, lit x = nat x  (meta-function, arity 1) *)
   | KPWP of Mg.tm                (* forall x :e A, lit x = 1 <-> nat x (meta-predicate, arity 1) *)
   | KRepFun of Mg.tm * Mg.tm     (* forall x :e K, hl_rep A (lit x) = nat x  (function into subsets of A) *)
+  | KRepFunN of Mg.tm list * Mg.tm  (* forall x1 :e K1, .., hl_rep A (lit x1 ..) = nat x1 ..  (curried function into subsets) *)
   | KPWP3 of Mg.tm * Mg.tm * Mg.tm  (* forall x y z, lit x y z = 1 <-> nat x y z (meta-predicate, arity 3) *)
   | KIff                         (* lit = 1 <-> nat *)
   | KPW2 of Mg.tm * Mg.tm        (* forall x :e A, forall y :e B, lit x y = nat x y *)
@@ -344,6 +345,9 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
           | Mg.Sep (v, x, Mg.App (Mg.App (Mg.Cst "and", Mg.App (Mg.App (Mg.Cst "In", Mg.Var v'), sx)), q)) when v' = v && (match sub sx (depth + 1) with Some _ -> true | None -> false) ->
               (* {v :e x | v :e sx /\ q} c= sx *)
               Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (Sep_Subq_In %s %s (fun %s:set => %s)))" (ppp sx) pf (ppp s) (ppp x) (ppp sx) v (pp q)) (sub sx (depth + 1))
+          | Mg.Sep (v, Mg.App (Mg.Cst "Power", a), Mg.App (Mg.App (Mg.Cst "Subq", Mg.Var v'), t)) when v' = v ->
+              (* the subsets of a finite set t inside Power a: a subset of the finite Power t *)
+              Option.map (fun pf -> Printf.sprintf "(Subq_finite (Power %s) (Power_finite %s %s) %s (fun %s H%s => PowerI %s %s (SepE2 (Power %s) (fun %s:set => %s c= %s) %s H%s)))" (ppp t) (ppp t) pf (ppp s) v v (ppp t) v (ppp a) v v (ppp t) v v) (sub t (depth + 1))
           | Mg.Sep (v, x, p) -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (Sep_Subq %s (fun %s:set => %s)))" (ppp x) pf (ppp s) (ppp x) v (pp p)) (sub x (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "setminus", x), y) -> Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (setminus_Subq %s %s))" (ppp x) pf (ppp s) (ppp x) (ppp y)) (sub x (depth + 1))
           | Mg.App (Mg.App (Mg.Cst "binintersect", x), y) ->
@@ -994,6 +998,23 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let natS = (match nat with Mg.App (Mg.App (Mg.Cst "In", _), s) -> s | _ -> unsupported "rel: nested subset application shape") in
                 let _, pf = if v.rel = "" then (prop1, pf1) else rewrite_in v.rel repS natS prop1 pf1 in
                 (lit, nat, KIff, pf)
+            | KRepFunN (ks, a), args when List.length args = List.length ks && args <> [] ->
+                (* a curried function into subsets fully applied: hl_rep a (f x y ..) = g x y .. from the
+                   pointwise hypothesis; the arguments are rewritten to their natives one at a time *)
+                let rels = List.map2 (fun x kc -> rel g x (Some (E.VSet kc))) args ks in
+                List.iter (fun (_, _, kx, _) -> if kx <> KEq then unsupported "rel: function-into-subsets argument relation") rels;
+                let head = (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf0 = Printf.sprintf "(%s %s)" v.rel (String.concat " " (List.map2 (fun (lx, _, _, _) x -> Printf.sprintf "%s %s" (ppp lx) (typ g x)) rels args)) in
+                let n = List.length rels in
+                let pf = ref pf0 in
+                List.iteri (fun i (lx, nx, _, px) ->
+                  if lx <> nx then begin
+                    let argsm = List.mapi (fun j (lx', nx', _, _) -> if j < i then nx' else if j = i then Mg.Var "hl__u" else lx') rels in
+                    pf := leibniz (if px = "" then refl else px) (pp (L.mg_eq (Mg.apps (Mg.Cst "hl_rep") [ a; lit ]) (Mg.apps head argsm))) !pf
+                  end) rels;
+                ignore n;
+                (lit, nat, KRep a, !pf)
+            | KRepFunN _, _ -> unsupported "rel: curried function into subsets (shape)"
             | KRepFun (kc, a), [ x ] ->
                 (* a function into subsets applied: hl_rep a (f x) = g x from the pointwise hypothesis *)
                 let lx, nx, kx, px = rel g x (Some (E.VSet kc)) in
@@ -1082,6 +1103,82 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                           (lit, nat, KEq, Printf.sprintf "(if_prop_cong (%s) (%s) 1 0 %s)" lp np iff)
                       | _ -> unsupported "rel: formula as data (native %s)" (pp nat))
                  | _ -> unsupported "rel: formula as data (view %s)" (E.string_of_view nview))
+            | "GSPEC" when (match E.dest_gspec t with Some (_, [ _; _; _ ], _, _) -> true | _ -> false) ->
+                (* a comprehension with three pattern variables {F x y z | P x y z}:
+                   native \/_ x :e A, \/_ y :e B, {F x y z | z :e C, P x y z} *)
+                let _, xs, p, body = Option.get (E.dest_gspec t) in
+                let (x, xty), (y, yty), (z, zty) = (match xs with [ a; b; c ] -> (a, b, c) | _ -> assert false) in
+                let nx = E.fresh g.nctx x in
+                let kx = x ^ "\000" ^ nx ^ "#" ^ string_of_int g.counter in
+                g.counter <- g.counter + 1;
+                let ny = E.fresh g.nctx y in
+                let ky = y ^ "\000" ^ ny ^ "#" ^ string_of_int g.counter in
+                g.counter <- g.counter + 1;
+                let nz = E.fresh g.nctx z in
+                let kz = z ^ "\000" ^ nz ^ "#" ^ string_of_int g.counter in
+                g.counter <- g.counter + 1;
+                let open3 tm = open_with (Const ("T", bool_ty)) (open_with (Free (kx, xty)) (open_with (Free (ky, yty)) (open_with (Free (kz, zty)) tm))) in
+                let p' = open3 p and body' = open3 body in
+                let ca = L.carrier g.lctx xty and cb2 = L.carrier g.lctx yty and cc3 = L.carrier g.lctx zty in
+                let body_ty = type_of [] body' in
+                let cb = L.carrier g.lctx body_ty in
+                let reg (k, ty, n, c) =
+                  g.nctx.E.vars <- (k, (ty, E.VSet c, n)) :: g.nctx.E.vars;
+                  g.lctx.L.vars <- (k, Mg.Var n) :: g.lctx.L.vars; g.lctx.L.used <- n :: g.lctx.L.used;
+                  g.vars <- (k, { vty = ty; view = E.VSet c; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars in
+                reg (kx, xty, nx, ca); reg (ky, yty, ny, cb2); reg (kz, zty, nz, cc3);
+                let cleanup () = List.iter (fun (k, n) ->
+                  g.nctx.E.vars <- List.remove_assoc k g.nctx.E.vars; E.release g.nctx n;
+                  g.lctx.L.vars <- List.remove_assoc k g.lctx.L.vars; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used;
+                  g.vars <- List.remove_assoc k g.vars) [ (kx, nx); (ky, ny); (kz, nz) ] in
+                let result = (try
+                  let lp = if L.is_logical p' then Mg.If (lprop g p', L.one, L.zero) else lterm g p' in
+                  let lt = lterm g body' in
+                  let np = nprop g p' in
+                  let nt = reduce_tuples (Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx body' (E.data_view g.nctx body_ty)))) in
+                  let hx = "H" ^ nx and hy = "H" ^ ny and hz = "H" ^ nz in
+                  let q_lam = Printf.sprintf "(fun %s %s %s => %s)" nx ny nz (pp lp) and f_lam = Printf.sprintf "(fun %s %s %s => %s)" nx ny nz (pp lt) in
+                  let hq = Printf.sprintf "(fun %s %s %s %s %s %s => %s)" nx hx ny hy nz hz (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
+                  let generic = Printf.sprintf "(hl_gspec_generic3 %s %s %s %s %s %s %s)" (ppp ca) (ppp cb2) (ppp cc3) (ppp cb) q_lam f_lam hq in
+                  let sv = if nx = "v" || ny = "v" || nz = "v" then "hl__y" else "v" in
+                  let mid = Mg.Sep (sv, cb, Mg.ExIn (nx, ca, Mg.ExIn (ny, cb2, Mg.ExIn (nz, cc3, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var sv) lt))))) in
+                  let iff_p =
+                    if L.is_logical p' then
+                      Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p')
+                    else (let _, _, kp, pfp = rel g p' (Some E.VProp) in if kp <> KIff then unsupported "gspec predicate relation"; pfp) in
+                  let body_sub = (match xty, yty, zty, body_ty with
+                    | TyApp ("fun", [ _; TyApp ("bool", []) ]), _, _, _ | _, TyApp ("fun", [ _; TyApp ("bool", []) ]), _, _ | _, _, TyApp ("fun", [ _; TyApp ("bool", []) ]), _ -> None
+                    | _, _, _, TyApp ("fun", [ b_ty; TyApp ("bool", []) ]) ->
+                        let cb' = L.carrier g.lctx b_ty in
+                        if alpha_eq (E.carrier g.nctx b_ty) cb' then Some cb' else None
+                    | _ -> None) in
+                  (match nat with
+                   | Mg.FamUnion (_, a, Mg.FamUnion (_, b, Mg.ReplSep (_, c, _, _))) when a = ca && b = cb2 && c = cc3 -> ()
+                   | _ -> unsupported "gspec triple pattern: native %s is not a family union" (pp nat));
+                  let hf = Printf.sprintf "(fun %s %s %s %s %s %s => %s)" nx hx ny hy nz hz (typ g body') in
+                  let hp = Printf.sprintf "(fun %s %s %s %s %s %s => %s)" nx hx ny hy nz hz iff_p in
+                  let f'_lam = Printf.sprintf "(fun %s %s %s => %s)" nx ny nz (pp nt) and p_lam = Printf.sprintf "(fun %s %s %s => %s)" nx ny nz (pp np) in
+                  (match body_sub with
+                   | Some cb' ->
+                       let lt2, nt2, kt, pt = rel g body' (Some (E.VSubset cb')) in
+                       (match kt with KRep _ -> () | _ -> unsupported "gspec triple pattern: subset body relation");
+                       if lt2 <> lt then unsupported "gspec triple pattern: subset body texts";
+                       if not (alpha_eq nt2 nt) then unsupported "gspec triple pattern: subset body native texts";
+                       let hff = Printf.sprintf "(fun %s %s %s %s %s %s => %s)" nx hx ny hy nz hz (if pt = "" then refl else pt) in
+                       let mid2 = Mg.Repl ("v", mid, Mg.apps (Mg.Cst "hl_rep") [ cb'; Mg.Var "v" ]) in
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep2 %s %s) %s %s (f_equal (fun hl__u => {hl_rep %s hl__w | hl__w :e hl__u}) (hl_rep %s %s) %s %s) (gspec_famunion3_form_rep2 %s %s %s %s %s %s %s %s %s %s %s))"
+                         (ppp cb') (ppp lit) (ppp mid2) (ppp nat) (ppp cb') (ppp cb) (ppp lit) (ppp mid) generic (ppp ca) (ppp cb2) (ppp cc3) (ppp cb') q_lam f_lam p_lam f'_lam hf hp hff in
+                       (lit, nat, KRep2 cb', pf)
+                   | None ->
+                       let lt2, nt2, kt, pt = rel g body' (Some (E.VSet cb)) in
+                       if kt <> KEq then unsupported "gspec body relation";
+                       if lt2 <> lt || nt2 <> nt then unsupported "gspec body texts";
+                       let pt = if pt = "" then refl else pt in
+                       let hff = Printf.sprintf "(fun %s %s %s %s %s %s => %s)" nx hx ny hy nz hz pt in
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (gspec_famunion3_form %s %s %s %s %s %s %s %s %s %s %s))" (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp ca) (ppp cb2) (ppp cc3) (ppp cb) q_lam f_lam f'_lam p_lam hf hff hp in
+                       (lit, nat, KRep cb, pf))
+                  with e -> cleanup (); raise e) in
+                cleanup (); result
             | "GSPEC" when (match E.dest_gspec t with Some (_, [ _; _ ], _, _) -> true | _ -> false) ->
                 (* a comprehension with two pattern variables {F x y | P x y}: native \/_ x :e A, {F x y | y :e B, P x y} *)
                 let _, xs, p, body = Option.get (E.dest_gspec t) in
@@ -1097,15 +1194,63 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let ca = L.carrier g.lctx xty and cb2 = L.carrier g.lctx yty in
                 let body_ty = type_of [] body' in
                 let cb = L.carrier g.lctx body_ty in
+                let cleanup () = List.iter (fun (k, n) ->
+                  g.nctx.E.vars <- List.remove_assoc k g.nctx.E.vars; E.release g.nctx n;
+                  g.lctx.L.vars <- List.remove_assoc k g.lctx.L.vars; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used;
+                  g.vars <- List.remove_assoc k g.vars) [ (kx, nx); (ky, ny) ] in
+                (* both pattern variables subsets and a subset-valued body: the variables are represented
+                   (hl_rep) in the pointwise proofs and the result by hl_rep2 (gspec_famunion_form_sub2_rep2) *)
+                let sub2 = (match xty, yty, body_ty with
+                  | TyApp ("fun", [ a_ty; TyApp ("bool", []) ]), TyApp ("fun", [ b_ty; TyApp ("bool", []) ]), TyApp ("fun", [ c_ty; TyApp ("bool", []) ]) ->
+                      let ca' = L.carrier g.lctx a_ty and cb' = L.carrier g.lctx b_ty and cc' = L.carrier g.lctx c_ty in
+                      if alpha_eq (E.carrier g.nctx a_ty) ca' && alpha_eq (E.carrier g.nctx b_ty) cb' && alpha_eq (E.carrier g.nctx c_ty) cc' then Some (ca', cb', cc') else None
+                  | _ -> None) in
+                if sub2 <> None then begin
+                  let ca', cb', cc' = Option.get sub2 in
+                  let hx = "H" ^ nx and hy = "H" ^ ny in
+                  g.nctx.E.vars <- (kx, (xty, E.VSubset ca', nx)) :: (ky, (yty, E.VSubset cb', ny)) :: g.nctx.E.vars;
+                  g.lctx.L.vars <- (kx, Mg.Var nx) :: (ky, Mg.Var ny) :: g.lctx.L.vars; g.lctx.L.used <- nx :: ny :: g.lctx.L.used;
+                  let result = (try
+                    (* phase 1: native texts with the plain variables *)
+                    let np0 = nprop g p' in
+                    let nt0 = Mg.normalize (Mg.subst (nat_subst g) (E.elab g.nctx body' (E.VSubset cc'))) in
+                    (* phase 2: pointwise proofs with the variables represented *)
+                    g.vars <- (kx, { vty = xty; view = E.VSubset ca'; lit = Mg.Var nx; nat = Some (Mg.apps (Mg.Cst "hl_rep") [ ca'; Mg.Var nx ]); mem = hx; rel = ""; kind = KRep ca'; hyp = "" })
+                      :: (ky, { vty = yty; view = E.VSubset cb'; lit = Mg.Var ny; nat = Some (Mg.apps (Mg.Cst "hl_rep") [ cb'; Mg.Var ny ]); mem = hy; rel = ""; kind = KRep cb'; hyp = "" }) :: g.vars;
+                    let lp = if L.is_logical p' then Mg.If (lprop g p', L.one, L.zero) else lterm g p' in
+                    let lt = lterm g body' in
+                    let q_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp lp) and f_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp lt) in
+                    let p_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp np0) and f'_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp nt0) in
+                    let hq = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
+                    let generic = Printf.sprintf "(hl_gspec_generic2 %s %s %s %s %s %s)" (ppp ca) (ppp cb2) (ppp cb) q_lam f_lam hq in
+                    let sv = if nx = "v" || ny = "v" then "hl__y" else "v" in
+                    let mid = Mg.Sep (sv, cb, Mg.ExIn (nx, ca, Mg.ExIn (ny, cb2, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var sv) lt)))) in
+                    let iff_p =
+                      if L.is_logical p' then
+                        (let np = nprop g p' in
+                         Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p'))
+                      else (let _, _, kp, pfp = rel g p' (Some E.VProp) in if kp <> KIff then unsupported "gspec predicate relation"; pfp) in
+                    let lb, _, kb, pb = rel g body' (Some (E.VSubset cc')) in
+                    (match kb with KRep _ -> () | _ -> unsupported "gspec pair pattern over subsets: body relation");
+                    if lb <> lt then unsupported "gspec pair pattern over subsets: body texts";
+                    (match nat with
+                     | Mg.FamUnion (_, a, Mg.ReplSep (_, b, _, _)) when alpha_eq a (Mg.App (Mg.Cst "Power", ca')) && alpha_eq b (Mg.App (Mg.Cst "Power", cb')) -> ()
+                     | _ -> unsupported "gspec pair pattern over subsets: native %s is not a family union" (pp nat));
+                    let hf = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (typ g body') in
+                    let hp = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy iff_p in
+                    let hff = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (if pb = "" then refl else pb) in
+                    let mid2 = Mg.Repl ("v", mid, Mg.apps (Mg.Cst "hl_rep") [ cc'; Mg.Var "v" ]) in
+                    let pf = Printf.sprintf "(eq_trans_i (hl_rep2 %s %s) %s %s (f_equal (fun hl__u => {hl_rep %s hl__w | hl__w :e hl__u}) (hl_rep %s %s) %s %s) (gspec_famunion_form_sub2_rep2 %s %s %s %s %s %s %s %s %s %s))"
+                      (ppp cc') (ppp lit) (ppp mid2) (ppp nat) (ppp cc') (ppp cb) (ppp lit) (ppp mid) generic (ppp ca') (ppp cb') (ppp cc') q_lam f_lam p_lam f'_lam hf hp hff in
+                    (lit, nat, KRep2 cc', pf)
+                    with e -> cleanup (); raise e) in
+                  cleanup (); result
+                end else
                 let reg (k, ty, n, c) =
                   g.nctx.E.vars <- (k, (ty, E.VSet c, n)) :: g.nctx.E.vars;
                   g.lctx.L.vars <- (k, Mg.Var n) :: g.lctx.L.vars; g.lctx.L.used <- n :: g.lctx.L.used;
                   g.vars <- (k, { vty = ty; view = E.VSet c; lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars in
                 reg (kx, xty, nx, ca); reg (ky, yty, ny, cb2);
-                let cleanup () = List.iter (fun (k, n) ->
-                  g.nctx.E.vars <- List.remove_assoc k g.nctx.E.vars; E.release g.nctx n;
-                  g.lctx.L.vars <- List.remove_assoc k g.lctx.L.vars; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used;
-                  g.vars <- List.remove_assoc k g.vars) [ (kx, nx); (ky, ny) ] in
                 let result = (try
                   let lp = if L.is_logical p' then Mg.If (lprop g p', L.one, L.zero) else lterm g p' in
                   let lt = lterm g body' in
@@ -2381,6 +2526,32 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
   (* fwd_first: the sub-bridge sees the native variable (representation instantiated on the literal side);
      otherwise the literal variable is given and the native side is substituted *)
   match xview with
+  | E.VSet (Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.Cst "Power", a)), k2)), k1))
+    when (match xty with TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("bool", []) ]) ]) ]) -> true | _ -> false) ->
+      (* a binary function into subsets (imp_forall_repfun2): pointwise hypothesis hl_rep A (f x y) = g x y *)
+      let la = lam_l lbody and na = lam_n nbody in
+      let n2 = E.fresh g.nctx n in
+      let hn2 = "H" ^ n2 and hpw = "H" ^ n ^ "pw" in
+      let v = { plain with nat = Some (Mg.Var n2); rel = hpw; kind = KRepFunN ([ k1; k2 ], a); hyp = hn2 } in
+      let sub = (try with_var v (fun () -> bridge g dir body') with e -> E.release g.nctx n2; raise e) in
+      E.release g.nctx n2;
+      let lemma = (match kind, dir with
+        | `All, Fwd -> "imp_forall_repfun2" | `All, Bwd -> "imp_forall_repfun2_rev"
+        | _ -> unsupported "bridge_binder: existential binary function into subsets") in
+      Printf.sprintf "(%s %s %s %s %s %s (fun %s %s %s %s %s => %s))" lemma (ppp k1) (ppp k2) (ppp a) la na n hn n2 hn2 hpw sub
+  | E.VSet (Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.Cst "Power", a)), k3)), k2)), k1))
+    when (match xty with TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("bool", []) ]) ]) ]) ]) -> true | _ -> false) ->
+      (* a ternary function into subsets (imp_forall_repfun3) *)
+      let la = lam_l lbody and na = lam_n nbody in
+      let n2 = E.fresh g.nctx n in
+      let hn2 = "H" ^ n2 and hpw = "H" ^ n ^ "pw" in
+      let v = { plain with nat = Some (Mg.Var n2); rel = hpw; kind = KRepFunN ([ k1; k2; k3 ], a); hyp = hn2 } in
+      let sub = (try with_var v (fun () -> bridge g dir body') with e -> E.release g.nctx n2; raise e) in
+      E.release g.nctx n2;
+      let lemma = (match kind, dir with
+        | `All, Fwd -> "imp_forall_repfun3" | `All, Bwd -> "imp_forall_repfun3_rev"
+        | _ -> unsupported "bridge_binder: existential ternary function into subsets") in
+      Printf.sprintf "(%s %s %s %s %s %s %s (fun %s %s %s %s %s => %s))" lemma (ppp k1) (ppp k2) (ppp k3) (ppp a) la na n hn n2 hn2 hpw sub
   | E.VSet (Mg.App (Mg.App (Mg.Cst "setexp", Mg.App (Mg.Cst "Power", a)), k)) when (match xty with TyApp ("fun", [ _; TyApp ("fun", [ _; TyApp ("bool", []) ]) ]) -> true | _ -> false) ->
       (* a function into subsets: the literal f :e 2 :^: A :^: K and the native g :e Power A :^: K are
          bound together with the pointwise hypothesis hl_rep A (f x) = g x *)
