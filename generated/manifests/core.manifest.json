@@ -64288,9 +64288,9 @@
    "source": "(!u:(A,M)cart. !v:(A,N)cart. !i:num. 1 <= i /\\ i <= dimindex UNIV ==> pastecart u v $ i = u $ i) /\\ (!u:(A,M)cart. !v:(A,N)cart. !i:num. dimindex UNIV + 1 <= i /\\ i <= dimindex UNIV + dimindex UNIV ==> pastecart u v $ i = v $ (i - dimindex UNIV))",
    "statement": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\\ i <= dimindex M -> pastecart M N u v i = u i) /\\ forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, dimindex M + 1 <= i /\\ i <= dimindex M + dimindex N -> pastecart M N u v i = v (minus_nat i (dimindex M))",
    "literal": "forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall u :e hl_ty_cart A M, forall v :e hl_ty_cart A N, forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\\ hl_le i (hl_dimindex M (hl_UNIV M)) = 1 -> hl_vindex A (hl_ty_finite_sum M N) (hl_pastecart A M N u v) i = hl_vindex A M u i) /\\ forall u :e hl_ty_cart A M, forall v :e hl_ty_cart A N, forall i :e omega, hl_le (hl_add (hl_dimindex M (hl_UNIV M)) (hl_NUMERAL (hl_BIT1 hl_zero))) i = 1 /\\ hl_le i (hl_add (hl_dimindex M (hl_UNIV M)) (hl_dimindex N (hl_UNIV N))) = 1 -> hl_vindex A (hl_ty_finite_sum M N) (hl_pastecart A M N u v) i = hl_vindex A N v (hl_sub i (hl_dimindex M (hl_UNIV M)))",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: side condition i :e idx (idx_n (dimindex M + dimindex N)) not available from hypotheses [hyps: i <= dimindex M + dimindex N, dimindex M + 1 <= i, forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\\ i <= dimindex M -> pastecart M N u v i = u i]",
-   "bridge": "",
+   "cert_status": "transport_checked",
+   "cert_error": "",
+   "bridge": "PASTECART_COMPONENT_bridge",
    "literal_proved": false,
    "proof_imported": false,
    "proof_leaves": [],
@@ -102812,7 +102812,7 @@
    "wf"
   ],
   "failed_shards": {},
-  "transport_checked": 2509,
+  "transport_checked": 2510,
   "literal_proved": 42,
   "fully_proved": 0
  }

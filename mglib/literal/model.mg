@@ -154,3 +154,8 @@ apply (xm (x :e hl_subtype A P)).
   + assume H0. rewrite (If_i_0 (0 :e hl_subtype A P) 0 (choose_in (hl_subtype A P) (fun _ => True)) H0).
     exact (choose_in_in (hl_subtype A P) Hne (fun _ => True)).
 Qed.
+
+// ---- the datatypes tybit0 / tybit1 of cart.ml (docs/DESIGN.md 21.9): modelled by the native index sets
+//      idx_n (2 * dimindex A) and idx_n (2 * dimindex A + 1); the constructors are identities (lemmas in bridge.mg) ----
+Definition hl_mktybit0 : set -> set := fun A => fun x :e idx_n (dimindex A + dimindex A) => x.
+Definition hl_mktybit1 : set -> set := fun A => fun x :e idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1) => x.

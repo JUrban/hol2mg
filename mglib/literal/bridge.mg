@@ -1004,3 +1004,42 @@ claim H0: 0 + 1 <= x + 1. { exact (add_SNo_Le1 0 1 x SNo_0 SNo_1 (omega_SNo x Hx
 claim H1: 1 <= x + 1. { exact ((add_SNo_0L 1 SNo_1) (fun u v => u <= x + 1) H0). }
 exact (SNoLe_tra 1 (x + 1) i SNo_1 (SNo_add_SNo x 1 (omega_SNo x Hx) SNo_1) (omega_SNo i Hi) H1 H).
 Qed.
+Theorem not_le_of_succ_le : forall m i :e omega, m + 1 <= i -> ~ (i <= m).
+let m. assume Hm. let i. assume Hi H Hle.
+claim Hlt: m < i. { exact (SNoLtLe_tra m (m + 1) i (omega_SNo m Hm) (SNo_add_SNo m 1 (omega_SNo m Hm) SNo_1) (omega_SNo i Hi) ((eq_sym_i (m + 1) (ordsucc m) (add_SNo_1_ordsucc m Hm)) (fun u v => m < u) (omega_lt_ordsucc m Hm)) H). }
+exact (SNoLt_irref m (SNoLtLe_tra m i m (omega_SNo m Hm) (omega_SNo i Hi) (omega_SNo m Hm) Hlt Hle)).
+Qed.
+// ---- the datatypes tybit0 / tybit1 of cart.ml (docs/DESIGN.md 21.9): carrier equations, typing, nonemptiness ----
+Theorem two_dimindex_add : forall A:set, 2 * dimindex A = dimindex A + dimindex A.
+let A.
+claim HS: SNo (dimindex A). { exact (omega_SNo (dimindex A) (dimindex_omega A)). }
+exact (eq_trans_i (2 * dimindex A) ((1 + 1) * dimindex A) (dimindex A + dimindex A) (add_SNo_1_1_2 (fun u v => u * dimindex A = (1 + 1) * dimindex A) (fun q H => H)) (eq_trans_i ((1 + 1) * dimindex A) (1 * dimindex A + 1 * dimindex A) (dimindex A + dimindex A) (mul_SNo_distrR 1 1 (dimindex A) SNo_1 SNo_1 HS) (f_equal2 (fun u v => u + v) (1 * dimindex A) (dimindex A) (1 * dimindex A) (dimindex A) (mul_SNo_oneL (dimindex A) HS) (mul_SNo_oneL (dimindex A) HS)))).
+Qed.
+Theorem tybit0_carrier : forall A:set, idx_n (2 * dimindex A) = idx_n (dimindex A + dimindex A).
+let A. exact (f_equal (fun u => idx_n u) (2 * dimindex A) (dimindex A + dimindex A) (two_dimindex_add A)).
+Qed.
+Theorem tybit1_carrier : forall A:set, idx_n (2 * dimindex A + 1) = idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1).
+let A.
+claim Hs: dimindex A + dimindex A :e omega. { exact (add_SNo_In_omega (dimindex A) (dimindex_omega A) (dimindex A) (dimindex_omega A)). }
+claim H1: dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1 = (dimindex A + dimindex A) + 1. { exact (f_equal2 (fun u v => u + v) (dimindex (idx_n (dimindex A + dimindex A))) (dimindex A + dimindex A) (dimindex 1) 1 (dimindex_idx_n (dimindex A + dimindex A) Hs) dimindex_one). }
+exact (eq_trans_i (idx_n (2 * dimindex A + 1)) (idx_n ((dimindex A + dimindex A) + 1)) (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (f_equal (fun u => idx_n (u + 1)) (2 * dimindex A) (dimindex A + dimindex A) (two_dimindex_add A)) (f_equal (fun u => idx_n u) ((dimindex A + dimindex A) + 1) (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1) (eq_sym_i (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1) ((dimindex A + dimindex A) + 1) H1))).
+Qed.
+Theorem hl_mktybit0_in : forall A:set, A <> Empty -> hl_mktybit0 A :e idx_n (2 * dimindex A) :^: idx_n (dimindex A + dimindex A).
+let A. assume HA. exact ((eq_sym_i (idx_n (2 * dimindex A)) (idx_n (dimindex A + dimindex A)) (tybit0_carrier A)) (fun u v => hl_mktybit0 A :e u :^: idx_n (dimindex A + dimindex A)) (lam_Pi (idx_n (dimindex A + dimindex A)) (fun _ => idx_n (dimindex A + dimindex A)) (fun x => x) (fun x Hx => Hx))).
+Qed.
+Theorem hl_mktybit1_in : forall A:set, A <> Empty -> hl_mktybit1 A :e idx_n (2 * dimindex A + 1) :^: idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1).
+let A. assume HA. exact ((eq_sym_i (idx_n (2 * dimindex A + 1)) (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (tybit1_carrier A)) (fun u v => hl_mktybit1 A :e u :^: idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (lam_Pi (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (fun _ => idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (fun x => x) (fun x Hx => Hx))).
+Qed.
+Theorem tybit0_nonempty : forall A:set, A <> Empty -> idx_n (2 * dimindex A) <> Empty.
+let A. assume HA.
+claim HS: SNo (dimindex A). { exact (omega_SNo (dimindex A) (dimindex_omega A)). }
+claim Hle: dimindex A <= dimindex A + dimindex A. { exact ((add_SNo_0R (dimindex A) HS) (fun u v => u <= dimindex A + dimindex A) (add_SNo_Le2 (dimindex A) 0 (dimindex A) HS SNo_0 HS (omega_nonneg (dimindex A) (dimindex_omega A)))). }
+claim H1: 1 <= dimindex A + dimindex A. { exact (SNoLe_tra 1 (dimindex A) (dimindex A + dimindex A) SNo_1 HS (SNo_add_SNo (dimindex A) (dimindex A) HS HS) (dimindex_ge_1 A HA) Hle). }
+exact ((eq_sym_i (idx_n (2 * dimindex A)) (idx_n (dimindex A + dimindex A)) (tybit0_carrier A)) (fun u v => u <> Empty) (nonempty_of_In (idx_n (dimindex A + dimindex A)) 1 (SepI omega (fun i => 1 <= i /\ i <= dimindex A + dimindex A) 1 (nat_p_omega 1 nat_1) (andI (1 <= 1) (1 <= dimindex A + dimindex A) (SNoLe_ref 1) H1)))).
+Qed.
+Theorem tybit1_nonempty : forall A:set, A <> Empty -> idx_n (2 * dimindex A + 1) <> Empty.
+let A. assume HA.
+claim HS: SNo (2 * dimindex A). { exact (omega_SNo (2 * dimindex A) (mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) (dimindex A) (dimindex_omega A))). }
+claim H1: 1 <= 2 * dimindex A + 1. { exact ((add_SNo_0L 1 SNo_1) (fun u v => u <= 2 * dimindex A + 1) (add_SNo_Le1 0 1 (2 * dimindex A) SNo_0 SNo_1 HS (omega_nonneg (2 * dimindex A) (mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) (dimindex A) (dimindex_omega A))))). }
+exact (nonempty_of_In (idx_n (2 * dimindex A + 1)) 1 (SepI omega (fun i => 1 <= i /\ i <= 2 * dimindex A + 1) 1 (nat_p_omega 1 nat_1) (andI (1 <= 1) (1 <= 2 * dimindex A + 1) (SNoLe_ref 1) H1))).
+Qed.

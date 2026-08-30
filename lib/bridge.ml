@@ -376,6 +376,8 @@ let rec nonempty_pf g (ty : ty) : string =
   | TyApp ("list", [ a ]) -> Printf.sprintf "(finseq_nonempty %s)" (ppp (L.carrier g.lctx a))
   | TyApp ("option", [ a ]) -> Printf.sprintf "(setsum_nonempty_L 1 %s one_nonempty)" (ppp (L.carrier g.lctx a))
   | TyApp ("sum", [ a; b ]) -> Printf.sprintf "(setsum_nonempty_L %s %s %s)" (ppp (L.carrier g.lctx a)) (ppp (L.carrier g.lctx b)) (nonempty_pf g a)
+  | TyApp ("tybit0", [ a ]) -> Printf.sprintf "(tybit0_nonempty %s %s)" (ppp (L.carrier g.lctx a)) (nonempty_pf g a)
+  | TyApp ("tybit1", [ a ]) -> Printf.sprintf "(tybit1_nonempty %s %s)" (ppp (L.carrier g.lctx a)) (nonempty_pf g a)
   | TyApp (c, args) when Hashtbl.mem g.an.L.tydefs c ->
       if g.lctx.L.use_native_tydefs && args = [] && Hashtbl.mem L.tydef_native c then ("hl_ty_" ^ E.sanitize_var c ^ "_native_nonempty")
       else if g.lctx.L.use_native_tydefs && !L.param_native && args <> [] && Hashtbl.mem L.tydef_native_k c then
@@ -822,6 +824,20 @@ let rec derive_idx g find_hyp (i : Mg.tm) (n : Mg.tm) : string option =
                       | None -> None)
                  | _ -> None))
        | None, _ -> None)
+  | _ when (match i with Mg.App (Mg.App (Mg.Cst "minus_nat", _), Mg.App (Mg.Cst "dimindex", _)) -> true | _ -> false) ->
+      (* the shifted index j - dimindex M of the second block, from dimindex M + 1 <= j (or ~ (j <= dimindex M))
+         and j <= dimindex M + dimindex N *)
+      (match i with
+       | Mg.App (Mg.App (Mg.Cst "minus_nat", j), Mg.App (Mg.Cst "dimindex", m)) ->
+           let t s = Mg.normalize (Mg.inst [ ("J", j); ("M", m); ("N", n) ] (cstify (Mg.parse_template s))) in
+           (match nat_var_mem g j, find_hyp g (t "?J <= dimindex ?M + dimindex ?N") with
+            | Some (Mg.Cst "omega", hj), Some hle ->
+                let hn = (match find_hyp g (t "~ (?J <= dimindex ?M)") with
+                  | Some h -> Some h
+                  | None -> Option.map (fun h -> Printf.sprintf "(not_le_of_succ_le (dimindex %s) (dimindex_omega %s) %s %s %s)" (ppp m) (ppp m) (ppp j) hj h) (find_hyp g (t "dimindex ?M + 1 <= ?J"))) in
+                Option.map (fun hn -> Printf.sprintf "(idx_shift %s %s %s %s %s %s)" (ppp m) (ppp n) (ppp j) hj hn hle) hn
+            | _ -> None)
+       | _ -> None)
   | _ ->
       (match var_omega with
        | Some hi ->

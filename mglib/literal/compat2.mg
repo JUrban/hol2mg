@@ -284,3 +284,10 @@ let A B. assume HA HB. let l1. assume Hidx.
 claim Hsub: l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero)))))). { exact ((eq_sym_i (hl_ty_finite_diff A B) (idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1)) (hl_ty_finite_diff_native A B HA HB)) (fun u v => l1 :e u) Hidx). }
 exact (beta (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero)))))) (fun x => x) l1 Hsub).
 Qed.
+// mktybit0 / mktybit1: the constructors of the tybit datatypes are identities on the index sets.
+Theorem hl_mktybit0_compat : forall A:set, A <> Empty -> forall l1 :e idx_n (dimindex A + dimindex A), hl_mktybit0 A l1 = l1.
+let A. assume HA. let l1. assume Hl1. exact (beta (idx_n (dimindex A + dimindex A)) (fun x => x) l1 Hl1).
+Qed.
+Theorem hl_mktybit1_compat : forall A:set, A <> Empty -> forall l1 :e idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1), hl_mktybit1 A l1 = l1.
+let A. assume HA. let l1. assume Hl1. exact (beta (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (fun x => x) l1 Hl1).
+Qed.

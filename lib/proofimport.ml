@@ -272,6 +272,8 @@ let rec ne (ctx : L.ctx) (ty : ty) : string =
   | TyApp ("list", [ a ]) -> Printf.sprintf "(finseq_nonempty %s)" (ppp (car a))
   | TyApp ("option", [ a ]) -> Printf.sprintf "(setsum_nonempty_l 1 %s one_nonempty)" (ppp (car a))
   | TyApp ("sum", [ a; b ]) -> Printf.sprintf "(setsum_nonempty_l %s %s %s)" (ppp (car a)) (ppp (car b)) (ne ctx a)
+  | TyApp ("tybit0", [ a ]) -> Printf.sprintf "(tybit0_nonempty %s %s)" (ppp (car a)) (ne ctx a)
+  | TyApp ("tybit1", [ a ]) -> Printf.sprintf "(tybit1_nonempty %s %s)" (ppp (car a)) (ne ctx a)
   | TyApp (c, []) when Hashtbl.mem ctx.L.tydefs c -> Printf.sprintf "hl_ty_%s_nonempty" (Elab.sanitize_var c)
   | TyApp (c, args) when Hashtbl.mem ctx.L.tydefs c ->
       (* parametrised translated type: hl_ty_T_nonempty A.. HA.. (docs/DESIGN.md 21.9) *)

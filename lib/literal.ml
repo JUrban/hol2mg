@@ -27,7 +27,10 @@ let primitive_types : (string * (Mg.tm list -> Mg.tm)) list =
     ("1", fun _ -> Mg.Num 1);
     ("list", (function [ a ] -> Mg.App (Mg.Cst "finseq", a) | _ -> assert false));
     ("option", (function [ a ] -> Mg.App (Mg.App (Mg.Cst "setsum", Mg.Num 1), a) | _ -> assert false));
-    ("sum", (function [ a; b ] -> Mg.App (Mg.App (Mg.Cst "setsum", a), b) | _ -> assert false)) ]
+    ("sum", (function [ a; b ] -> Mg.App (Mg.App (Mg.Cst "setsum", a), b) | _ -> assert false));
+    (* the datatypes tybit0 / tybit1 of cart.ml: the native index sets (docs/DESIGN.md 21.9) *)
+    ("tybit0", (function [ a ] -> Mg.App (Mg.Cst "idx_n", Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.App (Mg.Cst "dimindex", a))) | _ -> assert false));
+    ("tybit1", (function [ a ] -> Mg.App (Mg.Cst "idx_n", Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.App (Mg.Cst "dimindex", a))), Mg.Num 1)) | _ -> assert false)) ]
 
 (* HOL constants with primitive literal definitions (defined in mglib/literal/model.mg);
    name -> Megalodon name.  Their carrier arguments follow the generic type as for every
@@ -35,7 +38,7 @@ let primitive_types : (string * (Mg.tm list -> Mg.tm)) list =
 let primitive_consts : (string * string) list =
   [ ("=", "hl_eq"); ("@", "hl_select"); ("_0", "hl_zero"); ("SUC", "hl_SUC"); (",", "hl_pair");
     ("one", "hl_one"); ("NIL", "hl_NIL"); ("CONS", "hl_CONS"); ("NONE", "hl_NONE"); ("SOME", "hl_SOME");
-    ("INL", "hl_INL"); ("INR", "hl_INR");
+    ("INL", "hl_INL"); ("INR", "hl_INR"); ("mktybit0", "hl_mktybit0"); ("mktybit1", "hl_mktybit1");
     ("real_of_num", "hl_real_of_num"); ("real_neg", "hl_real_neg"); ("real_add", "hl_real_add");
     ("real_mul", "hl_real_mul"); ("real_le", "hl_real_le"); ("real_inv", "hl_real_inv") ]
 
