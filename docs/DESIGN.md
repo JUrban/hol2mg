@@ -1313,6 +1313,7 @@ literal_proved both imply transport_checked.
 | 2026-08-29 (i) | 2697 / 2697 | 2332 / 2685 public | 385 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-13.md` |
 | 2026-08-29 (j) | 2697 / 2697 | 2369 / 2685 public | 406 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-14.md` |
 | 2026-08-29 (k) | 2697 / 2697 | 2417 / 2685 public (38 literal_proved, 0 fully_proved) | 434 (+ 26 carrier lemmas, 162 bridge-library lemmas, 41 model theorems; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-15.md` |
+| 2026-08-30 (l) | 2697 / 2697 | 2428 / 2685 public (39 literal_proved; proof-import pilot, cap 1 000, not committed: 236 fully_proved) | 435 (+ 26 carrier lemmas, 162 bridge-library lemmas, 42 model theorems, 48 uniform-layer lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
