@@ -1315,6 +1315,7 @@ literal_proved both imply transport_checked.
 | 2026-08-29 (k) | 2697 / 2697 | 2417 / 2685 public (38 literal_proved, 0 fully_proved) | 434 (+ 26 carrier lemmas, 162 bridge-library lemmas, 41 model theorems; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-15.md` |
 | 2026-08-30 (l) | 2697 / 2697 | 2428 / 2685 public (39 literal_proved; proof-import pilot, cap 1 000, not committed: 236 fully_proved) | 435 (+ 26 carrier lemmas, 162 bridge-library lemmas, 42 model theorems, 48 uniform-layer lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (m) | 2697 / 2697 | 2455 / 2685 public (42 literal_proved; pilot round 4, cap 2 000 + forced leaves, 21/23 shards: 390 fully_proved) | 446 (+ 26 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (n) | 2697 / 2697 | 2528 / 2685 public (42 literal_proved; every public theorem has a literal statement; pilot round 4: 390 fully_proved) | 446 + 22 stage-2 (+ 26 + 15 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1408,9 +1409,20 @@ components `$` and the index embedding `finite_index` are characterised on the i
 (side conditions `?2 :e idx ?N` / `?1 :e idx ?N`, derived from hypotheses `1 <= i /\ i <= dimindex
 N` by `Bridge.derive_idx`).  A latent bug surfaced with `FINITE_CART`: the GSPEC branches built the
 intermediate set `{v :e C | exists v :e A, ..}` with a fixed binder name, captured when the HOL
-witness is itself named `v` (fixed).  Not covered: `tybit0`/`tybit1` (single-constructor
-datatypes over `recspace`, 18 theorems), `finite_diff`/`finite_prod` (7, same pattern as
-`finite_sum`), and theorems whose index side condition is not derivable from the hypotheses.
+witness is itself named `v` (fixed).  Later the same day (commits `0ca473e` … `356825b`): `finite_prod`/`finite_diff`
+carriers (7 theorems), the `idx_idx_n`/`dimindex_idx_n` rewrite replays, index side conditions
+for concatenated index sets (`derive_idx`: direct bounds, the two blocks, shifted indices,
+lower bounds of the form `x + 1 <= i`), finiteness of index sets, and the datatypes
+`tybit0`/`tybit1` modelled by the native index sets `idx_n (2 * dimindex A)` and
+`idx_n (2 * dimindex A + 1)` with the constructors `mktybit0`/`mktybit1` as identities
+(`Literal.primitive_types`/`primitive_consts`; definitions in `model.mg`, carrier equations,
+typing and nonemptiness in `bridge.mg`, compat in `compat2.mg`; 18 theorems).  Result:
+**83 of the 103 public theorems of cart.ml are transport-checked** (2 455 → 2 528 overall),
+and every public theorem of Core now has a literal statement.  The 20 remaining cart.ml
+theorems are inherent to the index-range characterisation of `$`/`finite_index` (side
+conditions without hypotheses: the second conjuncts of the `_tybij` theorems, `*_IMAGE` over
+`1..n`, `CART_EQ_FULL`, `FINITE_INDEX_INRANGE*`, `LAMBDA_ETA`), `CARD_CART_UNIV` (finiteness of
+a function space) and `PCROSS_INTERS/UNIONS_INTERS` (coercion).
 
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 

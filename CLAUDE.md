@@ -23,4 +23,7 @@
   admitted dependency except the literal source fact); `literal_proved` additionally means the
   literal fact is discharged by a model theorem (`mglib/literal/model_theorems.mg`); `fully_proved`
   (imported HOL proofs) is reserved.  Never mark certification by hand.
+- Stage-2 literal layer (docs/DESIGN.md §21.9): `carriers2.mg`, generated `_literal_typing2.mg` and
+  `compat2.mg` are checked after `compat.mg`; `tools/check_cert.sh` and the scratch check scripts must
+  keep that order.
 - Resource limits: a few CPUs; HOL Light export ≈ 2–4 min, Megalodon shard checks ≈ 4 s each.
