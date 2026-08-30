@@ -68,6 +68,24 @@ while changed:
         leaves = [by_hol.get(l) for l in i.get('proof_leaves', [])]
         if all(l is not None and l['name'] in fp for l in leaves):
             fp.add(i['name']); changed = True
+# results of proof-import pilot rounds recorded by tools/merge_pilot.py: a recorded fact counts while
+# the theorem and (transitively) its leaves keep the same statement hash and literal text
+import hashlib
+side_file = os.path.join(os.path.dirname(man_file), '..', 'proofcert', prof + '.pilot_results.json')
+n_side = 0
+if os.path.exists(side_file):
+    side = json.load(open(side_file))
+    by_name = {i['name']: i for i in m['items']}
+    def lit_digest(i): return hashlib.md5((i.get('literal') or '').encode()).hexdigest()
+    def matches(n): i = by_name.get(n); r = side['proved'][n]; return i is not None and i.get('hash') == r['hash'] and lit_digest(i) == r['lit']
+    changed = True
+    while changed:
+        changed = False
+        for n, r in side['proved'].items():
+            if n in fp or not matches(n): continue
+            if all(l in fp for l in r['leaves']):
+                fp.add(n); changed = True; n_side += 1
+                i = by_name[n]; i['proof_imported'] = True; i['proof_leaves'] = r['leaves']; i['proof_source'] = 'pilot'
 for i in m['items']:
     i['literal_fact_proved'] = i['name'] in fp
     i['fully_proved'] = (i['name'] in fp and bool(i.get('proof_imported')) and i.get('cert_status') == 'transport_checked')
@@ -75,5 +93,5 @@ n_full = sum(1 for i in m['items'] if i['fully_proved'])
 n_lfp = sum(1 for i in m['items'] if i['literal_fact_proved'] and i.get('proof_imported'))
 m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'transport_checked': n_cert, 'literal_proved': n_proved, 'fully_proved': n_full}
 json.dump(m, open(man_file, 'w'), indent=1)
-print(f'cert_finalize {prof}: {n_cert} transport_checked ({n_proved} literal_proved, {n_full} fully_proved; {n_lfp} literal facts proved by imported proofs), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
+print(f'cert_finalize {prof}: {n_cert} transport_checked ({n_proved} literal_proved, {n_full} fully_proved; {n_lfp} literal facts proved by imported proofs, {n_side} from recorded pilot rounds), {n_fail} bridge_failed, {n_mismatch} mismatches; shards OK {len(ok)}, failed {len(fail)}')
 sys.exit(1 if fail or n_mismatch else 0)

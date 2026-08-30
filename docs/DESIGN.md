@@ -1629,6 +1629,22 @@ single-use nodes instead of emitting claims was tried and rejected: Megalodon ca
 binder types of a proof lambda that is not checked against a stated claim, and the annotated form
 is larger than the claim.
 
+### 22.6 Recording pilot results in the committed certification (2026-08-30)
+
+A pilot round checks the certification modules with the imported proofs in a scratch directory
+(about 1 GB, not committed).  `tools/merge_pilot.py <profile> <pilot manifest> <tag> --apply`
+records, in `generated/proofcert/<profile>.pilot_results.json`, every theorem whose literal fact
+the round proved through imported proofs (`proof_imported` and `literal_fact_proved` in the
+pilot's manifest) together with its statement hash, a digest of its literal statement text and
+the public names of its proof leaves.  `tools/cert_finalize.py` re-applies the sidecar on every
+certification cycle: a recorded fact counts only while the theorem and, transitively, every
+leaf still have the same hash and literal text in the committed manifest (leaves discharged by
+model theorems count as proved), and `fully_proved` additionally requires the bridge to be
+transport-checked in that cycle.  A change to a literal statement or to a leaf therefore
+silently retires the recorded fact until a new round re-proves it; the manifest marks such
+theorems with `proof_source: pilot`.  Round 7 recorded 918 facts, all of which validate against
+the committed state (830 public theorems `fully_proved` at 2 592 transport-checked).
+
 ### 22.5 Steps
 
 1. Recording kernel, shadow directory, statistics — done.

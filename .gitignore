@@ -12,3 +12,6 @@ generated/internal/*.jsonl
 !generated/internal/core.jsonl
 generated/reports/*.review.html
 generated/proofcert/
+
+# recorded proof-import pilot results (docs/DESIGN.md 22.6) are part of the certification state
+!generated/proofcert/*.pilot_results.json
