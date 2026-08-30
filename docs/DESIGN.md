@@ -1317,6 +1317,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (m) | 2697 / 2697 | 2455 / 2685 public (42 literal_proved; pilot round 4, cap 2 000 + forced leaves, 21/23 shards: 390 fully_proved) | 446 (+ 26 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (n) | 2697 / 2697 | 2528 / 2685 public (42 literal_proved; every public theorem has a literal statement; pilot round 4: 390 fully_proved) | 446 + 22 stage-2 (+ 26 + 15 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (o) | 2697 / 2697 | 2544 / 2685 public (42 literal_proved; pilot round 4: 390 fully_proved) | 446 + 24 stage-2 (+ 26 + 15 carrier lemmas, 167 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (p) | 2697 / 2697 | 2547 / 2685 public (42 literal_proved; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 26 + 15 carrier lemmas, 170 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1430,7 +1431,14 @@ pointwise to a meta function used as a value (`fun_value_of_pw`: `EXISTS/FORALL_
 predicate constants used as subsets (`EXTENSIONAL s`: eta-expansion, `rep_of_pw`, the `KPWP` →
 subset coercion; 5 theorems), subset-valued constants over-applied as predicates (`(x INSERT s)
 y`: `rep_mem_iff`; `INSERT_DEF`, `SET_CASES`, `EMPTY`) and beta steps in over-applied
-conditionals (`COND_ABS`).  The 141 remaining `bridge_unsupported` public theorems are a long
+conditionals (`COND_ABS`); nested compat variants at chosen type variables of multi-parameter
+entries (`<compat>_pow<k>`, the scheme with type variable `k` instantiated to a subset type:
+`hl_IMAGE_compat_pow2` for `IMAGE` with a subset-valued function, whose premise is
+`hl_rep B (l1 x) = f1 x` and whose result is `hl_rep2`; `UNIONS_IMAGE`, `INTERS_IMAGE`,
+`UNIONS_MONO_IMAGE`), with the metafun slot arity taken from the registry scheme everywhere.
+Still open in that direction: `IMAGE (IMAGE f) s` (`IMAGE_INTERS*`, 6), where both type
+variables are nested and the function argument's relation goes through the representation
+(`hl_rep B (l1 x) = f1 (hl_rep A x)`), a variant the statement generator does not produce yet.  The 141 remaining `bridge_unsupported` public theorems are a long
 tail: `CARD`/`sup`/`inf` side conditions without hypotheses (18), `IMAGE` over `Power` (9),
 nested subset arguments (4), `MAP2`/`ITSET`/`ASSOC` conditional compat (9), 3-ary binders (5),
 the index-range cases of cart.ml (20), definitional theorems of `iterate` (3), and singletons.
