@@ -1782,7 +1782,8 @@ source: dimindex UNIV = dimindex UNIV + dimindex UNIV
 status: generalization_required
 statement: forall M N:set, dimindex M + dimindex N = dimindex M + dimindex N
 literal: forall M N:set, M <> Empty -> N <> Empty -> hl_dimindex (hl_ty_finite_sum M N) (hl_UNIV (hl_ty_finite_sum M N)) = hl_add (hl_dimindex M (hl_UNIV M)) (hl_dimindex N (hl_UNIV N))
-cert_status: bridge_unsupported
+bridge: DIMINDEX_FINITE_SUM_bridge
+cert_status: transport_checked
 
 ### DIMINDEX_GE_1   [Cartesian powers and finite index types]
 hash: 6330d948a4ade390789c61f4944f6861

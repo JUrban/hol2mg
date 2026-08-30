@@ -10,10 +10,6 @@ Admitted.
 Theorem hl_INJP_compat : forall A:set, A <> Empty -> hl_INJP A = Empty.
 Admitted.
 
-// mk_finite_diff : num->(A,B)finite_diff (not in compat.mg)
-Theorem hl_mk_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_diff A B l1 = l1.
-Admitted.
-
 // CARD : (A->bool)->num at A := A -> bool (not in compat.mg)
 Theorem hl_CARD_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), finite (hl_rep2 A l1) -> hl_CARD (2 :^: A) l1 = finite_cardinality (hl_rep2 A l1).
 Admitted.
@@ -32,10 +28,6 @@ Admitted.
 
 // FINREC : (A->B->B)->B->(A->bool)->B->num->bool (not in compat.mg)
 Theorem hl_FINREC_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_FINREC A B = Empty.
-Admitted.
-
-// dest_finite_prod : (A,B)finite_prod->num (not in compat.mg)
-Theorem hl_dest_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e idx_n (dimindex A * dimindex B), hl_dest_finite_prod A B l1 = l1.
 Admitted.
 
 // iterato : (A->bool)->A->(A->A->A)->(K->K->bool)->(K->bool)->(K->A)->A (not in compat.mg)
@@ -104,10 +96,6 @@ Admitted.
 
 // superadmissible : (A->A->bool)->((A->B)->P->bool)->(P->A)->((A->B)->P->B)->bool (not in compat.mg)
 Theorem hl_superadmissible_compat : forall A B P:set, A <> Empty -> B <> Empty -> P <> Empty -> hl_superadmissible A B P = Empty.
-Admitted.
-
-// dest_finite_diff : (A,B)finite_diff->num (not in compat.mg)
-Theorem hl_dest_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1), hl_dest_finite_diff A B l1 = l1.
 Admitted.
 
 // MAP2 : (A->B->C)->A list->B list->C list (not in compat.mg)
@@ -196,10 +184,6 @@ Admitted.
 
 // ITSET : (A->B->B)->(A->bool)->B->B (not in compat.mg)
 Theorem hl_ITSET_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e 2 :^: A, forall l3 :e B, hl_ITSET A B l1 l2 l3 = set_foldr f1 (hl_rep A l2) l3.
-Admitted.
-
-// mk_finite_prod : num->(A,B)finite_prod (not in compat.mg)
-Theorem hl_mk_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_prod A B l1 = l1.
 Admitted.
 
 // _FALSITY_ : bool (not in compat.mg)

@@ -990,8 +990,17 @@ Theorem In_idx_idx_n : forall n :e omega, forall i :e idx_n n, i :e idx (idx_n n
 let n. assume Hn. let i. assume Hi. exact ((eq_sym_i (idx (idx_n n)) (idx_n n) (idx_idx_n n Hn)) (fun u v => i :e u) Hi).
 Qed.
 Theorem idx_n_finite : forall n :e omega, finite (idx_n n).
-let n. assume Hn. witness n. apply andI. exact Hn. exact (idx_n_equip n Hn).
+let n. assume Hn. prove exists m :e omega, equip (idx_n n) m. witness n. apply andI. exact Hn. exact (idx_n_equip n Hn).
+Qed.
+Theorem idx_n_of_bounds : forall n:set, forall i :e omega, 1 <= i /\ i <= n -> i :e idx_n n.
+let n i. assume Hi H. exact (SepI omega (fun j => 1 <= j /\ j <= n) i Hi H).
 Qed.
 Theorem idx_finite : forall N:set, finite (idx N).
 let N. exact (idx_n_finite (dimindex N) (dimindex_omega N)).
+Qed.
+Theorem one_le_of_add_one_le : forall x i :e omega, x + 1 <= i -> 1 <= i.
+let x. assume Hx. let i. assume Hi H.
+claim H0: 0 + 1 <= x + 1. { exact (add_SNo_Le1 0 1 x SNo_0 SNo_1 (omega_SNo x Hx) (omega_nonneg x Hx)). }
+claim H1: 1 <= x + 1. { exact ((add_SNo_0L 1 SNo_1) (fun u v => u <= x + 1) H0). }
+exact (SNoLe_tra 1 (x + 1) i SNo_1 (SNo_add_SNo x 1 (omega_SNo x Hx) SNo_1) (omega_SNo i Hi) H1 H).
 Qed.

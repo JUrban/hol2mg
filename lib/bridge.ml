@@ -75,6 +75,8 @@ let side_conditions : (string * string list) list =
     ("$", [ "?2 :e idx ?N" ]);
     ("finite_index", [ "?1 :e idx ?N" ]);
     ("mk_finite_sum", [ "?1 :e idx_n (dimindex ?A + dimindex ?B)" ]);
+    ("mk_finite_prod", [ "?1 :e idx_n (dimindex ?A * dimindex ?B)" ]);
+    ("mk_finite_diff", [ "?1 :e idx_n (if dimindex ?B < dimindex ?A then minus_nat (dimindex ?A) (dimindex ?B) else 1)" ]);
 
     (* iterate is characterised only for monoidal operations (HOL Light's ITSET is a choice) *)
     ("iterate", [ "(forall x y :e ?B, ?1 x y = ?1 y x) /\\ (forall x y z :e ?B, ?1 x (?1 y z) = ?1 (?1 x y) z) /\\ (forall x :e ?B, ?1 (neutral_of ?B (fun a b => ?1 a b)) x = x)" ]) ]
@@ -768,22 +770,68 @@ let gabs_body_typing g (bodyn : tm) : string * string =
 
 (* membership of an index in idx N from the hypotheses in scope: i :e idx N itself, the bounds
    1 <= i /\ i <= dimindex N as one hypothesis, or the two bounds separately (docs/DESIGN.md 21.9) *)
+(* membership in omega of the index arithmetic of cart.ml *)
+let rec omega_of_index (t : Mg.tm) : string option =
+  match t with
+  | Mg.Num k -> Some (Printf.sprintf "(nat_p_omega %d %s)" k (let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in nat_pf k))
+  | Mg.App (Mg.Cst "dimindex", x) -> Some (Printf.sprintf "(dimindex_omega %s)" (ppp x))
+  | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+  | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+  | Mg.App (Mg.App (Mg.Cst "minus_nat", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(minus_nat_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+  | _ -> None
+
 let rec derive_idx g find_hyp (i : Mg.tm) (n : Mg.tm) : string option =
   let tpl s = Mg.normalize (Mg.inst [ ("1", i); ("N", n) ] (cstify (Mg.parse_template s))) in
-  match n, nat_var_mem g i with
-  | Mg.App (Mg.Cst "idx_n", (Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.App (Mg.Cst "dimindex", m)), Mg.App (Mg.Cst "dimindex", n2)) as s)), _ ->
-      (* the first block of a concatenated index set: i :e idx M gives i :e idx (idx_n (dimindex M + dimindex N)) *)
-      (match derive_idx g find_hyp i m with
-       | Some h -> Some (Printf.sprintf "(In_idx_idx_n %s (add_SNo_In_omega (dimindex %s) (dimindex_omega %s) (dimindex %s) (dimindex_omega %s)) %s (idx_block1 %s %s %s %s))" (ppp s) (ppp m) (ppp m) (ppp n2) (ppp n2) (ppp i) (ppp m) (ppp n2) (ppp i) h)
+  (* the bounds 1 <= i and i <= b, as one hypothesis or two *)
+  let bounds b =
+    let t s = Mg.normalize (Mg.inst [ ("1", i); ("B", b) ] (cstify (Mg.parse_template s))) in
+    (* the lower bound 1 <= i, possibly from a hypothesis x + 1 <= i *)
+    let lower () = (match find_hyp g (t "1 <= ?1") with
+      | Some h -> Some h
+      | None ->
+          List.find_map (fun (h, pf) -> match h with
+            | Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.App (Mg.App (Mg.Cst "add_SNo", x), Mg.Num 1)), i') when i' = i ->
+                (match omega_of_index x, nat_var_mem g i with
+                 | Some hx, Some (Mg.Cst "omega", hi) -> Some (Printf.sprintf "(one_le_of_add_one_le %s %s %s %s %s)" (ppp x) hx (ppp i) hi pf)
+                 | _ -> None)
+            | _ -> None) g.hyps) in
+    (match find_hyp g (t "1 <= ?1 /\\ ?1 <= ?B") with
+     | Some h -> Some h
+     | None -> (match lower (), find_hyp g (t "?1 <= ?B") with
+                | Some h1, Some h2 -> Some (Printf.sprintf "(andI %s %s %s %s)" (paren (pp (t "1 <= ?1"))) (paren (pp (t "?1 <= ?B"))) h1 h2)
+                | _ -> None)) in
+  let var_omega = (match nat_var_mem g i with Some (Mg.Cst "omega", hi) -> Some hi | _ -> None) in
+  match n with
+  | Mg.App (Mg.Cst "idx_n", s) when omega_of_index s <> None ->
+      let hs = Option.get (omega_of_index s) in
+      (* direct bounds 1 <= i <= s *)
+      let direct = (match var_omega, bounds s with
+        | Some hi, Some hb -> Some (Printf.sprintf "(In_idx_idx_n %s %s %s (idx_n_of_bounds %s %s %s %s))" (ppp s) hs (ppp i) (ppp s) (ppp i) hi hb)
+        | _ -> None) in
+      (match direct, s with
+       | Some p, _ -> Some p
+       | None, Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.App (Mg.Cst "dimindex", m)), Mg.App (Mg.Cst "dimindex", n2)) ->
+           (* the first block: i :e idx M; the second block: i = j + dimindex M with j :e idx N *)
+           (match derive_idx g find_hyp i m with
+            | Some h -> Some (Printf.sprintf "(In_idx_idx_n %s %s %s (idx_block1 %s %s %s %s))" (ppp s) hs (ppp i) (ppp m) (ppp n2) (ppp i) h)
+            | None ->
+                (match i with
+                 | Mg.App (Mg.App (Mg.Cst "add_SNo", j), Mg.App (Mg.Cst "dimindex", m')) when m' = m ->
+                     (match derive_idx g find_hyp j n2 with
+                      | Some h -> Some (Printf.sprintf "(In_idx_idx_n %s %s %s (idx_block2 %s %s %s %s))" (ppp s) hs (ppp i) (ppp m) (ppp n2) (ppp j) h)
+                      | None -> None)
+                 | _ -> None))
+       | None, _ -> None)
+  | _ ->
+      (match var_omega with
+       | Some hi ->
+           (match find_hyp g (tpl "1 <= ?1 /\\ ?1 <= dimindex ?N") with
+            | Some h -> Some (Printf.sprintf "(idx_of_bounds %s %s %s %s)" (ppp n) (ppp i) hi h)
+            | None ->
+                (match find_hyp g (tpl "1 <= ?1"), find_hyp g (tpl "?1 <= dimindex ?N") with
+                 | Some h1, Some h2 -> Some (Printf.sprintf "(idx_of_bounds %s %s %s (andI %s %s %s %s))" (ppp n) (ppp i) hi (paren (pp (tpl "1 <= ?1"))) (paren (pp (tpl "?1 <= dimindex ?N"))) h1 h2)
+                 | _ -> None))
        | None -> None)
-  | _, Some (Mg.Cst "omega", hi) ->
-      (match find_hyp g (tpl "1 <= ?1 /\\ ?1 <= dimindex ?N") with
-       | Some h -> Some (Printf.sprintf "(idx_of_bounds %s %s %s %s)" (ppp n) (ppp i) hi h)
-       | None ->
-           (match find_hyp g (tpl "1 <= ?1"), find_hyp g (tpl "?1 <= dimindex ?N") with
-            | Some h1, Some h2 -> Some (Printf.sprintf "(idx_of_bounds %s %s %s (andI %s %s %s %s))" (ppp n) (ppp i) hi (paren (pp (tpl "1 <= ?1"))) (paren (pp (tpl "?1 <= dimindex ?N"))) h1 h2)
-            | _ -> None))
-  | _ -> None
 
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
