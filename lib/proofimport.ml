@@ -577,7 +577,11 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
         let td = (match List.find_opt (fun ((td : type_definition), _) -> td.td_name = n.tyn) env.an.L.type_definitions with
           | Some (td, _) -> td | None -> unsupported "type definition %s not translated" n.tyn) in
         let rho, pf = L.dest_tydef_bij td in
-        let rcar = car rho and pred = u pf in
+        (* the carrier and the abs/rep constants are defined with the *literal* rendering of the
+           predicate (Literal.tydef); the uniform rendering is related by coherence (docs/DESIGN.md 22.5) *)
+        let rcar = car rho and pred = ppp (L.lterm ctx pf) in
+        let trivial = coh_trivial ctx pf in   (* the two renderings coincide: no coherence step *)
+        let coh_pred = coh env ctx pf in   (* L[pf] = U[pf] *)
         if n.rule = "TYDEF_ABS" then begin
           (* abs (rep a) = a *)
           let ty, lhs, a = dest_eq n.concl in
@@ -597,7 +601,13 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
                            close_lam ctx key nm;
                            Printf.sprintf "((beta %s %s %s %s) (fun hl__u hl__v => hl__u = 1) %s)" (car ty) lam (u t) (ty_ t) (pre 0)
                        | _ -> unsupported "TYDEF_REP: predicate %s differs from the definition's" (Mg.to_string (uterm ctx p'))) in
-          let lem = Printf.sprintf "(u_tydef_rep %s %s (hl_subtype_nonempty_of %s %s %s %s %s) %s %s %s)" rcar pred rcar pred (u t) (ty_ t) wit (ty_ pf) (u r) (ty_ r) in
+          (* the witness and the typing of the predicate, transported from the uniform rendering *)
+          let wit_lit = if trivial then wit else Printf.sprintf "((eq_sym_i %s %s %s) (fun hl__u hl__v => hl__u %s = 1) %s)" pred (u pf) coh_pred (u t) wit in
+          let typ_lit = if trivial then ty_ pf else Printf.sprintf "((eq_sym_i %s %s %s) (fun hl__u hl__v => hl__u :e 2 :^: %s) %s)" pred (u pf) coh_pred rcar (ty_ pf) in
+          let lem0 = Printf.sprintf "(u_tydef_rep %s %s (hl_subtype_nonempty_of %s %s %s %s %s) %s %s %s)" rcar pred rcar pred (u t) (ty_ t) wit_lit typ_lit (u r) (ty_ r) in
+          (* back to the uniform predicate in the conclusion hl_eq 2 (P r) (..) = 1 *)
+          let rep_abs = Printf.sprintf "(hl_subtype_rep %s %s (hl_subtype_abs %s %s %s))" rcar pred rcar pred (u r) in
+          let lem = if trivial then lem0 else Printf.sprintf "(%s (fun hl__u hl__v => hl_eq 2 (hl__u %s) (hl_eq %s %s %s) = 1) %s)" coh_pred (u r) rcar rep_abs (u r) lem0 in
           (* the theorem states P' r with P' the (possibly eta-expanded) predicate: beta step on the left *)
           let _, _, rhs_t = dest_eq n.concl in
           (match lhs with

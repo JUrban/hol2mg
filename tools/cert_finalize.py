@@ -53,9 +53,8 @@ by_hol = {i['source_name']: i for i in m['items']}
 # derivation failed): not proof_imported for the closure
 admitted_imports = set()
 for line in open(log):
-    m = re.search(r'admitted imports:((?: [A-Za-z_0-9\']+)+)', line)
-    if m: admitted_imports.update(m.group(1).split())
-for i in m['items'] if False else []: pass
+    mm = re.search(r'admitted imports:((?: [A-Za-z_0-9\']+)+)', line)
+    if mm: admitted_imports.update(mm.group(1).split())
 def checked(i): return base_ok and i.get('shard') in ok
 for i in m['items']:
     if i['name'] in admitted_imports and i.get('proof_imported'):
