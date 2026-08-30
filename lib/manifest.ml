@@ -23,6 +23,7 @@ type item = {
   literal_proved : bool;      (* the literal source fact is proved by a model theorem (§21.4), no admission remains *)
   proof_imported : bool;      (* the literal source fact is proved by an imported HOL Light proof (§22) *)
   proof_leaves : string list; (* named theorems the imported proof depends on (HOL names) *)
+  proof_error : string;       (* why an exported proof was not imported (empty when imported or not exported) *)
 }
 
 let json_of_item (i : item) : Yojson.Safe.t =
@@ -39,7 +40,7 @@ let json_of_item (i : item) : Yojson.Safe.t =
            ("statement", `String i.statement);
            ("literal", `String i.literal); ("cert_status", `String i.cert_status);
            ("cert_error", `String i.cert_error); ("bridge", `String i.bridge); ("literal_proved", `Bool i.literal_proved); ("proof_imported", `Bool i.proof_imported);
-           ("proof_leaves", `List (List.map (fun s -> `String s) i.proof_leaves)) ]
+           ("proof_leaves", `List (List.map (fun s -> `String s) i.proof_leaves)); ("proof_error", `String i.proof_error) ]
 
 let write_manifest file (header : (string * Yojson.Safe.t) list) (items : item list) =
   let items = List.sort (fun a b -> compare a.name b.name) items in

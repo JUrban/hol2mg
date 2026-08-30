@@ -200,7 +200,7 @@ let () =
         let shard = if src_file = "" then "misc" else shard_of_file src_file in
         let base = { Manifest.name = sanitize_thm_name th.name; source_name = th.name; aliases = th.aliases; hash = th.hash;
                      status = ""; shard; src_file; src_line; classes = []; bridges = []; notes = []; var_views = [];
-                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = ""; literal_proved = false; proof_imported = false; proof_leaves = [];
+                     error = ""; statement = ""; literal = ""; cert_status = "source_typed"; cert_error = ""; bridge = ""; literal_proved = false; proof_imported = false; proof_leaves = []; proof_error = "";
                      source = String.concat ", " (List.map Hol.string_of_tm th.seq.hyps) ^ (if th.seq.hyps = [] then "" else " |- ") ^ Hol.string_of_tm th.seq.concl } in
         let verbose = List.mem "--verbose" args in
         if verbose then (prerr_string (th.name ^ " "); flush stderr);
@@ -403,6 +403,7 @@ let () =
             List.iter (fun (i : Manifest.item) -> Hashtbl.replace mg_of_hol i.Manifest.source_name i.Manifest.name) items;
             let thm_name_fn h = (try Hashtbl.find mg_of_hol h with Not_found -> Elab.sanitize_var h) in
             let imported_tbl = Hashtbl.create 64 in
+            let import_err : (string, string) Hashtbl.t = Hashtbl.create 16 in
             Hashtbl.iter (fun t _ ->
               match Hashtbl.find_opt reg.Registry.types t with
               | Some te when te.Registry.t_arity = 0 && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native") && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native_nonempty") ->
@@ -522,8 +523,8 @@ let () =
                     | Some pr when (import_only = [] || List.mem i.Manifest.source_name import_only) && not (Hashtbl.mem declared ("hltu_" ^ i.Manifest.name)) ->
                         (match Hashtbl.find_opt thm_by_name i.Manifest.source_name with
                          | Some th -> (try Some (Proofimport.import an thm_name_fn pr th.seq)
-                                       with Proofimport.Import_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": " ^ m); None
-                                          | Failure m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": failure " ^ m); None)
+                                       with Proofimport.Import_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": " ^ m); Hashtbl.replace import_err i.Manifest.name m; None
+                                          | Failure m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": failure " ^ m); Hashtbl.replace import_err i.Manifest.name ("failure " ^ m); None)
                          | None -> None)
                     | _ -> None) in
                   (match imported with
@@ -561,7 +562,7 @@ let () =
               let i = if Hashtbl.mem lit_proved i.Manifest.name then { i with Manifest.literal_proved = true } else i in
               match Hashtbl.find_opt imported_tbl i.Manifest.name with
               | Some leaves -> { i with Manifest.proof_imported = true; proof_leaves = List.sort compare leaves }
-              | None -> i) items) in
+              | None -> (match Hashtbl.find_opt import_err i.Manifest.name with Some m -> { i with Manifest.proof_error = m } | None -> i)) items) in
       let manifest_file = (match opt "--manifest" with Some f -> f | None -> Filename.concat out_dir (profile ^ ".manifest.json")) in
       let header = [ ("schema", `Int 1); ("profile", `String profile); ("hol_light_commit", `String hol_commit);
                      ("auto_definitions", `List (List.map (fun ((ad : Elab.auto_def), (d : thm_record)) ->

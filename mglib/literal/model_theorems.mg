@@ -422,3 +422,14 @@ apply iffI.
   + assume Hx2. claim Hxn: x = - n. { exact (eq_trans_i x (hl_real_neg (hl_real_of_num n)) (- n) Hx2 (eq_trans_i (hl_real_neg (hl_real_of_num n)) (hl_real_neg n) (- n) (f_equal (fun u:set => hl_real_neg u) (hl_real_of_num n) n Hn1) (hl_real_neg_compat n HnR))). }
     exact (eq_trans_i (abs_SNo x) (abs_SNo (- n)) n (f_equal (fun u:set => abs_SNo u) x (- n) Hxn) (eq_trans_i (abs_SNo (- n)) (abs_SNo n) n (abs_SNo_minus n Sn) (nonneg_abs_SNo n Hn0'))).
 Qed.
+Theorem hlt_one_model : forall v :e 1, v = hl_one.
+let v. assume Hv. exact (cases_1 v Hv (fun u => u = hl_one) (fun q H => H)).
+Qed.
+Theorem hlt_one_DEF_model : hl_one = hl_select 1 (fun x :e 1 => if True then 1 else 0).
+claim HP: (fun x :e 1 => if True then 1 else 0) :e 2 :^: 1.
+{ claim H2: (if True then 1 else 0) :e 2. { rewrite (If_i_1 True 1 0 (fun p:prop => fun H:p => H)). exact In_1_2. }
+  exact (lam_Pi 1 (fun _ => 2) (fun x => if True then 1 else 0) (fun x Hx => H2)). }
+claim Hs: hl_select 1 (fun x :e 1 => if True then 1 else 0) :e 1.
+{ exact (setexp_ap (2 :^: 1) 1 (hl_select 1) (hl_select_in 1 one_nonempty) (fun x :e 1 => if True then 1 else 0) HP). }
+exact (cases_1 (hl_select 1 (fun x :e 1 => if True then 1 else 0)) Hs (fun u => hl_one = u) (fun q H => H)).
+Qed.

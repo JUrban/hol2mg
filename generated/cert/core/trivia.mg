@@ -75,23 +75,25 @@ Admitted.
 
 // HOL Light: trivia.ml:57 / one_DEF   (hash md5:e2591fc32bec2328753ba82d3aeb61dd)
 Theorem hlt_one_DEF : hl_one = hl_select 1 (fun x :e 1 => if True then 1 else 0).
-Admitted.
+exact hlt_one_DEF_model.
+Qed.
 Theorem one_DEF_bridge : (hl_one = hl_select 1 (fun x :e 1 => if True then 1 else 0)) -> (0 = choose_in 1 (fun x:set => True)).
 exact (fun H__top => ((imp_eq (hl_one) (0) (hl_select 1 (fun x :e 1 => if True then 1 else 0)) (choose_in 1 (fun x:set => True)) ((hl_one_compat)) (eq_trans_i (hl_select 1 (fun x :e 1 => if True then 1 else 0)) (choose_in 1 (fun hl__x:set => (fun x :e 1 => if True then 1 else 0) hl__x = 1)) (choose_in 1 (fun x:set => True)) (hl_select_eq (1) (fun x :e 1 => if True then 1 else 0) (lam_Pi (1) (fun _ => 2) (fun x => if True then 1 else 0) (fun x Hx => (If_in_2 (True))))) (choose_in_ext (1) (fun hl__x:set => (fun x :e 1 => if True then 1 else 0) hl__x = 1) (fun x:set => True) (fun x Hx => (iff_eq1_l ((fun x :e 1 => if True then 1 else 0) x) (if True then 1 else 0) (beta (1) (fun x:set => (if True then 1 else 0)) x Hx) (True) (iff_trans ((if True then 1 else 0) = 1) (True) (True) (If_1_iff (True)) (iffI (True) (True) (imp_refl True) (imp_refl True)))))))) H__top)).
 Qed.
 Theorem one_DEF : 0 = choose_in 1 (fun x:set => True).
 exact (one_DEF_bridge hlt_one_DEF).
-Admitted.
+Qed.
 
 // HOL Light: trivia.ml:60 / one   (hash md5:8221571543fa874800f76ce863e0cf84)
 Theorem hlt_one : forall v :e 1, v = hl_one.
-Admitted.
+exact hlt_one_model.
+Qed.
 Theorem one_bridge : (forall v :e 1, v = hl_one) -> (forall v :e 1, v = 0).
 exact (fun H__top => ((imp_forall_in (1) (fun v => v = hl_one) (fun v => v = 0) (fun v Hv => (imp_eq (v) (v) (hl_one) (0) (fun q H => H) ((hl_one_compat))))) H__top)).
 Qed.
 Theorem one : forall v :e 1, v = 0.
 exact (one_bridge hlt_one).
-Admitted.
+Qed.
 
 // HOL Light: trivia.ml:67 / one_axiom   (hash md5:1d5dc2e3ae749e7020d13e448211d911)
 Theorem hlt_one_axiom : forall A:set, A <> Empty -> forall f g :e 1 :^: A, f = g.
