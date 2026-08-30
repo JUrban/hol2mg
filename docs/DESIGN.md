@@ -1482,3 +1482,13 @@ is larger than the claim.
    definitional theorems with enormous recorded proofs (`is_int`, 162 111 inferences, now a model
    theorem).  Next: cap 2 000 (1 683 theorems) and forced export of the large leaves
    (`int_add_th`, `MONOIDAL_ADD`, `MONOIDAL_REAL_ADD`, `IN_ELIM_THM`, `int_sgn_th`).
+
+**Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
+ranks the admitted leaves by the number of transport-checked theorems they transitively
+block from `fully_proved`, classifying each as `not_exported` (above the exporter's cap),
+`import_failed`, `shard_failed` or `blocked` (its own leaves unresolved); `--force N`
+prints the best `not_exported` leaves as a `FORCE=` list for `tools/proof_pilot.sh`.  On
+the cap-1 000 run the top blockers were all above the cap: `EQ_CLAUSES` (301 theorems),
+`is_int` (298, since turned into a model theorem), `EXCLUDED_MIDDLE` (225),
+`REAL_NEG_NEG` (151), `REAL_EQ_NEG2` (123), `int_mul_th` (112), `int_add_th` (94),
+`real_pow` (94), `BIT0_DEF` (93), `LE` (92), `IN_ELIM_THM` (73).
