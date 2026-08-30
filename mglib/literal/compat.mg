@@ -7193,3 +7193,71 @@ let X. apply set_ext.
 - let z. assume Hz. apply (ReplE_impred X (fun x => x) z Hz). let x. assume Hx Hzx. exact ((eq_sym_i z x Hzx) (fun hl__u hl__v => hl__u :e X) Hx).
 - let z. assume Hz. exact (ReplI X (fun x => x) z Hz).
 Qed.
+// ---- transport of a relation along a literal equation (paired abstractions) ----
+Theorem pw_tr_fun : forall D F G:set, forall N:set -> set, F = G -> (forall x :e D, G x = N x) -> forall x :e D, F x = N x.
+let D F G N. assume Heq H. let x. assume Hx. exact (eq_trans_i (F x) (G x) (N x) (f_equal (fun u => u x) F G Heq) (H x Hx)).
+Qed.
+Theorem pw_tr_pred : forall D F G:set, forall N:set -> prop, F = G -> (forall x :e D, G x = 1 <-> N x) -> forall x :e D, F x = 1 <-> N x.
+let D F G N. assume Heq H. let x. assume Hx. exact (iff_eq1_l (F x) (G x) (f_equal (fun u => u x) F G Heq) (N x) (H x Hx)).
+Qed.
+Theorem rep_tr : forall A F G N:set, F = G -> hl_rep A G = N -> hl_rep A F = N.
+let A F G N. assume Heq H. exact (eq_trans_i (hl_rep A F) (hl_rep A G) N (f_equal (fun u => hl_rep A u) F G Heq) H).
+Qed.
+// ---- quantifiers over an arbitrary literal predicate, pointwise related to a native one ----
+Theorem hl_forall_pw : forall A:set, forall P :e 2 :^: A, forall N:set -> prop, (forall x :e A, P x = 1 <-> N x) -> (hl_forall A P = 1 <-> forall x :e A, N x).
+let A P. assume HP. let N. assume H. apply iffI.
+- assume H1. let x. assume Hx. exact (iffEL (P x = 1) (N x) (H x Hx) (iffEL (hl_forall A P = 1) (forall x :e A, P x = 1) (hl_forall_eq1 A P HP) H1 x Hx)).
+- assume H1. exact (iffER (hl_forall A P = 1) (forall x :e A, P x = 1) (hl_forall_eq1 A P HP) (fun x Hx => iffER (P x = 1) (N x) (H x Hx) (H1 x Hx))).
+Qed.
+Theorem hl_exists_pw : forall A:set, forall P :e 2 :^: A, forall N:set -> prop, (forall x :e A, P x = 1 <-> N x) -> (hl_exists A P = 1 <-> exists x :e A, N x).
+let A P. assume HP. let N. assume H. apply iffI.
+- assume H1. apply (iffEL (hl_exists A P = 1) (exists x :e A, P x = 1) (hl_exists_eq1 A P HP) H1). let x. assume Hx0. apply Hx0. assume Hx H2. witness x. apply andI. exact Hx. exact (iffEL (P x = 1) (N x) (H x Hx) H2).
+- assume H1. apply (iffER (hl_exists A P = 1) (exists x :e A, P x = 1) (hl_exists_eq1 A P HP)). apply H1. let x. assume Hx0. apply Hx0. assume Hx H2. witness x. apply andI. exact Hx. exact (iffER (P x = 1) (N x) (H x Hx) H2).
+Qed.
+Theorem gabs_pair_eq : forall A B C:set, A <> Empty -> B <> Empty -> forall T:set -> set -> set, (forall x :e A, forall y :e B, T x y :e C) -> hl_GABS (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) = (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)).
+let A B C. assume HA HB. let T. assume HT.
+claim HF: forall p :e A :*: B, hl_FST A B p :e A.
+{ let p. assume Hp. exact ((eq_sym_i (hl_FST A B p) (p 0) (hl_FST_compat A B HA HB p Hp)) (fun u v => u :e A) (ap0_Sigma A (fun _ => B) p Hp)). }
+claim HS: forall p :e A :*: B, hl_SND A B p :e B.
+{ let p. assume Hp. exact ((eq_sym_i (hl_SND A B p) (p 1) (hl_SND_compat A B HA HB p Hp)) (fun u v => u :e B) (ap1_Sigma A (fun _ => B) p Hp)). }
+claim Hg: (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) :e (C :^: (A :*: B)).
+{ exact (lam_Pi (A :*: B) (fun _ => C) (fun p => T (hl_FST A B p) (hl_SND A B p)) (fun p Hp => HT (hl_FST A B p) (HF p Hp) (hl_SND A B p) (HS p Hp))). }
+claim HP: (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) :e 2 :^: (C :^: (A :*: B)).
+{ exact (lam_Pi (C :^: (A :*: B)) (fun _ => 2) (fun f => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) (fun f Hf => (If_i_or (forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1) 1 0) ((if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) :e 2) (fun H1 => (eq_sym_i (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) 1 H1) (fun u v => u :e 2) In_1_2) (fun H0 => (eq_sym_i (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) 0 H0) (fun u v => u :e 2) In_0_2))). }
+claim Hpair: forall x :e A, forall y :e B, hl_pair A B x y :e A :*: B.
+{ let x. assume Hx. let y. assume Hy. rewrite (hl_pair_ap A B x Hx y Hy). exact (tuple_2_setprod A B x Hx y Hy). }
+claim Hgeq: forall a b :e C, hl_GEQ C a b = 1 -> a = b.
+{ let a. assume Ha. let b. assume Hb. assume H. exact ((xm (a = b)) (a = b) (fun H2 => H2) (fun Hn => (neq_1_0 (eq_trans_i 1 (if a = b then 1 else 0) 0 (eq_sym_i (if a = b then 1 else 0) 1 (eq_trans_i (if a = b then 1 else 0) (hl_GEQ C a b) 1 (eq_sym_i (hl_GEQ C a b) (if a = b then 1 else 0) (hl_GEQ_unfold C a Ha b Hb)) H)) (If_i_0 (a = b) 1 0 Hn))) (a = b))). }
+claim Hsat: forall f :e (C :^: (A :*: B)), (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f = 1 -> forall x :e A, forall y :e B, f (hl_pair A B x y) = T x y.
+{ let f. assume Hf H1.
+  claim Hif1: (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) = 1.
+  { exact (eq_trans_i (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) ((fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f) 1 (eq_sym_i ((fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f) (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) (beta (C :^: (A :*: B)) (fun f => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f Hf)) H1). }
+  claim Hc: forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1.
+  { exact ((xm (forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1)) (forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1) (fun H2 => H2) (fun Hn => (neq_1_0 (eq_trans_i 1 (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) 0 (eq_sym_i (if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) 1 Hif1) (If_i_0 (forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1) 1 0 Hn))) (forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1))). }
+  let x. assume Hx. let y. assume Hy.
+  exact (Hgeq (f (hl_pair A B x y)) (setexp_ap (A :*: B) C f Hf (hl_pair A B x y) (Hpair x Hx y Hy)) (T x y) (HT x Hx y Hy) (Hc x Hx y Hy)). }
+claim Hgood: (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) = 1.
+{ rewrite (beta (C :^: (A :*: B)) (fun f => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) Hg). apply (If_i_1 (forall x :e A, forall y :e B, hl_GEQ C ((fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) (hl_pair A B x y)) (T x y) = 1) 1 0).
+  let x. assume Hx. let y. assume Hy.
+  claim Hfst: hl_FST A B (hl_pair A B x y) = x.
+  { exact (eq_trans_i (hl_FST A B (hl_pair A B x y)) ((hl_pair A B x y) 0) x (hl_FST_compat A B HA HB (hl_pair A B x y) (Hpair x Hx y Hy)) (eq_trans_i ((hl_pair A B x y) 0) ((x,y) 0) x (f_equal (fun u => u 0) (hl_pair A B x y) (x,y) (hl_pair_ap A B x Hx y Hy)) (tuple_2_0_eq x y))). }
+  claim Hsnd: hl_SND A B (hl_pair A B x y) = y.
+  { exact (eq_trans_i (hl_SND A B (hl_pair A B x y)) ((hl_pair A B x y) 1) y (hl_SND_compat A B HA HB (hl_pair A B x y) (Hpair x Hx y Hy)) (eq_trans_i ((hl_pair A B x y) 1) ((x,y) 1) y (f_equal (fun u => u 1) (hl_pair A B x y) (x,y) (hl_pair_ap A B x Hx y Hy)) (tuple_2_1_eq x y))). }
+  claim Hgxy: (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) (hl_pair A B x y) = T x y.
+  { exact (eq_trans_i ((fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) (hl_pair A B x y)) (T (hl_FST A B (hl_pair A B x y)) (hl_SND A B (hl_pair A B x y))) (T x y) (beta (A :*: B) (fun p => T (hl_FST A B p) (hl_SND A B p)) (hl_pair A B x y) (Hpair x Hx y Hy)) (f_equal2 T (hl_FST A B (hl_pair A B x y)) x (hl_SND A B (hl_pair A B x y)) y Hfst Hsnd)). }
+  rewrite Hgxy. rewrite (hl_GEQ_unfold C (T x y) (HT x Hx y Hy) (T x y) (HT x Hx y Hy)). exact (If_i_1 (T x y = T x y) 1 0 (fun q H => H)). }
+claim Huniq: forall f :e (C :^: (A :*: B)), (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f = 1 -> f = (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)).
+{ let f. assume Hf Hf1. apply (Pi_ext (A :*: B) (fun _ => C) f Hf (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) Hg). let p. assume Hp.
+  claim Hp0: p 0 :e A. { exact (ap0_Sigma A (fun _ => B) p Hp). }
+  claim Hp1: p 1 :e B. { exact (ap1_Sigma A (fun _ => B) p Hp). }
+  claim Hpe: p = hl_pair A B (p 0) (p 1).
+  { exact (eq_trans_i p (p 0, p 1) (hl_pair A B (p 0) (p 1)) (eq_sym_i (p 0, p 1) p (tuple_Sigma_eta A (fun _ => B) p Hp)) (eq_sym_i (hl_pair A B (p 0) (p 1)) (p 0, p 1) (hl_pair_ap A B (p 0) Hp0 (p 1) Hp1))). }
+  claim Hfp: f p = T (p 0) (p 1).
+  { exact (eq_trans_i (f p) (f (hl_pair A B (p 0) (p 1))) (T (p 0) (p 1)) (f_equal (fun u => f u) p (hl_pair A B (p 0) (p 1)) Hpe) (Hsat f Hf Hf1 (p 0) Hp0 (p 1) Hp1)). }
+  claim Hgp: (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) p = T (p 0) (p 1).
+  { exact (eq_trans_i ((fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) p) (T (hl_FST A B p) (hl_SND A B p)) (T (p 0) (p 1)) (beta (A :*: B) (fun p => T (hl_FST A B p) (hl_SND A B p)) p Hp) (f_equal2 T (hl_FST A B p) (p 0) (hl_SND A B p) (p 1) (hl_FST_compat A B HA HB p Hp) (hl_SND_compat A B HA HB p Hp))). }
+  exact (eq_trans_i (f p) (T (p 0) (p 1)) ((fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) p) Hfp (eq_sym_i ((fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) p) (T (p 0) (p 1)) Hgp)). }
+claim Hsel: hl_GABS (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) = choose_in (C :^: (A :*: B)) (fun f => (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f = 1).
+{ exact (eq_trans_i (hl_GABS (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0)) (hl_select (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0)) (choose_in (C :^: (A :*: B)) (fun f => (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f = 1)) (hl_GABS_unfold (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) HP) (hl_select_eq (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) HP)). }
+exact (eq_trans_i (hl_GABS (C :^: (A :*: B)) (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0)) (choose_in (C :^: (A :*: B)) (fun f => (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f = 1)) (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) Hsel (choose_in_unique (C :^: (A :*: B)) (fun f => (fun f :e (C :^: (A :*: B)) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (T x y) = 1 then 1 else 0) f = 1) (fun p :e A :*: B => T (hl_FST A B p) (hl_SND A B p)) Hg Hgood Huniq)).
+Qed.

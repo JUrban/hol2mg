@@ -653,6 +653,55 @@ let open_lam g x xty body =
     E.release g.nctx n; g.lctx.L.used <- List.filter (( <> ) n) g.lctx.L.used in
   (n, body', xview, cleanup)
 
+(* paired abstraction GABS (\f. !x y. GEQ (f (x,y)) t): the eliminated lambda \p. t[x := FST p, y := SND p]
+   (exactly as the elaborator builds it), the curried body \x y. t and the component types *)
+let gabs_elim g (t : tm) : (tm * tm * ty * ty * ty) option =
+  match head_and_args t with
+  | Const ("GABS", _), Lam (f, fty, body) :: _ ->
+      let fn = E.fresh g.nctx f in
+      let fv = Free (fn, fty) in
+      let body = open_with fv body in
+      let rec strip acc t = (match t with
+        | App (Const ("!", _), Lam (x, ty, b)) -> let n = E.fresh g.nctx x in strip ((n, ty) :: acc) (open_with (Free (n, ty)) b)
+        | _ -> (List.rev acc, t)) in
+      let xs, inner = strip [] body in
+      let r = (match xs, inner with
+        | [ (x, tx); (y, ty) ], App (App (Const ("GEQ", _), App (fv', App (App (Const (",", _), Free (x', _)), Free (y', _)))), rhs)
+          when fv' = fv && x' = x && y' = y ->
+            let pty = TyApp ("prod", [ tx; ty ]) in
+            let pn = E.fresh g.nctx "p" in
+            let p = Free (pn, pty) in
+            let fst_ = App (Const ("FST", fun_ty pty tx), p) and snd_ = App (Const ("SND", fun_ty pty ty), p) in
+            let rhs' = replace_free (y, ty) snd_ 0 (replace_free (x, tx) fst_ 0 rhs) in
+            let lam = Lam (pn, pty, abstract_free (pn, pty) 0 rhs') in
+            let body2 = Lam (x, tx, abstract_free (x, tx) 0 (Lam (y, ty, abstract_free (y, ty) 0 rhs))) in
+            E.release g.nctx pn;
+            Some (lam, body2, tx, ty, type_of [] rhs)
+        | _ -> None) in
+      List.iter (fun (n, _) -> E.release g.nctx n) xs; E.release g.nctx fn;
+      r
+  | _ -> None
+
+(* typing of the curried body of a paired abstraction under its two binders:
+   (fun x Hx y Hy => lit t :e C) and the meta-lambda (fun x y => lit t) *)
+let gabs_body_typing g (body2 : tm) : string * string =
+  match body2 with
+  | Lam (x, tx, Lam (y, ty, _)) ->
+      let n1, key1, b1 = open_lit g x tx (match body2 with Lam (_, _, b) -> b | _ -> assert false) in
+      g.vars <- (key1, { vty = tx; view = E.VSet (L.carrier g.lctx tx); lit = Mg.Var n1; nat = None; mem = "H" ^ n1; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
+      (match b1 with
+       | Lam (_, _, b) ->
+           let n2, key2, b2 = open_lit g y ty b in
+           g.vars <- (key2, { vty = ty; view = E.VSet (L.carrier g.lctx ty); lit = Mg.Var n2; nat = None; mem = "H" ^ n2; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
+           let r = (try
+             let inner = typ g b2 in
+             let lb = lterm g b2 in
+             (Printf.sprintf "(fun %s H%s %s H%s => %s)" n1 n1 n2 n2 inner, Printf.sprintf "(fun %s:set => fun %s:set => %s)" n1 n2 (pp lb))
+             with e -> close_lit g key2 n2; close_lit g key1 n1; raise e) in
+           close_lit g key2 n2; close_lit g key1 n1; r
+       | _ -> close_lit g key1 n1; unsupported "gabs: body shape")
+  | _ -> unsupported "gabs: body shape"
+
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
   let nat, nview = E.elab_nat g.nctx t want in
@@ -802,6 +851,33 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   else Printf.sprintf "(fun hl__y Hhl__y => (%s %s %s hl__y Hhl__y))" v.rel (ppp lx) (typ g x) in
                 (lit, nat, KPW b, pw)
             | _ -> unsupported "rel: variable application with this view/arity")
+       | Const ("GABS", _), _ when (match args with Lam _ :: _ -> true | _ -> false) ->
+           (* paired abstraction: relate the eliminated lambda (applied to the remaining arguments)
+              and transport the relation along hl_GABS D P = fun p :e A :*: B => T (FST p) (SND p) *)
+           (match gabs_elim g t with
+            | None -> unsupported "rel: GABS not in paired-abstraction form"
+            | Some (lam, body2, tx, ty, tc) ->
+                let rest = List.tl args in
+                let t' = List.fold_left (fun f a -> App (f, a)) lam rest in
+                let lit', nat', k', pf' = rel g t' (Some nview) in
+                let ca = L.carrier g.lctx tx and cb = L.carrier g.lctx ty and cc = L.carrier g.lctx tc in
+                let ht, tl = gabs_body_typing g body2 in
+                let gabs_lit = lterm g (App (h, List.hd args)) and lam_lit = lterm g lam in
+                let heq = ref (Printf.sprintf "(gabs_pair_eq %s %s %s %s %s %s %s)" (ppp ca) (ppp cb) (ppp cc) (nonempty_pf g tx) (nonempty_pf g ty) tl ht) in
+                let cl = ref gabs_lit and cr = ref lam_lit in
+                List.iter (fun q ->
+                  let lq = lterm g q in
+                  heq := Printf.sprintf "(f_equal (fun hl__u => hl__u %s) %s %s %s)" (ppp lq) (ppp !cl) (ppp !cr) !heq;
+                  cl := Mg.App (!cl, lq); cr := Mg.App (!cr, lq)) rest;
+                let nm1 = (match nat' with Mg.Lam _ -> ppp nat' | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp nat')) in
+                let pf = (match k' with
+                  | KEq -> Printf.sprintf "(eq_trans_i %s %s %s %s %s)" (ppp lit) (ppp lit') (ppp nat') !heq (if pf' = "" then refl else pf')
+                  | KIff -> Printf.sprintf "(iff_eq1_l %s %s %s %s %s)" (ppp lit) (ppp lit') !heq (ppp nat') (if pf' = "" then Printf.sprintf "(iff_refl %s)" (ppp (L.mg_eq lit' L.one)) else pf')
+                  | KPW d -> Printf.sprintf "(pw_tr_fun %s %s %s %s %s %s)" (ppp d) (ppp lit) (ppp lit') nm1 !heq (if pf' = "" then "(fun hl__x Hhl__x => (fun q H => H))" else pf')
+                  | KPWP d -> Printf.sprintf "(pw_tr_pred %s %s %s %s %s %s)" (ppp d) (ppp lit) (ppp lit') nm1 !heq (if pf' = "" then Printf.sprintf "(fun hl__x Hhl__x => iff_refl (%s hl__x = 1))" (ppp lit') else pf')
+                  | KRep a -> Printf.sprintf "(rep_tr %s %s %s %s %s %s)" (ppp a) (ppp lit) (ppp lit') (ppp nat') !heq (if pf' = "" then refl else pf')
+                  | _ -> unsupported "rel: GABS relation kind") in
+                (lit, nat', k', pf))
        | Const (c, cty), _ ->
            (match c with
             | "T" | "F" | "~" | "/\\" | "\\/" | "==>" | "=" | "!" | "?" | "COND" when L.is_logical t ->
@@ -1687,6 +1763,21 @@ and bridge g (dir : dir) (t : tm) : string =
       (match dir with
        | Fwd -> Printf.sprintf "(imp_not %s %s %s)" la na (bridge g Bwd a)
        | Bwd -> Printf.sprintf "(imp_not %s %s %s)" na la (bridge g Fwd a))
+  | Const (("!" | "?") as q, _), [ p ] when (match p with Lam _ -> false | App (Const ("GABS", _), _) -> true | _ -> false) ->
+      (* a quantifier over a paired abstraction: the predicate is related pointwise (rel, metapred
+         view) and the quantifier transported by hl_forall_pw / hl_exists_pw *)
+      let d, _ = dest_fun_ty (type_of [] p) in
+      let cd = L.carrier g.lctx d in
+      let lp, np, kp, pw = rel g p (Some (E.VMetaPred [ cd ])) in
+      (match kp with KPWP _ -> () | _ -> unsupported "bridge: quantifier over a non-lambda predicate (relation kind)");
+      let pw = if pw = "" then Printf.sprintf "(fun hl__x Hhl__x => iff_refl (%s hl__x = 1))" (ppp lp) else pw in
+      let nm = (match np with Mg.Lam _ -> ppp np | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp np)) in
+      let lemma = if q = "!" then "hl_forall_pw" else "hl_exists_pw" in
+      let iff = Printf.sprintf "(%s %s %s %s %s %s)" lemma (ppp cd) (ppp lp) (typ g p) nm pw in
+      let la = paren (ltext g t) and na = paren (ntext g t) in
+      (match dir with
+       | Fwd -> Printf.sprintf "(iffEL %s %s %s)" la na iff
+       | Bwd -> Printf.sprintf "(iffER %s %s %s)" la na iff)
   | Const ("?!", _), [ p ] ->
       (* ?!x. P x is bridged through its expansion ?x. P x /\ !y. P y ==> y = x (exactly as the
          elaborator renders it); the literal constant hl_exists_unique is related to that expansion

@@ -443,7 +443,8 @@ source: !t:A#B->C. (\p:A#B. t p) = GABS (\f:A#B->C. !x:A. !y:B. GEQ (f (x , y)) 
 status: generalization_required
 statement: forall A B C:set, C <> Empty -> forall t:set -> set, (forall x :e A :*: B, t x :e C) -> forall p :e A :*: B, t p = t (p 0,p 1)
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall t :e C :^: (A :*: B), (fun p :e A :*: B => t p) = hl_GABS (C :^: (A :*: B)) (fun f :e C :^: (A :*: B) => if forall x :e A, forall y :e B, hl_GEQ C (f (hl_pair A B x y)) (t (hl_pair A B x y)) = 1 then 1 else 0)
-cert_status: bridge_unsupported
+bridge: LAMBDA_PAIR_THM_bridge
+cert_status: transport_checked
 
 ### CURRY_DEF   [products]
 hash: cede113a4abd362ecff19b551d8931ed
@@ -484,7 +485,8 @@ source: !P:A->B->bool. ! (GABS (\f:A#B->bool. !x:A. !y:B. GEQ (f (x , y)) (P x y
 status: generalization_required
 statement: forall A B:set, forall P:set -> set -> prop, (forall x :e A :*: B, P (x 0) (x 1)) <-> forall x :e A, forall y :e B, P x y
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: B :^: A, hl_forall (A :*: B) (hl_GABS (2 :^: (A :*: B)) (fun f :e 2 :^: (A :*: B) => if forall x :e A, forall y :e B, hl_GEQ 2 (f (hl_pair A B x y)) (P x y) = 1 then 1 else 0)) = 1 <-> forall x :e A, forall y :e B, P x y = 1
-cert_status: bridge_unsupported
+bridge: FORALL_PAIRED_THM_bridge
+cert_status: transport_checked
 
 ### NOT_SUC   [naturals: constructors, induction, arithmetic, order, division]
 hash: 08c916fb9a846af5b7a22a1e10f97142
