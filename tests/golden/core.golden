@@ -276,7 +276,8 @@ source: !b:bool. !f:A->B. !g:A->B. (\x:A. if b then f x else g x) = (if b then f
 status: generalization_required
 statement: forall A B:set, forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, (if b then f x else g x) = if b then f x else g x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f g :e B :^: A, (fun x :e A => hl_COND B b (f x) (g x)) = hl_COND (B :^: A) b f g
-cert_status: bridge_unsupported
+bridge: COND_ABS_bridge
+cert_status: transport_checked
 
 ### COND_RAND   [choice, conditionals, Booleans as data]
 hash: abd733d2ca6bac4ed355d508eb6d38ff

@@ -1367,7 +1367,7 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                              let redex = Mg.App (br, nx) in
                              let ctx = replace_tm redex (Mg.Var "hl__u") der in
                              ignore side;
-                             (replace_tm redex red der, Printf.sprintf "(%s (fun hl__u hl__v => %s = hl__u) %s)" pe (ppp lit) pf)) (derived0, pf0) [ (f, "l"); (gg, "r") ] in
+                             (replace_tm redex red der, Printf.sprintf "(%s (fun hl__u hl__v => %s = %s) %s)" pe (ppp lit) (pp ctx) pf)) (derived0, pf0) [ (f, "l"); (gg, "r") ] in
                      ignore derived0;
                      if not (alpha_eq derived nat) then unsupported "rel: conditional application derived %s differs from %s" (pp derived) (pp nat);
                      (lit, nat, KEq, pf)
