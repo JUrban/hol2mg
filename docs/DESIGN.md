@@ -1316,6 +1316,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (l) | 2697 / 2697 | 2428 / 2685 public (39 literal_proved; proof-import pilot, cap 1 000, not committed: 236 fully_proved) | 435 (+ 26 carrier lemmas, 162 bridge-library lemmas, 42 model theorems, 48 uniform-layer lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (m) | 2697 / 2697 | 2455 / 2685 public (42 literal_proved; pilot round 4, cap 2 000 + forced leaves, 21/23 shards: 390 fully_proved) | 446 (+ 26 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (n) | 2697 / 2697 | 2528 / 2685 public (42 literal_proved; every public theorem has a literal statement; pilot round 4: 390 fully_proved) | 446 + 22 stage-2 (+ 26 + 15 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (o) | 2697 / 2697 | 2544 / 2685 public (42 literal_proved; pilot round 4: 390 fully_proved) | 446 + 24 stage-2 (+ 26 + 15 carrier lemmas, 167 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1423,6 +1424,16 @@ theorems are inherent to the index-range characterisation of `$`/`finite_index` 
 conditions without hypotheses: the second conjuncts of the `_tybij` theorems, `*_IMAGE` over
 `1..n`, `CART_EQ_FULL`, `FINITE_INDEX_INRANGE*`, `LAMBDA_ETA`), `CARD_CART_UNIV` (finiteness of
 a function space) and `PCROSS_INTERS/UNIONS_INTERS` (coercion).
+
+After the slice (commits `2103d39` … `76df229`, 2 528 → **2 544**): a set function related
+pointwise to a meta function used as a value (`fun_value_of_pw`: `EXISTS/FORALL_UNPAIR_FUN_THM`),
+predicate constants used as subsets (`EXTENSIONAL s`: eta-expansion, `rep_of_pw`, the `KPWP` →
+subset coercion; 5 theorems), subset-valued constants over-applied as predicates (`(x INSERT s)
+y`: `rep_mem_iff`; `INSERT_DEF`, `SET_CASES`, `EMPTY`) and beta steps in over-applied
+conditionals (`COND_ABS`).  The 141 remaining `bridge_unsupported` public theorems are a long
+tail: `CARD`/`sup`/`inf` side conditions without hypotheses (18), `IMAGE` over `Power` (9),
+nested subset arguments (4), `MAP2`/`ITSET`/`ASSOC` conditional compat (9), 3-ary binders (5),
+the index-range cases of cart.ml (20), definitional theorems of `iterate` (3), and singletons.
 
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 
