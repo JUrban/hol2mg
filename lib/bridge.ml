@@ -502,12 +502,26 @@ and compat_statement_nested (an : L.analysis) (e : R.const_entry) : Mg.tm option
   | [ a ] -> compat_statement_of an e (subst_ty a (TyApp ("fun", [ TyVar a; TyApp ("bool", []) ])) e.R.c_scheme)
   | _ -> None
 
+(* the nested instance at one chosen type variable of a multi-parameter entry (IMAGE with a
+   subset-valued function: B := B -> bool), lemma <compat>_pow<k> with k the 1-based index *)
+and compat_statement_nested_at (an : L.analysis) (e : R.const_entry) (ks : int list) : Mg.tm option =
+  let tvs = L.tyvars_ordered e.R.c_scheme [] in
+  if ks = [] || List.exists (fun k -> k < 1 || k > List.length tvs) ks then None
+  else begin
+    let inst = List.map (fun k -> let a = List.nth tvs (k - 1) in (a, TyApp ("fun", [ TyVar a; TyApp ("bool", []) ]))) ks in
+    let scheme = List.fold_left (fun sc (a, sub) -> subst_ty a sub sc) e.R.c_scheme inst in
+    compat_statement_of_inst an e scheme inst
+  end
+
 and compat_statement_of (an : L.analysis) (e : R.const_entry) (scheme : ty) : Mg.tm option =
-  let tvs = L.tyvars_ordered scheme [] in
-  let tv_names = L.tyvar_params tvs in
-  let tv_inst = (match L.tyvars_ordered e.R.c_scheme [], tvs with
+  let tv_inst = (match L.tyvars_ordered e.R.c_scheme [], L.tyvars_ordered scheme [] with
     | [ a ], [ _ ] when scheme <> e.R.c_scheme -> [ (a, TyApp ("fun", [ TyVar a; TyApp ("bool", []) ])) ]
     | _ -> []) in
+  compat_statement_of_inst an e scheme tv_inst
+
+and compat_statement_of_inst (an : L.analysis) (e : R.const_entry) (scheme : ty) (tv_inst : (string * ty) list) : Mg.tm option =
+  let tvs = L.tyvars_ordered scheme [] in
+  let tv_names = L.tyvar_params tvs in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
   lctx.L.use_native_tydefs <- true;
   let doms, res = strip_fun_ty scheme in
@@ -527,13 +541,13 @@ and compat_statement_of (an : L.analysis) (e : R.const_entry) (scheme : ty) : Mg
            | _ -> (l, ca, `Bad, Mg.Var l))
       | R.RProp -> let p = L.fresh lctx ("p" ^ string_of_int (i + 1)) in (l, ca, `Prop p, Mg.Var p)
       | R.RMetaFun k ->
-          let k = (match k with Some k -> k | None -> E.fun_arity aty) in
+          let k = (match k with Some k -> k | None -> E.fun_arity (List.nth (fst (strip_fun_ty e.R.c_scheme)) i)) in
           (match k, aty with
            | 1, TyApp ("fun", [ a; cod ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun (f, L.carrier lctx a, nat_of_lit lctx cod (Mg.App (Mg.Var l, Mg.Var "x"))), Mg.Var f)
            | 2, TyApp ("fun", [ a; TyApp ("fun", [ b; _ ]) ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun2 (f, L.carrier lctx a, L.carrier lctx b), Mg.Var f)
            | _ -> (l, ca, `Bad, Mg.Var l))
       | R.RMetaPred k ->
-          let k = (match k with Some k -> k | None -> E.fun_arity aty) in
+          let k = (match k with Some k -> k | None -> E.fun_arity (List.nth (fst (strip_fun_ty e.R.c_scheme)) i)) in
           (match k, aty with
            | 1, TyApp ("fun", [ a; TyApp ("bool", []) ]) -> let p = L.fresh lctx ("P" ^ string_of_int (i + 1)) in (l, ca, `Pred (p, L.carrier lctx a, nat_of_lit lctx a (Mg.Var "x")), Mg.Var p)
            | 2, TyApp ("fun", [ a; TyApp ("fun", [ b; TyApp ("bool", []) ]) ]) -> let p = L.fresh lctx ("P" ^ string_of_int (i + 1)) in (l, ca, `Pred2 (p, L.carrier lctx a, L.carrier lctx b, nat_of_lit lctx a (Mg.Var "x"), nat_of_lit lctx b (Mg.Var "y")), Mg.Var p)
@@ -669,11 +683,11 @@ let compat_for g (e : R.const_entry) : string =
    | Some (_, st) -> unsupported "compat_missing: %s (%s)" name st
    | None -> unsupported "compat_missing: %s" name)
 
-let compat_for_nested g (e : R.const_entry) : string =
+let compat_for_nested ?(sfx = "") g (e : R.const_entry) : string =
   let idx = (match Hashtbl.find_opt g.nctx.E.reg.R.consts e.R.c_hol with
     | Some l -> (let rec find i = function [] -> 0 | x :: r -> if x == e then i else find (i + 1) r in find 0 l)
     | None -> 0) in
-  let name = compat_name e idx ^ "_pow" in
+  let name = compat_name e idx ^ "_pow" ^ sfx in
   (match Hashtbl.find_opt g.compat name with
    | Some (_, "ok") -> if not (List.mem name g.used_compat) then g.used_compat <- name :: g.used_compat; name
    | Some (_, st) -> unsupported "compat_missing: %s (%s)" name st
@@ -1678,12 +1692,28 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   (* a single type variable instantiated to a subset type: the nested instance (_pow lemma), whose
      carrier parameter is the inner carrier *)
   let nested = (match tvs with
-    | [ a ] -> (match List.assoc_opt a sub with Some (TyApp ("fun", [ x; TyApp ("bool", []) ])) -> Some (a, x) | _ -> None)
-    | _ -> None) in
-  let name = (match nested with Some _ -> compat_for_nested g e | None -> compat_for g e) in
+    | [ a ] -> (match List.assoc_opt a sub with Some (TyApp ("fun", [ x; TyApp ("bool", []) ])) -> Some ([ (a, x) ], "") | _ -> None)
+    | _ ->
+        (* a multi-parameter entry: the first type variable instantiated to a subset type whose
+           nested lemma <compat>_pow<k> exists (docs/DESIGN.md 21.4) *)
+        let idx0 = (match Hashtbl.find_opt g.nctx.E.reg.R.consts e.R.c_hol with
+          | Some l -> (let rec find i = function [] -> 0 | x :: r -> if x == e then i else find (i + 1) r in find 0 l) | None -> 0) in
+        let subs = List.filter_map (fun (k, a) ->
+          match List.assoc_opt a sub with
+          | Some (TyApp ("fun", [ x; TyApp ("bool", []) ])) -> Some (k, a, x)
+          | _ -> None) (List.mapi (fun i a -> (i + 1, a)) tvs) in
+        if subs = [] then None
+        else begin
+          let sfx = String.concat "" (List.map (fun (k, _, _) -> string_of_int k) subs) in
+          if Hashtbl.mem g.compat (compat_name e idx0 ^ "_pow" ^ sfx) then Some (List.map (fun (_, a, x) -> (a, x)) subs, sfx) else None
+        end) in
+  let name = (match nested with Some (_, sfx) -> compat_for_nested ~sfx g e | None -> compat_for g e) in
   (* carrier parameters of the compatibility lemma: one per type variable of the entry's scheme
-     (a type-specialised entry has none even when the literal constant is polymorphic) *)
-  let cs = (match nested with Some (_, x) -> [ (L.carrier g.lctx x, x) ] | None -> List.map (fun a -> let t = List.assoc a sub in (L.carrier g.lctx t, t)) tvs) in
+     (a type-specialised entry has none even when the literal constant is polymorphic); a
+     nested variable gets its inner carrier *)
+  let cs = (match nested with
+    | Some (axs, _) -> List.map (fun b -> match List.assoc_opt b axs with Some x -> (L.carrier g.lctx x, x) | None -> let t = List.assoc b sub in (L.carrier g.lctx t, t)) tvs
+    | None -> List.map (fun a -> let t = List.assoc a sub in (L.carrier g.lctx t, t)) tvs) in
   (* compat A.. HA.. l1 pf1 [f1 rel1] ... *)
   let doms, _ = strip_fun_ty cty in
   let parts = ref [ paren name ] in
@@ -1745,7 +1775,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         parts := paren pa :: ppp na :: typ g a :: ppp la :: !parts;
         tsub := (string_of_int (i + 1), na) :: !tsub
     | R.RMetaFun k ->
-        let k = (match k with Some k -> k | None -> E.fun_arity aty) in
+        (* the slot arity is fixed by the registry scheme (as in Elab and the compat statements) *)
+        let k = (match k with Some k -> k | None -> E.fun_arity (List.nth (fst (strip_fun_ty e.R.c_scheme)) i)) in
         if k = 1 then begin
           let d, cod = dest_fun_ty aty in
           let subset_cod = (match cod with TyApp ("fun", [ _; TyApp ("bool", []) ]) -> true | _ -> false) in
@@ -1766,7 +1797,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           tsub := (string_of_int (i + 1), na) :: !tsub
         end else unsupported "rel_mapped: metafun arity %d" k
     | R.RMetaPred k ->
-        let k = (match k with Some k -> k | None -> E.fun_arity aty) in
+        let k = (match k with Some k -> k | None -> E.fun_arity (List.nth (fst (strip_fun_ty e.R.c_scheme)) i)) in
         if k = 1 then begin
           let d, _ = dest_fun_ty aty in
           let la, na, ka, pa = rel g a (Some (E.VMetaPred [ L.carrier g.lctx d ])) in

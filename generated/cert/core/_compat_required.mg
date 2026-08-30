@@ -154,6 +154,14 @@ Admitted.
 Theorem hl_NULL_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_NULL A l1 = 1 <-> seq_len l1 = 0.
 Admitted.
 
+// IMAGE : (A->B)->(A->bool)->B->bool, nested at type variables 1 (not in compat.mg)
+Theorem hl_IMAGE_compat_pow1 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: (2 :^: A), forall f1:set -> set, (forall x :e 2 :^: A, l1 x = f1 x) -> forall l2 :e 2 :^: (2 :^: A), hl_rep B (hl_IMAGE (2 :^: A) B l1 l2) = {f1 x | x :e hl_rep2 A l2}.
+Admitted.
+
+// IMAGE : (A->B)->(A->bool)->B->bool, nested at type variables 1,2 (not in compat.mg)
+Theorem hl_IMAGE_compat_pow12 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: B :^: (2 :^: A), forall f1:set -> set, (forall x :e 2 :^: A, hl_rep B (l1 x) = f1 x) -> forall l2 :e 2 :^: (2 :^: A), hl_rep2 B (hl_IMAGE (2 :^: A) (2 :^: B) l1 l2) = {f1 x | x :e hl_rep2 A l2}.
+Admitted.
+
 // o : (B->bool)->(A->B)->A->bool (not in compat.mg)
 Theorem hl_o_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e 2 :^: B, forall P1:set -> prop, (forall x :e B, l1 x = 1 <-> P1 x) -> forall l2 :e B :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> forall x :e A, hl_o B 2 A l1 l2 x = 1 <-> P1 (f2 x).
 Admitted.

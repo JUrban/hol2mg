@@ -7348,3 +7348,19 @@ let p f g x. apply (xm p).
 - assume Hp. rewrite (If_i_1 p f g Hp). rewrite (If_i_1 p (f x) (g x) Hp). exact (fun q H => H).
 - assume Hn. rewrite (If_i_0 p f g Hn). rewrite (If_i_0 p (f x) (g x) Hn). exact (fun q H => H).
 Qed.
+// ---- IMAGE with a subset-valued function (nested at the codomain, docs/DESIGN.md 21.4) ----
+Theorem Repl_Repl : forall X:set, forall F G:set -> set, {G y | y :e {F x | x :e X}} = {G (F x) | x :e X}.
+let X F G. apply set_ext.
+- let z. assume Hz. apply (ReplE_impred {F x | x :e X} G z Hz). let y. assume Hy Hzy. apply (ReplE_impred X F y Hy). let x. assume Hx Hyx.
+  exact ((eq_sym_i z (G y) Hzy) (fun u v => u :e {G (F x) | x :e X}) ((eq_sym_i y (F x) Hyx) (fun u v => G u :e {G (F x) | x :e X}) (ReplI X (fun x => G (F x)) x Hx))).
+- let z. assume Hz. apply (ReplE_impred X (fun x => G (F x)) z Hz). let x. assume Hx Hzx.
+  exact ((eq_sym_i z (G (F x)) Hzx) (fun u v => u :e {G y | y :e {F x | x :e X}}) (ReplI {F x | x :e X} G (F x) (ReplI X F x Hx))).
+Qed.
+Theorem hl_IMAGE_compat_pow2 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: B :^: A, forall f1:set -> set, (forall x :e A, hl_rep B (l1 x) = f1 x) -> forall l2 :e 2 :^: A, hl_rep2 B (hl_IMAGE A (2 :^: B) l1 l2) = {f1 x | x :e hl_rep A l2}.
+let A B. assume HA HB. let l1. assume H1. let f1. assume Hf. let l2. assume H2.
+claim H2B: 2 :^: B <> Empty. { exact (setexp_nonempty B 2 two_nonempty). }
+claim Hrep: hl_rep (2 :^: B) (hl_IMAGE A (2 :^: B) l1 l2) = {l1 x | x :e hl_rep A l2}. { exact (hl_IMAGE_compat A (2 :^: B) HA H2B l1 H1 (fun x => l1 x) (fun x Hx => (fun q H => H)) l2 H2). }
+prove {hl_rep B u | u :e hl_rep (2 :^: B) (hl_IMAGE A (2 :^: B) l1 l2)} = {f1 x | x :e hl_rep A l2}.
+rewrite Hrep.
+exact (eq_trans_i {hl_rep B u | u :e {l1 x | x :e hl_rep A l2}} {hl_rep B (l1 x) | x :e hl_rep A l2} {f1 x | x :e hl_rep A l2} (Repl_Repl (hl_rep A l2) (fun x => l1 x) (fun u => hl_rep B u)) (Repl_ext_pw (hl_rep A l2) (fun x => hl_rep B (l1 x)) f1 (fun x Hx => Hf x (hl_rep_Subq A l2 x Hx)))).
+Qed.
