@@ -125,6 +125,9 @@ let rename_apart (p : proof) : proof * (string * ty, string) Hashtbl.t * (string
     | App (f, x) -> collect f; collect x
     | Lam (_, _, b) -> collect b
     | _ -> ()) in
+  (* the root's variables keep their names: seen first *)
+  let root = p.nodes.(p.root) in
+  List.iter collect root.hyps; collect root.concl;
   Array.iter (fun (n : pnode) -> List.iter collect n.hyps; collect n.concl; (match n.tm with Some t -> collect t | None -> ());
     List.iter (fun ((s, ty), t) -> collect (Free (s, ty)); collect t) n.theta_tm) p.nodes;
   let ren = Hashtbl.create 16 in
