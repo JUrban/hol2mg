@@ -445,6 +445,10 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
                | Some px, Some py -> Some (Printf.sprintf "(god1_setprod_finite %s %s %s %s)" (ppp x) (ppp y) px py)
                | _ -> None)
           | Mg.App (Mg.Cst "Power", x) -> Option.map (fun p -> Printf.sprintf "(god1_power_finite %s %s)" (ppp x) p) (sub x (depth + 1))
+          | Mg.App (Mg.App (Mg.Cst "setexp", b), a) ->
+              (match sub a (depth + 1), sub b (depth + 1) with
+               | Some pa, Some pb -> Some (Printf.sprintf "(setexp_finite %s %s %s %s)" (ppp a) (ppp b) pa pb)
+               | _ -> None)
           | Mg.App (Mg.Cst "seq_set", l) ->
               (match nat_var_mem g l with
                | Some (Mg.App (Mg.Cst "finseq", a), hl) -> Some (Printf.sprintf "(seq_set_finite %s %s %s)" (ppp a) (ppp l) hl)

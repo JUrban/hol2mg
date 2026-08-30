@@ -7698,3 +7698,30 @@ Qed.
 Theorem neq_Empty_Subq : forall S T:set, S c= T -> ~ S = Empty -> ~ T = Empty.
 let S T. assume HST H H2. apply H. apply (Empty_eq S). let x. assume Hx. exact (EmptyE x (H2 (fun hl__u hl__v => x :e hl__u) (HST x Hx))).
 Qed.
+
+// ---- finiteness of function spaces (injection of graphs into Power (A :*: B)) ----
+Theorem finite_of_inj : forall X Y:set, finite Y -> forall f:set -> set, (forall x :e X, f x :e Y) -> (forall x y :e X, f x = f y -> x = y) -> finite X.
+let X Y. assume HY. let f. assume Hf Hinj.
+claim HR: finite {f x | x :e X}.
+{ exact (Subq_finite Y HY {f x | x :e X} (fun z Hz => ReplE_impred X (fun x => f x) z Hz (z :e Y) (fun x Hx Hzx => (eq_sym_i z (f x) Hzx) (fun hl__u hl__v => hl__u :e Y) (Hf x Hx)))). }
+claim Hg: forall x :e X, choose_in X (fun x' => f x' = f x) = x.
+{ let x. assume Hx.
+  claim He: exists x' :e X, f x' = f x. { witness x. apply andI. exact Hx. exact (fun q H => H). }
+  apply (choose_in_spec X (fun x' => f x' = f x) He). assume H1 H2. exact (Hinj (choose_in X (fun x' => f x' = f x)) H1 x Hx H2). }
+claim HX: X c= {choose_in X (fun x' => f x' = y) | y :e {f x | x :e X}}.
+{ let x. assume Hx. exact ((Hg x Hx) (fun hl__u hl__v => hl__u :e {choose_in X (fun x' => f x' = y) | y :e {f x | x :e X}}) (ReplI {f x | x :e X} (fun y => choose_in X (fun x' => f x' = y)) (f x) (ReplI X (fun x => f x) x Hx))). }
+exact (Subq_finite {choose_in X (fun x' => f x' = y) | y :e {f x | x :e X}} (Repl_finite (fun y => choose_in X (fun x' => f x' = y)) {f x | x :e X} HR) X HX).
+Qed.
+Theorem setexp_finite : forall A B:set, finite A -> finite B -> finite (B :^: A).
+let A B. assume HA HB.
+apply (finite_of_inj (B :^: A) (Power (A :*: B)) (god1_power_finite (A :*: B) (god1_setprod_finite A B HA HB)) (fun f => {(x, f x) | x :e A})).
+- let f. assume Hf. prove {(x, f x) | x :e A} :e Power (A :*: B). apply (PowerI (A :*: B) {(x, f x) | x :e A}). let z. assume Hz. apply (ReplE_impred A (fun x => (x, f x)) z Hz). let x. assume Hx Hzx.
+  exact ((eq_sym_i z (x, f x) Hzx) (fun hl__u hl__v => hl__u :e A :*: B) (tuple_2_setprod A B x Hx (f x) (setexp_ap A B f Hf x Hx))).
+- let f. assume Hf. let g. assume Hg. prove {(x, f x) | x :e A} = {(x, g x) | x :e A} -> f = g. assume Hfg.
+  apply (Pi_ext A (fun _ => B) f Hf g Hg). let x. assume Hx.
+  claim Hin: (x, f x) :e {(x, g x) | x :e A}. { exact (Hfg (fun hl__u hl__v => (x, f x) :e hl__u) (ReplI A (fun x => (x, f x)) x Hx)). }
+  apply (ReplE_impred A (fun x => (x, g x)) (x, f x) Hin). let x'. assume Hx' Heq.
+  claim Hx0: x = x'. { exact (eq_trans_i x ((x, f x) 0) x' (eq_sym_i ((x, f x) 0) x (tuple_2_0_eq x (f x))) (eq_trans_i ((x, f x) 0) ((x', g x') 0) x' (f_equal (fun u => u 0) (x, f x) (x', g x') Heq) (tuple_2_0_eq x' (g x')))). }
+  claim H1: f x = g x'. { exact (eq_trans_i (f x) ((x, f x) 1) (g x') (eq_sym_i ((x, f x) 1) (f x) (tuple_2_1_eq x (f x))) (eq_trans_i ((x, f x) 1) ((x', g x') 1) (g x') (f_equal (fun u => u 1) (x, f x) (x', g x') Heq) (tuple_2_1_eq x' (g x')))). }
+  exact (eq_trans_i (f x) (g x') (g x) H1 (f_equal (fun u => g u) x' x (eq_sym_i x x' Hx0))).
+Qed.
