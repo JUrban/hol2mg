@@ -253,6 +253,12 @@ Theorem BOUNDS_IGNORE : forall P:set -> set, (forall x :e omega, P x :e omega) -
 exact (BOUNDS_IGNORE_bridge hlt_BOUNDS_IGNORE).
 Admitted.
 
+// HOL Light: realax.ml:253 / is_nadd   (hash md5:4dbe2f4e5cb83415bee16240d25906fb)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: realax.ml:256 / is_nadd_0   (hash md5:16c1676967ceed1c66eeccd77dfa1cfa)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: realax.ml:1782 / real_sub   (hash md5:4a314d6ac46d393a0829c387e4212582)
 Theorem hlt_real_sub : forall x y :e R, hl_real_sub x y = hl_real_add x (hl_real_neg y).
 Admitted.

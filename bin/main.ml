@@ -474,8 +474,14 @@ let () =
             close_out oc;
             let by_shard = Hashtbl.create 32 in
             let items = List.map (fun (i : Manifest.item) ->
-              if i.Manifest.cert_status <> "literal_emitted" || not (public i) then i
-              else begin
+              if i.Manifest.cert_status <> "literal_emitted" then i
+              else if not (public i) then begin
+                (* a non-public theorem with a literal statement (pending native mapping): import-only entry,
+                   its literal fact may be a leaf of imported proofs (docs/DESIGN.md 22) *)
+                if i.Manifest.literal <> "" && i.Manifest.shard <> "" then
+                  Hashtbl.replace by_shard i.Manifest.shard ((i, None) :: (try Hashtbl.find by_shard i.Manifest.shard with Not_found -> []));
+                i
+              end else begin
                 let th = Hashtbl.find thm_by_name i.Manifest.source_name in
                 let res = (try
                     ignore (Unix.alarm 20);
@@ -555,8 +561,22 @@ let () =
                     Printf.fprintf oc "Theorem %s_bridge : (%s) -> (%s).\nexact %s.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.statement o.Bridge.proof;
                     Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\n%s.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name (if proved then "Qed" else "Admitted")
                 | None ->
-                    ignore (import_here ());
-                    Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement) l;
+                    (* not bridged: the literal fact is still emitted when it is proved by an imported proof
+                       or by a model theorem (it may be a leaf of other imported proofs) *)
+                    (match import_here () with
+                     | Some _ -> ()
+                     | None ->
+                         if i.Manifest.literal <> "" then begin
+                           let norm_lit = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' i.Manifest.literal)) in
+                           let proved_model = (match Hashtbl.find_opt model ("hlt_" ^ i.Manifest.name ^ "_model") with Some st -> st = norm_lit | None -> false) in
+                           if proved_model then begin
+                             Hashtbl.replace lit_proved i.Manifest.name ();
+                             Printf.fprintf oc "Theorem hlt_%s : %s.\nexact hlt_%s_model.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.name
+                           end
+                         end);
+                    if i.Manifest.statement <> "" then
+                      Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement
+                    else Printf.fprintf oc "// no native statement (%s): literal fact only\n\n" i.Manifest.status) l;
               close_out oc) by_shard;
             List.map (fun (i : Manifest.item) ->
               let i = if Hashtbl.mem lit_proved i.Manifest.name then { i with Manifest.literal_proved = true } else i in

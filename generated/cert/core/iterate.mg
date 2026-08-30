@@ -798,6 +798,39 @@ Theorem ITERATE_REFLECT : forall A:set, A <> Empty -> forall op:set -> set -> se
 exact (ITERATE_REFLECT_bridge hlt_ITERATE_REFLECT).
 Admitted.
 
+// HOL Light: iterate.ml:896 / iterato   (hash md5:602b16f1ada6de6e7cc6d3f75dc62c37)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:933 / ITERATO_SUPPORT   (hash md5:f19ff3c10fd9eb2ead659e40c4e7415d)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:945 / ITERATO_EXPAND_CASES   (hash md5:f7d479195c5ae9168bf617db83f05492)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:955 / ITERATO_CLAUSES_GEN   (hash md5:d61118c784a133d150673f518ea91085)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1004 / ITERATO_CLAUSES   (hash md5:0c18fb8df22adbac0eea2b1c6ea99cd3)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1017 / ITERATO_CLAUSES_EXISTS   (hash md5:c1b1820fad25c9b2b139b46a81019b42)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1039 / ITERATO_EQ   (hash md5:2303daeffeb59b0461f28b3e98d96e4e)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1078 / ITERATO_INDUCT   (hash md5:f7907e020f7d38c874320fb6e364a492)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1119 / ITERATO_CLOSED   (hash md5:fafb056ad1680223f04c59258a7a5aef)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1127 / ITERATO_ITERATE   (hash md5:9b0cef8a7db288e934f7c8cacf205eed)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: iterate.ml:1167 / ITERATO_CLAUSES_NUMSEG_LEFT   (hash md5:eff5e259fefade4ab0790ec194b3c4ef)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: iterate.ml:1194 / nproduct   (hash md5:fb9f9e11f1871a90aa4028a977ebca69)
 Theorem hlt_nproduct : forall A:set, A <> Empty -> hl_nproduct A = hl_iterate omega A hl_mul.
 Admitted.

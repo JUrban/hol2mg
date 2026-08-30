@@ -23,6 +23,33 @@ Theorem ONTO : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A
 exact (ONTO_bridge hlt_ONTO).
 Admitted.
 
+// HOL Light: nums.ml:28 / INFINITY_AX   (hash md5:b594b682616676f3746f7a7ad56f3206)
+Theorem hlt_INFINITY_AX : exists f :e omega :^: omega, hl_ONE_ONE omega omega f = 1 /\ ~ hl_ONTO omega omega f = 1.
+exact hlt_INFINITY_AX_model.
+Qed.
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:35 / IND_SUC_0_EXISTS   (hash md5:76d6532182ac1531dac8208b34be6e12)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:40 / IND_SUC_SPEC   (hash md5:24df6769b13c3bc002fe6ad687019827)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:50 / IND_SUC_0   (hash md5:87939994943e74592d4327cf50f30d52)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:50 / IND_SUC_INJ   (hash md5:1ba25963c6ce068a06aed8ba6640c30d)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:56 / NUM_REP_CASES   (hash md5:77961099dc796c291f7fdfa598745acf)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:56 / NUM_REP_INDUCT   (hash md5:ebb4ad5f252bcc6de8b9fbfac2fdc78e)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: nums.ml:56 / NUM_REP_RULES   (hash md5:f8036db1c49372a5b37ba1866a9742c2)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: nums.ml:75 / NOT_SUC   (hash md5:08c916fb9a846af5b7a22a1e10f97142)
 Theorem hlt_NOT_SUC : forall n :e omega, ~ hl_SUC n = hl_NUMERAL hl_zero.
 exact hlt_NOT_SUC_model.

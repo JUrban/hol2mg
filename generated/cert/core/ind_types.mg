@@ -13,6 +13,78 @@ Theorem INJ_INVERSE2 : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty 
 exact (INJ_INVERSE2_bridge hlt_INJ_INVERSE2).
 Admitted.
 
+// HOL Light: ind_types.ml:32 / NUMPAIR   (hash md5:59bba51f3151a48a2d1f890abb13f866)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:35 / NUMPAIR_INJ_LEMMA   (hash md5:a87fbb431f402b48a6aedbfabad5f9b5)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:43 / NUMPAIR_INJ   (hash md5:583a29c12e2073fc29bb9124a2b89b7e)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:50 / NUMPAIR_DEST   (hash md5:d62bd4a7ba626c24538e35c7b1a17730)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:58 / NUMSUM   (hash md5:e7b733acb1df4eec4b9804b0fccfa673)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:61 / NUMSUM_INJ   (hash md5:20b1cddd5e0c25eaa9b875d06d74563d)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:69 / NUMSUM_DEST   (hash md5:6bd64c13fbc76b5ac2218a7edf569d7c)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:77 / INJN   (hash md5:1ef0c951a5818331eb5e71b34b8cf6e7)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:80 / INJN_INJ   (hash md5:f5118a7286890b87ac2818837931dc91)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:90 / INJA   (hash md5:99911194bc4ab3f851caad0a42c3634f)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:93 / INJA_INJ   (hash md5:3af13759a862813f9d3ba1a2d2ad8696)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:103 / INJF   (hash md5:2d3670275e7dddd5a1541e7b37e13273)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:106 / INJF_INJ   (hash md5:a2450be81bdbfecc3cddb214159b718e)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:119 / INJP   (hash md5:5ce0ce9cc0edd8a069abdfd22cd2eafe)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:123 / INJP_INJ   (hash md5:44cdcb28da44b8f006e67870af73581f)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:137 / ZCONSTR   (hash md5:bb3f692f617822848c3c53061b905d38)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:141 / ZBOT   (hash md5:c4e939ccfc0bd7c4281561dcffb393ac)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:144 / ZCONSTR_ZBOT   (hash md5:09d36cb701b002e5efb236b07486d24e)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:152 / ZRECSPACE_CASES   (hash md5:665a32fa47d9986799aa5aea804e1d18)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:152 / ZRECSPACE_INDUCT   (hash md5:023b1ff5a6966fcd6776d7ca8af8b5b4)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:152 / ZRECSPACE_RULES   (hash md5:aea00ec6313df2c2376b0aa0b7da67d5)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:285 / FCONS   (hash md5:060c513ba4302e470698772c90fc227a)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:289 / FCONS_UNDO   (hash md5:92616e8eb75b38dbb0ecc710f3336b4f)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: ind_types.ml:294 / FNIL   (hash md5:7293877a20b0f2459e27ba514f32a69f)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: ind_types.ml:768 / sum_INDUCT   (hash md5:de2725f07074fc50f47627403a63ffd9)
 Theorem hlt_sum_INDUCT : forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :+: B), (forall a :e A, P (hl_INL A B a) = 1) /\ (forall a :e B, P (hl_INR B A a) = 1) -> forall x :e A :+: B, P x = 1.
 exact hlt_sum_INDUCT_model.
@@ -79,6 +151,9 @@ exact (list_INDUCT_bridge hlt_list_INDUCT).
 Qed.
 
 // HOL Light: ind_types.ml:885 / list_RECURSION   (hash md5:21b923915525c3b3ed6c44a773a64671)
+Theorem hlt_list_RECURSION : forall A Z:set, A <> Empty -> Z <> Empty -> forall NIL' :e Z, forall CONS' :e Z :^: Z :^: finseq A :^: A, exists fn :e Z :^: finseq A, fn (hl_NIL A) = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (hl_CONS A a0 a1) = CONS' a0 a1 (fn a1).
+exact hlt_list_RECURSION_model.
+Qed.
 // not bridged: 
 Theorem list_RECURSION : forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1)).
 Admitted.

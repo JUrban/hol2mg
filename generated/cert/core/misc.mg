@@ -3,6 +3,18 @@
 // and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,
 // _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
 
+// HOL Light:  / Hashek.hashek_def   (hash md5:c9e057b71c5558b394ac2bf4f300350e)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light:  / Hashek.hashek_eq   (hash md5:0dae2246aacb5ce8008e3a6e41a7740c)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light:  / Hashek.hashek_prop   (hash md5:83afef388f469aa764df4fb491000547)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light:  / Hashek.hashek_thm   (hash md5:8d3769f9cc2fc973217a2aaaa8ad7398)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light:  / REAL_ADD_ASSOC   (hash md5:74a76cf70ce019499736a9012b5e2bae)
 Theorem hlt_REAL_ADD_ASSOC : forall x y z :e R, hl_real_add x (hl_real_add y z) = hl_real_add (hl_real_add x y) z.
 exact hlt_REAL_ADD_ASSOC_model.

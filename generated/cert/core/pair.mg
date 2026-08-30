@@ -13,6 +13,33 @@ Admitted.
 Theorem LET_END_DEF : forall A:set, forall t :e A, t = t.
 Admitted.
 
+// HOL Light: pair.ml:23 / GABS_DEF   (hash md5:8886898d2ce6038507d1ad6358b50777)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:26 / GEQ_DEF   (hash md5:63c343763b93289fcbc6a4902986b64f)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:29 / _SEQPATTERN   (hash md5:b3b669326d22d0c484a1518227920436)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:32 / _UNGUARDED_PATTERN   (hash md5:2e16ab36685a668362711f6593fe63bd)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:35 / _GUARDED_PATTERN   (hash md5:21f370a5a0b371b8153ac01cb6ecf1fa)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:38 / _MATCH   (hash md5:f2c54507accb137d79af6653bd21cacf)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:41 / _FUNCTION   (hash md5:772291ed615d0bb469942917848f8fb2)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:48 / mk_pair_def   (hash md5:922b62add08c32ff8c9f0ecadf276aee)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: pair.ml:51 / PAIR_EXISTS_THM   (hash md5:0b5592a6adaaca446015b3fb17077717)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: pair.ml:67 / FST_DEF   (hash md5:085c9267477376ef68995b88baf72064)
 Theorem hlt_FST_DEF : forall A B:set, A <> Empty -> B <> Empty -> forall p :e A :*: B, hl_FST A B p = hl_select A (fun x :e A => if exists y :e B, p = hl_pair A B x y then 1 else 0).
 Admitted.
@@ -119,6 +146,9 @@ Admitted.
 // not bridged: 
 Theorem UNCURRY_DEF : forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f x y = f x y.
 Admitted.
+
+// HOL Light: pair.ml:193 / PASSOC_DEF   (hash md5:9c161349298da1eba1ac9e3d2bbf725f)
+// no native statement (pending_mapping): literal fact only
 
 // HOL Light: pair.ml:295 / FORALL_PAIR_THM   (hash md5:259d29f2f6087c2bd6a11a52412f4491)
 Theorem hlt_FORALL_PAIR_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P :e 2 :^: (A :*: B), (forall p :e A :*: B, P p = 1) <-> forall p1 :e A, forall p2 :e B, P (hl_pair A B p1 p2) = 1.

@@ -23,6 +23,15 @@ Theorem EXTENSION : forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e
 exact (EXTENSION_bridge hlt_EXTENSION).
 Admitted.
 
+// HOL Light: sets.ml:53 / GSPEC   (hash md5:11309182715cc213e5248c694a48f4eb)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: sets.ml:56 / SETSPEC   (hash md5:62d81678fd0497eccfc67c438177a89a)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: sets.ml:63 / IN_ELIM_THM   (hash md5:f0b562a918d32513fbce399c8874d32d)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: sets.ml:77 / EMPTY   (hash md5:1989ccecebe524300c28d988fa7a6bf4)
 // not bridged: 
 Theorem EMPTY : forall A:set, forall x :e A, x :e Empty <-> False.
@@ -2788,6 +2797,21 @@ Theorem FINITE_SUBSET_UNIONS_CHAIN : forall A:set, A <> Empty -> forall f c= Pow
 exact (FINITE_SUBSET_UNIONS_CHAIN_bridge hlt_FINITE_SUBSET_UNIONS_CHAIN).
 Admitted.
 
+// HOL Light: sets.ml:1800 / FINREC   (hash md5:51fcb9941f6c19d194dd52075cfaeaee)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: sets.ml:1807 / FINREC_1_LEMMA   (hash md5:845a13e735b8b4c9435aea58b050a56a)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: sets.ml:1812 / FINREC_SUC_LEMMA   (hash md5:c5d6d381ce7126749355a4d12800903d)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: sets.ml:1843 / FINREC_UNIQUE_LEMMA   (hash md5:61790b80302e0bcda80be44c6e99e36f)
+// no native statement (pending_mapping): literal fact only
+
+// HOL Light: sets.ml:1859 / FINREC_EXISTS_LEMMA   (hash md5:4e7ea1fac6e4d3b4a9f5154296c16d50)
+// no native statement (pending_mapping): literal fact only
+
 // HOL Light: sets.ml:1869 / FINREC_FUN_LEMMA   (hash md5:8fa4074cd8c357e0186104cb076daccb)
 Theorem hlt_FINREC_FUN_LEMMA : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P :e 2 :^: A, forall R1 :e 2 :^: C :^: B :^: A, (forall s :e A, P s = 1 -> exists a :e B, exists n :e C, R1 s a n = 1) /\ (forall n1 n2 :e C, forall s :e A, forall a1 a2 :e B, R1 s a1 n1 = 1 /\ R1 s a2 n2 = 1 -> a1 = a2 /\ n1 = n2) -> exists f :e B :^: A, forall s :e A, forall a :e B, P s = 1 -> ((exists n :e C, R1 s a n = 1) <-> f s = a).
 Admitted.
@@ -2807,6 +2831,9 @@ Admitted.
 // not bridged: 
 Theorem SET_RECURSION_LEMMA : forall A B:set, A <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e B) -> forall b :e B, (forall x y :e A, forall s :e B, ~ x = y -> f x (f y s) = f y (f x s)) -> exists g:set -> set, (forall x :e Power A, g x :e B) /\ (g Empty = b /\ forall x :e A, forall s c= A, finite s -> g (SetAdjoin s x) = if x :e s then g s else f x (g s)).
 Admitted.
+
+// HOL Light: sets.ml:1936 / ITSET   (hash md5:e2d310775ffddbc8336653e95c53967d)
+// no native statement (pending_mapping): literal fact only
 
 // HOL Light: sets.ml:1943 / FINITE_RECURSION   (hash md5:706912b716233fee2433570bb27bb0e6)
 // not bridged: 

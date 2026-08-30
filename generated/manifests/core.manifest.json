@@ -28486,11 +28486,11 @@
    "cert_status": "literal_emitted",
    "cert_error": "",
    "bridge": "",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -99091,11 +99091,11 @@
    "cert_status": "bridge_unsupported",
    "cert_error": "bridge_unsupported: bridge_binder: view metafun(A,finseq A,Z -> Z)",
    "bridge": "",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -102806,6 +102806,7 @@
    "realarith",
    "realax",
    "sets",
+   "tactics",
    "theorems",
    "trivia",
    "wf"
