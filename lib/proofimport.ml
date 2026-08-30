@@ -115,6 +115,45 @@ let rec canon (t : tm) : tm =
   | _ -> t
 let alpha_eq (a : tm) (b : tm) = canon a = canon b
 
+(* HOL variables are identified by name and type: distinct variables with the same name and
+   different types occur in kernel proofs (e.g. y':A and y':B in the pair theorems).  The contexts
+   key variables by name, so such variables are renamed apart before translation. *)
+let rename_apart (p : proof) : proof * (string * ty, string) Hashtbl.t * (string, string) Hashtbl.t =
+  let seen : (string, ty list) Hashtbl.t = Hashtbl.create 64 in
+  let rec collect t = (match t with
+    | Free (s, ty) -> let l = (try Hashtbl.find seen s with Not_found -> []) in if not (List.mem ty l) then Hashtbl.replace seen s (l @ [ ty ])
+    | App (f, x) -> collect f; collect x
+    | Lam (_, _, b) -> collect b
+    | _ -> ()) in
+  Array.iter (fun (n : pnode) -> List.iter collect n.hyps; collect n.concl; (match n.tm with Some t -> collect t | None -> ());
+    List.iter (fun ((s, ty), t) -> collect (Free (s, ty)); collect t) n.theta_tm) p.nodes;
+  let ren = Hashtbl.create 16 in
+  Hashtbl.iter (fun s l -> List.iteri (fun i ty -> if i > 0 then Hashtbl.replace ren (s, ty) (s ^ "'v" ^ string_of_int i)) l) seen;
+  let orig = Hashtbl.create 16 in
+  Hashtbl.iter (fun (s, _) s' -> Hashtbl.replace orig s' s) ren;
+  if Hashtbl.length ren = 0 then (p, ren, orig) else begin
+    let rec rn t = (match t with
+      | Free (s, ty) -> (match Hashtbl.find_opt ren (s, ty) with Some s' -> Free (s', ty) | None -> t)
+      | App (f, x) -> App (rn f, rn x)
+      | Lam (x, ty, b) -> Lam (x, ty, rn b)
+      | _ -> t) in
+    let nodes = Array.map (fun (n : pnode) ->
+      { n with hyps = List.map rn n.hyps; concl = rn n.concl; tm = Option.map rn n.tm;
+               theta_tm = List.map (fun ((s, ty), t) -> ((match Hashtbl.find_opt ren (s, ty) with Some s' -> s' | None -> s), ty), rn t) n.theta_tm }) p.nodes in
+    ({ p with nodes }, ren, orig)
+  end
+
+(* after a type instantiation a variable (s, ty) may correspond to a renamed variable: canonical name *)
+let canon_name ren orig (s : string) (ty : ty) : string =
+  let s0 = (try Hashtbl.find orig s with Not_found -> s) in
+  (try Hashtbl.find ren (s0, ty) with Not_found -> s0)
+let rec fix_names ren orig (t : tm) : tm =
+  match t with
+  | Free (s, ty) -> Free (canon_name ren orig s ty, ty)
+  | App (f, x) -> App (fix_names ren orig f, fix_names ren orig x)
+  | Lam (x, ty, b) -> Lam (x, ty, fix_names ren orig b)
+  | _ -> t
+
 (* ------------------------------------------------------------------------ *)
 (* Signatures and closed statements (the uniform form of a sequent).        *)
 (* ------------------------------------------------------------------------ *)
@@ -190,7 +229,7 @@ let close_lam (ctx : L.ctx) (key : string) (n : string) =
 let rec uterm (ctx : L.ctx) (t : tm) : Mg.tm =
   match t with
   | Bound _ -> failwith "uterm: bound variable"
-  | Free (s, _) -> (try List.assoc s ctx.L.vars with Not_found -> failwith ("uterm: unknown variable " ^ s))
+  | Free (s, _) -> (try List.assoc s ctx.L.vars with Not_found -> unsupported "uterm: variable %s not in scope [%s]" s (String.concat "," (List.map fst ctx.L.vars)))
   | Const ("hl__choose", ty) -> Mg.apps (Mg.Cst "choose_in") [ L.carrier ctx ty; Mg.Lam ("hl__y", Mg.Set, Mg.Cst "True") ]
   | Const (c, ty) -> L.const_ref ctx c ty
   | App (f, x) -> Mg.App (uterm ctx f, uterm ctx x)
@@ -241,6 +280,8 @@ type env = {
   tcl : (tm, string) Hashtbl.t;         (* canonical term -> typing claim name *)
   pending : Buffer.t;                   (* typing claims to emit before the current node claim *)
   mutable tcount : int;
+  ren : (string * ty, string) Hashtbl.t;   (* variables renamed apart (rename_apart) *)
+  orig : (string, string) Hashtbl.t;
 }
 
 let hyp_of_var (ctx : L.ctx) (s : string) : string =
@@ -429,6 +470,7 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
   (* identity-style maps for the current node *)
   let tymap_id a = if List.mem_assoc a sg.tvs then TyVar a else TyApp ("1", []) in
   let tmmap_id (s, ty) =
+    let s = canon_name env.ren env.orig s ty in
     (match List.find_opt (fun (s', ty', _) -> s' = s && ty' = ty) sg.vars with
      | Some (_, _, nm) -> (Mg.Var nm, "H" ^ nm)
      | None -> (uterm ctx (Const ("hl__choose", ty)), utyp env ctx (Const ("hl__choose", ty)))) in
@@ -438,7 +480,7 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
   let lost_ty = List.filter_map (fun (a, _) -> if List.mem_assoc a sg.tvs then None else Some (a, TyApp ("1", []))) (uniq (List.concat_map (fun (g : sg) -> g.tvs) prem_sgs)) in
   let keep_var = ref [] in   (* variables bound locally by the rule (ABS) *)
   let cl (t : tm) : tm =
-    let t = inst_tm lost_ty t in
+    let t = fix_names env.ren env.orig (inst_tm lost_ty t) in
     let fv = uniq (frees t) in
     let sub = List.filter_map (fun (s, ty) -> if List.exists (fun (s', ty', _) -> s' = s && ty' = ty) sg.vars || List.mem (s, ty) !keep_var then None else Some ((s, ty), Const ("hl__choose", ty))) fv in
     subst_frees sub t in
@@ -499,7 +541,7 @@ let node_proof (env : env) (p : proof) (sgs : sg array) (i : int) : string =
     | "INST_TYPE" ->
         let theta = n.theta_ty in
         let tymap a = (try List.assoc a theta with Not_found -> tymap_id a) in
-        let hypmap h = hyp_index (inst_tm theta h) in
+        let hypmap h = hyp_index (fix_names env.ren env.orig (inst_tm theta h)) in
         apply_prem ctx (prem 0) sgs.(List.nth n.prem 0) ~tymap ~tmmap:tmmap_id ~hypmap
     | "INST" ->
         let theta = n.theta_tm in
@@ -574,7 +616,8 @@ type result = {
 }
 
 let import (an : L.analysis) (thm_name : string -> string) (p : proof) (seq : sequent) : result =
-  let env = { an; thm_name; leaves = Hashtbl.create 16; share = true; tcl = Hashtbl.create 256; pending = Buffer.create 4096; tcount = 0 } in
+  let p, ren, orig = rename_apart p in
+  let env = { an; thm_name; leaves = Hashtbl.create 16; share = true; tcl = Hashtbl.create 256; pending = Buffer.create 4096; tcount = 0; ren; orig } in
   let sgs = Array.map (fun (n : pnode) -> signature an n.hyps n.concl) p.nodes in
   let buf = Buffer.create 65536 in
   let root_sg = sgs.(p.root) in
