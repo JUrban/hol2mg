@@ -1318,6 +1318,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (n) | 2697 / 2697 | 2528 / 2685 public (42 literal_proved; every public theorem has a literal statement; pilot round 4: 390 fully_proved) | 446 + 22 stage-2 (+ 26 + 15 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (o) | 2697 / 2697 | 2544 / 2685 public (42 literal_proved; pilot round 4: 390 fully_proved) | 446 + 24 stage-2 (+ 26 + 15 carrier lemmas, 167 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (p) | 2697 / 2697 | 2547 / 2685 public (42 literal_proved; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 26 + 15 carrier lemmas, 170 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (q) | 2697 / 2697 | 2547 / 2685 public (51 literal_proved: + tybit0/1 INDUCT/RECURSION, int_add_th, int_mul_th, int_sgn_th, MONOIDAL_ADD, MONOIDAL_REAL_ADD; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 53 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1607,6 +1608,12 @@ is larger than the claim.
    the imports of `cart_tybij`, `finite_image_tybij` and `finite_sum_tybij` check.
    `tools/proof_pilot.sh` takes `PILOT_TAG` (tagged copies of manifest, summary and check log)
    and prints the blocker ranking at the end.
+9. The forced giant leaves dominate the checking time even after splitting (`int_p2` is one
+   110 000-line claim chain for `int_add_th`).  They are now model theorems instead
+   (`hlt_int_add_th_model`, `hlt_int_mul_th_model`, `hlt_int_sgn_th_model` from the compat
+   lemmas of the integer operations; `hlt_MONOIDAL_ADD_model`, `hlt_MONOIDAL_REAL_ADD_model` from
+   `hl_monoidal_compat` and the known monoids; also `tybit0/1_INDUCT/RECURSION`), so round 7
+   need not force them.
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively
