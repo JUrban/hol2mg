@@ -7615,3 +7615,86 @@ claim Hif: (if exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul 
     + exact (eq_trans_i (hl_real_sub x y) (x + - y) (hl_real_mul q n) (hl_real_sub_compat x Hx y Hy) (eq_trans_i (x + - y) (q * n) (hl_real_mul q n) He (eq_sym_i (hl_real_mul q n) (q * n) (hl_real_mul_compat q Hq n Hn)))). }
 exact ((hl_real_mod_unfold n Hn x Hx y Hy) (fun hl__u hl__v => hl__v = 1 <-> real_mod n x y) Hif).
 Qed.
+
+// ---- suprema/infima: bounds of unions, subsets, characterisations, approximations; omega closure ----
+Theorem bound_above_of_abs_ex : forall S:set, (exists a :e R, forall x :e R, x :e S -> abs_SNo x <= a) -> exists b :e R, forall x :e R, x :e S -> x <= b.
+let S. assume H. apply H. let a. assume Ha0. apply Ha0. assume Ha Hb. exact (bound_above_of_abs S a Ha Hb).
+Qed.
+Theorem bound_below_of_abs_ex : forall S:set, (exists a :e R, forall x :e R, x :e S -> abs_SNo x <= a) -> exists b :e R, forall x :e R, x :e S -> b <= x.
+let S. assume H. apply H. let a. assume Ha0. apply Ha0. assume Ha Hb. exact (bound_below_of_abs S a Ha Hb).
+Qed.
+Theorem bound_above_binunion : forall S T:set, (exists b :e R, forall x :e R, x :e S -> x <= b) -> (exists c :e R, forall x :e R, x :e T -> x <= c) -> exists d :e R, forall x :e R, x :e S :\/: T -> x <= d.
+let S T. assume HS HT. apply HS. let b. assume Hb0. apply Hb0. assume Hb HbS. apply HT. let c. assume Hc0. apply Hc0. assume Hc HcT.
+apply (SNoLtLe_or b c (real_SNo b Hb) (real_SNo c Hc)).
+- assume Hbc. witness c. apply andI. exact Hc. let x. assume Hx Hxu. apply (binunionE S T x Hxu).
+  + assume HxS. exact (SNoLe_tra x b c (real_SNo x Hx) (real_SNo b Hb) (real_SNo c Hc) (HbS x Hx HxS) (SNoLtLe b c Hbc)).
+  + assume HxT. exact (HcT x Hx HxT).
+- assume Hcb. witness b. apply andI. exact Hb. let x. assume Hx Hxu. apply (binunionE S T x Hxu).
+  + assume HxS. exact (HbS x Hx HxS).
+  + assume HxT. exact (SNoLe_tra x c b (real_SNo x Hx) (real_SNo c Hc) (real_SNo b Hb) (HcT x Hx HxT) Hcb).
+Qed.
+Theorem bound_below_binunion : forall S T:set, (exists b :e R, forall x :e R, x :e S -> b <= x) -> (exists c :e R, forall x :e R, x :e T -> c <= x) -> exists d :e R, forall x :e R, x :e S :\/: T -> d <= x.
+let S T. assume HS HT. apply HS. let b. assume Hb0. apply Hb0. assume Hb HbS. apply HT. let c. assume Hc0. apply Hc0. assume Hc HcT.
+apply (SNoLtLe_or b c (real_SNo b Hb) (real_SNo c Hc)).
+- assume Hbc. witness b. apply andI. exact Hb. let x. assume Hx Hxu. apply (binunionE S T x Hxu).
+  + assume HxS. exact (HbS x Hx HxS).
+  + assume HxT. exact (SNoLe_tra b c x (real_SNo b Hb) (real_SNo c Hc) (real_SNo x Hx) (SNoLtLe b c Hbc) (HcT x Hx HxT)).
+- assume Hcb. witness c. apply andI. exact Hc. let x. assume Hx Hxu. apply (binunionE S T x Hxu).
+  + assume HxS. exact (SNoLe_tra c b x (real_SNo c Hc) (real_SNo b Hb) (real_SNo x Hx) Hcb (HbS x Hx HxS)).
+  + assume HxT. exact (HcT x Hx HxT).
+Qed.
+Theorem bound_above_Subq : forall S T:set, S c= T -> (exists b :e R, forall x :e R, x :e T -> x <= b) -> exists b :e R, forall x :e R, x :e S -> x <= b.
+let S T. assume HST H. apply H. let b. assume Hb0. apply Hb0. assume Hb HbT. witness b. apply andI. exact Hb. let x. assume Hx HxS. exact (HbT x Hx (HST x HxS)).
+Qed.
+Theorem bound_below_Subq : forall S T:set, S c= T -> (exists b :e R, forall x :e R, x :e T -> b <= x) -> exists b :e R, forall x :e R, x :e S -> b <= x.
+let S T. assume HST H. apply H. let b. assume Hb0. apply Hb0. assume Hb HbT. witness b. apply andI. exact Hb. let x. assume Hx HxS. exact (HbT x Hx (HST x HxS)).
+Qed.
+Theorem binunion_neq_Empty_1 : forall S T:set, ~ S = Empty -> ~ S :\/: T = Empty.
+let S T. assume H H2. apply H. apply (Empty_eq S). let x. assume Hx. exact (EmptyE x (H2 (fun hl__u hl__v => x :e hl__u) (binunionI1 S T x Hx))).
+Qed.
+Theorem binunion_neq_Empty_2 : forall S T:set, ~ T = Empty -> ~ S :\/: T = Empty.
+let S T. assume H H2. apply H. apply (Empty_eq T). let x. assume Hx. exact (EmptyE x (H2 (fun hl__u hl__v => x :e hl__u) (binunionI2 S T x Hx))).
+Qed.
+Theorem lub_of_char : forall S:set, S c= R -> forall b :e R, (forall c :e R, (forall x :e R, x :e S -> x <= c) <-> b <= c) -> exists x :e R, is_lub S x.
+let S. assume HS. let b. assume Hb H. witness b. apply andI. exact Hb.
+prove upper_bound S b /\ forall y :e R, upper_bound S y -> b <= y.
+apply andI.
+- prove forall s :e S, s <= b. let s. assume Hs. apply (H b Hb). assume _ H2. exact (H2 (SNoLe_ref b) s (HS s Hs) Hs).
+- let y. assume Hy Huy. apply (H y Hy). assume H1 _. apply H1. let x. assume Hx HxS. exact (Huy x HxS).
+Qed.
+Theorem glb_of_char : forall S:set, S c= R -> forall b :e R, (forall c :e R, (forall x :e R, x :e S -> c <= x) <-> c <= b) -> exists x :e R, is_glb S x.
+let S. assume HS. let b. assume Hb H. witness b. apply andI. exact Hb.
+prove lower_bound S b /\ forall y :e R, lower_bound S y -> y <= b.
+apply andI.
+- prove forall s :e S, b <= s. let s. assume Hs. apply (H b Hb). assume _ H2. exact (H2 (SNoLe_ref b) s (HS s Hs) Hs).
+- let y. assume Hy Hly. apply (H y Hy). assume H1 _. apply H1. let x. assume Hx HxS. exact (Hly x HxS).
+Qed.
+Theorem lub_of_approx : forall S:set, S c= R -> forall b :e R, (forall x :e R, x :e S -> x <= b) -> (forall b' :e R, b' < b -> exists x :e R, x :e S /\ b' < x) -> exists x :e R, is_lub S x.
+let S. assume HS. let b. assume Hb Hub Happ. witness b. apply andI. exact Hb.
+prove upper_bound S b /\ forall y :e R, upper_bound S y -> b <= y.
+apply andI.
+- prove forall s :e S, s <= b. let s. assume Hs. exact (Hub s (HS s Hs) Hs).
+- let y. assume Hy Huy. apply (SNoLtLe_or y b (real_SNo y Hy) (real_SNo b Hb)).
+  + assume Hyb. apply (Happ y Hy Hyb). let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume HxS Hyx.
+    exact (FalseE (SNoLt_irref y (SNoLtLe_tra y x y (real_SNo y Hy) (real_SNo x Hx) (real_SNo y Hy) Hyx (Huy x HxS))) (b <= y)).
+  + assume Hby. exact Hby.
+Qed.
+Theorem glb_of_approx : forall S:set, S c= R -> forall b :e R, (forall x :e R, x :e S -> b <= x) -> (forall b' :e R, b < b' -> exists x :e R, x :e S /\ x < b') -> exists x :e R, is_glb S x.
+let S. assume HS. let b. assume Hb Hlb Happ. witness b. apply andI. exact Hb.
+prove lower_bound S b /\ forall y :e R, lower_bound S y -> y <= b.
+apply andI.
+- prove forall s :e S, b <= s. let s. assume Hs. exact (Hlb s (HS s Hs) Hs).
+- let y. assume Hy Hly. apply (SNoLtLe_or b y (real_SNo b Hb) (real_SNo y Hy)).
+  + assume Hby. apply (Happ y Hy Hby). let x. assume Hx0. apply Hx0. assume Hx H2. apply H2. assume HxS Hxy.
+    exact (FalseE (SNoLt_irref y (SNoLeLt_tra y x y (real_SNo y Hy) (real_SNo x Hx) (real_SNo y Hy) (Hly x HxS) Hxy)) (y <= b)).
+  + assume Hyb. exact Hyb.
+Qed.
+Theorem int_neg_omega_of_not_nonneg : forall i :e int, ~ 0 <= i -> - i :e omega.
+let i. assume Hi. apply (int_SNo_cases (fun x => ~ 0 <= x -> - x :e omega)).
+- let n. assume Hn H. exact (FalseE (H (omega_nonneg n Hn)) (- n :e omega)).
+- let n. assume Hn H. exact ((eq_sym_i (- - n) n (minus_SNo_invol n (omega_SNo n Hn))) (fun hl__u hl__v => hl__u :e omega) Hn).
+- exact Hi.
+Qed.
+Theorem neq_Empty_Subq : forall S T:set, S c= T -> ~ S = Empty -> ~ T = Empty.
+let S T. assume HST H H2. apply H. apply (Empty_eq S). let x. assume Hx. exact (EmptyE x (H2 (fun hl__u hl__v => x :e hl__u) (HST x Hx))).
+Qed.

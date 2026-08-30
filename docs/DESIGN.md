@@ -1322,6 +1322,8 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (r) | 2697 / 2697 | 2547 / 2685 public (54 literal_proved: + REAL_EQ_NEG2, REAL_LE_LMUL, REAL_EQ_MUL_LCANCEL; pilot round 6: 682 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 56 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (s) | 2697 / 2697 | 2558 / 2685 public (54 literal_proved; pilot round 6: 682 fully_proved; + `IMAGE` over sets of subsets, curried functions into subsets, triple-pattern comprehensions, `CARD`/`HAS_SIZE_POWERSET`) | 457 + 22 stage-2 (+ 41 carrier lemmas, 193 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (t) | 2697 / 2697 | 2566 / 2685 public (54 literal_proved; pilot round 6: 682 fully_proved; + pair patterns over subsets, finiteness rules) | 458 + 22 stage-2 (+ 41 carrier lemmas, 194 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (u) | 2697 / 2697 | 2575 / 2685 public (55 literal_proved; + ternary function binders, compat `LET`/`LET_END`/`UNCURRY`/`SING`/`>_c`/`NULL`/`real_mod`) | 465 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (v) | 2697 / 2697 | 2589 / 2685 public (55 literal_proved; + sup/inf existence rules, omega closure of integer expressions, set-function congruence) | 481 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1458,14 +1460,56 @@ represented by `hl_rep` in the pointwise proofs, the result by `hl_rep2`) give
 `CROSS`/`PCROSS_INTERS_INTERS` and `*_UNIONS_UNIONS`; `derive_finite` gained rules for
 `equip s n` hypotheses (`finite_of_equip`), transport along equations `X = s`, union equations
 `s :\/: t = u`, and compound omega bounds `m + d` in segments (`CARD_UNION_EQ`,
-`HAS_SIZE_CARD`, `CARD_NUMSEG_LEMMA`, `list_of_set`).  The 119 remaining `bridge_unsupported`
-public theorems are a long tail: `CARD`/`sup`/`inf` side conditions that are not derivable from
-the hypotheses in scope (13; `CARD_PSUBSET_IMP` has none, `IMAGE_IMP_INJECTIVE_GEN` states the
-image equation after the cardinalities, `CARD_FUNSPACE*`/`CARD_CART_UNIV` need the finiteness
-of function spaces), function-typed pattern variables into sets of subsets
-(`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`), `MAP2`/`ITSET`/`ASSOC` conditional compat (9),
-3-ary binders (5), the index-range cases of cart.ml (20), definitional theorems of `iterate`
-(3), and singletons.
+`HAS_SIZE_CARD`, `CARD_NUMSEG_LEMMA`, `list_of_set`).  Ternary function binders (`hl_lam3`,
+`imp_forall/exists_fun3`, kind `KPW3`) give `LAMBDA_TRIPLE`; compat lemmas for `LET`,
+`LET_END`, `UNCURRY`, `SING`, `>_c`, `NULL` (from the generated `hl_NULL_spec` by `seq_induct`)
+and `real_mod` close their definitional theorems.  Suprema and infima: `derive_bound` now
+also uses existential and `abs_SNo` bounds, bounds of unions (maximum/minimum of the two
+bounds), subset hypotheses and characterisations `(forall x :e s, x <= c) <-> b <= c`; the
+existence of a supremum follows directly from a characterisation (`lub_of_char`) or an
+approximation pair (`lub_of_approx`); nonemptiness of unions and supersets is derived from
+the parts (`SUP`/`INF_UNION`, `SUP`/`INF_UNIQUE`, `REAL_SUP`/`INF_UNIQUE`, `REAL_SUP_EQ_INF`,
+`REAL_SUP_LE_SUBSET`, `REAL_LE_INF_SUBSET`).  `?1 :e omega` side conditions are derived
+structurally for nonnegative integer variables, sums, products, powers and negations of
+negative integers (`NUM_OF_INT_ADD/MUL/POW`, `real_zpow`); applications of set-function
+variables to related arguments go through `f_equal2` (`WF_REC_TAIL_GENERAL`).  The residue
+is classified in §21.10.
+
+
+### 21.10 Residue of the Core certification (`tools/bridge_residue.py`)
+
+The public theorems whose bridge is still unsupported, grouped by reason (the tool reads the
+manifest; regenerate the table after each cycle).  Most groups are *not transportable* under the
+current mappings rather than open engineering: HOL's total functions on unspecified inputs
+(`CARD` of infinite sets, `EL`/`HD`/`TL` outside the range, cart components outside the index
+range, `MAP2`/`ASSOC` on unequal lengths or missing keys, `ITSET` of non-commuting operations)
+are related to their native counterparts only under side conditions, and the theorems in
+these groups state properties of exactly the unspecified cases; `OUTL`/`OUTR` are two unrelated
+`choose_in` specifications (the literal one carries HOL's recursion tag); `vector` differs from
+`seq_nth` beyond the list length.  Open engineering items are the arity-4 binders and pattern
+comprehensions (`FORALL/EXISTS_IN_GSPEC`, `IN_ELIM_QUAD_THM`), function-typed pattern
+variables into sets of subsets (`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`), the finiteness of
+function spaces (`CARD_FUNSPACE*`, `CARD_CART_UNIV`: an injection into `Power (A :*: B)`),
+and the singletons in the last row.
+
+| reason | theorems |
+|---|---|
+| cart index outside the range (`$`/`finite_index`/`idx_n` side conditions) | 16: `CART_EQ_FULL`, `FINITE_DIFF_IMAGE`, `FINITE_IMAGE_IMAGE`, `FINITE_INDEX_INRANGE`, `FINITE_INDEX_INRANGE_2`, `FINITE_PROD_IMAGE`, … |
+| finiteness side condition not derivable from the hypotheses in scope | 14: `BIJECTIONS_CARD_EQ`, `CARD`, `CARD_CART_UNIV`, `CARD_FUNSPACE`, `CARD_FUNSPACE_UNIV`, `CARD_IMAGE_INJ_EQ`, … |
+| list side condition (index/non-empty) not derivable | 13: `ALL2_DEF`, `EL`, `EL_APPEND`, `EL_CONS`, `EL_TL`, `HD_APPEND`, … |
+| iterate side conditions (monoidal operation) not derivable | 3: `ITERATE_EXPAND_CASES`, `ITERATE_SUPPORT`, `iterate` |
+| other side conditions | 23: `INF_EQ`, `INF_INSERT_INSERT`, `INF_UNION`, `INF_UNIQUE`, `NUM_OF_INT`, `NUM_OF_INT_ADD`, … |
+| compat lemma missing (partially specified or unmapped constant) | 16: `ASSOC`, `EL_MAP2`, `FINITE_RECURSION`, `FINITE_RECURSION_DELETE`, `IMAGE_PRODUCT_MAP`, `ITLIST2`, … |
+| arity-4 binders / patterns | 3: `EXISTS_IN_GSPEC`, `FORALL_IN_GSPEC`, `IN_ELIM_QUAD_THM` |
+| 3-ary binders or patterns not supported | 2: `WF_LEX`, `WF_POINTWISE` |
+| function-typed pattern variables into sets of subsets | 2: `INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS` |
+| partial applications / meta arguments of higher arity | 9: `FINREC_FUN`, `ISO_FUN`, `OUTL_thm`, `OUTR_thm`, `PRODUCT_MAP_RESTRICTION`, `SET_RECURSION_LEMMA`, … |
+| `?!` over a non-lambda predicate | 1: `EXISTS_UNIQUE_DEF` |
+| unmapped constant (GSPEC in a definitional theorem) | 2: `EXTENSIONAL`, `SURJECTIVE_PREIMAGE` |
+| other | 6: `ARBITRARY_UNION_OF_ALT`, `EXTENSIONAL_EMPTY`, `PAIRED_ETA_THM`, `POLYNOMIAL_FUNCTION_INDUCT`, `WF_LEX_DEPENDENT`, `WF_UREC_WF` |
+
+total: 110
+
 
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 

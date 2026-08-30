@@ -357,30 +357,6 @@ let lprop g t = L.lprop g.lctx t
 let ltext g t = pp (lprop g t)
 let lterm g t = L.lterm g.lctx t
 
-(* omega membership of a native term: omega-typed variables, nonnegative integer variables,
-   sums, products, powers, negations of negative integers, and index expressions *)
-let rec derive_omega g (t : Mg.tm) (depth : int) : string option =
-  if depth > 4 then None else
-  match nat_var_mem g t with
-  | Some (Mg.Cst "omega", h) -> Some h
-  | _ ->
-      let nonneg = List.assoc_opt (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), t)) g.hyps in
-      (match nat_var_mem g t, nonneg with
-       | Some (Mg.Cst "int", hi), Some h -> Some (Printf.sprintf "(int_nonneg_omega %s %s %s)" (ppp t) hi h)
-       | _ ->
-           (match t with
-            | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) ->
-                (match derive_omega g a (depth + 1), derive_omega g b (depth + 1) with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
-            | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) ->
-                (match derive_omega g a (depth + 1), derive_omega g b (depth + 1) with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
-            | Mg.App (Mg.App (Mg.Cst "exp_SNo_nat", a), n) ->
-                (match derive_omega g a (depth + 1), derive_omega g n (depth + 1) with Some pa, Some pn -> Some (Printf.sprintf "(exp_SNo_nat_In_omega %s %s %s %s)" (ppp a) pa (ppp n) pn) | _ -> None)
-            | Mg.App (Mg.Cst "minus_SNo", i) ->
-                (match nat_var_mem g i, List.assoc_opt (Mg.App (Mg.Cst "not", Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), i))) g.hyps with
-                 | Some (Mg.Cst "int", hi), Some h -> Some (Printf.sprintf "(int_neg_omega_of_not_nonneg %s %s %s)" (ppp i) hi h)
-                 | _ -> None)
-            | _ -> omega_of_index t))
-
 (* structural derivation of `finite s` from the hypotheses in scope: finite hypotheses, singletons,
    adjoined elements, unions, replacements, separations, differences, intersections, subsets of
    finite sets (a `s c= t` hypothesis), bounded segments of omega *)
@@ -405,6 +381,30 @@ let rec omega_of_index (t : Mg.tm) : string option =
   | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
   | Mg.App (Mg.App (Mg.Cst "minus_nat", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(minus_nat_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
   | _ -> None
+
+(* omega membership of a native term: omega-typed variables, nonnegative integer variables,
+   sums, products, powers, negations of negative integers, and index expressions *)
+let rec derive_omega g (t : Mg.tm) (depth : int) : string option =
+  if depth > 4 then None else
+  match nat_var_mem g t with
+  | Some (Mg.Cst "omega", h) -> Some h
+  | _ ->
+      let nonneg = List.assoc_opt (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), t)) g.hyps in
+      (match nat_var_mem g t, nonneg with
+       | Some (Mg.Cst "int", hi), Some h -> Some (Printf.sprintf "(int_nonneg_omega %s %s %s)" (ppp t) hi h)
+       | _ ->
+           (match t with
+            | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) ->
+                (match derive_omega g a (depth + 1), derive_omega g b (depth + 1) with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+            | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) ->
+                (match derive_omega g a (depth + 1), derive_omega g b (depth + 1) with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+            | Mg.App (Mg.App (Mg.Cst "exp_SNo_nat", a), n) ->
+                (match derive_omega g a (depth + 1), derive_omega g n (depth + 1) with Some pa, Some pn -> Some (Printf.sprintf "(exp_SNo_nat_In_omega %s %s %s %s)" (ppp a) pa (ppp n) pn) | _ -> None)
+            | Mg.App (Mg.Cst "minus_SNo", i) ->
+                (match nat_var_mem g i, List.assoc_opt (Mg.App (Mg.Cst "not", Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), i))) g.hyps with
+                 | Some (Mg.Cst "int", hi), Some h -> Some (Printf.sprintf "(int_neg_omega_of_not_nonneg %s %s %s)" (ppp i) hi h)
+                 | _ -> None)
+            | _ -> omega_of_index t))
 
 let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
   if depth > 6 then None
@@ -2179,7 +2179,13 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                                    (match ne a with
                                     | Some h -> Some (Printf.sprintf "(binunion_neq_Empty_1 %s %s %s)" (ppp a) (ppp b) h)
                                     | None -> Option.map (fun h -> Printf.sprintf "(binunion_neq_Empty_2 %s %s %s)" (ppp a) (ppp b) h) (ne b))
-                               | _ -> None))
+                               | _ ->
+                                   (* a superset of a nonempty set: hypotheses s c= t and ~ s = Empty *)
+                                   let ne t = List.find_map (fun tp -> List.assoc_opt (Mg.normalize (Mg.inst [ ("1", t) ] (cstify (Mg.parse_template tp)))) g.hyps) [ "~ ?1 = Empty"; "?1 <> Empty" ] in
+                                   List.find_map (fun (h, hp) -> match h with
+                                     | Mg.App (Mg.App (Mg.Cst "Subq", s'), t) when t = s_nat && s' <> s_nat ->
+                                         Option.map (fun hn -> Printf.sprintf "(neq_Empty_Subq %s %s %s %s)" (ppp s') (ppp t) hp hn) (ne s')
+                                     | _ -> None) g.hyps))
                        else if wrap = "lub" || wrap = "glb" then
                          List.find_map (fun (h, pf) -> match h with
                            | Mg.App (Mg.App (Mg.Cst ("is_lub" | "is_glb" as c), s), x) when s = s_nat && ((c = "is_lub") = (wrap = "lub")) ->
