@@ -1714,13 +1714,23 @@ exact (IMAGE_UNION_bridge hlt_IMAGE_UNION).
 Admitted.
 
 // HOL Light: sets.ml:964 / IMAGE_ID   (hash md5:01b246c997525053fc5b3cc2cf50bc5d)
-// not bridged: 
+Theorem hlt_IMAGE_ID : forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (fun x :e A => x) s = s.
+Admitted.
+Theorem IMAGE_ID_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (fun x :e A => x) s = s) -> (forall A:set, forall s c= A, s = s).
+exact (fun H__top A => (xm (A = Empty) (forall s c= A, s = s) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall s c= hl__u, s = s) (forall_Sub_Empty (fun s => s = s) (fun q H => H)))) (fun HAne => (fun s H__vs => ((Repl_id (s)) (fun hl__u hl__v => hl__u = s) (((imp_forall_sub (A) (fun s => hl_IMAGE A A (fun x :e A => x) s = s) (fun s => {x | x :e s} = s) (fun s Hss => (rep_eq_fwd (A) (hl_IMAGE A A (fun x :e A => x) (hl_chi A s)) (hl_chi A s) ({x | x :e s}) (s) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_rep A (hl_IMAGE A A (fun x :e A => x) (hl_chi A s)) = {x | x :e hl__u}) ((hl_IMAGE_compat) (A) (A) HAne HAne (fun x :e A => x) (lam_Pi (A) (fun _ => A) (fun x => x) (fun x Hx => Hx)) (fun x:set => x) ((fun x Hx => (beta (A) (fun x:set => x) x Hx))) (hl_chi A s) (hl_chi_Pi (A) s))) (hl_rep_chi (A) s Hss)))) (H__top A HAne)) s H__vs)))))).
+Qed.
 Theorem IMAGE_ID : forall A:set, forall s c= A, s = s.
+exact (IMAGE_ID_bridge hlt_IMAGE_ID).
 Admitted.
 
 // HOL Light: sets.ml:968 / IMAGE_I   (hash md5:8eaf7e71839341a7ce6527d0469812cb)
-// not bridged: 
+Theorem hlt_IMAGE_I : forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (hl_I A) s = s.
+Admitted.
+Theorem IMAGE_I_bridge : (forall A:set, A <> Empty -> forall s :e 2 :^: A, hl_IMAGE A A (hl_I A) s = s) -> (forall A:set, forall s c= A, s = s).
+exact (fun H__top A => (xm (A = Empty) (forall s c= A, s = s) (fun HAe => ((eq_sym_i A Empty HAe) (fun hl__u hl__v => forall s c= hl__u, s = s) (forall_Sub_Empty (fun s => s = s) (fun q H => H)))) (fun HAne => (fun s H__vs => ((Repl_id (s)) (fun hl__u hl__v => hl__u = s) (((imp_forall_sub (A) (fun s => hl_IMAGE A A (hl_I A) s = s) (fun s => {x | x :e s} = s) (fun s Hss => (rep_eq_fwd (A) (hl_IMAGE A A (hl_I A) (hl_chi A s)) (hl_chi A s) ({x | x :e s}) (s) ((hl_rep_chi (A) s Hss) (fun hl__u hl__v => hl_rep A (hl_IMAGE A A (hl_I A) (hl_chi A s)) = {x | x :e hl__u}) ((hl_IMAGE_compat) (A) (A) HAne HAne (hl_I A) ((hl_I_in) (A) HAne) (fun x:set => x) (((hl_I_compat) (A) HAne)) (hl_chi A s) (hl_chi_Pi (A) s))) (hl_rep_chi (A) s Hss)))) (H__top A HAne)) s H__vs)))))).
+Qed.
 Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
+exact (IMAGE_I_bridge hlt_IMAGE_I).
 Admitted.
 
 // HOL Light: sets.ml:972 / IMAGE_o   (hash md5:9666e7022fca9e70698bca3379b4251d)

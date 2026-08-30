@@ -7186,3 +7186,10 @@ Qed.
 Theorem hl_INR_compat : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e B, hl_INR B A l1 = Inj1 l1.
 let B A. assume HB HA. let l1. assume H1. exact (beta B (fun y => Inj1 y) l1 H1).
 Qed.
+
+// ---- the identity image ----
+Theorem Repl_id : forall X:set, {x | x :e X} = X.
+let X. apply set_ext.
+- let z. assume Hz. apply (ReplE_impred X (fun x => x) z Hz). let x. assume Hx Hzx. exact ((eq_sym_i z x Hzx) (fun hl__u hl__v => hl__u :e X) Hx).
+- let z. assume Hz. exact (ReplI X (fun x => x) z Hz).
+Qed.

@@ -2200,7 +2200,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let _, rewrites = Rewrite.run nat_stmt in
   (* idx_n_def / idx_def unfold definitions of the native prelude: the rewritten statement is convertible *)
   let convertible = [ "eta"; "idx_n_def"; "idx_def" ] in
-  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one"; "arith" ] @ convertible in
+  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one"; "arith"; "Repl_identity" ] @ convertible in
   (match List.filter (fun r -> not (List.mem r replayable)) rewrites with
    | [] -> ()
    | l -> unsupported "native rewrites %s" (String.concat "," l));
@@ -2250,7 +2250,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   (* replay of the elaborator's closed numeral arithmetic (Num a + Num b, Num a * Num b evaluated; ordsucc (Num a)
      is convertible with Num (a+1)): evaluation proofs by the add_nat / mul_nat recursion, Leibniz on the body *)
   let nat_body, final =
-    if not (List.mem "arith" rewrites) then (nat_body, final)
+    if not (List.mem "arith" rewrites || List.mem "Repl_identity" rewrites) then (nat_body, final)
     else begin
       let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in
       let omega_pf k = Printf.sprintf "(nat_p_omega %d %s)" k (nat_pf k) in
@@ -2266,21 +2266,42 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
         | Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Num a), Mg.Num b) -> Some (t, Mg.Num (a + b), Some (eval_add a b))
         | Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num a), Mg.Num b) -> Some (t, Mg.Num (a * b), Some (eval_mul a b))
         | Mg.App (Mg.Cst "ordsucc", Mg.Num a) -> Some (t, Mg.Num (a + 1), None)
+        | Mg.Repl (x, s, Mg.Var y) when x = y -> Some (t, s, Some (Printf.sprintf "(Repl_id %s)" (ppp s)))
         | Mg.App (f, x) -> (match find f with Some r -> Some r | None -> find x)
         | Mg.Lam (_, _, b) | Mg.All (_, _, b) | Mg.Ex (_, _, b) -> find b
-        | Mg.LamIn (_, a, b) | Mg.AllIn (_, a, b) | Mg.ExIn (_, a, b) | Mg.Sep (_, a, b) | Mg.Repl (_, a, b) -> (match find a with Some r -> Some r | None -> find b)
+        | Mg.LamIn (_, a, b) | Mg.AllIn (_, a, b) | Mg.ExIn (_, a, b) | Mg.Sep (_, a, b) | Mg.Repl (_, a, b)
+        | Mg.AllSub (_, a, b) | Mg.ExSub (_, a, b) | Mg.SigmaIn (_, a, b) | Mg.PiIn (_, a, b) | Mg.FamUnion (_, a, b) -> (match find a with Some r -> Some r | None -> find b)
+        | Mg.SetEnum l | Mg.Tuple l -> List.fold_left (fun acc x -> match acc with Some _ -> acc | None -> find x) None l
         | Mg.ReplSep (_, a, b, c) | Mg.If (a, b, c) -> (match find a with Some r -> Some r | None -> (match find b with Some r -> Some r | None -> find c))
         | Mg.Imp (a, b) -> (match find a with Some r -> Some r | None -> find b)
         | _ -> None) in
+      (* Leibniz transport of pf : t to t[redex := value], applied under the binders that scope the redex's
+         variables (the proof is eta-expanded through forall / -> like the vacuous-binder replay) *)
+      let occurs r t = replace_tm r (Mg.Var "hl__u") t <> t in
+      let rec rewrite_under redex value pe (t : Mg.tm) (pf : string) : Mg.tm * string =
+        let leib t pf = (replace_tm redex value t, Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm redex (Mg.Var "hl__u") t)) pf) in
+        (match t with
+         | Mg.All (x, ty, b) when occurs redex b ->
+             let b', pb = rewrite_under redex value pe b (Printf.sprintf "(%s %s)" pf x) in
+             (Mg.All (x, ty, b'), Printf.sprintf "(fun %s => %s)" x pb)
+         | Mg.AllIn (x, a, b) when occurs redex b && not (occurs redex a) ->
+             let b', pb = rewrite_under redex value pe b (Printf.sprintf "(%s %s H__v%s)" pf x x) in
+             (Mg.AllIn (x, a, b'), Printf.sprintf "(fun %s H__v%s => %s)" x x pb)
+         | Mg.AllSub (x, a, b) when occurs redex b && not (occurs redex a) ->
+             let b', pb = rewrite_under redex value pe b (Printf.sprintf "(%s %s H__v%s)" pf x x) in
+             (Mg.AllSub (x, a, b'), Printf.sprintf "(fun %s H__v%s => %s)" x x pb)
+         | Mg.Imp (h, b) when occurs redex b && not (occurs redex h) ->
+             let b', pb = rewrite_under redex value pe b (Printf.sprintf "(%s H__i%d)" pf (String.length pf)) in
+             (Mg.Imp (h, b'), Printf.sprintf "(fun H__i%d => %s)" (String.length pf) pb)
+         | _ -> leib t pf) in
       let rec loop body pf k =
         if k > 200 then unsupported "arith replay: too many steps" else
         match find body with
         | None -> (body, pf)
         | Some (redex, value, proof) ->
-            let body' = replace_tm redex value body in
             (match proof with
-             | None -> loop body' pf (k + 1)
-             | Some pe -> loop body' (Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm redex (Mg.Var "hl__u") body)) pf) (k + 1)) in
+             | None -> loop (replace_tm redex value body) pf (k + 1)
+             | Some pe -> let body', pf' = rewrite_under redex value pe body pf in loop body' pf' (k + 1)) in
       let body', pf' = loop nat_body final 0 in
       let target = fst (Rewrite.run nat_body) in
       if not (alpha_eq body' target) then unsupported "arith replay: %s vs %s" (pp body') (pp target);
