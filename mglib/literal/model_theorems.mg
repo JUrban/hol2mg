@@ -538,3 +538,22 @@ apply iffI.
     exact (eq_trans_i (hl_real_mul x y) (x * y) (hl_real_mul x z) (hl_real_mul_compat x Hx y Hy) (eq_trans_i (x * y) 0 (hl_real_mul x z) (eq_trans_i (x * y) (0 * y) 0 (f_equal (fun u => u * y) x 0 Hx0) (mul_SNo_zeroL y HSy)) (eq_sym_i (hl_real_mul x z) 0 (eq_trans_i (hl_real_mul x z) (x * z) 0 (hl_real_mul_compat x Hx z Hz) (eq_trans_i (x * z) (0 * z) 0 (f_equal (fun u => u * z) x 0 Hx0) (mul_SNo_zeroL z HSz)))))).
   + assume Hyz. exact (f_equal (fun u => hl_real_mul x u) y z Hyz).
 Qed.
+
+// ---- REAL_LT_IMP_NZ, REAL_LT_INV (pilot round 8 blockers) ----
+Theorem hlt_REAL_LT_IMP_NZ_model : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> ~ x = hl_real_of_num (hl_NUMERAL hl_zero).
+let x. assume Hx H.
+claim HaR: hl_real_of_num (hl_NUMERAL hl_zero) :e R. { exact ((eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 real_zero_numeral) (fun u v => u :e R) real_0). }
+claim H0x: 0 < x. { exact (real_zero_numeral (fun u v => u < x) (iffEL (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (hl_real_of_num (hl_NUMERAL hl_zero) < x) (hl_real_lt_compat (hl_real_of_num (hl_NUMERAL hl_zero)) HaR x Hx) H)). }
+assume Hx0.
+claim Hx00: x = 0. { exact (eq_trans_i x (hl_real_of_num (hl_NUMERAL hl_zero)) 0 Hx0 real_zero_numeral). }
+exact (SNoLt_irref 0 (Hx00 (fun u v => 0 < u) H0x)).
+Qed.
+Theorem hlt_REAL_LT_INV_model : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1.
+let x. assume Hx H.
+claim HaR: hl_real_of_num (hl_NUMERAL hl_zero) :e R. { exact ((eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 real_zero_numeral) (fun u v => u :e R) real_0). }
+claim H0x: 0 < x. { exact (real_zero_numeral (fun u v => u < x) (iffEL (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (hl_real_of_num (hl_NUMERAL hl_zero) < x) (hl_real_lt_compat (hl_real_of_num (hl_NUMERAL hl_zero)) HaR x Hx) H)). }
+claim Hpos: 0 < recip_SNo x. { exact (recip_SNo_of_pos_is_pos x (real_SNo x Hx) H0x). }
+claim HinvR: hl_real_inv x :e R. { exact ((eq_sym_i (hl_real_inv x) (recip_SNo x) (hl_real_inv_compat x Hx)) (fun u v => u :e R) (real_recip_SNo x Hx)). }
+claim Hlt: hl_real_of_num (hl_NUMERAL hl_zero) < hl_real_inv x. { exact ((eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 real_zero_numeral) (fun u v => u < hl_real_inv x) ((eq_sym_i (hl_real_inv x) (recip_SNo x) (hl_real_inv_compat x Hx)) (fun u v => 0 < u) Hpos)). }
+exact (iffER (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1) (hl_real_of_num (hl_NUMERAL hl_zero) < hl_real_inv x) (hl_real_lt_compat (hl_real_of_num (hl_NUMERAL hl_zero)) HaR (hl_real_inv x) HinvR) Hlt).
+Qed.
