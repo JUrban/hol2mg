@@ -515,40 +515,46 @@ let () =
               Printf.fprintf oc "// hol2mg certification module (private): shard %s of profile %s.\n// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),\n// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,\n// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.\n\n" shard profile;
               List.iter (fun ((i : Manifest.item), o) ->
                 Printf.fprintf oc "// HOL Light: %s%s / %s   (hash md5:%s)\n" i.Manifest.src_file (if i.Manifest.src_line > 0 then ":" ^ string_of_int i.Manifest.src_line else "") i.Manifest.source_name i.Manifest.hash;
+                (* proof import (docs/DESIGN.md 22): independent of the bridge; emits the leaves, hltu_N and, when the
+                   literal statement exists, hlt_N by coherence; returns whether hlt_N is Qed *)
+                let import_here () =
+                  let imported = (match Hashtbl.find_opt proof_by_name i.Manifest.source_name with
+                    | Some pr when (import_only = [] || List.mem i.Manifest.source_name import_only) && not (Hashtbl.mem declared ("hltu_" ^ i.Manifest.name)) ->
+                        (match Hashtbl.find_opt thm_by_name i.Manifest.source_name with
+                         | Some th -> (try Some (Proofimport.import an thm_name_fn pr th.seq)
+                                       with Proofimport.Import_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": " ^ m); None
+                                          | Failure m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": failure " ^ m); None)
+                         | None -> None)
+                    | _ -> None) in
+                  (match imported with
+                   | Some r ->
+                       List.iter (fun (ln, st) -> if not (Hashtbl.mem declared ln) then begin Hashtbl.replace declared ln false; Printf.fprintf oc "Theorem %s : %s.\nAdmitted.\n" ln st end) r.Proofimport.leaf_stmts;
+                       let all_proved = List.for_all (fun (ln, _) -> Hashtbl.find declared ln) r.Proofimport.leaf_stmts in
+                       Hashtbl.replace declared ("hltu_" ^ i.Manifest.name) all_proved;
+                       Hashtbl.replace imported_tbl i.Manifest.name r.Proofimport.leaf_names;
+                       (* Megalodon refuses Qed for a proof depending on an admitted leaf: the checked derivation is then admitted *)
+                       let ending = if all_proved then "Qed" else "Admitted" in
+                       Printf.fprintf oc "%s" (if all_proved then r.Proofimport.uniform else Str.global_replace (Str.regexp_string "\nQed.\n") "\nAdmitted.\n" r.Proofimport.uniform);
+                       if i.Manifest.literal <> "" then Printf.fprintf oc "Theorem hlt_%s : %s.\nexact %s.\n%s.\n" i.Manifest.name i.Manifest.literal r.Proofimport.discharge ending;
+                       Some all_proved
+                   | None -> None) in
                 match o with
                 | Some o ->
                     let norm_lit = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' i.Manifest.literal)) in
                     let proved_model = (match Hashtbl.find_opt model ("hlt_" ^ i.Manifest.name ^ "_model") with Some st -> st = norm_lit | None -> false) in
-                    let imported = (match Hashtbl.find_opt proof_by_name i.Manifest.source_name with
-                      | Some pr when (import_only = [] || List.mem i.Manifest.source_name import_only) && not (Hashtbl.mem declared ("hltu_" ^ i.Manifest.name)) ->
-                          (match Hashtbl.find_opt thm_by_name i.Manifest.source_name with
-                           | Some th -> (try Some (Proofimport.import an thm_name_fn pr th.seq)
-                                         with Proofimport.Import_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": " ^ m); None
-                                            | Failure m -> prerr_endline ("proof import " ^ i.Manifest.name ^ ": failure " ^ m); None)
-                           | None -> None)
-                      | _ -> None) in
-                    let proved = ref proved_model in
-                    (match imported with
-                     | Some r ->
-                         (* leaves: declared in this shard as proved (imported earlier) or admitted *)
-                         List.iter (fun (ln, st) -> if not (Hashtbl.mem declared ln) then begin Hashtbl.replace declared ln false; Printf.fprintf oc "Theorem %s : %s.\nAdmitted.\n" ln st end) r.Proofimport.leaf_stmts;
-                         let all_proved = List.for_all (fun (ln, _) -> Hashtbl.find declared ln) r.Proofimport.leaf_stmts in
-                         Hashtbl.replace declared ("hltu_" ^ i.Manifest.name) all_proved;
-                         Hashtbl.replace imported_tbl i.Manifest.name r.Proofimport.leaf_names;
-                         (* Megalodon refuses Qed for a proof depending on an admitted leaf: the checked derivation is then admitted *)
-                         proved := all_proved;
-                         let ending = if all_proved then "Qed" else "Admitted" in
-                         Printf.fprintf oc "%s" (if all_proved then r.Proofimport.uniform else Str.global_replace (Str.regexp_string "\nQed.\n") "\nAdmitted.\n" r.Proofimport.uniform);
-                         Printf.fprintf oc "Theorem hlt_%s : %s.\nexact %s.\n%s.\n" i.Manifest.name i.Manifest.literal r.Proofimport.discharge ending
-                     | None ->
-                         if proved_model then begin
-                           Hashtbl.replace lit_proved i.Manifest.name ();
-                           Printf.fprintf oc "Theorem hlt_%s : %s.\nexact hlt_%s_model.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.name
-                         end else
-                           Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal);
+                    let proved = (match import_here () with
+                      | Some all_proved -> all_proved
+                      | None ->
+                          if proved_model then begin
+                            Hashtbl.replace lit_proved i.Manifest.name ();
+                            Printf.fprintf oc "Theorem hlt_%s : %s.\nexact hlt_%s_model.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.name
+                          end else
+                            Printf.fprintf oc "Theorem hlt_%s : %s.\nAdmitted.\n" i.Manifest.name i.Manifest.literal;
+                          proved_model) in
                     Printf.fprintf oc "Theorem %s_bridge : (%s) -> (%s).\nexact %s.\nQed.\n" i.Manifest.name i.Manifest.literal i.Manifest.statement o.Bridge.proof;
-                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\n%s.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name (if !proved then "Qed" else "Admitted")
+                    Printf.fprintf oc "Theorem %s : %s.\nexact (%s_bridge hlt_%s).\n%s.\n\n" i.Manifest.name i.Manifest.statement i.Manifest.name i.Manifest.name (if proved then "Qed" else "Admitted")
                 | None ->
+                    ignore (import_here ());
                     Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement) l;
               close_out oc) by_shard;
             List.map (fun (i : Manifest.item) ->

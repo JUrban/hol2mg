@@ -1469,4 +1469,10 @@ is larger than the claim.
 2. Exporter — done.
 3. Uniform layer and coherence lemmas — done.
 4. Importer and emission — done (all kernel rules).
-5. Pilot run on the ≤ 1 000-node theorems — running; results in report 16.
+5. Pilot run on the ≤ 1 000-node theorems (2026-08-30, first full run): all 23 certification
+   shards with imported proofs check (439 MB, 4 jobs, about 45 minutes; the largest shard, `int`,
+   needs 4 GB); 1 365 of the 1 387 exported proofs import, 1 093 of them for transport-checked
+   theorems; only 17 theorems were `fully_proved` in that run because imports were emitted for
+   bridged theorems only, so most leaf chains ended in an admitted `hltu_M` — imports are now
+   emitted for every theorem with a recorded proof and the closure is computed on the uniform layer;
+   second run pending (report 16).
