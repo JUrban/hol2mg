@@ -982,3 +982,7 @@ let t p. assume Ht Hiff. apply (xm p).
   + assume Ht0. exact (eq_trans_i t 0 (if p then 1 else 0) Ht0 (eq_sym_i (if p then 1 else 0) 0 H0)).
   + assume Ht1. apply Hiff. assume H1 _. exact (FalseE (Hnp (H1 Ht1)) (t = if p then 1 else 0)).
 Qed.
+// ---- index sets of cart.ml (docs/DESIGN.md 21.9) ----
+Theorem idx_of_bounds : forall N:set, forall i :e omega, 1 <= i /\ i <= dimindex N -> i :e idx N.
+let N i. assume Hi H. exact (SepI omega (fun j => 1 <= j /\ j <= dimindex N) i Hi H).
+Qed.

@@ -858,7 +858,7 @@ Definition hl_dest_finite_image : set -> set :=
 Definition hl_ty_cart : set -> set -> set :=
   fun A:set => fun B:set => {x :e A :^: hl_ty_finite_image B | (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0) x = 1}.
 Definition hl_mk_cart : set -> set -> set :=
-  fun A:set => fun B:set => hl_subtype_abs (A :^: hl_ty_finite_image B) (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0).
+  fun B:set => fun A:set => hl_subtype_abs (A :^: hl_ty_finite_image B) (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0).
 Definition hl_dest_cart : set -> set -> set :=
   fun A:set => fun B:set => hl_subtype_rep (A :^: hl_ty_finite_image B) (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0).
 

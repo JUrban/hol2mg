@@ -1,0 +1,264 @@
+// ---- stage 2 compat lemmas (docs/DESIGN.md 21.9): the constants of cart.ml ----
+// finite_index N (the abs of finite_image) is the identity on the index range 1..dimindex N.
+Theorem hl_finite_index_compat : forall N:set, N <> Empty -> forall l1 :e omega, l1 :e idx N -> hl_finite_index N l1 = l1.
+let N. assume HN. let l1. assume Hl1 Hidx.
+claim Hsub: l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))). { exact ((eq_sym_i (hl_ty_finite_image N) (idx N) (hl_ty_finite_image_native N HN)) (fun u v => l1 :e u) Hidx). }
+exact (eq_trans_i (hl_finite_index N l1) (if l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) then l1 else if 0 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) then 0 else choose_in (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) (fun _ => True)) l1 (beta omega (fun x => if x :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) then x else if 0 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) then 0 else choose_in (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) (fun _ => True)) l1 Hl1) (If_i_1 (l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N)))))) l1 (if 0 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) then 0 else choose_in (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) (fun _ => True)) Hsub)).
+Qed.
+Theorem hl_dest_finite_image_compat : forall N:set, N <> Empty -> forall l1 :e idx N, hl_dest_finite_image N l1 = l1.
+let N. assume HN. let l1. assume Hidx.
+claim Hsub: l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))). { exact ((eq_sym_i (hl_ty_finite_image N) (idx N) (hl_ty_finite_image_native N HN)) (fun u v => l1 :e u) Hidx). }
+exact (beta (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex N (hl_UNIV N))))) (fun x => x) l1 Hsub).
+Qed.
+// mk_cart / dest_cart are identities on A :^: idx N.
+Theorem hl_mk_cart_compat : forall N A:set, N <> Empty -> A <> Empty -> forall l1 :e A :^: idx N, hl_mk_cart N A l1 = l1.
+let N A. assume HN HA. let l1. assume Hl1.
+claim HD: l1 :e (A :^: hl_ty_finite_image N). { exact ((eq_sym_i (hl_ty_finite_image N) (idx N) (hl_ty_finite_image_native N HN)) (fun u v => l1 :e A :^: u) Hl1). }
+claim Hsub: l1 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)). { exact ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) (hl_ty_cart_native A N HA HN)) (fun u v => l1 :e u) Hl1). }
+exact (eq_trans_i (hl_mk_cart N A l1) (if l1 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) then l1 else if 0 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) then 0 else choose_in (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) (fun _ => True)) l1 (beta (A :^: hl_ty_finite_image N) (fun x => if x :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) then x else if 0 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) then 0 else choose_in (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) (fun _ => True)) l1 HD) (If_i_1 (l1 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0))) l1 (if 0 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) then 0 else choose_in (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) (fun _ => True)) Hsub)).
+Qed.
+Theorem hl_dest_cart_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: idx N, hl_dest_cart A N l1 = l1.
+let A N. assume HA HN. let l1. assume Hl1.
+claim Hsub: l1 :e (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)). { exact ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) (hl_ty_cart_native A N HA HN)) (fun u v => l1 :e u) Hl1). }
+exact (beta (hl_subtype (A :^: hl_ty_finite_image N) (fun r :e (A :^: hl_ty_finite_image N) => if True then 1 else 0)) (fun x => x) l1 Hsub).
+Qed.
+// $ : the component l1 l2 of a vector, for an index in the range.
+Theorem hl_vindex_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: idx N, forall l2 :e omega, l2 :e idx N -> hl_vindex A N l1 l2 = l1 l2.
+let A N. assume HA HN. let l1. assume Hl1. let l2. assume Hl2 Hidx.
+claim Hc: l1 :e hl_ty_cart A N. { exact ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) (hl_ty_cart_native A N HA HN)) (fun u v => l1 :e u) Hl1). }
+claim Hu: hl_vindex A N l1 l2 = hl_dest_cart A N l1 (hl_finite_index N l2). { exact (hl_vindex_unfold A N l1 Hc l2 Hl2). }
+claim Hfi: hl_finite_index N l2 = l2. { exact (hl_finite_index_compat N HN l2 Hl2 Hidx). }
+claim Hdc: hl_dest_cart A N l1 = l1. { exact (hl_dest_cart_compat A N HA HN l1 Hl1). }
+exact (eq_trans_i (hl_vindex A N l1 l2) (hl_dest_cart A N l1 (hl_finite_index N l2)) (l1 l2) Hu (f_equal2 (fun f x => f x) (hl_dest_cart A N l1) l1 (hl_finite_index N l2) l2 Hdc Hfi)).
+Qed.
+// lambda: the vector with the given components (a choice in HOL Light) is the native lambda over idx N.
+Theorem hl_lambda_compat_idx : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e idx N, l1 x = f1 x) -> hl_lambda A N l1 = fun i :e idx N => f1 i.
+let A N. assume HA HN. let l1. assume Hl1. let f1. assume Hpw.
+claim Hcart: (hl_ty_cart A N) = A :^: idx N. { exact (hl_ty_cart_native A N HA HN). }
+claim Hn1: (hl_NUMERAL (hl_BIT1 hl_zero)) = 1. { exact hl_one_numeral. }
+claim Hd: (hl_dimindex N (hl_UNIV N)) = dimindex N. { exact (hl_dimindex_compat N HN (hl_UNIV N) (hl_UNIV_in N HN)). }
+claim Hdo: (hl_dimindex N (hl_UNIV N)) :e omega. { exact (setexp_ap (2 :^: N) omega (hl_dimindex N) (hl_dimindex_in N HN) (hl_UNIV N) (hl_UNIV_in N HN)). }
+claim Hidx: forall i :e omega, (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1) <-> i :e idx N.
+{ let i. assume Hi. apply iffI.
+  - assume H. apply H. assume H1 H2.
+    claim Hb1: 1 <= i. { exact ((Hn1) (fun u v => u <= i) (iffEL (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1) ((hl_NUMERAL (hl_BIT1 hl_zero)) <= i) (hl_le_compat (hl_NUMERAL (hl_BIT1 hl_zero)) (nat_p_omega (hl_NUMERAL (hl_BIT1 hl_zero)) (Hn1 (fun u v => nat_p v) nat_1)) i Hi) H1)). }
+    claim Hb2: i <= dimindex N. { exact ((Hd) (fun u v => i <= u) (iffEL (hl_le i (hl_dimindex N (hl_UNIV N)) = 1) (i <= (hl_dimindex N (hl_UNIV N))) (hl_le_compat i Hi (hl_dimindex N (hl_UNIV N)) Hdo) H2)). }
+    exact (idx_of_bounds N i Hi (andI (1 <= i) (i <= dimindex N) Hb1 Hb2)).
+  - assume H. apply andI.
+    + exact (iffER (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1) ((hl_NUMERAL (hl_BIT1 hl_zero)) <= i) (hl_le_compat (hl_NUMERAL (hl_BIT1 hl_zero)) (nat_p_omega (hl_NUMERAL (hl_BIT1 hl_zero)) (Hn1 (fun u v => nat_p v) nat_1)) i Hi) ((eq_sym_i (hl_NUMERAL (hl_BIT1 hl_zero)) 1 Hn1) (fun u v => u <= i) (andEL (1 <= i) (i <= dimindex N) (SepE2 omega (fun j => 1 <= j /\ j <= dimindex N) i H)))).
+    + exact (iffER (hl_le i (hl_dimindex N (hl_UNIV N)) = 1) (i <= (hl_dimindex N (hl_UNIV N))) (hl_le_compat i Hi (hl_dimindex N (hl_UNIV N)) Hdo) ((eq_sym_i (hl_dimindex N (hl_UNIV N)) (dimindex N) Hd) (fun u v => i <= u) (andER (1 <= i) (i <= dimindex N) (SepE2 omega (fun j => 1 <= j /\ j <= dimindex N) i H)))). }
+claim Hg: (fun i :e idx N => f1 i) :e (hl_ty_cart A N).
+{ rewrite Hcart. exact (lam_Pi (idx N) (fun _ => A) (fun i => f1 i) (fun i Hi => (Hpw i Hi) (fun u v => u :e A) (setexp_ap omega A l1 Hl1 i (SepE1 omega (fun j => 1 <= j /\ j <= dimindex N) i Hi)))). }
+claim HP: (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) :e 2 :^: (hl_ty_cart A N).
+{ exact (lam_Pi (hl_ty_cart A N) (fun _ => 2) (fun f => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) (fun f Hf => (If_i_or (forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i) 1 0) ((if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) :e 2) (fun H1 => (eq_sym_i (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) 1 H1) (fun u v => u :e 2) In_1_2) (fun H0 => (eq_sym_i (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) 0 H0) (fun u v => u :e 2) In_0_2))). }
+claim Hsat: forall f :e (hl_ty_cart A N), (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f = 1 -> forall i :e idx N, f i = f1 i.
+{ let f. assume Hf H1. let i. assume Hi.
+  claim Hio: i :e omega. { exact (SepE1 omega (fun j => 1 <= j /\ j <= dimindex N) i Hi). }
+  claim Hif1: (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) = 1.
+  { exact (eq_trans_i (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) ((fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f) 1 (eq_sym_i ((fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f) (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) (beta (hl_ty_cart A N) (fun f => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f Hf)) H1). }
+  claim Hc: forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i.
+  { exact ((xm (forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i)) (forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i) (fun H2 => H2) (fun Hn => (neq_1_0 (eq_trans_i 1 (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) 0 (eq_sym_i (if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) 1 Hif1) (If_i_0 (forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i) 1 0 Hn))) (forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i))). }
+  claim Hfn: f :e A :^: idx N. { exact (Hcart (fun u v => f :e u) Hf). }
+  claim Hvi: hl_vindex A N f i = l1 i. { exact (Hc i Hio (iffER (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1) (i :e idx N) (Hidx i Hio) Hi)). }
+  exact (eq_trans_i (f i) (hl_vindex A N f i) (f1 i) (eq_sym_i (hl_vindex A N f i) (f i) (hl_vindex_compat A N HA HN f Hfn i Hio Hi)) (eq_trans_i (hl_vindex A N f i) (l1 i) (f1 i) Hvi (Hpw i Hi))). }
+claim Hgood: (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) (fun i :e idx N => f1 i) = 1.
+{ rewrite (beta (hl_ty_cart A N) (fun f => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) (fun i :e idx N => f1 i) Hg). apply (If_i_1 (forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N (fun i :e idx N => f1 i) i = l1 i) 1 0).
+  let i. assume Hio H. 
+  claim Hi: i :e idx N. { exact (iffEL (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1) (i :e idx N) (Hidx i Hio) H). }
+  claim Hgn: (fun i :e idx N => f1 i) :e A :^: idx N. { exact (Hcart (fun u v => (fun i :e idx N => f1 i) :e u) Hg). }
+  exact (eq_trans_i (hl_vindex A N (fun i :e idx N => f1 i) i) ((fun i :e idx N => f1 i) i) (l1 i) (hl_vindex_compat A N HA HN (fun i :e idx N => f1 i) Hgn i Hio Hi) (eq_trans_i ((fun i :e idx N => f1 i) i) (f1 i) (l1 i) (beta (idx N) (fun i => f1 i) i Hi) (eq_sym_i (l1 i) (f1 i) (Hpw i Hi)))). }
+claim Huniq: forall f :e (hl_ty_cart A N), (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f = 1 -> f = (fun i :e idx N => f1 i).
+{ let f. assume Hf Hf1.
+  claim Hfn: f :e A :^: idx N. { exact (Hcart (fun u v => f :e u) Hf). }
+  claim Hgn: (fun i :e idx N => f1 i) :e A :^: idx N. { exact (Hcart (fun u v => (fun i :e idx N => f1 i) :e u) Hg). }
+  apply (Pi_ext (idx N) (fun _ => A) f Hfn (fun i :e idx N => f1 i) Hgn). let i. assume Hi.
+  exact (eq_trans_i (f i) (f1 i) ((fun i :e idx N => f1 i) i) (Hsat f Hf Hf1 i Hi) (eq_sym_i ((fun i :e idx N => f1 i) i) (f1 i) (beta (idx N) (fun i => f1 i) i Hi))). }
+claim Hsel: hl_lambda A N l1 = choose_in (hl_ty_cart A N) (fun f => (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f = 1).
+{ exact (eq_trans_i (hl_lambda A N l1) (hl_select (hl_ty_cart A N) (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0)) (choose_in (hl_ty_cart A N) (fun f => (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f = 1)) (hl_lambda_unfold A N l1 Hl1) (hl_select_eq (hl_ty_cart A N) (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) HP)). }
+exact (eq_trans_i (hl_lambda A N l1) (choose_in (hl_ty_cart A N) (fun f => (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f = 1)) (fun i :e idx N => f1 i) Hsel (choose_in_unique (hl_ty_cart A N) (fun f => (fun f :e (hl_ty_cart A N) => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> hl_vindex A N f i = l1 i then 1 else 0) f = 1) (fun i :e idx N => f1 i) Hg Hgood Huniq)).
+Qed.
+Theorem hl_lambda_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e omega, l1 x = f1 x) -> hl_lambda A N l1 = fun i :e idx N => f1 i.
+let A N. assume HA HN. let l1. assume Hl1. let f1. assume Hpw.
+exact (hl_lambda_compat_idx A N HA HN l1 Hl1 f1 (fun i Hi => Hpw i (SepE1 omega (fun j => 1 <= j /\ j <= dimindex N) i Hi))).
+Qed.
+// index shift of the second block of pastecart: i in (dimindex M, dimindex M + dimindex N] gives i - dimindex M in idx N
+Theorem idx_shift : forall M N:set, forall i :e omega, ~ (i <= dimindex M) -> i <= dimindex M + dimindex N -> minus_nat i (dimindex M) :e idx N.
+let M N i. assume Hi Hn Hle.
+claim HdM: dimindex M :e omega. { exact (dimindex_omega M). }
+claim HdN: dimindex N :e omega. { exact (dimindex_omega N). }
+claim HSi: SNo i. { exact (omega_SNo i Hi). }
+claim HSM: SNo (dimindex M). { exact (omega_SNo (dimindex M) HdM). }
+claim HSN: SNo (dimindex N). { exact (omega_SNo (dimindex N) HdN). }
+claim Hlt: dimindex M < i. { exact ((SNoLtLe_or (dimindex M) i HSM HSi) (dimindex M < i) (fun H => H) (fun H => (Hn H) (dimindex M < i))). }
+claim Hmem: dimindex M :e i. { exact (ordinal_SNoLt_In (dimindex M) i (nat_p_ordinal (dimindex M) (omega_nat_p (dimindex M) HdM)) (nat_p_ordinal i (omega_nat_p i Hi)) Hlt). }
+claim Hsucc: ordsucc (dimindex M) <= i. { exact (ordinal_Subq_SNoLe (ordsucc (dimindex M)) i (ordinal_ordsucc (dimindex M) (nat_p_ordinal (dimindex M) (omega_nat_p (dimindex M) HdM))) (nat_p_ordinal i (omega_nat_p i Hi)) (ordinal_ordsucc_In_Subq i (nat_p_ordinal i (omega_nat_p i Hi)) (dimindex M) Hmem)). }
+claim Hs1: dimindex M + 1 <= i. { exact ((eq_sym_i (dimindex M + 1) (ordsucc (dimindex M)) (add_SNo_1_ordsucc (dimindex M) HdM)) (fun u v => u <= i) Hsucc). }
+claim H1s: 1 + dimindex M <= i. { exact ((add_SNo_com (dimindex M) 1 HSM SNo_1) (fun u v => u <= i) Hs1). }
+claim Hmn: minus_nat i (dimindex M) = i + - dimindex M. { exact (If_i_1 (dimindex M <= i) (i + - dimindex M) 0 (SNoLtLe (dimindex M) i Hlt)). }
+claim Hlo: 1 <= i + - dimindex M. { exact (add_SNo_minus_Le2b i (dimindex M) 1 HSi HSM SNo_1 H1s). }
+claim Hle2: i <= dimindex N + dimindex M. { exact ((add_SNo_com (dimindex M) (dimindex N) HSM HSN) (fun u v => i <= u) Hle). }
+claim Hhi: i + - dimindex M <= dimindex N. { exact (add_SNo_minus_Le1b i (dimindex M) (dimindex N) HSi HSM HSN Hle2). }
+claim Ho: i + - dimindex M :e omega. { exact (Hmn (fun u v => u :e omega) (minus_nat_omega i Hi (dimindex M) HdM)). }
+exact ((eq_sym_i (minus_nat i (dimindex M)) (i + - dimindex M) Hmn) (fun u v => u :e idx N) (idx_of_bounds N (i + - dimindex M) Ho (andI (1 <= i + - dimindex M) (i + - dimindex M <= dimindex N) Hlo Hhi))).
+Qed.
+// mk_finite_sum / dest_finite_sum: identities on the index range 1..dimindex A + dimindex B.
+Theorem hl_mk_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, l1 :e idx_n (dimindex A + dimindex B) -> hl_mk_finite_sum A B l1 = l1.
+let A B. assume HA HB. let l1. assume Hl1 Hidx.
+claim Hsub: l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))). { exact ((eq_sym_i (hl_ty_finite_sum A B) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native A B HA HB)) (fun u v => l1 :e u) Hidx). }
+exact (eq_trans_i (hl_mk_finite_sum A B l1) (if l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) then l1 else if 0 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) then 0 else choose_in (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) (fun _ => True)) l1 (beta omega (fun x => if x :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) then x else if 0 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) then 0 else choose_in (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) (fun _ => True)) l1 Hl1) (If_i_1 (l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))))) l1 (if 0 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) then 0 else choose_in (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) (fun _ => True)) Hsub)).
+Qed.
+Theorem hl_dest_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e idx_n (dimindex A + dimindex B), hl_dest_finite_sum A B l1 = l1.
+let A B. assume HA HB. let l1. assume Hidx.
+claim Hsub: l1 :e (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))). { exact ((eq_sym_i (hl_ty_finite_sum A B) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native A B HA HB)) (fun u v => l1 :e u) Hidx). }
+exact (beta (hl_subtype omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))) (fun x => x) l1 Hsub).
+Qed.
+// pastecart: concatenation of two vectors is the native pastecart (blockwise on the index range).
+Theorem hl_pastecart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx M, forall l2 :e A :^: idx N, hl_pastecart A M N l1 l2 = pastecart M N l1 l2.
+let A M N. assume HA HM HN. let l1. assume Hl1. let l2. assume Hl2.
+claim Hc1: l1 :e hl_ty_cart A M. { exact ((eq_sym_i (hl_ty_cart A M) (A :^: idx M) (hl_ty_cart_native A M HA HM)) (fun u v => l1 :e u) Hl1). }
+claim Hc2: l2 :e hl_ty_cart A N. { exact ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) (hl_ty_cart_native A N HA HN)) (fun u v => l2 :e u) Hl2). }
+claim HdM: (hl_dimindex M (hl_UNIV M)) = dimindex M. { exact (hl_dimindex_compat M HM (hl_UNIV M) (hl_UNIV_in M HM)). }
+claim HdMo: (hl_dimindex M (hl_UNIV M)) :e omega. { exact (setexp_ap (2 :^: M) omega (hl_dimindex M) (hl_dimindex_in M HM) (hl_UNIV M) (hl_UNIV_in M HM)). }
+claim Hs: (dimindex M + dimindex N) :e omega. { exact (add_SNo_In_omega (dimindex M) (dimindex_omega M) (dimindex N) (dimindex_omega N)). }
+claim Hfs: hl_ty_finite_sum M N = (idx_n (dimindex M + dimindex N)). { exact (hl_ty_finite_sum_native M N HM HN). }
+claim Hu: hl_pastecart A M N l1 l2 = hl_lambda A (hl_ty_finite_sum M N) (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))). { exact (hl_pastecart_unfold A M N l1 Hc1 l2 Hc2). }
+claim Hu2: hl_pastecart A M N l1 l2 = hl_lambda A (idx_n (dimindex M + dimindex N)) (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))). { exact (Hfs (fun u v => hl_pastecart A M N l1 l2 = hl_lambda A u (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M)))))) Hu). }
+claim HL: (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) :e A :^: omega.
+{ exact (lam_Pi omega (fun _ => A) (fun i => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) (fun i Hi => setexp_ap A A (hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i)) (setexp_ap A (A :^: A) (hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M)))) (setexp_ap 2 (A :^: A :^: A) (hl_COND A) (hl_COND_in A HA) (hl_le i (hl_dimindex M (hl_UNIV M))) (setexp_ap omega 2 (hl_le i) (setexp_ap omega (2 :^: omega) hl_le hl_le_in i Hi) (hl_dimindex M (hl_UNIV M)) HdMo)) (hl_vindex A M l1 i) (setexp_ap omega A (hl_vindex A M l1) (setexp_ap (A :^: idx M) (A :^: omega) (hl_vindex A M) (hl_vindex_in A M HA HM) l1 Hl1) i Hi)) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M)))) (setexp_ap omega A (hl_vindex A N l2) (setexp_ap (A :^: idx N) (A :^: omega) (hl_vindex A N) (hl_vindex_in A N HA HN) l2 Hl2) (hl_sub i (hl_dimindex M (hl_UNIV M))) (setexp_ap omega omega (hl_sub i) (setexp_ap omega (omega :^: omega) hl_sub hl_sub_in i Hi) (hl_dimindex M (hl_UNIV M)) HdMo)))). }
+claim Hne: (idx_n (dimindex M + dimindex N)) <> Empty. { exact (hl_ty_finite_sum_native_nonempty M N HM HN). }
+claim Hpw: forall i :e idx (idx_n (dimindex M + dimindex N)), (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) i = (fun i:set => if i <= dimindex M then l1 i else l2 (minus_nat i (dimindex M))) i.
+{ let i. assume Hi0.
+  claim Hi: i :e (idx_n (dimindex M + dimindex N)). { exact ((idx_idx_n (dimindex M + dimindex N) Hs) (fun u v => i :e u) Hi0). }
+  claim Hio: i :e omega. { exact (SepE1 omega (fun j => 1 <= j /\ j <= (dimindex M + dimindex N)) i Hi). }
+  claim Hb: 1 <= i /\ i <= (dimindex M + dimindex N). { exact (SepE2 omega (fun j => 1 <= j /\ j <= (dimindex M + dimindex N)) i Hi). }
+  claim Hbeta: (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) i = hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M)))). { exact (beta omega (fun i => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) i Hio). }
+  claim Hle2: hl_le i (hl_dimindex M (hl_UNIV M)) :e 2. { exact (setexp_ap omega 2 (hl_le i) (setexp_ap omega (2 :^: omega) hl_le hl_le_in i Hio) (hl_dimindex M (hl_UNIV M)) HdMo). }
+  claim Hiff: hl_le i (hl_dimindex M (hl_UNIV M)) = 1 <-> i <= dimindex M. { rewrite HdM. exact (hl_le_compat i Hio (dimindex M) (dimindex_omega M)). }
+  claim Hv1: hl_vindex A M l1 i :e A. { exact (setexp_ap omega A (hl_vindex A M l1) (setexp_ap (A :^: idx M) (A :^: omega) (hl_vindex A M) (hl_vindex_in A M HA HM) l1 Hl1) i Hio). }
+  claim Hsubo: hl_sub i (hl_dimindex M (hl_UNIV M)) :e omega. { exact (setexp_ap omega omega (hl_sub i) (setexp_ap omega (omega :^: omega) hl_sub hl_sub_in i Hio) (hl_dimindex M (hl_UNIV M)) HdMo). }
+  claim Hv2: hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))) :e A. { exact (setexp_ap omega A (hl_vindex A N l2) (setexp_ap (A :^: idx N) (A :^: omega) (hl_vindex A N) (hl_vindex_in A N HA HN) l2 Hl2) (hl_sub i (hl_dimindex M (hl_UNIV M))) Hsubo). }
+  claim Hb1: i <= dimindex M -> hl_vindex A M l1 i = l1 i.
+  { assume H. exact (hl_vindex_compat A M HA HM l1 Hl1 i Hio (idx_of_bounds M i Hio (andI (1 <= i) (i <= dimindex M) (andEL (1 <= i) (i <= (dimindex M + dimindex N)) Hb) H))). }
+  claim Hb2: ~ (i <= dimindex M) -> hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))) = l2 (minus_nat i (dimindex M)).
+  { assume Hn.
+    claim Hsub: hl_sub i (hl_dimindex M (hl_UNIV M)) = minus_nat i (dimindex M). { exact (eq_trans_i (hl_sub i (hl_dimindex M (hl_UNIV M))) (minus_nat i (hl_dimindex M (hl_UNIV M))) (minus_nat i (dimindex M)) (hl_sub_compat i Hio (hl_dimindex M (hl_UNIV M)) HdMo) (f_equal (fun u => minus_nat i u) (hl_dimindex M (hl_UNIV M)) (dimindex M) HdM)). }
+    claim Hmo: minus_nat i (dimindex M) :e omega. { exact (minus_nat_omega i Hio (dimindex M) (dimindex_omega M)). }
+    exact (eq_trans_i (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M)))) (hl_vindex A N l2 (minus_nat i (dimindex M))) (l2 (minus_nat i (dimindex M))) (f_equal (fun u => hl_vindex A N l2 u) (hl_sub i (hl_dimindex M (hl_UNIV M))) (minus_nat i (dimindex M)) Hsub) (hl_vindex_compat A N HA HN l2 Hl2 (minus_nat i (dimindex M)) Hmo (idx_shift M N i Hio Hn (andER (1 <= i) (i <= (dimindex M + dimindex N)) Hb)))). }
+  exact (eq_trans_i ((fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) i) (hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) ((fun i:set => if i <= dimindex M then l1 i else l2 (minus_nat i (dimindex M))) i) Hbeta (hl_COND_if_dep A (hl_le i (hl_dimindex M (hl_UNIV M))) Hle2 (i <= dimindex M) Hiff (hl_vindex A M l1 i) Hv1 (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M)))) Hv2 (l1 i) (l2 (minus_nat i (dimindex M))) Hb1 Hb2)). }
+claim Hlam: hl_lambda A (idx_n (dimindex M + dimindex N)) (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) = fun i :e idx (idx_n (dimindex M + dimindex N)) => (fun i:set => if i <= dimindex M then l1 i else l2 (minus_nat i (dimindex M))) i. { exact (hl_lambda_compat_idx A (idx_n (dimindex M + dimindex N)) HA Hne (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) HL (fun i:set => if i <= dimindex M then l1 i else l2 (minus_nat i (dimindex M))) Hpw). }
+exact (eq_trans_i (hl_pastecart A M N l1 l2) (hl_lambda A (idx_n (dimindex M + dimindex N)) (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M)))))) (pastecart M N l1 l2) Hu2 ((idx_idx_n (dimindex M + dimindex N) Hs) (fun u v => hl_lambda A (idx_n (dimindex M + dimindex N)) (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M l1 i) (hl_vindex A N l2 (hl_sub i (hl_dimindex M (hl_UNIV M))))) = fun i :e u => (fun i:set => if i <= dimindex M then l1 i else l2 (minus_nat i (dimindex M))) i) Hlam)).
+Qed.
+// index lemmas for the blocks of a concatenated vector
+Theorem idx_block1 : forall M N:set, forall i :e idx M, i :e idx_n (dimindex M + dimindex N).
+let M N i. assume Hi.
+claim Hio: i :e omega. { exact (SepE1 omega (fun j => 1 <= j /\ j <= dimindex M) i Hi). }
+claim Hb: 1 <= i /\ i <= dimindex M. { exact (SepE2 omega (fun j => 1 <= j /\ j <= dimindex M) i Hi). }
+claim HSM: SNo (dimindex M). { exact (omega_SNo (dimindex M) (dimindex_omega M)). }
+claim HSN: SNo (dimindex N). { exact (omega_SNo (dimindex N) (dimindex_omega N)). }
+claim Hle: dimindex M <= dimindex M + dimindex N.
+{ claim H0: dimindex M + 0 <= dimindex M + dimindex N. { exact (add_SNo_Le2 (dimindex M) 0 (dimindex N) HSM SNo_0 HSN (omega_nonneg (dimindex N) (dimindex_omega N))). }
+   exact ((add_SNo_0R (dimindex M) HSM) (fun u v => u <= dimindex M + dimindex N) H0). }
+exact (SepI omega (fun j => 1 <= j /\ j <= dimindex M + dimindex N) i Hio (andI (1 <= i) (i <= dimindex M + dimindex N) (andEL (1 <= i) (i <= dimindex M) Hb) (SNoLe_tra i (dimindex M) (dimindex M + dimindex N) (omega_SNo i Hio) HSM (SNo_add_SNo (dimindex M) (dimindex N) HSM HSN) (andER (1 <= i) (i <= dimindex M) Hb) Hle))).
+Qed.
+Theorem idx_block2 : forall M N:set, forall i :e idx N, i + dimindex M :e idx_n (dimindex M + dimindex N).
+let M N i. assume Hi.
+claim Hio: i :e omega. { exact (SepE1 omega (fun j => 1 <= j /\ j <= dimindex N) i Hi). }
+claim Hb: 1 <= i /\ i <= dimindex N. { exact (SepE2 omega (fun j => 1 <= j /\ j <= dimindex N) i Hi). }
+claim HSi: SNo i. { exact (omega_SNo i Hio). }
+claim HSM: SNo (dimindex M). { exact (omega_SNo (dimindex M) (dimindex_omega M)). }
+claim HSN: SNo (dimindex N). { exact (omega_SNo (dimindex N) (dimindex_omega N)). }
+claim Ho: i + dimindex M :e omega. { exact (add_SNo_In_omega i Hio (dimindex M) (dimindex_omega M)). }
+claim Hlo: 1 <= i + dimindex M.
+{ claim H0: 1 + 0 <= i + dimindex M. { exact (SNoLe_tra (1 + 0) (i + 0) (i + dimindex M) (SNo_add_SNo 1 0 SNo_1 SNo_0) (SNo_add_SNo i 0 HSi SNo_0) (SNo_add_SNo i (dimindex M) HSi HSM) (add_SNo_Le1 1 0 i SNo_1 SNo_0 HSi (andEL (1 <= i) (i <= dimindex N) Hb)) (add_SNo_Le2 i 0 (dimindex M) HSi SNo_0 HSM (omega_nonneg (dimindex M) (dimindex_omega M)))). }
+   exact ((add_SNo_0R 1 SNo_1) (fun u v => u <= i + dimindex M) H0). }
+claim Hhi: i + dimindex M <= dimindex M + dimindex N.
+{ claim H1: i + dimindex M <= dimindex N + dimindex M. { exact (add_SNo_Le1 i (dimindex M) (dimindex N) HSi HSM HSN (andER (1 <= i) (i <= dimindex N) Hb)). }
+   exact ((add_SNo_com (dimindex N) (dimindex M) HSN HSM) (fun u v => i + dimindex M <= u) H1). }
+exact (SepI omega (fun j => 1 <= j /\ j <= dimindex M + dimindex N) (i + dimindex M) Ho (andI (1 <= i + dimindex M) (i + dimindex M <= dimindex M + dimindex N) Hlo Hhi)).
+Qed.
+// fstcart / sndcart: the two blocks of a vector indexed by finite_sum M N.
+Theorem hl_fstcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx (idx_n (dimindex M + dimindex N)), hl_fstcart A M N l1 = fstcart M l1.
+let A M N. assume HA HM HN. let l1. assume Hl1.
+claim Hs: (dimindex M + dimindex N) :e omega. { exact (add_SNo_In_omega (dimindex M) (dimindex_omega M) (dimindex N) (dimindex_omega N)). }
+claim Hfs: (hl_ty_finite_sum M N) = (idx_n (dimindex M + dimindex N)). { exact (hl_ty_finite_sum_native M N HM HN). }
+claim Hfsne: (hl_ty_finite_sum M N) <> Empty. { exact (hl_ty_finite_sum_nonempty M N HM HN). }
+claim Hl1n: l1 :e A :^: idx_n (dimindex M + dimindex N). { exact ((idx_idx_n (dimindex M + dimindex N) Hs) (fun u v => l1 :e A :^: u) Hl1). }
+claim Hl1f: l1 :e A :^: idx (hl_ty_finite_sum M N). { exact ((eq_sym_i (hl_ty_finite_sum M N) (idx_n (dimindex M + dimindex N)) Hfs) (fun u v => l1 :e A :^: idx u) Hl1). }
+claim Hc: l1 :e hl_ty_cart A (hl_ty_finite_sum M N). { exact ((eq_sym_i (hl_ty_cart A (hl_ty_finite_sum M N)) (A :^: idx (hl_ty_finite_sum M N)) (hl_ty_cart_native A (hl_ty_finite_sum M N) HA Hfsne)) (fun u v => l1 :e u) Hl1f). }
+claim Hu: hl_fstcart A M N l1 = hl_lambda A M (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 i). { exact (hl_fstcart_unfold A M N l1 Hc). }
+claim HL: (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 i) :e A :^: omega.
+{ exact (lam_Pi omega (fun _ => A) (fun i => hl_vindex A (hl_ty_finite_sum M N) l1 i) (fun i Hi => setexp_ap omega A (hl_vindex A (hl_ty_finite_sum M N) l1) (setexp_ap (A :^: idx (hl_ty_finite_sum M N)) (A :^: omega) (hl_vindex A (hl_ty_finite_sum M N)) (hl_vindex_in A (hl_ty_finite_sum M N) HA Hfsne) l1 Hl1f) i Hi)). }
+claim Hpw: forall i :e idx M, (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 i) i = (fun i:set => l1 i) i.
+{ let i. assume Hi.
+  claim Hio: i :e omega. { exact (SepE1 omega (fun j => 1 <= j /\ j <= dimindex M) i Hi). }
+  claim Hidx: i :e idx (idx_n (dimindex M + dimindex N)). { exact ((eq_sym_i (idx (idx_n (dimindex M + dimindex N))) (idx_n (dimindex M + dimindex N)) (idx_idx_n (dimindex M + dimindex N) Hs)) (fun u v => i :e u) (idx_block1 M N i Hi)). }
+  claim Hv: hl_vindex A (hl_ty_finite_sum M N) l1 i = l1 i. { exact ((eq_sym_i (hl_ty_finite_sum M N) (idx_n (dimindex M + dimindex N)) Hfs) (fun u v => hl_vindex A u l1 i = l1 i) (hl_vindex_compat A (idx_n (dimindex M + dimindex N)) HA (hl_ty_finite_sum_native_nonempty M N HM HN) l1 Hl1 i Hio Hidx)). }
+  exact (eq_trans_i ((fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 i) i) (hl_vindex A (hl_ty_finite_sum M N) l1 i) (l1 i) (beta omega (fun i => hl_vindex A (hl_ty_finite_sum M N) l1 i) i Hio) Hv). }
+exact (eq_trans_i (hl_fstcart A M N l1) (hl_lambda A M (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 i)) (fstcart M l1) Hu (hl_lambda_compat_idx A M HA HM (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 i) HL (fun i:set => l1 i) Hpw)).
+Qed.
+Theorem hl_sndcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx (idx_n (dimindex M + dimindex N)), hl_sndcart A M N l1 = sndcart M N l1.
+let A M N. assume HA HM HN. let l1. assume Hl1.
+claim Hs: (dimindex M + dimindex N) :e omega. { exact (add_SNo_In_omega (dimindex M) (dimindex_omega M) (dimindex N) (dimindex_omega N)). }
+claim Hfs: (hl_ty_finite_sum M N) = (idx_n (dimindex M + dimindex N)). { exact (hl_ty_finite_sum_native M N HM HN). }
+claim Hfsne: (hl_ty_finite_sum M N) <> Empty. { exact (hl_ty_finite_sum_nonempty M N HM HN). }
+claim Hl1f: l1 :e A :^: idx (hl_ty_finite_sum M N). { exact ((eq_sym_i (hl_ty_finite_sum M N) (idx_n (dimindex M + dimindex N)) Hfs) (fun u v => l1 :e A :^: idx u) Hl1). }
+claim Hc: l1 :e hl_ty_cart A (hl_ty_finite_sum M N). { exact ((eq_sym_i (hl_ty_cart A (hl_ty_finite_sum M N)) (A :^: idx (hl_ty_finite_sum M N)) (hl_ty_cart_native A (hl_ty_finite_sum M N) HA Hfsne)) (fun u v => l1 :e u) Hl1f). }
+claim HdM: (hl_dimindex M (hl_UNIV M)) = dimindex M. { exact (hl_dimindex_compat M HM (hl_UNIV M) (hl_UNIV_in M HM)). }
+claim HdMo: (hl_dimindex M (hl_UNIV M)) :e omega. { exact (setexp_ap (2 :^: M) omega (hl_dimindex M) (hl_dimindex_in M HM) (hl_UNIV M) (hl_UNIV_in M HM)). }
+claim Hu: hl_sndcart A M N l1 = hl_lambda A N (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))). { exact (hl_sndcart_unfold A M N l1 Hc). }
+claim HL: (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) :e A :^: omega.
+{ exact (lam_Pi omega (fun _ => A) (fun i => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) (fun i Hi => setexp_ap omega A (hl_vindex A (hl_ty_finite_sum M N) l1) (setexp_ap (A :^: idx (hl_ty_finite_sum M N)) (A :^: omega) (hl_vindex A (hl_ty_finite_sum M N)) (hl_vindex_in A (hl_ty_finite_sum M N) HA Hfsne) l1 Hl1f) (hl_add i (hl_dimindex M (hl_UNIV M))) (setexp_ap omega omega (hl_add i) (setexp_ap omega (omega :^: omega) hl_add hl_add_in i Hi) (hl_dimindex M (hl_UNIV M)) HdMo))). }
+claim Hpw: forall i :e idx N, (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) i = (fun i:set => l1 (i + dimindex M)) i.
+{ let i. assume Hi.
+  claim Hio: i :e omega. { exact (SepE1 omega (fun j => 1 <= j /\ j <= dimindex N) i Hi). }
+  claim Hadd: hl_add i (hl_dimindex M (hl_UNIV M)) = i + dimindex M. { exact (eq_trans_i (hl_add i (hl_dimindex M (hl_UNIV M))) (i + (hl_dimindex M (hl_UNIV M))) (i + dimindex M) (hl_add_compat i Hio (hl_dimindex M (hl_UNIV M)) HdMo) (f_equal (fun u => i + u) (hl_dimindex M (hl_UNIV M)) (dimindex M) HdM)). }
+  claim Hao: i + dimindex M :e omega. { exact (add_SNo_In_omega i Hio (dimindex M) (dimindex_omega M)). }
+  claim Hidx: i + dimindex M :e idx (idx_n (dimindex M + dimindex N)). { exact ((eq_sym_i (idx (idx_n (dimindex M + dimindex N))) (idx_n (dimindex M + dimindex N)) (idx_idx_n (dimindex M + dimindex N) Hs)) (fun u v => i + dimindex M :e u) (idx_block2 M N i Hi)). }
+  claim Hv: hl_vindex A (hl_ty_finite_sum M N) l1 (i + dimindex M) = l1 (i + dimindex M). { exact ((eq_sym_i (hl_ty_finite_sum M N) (idx_n (dimindex M + dimindex N)) Hfs) (fun u v => hl_vindex A u l1 (i + dimindex M) = l1 (i + dimindex M)) (hl_vindex_compat A (idx_n (dimindex M + dimindex N)) HA (hl_ty_finite_sum_native_nonempty M N HM HN) l1 Hl1 (i + dimindex M) Hao Hidx)). }
+  exact (eq_trans_i ((fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) i) (hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) (l1 (i + dimindex M)) (beta omega (fun i => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) i Hio) (eq_trans_i (hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) (hl_vindex A (hl_ty_finite_sum M N) l1 (i + dimindex M)) (l1 (i + dimindex M)) (f_equal (fun u => hl_vindex A (hl_ty_finite_sum M N) l1 u) (hl_add i (hl_dimindex M (hl_UNIV M))) (i + dimindex M) Hadd) Hv)). }
+exact (eq_trans_i (hl_sndcart A M N l1) (hl_lambda A N (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M))))) (sndcart M N l1) Hu (hl_lambda_compat_idx A N HA HN (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) l1 (hl_add i (hl_dimindex M (hl_UNIV M)))) HL (fun i:set => l1 (i + dimindex M)) Hpw)).
+Qed.
+// PCROSS: the set of concatenations of vectors of two sets is the native family union of the block products.
+Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: (A :^: idx M), forall l2 :e 2 :^: (A :^: idx N), hl_rep (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}.
+let A M N. assume HA HM HN. let l1. assume Hl1. let l2. assume Hl2.
+claim Hs: (dimindex M + dimindex N) :e omega. { exact (add_SNo_In_omega (dimindex M) (dimindex_omega M) (dimindex N) (dimindex_omega N)). }
+claim Hcm: (hl_ty_cart A M) = (A :^: idx M). { exact (hl_ty_cart_native A M HA HM). }
+claim Hcn: (hl_ty_cart A N) = (A :^: idx N). { exact (hl_ty_cart_native A N HA HN). }
+claim Hfs: (hl_ty_finite_sum M N) = idx_n (dimindex M + dimindex N). { exact (hl_ty_finite_sum_native M N HM HN). }
+claim Hfsne: (hl_ty_finite_sum M N) <> Empty. { exact (hl_ty_finite_sum_nonempty M N HM HN). }
+claim Hcf: (hl_ty_cart A (hl_ty_finite_sum M N)) = (A :^: idx (idx_n (dimindex M + dimindex N))). { exact (eq_trans_i (hl_ty_cart A (hl_ty_finite_sum M N)) (A :^: idx (hl_ty_finite_sum M N)) (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_ty_cart_native A (hl_ty_finite_sum M N) HA Hfsne) (f_equal (fun u => A :^: idx u) (hl_ty_finite_sum M N) (idx_n (dimindex M + dimindex N)) Hfs)). }
+claim H1: l1 :e 2 :^: (hl_ty_cart A M). { exact ((eq_sym_i (hl_ty_cart A M) (A :^: idx M) Hcm) (fun u v => l1 :e 2 :^: u) Hl1). }
+claim H2: l2 :e 2 :^: (hl_ty_cart A N). { exact ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) Hcn) (fun u v => l2 :e 2 :^: u) Hl2). }
+claim Hu: hl_PCROSS A M N l1 l2 = hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun p :e (hl_ty_cart A (hl_ty_finite_sum M N)) => if exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) p (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0). { exact (hl_PCROSS_unfold A M N l1 H1 l2 H2). }
+claim Hq: forall x :e (hl_ty_cart A M), forall y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) :e 2. { let x. assume Hx. let y. assume Hy. exact (If_in_2 (hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1)). }
+claim Hgen: hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun p :e (hl_ty_cart A (hl_ty_finite_sum M N)) => if exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) p (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0)) = {v :e (hl_ty_cart A (hl_ty_finite_sum M N)) | exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y}. { exact (hl_gspec_generic2 (hl_ty_cart A M) (hl_ty_cart A N) (hl_ty_cart A (hl_ty_finite_sum M N)) (fun x y => (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0)) (fun x y => hl_pastecart A M N x y) Hq). }
+claim Hmid: {v :e (hl_ty_cart A (hl_ty_finite_sum M N)) | exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y} = \/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}.
+{ apply set_ext.
+  - let v. assume Hv.
+    claim Hvc: v :e (hl_ty_cart A (hl_ty_finite_sum M N)). { exact (SepE1 (hl_ty_cart A (hl_ty_finite_sum M N)) (fun v => exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y) v Hv). }
+    claim Hex: exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y. { exact (SepE2 (hl_ty_cart A (hl_ty_finite_sum M N)) (fun v => exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y) v Hv). }
+    apply Hex. let x. assume Hx0. apply Hx0. assume Hx Hex2. apply Hex2. let y. assume Hy0. apply Hy0. assume Hy Hc. apply Hc. assume Hcond Hveq.
+    claim Hxn: x :e (A :^: idx M). { exact (Hcm (fun u v => x :e u) Hx). }
+    claim Hyn: y :e (A :^: idx N). { exact (Hcn (fun u v => y :e u) Hy). }
+    claim Hin: hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1. { exact (iffEL ((if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1) (hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1) (If_1_iff (hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1)) Hcond). }
+    claim Hxr: x :e hl_rep (A :^: idx M) l1. { exact (Hcm (fun u v => x :e hl_rep u l1) (iffEL (hl_IN (hl_ty_cart A M) x l1 = 1) (x :e hl_rep (hl_ty_cart A M) l1) (hl_IN_compat (hl_ty_cart A M) (nonempty_of_In (hl_ty_cart A M) x Hx) x Hx l1 H1) (andEL (hl_IN (hl_ty_cart A M) x l1 = 1) (hl_IN (hl_ty_cart A N) y l2 = 1) Hin))). }
+    claim Hyr: y :e hl_rep (A :^: idx N) l2. { exact (Hcn (fun u v => y :e hl_rep u l2) (iffEL (hl_IN (hl_ty_cart A N) y l2 = 1) (y :e hl_rep (hl_ty_cart A N) l2) (hl_IN_compat (hl_ty_cart A N) (nonempty_of_In (hl_ty_cart A N) y Hy) y Hy l2 H2) (andER (hl_IN (hl_ty_cart A M) x l1 = 1) (hl_IN (hl_ty_cart A N) y l2 = 1) Hin))). }
+    claim Hvp: v = pastecart M N x y. { exact (eq_trans_i v (hl_pastecart A M N x y) (pastecart M N x y) Hveq (hl_pastecart_compat A M N HA HM HN x Hxn y Hyn)). }
+    exact ((eq_sym_i v (pastecart M N x y) Hvp) (fun u v => u :e (\/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2})) (famunionI (hl_rep (A :^: idx M) l1) (fun x => {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}) x (pastecart M N x y) Hxr (ReplI (hl_rep (A :^: idx N) l2) (fun y => pastecart M N x y) y Hyr))).
+  - let v. assume Hv.
+    apply (famunionE (hl_rep (A :^: idx M) l1) (fun x => {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}) v Hv). let x. assume Hx0. apply Hx0. assume Hxr Hvr.
+    apply (ReplE_impred (hl_rep (A :^: idx N) l2) (fun y => pastecart M N x y) v Hvr). let y. assume Hyr Hveq.
+    claim Hxn: x :e (A :^: idx M). { exact (hl_rep_Subq (A :^: idx M) l1 x Hxr). }
+    claim Hyn: y :e (A :^: idx N). { exact (hl_rep_Subq (A :^: idx N) l2 y Hyr). }
+    claim Hx: x :e (hl_ty_cart A M). { exact ((eq_sym_i (hl_ty_cart A M) (A :^: idx M) Hcm) (fun u v => x :e u) Hxn). }
+    claim Hy: y :e (hl_ty_cart A N). { exact ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) Hcn) (fun u v => y :e u) Hyn). }
+    claim Hin1: hl_IN (hl_ty_cart A M) x l1 = 1. { exact (iffER (hl_IN (hl_ty_cart A M) x l1 = 1) (x :e hl_rep (hl_ty_cart A M) l1) (hl_IN_compat (hl_ty_cart A M) (nonempty_of_In (hl_ty_cart A M) x Hx) x Hx l1 H1) ((eq_sym_i (hl_ty_cart A M) (A :^: idx M) Hcm) (fun u v => x :e hl_rep u l1) Hxr)). }
+    claim Hin2: hl_IN (hl_ty_cart A N) y l2 = 1. { exact (iffER (hl_IN (hl_ty_cart A N) y l2 = 1) (y :e hl_rep (hl_ty_cart A N) l2) (hl_IN_compat (hl_ty_cart A N) (nonempty_of_In (hl_ty_cart A N) y Hy) y Hy l2 H2) ((eq_sym_i (hl_ty_cart A N) (A :^: idx N) Hcn) (fun u v => y :e hl_rep u l2) Hyr)). }
+    claim Hcond: (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1. { exact (If_i_1 (hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1) 1 0 (andI (hl_IN (hl_ty_cart A M) x l1 = 1) (hl_IN (hl_ty_cart A N) y l2 = 1) Hin1 Hin2)). }
+    claim Hvh: v = hl_pastecart A M N x y. { exact (eq_trans_i v (pastecart M N x y) (hl_pastecart A M N x y) Hveq (eq_sym_i (hl_pastecart A M N x y) (pastecart M N x y) (hl_pastecart_compat A M N HA HM HN x Hxn y Hyn))). }
+    claim Hpn: hl_pastecart A M N x y :e (A :^: idx (idx_n (dimindex M + dimindex N))). { exact (setexp_ap (A :^: idx N) (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_pastecart A M N x) (setexp_ap (A :^: idx M) ((A :^: idx (idx_n (dimindex M + dimindex N))) :^: (A :^: idx N)) (hl_pastecart A M N) (hl_pastecart_in A M N HA HM HN) x Hxn) y Hyn). }
+    claim Hvc: v :e (hl_ty_cart A (hl_ty_finite_sum M N)). { exact ((eq_sym_i v (hl_pastecart A M N x y) Hvh) (fun u v => u :e (hl_ty_cart A (hl_ty_finite_sum M N))) ((eq_sym_i (hl_ty_cart A (hl_ty_finite_sum M N)) (A :^: idx (idx_n (dimindex M + dimindex N))) Hcf) (fun u v => hl_pastecart A M N x y :e u) Hpn)). }
+    apply (SepI (hl_ty_cart A (hl_ty_finite_sum M N)) (fun v => exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y) v Hvc).
+    witness x. apply andI. exact Hx. witness y. apply andI. exact Hy. apply andI. exact Hcond. exact Hvh. }
+exact (eq_trans_i (hl_rep (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_PCROSS A M N l1 l2)) (hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun p :e (hl_ty_cart A (hl_ty_finite_sum M N)) => if exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) p (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0))) (\/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}) (eq_trans_i (hl_rep (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_PCROSS A M N l1 l2)) (hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_PCROSS A M N l1 l2)) (hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun p :e (hl_ty_cart A (hl_ty_finite_sum M N)) => if exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) p (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0))) ((eq_sym_i (hl_ty_cart A (hl_ty_finite_sum M N)) (A :^: idx (idx_n (dimindex M + dimindex N))) Hcf) (fun u v => hl_rep (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_PCROSS A M N l1 l2) = hl_rep u (hl_PCROSS A M N l1 l2)) (fun q H => H)) (f_equal (fun u => hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) u) (hl_PCROSS A M N l1 l2) (hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun p :e (hl_ty_cart A (hl_ty_finite_sum M N)) => if exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) p (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0)) Hu)) (eq_trans_i (hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun p :e (hl_ty_cart A (hl_ty_finite_sum M N)) => if exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) p (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0))) {v :e (hl_ty_cart A (hl_ty_finite_sum M N)) | exists x :e (hl_ty_cart A M), exists y :e (hl_ty_cart A N), (if hl_IN (hl_ty_cart A M) x l1 = 1 /\ hl_IN (hl_ty_cart A N) y l2 = 1 then 1 else 0) = 1 /\ v = hl_pastecart A M N x y} (\/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}) Hgen Hmid)).
+Qed.

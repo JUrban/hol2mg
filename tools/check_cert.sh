@@ -16,6 +16,10 @@ cat "$lit/_literal.mg" "$cert/_literal_unfold.mg" >> "$base"
 [ -s "$HERE/mglib/literal/carriers.mg" ] && cat "$HERE/mglib/literal/carriers.mg" >> "$base"
 cat "$cert/_literal_typing.mg" >> "$base"
 [ -s "$HERE/mglib/literal/compat.mg" ] && cat "$HERE/mglib/literal/compat.mg" >> "$base"
+# stage 2 (docs/DESIGN.md 21.9): carrier facts of parametrised translated types, their typing lemmas, their compat lemmas
+[ -s "$HERE/mglib/literal/carriers2.mg" ] && cat "$HERE/mglib/literal/carriers2.mg" >> "$base"
+[ -s "$cert/_literal_typing2.mg" ] && cat "$cert/_literal_typing2.mg" >> "$base"
+[ -s "$HERE/mglib/literal/compat2.mg" ] && cat "$HERE/mglib/literal/compat2.mg" >> "$base"
 [ -s "$HERE/mglib/literal/model_theorems.mg" ] && cat "$HERE/mglib/literal/model_theorems.mg" >> "$base"
 [ -s "$HERE/mglib/literal/uniform.mg" ] && cat "$HERE/mglib/literal/uniform.mg" >> "$base"
 off=$(wc -l < "$base")

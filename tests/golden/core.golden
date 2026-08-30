@@ -1739,7 +1739,8 @@ source: !x:(A,B)cart. !y:(A,B)cart. x = y <=> (!i:num. 1 <= i /\ i <= dimindex U
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall x y :e A :^: idx B, x = y <-> forall i :e omega, 1 <= i /\ i <= dimindex B -> x i = y i
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall x y :e hl_ty_cart A B, x = y <-> forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex B (hl_UNIV B)) = 1 -> hl_vindex A B x i = hl_vindex A B y i
-cert_status: bridge_unsupported
+bridge: CART_EQ_bridge
+cert_status: transport_checked
 
 ### LAMBDA_BETA   [Cartesian powers and finite index types]
 hash: a1b73e7882037b5a6a9034c65eb72d73
@@ -1747,7 +1748,8 @@ source: !i:num. 1 <= i /\ i <= dimindex UNIV ==> lambda g $ i = g i
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e omega, g x :e A) -> forall i :e omega, 1 <= i /\ i <= dimindex B -> (fun i :e idx B => g i) i = g i
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall g :e A :^: omega, forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex B (hl_UNIV B)) = 1 -> hl_vindex A B (hl_lambda A B g) i = g i
-cert_status: bridge_unsupported
+bridge: LAMBDA_BETA_bridge
+cert_status: transport_checked
 
 ### DIMINDEX_1   [Cartesian powers and finite index types]
 hash: 49a9d44c0dac1fb1c010affe48096fff
@@ -1771,7 +1773,8 @@ source: (!k:N finite_image. P k) <=> (!i:num. 1 <= i /\ i <= dimindex UNIV ==> P
 status: generalization_required
 statement: forall N:set, N <> Empty -> forall P:set -> prop, (forall k :e idx N, P k) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> P i
 literal: forall N:set, N <> Empty -> forall P :e 2 :^: hl_ty_finite_image N, (forall k :e hl_ty_finite_image N, P k = 1) <-> forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> P (hl_finite_index N i) = 1
-cert_status: bridge_unsupported
+bridge: FORALL_FINITE_INDEX_bridge
+cert_status: transport_checked
 
 ### DIMINDEX_FINITE_SUM   [Cartesian powers and finite index types]
 hash: 9c92b496f688797b7d7b3bea395b3a9d
@@ -1796,7 +1799,8 @@ source: !i:num. !j:num. 1 <= i /\ i <= dimindex UNIV /\ 1 <= j /\ j <= dimindex 
 status: generalization_required
 statement: forall A:set, A <> Empty -> forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j)
 literal: forall A:set, A <> Empty -> forall i j :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ (hl_le i (hl_dimindex A (hl_UNIV A)) = 1 /\ (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) j = 1 /\ hl_le j (hl_dimindex A (hl_UNIV A)) = 1)) -> (hl_finite_index A i = hl_finite_index A j <-> i = j)
-cert_status: bridge_unsupported
+bridge: FINITE_INDEX_INJ_bridge
+cert_status: transport_checked
 
 ### LAMBDA_ETA   [Cartesian powers and finite index types]
 hash: bf7a9034dc52575b2f124f169fb89276

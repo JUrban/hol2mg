@@ -1904,12 +1904,20 @@ Theorem hl_dimindex_in : forall A:set, A <> Empty -> hl_dimindex A :e omega :^: 
 exact hl_dimindex_in_lit.
 Qed.
 
-Theorem hl_dest_cart_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_cart A B :e A :^: hl_ty_finite_image B :^: hl_ty_cart A B.
-exact (fun A B HAne HBne => hl_subtype_rep_in (A :^: hl_ty_finite_image B) (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0)).
+Theorem hl_dest_finite_diff_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_diff A B :e omega :^: hl_ty_finite_diff A B.
+exact (fun A B HAne HBne => hl_subtype_rep_in (omega) (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero)))))).
 Qed.
 
-Theorem hl_dest_cart_in : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_cart A B :e A :^: hl_ty_finite_image B :^: hl_ty_cart A B.
-exact hl_dest_cart_in_lit.
+Theorem hl_dest_finite_diff_in : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_diff A B :e omega :^: hl_ty_finite_diff A B.
+exact hl_dest_finite_diff_in_lit.
+Qed.
+
+Theorem hl_dest_finite_prod_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_prod A B :e omega :^: hl_ty_finite_prod A B.
+exact (fun A B HAne HBne => hl_subtype_rep_in (omega) (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_mul (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))).
+Qed.
+
+Theorem hl_dest_finite_prod_in : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_prod A B :e omega :^: hl_ty_finite_prod A B.
+exact hl_dest_finite_prod_in_lit.
 Qed.
 
 Theorem hl_CASEWISE_in_lit : forall T138308 T138312 T138313 T138272:set, T138308 <> Empty -> T138312 <> Empty -> T138313 <> Empty -> T138272 <> Empty -> hl_CASEWISE T138308 T138312 T138313 T138272 :e T138272 :^: T138312 :^: T138313 :^: finseq (T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313).

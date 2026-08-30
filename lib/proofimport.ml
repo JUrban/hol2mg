@@ -273,6 +273,9 @@ let rec ne (ctx : L.ctx) (ty : ty) : string =
   | TyApp ("option", [ a ]) -> Printf.sprintf "(setsum_nonempty_l 1 %s one_nonempty)" (ppp (car a))
   | TyApp ("sum", [ a; b ]) -> Printf.sprintf "(setsum_nonempty_l %s %s %s)" (ppp (car a)) (ppp (car b)) (ne ctx a)
   | TyApp (c, []) when Hashtbl.mem ctx.L.tydefs c -> Printf.sprintf "hl_ty_%s_nonempty" (Elab.sanitize_var c)
+  | TyApp (c, args) when Hashtbl.mem ctx.L.tydefs c ->
+      (* parametrised translated type: hl_ty_T_nonempty A.. HA.. (docs/DESIGN.md 21.9) *)
+      Printf.sprintf "(hl_ty_%s_nonempty %s %s)" (Elab.sanitize_var c) (String.concat " " (List.map (fun a -> ppp (car a)) args)) (String.concat " " (List.map (ne ctx) args))
   | TyApp (c, _) -> unsupported "nonemptiness of the carrier of %s" c
 
 type env = {

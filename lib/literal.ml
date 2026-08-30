@@ -82,6 +82,13 @@ let rec match_ty (pat : ty) (ty : ty) (sub : (string * ty) list) : (string * ty)
    bridge generator and the compatibility statements once hl_ty_T = carrier has been proved
    (theorem hl_ty_<T>_native); the literal statements themselves always use hl_ty_T *)
 let tydef_native : (string, Mg.tm) Hashtbl.t = Hashtbl.create 8
+(* parametrised translated type definitions with a proved native carrier equation
+   hl_ty_T_native : forall A.., A <> Empty -> .. -> hl_ty_T A.. = template[A..] (docs/DESIGN.md 21.9):
+   type name -> carrier template with ?0 .. ?n-1 *)
+let tydef_native_k : (string, Mg.tm) Hashtbl.t = Hashtbl.create 8
+(* whether parametrised translated types print as their native carriers in native mode
+   (switched off while the literal arguments of a carrier conversion are computed) *)
+let param_native = ref true
 
 type ctx = {
   tyvar_names : (string * string) list;             (* HOL tyvar -> Megalodon parameter *)
@@ -114,7 +121,10 @@ let rec carrier ctx (ty : ty) : Mg.tm =
             | Some _ ->
                 (match (if ctx.use_native_tydefs && args = [] then Hashtbl.find_opt tydef_native c else None) with
                  | Some nat -> nat
-                 | None -> Mg.apps (Mg.Cst ("hl_ty_" ^ sanitize_var c)) (List.map (carrier ctx) args))
+                 | None ->
+                     (match (if ctx.use_native_tydefs && !param_native && args <> [] then Hashtbl.find_opt tydef_native_k c else None) with
+                      | Some tpl -> Mg.normalize (Mg.inst (List.mapi (fun i a -> (string_of_int i, carrier ctx a)) args) tpl)
+                      | None -> Mg.apps (Mg.Cst ("hl_ty_" ^ sanitize_var c)) (List.map (carrier ctx) args)))
             | None -> unsupported "type constructor %s has no literal carrier" c))
 
 (* ------------------------------------------------------------------------ *)
@@ -254,13 +264,19 @@ let tydef consts supported tydefs (td : type_definition) (arity : int) : (string
   let carrier_rho = carrier ctx rho in
   let p = lterm ctx pred in
   let lam body = List.fold_right (fun (_, n) acc -> Mg.Lam (n, Mg.Set, acc)) tv_names body in
+  (* abs and rep are ordinary constants: their parameters follow the type variables of their own
+     generic types in order of appearance (const_ref), which may differ from the sorted order of
+     the type's parameters (mk_cart : (N finite_image -> A) -> (A,N) cart) *)
+  let lam_const c body =
+    let order = (match Hashtbl.find_opt consts c with Some ty -> tyvars_ordered ty [] | None -> tvs) in
+    List.fold_right (fun a acc -> Mg.Lam ((try List.assoc a tv_names with Not_found -> Elab.sanitize_tyvar a), Mg.Set, acc)) order body in
   let ty_name = "hl_ty_" ^ sanitize_var td.td_name in
   let x = fresh ctx "x" in
   let sub = Mg.Sep (x, carrier_rho, mg_eq (Mg.App (p, Mg.Var x)) one) in
   let k = List.length tvs in
   [ (ty_name, mty_of_arity k, lam sub);
-    (mg_name_of_const td.td_abs, mty_of_arity k, lam (Mg.apps (Mg.Cst "hl_subtype_abs") [ carrier_rho; p ]));
-    (mg_name_of_const td.td_rep, mty_of_arity k, lam (Mg.apps (Mg.Cst "hl_subtype_rep") [ carrier_rho; p ])) ]
+    (mg_name_of_const td.td_abs, mty_of_arity k, lam_const td.td_abs (Mg.apps (Mg.Cst "hl_subtype_abs") [ carrier_rho; p ]));
+    (mg_name_of_const td.td_rep, mty_of_arity k, lam_const td.td_rep (Mg.apps (Mg.Cst "hl_subtype_rep") [ carrier_rho; p ])) ]
 
 (* closed literal statement of a sequent, in the same variable order as the native layer *)
 let statement consts supported tydefs (seq : sequent) : Mg.tm * (string * string) list * (string * ty * string) list =

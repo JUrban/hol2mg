@@ -71,6 +71,11 @@ let side_conditions : (string * string list) list =
     ("LAST", [ "~ ?1 = seq_nil" ]);
     ("ZIP", [ "seq_len ?1 = seq_len ?2" ]);
     ("EL", [ "?1 :e seq_len ?2" ]);
+    (* cart.ml (docs/DESIGN.md 21.9): components and the index embedding are characterised on the index range only *)
+    ("$", [ "?2 :e idx ?N" ]);
+    ("finite_index", [ "?1 :e idx ?N" ]);
+    ("mk_finite_sum", [ "?1 :e idx_n (dimindex ?A + dimindex ?B)" ]);
+
     (* iterate is characterised only for monoidal operations (HOL Light's ITSET is a choice) *)
     ("iterate", [ "(forall x y :e ?B, ?1 x y = ?1 y x) /\\ (forall x y z :e ?B, ?1 x (?1 y z) = ?1 (?1 x y) z) /\\ (forall x :e ?B, ?1 (neutral_of ?B (fun a b => ?1 a b)) x = x)" ]) ]
 (* side-condition templates use the native placeholders: `?1` is the representation of a subset
@@ -369,8 +374,29 @@ let rec nonempty_pf g (ty : ty) : string =
   | TyApp ("sum", [ a; b ]) -> Printf.sprintf "(setsum_nonempty_L %s %s %s)" (ppp (L.carrier g.lctx a)) (ppp (L.carrier g.lctx b)) (nonempty_pf g a)
   | TyApp (c, args) when Hashtbl.mem g.an.L.tydefs c ->
       if g.lctx.L.use_native_tydefs && args = [] && Hashtbl.mem L.tydef_native c then ("hl_ty_" ^ E.sanitize_var c ^ "_native_nonempty")
+      else if g.lctx.L.use_native_tydefs && !L.param_native && args <> [] && Hashtbl.mem L.tydef_native_k c then
+        paren (String.concat " " (("hl_ty_" ^ E.sanitize_var c ^ "_native_nonempty") :: List.map (fun a -> ppp (L.carrier g.lctx a)) args @ List.map (nonempty_pf g) args))
       else paren (String.concat " " (("hl_ty_" ^ E.sanitize_var c ^ "_nonempty") :: List.map (fun a -> ppp (L.carrier g.lctx a)) args @ List.map (nonempty_pf g) args))
   | TyApp (c, _) -> unsupported "nonemptiness of carrier for type %s" c
+
+(* instances of parametrised translated types with a native carrier occurring in a list of
+   types, outermost first (a type before its argument types) *)
+let rec ty_size = function TyApp (_, args) -> 1 + List.fold_left (fun n a -> n + ty_size a) 0 args | _ -> 1
+let rec param_instances acc (ty : ty) : ty list =
+  match ty with
+  | TyApp (c, args) ->
+      let acc = List.fold_left param_instances acc args in
+      if args <> [] && Hashtbl.mem L.tydef_native_k c && not (List.mem ty acc) then ty :: acc else acc
+  | _ -> acc
+let ordered_instances (tys : ty list) : ty list =
+  List.stable_sort (fun a b -> compare (ty_size b) (ty_size a)) (List.fold_left param_instances [] tys)
+(* all types mentioned by a term (constants, variables, binders) *)
+let rec tm_types acc (t : tm) : ty list =
+  match t with
+  | Const (_, ty) | Free (_, ty) -> if List.mem ty acc then acc else ty :: acc
+  | App (f, x) -> tm_types (tm_types acc f) x
+  | Lam (_, ty, b) -> tm_types (if List.mem ty acc then acc else ty :: acc) b
+  | Bound _ -> acc
 
 let const_tyvars g c =
   let generic = (try Hashtbl.find g.an.L.consts c with Not_found -> unsupported "no generic type for %s" c) in
@@ -583,6 +609,31 @@ let rec replace_tm (old : Mg.tm) (by : Mg.tm) (t : Mg.tm) : Mg.tm =
     | Mg.FamUnion (x, a, b) -> Mg.FamUnion (x, replace_tm old by a, replace_tm old by b)
     | _ -> t
 
+(* forward conversion of a proposition from the literal carriers of parametrised translated types
+   to their native carriers: the instances of `tys` are rewritten outermost first with the
+   equation hl_ty_T_native applied to the literal arguments and their nonemptiness proofs;
+   `pf` proves the proposition before, the result proves it after (docs/DESIGN.md 21.9) *)
+let convert_param_tydefs g (tys : ty list) (prop : Mg.tm) (pf : string) : Mg.tm * string =
+  let saved = !L.param_native in
+  L.param_native := false;
+  let r = (try
+    List.fold_left (fun (prop, pf) ty ->
+      match ty with
+      | TyApp (c, args) ->
+          let lit_args = List.map (L.carrier g.lctx) args in
+          let redex = Mg.apps (Mg.Cst ("hl_ty_" ^ E.sanitize_var c)) lit_args in
+          if replace_tm redex (Mg.Var "hl__u") prop = prop then (prop, pf)
+          else begin
+            let tpl = Hashtbl.find L.tydef_native_k c in
+            let value = Mg.normalize (Mg.inst (List.mapi (fun i a -> (string_of_int i, a)) lit_args) tpl) in
+            let eq = Printf.sprintf "(hl_ty_%s_native %s %s)" (E.sanitize_var c) (String.concat " " (List.map ppp lit_args)) (String.concat " " (List.map (nonempty_pf g) args)) in
+            let ctx = replace_tm redex (Mg.Var "hl__u") prop in
+            (replace_tm redex value prop, Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" eq (pp ctx) pf)
+          end
+      | _ -> (prop, pf)) (prop, pf) (ordered_instances tys)
+    with e -> L.param_native := saved; raise e) in
+  L.param_native := saved; r
+
 (* rewrite the proposition `prop` (a proof pf of it is given) replacing the literal term l by
    the native term n, justified by pf_eq : l = n; returns (new prop, proof) *)
 let rewrite_in (pf_eq : string) (l : Mg.tm) (n : Mg.tm) (prop : Mg.tm) (pf : string) : Mg.tm * string =
@@ -712,6 +763,20 @@ let gabs_body_typing g (bodyn : tm) : string * string =
         List.iter (fun (n, key) -> close_lit g key n) opened;
         r) in
   go bodyn []
+
+(* membership of an index in idx N from the hypotheses in scope: i :e idx N itself, the bounds
+   1 <= i /\ i <= dimindex N as one hypothesis, or the two bounds separately (docs/DESIGN.md 21.9) *)
+let derive_idx g find_hyp (i : Mg.tm) (n : Mg.tm) : string option =
+  let tpl s = Mg.normalize (Mg.inst [ ("1", i); ("N", n) ] (cstify (Mg.parse_template s))) in
+  match nat_var_mem g i with
+  | Some (Mg.Cst "omega", hi) ->
+      (match find_hyp g (tpl "1 <= ?1 /\\ ?1 <= dimindex ?N") with
+       | Some h -> Some (Printf.sprintf "(idx_of_bounds %s %s %s %s)" (ppp n) (ppp i) hi h)
+       | None ->
+           (match find_hyp g (tpl "1 <= ?1"), find_hyp g (tpl "?1 <= dimindex ?N") with
+            | Some h1, Some h2 -> Some (Printf.sprintf "(idx_of_bounds %s %s %s (andI %s %s %s %s))" (ppp n) (ppp i) hi (paren (pp (tpl "1 <= ?1"))) (paren (pp (tpl "?1 <= dimindex ?N"))) h1 h2)
+            | _ -> None))
+  | _ -> None
 
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
@@ -961,7 +1026,8 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   let q_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp lp) and f_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp lt) in
                   let hq = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
                   let generic = Printf.sprintf "(hl_gspec_generic2 %s %s %s %s %s %s)" (ppp ca) (ppp cb2) (ppp cb) q_lam f_lam hq in
-                  let mid = Mg.Sep ("v", cb, Mg.ExIn (nx, ca, Mg.ExIn (ny, cb2, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt)))) in
+                  let sv = if nx = "v" || ny = "v" then "hl__y" else "v" in
+                  let mid = Mg.Sep (sv, cb, Mg.ExIn (nx, ca, Mg.ExIn (ny, cb2, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var sv) lt)))) in
                   let iff_p =
                     if L.is_logical p' then
                       Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p')
@@ -1024,7 +1090,8 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                     let p_lam = Printf.sprintf "(fun %s => %s)" n (pp np) and fn_lam = Printf.sprintf "(fun %s => %s)" n (pp nt) in
                     let hq = Printf.sprintf "(fun %s %s => %s)" n hn (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
                     let generic = Printf.sprintf "(hl_gspec_generic %s %s %s %s %s)" (ppp ca) (ppp cb) q_lam f_lam hq in
-                    let mid = Mg.Sep ("v", cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt))) in
+                    let sv = if n = "v" then "hl__y" else "v" in
+                    let mid = Mg.Sep (sv, cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var sv) lt))) in
                     let mid2 = Mg.Repl ("v", mid, Mg.apps (Mg.Cst "hl_rep") [ cb'; Mg.Var "v" ]) in
                     let iff_p () =
                       if L.is_logical p' then
@@ -1071,7 +1138,8 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                     let p_lam = Printf.sprintf "(fun %s => %s)" n (pp np0) and fn_lam = Printf.sprintf "(fun %s => %s)" n (pp nt0) in
                     let hq = Printf.sprintf "(fun %s %s => %s)" n hn (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
                     let generic = Printf.sprintf "(hl_gspec_generic %s %s %s %s %s)" (ppp ca) (ppp cb) q_lam f_lam hq in
-                    let mid = Mg.Sep ("v", cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt))) in
+                    let sv = if n = "v" then "hl__y" else "v" in
+                    let mid = Mg.Sep (sv, cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var sv) lt))) in
                     let mid2 = Mg.Repl ("v", mid, Mg.apps (Mg.Cst "hl_rep") [ cb'; Mg.Var "v" ]) in
                     let iff_p () =
                       if L.is_logical p' then
@@ -1114,7 +1182,8 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   let q_lam = Printf.sprintf "(fun %s => %s)" n (pp lp) and f_lam = Printf.sprintf "(fun %s => %s)" n (pp lt) in
                   let hq = Printf.sprintf "(fun %s %s => %s)" n hn (if L.is_logical p' then Printf.sprintf "(If_in_2 %s)" (ppp (lprop g p')) else typ g p') in
                   let generic = Printf.sprintf "(hl_gspec_generic %s %s %s %s %s)" (ppp ca) (ppp cb) q_lam f_lam hq in
-                  let mid = Mg.Sep ("v", cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var "v") lt))) in
+                  let sv = if n = "v" then "hl__y" else "v" in
+                    let mid = Mg.Sep (sv, cb, Mg.ExIn (n, ca, L.mg_and (L.mg_eq lp L.one) (L.mg_eq (Mg.Var sv) lt))) in
                   (* iff between q x = 1 and the native predicate *)
                   let iff_p () =
                     if L.is_logical p' then
@@ -1683,6 +1752,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
                  | Mg.App (Mg.App (Mg.Cst "eq", a), b) when a = b -> Some refl
                  | _ when known_monoid sc_nat <> None -> known_monoid sc_nat
                  | Mg.App (Mg.Cst "finite", s) -> derive_finite g s 0
+                 | Mg.App (Mg.App (Mg.Cst "In", i), Mg.App (Mg.Cst "idx", n)) -> derive_idx g find_hyp i n
                  | Mg.App (Mg.App (Mg.Cst "In", n), Mg.App (Mg.Cst "seq_len", l)) ->
                      (match List.assoc_opt "1" !argtyp, List.assoc_opt "2" !argtyp with
                       | Some (l1, t1, c1), Some (l2, t2, c2) ->
@@ -2336,6 +2406,14 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
       lit_native_body := replace_tm lit_ty nat !lit_native_body;
       Printf.sprintf "(hl_ty_%s_native (fun hl__u hl__v => %s) %s)" (E.sanitize_var t) (pp ctx) hl
     end) "HL0" converters in
+  (* parametrised translated types (hl_ty_T A..): instances of the statement, outermost first *)
+  let wrap_hl =
+    if Hashtbl.length L.tydef_native_k = 0 then wrap_hl
+    else begin
+      let tys = List.fold_left tm_types [] (seq.concl :: seq.hyps) in
+      let body', wrap' = convert_param_tydefs g tys !lit_native_body wrap_hl in
+      lit_native_body := body'; wrap'
+    end in
   let inner = bridge g Fwd seq.concl in
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
@@ -2508,18 +2586,33 @@ let typing_lemma (an : L.analysis) (typing_ok : (string, unit) Hashtbl.t) (c : s
   let lit_name = L.mg_name_of_const c ^ "_in_lit" in
   let native_proof =
     if stmt_nat = stmt_lit then Printf.sprintf "exact %s." lit_name
-    else if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_nat) lit_name
-    else Printf.sprintf "let %s. assume %s. %sexact (%s %s)." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_nat) lit_name (String.concat " " (params @ hyps)) in
+    else if ordered_instances [ cty ] = [] then begin
+      if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_nat) lit_name
+      else Printf.sprintf "let %s. assume %s. %sexact (%s %s)." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_nat) lit_name (String.concat " " (params @ hyps))
+    end else begin
+      (* parametrised translated types: forward Leibniz conversion of the literal typing fact
+         (0-ary translated types by the rewrite tactics of carrier_conv on the goal) *)
+      lctx.L.use_native_tydefs <- false;
+      let body_lit = L.mg_in hd (L.carrier lctx cty) in
+      let _, pf' = convert_param_tydefs g [ cty ] body_lit (if params = [] then lit_name else Printf.sprintf "(%s %s)" lit_name (String.concat " " (params @ hyps))) in
+      lctx.L.use_native_tydefs <- true;
+      if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_nat) pf'
+      else Printf.sprintf "let %s. assume %s. %sexact %s." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_nat) pf'
+    end in
   [ (lit_name, Mg.to_string stmt_lit, "exact " ^ proof ^ "."); (typing_lemma_name c, Mg.to_string stmt_nat, native_proof) ]
 
 (* lemmas of a translated type definition: the (admitted) literal nonemptiness fact, the
    nonemptiness of the subtype carrier, and the typing lemmas of abs and rep *)
 let tydef_lemmas (an : L.analysis) (proved : (string, string) Hashtbl.t) (td : type_definition) (arity : int) : (string * string * string) list =
   let rho, pred = L.dest_tydef_bij td in
-  let tvs = List.sort compare (L.tyvars_ordered (type_of [] pred) []) in
+  let tvs = List.sort compare (uniq (tyvars_of_tm pred)) in
   if List.length tvs <> arity then unsupported "type definition %s: arity" td.td_name;
   let tv_names = L.tyvar_params tvs in
   let lctx = L.new_ctx an.L.consts an.L.supported an.L.tydefs tv_names in
+  let ty_inst = TyApp (td.td_name, List.map (fun a -> TyVar a) tvs) in
+  let dummy_reg = { R.types = Hashtbl.create 1; consts = Hashtbl.create 1; files = []; empty_rules = []; rewrite_rules = []; names = [] } in
+  let nctx = { E.reg = dummy_reg; tyvar_names = tv_names; vars = []; used = List.map snd tv_names; st = { E.classes = []; bridges = []; notes = [] } } in
+  let g = { lctx; nctx; an; compat = Hashtbl.create 1; vars = []; nonempty = List.map (fun (_, n) -> (n, "H" ^ n ^ "ne")) tv_names; counter = 0; used_compat = []; lit_typing = true; hyps = [] } in
   let params = List.map snd tv_names in
   let hyps = List.map (fun n -> "H" ^ n ^ "ne") params in
   let crho = L.carrier lctx rho and p = L.lterm lctx pred in
@@ -2535,24 +2628,43 @@ let tydef_lemmas (an : L.analysis) (proved : (string, string) Hashtbl.t) (td : t
   let ne_available = (match Hashtbl.find_opt proved ne_name with Some st -> st = ne_stmt | None -> false) in
   let ty_ne = (ne_name, ne_stmt, "") in
   let ne_pf = Printf.sprintf "(%s %s)" (tyname ^ "_nonempty") args in
-  let rep_hd = Mg.apps (Mg.Cst (L.mg_name_of_const td.td_rep)) (List.map (fun n -> Mg.Var n) params) in
-  let abs_hd = Mg.apps (Mg.Cst (L.mg_name_of_const td.td_abs)) (List.map (fun n -> Mg.Var n) params) in
-  let rep_stmt = close_all (close_hyp (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho; ty_app ]))) in
-  let abs_stmt = close_all (close_hyp (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app; crho ]))) in
-  let rep_lit = (L.mg_name_of_const td.td_rep ^ "_in_lit", Mg.to_string rep_stmt, Printf.sprintf "exact (%shl_subtype_rep_in %s %s)." binder (ppp crho) (ppp p)) in
-  let abs_lit = (L.mg_name_of_const td.td_abs ^ "_in_lit", Mg.to_string abs_stmt, Printf.sprintf "exact (%shl_subtype_abs_in %s %s %s)." binder (ppp crho) (ppp p) ne_pf) in
+  (* abs and rep take their parameters in the order of their own generic types (Literal.tydef) *)
+  let order_of c = (match Hashtbl.find_opt an.L.consts c with Some ty -> List.map (fun a -> List.assoc a tv_names) (L.tyvars_ordered ty []) | None -> params) in
+  let params_rep = order_of td.td_rep and params_abs = order_of td.td_abs in
+  let hyps_of ps = List.map (fun n -> "H" ^ n ^ "ne") ps in
+  let close_hyp_p ps body = List.fold_right (fun n acc -> Mg.Imp (L.mg_neq (Mg.Var n) (Mg.Cst "Empty"), acc)) ps body in
+  let close_all_p ps body = List.fold_right (fun n acc -> Mg.All (n, Mg.Set, acc)) ps body in
+  let binder_p ps = if ps = [] then "" else Printf.sprintf "fun %s => " (String.concat " " (ps @ hyps_of ps)) in
+  let rep_hd = Mg.apps (Mg.Cst (L.mg_name_of_const td.td_rep)) (List.map (fun n -> Mg.Var n) params_rep) in
+  let abs_hd = Mg.apps (Mg.Cst (L.mg_name_of_const td.td_abs)) (List.map (fun n -> Mg.Var n) params_abs) in
+  let rep_stmt = close_all_p params_rep (close_hyp_p params_rep (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho; ty_app ]))) in
+  let abs_stmt = close_all_p params_abs (close_hyp_p params_abs (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app; crho ]))) in
+  let rep_lit = (L.mg_name_of_const td.td_rep ^ "_in_lit", Mg.to_string rep_stmt, Printf.sprintf "exact (%shl_subtype_rep_in %s %s)." (binder_p params_rep) (ppp crho) (ppp p)) in
+  let abs_lit = (L.mg_name_of_const td.td_abs ^ "_in_lit", Mg.to_string abs_stmt, Printf.sprintf "exact (%shl_subtype_abs_in %s %s %s)." (binder_p params_abs) (ppp crho) (ppp p) ne_pf) in
+  ignore binder; ignore close_all; ignore close_hyp;
   (* native-carrier forms *)
   lctx.L.use_native_tydefs <- true;
   let crho_n = L.carrier lctx rho in
-  let ty_app_n = (match (if params = [] then Hashtbl.find_opt L.tydef_native td.td_name else None) with Some nat -> nat | None -> ty_app) in
-  let rep_stmt_n = close_all (close_hyp (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho_n; ty_app_n ]))) in
-  let abs_stmt_n = close_all (close_hyp (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app_n; crho_n ]))) in
-  let derive lit_name stmt_n stmt_l =
+  let ty_app_n = (match (if params = [] then Hashtbl.find_opt L.tydef_native td.td_name else None) with
+    | Some nat -> nat
+    | None -> L.carrier lctx ty_inst) in
+  let rep_stmt_n = close_all_p params_rep (close_hyp_p params_rep (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho_n; ty_app_n ]))) in
+  let abs_stmt_n = close_all_p params_abs (close_hyp_p params_abs (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app_n; crho_n ]))) in
+  let parametrised = ordered_instances [ rho; ty_inst ] <> [] in
+  let derive ps lit_name stmt_n stmt_l body_l =
+    let hyps = hyps_of ps in
     if stmt_n = stmt_l then Printf.sprintf "exact %s." lit_name
-    else if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_n) lit_name
-    else Printf.sprintf "let %s. assume %s. %sexact (%s %s)." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_n) lit_name (String.concat " " (params @ hyps)) in
-  let rep_in = (L.mg_name_of_const td.td_rep ^ "_in", Mg.to_string rep_stmt_n, derive (L.mg_name_of_const td.td_rep ^ "_in_lit") rep_stmt_n rep_stmt) in
-  let abs_in = (L.mg_name_of_const td.td_abs ^ "_in", Mg.to_string abs_stmt_n, derive (L.mg_name_of_const td.td_abs ^ "_in_lit") abs_stmt_n abs_stmt) in
+    else if not parametrised then begin
+      if ps = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_n) lit_name
+      else Printf.sprintf "let %s. assume %s. %sexact (%s %s)." (String.concat " " ps) (String.concat " " hyps) (carrier_conv stmt_n) lit_name (String.concat " " (ps @ hyps))
+    end else begin
+      lctx.L.use_native_tydefs <- false;
+      let _, pf' = convert_param_tydefs g [ rho; ty_inst ] body_l (Printf.sprintf "(%s %s)" lit_name (String.concat " " (ps @ hyps))) in
+      lctx.L.use_native_tydefs <- true;
+      Printf.sprintf "let %s. assume %s. %sexact %s." (String.concat " " ps) (String.concat " " hyps) (carrier_conv stmt_n) pf'
+    end in
+  let rep_in = (L.mg_name_of_const td.td_rep ^ "_in", Mg.to_string rep_stmt_n, derive params_rep (L.mg_name_of_const td.td_rep ^ "_in_lit") rep_stmt_n rep_stmt (L.mg_in rep_hd (Mg.apps (Mg.Cst "setexp") [ crho; ty_app ]))) in
+  let abs_in = (L.mg_name_of_const td.td_abs ^ "_in", Mg.to_string abs_stmt_n, derive params_abs (L.mg_name_of_const td.td_abs ^ "_in_lit") abs_stmt_n abs_stmt (L.mg_in abs_hd (Mg.apps (Mg.Cst "setexp") [ ty_app; crho ]))) in
   ignore ty_ne;
   if ne_available then [ rep_lit; rep_in; abs_lit; abs_in ] else [ rep_lit; rep_in; ("", ne_stmt, "") ]
 

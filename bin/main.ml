@@ -374,7 +374,7 @@ let () =
                  let norm = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' (String.map (fun c -> if c = '\n' then ' ' else c) body))) in
                  Hashtbl.replace proved name norm
                done with Not_found -> ())
-            end) [ carriers_file; compat_file ];
+            end) [ carriers_file; compat_file; "mglib/literal/carriers2.mg"; "mglib/literal/compat2.mg" ];
             (* model-soundness theorems (§21.4): hlt_N_model with exactly the literal statement of N discharges hlt_N *)
             let model = Hashtbl.create 64 in
             let model_file = "mglib/literal/model_theorems.mg" in
@@ -404,10 +404,14 @@ let () =
             let thm_name_fn h = (try Hashtbl.find mg_of_hol h with Not_found -> Elab.sanitize_var h) in
             let imported_tbl = Hashtbl.create 64 in
             let import_err : (string, string) Hashtbl.t = Hashtbl.create 16 in
+            Hashtbl.reset Literal.tydef_native_k;
             Hashtbl.iter (fun t _ ->
               match Hashtbl.find_opt reg.Registry.types t with
               | Some te when te.Registry.t_arity = 0 && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native") && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native_nonempty") ->
                   Hashtbl.replace Literal.tydef_native t te.Registry.t_carrier
+              | Some te when te.Registry.t_arity > 0 && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native") && Hashtbl.mem proved ("hl_ty_" ^ Elab.sanitize_var t ^ "_native_nonempty") ->
+                  (* parametrised translated type with proved carrier facts (docs/DESIGN.md 21.9, stage 2) *)
+                  Hashtbl.replace Literal.tydef_native_k t te.Registry.t_carrier
               | _ -> ()) an.Literal.tydefs;
             (* expected statements for every registry entry *)
             let compat = Hashtbl.create 256 in
@@ -441,11 +445,18 @@ let () =
             (* typing lemmas of the literal definitions *)
             let ocu = open_out (Filename.concat cdir "_literal_unfold.mg") in
             Printf.fprintf ocu "// Unfolding lemmas of the literal definitions (generated with proofs; checked right after _literal.mg).\n\n";
-            let oc = open_out (Filename.concat cdir "_literal_typing.mg") in
-            Printf.fprintf oc "// Typing lemmas of the literal definitions (generated with proofs; checked after mglib/literal/carriers.mg).\n\n";
+            let oc1 = open_out (Filename.concat cdir "_literal_typing.mg") in
+            Printf.fprintf oc1 "// Typing lemmas of the literal definitions (generated with proofs; checked after mglib/literal/carriers.mg).\n\n";
+            let oc2 = open_out (Filename.concat cdir "_literal_typing2.mg") in
+            Printf.fprintf oc2 "// Typing lemmas of the literal definitions whose types mention a parametrised translated type with a\n// native carrier (stage 2, docs/DESIGN.md 21.9): checked after mglib/literal/carriers2.mg.\n\n";
+            (* a type mentions a stage-2 translated type *)
+            let rec stage2 (ty : Hol.ty) = (match ty with
+              | Hol.TyApp (c, args) -> (args <> [] && Hashtbl.mem Literal.tydef_native_k c) || List.exists stage2 args
+              | _ -> false) in
             let typing_ok = Hashtbl.create 256 in
             List.iter (function
               | `D (c, cty, rhs) ->
+                  let oc = if stage2 cty then oc2 else oc1 in
                   if Hashtbl.find_opt an.Literal.supported c = Some true then
                     (match (try Some (Bridge.typing_lemma an typing_ok c cty rhs) with Bridge.Bridge_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("typing lemma " ^ c ^ ": " ^ m); None | Failure m -> prerr_endline ("typing lemma " ^ c ^ ": failure " ^ m); None) with
                      | Some lemmas ->
@@ -458,6 +469,7 @@ let () =
                           | None -> ())
                      | None -> ())
               | `T (td, arity) ->
+                  let oc = if arity > 0 && Hashtbl.mem Literal.tydef_native_k td.td_name then oc2 else oc1 in
                   (match (try Some (Bridge.tydef_lemmas an proved td arity) with Bridge.Bridge_unsupported m | Literal.Literal_unsupported m -> prerr_endline ("type definition lemmas " ^ td.td_name ^ ": " ^ m); None) with
                    | Some lemmas ->
                        List.iter (fun (name, st, pf) ->
@@ -468,7 +480,7 @@ let () =
                            else Hashtbl.replace typing_ok td.td_rep ()
                          end) lemmas
                    | None -> ())) (List.rev !literal_order);
-            close_out oc; close_out ocu;
+            close_out oc1; close_out oc2; close_out ocu;
             let oc = open_out (Filename.concat cdir "_compat_required.mg") in
             Printf.fprintf oc "// Compatibility theorem statements generated from the mapping registry (docs/DESIGN.md §21.4)\n// that are not yet proved in mglib/literal/compat.mg (or are stated differently there), and\n// carrier nonemptiness theorems missing from mglib/literal/carriers.mg.\n\n%s" (Buffer.contents stubs);
             close_out oc;

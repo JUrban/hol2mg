@@ -2,16 +2,8 @@
 // that are not yet proved in mglib/literal/compat.mg (or are stated differently there), and
 // carrier nonemptiness theorems missing from mglib/literal/carriers.mg.
 
-// pastecart : (A,M)cart->(A,N)cart->(A,(M,N)finite_sum)cart (not in compat.mg)
-Theorem hl_pastecart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A M, forall l2 :e hl_ty_cart A N, hl_pastecart A M N l1 l2 = pastecart M N l1 l2.
-Admitted.
-
 // CASEWISE : ((P->A)#(B->P->C)) list->B->A->C (not in compat.mg)
 Theorem hl_CASEWISE_compat : forall P A B C:set, P <> Empty -> A <> Empty -> B <> Empty -> C <> Empty -> hl_CASEWISE P A B C = Empty.
-Admitted.
-
-// mk_cart : (N finite_image->A)->(A,N)cart (not in compat.mg)
-Theorem hl_mk_cart_compat : forall N A:set, N <> Empty -> A <> Empty -> forall l1 :e A :^: hl_ty_finite_image N, hl_mk_cart N A l1 = l1.
 Admitted.
 
 // INJP : (num->A->bool)->(num->A->bool)->num->A->bool (not in compat.mg)
@@ -26,12 +18,8 @@ Admitted.
 Theorem hl_CARD_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), finite (hl_rep2 A l1) -> hl_CARD (2 :^: A) l1 = finite_cardinality (hl_rep2 A l1).
 Admitted.
 
-// lambda : (num->A)->(A,N)cart (not in compat.mg)
-Theorem hl_lambda_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e A :^: omega, forall f1:set -> set, (forall x :e omega, l1 x = f1 x) -> hl_lambda A N l1 = fun i :e idx N => f1 i.
-Admitted.
-
 // PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool (not in compat.mg)
-Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: hl_ty_cart A M, forall l2 :e 2 :^: hl_ty_cart A N, hl_rep (hl_ty_cart A (hl_ty_finite_sum M N)) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (hl_ty_cart A M) l1, {pastecart M N x y | y :e hl_rep (hl_ty_cart A N) l2}.
+Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: (A :^: idx M), forall l2 :e 2 :^: (A :^: idx N), hl_rep (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}.
 Admitted.
 
 // NUMSUM : bool->num->num (not in compat.mg)
@@ -82,20 +70,12 @@ Admitted.
 Theorem hl__UNGUARDED_PATTERN_compat : hl__UNGUARDED_PATTERN = Empty.
 Admitted.
 
-// dest_cart : (A,N)cart->N finite_image->A (not in compat.mg)
-Theorem hl_dest_cart_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A N, hl_dest_cart A N l1 = l1.
-Admitted.
-
 // tailadmissible : (A->A->bool)->((A->B)->P->bool)->(P->A)->((A->B)->P->B)->bool (not in compat.mg)
 Theorem hl_tailadmissible_compat : forall A B P:set, A <> Empty -> B <> Empty -> P <> Empty -> hl_tailadmissible A B P = Empty.
 Admitted.
 
 // NUMSND : num->num (not in compat.mg)
 Theorem hl_NUMSND_compat : hl_NUMSND = Empty.
-Admitted.
-
-// $ : (A,N)cart->num->A (not in compat.mg)
-Theorem hl_vindex_compat : forall A N:set, A <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A N, forall l2 :e omega, hl_vindex A N l1 l2 = l1 l2.
 Admitted.
 
 // mk_pair : A->B->A->B->bool (not in compat.mg)
@@ -106,20 +86,12 @@ Admitted.
 Theorem hl__FUNCTION_compat : forall A B:set, A <> Empty -> B <> Empty -> hl__FUNCTION A B = Empty.
 Admitted.
 
-// mk_finite_sum : num->(A,B)finite_sum (not in compat.mg)
-Theorem hl_mk_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e omega, hl_mk_finite_sum A B l1 = l1.
-Admitted.
-
 // OUTR : (A,B)sum->B (not in compat.mg)
 Theorem hl_OUTR_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTR A B = OUTR A B.
 Admitted.
 
 // ZBOT : num->A->bool (not in compat.mg)
 Theorem hl_ZBOT_compat : forall A:set, A <> Empty -> hl_ZBOT A = Empty.
-Admitted.
-
-// dest_finite_sum : (A,B)finite_sum->num (not in compat.mg)
-Theorem hl_dest_finite_sum_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_sum A B, hl_dest_finite_sum A B l1 = l1.
 Admitted.
 
 // product_map : (K->bool)->(K->A->B)->(K->A)->K->B (not in compat.mg)
@@ -162,10 +134,6 @@ Admitted.
 Theorem hl_LET_END_compat : forall A:set, A <> Empty -> forall l1 :e A, hl_LET_END A l1 = l1.
 Admitted.
 
-// finite_index : num->N finite_image (not in compat.mg)
-Theorem hl_finite_index_compat : forall N:set, N <> Empty -> forall l1 :e omega, hl_finite_index N l1 = l1.
-Admitted.
-
 // NUMPAIR : num->num->num (not in compat.mg)
 Theorem hl_NUMPAIR_compat : hl_NUMPAIR = Empty.
 Admitted.
@@ -203,15 +171,11 @@ Theorem hl_NULL_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_N
 Admitted.
 
 // sndcart : (A,(M,N)finite_sum)cart->(A,N)cart (not in compat.mg)
-Theorem hl_sndcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A (hl_ty_finite_sum M N), hl_sndcart A M N l1 = sndcart M N l1.
+Theorem hl_sndcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx (idx_n (dimindex M + dimindex N)), hl_sndcart A M N l1 = sndcart M N l1.
 Admitted.
 
 // fstcart : (A,(M,N)finite_sum)cart->(A,M)cart (not in compat.mg)
-Theorem hl_fstcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e hl_ty_cart A (hl_ty_finite_sum M N), hl_fstcart A M N l1 = fstcart M l1.
-Admitted.
-
-// dest_finite_image : N finite_image->num (not in compat.mg)
-Theorem hl_dest_finite_image_compat : forall N:set, N <> Empty -> forall l1 :e hl_ty_finite_image N, hl_dest_finite_image N l1 = l1.
+Theorem hl_fstcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx (idx_n (dimindex M + dimindex N)), hl_fstcart A M N l1 = fstcart M l1.
 Admitted.
 
 // o : (B->bool)->(A->B)->A->bool (not in compat.mg)
@@ -274,7 +238,11 @@ Admitted.
 Theorem hl_GEQ_compat : forall A:set, A <> Empty -> hl_GEQ A = Empty.
 Admitted.
 
-// nonemptiness of the carrier of type definition cart (prove in mglib/literal/carriers.mg)
-Theorem hl_ty_cart_nonempty : forall A B:set, A <> Empty -> B <> Empty -> hl_ty_cart A B <> Empty.
+// nonemptiness of the carrier of type definition finite_diff (prove in mglib/literal/carriers.mg)
+Theorem hl_ty_finite_diff_nonempty : forall A B:set, A <> Empty -> B <> Empty -> hl_ty_finite_diff A B <> Empty.
+Admitted.
+
+// nonemptiness of the carrier of type definition finite_prod (prove in mglib/literal/carriers.mg)
+Theorem hl_ty_finite_prod_nonempty : forall A B:set, A <> Empty -> B <> Empty -> hl_ty_finite_prod A B <> Empty.
 Admitted.
 
