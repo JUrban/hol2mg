@@ -69274,11 +69274,11 @@
    "cert_status": "transport_checked",
    "cert_error": "",
    "bridge": "REAL_EQ_MUL_LCANCEL_bridge",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -69342,11 +69342,11 @@
    "cert_status": "transport_checked",
    "cert_error": "",
    "bridge": "REAL_EQ_NEG2_bridge",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -71321,11 +71321,11 @@
    "cert_status": "transport_checked",
    "cert_error": "",
    "bridge": "REAL_LE_LMUL_bridge",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -102813,7 +102813,7 @@
   ],
   "failed_shards": {},
   "transport_checked": 2547,
-  "literal_proved": 51,
+  "literal_proved": 54,
   "fully_proved": 0
  }
 }

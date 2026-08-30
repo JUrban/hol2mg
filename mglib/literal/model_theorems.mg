@@ -496,3 +496,45 @@ claim Hx: x :e int. { exact (hl_ty_int_native (fun u v => x :e u) Hx0). }
 claim Hs: hl_int_sgn x :e int. { exact (setexp_ap int int hl_int_sgn hl_int_sgn_in x Hx). }
 exact (eq_trans_i (hl_real_of_int (hl_int_sgn x)) (hl_int_sgn x) (hl_real_sgn (hl_real_of_int x)) (hl_real_of_int_compat (hl_int_sgn x) Hs) (eq_trans_i (hl_int_sgn x) (if 0 < x then 1 else if x < 0 then - 1 else 0) (hl_real_sgn (hl_real_of_int x)) (hl_int_sgn_compat x Hx) (eq_sym_i (hl_real_sgn (hl_real_of_int x)) (if 0 < x then 1 else if x < 0 then - 1 else 0) (eq_trans_i (hl_real_sgn (hl_real_of_int x)) (hl_real_sgn x) (if 0 < x then 1 else if x < 0 then - 1 else 0) (f_equal (fun a => hl_real_sgn a) (hl_real_of_int x) x (hl_real_of_int_compat x Hx)) (hl_real_sgn_compat x (int_Subq_R x Hx)))))).
 Qed.
+// ---- real arithmetic facts with giant recorded proofs (realarith.ml): model theorems ----
+Theorem hlt_REAL_EQ_NEG2_model : forall x y :e R, hl_real_neg x = hl_real_neg y <-> x = y.
+let x. assume Hx. let y. assume Hy.
+claim HSx: SNo x. { exact (real_SNo x Hx). }
+claim HSy: SNo y. { exact (real_SNo y Hy). }
+apply iffI.
+- assume H.
+  claim Hm: - x = - y. { exact (eq_trans_i (- x) (hl_real_neg x) (- y) (eq_sym_i (hl_real_neg x) (- x) (hl_real_neg_compat x Hx)) (eq_trans_i (hl_real_neg x) (hl_real_neg y) (- y) H (hl_real_neg_compat y Hy))). }
+  exact (eq_trans_i x (- - x) y (eq_sym_i (- - x) x (minus_SNo_invol x HSx)) (eq_trans_i (- - x) (- - y) y (f_equal (fun u => - u) (- x) (- y) Hm) (minus_SNo_invol y HSy))).
+- assume H. exact (f_equal (fun u => hl_real_neg u) x y H).
+Qed.
+Theorem real_zero_numeral : hl_real_of_num (hl_NUMERAL hl_zero) = 0.
+exact (eq_trans_i (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_of_num 0) 0 (f_equal (fun u => hl_real_of_num u) (hl_NUMERAL hl_zero) 0 hl_NUMERAL_zero) (hl_real_of_num_compat 0 (nat_p_omega 0 nat_0))).
+Qed.
+Theorem hlt_REAL_LE_LMUL_model : forall x y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1.
+let x. assume Hx. let y. assume Hy. let z. assume Hz. assume H. apply H. assume H1 H2.
+claim HaR: hl_real_of_num (hl_NUMERAL hl_zero) :e R. { exact ((eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 real_zero_numeral) (fun u v => u :e R) real_0). }
+claim H0x: 0 <= x. { exact (real_zero_numeral (fun u v => u <= x) (iffEL (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (hl_real_of_num (hl_NUMERAL hl_zero) <= x) (hl_real_le_compat (hl_real_of_num (hl_NUMERAL hl_zero)) HaR x Hx) H1)). }
+claim Hyz: y <= z. { exact (iffEL (hl_real_le y z = 1) (y <= z) (hl_real_le_compat y Hy z Hz) H2). }
+claim Hm: x * y <= x * z. { exact (nonneg_mul_SNo_Le x y z (real_SNo x Hx) H0x (real_SNo y Hy) (real_SNo z Hz) Hyz). }
+claim Hxy: hl_real_mul x y :e R. { exact ((eq_sym_i (hl_real_mul x y) (x * y) (hl_real_mul_compat x Hx y Hy)) (fun u v => u :e R) (real_mul_SNo x Hx y Hy)). }
+claim Hxz: hl_real_mul x z :e R. { exact ((eq_sym_i (hl_real_mul x z) (x * z) (hl_real_mul_compat x Hx z Hz)) (fun u v => u :e R) (real_mul_SNo x Hx z Hz)). }
+claim Hm2: hl_real_mul x y <= hl_real_mul x z. { exact ((eq_sym_i (hl_real_mul x y) (x * y) (hl_real_mul_compat x Hx y Hy)) (fun u v => u <= hl_real_mul x z) ((eq_sym_i (hl_real_mul x z) (x * z) (hl_real_mul_compat x Hx z Hz)) (fun u v => x * y <= u) Hm)). }
+exact (iffER (hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1) (hl_real_mul x y <= hl_real_mul x z) (hl_real_le_compat (hl_real_mul x y) Hxy (hl_real_mul x z) Hxz) Hm2).
+Qed.
+Theorem hlt_REAL_EQ_MUL_LCANCEL_model : forall x y z :e R, hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z.
+let x. assume Hx. let y. assume Hy. let z. assume Hz.
+claim HSx: SNo x. { exact (real_SNo x Hx). }
+claim HSy: SNo y. { exact (real_SNo y Hy). }
+claim HSz: SNo z. { exact (real_SNo z Hz). }
+apply iffI.
+- assume H.
+  claim Hm: x * y = x * z. { exact (eq_trans_i (x * y) (hl_real_mul x y) (x * z) (eq_sym_i (hl_real_mul x y) (x * y) (hl_real_mul_compat x Hx y Hy)) (eq_trans_i (hl_real_mul x y) (hl_real_mul x z) (x * z) H (hl_real_mul_compat x Hx z Hz))). }
+  apply (xm (x = 0)).
+  + assume Hx0. apply orIL. exact (eq_trans_i x 0 (hl_real_of_num (hl_NUMERAL hl_zero)) Hx0 (eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 real_zero_numeral)).
+  + assume Hn. apply orIR. exact (mul_SNo_nonzero_cancel x y z HSx Hn HSy HSz Hm).
+- assume H. apply H.
+  + assume Hxa.
+    claim Hx0: x = 0. { exact (eq_trans_i x (hl_real_of_num (hl_NUMERAL hl_zero)) 0 Hxa real_zero_numeral). }
+    exact (eq_trans_i (hl_real_mul x y) (x * y) (hl_real_mul x z) (hl_real_mul_compat x Hx y Hy) (eq_trans_i (x * y) 0 (hl_real_mul x z) (eq_trans_i (x * y) (0 * y) 0 (f_equal (fun u => u * y) x 0 Hx0) (mul_SNo_zeroL y HSy)) (eq_sym_i (hl_real_mul x z) 0 (eq_trans_i (hl_real_mul x z) (x * z) 0 (hl_real_mul_compat x Hx z Hz) (eq_trans_i (x * z) (0 * z) 0 (f_equal (fun u => u * z) x 0 Hx0) (mul_SNo_zeroL z HSz)))))).
+  + assume Hyz. exact (f_equal (fun u => hl_real_mul x u) y z Hyz).
+Qed.

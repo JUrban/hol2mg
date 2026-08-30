@@ -816,13 +816,14 @@ Admitted.
 
 // HOL Light: real.ml:384 / REAL_EQ_NEG2   (hash md5:4c5e16e7f823b5a015c8cae9fd3ff887)
 Theorem hlt_REAL_EQ_NEG2 : forall x y :e R, hl_real_neg x = hl_real_neg y <-> x = y.
-Admitted.
+exact hlt_REAL_EQ_NEG2_model.
+Qed.
 Theorem REAL_EQ_NEG2_bridge : (forall x y :e R, hl_real_neg x = hl_real_neg y <-> x = y) -> (forall x y :e R, - x = - y <-> x = y).
 exact (fun H__top => ((imp_forall_in (R) (fun x => forall y :e R, hl_real_neg x = hl_real_neg y <-> x = y) (fun x => forall y :e R, - x = - y <-> x = y) (fun x Hx => (imp_forall_in (R) (fun y => hl_real_neg x = hl_real_neg y <-> x = y) (fun y => - x = - y <-> x = y) (fun y Hy => (imp_iff (hl_real_neg x = hl_real_neg y) (- x = - y) (x = y) (x = y) (imp_eq (hl_real_neg x) (- x) (hl_real_neg y) (- y) ((hl_real_neg_compat) (x) Hx) ((hl_real_neg_compat) (y) Hy)) (imp_eq (- x) (hl_real_neg x) (- y) (hl_real_neg y) (eq_sym_i (hl_real_neg x) (- x) ((hl_real_neg_compat) (x) Hx)) (eq_sym_i (hl_real_neg y) (- y) ((hl_real_neg_compat) (y) Hy))) (imp_eq (x) (x) (y) (y) (fun q H => H) (fun q H => H)) (imp_eq (x) (x) (y) (y) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (y) (y) (fun q H => H)))))))) H__top)).
 Qed.
 Theorem REAL_EQ_NEG2 : forall x y :e R, - x = - y <-> x = y.
 exact (REAL_EQ_NEG2_bridge hlt_REAL_EQ_NEG2).
-Admitted.
+Qed.
 
 // HOL Light: real.ml:388 / REAL_LT_NEG2   (hash md5:b9e85b77d9cfa307b318518e5e1183a2)
 Theorem hlt_REAL_LT_NEG2 : forall x y :e R, hl_real_lt (hl_real_neg x) (hl_real_neg y) = 1 <-> hl_real_lt y x = 1.
@@ -1336,13 +1337,14 @@ Admitted.
 
 // HOL Light: real.ml:644 / REAL_LE_LMUL   (hash md5:b2c6dbbde384bc8c9b07ff9b1fd67a50)
 Theorem hlt_REAL_LE_LMUL : forall x y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1.
-Admitted.
+exact hlt_REAL_LE_LMUL_model.
+Qed.
 Theorem REAL_LE_LMUL_bridge : (forall x y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1) -> (forall x y z :e R, 0 <= x /\ y <= z -> x * y <= x * z).
 exact (fun H__top => ((imp_forall_in (R) (fun x => forall y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1) (fun x => forall y z :e R, 0 <= x /\ y <= z -> x * y <= x * z) (fun x Hx => (imp_forall_in (R) (fun y => forall z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1) (fun y => forall z :e R, 0 <= x /\ y <= z -> x * y <= x * z) (fun y Hy => (imp_forall_in (R) (fun z => hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1) (fun z => 0 <= x /\ y <= z -> x * y <= x * z) (fun z Hz => (fun H__L : ((hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1) -> (hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1)) => fun H__hyp3 : (0 <= x /\ y <= z) => (iffEL (hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1) (x * y <= x * z) (((hl_real_mul_compat) (x) Hx (z) Hz) (fun hl__u hl__v => hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1 <-> x * y <= hl__u) (((hl_real_mul_compat) (x) Hx (y) Hy) (fun hl__u hl__v => hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1 <-> hl__u <= hl_real_mul x z) ((hl_real_le_compat) (hl_real_mul x y) (setexp_ap (R) (R) (hl_real_mul x) (setexp_ap (R) (R :^: R) (hl_real_mul) ((hl_real_mul_in)) (x) Hx) (y) Hy) (hl_real_mul x z) (setexp_ap (R) (R) (hl_real_mul x) (setexp_ap (R) (R :^: R) (hl_real_mul) ((hl_real_mul_in)) (x) Hx) (z) Hz))))) (H__L ((imp_and_dep_bwd (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (0 <= x) (hl_real_le y z = 1) (y <= z) (iffER (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (0 <= x) (((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun hl__u hl__v => hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 <-> hl__u <= x) ((hl_real_le_compat) (hl_real_of_num (hl_NUMERAL hl_zero)) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))) (x) Hx))) (fun H__and4 : (0 <= x) => (iffER (hl_real_le y z = 1) (y <= z) ((hl_real_le_compat) (y) Hy (z) Hz)))) H__hyp3))))))))) H__top)).
 Qed.
 Theorem REAL_LE_LMUL : forall x y z :e R, 0 <= x /\ y <= z -> x * y <= x * z.
 exact (REAL_LE_LMUL_bridge hlt_REAL_LE_LMUL).
-Admitted.
+Qed.
 
 // HOL Light: real.ml:649 / REAL_LE_RMUL   (hash md5:7b5bc314a301b05fb322785ee071949c)
 Theorem hlt_REAL_LE_RMUL : forall x y z :e R, hl_real_le x y = 1 /\ hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> hl_real_le (hl_real_mul x z) (hl_real_mul y z) = 1.
@@ -1376,13 +1378,14 @@ Admitted.
 
 // HOL Light: real.ml:662 / REAL_EQ_MUL_LCANCEL   (hash md5:77434096f794ecbda49184efdcd09ba1)
 Theorem hlt_REAL_EQ_MUL_LCANCEL : forall x y z :e R, hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z.
-Admitted.
+exact hlt_REAL_EQ_MUL_LCANCEL_model.
+Qed.
 Theorem REAL_EQ_MUL_LCANCEL_bridge : (forall x y z :e R, hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z) -> (forall x y z :e R, x * y = x * z <-> x = 0 \/ y = z).
 exact (fun H__top => ((imp_forall_in (R) (fun x => forall y z :e R, hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z) (fun x => forall y z :e R, x * y = x * z <-> x = 0 \/ y = z) (fun x Hx => (imp_forall_in (R) (fun y => forall z :e R, hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z) (fun y => forall z :e R, x * y = x * z <-> x = 0 \/ y = z) (fun y Hy => (imp_forall_in (R) (fun z => hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z) (fun z => x * y = x * z <-> x = 0 \/ y = z) (fun z Hz => (imp_iff (hl_real_mul x y = hl_real_mul x z) (x * y = x * z) (x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z) (x = 0 \/ y = z) (imp_eq (hl_real_mul x y) (x * y) (hl_real_mul x z) (x * z) ((hl_real_mul_compat) (x) Hx (y) Hy) ((hl_real_mul_compat) (x) Hx (z) Hz)) (imp_eq (x * y) (hl_real_mul x y) (x * z) (hl_real_mul x z) (eq_sym_i (hl_real_mul x y) (x * y) ((hl_real_mul_compat) (x) Hx (y) Hy)) (eq_sym_i (hl_real_mul x z) (x * z) ((hl_real_mul_compat) (x) Hx (z) Hz))) (imp_or (x = hl_real_of_num (hl_NUMERAL hl_zero)) (x = 0) (y = z) (y = z) (imp_eq (x) (x) (hl_real_of_num (hl_NUMERAL hl_zero)) (0) (fun q H => H) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))) (imp_eq (y) (y) (z) (z) (fun q H => H) (fun q H => H))) (imp_or (x = 0) (x = hl_real_of_num (hl_NUMERAL hl_zero)) (y = z) (y = z) (imp_eq (x) (x) (0) (hl_real_of_num (hl_NUMERAL hl_zero)) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))))) (imp_eq (y) (y) (z) (z) (eq_sym_i (y) (y) (fun q H => H)) (eq_sym_i (z) (z) (fun q H => H))))))))))) H__top)).
 Qed.
 Theorem REAL_EQ_MUL_LCANCEL : forall x y z :e R, x * y = x * z <-> x = 0 \/ y = z.
 exact (REAL_EQ_MUL_LCANCEL_bridge hlt_REAL_EQ_MUL_LCANCEL).
-Admitted.
+Qed.
 
 // HOL Light: real.ml:668 / REAL_EQ_MUL_RCANCEL   (hash md5:8289a329af7ef354b5c3755c64c97b38)
 Theorem hlt_REAL_EQ_MUL_RCANCEL : forall x y z :e R, hl_real_mul x z = hl_real_mul y z <-> x = y \/ z = hl_real_of_num (hl_NUMERAL hl_zero).
