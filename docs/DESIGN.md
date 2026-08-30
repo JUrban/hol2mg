@@ -1348,6 +1348,45 @@ profile; the fixture slice `tests/golden/core.names` categories "polymorphic com
 "products", "naturals", "lists", "sets", "choice", "type definitions", "reals" are certified
 before the rest of Core; the proof-export pilot starts only after Core is certified.
 
+### 21.8 Next slice: the `cart` family (planned 2026-08-30)
+
+All 93 public theorems without a literal statement belong to cart.ml: the types `cart`,
+`finite_image`, `finite_sum`, `tybit0`, `tybit1` and the constants `dimindex`, `$`, `lambda`,
+`finite_index`, `pastecart`, `fstcart`, `sndcart`.  The native side is complete
+(`cart A N = A :^: idx N`, `finite_image N = idx N`, `finite_sum M N = idx_n (dimindex M +
+dimindex N)`, `tybit0/1`).  On the literal side the only structural gap is that these type
+definitions have *phantom* type parameters: `finite_image A` is a subtype of `num` whose
+predicate mentions `dimindex(:A)` only through a constant instance.  The literal layer now
+takes the parameters from the type variables of the predicate term (as
+`new_basic_type_definition` does), which yields `hl_ty_finite_image A = {x :e omega | hl_IN
+omega x (hl_numseg 1 (hl_dimindex A (hl_UNIV A))) = 1}` and literal statements for the family.
+
+Plan for the certification of the family:
+
+1. Parametrised native carriers: a table of proved carrier equations `hl_ty_T_native : forall
+   A.., A <> Empty -> .. -> hl_ty_T A.. = template[A..]` and nonemptiness
+   `hl_ty_T_native_nonempty`, used by `Literal.carrier` (native mode), `Bridge.nonempty_pf`,
+   the compat statements and the bridge's carrier conversion, which rewrites the type
+   instances of a statement outermost-first (`hl_ty_cart A (hl_ty_finite_sum M N)` before
+   `hl_ty_finite_sum M N`) with the literal arguments and their literal nonemptiness proofs.
+2. A second layering stage.  The carrier equations and nonemptiness proofs of these types need
+   compat facts (`hl_dimindex_compat`, `hl_numseg_compat`, `hl_IN_compat`), the typing lemmas
+   of the cart constants need the nonemptiness proofs, and the cart compat lemmas need the
+   typing lemmas.  Hence the check order becomes `carriers.mg`, `_literal_typing.mg`,
+   `compat.mg`, `carriers2.mg` (hand-proved stage-2 carrier facts), `_literal_typing2.mg`
+   (generated typing lemmas of constants whose types mention a stage-2 type), `compat2.mg`
+   (hand-proved stage-2 compat lemmas), then `model_theorems.mg` and `uniform.mg`.  Typing
+   lemmas of stage-2 constants are generated in literal-carrier form; the bridge converts the
+   membership to the native carrier with the same outermost-first rewriting.
+3. Compat lemmas: `hl_vindex` (`$`, via `dest_cart` and `finite_index`), `hl_lambda`,
+   `hl_finite_index` (identity on `idx N`), `hl_mk_cart`/`hl_dest_cart` (identities),
+   `hl_pastecart`, `hl_fstcart`, `hl_sndcart`, `hl_mk_finite_sum`/`hl_dest_finite_sum`,
+   `hl_mk_tybit0`/`hl_mk_tybit1` and their `dest` forms; `hl_dimindex_compat` exists.
+
+Nonemptiness of a translated type may not be admitted: Megalodon refuses `Qed` for any proof
+depending on an admitted fact, so an admitted `hl_ty_T_nonempty` would make every typing lemma
+and bridge of the family admitted.
+
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 
 Started after the certification checkpoint (§21.7 row (k), §21.8).  Goal: discharge the admitted

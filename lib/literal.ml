@@ -247,7 +247,7 @@ let tydef consts supported tydefs (td : type_definition) (arity : int) : (string
   let rho, pred = dest_tydef_bij td in
   (* the type's parameters are the predicate's type variables in sorted order
      (HOL Light new_basic_type_definition) *)
-  let tvs = List.sort compare (tyvars_ordered (type_of [] pred) []) in
+  let tvs = List.sort compare (uniq (tyvars_of_tm pred)) in   (* all type variables of the term, as new_basic_type_definition *)
   if List.length tvs <> arity then unsupported "type definition %s: %d type variables but arity %d" td.td_name (List.length tvs) arity;
   let tv_names = tyvar_params tvs in
   let ctx = new_ctx consts supported tydefs tv_names in
