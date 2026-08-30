@@ -7364,3 +7364,20 @@ prove {hl_rep B u | u :e hl_rep (2 :^: B) (hl_IMAGE A (2 :^: B) l1 l2)} = {f1 x 
 rewrite Hrep.
 exact (eq_trans_i {hl_rep B u | u :e {l1 x | x :e hl_rep A l2}} {hl_rep B (l1 x) | x :e hl_rep A l2} {f1 x | x :e hl_rep A l2} (Repl_Repl (hl_rep A l2) (fun x => l1 x) (fun u => hl_rep B u)) (Repl_ext_pw (hl_rep A l2) (fun x => hl_rep B (l1 x)) f1 (fun x Hx => Hf x (hl_rep_Subq A l2 x Hx)))).
 Qed.
+// IMAGE over sets of subsets: the function sees the representations of the subsets (nested at the domain, and at both)
+Theorem hl_IMAGE_compat_pow1 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: (2 :^: A), forall f1:set -> set, (forall x :e 2 :^: A, l1 x = f1 (hl_rep A x)) -> forall l2 :e 2 :^: (2 :^: A), hl_rep B (hl_IMAGE (2 :^: A) B l1 l2) = {f1 x | x :e hl_rep2 A l2}.
+let A B. assume HA HB. let l1. assume H1. let f1. assume Hf. let l2. assume H2.
+claim H2A: 2 :^: A <> Empty. { exact (setexp_nonempty A 2 two_nonempty). }
+claim Hrep: hl_rep B (hl_IMAGE (2 :^: A) B l1 l2) = {l1 x | x :e hl_rep (2 :^: A) l2}. { exact (hl_IMAGE_compat (2 :^: A) B H2A HB l1 H1 (fun x => l1 x) (fun x Hx => (fun q H => H)) l2 H2). }
+prove hl_rep B (hl_IMAGE (2 :^: A) B l1 l2) = {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}}.
+exact (eq_trans_i (hl_rep B (hl_IMAGE (2 :^: A) B l1 l2)) {l1 x | x :e hl_rep (2 :^: A) l2} {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} Hrep (eq_trans_i {l1 x | x :e hl_rep (2 :^: A) l2} {f1 (hl_rep A x) | x :e hl_rep (2 :^: A) l2} {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} (Repl_ext_pw (hl_rep (2 :^: A) l2) (fun x => l1 x) (fun x => f1 (hl_rep A x)) (fun x Hx => Hf x (hl_rep_Subq (2 :^: A) l2 x Hx))) (eq_sym_i {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} {f1 (hl_rep A x) | x :e hl_rep (2 :^: A) l2} (Repl_Repl (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) f1)))).
+Qed.
+Theorem hl_IMAGE_compat_pow12 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: B :^: (2 :^: A), forall f1:set -> set, (forall x :e 2 :^: A, hl_rep B (l1 x) = f1 (hl_rep A x)) -> forall l2 :e 2 :^: (2 :^: A), hl_rep2 B (hl_IMAGE (2 :^: A) (2 :^: B) l1 l2) = {f1 x | x :e hl_rep2 A l2}.
+let A B. assume HA HB. let l1. assume H1. let f1. assume Hf. let l2. assume H2.
+claim H2A: 2 :^: A <> Empty. { exact (setexp_nonempty A 2 two_nonempty). }
+claim H2B: 2 :^: B <> Empty. { exact (setexp_nonempty B 2 two_nonempty). }
+claim Hrep: hl_rep (2 :^: B) (hl_IMAGE (2 :^: A) (2 :^: B) l1 l2) = {l1 x | x :e hl_rep (2 :^: A) l2}. { exact (hl_IMAGE_compat (2 :^: A) (2 :^: B) H2A H2B l1 H1 (fun x => l1 x) (fun x Hx => (fun q H => H)) l2 H2). }
+prove {hl_rep B u | u :e hl_rep (2 :^: B) (hl_IMAGE (2 :^: A) (2 :^: B) l1 l2)} = {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}}.
+rewrite Hrep.
+exact (eq_trans_i {hl_rep B u | u :e {l1 x | x :e hl_rep (2 :^: A) l2}} {hl_rep B (l1 x) | x :e hl_rep (2 :^: A) l2} {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} (Repl_Repl (hl_rep (2 :^: A) l2) (fun x => l1 x) (fun u => hl_rep B u)) (eq_trans_i {hl_rep B (l1 x) | x :e hl_rep (2 :^: A) l2} {f1 (hl_rep A x) | x :e hl_rep (2 :^: A) l2} {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} (Repl_ext_pw (hl_rep (2 :^: A) l2) (fun x => hl_rep B (l1 x)) (fun x => f1 (hl_rep A x)) (fun x Hx => Hf x (hl_rep_Subq (2 :^: A) l2 x Hx))) (eq_sym_i {f1 s | s :e {hl_rep A u | u :e hl_rep (2 :^: A) l2}} {f1 (hl_rep A x) | x :e hl_rep (2 :^: A) l2} (Repl_Repl (hl_rep (2 :^: A) l2) (fun u => hl_rep A u) f1)))).
+Qed.

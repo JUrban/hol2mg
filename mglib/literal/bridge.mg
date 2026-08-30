@@ -834,6 +834,10 @@ Theorem pw_eta_fun : forall D F:set, forall N:set -> set, (forall x :e D, (fun x
 let D F N. assume H. let x. assume Hx.
 exact (eq_trans_i (F x) ((fun x :e D => F x) x) (N x) (eq_sym_i ((fun x :e D => F x) x) (F x) (beta D (fun x => F x) x Hx)) (H x Hx)).
 Qed.
+Theorem pw_eta_repfun : forall D B F:set, forall N:set -> set, (forall x :e D, hl_rep B ((fun x :e D => F x) x) = N x) -> forall x :e D, hl_rep B (F x) = N x.
+let D B F N. assume H. let x. assume Hx.
+exact (beta D (fun x => F x) x Hx (fun u v => hl_rep B u = N x) (H x Hx)).
+Qed.
 
 // ---- equality of Boolean-valued functions is pointwise equivalence ----
 Theorem two_eq_iff : forall x y :e 2, x = y <-> (x = 1 <-> y = 1).

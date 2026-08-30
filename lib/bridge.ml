@@ -543,7 +543,11 @@ and compat_statement_of_inst (an : L.analysis) (e : R.const_entry) (scheme : ty)
       | R.RMetaFun k ->
           let k = (match k with Some k -> k | None -> E.fun_arity (List.nth (fst (strip_fun_ty e.R.c_scheme)) i)) in
           (match k, aty with
-           | 1, TyApp ("fun", [ a; cod ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun (f, L.carrier lctx a, nat_of_lit lctx cod (Mg.App (Mg.Var l, Mg.Var "x"))), Mg.Var f)
+           | 1, TyApp ("fun", [ a; cod ]) ->
+               let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in
+               (* a nested domain (A := A -> bool): the meta function sees the representation of the argument
+                  (premise nat[l x] = f (hl_rep A x)) while the template applies it to native elements *)
+               (l, ca, `Fun (f, L.carrier lctx a, nat_of_lit lctx cod (Mg.App (Mg.Var l, Mg.Var "x")), Mg.App (Mg.Var f, nat_of_lit lctx a (Mg.Var "x"))), Mg.Var f)
            | 2, TyApp ("fun", [ a; TyApp ("fun", [ b; _ ]) ]) -> let f = L.fresh lctx ("f" ^ string_of_int (i + 1)) in (l, ca, `Fun2 (f, L.carrier lctx a, L.carrier lctx b), Mg.Var f)
            | _ -> (l, ca, `Bad, Mg.Var l))
       | R.RMetaPred k ->
@@ -581,7 +585,7 @@ and compat_statement_of_inst (an : L.analysis) (e : R.const_entry) (scheme : ty)
           let body = List.fold_right (fun sc acc -> Mg.Imp (sc, acc)) sides body in
           let body = List.fold_right (fun (l, ca, k, _) acc ->
             let acc = (match k with
-              | `Fun (f, a, lx) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Set), Mg.Imp (Mg.AllIn ("x", a, L.mg_eq lx (Mg.App (Mg.Var f, Mg.Var "x"))), acc))
+              | `Fun (f, a, lx, fx) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Set), Mg.Imp (Mg.AllIn ("x", a, L.mg_eq lx fx), acc))
               | `Pred (p, a, nx) -> Mg.All (p, Mg.Arr (Mg.Set, Mg.Prop), Mg.Imp (Mg.AllIn ("x", a, L.mg_iff (L.mg_eq (Mg.App (Mg.Var l, Mg.Var "x")) L.one) (Mg.App (Mg.Var p, nx))), acc))
               | `Fun2 (f, a, b) -> Mg.All (f, Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Set)), Mg.Imp (Mg.AllIn ("x", a, Mg.AllIn ("y", b, L.mg_eq (Mg.apps (Mg.Var l) [ Mg.Var "x"; Mg.Var "y" ]) (Mg.apps (Mg.Var f) [ Mg.Var "x"; Mg.Var "y" ]))), acc))
               | `Pred2 (p, a, b, nx, ny) -> Mg.All (p, Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Prop)), Mg.Imp (Mg.AllIn ("x", a, Mg.AllIn ("y", b, L.mg_iff (L.mg_eq (Mg.apps (Mg.Var l) [ Mg.Var "x"; Mg.Var "y" ]) L.one) (Mg.apps (Mg.Var p) [ nx; ny ]))), acc))
@@ -1117,19 +1121,39 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                     if L.is_logical p' then
                       Printf.sprintf "(iff_trans (%s = 1) %s %s (If_1_iff %s) (iffI %s %s %s %s))" (ppp lp) (ppp (lprop g p')) (ppp np) (ppp (lprop g p')) (ppp (lprop g p')) (ppp np) (bridge g Fwd p') (bridge g Bwd p')
                     else (let _, _, kp, pfp = rel g p' (Some E.VProp) in if kp <> KIff then unsupported "gspec predicate relation"; pfp) in
-                  let lt2, nt2, kt, pt = rel g body' (Some (E.VSet cb)) in
-                  if kt <> KEq then unsupported "gspec body relation";
-                  if lt2 <> lt || nt2 <> nt then unsupported "gspec body texts";
-                  let pt = if pt = "" then refl else pt in
+                  (* a subset-valued body with ordinary pattern variables: the result is represented by
+                     hl_rep2 (gspec_famunion_form_rep2) *)
+                  let body_sub = (match xty, yty, body_ty with
+                    | TyApp ("fun", [ _; TyApp ("bool", []) ]), _, _ | _, TyApp ("fun", [ _; TyApp ("bool", []) ]), _ -> None
+                    | _, _, TyApp ("fun", [ b_ty; TyApp ("bool", []) ]) ->
+                        let cb' = L.carrier g.lctx b_ty in
+                        if alpha_eq (E.carrier g.nctx b_ty) cb' then Some cb' else None
+                    | _ -> None) in
                   (match nat with
                    | Mg.FamUnion (_, a, Mg.ReplSep (_, b, _, _)) when a = ca && b = cb2 -> ()
                    | _ -> unsupported "gspec pair pattern: native %s is not a family union" (pp nat));
                   let hf = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (typ g body') in
-                  let hff = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy pt in
                   let hp = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy iff_p in
                   let f'_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp nt) and p_lam = Printf.sprintf "(fun %s %s => %s)" nx ny (pp np) in
-                  let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (gspec_famunion_form %s %s %s %s %s %s %s %s %s %s))" (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp ca) (ppp cb2) (ppp cb) q_lam f_lam f'_lam p_lam hf hff hp in
-                  (lit, nat, KRep cb, pf)
+                  (match body_sub with
+                   | Some cb' ->
+                       let lt2, nt2, kt, pt = rel g body' (Some (E.VSubset cb')) in
+                       (match kt with KRep _ -> () | _ -> unsupported "gspec pair pattern: subset body relation");
+                       if lt2 <> lt then unsupported "gspec pair pattern: subset body texts";
+                       if not (alpha_eq nt2 nt) then unsupported "gspec pair pattern: subset body native texts";
+                       let hff = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy (if pt = "" then refl else pt) in
+                       let mid2 = Mg.Repl ("v", mid, Mg.apps (Mg.Cst "hl_rep") [ cb'; Mg.Var "v" ]) in
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep2 %s %s) %s %s (f_equal (fun hl__u => {hl_rep %s hl__w | hl__w :e hl__u}) (hl_rep %s %s) %s %s) (gspec_famunion_form_rep2 %s %s %s %s %s %s %s %s %s %s))"
+                         (ppp cb') (ppp lit) (ppp mid2) (ppp nat) (ppp cb') (ppp cb) (ppp lit) (ppp mid) generic (ppp ca) (ppp cb2) (ppp cb') q_lam f_lam p_lam f'_lam hf hp hff in
+                       (lit, nat, KRep2 cb', pf)
+                   | None ->
+                       let lt2, nt2, kt, pt = rel g body' (Some (E.VSet cb)) in
+                       if kt <> KEq then unsupported "gspec body relation";
+                       if lt2 <> lt || nt2 <> nt then unsupported "gspec body texts";
+                       let pt = if pt = "" then refl else pt in
+                       let hff = Printf.sprintf "(fun %s %s %s %s => %s)" nx hx ny hy pt in
+                       let pf = Printf.sprintf "(eq_trans_i (hl_rep %s %s) %s %s %s (gspec_famunion_form %s %s %s %s %s %s %s %s %s %s))" (ppp cb) (ppp lit) (ppp mid) (ppp nat) generic (ppp ca) (ppp cb2) (ppp cb) q_lam f_lam f'_lam p_lam hf hff hp in
+                       (lit, nat, KRep cb, pf))
                   with e -> cleanup (); raise e) in
                 cleanup (); result
             | "GSPEC" when (match E.dest_gspec t with Some (_, [ _ ], _, _) -> true | _ -> false) ->
@@ -1528,6 +1552,22 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                       | KPW _, Mg.LamIn _ ->
                           (lit, nat, k', Printf.sprintf "(pw_eta_fun %s %s %s %s)" (ppp ca) (ppp lit) m pf')
                       | _ -> unsupported "rel: partial application shape")
+                 | Some (e, _) when List.length args + 1 = List.length e.R.c_args && e.R.c_result = R.RSubset && (match nview with E.VMetaPred [ _; _ ] -> true | _ -> false) ->
+                     (* a subset-valued constant missing its last argument, used as a function into subsets
+                        (IMAGE (IMAGE f) s): eta-expand and relate the lambda as a function into subsets *)
+                     let rem_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty args in
+                     let dom, cod = dest_fun_ty rem_ty in
+                     let ca = L.carrier g.lctx dom in
+                     let t' = E.eta_expand "x" t rem_ty in
+                     let l', n', k', pf' = rel g t' (Some (E.VMetaFun ([ ca ], nat_carrier_of g.lctx cod))) in
+                     (match k', l' with
+                      | KRepFun (c, a), Mg.LamIn _ ->
+                          (* the native side is applied to the representation of the literal element *)
+                          let rx = nat_of_lit g.lctx dom (Mg.Var "hl__x") in
+                          let m = if rx = Mg.Var "hl__x" then (match n' with Mg.Lam _ -> ppp n' | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp n'))
+                            else Printf.sprintf "(fun hl__x:set => %s %s)" (ppp n') (ppp rx) in
+                          (lit, n', k', Printf.sprintf "(pw_eta_repfun %s %s %s %s %s)" (ppp c) (ppp a) (ppp lit) m pf')
+                      | _ -> unsupported "rel: partial subset-valued application shape")
                  | Some _ -> unsupported "rel: partial application of mapped constant %s (view %s, %d args)" c (E.string_of_view nview) (List.length args)
                  | None -> unsupported "rel: unmapped constant %s (view %s, %d args)" c (E.string_of_view nview) (List.length args)))
        | Lam (x, xty, body), (E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ]) ->
@@ -1783,6 +1823,8 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let la, na, ka, pa = rel g a (Some (E.VMetaFun ([ L.carrier g.lctx d ], if subset_cod then nat_carrier_of g.lctx cod else L.carrier g.lctx cod))) in
           (match ka, subset_cod with KPW _, false | KRepFun _, true -> () | _ -> unsupported "rel_mapped: metafun argument relation");
           let pw = if pa = "" then Printf.sprintf "(fun x Hx => (fun q H => H))" else pa in
+          (* for a subset-typed domain the compat premise is stated through the representation
+             (.. = f1 (hl_rep A x)); the pointwise relation of the argument already has that shape *)
           let na_meta = (match na with Mg.Lam _ -> ppp na | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp na)) in
           parts := paren pw :: na_meta :: typ g a :: ppp la :: !parts;
           tsub := (string_of_int (i + 1), na) :: !tsub
@@ -2013,7 +2055,12 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
       (match nat with
        | Mg.Lam (i, _, Mg.Lam (a, _, body)) ->
            let nat' = Mg.Lam (i, Mg.Set, Mg.Sep (a, d, body)) in
-           let pf' = Printf.sprintf "(rep_of_pw2 %s %s %s (fun %s %s => %s) %s)" (ppp c) (ppp d) (ppp lit) i a (pp body) pf in
+           (* a subset-typed domain: the pointwise relation is stated through the representation of
+              the element (nat (hl_rep A i) a), as is the resulting function relation *)
+           let dom = (match type_of [] t with TyApp ("fun", [ dm; _ ]) -> dm | _ -> unsupported "coerce_rel: binary predicate domain") in
+           let rx = nat_of_lit g.lctx dom (Mg.Var i) in
+           let pbody = if rx = Mg.Var i then pp body else Printf.sprintf "%s %s %s" (ppp nat) (ppp rx) a in
+           let pf' = Printf.sprintf "(rep_of_pw2 %s %s %s (fun %s %s => %s) %s)" (ppp c) (ppp d) (ppp lit) i a pbody pf in
            (lit, nat', KRepFun (c, d), pf')
        | _ -> unsupported "coerce_rel: binary predicate as a function into subsets (shape %s)" (pp nat))
   | KPWP a, E.VMetaPred [ _ ] -> (lit, nat, kind, pf)

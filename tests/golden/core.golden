@@ -1436,7 +1436,8 @@ source: GSPEC (\GEN%PVAR%163:A->bool. ?s:A->bool. SETSPEC GEN%PVAR%163 (s SUBSET
 status: exact_native
 statement: forall A:set, A <> Empty -> {s :e Power A | s c= Empty} = {Empty} /\ forall a :e A, forall t c= A, {s :e Power A | s c= SetAdjoin t a} = {s :e Power A | s c= t} :\/: {{x0 :e A | x0 :e SetAdjoin x a} | x :e {s :e Power A | s c= t}}
 literal: forall A:set, A <> Empty -> hl_GSPEC (2 :^: A) (fun GEN_PVAR_163 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_163 (hl_SUBSET A s (hl_EMPTY A)) s = 1 then 1 else 0) = hl_INSERT (2 :^: A) (hl_EMPTY A) (hl_EMPTY (2 :^: A)) /\ forall a :e A, forall t :e 2 :^: A, hl_GSPEC (2 :^: A) (fun GEN_PVAR_164 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_164 (hl_SUBSET A s (hl_INSERT A a t)) s = 1 then 1 else 0) = hl_UNION (2 :^: A) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_165 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_165 (hl_SUBSET A s t) s = 1 then 1 else 0)) (hl_IMAGE (2 :^: A) (2 :^: A) (fun s :e 2 :^: A => hl_INSERT A a s) (hl_GSPEC (2 :^: A) (fun GEN_PVAR_166 :e 2 :^: A => if exists s :e 2 :^: A, hl_SETSPEC (2 :^: A) GEN_PVAR_166 (hl_SUBSET A s t) s = 1 then 1 else 0)))
-cert_status: bridge_unsupported
+bridge: POWERSET_CLAUSES_bridge
+cert_status: transport_checked
 
 ### IN_CROSS   [sets: membership, algebra, comprehensions, images, families]
 hash: ed960ab7f490ac67ee857ac89ae420d6
