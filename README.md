@@ -60,8 +60,10 @@ the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/ch
 `tools/cert_finalize.py`); the literal statement `hlt_N` is then the only admission.  It is
 `literal_proved` when that admission is discharged too, by a model-soundness theorem of the
 primitive interface (`mglib/literal/model_theorems.mg`, DESIGN §21.4): nothing is admitted.
-`fully_proved` (discharge by an imported HOL Light proof) is reserved for the proof-export pilot
-and is 0 so far.  Compatibility theorems for mapped
+`fully_proved` (discharge by an imported HOL Light proof) comes from the proof-export pilot
+(DESIGN §22, `tools/proof_pilot.sh`): its artifacts are regenerated, not committed, so the committed
+manifest carries no imported proofs; the pilot run of 2026-08-30 (cap 1 000 inferences) proved 236
+public Core theorems fully (report 16).  Compatibility theorems for mapped
 constants are hand-proved in `mglib/literal/compat.mg` from the literal definitions.
 
 Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are

@@ -2,7 +2,7 @@
 (* hol2mg proof-export pilot: dump recorded kernel proofs as JSON Lines.     *)
 (* Load in a session started in the recording directory (tools/make_hol_rec_dir.sh) *)
 (* after hol_export/export.ml:  loadt ".../proof_export.ml";;               *)
-(*   Hol2mg_proof.export "out.jsonl" 1000 [];;   (cap on own nodes, name filter) *)
+(*   Hol2mg_proof.export "out.jsonl" 1000 [] [];;   (cap on own nodes, name filter, names exported regardless of the cap) *)
 (* Records: {"kind":"type",id,node} {"kind":"term",id,node} shared across the *)
 (* file (structural hash-consing), and {"kind":"proof",name,hash,root,nodes}  *)
 (* with one node per shared inference (post-order), named leaves as NAMED.   *)
@@ -105,7 +105,7 @@ let export_theorem named_ph name th =
   emit (jobj ["kind", jstr "proof"; "name", jstr name; "hash", jstr (hash_of_sequent (dest_thm th));
               "root", jint root; "nodes", jlist (List.rev !nodes)]);;
 
-let export outfile cap only =
+let export outfile cap only force =
   update_database();
   let named_list = filter (fun (n,_) -> n <> "it" && n <> "buf__") (!theorems) in
   (* physical table thm -> name (first name wins) *)
@@ -116,6 +116,7 @@ let export outfile cap only =
   let n_exp = ref 0 and n_skip = ref 0 in
   List.iter (fun (n,th) ->
     if only <> [] && not (List.mem n only) then () else
+    if List.mem n force then (export_theorem named_ph n th; incr n_exp) else
     match own_size_capped named_ph cap th with
       None -> incr n_skip
     | Some _ -> (export_theorem named_ph n th; incr n_exp)) named_list;

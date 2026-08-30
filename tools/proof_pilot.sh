@@ -7,7 +7,7 @@ set -e
 HERE=$(cd "$(dirname "$0")/.." && pwd)
 prof=${1:-core}; cap=${2:-1000}
 proofs=$HERE/generated/internal/$prof.proofs.jsonl
-[ -s "$proofs" ] || "$HERE/tools/hol_proof_export.sh" "$proofs" "$cap"
+[ -s "$proofs" ] || "$HERE/tools/hol_proof_export.sh" "$proofs" "$cap" "" "${FORCE:-}"
 out=$HERE/generated/proofcert/$prof
 rm -rf "$out/public" "$out/literal" "$out/cert"; mkdir -p "$out/public" "$out/literal" "$out/cert"
 roots=$(python3 -c "import json;print(','.join(json.load(open('$HERE/profiles/$prof.json')).get('mappings', ['mappings/core.json','mappings/lists.json'])))" 2>/dev/null || echo mappings/core.json,mappings/lists.json)

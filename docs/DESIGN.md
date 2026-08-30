@@ -1474,5 +1474,10 @@ is larger than the claim.
    needs 4 GB); 1 365 of the 1 387 exported proofs import, 1 093 of them for transport-checked
    theorems; only 17 theorems were `fully_proved` in that run because imports were emitted for
    bridged theorems only, so most leaf chains ended in an admitted `hltu_M` — imports are now
-   emitted for every theorem with a recorded proof and the closure is computed on the uniform layer;
-   second run pending (report 16).
+   emitted for every theorem with a recorded proof and the closure is computed on the uniform layer.
+   Second run (same cap): 483 MB, all 23 shards check, 1 365 proofs imported (1 182 public), 305
+   literal facts proved through imported proofs, **236 public theorems `fully_proved`**
+   (`docs/reports/2026-08-30-interim-16.md`).  Blockers: leaves above the cap (456 of 726) and
+   definitional theorems with enormous recorded proofs (`is_int`, 162 111 inferences, now a model
+   theorem).  Next: cap 2 000 (1 683 theorems) and forced export of the large leaves
+   (`int_add_th`, `MONOIDAL_ADD`, `MONOIDAL_REAL_ADD`, `IN_ELIM_THM`, `int_sgn_th`).

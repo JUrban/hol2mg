@@ -61,3 +61,8 @@ primitive interface (§21.4 table) are all proved; the trusted-assumption paragr
 updated accordingly.  Remaining risk: the correctness of the literal *statements* themselves
 (§21.2) is syntax-directed and reviewed but not independently checked; the proof-export pilot
 will exercise it.
+
+Update 2026-08-30: the proof-export pilot (§22) is running end to end: HOL Light kernel proofs are
+recorded, exported and imported into the uniform model, and Megalodon checks the whole chain; in the
+cap-1 000 run 236 public Core theorems are `fully_proved` (no admission at all).  The literal
+*statements* are thereby exercised by the imported proofs for those theorems.
