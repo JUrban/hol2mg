@@ -98,8 +98,13 @@ exact (num_CASES_bridge hlt_num_CASES).
 Admitted.
 
 // HOL Light: nums.ml:192 / BIT0_DEF   (hash md5:cee1bcf83250b63d8623c6b4cebc7e98)
-// not bridged: 
+Theorem hlt_BIT0_DEF : hl_BIT0 (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\ forall n :e omega, hl_BIT0 (hl_SUC n) = hl_SUC (hl_SUC (hl_BIT0 n)).
+Admitted.
+Theorem BIT0_DEF_bridge : (hl_BIT0 (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero /\ forall n :e omega, hl_BIT0 (hl_SUC n) = hl_SUC (hl_SUC (hl_BIT0 n))) -> (0 = 0 /\ forall n :e omega, 2 * ordsucc n = ordsucc (ordsucc (2 * n))).
+exact (fun H__top => ((eq_trans_i (2 * 0) (mul_nat 2 0) 0 (eq_sym_i (mul_nat 2 0) (2 * 0) (mul_nat_mul_SNo 2 (nat_p_omega 2 nat_2) 0 (nat_p_omega 0 nat_0))) (mul_nat_0R 2)) (fun hl__u hl__v => hl__u = 0 /\ forall n :e omega, 2 * ordsucc n = ordsucc (ordsucc (2 * n))) ((imp_and_dep (hl_BIT0 (hl_NUMERAL hl_zero) = hl_NUMERAL hl_zero) (2 * 0 = 0) (forall n :e omega, hl_BIT0 (hl_SUC n) = hl_SUC (hl_SUC (hl_BIT0 n))) (forall n :e omega, 2 * ordsucc n = ordsucc (ordsucc (2 * n))) (imp_eq (hl_BIT0 (hl_NUMERAL hl_zero)) (2 * 0) (hl_NUMERAL hl_zero) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_BIT0 (hl_NUMERAL hl_zero) = 2 * hl__u) ((hl_BIT0_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat)) (fun H__and0 : (2 * 0 = 0) => (imp_forall_in (omega) (fun n => hl_BIT0 (hl_SUC n) = hl_SUC (hl_SUC (hl_BIT0 n))) (fun n => 2 * ordsucc n = ordsucc (ordsucc (2 * n))) (fun n Hn => (imp_eq (hl_BIT0 (hl_SUC n)) (2 * ordsucc n) (hl_SUC (hl_SUC (hl_BIT0 n))) (ordsucc (ordsucc (2 * n))) (((hl_SUC_compat) (n) Hn) (fun hl__u hl__v => hl_BIT0 (hl_SUC n) = 2 * hl__u) ((hl_BIT0_compat) (hl_SUC n) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (n) Hn))) ((((hl_BIT0_compat) (n) Hn) (fun hl__u hl__v => hl_SUC (hl_BIT0 n) = ordsucc hl__u) ((hl_SUC_compat) (hl_BIT0 n) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (n) Hn))) (fun hl__u hl__v => hl_SUC (hl_SUC (hl_BIT0 n)) = ordsucc hl__u) ((hl_SUC_compat) (hl_SUC (hl_BIT0 n)) (setexp_ap (omega) (omega) (hl_SUC) ((hl_SUC_in)) (hl_BIT0 n) (setexp_ap (omega) (omega) (hl_BIT0) ((hl_BIT0_in)) (n) Hn))))))))) H__top))).
+Qed.
 Theorem BIT0_DEF : 0 = 0 /\ forall n :e omega, 2 * ordsucc n = ordsucc (ordsucc (2 * n)).
+exact (BIT0_DEF_bridge hlt_BIT0_DEF).
 Admitted.
 
 // HOL Light: nums.ml:200 / BIT1_DEF   (hash md5:bd2631f8d3c5ce7d18b1dbba22927d46)

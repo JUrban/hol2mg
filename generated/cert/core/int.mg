@@ -15,13 +15,14 @@ Admitted.
 
 // HOL Light: int.ml:23 / is_int   (hash md5:525eb688cbd4423a5f45509ef427b678)
 Theorem hlt_is_int : forall x :e R, hl_integer x = 1 <-> exists n :e omega, x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n).
-Admitted.
+exact hlt_is_int_model.
+Qed.
 Theorem is_int_bridge : (forall x :e R, hl_integer x = 1 <-> exists n :e omega, x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n)) -> (forall x :e R, x :e int <-> exists n :e omega, x = n \/ x = - n).
 exact (fun H__top => ((imp_forall_in (R) (fun x => hl_integer x = 1 <-> exists n :e omega, x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n)) (fun x => x :e int <-> exists n :e omega, x = n \/ x = - n) (fun x Hx => (imp_iff (hl_integer x = 1) (x :e int) (exists n :e omega, x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n)) (exists n :e omega, x = n \/ x = - n) (iffEL (hl_integer x = 1) (x :e int) ((hl_integer_compat) (x) Hx)) (iffER (hl_integer x = 1) (x :e int) ((hl_integer_compat) (x) Hx)) (imp_exists_in (omega) (fun n => x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n)) (fun n => x = n \/ x = - n) (fun n Hn => (imp_or (x = hl_real_of_num n) (x = n) (x = hl_real_neg (hl_real_of_num n)) (x = - n) (imp_eq (x) (x) (hl_real_of_num n) (n) (fun q H => H) ((hl_real_of_num_compat) (n) Hn)) (imp_eq (x) (x) (hl_real_neg (hl_real_of_num n)) (- n) (fun q H => H) (((hl_real_of_num_compat) (n) Hn) (fun hl__u hl__v => hl_real_neg (hl_real_of_num n) = - hl__u) ((hl_real_neg_compat) (hl_real_of_num n) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (n) Hn))))))) (imp_exists_in (omega) (fun n => x = n \/ x = - n) (fun n => x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n)) (fun n Hn => (imp_or (x = n) (x = hl_real_of_num n) (x = - n) (x = hl_real_neg (hl_real_of_num n)) (imp_eq (x) (x) (n) (hl_real_of_num n) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_real_of_num n) (n) ((hl_real_of_num_compat) (n) Hn))) (imp_eq (x) (x) (- n) (hl_real_neg (hl_real_of_num n)) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_real_neg (hl_real_of_num n)) (- n) (((hl_real_of_num_compat) (n) Hn) (fun hl__u hl__v => hl_real_neg (hl_real_of_num n) = - hl__u) ((hl_real_neg_compat) (hl_real_of_num n) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (n) Hn))))))))))) H__top)).
 Qed.
 Theorem is_int : forall x :e R, x :e int <-> exists n :e omega, x = n \/ x = - n.
 exact (is_int_bridge hlt_is_int).
-Admitted.
+Qed.
 
 // HOL Light: int.ml:31 / int_tybij   (hash md5:3046e4c5f8eb4701b59127b6d816a01b)
 Theorem hlt_int_tybij : (forall a :e hl_ty_int, hl_int_of_real (hl_real_of_int a) = a) /\ forall r :e R, hl_integer r = 1 <-> hl_real_of_int (hl_int_of_real r) = r.

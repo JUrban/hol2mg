@@ -789,7 +789,8 @@ source: (!m:num. !n:num. NUMERAL m + NUMERAL n = NUMERAL (m + n)) /\ _0 + _0 = _
 status: transport_required
 statement: (forall m n :e omega, m + n = m + n) /\ (0 = 0 /\ ((forall n :e omega, 0 + 2 * n = 2 * n) /\ ((forall n :e omega, 0 + 2 * n + 1 = 2 * n + 1) /\ ((forall n :e omega, 2 * n + 0 = 2 * n) /\ ((forall n :e omega, (2 * n + 1) + 0 = 2 * n + 1) /\ ((forall m n :e omega, 2 * m + 2 * n = 2 * (m + n)) /\ ((forall m n :e omega, 2 * m + 2 * n + 1 = 2 * (m + n) + 1) /\ ((forall m n :e omega, (2 * m + 1) + 2 * n = 2 * (m + n) + 1) /\ forall m n :e omega, (2 * m + 1) + 2 * n + 1 = 2 * ordsucc (m + n)))))))))
 literal: (forall m n :e omega, hl_add (hl_NUMERAL m) (hl_NUMERAL n) = hl_NUMERAL (hl_add m n)) /\ (hl_add hl_zero hl_zero = hl_zero /\ ((forall n :e omega, hl_add hl_zero (hl_BIT0 n) = hl_BIT0 n) /\ ((forall n :e omega, hl_add hl_zero (hl_BIT1 n) = hl_BIT1 n) /\ ((forall n :e omega, hl_add (hl_BIT0 n) hl_zero = hl_BIT0 n) /\ ((forall n :e omega, hl_add (hl_BIT1 n) hl_zero = hl_BIT1 n) /\ ((forall m n :e omega, hl_add (hl_BIT0 m) (hl_BIT0 n) = hl_BIT0 (hl_add m n)) /\ ((forall m n :e omega, hl_add (hl_BIT0 m) (hl_BIT1 n) = hl_BIT1 (hl_add m n)) /\ ((forall m n :e omega, hl_add (hl_BIT1 m) (hl_BIT0 n) = hl_BIT1 (hl_add m n)) /\ forall m n :e omega, hl_add (hl_BIT1 m) (hl_BIT1 n) = hl_BIT0 (hl_SUC (hl_add m n))))))))))
-cert_status: bridge_unsupported
+bridge: ARITH_ADD_bridge
+cert_status: transport_checked
 
 ### BIT0_THM   [naturals: constructors, induction, arithmetic, order, division]
 hash: 559c2f7303610dd8ed299cfea6532bed
