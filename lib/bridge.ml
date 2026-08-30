@@ -1352,11 +1352,24 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 if kx <> KEq || lx <> nx then unsupported "rel: conditional function argument";
                 (match n3 with
                  | Mg.If (c, f, gg) ->
-                     let derived = Mg.If (c, Mg.App (f, nx), Mg.App (gg, nx)) in
-                     if not (alpha_eq derived nat) then unsupported "rel: conditional application derived %s differs from %s" (pp derived) (pp nat);
+                     let derived0 = Mg.If (c, Mg.App (f, nx), Mg.App (gg, nx)) in
                      let p3 = if p3 = "" then refl else p3 in
-                     let pf = Printf.sprintf "(eq_trans_i %s %s %s (f_equal (fun hl__u => hl__u %s) %s %s %s) (If_i_ap %s %s %s %s))"
-                       (ppp lit) (ppp (Mg.App (n3, lx))) (ppp derived) (ppp lx) (ppp l3) (ppp n3) p3 (paren (pp c)) (ppp f) (ppp gg) (ppp lx) in
+                     let pf0 = Printf.sprintf "(eq_trans_i %s %s %s (f_equal (fun hl__u => hl__u %s) %s %s %s) (If_i_ap %s %s %s %s))"
+                       (ppp lit) (ppp (Mg.App (n3, lx))) (ppp derived0) (ppp lx) (ppp l3) (ppp n3) p3 (paren (pp c)) (ppp f) (ppp gg) (ppp lx) in
+                     (* branches that are bounded lambdas applied to the argument: beta (needs the membership) *)
+                     let beta_branch (b : Mg.tm) = (match b with
+                       | Mg.LamIn (v, d, body) when d = L.carrier g.lctx dom -> Some (Mg.normalize (Mg.subst [ (v, nx) ] body), Printf.sprintf "(beta %s (fun %s:set => %s) %s %s)" (ppp d) v (pp body) (ppp nx) (typ g x))
+                       | _ -> None) in
+                     let derived, pf = List.fold_left (fun (der, pf) (br, side) ->
+                         match beta_branch br with
+                         | None -> (der, pf)
+                         | Some (red, pe) ->
+                             let redex = Mg.App (br, nx) in
+                             let ctx = replace_tm redex (Mg.Var "hl__u") der in
+                             ignore side;
+                             (replace_tm redex red der, Printf.sprintf "(%s (fun hl__u hl__v => %s = hl__u) %s)" pe (ppp lit) pf)) (derived0, pf0) [ (f, "l"); (gg, "r") ] in
+                     ignore derived0;
+                     if not (alpha_eq derived nat) then unsupported "rel: conditional application derived %s differs from %s" (pp derived) (pp nat);
                      (lit, nat, KEq, pf)
                  | _ -> unsupported "rel: conditional function shape")
             | "COND" when List.length args = 3 ->
@@ -1424,6 +1437,26 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                       | KPWP2 _ -> (lit, nat, k', Printf.sprintf "(pw_eta_pred2 %s %s %s %s %s)" (ppp c1) (ppp c2) (ppp lit) m pf')
                       | KPW2 _ -> (lit, nat, k', Printf.sprintf "(pw_eta_fun2 %s %s %s %s %s)" (ppp c1) (ppp c2) (ppp lit) m pf')
                       | _ -> unsupported "rel: partial application (arity 2) shape")
+                 | Some (e, _) when List.length args = List.length e.R.c_args + 1 && e.R.c_result = R.RSubset && nview = E.VProp ->
+                     (* a subset-valued constant applied to one more argument is membership:
+                        lit y = 1 <-> y :e hl_rep a lit (rep_mem_iff) and hl_rep a lit = nat (the subset relation) *)
+                     let n = List.length e.R.c_args in
+                     let base_args = List.filteri (fun i _ -> i < n) args and y = List.nth args n in
+                     let t0 = List.fold_left (fun acc a -> App (acc, a)) h base_args in
+                     let ca = L.carrier g.lctx (type_of [] y) in
+                     let l0, n0, k0, p0 = rel g t0 (Some (E.VSubset ca)) in
+                     let ly, ny, ky, _ = rel g y (Some (E.VSet ca)) in
+                     if ky <> KEq || ly <> ny then unsupported "rel: membership argument relation";
+                     (match k0 with
+                      | KRep a when a = ca ->
+                          let p0 = if p0 = "" then refl else p0 in
+                          (* lit y = 1 <-> y :e hl_rep a l0, then hl_rep a l0 = n0 *)
+                          let pf = Printf.sprintf "(iff_trans (%s = 1) (%s :e hl_rep %s %s) (%s :e %s) (rep_mem_iff %s %s %s %s) (%s (fun hl__u hl__v => (%s :e hl_rep %s %s) <-> (%s :e hl__u)) (iff_refl (%s :e hl_rep %s %s))))"
+                            (ppp lit) (ppp ly) (ppp a) (ppp l0) (ppp ly) (ppp n0) (ppp a) (ppp l0) (ppp ly) (typ g y) p0 (ppp ly) (ppp a) (ppp l0) (ppp ly) (ppp ly) (ppp a) (ppp l0) in
+                          let derived = L.mg_in ny n0 in
+                          if not (alpha_eq derived nat) then unsupported "rel: membership derived %s differs from %s" (pp derived) (pp nat);
+                          (lit, nat, KIff, pf)
+                      | _ -> unsupported "rel: subset over-application relation")
                  | Some (e, _) when List.length args = List.length e.R.c_args + 1 && (match e.R.c_result with R.RMetaFun _ | R.RMetaPred _ -> true | _ -> false) ->
                      (* over-application of a constant with a meta-function/predicate result: relate the
                         application to the registry's arguments pointwise, then apply to the extra argument *)

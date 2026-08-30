@@ -1054,3 +1054,9 @@ Theorem rep_of_pw : forall A F:set, forall P:set -> prop, F :e 2 :^: A -> (foral
 let A F P. assume HF H.
 exact (Sep_ext_iff A (fun x => F x = 1) (fun x => P x) H).
 Qed.
+// membership in the representation of a Boolean-valued function
+Theorem rep_mem_iff : forall A F:set, forall y :e A, F y = 1 <-> y :e hl_rep A F.
+let A F y. assume Hy. apply iffI.
+- assume H. exact (SepI A (fun x => F x = 1) y Hy H).
+- assume H. exact (SepE2 A (fun x => F x = 1) y H).
+Qed.
