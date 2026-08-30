@@ -433,3 +433,39 @@ claim Hs: hl_select 1 (fun x :e 1 => if True then 1 else 0) :e 1.
 { exact (setexp_ap (2 :^: 1) 1 (hl_select 1) (hl_select_in 1 one_nonempty) (fun x :e 1 => if True then 1 else 0) HP). }
 exact (cases_1 (hl_select 1 (fun x :e 1 => if True then 1 else 0)) Hs (fun u => hl_one = u) (fun q H => H)).
 Qed.
+// ---- the datatypes tybit0 / tybit1 (docs/DESIGN.md 21.9): induction and recursion in the model ----
+Theorem hlt_tybit0_INDUCT_model : forall A:set, A <> Empty -> forall P :e 2 :^: idx_n (2 * dimindex A), (forall a :e hl_ty_finite_sum A A, P (hl_mktybit0 A a) = 1) -> forall x :e idx_n (2 * dimindex A), P x = 1.
+let A. assume HA. let P. assume HP H. let x. assume Hx.
+claim Hx2: x :e idx_n (dimindex A + dimindex A). { exact ((tybit0_carrier A) (fun u v => x :e u) Hx). }
+claim Hxf: x :e hl_ty_finite_sum A A. { exact ((eq_sym_i (hl_ty_finite_sum A A) (idx_n (dimindex A + dimindex A)) (hl_ty_finite_sum_native A A HA HA)) (fun u v => x :e u) Hx2). }
+exact ((beta (idx_n (dimindex A + dimindex A)) (fun x => x) x Hx2) (fun u v => P u = 1) (H x Hxf)).
+Qed.
+Theorem hlt_tybit0_RECURSION_model : forall A Z:set, A <> Empty -> Z <> Empty -> forall f :e Z :^: hl_ty_finite_sum A A, exists fn :e Z :^: idx_n (2 * dimindex A), forall a :e hl_ty_finite_sum A A, fn (hl_mktybit0 A a) = f a.
+let A Z. assume HA HZ. let f. assume Hf.
+claim Hfs: hl_ty_finite_sum A A = idx_n (2 * dimindex A). { exact (eq_trans_i (hl_ty_finite_sum A A) (idx_n (dimindex A + dimindex A)) (idx_n (2 * dimindex A)) (hl_ty_finite_sum_native A A HA HA) (eq_sym_i (idx_n (2 * dimindex A)) (idx_n (dimindex A + dimindex A)) (tybit0_carrier A))). }
+witness f. apply andI.
+- exact (Hfs (fun u v => f :e Z :^: u) Hf).
+- let a. assume Ha.
+  claim Ha2: a :e idx_n (dimindex A + dimindex A). { exact ((hl_ty_finite_sum_native A A HA HA) (fun u v => a :e u) Ha). }
+  exact (f_equal (fun u => f u) (hl_mktybit0 A a) a (beta (idx_n (dimindex A + dimindex A)) (fun x => x) a Ha2)).
+Qed.
+Theorem tybit1_dom_eq : forall A:set, A <> Empty -> hl_ty_finite_sum (hl_ty_finite_sum A A) 1 = idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1).
+let A. assume HA.
+claim Hne: hl_ty_finite_sum A A <> Empty. { exact (hl_ty_finite_sum_nonempty A A HA HA). }
+exact (eq_trans_i (hl_ty_finite_sum (hl_ty_finite_sum A A) 1) (idx_n (dimindex (hl_ty_finite_sum A A) + dimindex 1)) (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (hl_ty_finite_sum_native (hl_ty_finite_sum A A) 1 Hne one_nonempty) (f_equal (fun u => idx_n (dimindex u + dimindex 1)) (hl_ty_finite_sum A A) (idx_n (dimindex A + dimindex A)) (hl_ty_finite_sum_native A A HA HA))).
+Qed.
+Theorem hlt_tybit1_INDUCT_model : forall A:set, A <> Empty -> forall P :e 2 :^: idx_n (2 * dimindex A + 1), (forall a :e hl_ty_finite_sum (hl_ty_finite_sum A A) 1, P (hl_mktybit1 A a) = 1) -> forall x :e idx_n (2 * dimindex A + 1), P x = 1.
+let A. assume HA. let P. assume HP H. let x. assume Hx.
+claim Hx2: x :e idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1). { exact ((tybit1_carrier A) (fun u v => x :e u) Hx). }
+claim Hxf: x :e hl_ty_finite_sum (hl_ty_finite_sum A A) 1. { exact ((eq_sym_i (hl_ty_finite_sum (hl_ty_finite_sum A A) 1) (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (tybit1_dom_eq A HA)) (fun u v => x :e u) Hx2). }
+exact ((beta (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (fun x => x) x Hx2) (fun u v => P u = 1) (H x Hxf)).
+Qed.
+Theorem hlt_tybit1_RECURSION_model : forall A Z:set, A <> Empty -> Z <> Empty -> forall f :e Z :^: hl_ty_finite_sum (hl_ty_finite_sum A A) 1, exists fn :e Z :^: idx_n (2 * dimindex A + 1), forall a :e hl_ty_finite_sum (hl_ty_finite_sum A A) 1, fn (hl_mktybit1 A a) = f a.
+let A Z. assume HA HZ. let f. assume Hf.
+claim Hdom: hl_ty_finite_sum (hl_ty_finite_sum A A) 1 = idx_n (2 * dimindex A + 1). { exact (eq_trans_i (hl_ty_finite_sum (hl_ty_finite_sum A A) 1) (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (idx_n (2 * dimindex A + 1)) (tybit1_dom_eq A HA) (eq_sym_i (idx_n (2 * dimindex A + 1)) (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (tybit1_carrier A))). }
+witness f. apply andI.
+- exact (Hdom (fun u v => f :e Z :^: u) Hf).
+- let a. assume Ha.
+  claim Ha2: a :e idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1). { exact ((tybit1_dom_eq A HA) (fun u v => a :e u) Ha). }
+  exact (f_equal (fun u => f u) (hl_mktybit1 A a) a (beta (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (fun x => x) a Ha2)).
+Qed.
