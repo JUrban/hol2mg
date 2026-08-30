@@ -18,10 +18,6 @@ Admitted.
 Theorem hl_CARD_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), finite (hl_rep2 A l1) -> hl_CARD (2 :^: A) l1 = finite_cardinality (hl_rep2 A l1).
 Admitted.
 
-// PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool (not in compat.mg)
-Theorem hl_PCROSS_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e 2 :^: (A :^: idx M), forall l2 :e 2 :^: (A :^: idx N), hl_rep (A :^: idx (idx_n (dimindex M + dimindex N))) (hl_PCROSS A M N l1 l2) = \/_ x :e hl_rep (A :^: idx M) l1, {pastecart M N x y | y :e hl_rep (A :^: idx N) l2}.
-Admitted.
-
 // NUMSUM : bool->num->num (not in compat.mg)
 Theorem hl_NUMSUM_compat : hl_NUMSUM = Empty.
 Admitted.
@@ -39,7 +35,7 @@ Theorem hl_FINREC_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_FINREC
 Admitted.
 
 // dest_finite_prod : (A,B)finite_prod->num (not in compat.mg)
-Theorem hl_dest_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_prod A B, hl_dest_finite_prod A B l1 = l1.
+Theorem hl_dest_finite_prod_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e idx_n (dimindex A * dimindex B), hl_dest_finite_prod A B l1 = l1.
 Admitted.
 
 // iterato : (A->bool)->A->(A->A->A)->(K->K->bool)->(K->bool)->(K->A)->A (not in compat.mg)
@@ -111,7 +107,7 @@ Theorem hl_superadmissible_compat : forall A B P:set, A <> Empty -> B <> Empty -
 Admitted.
 
 // dest_finite_diff : (A,B)finite_diff->num (not in compat.mg)
-Theorem hl_dest_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e hl_ty_finite_diff A B, hl_dest_finite_diff A B l1 = l1.
+Theorem hl_dest_finite_diff_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1), hl_dest_finite_diff A B l1 = l1.
 Admitted.
 
 // MAP2 : (A->B->C)->A list->B list->C list (not in compat.mg)
@@ -168,14 +164,6 @@ Admitted.
 
 // NULL : A list->bool (not in compat.mg)
 Theorem hl_NULL_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_NULL A l1 = 1 <-> seq_len l1 = 0.
-Admitted.
-
-// sndcart : (A,(M,N)finite_sum)cart->(A,N)cart (not in compat.mg)
-Theorem hl_sndcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx (idx_n (dimindex M + dimindex N)), hl_sndcart A M N l1 = sndcart M N l1.
-Admitted.
-
-// fstcart : (A,(M,N)finite_sum)cart->(A,M)cart (not in compat.mg)
-Theorem hl_fstcart_compat : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall l1 :e A :^: idx (idx_n (dimindex M + dimindex N)), hl_fstcart A M N l1 = fstcart M l1.
 Admitted.
 
 // o : (B->bool)->(A->B)->A->bool (not in compat.mg)
@@ -236,13 +224,5 @@ Admitted.
 
 // GEQ : A->A->bool (not in compat.mg)
 Theorem hl_GEQ_compat : forall A:set, A <> Empty -> hl_GEQ A = Empty.
-Admitted.
-
-// nonemptiness of the carrier of type definition finite_diff (prove in mglib/literal/carriers.mg)
-Theorem hl_ty_finite_diff_nonempty : forall A B:set, A <> Empty -> B <> Empty -> hl_ty_finite_diff A B <> Empty.
-Admitted.
-
-// nonemptiness of the carrier of type definition finite_prod (prove in mglib/literal/carriers.mg)
-Theorem hl_ty_finite_prod_nonempty : forall A B:set, A <> Empty -> B <> Empty -> hl_ty_finite_prod A B <> Empty.
 Admitted.
 

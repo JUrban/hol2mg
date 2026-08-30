@@ -986,3 +986,12 @@ Qed.
 Theorem idx_of_bounds : forall N:set, forall i :e omega, 1 <= i /\ i <= dimindex N -> i :e idx N.
 let N i. assume Hi H. exact (SepI omega (fun j => 1 <= j /\ j <= dimindex N) i Hi H).
 Qed.
+Theorem In_idx_idx_n : forall n :e omega, forall i :e idx_n n, i :e idx (idx_n n).
+let n. assume Hn. let i. assume Hi. exact ((eq_sym_i (idx (idx_n n)) (idx_n n) (idx_idx_n n Hn)) (fun u v => i :e u) Hi).
+Qed.
+Theorem idx_n_finite : forall n :e omega, finite (idx_n n).
+let n. assume Hn. witness n. apply andI. exact Hn. exact (idx_n_equip n Hn).
+Qed.
+Theorem idx_finite : forall N:set, finite (idx N).
+let N. exact (idx_n_finite (dimindex N) (dimindex_omega N)).
+Qed.

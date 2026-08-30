@@ -300,6 +300,8 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
         let sub = derive_finite g in
         let r = (match s with
           | Mg.Cst "Empty" | Mg.Num 0 -> Some "finite_Empty"
+          | Mg.App (Mg.Cst "idx", n) -> Some (Printf.sprintf "(idx_finite %s)" (ppp n))
+          | Mg.App (Mg.Cst "idx_n", Mg.App (Mg.Cst "dimindex", n)) -> Some (Printf.sprintf "(idx_n_finite (dimindex %s) (dimindex_omega %s))" (ppp n) (ppp n))
           | Mg.Num n when n <= 2 -> Some (Printf.sprintf "(nat_finite %d nat_%d)" n n)
           | Mg.SetEnum [ a ] -> Some (Printf.sprintf "(Sing_finite %s)" (ppp a))
           | Mg.SetEnum [ a; b ] -> Some (Printf.sprintf "(finite_UPair %s %s)" (ppp a) (ppp b))
@@ -766,10 +768,15 @@ let gabs_body_typing g (bodyn : tm) : string * string =
 
 (* membership of an index in idx N from the hypotheses in scope: i :e idx N itself, the bounds
    1 <= i /\ i <= dimindex N as one hypothesis, or the two bounds separately (docs/DESIGN.md 21.9) *)
-let derive_idx g find_hyp (i : Mg.tm) (n : Mg.tm) : string option =
+let rec derive_idx g find_hyp (i : Mg.tm) (n : Mg.tm) : string option =
   let tpl s = Mg.normalize (Mg.inst [ ("1", i); ("N", n) ] (cstify (Mg.parse_template s))) in
-  match nat_var_mem g i with
-  | Some (Mg.Cst "omega", hi) ->
+  match n, nat_var_mem g i with
+  | Mg.App (Mg.Cst "idx_n", (Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.App (Mg.Cst "dimindex", m)), Mg.App (Mg.Cst "dimindex", n2)) as s)), _ ->
+      (* the first block of a concatenated index set: i :e idx M gives i :e idx (idx_n (dimindex M + dimindex N)) *)
+      (match derive_idx g find_hyp i m with
+       | Some h -> Some (Printf.sprintf "(In_idx_idx_n %s (add_SNo_In_omega (dimindex %s) (dimindex_omega %s) (dimindex %s) (dimindex_omega %s)) %s (idx_block1 %s %s %s %s))" (ppp s) (ppp m) (ppp m) (ppp n2) (ppp n2) (ppp i) (ppp m) (ppp n2) (ppp i) h)
+       | None -> None)
+  | _, Some (Mg.Cst "omega", hi) ->
       (match find_hyp g (tpl "1 <= ?1 /\\ ?1 <= dimindex ?N") with
        | Some h -> Some (Printf.sprintf "(idx_of_bounds %s %s %s %s)" (ppp n) (ppp i) hi h)
        | None ->
@@ -2425,7 +2432,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let _, rewrites = Rewrite.run nat_stmt in
   (* idx_n_def / idx_def unfold definitions of the native prelude: the rewritten statement is convertible *)
   let convertible = [ "eta"; "idx_n_def"; "idx_def" ] in
-  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one"; "arith"; "Repl_identity" ] @ convertible in
+  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one"; "arith"; "Repl_identity"; "idx_idx_n"; "dimindex_idx_n" ] @ convertible in
   (match List.filter (fun r -> not (List.mem r replayable)) rewrites with
    | [] -> ()
    | l -> unsupported "native rewrites %s" (String.concat "," l));
@@ -2475,8 +2482,16 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   (* replay of the elaborator's closed numeral arithmetic (Num a + Num b, Num a * Num b evaluated; ordsucc (Num a)
      is convertible with Num (a+1)): evaluation proofs by the add_nat / mul_nat recursion, Leibniz on the body *)
   let nat_body, final =
-    if not (List.mem "arith" rewrites || List.mem "Repl_identity" rewrites) then (nat_body, final)
+    if not (List.mem "arith" rewrites || List.mem "Repl_identity" rewrites || List.mem "idx_idx_n" rewrites || List.mem "dimindex_idx_n" rewrites) then (nat_body, final)
     else begin
+      (* membership in omega of the index arithmetic of cart.ml (docs/DESIGN.md 21.9) *)
+      let rec omega_of (t : Mg.tm) : string option = (match t with
+        | Mg.Num k -> Some (Printf.sprintf "(nat_p_omega %d %s)" k (let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in nat_pf k))
+        | Mg.App (Mg.Cst "dimindex", x) -> Some (Printf.sprintf "(dimindex_omega %s)" (ppp x))
+        | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) -> (match omega_of a, omega_of b with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+        | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) -> (match omega_of a, omega_of b with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+        | Mg.App (Mg.App (Mg.Cst "minus_nat", a), b) -> (match omega_of a, omega_of b with Some pa, Some pb -> Some (Printf.sprintf "(minus_nat_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+        | _ -> None) in
       let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in
       let omega_pf k = Printf.sprintf "(nat_p_omega %d %s)" k (nat_pf k) in
       let rec ev_add a b = (if b = 0 then Printf.sprintf "(add_nat_0R %d)" a
@@ -2492,6 +2507,8 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
         | Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num a), Mg.Num b) -> Some (t, Mg.Num (a * b), Some (eval_mul a b))
         | Mg.App (Mg.Cst "ordsucc", Mg.Num a) -> Some (t, Mg.Num (a + 1), None)
         | Mg.Repl (x, s, Mg.Var y) when x = y -> Some (t, s, Some (Printf.sprintf "(Repl_id %s)" (ppp s)))
+        | Mg.App (Mg.Cst "idx", (Mg.App (Mg.Cst "idx_n", n) as v)) when omega_of n <> None -> Some (t, v, Some (Printf.sprintf "(idx_idx_n %s %s)" (ppp n) (Option.get (omega_of n))))
+        | Mg.App (Mg.Cst "dimindex", Mg.App (Mg.Cst "idx_n", n)) when omega_of n <> None -> Some (t, n, Some (Printf.sprintf "(dimindex_idx_n %s %s)" (ppp n) (Option.get (omega_of n))))
         | Mg.App (f, x) -> (match find f with Some r -> Some r | None -> find x)
         | Mg.Lam (_, _, b) | Mg.All (_, _, b) | Mg.Ex (_, _, b) -> find b
         | Mg.LamIn (_, a, b) | Mg.AllIn (_, a, b) | Mg.ExIn (_, a, b) | Mg.Sep (_, a, b) | Mg.Repl (_, a, b)

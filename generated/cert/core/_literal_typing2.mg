@@ -49,6 +49,38 @@ Theorem hl_mk_finite_sum_in : forall A B:set, A <> Empty -> B <> Empty -> hl_mk_
 let A B. assume HAne HBne. exact ((hl_ty_finite_sum_native (A) (B) HAne HBne) (fun hl__u hl__v => hl_mk_finite_sum A B :e hl__u :^: omega) (hl_mk_finite_sum_in_lit A B HAne HBne)).
 Qed.
 
+Theorem hl_dest_finite_diff_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_diff A B :e omega :^: hl_ty_finite_diff A B.
+exact (fun A B HAne HBne => hl_subtype_rep_in (omega) (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero)))))).
+Qed.
+
+Theorem hl_dest_finite_diff_in : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_diff A B :e omega :^: idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1).
+let A B. assume HAne HBne. exact ((hl_ty_finite_diff_native (A) (B) HAne HBne) (fun hl__u hl__v => hl_dest_finite_diff A B :e omega :^: hl__u) (hl_dest_finite_diff_in_lit A B HAne HBne)).
+Qed.
+
+Theorem hl_mk_finite_diff_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_mk_finite_diff A B :e hl_ty_finite_diff A B :^: omega.
+exact (fun A B HAne HBne => hl_subtype_abs_in (omega) (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero))))) (hl_ty_finite_diff_nonempty A B HAne HBne)).
+Qed.
+
+Theorem hl_mk_finite_diff_in : forall A B:set, A <> Empty -> B <> Empty -> hl_mk_finite_diff A B :e idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1) :^: omega.
+let A B. assume HAne HBne. exact ((hl_ty_finite_diff_native (A) (B) HAne HBne) (fun hl__u hl__v => hl_mk_finite_diff A B :e hl__u :^: omega) (hl_mk_finite_diff_in_lit A B HAne HBne)).
+Qed.
+
+Theorem hl_dest_finite_prod_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_prod A B :e omega :^: hl_ty_finite_prod A B.
+exact (fun A B HAne HBne => hl_subtype_rep_in (omega) (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_mul (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B)))))).
+Qed.
+
+Theorem hl_dest_finite_prod_in : forall A B:set, A <> Empty -> B <> Empty -> hl_dest_finite_prod A B :e omega :^: idx_n (dimindex A * dimindex B).
+let A B. assume HAne HBne. exact ((hl_ty_finite_prod_native (A) (B) HAne HBne) (fun hl__u hl__v => hl_dest_finite_prod A B :e omega :^: hl__u) (hl_dest_finite_prod_in_lit A B HAne HBne)).
+Qed.
+
+Theorem hl_mk_finite_prod_in_lit : forall A B:set, A <> Empty -> B <> Empty -> hl_mk_finite_prod A B :e hl_ty_finite_prod A B :^: omega.
+exact (fun A B HAne HBne => hl_subtype_abs_in (omega) (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_mul (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))) (hl_ty_finite_prod_nonempty A B HAne HBne)).
+Qed.
+
+Theorem hl_mk_finite_prod_in : forall A B:set, A <> Empty -> B <> Empty -> hl_mk_finite_prod A B :e idx_n (dimindex A * dimindex B) :^: omega.
+let A B. assume HAne HBne. exact ((hl_ty_finite_prod_native (A) (B) HAne HBne) (fun hl__u hl__v => hl_mk_finite_prod A B :e hl__u :^: omega) (hl_mk_finite_prod_in_lit A B HAne HBne)).
+Qed.
+
 Theorem hl_vindex_in_lit : forall A N:set, A <> Empty -> N <> Empty -> hl_vindex A N :e A :^: omega :^: hl_ty_cart A N.
 exact (fun A N HAne HNne => (lam_Pi (hl_ty_cart A N) (fun _ => A :^: omega) (fun v_94758 => fun v_94759 :e omega => hl_dest_cart A N v_94758 (hl_finite_index N v_94759)) (fun v_94758 Hv_94758 => (lam_Pi (omega) (fun _ => A) (fun v_94759 => hl_dest_cart A N v_94758 (hl_finite_index N v_94759)) (fun v_94759 Hv_94759 => (setexp_ap (hl_ty_finite_image N) (A) (hl_dest_cart A N v_94758) (setexp_ap (hl_ty_cart A N) (A :^: hl_ty_finite_image N) (hl_dest_cart A N) ((hl_dest_cart_in_lit) (A) (N) HAne HNne) (v_94758) Hv_94758) (hl_finite_index N v_94759) (setexp_ap (omega) (hl_ty_finite_image N) (hl_finite_index N) ((hl_finite_index_in_lit) (N) HNne) (v_94759) Hv_94759))))))).
 Qed.

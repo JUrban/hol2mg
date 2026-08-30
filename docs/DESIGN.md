@@ -1388,6 +1388,30 @@ Nonemptiness of a translated type may not be admitted: Megalodon refuses `Qed` f
 depending on an admitted fact, so an admitted `hl_ty_T_nonempty` would make every typing lemma
 and bridge of the family admitted.
 
+**Status (2026-08-30, commits `dc0fa57` …).**  Implemented as planned: `Literal.tydef_native_k`
+(parametrised carrier templates, registered when `hl_ty_T_native` and `hl_ty_T_native_nonempty`
+are proved), `Literal.param_native` (literal arguments of a conversion), `Bridge.ordered_instances`
+/ `convert_param_tydefs` (outermost-first forward Leibniz conversion, used for the theorem
+statement and for the typing lemmas of stage-2 constants, whose `_in` forms are derived from the
+literal `_in_lit` forms), `Bridge.nonempty_pf` for parametrised native carriers, the importer's
+nonemptiness for parametrised types, the check order with `carriers2.mg`, `_literal_typing2.mg`
+and `compat2.mg` (`tools/check_cert.sh`, stage-2 constants selected by their types), and the
+abs/rep constants of a type definition now take their parameters in the order of their own
+generic types (`mk_cart : (N finite_image -> A) -> (A,N) cart` differs from the sorted order of
+the type).  `mglib/literal/carriers2.mg` proves the carrier equations and nonemptiness of
+`finite_image` (`idx A`), `cart` (`A :^: idx N`) and `finite_sum` (`idx_n (dimindex M + dimindex
+N)`); `mglib/literal/compat2.mg` proves the compat lemmas of `finite_index`, `dest_finite_image`,
+`mk_cart`, `dest_cart`, `$` (`hl_vindex`), `lambda` (select uniqueness over the index range),
+`mk_finite_sum`, `dest_finite_sum`, `pastecart`, `fstcart`, `sndcart` and `PCROSS` (family union
+of the block products), with the index lemmas `idx_of_bounds`, `idx_shift`, `idx_block1/2`.  The
+components `$` and the index embedding `finite_index` are characterised on the index range only
+(side conditions `?2 :e idx ?N` / `?1 :e idx ?N`, derived from hypotheses `1 <= i /\ i <= dimindex
+N` by `Bridge.derive_idx`).  A latent bug surfaced with `FINITE_CART`: the GSPEC branches built the
+intermediate set `{v :e C | exists v :e A, ..}` with a fixed binder name, captured when the HOL
+witness is itself named `v` (fixed).  Not covered: `tybit0`/`tybit1` (single-constructor
+datatypes over `recspace`, 18 theorems), `finite_diff`/`finite_prod` (7, same pattern as
+`finite_sum`), and theorems whose index side condition is not derivable from the hypotheses.
+
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 
 Started after the certification checkpoint (§21.7 row (k), §21.8).  Goal: discharge the admitted
