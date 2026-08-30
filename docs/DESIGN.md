@@ -1348,7 +1348,7 @@ profile; the fixture slice `tests/golden/core.names` categories "polymorphic com
 "products", "naturals", "lists", "sets", "choice", "type definitions", "reals" are certified
 before the rest of Core; the proof-export pilot starts only after Core is certified.
 
-### 21.8 Next slice: the `cart` family (planned 2026-08-30)
+### 21.9 Next slice: the `cart` family (planned 2026-08-30)
 
 All 93 public theorems without a literal statement belong to cart.ml: the types `cart`,
 `finite_image`, `finite_sum`, `tybit0`, `tybit1` and the constants `dimindex`, `$`, `lambda`,

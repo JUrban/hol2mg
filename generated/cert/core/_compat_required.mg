@@ -274,3 +274,7 @@ Admitted.
 Theorem hl_GEQ_compat : forall A:set, A <> Empty -> hl_GEQ A = Empty.
 Admitted.
 
+// nonemptiness of the carrier of type definition cart (prove in mglib/literal/carriers.mg)
+Theorem hl_ty_cart_nonempty : forall A B:set, A <> Empty -> B <> Empty -> hl_ty_cart A B <> Empty.
+Admitted.
+

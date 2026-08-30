@@ -1738,14 +1738,16 @@ hash: 12d2a2739958dbd8cafb139a4bfa94c3
 source: !x:(A,B)cart. !y:(A,B)cart. x = y <=> (!i:num. 1 <= i /\ i <= dimindex UNIV ==> x $ i = y $ i)
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall x y :e A :^: idx B, x = y <-> forall i :e omega, 1 <= i /\ i <= dimindex B -> x i = y i
-cert_status: literal_unsupported
+literal: forall A B:set, A <> Empty -> B <> Empty -> forall x y :e hl_ty_cart A B, x = y <-> forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex B (hl_UNIV B)) = 1 -> hl_vindex A B x i = hl_vindex A B y i
+cert_status: bridge_unsupported
 
 ### LAMBDA_BETA   [Cartesian powers and finite index types]
 hash: a1b73e7882037b5a6a9034c65eb72d73
 source: !i:num. 1 <= i /\ i <= dimindex UNIV ==> lambda g $ i = g i
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e omega, g x :e A) -> forall i :e omega, 1 <= i /\ i <= dimindex B -> (fun i :e idx B => g i) i = g i
-cert_status: literal_unsupported
+literal: forall A B:set, A <> Empty -> B <> Empty -> forall g :e A :^: omega, forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex B (hl_UNIV B)) = 1 -> hl_vindex A B (hl_lambda A B g) i = g i
+cert_status: bridge_unsupported
 
 ### DIMINDEX_1   [Cartesian powers and finite index types]
 hash: 49a9d44c0dac1fb1c010affe48096fff
@@ -1768,14 +1770,16 @@ hash: 43ac0aa393472f102dd0f56823d962d3
 source: (!k:N finite_image. P k) <=> (!i:num. 1 <= i /\ i <= dimindex UNIV ==> P (finite_index i))
 status: generalization_required
 statement: forall N:set, N <> Empty -> forall P:set -> prop, (forall k :e idx N, P k) <-> forall i :e omega, 1 <= i /\ i <= dimindex N -> P i
-cert_status: literal_unsupported
+literal: forall N:set, N <> Empty -> forall P :e 2 :^: hl_ty_finite_image N, (forall k :e hl_ty_finite_image N, P k = 1) <-> forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex N (hl_UNIV N)) = 1 -> P (hl_finite_index N i) = 1
+cert_status: bridge_unsupported
 
 ### DIMINDEX_FINITE_SUM   [Cartesian powers and finite index types]
 hash: 9c92b496f688797b7d7b3bea395b3a9d
 source: dimindex UNIV = dimindex UNIV + dimindex UNIV
 status: generalization_required
 statement: forall M N:set, dimindex M + dimindex N = dimindex M + dimindex N
-cert_status: literal_unsupported
+literal: forall M N:set, M <> Empty -> N <> Empty -> hl_dimindex (hl_ty_finite_sum M N) (hl_UNIV (hl_ty_finite_sum M N)) = hl_add (hl_dimindex M (hl_UNIV M)) (hl_dimindex N (hl_UNIV N))
+cert_status: bridge_unsupported
 
 ### DIMINDEX_GE_1   [Cartesian powers and finite index types]
 hash: 6330d948a4ade390789c61f4944f6861
@@ -1791,21 +1795,24 @@ hash: ed3f2b168a80aa1187743fa433a8d6e6
 source: !i:num. !j:num. 1 <= i /\ i <= dimindex UNIV /\ 1 <= j /\ j <= dimindex UNIV ==> (finite_index i = finite_index j <=> i = j)
 status: generalization_required
 statement: forall A:set, A <> Empty -> forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j)
-cert_status: literal_unsupported
+literal: forall A:set, A <> Empty -> forall i j :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ (hl_le i (hl_dimindex A (hl_UNIV A)) = 1 /\ (hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) j = 1 /\ hl_le j (hl_dimindex A (hl_UNIV A)) = 1)) -> (hl_finite_index A i = hl_finite_index A j <-> i = j)
+cert_status: bridge_unsupported
 
 ### LAMBDA_ETA   [Cartesian powers and finite index types]
 hash: bf7a9034dc52575b2f124f169fb89276
 source: !g:(A,B)cart. lambda (\i:num. g $ i) = g
 status: transport_required
 statement: forall A B:set, A <> Empty -> B <> Empty -> forall g :e A :^: idx B, (fun i :e idx B => g i) = g
-cert_status: literal_unsupported
+literal: forall A B:set, A <> Empty -> B <> Empty -> forall g :e hl_ty_cart A B, hl_lambda A B (fun i :e omega => hl_vindex A B g i) = g
+cert_status: bridge_unsupported
 
 ### CART_EQ_FULL   [Cartesian powers and finite index types]
 hash: 955cf716b47b18c6a131edcb1725c1c6
 source: !x:(A,N)cart. !y:(A,N)cart. x = y <=> (!i:num. x $ i = y $ i)
 status: transport_required
 statement: forall A N:set, A <> Empty -> N <> Empty -> forall x y :e A :^: idx N, x = y <-> forall i :e omega, x i = y i
-cert_status: literal_unsupported
+literal: forall A N:set, A <> Empty -> N <> Empty -> forall x y :e hl_ty_cart A N, x = y <-> forall i :e omega, hl_vindex A N x i = hl_vindex A N y i
+cert_status: bridge_unsupported
 
 ### REAL_ADD_SYM   [reals: field axioms, order, derived operations]
 hash: 69f4343bec6bd235a399ba23a38d19cf

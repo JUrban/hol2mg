@@ -846,6 +846,74 @@ Definition hl_polynomial_function : set :=
 Definition hl_dimindex : set -> set :=
   fun A:set => fun v_94348 :e 2 :^: A => hl_COND omega (hl_FINITE A (hl_UNIV A)) (hl_CARD A (hl_UNIV A)) (hl_NUMERAL (hl_BIT1 hl_zero)).
 
+// HOL Light type definition finite_image (abs finite_index, rep dest_finite_image)
+Definition hl_ty_finite_image : set -> set :=
+  fun A:set => {x :e omega | (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A (hl_UNIV A)))) x = 1}.
+Definition hl_finite_index : set -> set :=
+  fun A:set => hl_subtype_abs omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A (hl_UNIV A)))).
+Definition hl_dest_finite_image : set -> set :=
+  fun A:set => hl_subtype_rep omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_dimindex A (hl_UNIV A)))).
+
+// HOL Light type definition cart (abs mk_cart, rep dest_cart)
+Definition hl_ty_cart : set -> set -> set :=
+  fun A:set => fun B:set => {x :e A :^: hl_ty_finite_image B | (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0) x = 1}.
+Definition hl_mk_cart : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_abs (A :^: hl_ty_finite_image B) (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0).
+Definition hl_dest_cart : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_rep (A :^: hl_ty_finite_image B) (fun r :e A :^: hl_ty_finite_image B => if True then 1 else 0).
+
+// HOL Light type definition finite_sum (abs mk_finite_sum, rep dest_finite_sum)
+Definition hl_ty_finite_sum : set -> set -> set :=
+  fun A:set => fun B:set => {x :e omega | (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))) x = 1}.
+Definition hl_mk_finite_sum : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_abs omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))).
+Definition hl_dest_finite_sum : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_rep omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_add (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))).
+
+// HOL Light type definition finite_diff (abs mk_finite_diff, rep dest_finite_diff)
+Definition hl_ty_finite_diff : set -> set -> set :=
+  fun A:set => fun B:set => {x :e omega | (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero))))) x = 1}.
+Definition hl_mk_finite_diff : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_abs omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero))))).
+Definition hl_dest_finite_diff : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_rep omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_COND omega (hl_lt (hl_dimindex B (hl_UNIV B)) (hl_dimindex A (hl_UNIV A))) (hl_sub (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))) (hl_NUMERAL (hl_BIT1 hl_zero))))).
+
+// HOL Light type definition finite_prod (abs mk_finite_prod, rep dest_finite_prod)
+Definition hl_ty_finite_prod : set -> set -> set :=
+  fun A:set => fun B:set => {x :e omega | (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_mul (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))) x = 1}.
+Definition hl_mk_finite_prod : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_abs omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_mul (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))).
+Definition hl_dest_finite_prod : set -> set -> set :=
+  fun A:set => fun B:set => hl_subtype_rep omega (fun r :e omega => hl_IN omega r (hl_numseg (hl_NUMERAL (hl_BIT1 hl_zero)) (hl_mul (hl_dimindex A (hl_UNIV A)) (hl_dimindex B (hl_UNIV B))))).
+
+// HOL Light: $ : (A,N)cart->num->A
+Definition hl_vindex : set -> set -> set :=
+  fun A:set => fun N:set => fun v_94758 :e hl_ty_cart A N => fun v_94759 :e omega => hl_dest_cart A N v_94758 (hl_finite_index N v_94759).
+
+// HOL Light: lambda : (num->A)->(A,B)cart
+Definition hl_lambda : set -> set -> set :=
+  fun A:set => fun B:set => fun v_94794 :e A :^: omega => hl_select (hl_ty_cart A B) (fun f :e hl_ty_cart A B => if forall i :e omega, hl_le (hl_NUMERAL (hl_BIT1 hl_zero)) i = 1 /\ hl_le i (hl_dimindex B (hl_UNIV B)) = 1 -> hl_vindex A B f i = v_94794 i then 1 else 0).
+
+// HOL Light: pastecart : (A,M)cart->(A,N)cart->(A,(M,N)finite_sum)cart
+Definition hl_pastecart : set -> set -> set -> set :=
+  fun A:set => fun M:set => fun N:set => fun v_95085 :e hl_ty_cart A M => fun v_95086 :e hl_ty_cart A N => hl_lambda A (hl_ty_finite_sum M N) (fun i :e omega => hl_COND A (hl_le i (hl_dimindex M (hl_UNIV M))) (hl_vindex A M v_95085 i) (hl_vindex A N v_95086 (hl_sub i (hl_dimindex M (hl_UNIV M))))).
+
+// HOL Light: fstcart : (A,(M,N)finite_sum)cart->(A,M)cart
+Definition hl_fstcart : set -> set -> set -> set :=
+  fun A:set => fun M:set => fun N:set => fun v_95097 :e hl_ty_cart A (hl_ty_finite_sum M N) => hl_lambda A M (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) v_95097 i).
+
+// HOL Light: sndcart : (A,(M,N)finite_sum)cart->(A,N)cart
+Definition hl_sndcart : set -> set -> set -> set :=
+  fun A:set => fun M:set => fun N:set => fun v_95102 :e hl_ty_cart A (hl_ty_finite_sum M N) => hl_lambda A N (fun i :e omega => hl_vindex A (hl_ty_finite_sum M N) v_95102 (hl_add i (hl_dimindex M (hl_UNIV M)))).
+
+// HOL Light: vector : A list->(A,N)cart
+Definition hl_vector : set -> set -> set :=
+  fun A:set => fun N:set => fun v_102225 :e finseq A => hl_lambda A N (fun i :e omega => hl_EL A (hl_sub i (hl_NUMERAL (hl_BIT1 hl_zero))) v_102225).
+
+// HOL Light: PCROSS : ((A,M)cart->bool)->((A,N)cart->bool)->(A,(M,N)finite_sum)cart->bool
+Definition hl_PCROSS : set -> set -> set -> set :=
+  fun A:set => fun M:set => fun N:set => fun v_102252 :e 2 :^: hl_ty_cart A M => fun v_102253 :e 2 :^: hl_ty_cart A N => hl_GSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) (fun GEN_PVAR_363 :e hl_ty_cart A (hl_ty_finite_sum M N) => if exists x :e hl_ty_cart A M, exists y :e hl_ty_cart A N, hl_SETSPEC (hl_ty_cart A (hl_ty_finite_sum M N)) GEN_PVAR_363 (if hl_IN (hl_ty_cart A M) x v_102252 = 1 /\ hl_IN (hl_ty_cart A N) y v_102253 = 1 then 1 else 0) (hl_pastecart A M N x y) = 1 then 1 else 0).
+
 // HOL Light: CASEWISE : ((?138308->?138312)#(?138313->?138308->?138272)) list->?138313->?138312->?138272
 Definition hl_CASEWISE : set -> set -> set -> set -> set :=
   fun T138308:set => fun T138312:set => fun T138313:set => fun T138272:set => hl_select (T138272 :^: T138312 :^: T138313 :^: finseq (T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313) :^: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: omega)))))))) (fun CASEWISE :e T138272 :^: T138312 :^: T138313 :^: finseq (T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313) :^: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: omega))))))) => if forall v_102857 :e omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: omega)))))), (forall f :e T138313, forall x :e T138312, CASEWISE v_102857 (hl_NIL (T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313)) f x = hl_select T138272 (fun y :e T138272 => if True then 1 else 0)) /\ forall h :e T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313, forall t :e finseq (T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313), forall f :e T138313, forall x :e T138312, CASEWISE v_102857 (hl_CONS (T138312 :^: T138308 :*: T138272 :^: T138308 :^: T138313) h t) f x = hl_COND T138272 (if exists y :e T138308, hl_FST (T138312 :^: T138308) (T138272 :^: T138308 :^: T138313) h y = x then 1 else 0) (hl_SND (T138312 :^: T138308) (T138272 :^: T138308 :^: T138313) h f (hl_select T138308 (fun y :e T138308 => if hl_FST (T138312 :^: T138308) (T138272 :^: T138308 :^: T138313) h y = x then 1 else 0))) (CASEWISE v_102857 t f x) then 1 else 0) (hl_pair omega (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: omega)))))) (hl_NUMERAL (hl_BIT1 (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_pair omega (omega :*: (omega :*: (omega :*: (omega :*: (omega :*: omega))))) (hl_NUMERAL (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_pair omega (omega :*: (omega :*: (omega :*: (omega :*: omega)))) (hl_NUMERAL (hl_BIT1 (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT1 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_pair omega (omega :*: (omega :*: (omega :*: omega))) (hl_NUMERAL (hl_BIT1 (hl_BIT0 (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_pair omega (omega :*: (omega :*: omega)) (hl_NUMERAL (hl_BIT1 (hl_BIT1 (hl_BIT1 (hl_BIT0 (hl_BIT1 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_pair omega (omega :*: omega) (hl_NUMERAL (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_pair omega omega (hl_NUMERAL (hl_BIT1 (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT1 (hl_BIT0 (hl_BIT1 hl_zero)))))))) (hl_NUMERAL (hl_BIT1 (hl_BIT0 (hl_BIT1 (hl_BIT0 (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero))))))))))))))).
