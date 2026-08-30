@@ -1680,8 +1680,8 @@ leaf still have the same hash and literal text in the committed manifest (leaves
 model theorems count as proved), and `fully_proved` additionally requires the bridge to be
 transport-checked in that cycle.  A change to a literal statement or to a leaf therefore
 silently retires the recorded fact until a new round re-proves it; the manifest marks such
-theorems with `proof_source: pilot`.  Rounds 7 and 8 recorded 935 facts, all of which validate
-against the committed state (847 public theorems `fully_proved` at 2 592 transport-checked).
+theorems with `proof_source: pilot`.  Rounds 7 and 8 recorded 935 facts; 927 validate
+after the next cycle's translate (840 public theorems `fully_proved` at 2 592 transport-checked).
 
 ### 22.5 Steps
 
@@ -1764,7 +1764,9 @@ against the committed state (847 public theorems `fully_proved` at 2 592 transpo
    45 parts, 6 jobs, 3.3-hour limit; 2026-08-30/31): 42 of 44 parts and the base check pass —
    only the two giant parts (`iterate_p1`, `sets_p3`) time out; 935 literal facts proved
    through imported proofs in the pilot, of which **all 935 validate against the committed
-   manifest: 847 public theorems `fully_proved`** recorded via §22.6
+   manifest at recording time: 847 public theorems `fully_proved`** recorded via §22.6 (the
+   next cycle's fresh translate moved a few literal texts, re-validating 927 facts — 840
+   `fully_proved` in the committed manifest)
    (`generated/proofcert/core.round8.*`).  The aggregation of the run was corrupted a second
    time by an edit to `tools/check_cert.sh` while instances were executing it (results rebuilt
    from the per-part `.res` files); the script now re-executes itself from a private copy at
