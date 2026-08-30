@@ -465,7 +465,8 @@ source: !f:A->B->C. !x:A. !y:B. UNCURRY f (x , y) = f x y
 status: generalization_required
 statement: forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f x y = f x y
 literal: forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f :e C :^: B :^: A, forall x :e A, forall y :e B, hl_UNCURRY A B C f (hl_pair A B x y) = f x y
-cert_status: bridge_unsupported
+bridge: UNCURRY_DEF_bridge
+cert_status: transport_checked
 
 ### PASSOC_DEF   [products]
 hash: 9c161349298da1eba1ac9e3d2bbf725f
@@ -929,7 +930,8 @@ source: !NIL':Z. !CONS':A->A list->Z->Z. ?fn:A list->Z. fn NIL = NIL' /\ (!a0:A.
 status: generalization_required
 statement: forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1))
 literal: forall A Z:set, A <> Empty -> Z <> Empty -> forall NIL' :e Z, forall CONS' :e Z :^: Z :^: finseq A :^: A, exists fn :e Z :^: finseq A, fn (hl_NIL A) = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (hl_CONS A a0 a1) = CONS' a0 a1 (fn a1)
-cert_status: bridge_unsupported
+bridge: list_RECURSION_bridge
+cert_status: transport_checked
 
 ### APPEND   [lists (finite sequences), including higher-order mapped operations]
 hash: 3ef027801213877da04628f269452000

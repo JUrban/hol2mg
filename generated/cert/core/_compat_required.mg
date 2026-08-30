@@ -38,14 +38,6 @@ Admitted.
 Theorem hl_INJF_compat : forall A:set, A <> Empty -> hl_INJF A = Empty.
 Admitted.
 
-// >_c : (A->bool)->(B->bool)->bool (not in compat.mg)
-Theorem hl_sym_3e5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3e5f63 A B l1 l2 = 1 <-> atleastp (hl_rep B l2) (hl_rep A l1) /\ ~ equip (hl_rep B l2) (hl_rep A l1).
-Admitted.
-
-// SING : (A->bool)->bool (not in compat.mg)
-Theorem hl_SING_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_SING A l1 = 1 <-> exists x :e A, hl_rep A l1 = {x}.
-Admitted.
-
 // SING : (A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_SING_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_SING (2 :^: A) l1 = 1 <-> exists x :e Power A, hl_rep2 A l1 = {x}.
 Admitted.
@@ -110,10 +102,6 @@ Admitted.
 Theorem hl_IND_SUC_compat : hl_IND_SUC = Empty.
 Admitted.
 
-// LET_END : A->A (not in compat.mg)
-Theorem hl_LET_END_compat : forall A:set, A <> Empty -> forall l1 :e A, hl_LET_END A l1 = l1.
-Admitted.
-
 // NUMPAIR : num->num->num (not in compat.mg)
 Theorem hl_NUMPAIR_compat : hl_NUMPAIR = Empty.
 Admitted.
@@ -134,20 +122,12 @@ Admitted.
 Theorem hl_OUTL_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTL A B = OUTL A B.
 Admitted.
 
-// UNCURRY : (A->B->C)->A#B->C (not in compat.mg)
-Theorem hl_UNCURRY_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e A :*: B, hl_UNCURRY A B C l1 l2 = f1 (l2 0) (l2 1).
-Admitted.
-
 // _GUARDED_PATTERN : bool->bool->bool->bool (not in compat.mg)
 Theorem hl__GUARDED_PATTERN_compat : hl__GUARDED_PATTERN = Empty.
 Admitted.
 
 // INJN : num->num->A->bool (not in compat.mg)
 Theorem hl_INJN_compat : forall A:set, A <> Empty -> hl_INJN A = Empty.
-Admitted.
-
-// NULL : A list->bool (not in compat.mg)
-Theorem hl_NULL_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_NULL A l1 = 1 <-> seq_len l1 = 0.
 Admitted.
 
 // o : (B->bool)->(A->B)->A->bool (not in compat.mg)
@@ -160,10 +140,6 @@ Admitted.
 
 // ASSOC : A->(A#B) list->B (not in compat.mg)
 Theorem hl_ASSOC_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e A, forall l2 :e finseq (A :*: B), hl_ASSOC A B l1 l2 = seq_assoc l1 l2.
-Admitted.
-
-// LET : (A->B)->A->B (not in compat.mg)
-Theorem hl_LET_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e A, hl_LET A B l1 l2 = f1 l2.
 Admitted.
 
 // INJA : A->num->A->bool (not in compat.mg)
@@ -188,10 +164,6 @@ Admitted.
 
 // _SEQPATTERN : (A->B->bool)->(A->B->bool)->A->B->bool (not in compat.mg)
 Theorem hl__SEQPATTERN_compat : forall A B:set, A <> Empty -> B <> Empty -> hl__SEQPATTERN A B = Empty.
-Admitted.
-
-// real_mod : real->real->real->bool (not in compat.mg)
-Theorem hl_real_mod_compat : forall l1 l2 l3 :e R, hl_real_mod l1 l2 l3 = 1 <-> real_mod l1 l2 l3.
 Admitted.
 
 // vector : A list->(A,N)cart (not in compat.mg)

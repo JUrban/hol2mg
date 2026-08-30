@@ -7537,3 +7537,81 @@ let A B C q F P' F'. assume HFC HP HF. apply set_ext.
   claim Hweq: hl_rep C (F (hl_chi A u) (hl_chi B u2)) = w. { exact (eq_trans_i (hl_rep C (F (hl_chi A u) (hl_chi B u2))) (F' u u2) w (eq_trans_i (hl_rep C (F (hl_chi A u) (hl_chi B u2))) (F' (hl_rep A (hl_chi A u)) (hl_rep B (hl_chi B u2))) (F' u u2) (HF (hl_chi A u) Hs (hl_chi B u2) Ht) HF2) (eq_sym_i w (F' u u2) Hw')). }
   exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep C v | v :e {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t}}) (ReplI {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t} (fun v => hl_rep C v) (F (hl_chi A u) (hl_chi B u2)) Hin)).
 Qed.
+
+// ---- LET, LET_END, UNCURRY, >_c, SING, NULL, real_mod ----
+Theorem hl_LET_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e B :^: A, forall f1:set -> set, (forall x :e A, l1 x = f1 x) -> forall l2 :e A, hl_LET A B l1 l2 = f1 l2.
+let A B. assume HA HB. let l1. assume H1. let f1. assume Hf. let l2. assume H2.
+exact (eq_trans_i (hl_LET A B l1 l2) (l1 l2) (f1 l2) (hl_LET_unfold A B l1 H1 l2 H2) (Hf l2 H2)).
+Qed.
+Theorem hl_LET_END_compat : forall A:set, A <> Empty -> forall l1 :e A, hl_LET_END A l1 = l1.
+let A. assume HA. let l1. assume H1. exact (hl_LET_END_unfold A l1 H1).
+Qed.
+Theorem hl_UNCURRY_compat : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall l1 :e C :^: B :^: A, forall f1:set -> set -> set, (forall x :e A, forall y :e B, l1 x y = f1 x y) -> forall l2 :e A :*: B, hl_UNCURRY A B C l1 l2 = f1 (l2 0) (l2 1).
+let A B C. assume HA HB HC. let l1. assume H1. let f1. assume Hf. let l2. assume H2.
+claim H20: l2 0 :e A. { exact (ap0_Sigma A (fun _ => B) l2 H2). }
+claim H21: l2 1 :e B. { exact (ap1_Sigma A (fun _ => B) l2 H2). }
+claim HF: hl_FST A B l2 = l2 0. { exact (hl_FST_compat A B HA HB l2 H2). }
+claim HS: hl_SND A B l2 = l2 1. { exact (hl_SND_compat A B HA HB l2 H2). }
+rewrite (hl_UNCURRY_unfold A B C l1 H1 l2 H2). rewrite HF. rewrite HS. exact (Hf (l2 0) H20 (l2 1) H21).
+Qed.
+Theorem hl_sym_3e5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_sym_3e5f63 A B l1 l2 = 1 <-> atleastp (hl_rep B l2) (hl_rep A l1) /\ ~ equip (hl_rep B l2) (hl_rep A l1).
+let A B. assume HA HB. let l1. assume H1. let l2. assume H2.
+rewrite (hl_sym_3e5f63_unfold A B l1 H1 l2 H2). exact (hl_sym_3c5f63_compat B A HB HA l2 H2 l1 H1).
+Qed.
+Theorem hl_SING_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A, hl_SING A l1 = 1 <-> exists x :e A, hl_rep A l1 = {x}.
+let A. assume HA. let s. assume Hs.
+rewrite (hl_SING_unfold A s Hs).
+apply (iff_trans ((if exists x :e A, s = hl_INSERT A x (hl_EMPTY A) then 1 else 0) = 1) (exists x :e A, s = hl_INSERT A x (hl_EMPTY A)) (exists x :e A, hl_rep A s = {x}) (If_1_iff (exists x :e A, s = hl_INSERT A x (hl_EMPTY A)))).
+claim Hrep: forall x :e A, hl_rep A (hl_INSERT A x (hl_EMPTY A)) = {x}.
+{ let x. assume Hx.
+  exact (eq_trans_i (hl_rep A (hl_INSERT A x (hl_EMPTY A))) (SetAdjoin (hl_rep A (hl_EMPTY A)) x) {x} (hl_INSERT_compat A HA x Hx (hl_EMPTY A) (hl_EMPTY_in A HA)) (eq_trans_i (SetAdjoin (hl_rep A (hl_EMPTY A)) x) (SetAdjoin Empty x) {x} (f_equal (fun u => SetAdjoin u x) (hl_rep A (hl_EMPTY A)) Empty (hl_EMPTY_compat A HA)) (binunion_idl {x}))). }
+claim Hin: forall x :e A, hl_INSERT A x (hl_EMPTY A) :e 2 :^: A.
+{ let x. assume Hx. exact (setexp_ap (2 :^: A) (2 :^: A) (hl_INSERT A x) (setexp_ap A (2 :^: A :^: (2 :^: A)) (hl_INSERT A) (hl_INSERT_in A HA) x Hx) (hl_EMPTY A) (hl_EMPTY_in A HA)). }
+apply iffI.
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx Hsx. witness x. apply andI. exact Hx.
+  exact (eq_trans_i (hl_rep A s) (hl_rep A (hl_INSERT A x (hl_EMPTY A))) {x} (f_equal (fun u => hl_rep A u) s (hl_INSERT A x (hl_EMPTY A)) Hsx) (Hrep x Hx)).
+- assume H. apply H. let x. assume Hx0. apply Hx0. assume Hx Hrx. witness x. apply andI. exact Hx.
+  exact (hl_rep_inj A s (hl_INSERT A x (hl_EMPTY A)) Hs (Hin x Hx) (eq_trans_i (hl_rep A s) {x} (hl_rep A (hl_INSERT A x (hl_EMPTY A))) Hrx (eq_sym_i (hl_rep A (hl_INSERT A x (hl_EMPTY A))) {x} (Hrep x Hx)))).
+Qed.
+Theorem hl_NULL_compat : forall A:set, A <> Empty -> forall l1 :e finseq A, hl_NULL A l1 = 1 <-> seq_len l1 = 0.
+let A. assume HA.
+claim Hex: exists g :e 2 :^: finseq A, (g (hl_NIL A) = 1 <-> True) /\ forall h :e A, forall t :e finseq A, g (hl_CONS A h t) = 1 <-> False.
+{ witness (fun l :e finseq A => if seq_len l = 0 then 1 else 0). apply andI.
+  - prove (fun l :e finseq A => if seq_len l = 0 then 1 else 0) :e Pi_ l :e finseq A, 2. exact (lam_Pi (finseq A) (fun _ => 2) (fun l => if seq_len l = 0 then 1 else 0) (fun l Hl => If_in_2 (seq_len l = 0))).
+  - apply andI.
+    + rewrite (beta (finseq A) (fun l => if seq_len l = 0 then 1 else 0) seq_nil (seq_nil_finseq A)). rewrite seq_len_nil.
+      exact (iff_trans ((if 0 = 0 then 1 else 0) = 1) (0 = 0) True (If_1_iff (0 = 0)) (iffI (0 = 0) True (fun _ => (fun p H => H)) (fun _ => (fun q H => H)))).
+    + let h. assume Hh. let t. assume Ht.
+      claim Hct: hl_CONS A h t = seq_cons h t. { exact (hl_CONS_compat A HA h Hh t Ht). }
+      claim Hcf: seq_cons h t :e finseq A. { exact (seq_cons_finseq A h Hh t Ht). }
+      rewrite Hct. rewrite (beta (finseq A) (fun l => if seq_len l = 0 then 1 else 0) (seq_cons h t) Hcf). rewrite (seq_len_cons A h Hh t Ht).
+      exact (iff_trans ((if ordsucc (seq_len t) = 0 then 1 else 0) = 1) (ordsucc (seq_len t) = 0) False (If_1_iff (ordsucc (seq_len t) = 0)) (iffI (ordsucc (seq_len t) = 0) False (fun H => neq_ordsucc_0 (seq_len t) H) (fun H => FalseE H (ordsucc (seq_len t) = 0)))). }
+apply (hl_NULL_spec A HA Hex). assume H12 Hin. apply H12. assume Hnil Hcons.
+claim Hbase: hl_NULL A seq_nil = 1 <-> seq_len seq_nil = 0.
+{ apply (iff_trans (hl_NULL A seq_nil = 1) True (seq_len seq_nil = 0) Hnil). apply iffI. assume _. exact seq_len_nil. assume _. exact (fun p H => H). }
+claim Hstep: forall h :e A, forall t :e finseq A, (hl_NULL A t = 1 <-> seq_len t = 0) -> (hl_NULL A (seq_cons h t) = 1 <-> seq_len (seq_cons h t) = 0).
+{ let h. assume Hh. let t. assume Ht IH.
+  claim Hct: hl_CONS A h t = seq_cons h t. { exact (hl_CONS_compat A HA h Hh t Ht). }
+  claim H1: hl_NULL A (seq_cons h t) = 1 <-> False. { rewrite <- Hct. exact (Hcons h Hh t Ht). }
+  apply (iff_trans (hl_NULL A (seq_cons h t) = 1) False (seq_len (seq_cons h t) = 0) H1).
+  apply iffI.
+  - assume H. exact (FalseE H (seq_len (seq_cons h t) = 0)).
+  - assume H. apply (neq_ordsucc_0 (seq_len t)). exact (eq_trans_i (ordsucc (seq_len t)) (seq_len (seq_cons h t)) 0 (eq_sym_i (seq_len (seq_cons h t)) (ordsucc (seq_len t)) (seq_len_cons A h Hh t Ht)) H). }
+exact (seq_induct A (fun l => hl_NULL A l = 1 <-> seq_len l = 0) Hbase Hstep).
+Qed.
+Theorem hl_real_mod_compat : forall l1 l2 l3 :e R, hl_real_mod l1 l2 l3 = 1 <-> real_mod l1 l2 l3.
+let n. assume Hn. let x. assume Hx. let y. assume Hy.
+claim Hif: (if exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n then 1 else 0) = 1 <-> real_mod n x y.
+{ apply (iff_trans ((if exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n then 1 else 0) = 1) (exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (real_mod n x y) (If_1_iff (exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n))).
+  apply iffI.
+  - assume H. apply H. let q. assume Hq0. apply Hq0. assume Hq H2. apply H2. assume Hi He.
+    prove exists q :e R, q :e int /\ x + - y = q * n.
+    witness q. apply andI. exact Hq. apply andI.
+    + apply (hl_integer_compat q Hq). assume H3 _. exact (H3 Hi).
+    + exact (eq_trans_i (x + - y) (hl_real_sub x y) (q * n) (eq_sym_i (hl_real_sub x y) (x + - y) (hl_real_sub_compat x Hx y Hy)) (eq_trans_i (hl_real_sub x y) (hl_real_mul q n) (q * n) He (hl_real_mul_compat q Hq n Hn))).
+  - assume H. apply H. let q. assume Hq0. apply Hq0. assume Hq H2. apply H2. assume Hi He.
+    witness q. apply andI. exact Hq. apply andI.
+    + apply (hl_integer_compat q Hq). assume _ H3. exact (H3 Hi).
+    + exact (eq_trans_i (hl_real_sub x y) (x + - y) (hl_real_mul q n) (hl_real_sub_compat x Hx y Hy) (eq_trans_i (x + - y) (q * n) (hl_real_mul q n) He (eq_sym_i (hl_real_mul q n) (q * n) (hl_real_mul_compat q Hq n Hn)))). }
+exact ((hl_real_mod_unfold n Hn x Hx y Hy) (fun hl__u hl__v => hl__v = 1 <-> real_mod n x y) Hif).
+Qed.

@@ -1124,3 +1124,36 @@ Qed.
 Theorem finite_of_equip : forall s n:set, n :e omega -> equip s n -> finite s.
 let s n. assume Hn H. prove exists m :e omega, equip s m. witness n. apply andI. exact Hn. exact H.
 Qed.
+
+// ---- ternary function binders ----
+Definition hl_lam3 : set -> set -> set -> (set -> set -> set -> set) -> set := fun A B C f => fun x :e A => fun y :e B => fun z :e C => f x y z.
+Theorem hl_lam3_Pi : forall A B C D:set, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> hl_lam3 A B C f :e ((D :^: C) :^: B) :^: A.
+let A B C D f. assume Hf. prove (fun x :e A => fun y :e B => fun z :e C => f x y z) :e Pi_ x :e A, (D :^: C) :^: B.
+apply (lam_Pi A (fun _ => (D :^: C) :^: B) (fun x => fun y :e B => fun z :e C => f x y z)).
+let x. assume Hx. exact (hl_lam2_Pi B C D (fun y z => f x y z) (fun y Hy z Hz => Hf x Hx y Hy z Hz)).
+Qed.
+Theorem hl_lam3_ap : forall A B C:set, forall f:set -> set -> set -> set, forall x :e A, forall y :e B, forall z :e C, hl_lam3 A B C f x y z = f x y z.
+let A B C f x. assume Hx. let y. assume Hy. let z. assume Hz.
+prove (fun x :e A => fun y :e B => fun z :e C => f x y z) x y z = f x y z.
+rewrite (beta A (fun x => fun y :e B => fun z :e C => f x y z) x Hx). exact (hl_lam2_ap B C (fun y z => f x y z) y Hy z Hz).
+Qed.
+Theorem setexp3_ap_closure : forall A B C D F:set, F :e ((D :^: C) :^: B) :^: A -> forall x :e A, forall y :e B, forall z :e C, F x y z :e D.
+let A B C D F. assume HF. let x. assume Hx. exact (setexp2_ap_closure B C D (F x) (setexp_ap A ((D :^: C) :^: B) F HF x Hx)).
+Qed.
+Theorem imp_forall_fun3 : forall A B C D:set, forall L:set -> prop, forall N:(set -> set -> set -> set) -> prop,
+  (forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> L (hl_lam3 A B C f) -> N f) -> (forall F :e ((D :^: C) :^: B) :^: A, L F) -> forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> N f.
+let A B C D L N. assume H H1. let f. assume Hf. exact (H f Hf (H1 (hl_lam3 A B C f) (hl_lam3_Pi A B C D f Hf))).
+Qed.
+Theorem imp_forall_fun3_rev : forall A B C D:set, forall L:set -> prop, forall N:(set -> set -> set -> set) -> prop,
+  (forall F :e ((D :^: C) :^: B) :^: A, N (fun x y z => F x y z) -> L F) -> (forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> N f) -> forall F :e ((D :^: C) :^: B) :^: A, L F.
+let A B C D L N. assume H H1. let F. assume HF. exact (H F HF (H1 (fun x y z => F x y z) (setexp3_ap_closure A B C D F HF))).
+Qed.
+Theorem imp_exists_fun3 : forall A B C D:set, forall L:set -> prop, forall N:(set -> set -> set -> set) -> prop,
+  (forall F :e ((D :^: C) :^: B) :^: A, L F -> N (fun x y z => F x y z)) -> (exists F :e ((D :^: C) :^: B) :^: A, L F) -> exists f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) /\ N f.
+let A B C D L N. assume H H1. apply H1. let F. assume HF0. apply HF0. assume HF HL. witness (fun x y z => F x y z).
+exact (andI (forall x :e A, forall y :e B, forall z :e C, F x y z :e D) (N (fun x y z => F x y z)) (setexp3_ap_closure A B C D F HF) (H F HF HL)).
+Qed.
+Theorem imp_exists_fun3_rev : forall A B C D:set, forall L:set -> prop, forall N:(set -> set -> set -> set) -> prop,
+  (forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> N f -> L (hl_lam3 A B C f)) -> (exists f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) /\ N f) -> exists F :e ((D :^: C) :^: B) :^: A, L F.
+let A B C D L N. assume H H1. apply H1. let f. assume Hf0. apply Hf0. assume Hf HN. witness (hl_lam3 A B C f). apply andI. exact (hl_lam3_Pi A B C D f Hf). exact (H f Hf HN).
+Qed.

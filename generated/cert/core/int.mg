@@ -3498,8 +3498,13 @@ exact (cong_bridge hlt_cong).
 Admitted.
 
 // HOL Light: int.ml:1170 / real_mod   (hash md5:66e08ca96f3f09be49b9be03c590342a)
-// not bridged: 
+Theorem hlt_real_mod_thm : forall x y n :e R, hl_real_mod n x y = 1 <-> exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n.
+Admitted.
+Theorem real_mod_thm_bridge : (forall x y n :e R, hl_real_mod n x y = 1 <-> exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) -> (forall x y n :e R, real_mod n x y <-> exists q :e R, q :e int /\ x + - y = q * n).
+exact (fun H__top => ((imp_forall_in (R) (fun x => forall y n :e R, hl_real_mod n x y = 1 <-> exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (fun x => forall y n :e R, real_mod n x y <-> exists q :e R, q :e int /\ x + - y = q * n) (fun x Hx => (imp_forall_in (R) (fun y => forall n :e R, hl_real_mod n x y = 1 <-> exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (fun y => forall n :e R, real_mod n x y <-> exists q :e R, q :e int /\ x + - y = q * n) (fun y Hy => (imp_forall_in (R) (fun n => hl_real_mod n x y = 1 <-> exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (fun n => real_mod n x y <-> exists q :e R, q :e int /\ x + - y = q * n) (fun n Hn => (imp_iff (hl_real_mod n x y = 1) (real_mod n x y) (exists q :e R, hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (exists q :e R, q :e int /\ x + - y = q * n) (iffEL (hl_real_mod n x y = 1) (real_mod n x y) ((hl_real_mod_compat) (n) Hn (x) Hx (y) Hy)) (iffER (hl_real_mod n x y = 1) (real_mod n x y) ((hl_real_mod_compat) (n) Hn (x) Hx (y) Hy)) (imp_exists_in (R) (fun q => hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (fun q => q :e int /\ x + - y = q * n) (fun q Hq => (imp_and_dep (hl_integer q = 1) (q :e int) (hl_real_sub x y = hl_real_mul q n) (x + - y = q * n) (iffEL (hl_integer q = 1) (q :e int) ((hl_integer_compat) (q) Hq)) (fun H__and6 : (q :e int) => (imp_eq (hl_real_sub x y) (x + - y) (hl_real_mul q n) (q * n) ((hl_real_sub_compat) (x) Hx (y) Hy) ((hl_real_mul_compat) (q) Hq (n) Hn)))))) (imp_exists_in (R) (fun q => q :e int /\ x + - y = q * n) (fun q => hl_integer q = 1 /\ hl_real_sub x y = hl_real_mul q n) (fun q Hq => (imp_and_dep_bwd (hl_integer q = 1) (q :e int) (hl_real_sub x y = hl_real_mul q n) (x + - y = q * n) (iffER (hl_integer q = 1) (q :e int) ((hl_integer_compat) (q) Hq)) (fun H__and4 : (q :e int) => (imp_eq (x + - y) (hl_real_sub x y) (q * n) (hl_real_mul q n) (eq_sym_i (hl_real_sub x y) (x + - y) ((hl_real_sub_compat) (x) Hx (y) Hy)) (eq_sym_i (hl_real_mul q n) (q * n) ((hl_real_mul_compat) (q) Hq (n) Hn)))))))))))))) H__top)).
+Qed.
 Theorem real_mod_thm : forall x y n :e R, real_mod n x y <-> exists q :e R, q :e int /\ x + - y = q * n.
+exact (real_mod_thm_bridge hlt_real_mod_thm).
 Admitted.
 
 // HOL Light: int.ml:1182 / int_divides   (hash md5:0dff4dff15f6e11d7fe6ecc0cf30f0ed)
