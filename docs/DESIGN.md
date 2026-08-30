@@ -1327,6 +1327,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (w) | 2697 / 2697 | 2592 / 2685 public (55 literal_proved; + finiteness of function spaces `setexp_finite`) | 483 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (x) | 2697 / 2697 | 2592 / 2685 public (57 literal_proved; 823 fully_proved recorded from pilot round 7, §22.6) | 486 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 63 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (y) **standard** | 4396 / 4396 | 3546 / 4290 public (57 literal_proved) — all 36 shards check | same libraries + `COUNTABLE`/`<=_c`/`<_c` nested lemmas | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (z) **standard** | 4396 / 4396 | 3839 / 4290 public (57 literal_proved) — all 36 shards check | + `mglib/literal/compat_standard.mg` (23 lemmas: `squarefree`, `int_prime`, `order`, `+_c`, `*_c`, `fld`/`qoset`/`poset`/`toset`/`woset`/`wqoset`/`inseg`, `inverse_mod`, `phi`, `ITER`) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1494,10 +1495,25 @@ instantiated at a subset type always selects the nested variant (reported as
 `compat_missing` when absent), and the expected nested statements are generated for every
 entry whose type variables occur as subset-element types anywhere in the scheme (this also
 covers `IMAGE` with subset-valued functions, which the earlier fixed list handled ad hoc).
-The standard residue: 744 `bridge_unsupported`, dominated by missing compat lemmas of the
-Library constants (`wo.ml` well-orders 126, `pocklington.ml` 108, `card.ml` 64) and the
-closure operators of `rstc.ml` (`TC`/`RTC`/`RC`/`SC`, 79); some generated nested statements
-are unprovable as stated (`*_c`: pairs of literal versus native subsets) and stay stubs.
+Profile-specific compat lemmas live in `mglib/literal/compat_<profile>.mg` (checked after
+`compat2.mg` for that profile only; their unfold lemmas exist only in the profile's generated
+modules).  `compat_standard.mg` (23 lemmas) proves the compat lemmas of `squarefree`,
+`int_prime`, `order` and `inverse_mod` (HOL's `@`-specifications versus the prelude's
+`choose_in` over the same predicate: `hl_select_eq` + `choose_in_ext`), the cardinal sum and
+product (`+_c` via the `setsum` definition, `*_c` via a pair-pattern comprehension and
+`Sigma_`), the relation predicates of `wo.ml` (`fld`, `qoset`, `poset`, `toset`, `woset`,
+`wqoset`, `inseg`: `order.mg` mirrors HOL's definitions, well-foundedness and finite-subcover
+clauses transfer subsets through `hl_chi`/`hl_rep`), Euler's `phi` (`hl_CARD_compat` with the
+finiteness of a bounded segment) and `ITER` (the generated recursion spec with `nat_primrec`):
+3 546 → **3 839** transport-checked.  The first check of these exposed a second generator
+bug: the native lambda of a bound meta-function variable used the fixed binder name `x`,
+which captured a HOL variable literally named `x` (`WQOSET_NOBAD`, `fun x => x x`); the
+generated binders now use reserved names.  The standard residue (451): missing compat lemmas
+whose native counterparts need arithmetic God1 lacks (`index` 42, `binom` 27 — the vanishing
+cases k > n, `rational` 25 — sign normalisation, `floor` 21 — integer uniqueness), the
+closure operators of `rstc.ml` (`TC`/`RTC`/`RC`/`SC`, 79), `ordinal`/`properly` (11), and
+the Core residue; some generated nested statements are unprovable as stated (`*_c` at a
+nested instance: pairs of literal versus native subsets) and stay stubs.
 
 ### 21.10 Residue of the Core certification (`tools/bridge_residue.py`)
 

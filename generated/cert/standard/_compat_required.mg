@@ -18,20 +18,12 @@ Admitted.
 Theorem hl_INJP_compat_pow : forall A:set, A <> Empty -> hl_INJP (2 :^: A) = Empty.
 Admitted.
 
-// inverse_mod : num->num->num (not in compat.mg)
-Theorem hl_inverse_mod_compat : forall l1 l2 :e omega, hl_inverse_mod l1 l2 = inverse_mod l1 l2.
-Admitted.
-
 // <=_c : (A->bool)->(B->bool)->bool, nested at type variables 2 (not in compat.mg)
 Theorem hl_sym_3c3d5f63_compat_pow2 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: (2 :^: B), hl_sym_3c3d5f63 A (2 :^: B) l1 l2 = 1 <-> atleastp (hl_rep A l1) (hl_rep2 B l2).
 Admitted.
 
 // <=_c : (A->bool)->(B->bool)->bool, nested at type variables 1,2 (not in compat.mg)
 Theorem hl_sym_3c3d5f63_compat_pow12 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e 2 :^: (2 :^: B), hl_sym_3c3d5f63 (2 :^: A) (2 :^: B) l1 l2 = 1 <-> atleastp (hl_rep2 A l1) (hl_rep2 B l2).
-Admitted.
-
-// int_prime : int->bool (not in compat.mg)
-Theorem hl_int_prime_compat : forall l1 :e int, hl_int_prime l1 = 1 <-> 1 < abs_SNo l1 /\ forall x :e int, divides_int x l1 -> abs_SNo x = 1 \/ abs_SNo x = abs_SNo l1.
 Admitted.
 
 // frac : real->real (not in compat.mg)
@@ -42,16 +34,8 @@ Admitted.
 Theorem hl_UNION_OF_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: (2 :^: (2 :^: A))), forall P1:set -> prop, (forall x :e 2 :^: (2 :^: (2 :^: A)), l1 x = 1 <-> P1 (hl_rep2 (2 :^: A) x)) -> forall l2 :e 2 :^: (2 :^: (2 :^: A)), forall P2:set -> prop, (forall x :e 2 :^: (2 :^: A), l2 x = 1 <-> P2 (hl_rep2 A x)) -> forall l3 :e 2 :^: (2 :^: A), hl_UNION_OF (2 :^: A) l1 l2 l3 = 1 <-> exists u c= Power (Power A), P1 u /\ (forall c :e u, P2 c) /\ Union u = hl_rep2 A l3.
 Admitted.
 
-// wqoset : (A->A->bool)->bool (not in compat.mg)
-Theorem hl_wqoset_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_wqoset A l1 = 1 <-> wqoset_on A P1).
-Admitted.
-
 // wqoset : (A->A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_wqoset_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> (hl_wqoset (2 :^: A) l1 = 1 <-> wqoset_on (Power A) P1).
-Admitted.
-
-// order : num->num->num (not in compat.mg)
-Theorem hl_order_compat : forall l1 l2 :e omega, hl_order l1 l2 = mult_order l1 l2.
 Admitted.
 
 // ALL : (A->bool)->A list->bool at A := A -> bool (not in compat.mg)
@@ -80,10 +64,6 @@ Admitted.
 
 // CHOICE : (A->bool)->A at A := A -> bool (not in compat.mg)
 Theorem hl_CHOICE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_CHOICE (2 :^: A) l1 = choose_in (Power A) (fun x:set => x :e hl_rep2 A l1).
-Admitted.
-
-// squarefree : num->bool (not in compat.mg)
-Theorem hl_squarefree_compat : forall l1 :e omega, hl_squarefree l1 = 1 <-> forall m :e omega, divides_nat (m ^ 2) l1 -> m = 1.
 Admitted.
 
 // EXTENSIONAL : (A->bool)->(A->B)->bool, nested at type variables 1 (not in compat.mg)
@@ -134,10 +114,6 @@ Admitted.
 Theorem hl_iterato_compat_pow12 : forall A K:set, A <> Empty -> K <> Empty -> hl_iterato (2 :^: A) (2 :^: K) = Empty.
 Admitted.
 
-// toset : (A->A->bool)->bool (not in compat.mg)
-Theorem hl_toset_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_toset A l1 = 1 <-> toset_on A P1).
-Admitted.
-
 // toset : (A->A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_toset_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> (hl_toset (2 :^: A) l1 = 1 <-> toset_on (Power A) P1).
 Admitted.
@@ -166,14 +142,6 @@ Admitted.
 Theorem hl_iproduct_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e int :^: (2 :^: A), forall f2:set -> set, (forall x :e 2 :^: A, l2 x = f2 (hl_rep A x)) -> hl_iproduct (2 :^: A) l1 l2 = finprod (hl_rep2 A l1) f2.
 Admitted.
 
-// phi : num->num (not in compat.mg)
-Theorem hl_phi_compat : forall l1 :e omega, hl_phi l1 = totient l1.
-Admitted.
-
-// fld : (A->A->bool)->A->bool (not in compat.mg)
-Theorem hl_fld_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> hl_rep A (hl_fld A l1) = fld_on A P1.
-Admitted.
-
 // fld : (A->A->bool)->A->bool at A := A -> bool (not in compat.mg)
 Theorem hl_fld_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> hl_rep2 A (hl_fld (2 :^: A) l1) = fld_on (Power A) P1.
 Admitted.
@@ -196,10 +164,6 @@ Admitted.
 
 // SING : (A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_SING_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_SING (2 :^: A) l1 = 1 <-> exists x :e Power A, hl_rep2 A l1 = {x}.
-Admitted.
-
-// ITER : num->(A->A)->A->A (not in compat.mg)
-Theorem hl_ITER_compat : forall A:set, A <> Empty -> forall l1 :e omega, forall l2 :e A :^: A, forall f2:set -> set, (forall x :e A, l2 x = f2 x) -> forall l3 :e A, hl_ITER A l1 l2 l3 = iter_fun l1 f2 l3.
 Admitted.
 
 // == : A->A->(A->A->bool)->bool at A := A -> bool (not in compat.mg)
@@ -238,16 +202,8 @@ Admitted.
 Theorem hl_nproduct_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e omega :^: (2 :^: A), forall f2:set -> set, (forall x :e 2 :^: A, l2 x = f2 (hl_rep A x)) -> hl_nproduct (2 :^: A) l1 l2 = finprod (hl_rep2 A l1) f2.
 Admitted.
 
-// inseg : (A->A->bool)->(A->A->bool)->bool (not in compat.mg)
-Theorem hl_inseg_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> forall l2 :e 2 :^: A :^: A, forall P2:set -> set -> prop, (forall x y :e A, l2 x y = 1 <-> P2 x y) -> (hl_inseg A l1 l2 = 1 <-> inseg_on A P1 P2).
-Admitted.
-
 // inseg : (A->A->bool)->(A->A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_inseg_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> forall l2 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P2:set -> set -> prop, (forall x y :e 2 :^: A, l2 x y = 1 <-> P2 (hl_rep A x) (hl_rep A y)) -> (hl_inseg (2 :^: A) l1 l2 = 1 <-> inseg_on (Power A) P1 P2).
-Admitted.
-
-// +_c : (A->bool)->(B->bool)->(A,B)sum->bool (not in compat.mg)
-Theorem hl_sym_2b5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_rep (A :+: B) (hl_sym_2b5f63 A B l1 l2) = hl_rep A l1 :+: hl_rep B l2.
 Admitted.
 
 // +_c : (A->bool)->(B->bool)->(A,B)sum->bool, nested at type variables 1 (not in compat.mg)
@@ -304,10 +260,6 @@ Admitted.
 
 // _FUNCTION : (A->B->bool)->A->B, nested at type variables 2 (not in compat.mg)
 Theorem hl__FUNCTION_compat_pow2 : forall A B:set, A <> Empty -> B <> Empty -> hl__FUNCTION A (2 :^: B) = Empty.
-Admitted.
-
-// *_c : (A->bool)->(B->bool)->A#B->bool (not in compat.mg)
-Theorem hl_sym_2a5f63_compat : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: B, hl_rep (A :*: B) (hl_sym_2a5f63 A B l1 l2) = hl_rep A l1 :*: hl_rep B l2.
 Admitted.
 
 // *_c : (A->bool)->(B->bool)->A#B->bool, nested at type variables 1 (not in compat.mg)
@@ -412,10 +364,6 @@ Admitted.
 
 // SETSPEC : A->bool->A->bool at A := A -> bool (not in compat.mg)
 Theorem hl_SETSPEC_compat_pow : forall A:set, A <> Empty -> hl_SETSPEC (2 :^: A) = Empty.
-Admitted.
-
-// qoset : (A->A->bool)->bool (not in compat.mg)
-Theorem hl_qoset_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_qoset A l1 = 1 <-> qoset_on A P1).
 Admitted.
 
 // qoset : (A->A->bool)->bool at A := A -> bool (not in compat.mg)
@@ -610,16 +558,8 @@ Admitted.
 Theorem hl_support_compat_pow2 : forall B A:set, B <> Empty -> A <> Empty -> forall l1 :e B :^: B :^: B, forall f1:set -> set -> set, (forall x y :e B, l1 x y = f1 x y) -> forall l2 :e B :^: (2 :^: A), forall f2:set -> set, (forall x :e 2 :^: A, l2 x = f2 (hl_rep A x)) -> forall l3 :e 2 :^: (2 :^: A), hl_rep2 A (hl_support B (2 :^: A) l1 l2 l3) = {x :e hl_rep2 A l3 | f2 x <> neutral_of B (fun a:set => fun b:set => f1 a b)}.
 Admitted.
 
-// woset : (A->A->bool)->bool (not in compat.mg)
-Theorem hl_woset_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_woset A l1 = 1 <-> woset_on A P1).
-Admitted.
-
 // woset : (A->A->bool)->bool at A := A -> bool (not in compat.mg)
 Theorem hl_woset_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A) :^: (2 :^: A), forall P1:set -> set -> prop, (forall x y :e 2 :^: A, l1 x y = 1 <-> P1 (hl_rep A x) (hl_rep A y)) -> (hl_woset (2 :^: A) l1 = 1 <-> woset_on (Power A) P1).
-Admitted.
-
-// poset : (A->A->bool)->bool (not in compat.mg)
-Theorem hl_poset_compat : forall A:set, A <> Empty -> forall l1 :e 2 :^: A :^: A, forall P1:set -> set -> prop, (forall x y :e A, l1 x y = 1 <-> P1 x y) -> (hl_poset A l1 = 1 <-> poset_on A P1).
 Admitted.
 
 // poset : (A->A->bool)->bool at A := A -> bool (not in compat.mg)

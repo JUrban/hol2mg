@@ -54,7 +54,7 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 | profile | public statements | literal statements checked | `transport_checked` | `literal_proved` | `fully_proved` |
 |---|---|---|---|---|---|
 | core | 2685 | 2697 | 2592 | 57 | 823 (recorded from pilot round 7, DESIGN 22.6) |
-| standard | 4290 | 4396 | 3546 | 57 | — |
+| standard | 4290 | 4396 | 3839 | 57 | — |
 
 A theorem is `transport_checked` (formerly `native_certified`) only when Megalodon `Qed`-checked
 the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`,
