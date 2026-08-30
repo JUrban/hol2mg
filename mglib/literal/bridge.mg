@@ -1043,3 +1043,14 @@ claim HS: SNo (2 * dimindex A). { exact (omega_SNo (2 * dimindex A) (mul_SNo_In_
 claim H1: 1 <= 2 * dimindex A + 1. { exact ((add_SNo_0L 1 SNo_1) (fun u v => u <= 2 * dimindex A + 1) (add_SNo_Le1 0 1 (2 * dimindex A) SNo_0 SNo_1 HS (omega_nonneg (2 * dimindex A) (mul_SNo_In_omega 2 (nat_p_omega 2 nat_2) (dimindex A) (dimindex_omega A))))). }
 exact (nonempty_of_In (idx_n (2 * dimindex A + 1)) 1 (SepI omega (fun i => 1 <= i /\ i <= 2 * dimindex A + 1) 1 (nat_p_omega 1 nat_1) (andI (1 <= 1) (1 <= 2 * dimindex A + 1) (SNoLe_ref 1) H1))).
 Qed.
+// a set function related pointwise to a meta function is the bounded lambda of the latter
+Theorem fun_value_of_pw : forall A B F:set, forall N:set -> set, F :e B :^: A -> (forall x :e A, F x = N x) -> F = fun x :e A => N x.
+let A B F N. assume HF H.
+claim Hg: (fun x :e A => N x) :e B :^: A. { exact (lam_Pi A (fun _ => B) (fun x => N x) (fun x Hx => (H x Hx) (fun u v => u :e B) (setexp_ap A B F HF x Hx))). }
+exact (Pi_ext A (fun _ => B) F HF (fun x :e A => N x) Hg (fun x Hx => eq_trans_i (F x) (N x) ((fun x :e A => N x) x) (H x Hx) (eq_sym_i ((fun x :e A => N x) x) (N x) (beta A (fun x => N x) x Hx)))).
+Qed.
+// the representation of a Boolean-valued function related pointwise to a predicate
+Theorem rep_of_pw : forall A F:set, forall P:set -> prop, F :e 2 :^: A -> (forall x :e A, F x = 1 <-> P x) -> hl_rep A F = {x :e A | P x}.
+let A F P. assume HF H.
+exact (Sep_ext_iff A (fun x => F x = 1) (fun x => P x) H).
+Qed.

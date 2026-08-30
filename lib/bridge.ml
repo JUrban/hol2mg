@@ -1448,6 +1448,20 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                           if lx = nx then (lit, nat, KIff, pf0)
                           else (lit, nat, KIff, leibniz (if px = "" then refl else px) (pp (L.mg_iff (L.mg_eq lit L.one) (Mg.App (n0, Mg.Var "hl__u")))) pf0)
                       | _ -> unsupported "rel: over-application relation")
+                 | Some (e, _) when List.length args + 1 = List.length e.R.c_args && e.R.c_result = R.RProp && (match nview with E.VSubset _ -> true | _ -> false) ->
+                     (* a predicate constant missing its last argument, used as a subset (EXTENSIONAL s):
+                        eta-expand and relate the lambda as a predicate, then represent it *)
+                     let rem_ty = List.fold_left (fun ty _ -> snd (dest_fun_ty ty)) cty args in
+                     let dom, _ = dest_fun_ty rem_ty in
+                     let cd = L.carrier g.lctx dom in
+                     let t' = E.eta_expand "x" t rem_ty in
+                     let l', n', k', pf' = rel g t' (Some (E.VMetaPred [ cd ])) in
+                     (match k', l' with
+                      | KPWP _, Mg.LamIn _ ->
+                          let m = (match n' with Mg.Lam _ -> ppp n' | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp n')) in
+                          let pw = Printf.sprintf "(pw_eta_pred %s %s %s %s)" (ppp cd) (ppp lit) m pf' in
+                          coerce_rel g t (lit, n', KPWP cd, pw) nview
+                      | _ -> unsupported "rel: predicate constant as a subset (shape)")
                  | Some (e, _) when List.length args < List.length e.R.c_args && (match nview with E.VMetaFun ([ _ ], _) | E.VMetaPred [ _ ] -> true | _ -> false) ->
                      (* partial application in a meta position: eta-expand and relate the lambda; the
                         literal of the original term is the unexpanded application, evaluated with beta *)
@@ -1922,6 +1936,13 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
       (* a Boolean formula used as data: lit = if nat then 1 else 0 *)
       (lit, Mg.If (nat, L.one, L.zero), KEq, Printf.sprintf "(bool_data_of_iff %s %s %s %s)" (ppp lit) (ppp nat) (typ g t) pf)
   | KPW a, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
+  | KPW a, E.VSet (Mg.App (Mg.App (Mg.Cst "setexp", b), a')) when a = a' ->
+      (* a set function related pointwise to a meta function, used as a value: F = fun x :e A => N x
+         (fun_value_of_pw, with the typing of the literal) *)
+      let pw = if pf = "" then "(fun hl__x Hhl__x => (fun q H => H))" else pf in
+      let nm = (match nat with Mg.Lam _ -> ppp nat | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp nat)) in
+      let nat' = Mg.normalize (Mg.LamIn ("hl__x", a, Mg.App (nat, Mg.Var "hl__x"))) in
+      (lit, nat', KEq, Printf.sprintf "(fun_value_of_pw %s %s %s %s %s %s)" (ppp a) (ppp b) (ppp lit) nm (typ g t) pw)
   | KRepFun _, E.VMetaFun ([ _ ], _) -> (lit, nat, kind, pf)
   | KPWP2 (c, d), E.VMetaFun ([ c' ], Mg.App (Mg.Cst "Power", d')) when c = c' && d = d' ->
       (* a binary predicate used as a function into subsets: hl_rep d (lit i) = {a :e d | nat i a} *)
@@ -1932,6 +1953,13 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
            (lit, nat', KRepFun (c, d), pf')
        | _ -> unsupported "coerce_rel: binary predicate as a function into subsets (shape %s)" (pp nat))
   | KPWP a, E.VMetaPred [ _ ] -> (lit, nat, kind, pf)
+  | KPWP a, E.VSubset a' when a = a' ->
+      (* a Boolean-valued function related pointwise to a predicate, used as a subset:
+         hl_rep a lit = {x :e a | nat x} (rep_of_pw, with the typing of the literal) *)
+      let pw = if pf = "" then Printf.sprintf "(fun hl__x Hhl__x => iff_refl (%s hl__x = 1))" (ppp lit) else pf in
+      let nm = (match nat with Mg.Lam _ -> ppp nat | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp nat)) in
+      let nat' = Mg.normalize (Mg.Sep ("hl__x", a, Mg.App (nat, Mg.Var "hl__x"))) in
+      (lit, nat', KRep a, Printf.sprintf "(rep_of_pw %s %s %s %s %s)" (ppp a) (ppp lit) nm (typ g t) pw)
   | KPW2 _, E.VMetaFun ([ _; _ ], _) -> (lit, nat, kind, pf)
   | KPWP2 _, E.VMetaPred [ _; _ ] -> (lit, nat, kind, pf)
   | KEq, E.VMetaFun ([ a ], _) ->
@@ -1941,7 +1969,9 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
   | KRep a, E.VMetaPred [ _ ] ->
       let pw = Printf.sprintf "(rep_to_pw %s %s %s %s %s)" (ppp a) (ppp lit) (ppp nat) (typ g t) (if pf = "" then refl else pf) in
       (lit, nat, KPWP a, pw)
-  | _ -> unsupported "coerce_rel: %s" (E.string_of_view want)
+  | _ ->
+      let kind_s = (match kind with KEq -> "KEq" | KIff -> "KIff" | KPW _ -> "KPW" | KPWP _ -> "KPWP" | KRep _ -> "KRep" | KRep2 _ -> "KRep2" | KRepFun _ -> "KRepFun" | KPW2 _ -> "KPW2" | KPWP2 _ -> "KPWP2") in
+      unsupported "coerce_rel: %s (kind %s, literal %s)" (E.string_of_view want) kind_s (pp lit)
 
 (* ------------------------------------------------------------------------ *)
 (* Formula bridging.                                                        *)
