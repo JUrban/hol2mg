@@ -851,6 +851,18 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   else Printf.sprintf "(fun hl__y Hhl__y => (%s %s %s hl__y Hhl__y))" v.rel (ppp lx) (typ g x) in
                 (lit, nat, KPW b, pw)
             | _ -> unsupported "rel: variable application with this view/arity")
+       | Const ("@", _), E.VSet ca when List.length args = 1 ->
+           (* Hilbert choice over a predicate related pointwise: hl_select A P = choose_in A (fun x => P x = 1)
+              (hl_select_eq) = choose_in A N (choose_in_ext) *)
+           let p = List.hd args in
+           let lp, np, kp, pw = rel g p (Some (E.VMetaPred [ ca ])) in
+           (match kp with KPWP _ -> () | _ -> unsupported "rel: choice over a predicate (relation kind)");
+           let pw = if pw = "" then Printf.sprintf "(fun hl__x Hhl__x => iff_refl (%s hl__x = 1))" (ppp lp) else pw in
+           let nm = (match np with Mg.Lam _ -> ppp np | _ -> Printf.sprintf "(fun hl__x:set => %s hl__x)" (ppp np)) in
+           let mid = Printf.sprintf "(choose_in %s (fun hl__x:set => %s hl__x = 1))" (ppp ca) (ppp lp) in
+           let pf = Printf.sprintf "(eq_trans_i %s %s %s (hl_select_eq %s %s %s) (choose_in_ext %s (fun hl__x:set => %s hl__x = 1) %s %s))"
+             (ppp lit) mid (ppp nat) (ppp ca) (ppp lp) (typ g p) (ppp ca) (ppp lp) nm pw in
+           (lit, nat, KEq, pf)
        | Const ("GABS", _), _ when (match args with Lam _ :: _ -> true | _ -> false) ->
            (* paired abstraction: relate the eliminated lambda (applied to the remaining arguments)
               and transport the relation along hl_GABS D P = fun p :e A :*: B => T (FST p) (SND p) *)
@@ -1772,7 +1784,7 @@ and bridge g (dir : dir) (t : tm) : string =
       (match dir with
        | Fwd -> Printf.sprintf "(imp_not %s %s %s)" la na (bridge g Bwd a)
        | Bwd -> Printf.sprintf "(imp_not %s %s %s)" na la (bridge g Fwd a))
-  | Const (("!" | "?") as q, _), [ p ] when (match p with Lam _ -> false | App (Const ("GABS", _), _) -> true | _ -> false) ->
+  | Const (("!" | "?") as q, _), [ p ] when (match p with Lam _ -> false | _ -> true) ->
       (* a quantifier over a paired abstraction: the predicate is related pointwise (rel, metapred
          view) and the quantifier transported by hl_forall_pw / hl_exists_pw *)
       let d, _ = dest_fun_ty (type_of [] p) in
@@ -1791,7 +1803,7 @@ and bridge g (dir : dir) (t : tm) : string =
       (* ?!x. P x is bridged through its expansion ?x. P x /\ !y. P y ==> y = x (exactly as the
          elaborator renders it); the literal constant hl_exists_unique is related to that expansion
          by hl_exists_unique_lit *)
-      let p = (match p with Lam _ -> p | _ -> let pty, _ = dest_fun_ty (type_of [] p) in E.eta_expand "x" p pty) in
+      let p = (match p with Lam _ -> p | _ -> unsupported "bridge: ?! over a non-lambda predicate") in
       (match p with
        | Lam (x, ty, body) ->
            let py = Hol.lift 1 1 body in

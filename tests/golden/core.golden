@@ -240,7 +240,8 @@ source: !P:A->bool. !x:A. (!y:A. P y <=> y = x) ==> @ P = x
 status: generalization_required
 statement: forall A:set, forall P:set -> prop, forall x :e A, (forall y :e A, P y <-> y = x) -> choose_in A P = x
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, forall x :e A, (forall y :e A, P y = 1 <-> y = x) -> hl_select A P = x
-cert_status: bridge_unsupported
+bridge: SELECT_UNIQUE_bridge
+cert_status: transport_checked
 
 ### SELECT_AX   [choice, conditionals, Booleans as data]
 hash: 4e877f34f5dc642b1b50fc1ef7367fcd
@@ -248,7 +249,8 @@ source: !P:A->bool. !x:A. P x ==> P (@ P)
 status: generalization_required
 statement: forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A P)
 literal: forall A:set, A <> Empty -> forall P :e 2 :^: A, forall x :e A, P x = 1 -> P (hl_select A P) = 1
-cert_status: bridge_unsupported
+bridge: SELECT_AX_bridge
+cert_status: transport_checked
 
 ### COND_CLAUSES   [choice, conditionals, Booleans as data]
 hash: 0917c6f97e746313156fb948ae4a0a66
