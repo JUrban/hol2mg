@@ -1765,7 +1765,9 @@ hash: d0a8da4f2034656bd4d9e0714a4c82f2
 source: dimindex UNIV = 2
 status: transport_required
 statement: 2 = 2
-cert_status: literal_unsupported
+literal: hl_dimindex (idx_n (2 * dimindex 1)) (hl_UNIV (idx_n (2 * dimindex 1))) = hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))
+bridge: DIMINDEX_2_bridge
+cert_status: transport_checked
 
 ### FORALL_FINITE_INDEX   [Cartesian powers and finite index types]
 hash: 43ac0aa393472f102dd0f56823d962d3

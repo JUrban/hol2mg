@@ -2543,6 +2543,12 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
       if not (alpha_eq t' target) then unsupported "vacuous binder replay: %s vs %s" (pp t') (pp target);
       (t', pf')
     end in
+  (* replay of the closed equation dimindex 1 = 1 by a Leibniz step on the proved body *)
+  let nat_body, final =
+    let d1 = Mg.App (Mg.Cst "dimindex", Mg.Num 1) in
+    if List.mem "dimindex_one" rewrites && replace_tm d1 (Mg.Var "hl__u") nat_body <> nat_body then
+      (replace_tm d1 (Mg.Num 1) nat_body, Printf.sprintf "(dimindex_one (fun hl__u hl__v => %s) %s)" (pp (replace_tm d1 (Mg.Var "hl__u") nat_body)) final)
+    else (nat_body, final) in
   (* replay of the elaborator's closed numeral arithmetic (Num a + Num b, Num a * Num b evaluated; ordsucc (Num a)
      is convertible with Num (a+1)): evaluation proofs by the add_nat / mul_nat recursion, Leibniz on the body *)
   let nat_body, final =
@@ -2613,12 +2619,6 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
       if not (alpha_eq body' target) then unsupported "arith replay: %s vs %s" (pp body') (pp target);
       (body', pf')
     end in
-  (* replay of the closed equation dimindex 1 = 1 by a Leibniz step on the proved body *)
-  let nat_body, final =
-    let d1 = Mg.App (Mg.Cst "dimindex", Mg.Num 1) in
-    if List.mem "dimindex_one" rewrites && replace_tm d1 (Mg.Var "hl__u") nat_body <> nat_body then
-      (replace_tm d1 (Mg.Num 1) nat_body, Printf.sprintf "(dimindex_one (fun hl__u hl__v => %s) %s)" (pp (replace_tm d1 (Mg.Var "hl__u") nat_body)) final)
-    else (nat_body, final) in
   let nat_body = if List.exists (fun r -> List.mem r convertible) rewrites then fst (Rewrite.run nat_body) else nat_body in
   let nat_stmt = close_lit nat_body in
   let nat_gen, dropped = Emptycase.generalize nat_stmt params in

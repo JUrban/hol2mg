@@ -213,8 +213,80 @@ Admitted.
 Theorem hlt_DIMINDEX_FINITE_PROD : forall M N:set, M <> Empty -> N <> Empty -> hl_dimindex (hl_ty_finite_prod M N) (hl_UNIV (hl_ty_finite_prod M N)) = hl_mul (hl_dimindex M (hl_UNIV M)) (hl_dimindex N (hl_UNIV N)).
 Admitted.
 
+// HOL Light: cart.ml:341 / tybit0_INDUCT   (hash md5:78d927b0732f0cf2715fce6ad6aa283b)
+Theorem hlt_tybit0_INDUCT : forall A:set, A <> Empty -> forall P :e 2 :^: idx_n (2 * dimindex A), (forall a :e hl_ty_finite_sum A A, P (hl_mktybit0 A a) = 1) -> forall x :e idx_n (2 * dimindex A), P x = 1.
+Admitted.
+
+// HOL Light: cart.ml:341 / tybit0_RECURSION   (hash md5:9fa6df9bc475b4aacb910c31a4a7e571)
+Theorem hlt_tybit0_RECURSION : forall A Z:set, A <> Empty -> Z <> Empty -> forall f :e Z :^: hl_ty_finite_sum A A, exists fn :e Z :^: idx_n (2 * dimindex A), forall a :e hl_ty_finite_sum A A, fn (hl_mktybit0 A a) = f a.
+Admitted.
+
+// HOL Light: cart.ml:344 / tybit1_INDUCT   (hash md5:37e8ee45727d8dddc94744b2e20590cf)
+Theorem hlt_tybit1_INDUCT : forall A:set, A <> Empty -> forall P :e 2 :^: idx_n (2 * dimindex A + 1), (forall a :e hl_ty_finite_sum (hl_ty_finite_sum A A) 1, P (hl_mktybit1 A a) = 1) -> forall x :e idx_n (2 * dimindex A + 1), P x = 1.
+Admitted.
+
+// HOL Light: cart.ml:344 / tybit1_RECURSION   (hash md5:6ecdce784840dbafa08ce3b5f0f03ab6)
+Theorem hlt_tybit1_RECURSION : forall A Z:set, A <> Empty -> Z <> Empty -> forall f :e Z :^: hl_ty_finite_sum (hl_ty_finite_sum A A) 1, exists fn :e Z :^: idx_n (2 * dimindex A + 1), forall a :e hl_ty_finite_sum (hl_ty_finite_sum A A) 1, fn (hl_mktybit1 A a) = f a.
+Admitted.
+
+// HOL Light: cart.ml:347 / HAS_SIZE_TYBIT0   (hash md5:ea3d837c4014ac0c3ad86b5e9d5d04f4)
+Theorem hlt_HAS_SIZE_TYBIT0 : forall A:set, A <> Empty -> hl_HAS_SIZE (idx_n (2 * dimindex A)) (hl_UNIV (idx_n (2 * dimindex A))) (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_dimindex A (hl_UNIV A))) = 1.
+Admitted.
+
+// HOL Light: cart.ml:360 / HAS_SIZE_TYBIT1   (hash md5:c1d060ab4d4fb3722685a5022fd13b92)
+Theorem hlt_HAS_SIZE_TYBIT1 : forall A:set, A <> Empty -> hl_HAS_SIZE (idx_n (2 * dimindex A + 1)) (hl_UNIV (idx_n (2 * dimindex A + 1))) (hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_dimindex A (hl_UNIV A))) (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: cart.ml:373 / DIMINDEX_TYBIT0   (hash md5:2726109efadf953501db3fedb4c44ec0)
+Theorem hlt_DIMINDEX_TYBIT0 : forall A:set, A <> Empty -> hl_dimindex (idx_n (2 * dimindex A)) (hl_UNIV (idx_n (2 * dimindex A))) = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_dimindex A (hl_UNIV A)).
+Admitted.
+
+// HOL Light: cart.ml:377 / DIMINDEX_TYBIT1   (hash md5:18db18f4fd77000629321bf157fb1353)
+Theorem hlt_DIMINDEX_TYBIT1 : forall A:set, A <> Empty -> hl_dimindex (idx_n (2 * dimindex A + 1)) (hl_UNIV (idx_n (2 * dimindex A + 1))) = hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_dimindex A (hl_UNIV A))) (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: cart.ml:381 / DIMINDEX_CLAUSES   (hash md5:1c9164d9e863112afb3e9f170701e014)
+Theorem hlt_DIMINDEX_CLAUSES : forall A:set, A <> Empty -> hl_dimindex 1 (hl_UNIV 1) = hl_NUMERAL (hl_BIT1 hl_zero) /\ (hl_dimindex (idx_n (2 * dimindex A)) (hl_UNIV (idx_n (2 * dimindex A))) = hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_dimindex A (hl_UNIV A)) /\ hl_dimindex (idx_n (2 * dimindex A + 1)) (hl_UNIV (idx_n (2 * dimindex A + 1))) = hl_add (hl_mul (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) (hl_dimindex A (hl_UNIV A))) (hl_NUMERAL (hl_BIT1 hl_zero))).
+Admitted.
+
 // HOL Light: cart.ml:389 / FINITE_1   (hash md5:90a6cd0195246fd82f4fbaf42c36e52d)
 Theorem hlt_FINITE_1 : hl_FINITE 1 (hl_UNIV 1) = 1.
+Admitted.
+
+// HOL Light: cart.ml:393 / FINITE_TYBIT0   (hash md5:7028ce5cbd4cf522cc4d8615d9b239b9)
+Theorem hlt_FINITE_TYBIT0 : forall A:set, A <> Empty -> hl_FINITE (idx_n (2 * dimindex A)) (hl_UNIV (idx_n (2 * dimindex A))) = 1.
+Admitted.
+
+// HOL Light: cart.ml:397 / FINITE_TYBIT1   (hash md5:a64758743525884a577bc64816c96b00)
+Theorem hlt_FINITE_TYBIT1 : forall A:set, A <> Empty -> hl_FINITE (idx_n (2 * dimindex A + 1)) (hl_UNIV (idx_n (2 * dimindex A + 1))) = 1.
+Admitted.
+
+// HOL Light: cart.ml:401 / FINITE_CLAUSES   (hash md5:42e8dcd423445931474546e2e60002e4)
+Theorem hlt_FINITE_CLAUSES : forall A:set, A <> Empty -> hl_FINITE 1 (hl_UNIV 1) = 1 /\ (hl_FINITE (idx_n (2 * dimindex A)) (hl_UNIV (idx_n (2 * dimindex A))) = 1 /\ hl_FINITE (idx_n (2 * dimindex A + 1)) (hl_UNIV (idx_n (2 * dimindex A + 1))) = 1).
+Admitted.
+
+// HOL Light: cart.ml:463 / DIMINDEX_2   (hash md5:d0a8da4f2034656bd4d9e0714a4c82f2)
+Theorem hlt_DIMINDEX_2 : hl_dimindex (idx_n (2 * dimindex 1)) (hl_UNIV (idx_n (2 * dimindex 1))) = hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: cart.ml:467 / DIMINDEX_3   (hash md5:51e4181dfc4fc784261ccfc05b5c00b7)
+Theorem hlt_DIMINDEX_3 : hl_dimindex (idx_n (2 * dimindex 1 + 1)) (hl_UNIV (idx_n (2 * dimindex 1 + 1))) = hl_NUMERAL (hl_BIT1 (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: cart.ml:471 / DIMINDEX_4   (hash md5:75e488850afa71d3a191d143cb618282)
+Theorem hlt_DIMINDEX_4 : hl_dimindex (idx_n (2 * dimindex (idx_n (2 * dimindex 1)))) (hl_UNIV (idx_n (2 * dimindex (idx_n (2 * dimindex 1))))) = hl_NUMERAL (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero))).
+Admitted.
+
+// HOL Light: cart.ml:475 / HAS_SIZE_2   (hash md5:f82c0a70f6705c7e235e4e36d867a1a2)
+Theorem hlt_HAS_SIZE_2 : hl_HAS_SIZE (idx_n (2 * dimindex 1)) (hl_UNIV (idx_n (2 * dimindex 1))) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: cart.ml:476 / HAS_SIZE_3   (hash md5:ac76f67ba36d0e7b7fc0d59c010424af)
+Theorem hlt_HAS_SIZE_3 : hl_HAS_SIZE (idx_n (2 * dimindex 1 + 1)) (hl_UNIV (idx_n (2 * dimindex 1 + 1))) (hl_NUMERAL (hl_BIT1 (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: cart.ml:477 / HAS_SIZE_4   (hash md5:1397fa02f89f92b1eb4960c1f347e79c)
+Theorem hlt_HAS_SIZE_4 : hl_HAS_SIZE (idx_n (2 * dimindex (idx_n (2 * dimindex 1)))) (hl_UNIV (idx_n (2 * dimindex (idx_n (2 * dimindex 1))))) (hl_NUMERAL (hl_BIT0 (hl_BIT0 (hl_BIT1 hl_zero)))) = 1.
 Admitted.
 
 // HOL Light: cart.ml:483 / FINITE_CART   (hash md5:a0034d785932cd5307e955f10e16d620)
