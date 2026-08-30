@@ -34324,11 +34324,18 @@
    "cert_error": "",
    "bridge": "INT_ABS_MUL_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_ABS_MUL",
+    "TRUTH",
+    "int_abs_th",
+    "int_eq",
+    "int_mul_th"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_ABS_MUL_1",
@@ -34392,11 +34399,18 @@
    "cert_error": "",
    "bridge": "INT_ABS_NEG_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_ABS_NEG",
+    "TRUTH",
+    "int_abs_th",
+    "int_eq",
+    "int_neg_th"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_ABS_NUM",
@@ -34538,11 +34552,18 @@
    "cert_error": "",
    "bridge": "INT_ABS_POW_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_ABS_POW",
+    "TRUTH",
+    "int_abs_th",
+    "int_eq",
+    "int_pow_th"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_ABS_REFL",
@@ -40481,11 +40502,18 @@
    "cert_error": "",
    "bridge": "INT_LT_LE_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_LT_LE",
+    "TRUTH",
+    "int_eq",
+    "int_le",
+    "int_lt"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_LT_LMUL",
@@ -40697,11 +40725,18 @@
    "cert_error": "",
    "bridge": "INT_LT_MUL_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_LT_MUL",
+    "TRUTH",
+    "int_lt",
+    "int_mul_th",
+    "int_of_num_th"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_LT_MUL2",
@@ -41229,11 +41264,19 @@
    "cert_error": "",
    "bridge": "INT_LT_SQUARE_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_LT_SQUARE",
+    "TRUTH",
+    "int_eq",
+    "int_lt",
+    "int_mul_th",
+    "int_of_num_th"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_LT_SQUARE_ABS",
@@ -44142,11 +44185,18 @@
    "cert_error": "",
    "bridge": "INT_POS_NZ_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_LT_IMP_NZ",
+    "TRUTH",
+    "int_eq",
+    "int_lt",
+    "int_of_num_th"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "INT_POW",
@@ -71835,11 +71885,23 @@
    "cert_error": "",
    "bridge": "REAL_ABS_MUL_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "COND_CLAUSES",
+    "REAL_ABS_NEG",
+    "REAL_LE_MUL",
+    "REAL_LE_NEGTOTAL",
+    "REAL_MUL_LNEG",
+    "REAL_MUL_RNEG",
+    "REAL_NEG_NEG",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "real_abs"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_ABS_NEG",
@@ -71868,11 +71930,44 @@
    "cert_error": "",
    "bridge": "REAL_ABS_NEG_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "AND_CLAUSES",
+    "BETA_THM",
+    "BOOL_CASES_AX",
+    "COND_CLAUSES",
+    "CONJ_ASSOC",
+    "DE_MORGAN_THM",
+    "DISJ_ACI",
+    "DISJ_ASSOC",
+    "EQ_CLAUSES",
+    "EQ_REFL",
+    "EQ_SYM_EQ",
+    "EXCLUDED_MIDDLE",
+    "EXISTS_OR_THM",
+    "FORALL_AND_THM",
+    "IMP_CLAUSES",
+    "NOT_CLAUSES",
+    "NOT_CLAUSES_WEAK",
+    "NOT_EXISTS_THM",
+    "NOT_FORALL_THM",
+    "NOT_IMP",
+    "OR_CLAUSES",
+    "OR_EXISTS_THM",
+    "REAL_ADD_LID",
+    "REAL_LE_ANTISYM",
+    "REAL_LE_RNEG",
+    "REAL_LE_TOTAL",
+    "REAL_NEG_0",
+    "REAL_NEG_NEG",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "real_abs"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_ABS_NUM",
@@ -72016,11 +72111,19 @@
    "cert_error": "",
    "bridge": "REAL_ABS_POW_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_ABS_MUL",
+    "REAL_ABS_NUM",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "num_INDUCTION",
+    "real_pow"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_ABS_REFL",
@@ -78439,11 +78542,20 @@
    "cert_error": "",
    "bridge": "REAL_LT_DIV_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "AND_CLAUSES",
+    "FORALL_SIMP",
+    "IMP_CLAUSES",
+    "REAL_LT_INV_EQ",
+    "REAL_LT_MUL",
+    "TRUTH",
+    "real_div"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_LT_DIV2_EQ",
@@ -78748,11 +78860,16 @@
    "cert_error": "",
    "bridge": "REAL_LT_INV_EQ_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "REAL_INV_INV",
+    "REAL_LT_INV",
+    "TRUTH"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_LT_LADD",
@@ -78931,11 +79048,38 @@
    "cert_error": "",
    "bridge": "REAL_LT_LE_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "AND_CLAUSES",
+    "BETA_THM",
+    "BOOL_CASES_AX",
+    "CONJ_ASSOC",
+    "DE_MORGAN_THM",
+    "DISJ_ACI",
+    "DISJ_ASSOC",
+    "EQ_CLAUSES",
+    "EQ_SYM_EQ",
+    "EXCLUDED_MIDDLE",
+    "EXISTS_OR_THM",
+    "FORALL_AND_THM",
+    "IMP_CLAUSES",
+    "NOT_CLAUSES",
+    "NOT_CLAUSES_WEAK",
+    "NOT_EXISTS_THM",
+    "NOT_FORALL_THM",
+    "NOT_IMP",
+    "OR_CLAUSES",
+    "OR_EXISTS_THM",
+    "REAL_LE_ANTISYM",
+    "REAL_LE_TOTAL",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "real_lt"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_LT_LINV",
@@ -79217,11 +79361,20 @@
    "cert_error": "",
    "bridge": "REAL_LT_MUL_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "AND_CLAUSES",
+    "NOT_CLAUSES_WEAK",
+    "OR_CLAUSES",
+    "REAL_ENTIRE",
+    "REAL_LE_MUL",
+    "REAL_LT_LE",
+    "TRUTH"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_LT_MUL2",
@@ -79390,11 +79543,21 @@
    "cert_error": "",
    "bridge": "REAL_LT_NZ_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "AND_CLAUSES",
+    "EQ_CLAUSES",
+    "EXCLUDED_MIDDLE",
+    "NOT_CLAUSES_WEAK",
+    "REAL_LT_LE",
+    "REAL_POS",
+    "REFL_CLAUSE",
+    "TRUTH"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_LT_POW2",
@@ -79820,11 +79983,21 @@
    "cert_error": "",
    "bridge": "REAL_LT_SQUARE_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "AND_CLAUSES",
+    "EQ_SYM_EQ",
+    "OR_CLAUSES",
+    "REAL_ENTIRE",
+    "REAL_LE_SQUARE",
+    "REAL_LT_LE",
+    "REFL_CLAUSE",
+    "TRUTH"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_LT_SQUARE_ABS",
@@ -83101,11 +83274,18 @@
    "cert_error": "",
    "bridge": "REAL_POS_LT_bridge",
    "literal_proved": false,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "LT_0",
+    "LT_NZ",
+    "REAL_LT_NZ",
+    "REAL_OF_NUM_EQ",
+    "TRUTH"
+   ],
    "proof_error": "",
-   "literal_fact_proved": false,
-   "fully_proved": false
+   "proof_source": "pilot",
+   "literal_fact_proved": true,
+   "fully_proved": true
   },
   {
    "name": "REAL_POW2_ABS",
@@ -109820,6 +110000,6 @@
   "failed_shards": {},
   "transport_checked": 2592,
   "literal_proved": 57,
-  "fully_proved": 823
+  "fully_proved": 840
  }
 }

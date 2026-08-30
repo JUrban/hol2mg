@@ -5,10 +5,11 @@
 # Run from a private copy of this script: bash reads scripts by byte offset, so editing the
 # file while a long check runs (cycles, pilots) would corrupt the running instance.
 if [ -z "${CHECK_CERT_COPY:-}" ]; then
-  _cc_copy=$(mktemp); cp "$0" "$_cc_copy"; CHECK_CERT_COPY=1 exec bash "$_cc_copy" "$@"
+  _cc_copy=$(mktemp); cp "$0" "$_cc_copy"
+  CHECK_CERT_HERE="$(cd "$(dirname "$0")/.." && pwd)" CHECK_CERT_COPY=1 exec bash "$_cc_copy" "$@"
 fi
 
-HERE=$(cd "$(dirname "$0")/.." && pwd)
+HERE=${CHECK_CERT_HERE:-$(cd "$(dirname "$0")/.." && pwd)}
 MG=${MEGALODON:-$HERE/../repos/Megalodon/bin/megalodon}
 prof=$1; shift
 pub=${PUBDIR:-$HERE/generated/public/$prof}; lit=${LITDIR:-$HERE/generated/literal/$prof}; cert=${CERTDIR:-$HERE/generated/cert/$prof}

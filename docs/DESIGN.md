@@ -1680,8 +1680,8 @@ leaf still have the same hash and literal text in the committed manifest (leaves
 model theorems count as proved), and `fully_proved` additionally requires the bridge to be
 transport-checked in that cycle.  A change to a literal statement or to a leaf therefore
 silently retires the recorded fact until a new round re-proves it; the manifest marks such
-theorems with `proof_source: pilot`.  Round 7 recorded 918 facts, all of which validate against
-the committed state (830 public theorems `fully_proved` at 2 592 transport-checked).
+theorems with `proof_source: pilot`.  Rounds 7 and 8 recorded 935 facts, all of which validate
+against the committed state (847 public theorems `fully_proved` at 2 592 transport-checked).
 
 ### 22.5 Steps
 
@@ -1760,6 +1760,20 @@ the committed state (830 public theorems `fully_proved` at 2 592 transport-check
    5 K), `INT_DIVMOD_UNIQ` (15; 246 K), `REAL_LT_IMP_NZ` (15; 28 K).  Round 8 plan: force the
    leaves below 20 K, model theorems for `REAL_LT_INV` and `REAL_LT_IMP_NZ`, leave
    `INT_DIVMOD_UNIQ` blocked.
+12. Round 8 (cap 2 000, 42 forced leaves, model theorems for `REAL_LT_INV`/`REAL_LT_IMP_NZ`,
+   45 parts, 6 jobs, 3.3-hour limit; 2026-08-30/31): 42 of 44 parts and the base check pass —
+   only the two giant parts (`iterate_p1`, `sets_p3`) time out; 935 literal facts proved
+   through imported proofs in the pilot, of which **all 935 validate against the committed
+   manifest: 847 public theorems `fully_proved`** recorded via §22.6
+   (`generated/proofcert/core.round8.*`).  The aggregation of the run was corrupted a second
+   time by an edit to `tools/check_cert.sh` while instances were executing it (results rebuilt
+   from the per-part `.res` files); the script now re-executes itself from a private copy at
+   startup, so later edits cannot affect running instances.  Top blockers now: leaves of the
+   two timed-out parts (`neutral` 46, `FINREC_FUN` 20, `ITERATE_CLAUSES` 15, `FINITE_NUMSEG`
+   12 — round 9 should split the giant parts further, `HOL2MG_PART_NODES` below 40 000) and
+   above-cap leaves (`INT_DIVMOD_EXIST_0` 22, `REAL_LE_RMUL` 15, `REAL_LE_LT` 14,
+   `REAL_LT_01` 14, `REAL_ZPOW_NEG` 13, `FORALL_INT_CASES` 12, …; the printed `FORCE` list in
+   `core.round8.summary.txt`).
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively
