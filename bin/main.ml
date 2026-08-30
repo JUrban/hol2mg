@@ -430,10 +430,18 @@ let () =
                     Hashtbl.replace compat name (txt, status);
                     if status <> "ok" then Buffer.add_string stubs (Printf.sprintf "// %s : %s (%s)\nTheorem %s : %s.\nAdmitted.\n\n" e.Registry.c_hol (Hol.string_of_ty e.Registry.c_scheme) status name txt);
                     (* nested instances at one type variable of multi-parameter entries (IMAGE with a subset-valued function) *)
-                    let n_tv = List.length (Literal.tyvars_ordered e.Registry.c_scheme []) in
-                    if n_tv >= 2 && n_tv <= 3 then begin
+                    let tvs_all = Literal.tyvars_ordered e.Registry.c_scheme [] in
+                    let n_tv = List.length tvs_all in
+                    (* type variables that are element types of subset-role arguments: only these have
+                       nested instances (sets of subsets, represented by hl_rep2) *)
+                    let sub_tvs = (let args_ty = fst (Hol.strip_fun_ty e.Registry.c_scheme) in
+                      List.filter_map (fun (i, a) ->
+                        if List.exists2 (fun role ty -> role = Registry.RSubset && ty = Hol.TyApp ("fun", [ Hol.TyVar a; Hol.TyApp ("bool", []) ]))
+                             e.Registry.c_args (List.filteri (fun j _ -> j < List.length e.Registry.c_args) args_ty)
+                        then Some (i + 1) else None) (List.mapi (fun i a -> (i, a)) tvs_all)) in
+                    if n_tv >= 2 && n_tv <= 3 && sub_tvs <> [] then begin
                       let n = n_tv in
-                      let rec subsets k = if k > n then [ [] ] else List.concat_map (fun r -> [ r; k :: r ]) (subsets (k + 1)) in
+                      let rec subsets k = if k > n then [ [] ] else List.concat_map (fun r -> if List.mem k sub_tvs then [ r; k :: r ] else [ r ]) (subsets (k + 1)) in
                       List.iter (fun ks ->
                         let ks = List.sort compare ks in
                         match (if ks = [] then None else (try Bridge.compat_statement_nested_at an e ks with _ -> None)) with
@@ -449,7 +457,7 @@ let () =
                             if status2 <> "ok" then Buffer.add_string stubs (Printf.sprintf "// %s : %s, nested at type variables %s (%s)\nTheorem %s : %s.\nAdmitted.\n\n" e.Registry.c_hol (Hol.string_of_ty e.Registry.c_scheme) (String.concat "," (List.map string_of_int ks)) status2 name2 txt2)) (subsets 1)
                     end;
                     (* nested instance (sets of subsets) for the set-theoretic constants *)
-                    if n_tv = 1 then
+                    if n_tv = 1 && sub_tvs <> [] then
                       (match (try Bridge.compat_statement_nested an e with _ -> None) with
                        | None -> ()
                        | Some st2 ->

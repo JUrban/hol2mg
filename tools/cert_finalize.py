@@ -71,7 +71,7 @@ while changed:
 # results of proof-import pilot rounds recorded by tools/merge_pilot.py: a recorded fact counts while
 # the theorem and (transitively) its leaves keep the same statement hash and literal text
 import hashlib
-side_file = os.path.join(os.path.dirname(man_file), '..', 'proofcert', prof + '.pilot_results.json')
+side_file = os.path.join(here, 'generated', 'proofcert', prof + '.pilot_results.json')
 n_side = 0
 if os.path.exists(side_file):
     side = json.load(open(side_file))
@@ -89,6 +89,9 @@ if os.path.exists(side_file):
 for i in m['items']:
     i['literal_fact_proved'] = i['name'] in fp
     i['fully_proved'] = (i['name'] in fp and bool(i.get('proof_imported')) and i.get('cert_status') == 'transport_checked')
+# counts over the whole manifest (re-running on a finalized manifest must not change them)
+n_cert = sum(1 for i in m['items'] if i.get('cert_status') == 'transport_checked')
+n_proved = sum(1 for i in m['items'] if i.get('cert_status') == 'transport_checked' and i['name'] in fully_proved and i.get('literal_proved'))
 n_full = sum(1 for i in m['items'] if i['fully_proved'])
 n_lfp = sum(1 for i in m['items'] if i['literal_fact_proved'] and i.get('proof_imported'))
 m['certification'] = {'checked_shards': sorted(ok), 'failed_shards': fail, 'transport_checked': n_cert, 'literal_proved': n_proved, 'fully_proved': n_full}

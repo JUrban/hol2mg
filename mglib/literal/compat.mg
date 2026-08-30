@@ -7725,3 +7725,35 @@ apply (finite_of_inj (B :^: A) (Power (A :*: B)) (god1_power_finite (A :*: B) (g
   claim H1: f x = g x'. { exact (eq_trans_i (f x) ((x, f x) 1) (g x') (eq_sym_i ((x, f x) 1) (f x) (tuple_2_1_eq x (f x))) (eq_trans_i ((x, f x) 1) ((x', g x') 1) (g x') (f_equal (fun u => u 1) (x, f x) (x', g x') Heq) (tuple_2_1_eq x' (g x')))). }
   exact (eq_trans_i (f x) (g x') (g x) H1 (f_equal (fun u => g u) x' x (eq_sym_i x x' Hx0))).
 Qed.
+
+// ---- nested instances for the standard profile: COUNTABLE, <=_c (first argument), <_c (second argument) ----
+Theorem hl_COUNTABLE_compat_pow : forall A:set, A <> Empty -> forall l1 :e 2 :^: (2 :^: A), hl_COUNTABLE (2 :^: A) l1 = 1 <-> countable (hl_rep2 A l1).
+let A. assume HA. let l1. assume H1.
+claim HE: equip (hl_rep (2 :^: A) l1) (hl_rep2 A l1). { exact (rep2_equip A (hl_rep (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l1)). }
+apply (iff_trans (hl_COUNTABLE (2 :^: A) l1 = 1) (countable (hl_rep (2 :^: A) l1)) (countable (hl_rep2 A l1)) (hl_COUNTABLE_compat (2 :^: A) (setexp_nonempty A 2 two_nonempty) l1 H1)).
+prove atleastp (hl_rep (2 :^: A) l1) omega <-> atleastp (hl_rep2 A l1) omega.
+apply iffI.
+- assume H. exact (atleastp_tra (hl_rep2 A l1) (hl_rep (2 :^: A) l1) omega (equip_atleastp (hl_rep2 A l1) (hl_rep (2 :^: A) l1) (equip_sym (hl_rep (2 :^: A) l1) (hl_rep2 A l1) HE)) H).
+- assume H. exact (atleastp_tra (hl_rep (2 :^: A) l1) (hl_rep2 A l1) omega (equip_atleastp (hl_rep (2 :^: A) l1) (hl_rep2 A l1) HE) H).
+Qed.
+Theorem hl_sym_3c3d5f63_compat_pow1 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: (2 :^: A), forall l2 :e 2 :^: B, hl_sym_3c3d5f63 (2 :^: A) B l1 l2 = 1 <-> atleastp (hl_rep2 A l1) (hl_rep B l2).
+let A B. assume HA HB. let l1. assume H1. let l2. assume H2.
+claim HE: equip (hl_rep (2 :^: A) l1) (hl_rep2 A l1). { exact (rep2_equip A (hl_rep (2 :^: A) l1) (hl_rep_Subq (2 :^: A) l1)). }
+apply (iff_trans (hl_sym_3c3d5f63 (2 :^: A) B l1 l2 = 1) (atleastp (hl_rep (2 :^: A) l1) (hl_rep B l2)) (atleastp (hl_rep2 A l1) (hl_rep B l2)) (hl_sym_3c3d5f63_compat (2 :^: A) B (setexp_nonempty A 2 two_nonempty) HB l1 H1 l2 H2)).
+apply iffI.
+- assume H. exact (atleastp_tra (hl_rep2 A l1) (hl_rep (2 :^: A) l1) (hl_rep B l2) (equip_atleastp (hl_rep2 A l1) (hl_rep (2 :^: A) l1) (equip_sym (hl_rep (2 :^: A) l1) (hl_rep2 A l1) HE)) H).
+- assume H. exact (atleastp_tra (hl_rep (2 :^: A) l1) (hl_rep2 A l1) (hl_rep B l2) (equip_atleastp (hl_rep (2 :^: A) l1) (hl_rep2 A l1) HE) H).
+Qed.
+Theorem hl_sym_3c5f63_compat_pow2 : forall A B:set, A <> Empty -> B <> Empty -> forall l1 :e 2 :^: A, forall l2 :e 2 :^: (2 :^: B), hl_sym_3c5f63 A (2 :^: B) l1 l2 = 1 <-> atleastp (hl_rep A l1) (hl_rep2 B l2) /\ ~ equip (hl_rep A l1) (hl_rep2 B l2).
+let A B. assume HA HB. let l1. assume H1. let l2. assume H2.
+claim HE: equip (hl_rep (2 :^: B) l2) (hl_rep2 B l2). { exact (rep2_equip B (hl_rep (2 :^: B) l2) (hl_rep_Subq (2 :^: B) l2)). }
+claim HE': equip (hl_rep2 B l2) (hl_rep (2 :^: B) l2). { exact (equip_sym (hl_rep (2 :^: B) l2) (hl_rep2 B l2) HE). }
+apply (iff_trans (hl_sym_3c5f63 A (2 :^: B) l1 l2 = 1) (atleastp (hl_rep A l1) (hl_rep (2 :^: B) l2) /\ ~ equip (hl_rep A l1) (hl_rep (2 :^: B) l2)) (atleastp (hl_rep A l1) (hl_rep2 B l2) /\ ~ equip (hl_rep A l1) (hl_rep2 B l2)) (hl_sym_3c5f63_compat A (2 :^: B) HA (setexp_nonempty B 2 two_nonempty) l1 H1 l2 H2)).
+apply iffI.
+- assume H. apply H. assume Ha Hne. apply andI.
+  + exact (atleastp_tra (hl_rep A l1) (hl_rep (2 :^: B) l2) (hl_rep2 B l2) Ha (equip_atleastp (hl_rep (2 :^: B) l2) (hl_rep2 B l2) HE)).
+  + assume Heq. apply Hne. exact (equip_tra (hl_rep A l1) (hl_rep2 B l2) (hl_rep (2 :^: B) l2) Heq HE').
+- assume H. apply H. assume Ha Hne. apply andI.
+  + exact (atleastp_tra (hl_rep A l1) (hl_rep2 B l2) (hl_rep (2 :^: B) l2) Ha (equip_atleastp (hl_rep2 B l2) (hl_rep (2 :^: B) l2) HE')).
+  + assume Heq. apply Hne. exact (equip_tra (hl_rep A l1) (hl_rep (2 :^: B) l2) (hl_rep2 B l2) Heq HE).
+Qed.
