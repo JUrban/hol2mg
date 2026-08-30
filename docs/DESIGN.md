@@ -1693,6 +1693,19 @@ is larger than the claim.
    while a pilot was running shifted the running bash script's offsets and its final aggregation
    ran garbage — the results were rebuilt from the per-part `.res` files; never edit a script that
    a long job is executing.
+11. Round 7 (cap 2 000, 30 forced leaves, giant leaves replaced by model theorems, 45 parts,
+   6 jobs, 3.3-hour limit; 2026-08-30): **all 44 parts and the base check pass** (the last part,
+   `sets_p3`, took 1.3 hours), 918 literal facts proved through imported proofs, **817 public
+   theorems `fully_proved`** (`generated/proofcert/core.round7.manifest.json`, summary and check
+   log alongside).  The run used the certification state of the morning (2 547
+   transport-checked theorems); the later bridge work of the day is not yet combined with the
+   imports.  Top blockers now (leaves above the cap, with their inference counts):
+   `FINREC_FUN/UNIQUE/EXISTS/SUC_LEMMA` (35 each; 3–10 K), `NEUTRAL_REAL_ADD` (25; 3.8 K),
+   `REAL_ABS_NEG` (21; 5 K), `FINITE_SUPPORT`/`NEUTRAL_ADD` (20; 3–4 K), `ITERATE_CLAUSES_GEN`
+   (19; 16 K), `REAL_LT_INV` (18; 29 K), `INT_DIV_0`/`INT_REM_0` (17; 3 K), `REAL_LT_LE` (16;
+   5 K), `INT_DIVMOD_UNIQ` (15; 246 K), `REAL_LT_IMP_NZ` (15; 28 K).  Round 8 plan: force the
+   leaves below 20 K, model theorems for `REAL_LT_INV` and `REAL_LT_IMP_NZ`, leave
+   `INT_DIVMOD_UNIQ` blocked.
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively
