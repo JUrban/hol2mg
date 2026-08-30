@@ -10,14 +10,14 @@ Admitted.
 
 // HOL Light: class.ml:30 / EQ_EXT
 // Source hash: md5:74f6b9b467171dc186a2df9978244b58
-// Status: generalization_required (bridges: empty_case:A, empty_case:B)
-Theorem EQ_EXT : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
+// Status: generalization_required (bridges: empty_case:A)
+Theorem EQ_EXT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
 Admitted.
 
 // HOL Light: class.ml:35 / FUN_EQ_THM
 // Source hash: md5:f5a914b29ff3ffb2975dadfdab697414
-// Status: generalization_required (bridges: empty_case:A, empty_case:B)
-Theorem FUN_EQ_THM : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x).
+// Status: generalization_required (bridges: empty_case:A)
+Theorem FUN_EQ_THM : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x).
 Admitted.
 
 // HOL Light: class.ml:53 / SELECT_AX
@@ -226,26 +226,26 @@ Admitted.
 
 // HOL Light: class.ml:418 / SKOLEM_THM
 // Source hash: md5:7032340324a1a8ad7909cb040961f738
-// Status: generalization_required (bridges: empty_case:A)
-Theorem SKOLEM_THM : forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x).
+// Status: exact_native
+Theorem SKOLEM_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x).
 Admitted.
 
 // HOL Light: class.ml:426 / SKOLEM_THM_GEN
 // Source hash: md5:5565ee13d340ccbd045d169fd93d59bc
-// Status: generalization_required (bridges: empty_case:A)
-Theorem SKOLEM_THM_GEN : forall A B:set, B <> Empty -> forall P:set -> prop, forall R0:set -> set -> prop, (forall x :e A, P x -> exists y :e B, R0 x y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, P x -> R0 x (f x).
+// Status: exact_native
+Theorem SKOLEM_THM_GEN : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> prop, forall R0:set -> set -> prop, (forall x :e A, P x -> exists y :e B, R0 x y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, P x -> R0 x (f x).
 Admitted.
 
 // HOL Light: class.ml:434 / UNIQUE_SKOLEM_ALT
 // Source hash: md5:a0be667b32ad906a5f23194afc353c19
-// Status: generalization_required (bridges: empty_case:A)
-Theorem UNIQUE_SKOLEM_ALT : forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y.
+// Status: exact_native
+Theorem UNIQUE_SKOLEM_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ forall x :e A, forall y :e B, P x y <-> f x = y.
 Admitted.
 
 // HOL Light: class.ml:442 / UNIQUE_SKOLEM_THM
 // Source hash: md5:e8db4e1e4a06d49a8fc6b9eaee700c91
-// Status: generalization_required (bridges: empty_case:A)
-Theorem UNIQUE_SKOLEM_THM : forall A B:set, B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ ((forall x :e A, P x (f x)) /\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (y x)) -> forall x :e A, y x = f x).
+// Status: exact_native
+Theorem UNIQUE_SKOLEM_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y /\ forall y0 :e B, P x y0 -> y0 = y) <-> exists f:set -> set, (forall x :e A, f x :e B) /\ ((forall x :e A, P x (f x)) /\ forall y:set -> set, (forall x :e A, y x :e B) -> (forall x :e A, P x (y x)) -> forall x :e A, y x = f x).
 Admitted.
 
 // HOL Light: class.ml:479 / bool_INDUCT

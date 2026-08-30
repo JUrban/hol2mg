@@ -509,7 +509,7 @@ Admitted.
 // HOL Light: Library/isum.ml:181 / ISUM_ISUM_PRODUCT
 // Source hash: md5:4350a55dc1624599c44c4673fc512ae7
 // Status: transport_required (bridges: hol_finite_finite, hol_int_int, hol_prod_setprod, hol_sum_finsum)
-Theorem ISUM_ISUM_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x :e A, forall y :e B, x x y :e int) -> finite s /\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\/_ i :e A, {(i,j) | j :e B, i :e s /\ j :e t i}) (fun p:set => x (p 0) (p 1)).
+Theorem ISUM_ISUM_PRODUCT : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t :e Power B :^: A, forall x:set -> set -> set, (forall x0 :e A, forall y :e B, x x0 y :e int) -> finite s /\ (forall i :e A, i :e s -> finite (t i)) -> finsum s (fun i:set => finsum (t i) (x i)) = finsum (\/_ i :e A, {(i,j) | j :e B, i :e s /\ j :e t i}) (fun p:set => x (p 0) (p 1)).
 Admitted.
 
 // HOL Light: Library/isum.ml:197 / INT_SUB_POW_L1

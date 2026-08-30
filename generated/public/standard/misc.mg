@@ -191,12 +191,12 @@ Admitted.
 // HOL Light:  / WQOSET_NOBAD
 // Source hash: md5:2335184538662ee9cce85cc928a9851d
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
-Theorem WQOSET_NOBAD : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists i j :e omega, i < j /\ l (x i) (x j).
+Theorem WQOSET_NOBAD : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists i j :e omega, i < j /\ l (x i) (x j).
 Admitted.
 
 // HOL Light:  / WQOSET_NOBAD_SUBSEQ
 // Source hash: md5:50d5416656b450467dc4740b717acb55
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem WQOSET_NOBAD_SUBSEQ : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ forall i j :e omega, i <= j -> l (x (r i)) (x (r j))).
+Theorem WQOSET_NOBAD_SUBSEQ : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ forall i j :e omega, i <= j -> l (x (r i)) (x (r j))).
 Admitted.
 

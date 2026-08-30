@@ -82,8 +82,8 @@ Admitted.
 
 // HOL Light: ind_types.ml:1061 / ISO
 // Source hash: md5:3ba2a1ebc7dc10f5cd16b4b8c40e2eb7
-// Status: generalization_required (bridges: empty_case:A, empty_case:B)
-Theorem ISO : forall A B:set, forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e B, f (g x) = x) /\ (forall y :e A, g (f y) = y) <-> (forall x :e B, f (g x) = x) /\ forall y :e A, g (f y) = y).
+// Status: exact_native
+Theorem ISO : forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e B, f (g x) = x) /\ (forall y :e A, g (f y) = y) <-> (forall x :e B, f (g x) = x) /\ forall y :e A, g (f y) = y).
 Admitted.
 
 // HOL Light: ind_types.ml:1064 / ISO_REFL

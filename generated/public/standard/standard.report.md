@@ -10,11 +10,11 @@
 
 | status | count |
 |---|---|
-| transport_required | 3014 |
-| generalization_required | 951 |
+| transport_required | 3031 |
+| generalization_required | 910 |
 | pending_mapping | 300 |
-| exact_native | 237 |
-| native_reuse | 88 |
+| exact_native | 260 |
+| native_reuse | 89 |
 
 ## Public statements per shard
 
@@ -38,7 +38,7 @@
 | isum | 92 | 1 | 0 |
 | iter | 12 | 0 | 0 |
 | iterate | 313 | 11 | 0 |
-| lists | 130 | 2 | 0 |
+| lists | 129 | 2 | 0 |
 | misc | 24 | 25 | 0 |
 | nums | 11 | 10 | 0 |
 | pair | 36 | 13 | 0 |
@@ -117,8 +117,8 @@
 
 - hol_num_omega (2228)
 - hol_real_R (858)
-- empty_case:A (855)
 - hol_int_int (850)
+- empty_case:A (823)
 - hol_finite_finite (554)
 - hol_prod_setprod (543)
 - omega_Subq_R (412)
@@ -131,8 +131,8 @@
 - exp_nat_exp_SNo_nat (176)
 - hol_list_finseq (157)
 - hol_card_finite_cardinality (129)
-- empty_case:B (108)
 - hol_product_finprod (108)
+- empty_case:B (107)
 - hol_nsum_finsum (103)
 - int_Subq_R (97)
 - hol_eq_c_equip (95)
@@ -148,11 +148,11 @@
 - hol_sum_setsum (43)
 - hol_binom_binomial_coefficient (28)
 - hol_one_1 (23)
-- empty_case:K (22)
+- empty_case:K (20)
 - hol_fact_factorial (20)
 - hol_fun_setexp (20)
+- empty_case:C (19)
 - hol_tybit_idx (18)
-- empty_case:C (17)
 - hol_finite_image_idx (11)
 - hol_option_setsum (6)
 - hol_itset (5)

@@ -1,0 +1,1327 @@
+// hol2mg literal statements (private): shard real of profile standard.  Each theorem is the literal
+// interpretation of the HOL Light theorem named in the comment; all are admitted source facts.
+
+// HOL Light: real.ml:17 / REAL_OF_NUM_LT   (hash md5:e7fb371ee0fa6301ee0e301d14d22d9d)
+Theorem hlt_REAL_OF_NUM_LT : forall m n :e omega, hl_real_lt (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_lt m n = 1.
+Admitted.
+
+// HOL Light: real.ml:21 / REAL_OF_NUM_GE   (hash md5:ac8ad8e9f705eaaef9e61fdb8c8f87f6)
+Theorem hlt_REAL_OF_NUM_GE : forall m n :e omega, hl_real_ge (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_ge m n = 1.
+Admitted.
+
+// HOL Light: real.ml:25 / REAL_OF_NUM_GT   (hash md5:54fafed050edb02b2191bc1d7859d034)
+Theorem hlt_REAL_OF_NUM_GT : forall m n :e omega, hl_real_gt (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_gt m n = 1.
+Admitted.
+
+// HOL Light: real.ml:29 / REAL_OF_NUM_MAX   (hash md5:45388de062050d37a96ef6971ca9a057)
+Theorem hlt_REAL_OF_NUM_MAX : forall m n :e omega, hl_real_max (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_MAX m n).
+Admitted.
+
+// HOL Light: real.ml:33 / REAL_OF_NUM_MIN   (hash md5:1aae7dd9d4ab753bc61690f1ff6a2e3e)
+Theorem hlt_REAL_OF_NUM_MIN : forall m n :e omega, hl_real_min (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_MIN m n).
+Admitted.
+
+// HOL Light: real.ml:37 / REAL_OF_NUM_SUC   (hash md5:54dc57e66aeb4c39062a5b0df2ff68d2)
+Theorem hlt_REAL_OF_NUM_SUC : forall n :e omega, hl_real_add (hl_real_of_num n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_SUC n).
+Admitted.
+
+// HOL Light: real.ml:41 / REAL_OF_NUM_SUB   (hash md5:5b5ff38e684439b10f02add17633150b)
+Theorem hlt_REAL_OF_NUM_SUB : forall m n :e omega, hl_le m n = 1 -> hl_real_sub (hl_real_of_num n) (hl_real_of_num m) = hl_real_of_num (hl_sub n m).
+Admitted.
+
+// HOL Light: real.ml:50 / REAL_OF_NUM_SUB_CASES   (hash md5:a8a138c5f4dbdbbef7009d953b2e085a)
+Theorem hlt_REAL_OF_NUM_SUB_CASES : forall m n :e omega, hl_real_sub (hl_real_of_num m) (hl_real_of_num n) = hl_COND R (hl_le n m) (hl_real_of_num (hl_sub m n)) (hl_real_neg (hl_real_of_num (hl_sub n m))).
+Admitted.
+
+// HOL Light: real.ml:56 / REAL_OF_NUM_CLAUSES   (hash md5:f78072bc00e29a6284e396b047cfbcbe)
+Theorem hlt_REAL_OF_NUM_CLAUSES : (forall m n :e omega, hl_real_of_num m = hl_real_of_num n <-> m = n) /\ ((forall m n :e omega, hl_real_ge (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_ge m n = 1) /\ ((forall m n :e omega, hl_real_gt (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_gt m n = 1) /\ ((forall m n :e omega, hl_real_le (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_le m n = 1) /\ ((forall m n :e omega, hl_real_lt (hl_real_of_num m) (hl_real_of_num n) = 1 <-> hl_lt m n = 1) /\ ((forall m n :e omega, hl_real_max (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_MAX m n)) /\ ((forall m n :e omega, hl_real_min (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_MIN m n)) /\ ((forall m n :e omega, hl_real_add (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_add m n)) /\ ((forall m n :e omega, hl_real_mul (hl_real_of_num m) (hl_real_of_num n) = hl_real_of_num (hl_mul m n)) /\ forall x n :e omega, hl_real_pow (hl_real_of_num x) n = hl_real_of_num (hl_EXP x n))))))))).
+Admitted.
+
+// HOL Light: real.ml:76 / REAL_MUL_AC   (hash md5:b738b9b0879647f11343593272b18b92)
+Theorem hlt_REAL_MUL_AC : forall m n p :e R, hl_real_mul m n = hl_real_mul n m /\ (hl_real_mul (hl_real_mul m n) p = hl_real_mul m (hl_real_mul n p) /\ hl_real_mul m (hl_real_mul n p) = hl_real_mul n (hl_real_mul m p)).
+Admitted.
+
+// HOL Light: real.ml:83 / REAL_ADD_RDISTRIB   (hash md5:0238d020218e2221a762aeb73326f3c9)
+Theorem hlt_REAL_ADD_RDISTRIB : forall x y z :e R, hl_real_mul (hl_real_add x y) z = hl_real_add (hl_real_mul x z) (hl_real_mul y z).
+Admitted.
+
+// HOL Light: real.ml:87 / REAL_LT_LADD_IMP   (hash md5:c540e203a0aead265ae133df5ac2300d)
+Theorem hlt_REAL_LT_LADD_IMP : forall x y z :e R, hl_real_lt y z = 1 -> hl_real_lt (hl_real_add x y) (hl_real_add x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:95 / REAL_LT_MUL   (hash md5:6df047178a154b6dd44c0e5989f496c1)
+Theorem hlt_REAL_LT_MUL : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1.
+Admitted.
+
+// HOL Light: real.ml:112 / REAL_EQ_ADD_LCANCEL_0   (hash md5:dac4cce3f5dbc0539871cc19e913744f)
+Theorem hlt_REAL_EQ_ADD_LCANCEL_0 : forall x y :e R, hl_real_add x y = x <-> y = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:116 / REAL_EQ_ADD_RCANCEL_0   (hash md5:8e58c87b395392edd9681c289b8620a7)
+Theorem hlt_REAL_EQ_ADD_RCANCEL_0 : forall x y :e R, hl_real_add x y = y <-> x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:120 / REAL_LNEG_UNIQ   (hash md5:3a9f117e0bd1a486b7a70cea3bd332bd)
+Theorem hlt_REAL_LNEG_UNIQ : forall x y :e R, hl_real_add x y = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_neg y.
+Admitted.
+
+// HOL Light: real.ml:124 / REAL_RNEG_UNIQ   (hash md5:57b0eeb60c1c87e4d2c440dfe31428e2)
+Theorem hlt_REAL_RNEG_UNIQ : forall x y :e R, hl_real_add x y = hl_real_of_num (hl_NUMERAL hl_zero) <-> y = hl_real_neg x.
+Admitted.
+
+// HOL Light: real.ml:128 / REAL_NEG_LMUL   (hash md5:ba8f12b8011fac8df663ad4cb15b6162)
+Theorem hlt_REAL_NEG_LMUL : forall x y :e R, hl_real_neg (hl_real_mul x y) = hl_real_mul (hl_real_neg x) y.
+Admitted.
+
+// HOL Light: real.ml:132 / REAL_NEG_RMUL   (hash md5:0d857bec0c0fc518c2fe5dc7cd67c4ed)
+Theorem hlt_REAL_NEG_RMUL : forall x y :e R, hl_real_neg (hl_real_mul x y) = hl_real_mul x (hl_real_neg y).
+Admitted.
+
+// HOL Light: real.ml:136 / REAL_NEG_MUL2   (hash md5:3f879509bf9f1b12f36535f1ef11ba5f)
+Theorem hlt_REAL_NEG_MUL2 : forall x y :e R, hl_real_mul (hl_real_neg x) (hl_real_neg y) = hl_real_mul x y.
+Admitted.
+
+// HOL Light: real.ml:140 / REAL_LT_LADD   (hash md5:bb69c767183b45d2f399b707d12f83d0)
+Theorem hlt_REAL_LT_LADD : forall x y z :e R, hl_real_lt (hl_real_add x y) (hl_real_add x z) = 1 <-> hl_real_lt y z = 1.
+Admitted.
+
+// HOL Light: real.ml:144 / REAL_LT_RADD   (hash md5:74f4501bb259838e77df340cfb0bd438)
+Theorem hlt_REAL_LT_RADD : forall x y z :e R, hl_real_lt (hl_real_add x z) (hl_real_add y z) = 1 <-> hl_real_lt x y = 1.
+Admitted.
+
+// HOL Light: real.ml:148 / REAL_LT_ANTISYM   (hash md5:1dc1d001a47145b1cbab2870f7cd32e0)
+Theorem hlt_REAL_LT_ANTISYM : forall x y :e R, ~ (hl_real_lt x y = 1 /\ hl_real_lt y x = 1).
+Admitted.
+
+// HOL Light: real.ml:152 / REAL_LT_GT   (hash md5:d80208d5f107d41dbdf00bfc4191ce60)
+Theorem hlt_REAL_LT_GT : forall x y :e R, hl_real_lt x y = 1 -> ~ hl_real_lt y x = 1.
+Admitted.
+
+// HOL Light: real.ml:156 / REAL_NOT_EQ   (hash md5:66fd87820781b89145dc881cf2847433)
+Theorem hlt_REAL_NOT_EQ : forall x y :e R, ~ x = y <-> hl_real_lt x y = 1 \/ hl_real_lt y x = 1.
+Admitted.
+
+// HOL Light: real.ml:160 / REAL_NOT_LE   (hash md5:8add6e0fc760038bbad2060d97b89947)
+Theorem hlt_REAL_NOT_LE : forall x y :e R, ~ hl_real_le x y = 1 <-> hl_real_lt y x = 1.
+Admitted.
+
+// HOL Light: real.ml:164 / REAL_LET_ANTISYM   (hash md5:d46eeb244c616d58783bd0c74eb04325)
+Theorem hlt_REAL_LET_ANTISYM : forall x y :e R, ~ (hl_real_le x y = 1 /\ hl_real_lt y x = 1).
+Admitted.
+
+// HOL Light: real.ml:168 / REAL_NEG_LT0   (hash md5:ab7dbf7e9324060e984cb13c4581ea89)
+Theorem hlt_REAL_NEG_LT0 : forall x :e R, hl_real_lt (hl_real_neg x) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:172 / REAL_NEG_GT0   (hash md5:2f3fd8c8a4fece7ba704423fea80dd10)
+Theorem hlt_REAL_NEG_GT0 : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_neg x) = 1 <-> hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1.
+Admitted.
+
+// HOL Light: real.ml:176 / REAL_NEG_LE0   (hash md5:d9c8d15b227ca765260d938070e87f07)
+Theorem hlt_REAL_NEG_LE0 : forall x :e R, hl_real_le (hl_real_neg x) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:180 / REAL_NEG_GE0   (hash md5:fadae0e2f89910d3d9d45ec4a014baf6)
+Theorem hlt_REAL_NEG_GE0 : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_neg x) = 1 <-> hl_real_le x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1.
+Admitted.
+
+// HOL Light: real.ml:184 / REAL_LT_TOTAL   (hash md5:ac4b52bab10f3ed1a46e76f849ba562b)
+Theorem hlt_REAL_LT_TOTAL : forall x y :e R, x = y \/ (hl_real_lt x y = 1 \/ hl_real_lt y x = 1).
+Admitted.
+
+// HOL Light: real.ml:188 / REAL_LT_NEGTOTAL   (hash md5:6d3dacd6d244ccb96bbfc935b056f253)
+Theorem hlt_REAL_LT_NEGTOTAL : forall x :e R, x = hl_real_of_num (hl_NUMERAL hl_zero) \/ (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 \/ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_neg x) = 1).
+Admitted.
+
+// HOL Light: real.ml:192 / REAL_LE_01   (hash md5:19ff8b65d5972f210deb5f4d4f3bca10)
+Theorem hlt_REAL_LE_01 : hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: real.ml:196 / REAL_LT_01   (hash md5:c6778a8fda619be4b6b9f533e4978591)
+Theorem hlt_REAL_LT_01 : hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: real.ml:200 / REAL_LE_LADD   (hash md5:09e23f78214806a82299b2693d267f41)
+Theorem hlt_REAL_LE_LADD : forall x y z :e R, hl_real_le (hl_real_add x y) (hl_real_add x z) = 1 <-> hl_real_le y z = 1.
+Admitted.
+
+// HOL Light: real.ml:204 / REAL_LE_RADD   (hash md5:76772e0e00860d12b575f9c0c3cc595a)
+Theorem hlt_REAL_LE_RADD : forall x y z :e R, hl_real_le (hl_real_add x z) (hl_real_add y z) = 1 <-> hl_real_le x y = 1.
+Admitted.
+
+// HOL Light: real.ml:208 / REAL_LT_ADD2   (hash md5:101c8e158dd8204b7f989f403022c1bf)
+Theorem hlt_REAL_LT_ADD2 : forall w x y z :e R, hl_real_lt w x = 1 /\ hl_real_lt y z = 1 -> hl_real_lt (hl_real_add w y) (hl_real_add x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:212 / REAL_LE_ADD2   (hash md5:824c895187f3e5b6a593f473b73c373d)
+Theorem hlt_REAL_LE_ADD2 : forall w x y z :e R, hl_real_le w x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_add w y) (hl_real_add x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:216 / REAL_LT_LNEG   (hash md5:bc65fce0292841a5263a8f2dcab1b6fb)
+Theorem hlt_REAL_LT_LNEG : forall x y :e R, hl_real_lt (hl_real_neg x) y = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_add x y) = 1.
+Admitted.
+
+// HOL Light: real.ml:220 / REAL_LT_RNEG   (hash md5:312fd3392935e29cdf9b92933d3e5388)
+Theorem hlt_REAL_LT_RNEG : forall x y :e R, hl_real_lt x (hl_real_neg y) = 1 <-> hl_real_lt (hl_real_add x y) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1.
+Admitted.
+
+// HOL Light: real.ml:224 / REAL_LT_ADDNEG   (hash md5:143d9f043f9499275b03ff3596b85f48)
+Theorem hlt_REAL_LT_ADDNEG : forall x y z :e R, hl_real_lt y (hl_real_add x (hl_real_neg z)) = 1 <-> hl_real_lt (hl_real_add y z) x = 1.
+Admitted.
+
+// HOL Light: real.ml:228 / REAL_LT_ADDNEG2   (hash md5:739be92bc4e5dce6e08766d35f5a3f04)
+Theorem hlt_REAL_LT_ADDNEG2 : forall x y z :e R, hl_real_lt (hl_real_add x (hl_real_neg y)) z = 1 <-> hl_real_lt x (hl_real_add z y) = 1.
+Admitted.
+
+// HOL Light: real.ml:232 / REAL_LT_ADD1   (hash md5:c8fe88db67143dc7259a4f62fdea10ca)
+Theorem hlt_REAL_LT_ADD1 : forall x y :e R, hl_real_le x y = 1 -> hl_real_lt x (hl_real_add y (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))) = 1.
+Admitted.
+
+// HOL Light: real.ml:236 / REAL_SUB_ADD   (hash md5:e6fa2768a683ef3713f9a6729c76c6c5)
+Theorem hlt_REAL_SUB_ADD : forall x y :e R, hl_real_add (hl_real_sub x y) y = x.
+Admitted.
+
+// HOL Light: real.ml:240 / REAL_SUB_ADD2   (hash md5:9484cc3170ba3c29ac75fa823016f1f9)
+Theorem hlt_REAL_SUB_ADD2 : forall x y :e R, hl_real_add y (hl_real_sub x y) = x.
+Admitted.
+
+// HOL Light: real.ml:244 / REAL_SUB_REFL   (hash md5:954229b87a301bbd4ac5123d74fb55de)
+Theorem hlt_REAL_SUB_REFL : forall x :e R, hl_real_sub x x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:248 / REAL_LE_DOUBLE   (hash md5:805d9db4299549df7cdd656241c9300c)
+Theorem hlt_REAL_LE_DOUBLE : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_add x x) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:252 / REAL_LE_NEGL   (hash md5:7d89929611a3834cc30333dbd2284ff2)
+Theorem hlt_REAL_LE_NEGL : forall x :e R, hl_real_le (hl_real_neg x) x = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:256 / REAL_LE_NEGR   (hash md5:0dda93e0cad0c014be52f05b9a8b3c5c)
+Theorem hlt_REAL_LE_NEGR : forall x :e R, hl_real_le x (hl_real_neg x) = 1 <-> hl_real_le x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1.
+Admitted.
+
+// HOL Light: real.ml:260 / REAL_NEG_EQ_0   (hash md5:7f8cc4b04f879bfeee069a93d96a2b59)
+Theorem hlt_REAL_NEG_EQ_0 : forall x :e R, hl_real_neg x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:264 / REAL_ADD_SUB   (hash md5:b95ded0c20d308473191ca49042bd6dd)
+Theorem hlt_REAL_ADD_SUB : forall x y :e R, hl_real_sub (hl_real_add x y) x = y.
+Admitted.
+
+// HOL Light: real.ml:268 / REAL_NEG_EQ   (hash md5:db4160e66787d3eb48fd5ef7f3c11cb8)
+Theorem hlt_REAL_NEG_EQ : forall x y :e R, hl_real_neg x = y <-> x = hl_real_neg y.
+Admitted.
+
+// HOL Light: real.ml:272 / REAL_NEG_MINUS1   (hash md5:ad95c4f69dd20778d06a0eb3f702f41c)
+Theorem hlt_REAL_NEG_MINUS1 : forall x :e R, hl_real_neg x = hl_real_mul (hl_real_neg (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))) x.
+Admitted.
+
+// HOL Light: real.ml:276 / REAL_LT_IMP_NE   (hash md5:bc8711244032e451c2cc1a0a9aaef6cb)
+Theorem hlt_REAL_LT_IMP_NE : forall x y :e R, hl_real_lt x y = 1 -> ~ x = y.
+Admitted.
+
+// HOL Light: real.ml:280 / REAL_LE_ADDR   (hash md5:57f1c61d9445dfdd4a9cba10dee4586f)
+Theorem hlt_REAL_LE_ADDR : forall x y :e R, hl_real_le x (hl_real_add x y) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1.
+Admitted.
+
+// HOL Light: real.ml:284 / REAL_LE_ADDL   (hash md5:8045581cec0bc0a014ce0bf6ad24164f)
+Theorem hlt_REAL_LE_ADDL : forall x y :e R, hl_real_le y (hl_real_add x y) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:288 / REAL_LT_ADDR   (hash md5:7a86671be829ce63761062b1023ffc20)
+Theorem hlt_REAL_LT_ADDR : forall x y :e R, hl_real_lt x (hl_real_add x y) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1.
+Admitted.
+
+// HOL Light: real.ml:292 / REAL_LT_ADDL   (hash md5:bbab0ee45e5c03aab96915634c3c2110)
+Theorem hlt_REAL_LT_ADDL : forall x y :e R, hl_real_lt y (hl_real_add x y) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:296 / REAL_SUB_SUB   (hash md5:9c6cec8a36ad82bb7d532f50502e0d15)
+Theorem hlt_REAL_SUB_SUB : forall x y :e R, hl_real_sub (hl_real_sub x y) x = hl_real_neg y.
+Admitted.
+
+// HOL Light: real.ml:300 / REAL_LT_ADD_SUB   (hash md5:f562e729387dc8b32e8fb058a47bd4cd)
+Theorem hlt_REAL_LT_ADD_SUB : forall x y z :e R, hl_real_lt (hl_real_add x y) z = 1 <-> hl_real_lt x (hl_real_sub z y) = 1.
+Admitted.
+
+// HOL Light: real.ml:304 / REAL_LT_SUB_RADD   (hash md5:9a28a8add7e180ad9f098028b5115e19)
+Theorem hlt_REAL_LT_SUB_RADD : forall x y z :e R, hl_real_lt (hl_real_sub x y) z = 1 <-> hl_real_lt x (hl_real_add z y) = 1.
+Admitted.
+
+// HOL Light: real.ml:308 / REAL_LT_SUB_LADD   (hash md5:e5d5a21780233fdfa373d2f067864a19)
+Theorem hlt_REAL_LT_SUB_LADD : forall x y z :e R, hl_real_lt x (hl_real_sub y z) = 1 <-> hl_real_lt (hl_real_add x z) y = 1.
+Admitted.
+
+// HOL Light: real.ml:312 / REAL_LE_SUB_LADD   (hash md5:e5f2c6698ed26f2d030910e2bef28f09)
+Theorem hlt_REAL_LE_SUB_LADD : forall x y z :e R, hl_real_le x (hl_real_sub y z) = 1 <-> hl_real_le (hl_real_add x z) y = 1.
+Admitted.
+
+// HOL Light: real.ml:316 / REAL_LE_SUB_RADD   (hash md5:652c7de00f8bb30a8b527f23921c872f)
+Theorem hlt_REAL_LE_SUB_RADD : forall x y z :e R, hl_real_le (hl_real_sub x y) z = 1 <-> hl_real_le x (hl_real_add z y) = 1.
+Admitted.
+
+// HOL Light: real.ml:320 / REAL_ADD2_SUB2   (hash md5:eb882cb3a780f2448ce09772fe6abf36)
+Theorem hlt_REAL_ADD2_SUB2 : forall a b c d :e R, hl_real_sub (hl_real_add a b) (hl_real_add c d) = hl_real_add (hl_real_sub a c) (hl_real_sub b d).
+Admitted.
+
+// HOL Light: real.ml:324 / REAL_SUB_LZERO   (hash md5:167b7e4e5facb5b10c8075a6dd31d74f)
+Theorem hlt_REAL_SUB_LZERO : forall x :e R, hl_real_sub (hl_real_of_num (hl_NUMERAL hl_zero)) x = hl_real_neg x.
+Admitted.
+
+// HOL Light: real.ml:328 / REAL_SUB_RZERO   (hash md5:f8cfd3628ac7652bc4ec6ae7c548b1f4)
+Theorem hlt_REAL_SUB_RZERO : forall x :e R, hl_real_sub x (hl_real_of_num (hl_NUMERAL hl_zero)) = x.
+Admitted.
+
+// HOL Light: real.ml:332 / REAL_LET_ADD2   (hash md5:d0b362250644ecc98b56e81d12b860a4)
+Theorem hlt_REAL_LET_ADD2 : forall w x y z :e R, hl_real_le w x = 1 /\ hl_real_lt y z = 1 -> hl_real_lt (hl_real_add w y) (hl_real_add x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:336 / REAL_LTE_ADD2   (hash md5:210e41401a298e09c0bb62c1194cd90b)
+Theorem hlt_REAL_LTE_ADD2 : forall w x y z :e R, hl_real_lt w x = 1 /\ hl_real_le y z = 1 -> hl_real_lt (hl_real_add w y) (hl_real_add x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:340 / REAL_SUB_LNEG   (hash md5:d76bc5ade38ef15104750a5e3b71af29)
+Theorem hlt_REAL_SUB_LNEG : forall x y :e R, hl_real_sub (hl_real_neg x) y = hl_real_neg (hl_real_add x y).
+Admitted.
+
+// HOL Light: real.ml:344 / REAL_SUB_RNEG   (hash md5:2412ccf96ff43ea2e17617e7d563892a)
+Theorem hlt_REAL_SUB_RNEG : forall x y :e R, hl_real_sub x (hl_real_neg y) = hl_real_add x y.
+Admitted.
+
+// HOL Light: real.ml:348 / REAL_SUB_NEG2   (hash md5:4f3ddb1c2862241635a7e55a1c283a0e)
+Theorem hlt_REAL_SUB_NEG2 : forall x y :e R, hl_real_sub (hl_real_neg x) (hl_real_neg y) = hl_real_sub y x.
+Admitted.
+
+// HOL Light: real.ml:352 / REAL_SUB_TRIANGLE   (hash md5:7727a639792d93ef3538b34e76999038)
+Theorem hlt_REAL_SUB_TRIANGLE : forall a b c :e R, hl_real_add (hl_real_sub a b) (hl_real_sub b c) = hl_real_sub a c.
+Admitted.
+
+// HOL Light: real.ml:356 / REAL_EQ_SUB_LADD   (hash md5:d4e1e47ae986c0cfb4f2c2ac2b809877)
+Theorem hlt_REAL_EQ_SUB_LADD : forall x y z :e R, x = hl_real_sub y z <-> hl_real_add x z = y.
+Admitted.
+
+// HOL Light: real.ml:360 / REAL_EQ_SUB_RADD   (hash md5:89de5c2d386a9f92be03c3cecd309c12)
+Theorem hlt_REAL_EQ_SUB_RADD : forall x y z :e R, hl_real_sub x y = z <-> x = hl_real_add z y.
+Admitted.
+
+// HOL Light: real.ml:364 / REAL_SUB_SUB2   (hash md5:87d04f9a508924766a7ad2f419eba944)
+Theorem hlt_REAL_SUB_SUB2 : forall x y :e R, hl_real_sub x (hl_real_sub x y) = y.
+Admitted.
+
+// HOL Light: real.ml:368 / REAL_ADD_SUB2   (hash md5:41b420614815a3478c2b473254f28dfc)
+Theorem hlt_REAL_ADD_SUB2 : forall x y :e R, hl_real_sub x (hl_real_add x y) = hl_real_neg y.
+Admitted.
+
+// HOL Light: real.ml:372 / REAL_EQ_IMP_LE   (hash md5:13a44c4f570fa7205597bdbee0db1740)
+Theorem hlt_REAL_EQ_IMP_LE : forall x y :e R, x = y -> hl_real_le x y = 1.
+Admitted.
+
+// HOL Light: real.ml:376 / REAL_LT_IMP_NZ   (hash md5:203d6d33aa3dcd23b06a048f430c5328)
+Theorem hlt_REAL_LT_IMP_NZ : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> ~ x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:380 / REAL_DIFFSQ   (hash md5:99f08df2ef0a2ad620d38c0a31228ef9)
+Theorem hlt_REAL_DIFFSQ : forall x y :e R, hl_real_mul (hl_real_add x y) (hl_real_sub x y) = hl_real_sub (hl_real_mul x x) (hl_real_mul y y).
+Admitted.
+
+// HOL Light: real.ml:384 / REAL_EQ_NEG2   (hash md5:4c5e16e7f823b5a015c8cae9fd3ff887)
+Theorem hlt_REAL_EQ_NEG2 : forall x y :e R, hl_real_neg x = hl_real_neg y <-> x = y.
+Admitted.
+
+// HOL Light: real.ml:388 / REAL_LT_NEG2   (hash md5:b9e85b77d9cfa307b318518e5e1183a2)
+Theorem hlt_REAL_LT_NEG2 : forall x y :e R, hl_real_lt (hl_real_neg x) (hl_real_neg y) = 1 <-> hl_real_lt y x = 1.
+Admitted.
+
+// HOL Light: real.ml:392 / REAL_SUB_LDISTRIB   (hash md5:305438e450dba6ab735824f48598fd21)
+Theorem hlt_REAL_SUB_LDISTRIB : forall x y z :e R, hl_real_mul x (hl_real_sub y z) = hl_real_sub (hl_real_mul x y) (hl_real_mul x z).
+Admitted.
+
+// HOL Light: real.ml:396 / REAL_SUB_RDISTRIB   (hash md5:28772e2a22ff3684b874ddf14e6059e8)
+Theorem hlt_REAL_SUB_RDISTRIB : forall x y z :e R, hl_real_mul (hl_real_sub x y) z = hl_real_sub (hl_real_mul x z) (hl_real_mul y z).
+Admitted.
+
+// HOL Light: real.ml:404 / REAL_ABS_ZERO   (hash md5:149b54bb3af318721cce5f4d1802e361)
+Theorem hlt_REAL_ABS_ZERO : forall x :e R, hl_real_abs x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:408 / REAL_ABS_0   (hash md5:fd763b63100b4a2a6a1f597344f4d350)
+Theorem hlt_REAL_ABS_0 : hl_real_abs (hl_real_of_num (hl_NUMERAL hl_zero)) = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:412 / REAL_ABS_1   (hash md5:df81b9394f1fa06d80fd5aec4f5093ca)
+Theorem hlt_REAL_ABS_1 : hl_real_abs (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:416 / REAL_ABS_TRIANGLE   (hash md5:8a6e90a0968c0c940616841569612a35)
+Theorem hlt_REAL_ABS_TRIANGLE : forall x y :e R, hl_real_le (hl_real_abs (hl_real_add x y)) (hl_real_add (hl_real_abs x) (hl_real_abs y)) = 1.
+Admitted.
+
+// HOL Light: real.ml:420 / REAL_ABS_TRIANGLE_LE   (hash md5:8482c5de81185779529f28fe50b59ab8)
+Theorem hlt_REAL_ABS_TRIANGLE_LE : forall x y z :e R, hl_real_le (hl_real_add (hl_real_abs x) (hl_real_abs (hl_real_sub y x))) z = 1 -> hl_real_le (hl_real_abs y) z = 1.
+Admitted.
+
+// HOL Light: real.ml:424 / REAL_ABS_TRIANGLE_LT   (hash md5:d09db6c5e73bf854137d2d7dc1e824ed)
+Theorem hlt_REAL_ABS_TRIANGLE_LT : forall x y z :e R, hl_real_lt (hl_real_add (hl_real_abs x) (hl_real_abs (hl_real_sub y x))) z = 1 -> hl_real_lt (hl_real_abs y) z = 1.
+Admitted.
+
+// HOL Light: real.ml:428 / REAL_ABS_POS   (hash md5:e8a555b35bac915447922d0b3b8edb07)
+Theorem hlt_REAL_ABS_POS : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_abs x) = 1.
+Admitted.
+
+// HOL Light: real.ml:432 / REAL_ABS_SUB   (hash md5:c515ed4a9e538c45de0eed109a3d2228)
+Theorem hlt_REAL_ABS_SUB : forall x y :e R, hl_real_abs (hl_real_sub x y) = hl_real_abs (hl_real_sub y x).
+Admitted.
+
+// HOL Light: real.ml:436 / REAL_ABS_NZ   (hash md5:303e63abdf82b80944e20e55fbedaa43)
+Theorem hlt_REAL_ABS_NZ : forall x :e R, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_abs x) = 1.
+Admitted.
+
+// HOL Light: real.ml:440 / REAL_ABS_ABS   (hash md5:1c331e301ebaf30dea6a89b6e7e7bc2d)
+Theorem hlt_REAL_ABS_ABS : forall x :e R, hl_real_abs (hl_real_abs x) = hl_real_abs x.
+Admitted.
+
+// HOL Light: real.ml:444 / REAL_ABS_LE   (hash md5:da00b811b7910e54fa2ecea2794396af)
+Theorem hlt_REAL_ABS_LE : forall x :e R, hl_real_le x (hl_real_abs x) = 1.
+Admitted.
+
+// HOL Light: real.ml:448 / REAL_ABS_REFL   (hash md5:2983dedd34edb2b4e28aeb958bf3bf74)
+Theorem hlt_REAL_ABS_REFL : forall x :e R, hl_real_abs x = x <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:452 / REAL_ABS_BETWEEN   (hash md5:0484d1067852db21ba67fbddb50b5229)
+Theorem hlt_REAL_ABS_BETWEEN : forall x y d :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) d = 1 /\ (hl_real_lt (hl_real_sub x d) y = 1 /\ hl_real_lt y (hl_real_add x d) = 1) <-> hl_real_lt (hl_real_abs (hl_real_sub y x)) d = 1.
+Admitted.
+
+// HOL Light: real.ml:456 / REAL_ABS_BOUND   (hash md5:f071c7951e8afdf1de5a3dbe56ec718a)
+Theorem hlt_REAL_ABS_BOUND : forall x y d :e R, hl_real_lt (hl_real_abs (hl_real_sub x y)) d = 1 -> hl_real_lt y (hl_real_add x d) = 1.
+Admitted.
+
+// HOL Light: real.ml:460 / REAL_ABS_STILLNZ   (hash md5:c2dc88b8bdce2565b132507af4376d12)
+Theorem hlt_REAL_ABS_STILLNZ : forall x y :e R, hl_real_lt (hl_real_abs (hl_real_sub x y)) (hl_real_abs y) = 1 -> ~ x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:464 / REAL_ABS_CASES   (hash md5:a3b7f65ff00fb1ce368ea1b56cb3d521)
+Theorem hlt_REAL_ABS_CASES : forall x :e R, x = hl_real_of_num (hl_NUMERAL hl_zero) \/ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_abs x) = 1.
+Admitted.
+
+// HOL Light: real.ml:468 / REAL_ABS_BETWEEN1   (hash md5:95d4eb631aec945d4b619aa04941099c)
+Theorem hlt_REAL_ABS_BETWEEN1 : forall x y z :e R, hl_real_lt x z = 1 /\ hl_real_lt (hl_real_abs (hl_real_sub y x)) (hl_real_sub z x) = 1 -> hl_real_lt y z = 1.
+Admitted.
+
+// HOL Light: real.ml:472 / REAL_ABS_SIGN   (hash md5:c3934a45e47800425c9f45f4758c55b8)
+Theorem hlt_REAL_ABS_SIGN : forall x y :e R, hl_real_lt (hl_real_abs (hl_real_sub x y)) y = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:476 / REAL_ABS_SIGN2   (hash md5:e405b90f418fe8a6cd16f82335bcf25a)
+Theorem hlt_REAL_ABS_SIGN2 : forall x y :e R, hl_real_lt (hl_real_abs (hl_real_sub x y)) (hl_real_neg y) = 1 -> hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1.
+Admitted.
+
+// HOL Light: real.ml:480 / REAL_ABS_CIRCLE   (hash md5:745c16527751a3ca18b94fa5b074473d)
+Theorem hlt_REAL_ABS_CIRCLE : forall x y h :e R, hl_real_lt (hl_real_abs h) (hl_real_sub (hl_real_abs y) (hl_real_abs x)) = 1 -> hl_real_lt (hl_real_abs (hl_real_add x h)) (hl_real_abs y) = 1.
+Admitted.
+
+// HOL Light: real.ml:484 / REAL_SUB_ABS   (hash md5:da4d0b01809523b2cd2607ce76ba7a52)
+Theorem hlt_REAL_SUB_ABS : forall x y :e R, hl_real_le (hl_real_sub (hl_real_abs x) (hl_real_abs y)) (hl_real_abs (hl_real_sub x y)) = 1.
+Admitted.
+
+// HOL Light: real.ml:488 / REAL_ABS_SUB_ABS   (hash md5:b9676b39c033a29eeeebd9654a11a2fd)
+Theorem hlt_REAL_ABS_SUB_ABS : forall x y :e R, hl_real_le (hl_real_abs (hl_real_sub (hl_real_abs x) (hl_real_abs y))) (hl_real_abs (hl_real_sub x y)) = 1.
+Admitted.
+
+// HOL Light: real.ml:492 / REAL_ABS_BETWEEN2   (hash md5:94235e953504e4e1fdec345e8e68feb0)
+Theorem hlt_REAL_ABS_BETWEEN2 : forall x0 x y0 y :e R, hl_real_lt x0 y0 = 1 /\ (hl_real_lt (hl_real_mul (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_abs (hl_real_sub x x0))) (hl_real_sub y0 x0) = 1 /\ hl_real_lt (hl_real_mul (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_abs (hl_real_sub y y0))) (hl_real_sub y0 x0) = 1) -> hl_real_lt x y = 1.
+Admitted.
+
+// HOL Light: real.ml:498 / REAL_ABS_BOUNDS   (hash md5:608933eaaa92371ed257256cd256cc62)
+Theorem hlt_REAL_ABS_BOUNDS : forall x k :e R, hl_real_le (hl_real_abs x) k = 1 <-> hl_real_le (hl_real_neg k) x = 1 /\ hl_real_le x k = 1.
+Admitted.
+
+// HOL Light: real.ml:502 / REAL_BOUNDS_LE   (hash md5:8486669a813b656ff0f9d647d08094c3)
+Theorem hlt_REAL_BOUNDS_LE : forall x k :e R, hl_real_le (hl_real_neg k) x = 1 /\ hl_real_le x k = 1 <-> hl_real_le (hl_real_abs x) k = 1.
+Admitted.
+
+// HOL Light: real.ml:506 / REAL_BOUNDS_LT   (hash md5:c321a58e0332d584ee7e8a214f521389)
+Theorem hlt_REAL_BOUNDS_LT : forall x k :e R, hl_real_lt (hl_real_neg k) x = 1 /\ hl_real_lt x k = 1 <-> hl_real_lt (hl_real_abs x) k = 1.
+Admitted.
+
+// HOL Light: real.ml:514 / REAL_MIN_MAX   (hash md5:d972ba1b0203e3cd9918830d88ef9145)
+Theorem hlt_REAL_MIN_MAX : forall x y :e R, hl_real_min x y = hl_real_neg (hl_real_max (hl_real_neg x) (hl_real_neg y)).
+Admitted.
+
+// HOL Light: real.ml:518 / REAL_MAX_MIN   (hash md5:123f2fec7036c9c21403a85b57953fa0)
+Theorem hlt_REAL_MAX_MIN : forall x y :e R, hl_real_max x y = hl_real_neg (hl_real_min (hl_real_neg x) (hl_real_neg y)).
+Admitted.
+
+// HOL Light: real.ml:522 / REAL_MAX_MAX   (hash md5:032fe5d0ff458d8adeef2c2d3a7c5a96)
+Theorem hlt_REAL_MAX_MAX : forall x y :e R, hl_real_le x (hl_real_max x y) = 1 /\ hl_real_le y (hl_real_max x y) = 1.
+Admitted.
+
+// HOL Light: real.ml:526 / REAL_MIN_MIN   (hash md5:be67be6dab1d732d4acf52d7a1974204)
+Theorem hlt_REAL_MIN_MIN : forall x y :e R, hl_real_le (hl_real_min x y) x = 1 /\ hl_real_le (hl_real_min x y) y = 1.
+Admitted.
+
+// HOL Light: real.ml:530 / REAL_MAX_SYM   (hash md5:ac6b44f051f42071d574a63ce3fb495b)
+Theorem hlt_REAL_MAX_SYM : forall x y :e R, hl_real_max x y = hl_real_max y x.
+Admitted.
+
+// HOL Light: real.ml:534 / REAL_MIN_SYM   (hash md5:a3a143b6fad322bbe8ecc762631df670)
+Theorem hlt_REAL_MIN_SYM : forall x y :e R, hl_real_min x y = hl_real_min y x.
+Admitted.
+
+// HOL Light: real.ml:538 / REAL_LE_MAX   (hash md5:c6867eb465c8d51bc6d536e2a6e7933a)
+Theorem hlt_REAL_LE_MAX : forall x y z :e R, hl_real_le z (hl_real_max x y) = 1 <-> hl_real_le z x = 1 \/ hl_real_le z y = 1.
+Admitted.
+
+// HOL Light: real.ml:542 / REAL_LE_MIN   (hash md5:c27f8f567a96fba6e922cb5ba14231d6)
+Theorem hlt_REAL_LE_MIN : forall x y z :e R, hl_real_le z (hl_real_min x y) = 1 <-> hl_real_le z x = 1 /\ hl_real_le z y = 1.
+Admitted.
+
+// HOL Light: real.ml:546 / REAL_LT_MAX   (hash md5:461e5b15722de7f56b67067d079bcb2c)
+Theorem hlt_REAL_LT_MAX : forall x y z :e R, hl_real_lt z (hl_real_max x y) = 1 <-> hl_real_lt z x = 1 \/ hl_real_lt z y = 1.
+Admitted.
+
+// HOL Light: real.ml:550 / REAL_LT_MIN   (hash md5:f15a9a932b26ffb51ef75f217567173f)
+Theorem hlt_REAL_LT_MIN : forall x y z :e R, hl_real_lt z (hl_real_min x y) = 1 <-> hl_real_lt z x = 1 /\ hl_real_lt z y = 1.
+Admitted.
+
+// HOL Light: real.ml:554 / REAL_MAX_LE   (hash md5:bc4f6619ede330970e97e08558c3ab1c)
+Theorem hlt_REAL_MAX_LE : forall x y z :e R, hl_real_le (hl_real_max x y) z = 1 <-> hl_real_le x z = 1 /\ hl_real_le y z = 1.
+Admitted.
+
+// HOL Light: real.ml:558 / REAL_MIN_LE   (hash md5:8dffbe21658fbf6b5d02f0360194fc13)
+Theorem hlt_REAL_MIN_LE : forall x y z :e R, hl_real_le (hl_real_min x y) z = 1 <-> hl_real_le x z = 1 \/ hl_real_le y z = 1.
+Admitted.
+
+// HOL Light: real.ml:562 / REAL_MAX_LT   (hash md5:d6326bded8ec9eb64d8d43c4488c53ea)
+Theorem hlt_REAL_MAX_LT : forall x y z :e R, hl_real_lt (hl_real_max x y) z = 1 <-> hl_real_lt x z = 1 /\ hl_real_lt y z = 1.
+Admitted.
+
+// HOL Light: real.ml:566 / REAL_MIN_LT   (hash md5:a1729ce8eaf4ea329f7f1b704d0d3189)
+Theorem hlt_REAL_MIN_LT : forall x y z :e R, hl_real_lt (hl_real_min x y) z = 1 <-> hl_real_lt x z = 1 \/ hl_real_lt y z = 1.
+Admitted.
+
+// HOL Light: real.ml:570 / REAL_MAX_ASSOC   (hash md5:d4af6449c122a28eaf32b21db07736f7)
+Theorem hlt_REAL_MAX_ASSOC : forall x y z :e R, hl_real_max x (hl_real_max y z) = hl_real_max (hl_real_max x y) z.
+Admitted.
+
+// HOL Light: real.ml:574 / REAL_MIN_ASSOC   (hash md5:9312e48175a204ed96138eb12312e126)
+Theorem hlt_REAL_MIN_ASSOC : forall x y z :e R, hl_real_min x (hl_real_min y z) = hl_real_min (hl_real_min x y) z.
+Admitted.
+
+// HOL Light: real.ml:578 / REAL_MAX_ACI   (hash md5:8c3fb12b0c4f858928149038afe42078)
+Theorem hlt_REAL_MAX_ACI : forall x y z :e R, hl_real_max x y = hl_real_max y x /\ (hl_real_max (hl_real_max x y) z = hl_real_max x (hl_real_max y z) /\ (hl_real_max x (hl_real_max y z) = hl_real_max y (hl_real_max x z) /\ (hl_real_max x x = x /\ hl_real_max x (hl_real_max x y) = hl_real_max x y))).
+Admitted.
+
+// HOL Light: real.ml:586 / REAL_MIN_ACI   (hash md5:89e73c46860414808c4cb4a8a2ff539e)
+Theorem hlt_REAL_MIN_ACI : forall x y z :e R, hl_real_min x y = hl_real_min y x /\ (hl_real_min (hl_real_min x y) z = hl_real_min x (hl_real_min y z) /\ (hl_real_min x (hl_real_min y z) = hl_real_min y (hl_real_min x z) /\ (hl_real_min x x = x /\ hl_real_min x (hl_real_min x y) = hl_real_min x y))).
+Admitted.
+
+// HOL Light: real.ml:610 / REAL_ABS_MUL   (hash md5:3bf3da5595c942035ade1c5f8abc27cc)
+Theorem hlt_REAL_ABS_MUL : forall x y :e R, hl_real_abs (hl_real_mul x y) = hl_real_mul (hl_real_abs x) (hl_real_abs y).
+Admitted.
+
+// HOL Light: real.ml:627 / REAL_POW_LE   (hash md5:5a8ecf718eb89350fd202db7c08ab26a)
+Theorem hlt_REAL_POW_LE : forall x :e R, forall n :e omega, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:633 / REAL_POW_LT   (hash md5:2b1b3b1c1ac2dd5a089f330e56402983)
+Theorem hlt_REAL_POW_LT : forall x :e R, forall n :e omega, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:639 / REAL_ABS_POW   (hash md5:620d354328ae656b67c7a60027c48ead)
+Theorem hlt_REAL_ABS_POW : forall x :e R, forall n :e omega, hl_real_abs (hl_real_pow x n) = hl_real_pow (hl_real_abs x) n.
+Admitted.
+
+// HOL Light: real.ml:644 / REAL_LE_LMUL   (hash md5:b2c6dbbde384bc8c9b07ff9b1fd67a50)
+Theorem hlt_REAL_LE_LMUL : forall x y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le y z = 1 -> hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:649 / REAL_LE_RMUL   (hash md5:7b5bc314a301b05fb322785ee071949c)
+Theorem hlt_REAL_LE_RMUL : forall x y z :e R, hl_real_le x y = 1 /\ hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> hl_real_le (hl_real_mul x z) (hl_real_mul y z) = 1.
+Admitted.
+
+// HOL Light: real.ml:653 / REAL_LT_LMUL   (hash md5:b611cca81cabe04be52e5712d710425e)
+Theorem hlt_REAL_LT_LMUL : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt y z = 1 -> hl_real_lt (hl_real_mul x y) (hl_real_mul x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:658 / REAL_LT_RMUL   (hash md5:997f1942a225543795540931c4705a2e)
+Theorem hlt_REAL_LT_RMUL : forall x y z :e R, hl_real_lt x y = 1 /\ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> hl_real_lt (hl_real_mul x z) (hl_real_mul y z) = 1.
+Admitted.
+
+// HOL Light: real.ml:662 / REAL_EQ_MUL_LCANCEL   (hash md5:77434096f794ecbda49184efdcd09ba1)
+Theorem hlt_REAL_EQ_MUL_LCANCEL : forall x y z :e R, hl_real_mul x y = hl_real_mul x z <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = z.
+Admitted.
+
+// HOL Light: real.ml:668 / REAL_EQ_MUL_RCANCEL   (hash md5:8289a329af7ef354b5c3755c64c97b38)
+Theorem hlt_REAL_EQ_MUL_RCANCEL : forall x y z :e R, hl_real_mul x z = hl_real_mul y z <-> x = y \/ z = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:674 / REAL_MUL_LINV_UNIQ   (hash md5:b01ec3aecf5046e9acceb4fdde422eaf)
+Theorem hlt_REAL_MUL_LINV_UNIQ : forall x y :e R, hl_real_mul x y = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) -> hl_real_inv y = x.
+Admitted.
+
+// HOL Light: real.ml:683 / REAL_MUL_RINV_UNIQ   (hash md5:e04dc8157f02887c308fca7ee5e1ae43)
+Theorem hlt_REAL_MUL_RINV_UNIQ : forall x y :e R, hl_real_mul x y = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) -> hl_real_inv x = y.
+Admitted.
+
+// HOL Light: real.ml:688 / REAL_INV_INV   (hash md5:15378ada745a2d9d74f5b75bb47f417d)
+Theorem hlt_REAL_INV_INV : forall x :e R, hl_real_inv (hl_real_inv x) = x.
+Admitted.
+
+// HOL Light: real.ml:696 / REAL_EQ_INV2   (hash md5:fe4661bdce06eae5ac283a5a10b22cc2)
+Theorem hlt_REAL_EQ_INV2 : forall x y :e R, hl_real_inv x = hl_real_inv y <-> x = y.
+Admitted.
+
+// HOL Light: real.ml:700 / REAL_INV_EQ_0   (hash md5:fce14c1baff0d2aa524383db3bd439f1)
+Theorem hlt_REAL_INV_EQ_0 : forall x :e R, hl_real_inv x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:705 / REAL_LT_INV   (hash md5:9de65b7bb46eeb7fbc335600141cdfe5)
+Theorem hlt_REAL_LT_INV : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:719 / REAL_LT_INV_EQ   (hash md5:95ff13f6e9f399226108738716c0f5d3)
+Theorem hlt_REAL_LT_INV_EQ : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:725 / REAL_INV_NEG   (hash md5:41800ba362526b48c6fb2d73e3f62029)
+Theorem hlt_REAL_INV_NEG : forall x :e R, hl_real_inv (hl_real_neg x) = hl_real_neg (hl_real_inv x).
+Admitted.
+
+// HOL Light: real.ml:733 / REAL_LE_INV_EQ   (hash md5:72fc86de99623d72eb9e4c876ac3ebd4)
+Theorem hlt_REAL_LE_INV_EQ : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:738 / REAL_LE_INV   (hash md5:e7a2f9e0b25f1c711b6321e678c8ec4f)
+Theorem hlt_REAL_LE_INV : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:742 / REAL_MUL_RINV   (hash md5:64d63a55ff5b658f15b6a5b8f4062949)
+Theorem hlt_REAL_MUL_RINV : forall x :e R, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_mul x (hl_real_inv x) = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:747 / REAL_INV_1   (hash md5:f360e2364332dadf1d4e1bbd1529ae9f)
+Theorem hlt_REAL_INV_1 : hl_real_inv (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:752 / REAL_INV_EQ_1   (hash md5:5a5340582646f88dbc477867ddfbd395)
+Theorem hlt_REAL_INV_EQ_1 : forall x :e R, hl_real_inv x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:756 / REAL_DIV_1   (hash md5:e9dce434ea10fa2b1b0e1bab0d5d1d0c)
+Theorem hlt_REAL_DIV_1 : forall x :e R, hl_real_div x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = x.
+Admitted.
+
+// HOL Light: real.ml:760 / REAL_DIV_REFL   (hash md5:fc6ed5898d96f0fdd75da1bcc15992a9)
+Theorem hlt_REAL_DIV_REFL : forall x :e R, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_div x x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:764 / REAL_DIV_RMUL   (hash md5:dc1e874243af11b5b5594f626f5e7e0b)
+Theorem hlt_REAL_DIV_RMUL : forall x y :e R, ~ y = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_mul (hl_real_div x y) y = x.
+Admitted.
+
+// HOL Light: real.ml:768 / REAL_DIV_LMUL   (hash md5:81e88d1e2aaaa6ca52f34b1454fee735)
+Theorem hlt_REAL_DIV_LMUL : forall x y :e R, ~ y = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_mul y (hl_real_div x y) = x.
+Admitted.
+
+// HOL Light: real.ml:772 / REAL_DIV_EQ_1   (hash md5:77013e505211cb30d335113951ce7a41)
+Theorem hlt_REAL_DIV_EQ_1 : forall x y :e R, hl_real_div x y = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> x = y /\ (~ x = hl_real_of_num (hl_NUMERAL hl_zero) /\ ~ y = hl_real_of_num (hl_NUMERAL hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:782 / REAL_ABS_INV   (hash md5:083c2d04ab52ae2cb44ea18261b5456b)
+Theorem hlt_REAL_ABS_INV : forall x :e R, hl_real_abs (hl_real_inv x) = hl_real_inv (hl_real_abs x).
+Admitted.
+
+// HOL Light: real.ml:791 / REAL_ABS_DIV   (hash md5:8687e1a4ab5698822994d6adc964de39)
+Theorem hlt_REAL_ABS_DIV : forall x y :e R, hl_real_abs (hl_real_div x y) = hl_real_div (hl_real_abs x) (hl_real_abs y).
+Admitted.
+
+// HOL Light: real.ml:795 / REAL_INV_MUL   (hash md5:34406e27d1d6775fc902c8ae9b8f6720)
+Theorem hlt_REAL_INV_MUL : forall x y :e R, hl_real_inv (hl_real_mul x y) = hl_real_mul (hl_real_inv x) (hl_real_inv y).
+Admitted.
+
+// HOL Light: real.ml:805 / REAL_INV_DIV   (hash md5:40b075895018c9de5bf57d9091b92495)
+Theorem hlt_REAL_INV_DIV : forall x y :e R, hl_real_inv (hl_real_div x y) = hl_real_div y x.
+Admitted.
+
+// HOL Light: real.ml:810 / REAL_POW_MUL   (hash md5:52a704450809514f3dedd5e81458abca)
+Theorem hlt_REAL_POW_MUL : forall x y :e R, forall n :e omega, hl_real_pow (hl_real_mul x y) n = hl_real_mul (hl_real_pow x n) (hl_real_pow y n).
+Admitted.
+
+// HOL Light: real.ml:815 / REAL_POW_INV   (hash md5:081bf9eff4c86aeecf663d34a65e0879)
+Theorem hlt_REAL_POW_INV : forall x :e R, forall n :e omega, hl_real_pow (hl_real_inv x) n = hl_real_inv (hl_real_pow x n).
+Admitted.
+
+// HOL Light: real.ml:820 / REAL_INV_POW   (hash md5:903bc307fcb5b75c6b118d3c137253d0)
+Theorem hlt_REAL_INV_POW : forall x :e R, forall n :e omega, hl_real_inv (hl_real_pow x n) = hl_real_pow (hl_real_inv x) n.
+Admitted.
+
+// HOL Light: real.ml:824 / REAL_POW_DIV   (hash md5:a4d103a3c440083dbdb18a77a290eef5)
+Theorem hlt_REAL_POW_DIV : forall x y :e R, forall n :e omega, hl_real_pow (hl_real_div x y) n = hl_real_div (hl_real_pow x n) (hl_real_pow y n).
+Admitted.
+
+// HOL Light: real.ml:828 / REAL_DIV_EQ_0   (hash md5:9c434b6c65861ae293ac85add7b8dd54)
+Theorem hlt_REAL_DIV_EQ_0 : forall x y :e R, hl_real_div x y = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ y = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:832 / REAL_POW_ADD   (hash md5:7444b9839b1bd878ee901b5bf4897d75)
+Theorem hlt_REAL_POW_ADD : forall x :e R, forall m n :e omega, hl_real_pow x (hl_add m n) = hl_real_mul (hl_real_pow x m) (hl_real_pow x n).
+Admitted.
+
+// HOL Light: real.ml:837 / REAL_POW_NZ   (hash md5:7dc1e846a77d3968d6e607e4cbb9f181)
+Theorem hlt_REAL_POW_NZ : forall x :e R, forall n :e omega, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> ~ hl_real_pow x n = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:843 / REAL_POW_SUB   (hash md5:203aded5a36dd1c55a6b0576c51a225d)
+Theorem hlt_REAL_POW_SUB : forall x :e R, forall m n :e omega, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) /\ hl_le m n = 1 -> hl_real_pow x (hl_sub n m) = hl_real_div (hl_real_pow x n) (hl_real_pow x m).
+Admitted.
+
+// HOL Light: real.ml:856 / REAL_LT_LCANCEL_IMP   (hash md5:85174a6a1378e69c35e63b9b809068d7)
+Theorem hlt_REAL_LT_LCANCEL_IMP : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt (hl_real_mul x y) (hl_real_mul x z) = 1 -> hl_real_lt y z = 1.
+Admitted.
+
+// HOL Light: real.ml:865 / REAL_LT_RCANCEL_IMP   (hash md5:ae0ada48843f8efe0081569a081819aa)
+Theorem hlt_REAL_LT_RCANCEL_IMP : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 /\ hl_real_lt (hl_real_mul x z) (hl_real_mul y z) = 1 -> hl_real_lt x y = 1.
+Admitted.
+
+// HOL Light: real.ml:869 / REAL_LE_LCANCEL_IMP   (hash md5:fda123eb6327992a96ff1df3f8d15771)
+Theorem hlt_REAL_LE_LCANCEL_IMP : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le (hl_real_mul x y) (hl_real_mul x z) = 1 -> hl_real_le y z = 1.
+Admitted.
+
+// HOL Light: real.ml:877 / REAL_LE_RCANCEL_IMP   (hash md5:f9e14b910aa8565e6b8cea79fd0e945a)
+Theorem hlt_REAL_LE_RCANCEL_IMP : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 /\ hl_real_le (hl_real_mul x z) (hl_real_mul y z) = 1 -> hl_real_le x y = 1.
+Admitted.
+
+// HOL Light: real.ml:881 / REAL_LE_RMUL_EQ   (hash md5:f743620bbdffa403bb9de3690ef5f6f5)
+Theorem hlt_REAL_LE_RMUL_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_le (hl_real_mul x z) (hl_real_mul y z) = 1 <-> hl_real_le x y = 1).
+Admitted.
+
+// HOL Light: real.ml:885 / REAL_LE_LMUL_EQ   (hash md5:bcff6d4c2ae71e11fdc9c41ac28bcf52)
+Theorem hlt_REAL_LE_LMUL_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_le (hl_real_mul z x) (hl_real_mul z y) = 1 <-> hl_real_le x y = 1).
+Admitted.
+
+// HOL Light: real.ml:889 / REAL_LT_RMUL_EQ   (hash md5:248be4e3c0ffe9aed05312b2680fba0a)
+Theorem hlt_REAL_LT_RMUL_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_lt (hl_real_mul x z) (hl_real_mul y z) = 1 <-> hl_real_lt x y = 1).
+Admitted.
+
+// HOL Light: real.ml:893 / REAL_LT_LMUL_EQ   (hash md5:4fe5c1ae61ef25638bbb525efb6a7d57)
+Theorem hlt_REAL_LT_LMUL_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_lt (hl_real_mul z x) (hl_real_mul z y) = 1 <-> hl_real_lt x y = 1).
+Admitted.
+
+// HOL Light: real.ml:897 / REAL_LE_MUL_EQ   (hash md5:bb233e2b18f912db1f4fe7e96931398d)
+Theorem hlt_REAL_LE_MUL_EQ : (forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1)) /\ forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1).
+Admitted.
+
+// HOL Light: real.ml:902 / REAL_LT_MUL_EQ   (hash md5:3c7a99d5ce565525e3037cc8184975a9)
+Theorem hlt_REAL_LT_MUL_EQ : (forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1)) /\ forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1).
+Admitted.
+
+// HOL Light: real.ml:907 / REAL_MUL_POS_LT   (hash md5:046cb81dc764bf894f31afdc6181da03)
+Theorem hlt_REAL_MUL_POS_LT : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 \/ hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 /\ hl_real_lt y (hl_real_of_num (hl_NUMERAL hl_zero)) = 1.
+Admitted.
+
+// HOL Light: real.ml:916 / REAL_MUL_POS_LE   (hash md5:30c4cc2f073dbf8960f20883605b3bda)
+Theorem hlt_REAL_MUL_POS_LE : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x y) = 1 <-> x = hl_real_of_num (hl_NUMERAL hl_zero) \/ (y = hl_real_of_num (hl_NUMERAL hl_zero) \/ (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 \/ hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 /\ hl_real_lt y (hl_real_of_num (hl_NUMERAL hl_zero)) = 1)).
+Admitted.
+
+// HOL Light: real.ml:922 / REAL_LE_RDIV_EQ   (hash md5:5aee723dbc743abcbd4a5df4521dd73b)
+Theorem hlt_REAL_LE_RDIV_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_le x (hl_real_div y z) = 1 <-> hl_real_le (hl_real_mul x z) y = 1).
+Admitted.
+
+// HOL Light: real.ml:930 / REAL_LE_LDIV_EQ   (hash md5:ab67bfc5ccf86e8354ab9e4a52b3cdcd)
+Theorem hlt_REAL_LE_LDIV_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_le (hl_real_div x z) y = 1 <-> hl_real_le x (hl_real_mul y z) = 1).
+Admitted.
+
+// HOL Light: real.ml:938 / REAL_LT_RDIV_EQ   (hash md5:afc2e11c9304d93d6862ee5804c902ed)
+Theorem hlt_REAL_LT_RDIV_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_lt x (hl_real_div y z) = 1 <-> hl_real_lt (hl_real_mul x z) y = 1).
+Admitted.
+
+// HOL Light: real.ml:942 / REAL_LT_LDIV_EQ   (hash md5:9b8a675f22432be4ae6ca0683ddc13e6)
+Theorem hlt_REAL_LT_LDIV_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_lt (hl_real_div x z) y = 1 <-> hl_real_lt x (hl_real_mul y z) = 1).
+Admitted.
+
+// HOL Light: real.ml:946 / REAL_EQ_RDIV_EQ   (hash md5:7eedc9ebf617d4b1bc3d2ed790997e2f)
+Theorem hlt_REAL_EQ_RDIV_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (x = hl_real_div y z <-> hl_real_mul x z = y).
+Admitted.
+
+// HOL Light: real.ml:951 / REAL_EQ_LDIV_EQ   (hash md5:3f9150b278c68b71ac42b24a62fd47d1)
+Theorem hlt_REAL_EQ_LDIV_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_div x z = y <-> x = hl_real_mul y z).
+Admitted.
+
+// HOL Light: real.ml:956 / REAL_LT_DIV2_EQ   (hash md5:f4e91352482a4a4a284a4cf3ee9a1b64)
+Theorem hlt_REAL_LT_DIV2_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_lt (hl_real_div x z) (hl_real_div y z) = 1 <-> hl_real_lt x y = 1).
+Admitted.
+
+// HOL Light: real.ml:960 / REAL_LE_DIV2_EQ   (hash md5:d591a03fe3a8c1971a6cf785989dbd0b)
+Theorem hlt_REAL_LE_DIV2_EQ : forall x y z :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) z = 1 -> (hl_real_le (hl_real_div x z) (hl_real_div y z) = 1 <-> hl_real_le x y = 1).
+Admitted.
+
+// HOL Light: real.ml:964 / REAL_MUL_2   (hash md5:ab950f9f35f803d5edb71032a25fc47c)
+Theorem hlt_REAL_MUL_2 : forall x :e R, hl_real_mul (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) x = hl_real_add x x.
+Admitted.
+
+// HOL Light: real.ml:968 / REAL_POW_EQ_0   (hash md5:a58912d4285a1871bc4ef6043d16cfe4)
+Theorem hlt_REAL_POW_EQ_0 : forall x :e R, forall n :e omega, hl_real_pow x n = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero) /\ ~ n = hl_NUMERAL hl_zero.
+Admitted.
+
+// HOL Light: real.ml:975 / REAL_LE_MUL2   (hash md5:7bae4fd9114513ce16bb6bb529b503e0)
+Theorem hlt_REAL_LE_MUL2 : forall w x y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) w = 1 /\ (hl_real_le w x = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_le y z = 1)) -> hl_real_le (hl_real_mul w y) (hl_real_mul x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:985 / REAL_LT_MUL2   (hash md5:07456aec0653ee1822a88a70b1fa599d)
+Theorem hlt_REAL_LT_MUL2 : forall w x y z :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) w = 1 /\ (hl_real_lt w x = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_lt y z = 1)) -> hl_real_lt (hl_real_mul w y) (hl_real_mul x z) = 1.
+Admitted.
+
+// HOL Light: real.ml:996 / REAL_LT_SQUARE   (hash md5:7737e45b67bd518ca80f9d981d44bddf)
+Theorem hlt_REAL_LT_SQUARE : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_mul x x) = 1 <-> ~ x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:1002 / REAL_POW_1   (hash md5:0945080bbeb765fc3f376683d70dc5b7)
+Theorem hlt_REAL_POW_1 : forall x :e R, hl_real_pow x (hl_NUMERAL (hl_BIT1 hl_zero)) = x.
+Admitted.
+
+// HOL Light: real.ml:1007 / REAL_POW_ONE   (hash md5:35849fa085078b022539fc5308d5b679)
+Theorem hlt_REAL_POW_ONE : forall n :e omega, hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) n = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:1011 / REAL_LT_INV2   (hash md5:0b7c3c23a4426b44c6f77f2b4deb7715)
+Theorem hlt_REAL_LT_INV2 : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt x y = 1 -> hl_real_lt (hl_real_inv y) (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1024 / REAL_LE_INV2   (hash md5:47391950a27521ae859190edfb157f3c)
+Theorem hlt_REAL_LE_INV2 : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le x y = 1 -> hl_real_le (hl_real_inv y) (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1031 / REAL_LT_LINV   (hash md5:e1a9c796f34611ae5d5695c841b8cba4)
+Theorem hlt_REAL_LT_LINV : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_lt (hl_real_inv y) x = 1 -> hl_real_lt (hl_real_inv x) y = 1.
+Admitted.
+
+// HOL Light: real.ml:1038 / REAL_LT_RINV   (hash md5:d8104d372d289d390eda1956f23d9430)
+Theorem hlt_REAL_LT_RINV : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt x (hl_real_inv y) = 1 -> hl_real_lt y (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1045 / REAL_LE_LINV   (hash md5:c65484828eba7088403aed6e209abeec)
+Theorem hlt_REAL_LE_LINV : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_le (hl_real_inv y) x = 1 -> hl_real_le (hl_real_inv x) y = 1.
+Admitted.
+
+// HOL Light: real.ml:1052 / REAL_LE_RINV   (hash md5:58134c64f46684e97c7f1a342339c8c1)
+Theorem hlt_REAL_LE_RINV : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le x (hl_real_inv y) = 1 -> hl_real_le y (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1059 / REAL_INV_LE_1   (hash md5:70e23b5e91a9ea222f232c5173025e50)
+Theorem hlt_REAL_INV_LE_1 : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 -> hl_real_le (hl_real_inv x) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1064 / REAL_INV_1_LE   (hash md5:5f3305438c6f44b1fcc4befce5130e35)
+Theorem hlt_REAL_INV_1_LE : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1069 / REAL_INV_LT_1   (hash md5:5e45dbc490ceddf7ff3b9c954bc07bc2)
+Theorem hlt_REAL_INV_LT_1 : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 -> hl_real_lt (hl_real_inv x) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1074 / REAL_INV_1_LT   (hash md5:8ed1117a255e5bb22c61e334e122361a)
+Theorem hlt_REAL_INV_1_LT : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_inv x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1079 / REAL_SUB_INV   (hash md5:4057f02a39132dfbadce2bc0ac012ffb)
+Theorem hlt_REAL_SUB_INV : forall x y :e R, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) /\ ~ y = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_sub (hl_real_inv x) (hl_real_inv y) = hl_real_div (hl_real_sub y x) (hl_real_mul x y).
+Admitted.
+
+// HOL Light: real.ml:1086 / REAL_DOWN   (hash md5:1113f163cb23a6ab50c080ab6def2b18)
+Theorem hlt_REAL_DOWN : forall d :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) d = 1 -> exists e1 :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) e1 = 1 /\ hl_real_lt e1 d = 1.
+Admitted.
+
+// HOL Light: real.ml:1095 / REAL_DOWN2   (hash md5:e4efc9e04447f21088bc58cf14af7ffa)
+Theorem hlt_REAL_DOWN2 : forall d1 d2 :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) d1 = 1 /\ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) d2 = 1 -> exists e1 :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) e1 = 1 /\ (hl_real_lt e1 d1 = 1 /\ hl_real_lt e1 d2 = 1).
+Admitted.
+
+// HOL Light: real.ml:1107 / REAL_POW_LE2   (hash md5:a398c3c1a94f3e2aa0293077a8b88b7f)
+Theorem hlt_REAL_POW_LE2 : forall n :e omega, forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le x y = 1 -> hl_real_le (hl_real_pow x n) (hl_real_pow y n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1115 / REAL_POW_LE_1   (hash md5:2084bb85742670d69520ff20b02ddf17)
+Theorem hlt_REAL_POW_LE_1 : forall n :e omega, forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1121 / REAL_POW_1_LE   (hash md5:56a426a5927dde0690513478f85e1105)
+Theorem hlt_REAL_POW_1_LE : forall n :e omega, forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 -> hl_real_le (hl_real_pow x n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1127 / REAL_POW_MONO   (hash md5:21433bd8631c3f4e383ae69ca5f3c812)
+Theorem hlt_REAL_POW_MONO : forall m n :e omega, forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 /\ hl_le m n = 1 -> hl_real_le (hl_real_pow x m) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1140 / REAL_POW_LT2   (hash md5:755d01d3765efe53e9b4448e404735a3)
+Theorem hlt_REAL_POW_LT2 : forall n :e omega, forall x y :e R, ~ n = hl_NUMERAL hl_zero /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt x y = 1) -> hl_real_lt (hl_real_pow x n) (hl_real_pow y n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1148 / REAL_POW_LT_1   (hash md5:eb0195455f25e7e862b49ceb78d6ab8f)
+Theorem hlt_REAL_POW_LT_1 : forall n :e omega, forall x :e R, ~ n = hl_NUMERAL hl_zero /\ hl_real_lt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1154 / REAL_POW_1_LT   (hash md5:c00ff57ee8b260d52b97cc7d4d17026f)
+Theorem hlt_REAL_POW_1_LT : forall n :e omega, forall x :e R, ~ n = hl_NUMERAL hl_zero /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1) -> hl_real_lt (hl_real_pow x n) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1160 / REAL_POW_MONO_LT   (hash md5:08c5d8e528c6f3746d508742a691e4de)
+Theorem hlt_REAL_POW_MONO_LT : forall m n :e omega, forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 /\ hl_lt m n = 1 -> hl_real_lt (hl_real_pow x m) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1178 / REAL_POW_POW   (hash md5:2740a704206ead40d734197c0ba8020c)
+Theorem hlt_REAL_POW_POW : forall x :e R, forall m n :e omega, hl_real_pow (hl_real_pow x m) n = hl_real_pow x (hl_mul m n).
+Admitted.
+
+// HOL Light: real.ml:1183 / REAL_EQ_RCANCEL_IMP   (hash md5:422cd4026a64f5084ac4cb9b828cdf37)
+Theorem hlt_REAL_EQ_RCANCEL_IMP : forall x y z :e R, ~ z = hl_real_of_num (hl_NUMERAL hl_zero) /\ hl_real_mul x z = hl_real_mul y z -> x = y.
+Admitted.
+
+// HOL Light: real.ml:1189 / REAL_EQ_LCANCEL_IMP   (hash md5:f078387ba2c2dd4b70bd235228b70eef)
+Theorem hlt_REAL_EQ_LCANCEL_IMP : forall x y z :e R, ~ z = hl_real_of_num (hl_NUMERAL hl_zero) /\ hl_real_mul z x = hl_real_mul z y -> x = y.
+Admitted.
+
+// HOL Light: real.ml:1193 / REAL_LT_DIV   (hash md5:1593fa15ca56d084d524fae465a8d52a)
+Theorem hlt_REAL_LT_DIV : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_div x y) = 1.
+Admitted.
+
+// HOL Light: real.ml:1197 / REAL_LE_DIV   (hash md5:fbc2d930b08eebf50a30862eecd9c19e)
+Theorem hlt_REAL_LE_DIV : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_div x y) = 1.
+Admitted.
+
+// HOL Light: real.ml:1201 / REAL_DIV_POW2   (hash md5:a8d2ef6f150e9aec0190888be1836bf9)
+Theorem hlt_REAL_DIV_POW2 : forall x :e R, forall m n :e omega, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_div (hl_real_pow x m) (hl_real_pow x n) = hl_COND R (hl_le n m) (hl_real_pow x (hl_sub m n)) (hl_real_inv (hl_real_pow x (hl_sub n m))).
+Admitted.
+
+// HOL Light: real.ml:1213 / REAL_DIV_POW2_ALT   (hash md5:619b983dd283e75ffda969e721ffb24d)
+Theorem hlt_REAL_DIV_POW2_ALT : forall x :e R, forall m n :e omega, ~ x = hl_real_of_num (hl_NUMERAL hl_zero) -> hl_real_div (hl_real_pow x m) (hl_real_pow x n) = hl_COND R (hl_lt n m) (hl_real_pow x (hl_sub m n)) (hl_real_inv (hl_real_pow x (hl_sub n m))).
+Admitted.
+
+// HOL Light: real.ml:1224 / REAL_LT_POW2   (hash md5:f48df9151c90aa2047036e747ec922b3)
+Theorem hlt_REAL_LT_POW2 : forall n :e omega, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1228 / REAL_LE_POW2   (hash md5:35c6002769a6674264fc03a30787d3bb)
+Theorem hlt_REAL_LE_POW2 : forall n :e omega, hl_real_le (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1234 / REAL_POW2_ABS   (hash md5:d69784d28790f9aff5ab632f129b5e01)
+Theorem hlt_REAL_POW2_ABS : forall x :e R, hl_real_pow (hl_real_abs x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))).
+Admitted.
+
+// HOL Light: real.ml:1239 / REAL_LE_SQUARE_ABS   (hash md5:b987e2742b2b71179410cb4970b0e734)
+Theorem hlt_REAL_LE_SQUARE_ABS : forall x y :e R, hl_real_le (hl_real_abs x) (hl_real_abs y) = 1 <-> hl_real_le (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1245 / REAL_LT_SQUARE_ABS   (hash md5:28f055a8c4c3835a86736edca63ec041)
+Theorem hlt_REAL_LT_SQUARE_ABS : forall x y :e R, hl_real_lt (hl_real_abs x) (hl_real_abs y) = 1 <-> hl_real_lt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1249 / REAL_EQ_SQUARE_ABS   (hash md5:e6fb45052731e77ae8a61f8070a57baa)
+Theorem hlt_REAL_EQ_SQUARE_ABS : forall x y :e R, hl_real_abs x = hl_real_abs y <-> hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))).
+Admitted.
+
+// HOL Light: real.ml:1253 / REAL_LE_POW_2   (hash md5:6618dd12d2ffb1e7914d0292366d9cd1)
+Theorem hlt_REAL_LE_POW_2 : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1257 / REAL_LT_POW_2   (hash md5:26cbff7231069ad4e60cd5a263edf43d)
+Theorem hlt_REAL_LT_POW_2 : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1 <-> ~ x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:1262 / REAL_SOS_EQ_0   (hash md5:9f57a62aaa925e40bfb0103c2717becf)
+Theorem hlt_REAL_SOS_EQ_0 : forall x y :e R, hl_real_add (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero) /\ y = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:1270 / REAL_POW_ZERO   (hash md5:95b3e0ebd583acdf38f69f3ca65becdc)
+Theorem hlt_REAL_POW_ZERO : forall n :e omega, hl_real_pow (hl_real_of_num (hl_NUMERAL hl_zero)) n = hl_COND R (if n = hl_NUMERAL hl_zero then 1 else 0) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_of_num (hl_NUMERAL hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:1274 / REAL_POW_MONO_INV   (hash md5:078d007983543af79b37f5eeb2dfeb68)
+Theorem hlt_REAL_POW_MONO_INV : forall m n :e omega, forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ (hl_real_le x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 /\ hl_le n m = 1) -> hl_real_le (hl_real_pow x m) (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1288 / REAL_POW_LE2_REV   (hash md5:be493870d295c14273e91be7d80befcb)
+Theorem hlt_REAL_POW_LE2_REV : forall n :e omega, forall x y :e R, ~ n = hl_NUMERAL hl_zero /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_le (hl_real_pow x n) (hl_real_pow y n) = 1) -> hl_real_le x y = 1.
+Admitted.
+
+// HOL Light: real.ml:1292 / REAL_POW_LT2_REV   (hash md5:613c50539f6ff737a9837d833576cc8b)
+Theorem hlt_REAL_POW_LT2_REV : forall n :e omega, forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_lt (hl_real_pow x n) (hl_real_pow y n) = 1 -> hl_real_lt x y = 1.
+Admitted.
+
+// HOL Light: real.ml:1296 / REAL_POW_EQ   (hash md5:c86dc5de57042dcd2e9781567d7dd964)
+Theorem hlt_REAL_POW_EQ : forall n :e omega, forall x y :e R, ~ n = hl_NUMERAL hl_zero /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_pow x n = hl_real_pow y n)) -> x = y.
+Admitted.
+
+// HOL Light: real.ml:1300 / REAL_POW_EQ_ABS   (hash md5:a9881bc4c0f9b25cc045d8d3f8930c07)
+Theorem hlt_REAL_POW_EQ_ABS : forall n :e omega, forall x y :e R, ~ n = hl_NUMERAL hl_zero /\ hl_real_pow x n = hl_real_pow y n -> hl_real_abs x = hl_real_abs y.
+Admitted.
+
+// HOL Light: real.ml:1305 / REAL_POW_EQ_1_IMP   (hash md5:fb41e053da809b922ba42fb6edd03b56)
+Theorem hlt_REAL_POW_EQ_1_IMP : forall x :e R, forall n :e omega, ~ n = hl_NUMERAL hl_zero /\ hl_real_pow x n = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) -> hl_real_abs x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:1311 / REAL_POW_EQ_1   (hash md5:1d1092b4469f9108fb72215c8330dd58)
+Theorem hlt_REAL_POW_EQ_1 : forall x :e R, forall n :e omega, hl_real_pow x n = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> hl_real_abs x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) /\ (hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 -> hl_EVEN n = 1) \/ n = hl_NUMERAL hl_zero.
+Admitted.
+
+// HOL Light: real.ml:1323 / REAL_POW_LT2_ODD   (hash md5:b285108948c46013a08d9083e8e251b6)
+Theorem hlt_REAL_POW_LT2_ODD : forall n :e omega, forall x y :e R, hl_real_lt x y = 1 /\ hl_ODD n = 1 -> hl_real_lt (hl_real_pow x n) (hl_real_pow y n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1338 / REAL_POW_LE2_ODD   (hash md5:7feccb57c788b172fc54deeddc6afcd3)
+Theorem hlt_REAL_POW_LE2_ODD : forall n :e omega, forall x y :e R, hl_real_le x y = 1 /\ hl_ODD n = 1 -> hl_real_le (hl_real_pow x n) (hl_real_pow y n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1343 / REAL_POW_LT2_ODD_EQ   (hash md5:a1915cfb0f9a888f6f5f6656cd6bbc6e)
+Theorem hlt_REAL_POW_LT2_ODD_EQ : forall n :e omega, forall x y :e R, hl_ODD n = 1 -> (hl_real_lt (hl_real_pow x n) (hl_real_pow y n) = 1 <-> hl_real_lt x y = 1).
+Admitted.
+
+// HOL Light: real.ml:1347 / REAL_POW_LE2_ODD_EQ   (hash md5:e82f679452ef4f3c0eb3b3ea88f0676d)
+Theorem hlt_REAL_POW_LE2_ODD_EQ : forall n :e omega, forall x y :e R, hl_ODD n = 1 -> (hl_real_le (hl_real_pow x n) (hl_real_pow y n) = 1 <-> hl_real_le x y = 1).
+Admitted.
+
+// HOL Light: real.ml:1351 / REAL_POW_EQ_ODD_EQ   (hash md5:9c1b5a785b4d433f7bea4f5b6d6cce50)
+Theorem hlt_REAL_POW_EQ_ODD_EQ : forall n :e omega, forall x y :e R, hl_ODD n = 1 -> (hl_real_pow x n = hl_real_pow y n <-> x = y).
+Admitted.
+
+// HOL Light: real.ml:1355 / REAL_POW_EQ_ODD   (hash md5:4a4edf73f1a35d774949b0ac4ee8cee8)
+Theorem hlt_REAL_POW_EQ_ODD : forall n :e omega, forall x y :e R, hl_ODD n = 1 /\ hl_real_pow x n = hl_real_pow y n -> x = y.
+Admitted.
+
+// HOL Light: real.ml:1359 / REAL_POW_EQ_EQ   (hash md5:931b1b3b7530104bab7966aca028ed31)
+Theorem hlt_REAL_POW_EQ_EQ : forall n :e omega, forall x y :e R, hl_real_pow x n = hl_real_pow y n <-> hl_EVEN n = 1 /\ (n = hl_NUMERAL hl_zero \/ hl_real_abs x = hl_real_abs y) \/ ~ hl_EVEN n = 1 /\ x = y.
+Admitted.
+
+// HOL Light: real.ml:1370 / REAL_EVENPOW_ABS   (hash md5:cab038d306371eb99b869d3c36ca6758)
+Theorem hlt_REAL_EVENPOW_ABS : forall x :e R, forall n :e omega, hl_EVEN n = 1 -> hl_real_pow (hl_real_abs x) n = hl_real_pow x n.
+Admitted.
+
+// HOL Light: real.ml:1374 / REAL_OF_NUM_MOD   (hash md5:d18406758083d683613e0514030d5578)
+Theorem hlt_REAL_OF_NUM_MOD : forall m n :e omega, hl_real_of_num (hl_MOD m n) = hl_real_sub (hl_real_of_num m) (hl_real_mul (hl_real_of_num (hl_DIV m n)) (hl_real_of_num n)).
+Admitted.
+
+// HOL Light: real.ml:1380 / REAL_OF_NUM_DIV   (hash md5:f0f4477830c3e6426c7106d7e3562b63)
+Theorem hlt_REAL_OF_NUM_DIV : forall m n :e omega, hl_real_of_num (hl_DIV m n) = hl_real_sub (hl_real_div (hl_real_of_num m) (hl_real_of_num n)) (hl_real_div (hl_real_of_num (hl_MOD m n)) (hl_real_of_num n)).
+Admitted.
+
+// HOL Light: real.ml:1393 / REAL_CONVEX_BOUND2_LT   (hash md5:bab8122791513121c6e98c3e2a2df5fe)
+Theorem hlt_REAL_CONVEX_BOUND2_LT : forall b x y a u v :e R, hl_real_lt x a = 1 /\ (hl_real_lt y b = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) -> hl_real_lt (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) (hl_real_add (hl_real_mul u a) (hl_real_mul v b)) = 1.
+Admitted.
+
+// HOL Light: real.ml:1403 / REAL_CONVEX_BOUND2_LE   (hash md5:885e39ff609b4081fb05a08a6e6623b1)
+Theorem hlt_REAL_CONVEX_BOUND2_LE : forall b x y a u v :e R, hl_real_le x a = 1 /\ (hl_real_le y b = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) -> hl_real_le (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) (hl_real_add (hl_real_mul u a) (hl_real_mul v b)) = 1.
+Admitted.
+
+// HOL Light: real.ml:1410 / REAL_CONVEX_BOUND_LT   (hash md5:9871338db2d0f6289195eb52ea1485f4)
+Theorem hlt_REAL_CONVEX_BOUND_LT : forall x y a u v :e R, hl_real_lt x a = 1 /\ (hl_real_lt y a = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) -> hl_real_lt (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) a = 1.
+Admitted.
+
+// HOL Light: real.ml:1416 / REAL_CONVEX_BOUND_LE   (hash md5:b2d325b0358004f3ca6846fd83c4a30e)
+Theorem hlt_REAL_CONVEX_BOUND_LE : forall x y a u v :e R, hl_real_le x a = 1 /\ (hl_real_le y a = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) -> hl_real_le (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) a = 1.
+Admitted.
+
+// HOL Light: real.ml:1422 / REAL_CONVEX_BOUND_GT   (hash md5:b6d27d2d2d17d7b102947183873c8d73)
+Theorem hlt_REAL_CONVEX_BOUND_GT : forall x y a u v :e R, hl_real_lt a x = 1 /\ (hl_real_lt a y = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) -> hl_real_lt a (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) = 1.
+Admitted.
+
+// HOL Light: real.ml:1429 / REAL_CONVEX_BOUND_GE   (hash md5:a95e2377b3fda1a58c56c4887cda501e)
+Theorem hlt_REAL_CONVEX_BOUND_GE : forall x y a u v :e R, hl_real_le a x = 1 /\ (hl_real_le a y = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))) -> hl_real_le a (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) = 1.
+Admitted.
+
+// HOL Light: real.ml:1436 / REAL_CONVEX_BOUNDS_LE   (hash md5:20b1cce820b4c348cb06bba753cfe00f)
+Theorem hlt_REAL_CONVEX_BOUNDS_LE : forall x y a b u v :e R, hl_real_le a x = 1 /\ (hl_real_le x b = 1 /\ (hl_real_le a y = 1 /\ (hl_real_le y b = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))))) -> hl_real_le a (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) = 1 /\ hl_real_le (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) b = 1.
+Admitted.
+
+// HOL Light: real.ml:1444 / REAL_CONVEX_BOUNDS_LT   (hash md5:4044f7a3d802e00527ae7430a3d2b2e0)
+Theorem hlt_REAL_CONVEX_BOUNDS_LT : forall x y a b u v :e R, hl_real_lt a x = 1 /\ (hl_real_lt x b = 1 /\ (hl_real_lt a y = 1 /\ (hl_real_lt y b = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) u = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) v = 1 /\ hl_real_add u v = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))))))) -> hl_real_lt a (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) = 1 /\ hl_real_lt (hl_real_add (hl_real_mul u x) (hl_real_mul v y)) b = 1.
+Admitted.
+
+// HOL Light: real.ml:1456 / REAL_ARCH_SIMPLE   (hash md5:e0d7daed8179ff100663d3269f1ba489)
+Theorem hlt_REAL_ARCH_SIMPLE : forall x :e R, exists n :e omega, hl_real_le x (hl_real_of_num n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1463 / REAL_ARCH_LT   (hash md5:798409bc22a4425258bd3cde78f83330)
+Theorem hlt_REAL_ARCH_LT : forall x :e R, exists n :e omega, hl_real_lt x (hl_real_of_num n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1468 / REAL_ARCH   (hash md5:abad9d45e11f20c4544fb1dbe61c24fa)
+Theorem hlt_REAL_ARCH : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> forall y :e R, exists n :e omega, hl_real_lt y (hl_real_mul (hl_real_of_num n) x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1472 / REAL_ARCH_INV   (hash md5:2a255c6fb34d6115aa268d177c78cbe1)
+Theorem hlt_REAL_ARCH_INV : forall e1 :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) e1 = 1 <-> exists n :e omega, ~ n = hl_NUMERAL hl_zero /\ (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv (hl_real_of_num n)) = 1 /\ hl_real_lt (hl_real_inv (hl_real_of_num n)) e1 = 1).
+Admitted.
+
+// HOL Light: real.ml:1480 / REAL_POW_LBOUND   (hash md5:fd30b6e530f1071906599be373af857b)
+Theorem hlt_REAL_POW_LBOUND : forall x :e R, forall n :e omega, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_add (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_real_mul (hl_real_of_num n) x)) (hl_real_pow (hl_real_add (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x) n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1491 / REAL_ARCH_POW   (hash md5:1c2a592397ae65f6e7c3b360144dbf91)
+Theorem hlt_REAL_ARCH_POW : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) x = 1 -> exists n :e omega, hl_real_lt y (hl_real_pow x n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1502 / REAL_ARCH_POW2   (hash md5:4e3e7a35216ffbf8a621fd76e880f7d6)
+Theorem hlt_REAL_ARCH_POW2 : forall x :e R, exists n :e omega, hl_real_lt x (hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n) = 1.
+Admitted.
+
+// HOL Light: real.ml:1506 / REAL_ARCH_POW_INV   (hash md5:b9a04992825509ba441eedeb22ee84cb)
+Theorem hlt_REAL_ARCH_POW_INV : forall x y :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_lt x (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = 1 -> exists n :e omega, hl_real_lt (hl_real_pow x n) y = 1.
+Admitted.
+
+// HOL Light: real.ml:1521 / real_sgn   (hash md5:02d5b83e3d627c6214a6504a3d20a12b)
+Theorem hlt_real_sgn : forall x :e R, hl_real_sgn x = hl_COND R (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x) (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) (hl_COND R (hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero))) (hl_real_neg (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))) (hl_real_of_num (hl_NUMERAL hl_zero))).
+Admitted.
+
+// HOL Light: real.ml:1525 / REAL_SGN_0   (hash md5:0ba61872340d167031fe1bf0c7ce87fe)
+Theorem hlt_REAL_SGN_0 : hl_real_sgn (hl_real_of_num (hl_NUMERAL hl_zero)) = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:1529 / REAL_SGN_NEG   (hash md5:5498fc72438d73cc9d16f67f9faa3d0f)
+Theorem hlt_REAL_SGN_NEG : forall x :e R, hl_real_sgn (hl_real_neg x) = hl_real_neg (hl_real_sgn x).
+Admitted.
+
+// HOL Light: real.ml:1533 / REAL_SGN_ABS   (hash md5:c209332ce1b930c55e0422d993be06d3)
+Theorem hlt_REAL_SGN_ABS : forall x :e R, hl_real_mul (hl_real_sgn x) (hl_real_abs x) = x.
+Admitted.
+
+// HOL Light: real.ml:1537 / REAL_SGN_ABS_ALT   (hash md5:63573dd43d0dc07ad4084ac0afd6ef27)
+Theorem hlt_REAL_SGN_ABS_ALT : forall x :e R, hl_real_mul (hl_real_sgn x) x = hl_real_abs x.
+Admitted.
+
+// HOL Light: real.ml:1541 / REAL_EQ_SGN_ABS   (hash md5:ca9aac9af66c50ffb7538abac9788644)
+Theorem hlt_REAL_EQ_SGN_ABS : forall x y :e R, x = y <-> hl_real_sgn x = hl_real_sgn y /\ hl_real_abs x = hl_real_abs y.
+Admitted.
+
+// HOL Light: real.ml:1545 / REAL_ABS_SGN   (hash md5:3b1d640fc8e1ea7f3dec9e3868127962)
+Theorem hlt_REAL_ABS_SGN : forall x :e R, hl_real_abs (hl_real_sgn x) = hl_real_sgn (hl_real_abs x).
+Admitted.
+
+// HOL Light: real.ml:1549 / REAL_SGN   (hash md5:009858db3b7fc5ff95ce3c1fc5bfded7)
+Theorem hlt_REAL_SGN : forall x :e R, hl_real_sgn x = hl_real_div x (hl_real_abs x).
+Admitted.
+
+// HOL Light: real.ml:1557 / REAL_SGN_MUL   (hash md5:f9009dd3e53babd26e8294bf9c992eb6)
+Theorem hlt_REAL_SGN_MUL : forall x y :e R, hl_real_sgn (hl_real_mul x y) = hl_real_mul (hl_real_sgn x) (hl_real_sgn y).
+Admitted.
+
+// HOL Light: real.ml:1562 / REAL_SGN_INV   (hash md5:23e5c0542d9b5c90160c95d6b68e2663)
+Theorem hlt_REAL_SGN_INV : forall x :e R, hl_real_sgn (hl_real_inv x) = hl_real_sgn x.
+Admitted.
+
+// HOL Light: real.ml:1567 / REAL_SGN_DIV   (hash md5:35f7377ef1aa0072761557db205ba186)
+Theorem hlt_REAL_SGN_DIV : forall x y :e R, hl_real_sgn (hl_real_div x y) = hl_real_div (hl_real_sgn x) (hl_real_sgn y).
+Admitted.
+
+// HOL Light: real.ml:1573 / REAL_SGN_EQ   (hash md5:e7b182206bb765b05ca07ccae4da3dcc)
+Theorem hlt_REAL_SGN_EQ : (forall x :e R, hl_real_sgn x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero)) /\ ((forall x :e R, hl_real_sgn x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> hl_real_gt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ forall x :e R, hl_real_sgn x = hl_real_neg (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) <-> hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1).
+Admitted.
+
+// HOL Light: real.ml:1579 / REAL_SGN_CASES   (hash md5:6f95ac94bc74e2723af62ef81b809ed2)
+Theorem hlt_REAL_SGN_CASES : forall x :e R, hl_real_sgn x = hl_real_of_num (hl_NUMERAL hl_zero) \/ (hl_real_sgn x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) \/ hl_real_sgn x = hl_real_neg (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)))).
+Admitted.
+
+// HOL Light: real.ml:1583 / REAL_SGN_INEQS   (hash md5:1d500aee6b2b544b156312d2b410ece2)
+Theorem hlt_REAL_SGN_INEQS : (forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_sgn x) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) /\ ((forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_sgn x) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) /\ ((forall x :e R, hl_real_ge (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_sgn x) = 1 <-> hl_real_ge (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) /\ ((forall x :e R, hl_real_gt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_sgn x) = 1 <-> hl_real_gt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) /\ ((forall x :e R, hl_real_of_num (hl_NUMERAL hl_zero) = hl_real_sgn x <-> hl_real_of_num (hl_NUMERAL hl_zero) = x) /\ ((forall x :e R, hl_real_le (hl_real_sgn x) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_le x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ ((forall x :e R, hl_real_lt (hl_real_sgn x) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ ((forall x :e R, hl_real_ge (hl_real_sgn x) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_ge x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ ((forall x :e R, hl_real_gt (hl_real_sgn x) (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_gt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ forall x :e R, hl_real_sgn x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero))))))))).
+Admitted.
+
+// HOL Light: real.ml:1596 / REAL_SGN_POW   (hash md5:0c9ec15903ca2f62b741ed241a2ed290)
+Theorem hlt_REAL_SGN_POW : forall x :e R, forall n :e omega, hl_real_sgn (hl_real_pow x n) = hl_real_pow (hl_real_sgn x) n.
+Admitted.
+
+// HOL Light: real.ml:1601 / REAL_SGN_POW_2   (hash md5:d8c9934a06183f0c2bd56641d82fc9ce)
+Theorem hlt_REAL_SGN_POW_2 : forall x :e R, hl_real_sgn (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_real_sgn (hl_real_abs x).
+Admitted.
+
+// HOL Light: real.ml:1608 / REAL_SGN_REAL_SGN   (hash md5:7d472f46feea64b7097d225eef509903)
+Theorem hlt_REAL_SGN_REAL_SGN : forall x :e R, hl_real_sgn (hl_real_sgn x) = hl_real_sgn x.
+Admitted.
+
+// HOL Light: real.ml:1612 / REAL_INV_SGN   (hash md5:da8862c995ac95e643e6269f3e9e4afc)
+Theorem hlt_REAL_INV_SGN : forall x :e R, hl_real_inv (hl_real_sgn x) = hl_real_sgn x.
+Admitted.
+
+// HOL Light: real.ml:1618 / REAL_SGN_EQ_INEQ   (hash md5:b3d53ccc04ea1a5d8a7cb609d357a640)
+Theorem hlt_REAL_SGN_EQ_INEQ : forall x y :e R, hl_real_sgn x = hl_real_sgn y <-> x = y \/ hl_real_lt (hl_real_abs (hl_real_sub x y)) (hl_real_max (hl_real_abs x) (hl_real_abs y)) = 1.
+Admitted.
+
+// HOL Light: real.ml:1623 / REAL_SGNS_EQ   (hash md5:b12611944c097b17e591bc53123cad46)
+Theorem hlt_REAL_SGNS_EQ : forall x y :e R, hl_real_sgn x = hl_real_sgn y <-> (x = hl_real_of_num (hl_NUMERAL hl_zero) <-> y = hl_real_of_num (hl_NUMERAL hl_zero)) /\ ((hl_real_gt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_gt y (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ (hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 <-> hl_real_lt y (hl_real_of_num (hl_NUMERAL hl_zero)) = 1)).
+Admitted.
+
+// HOL Light: real.ml:1630 / REAL_SGNS_EQ_ALT   (hash md5:b2b54e6eb3282ccfeb4bbf84445deb55)
+Theorem hlt_REAL_SGNS_EQ_ALT : forall x y :e R, hl_real_sgn x = hl_real_sgn y <-> (x = hl_real_of_num (hl_NUMERAL hl_zero) -> y = hl_real_of_num (hl_NUMERAL hl_zero)) /\ ((hl_real_gt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 -> hl_real_gt y (hl_real_of_num (hl_NUMERAL hl_zero)) = 1) /\ (hl_real_lt x (hl_real_of_num (hl_NUMERAL hl_zero)) = 1 -> hl_real_lt y (hl_real_of_num (hl_NUMERAL hl_zero)) = 1)).
+Admitted.
+
+// HOL Light: real.ml:1641 / REAL_WLOG_LE   (hash md5:be2fe79adb0fa7756db5fb551324119f)
+Theorem hlt_REAL_WLOG_LE : forall P :e 2 :^: R :^: R, (forall x y :e R, P x y = 1 <-> P y x = 1) /\ (forall x y :e R, hl_real_le x y = 1 -> P x y = 1) -> forall x y :e R, P x y = 1.
+Admitted.
+
+// HOL Light: real.ml:1645 / REAL_WLOG_LT   (hash md5:8472bc6418f9ddb1fa484241145fb1d8)
+Theorem hlt_REAL_WLOG_LT : forall P :e 2 :^: R :^: R, (forall x :e R, P x x = 1) /\ ((forall x y :e R, P x y = 1 <-> P y x = 1) /\ (forall x y :e R, hl_real_lt x y = 1 -> P x y = 1)) -> forall x y :e R, P x y = 1.
+Admitted.
+
+// HOL Light: real.ml:1650 / REAL_WLOG_LE_3   (hash md5:0116a37aa7ee1be862334b1b5702dd48)
+Theorem hlt_REAL_WLOG_LE_3 : forall P :e 2 :^: R :^: R :^: R, (forall x y z :e R, P x y z = 1 -> P y x z = 1 /\ P x z y = 1) /\ (forall x y z :e R, hl_real_le x y = 1 /\ hl_real_le y z = 1 -> P x y z = 1) -> forall x y z :e R, P x y z = 1.
+Admitted.
+
+// HOL Light: real.ml:1663 / sqrt   (hash md5:64ef60a7123c0c8a638ee7fcefc57918)
+Theorem hlt_sqrt : forall x :e R, hl_sqrt x = hl_select R (fun y :e R => if hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x then 1 else 0).
+Admitted.
+
+// HOL Light: real.ml:1666 / SQRT_UNIQUE   (hash md5:e765e2c48d8108cd080f1284cf72647b)
+Theorem hlt_SQRT_UNIQUE : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x -> hl_sqrt x = y.
+Admitted.
+
+// HOL Light: real.ml:1677 / POW_2_SQRT   (hash md5:03fea7ab8e7e29b7b9193b439d509c47)
+Theorem hlt_POW_2_SQRT : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_sqrt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = x.
+Admitted.
+
+// HOL Light: real.ml:1681 / SQRT_0   (hash md5:4107f97fa027c77d18bded7d67cdb9d5)
+Theorem hlt_SQRT_0 : hl_sqrt (hl_real_of_num (hl_NUMERAL hl_zero)) = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:1685 / SQRT_1   (hash md5:e5a784fe40959d8236553c3b4ad06f0d)
+Theorem hlt_SQRT_1 : hl_sqrt (hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero))) = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:1689 / POW_2_SQRT_ABS   (hash md5:3309a6904d738a4dee8c3183243e464b)
+Theorem hlt_POW_2_SQRT_ABS : forall x :e R, hl_sqrt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = hl_real_abs x.
+Admitted.
+
+// HOL Light: real.ml:1695 / SQRT_WORKS_GEN   (hash md5:32b68fe266a98305f99d70902b4c7971)
+Theorem hlt_SQRT_WORKS_GEN : forall x :e R, hl_real_sgn (hl_sqrt x) = hl_real_sgn x /\ hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x.
+Admitted.
+
+// HOL Light: real.ml:1800 / SQRT_UNIQUE_GEN   (hash md5:962c5c99c90a69ef082b4e220662a6b0)
+Theorem hlt_SQRT_UNIQUE_GEN : forall x y :e R, hl_real_sgn y = hl_real_sgn x /\ hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x -> hl_sqrt x = y.
+Admitted.
+
+// HOL Light: real.ml:1810 / SQRT_NEG   (hash md5:270a54a5b49ca2a4d9c734345937b606)
+Theorem hlt_SQRT_NEG : forall x :e R, hl_sqrt (hl_real_neg x) = hl_real_neg (hl_sqrt x).
+Admitted.
+
+// HOL Light: real.ml:1816 / REAL_SGN_SQRT   (hash md5:6246426ec2fcb2d6ac2b297bc2c03047)
+Theorem hlt_REAL_SGN_SQRT : forall x :e R, hl_real_sgn (hl_sqrt x) = hl_real_sgn x.
+Admitted.
+
+// HOL Light: real.ml:1820 / SQRT_WORKS   (hash md5:d2ba33ce3887617991fbab15942ed453)
+Theorem hlt_SQRT_WORKS : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1 /\ hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x.
+Admitted.
+
+// HOL Light: real.ml:1825 / REAL_POS_EQ_SQUARE   (hash md5:990f1369a8672a55bf78885b4bf6f0bd)
+Theorem hlt_REAL_POS_EQ_SQUARE : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 <-> exists y :e R, hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x.
+Admitted.
+
+// HOL Light: real.ml:1829 / SQRT_POS_LE   (hash md5:da108a94d4e91a582ce0dc062b6e6e0c)
+Theorem hlt_SQRT_POS_LE : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1833 / SQRT_POW_2   (hash md5:be8470c9ffb0297affc023f8c3eab4c3)
+Theorem hlt_SQRT_POW_2 : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x.
+Admitted.
+
+// HOL Light: real.ml:1837 / SQRT_POW2   (hash md5:c9e532d4ae28f19cced07c0bb0a2fbab)
+Theorem hlt_SQRT_POW2 : forall x :e R, hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = x <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:1841 / SQRT_MUL   (hash md5:037bfab9468cfaa5178cfd6b1e41a0a8)
+Theorem hlt_SQRT_MUL : forall x y :e R, hl_sqrt (hl_real_mul x y) = hl_real_mul (hl_sqrt x) (hl_sqrt y).
+Admitted.
+
+// HOL Light: real.ml:1846 / SQRT_INV   (hash md5:a12b693254200ac8bfac3476f7f4b897)
+Theorem hlt_SQRT_INV : forall x :e R, hl_sqrt (hl_real_inv x) = hl_real_inv (hl_sqrt x).
+Admitted.
+
+// HOL Light: real.ml:1851 / SQRT_DIV   (hash md5:4b4bcd6a74afef651b6613469b7a3ee7)
+Theorem hlt_SQRT_DIV : forall x y :e R, hl_sqrt (hl_real_div x y) = hl_real_div (hl_sqrt x) (hl_sqrt y).
+Admitted.
+
+// HOL Light: real.ml:1855 / SQRT_LT_0   (hash md5:494a94f7f0fc8949c70dbc95c709c329)
+Theorem hlt_SQRT_LT_0 : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:1859 / SQRT_EQ_0   (hash md5:20641b3e99353c8c41cda5f03ec72d47)
+Theorem hlt_SQRT_EQ_0 : forall x :e R, hl_sqrt x = hl_real_of_num (hl_NUMERAL hl_zero) <-> x = hl_real_of_num (hl_NUMERAL hl_zero).
+Admitted.
+
+// HOL Light: real.ml:1863 / SQRT_LE_0   (hash md5:d667fd721c1da4a589377e5270401d26)
+Theorem hlt_SQRT_LE_0 : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1 <-> hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.
+Admitted.
+
+// HOL Light: real.ml:1868 / REAL_ABS_SQRT   (hash md5:40f1cfbd517e7205784dca34d4d1bb51)
+Theorem hlt_REAL_ABS_SQRT : forall x :e R, hl_real_abs (hl_sqrt x) = hl_sqrt (hl_real_abs x).
+Admitted.
+
+// HOL Light: real.ml:1873 / SQRT_MONO_LT   (hash md5:04c01b276dbdefd0a3112466ee08c7c3)
+Theorem hlt_SQRT_MONO_LT : forall x y :e R, hl_real_lt x y = 1 -> hl_real_lt (hl_sqrt x) (hl_sqrt y) = 1.
+Admitted.
+
+// HOL Light: real.ml:1886 / SQRT_MONO_LE   (hash md5:421277d55dc0edea3e04b6b0bc1c1ab9)
+Theorem hlt_SQRT_MONO_LE : forall x y :e R, hl_real_le x y = 1 -> hl_real_le (hl_sqrt x) (hl_sqrt y) = 1.
+Admitted.
+
+// HOL Light: real.ml:1890 / SQRT_MONO_LT_EQ   (hash md5:b1afb305396a9b59d372376b8aaeb0c0)
+Theorem hlt_SQRT_MONO_LT_EQ : forall x y :e R, hl_real_lt (hl_sqrt x) (hl_sqrt y) = 1 <-> hl_real_lt x y = 1.
+Admitted.
+
+// HOL Light: real.ml:1894 / SQRT_MONO_LE_EQ   (hash md5:f554cf1ff947587ebd5e3decca2a9ff5)
+Theorem hlt_SQRT_MONO_LE_EQ : forall x y :e R, hl_real_le (hl_sqrt x) (hl_sqrt y) = 1 <-> hl_real_le x y = 1.
+Admitted.
+
+// HOL Light: real.ml:1898 / SQRT_INJ   (hash md5:5daccc42c789bcc1fcc7b1e7f597cf3a)
+Theorem hlt_SQRT_INJ : forall x y :e R, hl_sqrt x = hl_sqrt y <-> x = y.
+Admitted.
+
+// HOL Light: real.ml:1902 / SQRT_EQ_1   (hash md5:3ebd69eeb0d4c9e17748c0f936f29e17)
+Theorem hlt_SQRT_EQ_1 : forall x :e R, hl_sqrt x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)) <-> x = hl_real_of_num (hl_NUMERAL (hl_BIT1 hl_zero)).
+Admitted.
+
+// HOL Light: real.ml:1906 / SQRT_POS_LT   (hash md5:8999a7be8467c5e578783ce92d54cbbb)
+Theorem hlt_SQRT_POS_LT : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_sqrt x) = 1.
+Admitted.
+
+// HOL Light: real.ml:1910 / REAL_LE_LSQRT   (hash md5:ebd789f2f189caf90d42d4989602e87a)
+Theorem hlt_REAL_LE_LSQRT : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_le x (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1 -> hl_real_le (hl_sqrt x) y = 1.
+Admitted.
+
+// HOL Light: real.ml:1914 / REAL_LE_RSQRT   (hash md5:e404d2b46150748a5c95364d92cf65cd)
+Theorem hlt_REAL_LE_RSQRT : forall x y :e R, hl_real_le (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) y = 1 -> hl_real_le x (hl_sqrt y) = 1.
+Admitted.
+
+// HOL Light: real.ml:1919 / REAL_LT_LSQRT   (hash md5:5c51b3af962f799e70171d4f6ffaf3b2)
+Theorem hlt_REAL_LT_LSQRT : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_lt x (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1 -> hl_real_lt (hl_sqrt x) y = 1.
+Admitted.
+
+// HOL Light: real.ml:1923 / REAL_LT_RSQRT   (hash md5:7277a2a5e5ffdcea3deade108a4179c0)
+Theorem hlt_REAL_LT_RSQRT : forall x y :e R, hl_real_lt (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) y = 1 -> hl_real_lt x (hl_sqrt y) = 1.
+Admitted.
+
+// HOL Light: real.ml:1929 / SQRT_EVEN_POW2   (hash md5:c8f2219659bdf350d24796b7d61c191d)
+Theorem hlt_SQRT_EVEN_POW2 : forall n :e omega, hl_EVEN n = 1 -> hl_sqrt (hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) n) = hl_real_pow (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_DIV n (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))).
+Admitted.
+
+// HOL Light: real.ml:1934 / REAL_DIV_SQRT   (hash md5:19c1302164a80387d065b1628b59a56b)
+Theorem hlt_REAL_DIV_SQRT : forall x :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_div x (hl_sqrt x) = hl_sqrt x.
+Admitted.
+
+// HOL Light: real.ml:1941 / REAL_RSQRT_LE   (hash md5:7aef40e3fcb93c329794139d541c8a2a)
+Theorem hlt_REAL_RSQRT_LE : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 /\ hl_real_le x (hl_sqrt y) = 1) -> hl_real_le (hl_real_pow x (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) y = 1.
+Admitted.
+
+// HOL Light: real.ml:1945 / REAL_LSQRT_LE   (hash md5:1ffa11e8808c52b2c6500803f66d5aed)
+Theorem hlt_REAL_LSQRT_LE : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le (hl_sqrt x) y = 1 -> hl_real_le x (hl_real_pow y (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1949 / REAL_SQRT_POW_2   (hash md5:392632ddd5781a97c2b4ff005f325f1f)
+Theorem hlt_REAL_SQRT_POW_2 : forall x :e R, hl_real_pow (hl_sqrt x) (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero))) = hl_real_abs x.
+Admitted.
+
+// HOL Light: real.ml:1953 / REAL_ABS_LE_SQRT_POS   (hash md5:dee2f776c30f5bdfe0f6d914f2d46369)
+Theorem hlt_REAL_ABS_LE_SQRT_POS : forall x y :e R, hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 /\ hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) y = 1 -> hl_real_le (hl_real_abs (hl_real_sub (hl_sqrt x) (hl_sqrt y))) (hl_sqrt (hl_real_abs (hl_real_sub x y))) = 1.
+Admitted.
+
+// HOL Light: real.ml:1967 / REAL_ABS_LE_SQRT   (hash md5:ce3dabfe69c4654d09ea84cf6365a884)
+Theorem hlt_REAL_ABS_LE_SQRT : forall x y :e R, hl_real_le (hl_real_abs (hl_real_sub (hl_sqrt x) (hl_sqrt y))) (hl_sqrt (hl_real_mul (hl_real_of_num (hl_NUMERAL (hl_BIT0 (hl_BIT1 hl_zero)))) (hl_real_abs (hl_real_sub x y)))) = 1.
+Admitted.
+

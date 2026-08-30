@@ -52,8 +52,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:68 / BIJECTIVE_INJECTIVE_SURJECTIVE
 // Source hash: md5:3de32746ab64cbf492f42abc21dc846b
-// Status: generalization_required (bridges: empty_case:B)
-Theorem BIJECTIVE_INJECTIVE_SURJECTIVE : forall A B:set, A <> Empty -> forall s c= B, forall f:set -> set, (forall x :e B, f x :e A) -> forall t c= A, (forall x :e B, x :e s -> f x :e t) /\ (forall y :e A, y :e t -> exists x :e B, x :e s /\ f x = y /\ forall y0 :e B, y0 :e s /\ f y0 = y -> y0 = x) <-> (forall x :e B, x :e s -> f x :e t) /\ ((forall x y :e B, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ forall y :e A, y :e t -> exists x :e B, x :e s /\ f x = y).
+// Status: exact_native
+Theorem BIJECTIVE_INJECTIVE_SURJECTIVE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= B, forall f:set -> set, (forall x :e B, f x :e A) -> forall t c= A, (forall x :e B, x :e s -> f x :e t) /\ (forall y :e A, y :e t -> exists x :e B, x :e s /\ f x = y /\ forall y0 :e B, y0 :e s /\ f y0 = y -> y0 = x) <-> (forall x :e B, x :e s -> f x :e t) /\ ((forall x y :e B, x :e s /\ (y :e s /\ f x = f y) -> x = y) /\ forall y :e A, y :e t -> exists x :e B, x :e s /\ f x = y).
 Admitted.
 
 // HOL Light: Library/card.ml:76 / BIJECTIVE_INVERSES
@@ -100,8 +100,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:151 / CARD_LT_REFL
 // Source hash: md5:4f6ac9fd49cc641972e13c2ea0d9dfa2
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem CARD_LT_REFL : forall A:set, A <> Empty -> forall s c= A, ~ (atleastp s s /\ ~ equip s s).
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip)
+Theorem CARD_LT_REFL : forall A:set, forall s c= A, ~ (atleastp s s /\ ~ equip s s).
 Admitted.
 
 // HOL Light: Library/card.ml:155 / CARD_LET_TRANS
@@ -124,14 +124,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:176 / CARD_EQ_REFL
 // Source hash: md5:5ef2f1bd4aca54e92bf09423da620442
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem CARD_EQ_REFL : forall A:set, A <> Empty -> forall s c= A, equip s s.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip)
+Theorem CARD_EQ_REFL : forall A:set, forall s c= A, equip s s.
 Admitted.
 
 // HOL Light: Library/card.ml:181 / CARD_EQ_REFL_IMP
 // Source hash: md5:d2d4ab16c9bb87fe051933c3baf24fee
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem CARD_EQ_REFL_IMP : forall A:set, A <> Empty -> forall s t c= A, s = t -> equip s t.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip)
+Theorem CARD_EQ_REFL_IMP : forall A:set, forall s t c= A, s = t -> equip s t.
 Admitted.
 
 // HOL Light: Library/card.ml:185 / CARD_EQ_SYM
@@ -172,8 +172,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:221 / CARD_EQ_EMPTY
 // Source hash: md5:8374b564c754f8343c36dcb878a2a03d
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem CARD_EQ_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall s c= B, equip s Empty <-> s = Empty.
+// Status: generalization_required (bridges: empty_case:B, hol_eq_c_equip)
+Theorem CARD_EQ_EMPTY : forall A B:set, A <> Empty -> forall s c= B, equip s Empty <-> s = Empty.
 Admitted.
 
 // HOL Light: Library/card.ml:229 / CARD_LE_ANTISYM
@@ -220,8 +220,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:303 / CARD_LT_LE
 // Source hash: md5:9752e47ba9cccdc82441d3f361bb13c3
-// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_eq_c_equip, hol_le_c_atleastp)
-Theorem CARD_LT_LE : forall A B:set, forall s c= A, forall t c= B, atleastp s t /\ ~ equip s t <-> atleastp s t /\ ~ equip s t.
+// Status: transport_required (bridges: hol_eq_c_equip, hol_le_c_atleastp)
+Theorem CARD_LT_LE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, atleastp s t /\ ~ equip s t <-> atleastp s t /\ ~ equip s t.
 Admitted.
 
 // HOL Light: Library/card.ml:307 / CARD_LE_LT
@@ -304,14 +304,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:397 / CARD_LE_FINITE
 // Source hash: md5:5cdeaded5620bb49d773a0b7abd2c459
-// Status: transport_required (bridges: hol_finite_finite, hol_le_c_atleastp)
-Theorem CARD_LE_FINITE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite t /\ atleastp s t -> finite s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_le_c_atleastp)
+Theorem CARD_LE_FINITE : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, finite t /\ atleastp s t -> finite s.
 Admitted.
 
 // HOL Light: Library/card.ml:401 / CARD_EQ_FINITE
 // Source hash: md5:a8c596df897464973c9004d3608fa285
-// Status: transport_required (bridges: hol_eq_c_equip, hol_finite_finite)
-Theorem CARD_EQ_FINITE : forall B A:set, B <> Empty -> A <> Empty -> forall s c= B, forall t c= A, finite t /\ equip s t -> finite s.
+// Status: generalization_required (bridges: empty_case:B, hol_eq_c_equip, hol_finite_finite)
+Theorem CARD_EQ_FINITE : forall B A:set, A <> Empty -> forall s c= B, forall t c= A, finite t /\ equip s t -> finite s.
 Admitted.
 
 // HOL Light: Library/card.ml:405 / CARD_EQ_INFINITE
@@ -394,8 +394,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:488 / CARD_EQ_IMAGE
 // Source hash: md5:fd900abbe479f2ed2f84d6e9a74c0ef9
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem CARD_EQ_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> equip {f x | x :e s} s.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip)
+Theorem CARD_EQ_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> equip {f x | x :e s} s.
 Admitted.
 
 // HOL Light: Library/card.ml:495 / CARD_GE_PREIMAGE
@@ -424,8 +424,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:527 / CARD_EQ_IMAGES
 // Source hash: md5:104ccdece8f474c6459c5404d9402a07
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem CARD_EQ_IMAGES : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, (forall x y :e A, x :e s /\ y :e s -> (f x = f y <-> g x = g y)) -> equip {f x | x :e s} {g x | x :e s}.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip)
+Theorem CARD_EQ_IMAGES : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e C) -> forall s c= A, (forall x y :e A, x :e s /\ y :e s -> (f x = f y <-> g x = g y)) -> equip {f x | x :e s} {g x | x :e s}.
 Admitted.
 
 // HOL Light: Library/card.ml:534 / LE_C_IMAGE
@@ -580,26 +580,26 @@ Admitted.
 
 // HOL Light: Library/card.ml:781 / CARD_MUL_SYM
 // Source hash: md5:a4b55e8c1820e8984b7287d26cec5d24
-// Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod)
-Theorem CARD_MUL_SYM : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, equip (s :*: t) (t :*: s).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_eq_c_equip, hol_prod_setprod)
+Theorem CARD_MUL_SYM : forall A B:set, forall s c= A, forall t c= B, equip (s :*: t) (t :*: s).
 Admitted.
 
 // HOL Light: Library/card.ml:791 / CARD_MUL_ASSOC
 // Source hash: md5:20842cf0a3502360889f78d912589677
-// Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod)
-Theorem CARD_MUL_ASSOC : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall s c= A, forall t c= B, forall u c= C, equip (s :*: (t :*: u)) (s :*: t :*: u).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, hol_eq_c_equip, hol_prod_setprod)
+Theorem CARD_MUL_ASSOC : forall A B C:set, forall s c= A, forall t c= B, forall u c= C, equip (s :*: (t :*: u)) (s :*: t :*: u).
 Admitted.
 
 // HOL Light: Library/card.ml:803 / CARD_LDISTRIB
 // Source hash: md5:fdfac6005a185a9b2afc49ad097c17b8
-// Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod, hol_sum_setsum)
-Theorem CARD_LDISTRIB : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall s c= A, forall t c= B, forall u c= C, equip (s :*: (t :+: u)) (s :*: t :+: s :*: u).
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_prod_setprod, hol_sum_setsum)
+Theorem CARD_LDISTRIB : forall A B C:set, B <> Empty -> C <> Empty -> forall s c= A, forall t c= B, forall u c= C, equip (s :*: (t :+: u)) (s :*: t :+: s :*: u).
 Admitted.
 
 // HOL Light: Library/card.ml:818 / CARD_RDISTRIB
 // Source hash: md5:c3b96d4d8cec076cf52e984c029ed749
-// Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod, hol_sum_setsum)
-Theorem CARD_RDISTRIB : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall s c= A, forall t c= B, forall u c= C, equip ((s :+: t) :*: u) (s :*: u :+: t :*: u).
+// Status: generalization_required (bridges: empty_case:C, hol_eq_c_equip, hol_prod_setprod, hol_sum_setsum)
+Theorem CARD_RDISTRIB : forall A B C:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, forall u c= C, equip ((s :+: t) :*: u) (s :*: u :+: t :*: u).
 Admitted.
 
 // HOL Light: Library/card.ml:830 / CARD_LE_ADDR
@@ -616,14 +616,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:840 / CARD_MUL_LID
 // Source hash: md5:5ad6f054bb14af491420c00757a036f6
-// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_prod_setprod)
-Theorem CARD_MUL_LID : forall A B:set, B <> Empty -> forall a :e A, forall t c= B, equip ({a} :*: t) t.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_eq_c_equip, hol_prod_setprod)
+Theorem CARD_MUL_LID : forall A B:set, forall a :e A, forall t c= B, equip ({a} :*: t) t.
 Admitted.
 
 // HOL Light: Library/card.ml:847 / CARD_MUL_RID
 // Source hash: md5:f8270b4f0744813f95c079038cb46705
-// Status: generalization_required (bridges: empty_case:B, hol_eq_c_equip, hol_prod_setprod)
-Theorem CARD_MUL_RID : forall A B:set, A <> Empty -> forall s c= A, forall b :e B, equip (s :*: {b}) s.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_eq_c_equip, hol_prod_setprod)
+Theorem CARD_MUL_RID : forall A B:set, forall s c= A, forall b :e B, equip (s :*: {b}) s.
 Admitted.
 
 // HOL Light: Library/card.ml:858 / CARD_ADD_LE_MUL_INFINITE
@@ -634,8 +634,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:875 / CARD_DISJOINT_UNION
 // Source hash: md5:63bbdacd000b4e21a024fb3acd617470
-// Status: transport_required (bridges: hol_eq_c_equip, hol_sum_setsum)
-Theorem CARD_DISJOINT_UNION : forall A:set, A <> Empty -> forall s t c= A, s :/\: t = Empty -> equip (s :\/: t) (s :+: t).
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_sum_setsum)
+Theorem CARD_DISJOINT_UNION : forall A:set, forall s t c= A, s :/\: t = Empty -> equip (s :\/: t) (s :+: t).
 Admitted.
 
 // HOL Light: Library/card.ml:886 / CARD_LE_EXISTS
@@ -652,8 +652,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:935 / CARD_SQUARE_INFINITE
 // Source hash: md5:bc648bb93cfb595a8333992ea1f89d73
-// Status: transport_required (bridges: hol_eq_c_equip, hol_finite_finite, hol_prod_setprod)
-Theorem CARD_SQUARE_INFINITE : forall A:set, A <> Empty -> forall k c= A, infinite k -> equip (k :*: k) k.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_finite_finite, hol_prod_setprod)
+Theorem CARD_SQUARE_INFINITE : forall A:set, forall k c= A, infinite k -> equip (k :*: k) k.
 Admitted.
 
 // HOL Light: Library/card.ml:1127 / CARD_ADD_FINITE
@@ -670,14 +670,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:1138 / CARD_MUL_FINITE
 // Source hash: md5:353b2aa14fb7c97cd0d5f87bb851c948
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem CARD_MUL_FINITE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite, hol_prod_setprod)
+Theorem CARD_MUL_FINITE : forall A B:set, forall s c= A, forall t c= B, finite s /\ finite t -> finite (s :*: t).
 Admitted.
 
 // HOL Light: Library/card.ml:1142 / CARD_MUL_FINITE_EQ
 // Source hash: md5:fba3314d4e2bc33f5cd2634cbd7a8a02
-// Status: transport_required (bridges: hol_finite_finite, hol_prod_setprod)
-Theorem CARD_MUL_FINITE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, finite (s :*: t) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_finite_finite, hol_prod_setprod)
+Theorem CARD_MUL_FINITE_EQ : forall A B:set, forall s c= A, forall t c= B, finite (s :*: t) <-> s = Empty \/ (t = Empty \/ finite s /\ finite t).
 Admitted.
 
 // HOL Light: Library/card.ml:1151 / CARD_MUL_ABSORB_LE
@@ -712,8 +712,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1188 / CARD_MUL_ABSORB
 // Source hash: md5:1419f4d836a92cd242174e7744234144
-// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_finite_finite, hol_le_c_atleastp, hol_prod_setprod)
-Theorem CARD_MUL_ABSORB : forall A B:set, B <> Empty -> forall s c= A, forall t c= B, infinite t /\ (~ s = Empty /\ atleastp s t) -> equip (s :*: t) t.
+// Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_eq_c_equip, hol_finite_finite, hol_le_c_atleastp, hol_prod_setprod)
+Theorem CARD_MUL_ABSORB : forall A B:set, forall s c= A, forall t c= B, infinite t /\ (~ s = Empty /\ atleastp s t) -> equip (s :*: t) t.
 Admitted.
 
 // HOL Light: Library/card.ml:1197 / CARD_ADD_ABSORB_LEFT
@@ -730,14 +730,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:1207 / CARD_UNION_ABSORB_LEFT
 // Source hash: md5:ba24c05142a059329ee644b6c0cd665d
-// Status: transport_required (bridges: hol_eq_c_equip, hol_finite_finite, hol_le_c_atleastp)
-Theorem CARD_UNION_ABSORB_LEFT : forall A:set, A <> Empty -> forall s t c= A, infinite t /\ atleastp s t -> equip (s :\/: t) t.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_finite_finite, hol_le_c_atleastp)
+Theorem CARD_UNION_ABSORB_LEFT : forall A:set, forall s t c= A, infinite t /\ atleastp s t -> equip (s :\/: t) t.
 Admitted.
 
 // HOL Light: Library/card.ml:1215 / CARD_UNION_ABSORB_RIGHT
 // Source hash: md5:676f6b0374682c73d2b43463b8815941
-// Status: transport_required (bridges: hol_eq_c_equip, hol_finite_finite, hol_le_c_atleastp)
-Theorem CARD_UNION_ABSORB_RIGHT : forall A:set, A <> Empty -> forall s t c= A, infinite s /\ atleastp t s -> equip (s :\/: t) s.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_finite_finite, hol_le_c_atleastp)
+Theorem CARD_UNION_ABSORB_RIGHT : forall A:set, forall s t c= A, infinite s /\ atleastp t s -> equip (s :\/: t) s.
 Admitted.
 
 // HOL Light: Library/card.ml:1219 / CARD_ADD2_ABSORB_LT
@@ -748,8 +748,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1236 / CARD_DIFF_ABSORB
 // Source hash: md5:8c6e3d1e57bdc0652b187f90c2526541
-// Status: transport_required (bridges: hol_eq_c_equip, hol_finite_finite)
-Theorem CARD_DIFF_ABSORB : forall A:set, A <> Empty -> forall s t c= A, infinite s /\ (atleastp t s /\ ~ equip t s) -> equip (s :\: t) s.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_finite_finite)
+Theorem CARD_DIFF_ABSORB : forall A:set, forall s t c= A, infinite s /\ (atleastp t s /\ ~ equip t s) -> equip (s :\: t) s.
 Admitted.
 
 // HOL Light: Library/card.ml:1246 / CARD_LT_ADD
@@ -832,8 +832,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1409 / CARD_EQ_IMAGE_MUL_FIBRES
 // Source hash: md5:3fc9424fbabf252f2e29e54e14a86968
-// Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod)
-Theorem CARD_EQ_IMAGE_MUL_FIBRES : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= C, (forall x :e A, x :e s -> equip {z :e A | z :e s /\ f z = f x} t) -> equip ({f x | x :e s} :*: t) s.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_prod_setprod)
+Theorem CARD_EQ_IMAGE_MUL_FIBRES : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, forall t c= C, (forall x :e A, x :e s -> equip {z :e A | z :e s /\ f z = f x} t) -> equip ({f x | x :e s} :*: t) s.
 Admitted.
 
 // HOL Light: Library/card.ml:1430 / CARD_DIFF_CONG
@@ -868,8 +868,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1514 / EQ_C_INVOLUTION
 // Source hash: md5:22cfe688818380b8dcdad15621502188
-// Status: transport_required (bridges: hol_eq_c_equip)
-Theorem EQ_C_INVOLUTION : forall A:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e A) -> forall s t c= A, (forall x :e A, x :e s -> f x :e t) /\ ((forall x :e A, x :e t -> f x :e s) /\ (forall x :e A, x :e s \/ x :e t -> f (f x) = x)) -> equip s t.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip)
+Theorem EQ_C_INVOLUTION : forall A:set, forall f:set -> set, (forall x :e A, f x :e A) -> forall s t c= A, (forall x :e A, x :e s -> f x :e t) /\ ((forall x :e A, x :e t -> f x :e s) /\ (forall x :e A, x :e s \/ x :e t -> f (f x) = x)) -> equip s t.
 Admitted.
 
 // HOL Light: Library/card.ml:1526 / CARD_MUL_LT_LEMMA
@@ -934,14 +934,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:1592 / COUNTABLE_SUBSET
 // Source hash: md5:725967475ec0f8f249f9b1857de99481
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_SUBSET : forall A:set, forall s t c= A, countable t /\ s c= t -> countable s.
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_SUBSET : forall A:set, A <> Empty -> forall s t c= A, countable t /\ s c= t -> countable s.
 Admitted.
 
 // HOL Light: Library/card.ml:1598 / COUNTABLE_RESTRICT
 // Source hash: md5:b906944ff940aca90da88440910d620c
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_RESTRICT : forall A:set, forall s c= A, forall P:set -> prop, countable s -> countable {x :e A | x :e s /\ P x}.
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_RESTRICT : forall A:set, A <> Empty -> forall s c= A, forall P:set -> prop, countable s -> countable {x :e A | x :e s /\ P x}.
 Admitted.
 
 // HOL Light: Library/card.ml:1604 / COUNTABLE_SUBSET_NUM
@@ -970,8 +970,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1621 / COUNTABLE_IMAGE
 // Source hash: md5:391ae5704402a46a5636a92a1a3ba2e5
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_IMAGE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, countable s -> countable {f x | x :e s}.
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_IMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, countable s -> countable {f x | x :e s}.
 Admitted.
 
 // HOL Light: Library/card.ml:1627 / COUNTABLE_IMAGE_INJ_GENERAL
@@ -982,8 +982,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1638 / COUNTABLE_IMAGE_INJ_EQ
 // Source hash: md5:71650e508a7ce3661423702d584b8865
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_IMAGE_INJ_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (countable {f x | x :e s} <-> countable s).
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_IMAGE_INJ_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, (forall x y :e A, x :e s /\ (y :e s /\ f x = f y) -> x = y) -> (countable {f x | x :e s} <-> countable s).
 Admitted.
 
 // HOL Light: Library/card.ml:1647 / COUNTABLE_IMAGE_INJ
@@ -1036,14 +1036,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:1697 / COUNTABLE_DIFF_FINITE
 // Source hash: md5:b0c9067319fadf345d84e3a52588ae1c
-// Status: generalization_required (bridges: empty_case:A, hol_countable, hol_finite_finite)
-Theorem COUNTABLE_DIFF_FINITE : forall A:set, forall s t c= A, finite s -> (countable (t :\: s) <-> countable t).
+// Status: transport_required (bridges: hol_countable, hol_finite_finite)
+Theorem COUNTABLE_DIFF_FINITE : forall A:set, A <> Empty -> forall s t c= A, finite s -> (countable (t :\: s) <-> countable t).
 Admitted.
 
 // HOL Light: Library/card.ml:1704 / COUNTABLE_DIFF
 // Source hash: md5:af5fb09298a6e66163c1c85ea703605d
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_DIFF : forall A:set, forall s t c= A, countable s -> countable (s :\: t).
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_DIFF : forall A:set, A <> Empty -> forall s t c= A, countable s -> countable (s :\: t).
 Admitted.
 
 // HOL Light: Library/card.ml:1708 / COUNTABLE_CROSS
@@ -1102,8 +1102,8 @@ Admitted.
 
 // HOL Light: Library/card.ml:1766 / COUNTABLE_PRODUCT_DEPENDENT
 // Source hash: md5:68254c9703f2d302b0a7ea7cefb73b06
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_PRODUCT_DEPENDENT : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t :e Power B :^: A, countable s /\ (forall x :e A, x :e s -> countable (t x)) -> countable (\/_ x :e A, {f x y | y :e B, x :e s /\ y :e t x}).
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_PRODUCT_DEPENDENT : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall s c= A, forall t :e Power B :^: A, countable s /\ (forall x :e A, x :e s -> countable (t x)) -> countable (\/_ x :e A, {f x y | y :e B, x :e s /\ y :e t x}).
 Admitted.
 
 // HOL Light: Library/card.ml:1792 / COUNTABLE_CARD_ADD
@@ -1204,14 +1204,14 @@ Admitted.
 
 // HOL Light: Library/card.ml:1950 / COUNTABLE_IMAGE_EQ
 // Source hash: md5:98995e3f19d7ee3aaabd8799189285ea
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_IMAGE_EQ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, countable {f x | x :e s} <-> exists t c= A, countable t /\ (t c= s /\ {f x | x :e s} = {f x | x :e t}).
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_IMAGE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, countable {f x | x :e s} <-> exists t c= A, countable t /\ (t c= s /\ {f x | x :e s} = {f x | x :e t}).
 Admitted.
 
 // HOL Light: Library/card.ml:1955 / COUNTABLE_IMAGE_EQ_INJ
 // Source hash: md5:e1483f26b23e7094312c9ae232980a4c
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem COUNTABLE_IMAGE_EQ_INJ : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, countable {f x | x :e s} <-> exists t c= A, countable t /\ (t c= s /\ ({f x | x :e s} = {f x | x :e t} /\ forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y))).
+// Status: transport_required (bridges: hol_countable)
+Theorem COUNTABLE_IMAGE_EQ_INJ : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, countable {f x | x :e s} <-> exists t c= A, countable t /\ (t c= s /\ ({f x | x :e s} = {f x | x :e t} /\ forall x y :e A, x :e t /\ y :e t -> (f x = f y <-> x = y))).
 Admitted.
 
 // HOL Light: Library/card.ml:1966 / COUNTABLE_FLD

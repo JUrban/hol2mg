@@ -10,8 +10,8 @@ Admitted.
 
 // HOL Light: nums.ml:25 / ONTO
 // Source hash: md5:069712bfe0b0449845d319d1a7497175
-// Status: generalization_required (bridges: empty_case:A, empty_case:B)
-Theorem ONTO : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> forall y :e B, exists x :e A, y = f x).
+// Status: generalization_required (bridges: empty_case:B)
+Theorem ONTO : forall A B:set, A <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall y :e B, exists x :e A, f x = y) <-> forall y :e B, exists x :e A, y = f x).
 Admitted.
 
 // HOL Light: nums.ml:75 / NOT_SUC
