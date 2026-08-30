@@ -2200,7 +2200,7 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
   let _, rewrites = Rewrite.run nat_stmt in
   (* idx_n_def / idx_def unfold definitions of the native prelude: the rewritten statement is convertible *)
   let convertible = [ "eta"; "idx_n_def"; "idx_def" ] in
-  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one" ] @ convertible in
+  let replayable = [ "tuple_2_0_eq"; "tuple_2_1_eq"; "vacuous_forall"; "dimindex_one"; "arith" ] @ convertible in
   (match List.filter (fun r -> not (List.mem r replayable)) rewrites with
    | [] -> ()
    | l -> unsupported "native rewrites %s" (String.concat "," l));
@@ -2246,6 +2246,45 @@ let generate (reg : R.t) (an : L.analysis) (compat : (string, string * string) H
       let t', pf' = strip nat_body final in
       if not (alpha_eq t' target) then unsupported "vacuous binder replay: %s vs %s" (pp t') (pp target);
       (t', pf')
+    end in
+  (* replay of the elaborator's closed numeral arithmetic (Num a + Num b, Num a * Num b evaluated; ordsucc (Num a)
+     is convertible with Num (a+1)): evaluation proofs by the add_nat / mul_nat recursion, Leibniz on the body *)
+  let nat_body, final =
+    if not (List.mem "arith" rewrites) then (nat_body, final)
+    else begin
+      let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in
+      let omega_pf k = Printf.sprintf "(nat_p_omega %d %s)" k (nat_pf k) in
+      let rec ev_add a b = (if b = 0 then Printf.sprintf "(add_nat_0R %d)" a
+        else Printf.sprintf "(eq_trans_i (add_nat %d %d) (ordsucc (add_nat %d %d)) %d (add_nat_SR %d %d %s) (f_equal (fun hl__u:set => ordsucc hl__u) (add_nat %d %d) %d %s))" a b a (b - 1) (a + b) a (b - 1) (nat_pf (b - 1)) a (b - 1) (a + b - 1) (ev_add a (b - 1))) in
+      let rec ev_mul a b = (if b = 0 then Printf.sprintf "(mul_nat_0R %d)" a
+        else Printf.sprintf "(eq_trans_i (mul_nat %d %d) (add_nat %d (mul_nat %d %d)) %d (mul_nat_SR %d %d %s) (eq_trans_i (add_nat %d (mul_nat %d %d)) (add_nat %d %d) %d (f_equal (fun hl__u:set => add_nat %d hl__u) (mul_nat %d %d) %d %s) %s))"
+                a b a a (b - 1) (a * b) a (b - 1) (nat_pf (b - 1)) a a (b - 1) a (a * (b - 1)) (a * b) a a (b - 1) (a * (b - 1)) (ev_mul a (b - 1)) (ev_add a (a * (b - 1)))) in
+      let eval_add a b = Printf.sprintf "(eq_trans_i (%d + %d) (add_nat %d %d) %d (eq_sym_i (add_nat %d %d) (%d + %d) (add_nat_add_SNo %d %s %d %s)) %s)" a b a b (a + b) a b a b a (omega_pf a) b (omega_pf b) (ev_add a b) in
+      let eval_mul a b = Printf.sprintf "(eq_trans_i (%d * %d) (mul_nat %d %d) %d (eq_sym_i (mul_nat %d %d) (%d * %d) (mul_nat_mul_SNo %d %s %d %s)) %s)" a b a b (a * b) a b a b a (omega_pf a) b (omega_pf b) (ev_mul a b) in
+      (* innermost closed arithmetic redex *)
+      let rec find t = (match t with
+        | Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Num a), Mg.Num b) -> Some (t, Mg.Num (a + b), Some (eval_add a b))
+        | Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num a), Mg.Num b) -> Some (t, Mg.Num (a * b), Some (eval_mul a b))
+        | Mg.App (Mg.Cst "ordsucc", Mg.Num a) -> Some (t, Mg.Num (a + 1), None)
+        | Mg.App (f, x) -> (match find f with Some r -> Some r | None -> find x)
+        | Mg.Lam (_, _, b) | Mg.All (_, _, b) | Mg.Ex (_, _, b) -> find b
+        | Mg.LamIn (_, a, b) | Mg.AllIn (_, a, b) | Mg.ExIn (_, a, b) | Mg.Sep (_, a, b) | Mg.Repl (_, a, b) -> (match find a with Some r -> Some r | None -> find b)
+        | Mg.ReplSep (_, a, b, c) | Mg.If (a, b, c) -> (match find a with Some r -> Some r | None -> (match find b with Some r -> Some r | None -> find c))
+        | Mg.Imp (a, b) -> (match find a with Some r -> Some r | None -> find b)
+        | _ -> None) in
+      let rec loop body pf k =
+        if k > 200 then unsupported "arith replay: too many steps" else
+        match find body with
+        | None -> (body, pf)
+        | Some (redex, value, proof) ->
+            let body' = replace_tm redex value body in
+            (match proof with
+             | None -> loop body' pf (k + 1)
+             | Some pe -> loop body' (Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm redex (Mg.Var "hl__u") body)) pf) (k + 1)) in
+      let body', pf' = loop nat_body final 0 in
+      let target = fst (Rewrite.run nat_body) in
+      if not (alpha_eq body' target) then unsupported "arith replay: %s vs %s" (pp body') (pp target);
+      (body', pf')
     end in
   (* replay of the closed equation dimindex 1 = 1 by a Leibniz step on the proved body *)
   let nat_body, final =
