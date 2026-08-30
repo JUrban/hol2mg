@@ -20,4 +20,11 @@ echo "translate: $(grep -c 'proof import' "$out/translate.stderr") proofs not im
 CHECK_RETRY=${CHECK_RETRY:-2} JOBS=${JOBS:-4} MGTIMEOUT=${MGTIMEOUT:-5400} PUBDIR="$out/public" LITDIR="$out/literal" CERTDIR="$out/cert" tools/check_cert.sh $prof > "$out/check.log" 2>&1 || true
 python3 tools/cert_finalize.py $prof "$out/check.log" --manifest "$out/public/$prof.manifest.json" --cert-dir "$out/cert" | tee "$out/summary.txt"
 grep "^FAIL" "$out/check.log" | cut -c1-300 | head -20
+# tagged copies of the results (PILOT_TAG, e.g. round6) and the blocker ranking (docs/DESIGN.md 22.5)
+if [ -n "${PILOT_TAG:-}" ]; then
+  cp "$out/public/$prof.manifest.json" "$HERE/generated/proofcert/$prof.$PILOT_TAG.manifest.json"
+  cp "$out/summary.txt" "$HERE/generated/proofcert/$prof.$PILOT_TAG.summary.txt"
+  cp "$out/check.log" "$HERE/generated/proofcert/$prof.$PILOT_TAG.check.log"
+fi
+python3 "$HERE/tools/proof_blockers.py" "$out/public/$prof.manifest.json" --top 15 --force 12 2>/dev/null | tee -a "$out/summary.txt" | head -20
 echo "pilot done"

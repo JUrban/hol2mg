@@ -1600,8 +1600,13 @@ is larger than the claim.
    `tools/cert_finalize.py` clears `proof_imported` for them.  First case: `cart_tybij` — the
    importer renders the type definition's predicate `\r. T` in the uniform layer (`hl_T`) while
    the literal carrier `hl_ty_cart` is defined with the literal rendering (`if True then 1 else
-   0`), so `hl_subtype_abs_rep` does not apply; the TYDEF rules should use the literal predicate
-   with a coherence step for the nonemptiness premise (open).
+   0`), so `hl_subtype_abs_rep` did not apply.  Fixed: the TYDEF rules now use the literal
+   rendering of the predicate (the one the carrier and the abs/rep constants are defined with)
+   and transport the nonemptiness witness, the predicate's typing and the conclusion between the
+   two renderings by the coherence lemma `L[P] = U[P]` (skipped when the renderings coincide);
+   the imports of `cart_tybij`, `finite_image_tybij` and `finite_sum_tybij` check.
+   `tools/proof_pilot.sh` takes `PILOT_TAG` (tagged copies of manifest, summary and check log)
+   and prints the blocker ranking at the end.
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively
