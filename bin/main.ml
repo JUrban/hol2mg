@@ -527,8 +527,35 @@ let () =
                 Hashtbl.replace by_shard i.Manifest.shard (entry :: (try Hashtbl.find by_shard i.Manifest.shard with Not_found -> []));
                 i'
               end) items in
+            (* proof import (docs/DESIGN.md 22): shards whose imported proofs are large are split into parts
+               <shard>_p<k> by cumulative proof size, so that Megalodon checks them in parallel; the manifest
+               records the part as the item's shard *)
+            let part_of = Hashtbl.create 64 in
+            let part_limit = (match Sys.getenv_opt "HOL2MG_PART_NODES" with Some s -> int_of_string s | None -> 40000) in
+            let parts_of shard l =
+              if Hashtbl.length proof_by_name = 0 then [ (shard, l) ]
+              else begin
+                let size ((i : Manifest.item), _) = (match Hashtbl.find_opt proof_by_name i.Manifest.source_name with Some (p : Proofimport.proof) -> Array.length p.Proofimport.nodes | None -> 0) in
+                let total = List.fold_left (fun n e -> n + size e) 0 l in
+                if total <= part_limit then [ (shard, l) ]
+                else begin
+                  let parts = ref [] and cur = ref [] and acc = ref 0 and k = ref 1 in
+                  List.iter (fun e ->
+                    if !acc > 0 && !acc + size e > part_limit then begin
+                      parts := (Printf.sprintf "%s_p%d" shard !k, List.rev !cur) :: !parts; incr k; cur := []; acc := 0
+                    end;
+                    cur := e :: !cur; acc := !acc + size e) l;
+                  if !cur <> [] then parts := (Printf.sprintf "%s_p%d" shard !k, List.rev !cur) :: !parts;
+                  List.rev !parts
+                end
+              end in
+            let by_part = Hashtbl.create 64 in
             Hashtbl.iter (fun shard l ->
               let l = List.sort (fun ((a : Manifest.item), _) ((b : Manifest.item), _) -> compare (a.Manifest.src_line, a.Manifest.name) (b.Manifest.src_line, b.Manifest.name)) l in
+              List.iter (fun (part, pl) ->
+                List.iter (fun ((i : Manifest.item), _) -> if part <> shard then Hashtbl.replace part_of i.Manifest.name part) pl;
+                Hashtbl.replace by_part part pl) (parts_of shard l)) by_shard;
+            Hashtbl.iter (fun shard l ->
               let oc = open_out (Filename.concat cdir (shard ^ ".mg")) in
               let declared = Hashtbl.create 64 in
               Printf.fprintf oc "// hol2mg certification module (private): shard %s of profile %s.\n// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),\n// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,\n// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.\n\n" shard profile;
@@ -589,8 +616,9 @@ let () =
                     if i.Manifest.statement <> "" then
                       Printf.fprintf oc "// not bridged: %s\nTheorem %s : %s.\nAdmitted.\n\n" (String.concat " " (String.split_on_char '\n' i.Manifest.cert_error)) i.Manifest.name i.Manifest.statement
                     else Printf.fprintf oc "// no native statement (%s): literal fact only\n\n" i.Manifest.status) l;
-              close_out oc) by_shard;
+              close_out oc) by_part;
             List.map (fun (i : Manifest.item) ->
+              let i = (match Hashtbl.find_opt part_of i.Manifest.name with Some p -> { i with Manifest.shard = p } | None -> i) in
               let i = if Hashtbl.mem lit_proved i.Manifest.name then { i with Manifest.literal_proved = true } else i in
               match Hashtbl.find_opt imported_tbl i.Manifest.name with
               | Some leaves -> { i with Manifest.proof_imported = true; proof_leaves = List.sort compare leaves }
