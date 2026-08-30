@@ -655,7 +655,7 @@ let open_lam g x xty body =
 
 (* paired abstraction GABS (\f. !x y. GEQ (f (x,y)) t): the eliminated lambda \p. t[x := FST p, y := SND p]
    (exactly as the elaborator builds it), the curried body \x y. t and the component types *)
-let gabs_elim g (t : tm) : (tm * tm * ty * ty * ty) option =
+let gabs_elim g (t : tm) : (tm * tm * ty list * ty) option =
   match head_and_args t with
   | Const ("GABS", _), Lam (f, fty, body) :: _ ->
       let fn = E.fresh g.nctx f in
@@ -665,18 +665,29 @@ let gabs_elim g (t : tm) : (tm * tm * ty * ty * ty) option =
         | App (Const ("!", _), Lam (x, ty, b)) -> let n = E.fresh g.nctx x in strip ((n, ty) :: acc) (open_with (Free (n, ty)) b)
         | _ -> (List.rev acc, t)) in
       let xs, inner = strip [] body in
-      let r = (match xs, inner with
-        | [ (x, tx); (y, ty) ], App (App (Const ("GEQ", _), App (fv', App (App (Const (",", _), Free (x', _)), Free (y', _)))), rhs)
-          when fv' = fv && x' = x && y' = y ->
-            let pty = TyApp ("prod", [ tx; ty ]) in
+      (* the tuple pattern (x, (y, z)) with the projections of each variable *)
+      let rec projs tm acc_tm ty = (match tm with
+        | App (App (Const (",", _), a), b) ->
+            (match ty with
+             | TyApp ("prod", [ ta; tb ]) ->
+                 let fst_ = App (Const ("FST", fun_ty ty ta), acc_tm) and snd_ = App (Const ("SND", fun_ty ty tb), acc_tm) in
+                 (match projs a fst_ ta, projs b snd_ tb with Some l1, Some l2 -> Some (l1 @ l2) | _ -> None)
+             | _ -> None)
+        | Free (x, xty) -> Some [ ((x, xty), acc_tm) ]
+        | _ -> None) in
+      let r = (match inner with
+        | App (App (Const ("GEQ", _), App (fv', tuple)), rhs) when fv' = fv ->
+            let pty = type_of [] tuple in
             let pn = E.fresh g.nctx "p" in
             let p = Free (pn, pty) in
-            let fst_ = App (Const ("FST", fun_ty pty tx), p) and snd_ = App (Const ("SND", fun_ty pty ty), p) in
-            let rhs' = replace_free (y, ty) snd_ 0 (replace_free (x, tx) fst_ 0 rhs) in
-            let lam = Lam (pn, pty, abstract_free (pn, pty) 0 rhs') in
-            let body2 = Lam (x, tx, abstract_free (x, tx) 0 (Lam (y, ty, abstract_free (y, ty) 0 rhs))) in
-            E.release g.nctx pn;
-            Some (lam, body2, tx, ty, type_of [] rhs)
+            (match projs tuple p pty with
+             | Some sub when List.length sub = List.length xs && List.for_all2 (fun (x, _) ((x', _), _) -> x = x') xs sub ->
+                 let rhs' = List.fold_left (fun t ((x, xty), proj) -> replace_free (x, xty) proj 0 t) rhs sub in
+                 let lam = Lam (pn, pty, abstract_free (pn, pty) 0 rhs') in
+                 let bodyn = List.fold_right (fun (x, xty) acc -> Lam (x, xty, abstract_free (x, xty) 0 acc)) xs rhs in
+                 E.release g.nctx pn;
+                 Some (lam, bodyn, List.map snd xs, type_of [] rhs)
+             | _ -> E.release g.nctx pn; None)
         | _ -> None) in
       List.iter (fun (n, _) -> E.release g.nctx n) xs; E.release g.nctx fn;
       r
@@ -684,23 +695,23 @@ let gabs_elim g (t : tm) : (tm * tm * ty * ty * ty) option =
 
 (* typing of the curried body of a paired abstraction under its two binders:
    (fun x Hx y Hy => lit t :e C) and the meta-lambda (fun x y => lit t) *)
-let gabs_body_typing g (body2 : tm) : string * string =
-  match body2 with
-  | Lam (x, tx, Lam (y, ty, _)) ->
-      let n1, key1, b1 = open_lit g x tx (match body2 with Lam (_, _, b) -> b | _ -> assert false) in
-      g.vars <- (key1, { vty = tx; view = E.VSet (L.carrier g.lctx tx); lit = Mg.Var n1; nat = None; mem = "H" ^ n1; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
-      (match b1 with
-       | Lam (_, _, b) ->
-           let n2, key2, b2 = open_lit g y ty b in
-           g.vars <- (key2, { vty = ty; view = E.VSet (L.carrier g.lctx ty); lit = Mg.Var n2; nat = None; mem = "H" ^ n2; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
-           let r = (try
-             let inner = typ g b2 in
-             let lb = lterm g b2 in
-             (Printf.sprintf "(fun %s H%s %s H%s => %s)" n1 n1 n2 n2 inner, Printf.sprintf "(fun %s:set => fun %s:set => %s)" n1 n2 (pp lb))
-             with e -> close_lit g key2 n2; close_lit g key1 n1; raise e) in
-           close_lit g key2 n2; close_lit g key1 n1; r
-       | _ -> close_lit g key1 n1; unsupported "gabs: body shape")
-  | _ -> unsupported "gabs: body shape"
+let gabs_body_typing g (bodyn : tm) : string * string =
+  let rec go t opened = (match t with
+    | Lam (x, tx, b) ->
+        let n, key, b' = open_lit g x tx b in
+        g.vars <- (key, { vty = tx; view = E.VSet (L.carrier g.lctx tx); lit = Mg.Var n; nat = None; mem = "H" ^ n; rel = ""; kind = KEq; hyp = "" }) :: g.vars;
+        go b' ((n, key) :: opened)
+    | _ ->
+        let r = (try
+          let inner = typ g t in
+          let lb = lterm g t in
+          let names = List.rev_map fst opened in
+          (Printf.sprintf "(fun %s => %s)" (String.concat " " (List.map (fun n -> n ^ " H" ^ n) names)) inner,
+           Printf.sprintf "(%s%s)" (String.concat "" (List.map (fun n -> "fun " ^ n ^ ":set => ") names)) (pp lb))
+          with e -> List.iter (fun (n, key) -> close_lit g key n) opened; raise e) in
+        List.iter (fun (n, key) -> close_lit g key n) opened;
+        r) in
+  go bodyn []
 
 (* relation proof for a HOL term in a given native view; returns (lit, nat, kind, proof) *)
 let rec rel g (t : tm) (want : E.view option) : Mg.tm * Mg.tm * relkind * string =
@@ -868,17 +879,18 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
               and transport the relation along hl_GABS D P = fun p :e A :*: B => T (FST p) (SND p) *)
            (match gabs_elim g t with
             | None -> unsupported "rel: GABS not in paired-abstraction form"
-            | Some (lam, body2, tx, ty, tc) ->
+            | Some (lam, bodyn, tys, tc) ->
                 let rec has_gabs t = (match t with
                   | Const ("GABS", _) -> true | App (a, b) -> has_gabs a || has_gabs b | Lam (_, _, b) -> has_gabs b | _ -> false) in
-                if has_gabs body2 then unsupported "rel: nested paired abstraction";
+                if has_gabs bodyn then unsupported "rel: nested paired abstraction";
+                let lemma = (match List.length tys with 2 -> "gabs_pair_eq" | 3 -> "gabs_triple_eq" | n -> unsupported "rel: paired abstraction of arity %d" n) in
                 let rest = List.tl args in
                 let t' = List.fold_left (fun f a -> App (f, a)) lam rest in
                 let lit', nat', k', pf' = rel g t' (Some nview) in
-                let ca = L.carrier g.lctx tx and cb = L.carrier g.lctx ty and cc = L.carrier g.lctx tc in
-                let ht, tl = gabs_body_typing g body2 in
+                let cs = List.map (fun ty -> ppp (L.carrier g.lctx ty)) tys and cc = L.carrier g.lctx tc in
+                let ht, tl = gabs_body_typing g bodyn in
                 let gabs_lit = lterm g (App (h, List.hd args)) and lam_lit = lterm g lam in
-                let heq = ref (Printf.sprintf "(gabs_pair_eq %s %s %s %s %s %s %s)" (ppp ca) (ppp cb) (ppp cc) (nonempty_pf g tx) (nonempty_pf g ty) tl ht) in
+                let heq = ref (Printf.sprintf "(%s %s %s %s %s %s)" lemma (String.concat " " cs) (ppp cc) (String.concat " " (List.map (nonempty_pf g) tys)) tl ht) in
                 let cl = ref gabs_lit and cr = ref lam_lit in
                 List.iter (fun q ->
                   let lq = lterm g q in
