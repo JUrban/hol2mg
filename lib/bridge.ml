@@ -1380,6 +1380,10 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
   let lsub = ref (List.map (fun a -> (a, L.carrier g.lctx (List.assoc a sub))) tvs) in   (* literal arguments, for side conditions *)
   let argtyp = ref [] in   (* literal typing proofs of set arguments: (index, (literal, proof, carrier)) *)
   let rewrites = ref [] in     (* (literal subterm, native subterm, proof) to apply to the RHS *)
+  (* rewrites are applied largest literal first: a literal argument containing another
+     argument's literal (2 * m inside (2 * m) ^ n) must be rewritten before the inner one,
+     otherwise the inner rewrite destroys the outer pattern *)
+  let ordered_rewrites () = List.stable_sort (fun (l1, _, _) (l2, _, _) -> compare (String.length (Mg.to_string l2)) (String.length (Mg.to_string l1))) (List.rev !rewrites) in
   List.iteri (fun i (role, a) ->
     let aty = List.nth doms i in
     match role with
@@ -1476,12 +1480,12 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
         List.fold_left (fun pf sc_t ->
           let sc = Mg.normalize (Mg.inst !tsub (cstify (Mg.parse_template sc_t))) in
           (* native form after the pending rewrites *)
-          let nat_of t = List.fold_left (fun t (l, n, _) -> replace_tm l n t) t (List.rev !rewrites) in
+          let nat_of t = List.fold_left (fun t (l, n, _) -> replace_tm l n t) t (ordered_rewrites ()) in
           let sc_nat = nat_of sc in
           (* forward transport of a literal-level proof through the pending rewrites *)
           let transport_fwd (prop, pf) = List.fold_left (fun (cur, pf) (l, n, pe) ->
             if replace_tm l n cur = cur then (cur, pf)
-            else (replace_tm l n cur, Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm l (Mg.Var "hl__u") cur)) pf)) (prop, pf) (List.rev !rewrites) in
+            else (replace_tm l n cur, Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)" pe (pp (replace_tm l (Mg.Var "hl__u") cur)) pf)) (prop, pf) (ordered_rewrites ()) in
           let derived () = (match List.assoc_opt sc_t side_derivations with
             | None -> None
             | Some rules ->
@@ -1599,7 +1603,7 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
     let rebuild, b = split_rhs prop in
     let ctx = rebuild (replace_tm l (Mg.Var "hl__u") b) in
     let prop' = rebuild (replace_tm l n b) in
-    (prop', leibniz pe (pp ctx) pf)) (prop0, pf0) (List.rev !rewrites) in
+    (prop', leibniz pe (pp ctx) pf)) (prop0, pf0) (ordered_rewrites ()) in
   (* replay the elaborator's singleton normalisation SetAdjoin Empty a = {a} on the native side *)
   let rec find_adjoin_empty t = (match t with
     | Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Cst "Empty"), a) -> Some (t, Mg.SetEnum [ a ], Printf.sprintf "(binunion_idl %s)" (ppp (Mg.SetEnum [ a ])))
