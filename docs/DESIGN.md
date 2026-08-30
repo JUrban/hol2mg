@@ -1326,7 +1326,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (v) | 2697 / 2697 | 2590 / 2685 public (55 literal_proved; + sup/inf existence rules, omega closure of integer expressions, set-function congruence) | 481 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (w) | 2697 / 2697 | 2592 / 2685 public (55 literal_proved; + finiteness of function spaces `setexp_finite`) | 483 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (x) | 2697 / 2697 | 2592 / 2685 public (57 literal_proved; 823 fully_proved recorded from pilot round 7, §22.6) | 486 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 63 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
-| 2026-08-30 (y) **standard** | 4386 / 4386 | 3546 / 4290 public (57 literal_proved) — all 36 shards check | same libraries + `COUNTABLE`/`<=_c`/`<_c` nested lemmas | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (y) **standard** | 4396 / 4396 | 3546 / 4290 public (57 literal_proved) — all 36 shards check | same libraries + `COUNTABLE`/`<=_c`/`<_c` nested lemmas | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
