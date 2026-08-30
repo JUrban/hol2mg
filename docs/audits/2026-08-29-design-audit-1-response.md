@@ -66,3 +66,16 @@ Update 2026-08-30: the proof-export pilot (§22) is running end to end: HOL Ligh
 recorded, exported and imported into the uniform model, and Megalodon checks the whole chain; in the
 cap-1 000 run 236 public Core theorems are `fully_proved` (no admission at all).  The literal
 *statements* are thereby exercised by the imported proofs for those theorems.
+
+Update 2026-08-31: Core 2 592 / 2 685 `transport_checked` (57 `literal_proved`); pilot rounds 7–8
+recorded per §22.6 — **840 public Core theorems `fully_proved`** in the committed manifest (927
+literal facts discharged by imported, Megalodon-checked HOL proofs, re-validated on every cycle
+by statement-hash and literal-text digests).  The certification pipeline also runs on the
+`standard` profile: 3 839 / 4 290 transport-checked (`docs/DESIGN.md` §21.9a).  The audit's core
+thesis — that only Megalodon-checked bridges count — has since caught two real generator bugs
+(a base-lemma fallback at nested instances, and binder capture in generated lambdas; DESIGN
+§21.9a), confirming the value of the checked chain.  The frozen milestone is pushed:
+`origin/dev/statements-v1` equals the local `f16bb31` (the annotated tag `statements-v1` points
+to the same commit).  Standing limitation: pushes fail in this environment (no credentials), so
+the tag and the ongoing `dev/semantics-v1` commits exist only locally and must be pushed when
+credentials are available.
