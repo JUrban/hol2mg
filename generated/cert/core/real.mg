@@ -796,13 +796,14 @@ Admitted.
 
 // HOL Light: real.ml:376 / REAL_LT_IMP_NZ   (hash md5:203d6d33aa3dcd23b06a048f430c5328)
 Theorem hlt_REAL_LT_IMP_NZ : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> ~ x = hl_real_of_num (hl_NUMERAL hl_zero).
-Admitted.
+exact hlt_REAL_LT_IMP_NZ_model.
+Qed.
 Theorem REAL_LT_IMP_NZ_bridge : (forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> ~ x = hl_real_of_num (hl_NUMERAL hl_zero)) -> (forall x :e R, 0 < x -> ~ x = 0).
 exact (fun H__top => ((imp_forall_in (R) (fun x => hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> ~ x = hl_real_of_num (hl_NUMERAL hl_zero)) (fun x => 0 < x -> ~ x = 0) (fun x Hx => (fun H__L : ((hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) -> (~ x = hl_real_of_num (hl_NUMERAL hl_zero))) => fun H__hyp1 : (0 < x) => (imp_not (x = hl_real_of_num (hl_NUMERAL hl_zero)) (x = 0) (imp_eq (x) (x) (0) (hl_real_of_num (hl_NUMERAL hl_zero)) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) (0) ((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))))))) (H__L ((iffER (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (0 < x) (((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun hl__u hl__v => hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 <-> hl__u < x) ((hl_real_lt_compat) (hl_real_of_num (hl_NUMERAL hl_zero)) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))) (x) Hx))) H__hyp1))))) H__top)).
 Qed.
 Theorem REAL_LT_IMP_NZ : forall x :e R, 0 < x -> ~ x = 0.
 exact (REAL_LT_IMP_NZ_bridge hlt_REAL_LT_IMP_NZ).
-Admitted.
+Qed.
 
 // HOL Light: real.ml:380 / REAL_DIFFSQ   (hash md5:99f08df2ef0a2ad620d38c0a31228ef9)
 Theorem hlt_REAL_DIFFSQ : forall x y :e R, hl_real_mul (hl_real_add x y) (hl_real_sub x y) = hl_real_sub (hl_real_mul x x) (hl_real_mul y y).
@@ -1449,13 +1450,14 @@ Admitted.
 
 // HOL Light: real.ml:705 / REAL_LT_INV   (hash md5:9de65b7bb46eeb7fbc335600141cdfe5)
 Theorem hlt_REAL_LT_INV : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1.
-Admitted.
+exact hlt_REAL_LT_INV_model.
+Qed.
 Theorem REAL_LT_INV_bridge : (forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1) -> (forall x :e R, 0 < x -> 0 < recip_SNo x).
 exact (fun H__top => ((imp_forall_in (R) (fun x => hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 -> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1) (fun x => 0 < x -> 0 < recip_SNo x) (fun x Hx => (fun H__L : ((hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) -> (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1)) => fun H__hyp1 : (0 < x) => (iffEL (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1) (0 < recip_SNo x) (((hl_real_inv_compat) (x) Hx) (fun hl__u hl__v => hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1 <-> 0 < hl__u) (((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun hl__u hl__v => hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1 <-> hl__u < hl_real_inv x) ((hl_real_lt_compat) (hl_real_of_num (hl_NUMERAL hl_zero)) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))) (hl_real_inv x) (setexp_ap (R) (R) (hl_real_inv) ((hl_real_inv_in)) (x) Hx))))) (H__L ((iffER (hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1) (0 < x) (((eq_trans_i (hl_NUMERAL hl_zero) (hl_zero) 0 (hl_NUMERAL_compat (hl_zero) ((eq_sym_i (hl_zero) 0 hl_zero_compat) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0))) hl_zero_compat) (fun hl__u hl__v => hl_real_of_num (hl_NUMERAL hl_zero) = hl__u) ((hl_real_of_num_compat) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in))))) (fun hl__u hl__v => hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 <-> hl__u < x) ((hl_real_lt_compat) (hl_real_of_num (hl_NUMERAL hl_zero)) (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (hl_NUMERAL hl_zero) (setexp_ap (omega) (omega) (hl_NUMERAL) ((hl_NUMERAL_in)) (hl_zero) ((hl_zero_in)))) (x) Hx))) H__hyp1))))) H__top)).
 Qed.
 Theorem REAL_LT_INV : forall x :e R, 0 < x -> 0 < recip_SNo x.
 exact (REAL_LT_INV_bridge hlt_REAL_LT_INV).
-Admitted.
+Qed.
 
 // HOL Light: real.ml:719 / REAL_LT_INV_EQ   (hash md5:95ff13f6e9f399226108738716c0f5d3)
 Theorem hlt_REAL_LT_INV_EQ : forall x :e R, hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) (hl_real_inv x) = 1 <-> hl_real_lt (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1.

@@ -73300,11 +73300,11 @@
    "cert_status": "transport_checked",
    "cert_error": "",
    "bridge": "REAL_LT_IMP_NZ_bridge",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -73370,11 +73370,11 @@
    "cert_status": "transport_checked",
    "cert_error": "",
    "bridge": "REAL_LT_INV_bridge",
-   "literal_proved": false,
+   "literal_proved": true,
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "literal_fact_proved": false,
+   "literal_fact_proved": true,
    "fully_proved": false
   },
   {
@@ -102813,7 +102813,7 @@
   ],
   "failed_shards": {},
   "transport_checked": 2592,
-  "literal_proved": 55,
+  "literal_proved": 57,
   "fully_proved": 0
  }
 }
