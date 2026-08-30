@@ -1319,6 +1319,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (o) | 2697 / 2697 | 2544 / 2685 public (42 literal_proved; pilot round 4: 390 fully_proved) | 446 + 24 stage-2 (+ 26 + 15 carrier lemmas, 167 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (p) | 2697 / 2697 | 2547 / 2685 public (42 literal_proved; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 26 + 15 carrier lemmas, 170 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (q) | 2697 / 2697 | 2547 / 2685 public (51 literal_proved: + tybit0/1 INDUCT/RECURSION, int_add_th, int_mul_th, int_sgn_th, MONOIDAL_ADD, MONOIDAL_REAL_ADD; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 53 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (r) | 2697 / 2697 | 2547 / 2685 public (54 literal_proved: + REAL_EQ_NEG2, REAL_LE_LMUL, REAL_EQ_MUL_LCANCEL; pilot round 6: 682 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 56 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1613,7 +1614,9 @@ is larger than the claim.
    (`hlt_int_add_th_model`, `hlt_int_mul_th_model`, `hlt_int_sgn_th_model` from the compat
    lemmas of the integer operations; `hlt_MONOIDAL_ADD_model`, `hlt_MONOIDAL_REAL_ADD_model` from
    `hl_monoidal_compat` and the known monoids; also `tybit0/1_INDUCT/RECURSION`), so round 7
-   need not force them.
+   need not force them.  The same for the three 32 000-inference blockers of realarith.ml
+   (`REAL_EQ_NEG2`, `REAL_LE_LMUL`, `REAL_EQ_MUL_LCANCEL`: model theorems from the real-arithmetic
+   compat lemmas and God1's `minus_SNo_invol`, `nonneg_mul_SNo_Le`, `mul_SNo_nonzero_cancel`).
 10. Round 6 (cap 2 000, 29 forced leaves, 45 parts, 6 jobs, 3.3-hour limit): 42 parts and the
    base check (the `cart` part after admitting the `cart_tybij` import by hand, before the
    importer fix), the three parts carrying the giant forced proofs time out; 780 literal facts
