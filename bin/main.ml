@@ -362,9 +362,9 @@ let () =
             let carriers_file = "mglib/literal/carriers.mg" in
             let proved = Hashtbl.create 64 in
             List.iter (fun compat_file -> if Sys.file_exists compat_file then begin
-              let ic = open_in compat_file in
-              let n = in_channel_length ic in
-              let txt = really_input_string ic n in close_in ic;
+              let txt = (if Sys.file_exists compat_file then (let ic = open_in compat_file in
+                let n = in_channel_length ic in
+                let t = really_input_string ic n in close_in ic; t) else "") in
               let re = Str.regexp "Theorem[ \n]+\([A-Za-z_0-9']+\)[ \n]*:\([^.]*\)\.[ \n]" in
               let pos = ref 0 in
               (try while true do
@@ -374,7 +374,7 @@ let () =
                  let norm = String.concat " " (List.filter (fun w -> w <> "") (String.split_on_char ' ' (String.map (fun c -> if c = '\n' then ' ' else c) body))) in
                  Hashtbl.replace proved name norm
                done with Not_found -> ())
-            end) [ carriers_file; compat_file; "mglib/literal/carriers2.mg"; "mglib/literal/compat2.mg" ];
+            end) [ carriers_file; compat_file; "mglib/literal/carriers2.mg"; "mglib/literal/compat2.mg"; "mglib/literal/compat_" ^ profile ^ ".mg" ];
             (* model-soundness theorems (§21.4): hlt_N_model with exactly the literal statement of N discharges hlt_N *)
             let model = Hashtbl.create 64 in
             let model_file = "mglib/literal/model_theorems.mg" in

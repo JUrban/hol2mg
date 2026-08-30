@@ -2760,7 +2760,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         let sub = with_var v (fun () -> bridge g dir body') in
         Printf.sprintf "(%s %s %s %s (fun %s => %s))" (lemma (match kind with `All -> "pred" | `Ex -> "pred_rev")) (ppp c) la na n sub
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, L.mg_eq (Mg.App (Mg.Var n, Mg.Var "x")) L.one)); rel = ""; kind = KPWP c } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__x", Mg.Set, L.mg_eq (Mg.App (Mg.Var n, Mg.Var "hl__x")) L.one)); rel = ""; kind = KPWP c } in
         let sub = with_var v (fun () -> bridge g dir body') in
         Printf.sprintf "(%s %s %s %s (fun %s %s => %s))" (lemma (match kind with `All -> "pred_rev" | `Ex -> "pred")) (ppp c) la na n hn sub
       end
@@ -2775,7 +2775,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
          | `All -> Printf.sprintf "(imp_forall_fun %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) la na n hf sub
          | `Ex -> Printf.sprintf "(imp_exists_fun_rev %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) la na n hf sub)
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.App (Mg.Var n, Mg.Var "x"))); rel = ""; kind = KPW c } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__x", Mg.Set, Mg.App (Mg.Var n, Mg.Var "hl__x"))); rel = ""; kind = KPW c } in
         let sub = with_var v (fun () -> bridge g dir body') in
         (match kind with
          | `All -> Printf.sprintf "(imp_forall_fun_rev %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) la na n hn sub
@@ -2824,7 +2824,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         let sub = with_var v (fun () -> bridge g dir body') in
         Printf.sprintf "(%s %s %s %s %s %s (fun %s => %s))" (lemma (match kind with `All -> "pred3" | `Ex -> "pred3_rev")) (ppp c) (ppp d) (ppp e) la na n sub
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.Lam ("y", Mg.Set, Mg.Lam ("z", Mg.Set, L.mg_eq (Mg.apps (Mg.Var n) [ Mg.Var "x"; Mg.Var "y"; Mg.Var "z" ]) L.one)))); rel = ""; kind = KPWP3 (c, d, e) } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__x", Mg.Set, Mg.Lam ("hl__y", Mg.Set, Mg.Lam ("hl__z", Mg.Set, L.mg_eq (Mg.apps (Mg.Var n) [ Mg.Var "hl__x"; Mg.Var "hl__y"; Mg.Var "hl__z" ]) L.one)))); rel = ""; kind = KPWP3 (c, d, e) } in
         let sub = with_var v (fun () -> bridge g dir body') in
         Printf.sprintf "(%s %s %s %s %s %s (fun %s %s => %s))" (lemma (match kind with `All -> "pred3_rev" | `Ex -> "pred3")) (ppp c) (ppp d) (ppp e) la na n hn sub
       end
@@ -2836,7 +2836,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         let sub = with_var v (fun () -> bridge g dir body') in
         Printf.sprintf "(%s %s %s %s %s (fun %s => %s))" (lemma (match kind with `All -> "pred2" | `Ex -> "pred2_rev")) (ppp c) (ppp d) la na n sub
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.Lam ("y", Mg.Set, L.mg_eq (Mg.apps (Mg.Var n) [ Mg.Var "x"; Mg.Var "y" ]) L.one))); rel = ""; kind = KPWP2 (c, d) } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__x", Mg.Set, Mg.Lam ("hl__y", Mg.Set, L.mg_eq (Mg.apps (Mg.Var n) [ Mg.Var "hl__x"; Mg.Var "hl__y" ]) L.one))); rel = ""; kind = KPWP2 (c, d) } in
         let sub = with_var v (fun () -> bridge g dir body') in
         Printf.sprintf "(%s %s %s %s %s (fun %s %s => %s))" (lemma (match kind with `All -> "pred2_rev" | `Ex -> "pred2")) (ppp c) (ppp d) la na n hn sub
       end
@@ -2851,7 +2851,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
          | `All -> Printf.sprintf "(imp_forall_fun2 %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) la na n hf sub
          | `Ex -> Printf.sprintf "(imp_exists_fun2_rev %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) la na n hf sub)
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.Lam ("y", Mg.Set, Mg.apps (Mg.Var n) [ Mg.Var "x"; Mg.Var "y" ]))); rel = ""; kind = KPW2 (c, d) } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__x", Mg.Set, Mg.Lam ("hl__y", Mg.Set, Mg.apps (Mg.Var n) [ Mg.Var "hl__x"; Mg.Var "hl__y" ]))); rel = ""; kind = KPW2 (c, d) } in
         let sub = with_var v (fun () -> bridge g dir body') in
         (match kind with
          | `All -> Printf.sprintf "(imp_forall_fun2_rev %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) la na n hn sub
@@ -2868,7 +2868,7 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
          | `All -> Printf.sprintf "(imp_forall_fun3 %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hf sub
          | `Ex -> Printf.sprintf "(imp_exists_fun3_rev %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hf sub)
       end else begin
-        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.Lam ("y", Mg.Set, Mg.Lam ("z", Mg.Set, Mg.apps (Mg.Var n) [ Mg.Var "x"; Mg.Var "y"; Mg.Var "z" ])))); rel = ""; kind = KPW3 (c, d, e) } in
+        let v = { plain with nat = Some (Mg.Lam ("hl__x", Mg.Set, Mg.Lam ("hl__y", Mg.Set, Mg.Lam ("hl__z", Mg.Set, Mg.apps (Mg.Var n) [ Mg.Var "hl__x"; Mg.Var "hl__y"; Mg.Var "hl__z" ])))); rel = ""; kind = KPW3 (c, d, e) } in
         let sub = with_var v (fun () -> bridge g dir body') in
         (match kind with
          | `All -> Printf.sprintf "(imp_forall_fun3_rev %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hn sub
