@@ -469,3 +469,30 @@ witness f. apply andI.
   claim Ha2: a :e idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1). { exact ((tybit1_dom_eq A HA) (fun u v => a :e u) Ha). }
   exact (f_equal (fun u => f u) (hl_mktybit1 A a) a (beta (idx_n (dimindex (idx_n (dimindex A + dimindex A)) + dimindex 1)) (fun x => x) a Ha2)).
 Qed.
+// ---- integer arithmetic (int.ml) and the monoidal facts of iterate.ml: model theorems replacing giant recorded proofs ----
+Theorem hlt_MONOIDAL_ADD_model : hl_monoidal omega hl_add = 1.
+exact (iffER (hl_monoidal omega hl_add = 1) ((forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + (y + z) = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x) (hl_monoidal_compat omega omega_nonempty hl_add hl_add_in (fun a:set => fun b:set => a + b) (fun x Hx y Hy => hl_add_compat x Hx y Hy)) monoidal_omega_add).
+Qed.
+Theorem hlt_MONOIDAL_REAL_ADD_model : hl_monoidal R hl_real_add = 1.
+exact (iffER (hl_monoidal R hl_real_add = 1) ((forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + (y + z) = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x) (hl_monoidal_compat R R_nonempty hl_real_add hl_real_add_in (fun a:set => fun b:set => a + b) (fun x Hx y Hy => hl_real_add_compat x Hx y Hy)) monoidal_R_add).
+Qed.
+Theorem hlt_int_add_th_model : forall x y :e hl_ty_int, hl_real_of_int (hl_int_add x y) = hl_real_add (hl_real_of_int x) (hl_real_of_int y).
+let x. assume Hx0. let y. assume Hy0.
+claim Hx: x :e int. { exact (hl_ty_int_native (fun u v => x :e u) Hx0). }
+claim Hy: y :e int. { exact (hl_ty_int_native (fun u v => y :e u) Hy0). }
+claim Hs: hl_int_add x y :e int. { exact ((eq_sym_i (hl_int_add x y) (x + y) (hl_int_add_compat x Hx y Hy)) (fun u v => u :e int) (int_add_SNo x Hx y Hy)). }
+exact (eq_trans_i (hl_real_of_int (hl_int_add x y)) (hl_int_add x y) (hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (hl_real_of_int_compat (hl_int_add x y) Hs) (eq_trans_i (hl_int_add x y) (x + y) (hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (hl_int_add_compat x Hx y Hy) (eq_sym_i (hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (x + y) (eq_trans_i (hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (hl_real_add x y) (x + y) (f_equal2 (fun a b => hl_real_add a b) (hl_real_of_int x) x (hl_real_of_int y) y (hl_real_of_int_compat x Hx) (hl_real_of_int_compat y Hy)) (hl_real_add_compat x (int_Subq_R x Hx) y (int_Subq_R y Hy)))))).
+Qed.
+Theorem hlt_int_mul_th_model : forall x y :e hl_ty_int, hl_real_of_int (hl_int_mul x y) = hl_real_mul (hl_real_of_int x) (hl_real_of_int y).
+let x. assume Hx0. let y. assume Hy0.
+claim Hx: x :e int. { exact (hl_ty_int_native (fun u v => x :e u) Hx0). }
+claim Hy: y :e int. { exact (hl_ty_int_native (fun u v => y :e u) Hy0). }
+claim Hs: hl_int_mul x y :e int. { exact ((eq_sym_i (hl_int_mul x y) (x * y) (hl_int_mul_compat x Hx y Hy)) (fun u v => u :e int) (int_mul_SNo x Hx y Hy)). }
+exact (eq_trans_i (hl_real_of_int (hl_int_mul x y)) (hl_int_mul x y) (hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (hl_real_of_int_compat (hl_int_mul x y) Hs) (eq_trans_i (hl_int_mul x y) (x * y) (hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (hl_int_mul_compat x Hx y Hy) (eq_sym_i (hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (x * y) (eq_trans_i (hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (hl_real_mul x y) (x * y) (f_equal2 (fun a b => hl_real_mul a b) (hl_real_of_int x) x (hl_real_of_int y) y (hl_real_of_int_compat x Hx) (hl_real_of_int_compat y Hy)) (hl_real_mul_compat x (int_Subq_R x Hx) y (int_Subq_R y Hy)))))).
+Qed.
+Theorem hlt_int_sgn_th_model : forall x :e hl_ty_int, hl_real_of_int (hl_int_sgn x) = hl_real_sgn (hl_real_of_int x).
+let x. assume Hx0.
+claim Hx: x :e int. { exact (hl_ty_int_native (fun u v => x :e u) Hx0). }
+claim Hs: hl_int_sgn x :e int. { exact (setexp_ap int int hl_int_sgn hl_int_sgn_in x Hx). }
+exact (eq_trans_i (hl_real_of_int (hl_int_sgn x)) (hl_int_sgn x) (hl_real_sgn (hl_real_of_int x)) (hl_real_of_int_compat (hl_int_sgn x) Hs) (eq_trans_i (hl_int_sgn x) (if 0 < x then 1 else if x < 0 then - 1 else 0) (hl_real_sgn (hl_real_of_int x)) (hl_int_sgn_compat x Hx) (eq_sym_i (hl_real_sgn (hl_real_of_int x)) (if 0 < x then 1 else if x < 0 then - 1 else 0) (eq_trans_i (hl_real_sgn (hl_real_of_int x)) (hl_real_sgn x) (if 0 < x then 1 else if x < 0 then - 1 else 0) (f_equal (fun a => hl_real_sgn a) (hl_real_of_int x) x (hl_real_of_int_compat x Hx)) (hl_real_sgn_compat x (int_Subq_R x Hx)))))).
+Qed.

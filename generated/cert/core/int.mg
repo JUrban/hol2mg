@@ -176,13 +176,14 @@ Admitted.
 
 // HOL Light: int.ml:109 / int_add_th   (hash md5:dd9f80506f6d99ceaf3f0d9bb1319597)
 Theorem hlt_int_add_th : forall x y :e hl_ty_int, hl_real_of_int (hl_int_add x y) = hl_real_add (hl_real_of_int x) (hl_real_of_int y).
-Admitted.
+exact hlt_int_add_th_model.
+Qed.
 Theorem int_add_th_bridge : (forall x y :e hl_ty_int, hl_real_of_int (hl_int_add x y) = hl_real_add (hl_real_of_int x) (hl_real_of_int y)) -> (forall x y :e int, x + y = x + y).
 exact (fun H__top => ((imp_forall_in (int) (fun x => forall y :e int, hl_real_of_int (hl_int_add x y) = hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (fun x => forall y :e int, x + y = x + y) (fun x Hx => (imp_forall_in (int) (fun y => hl_real_of_int (hl_int_add x y) = hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (fun y => x + y = x + y) (fun y Hy => (imp_eq (hl_real_of_int (hl_int_add x y)) (x + y) (hl_real_add (hl_real_of_int x) (hl_real_of_int y)) (x + y) (((hl_int_add_compat) (x) Hx (y) Hy) (fun hl__u hl__v => hl_real_of_int (hl_int_add x y) = hl__u) ((hl_real_of_int_compat) (hl_int_add x y) (setexp_ap (int) (int) (hl_int_add x) (setexp_ap (int) (int :^: int) (hl_int_add) ((hl_int_add_in)) (x) Hx) (y) Hy))) (((hl_real_of_int_compat) (y) Hy) (fun hl__u hl__v => hl_real_add (hl_real_of_int x) (hl_real_of_int y) = x + hl__u) (((hl_real_of_int_compat) (x) Hx) (fun hl__u hl__v => hl_real_add (hl_real_of_int x) (hl_real_of_int y) = hl__u + hl_real_of_int y) ((hl_real_add_compat) (hl_real_of_int x) (setexp_ap (int) (R) (hl_real_of_int) ((hl_real_of_int_in)) (x) Hx) (hl_real_of_int y) (setexp_ap (int) (R) (hl_real_of_int) ((hl_real_of_int_in)) (y) Hy))))))))) (hl_ty_int_native (fun hl__u hl__v => forall x y :e hl__u, hl_real_of_int (hl_int_add x y) = hl_real_add (hl_real_of_int x) (hl_real_of_int y)) H__top))).
 Qed.
 Theorem int_add_th : forall x y :e int, x + y = x + y.
 exact (int_add_th_bridge hlt_int_add_th).
-Admitted.
+Qed.
 
 // HOL Light: int.ml:123 / int_sub   (hash md5:da9658dcf1adb65471b3df2d7a5508a8)
 Theorem hlt_int_sub : forall x y :e hl_ty_int, hl_int_sub x y = hl_int_of_real (hl_real_sub (hl_real_of_int x) (hl_real_of_int y)).
@@ -216,13 +217,14 @@ Admitted.
 
 // HOL Light: int.ml:134 / int_mul_th   (hash md5:b83b17b818c1f7162261a657aaa93495)
 Theorem hlt_int_mul_th : forall x y :e hl_ty_int, hl_real_of_int (hl_int_mul x y) = hl_real_mul (hl_real_of_int x) (hl_real_of_int y).
-Admitted.
+exact hlt_int_mul_th_model.
+Qed.
 Theorem int_mul_th_bridge : (forall x y :e hl_ty_int, hl_real_of_int (hl_int_mul x y) = hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) -> (forall x y :e int, x * y = x * y).
 exact (fun H__top => ((imp_forall_in (int) (fun x => forall y :e int, hl_real_of_int (hl_int_mul x y) = hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (fun x => forall y :e int, x * y = x * y) (fun x Hx => (imp_forall_in (int) (fun y => hl_real_of_int (hl_int_mul x y) = hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (fun y => x * y = x * y) (fun y Hy => (imp_eq (hl_real_of_int (hl_int_mul x y)) (x * y) (hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) (x * y) (((hl_int_mul_compat) (x) Hx (y) Hy) (fun hl__u hl__v => hl_real_of_int (hl_int_mul x y) = hl__u) ((hl_real_of_int_compat) (hl_int_mul x y) (setexp_ap (int) (int) (hl_int_mul x) (setexp_ap (int) (int :^: int) (hl_int_mul) ((hl_int_mul_in)) (x) Hx) (y) Hy))) (((hl_real_of_int_compat) (y) Hy) (fun hl__u hl__v => hl_real_mul (hl_real_of_int x) (hl_real_of_int y) = x * hl__u) (((hl_real_of_int_compat) (x) Hx) (fun hl__u hl__v => hl_real_mul (hl_real_of_int x) (hl_real_of_int y) = hl__u * hl_real_of_int y) ((hl_real_mul_compat) (hl_real_of_int x) (setexp_ap (int) (R) (hl_real_of_int) ((hl_real_of_int_in)) (x) Hx) (hl_real_of_int y) (setexp_ap (int) (R) (hl_real_of_int) ((hl_real_of_int_in)) (y) Hy))))))))) (hl_ty_int_native (fun hl__u hl__v => forall x y :e hl__u, hl_real_of_int (hl_int_mul x y) = hl_real_mul (hl_real_of_int x) (hl_real_of_int y)) H__top))).
 Qed.
 Theorem int_mul_th : forall x y :e int, x * y = x * y.
 exact (int_mul_th_bridge hlt_int_mul_th).
-Admitted.
+Qed.
 
 // HOL Light: int.ml:143 / int_abs   (hash md5:71eaa84cc4df60cef62cde4868205e2e)
 Theorem hlt_int_abs : forall x :e hl_ty_int, hl_int_abs x = hl_int_of_real (hl_real_abs (hl_real_of_int x)).
@@ -256,13 +258,14 @@ Admitted.
 
 // HOL Light: int.ml:154 / int_sgn_th   (hash md5:b6c4c1d56066eb2f173bcd00597562bf)
 Theorem hlt_int_sgn_th : forall x :e hl_ty_int, hl_real_of_int (hl_int_sgn x) = hl_real_sgn (hl_real_of_int x).
-Admitted.
+exact hlt_int_sgn_th_model.
+Qed.
 Theorem int_sgn_th_bridge : (forall x :e hl_ty_int, hl_real_of_int (hl_int_sgn x) = hl_real_sgn (hl_real_of_int x)) -> (forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0).
 exact (fun H__top => ((imp_forall_in (int) (fun x => hl_real_of_int (hl_int_sgn x) = hl_real_sgn (hl_real_of_int x)) (fun x => (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0) (fun x Hx => (imp_eq (hl_real_of_int (hl_int_sgn x)) (if 0 < x then 1 else if x < 0 then - 1 else 0) (hl_real_sgn (hl_real_of_int x)) (if 0 < x then 1 else if x < 0 then - 1 else 0) (((hl_int_sgn_compat) (x) Hx) (fun hl__u hl__v => hl_real_of_int (hl_int_sgn x) = hl__u) ((hl_real_of_int_compat) (hl_int_sgn x) (setexp_ap (int) (int) (hl_int_sgn) ((hl_int_sgn_in)) (x) Hx))) (((hl_real_of_int_compat) (x) Hx) (fun hl__u hl__v => hl_real_sgn (hl_real_of_int x) = if 0 < hl__u then 1 else if hl__u < 0 then - 1 else 0) ((hl_real_sgn_compat) (hl_real_of_int x) (setexp_ap (int) (R) (hl_real_of_int) ((hl_real_of_int_in)) (x) Hx)))))) (hl_ty_int_native (fun hl__u hl__v => forall x :e hl__u, hl_real_of_int (hl_int_sgn x) = hl_real_sgn (hl_real_of_int x)) H__top))).
 Qed.
 Theorem int_sgn_th : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
 exact (int_sgn_th_bridge hlt_int_sgn_th).
-Admitted.
+Qed.
 
 // HOL Light: int.ml:160 / int_max   (hash md5:27b81a3591ba69db6f036db60e5e9b3a)
 Theorem hlt_int_max : forall x y :e hl_ty_int, hl_int_max x y = hl_int_of_real (hl_real_max (hl_real_of_int x) (hl_real_of_int y)).

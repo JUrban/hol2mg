@@ -1013,13 +1013,14 @@ Admitted.
 
 // HOL Light: iterate.ml:1296 / MONOIDAL_ADD   (hash md5:bba9deba271dae756a54baac1be666fc)
 Theorem hlt_MONOIDAL_ADD : hl_monoidal omega hl_add = 1.
-Admitted.
+exact hlt_MONOIDAL_ADD_model.
+Qed.
 Theorem MONOIDAL_ADD_bridge : (hl_monoidal omega hl_add = 1) -> ((forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x).
 exact (fun H__top => ((iffEL (hl_monoidal omega hl_add = 1) ((forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x) ((hl_monoidal_compat) (omega) omega_nonempty (hl_add) ((hl_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (omega) (omega) (hl_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e omega => fun y :e omega => hl_add x y) x y) (hl_add x y) (x + y) (lam2_beta (omega) (omega) (fun x y => hl_add x y) x Hx y Hy) ((hl_add_compat) (x) Hx (y) Hy))))))) H__top)).
 Qed.
 Theorem MONOIDAL_ADD : (forall x y :e omega, x + y = y + x) /\ (forall x y z :e omega, x + y + z = (x + y) + z) /\ forall x :e omega, neutral_of omega (fun a:set => fun b:set => a + b) + x = x.
 exact (MONOIDAL_ADD_bridge hlt_MONOIDAL_ADD).
-Admitted.
+Qed.
 
 // HOL Light: iterate.ml:1300 / NSUM_DEGENERATE   (hash md5:c1df488542489eef5bbd5fb998960ec3)
 Theorem hlt_NSUM_DEGENERATE : forall A:set, A <> Empty -> forall f :e omega :^: A, forall s :e 2 :^: A, ~ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_286 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_286 (if hl_IN A x s = 1 /\ ~ f x = hl_NUMERAL hl_zero then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_nsum A s f = hl_NUMERAL hl_zero.
@@ -1898,13 +1899,14 @@ Admitted.
 
 // HOL Light: iterate.ml:1992 / MONOIDAL_REAL_ADD   (hash md5:56f4a58acc8d9b328a62928ef674af6d)
 Theorem hlt_MONOIDAL_REAL_ADD : hl_monoidal R hl_real_add = 1.
-Admitted.
+exact hlt_MONOIDAL_REAL_ADD_model.
+Qed.
 Theorem MONOIDAL_REAL_ADD_bridge : (hl_monoidal R hl_real_add = 1) -> ((forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x).
 exact (fun H__top => ((iffEL (hl_monoidal R hl_real_add = 1) ((forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x) ((hl_monoidal_compat) (R) R_nonempty (hl_real_add) ((hl_real_add_in)) (fun x:set => fun x0:set => x + x0) ((pw_eta_fun2 (R) (R) (hl_real_add) (fun x:set => fun x0:set => x + x0) (fun x Hx y Hy => (eq_trans_i ((fun x :e R => fun y :e R => hl_real_add x y) x y) (hl_real_add x y) (x + y) (lam2_beta (R) (R) (fun x y => hl_real_add x y) x Hx y Hy) ((hl_real_add_compat) (x) Hx (y) Hy))))))) H__top)).
 Qed.
 Theorem MONOIDAL_REAL_ADD : (forall x y :e R, x + y = y + x) /\ (forall x y z :e R, x + y + z = (x + y) + z) /\ forall x :e R, neutral_of R (fun a:set => fun b:set => a + b) + x = x.
 exact (MONOIDAL_REAL_ADD_bridge hlt_MONOIDAL_REAL_ADD).
-Admitted.
+Qed.
 
 // HOL Light: iterate.ml:1996 / SUM_DEGENERATE   (hash md5:cf2bc0c49dfb27c1270078e50a73d766)
 Theorem hlt_SUM_DEGENERATE : forall A:set, A <> Empty -> forall f :e R :^: A, forall s :e 2 :^: A, ~ hl_FINITE A (hl_GSPEC A (fun GEN_PVAR_313 :e A => if exists x :e A, hl_SETSPEC A GEN_PVAR_313 (if hl_IN A x s = 1 /\ ~ f x = hl_real_of_num (hl_NUMERAL hl_zero) then 1 else 0) x = 1 then 1 else 0)) = 1 -> hl_sum A s f = hl_real_of_num (hl_NUMERAL hl_zero).
