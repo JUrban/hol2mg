@@ -1325,6 +1325,8 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (u) | 2697 / 2697 | 2575 / 2685 public (55 literal_proved; + ternary function binders, compat `LET`/`LET_END`/`UNCURRY`/`SING`/`>_c`/`NULL`/`real_mod`) | 465 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (v) | 2697 / 2697 | 2590 / 2685 public (55 literal_proved; + sup/inf existence rules, omega closure of integer expressions, set-function congruence) | 481 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (w) | 2697 / 2697 | 2592 / 2685 public (55 literal_proved; + finiteness of function spaces `setexp_finite`) | 483 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (x) | 2697 / 2697 | 2592 / 2685 public (57 literal_proved; 823 fully_proved recorded from pilot round 7, §22.6) | 486 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 63 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (y) **standard** | 4386 / 4386 | 3546 / 4290 public (57 literal_proved) — all 36 shards check | same libraries + `COUNTABLE`/`<=_c`/`<_c` nested lemmas | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1476,6 +1478,26 @@ negative integers (`NUM_OF_INT_ADD/MUL/POW`, `real_zpow`); applications of set-f
 variables to related arguments go through `f_equal2` (`WF_REC_TAIL_GENERAL`).  The residue
 is classified in §21.10.
 
+
+### 21.9a The `standard` profile (2026-08-30)
+
+The certification pipeline runs unchanged on the `standard` profile (Core plus 11 Library
+files, 4 290 public theorems): `tools/update.sh standard` translates, checks and finalizes it
+like Core.  First run: 3 546 transport-checked (the 2 592 of Core plus 954 Library theorems —
+`prime.ml`, `integer.ml`, `products.ml`, `card.ml`, `isum.ml`, `pocklington.ml`, `floor.ml`,
+`binomial.ml` …), all 36 shards check.  The first attempt exposed a generator bug that Core
+never exercised: with a missing nested compat variant `<compat>_pow<k>`, `rel_mapped` silently
+fell back to the *base* lemma although a subset-role argument was a set of subsets
+(represented by `hl_rep2`); Megalodon rejected the proof (`CARD_LE_UNIONS`), as the trust
+chain intends, but the failure took the whole `card` shard with it.  Now a type variable
+instantiated at a subset type always selects the nested variant (reported as
+`compat_missing` when absent), and the expected nested statements are generated for every
+entry whose type variables occur as subset-element types anywhere in the scheme (this also
+covers `IMAGE` with subset-valued functions, which the earlier fixed list handled ad hoc).
+The standard residue: 744 `bridge_unsupported`, dominated by missing compat lemmas of the
+Library constants (`wo.ml` well-orders 126, `pocklington.ml` 108, `card.ml` 64) and the
+closure operators of `rstc.ml` (`TC`/`RTC`/`RC`/`SC`, 79); some generated nested statements
+are unprovable as stated (`*_c`: pairs of literal versus native subsets) and stay stubs.
 
 ### 21.10 Residue of the Core certification (`tools/bridge_residue.py`)
 
