@@ -1314,6 +1314,7 @@ literal_proved both imply transport_checked.
 | 2026-08-29 (j) | 2697 / 2697 | 2369 / 2685 public | 406 (+ 26 carrier lemmas, 162 bridge-library lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-14.md` |
 | 2026-08-29 (k) | 2697 / 2697 | 2417 / 2685 public (38 literal_proved, 0 fully_proved) | 434 (+ 26 carrier lemmas, 162 bridge-library lemmas, 41 model theorems; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-29-interim-15.md` |
 | 2026-08-30 (l) | 2697 / 2697 | 2428 / 2685 public (39 literal_proved; proof-import pilot, cap 1 000, not committed: 236 fully_proved) | 435 (+ 26 carrier lemmas, 162 bridge-library lemmas, 42 model theorems, 48 uniform-layer lemmas; generated: 485 typing, 213 unfolding, 55 specification lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (m) | 2697 / 2697 | 2455 / 2685 public (42 literal_proved; pilot round 4, cap 2 000 + forced leaves, 21/23 shards: 390 fully_proved) | 446 (+ 26 carrier lemmas, 162 bridge-library lemmas, 44 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1519,8 +1520,13 @@ is larger than the claim.
    literal facts proved through imported proofs, **236 public theorems `fully_proved`**
    (`docs/reports/2026-08-30-interim-16.md`).  Blockers: leaves above the cap (456 of 726) and
    definitional theorems with enormous recorded proofs (`is_int`, 162 111 inferences, now a model
-   theorem).  Next: cap 2 000 (1 683 theorems) and forced export of the large leaves
-   (`int_add_th`, `MONOIDAL_ADD`, `MONOIDAL_REAL_ADD`, `IN_ELIM_THM`, `int_sgn_th`).
+   theorem).
+6. Rounds 3–4 (cap 2 000, 1 683 theorems; round 4 with six forced large leaves, 952 MB of
+   modules, 5 jobs, 2-hour limit): 21 of 23 shards check (`int`, `iterate` exceed 2 hours),
+   423 literal facts proved through imported proofs, **390 public theorems `fully_proved`**.
+   Fixed afterwards: import-only certification entries for non-public theorems with a literal
+   statement (leaves such as `IN_ELIM_THM`), model-theorem discharge for non-bridged theorems
+   (`list_RECURSION`).  Round 5 (18 forced leaves, 3.3-hour limit) started 2026-08-30.
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively
