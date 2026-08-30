@@ -1573,7 +1573,18 @@ is larger than the claim.
    423 literal facts proved through imported proofs, **390 public theorems `fully_proved`**.
    Fixed afterwards: import-only certification entries for non-public theorems with a literal
    statement (leaves such as `IN_ELIM_THM`), model-theorem discharge for non-bridged theorems
-   (`list_RECURSION`).  Round 5 (18 forced leaves, 3.3-hour limit) started 2026-08-30.
+   (`list_RECURSION`).
+7. Round 5 (cap 2 000, 18 forced leaves of 2–4 K inferences, 5 jobs, 3.3-hour limit): 22 of 24
+   shards check (`int`, `iterate` again exceed the limit), 639 literal facts proved through
+   imported proofs, **548 public theorems `fully_proved`** (manifest copy
+   `generated/proofcert/core.pilot5.manifest.json`).  The two largest shards are the bottleneck
+   (200 MB modules, single-threaded Megalodon): the emission now splits a shard whose imported
+   proofs exceed `HOL2MG_PART_NODES` (default 40 000) inference nodes into parts `<shard>_p<k>`
+   by cumulative size (the manifest records the part as the item's shard, leaves are declared
+   per part), so that the parts check in parallel.  Round 6 (cap 2 000, 29 forced leaves up to
+   8 K inferences, split shards, 6 jobs) started 2026-08-30.  Top blockers after round 5:
+   `REAL_EQ_ADD_RCANCEL` (70), `LT_MULT_LCANCEL` (65), `num_WOP` (40), `REAL_EQ_MUL_LCANCEL`
+   (40, 32 834 inferences — not forced), `REAL_MUL_LNEG`/`REAL_MUL_RID` (21).
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively

@@ -53,7 +53,7 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 
 | profile | public statements | literal statements checked | `transport_checked` | `literal_proved` | `fully_proved` |
 |---|---|---|---|---|---|
-| core | 2685 | 2697 | 2544 | 42 | 390 (pilot, not committed) |
+| core | 2685 | 2697 | 2544 | 42 | 548 (pilot, not committed) |
 
 A theorem is `transport_checked` (formerly `native_certified`) only when Megalodon `Qed`-checked
 the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`,
@@ -62,7 +62,7 @@ the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/ch
 primitive interface (`mglib/literal/model_theorems.mg`, DESIGN §21.4): nothing is admitted.
 `fully_proved` (discharge by an imported HOL Light proof) comes from the proof-export pilot
 (DESIGN §22, `tools/proof_pilot.sh`): its artifacts are regenerated, not committed, so the committed
-manifest carries no imported proofs; the pilot round 4 of 2026-08-30 (cap 2 000 inferences plus forced leaves, 21 of 23 shards) proved 390
+manifest carries no imported proofs; the pilot round 5 of 2026-08-30 (cap 2 000 inferences plus 18 forced leaves, 22 of 24 shards) proved 548
 public Core theorems fully (report 16).  Compatibility theorems for mapped
 constants are hand-proved in `mglib/literal/compat.mg` from the literal definitions.
 
