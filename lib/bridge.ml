@@ -1190,6 +1190,8 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
             | Some (lam, bodyn, tys, tc) ->
                 let rec has_gabs t = (match t with
                   | Const ("GABS", _) -> true | App (a, b) -> has_gabs a || has_gabs b | Lam (_, _, b) -> has_gabs b | _ -> false) in
+                (* an inner paired abstraction in the body: the eliminated form relates, but the inner
+                   relation does not line up with the literal text (checked 2026-08-30: wrong proofs) *)
                 if has_gabs bodyn then unsupported "rel: nested paired abstraction";
                 let lemma = (match List.length tys with 2 -> "gabs_pair_eq" | 3 -> "gabs_triple_eq" | n -> unsupported "rel: paired abstraction of arity %d" n) in
                 let rest = List.tl args in

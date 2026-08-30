@@ -1324,6 +1324,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (t) | 2697 / 2697 | 2566 / 2685 public (54 literal_proved; pilot round 6: 682 fully_proved; + pair patterns over subsets, finiteness rules) | 458 + 22 stage-2 (+ 41 carrier lemmas, 194 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (u) | 2697 / 2697 | 2575 / 2685 public (55 literal_proved; + ternary function binders, compat `LET`/`LET_END`/`UNCURRY`/`SING`/`>_c`/`NULL`/`real_mod`) | 465 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (v) | 2697 / 2697 | 2590 / 2685 public (55 literal_proved; + sup/inf existence rules, omega closure of integer expressions, set-function congruence) | 481 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (w) | 2697 / 2697 | 2592 / 2685 public (55 literal_proved; + finiteness of function spaces `setexp_finite`) | 483 + 22 stage-2 (+ 41 carrier lemmas, 202 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1488,14 +1489,15 @@ these groups state properties of exactly the unspecified cases; `OUTL`/`OUTR` ar
 `choose_in` specifications (the literal one carries HOL's recursion tag); `vector` differs from
 `seq_nth` beyond the list length.  Open engineering items are the arity-4 binders and pattern
 comprehensions (`FORALL/EXISTS_IN_GSPEC`, `IN_ELIM_QUAD_THM`), function-typed pattern
-variables into sets of subsets (`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`), the finiteness of
-function spaces (`CARD_FUNSPACE*`, `CARD_CART_UNIV`: an injection into `Power (A :*: B)`),
-and the singletons in the last row.
+variables into sets of subsets (`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`), restricted function spaces (`CARD_FUNSPACE`: an injection of the functions fixed outside `s`
+into a finite space; `setexp_finite` covers the full spaces), nested paired abstractions
+(`WF_LEX`, `WF_POINTWISE`: the eliminated form relates but the inner relation does not line up
+with the literal text), and the singletons in the last row.
 
 | reason | theorems |
 |---|---|
 | cart index outside the range (`$`/`finite_index`/`idx_n` side conditions) | 16: `CART_EQ_FULL`, `FINITE_DIFF_IMAGE`, `FINITE_IMAGE_IMAGE`, `FINITE_INDEX_INRANGE`, `FINITE_INDEX_INRANGE_2`, `FINITE_PROD_IMAGE`, … |
-| finiteness side condition not derivable from the hypotheses in scope | 14: `BIJECTIONS_CARD_EQ`, `CARD`, `CARD_CART_UNIV`, `CARD_FUNSPACE`, `CARD_FUNSPACE_UNIV`, `CARD_IMAGE_INJ_EQ`, … |
+| finiteness side condition not derivable from the hypotheses in scope | 12: `BIJECTIONS_CARD_EQ`, `CARD`, `CARD_FUNSPACE`, `CARD_IMAGE_INJ_EQ`, `CARD_PRODUCT`, `CARD_PSUBSET_IMP`, … |
 | list side condition (index/non-empty) not derivable | 13: `ALL2_DEF`, `EL`, `EL_APPEND`, `EL_CONS`, `EL_TL`, `HD_APPEND`, … |
 | iterate side conditions (monoidal operation) not derivable | 3: `ITERATE_EXPAND_CASES`, `ITERATE_SUPPORT`, `iterate` |
 | other side conditions | 10: `INF_EQ`, `INF_INSERT_INSERT`, `NUM_OF_INT`, `SUP_EQ`, `SUP_INSERT_INSERT`, `inf_thm`, … |
@@ -1508,7 +1510,7 @@ and the singletons in the last row.
 | unmapped constant (GSPEC in a definitional theorem) | 2: `EXTENSIONAL`, `SURJECTIVE_PREIMAGE` |
 | other | 7: `ARBITRARY_UNION_OF_ALT`, `EXTENSIONAL_EMPTY`, `ISO_FUN`, `PAIRED_ETA_THM`, `POLYNOMIAL_FUNCTION_INDUCT`, `WF_LEX_DEPENDENT`, … |
 
-total: 95
+total: 93
 
 
 ## 22. Proof-recording/export pilot (started 2026-08-29)
