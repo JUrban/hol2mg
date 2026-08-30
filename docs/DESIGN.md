@@ -1614,6 +1614,14 @@ is larger than the claim.
    lemmas of the integer operations; `hlt_MONOIDAL_ADD_model`, `hlt_MONOIDAL_REAL_ADD_model` from
    `hl_monoidal_compat` and the known monoids; also `tybit0/1_INDUCT/RECURSION`), so round 7
    need not force them.
+10. Round 6 (cap 2 000, 29 forced leaves, 45 parts, 6 jobs, 3.3-hour limit): 42 parts and the
+   base check (the `cart` part after admitting the `cart_tybij` import by hand, before the
+   importer fix), the three parts carrying the giant forced proofs time out; 780 literal facts
+   proved through imported proofs, **682 public theorems `fully_proved`** (manifest copy
+   `generated/proofcert/core.pilot6.manifest.json`).  Lesson: editing `tools/check_cert.sh`
+   while a pilot was running shifted the running bash script's offsets and its final aggregation
+   ran garbage — the results were rebuilt from the per-part `.res` files; never edit a script that
+   a long job is executing.
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively
