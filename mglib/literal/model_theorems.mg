@@ -387,3 +387,38 @@ witness (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else IN
   claim H1: (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj1 b) = INR' b. { exact (eq_trans_i ((fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj1 b)) (if Inj1 b :e {Inj0 a | a :e A} then INL' (Unj (Inj1 b)) else INR' (Unj (Inj1 b))) (INR' b) (beta (A :+: B) (fun z => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) (Inj1 b) (Inj1_setsum A B b Hb)) (Hv1 b Hb)). }
   exact ((eq_sym_i (hl_INR B A b) (Inj1 b) Hr) (fun hl__u hl__v => (fun z :e A :+: B => if z :e {Inj0 a | a :e A} then INL' (Unj z) else INR' (Unj z)) hl__u = INR' b) H1).
 Qed.
+
+// ---- is_int: integer x <-> exists n, x = n \/ x = - n (the recorded kernel proof has 162 K inferences) ----
+Theorem hlt_is_int_model : forall x :e R, hl_integer x = 1 <-> exists n :e omega, x = hl_real_of_num n \/ x = hl_real_neg (hl_real_of_num n).
+let x. assume Hx.
+claim Sx: SNo x. { exact (real_SNo x Hx). }
+claim HzR: hl_real_of_num (hl_NUMERAL hl_zero) :e R. { exact ((eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 hl_real_zero_lit) (fun hl__u hl__v => hl__u :e R) real_0). }
+claim Hc: hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x :e 2. { exact (setexp2_ap R R 2 hl_real_le hl_real_le_in (hl_real_of_num (hl_NUMERAL hl_zero)) HzR x Hx). }
+claim Hiff: hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x = 1 <-> 0 <= x. { exact ((eq_sym_i (hl_real_of_num (hl_NUMERAL hl_zero)) 0 hl_real_zero_lit) (fun hl__u hl__v => hl_real_le hl__u x = 1 <-> 0 <= x) (hl_real_le_compat 0 real_0 x Hx)). }
+claim Hnx: hl_real_neg x :e R. { exact (setexp_ap R R hl_real_neg hl_real_neg_in x Hx). }
+claim Habs: hl_real_abs x = abs_SNo x.
+{ prove hl_real_abs x = if 0 <= x then x else - x.
+   exact (eq_trans_i (hl_real_abs x) (hl_COND R (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x) x (hl_real_neg x)) (if 0 <= x then x else - x) (hl_real_abs_unfold x Hx) (eq_trans_i (hl_COND R (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x) x (hl_real_neg x)) (if 0 <= x then x else hl_real_neg x) (if 0 <= x then x else - x) (hl_COND_if R (hl_real_le (hl_real_of_num (hl_NUMERAL hl_zero)) x) Hc (0 <= x) Hiff x Hx (hl_real_neg x) Hnx) (f_equal (fun u:set => if 0 <= x then x else u) (hl_real_neg x) (- x) (hl_real_neg_compat x Hx)))). }
+claim Hnum: forall n :e omega, hl_real_of_num n = n /\ (n :e R /\ (SNo n /\ 0 <= n)).
+{ let n. assume Hn. apply andI. exact (hl_real_of_num_compat n Hn). apply andI. exact (omega_subq_R n Hn). apply andI. exact (omega_SNo n Hn). exact (omega_nonneg n Hn). }
+rewrite (hl_integer_unfold x Hx).
+apply (If_1_iff (exists n :e omega, hl_real_abs x = hl_real_of_num n)). assume Hf Hb.
+apply iffI.
+- assume H. apply (Hf H). let n. assume Hn0. apply Hn0. assume Hn Heq. apply (Hnum n Hn). assume Hn1 Hn2. apply Hn2. assume HnR Hn3. apply Hn3. assume Sn Hn0'.
+  claim Habsn: abs_SNo x = n. { exact (eq_trans_i (abs_SNo x) (hl_real_abs x) n (eq_sym_i (hl_real_abs x) (abs_SNo x) Habs) (eq_trans_i (hl_real_abs x) (hl_real_of_num n) n Heq Hn1)). }
+  witness n. apply andI. exact Hn.
+  apply (xm (0 <= x)).
+  + assume H0. apply orIL. exact (eq_trans_i x (abs_SNo x) (hl_real_of_num n) (eq_sym_i (abs_SNo x) x (nonneg_abs_SNo x H0)) (eq_trans_i (abs_SNo x) n (hl_real_of_num n) Habsn (eq_sym_i (hl_real_of_num n) n Hn1))).
+  + assume H0. apply orIR.
+    claim Hmx: - x = n. { exact (eq_trans_i (- x) (abs_SNo x) n (eq_sym_i (abs_SNo x) (- x) (not_nonneg_abs_SNo x H0)) Habsn). }
+    exact (eq_trans_i x (- - x) (hl_real_neg (hl_real_of_num n)) (eq_sym_i (- - x) x (minus_SNo_invol x Sx)) (eq_trans_i (- - x) (- n) (hl_real_neg (hl_real_of_num n)) (f_equal (fun u:set => - u) (- x) n Hmx) (eq_sym_i (hl_real_neg (hl_real_of_num n)) (- n) (eq_trans_i (hl_real_neg (hl_real_of_num n)) (hl_real_neg n) (- n) (f_equal (fun u:set => hl_real_neg u) (hl_real_of_num n) n Hn1) (hl_real_neg_compat n HnR))))).
+- assume H. apply Hb. apply H. let n. assume Hn0. apply Hn0. assume Hn Hor. apply (Hnum n Hn). assume Hn1 Hn2. apply Hn2. assume HnR Hn3. apply Hn3. assume Sn Hn0'.
+  witness n. apply andI. exact Hn.
+  claim Goal: abs_SNo x = n -> hl_real_abs x = hl_real_of_num n. { assume K. exact (eq_trans_i (hl_real_abs x) (abs_SNo x) (hl_real_of_num n) Habs (eq_trans_i (abs_SNo x) n (hl_real_of_num n) K (eq_sym_i (hl_real_of_num n) n Hn1))). }
+  apply Goal.
+  apply Hor.
+  + assume Hx1. claim Hxn: x = n. { exact (eq_trans_i x (hl_real_of_num n) n Hx1 Hn1). }
+    exact (eq_trans_i (abs_SNo x) (abs_SNo n) n (f_equal (fun u:set => abs_SNo u) x n Hxn) (nonneg_abs_SNo n Hn0')).
+  + assume Hx2. claim Hxn: x = - n. { exact (eq_trans_i x (hl_real_neg (hl_real_of_num n)) (- n) Hx2 (eq_trans_i (hl_real_neg (hl_real_of_num n)) (hl_real_neg n) (- n) (f_equal (fun u:set => hl_real_neg u) (hl_real_of_num n) n Hn1) (hl_real_neg_compat n HnR))). }
+    exact (eq_trans_i (abs_SNo x) (abs_SNo (- n)) n (f_equal (fun u:set => abs_SNo u) x (- n) Hxn) (eq_trans_i (abs_SNo (- n)) (abs_SNo n) n (abs_SNo_minus n Sn) (nonneg_abs_SNo n Hn0'))).
+Qed.
