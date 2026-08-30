@@ -2031,7 +2031,10 @@ and rel_mapped g (e : R.const_entry) c cty args lit nat nview =
           let inst_args = List.filteri (fun i _ -> i < List.length e.R.c_args) (fst (strip_fun_ty cty)) in
           let needs_nested = List.length inst_args = List.length e.R.c_args && List.exists2 (fun role aty ->
             role = R.RSubset && (match aty with TyApp ("fun", [ TyApp ("fun", [ _; TyApp ("bool", []) ]); TyApp ("bool", []) ]) -> true | _ -> false)) e.R.c_args inst_args in
-          if needs_nested || Hashtbl.mem g.compat (compat_name e idx0 ^ "_pow" ^ sfx) then Some (List.map (fun (_, a, x) -> (a, x)) subs, sfx) else None
+          ignore needs_nested; ignore inst_args;
+          (* any type variable at a subset type changes the representation of some argument, function
+             value or result: the nested lemma is required (never the base lemma) *)
+          Some (List.map (fun (_, a, x) -> (a, x)) subs, sfx)
         end) in
   let name = (match nested with Some (_, sfx) -> compat_for_nested ~sfx g e | None -> compat_for g e) in
   (* carrier parameters of the compatibility lemma: one per type variable of the entry's scheme

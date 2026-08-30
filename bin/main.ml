@@ -434,11 +434,11 @@ let () =
                     let n_tv = List.length tvs_all in
                     (* type variables that are element types of subset-role arguments: only these have
                        nested instances (sets of subsets, represented by hl_rep2) *)
-                    let sub_tvs = (let args_ty = fst (Hol.strip_fun_ty e.Registry.c_scheme) in
-                      List.filter_map (fun (i, a) ->
-                        if List.exists2 (fun role ty -> role = Registry.RSubset && ty = Hol.TyApp ("fun", [ Hol.TyVar a; Hol.TyApp ("bool", []) ]))
-                             e.Registry.c_args (List.filteri (fun j _ -> j < List.length e.Registry.c_args) args_ty)
-                        then Some (i + 1) else None) (List.mapi (fun i a -> (i, a)) tvs_all)) in
+                    let sub_tvs = (let rec occ a ty = (match ty with
+                        | Hol.TyApp ("fun", [ Hol.TyVar b; Hol.TyApp ("bool", []) ]) when b = a -> true
+                        | Hol.TyApp (_, args) -> List.exists (occ a) args
+                        | _ -> false) in
+                      List.filter_map (fun (i, a) -> if occ a e.Registry.c_scheme then Some (i + 1) else None) (List.mapi (fun i a -> (i, a)) tvs_all)) in
                     if n_tv >= 2 && n_tv <= 3 && sub_tvs <> [] then begin
                       let n = n_tv in
                       let rec subsets k = if k > n then [ [] ] else List.concat_map (fun r -> if List.mem k sub_tvs then [ r; k :: r ] else [ r ]) (subsets (k + 1)) in
