@@ -857,6 +857,9 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
            (match gabs_elim g t with
             | None -> unsupported "rel: GABS not in paired-abstraction form"
             | Some (lam, body2, tx, ty, tc) ->
+                let rec has_gabs t = (match t with
+                  | Const ("GABS", _) -> true | App (a, b) -> has_gabs a || has_gabs b | Lam (_, _, b) -> has_gabs b | _ -> false) in
+                if has_gabs body2 then unsupported "rel: nested paired abstraction";
                 let rest = List.tl args in
                 let t' = List.fold_left (fun f a -> App (f, a)) lam rest in
                 let lit', nat', k', pf' = rel g t' (Some nview) in
@@ -876,6 +879,12 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                   | KPW d -> Printf.sprintf "(pw_tr_fun %s %s %s %s %s %s)" (ppp d) (ppp lit) (ppp lit') nm1 !heq (if pf' = "" then "(fun hl__x Hhl__x => (fun q H => H))" else pf')
                   | KPWP d -> Printf.sprintf "(pw_tr_pred %s %s %s %s %s %s)" (ppp d) (ppp lit) (ppp lit') nm1 !heq (if pf' = "" then Printf.sprintf "(fun hl__x Hhl__x => iff_refl (%s hl__x = 1))" (ppp lit') else pf')
                   | KRep a -> Printf.sprintf "(rep_tr %s %s %s %s %s %s)" (ppp a) (ppp lit) (ppp lit') (ppp nat') !heq (if pf' = "" then refl else pf')
+                  | KPW2 (d1, d2) ->
+                      let nm2 = (match nat' with Mg.Lam _ -> ppp nat' | _ -> Printf.sprintf "(fun hl__x:set => fun hl__y:set => %s hl__x hl__y)" (ppp nat')) in
+                      Printf.sprintf "(pw_tr_fun2 %s %s %s %s %s %s %s)" (ppp d1) (ppp d2) (ppp lit) (ppp lit') nm2 !heq (if pf' = "" then "(fun hl__x Hhl__x hl__y Hhl__y => (fun q H => H))" else pf')
+                  | KPWP2 (d1, d2) ->
+                      let nm2 = (match nat' with Mg.Lam _ -> ppp nat' | _ -> Printf.sprintf "(fun hl__x:set => fun hl__y:set => %s hl__x hl__y)" (ppp nat')) in
+                      Printf.sprintf "(pw_tr_pred2 %s %s %s %s %s %s %s)" (ppp d1) (ppp d2) (ppp lit) (ppp lit') nm2 !heq (if pf' = "" then Printf.sprintf "(fun hl__x Hhl__x hl__y Hhl__y => iff_refl (%s hl__x hl__y = 1))" (ppp lit') else pf')
                   | _ -> unsupported "rel: GABS relation kind") in
                 (lit, nat', k', pf))
        | Const (c, cty), _ ->
