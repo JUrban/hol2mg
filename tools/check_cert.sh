@@ -2,6 +2,12 @@
 # Megalodon-check the certification modules of a profile.
 # Usage: tools/check_cert.sh <profile> [shards]   (uses generated/{public,literal,cert}/<profile>)
 # Base: native modules + literal model + bridge library + _definitions.mg + _literal.mg + _literal_typing.mg + compat.mg
+# Run from a private copy of this script: bash reads scripts by byte offset, so editing the
+# file while a long check runs (cycles, pilots) would corrupt the running instance.
+if [ -z "${CHECK_CERT_COPY:-}" ]; then
+  _cc_copy=$(mktemp); cp "$0" "$_cc_copy"; CHECK_CERT_COPY=1 exec bash "$_cc_copy" "$@"
+fi
+
 HERE=$(cd "$(dirname "$0")/.." && pwd)
 MG=${MEGALODON:-$HERE/../repos/Megalodon/bin/megalodon}
 prof=$1; shift
@@ -20,6 +26,8 @@ cat "$cert/_literal_typing.mg" >> "$base"
 [ -s "$HERE/mglib/literal/carriers2.mg" ] && cat "$HERE/mglib/literal/carriers2.mg" >> "$base"
 [ -s "$cert/_literal_typing2.mg" ] && cat "$cert/_literal_typing2.mg" >> "$base"
 [ -s "$HERE/mglib/literal/compat2.mg" ] && cat "$HERE/mglib/literal/compat2.mg" >> "$base"
+# profile-specific compat lemmas (constants of the profile's Library files, docs/DESIGN.md 21.9a)
+[ -s "$HERE/mglib/literal/compat_$prof.mg" ] && cat "$HERE/mglib/literal/compat_$prof.mg" >> "$base"
 [ -s "$HERE/mglib/literal/model_theorems.mg" ] && cat "$HERE/mglib/literal/model_theorems.mg" >> "$base"
 [ -s "$HERE/mglib/literal/uniform.mg" ] && cat "$HERE/mglib/literal/uniform.mg" >> "$base"
 off=$(wc -l < "$base")

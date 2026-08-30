@@ -6,6 +6,12 @@
    "file": "generated/proofcert/core.round7.manifest.json",
    "proved": 918,
    "time": "2026-08-30 15:37"
+  },
+  {
+   "tag": "round8",
+   "file": "generated/proofcert/core.round8.manifest.json",
+   "proved": 932,
+   "time": "2026-08-30 20:01"
   }
  ],
  "proved": {
@@ -10729,6 +10735,254 @@
    "hash": "56827346d192eb3c809c21ecac00effb",
    "lit": "125996a95f3f278b444330f1739d79fa",
    "leaves": [
+    "TRUTH"
+   ]
+  },
+  "INT_ABS_MUL": {
+   "hash": "830c4d4bce8705fa086b96516a87cbe6",
+   "lit": "193784f62ec32d2c97d7dfd55c71e67b",
+   "leaves": [
+    "REAL_ABS_MUL",
+    "TRUTH",
+    "int_abs_th",
+    "int_eq",
+    "int_mul_th"
+   ]
+  },
+  "INT_ABS_NEG": {
+   "hash": "82eca5945fa9c3df0fd61b6a7a50468b",
+   "lit": "1c2d40aa7c6f7e7a254fc9b2580fc3ab",
+   "leaves": [
+    "REAL_ABS_NEG",
+    "TRUTH",
+    "int_abs_th",
+    "int_eq",
+    "int_neg_th"
+   ]
+  },
+  "INT_ABS_POW": {
+   "hash": "e37aae1077f7e875df3519f445e8a186",
+   "lit": "95cb37cba8d96e5115aa87ca362e4ee5",
+   "leaves": [
+    "REAL_ABS_POW",
+    "TRUTH",
+    "int_abs_th",
+    "int_eq",
+    "int_pow_th"
+   ]
+  },
+  "INT_LT_LE": {
+   "hash": "af1a8a735823de3d13c96b7fbbd92327",
+   "lit": "a18689e9ebce884150e3b9e37ff99d01",
+   "leaves": [
+    "REAL_LT_LE",
+    "TRUTH",
+    "int_eq",
+    "int_le",
+    "int_lt"
+   ]
+  },
+  "INT_LT_MUL": {
+   "hash": "60ee6ad5be35518adbc2aae24fb40e4a",
+   "lit": "20ba77d4ef6ed16fb20cc145dad90212",
+   "leaves": [
+    "REAL_LT_MUL",
+    "TRUTH",
+    "int_lt",
+    "int_mul_th",
+    "int_of_num_th"
+   ]
+  },
+  "INT_LT_SQUARE": {
+   "hash": "7e7a2be208cdd2133367de23720d5d7b",
+   "lit": "986c498f9781aed46a7cc7ec8449230d",
+   "leaves": [
+    "REAL_LT_SQUARE",
+    "TRUTH",
+    "int_eq",
+    "int_lt",
+    "int_mul_th",
+    "int_of_num_th"
+   ]
+  },
+  "INT_POS_NZ": {
+   "hash": "d97a566d1182ed9c5604e06c0e57b12d",
+   "lit": "712aa347bb5af7097d6499c847644949",
+   "leaves": [
+    "REAL_LT_IMP_NZ",
+    "TRUTH",
+    "int_eq",
+    "int_lt",
+    "int_of_num_th"
+   ]
+  },
+  "REAL_ABS_MUL": {
+   "hash": "3bf3da5595c942035ade1c5f8abc27cc",
+   "lit": "a6258c83186be50b9a8ab580dfd02077",
+   "leaves": [
+    "COND_CLAUSES",
+    "REAL_ABS_NEG",
+    "REAL_LE_MUL",
+    "REAL_LE_NEGTOTAL",
+    "REAL_MUL_LNEG",
+    "REAL_MUL_RNEG",
+    "REAL_NEG_NEG",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "real_abs"
+   ]
+  },
+  "REAL_ABS_NEG": {
+   "hash": "d5f050a5931b9e3acf72455c03c199d3",
+   "lit": "0c043b17c7136ab50b4370b5f27b885c",
+   "leaves": [
+    "AND_CLAUSES",
+    "BETA_THM",
+    "BOOL_CASES_AX",
+    "COND_CLAUSES",
+    "CONJ_ASSOC",
+    "DE_MORGAN_THM",
+    "DISJ_ACI",
+    "DISJ_ASSOC",
+    "EQ_CLAUSES",
+    "EQ_REFL",
+    "EQ_SYM_EQ",
+    "EXCLUDED_MIDDLE",
+    "EXISTS_OR_THM",
+    "FORALL_AND_THM",
+    "IMP_CLAUSES",
+    "NOT_CLAUSES",
+    "NOT_CLAUSES_WEAK",
+    "NOT_EXISTS_THM",
+    "NOT_FORALL_THM",
+    "NOT_IMP",
+    "OR_CLAUSES",
+    "OR_EXISTS_THM",
+    "REAL_ADD_LID",
+    "REAL_LE_ANTISYM",
+    "REAL_LE_RNEG",
+    "REAL_LE_TOTAL",
+    "REAL_NEG_0",
+    "REAL_NEG_NEG",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "real_abs"
+   ]
+  },
+  "REAL_ABS_POW": {
+   "hash": "620d354328ae656b67c7a60027c48ead",
+   "lit": "478d8434cda7d3d963b4fbe268f83796",
+   "leaves": [
+    "REAL_ABS_MUL",
+    "REAL_ABS_NUM",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "num_INDUCTION",
+    "real_pow"
+   ]
+  },
+  "REAL_LT_DIV": {
+   "hash": "1593fa15ca56d084d524fae465a8d52a",
+   "lit": "b53fece073da032211e4b4cfa5377945",
+   "leaves": [
+    "AND_CLAUSES",
+    "FORALL_SIMP",
+    "IMP_CLAUSES",
+    "REAL_LT_INV_EQ",
+    "REAL_LT_MUL",
+    "TRUTH",
+    "real_div"
+   ]
+  },
+  "REAL_LT_INV_EQ": {
+   "hash": "95ff13f6e9f399226108738716c0f5d3",
+   "lit": "8ff9e280117d93a7993e617859bbc923",
+   "leaves": [
+    "REAL_INV_INV",
+    "REAL_LT_INV",
+    "TRUTH"
+   ]
+  },
+  "REAL_LT_LE": {
+   "hash": "9510a08cce604f85797f2316f36822ad",
+   "lit": "179a68bbbd6367a2583334f3442fe0db",
+   "leaves": [
+    "AND_CLAUSES",
+    "BETA_THM",
+    "BOOL_CASES_AX",
+    "CONJ_ASSOC",
+    "DE_MORGAN_THM",
+    "DISJ_ACI",
+    "DISJ_ASSOC",
+    "EQ_CLAUSES",
+    "EQ_SYM_EQ",
+    "EXCLUDED_MIDDLE",
+    "EXISTS_OR_THM",
+    "FORALL_AND_THM",
+    "IMP_CLAUSES",
+    "NOT_CLAUSES",
+    "NOT_CLAUSES_WEAK",
+    "NOT_EXISTS_THM",
+    "NOT_FORALL_THM",
+    "NOT_IMP",
+    "OR_CLAUSES",
+    "OR_EXISTS_THM",
+    "REAL_LE_ANTISYM",
+    "REAL_LE_TOTAL",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "real_lt"
+   ]
+  },
+  "REAL_LT_MUL": {
+   "hash": "6df047178a154b6dd44c0e5989f496c1",
+   "lit": "068ddf5c62a9e1b0730d4f5292803e07",
+   "leaves": [
+    "AND_CLAUSES",
+    "NOT_CLAUSES_WEAK",
+    "OR_CLAUSES",
+    "REAL_ENTIRE",
+    "REAL_LE_MUL",
+    "REAL_LT_LE",
+    "TRUTH"
+   ]
+  },
+  "REAL_LT_NZ": {
+   "hash": "a30a85766a8dbbc964242396cfce7cc1",
+   "lit": "8ba3a277056ac98dec19c0844e97cac1",
+   "leaves": [
+    "AND_CLAUSES",
+    "EQ_CLAUSES",
+    "EXCLUDED_MIDDLE",
+    "NOT_CLAUSES_WEAK",
+    "REAL_LT_LE",
+    "REAL_POS",
+    "REFL_CLAUSE",
+    "TRUTH"
+   ]
+  },
+  "REAL_LT_SQUARE": {
+   "hash": "7737e45b67bd518ca80f9d981d44bddf",
+   "lit": "4b05e0915472afa6f64cea5b60463a4d",
+   "leaves": [
+    "AND_CLAUSES",
+    "EQ_SYM_EQ",
+    "OR_CLAUSES",
+    "REAL_ENTIRE",
+    "REAL_LE_SQUARE",
+    "REAL_LT_LE",
+    "REFL_CLAUSE",
+    "TRUTH"
+   ]
+  },
+  "REAL_POS_LT": {
+   "hash": "14450394b10aeb942300184b9ecd85b2",
+   "lit": "65f1623aab9f9d63b361dc20208d343f",
+   "leaves": [
+    "LT_0",
+    "LT_NZ",
+    "REAL_LT_NZ",
+    "REAL_OF_NUM_EQ",
     "TRUTH"
    ]
   }
