@@ -29,6 +29,7 @@ type relkind =
   | KPWP of Mg.tm                (* forall x :e A, lit x = 1 <-> nat x (meta-predicate, arity 1) *)
   | KRepFun of Mg.tm * Mg.tm     (* forall x :e K, hl_rep A (lit x) = nat x  (function into subsets of A) *)
   | KRepFunN of Mg.tm list * Mg.tm  (* forall x1 :e K1, .., hl_rep A (lit x1 ..) = nat x1 ..  (curried function into subsets) *)
+  | KPW3 of Mg.tm * Mg.tm * Mg.tm  (* forall x :e A, forall y :e B, forall z :e C, lit x y z = nat x y z *)
   | KPWP3 of Mg.tm * Mg.tm * Mg.tm  (* forall x y z, lit x y z = 1 <-> nat x y z (meta-predicate, arity 3) *)
   | KIff                         (* lit = 1 <-> nat *)
   | KPW2 of Mg.tm * Mg.tm        (* forall x :e A, forall y :e B, lit x y = nat x y *)
@@ -294,6 +295,18 @@ let known_monoid (sc : Mg.tm) : string option =
     [ ("omega", "*", "monoidal_omega_mul"); ("R", "*", "monoidal_R_mul"); ("int", "*", "monoidal_int_mul");
       ("omega", "+", "monoidal_omega_add"); ("R", "+", "monoidal_R_add"); ("int", "+", "monoidal_int_add") ]
 
+(* membership of an index in idx N from the hypotheses in scope: i :e idx N itself, the bounds
+   1 <= i /\ i <= dimindex N as one hypothesis, or the two bounds separately (docs/DESIGN.md 21.9) *)
+(* membership in omega of the index arithmetic of cart.ml *)
+let rec omega_of_index (t : Mg.tm) : string option =
+  match t with
+  | Mg.Num k -> Some (Printf.sprintf "(nat_p_omega %d %s)" k (let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in nat_pf k))
+  | Mg.App (Mg.Cst "dimindex", x) -> Some (Printf.sprintf "(dimindex_omega %s)" (ppp x))
+  | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+  | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+  | Mg.App (Mg.App (Mg.Cst "minus_nat", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(minus_nat_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+  | _ -> None
+
 let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
   if depth > 6 then None
   else
@@ -301,6 +314,18 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
     | Some h -> Some h
     | None ->
         let sub = derive_finite g in
+        (* omega membership of a bound: a variable with an omega typing hypothesis, a numeral,
+           dimindex, or sums/products of such *)
+        let rec omega_pf (t : Mg.tm) : string option =
+          (match nat_var_mem g t with
+           | Some (Mg.Cst "omega", h) -> Some h
+           | _ ->
+               (match t with
+                | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) ->
+                    (match omega_pf a, omega_pf b with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+                | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) ->
+                    (match omega_pf a, omega_pf b with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
+                | _ -> omega_of_index t)) in
         let r = (match s with
           | Mg.Cst "Empty" | Mg.Num 0 -> Some "finite_Empty"
           | Mg.App (Mg.Cst "idx", n) -> Some (Printf.sprintf "(idx_finite %s)" (ppp n))
@@ -337,11 +362,11 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
                 | Mg.App (Mg.App (Mg.Cst "SNoLt", _), n) -> (n, Printf.sprintf "(fun %s H%s H => (SNoLtLe %s %s H))" v v v (ppp n))
                 | Mg.App (Mg.App (Mg.Cst "and", a), (Mg.App (Mg.App (Mg.Cst "SNoLe", _), n) as b)) -> (n, Printf.sprintf "(fun %s H%s H => (andER (%s) (%s) H))" v v (pp a) (pp b))
                 | _ -> assert false) in
-              (match nat_var_mem g n with
-               | Some (Mg.Cst "omega", hn) ->
+              (match omega_pf n with
+               | Some hn ->
                    let seg = Mg.Sep (v, Mg.Cst "omega", Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var v), n)) in
                    Some (Printf.sprintf "(Subq_finite %s (segment_le_finite %s %s) %s (Sep_Subq_Sep omega (fun %s:set => %s) (fun %s:set => %s <= %s) %s))" (ppp seg) (ppp n) hn (ppp s) v (pp body) v v (ppp n) imp)
-               | _ -> None)
+               | None -> None)
           | Mg.Sep (v, x, Mg.App (Mg.App (Mg.Cst "and", Mg.App (Mg.App (Mg.Cst "In", Mg.Var v'), sx)), q)) when v' = v && (match sub sx (depth + 1) with Some _ -> true | None -> false) ->
               (* {v :e x | v :e sx /\ q} c= sx *)
               Option.map (fun pf -> Printf.sprintf "(Subq_finite %s %s %s (Sep_Subq_In %s %s (fun %s:set => %s)))" (ppp sx) pf (ppp s) (ppp x) (ppp sx) v (pp q)) (sub sx (depth + 1))
@@ -358,8 +383,17 @@ let rec derive_finite g (s : Mg.tm) (depth : int) : string option =
         (match r with
          | Some _ -> r
          | None ->
+             let union_rule s1 s2 u hp' =
+               (* s c= u from s1 :\/: s2 = u with s one of the parts *)
+               let inj = if s1 = s then Printf.sprintf "(binunionI1 %s %s hl__x Hhl__x)" (ppp s1) (ppp s2) else Printf.sprintf "(binunionI2 %s %s hl__x Hhl__x)" (ppp s1) (ppp s2) in
+               Option.map (fun pu -> Printf.sprintf "(Subq_finite %s %s %s (fun hl__x Hhl__x => %s (fun hl__u hl__v => hl__x :e hl__u) %s))" (ppp u) pu (ppp s) hp' inj) (sub u (depth + 1)) in
              List.find_map (fun (h, hp) -> match h with
                | Mg.App (Mg.App (Mg.Cst "Subq", s'), t) when s' = s && t <> s -> Option.map (fun pt -> Printf.sprintf "(Subq_finite %s %s %s %s)" (ppp t) pt (ppp s) hp) (sub t (depth + 1))
+               | Mg.App (Mg.App (Mg.Cst "equip", s'), n) when s' = s -> Option.map (fun hn -> Printf.sprintf "(finite_of_equip %s %s %s %s)" (ppp s) (ppp n) hn hp) (omega_pf n)
+               | Mg.App (Mg.App (Mg.Cst "eq", Mg.App (Mg.App (Mg.Cst "binunion", s1), s2)), u) when (s1 = s || s2 = s) && u <> s -> union_rule s1 s2 u hp
+               | Mg.App (Mg.App (Mg.Cst "eq", u), (Mg.App (Mg.App (Mg.Cst "binunion", s1), s2) as bu)) when (s1 = s || s2 = s) && u <> s -> union_rule s1 s2 u (Printf.sprintf "(eq_sym_i %s %s %s)" (ppp u) (ppp bu) hp)
+               | Mg.App (Mg.App (Mg.Cst "eq", x), s') when s' = s && x <> s -> Option.map (fun px -> Printf.sprintf "(%s (fun hl__u hl__v => finite hl__u) %s)" hp px) (sub x (depth + 1))
+               | Mg.App (Mg.App (Mg.Cst "eq", s'), x) when s' = s && x <> s -> Option.map (fun px -> Printf.sprintf "((eq_sym_i %s %s %s) (fun hl__u hl__v => finite hl__u) %s)" (ppp s) (ppp x) hp px) (sub x (depth + 1))
                | _ -> None) g.hyps)
 
 (* ------------------------------------------------------------------------ *)
@@ -792,18 +826,6 @@ let gabs_body_typing g (bodyn : tm) : string * string =
         r) in
   go bodyn []
 
-(* membership of an index in idx N from the hypotheses in scope: i :e idx N itself, the bounds
-   1 <= i /\ i <= dimindex N as one hypothesis, or the two bounds separately (docs/DESIGN.md 21.9) *)
-(* membership in omega of the index arithmetic of cart.ml *)
-let rec omega_of_index (t : Mg.tm) : string option =
-  match t with
-  | Mg.Num k -> Some (Printf.sprintf "(nat_p_omega %d %s)" k (let rec nat_pf k = (match k with 0 -> "nat_0" | 1 -> "nat_1" | 2 -> "nat_2" | _ -> Printf.sprintf "(nat_ordsucc %d %s)" (k - 1) (nat_pf (k - 1))) in nat_pf k))
-  | Mg.App (Mg.Cst "dimindex", x) -> Some (Printf.sprintf "(dimindex_omega %s)" (ppp x))
-  | Mg.App (Mg.App (Mg.Cst "add_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(add_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
-  | Mg.App (Mg.App (Mg.Cst "mul_SNo", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(mul_SNo_In_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
-  | Mg.App (Mg.App (Mg.Cst "minus_nat", a), b) -> (match omega_of_index a, omega_of_index b with Some pa, Some pb -> Some (Printf.sprintf "(minus_nat_omega %s %s %s %s)" (ppp a) pa (ppp b) pb) | _ -> None)
-  | _ -> None
-
 let rec derive_idx g find_hyp (i : Mg.tm) (n : Mg.tm) : string option =
   let tpl s = Mg.normalize (Mg.inst [ ("1", i); ("N", n) ] (cstify (Mg.parse_template s))) in
   (* the bounds 1 <= i and i <= b, as one hypothesis or two *)
@@ -958,6 +980,15 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                 let pf1 = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_eq lit (Mg.apps head [ Mg.Var "hl__u"; ly ]))) pf0 in
                 let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_eq lit (Mg.apps head [ nx; Mg.Var "hl__u" ]))) pf1 in
                 (lit, nat, KEq, pf2)
+            | KPW3 (a, b, c), [ x; y; z ] ->
+                let lx, nx, kx, px = rel g x (Some (E.VSet a)) and ly, ny, ky, py = rel g y (Some (E.VSet b)) and lz, nz, kz, pz = rel g z (Some (E.VSet c)) in
+                if kx <> KEq || ky <> KEq || kz <> KEq then unsupported "rel: metafun3 argument";
+                let head = if v.rel = "" then v.lit else (match v.nat with Some t -> t | None -> Mg.Var (match List.assoc_opt k g.nctx.E.vars with Some (_, _, n) -> n | None -> k)) in
+                let pf0 = if v.rel = "" then refl else Printf.sprintf "(%s %s %s %s %s %s %s)" v.rel (ppp lx) (typ g x) (ppp ly) (typ g y) (ppp lz) (typ g z) in
+                let pf1 = if lx = nx then pf0 else leibniz (if px = "" then refl else px) (pp (L.mg_eq lit (Mg.apps head [ Mg.Var "hl__u"; ly; lz ]))) pf0 in
+                let pf2 = if ly = ny then pf1 else leibniz (if py = "" then refl else py) (pp (L.mg_eq lit (Mg.apps head [ nx; Mg.Var "hl__u"; lz ]))) pf1 in
+                let pf3 = if lz = nz then pf2 else leibniz (if pz = "" then refl else pz) (pp (L.mg_eq lit (Mg.apps head [ nx; ny; Mg.Var "hl__u" ]))) pf2 in
+                (lit, nat, KEq, pf3)
             | KPWP2 (a, b), [ x; y ] ->
                 let lx, nx, kx, px = rel g x (Some (E.VSet a)) and ly, ny, ky, py = rel g y (Some (E.VSet b)) in
                 if kx <> KEq || ky <> KEq then unsupported "rel: metapred2 argument";
@@ -2217,6 +2248,7 @@ and coerce_rel g t (lit, nat, kind, pf) (want : E.view) =
       let nat' = Mg.normalize (Mg.Sep ("hl__x", a, Mg.App (nat, Mg.Var "hl__x"))) in
       (lit, nat', KRep a, Printf.sprintf "(rep_of_pw %s %s %s %s %s)" (ppp a) (ppp lit) nm (typ g t) pw)
   | KPW2 _, E.VMetaFun ([ _; _ ], _) -> (lit, nat, kind, pf)
+  | KPW3 _, E.VMetaFun ([ _; _; _ ], _) -> (lit, nat, kind, pf)
   | KPWP2 _, E.VMetaPred [ _; _ ] -> (lit, nat, kind, pf)
   | KEq, E.VMetaFun ([ a ], _) ->
       (* set function value used as a meta function: nat is the same set applied *)
@@ -2696,6 +2728,23 @@ and bridge_binder_views g dir kind key n xty xview body' plain with_var lbody nb
         (match kind with
          | `All -> Printf.sprintf "(imp_forall_fun2_rev %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) la na n hn sub
          | `Ex -> Printf.sprintf "(imp_exists_fun2 %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) la na n hn sub)
+      end
+  | E.VMetaFun ([ c; d; e ], f) ->
+      let la = lam_l lbody and na = lam_n nbody in
+      let hf = "H" ^ n ^ "c" in
+      if fwd_first then begin
+        let v = { plain with lit = Mg.apps (Mg.Cst "hl_lam3") [ c; d; e; Mg.Var n ]; mem = Printf.sprintf "(hl_lam3_Pi %s %s %s %s %s %s)" (ppp c) (ppp d) (ppp e) (ppp f) n hf;
+                             rel = Printf.sprintf "(hl_lam3_ap %s %s %s %s)" (ppp c) (ppp d) (ppp e) n; kind = KPW3 (c, d, e); hyp = hf } in
+        let sub = with_var v (fun () -> bridge g dir body') in
+        (match kind with
+         | `All -> Printf.sprintf "(imp_forall_fun3 %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hf sub
+         | `Ex -> Printf.sprintf "(imp_exists_fun3_rev %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hf sub)
+      end else begin
+        let v = { plain with nat = Some (Mg.Lam ("x", Mg.Set, Mg.Lam ("y", Mg.Set, Mg.Lam ("z", Mg.Set, Mg.apps (Mg.Var n) [ Mg.Var "x"; Mg.Var "y"; Mg.Var "z" ])))); rel = ""; kind = KPW3 (c, d, e) } in
+        let sub = with_var v (fun () -> bridge g dir body') in
+        (match kind with
+         | `All -> Printf.sprintf "(imp_forall_fun3_rev %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hn sub
+         | `Ex -> Printf.sprintf "(imp_exists_fun3 %s %s %s %s %s %s (fun %s %s => %s))" (ppp c) (ppp d) (ppp e) (ppp f) la na n hn sub)
       end
   | E.VProp ->
       let la = lam_l lbody and na = lam_n nbody in

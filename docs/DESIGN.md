@@ -1321,6 +1321,7 @@ literal_proved both imply transport_checked.
 | 2026-08-30 (q) | 2697 / 2697 | 2547 / 2685 public (51 literal_proved: + tybit0/1 INDUCT/RECURSION, int_add_th, int_mul_th, int_sgn_th, MONOIDAL_ADD, MONOIDAL_REAL_ADD; pilot round 5: 548 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 53 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (r) | 2697 / 2697 | 2547 / 2685 public (54 literal_proved: + REAL_EQ_NEG2, REAL_LE_LMUL, REAL_EQ_MUL_LCANCEL; pilot round 6: 682 fully_proved) | 448 + 24 stage-2 (+ 41 carrier lemmas, 170 bridge-library lemmas, 56 model theorems, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 | 2026-08-30 (s) | 2697 / 2697 | 2558 / 2685 public (54 literal_proved; pilot round 6: 682 fully_proved; + `IMAGE` over sets of subsets, curried functions into subsets, triple-pattern comprehensions, `CARD`/`HAS_SIZE_POWERSET`) | 457 + 22 stage-2 (+ 41 carrier lemmas, 193 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
+| 2026-08-30 (t) | 2697 / 2697 | 2566 / 2685 public (54 literal_proved; pilot round 6: 682 fully_proved; + pair patterns over subsets, finiteness rules) | 458 + 22 stage-2 (+ 41 carrier lemmas, 194 bridge-library lemmas, 61 model theorems incl. helpers, 48 uniform-layer lemmas) | `docs/reports/2026-08-30-interim-16.md` |
 
 Partially specified HOL constants (`EL` outside the range, `HD`/`TL`/`LAST` of `[]`, `ZIP` and
 `MAP2` on unequal lengths, `ASSOC` on `[]`) are related to total native functions only under a
@@ -1451,12 +1452,20 @@ variables (`hl_gspec_generic3`, `gspec_famunion3_form`) and nested pair/triple c
 with subset-valued bodies (`gspec_famunion_form_rep2`, `gspec_famunion3_form_rep2`) give
 `INTERS_GSPEC`/`UNIONS_GSPEC`; `CARD`/`HAS_SIZE` at the nested instance follow from the base
 lemmas through the bijection `hl_rep A` (`rep2_equip`, `god1_finite_cardinality_equip_eq`), with
-`Power_finite` deriving the side condition of `CARD_POWERSET`.  The 127 remaining
-`bridge_unsupported` public theorems are a long tail: `CARD`/`sup`/`inf` side conditions without
-hypotheses (18), pair patterns over subsets (`CROSS`/`PCROSS_INTERS_INTERS`, `*_UNIONS_UNIONS`,
-4), function-typed pattern variables (`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`),
-`MAP2`/`ITSET`/`ASSOC` conditional compat (9), 3-ary binders (5), the index-range cases of
-cart.ml (20), definitional theorems of `iterate` (3), and singletons.
+`Power_finite` deriving the side condition of `CARD_POWERSET`.  Pair patterns over subsets
+with a subset-valued body (`gspec_famunion_form_sub2_rep2`: the pattern variables are
+represented by `hl_rep` in the pointwise proofs, the result by `hl_rep2`) give
+`CROSS`/`PCROSS_INTERS_INTERS` and `*_UNIONS_UNIONS`; `derive_finite` gained rules for
+`equip s n` hypotheses (`finite_of_equip`), transport along equations `X = s`, union equations
+`s :\/: t = u`, and compound omega bounds `m + d` in segments (`CARD_UNION_EQ`,
+`HAS_SIZE_CARD`, `CARD_NUMSEG_LEMMA`, `list_of_set`).  The 119 remaining `bridge_unsupported`
+public theorems are a long tail: `CARD`/`sup`/`inf` side conditions that are not derivable from
+the hypotheses in scope (13; `CARD_PSUBSET_IMP` has none, `IMAGE_IMP_INJECTIVE_GEN` states the
+image equation after the cardinalities, `CARD_FUNSPACE*`/`CARD_CART_UNIV` need the finiteness
+of function spaces), function-typed pattern variables into sets of subsets
+(`INTERS_OVER_UNIONS`, `UNIONS_OVER_INTERS`), `MAP2`/`ITSET`/`ASSOC` conditional compat (9),
+3-ary binders (5), the index-range cases of cart.ml (20), definitional theorems of `iterate`
+(3), and singletons.
 
 ## 22. Proof-recording/export pilot (started 2026-08-29)
 

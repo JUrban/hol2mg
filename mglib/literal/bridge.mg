@@ -1121,3 +1121,6 @@ Theorem imp_forall_repfun3_rev : forall K1 K2 K3 A:set, forall L N:set -> prop, 
 let K1 K2 K3 A L N. assume H HN. let f. assume Hf.
 exact (H f Hf (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) (repfun3_rep_Pi K1 K2 K3 A f) (repfun3_rep_pw K1 K2 K3 A f) (HN (fun x :e K1 => fun y :e K2 => fun z :e K3 => hl_rep A (f x y z)) (repfun3_rep_Pi K1 K2 K3 A f))).
 Qed.
+Theorem finite_of_equip : forall s n:set, n :e omega -> equip s n -> finite s.
+let s n. assume Hn H. prove exists m :e omega, equip s m. witness n. apply andI. exact Hn. exact H.
+Qed.

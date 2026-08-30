@@ -7510,3 +7510,30 @@ let A B C D q F P F'. assume HFD HP HF. apply set_ext.
   claim Hweq: hl_rep D (F x y z) = w. { exact (eq_trans_i (hl_rep D (F x y z)) (F' x y z) w (HF x Hx y Hy z Hz) (eq_sym_i w (F' x y z) Hw')). }
   exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep D v | v :e {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z}}) (ReplI {v :e 2 :^: D | exists x :e A, exists y :e B, exists z :e C, q x y z = 1 /\ v = F x y z} (fun v => hl_rep D v) (F x y z) Hin)).
 Qed.
+
+// ---- comprehensions with two subset pattern variables and a subset-valued body ----
+Theorem gspec_famunion_form_sub2_rep2 : forall A B C:set, forall q:set -> set -> set, forall F:set -> set -> set, forall P':set -> set -> prop, forall F':set -> set -> set, (forall s :e 2 :^: A, forall t :e 2 :^: B, F s t :e 2 :^: C) -> (forall s :e 2 :^: A, forall t :e 2 :^: B, q s t = 1 <-> P' (hl_rep A s) (hl_rep B t)) -> (forall s :e 2 :^: A, forall t :e 2 :^: B, hl_rep C (F s t) = F' (hl_rep A s) (hl_rep B t)) -> {hl_rep C v | v :e {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t}} = \/_ u :e Power A, {F' u w | w :e Power B, P' u w}.
+let A B C q F P' F'. assume HFC HP HF. apply set_ext.
+- let w. assume Hw. apply (ReplE_impred {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t} (fun v => hl_rep C v) w Hw). let v. assume Hv Hwv.
+  apply (SepE (2 :^: C) (fun v => exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t) v Hv). assume HvC H.
+  apply H. let s. assume Hs0. apply Hs0. assume Hs Ht0. apply Ht0. let t. assume Ht1. apply Ht1. assume Ht H2. apply H2. assume Hq Hvs.
+  claim Hu: hl_rep A s :e Power A. { exact (PowerI A (hl_rep A s) (hl_rep_Subq A s)). }
+  claim Hu2: hl_rep B t :e Power B. { exact (PowerI B (hl_rep B t) (hl_rep_Subq B t)). }
+  claim HPst: P' (hl_rep A s) (hl_rep B t). { apply (HP s Hs t Ht). assume H3 _. exact (H3 Hq). }
+  claim Hweq: w = F' (hl_rep A s) (hl_rep B t). { exact (eq_trans_i w (hl_rep C v) (F' (hl_rep A s) (hl_rep B t)) Hwv (eq_trans_i (hl_rep C v) (hl_rep C (F s t)) (F' (hl_rep A s) (hl_rep B t)) (f_equal (fun x => hl_rep C x) v (F s t) Hvs) (HF s Hs t Ht))). }
+  apply (famunionI (Power A) (fun u => {F' u w | w :e Power B, P' u w}) (hl_rep A s) w Hu).
+  exact ((eq_sym_i w (F' (hl_rep A s) (hl_rep B t)) Hweq) (fun hl__u hl__v => hl__u :e {F' (hl_rep A s) w | w :e Power B, P' (hl_rep A s) w}) (ReplSepI (Power B) (fun w => P' (hl_rep A s) w) (fun w => F' (hl_rep A s) w) (hl_rep B t) Hu2 HPst)).
+- let w. assume Hw. apply (famunionE_impred (Power A) (fun u => {F' u w | w :e Power B, P' u w}) w Hw). let u. assume Hu Hwu.
+  apply (ReplSepE_impred (Power B) (fun w => P' u w) (fun w => F' u w) w Hwu). let u2. assume Hu2 HPu Hw'.
+  claim Hs: hl_chi A u :e 2 :^: A. { exact (hl_chi_Pi A u). }
+  claim Ht: hl_chi B u2 :e 2 :^: B. { exact (hl_chi_Pi B u2). }
+  claim Hru: hl_rep A (hl_chi A u) = u. { exact (hl_rep_chi A u (PowerE A u Hu)). }
+  claim Hru2: hl_rep B (hl_chi B u2) = u2. { exact (hl_rep_chi B u2 (PowerE B u2 Hu2)). }
+  claim HP2: P' (hl_rep A (hl_chi A u)) (hl_rep B (hl_chi B u2)). { exact ((eq_sym_i (hl_rep A (hl_chi A u)) u Hru) (fun hl__u hl__v => P' hl__u (hl_rep B (hl_chi B u2))) ((eq_sym_i (hl_rep B (hl_chi B u2)) u2 Hru2) (fun hl__u hl__v => P' u hl__u) HPu)). }
+  claim Hq: q (hl_chi A u) (hl_chi B u2) = 1. { apply (HP (hl_chi A u) Hs (hl_chi B u2) Ht). assume _ H3. exact (H3 HP2). }
+  claim Hex: exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ F (hl_chi A u) (hl_chi B u2) = F s t. { witness (hl_chi A u). apply andI. exact Hs. witness (hl_chi B u2). apply andI. exact Ht. apply andI. exact Hq. exact (fun p H => H). }
+  claim Hin: F (hl_chi A u) (hl_chi B u2) :e {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t}. { exact (SepI (2 :^: C) (fun v => exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t) (F (hl_chi A u) (hl_chi B u2)) (HFC (hl_chi A u) Hs (hl_chi B u2) Ht) Hex). }
+  claim HF2: F' (hl_rep A (hl_chi A u)) (hl_rep B (hl_chi B u2)) = F' u u2. { exact (f_equal2 (fun a b => F' a b) (hl_rep A (hl_chi A u)) u (hl_rep B (hl_chi B u2)) u2 Hru Hru2). }
+  claim Hweq: hl_rep C (F (hl_chi A u) (hl_chi B u2)) = w. { exact (eq_trans_i (hl_rep C (F (hl_chi A u) (hl_chi B u2))) (F' u u2) w (eq_trans_i (hl_rep C (F (hl_chi A u) (hl_chi B u2))) (F' (hl_rep A (hl_chi A u)) (hl_rep B (hl_chi B u2))) (F' u u2) (HF (hl_chi A u) Hs (hl_chi B u2) Ht) HF2) (eq_sym_i w (F' u u2) Hw')). }
+  exact (Hweq (fun hl__u hl__v => hl__u :e {hl_rep C v | v :e {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t}}) (ReplI {v :e 2 :^: C | exists s :e 2 :^: A, exists t :e 2 :^: B, q s t = 1 /\ v = F s t} (fun v => hl_rep C v) (F (hl_chi A u) (hl_chi B u2)) Hin)).
+Qed.
