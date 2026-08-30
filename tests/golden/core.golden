@@ -293,7 +293,8 @@ source: !b:bool. !f:A->B. !g:A->B. !x:A. (if b then f else g) x = (if b then f x
 status: generalization_required
 statement: forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x
 literal: forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f g :e B :^: A, forall x :e A, hl_COND (B :^: A) b f g x = hl_COND B b (f x) (g x)
-cert_status: bridge_unsupported
+bridge: COND_RATOR_bridge
+cert_status: transport_checked
 
 ### EQ_CLAUSES   [choice, conditionals, Booleans as data]
 hash: a45d7c9d85285642cfa3024e621fd5c5

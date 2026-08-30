@@ -1200,6 +1200,25 @@ and rel_nat g (t : tm) (lit : Mg.tm) (nat : Mg.tm) (nview : E.view) : Mg.tm * Mg
                  | Mg.App (Mg.App (Mg.Cst "eq", _), r) when r <> nat -> unsupported "rel: subset conditional derived %s differs from %s" (pp r) (pp nat)
                  | _ -> ());
                 (lit, nat, KRep ra, pf4)
+            | "COND" when List.length args = 4 ->
+                (* (if c then f else g) x at a function type: relate the conditional (3 arguments) as a
+                   set function, apply it to the argument and push the application inside (If_i_ap) *)
+                let t3 = App (App (App (h, List.nth args 0), List.nth args 1), List.nth args 2) and x = List.nth args 3 in
+                let fty = type_of [] t3 in
+                let dom, _ = dest_fun_ty fty in
+                let l3, n3, k3, p3 = rel g t3 (Some (E.VSet (L.carrier g.lctx fty))) in
+                if k3 <> KEq then unsupported "rel: conditional function";
+                let lx, nx, kx, _ = rel g x (Some (E.VSet (L.carrier g.lctx dom))) in
+                if kx <> KEq || lx <> nx then unsupported "rel: conditional function argument";
+                (match n3 with
+                 | Mg.If (c, f, gg) ->
+                     let derived = Mg.If (c, Mg.App (f, nx), Mg.App (gg, nx)) in
+                     if not (alpha_eq derived nat) then unsupported "rel: conditional application derived %s differs from %s" (pp derived) (pp nat);
+                     let p3 = if p3 = "" then refl else p3 in
+                     let pf = Printf.sprintf "(eq_trans_i %s %s %s (f_equal (fun hl__u => hl__u %s) %s %s %s) (If_i_ap %s %s %s %s))"
+                       (ppp lit) (ppp (Mg.App (n3, lx))) (ppp derived) (ppp lx) (ppp l3) (ppp n3) p3 (paren (pp c)) (ppp f) (ppp gg) (ppp lx) in
+                     (lit, nat, KEq, pf)
+                 | _ -> unsupported "rel: conditional function shape")
             | "COND" when List.length args = 3 ->
                 (* if c then a else b at a data type: hl_COND_if + argument rewrites *)
                 let ty = type_of [] t in

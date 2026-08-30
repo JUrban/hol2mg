@@ -7263,7 +7263,7 @@
    "statement": "forall A B:set, forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, (if b then f x else g x) = if b then f x else g x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f g :e B :^: A, (fun x :e A => hl_COND B b (f x) (g x)) = hl_COND (B :^: A) b f g",
    "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant COND (view set(B), 4 args)",
+   "cert_error": "bridge_unsupported: coerce_rel: set(B :^: A)",
    "bridge": "",
    "literal_proved": false,
    "proof_imported": false,
@@ -7497,9 +7497,9 @@
    "source": "!b:bool. !f:A->B. !g:A->B. !x:A. (if b then f else g) x = (if b then f x else g x)",
    "statement": "forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x",
    "literal": "forall A B:set, A <> Empty -> B <> Empty -> forall b :e 2, forall f g :e B :^: A, forall x :e A, hl_COND (B :^: A) b f g x = hl_COND B b (f x) (g x)",
-   "cert_status": "bridge_unsupported",
-   "cert_error": "bridge_unsupported: rel: unmapped constant COND (view set(B), 4 args)",
-   "bridge": "",
+   "cert_status": "transport_checked",
+   "cert_error": "",
+   "bridge": "COND_RATOR_bridge",
    "literal_proved": false,
    "proof_imported": false,
    "proof_leaves": [],
@@ -102811,7 +102811,7 @@
    "wf"
   ],
   "failed_shards": {},
-  "transport_checked": 2454,
+  "transport_checked": 2455,
   "literal_proved": 42,
   "fully_proved": 0
  }
