@@ -1593,6 +1593,15 @@ is larger than the claim.
    8 K inferences, split shards, 6 jobs) started 2026-08-30.  Top blockers after round 5:
    `REAL_EQ_ADD_RCANCEL` (70), `LT_MULT_LCANCEL` (65), `num_WOP` (40), `REAL_EQ_MUL_LCANCEL`
    (40, 32 834 inferences — not forced), `REAL_MUL_LNEG`/`REAL_MUL_RID` (21).
+8. Robustness: one failing imported proof used to lose its whole shard.  `tools/check_cert.sh`
+   now takes `CHECK_RETRY=k` (the pilot passes 2): when a module fails inside `hltu_N`, the
+   theorems `hltu_N` and `hlt_N` are admitted in the composed module (`tools/admit_theorem.py`)
+   and the module is checked again; the `OK` line records `admitted imports: N ..` and
+   `tools/cert_finalize.py` clears `proof_imported` for them.  First case: `cart_tybij` — the
+   importer renders the type definition's predicate `\r. T` in the uniform layer (`hl_T`) while
+   the literal carrier `hl_ty_cart` is defined with the literal rendering (`if True then 1 else
+   0`), so `hl_subtype_abs_rep` does not apply; the TYDEF rules should use the literal predicate
+   with a coherence step for the nonemptiness premise (open).
 
 **Blocker analysis.** `tools/proof_blockers.py <pilot manifest> [--top N] [--force N]`
 ranks the admitted leaves by the number of transport-checked theorems they transitively

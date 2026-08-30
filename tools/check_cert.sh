@@ -29,14 +29,29 @@ echo "OK   base (typing lemmas: $(grep -c '^Theorem' "$cert/_literal_typing.mg")
 check_one() {
   s=$1; f=$tmp/$s.mg
   cat "$base" "$cert/$s.mg" > "$f"
-  out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces "$f" 2>&1)
-  if echo "$out" | grep -q "Everything looks good"; then
-    echo "OK   $s ($(grep -c '_bridge : ' "$cert/$s.mg") bridges, $(grep -c '^// not bridged' "$cert/$s.mg") not bridged)" > "$tmp/$s.res"
-  else
+  tries=0; admitted=""
+  while true; do
+    out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces "$f" 2>&1)
+    if echo "$out" | grep -q "Everything looks good"; then
+      note=""; [ -n "$admitted" ] && note="; admitted imports:$admitted"
+      echo "OK   $s ($(grep -c '_bridge : ' "$cert/$s.mg") bridges, $(grep -c '^// not bridged' "$cert/$s.mg") not bridged$note)" > "$tmp/$s.res"
+      return
+    fi
     ln=$(echo "$out" | grep -o 'line [0-9]*' | head -1 | grep -o '[0-9]*')
-    thm=""; if [ -n "$ln" ]; then sl=$((ln-off)); thm=$(head -n "$sl" "$cert/$s.mg" | grep -o '^Theorem [A-Za-z_0-9]*' | tail -1); fi
+    thm=""; if [ -n "$ln" ]; then thm=$(head -n "$ln" "$f" | grep -o '^Theorem [A-Za-z_0-9]*' | tail -1); fi
+    # CHECK_RETRY (proof pilot, docs/DESIGN.md 22): a failure inside an imported proof hltu_N admits
+    # hltu_N and hlt_N and checks the module again, so that one bad import does not lose the shard
+    case "$thm" in
+      "Theorem hltu_"*)
+        if [ "${CHECK_RETRY:-0}" -gt "$tries" ]; then
+          name=${thm#Theorem hltu_}
+          python3 "$HERE/tools/admit_theorem.py" "$f" "hltu_$name" "hlt_$name" > /dev/null
+          admitted="$admitted $name"; tries=$((tries+1)); continue
+        fi ;;
+    esac
     echo "FAIL $s: $(echo "$out" | grep -v '^$' | head -2 | sed "s/line \([0-9]*\)/line \1 (shard line \$((\1-$off)))/") [$thm]" > "$tmp/$s.res"
-  fi
+    return
+  done
 }
 export -f check_one; export HERE MG cert tmp off base
 printf '%s\n' "${shards[@]}" | xargs -P ${JOBS:-4} -I{} bash -c 'check_one {}'

@@ -17,7 +17,7 @@ cd "$HERE"
   --srcindex generated/internal/$prof.srcindex.json --timeout 10 --known-props generated/public/$prof/known_props.txt \
   --proofs "$proofs" 2> "$out/translate.stderr" > /dev/null
 echo "translate: $(grep -c 'proof import' "$out/translate.stderr") proofs not imported; $(du -sh "$out/cert" | cut -f1) of certification modules"
-JOBS=${JOBS:-4} MGTIMEOUT=${MGTIMEOUT:-5400} PUBDIR="$out/public" LITDIR="$out/literal" CERTDIR="$out/cert" tools/check_cert.sh $prof > "$out/check.log" 2>&1 || true
+CHECK_RETRY=${CHECK_RETRY:-2} JOBS=${JOBS:-4} MGTIMEOUT=${MGTIMEOUT:-5400} PUBDIR="$out/public" LITDIR="$out/literal" CERTDIR="$out/cert" tools/check_cert.sh $prof > "$out/check.log" 2>&1 || true
 python3 tools/cert_finalize.py $prof "$out/check.log" --manifest "$out/public/$prof.manifest.json" --cert-dir "$out/cert" | tee "$out/summary.txt"
 grep "^FAIL" "$out/check.log" | cut -c1-300 | head -20
 echo "pilot done"
