@@ -6,7 +6,14 @@
 // Source hash: md5:f03cdf2f45e6fbe418632b3eb5ad3ffc
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem numseg : forall m n :e omega, {i :e omega | m <= i /\ i <= n} = {x :e omega | m <= x /\ x <= n}.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply (set_ext ({i :e omega | m <= i /\ i <= n}) ({x :e omega | m <= x /\ x <= n})).
+- let x1. assume Hx1.
+  exact (SepI (omega) (fun x:set => m <= x /\ x <= n) (x1) (SepE1 (omega) (fun i:set => m <= i /\ i <= n) (x1) Hx1) (SepE2 (omega) (fun i:set => m <= i /\ i <= n) (x1) Hx1)).
+- let x. assume Hx.
+  exact (SepI (omega) (fun i:set => m <= i /\ i <= n) (x) (SepE1 (omega) (fun x:set => m <= x /\ x <= n) (x) Hx) (SepE2 (omega) (fun x:set => m <= x /\ x <= n) (x) Hx)).
+Qed.
 
 // HOL Light: iterate.ml:21 / FINITE_NUMSEG
 // Source hash: md5:e6b51c0e6a38a0ab18878a9dbc01b333
@@ -48,7 +55,15 @@ Admitted.
 // Source hash: md5:1e87b41df6e3ca7d40b6c9d88a0a2559
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem IN_NUMSEG : forall m n p :e omega, p :e {i :e omega | m <= i /\ i <= n} <-> m <= p /\ p <= n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (SepE2 (omega) (fun i:set => m <= i /\ i <= n) (p) H1).
+- assume H.
+  exact (SepI (omega) (fun i:set => m <= i /\ i <= n) (p) Hp H).
+Qed.
 
 // HOL Light: iterate.ml:51 / IN_NUMSEG_0
 // Source hash: md5:acb324168827d0a9abef183064cfb422
@@ -230,7 +245,20 @@ Admitted.
 // Source hash: md5:0aedb34b9d6661fba4a5b10ecedffecd
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B op} | f x <> neutral_of B op} = {x :e s | f x <> neutral_of B op}.
-Admitted.
+let A.
+let B.
+assume H.
+let op.
+assume H1.
+let f.
+assume H2.
+let s. assume Hs.
+apply (set_ext ({x :e {x :e s | f x <> neutral_of B op} | f x <> neutral_of B op}) ({x :e s | f x <> neutral_of B op})).
+- let x1. assume Hx1.
+  exact (SepE1 ({x :e s | f x <> neutral_of B op}) (fun x:set => f x <> neutral_of B op) (x1) Hx1).
+- let x. assume Hx.
+  exact (SepI ({x :e s | f x <> neutral_of B op}) (fun x:set => f x <> neutral_of B op) (x) Hx (SepE2 (s) (fun x:set => f x <> neutral_of B op) (x) Hx)).
+Qed.
 
 // HOL Light: iterate.ml:315 / SUPPORT_EMPTY
 // Source hash: md5:51a15a0f30064f51df84243d65184a37
@@ -242,7 +270,17 @@ Admitted.
 // Source hash: md5:1cb492d6d2a10235f4796e2e45535a55
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SUPPORT_SUBSET : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e s | f x <> neutral_of B op} c= s.
-Admitted.
+let A.
+let B.
+assume H.
+let op.
+assume H1.
+let f.
+assume H2.
+let s. assume Hs.
+let x. assume Hx.
+exact (SepE1 (s) (fun x:set => f x <> neutral_of B op) (x) Hx).
+Qed.
 
 // HOL Light: iterate.ml:324 / FINITE_SUPPORT
 // Source hash: md5:5f2e5868802d786d3586b28b029dac08

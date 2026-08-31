@@ -1869,8 +1869,8 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **213 of 2 685 public theorems receive generated
-native proofs, and the whole set checks in 3 s against the native context alone** — God1
+equality congruence by motive replacement): **246 of 2 685 public theorems receive generated
+native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
 quantifier-swap/UNWIND lemmas of `theorems.ml`, and the `INT/REAL_OF_NUM` transfer lemmas.
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (213 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (246 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1924,6 +1924,15 @@ happens — charging on every fallback drained or-heavy searches (DISJ_ACI); wit
 (premise-growth check in the fixpoint, per-transport charges, 100-fuel split charge) the
 whole synthesis phase costs ~4.7 min at budget 4000 with strictly more theorems proved
 than the unguarded 6000-budget search.
+
+N3a — sets (213 → 246): membership in separations, `:/\:`/`:\/:`/`:\:` and enumerations
+is *constructed* (`SepI`, `binintersectI`, `binunionI1/I2`, `setminusI`, `SingI`,
+`UPairI1/I2`) and *destructured* (`SepE1/E2`, `binintersectE1/E2`, `setminusE1/E2`,
+`binunionE` and `UPairE` as disjunctive hypotheses, `SingE` as an equation) as proof terms;
+`c=` goals introduce with `let x. assume Hx.`; and a set-typed equation nothing else closes
+falls back to `apply (set_ext ...)` with the two inclusions as bullets.  This sweeps the
+INTER/UNION/DELETE/DIFF/SUBSET families of `sets.ml` (IN_INTER, UNION_ACI, DELETE_DELETE,
+SUBSET_DIFF, SING_GSPEC, ...) — 33 theorems in one rule set, all checked.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

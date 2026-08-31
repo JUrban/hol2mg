@@ -274,6 +274,54 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
       |> function
       | Some t -> Some t
       | None ->
+      (* membership in separations, boolean set operations, and enumerations *)
+      (match goal with
+       | Mg.App (Mg.App (Mg.Cst "In", z), sset) ->
+           (match sset with
+            | Mg.Sep (x, a, pbody) ->
+                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                 | None -> None
+                 | Some t1 ->
+                     (match close_term st hyps (Mg.subst [ (x, z) ] pbody) (adepth - 1) with
+                      | None -> None
+                      | Some t2 ->
+                          Some (Printf.sprintf "(SepI %s (fun %s:set => %s) %s %s %s)"
+                                  (ppp a) x (pp pbody) (ppp z) t1 t2)))
+            | Mg.App (Mg.App (Mg.Cst "binintersect", a), b) ->
+                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                 | None -> None
+                 | Some t1 ->
+                     (match close_term st hyps (mg_in z b) (adepth - 1) with
+                      | None -> None
+                      | Some t2 -> Some (Printf.sprintf "(binintersectI %s %s %s %s %s)"
+                                           (ppp a) (ppp b) (ppp z) t1 t2)))
+            | Mg.App (Mg.App (Mg.Cst "binunion", a), b) ->
+                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                 | Some t1 -> Some (Printf.sprintf "(binunionI1 %s %s %s %s)" (ppp a) (ppp b) (ppp z) t1)
+                 | None ->
+                     (match close_term st hyps (mg_in z b) (adepth - 1) with
+                      | Some t2 -> Some (Printf.sprintf "(binunionI2 %s %s %s %s)" (ppp a) (ppp b) (ppp z) t2)
+                      | None -> None))
+            | Mg.App (Mg.App (Mg.Cst "setminus", a), b) ->
+                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                 | None -> None
+                 | Some t1 ->
+                     (match List.find_opt (fun h ->
+                        match dest_not h.prop with
+                        | Some pp' -> aeq pp' (mg_in z b) | None -> false) hyps with
+                      | Some h -> Some (Printf.sprintf "(setminusI %s %s %s %s %s)"
+                                          (ppp a) (ppp b) (ppp z) t1 h.hname)
+                      | None -> None))
+            | Mg.SetEnum [ a ] when aeq z a -> Some (Printf.sprintf "(SingI %s)" (ppp a))
+            | Mg.SetEnum [ a; b ] ->
+                if aeq z a then Some (Printf.sprintf "(UPairI1 %s %s)" (ppp a) (ppp b))
+                else if aeq z b then Some (Printf.sprintf "(UPairI2 %s %s)" (ppp a) (ppp b))
+                else None
+            | _ -> None)
+       | _ -> None)
+      |> function
+      | Some t -> Some t
+      | None ->
       (* transport along an equality hypothesis: close goal[e2 := e1] and rewrite *)
       (match List.find_map (fun h ->
          match dest_eq h.prop with
@@ -424,6 +472,32 @@ let rec push st (gl : Mg.tm) (name : string) (prop : Mg.tm) (hyps : hyp list)
       let hp = fresh st "H" in
       Printf.sprintf "apply %s. let %s. assume %s." name x' hp
       :: push st gl hp p hyps cont
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.Sep (x, a, pbody)) ->
+      let pl = Printf.sprintf "(fun %s:set => %s)" x (pp pbody) in
+      let t1 = Printf.sprintf "(SepE1 %s %s %s %s)" (ppp a) pl (ppp z) name in
+      let t2 = Printf.sprintf "(SepE2 %s %s %s %s)" (ppp a) pl (ppp z) name in
+      push st gl t1 (mg_in z a) (h :: hyps) (fun hyps ->
+        push st gl t2 (Mg.subst [ (x, z) ] pbody) hyps cont)
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "binintersect", a), b)) ->
+      let t1 = Printf.sprintf "(binintersectE1 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
+      let t2 = Printf.sprintf "(binintersectE2 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
+      push st gl t1 (mg_in z a) (h :: hyps) (fun hyps -> push st gl t2 (mg_in z b) hyps cont)
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "setminus", a), b)) ->
+      let t1 = Printf.sprintf "(setminusE1 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
+      let t2 = Printf.sprintf "(setminusE2 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
+      push st gl t1 (mg_in z a) (h :: hyps) (fun hyps ->
+        push st gl t2 (Mg.App (Mg.Cst "not", mg_in z b)) hyps cont)
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "binunion", a), b)) ->
+      let t = Printf.sprintf "(binunionE %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
+      push st gl t (Mg.App (Mg.App (Mg.Cst "or", mg_in z a), mg_in z b)) (h :: hyps) cont
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.SetEnum [ a ]) ->
+      push st gl (Printf.sprintf "(SingE %s %s %s)" (ppp a) (ppp z) name)
+        (Mg.App (Mg.App (Mg.Cst "eq", z), a)) (h :: hyps) cont
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.SetEnum [ a; b ]) ->
+      push st gl (Printf.sprintf "(UPairE %s %s %s %s)" (ppp z) (ppp a) (ppp b) name)
+        (Mg.App (Mg.App (Mg.Cst "or",
+           Mg.App (Mg.App (Mg.Cst "eq", z), a)), Mg.App (Mg.App (Mg.Cst "eq", z), b)))
+        (h :: hyps) cont
   | _ -> cont (h :: hyps)
 
 let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
@@ -444,6 +518,15 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
       let b' = Mg.subst [ (x, Mg.Var x') ] b in
       Printf.sprintf "let %s. assume %s." x' hx
       :: push st b' hx (mg_subq (Mg.Var x') a) hyps (fun hyps -> prove_goal st hyps b' d)
+  | Mg.App (Mg.App (Mg.Cst "Subq", sl), tr) ->
+      (match close_term st hyps goal 2 with
+       | Some tm -> [ Printf.sprintf "exact %s." tm ]
+       | None ->
+           let x' = fresh st "x" in
+           let hx = fresh st ("H" ^ x') in
+           Printf.sprintf "let %s. assume %s." x' hx
+           :: push st (mg_in (Mg.Var x') tr) hx (mg_in (Mg.Var x') sl) hyps
+                (fun hyps -> prove_goal st hyps (mg_in (Mg.Var x') tr) d))
   | Mg.Imp (p, q) ->
       let hn = fresh st "H" in
       Printf.sprintf "assume %s." hn :: push st q hn p hyps (fun hyps -> prove_goal st hyps q d)
@@ -535,7 +618,18 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                Printf.sprintf "apply (xm (%s))." (pp g)
                :: (bl [ Printf.sprintf "assume %s. exact %s." h1 h1 ]
                    @ bl [ Printf.sprintf "assume %s. exact (FalseE (%s %s) (%s))." h1 h.hname h1 (pp g) ])
-           | None -> or_elim st hyps g d)
+           | None ->
+               (* set equalities via extensionality *)
+               let is_setop = function
+                 | Mg.Sep _ | Mg.SetEnum _
+                 | Mg.App (Mg.App (Mg.Cst ("binintersect" | "binunion" | "setminus"), _), _) -> true
+                 | _ -> false in
+               (match dest_eq g with
+                | Some (l, r) when is_setop l || is_setop r ->
+                    Printf.sprintf "apply (set_ext %s %s)." (ppp l) (ppp r)
+                    :: (block d (prove_goal st hyps (mg_subq l r) (d + 1))
+                        @ block d (prove_goal st hyps (mg_subq r l) (d + 1)))
+                | _ -> or_elim st hyps g d))
 
 and if_split st hyps goal d =
   (* first if-subterm of the goal, outside binders *)
