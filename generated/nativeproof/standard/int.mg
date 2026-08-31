@@ -509,6 +509,17 @@ let n. assume Hn.
 exact (If_i_1 (n :e omega) (n) (0) Hn).
 Qed.
 
+// HOL Light: int.ml / num_divides
+Theorem num_divides : forall a b :e omega, divides_nat a b <-> divides_int a b.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H1.
+  exact (divides_nat_divides_int (a) (b) H1).
+- assume H.
+  exact (divides_int_divides_nat (a) Ha (b) Hb H).
+Qed.
+
 // HOL Light: int.ml / num_coprime
 Theorem num_coprime : forall a b :e omega, gcd_int a b = 1 <-> gcd_int a b = 1.
 let a. assume Ha.
