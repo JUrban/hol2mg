@@ -68,6 +68,12 @@ apply iffI.
   + exact H1.
 Qed.
 
+// HOL Light: class.ml / EXCLUDED_MIDDLE
+Theorem EXCLUDED_MIDDLE : forall t:prop, t \/ ~ t.
+let t.
+exact (xm (t)).
+Qed.
+
 // HOL Light: class.ml / NOT_CLAUSES
 Theorem NOT_CLAUSES : (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True)).
 apply andI.
