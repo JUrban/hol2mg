@@ -6,7 +6,10 @@
 // Source hash: md5:fa6361200beb01135fbf6c305ca1bb33
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem DECIMAL : forall x y :e omega, x :/: y = x :/: y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: calc_rat.ml:23 / RAT_LEMMA1
 // Source hash: md5:e8393a3cd1be553aa7c60366fca81f84

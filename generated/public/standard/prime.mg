@@ -444,13 +444,24 @@ Admitted.
 // Source hash: md5:bc8550b9fdda5dd1c4ae5d3e17c76283
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
 Theorem COPRIME_GCD : forall a b :e omega, gcd_int a b = 1 <-> gcd_int a b = 1.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/prime.ml:414 / GCD_ONE
 // Source hash: md5:e97f18e329235c05345b9449d83fc5fa
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod)
 Theorem GCD_ONE : forall a b :e omega, gcd_int a b = 1 -> gcd_int a b = 1.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+assume H.
+exact H.
+Qed.
 
 // HOL Light: Library/prime.ml:418 / COPRIME_SYM
 // Source hash: md5:d6c02981478c7201187228ea5a76f5a9

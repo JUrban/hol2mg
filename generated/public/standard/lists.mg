@@ -510,7 +510,23 @@ Admitted.
 // Source hash: md5:808bb6d4c5cb3d40cbad02f407cc2372
 // Status: transport_required (bridges: hol_list_finseq)
 Theorem ALLPAIRS_SYM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i).
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let P.
+let l. assume Hl.
+let m. assume Hm.
+apply iffI.
+- assume H3.
+  let i1. assume Hi1.
+  let j1. assume Hj1.
+  exact (H3 (j1) Hj1 (i1) Hi1).
+- assume H2.
+  let i. assume Hi.
+  let j. assume Hj.
+  exact (H2 (j) Hj (i) Hi).
+Qed.
 
 // HOL Light: lists.ml:445 / ALLPAIRS_MEM
 // Source hash: md5:ef9bf6d2f325f0fc0358e7051e150305

@@ -6,13 +6,46 @@
 // Source hash: md5:a66cd7ee4a285afac484463c22127497
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SYM_ALT : forall A:set, forall R0:set -> set -> prop, (forall x y :e A, R0 x y -> R0 y x) <-> forall x y :e A, R0 x y <-> R0 y x.
-Admitted.
+let A.
+let R0.
+apply iffI.
+- assume H2.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  apply iffI.
+  + assume H4.
+    exact (H2 (x1) Hx1 (y1) Hy1 H4).
+  + assume H3.
+    exact (H2 (y1) Hy1 (x1) Hx1 H3).
+- assume H.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H1.
+  exact ((andEL (R0 x y -> R0 y x) (R0 y x -> R0 x y) (H (x) Hx (y) Hy)) H1).
+Qed.
 
 // HOL Light: Library/rstc.ml:21 / TRANS_ALT
 // Source hash: md5:21e53f124e0e31ea49b2c62deca0c258
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TRANS_ALT : forall A:set, forall R0 S U:set -> set -> prop, (forall x z :e A, (exists y :e A, R0 x y /\ S y z) -> U x z) <-> forall x y z :e A, R0 x y /\ S y z -> U x z.
-Admitted.
+let A.
+let R0.
+let S.
+let U.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  let z1. assume Hz1.
+  assume H5.
+  exact (H4 (x1) Hx1 (z1) Hz1 (ex_intro (fun hl__w:set => hl__w :e A /\ (R0 x1 hl__w /\ S hl__w z1)) (y1) (andI (y1 :e A) (R0 x1 y1 /\ S y1 z1) Hy1 H5))).
+- assume H.
+  let x. assume Hx.
+  let z. assume Hz.
+  assume H1.
+  apply H1. let y. assume H2. apply H2. assume Hy H3.
+  exact (H (x) Hx (y) Hy (z) Hz H3).
+Qed.
 
 // HOL Light: Library/rstc.ml:32 / RC_CASES
 // Source hash: md5:5d8563cd52dd513bc837e914ac3281e4
@@ -277,7 +310,16 @@ Admitted.
 // Source hash: md5:59c9e941594a6b4f331f5446c341a818
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RSC : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (SC_rel R0) x x0 <-> RC_rel (SC_rel R0) x x0.
-Admitted.
+let A.
+let R0.
+let x. assume Hx.
+let x0. assume Hx0.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/rstc.ml:242 / RSC_INC
 // Source hash: md5:07575b5a00a32daa8fb9e05d5439d9f3
@@ -331,7 +373,16 @@ Admitted.
 // Source hash: md5:395a9663ed5f2a3e6810faec536323aa
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RTC : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (TC_on A R0) x x0 <-> RC_rel (TC_on A R0) x x0.
-Admitted.
+let A.
+let R0.
+let x. assume Hx.
+let x0. assume Hx0.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/rstc.ml:287 / RTC_INC
 // Source hash: md5:ed1e23cd7c989c7199c0d62714bc59fc
@@ -469,7 +520,16 @@ Admitted.
 // Source hash: md5:c752ddc58f91942f156c4942892d28e3
 // Status: generalization_required (bridges: empty_case:A)
 Theorem STC : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, TC_on A (SC_rel R0) x x0 <-> TC_on A (SC_rel R0) x x0.
-Admitted.
+let A.
+let R0.
+let x. assume Hx.
+let x0. assume Hx0.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/rstc.ml:408 / STC_INC
 // Source hash: md5:af976e9306e50a725d031aec295dc211
@@ -553,7 +613,16 @@ Admitted.
 // Source hash: md5:ceb70076cd39d0195e6c9a8826ec8b6c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RSTC : forall A:set, forall R0:set -> set -> prop, forall x x0 :e A, RC_rel (TC_on A (SC_rel R0)) x x0 <-> RC_rel (TC_on A (SC_rel R0)) x x0.
-Admitted.
+let A.
+let R0.
+let x. assume Hx.
+let x0. assume Hx0.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/rstc.ml:480 / RSTC_INC
 // Source hash: md5:a30ec1700370f8d5b882e445ad3cfd37

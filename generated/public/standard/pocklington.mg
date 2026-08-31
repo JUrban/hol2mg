@@ -96,19 +96,63 @@ Admitted.
 // Source hash: md5:9e1c450fc5dcd58a9425f52e1746780d
 // Status: transport_required (bridges: hol_num_omega)
 Theorem CONG_REFL : forall x n :e omega, exists q1 q2 :e omega, x + n * q1 = x + n * q2.
-Admitted.
+let x. assume Hx.
+let n. assume Hn.
+witness n.
+apply andI.
+- exact Hn.
+- witness n.
+  apply andI.
+  + exact Hn.
+  + exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/pocklington.ml:151 / EQ_IMP_CONG
 // Source hash: md5:9d70fa76583447e90be1578744f0bba0
 // Status: transport_required (bridges: hol_num_omega)
 Theorem EQ_IMP_CONG : forall a b n :e omega, a = b -> exists q1 q2 :e omega, a + n * q1 = b + n * q2.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+let n. assume Hn.
+assume H.
+witness n.
+apply andI.
+- exact Hn.
+- witness n.
+  apply andI.
+  + exact Hn.
+  + exact (H (fun hl__u hl__v => (a + n * n) = (hl__u + n * n)) (fun q H => H)).
+Qed.
 
 // HOL Light: Library/pocklington.ml:155 / CONG_SYM
 // Source hash: md5:663378a217c3b8e1206911c5dd10bea8
 // Status: transport_required (bridges: hol_num_omega)
 Theorem CONG_SYM : forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> exists q1 q2 :e omega, y + n * q1 = x + n * q2.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let n. assume Hn.
+apply iffI.
+- assume H5.
+  apply H5. let q11. assume H6. apply H6. assume Hq11 H7.
+  apply H7. let q21. assume H8. apply H8. assume Hq21 H9.
+  witness q21.
+  apply andI.
+  + exact Hq21.
+  + witness q11.
+    apply andI.
+    * exact Hq11.
+    * exact (H9 (fun hl__u hl__v => hl__u = (x + n * q11)) (fun q H => H)).
+- assume H.
+  apply H. let q1. assume H1. apply H1. assume Hq1 H2.
+  apply H2. let q2. assume H3. apply H3. assume Hq2 H4.
+  witness q2.
+  apply andI.
+  + exact Hq2.
+  + witness q1.
+    apply andI.
+    * exact Hq1.
+    * exact (H4 (fun hl__u hl__v => hl__u = (y + n * q1)) (fun q H => H)).
+Qed.
 
 // HOL Light: Library/pocklington.ml:159 / CONG_TRANS
 // Source hash: md5:84a463fcebae5f1a578d70cd9fbd8d2e
@@ -552,7 +596,17 @@ Admitted.
 // Source hash: md5:2adc171740ca003c25044f1f1ba5fb6c
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
 Theorem squarefree : forall n :e omega, (forall m :e omega, divides_nat (m ^ 2) n -> m = 1) <-> forall m :e omega, divides_nat (m ^ 2) n -> m = 1.
-Admitted.
+let n. assume Hn.
+apply iffI.
+- assume H2.
+  let m1. assume Hm1.
+  assume H3.
+  exact (H2 (m1) Hm1 H3).
+- assume H.
+  let m. assume Hm.
+  assume H1.
+  exact (H (m) Hm H1).
+Qed.
 
 // HOL Light: Library/pocklington.ml:880 / SQUAREFREE_0
 // Source hash: md5:e252e335007c9fd015533a5f3caf6215

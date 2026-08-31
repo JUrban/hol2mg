@@ -12,7 +12,12 @@ Admitted.
 // Source hash: md5:a9f4330c5595159fbb6ce98f1e9e8440
 // Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_real_R, hol_sum_finsum, int_Subq_R)
 Theorem int_isum : forall A:set, forall f:set -> set, (forall x :e A, f x :e int) -> forall s c= A, finsum s f = finsum s f.
-Admitted.
+let A.
+let f.
+assume H.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/isum.ml:89 / CARD_EQ_ISUM
 // Source hash: md5:fc690b8e142d32b9c6aacc7f8f17ab6a
@@ -498,13 +503,24 @@ Admitted.
 // Source hash: md5:709f5eb1e140a303d878c51fccf1bae4
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_int_int, hol_nsum_finsum, hol_num_omega, hol_sum_finsum, omega_Subq_int)
 Theorem REAL_OF_NUM_ISUM : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s f = finsum s f.
-Admitted.
+let A.
+let f.
+assume H.
+let s. assume Hs.
+assume H1.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/isum.ml:170 / REAL_OF_NUM_ISUM_NUMSEG
 // Source hash: md5:2e940ef246f669cc86c5f00e42fe2b0f
 // Status: transport_required (bridges: hol_int_int, hol_nsum_finsum, hol_num_omega, hol_sum_finsum, omega_Subq_int)
 Theorem REAL_OF_NUM_ISUM_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} f.
-Admitted.
+let f.
+assume H.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/isum.ml:181 / ISUM_ISUM_PRODUCT
 // Source hash: md5:4350a55dc1624599c44c4673fc512ae7

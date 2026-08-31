@@ -6,7 +6,18 @@
 // Source hash: md5:8ba22a7cbd713aad5d5d70acce413110
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SUBSET_PRED : forall A:set, forall P Q c= A, P c= Q <-> forall x :e A, x :e P -> x :e Q.
-Admitted.
+let A.
+let P. assume HP.
+let Q. assume HQ.
+apply iffI.
+- assume H1.
+  let x1. assume Hx1.
+  assume H2.
+  exact (H1 (x1) H2).
+- assume H.
+  let x. assume Hx.
+  exact (H (x) (HP (x) Hx) Hx).
+Qed.
 
 // HOL Light: Library/wo.ml:12 / UNIONS_PRED
 // Source hash: md5:76b0e0d615789ff56e8e2da69931509c
@@ -582,7 +593,24 @@ Admitted.
 // Source hash: md5:eb26433fd3e315716f53d94c2be6e661
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem PAIRED_EXT : forall A B C:set, C <> Empty -> forall l:set -> set -> set, (forall x :e A, forall y :e B, l x y :e C) -> forall m:set -> set -> set, (forall x :e A, forall y :e B, m x y :e C) -> ((forall x :e A, forall y :e B, l x y = m x y) <-> forall x :e A, forall x0 :e B, l x x0 = m x x0).
-Admitted.
+let A.
+let B.
+let C.
+assume H.
+let l.
+assume H1.
+let m.
+assume H2.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let x0. assume Hx0.
+  exact (H4 (x1) Hx1 (x0) Hx0).
+- assume H3.
+  let x. assume Hx.
+  let y. assume Hy.
+  exact (H3 (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: Library/wo.ml:800 / WOSET_TRANS_LE
 // Source hash: md5:a488999cc030a045982fc36a5b7e1fac

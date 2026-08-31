@@ -6,43 +6,93 @@
 // Source hash: md5:7072af01086ae1b09b3e67863fac76ac
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C)
 Theorem o_DEF : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
-Admitted.
+let A.
+let B.
+let C.
+let f.
+assume H.
+let g.
+assume H1.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:21 / I_DEF
 // Source hash: md5:98f75ab7f3aecd3890689464fdb13fda
 // Status: native_reuse (bridges: empty_case:A)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem I_DEF : forall A:set, forall x :e A, x = x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem I_DEF : forall A:set, forall x :e A, x = x.
+let A.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:24 / o_THM
 // Source hash: md5:5f35f2b84dbd2ff7d1a387066c77a57f
 // Status: native_reuse (bridges: empty_case:A, empty_case:B, empty_case:C)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem o_THM : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem o_THM : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
+let A.
+let B.
+let C.
+let f.
+assume H.
+let g.
+assume H1.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:30 / o_ASSOC
 // Source hash: md5:f22ad52a4382071def526afc8c38a995
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, empty_case:D)
 Theorem o_ASSOC : forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x)).
-Admitted.
+let A.
+let B.
+let C.
+let D.
+let f.
+assume H.
+let g.
+assume H1.
+let h.
+assume H2.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:36 / I_THM
 // Source hash: md5:869bdf643ad8869e3e6c61189c7171c1
 // Status: native_reuse (bridges: empty_case:A)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem I_THM : forall A:set, forall x :e A, x = x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem I_THM : forall A:set, forall x :e A, x = x.
+let A.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:40 / I_O_ID
 // Source hash: md5:dc7aa55a625b9a78c1fd4104e409969c
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem I_O_ID : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x.
-Admitted.
+let A.
+let B.
+let f.
+assume H.
+apply andI.
+- let x1. assume Hx1.
+  exact (fun q H => H).
+- let x. assume Hx.
+  exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:49 / EXISTS_ONE_REP
 // Source hash: md5:333141743c1f0da979ec93730a80c4d4
 // Status: exact_native
 Theorem EXISTS_ONE_REP : exists b:prop, b.
-Admitted.
+witness True.
+exact (fun p:prop => fun H:p => H).
+Qed.
 
 // HOL Light: trivia.ml:57 / one_DEF
 // Source hash: md5:e2591fc32bec2328753ba82d3aeb61dd

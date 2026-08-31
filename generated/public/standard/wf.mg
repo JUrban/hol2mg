@@ -126,7 +126,17 @@ Admitted.
 // Source hash: md5:abb01e8d84ce430691bf20436f40529b
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, nat_lt_SNoLt)
 Theorem MEASURE : forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y.
-Admitted.
+let A.
+let m.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H2.
+  exact H2.
+- assume H1.
+  exact H1.
+Qed.
 
 // HOL Light: wf.ml:260 / WF_MEASURE
 // Source hash: md5:5d1b43ae387330061cca4c569f00754a
@@ -156,7 +166,17 @@ Admitted.
 // Source hash: md5:3a0c9abd721808b47cf963c7218fab66
 // Status: exact_native
 Theorem WF_FALSE : forall A:set, A <> Empty -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ False.
-Admitted.
+let A.
+assume H.
+let P. assume HP.
+assume H1.
+witness choose_in P (fun hl__w:set => True).
+apply andI.
+- exact (choose_in_in (P) H1 (fun hl__w:set => True)).
+- let y. assume Hy.
+  assume H2.
+  exact H2.
+Qed.
 
 // HOL Light: wf.ml:298 / MINIMAL_BAD_SEQUENCE
 // Source hash: md5:626982c0fe0f800129b51817d89ba2b9

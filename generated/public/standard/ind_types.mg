@@ -84,13 +84,32 @@ Admitted.
 // Source hash: md5:3ba2a1ebc7dc10f5cd16b4b8c40e2eb7
 // Status: exact_native
 Theorem ISO : forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e B, f (g x) = x) /\ (forall y :e A, g (f y) = y) <-> (forall x :e B, f (g x) = x) /\ forall y :e A, g (f y) = y).
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let g.
+assume H2.
+let f.
+assume H3.
+apply iffI.
+- assume H5.
+  exact H5.
+- assume H4.
+  exact H4.
+Qed.
 
 // HOL Light: ind_types.ml:1064 / ISO_REFL
 // Source hash: md5:a011c509c7618efcc0a361277975e422
 // Status: generalization_required (bridges: empty_case:A)
 Theorem ISO_REFL : forall A:set, (forall x :e A, x = x) /\ forall y :e A, y = y.
-Admitted.
+let A.
+apply andI.
+- let x. assume Hx.
+  exact (fun q H => H).
+- let y. assume Hy.
+  exact (fun q H => H).
+Qed.
 
 // HOL Light: ind_types.ml:1068 / ISO_FUN
 // Source hash: md5:a2a618441e3e25283a31bd76d0349c20

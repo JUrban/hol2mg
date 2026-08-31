@@ -234,7 +234,14 @@ Admitted.
 // Source hash: md5:60ce1d465c214ba48f747c87aeb91320
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
 Theorem INT_COPRIME_GCD : forall a b :e int, gcd_int a b = 1 <-> gcd_int a b = 1.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/integer.ml:166 / INT_GCD_BEZOUT
 // Source hash: md5:3f6681643c50ff838d1b41e551046801
@@ -738,7 +745,15 @@ Admitted.
 // Source hash: md5:11195ba0485a02153aab067db3baabb7
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_CONG : forall x y n :e int, divides_int n (x + - y) <-> divides_int n (x + - y).
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/integer.ml:615 / INT_CONG_MOD_ABS
 // Source hash: md5:53d47c90ebf8907dabd4f75fed3faef1
@@ -900,7 +915,11 @@ Admitted.
 // Source hash: md5:eb4b92d3055e6897dd3c23c204507428
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_CONG_1_DIVIDES : forall n x :e int, divides_int n (x + - 1) -> divides_int n (x + - 1).
-Admitted.
+let n. assume Hn.
+let x. assume Hx.
+assume H.
+exact H.
+Qed.
 
 // HOL Light: Library/integer.ml:727 / INT_CONG_DIVIDES
 // Source hash: md5:2f8ab7b9c3bc2d9591e948328a472d85
@@ -1056,7 +1075,13 @@ Admitted.
 // Source hash: md5:9bfe25278cdbfeaa796fd0c14c91216a
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem int_prime : forall p :e int, 1 < abs_SNo p /\ (forall x :e int, divides_int x p -> abs_SNo x = 1 \/ abs_SNo x = abs_SNo p) <-> 1 < abs_SNo p /\ forall x :e int, divides_int x p -> abs_SNo x = 1 \/ abs_SNo x = abs_SNo p.
-Admitted.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/integer.ml:898 / INT_PRIME_NEG
 // Source hash: md5:c74ebb3a5251a25ce576c008b5a10d4e

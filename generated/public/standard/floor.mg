@@ -24,19 +24,31 @@ Admitted.
 // Source hash: md5:d3ea4652c4f48f256dcc0aed1a6af887
 // Status: transport_required (bridges: hol_real_R, int_Subq_R)
 Theorem INTEGER_ADD : forall x y :e R, x :e int /\ y :e int -> x + y :e int.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (int_add_SNo (x) (andEL (x :e int) (y :e int) H) (y) (andER (x :e int) (y :e int) H)).
+Qed.
 
 // HOL Light: Library/floor.ml:59 / INTEGER_SUB
 // Source hash: md5:10b7cb8083bcf2ce8d2f97c2d560e51e
 // Status: transport_required (bridges: hol_real_R, int_Subq_R)
 Theorem INTEGER_SUB : forall x y :e R, x :e int /\ y :e int -> x + - y :e int.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (int_add_SNo (x) (andEL (x :e int) (y :e int) H) (- y) (int_minus_SNo (y) (andER (x :e int) (y :e int) H))).
+Qed.
 
 // HOL Light: Library/floor.ml:63 / INTEGER_MUL
 // Source hash: md5:f5b8f666c0f20d7d4013895c0ee10fc6
 // Status: transport_required (bridges: hol_real_R, int_Subq_R)
 Theorem INTEGER_MUL : forall x y :e R, x :e int /\ y :e int -> x * y :e int.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (int_mul_SNo (x) (andEL (x :e int) (y :e int) H) (y) (andER (x :e int) (y :e int) H)).
+Qed.
 
 // HOL Light: Library/floor.ml:67 / INTEGER_POW
 // Source hash: md5:9706f7daddb9bb149bc8cc9020d7d9cf
@@ -300,7 +312,9 @@ Admitted.
 // Source hash: md5:e811a8f9f4f06332431f2446f11fe46f
 // Status: transport_required (bridges: hol_real_R)
 Theorem FRAC_FLOOR : forall x :e R, x + - floor_R x = x + - floor_R x.
-Admitted.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/floor.ml:355 / FLOOR_NUM
 // Source hash: md5:3a2bd706226adcd2dfc13cc51b108ada
@@ -492,13 +506,22 @@ Admitted.
 // Source hash: md5:884e4ec7b202cf2b9672513bbbbd5f33
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem REAL_OF_INT_OF_REAL : forall x :e R, x :e int -> (if x :e int then x else 0) = x.
-Admitted.
+let x. assume Hx.
+assume H.
+exact (If_i_1 (x :e int) (x) (0) H).
+Qed.
 
 // HOL Light: Library/floor.ml:561 / IMAGE_REAL_OF_INT_UNIV
 // Source hash: md5:1d1e4a1399322dd5aef50bca7cdef59e
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem IMAGE_REAL_OF_INT_UNIV : forall x :e R, x :e int <-> x :e int.
-Admitted.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/floor.ml:570 / HAS_SIZE_INTSEG_NUM
 // Source hash: md5:4468e517dca0ac219e00cc8f058b104f

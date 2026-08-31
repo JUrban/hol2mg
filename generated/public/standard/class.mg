@@ -6,31 +6,78 @@
 // Source hash: md5:e20b11b91c226ce7c7fa8169d22798c6
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem ETA_AX : forall A B:set, forall t:set -> set, (forall x :e A, t x :e B) -> forall x :e A, t x = t x.
-Admitted.
+let A.
+let B.
+let t.
+assume H.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: class.ml:30 / EQ_EXT
 // Source hash: md5:74f6b9b467171dc186a2df9978244b58
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EQ_EXT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> (forall x :e A, f x = g x) -> forall x :e A, f x = g x.
-Admitted.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+let g.
+assume H2.
+assume H3.
+let x. assume Hx.
+exact (H3 (x) Hx).
+Qed.
 
 // HOL Light: class.ml:35 / FUN_EQ_THM
 // Source hash: md5:f5a914b29ff3ffb2975dadfdab697414
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FUN_EQ_THM : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = g x) <-> forall x :e A, f x = g x).
-Admitted.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+let g.
+assume H2.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  exact (H4 (x1) Hx1).
+- assume H3.
+  let x. assume Hx.
+  exact (H3 (x) Hx).
+Qed.
 
 // HOL Light: class.ml:53 / SELECT_AX
 // Source hash: md5:4e877f34f5dc642b1b50fc1ef7367fcd
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem SELECT_AX : forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A P).
-Admitted.
+let A.
+let P.
+let x. assume Hx.
+assume H.
+exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H)))).
+Qed.
 
 // HOL Light: class.ml:60 / EXISTS_THM
 // Source hash: md5:a89cb4aa5c0e6a37ab368e12856a3e84
 // Status: exact_native (bridges: choose_in_spec)
 Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A P).
-Admitted.
+let A.
+assume H.
+let P.
+apply iffI.
+- assume H2.
+  apply H2. let x. assume H3. apply H3. assume Hx H4.
+  exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H4)))).
+- assume H1.
+  witness choose_in A P.
+  apply andI.
+  + exact (choose_in_in (A) H (P)).
+  + exact H1.
+Qed.
 
 // HOL Light: class.ml:102 / SELECT_REFL
 // Source hash: md5:5d89ddfdd48e07285ef4152ba2f87957
@@ -66,7 +113,30 @@ Admitted.
 // Source hash: md5:3b3c3e9efdbcbcbfc4b0cad619ffceaa
 // Status: exact_native
 Theorem NOT_CLAUSES : (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True)).
-Admitted.
+apply andI.
+- let t.
+  apply iffI.
+  + assume H8.
+    apply (xm (t)).
+    * assume H9. exact H9.
+    * assume H9. exact (FalseE (H8 H9) (t)).
+  + assume H6.
+    assume H7.
+    exact (H7 H6).
+- apply andI.
+  + apply iffI.
+    * assume H5.
+      exact (H5 (fun p:prop => fun H:p => H)).
+    * assume H3.
+      assume H4.
+      exact H3.
+  + apply iffI.
+    * assume H2.
+      exact (fun p:prop => fun H:p => H).
+    * assume H.
+      assume H1.
+      exact H1.
+Qed.
 
 // HOL Light: class.ml:191 / NOT_IMP
 // Source hash: md5:045dca8754fe888ab0bd299f74e2ef6c
@@ -84,7 +154,18 @@ Admitted.
 // Source hash: md5:bd9e48e90e3a55c73b430ea13ad14537
 // Status: generalization_required (bridges: empty_case:A)
 Theorem NOT_EXISTS_THM : forall A:set, forall P:set -> prop, ~ (exists x :e A, P x) <-> forall x :e A, ~ P x.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  assume H5.
+  exact (H4 (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x1) (andI (x1 :e A) (P x1) Hx1 H5))).
+- assume H.
+  assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  exact ((H (x) Hx) H3).
+Qed.
 
 // HOL Light: class.ml:240 / EXISTS_NOT_THM
 // Source hash: md5:6cc8add8ef8d6ef2111d93d16002aab6
@@ -102,7 +183,18 @@ Admitted.
 // Source hash: md5:46d579bbfb2d94977204d7499747c02c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_NOT_THM : forall A:set, forall P:set -> prop, (forall x :e A, ~ P x) <-> ~ exists x :e A, P x.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H2.
+  assume H3.
+  apply H3. let x1. assume H4. apply H4. assume Hx1 H5.
+  exact ((H2 (x1) Hx1) H5).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  exact (H (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H1))).
+Qed.
 
 // HOL Light: class.ml:257 / FORALL_BOOL_THM
 // Source hash: md5:b3f414a38201a0bff3f5497ef007dd44
@@ -174,7 +266,11 @@ Admitted.
 // Source hash: md5:0917c6f97e746313156fb948ae4a0a66
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_CLAUSES : forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2.
-Admitted.
+let A.
+let t1. assume Ht1.
+let t2. assume Ht2.
+exact (andI ((if True then t1 else t2) = t1) ((if False then t1 else t2) = t2) (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)) (If_i_0 (False) (t1) (t2) (fun hl__H : False => hl__H))).
+Qed.
 
 // HOL Light: class.ml:342 / COND_EXPAND
 // Source hash: md5:a0ffc58d882ed08bb9ceb976d7d87a07
@@ -186,7 +282,15 @@ Admitted.
 // Source hash: md5:6cd454b7a60ebc592010064af1887257
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_ID : forall A:set, forall b:prop, forall t :e A, (if b then t else t) = t.
-Admitted.
+let A.
+let b.
+let t. assume Ht.
+apply (xm (b)).
+- assume H.
+  exact (If_i_1 (b) (t) (t) H).
+- assume H1.
+  exact (If_i_0 (b) (t) (t) H1).
+Qed.
 
 // HOL Light: class.ml:351 / COND_RAND
 // Source hash: md5:abd733d2ca6bac4ed355d508eb6d38ff
@@ -198,13 +302,29 @@ Admitted.
 // Source hash: md5:daf8a0139729304ef354db21fe53723a
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem COND_RATOR : forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x.
-Admitted.
+let A.
+let B.
+let b.
+let f. assume Hf.
+let g. assume Hg.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: class.ml:359 / COND_ABS
 // Source hash: md5:1ff110853c4fd6318c48220aea045eda
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem COND_ABS : forall A B:set, forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, (if b then f x else g x) = if b then f x else g x.
-Admitted.
+let A.
+let B.
+let b.
+let f.
+assume H.
+let g.
+assume H1.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: class.ml:363 / COND_SWAP
 // Source hash: md5:517d4149a3b1212d2fd976fea9192f45
@@ -216,7 +336,19 @@ Admitted.
 // Source hash: md5:3bf95bbe2ccb554b6786e9c177f87e70
 // Status: exact_native
 Theorem MONO_COND : forall A B C D b:prop, (A -> B) /\ (C -> D) -> (b -> A) /\ (~ b -> C) -> (b -> B) /\ (~ b -> D).
-Admitted.
+let A.
+let B.
+let C.
+let D.
+let b.
+assume H.
+assume H1.
+apply andI.
+- assume H3.
+  exact ((andEL (A -> B) (C -> D) H) ((andEL (b -> A) (~ b -> C) H1) H3)).
+- assume H2.
+  exact ((andER (A -> B) (C -> D) H) ((andER (b -> A) (~ b -> C) H1) H2)).
+Qed.
 
 // HOL Light: class.ml:399 / COND_ELIM_THM
 // Source hash: md5:a175440e00beddf5149a7ff13668add1
