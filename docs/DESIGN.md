@@ -1991,6 +1991,14 @@ tried and reverted: a term of the folded type used where the unfolded form is ex
 not converted by `exact`, so only the goal-side restatement (plus the God1 bridging
 premises `divides_nat_divides_int`, `divides_int_divides_nat`) is kept.
 
+Next (N4b, designed): *derived equations* — instantiate equation-concluding hypotheses
+(`forall y :e A, P y -> y = x1` at `x2` and at `x'`) into term-level equality hypotheses,
+then let the existing symmetry/transitivity/transport machinery chain them (the
+EXISTS_UNIQUE family, and the general shape of the recorded rewrite steps).  This wants the
+hypothesis-application core factored out so the same matching/back-chaining can *produce*
+facts as well as close goals — the entry point for DAG-guided rewriting from the §22
+recordings.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

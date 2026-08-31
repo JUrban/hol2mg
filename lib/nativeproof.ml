@@ -641,7 +641,7 @@ let np_debug = Sys.getenv_opt "NPDEBUG" <> None
 
 let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
   spend st 2;
-  if np_debug then Printf.eprintf "[np] goal(d=%d,fuel=%d): %s\n%!" d st.fuel (String.concat " ; " (List.map (fun h -> h.hname ^ " : " ^ pp h.prop) (match hyps with a :: b :: _ -> [a; b] | l -> l)) ^ " |- " ^ pp goal);
+  if np_debug then Printf.eprintf "[np] goal(d=%d,fuel=%d): %s\n%!" d st.fuel (String.concat " ; " (List.map (fun h -> h.hname ^ " : " ^ pp h.prop) (List.filteri (fun i _ -> i < 6) hyps)) ^ " |- " ^ pp goal);
   match goal with
   | Mg.All (x, _, b) ->
       let x' = fresh st x in
