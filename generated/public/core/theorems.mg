@@ -5,8 +5,12 @@
 // HOL Light: theorems.ml:17 / EQ_REFL
 // Source hash: md5:5fb3b368ada0da55fa9425fc34443cce
 // Status: native_reuse (bridges: empty_case:A)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem EQ_REFL : forall A:set, forall x :e A, x = x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem EQ_REFL : forall A:set, forall x :e A, x = x.
+let A.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: theorems.ml:21 / REFL_CLAUSE
 // Source hash: md5:2ce4c3adc3cbc009644ca0f1da20bfcf
@@ -90,17 +94,9 @@ let t2.
 let t3.
 apply iffI.
 - assume H1.
-  apply andI.
-  + apply andI.
-    * exact (andEL (t1) (t2 /\ t3) H1).
-    * exact (andEL (t2) (t3) (andER (t1) (t2 /\ t3) H1)).
-  + exact (andER (t2) (t3) (andER (t1) (t2 /\ t3) H1)).
+  exact (andI (t1 /\ t2) (t3) (andI (t1) (t2) (andEL (t1) (t2 /\ t3) H1) (andEL (t2) (t3) (andER (t1) (t2 /\ t3) H1))) (andER (t2) (t3) (andER (t1) (t2 /\ t3) H1))).
 - assume H.
-  apply andI.
-  + exact (andEL (t1) (t2) (andEL (t1 /\ t2) (t3) H)).
-  + apply andI.
-    * exact (andER (t1) (t2) (andEL (t1 /\ t2) (t3) H)).
-    * exact (andER (t1 /\ t2) (t3) H).
+  exact (andI (t1) (t2 /\ t3) (andEL (t1) (t2) (andEL (t1 /\ t2) (t3) H)) (andI (t2) (t3) (andER (t1) (t2) (andEL (t1 /\ t2) (t3) H)) (andER (t1 /\ t2) (t3) H))).
 Qed.
 
 // HOL Light: theorems.ml:63 / CONJ_SYM
@@ -111,13 +107,9 @@ let t1.
 let t2.
 apply iffI.
 - assume H1.
-  apply andI.
-  + exact (andER (t1) (t2) H1).
-  + exact (andEL (t1) (t2) H1).
+  exact (andI (t2) (t1) (andER (t1) (t2) H1) (andEL (t1) (t2) H1)).
 - assume H.
-  apply andI.
-  + exact (andER (t2) (t1) H).
-  + exact (andEL (t2) (t1) H).
+  exact (andI (t1) (t2) (andER (t2) (t1) H) (andEL (t2) (t1) H)).
 Qed.
 
 // HOL Light: theorems.ml:67 / CONJ_ACI
@@ -130,56 +122,32 @@ let r.
 apply andI.
 - apply iffI.
   + assume H9.
-    apply andI.
-    * exact (andER (p) (q) H9).
-    * exact (andEL (p) (q) H9).
+    exact (andI (q) (p) (andER (p) (q) H9) (andEL (p) (q) H9)).
   + assume H8.
-    apply andI.
-    * exact (andER (q) (p) H8).
-    * exact (andEL (q) (p) H8).
+    exact (andI (p) (q) (andER (q) (p) H8) (andEL (q) (p) H8)).
 - apply andI.
   + apply iffI.
     * assume H7.
-      apply andI.
-      exact (andEL (p) (q) (andEL (p /\ q) (r) H7)).
-      apply andI.
-      exact (andER (p) (q) (andEL (p /\ q) (r) H7)).
-      exact (andER (p /\ q) (r) H7).
+      exact (andI (p) (q /\ r) (andEL (p) (q) (andEL (p /\ q) (r) H7)) (andI (q) (r) (andER (p) (q) (andEL (p /\ q) (r) H7)) (andER (p /\ q) (r) H7))).
     * assume H6.
-      apply andI.
-      apply andI.
-      exact (andEL (p) (q /\ r) H6).
-      exact (andEL (q) (r) (andER (p) (q /\ r) H6)).
-      exact (andER (q) (r) (andER (p) (q /\ r) H6)).
+      exact (andI (p /\ q) (r) (andI (p) (q) (andEL (p) (q /\ r) H6) (andEL (q) (r) (andER (p) (q /\ r) H6))) (andER (q) (r) (andER (p) (q /\ r) H6))).
   + apply andI.
     * apply iffI.
       assume H5.
-      apply andI.
-      exact (andEL (q) (r) (andER (p) (q /\ r) H5)).
-      apply andI.
-      exact (andEL (p) (q /\ r) H5).
-      exact (andER (q) (r) (andER (p) (q /\ r) H5)).
+      exact (andI (q) (p /\ r) (andEL (q) (r) (andER (p) (q /\ r) H5)) (andI (p) (r) (andEL (p) (q /\ r) H5) (andER (q) (r) (andER (p) (q /\ r) H5)))).
       assume H4.
-      apply andI.
-      exact (andEL (p) (r) (andER (q) (p /\ r) H4)).
-      apply andI.
-      exact (andEL (q) (p /\ r) H4).
-      exact (andER (p) (r) (andER (q) (p /\ r) H4)).
+      exact (andI (p) (q /\ r) (andEL (p) (r) (andER (q) (p /\ r) H4)) (andI (q) (r) (andEL (q) (p /\ r) H4) (andER (p) (r) (andER (q) (p /\ r) H4)))).
     * apply andI.
       apply iffI.
       assume H3.
       exact (andER (p) (p) H3).
       assume H2.
-      apply andI.
-      exact H2.
-      exact H2.
+      exact (andI (p) (p) H2 H2).
       apply iffI.
       assume H1.
       exact (andER (p) (p /\ q) H1).
       assume H.
-      apply andI.
-      exact (andEL (p) (q) H).
-      exact H.
+      exact (andI (p) (p /\ q) (andEL (p) (q) H) H).
 Qed.
 
 // HOL Light: theorems.ml:75 / DISJ_ASSOC
@@ -193,33 +161,23 @@ apply iffI.
 - assume H29.
   apply H29.
   + assume H50.
-    apply orIL.
-    apply orIL.
-    exact H50.
+    exact (orIL (t1 \/ t2) (t3) (orIL (t1) (t2) H50)).
   + assume H51.
     apply H51.
     * assume H60.
-      apply orIL.
-      apply orIR.
-      exact H60.
+      exact (orIL (t1 \/ t2) (t3) (orIR (t1) (t2) H60)).
     * assume H61.
-      apply orIR.
-      exact H61.
+      exact (orIR (t1 \/ t2) (t3) H61).
 - assume H.
   apply H.
   + assume H17.
     apply H17.
     * assume H27.
-      apply orIL.
-      exact H27.
+      exact (orIL (t1) (t2 \/ t3) H27).
     * assume H28.
-      apply orIR.
-      apply orIL.
-      exact H28.
+      exact (orIR (t1) (t2 \/ t3) (orIL (t2) (t3) H28)).
   + assume H18.
-    apply orIR.
-    apply orIR.
-    exact H18.
+    exact (orIR (t1) (t2 \/ t3) (orIR (t2) (t3) H18)).
 Qed.
 
 // HOL Light: theorems.ml:79 / DISJ_SYM
@@ -232,19 +190,15 @@ apply iffI.
 - assume H7.
   apply H7.
   + assume H12.
-    apply orIR.
-    exact H12.
+    exact (orIR (t2) (t1) H12).
   + assume H13.
-    apply orIL.
-    exact H13.
+    exact (orIL (t2) (t1) H13).
 - assume H.
   apply H.
   + assume H5.
-    apply orIR.
-    exact H5.
+    exact (orIR (t1) (t2) H5).
   + assume H6.
-    apply orIL.
-    exact H6.
+    exact (orIL (t1) (t2) H6).
 Qed.
 
 // HOL Light: theorems.ml:83 / DISJ_ACI
@@ -256,127 +210,133 @@ let q.
 let r.
 apply andI.
 - apply iffI.
-  + assume H153.
-    apply H153.
-    * assume H158.
-      apply orIR.
-      exact H158.
-    * assume H159.
-      apply orIL.
-      exact H159.
-  + assume H146.
-    apply H146.
-    * assume H151.
-      apply orIR.
-      exact H151.
-    * assume H152.
-      apply orIL.
-      exact H152.
+  + assume H151.
+    apply H151.
+    * assume H156.
+      exact (orIR (q) (p) H156).
+    * assume H157.
+      exact (orIL (q) (p) H157).
+  + assume H144.
+    apply H144.
+    * assume H149.
+      exact (orIR (p) (q) H149).
+    * assume H150.
+      exact (orIL (p) (q) H150).
 - apply andI.
   + apply iffI.
-    * assume H117.
-      apply H117.
-      assume H134.
-      apply H134.
-      assume H144.
-      apply orIL.
-      exact H144.
-      assume H145.
-      apply orIR.
-      apply orIL.
-      exact H145.
-      assume H135.
-      apply orIR.
-      apply orIR.
-      exact H135.
-    * assume H84.
-      apply H84.
-      assume H105.
-      apply orIL.
-      apply orIL.
-      exact H105.
-      assume H106.
-      apply H106.
-      assume H115.
-      apply orIL.
-      apply orIR.
-      exact H115.
-      assume H116.
-      apply orIR.
-      exact H116.
+    * assume H115.
+      apply H115.
+      assume H132.
+      apply H132.
+      assume H142.
+      exact (orIL (p) (q \/ r) H142).
+      assume H143.
+      exact (orIR (p) (q \/ r) (orIL (q) (r) H143)).
+      assume H133.
+      exact (orIR (p) (q \/ r) (orIR (q) (r) H133)).
+    * assume H82.
+      apply H82.
+      assume H103.
+      exact (orIL (p \/ q) (r) (orIL (p) (q) H103)).
+      assume H104.
+      apply H104.
+      assume H113.
+      exact (orIL (p \/ q) (r) (orIR (p) (q) H113)).
+      assume H114.
+      exact (orIR (p \/ q) (r) H114).
   + apply andI.
     * apply iffI.
-      assume H51.
-      apply H51.
-      assume H72.
-      apply orIR.
-      apply orIL.
-      exact H72.
-      assume H73.
-      apply H73.
-      assume H82.
-      apply orIL.
-      exact H82.
-      assume H83.
-      apply orIR.
-      apply orIR.
-      exact H83.
-      assume H18.
-      apply H18.
-      assume H39.
-      apply orIR.
-      apply orIL.
-      exact H39.
-      assume H40.
-      apply H40.
       assume H49.
-      apply orIL.
-      exact H49.
-      assume H50.
-      apply orIR.
-      apply orIR.
-      exact H50.
+      apply H49.
+      assume H70.
+      exact (orIR (q) (p \/ r) (orIL (p) (r) H70)).
+      assume H71.
+      apply H71.
+      assume H80.
+      exact (orIL (q) (p \/ r) H80).
+      assume H81.
+      exact (orIR (q) (p \/ r) (orIR (p) (r) H81)).
+      assume H16.
+      apply H16.
+      assume H37.
+      exact (orIR (p) (q \/ r) (orIL (q) (r) H37)).
+      assume H38.
+      apply H38.
+      assume H47.
+      exact (orIL (p) (q \/ r) H47).
+      assume H48.
+      exact (orIR (p) (q \/ r) (orIR (q) (r) H48)).
     * apply andI.
       apply iffI.
-      assume H15.
-      apply H15.
-      assume H16.
-      exact H16.
-      assume H17.
-      exact H17.
-      assume H14.
-      apply orIL.
-      exact H14.
-      apply iffI.
-      assume H3.
-      apply H3.
-      assume H12.
-      apply orIL.
-      exact H12.
       assume H13.
-      exact H13.
+      apply H13.
+      assume H14.
+      exact H14.
+      assume H15.
+      exact H15.
+      assume H12.
+      exact (orIL (p) (p) H12).
+      apply iffI.
+      assume H1.
+      apply H1.
+      assume H10.
+      exact (orIL (p) (q) H10).
+      assume H11.
+      exact H11.
       assume H.
-      apply orIR.
-      exact H.
+      exact (orIR (p) (p \/ q) H).
 Qed.
 
 // HOL Light: theorems.ml:91 / IMP_CONJ
 // Source hash: md5:7f69a2c0ad4dbc5a9933e79329373bd2
 // Status: exact_native
 Theorem IMP_CONJ : forall p q r:prop, p /\ q -> r <-> p -> q -> r.
-Admitted.
+let p.
+let q.
+let r.
+apply iffI.
+- assume H2.
+  assume H3.
+  assume H4.
+  exact (H2 (andI (p) (q) H3 H4)).
+- assume H.
+  assume H1.
+  exact (H (andEL (p) (q) H1) (andER (p) (q) H1)).
+Qed.
 
 // HOL Light: theorems.ml:95 / IMP_IMP
 // Source hash: md5:c2afa2acad374e8c7a067da34eebffa5
 // Status: exact_native
 Theorem IMP_IMP : forall p q r:prop, p -> q -> r <-> p /\ q -> r.
-Admitted.
+let p.
+let q.
+let r.
+apply iffI.
+- assume H3.
+  assume H4.
+  exact (H3 (andEL (p) (q) H4) (andER (p) (q) H4)).
+- assume H.
+  assume H1.
+  assume H2.
+  exact (H (andI (p) (q) H1 H2)).
+Qed.
 
 // HOL Light: theorems.ml:97 / IMP_CONJ_ALT
 // Source hash: md5:3691331c57b4197b7664f3980fcf35a2
 // Status: exact_native
 Theorem IMP_CONJ_ALT : forall p q r:prop, p /\ q -> r <-> q -> p -> r.
-Admitted.
+let p.
+let q.
+let r.
+apply iffI.
+- assume H2.
+  assume H3.
+  assume H4.
+  exact (H2 (andI (p) (q) H4 H3)).
+- assume H.
+  assume H1.
+  exact (H (andER (p) (q) H1) (andEL (p) (q) H1)).
+Qed.
 
 // HOL Light: theorems.ml:105 / LEFT_OR_DISTRIB
 // Source hash: md5:e8a5c513c28357407acf729d84e1d039
@@ -389,15 +349,9 @@ apply iffI.
 - assume H9.
   apply (andER (p) (q \/ r) H9).
   + assume H14.
-    apply orIL.
-    apply andI.
-    * exact (andEL (p) (q \/ r) H9).
-    * exact H14.
+    exact (orIL (p /\ q) (p /\ r) (andI (p) (q) (andEL (p) (q \/ r) H9) H14)).
   + assume H15.
-    apply orIR.
-    apply andI.
-    * exact (andEL (p) (q \/ r) H9).
-    * exact H15.
+    exact (orIR (p /\ q) (p /\ r) (andI (p) (r) (andEL (p) (q \/ r) H9) H15)).
 - assume H.
   apply andI.
   + apply H.
@@ -407,11 +361,9 @@ apply iffI.
       exact (andEL (p) (r) H8).
   + apply H.
     * assume H5.
-      apply orIL.
-      exact (andER (p) (q) H5).
+      exact (orIL (q) (r) (andER (p) (q) H5)).
     * assume H6.
-      apply orIR.
-      exact (andER (p) (r) H6).
+      exact (orIR (q) (r) (andER (p) (r) H6)).
 Qed.
 
 // HOL Light: theorems.ml:109 / RIGHT_OR_DISTRIB
@@ -425,24 +377,16 @@ apply iffI.
 - assume H9.
   apply (andEL (p \/ q) (r) H9).
   + assume H14.
-    apply orIL.
-    apply andI.
-    * exact H14.
-    * exact (andER (p \/ q) (r) H9).
+    exact (orIL (p /\ r) (q /\ r) (andI (p) (r) H14 (andER (p \/ q) (r) H9))).
   + assume H15.
-    apply orIR.
-    apply andI.
-    * exact H15.
-    * exact (andER (p \/ q) (r) H9).
+    exact (orIR (p /\ r) (q /\ r) (andI (q) (r) H15 (andER (p \/ q) (r) H9))).
 - assume H.
   apply andI.
   + apply H.
     * assume H7.
-      apply orIL.
-      exact (andEL (p) (r) H7).
+      exact (orIL (p) (q) (andEL (p) (r) H7)).
     * assume H8.
-      apply orIR.
-      exact (andEL (q) (r) H8).
+      exact (orIR (p) (q) (andEL (q) (r) H8)).
   + apply H.
     * assume H1.
       exact (andER (p) (r) H1).
@@ -465,8 +409,14 @@ Admitted.
 // HOL Light: theorems.ml:129 / EQ_IMP
 // Source hash: md5:889b227d11bb9b8ec4e1b0134eb5b325
 // Status: native_reuse
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem EQ_IMP : forall a b:prop, (a <-> b) -> a -> b.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem EQ_IMP : forall a b:prop, (a <-> b) -> a -> b.
+let a.
+let b.
+assume H.
+assume H1.
+exact ((andEL (a -> b) (b -> a) H) H1).
+Qed.
 
 // HOL Light: theorems.ml:135 / EQ_CLAUSES
 // Source hash: md5:a45d7c9d85285642cfa3024e621fd5c5
@@ -478,7 +428,20 @@ Admitted.
 // Source hash: md5:6b28ea76696090f22c8e96fc4ada3b7e
 // Status: exact_native
 Theorem NOT_CLAUSES_WEAK : (~ True <-> False) /\ (~ False <-> True).
-Admitted.
+apply andI.
+- apply iffI.
+  + assume H5.
+    exact (H5 (fun p:prop => fun H:p => H)).
+  + assume H3.
+    assume H4.
+    exact H3.
+- apply iffI.
+  + assume H2.
+    exact (fun p:prop => fun H:p => H).
+  + assume H.
+    assume H1.
+    exact H1.
+Qed.
 
 // HOL Light: theorems.ml:144 / AND_CLAUSES
 // Source hash: md5:984c7e9a6a57999089ad22b53f6a110e
@@ -490,17 +453,13 @@ apply andI.
   + assume H9.
     exact (andER (True) (t) H9).
   + assume H8.
-    apply andI.
-    * exact (fun p:prop => fun H:p => H).
-    * exact H8.
+    exact (andI (True) (t) (fun p:prop => fun H:p => H) H8).
 - apply andI.
   + apply iffI.
     * assume H7.
       exact (andEL (t) (True) H7).
     * assume H6.
-      apply andI.
-      exact H6.
-      exact (fun p:prop => fun H:p => H).
+      exact (andI (t) (True) H6 (fun p:prop => fun H:p => H)).
   + apply andI.
     * apply iffI.
       assume H5.
@@ -517,9 +476,7 @@ apply andI.
       assume H1.
       exact (andER (t) (t) H1).
       assume H.
-      apply andI.
-      exact H.
-      exact H.
+      exact (andI (t) (t) H H).
 Qed.
 
 // HOL Light: theorems.ml:149 / OR_CLAUSES
@@ -532,15 +489,13 @@ apply andI.
   + assume H15.
     exact (fun p:prop => fun H:p => H).
   + assume H14.
-    apply orIL.
-    exact H14.
+    exact (orIL (True) (t) H14).
 - apply andI.
   + apply iffI.
     * assume H13.
       exact (fun p:prop => fun H:p => H).
     * assume H12.
-      apply orIR.
-      exact H12.
+      exact (orIR (t) (True) H12).
   + apply andI.
     * apply iffI.
       assume H9.
@@ -550,8 +505,7 @@ apply andI.
       assume H11.
       exact H11.
       assume H8.
-      apply orIR.
-      exact H8.
+      exact (orIR (False) (t) H8).
     * apply andI.
       apply iffI.
       assume H5.
@@ -561,8 +515,7 @@ apply andI.
       assume H7.
       exact (FalseE H7 (t)).
       assume H4.
-      apply orIL.
-      exact H4.
+      exact (orIL (t) (False) H4).
       apply iffI.
       assume H1.
       apply H1.
@@ -571,8 +524,7 @@ apply andI.
       assume H3.
       exact H3.
       assume H.
-      apply orIL.
-      exact H.
+      exact (orIL (t) (t) H).
 Qed.
 
 // HOL Light: theorems.ml:154 / IMP_CLAUSES
@@ -630,9 +582,7 @@ apply iffI.
   witness a.
   apply andI.
   + exact Ha.
-  + apply andI.
-    * exact (fun q H => H).
-    * exact H.
+  + exact (andI (a = a) (P a) (fun q H => H) H).
 Qed.
 
 // HOL Light: theorems.ml:212 / UNWIND_THM2
@@ -650,9 +600,7 @@ apply iffI.
   witness a.
   apply andI.
   + exact Ha.
-  + apply andI.
-    * exact (fun q H => H).
-    * exact H.
+  + exact (andI (a = a) (P a) (fun q H => H) H).
 Qed.
 
 // HOL Light: theorems.ml:217 / FORALL_UNWIND_THM2
@@ -804,9 +752,7 @@ apply iffI.
   witness x.
   apply andI.
   + exact Hx.
-  + apply andI.
-    * exact H2.
-    * exact (andER (exists x :e A, P x) (Q) H).
+  + exact (andI (P x) (Q) H2 (andER (exists x :e A, P x) (Q) H)).
 Qed.
 
 // HOL Light: theorems.ml:289 / RIGHT_EXISTS_AND_THM
@@ -830,9 +776,7 @@ apply iffI.
   witness x.
   apply andI.
   + exact Hx.
-  + apply andI.
-    * exact (andEL (P) (exists x :e A, Q x) H).
-    * exact H2.
+  + exact (andI (P) (Q x) (andEL (P) (exists x :e A, Q x) H) H2).
 Qed.
 
 // HOL Light: theorems.ml:293 / TRIV_EXISTS_AND_THM
@@ -860,9 +804,7 @@ apply iffI.
   witness x1.
   apply andI.
   + exact Hx1.
-  + apply andI.
-    * exact H2.
-    * exact H4.
+  + exact (andI (P) (Q) H2 H4).
 Qed.
 
 // HOL Light: theorems.ml:297 / LEFT_AND_EXISTS_THM
@@ -878,9 +820,7 @@ apply iffI.
   witness x1.
   apply andI.
   + exact Hx1.
-  + apply andI.
-    * exact H5.
-    * exact (andER (exists x :e A, P x) (Q) H3).
+  + exact (andI (P x1) (Q) H5 (andER (exists x :e A, P x) (Q) H3)).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   apply andI.
@@ -904,9 +844,7 @@ apply iffI.
   witness x1.
   apply andI.
   + exact Hx1.
-  + apply andI.
-    * exact (andEL (P) (exists x :e A, Q x) H3).
-    * exact H5.
+  + exact (andI (P) (Q x1) (andEL (P) (exists x :e A, Q x) H3) H5).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   apply andI.
@@ -931,9 +869,7 @@ apply iffI.
   witness x2.
   apply andI.
   + exact Hx2.
-  + apply andI.
-    * exact H5.
-    * exact H7.
+  + exact (andI (P) (Q) H5 H7).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   apply andI.
@@ -1029,9 +965,7 @@ let C.
 let D.
 assume H.
 assume H1.
-apply andI.
-- exact ((andEL (A -> B) (C -> D) H) (andEL (A) (C) H1)).
-- exact ((andER (A -> B) (C -> D) H) (andER (A) (C) H1)).
+exact (andI (B) (D) ((andEL (A -> B) (C -> D) H) (andEL (A) (C) H1)) ((andER (A -> B) (C -> D) H) (andER (A) (C) H1))).
 Qed.
 
 // HOL Light: theorems.ml:355 / MONO_OR
@@ -1046,11 +980,9 @@ assume H.
 assume H1.
 apply H1.
 - assume H6.
-  apply orIL.
-  exact ((andEL (A -> B) (C -> D) H) H6).
+  exact (orIL (B) (D) ((andEL (A -> B) (C -> D) H) H6)).
 - assume H7.
-  apply orIR.
-  exact ((andER (A -> B) (C -> D) H) H7).
+  exact (orIR (B) (D) ((andER (A -> B) (C -> D) H) H7)).
 Qed.
 
 // HOL Light: theorems.ml:357 / MONO_IMP
@@ -1071,7 +1003,13 @@ Qed.
 // Source hash: md5:f70b61870f971356e881aa6a56b2136b
 // Status: exact_native
 Theorem MONO_NOT : forall B A:prop, (B -> A) -> ~ A -> ~ B.
-Admitted.
+let B.
+let A.
+assume H.
+assume H1.
+assume H2.
+exact (H1 (H H2)).
+Qed.
 
 // HOL Light: theorems.ml:361 / MONO_FORALL
 // Source hash: md5:32c8690ef1e35ecb9a776a51c3db2049

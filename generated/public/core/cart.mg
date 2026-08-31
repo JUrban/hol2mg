@@ -423,11 +423,7 @@ Qed.
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx, mul_nat_mul_SNo)
 Theorem DIMINDEX_CLAUSES : forall A:set, 1 = 1 /\ (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1).
 let A.
-apply andI.
-- exact (fun q H => H).
-- apply andI.
-  + exact (fun q H => H).
-  + exact (fun q H => H).
+exact (andI (1 = 1) (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1) (fun q H => H) (andI (2 * dimindex A = 2 * dimindex A) (2 * dimindex A + 1 = 2 * dimindex A + 1) (fun q H => H) (fun q H => H))).
 Qed.
 
 // HOL Light: cart.ml:389 / FINITE_1

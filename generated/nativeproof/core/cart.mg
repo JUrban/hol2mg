@@ -44,7 +44,7 @@ apply andI.
   + assume H1.
     exact (fun q H => H).
   + assume H.
-    exact (fun p:prop => fun H:p => H).
+    exact TRUTH.
 Qed.
 
 // HOL Light: cart.ml / finite_index
@@ -106,11 +106,7 @@ Qed.
 // HOL Light: cart.ml / DIMINDEX_CLAUSES
 Theorem DIMINDEX_CLAUSES : forall A:set, 1 = 1 /\ (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1).
 let A.
-apply andI.
-- exact DIMINDEX_1.
-- apply andI.
-  + exact (fun q H => H).
-  + exact (fun q H => H).
+exact (andI (1 = 1) (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1) DIMINDEX_1 (andI (2 * dimindex A = 2 * dimindex A) (2 * dimindex A + 1 = 2 * dimindex A + 1) (fun q H => H) (fun q H => H))).
 Qed.
 
 // HOL Light: cart.ml / DIMINDEX_2

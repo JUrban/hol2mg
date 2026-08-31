@@ -1946,8 +1946,11 @@ Admitted.
 // HOL Light: int.ml:569 / INT_SGN
 // Source hash: md5:8125c06f3f21f21d1fb3f75026ee7511
 // Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:570 / INT_SGNS_EQ
 // Source hash: md5:acbb6321282e6b76ec56d3bc7fae24f5
@@ -2198,14 +2201,30 @@ Admitted.
 // HOL Light: int.ml:658 / INT_GE
 // Source hash: md5:21fd94d6d5bf4ed5f82206866508dece
 // Status: native_reuse (bridges: hol_int_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:662 / INT_GT
 // Source hash: md5:210f1a8f40f04907eb1ff4ede4ade97e
 // Status: native_reuse (bridges: hol_int_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_GT : forall x y :e int, y < x <-> y < x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_GT : forall x y :e int, y < x <-> y < x.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:666 / INT_LT
 // Source hash: md5:68a146ef016b6b7b0ba14603c5c22c4a
@@ -2216,20 +2235,32 @@ Admitted.
 // HOL Light: int.ml:715 / INT_SUB
 // Source hash: md5:84797b55cfb18771c7a0b0f6b45861de
 // Status: native_reuse (bridges: hol_int_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:717 / INT_MAX
 // Source hash: md5:137b46cca035b261ad44244bcfc009b7
 // Status: native_reuse (bridges: hol_int_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:719 / INT_MIN
 // Source hash: md5:f418eb61bef787b420491a2976be0304
 // Status: native_reuse (bridges: hol_int_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:725 / INT_OF_NUM_EXISTS
 // Source hash: md5:2649dc915583d6fad07e349593bf781a

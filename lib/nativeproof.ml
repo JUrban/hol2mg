@@ -141,7 +141,11 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
         | Some p ->
             (match List.find_opt (fun h2 -> aeq h2.prop p) hyps with
              | Some h2 -> Some (Printf.sprintf "(%s %s)" h.hname h2.hname)
-             | None -> None)
+             | None ->
+                 if adepth <= 0 then None else
+                 (match close_term st (List.filter (fun h2 -> h2.hname <> h.hname) hyps) p (adepth - 1) with
+                  | Some t -> Some (Printf.sprintf "(%s %s)" h.hname t)
+                  | None -> None))
         | None -> None) hyps
   | _ ->
   (* ex falso: any goal follows from a False hypothesis or a direct contradiction *)
@@ -172,12 +176,15 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
          List.find_map (fun h ->
            match dest_eq h.prop with
            | Some (e1, e2) when not (aeq e1 e2) ->
+               (* first-variable Leibniz: h (fun u v => P[u]) (pf : P[e1]) : P[e2] *)
                if aeq (replace_tm e1 e2 a) b && not (aeq a b) then
+                 (* P[u] := a = a[e1:=u]; P[e1] is refl, P[e2] is the goal *)
                  Some (Printf.sprintf "(%s (fun hl__u hl__v => %s = %s) %s)"
-                         h.hname (ppp a) (ppp (replace_tm e1 (Mg.Var "hl__u") b)) refl_tm)
+                         h.hname (ppp a) (ppp (replace_tm e1 (Mg.Var "hl__u") a)) refl_tm)
                else if aeq (replace_tm e2 e1 b) a then
+                 (* via h_sym : e2 = e1 and P[u] := b[e2:=u] = b; P[e2] is refl, P[e1] the goal *)
                  Some (Printf.sprintf "((%s (fun hl__u hl__v => hl__u = %s) %s) (fun hl__u hl__v => %s = %s) %s)"
-                         h.hname (ppp e1) refl_tm (ppp a) (ppp (replace_tm e2 (Mg.Var "hl__u") b)) refl_tm)
+                         h.hname (ppp e1) refl_tm (ppp (replace_tm e2 (Mg.Var "hl__u") b)) (ppp b) refl_tm)
                else None
            | _ -> None) hyps in
        (match sym with
@@ -201,6 +208,28 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
   | Some t -> Some t
   | None ->
       if adepth <= 0 then None else
+      (* introductions as proof terms: andI / orIL / orIR *)
+      (match dest_and goal with
+       | Some (a, b) ->
+           (match close_term st hyps a (adepth - 1) with
+            | Some ta ->
+                (match close_term st hyps b (adepth - 1) with
+                 | Some tb -> Some (Printf.sprintf "(andI %s %s %s %s)" (ppp a) (ppp b) ta tb)
+                 | None -> None)
+            | None -> None)
+       | None ->
+           match dest_or goal with
+           | Some (a, b) ->
+               (match close_term st hyps a (adepth - 1) with
+                | Some ta -> Some (Printf.sprintf "(orIL %s %s %s)" (ppp a) (ppp b) ta)
+                | None ->
+                    (match close_term st hyps b (adepth - 1) with
+                     | Some tb -> Some (Printf.sprintf "(orIR %s %s %s)" (ppp a) (ppp b) tb)
+                     | None -> None))
+           | None -> None)
+      |> function
+      | Some t -> Some t
+      | None ->
       (* transport along an equality hypothesis: close goal[e2 := e1] and rewrite *)
       (match List.find_map (fun h ->
          match dest_eq h.prop with
@@ -371,6 +400,24 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                    @ block d (prove_goal st hyps (Mg.subst [ (x, t) ] b) (d + 1)))
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
       in try_wit cands
+  | Mg.Ex (x, m, b) ->
+      (* unbounded existential: True/False for prop binders, else membership terms *)
+      let wits =
+        (match m with
+         | Mg.Prop -> [ Mg.Cst "True"; Mg.Cst "False" ]
+         | _ ->
+             List.filter_map (fun h ->
+               match h.prop with
+               | Mg.App (Mg.App (Mg.Cst "In", t), _) -> Some t
+               | _ -> None) hyps
+             @ [ Mg.Cst "Empty" ]) in
+      let rec try_wit = function
+        | [] -> raise Give_up
+        | t :: rest ->
+            let fuel0 = st.fuel in
+            (try Printf.sprintf "witness %s." (pp t) :: prove_goal st hyps (Mg.subst [ (x, t) ] b) d
+             with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
+      in try_wit wits
   | g ->
       (match close_term st hyps g 3 with
        | Some t -> [ Printf.sprintf "exact %s." t ]

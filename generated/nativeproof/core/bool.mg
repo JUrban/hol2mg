@@ -15,3 +15,8 @@ apply iffI.
   exact (fun p:prop => fun H:p => H).
 Qed.
 
+// HOL Light: bool.ml / TRUTH
+Theorem TRUTH : True.
+exact (fun p:prop => fun H:p => H).
+Qed.
+

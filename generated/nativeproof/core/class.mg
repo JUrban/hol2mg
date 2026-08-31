@@ -43,6 +43,33 @@ apply iffI.
   exact (H3 (x) Hx).
 Qed.
 
+// HOL Light: class.ml / NOT_CLAUSES
+Theorem NOT_CLAUSES : (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True)).
+apply andI.
+- let t.
+  apply iffI.
+  + assume H8.
+    apply (xm (t)).
+    - assume H9. exact H9.
+    - assume H9. exact (FalseE (H8 H9) (t)).
+  + assume H6.
+    assume H7.
+    exact (H7 H6).
+- apply andI.
+  + apply iffI.
+    * assume H5.
+      exact (H5 (fun p:prop => fun H:p => H)).
+    * assume H3.
+      assume H4.
+      exact H3.
+  + apply iffI.
+    * assume H2.
+      exact (fun p:prop => fun H:p => H).
+    * assume H.
+      assume H1.
+      exact H1.
+Qed.
+
 // HOL Light: class.ml / COND_RATOR
 Theorem COND_RATOR : forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x.
 let A.

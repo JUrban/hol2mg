@@ -96,7 +96,30 @@ Admitted.
 // Source hash: md5:3b3c3e9efdbcbcbfc4b0cad619ffceaa
 // Status: exact_native
 Theorem NOT_CLAUSES : (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True)).
-Admitted.
+apply andI.
+- let t.
+  apply iffI.
+  + assume H8.
+    apply (xm (t)).
+    - assume H9. exact H9.
+    - assume H9. exact (FalseE (H8 H9) (t)).
+  + assume H6.
+    assume H7.
+    exact (H7 H6).
+- apply andI.
+  + apply iffI.
+    * assume H5.
+      exact (H5 (fun p:prop => fun H:p => H)).
+    * assume H3.
+      assume H4.
+      exact H3.
+  + apply iffI.
+    * assume H2.
+      exact (fun p:prop => fun H:p => H).
+    * assume H.
+      assume H1.
+      exact H1.
+Qed.
 
 // HOL Light: class.ml:191 / NOT_IMP
 // Source hash: md5:045dca8754fe888ab0bd299f74e2ef6c

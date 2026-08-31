@@ -14,6 +14,26 @@ let x. assume Hx.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: trivia.ml / I_DEF
+Theorem I_DEF : forall A:set, forall x :e A, x = x.
+let A.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
+
+// HOL Light: trivia.ml / o_THM
+Theorem o_THM : forall A B C:set, forall f:set -> set, (forall x :e B, f x :e C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall x :e A, f (g x) = f (g x).
+let A.
+let B.
+let C.
+let f.
+assume H.
+let g.
+assume H1.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
+
 // HOL Light: trivia.ml / o_ASSOC
 Theorem o_ASSOC : forall A B C D:set, forall f:set -> set, (forall x :e C, f x :e D) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall h:set -> set, (forall x :e A, h x :e B) -> forall x :e A, f (g (h x)) = f (g (h x)).
 let A.
@@ -30,6 +50,13 @@ let x. assume Hx.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: trivia.ml / I_THM
+Theorem I_THM : forall A:set, forall x :e A, x = x.
+let A.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
+
 // HOL Light: trivia.ml / I_O_ID
 Theorem I_O_ID : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> (forall x :e A, f x = f x) /\ forall x :e A, f x = f x.
 let A.
@@ -41,5 +68,11 @@ apply andI.
   exact (fun q H => H).
 - let x. assume Hx.
   exact (fun q H => H).
+Qed.
+
+// HOL Light: trivia.ml / EXISTS_ONE_REP
+Theorem EXISTS_ONE_REP : exists b:prop, b.
+witness True.
+exact (fun p:prop => fun H:p => H).
 Qed.
 

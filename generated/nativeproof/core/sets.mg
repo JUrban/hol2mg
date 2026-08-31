@@ -69,12 +69,27 @@ let s. assume Hs.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: sets.ml / IN_UNIV
+Theorem IN_UNIV : forall A:set, forall x :e A, x :e A.
+let A.
+let x. assume Hx.
+exact Hx.
+Qed.
+
 // HOL Light: sets.ml / UNIV_NOT_EMPTY
 Theorem UNIV_NOT_EMPTY : forall A:set, A <> Empty -> ~ A = Empty.
 let A.
 assume H.
 assume H1.
 exact (H H1).
+Qed.
+
+// HOL Light: sets.ml / EMPTY_NOT_UNIV
+Theorem EMPTY_NOT_UNIV : forall A:set, A <> Empty -> ~ Empty = A.
+let A.
+assume H.
+assume H1.
+exact (H (H1 (fun hl__u hl__v => hl__u = (Empty)) (fun q H => H))).
 Qed.
 
 // HOL Light: sets.ml / SUBSET_UNIV
@@ -84,11 +99,39 @@ let s. assume Hs.
 exact Hs.
 Qed.
 
+// HOL Light: sets.ml / PSUBSET_IRREFL
+Theorem PSUBSET_IRREFL : forall A:set, A <> Empty -> forall s c= A, ~ (s c= s /\ s <> s).
+let A.
+assume H.
+let s. assume Hs.
+assume H1.
+exact ((andER (s c= s) (s <> s) H1) (fun q H => H)).
+Qed.
+
 // HOL Light: sets.ml / IMAGE_ID
 Theorem IMAGE_ID : forall A:set, forall s c= A, s = s.
 let A.
 let s. assume Hs.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / IMAGE_I
+Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
+let A.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / CARD_PSUBSET_IMP
+Theorem CARD_PSUBSET_IMP : forall A:set, forall a b c= A, a c= b /\ ~ finite_cardinality a = finite_cardinality b -> a c= b /\ a <> b.
+let A.
+let a. assume Ha.
+let b. assume Hb.
+assume H.
+apply andI.
+- exact (andEL (a c= b) (~ finite_cardinality a = finite_cardinality b) H).
+- assume H1.
+  exact ((andER (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (H1 (fun hl__u hl__v => (finite_cardinality a) = (finite_cardinality hl__u)) (fun q H => H))).
 Qed.
 
 // HOL Light: sets.ml / CROSS_UNIV

@@ -368,6 +368,55 @@ let n. assume Hn.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: int.ml / INT_SGN
+Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
+
+// HOL Light: int.ml / INT_GE
+Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
+
+// HOL Light: int.ml / INT_GT
+Theorem INT_GT : forall x y :e int, y < x <-> y < x.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
+
+// HOL Light: int.ml / INT_SUB
+Theorem INT_SUB : forall x y :e int, x + - y = x + - y.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
+
+// HOL Light: int.ml / INT_MAX
+Theorem INT_MAX : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
+
+// HOL Light: int.ml / INT_MIN
+Theorem INT_MIN : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
+
 // HOL Light: int.ml / cong
 Theorem cong : forall A:set, forall rel:set -> set -> prop, forall x y :e A, rel x y <-> rel x y.
 let A.

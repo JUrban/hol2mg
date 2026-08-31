@@ -211,8 +211,12 @@ Admitted.
 // HOL Light: sets.ml:178 / IN_UNIV
 // Source hash: md5:eee80073ec9a8663b3ed94c2504d029b
 // Status: native_reuse (bridges: empty_case:A)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem IN_UNIV : forall A:set, forall x :e A, x :e A.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem IN_UNIV : forall A:set, forall x :e A, x :e A.
+let A.
+let x. assume Hx.
+exact Hx.
+Qed.
 
 // HOL Light: sets.ml:182 / IN_UNION
 // Source hash: md5:53bfd4012ecbf824436fdec1d98ef00d
@@ -390,7 +394,11 @@ Qed.
 // Source hash: md5:e882b1ce44890b0d529523d678d8a5e5
 // Status: exact_native
 Theorem EMPTY_NOT_UNIV : forall A:set, A <> Empty -> ~ Empty = A.
-Admitted.
+let A.
+assume H.
+assume H1.
+exact (H (H1 (fun hl__u hl__v => hl__u = (Empty)) (fun q H => H))).
+Qed.
 
 // HOL Light: sets.ml:375 / EQ_UNIV
 // Source hash: md5:33fbef6b665c4e7157d202eeb19c3aea
@@ -483,7 +491,12 @@ Admitted.
 // Source hash: md5:d51110cbc8e2e357317012caa5b80674
 // Status: exact_native
 Theorem PSUBSET_IRREFL : forall A:set, A <> Empty -> forall s c= A, ~ (s c= s /\ s <> s).
-Admitted.
+let A.
+assume H.
+let s. assume Hs.
+assume H1.
+exact ((andER (s c= s) (s <> s) H1) (fun q H => H)).
+Qed.
 
 // HOL Light: sets.ml:443 / NOT_PSUBSET_EMPTY
 // Source hash: md5:3332b221fe7ff158d43ce2e5bf4da15b
@@ -1127,8 +1140,12 @@ Qed.
 // HOL Light: sets.ml:968 / IMAGE_I
 // Source hash: md5:8eaf7e71839341a7ce6527d0469812cb
 // Status: native_reuse (bridges: empty_case:A)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
+let A.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:972 / IMAGE_o
 // Source hash: md5:9666e7022fca9e70698bca3379b4251d
@@ -1992,7 +2009,15 @@ Admitted.
 // Source hash: md5:eccb64de3a1afb1f04cd785ae2b351df
 // Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_num_omega)
 Theorem CARD_PSUBSET_IMP : forall A:set, forall a b c= A, a c= b /\ ~ finite_cardinality a = finite_cardinality b -> a c= b /\ a <> b.
-Admitted.
+let A.
+let a. assume Ha.
+let b. assume Hb.
+assume H.
+apply andI.
+- exact (andEL (a c= b) (~ finite_cardinality a = finite_cardinality b) H).
+- assume H1.
+  exact ((andER (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (H1 (fun hl__u hl__v => (finite_cardinality a) = (finite_cardinality hl__u)) (fun q H => H))).
+Qed.
 
 // HOL Light: sets.ml:2313 / CARD_PSUBSET_EQ
 // Source hash: md5:c485f9330fdd7e25f487bfcc2e78dfa6

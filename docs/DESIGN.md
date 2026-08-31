@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **158 of 2 610 public theorems receive generated
+equality congruence by motive replacement): **183 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 3 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,9 +1882,20 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (158 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (183 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
+
+Further rules (same day): recursive negation application when closing `False` (`(Hneg pf)`
+with `pf` closed recursively — MONO_NOT), `andI`/`orIL`/`orIR` as proof terms inside
+`close_term` (IMP_CONJ), unbounded-existential witnesses (`True`/`False` for prop binders —
+EXISTS_ONE_REP), and a fix to the congruence motives: the first-variable Leibniz rule needs
+`P[u] := a = a[e1:=u]` (abstract the rewritten copy of the goal's left side), not a
+substitution into the right side where `e1` no longer occurs — Megalodon caught the first
+firing of the broken branch (CARD_PSUBSET_IMP).  `native_reuse` theorems (propositions God1
+already has, under other names) are now *re-proved natively* too: that makes them citable
+premises under their HOL names, and the public shards show a readable proof instead of a
+bare reuse comment (Megalodon only warns about re-proving).
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

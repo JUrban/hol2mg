@@ -197,29 +197,9 @@ let op.
 assume H.
 apply iffI.
 - assume H2.
-  apply andI.
-  + let x5. assume Hx5.
-    let y3. assume Hy3.
-    exact ((andEL (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2)) (x5) Hx5 (y3) Hy3).
-  + apply andI.
-    * let x4. assume Hx4.
-      let y2. assume Hy2.
-      let z1. assume Hz1.
-      exact ((andER (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2)) (x4) Hx4 (y2) Hy2 (z1) Hz1).
-    * let x3. assume Hx3.
-      exact ((andER ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2) (x3) Hx3).
+  exact (andI (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) (andEL (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2)) (andI (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2)) (andER ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2))).
 - assume H1.
-  apply andI.
-  + apply andI.
-    * let x2. assume Hx2.
-      let y1. assume Hy1.
-      exact ((andEL (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1) (x2) Hx2 (y1) Hy1).
-    * let x1. assume Hx1.
-      let y. assume Hy.
-      let z. assume Hz.
-      exact ((andEL (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1)) (x1) Hx1 (y) Hy (z) Hz).
-  + let x. assume Hx.
-    exact ((andER (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1)) (x) Hx).
+  exact (andI ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andI (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1) (andEL (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1))) (andER (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1))).
 Qed.
 
 // HOL Light: iterate.ml:289 / MONOIDAL_AC

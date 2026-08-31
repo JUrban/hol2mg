@@ -11,6 +11,13 @@ let x. assume Hx.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: pair.ml / LET_END_DEF
+Theorem LET_END_DEF : forall A:set, forall t :e A, t = t.
+let A.
+let t. assume Ht.
+exact (fun q H => H).
+Qed.
+
 // HOL Light: pair.ml / FST
 Theorem FST : forall A B:set, forall x :e A, forall y :e B, x = x.
 let A.

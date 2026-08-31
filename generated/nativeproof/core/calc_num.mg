@@ -3,9 +3,7 @@
 
 // HOL Light: calc_num.ml / ARITH_ZERO
 Theorem ARITH_ZERO : 0 = 0 /\ 0 = 0.
-apply andI.
-- exact (fun q H => H).
-- exact (fun q H => H).
+exact (andI (0 = 0) (0 = 0) (fun q H => H) (fun q H => H)).
 Qed.
 
 // HOL Light: calc_num.ml / BIT0_0

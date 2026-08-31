@@ -261,7 +261,9 @@ let () =
            let by_source : (string, string) Hashtbl.t = Hashtbl.create 4096 in
            List.iter (fun i -> Hashtbl.replace by_source i.Manifest.source_name i.Manifest.name) items;
            let np_proved : (string, string) Hashtbl.t = Hashtbl.create 512 in  (* name -> proof text *)
-           let pubs = List.filter (fun i -> public i && i.Manifest.status <> "native_reuse") items in
+           (* native_reuse propositions are already God1 theorems, but under other names:
+              re-prove them natively so they are citable premises and readable statements *)
+           let pubs = List.filter public items in
            let changed = ref true in
            while !changed do
              changed := false;
@@ -289,7 +291,7 @@ let () =
              | None -> ()) np_proved;
            let n_ok = ref 0 and n_try = ref 0 in
            List.iter (fun s ->
-             let l = List.filter (fun i -> i.Manifest.shard = s && public i && i.Manifest.status <> "native_reuse") items in
+             let l = List.filter (fun i -> i.Manifest.shard = s && public i) items in
              let l = List.sort (fun a b -> compare (a.Manifest.src_line, a.Manifest.name) (b.Manifest.src_line, b.Manifest.name)) l in
              let outs = List.filter_map (fun i ->
                match Hashtbl.find_opt np_asts i.Manifest.name with
@@ -328,7 +330,9 @@ let () =
             Printf.fprintf oc "// Source hash: md5:%s\n// Status: %s%s\n" i.Manifest.hash i.Manifest.status
               (if i.Manifest.bridges <> [] then " (bridges: " ^ String.concat ", " (List.sort compare i.Manifest.bridges) ^ ")" else "");
             if i.Manifest.status = "native_reuse" then
-              Printf.fprintf oc "// Reuse: this proposition is already a theorem of the target library.\n// Theorem %s : %s.\n\n" i.Manifest.name i.Manifest.statement
+              (match Hashtbl.find_opt np_self i.Manifest.name with
+               | Some pf -> Printf.fprintf oc "// Reuse: this proposition is already a theorem of the target library (reproved natively).\nTheorem %s : %s.\n%s\nQed.\n\n" i.Manifest.name i.Manifest.statement pf
+               | None -> Printf.fprintf oc "// Reuse: this proposition is already a theorem of the target library.\n// Theorem %s : %s.\n\n" i.Manifest.name i.Manifest.statement)
             else (match Hashtbl.find_opt np_self i.Manifest.name with
               | Some pf -> Printf.fprintf oc "Theorem %s : %s.\n%s\nQed.\n\n" i.Manifest.name i.Manifest.statement pf
               | None -> Printf.fprintf oc "Theorem %s : %s.\nAdmitted.\n\n" i.Manifest.name i.Manifest.statement)) l;

@@ -6,9 +6,7 @@
 // Source hash: md5:a1ff746f810d4dbbed251cb0965b071a
 // Status: transport_required (bridges: hol_num_omega)
 Theorem ARITH_ZERO : 0 = 0 /\ 0 = 0.
-apply andI.
-- exact (fun q H => H).
-- exact (fun q H => H).
+exact (andI (0 = 0) (0 = 0) (fun q H => H) (fun q H => H)).
 Qed.
 
 // HOL Light: calc_num.ml:31 / BIT0_0

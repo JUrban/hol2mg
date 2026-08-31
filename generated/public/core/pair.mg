@@ -17,8 +17,12 @@ Qed.
 // HOL Light: pair.ml:20 / LET_END_DEF
 // Source hash: md5:3540107cfa54c763381fa257e545baa3
 // Status: native_reuse (bridges: empty_case:A)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem LET_END_DEF : forall A:set, forall t :e A, t = t.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem LET_END_DEF : forall A:set, forall t :e A, t = t.
+let A.
+let t. assume Ht.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:67 / FST_DEF
 // Source hash: md5:085c9267477376ef68995b88baf72064
