@@ -1327,7 +1327,7 @@ assume H.
 let x. assume Hx.
 let y. assume Hy.
 assume H1.
-exact ((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => (if x :e s then f x else choose_in B (fun y:set => False)) = hl__u) (((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => hl__u = (f x)) (fun q H => H)) (fun hl__u hl__v => (if x :e s then hl__u else choose_in B (fun y:set => False)) = hl__u) (If_i_1 (x :e s) (y) (choose_in B (fun y:set => False)) (andEL (x :e s) (f x = y) H1)))).
+exact ((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => (if x :e s then f x else choose_in B (fun y:set => False)) = hl__u) (If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) (andEL (x :e s) (f x = y) H1))).
 Qed.
 
 // HOL Light: sets.ml / RESTRICTION_UNIV
