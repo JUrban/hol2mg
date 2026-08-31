@@ -102,23 +102,43 @@ Admitted.
 // Source hash: md5:783dde967a79844cda42d3f3e75c41ad
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_OF_NUM_ADD : forall m n :e omega, m + n = m + n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light:  / REAL_OF_NUM_EQ
 // Source hash: md5:e649467213c154968e334408a35629a3
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_OF_NUM_EQ : forall m n :e omega, m = n <-> m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light:  / REAL_OF_NUM_LE
 // Source hash: md5:b38ea287b1a6fde1b028bc2167d47117
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
 Theorem REAL_OF_NUM_LE : forall m n :e omega, m <= n <-> m <= n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light:  / REAL_OF_NUM_MUL
 // Source hash: md5:5d6f0dca606a500bcdc82080ce708462
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, mul_nat_mul_SNo, omega_Subq_R)
 Theorem REAL_OF_NUM_MUL : forall m n :e omega, m * n = m * n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 

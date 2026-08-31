@@ -12,73 +12,353 @@
 // Source hash: md5:2ce4c3adc3cbc009644ca0f1da20bfcf
 // Status: generalization_required (bridges: empty_case:A)
 Theorem REFL_CLAUSE : forall A:set, forall x :e A, x = x <-> True.
-Admitted.
+let A.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact (fun p:prop => fun H:p => H).
+- assume H.
+  exact (fun q H => H).
+Qed.
 
 // HOL Light: theorems.ml:25 / EQ_SYM
 // Source hash: md5:b9d6fe477bd3d7fa5366b65298ff2a45
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EQ_SYM : forall A:set, forall x y :e A, x = y -> y = x.
-Admitted.
+let A.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)).
+Qed.
 
 // HOL Light: theorems.ml:29 / EQ_SYM_EQ
 // Source hash: md5:2232c266541db65541247b04739eb1ad
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EQ_SYM_EQ : forall A:set, forall x y :e A, x = y <-> y = x.
-Admitted.
+let A.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact (H1 (fun hl__u hl__v => hl__u = (x)) (fun q H => H)).
+- assume H.
+  exact (H (fun hl__u hl__v => hl__u = (y)) (fun q H => H)).
+Qed.
 
 // HOL Light: theorems.ml:33 / EQ_TRANS
 // Source hash: md5:a433f46488d631f19c0671432eca45a2
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EQ_TRANS : forall A:set, forall x y z :e A, x = y /\ y = z -> x = z.
-Admitted.
+let A.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact ((andER (x = y) (y = z) H) (fun hl__u hl__v => (x) = hl__u) (andEL (x = y) (y = z) H)).
+Qed.
 
 // HOL Light: theorems.ml:47 / BETA_THM
 // Source hash: md5:014410de6c67ffec5a76c8993197b426
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem BETA_THM : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall y :e A, f y = f y.
-Admitted.
+let A.
+let B.
+let f.
+assume H.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: theorems.ml:51 / ABS_SIMP
 // Source hash: md5:60035b0f6aaa54e21e40375b2cfc2b87
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem ABS_SIMP : forall A B:set, forall t1 :e A, forall t2 :e B, t1 = t1.
-Admitted.
+let A.
+let B.
+let t1. assume Ht1.
+let t2. assume Ht2.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: theorems.ml:59 / CONJ_ASSOC
 // Source hash: md5:68b444512171831dd562fcbd5b2c97dc
 // Status: exact_native
 Theorem CONJ_ASSOC : forall t1 t2 t3:prop, t1 /\ (t2 /\ t3) <-> t1 /\ t2 /\ t3.
-Admitted.
+let t1.
+let t2.
+let t3.
+apply iffI.
+- assume H1.
+  apply andI.
+  + apply andI.
+    * exact (andEL (t1) (t2 /\ t3) H1).
+    * exact (andEL (t2) (t3) (andER (t1) (t2 /\ t3) H1)).
+  + exact (andER (t2) (t3) (andER (t1) (t2 /\ t3) H1)).
+- assume H.
+  apply andI.
+  + exact (andEL (t1) (t2) (andEL (t1 /\ t2) (t3) H)).
+  + apply andI.
+    * exact (andER (t1) (t2) (andEL (t1 /\ t2) (t3) H)).
+    * exact (andER (t1 /\ t2) (t3) H).
+Qed.
 
 // HOL Light: theorems.ml:63 / CONJ_SYM
 // Source hash: md5:cd8473c2e3bc69d3247d921266d28857
 // Status: exact_native
 Theorem CONJ_SYM : forall t1 t2:prop, t1 /\ t2 <-> t2 /\ t1.
-Admitted.
+let t1.
+let t2.
+apply iffI.
+- assume H1.
+  apply andI.
+  + exact (andER (t1) (t2) H1).
+  + exact (andEL (t1) (t2) H1).
+- assume H.
+  apply andI.
+  + exact (andER (t2) (t1) H).
+  + exact (andEL (t2) (t1) H).
+Qed.
 
 // HOL Light: theorems.ml:67 / CONJ_ACI
 // Source hash: md5:9c74a16c4a4acede32b14fa26a41200a
 // Status: exact_native
 Theorem CONJ_ACI : forall p q r:prop, (p /\ q <-> q /\ p) /\ ((p /\ q /\ r <-> p /\ (q /\ r)) /\ ((p /\ (q /\ r) <-> q /\ (p /\ r)) /\ ((p /\ p <-> p) /\ (p /\ (p /\ q) <-> p /\ q)))).
-Admitted.
+let p.
+let q.
+let r.
+apply andI.
+- apply iffI.
+  + assume H9.
+    apply andI.
+    * exact (andER (p) (q) H9).
+    * exact (andEL (p) (q) H9).
+  + assume H8.
+    apply andI.
+    * exact (andER (q) (p) H8).
+    * exact (andEL (q) (p) H8).
+- apply andI.
+  + apply iffI.
+    * assume H7.
+      apply andI.
+      exact (andEL (p) (q) (andEL (p /\ q) (r) H7)).
+      apply andI.
+      exact (andER (p) (q) (andEL (p /\ q) (r) H7)).
+      exact (andER (p /\ q) (r) H7).
+    * assume H6.
+      apply andI.
+      apply andI.
+      exact (andEL (p) (q /\ r) H6).
+      exact (andEL (q) (r) (andER (p) (q /\ r) H6)).
+      exact (andER (q) (r) (andER (p) (q /\ r) H6)).
+  + apply andI.
+    * apply iffI.
+      assume H5.
+      apply andI.
+      exact (andEL (q) (r) (andER (p) (q /\ r) H5)).
+      apply andI.
+      exact (andEL (p) (q /\ r) H5).
+      exact (andER (q) (r) (andER (p) (q /\ r) H5)).
+      assume H4.
+      apply andI.
+      exact (andEL (p) (r) (andER (q) (p /\ r) H4)).
+      apply andI.
+      exact (andEL (q) (p /\ r) H4).
+      exact (andER (p) (r) (andER (q) (p /\ r) H4)).
+    * apply andI.
+      apply iffI.
+      assume H3.
+      exact (andER (p) (p) H3).
+      assume H2.
+      apply andI.
+      exact H2.
+      exact H2.
+      apply iffI.
+      assume H1.
+      exact (andER (p) (p /\ q) H1).
+      assume H.
+      apply andI.
+      exact (andEL (p) (q) H).
+      exact H.
+Qed.
 
 // HOL Light: theorems.ml:75 / DISJ_ASSOC
 // Source hash: md5:94fb6e52c45be0ee495157082ccec039
 // Status: exact_native
 Theorem DISJ_ASSOC : forall t1 t2 t3:prop, t1 \/ (t2 \/ t3) <-> t1 \/ t2 \/ t3.
-Admitted.
+let t1.
+let t2.
+let t3.
+apply iffI.
+- assume H29.
+  apply H29.
+  + assume H50.
+    apply orIL.
+    apply orIL.
+    exact H50.
+  + assume H51.
+    apply H51.
+    * assume H60.
+      apply orIL.
+      apply orIR.
+      exact H60.
+    * assume H61.
+      apply orIR.
+      exact H61.
+- assume H.
+  apply H.
+  + assume H17.
+    apply H17.
+    * assume H27.
+      apply orIL.
+      exact H27.
+    * assume H28.
+      apply orIR.
+      apply orIL.
+      exact H28.
+  + assume H18.
+    apply orIR.
+    apply orIR.
+    exact H18.
+Qed.
 
 // HOL Light: theorems.ml:79 / DISJ_SYM
 // Source hash: md5:b367350478e7ae03ac7490f315c5c53d
 // Status: exact_native
 Theorem DISJ_SYM : forall t1 t2:prop, t1 \/ t2 <-> t2 \/ t1.
-Admitted.
+let t1.
+let t2.
+apply iffI.
+- assume H7.
+  apply H7.
+  + assume H12.
+    apply orIR.
+    exact H12.
+  + assume H13.
+    apply orIL.
+    exact H13.
+- assume H.
+  apply H.
+  + assume H5.
+    apply orIR.
+    exact H5.
+  + assume H6.
+    apply orIL.
+    exact H6.
+Qed.
 
 // HOL Light: theorems.ml:83 / DISJ_ACI
 // Source hash: md5:c1a1228e4cd352b332da0dca0216713c
 // Status: exact_native
 Theorem DISJ_ACI : forall p q r:prop, (p \/ q <-> q \/ p) /\ ((p \/ q \/ r <-> p \/ (q \/ r)) /\ ((p \/ (q \/ r) <-> q \/ (p \/ r)) /\ ((p \/ p <-> p) /\ (p \/ (p \/ q) <-> p \/ q)))).
-Admitted.
+let p.
+let q.
+let r.
+apply andI.
+- apply iffI.
+  + assume H153.
+    apply H153.
+    * assume H158.
+      apply orIR.
+      exact H158.
+    * assume H159.
+      apply orIL.
+      exact H159.
+  + assume H146.
+    apply H146.
+    * assume H151.
+      apply orIR.
+      exact H151.
+    * assume H152.
+      apply orIL.
+      exact H152.
+- apply andI.
+  + apply iffI.
+    * assume H117.
+      apply H117.
+      assume H134.
+      apply H134.
+      assume H144.
+      apply orIL.
+      exact H144.
+      assume H145.
+      apply orIR.
+      apply orIL.
+      exact H145.
+      assume H135.
+      apply orIR.
+      apply orIR.
+      exact H135.
+    * assume H84.
+      apply H84.
+      assume H105.
+      apply orIL.
+      apply orIL.
+      exact H105.
+      assume H106.
+      apply H106.
+      assume H115.
+      apply orIL.
+      apply orIR.
+      exact H115.
+      assume H116.
+      apply orIR.
+      exact H116.
+  + apply andI.
+    * apply iffI.
+      assume H51.
+      apply H51.
+      assume H72.
+      apply orIR.
+      apply orIL.
+      exact H72.
+      assume H73.
+      apply H73.
+      assume H82.
+      apply orIL.
+      exact H82.
+      assume H83.
+      apply orIR.
+      apply orIR.
+      exact H83.
+      assume H18.
+      apply H18.
+      assume H39.
+      apply orIR.
+      apply orIL.
+      exact H39.
+      assume H40.
+      apply H40.
+      assume H49.
+      apply orIL.
+      exact H49.
+      assume H50.
+      apply orIR.
+      apply orIR.
+      exact H50.
+    * apply andI.
+      apply iffI.
+      assume H15.
+      apply H15.
+      assume H16.
+      exact H16.
+      assume H17.
+      exact H17.
+      assume H14.
+      apply orIL.
+      exact H14.
+      apply iffI.
+      assume H3.
+      apply H3.
+      assume H12.
+      apply orIL.
+      exact H12.
+      assume H13.
+      exact H13.
+      assume H.
+      apply orIR.
+      exact H.
+Qed.
 
 // HOL Light: theorems.ml:91 / IMP_CONJ
 // Source hash: md5:7f69a2c0ad4dbc5a9933e79329373bd2
@@ -102,13 +382,73 @@ Admitted.
 // Source hash: md5:e8a5c513c28357407acf729d84e1d039
 // Status: exact_native
 Theorem LEFT_OR_DISTRIB : forall p q r:prop, p /\ (q \/ r) <-> p /\ q \/ p /\ r.
-Admitted.
+let p.
+let q.
+let r.
+apply iffI.
+- assume H9.
+  apply (andER (p) (q \/ r) H9).
+  + assume H14.
+    apply orIL.
+    apply andI.
+    * exact (andEL (p) (q \/ r) H9).
+    * exact H14.
+  + assume H15.
+    apply orIR.
+    apply andI.
+    * exact (andEL (p) (q \/ r) H9).
+    * exact H15.
+- assume H.
+  apply andI.
+  + apply H.
+    * assume H7.
+      exact (andEL (p) (q) H7).
+    * assume H8.
+      exact (andEL (p) (r) H8).
+  + apply H.
+    * assume H5.
+      apply orIL.
+      exact (andER (p) (q) H5).
+    * assume H6.
+      apply orIR.
+      exact (andER (p) (r) H6).
+Qed.
 
 // HOL Light: theorems.ml:109 / RIGHT_OR_DISTRIB
 // Source hash: md5:7e48875e210f34a9a2c22591e6b9403c
 // Status: exact_native
 Theorem RIGHT_OR_DISTRIB : forall p q r:prop, (p \/ q) /\ r <-> p /\ r \/ q /\ r.
-Admitted.
+let p.
+let q.
+let r.
+apply iffI.
+- assume H9.
+  apply (andEL (p \/ q) (r) H9).
+  + assume H14.
+    apply orIL.
+    apply andI.
+    * exact H14.
+    * exact (andER (p \/ q) (r) H9).
+  + assume H15.
+    apply orIR.
+    apply andI.
+    * exact H15.
+    * exact (andER (p \/ q) (r) H9).
+- assume H.
+  apply andI.
+  + apply H.
+    * assume H7.
+      apply orIL.
+      exact (andEL (p) (r) H7).
+    * assume H8.
+      apply orIR.
+      exact (andEL (q) (r) H8).
+  + apply H.
+    * assume H1.
+      exact (andER (p) (r) H1).
+    * assume H2.
+      exact (andER (q) (r) H2).
+Qed.
 
 // HOL Light: theorems.ml:117 / FORALL_SIMP
 // Source hash: md5:5b2bbb121df4deed7a734bfc92ca8777
@@ -144,13 +484,96 @@ Admitted.
 // Source hash: md5:984c7e9a6a57999089ad22b53f6a110e
 // Status: exact_native
 Theorem AND_CLAUSES : forall t:prop, (True /\ t <-> t) /\ ((t /\ True <-> t) /\ ((False /\ t <-> False) /\ ((t /\ False <-> False) /\ (t /\ t <-> t)))).
-Admitted.
+let t.
+apply andI.
+- apply iffI.
+  + assume H9.
+    exact (andER (True) (t) H9).
+  + assume H8.
+    apply andI.
+    * exact (fun p:prop => fun H:p => H).
+    * exact H8.
+- apply andI.
+  + apply iffI.
+    * assume H7.
+      exact (andEL (t) (True) H7).
+    * assume H6.
+      apply andI.
+      exact H6.
+      exact (fun p:prop => fun H:p => H).
+  + apply andI.
+    * apply iffI.
+      assume H5.
+      exact (andEL (False) (t) H5).
+      assume H4.
+      exact (FalseE H4 (False /\ t)).
+    * apply andI.
+      apply iffI.
+      assume H3.
+      exact (andER (t) (False) H3).
+      assume H2.
+      exact (FalseE H2 (t /\ False)).
+      apply iffI.
+      assume H1.
+      exact (andER (t) (t) H1).
+      assume H.
+      apply andI.
+      exact H.
+      exact H.
+Qed.
 
 // HOL Light: theorems.ml:149 / OR_CLAUSES
 // Source hash: md5:5dafa8d855df75672f600f99dae41d5d
 // Status: exact_native
 Theorem OR_CLAUSES : forall t:prop, (True \/ t <-> True) /\ ((t \/ True <-> True) /\ ((False \/ t <-> t) /\ ((t \/ False <-> t) /\ (t \/ t <-> t)))).
-Admitted.
+let t.
+apply andI.
+- apply iffI.
+  + assume H15.
+    exact (fun p:prop => fun H:p => H).
+  + assume H14.
+    apply orIL.
+    exact H14.
+- apply andI.
+  + apply iffI.
+    * assume H13.
+      exact (fun p:prop => fun H:p => H).
+    * assume H12.
+      apply orIR.
+      exact H12.
+  + apply andI.
+    * apply iffI.
+      assume H9.
+      apply H9.
+      assume H10.
+      exact (FalseE H10 (t)).
+      assume H11.
+      exact H11.
+      assume H8.
+      apply orIR.
+      exact H8.
+    * apply andI.
+      apply iffI.
+      assume H5.
+      apply H5.
+      assume H6.
+      exact H6.
+      assume H7.
+      exact (FalseE H7 (t)).
+      assume H4.
+      apply orIL.
+      exact H4.
+      apply iffI.
+      assume H1.
+      apply H1.
+      assume H2.
+      exact H2.
+      assume H3.
+      exact H3.
+      assume H.
+      apply orIL.
+      exact H.
+Qed.
 
 // HOL Light: theorems.ml:154 / IMP_CLAUSES
 // Source hash: md5:6382a4321b560df4302c6f84b6cf6558
@@ -168,49 +591,149 @@ Admitted.
 // Source hash: md5:e372b30f99349efa111d83e2f360fb61
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_REFL : forall A:set, forall a :e A, exists x :e A, x = a.
-Admitted.
+let A.
+let a. assume Ha.
+witness a.
+apply andI.
+- exact Ha.
+- exact (fun q H => H).
+Qed.
 
 // HOL Light: theorems.ml:193 / EXISTS_UNIQUE_REFL
 // Source hash: md5:073206835fb258ce74d7a2600f421fc2
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_UNIQUE_REFL : forall A:set, forall a :e A, exists x :e A, x = a /\ forall y :e A, y = a -> y = x.
-Admitted.
+let A.
+let a. assume Ha.
+witness a.
+apply andI.
+- exact Ha.
+- apply andI.
+  + exact (fun q H => H).
+  + let y. assume Hy.
+    assume H.
+    exact H.
+Qed.
 
 // HOL Light: theorems.ml:204 / UNWIND_THM1
 // Source hash: md5:e252b2b585ba192019ab0a47e91cd9f2
 // Status: generalization_required (bridges: empty_case:A)
 Theorem UNWIND_THM1 : forall A:set, forall P:set -> prop, forall a :e A, (exists x :e A, a = x /\ P x) <-> P a.
-Admitted.
+let A.
+let P.
+let a. assume Ha.
+apply iffI.
+- assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  exact (((andEL (a = x) (P x) H3) (fun hl__u hl__v => hl__u = (a)) (fun q H => H)) (fun hl__u hl__v => P hl__u) (andER (a = x) (P x) H3)).
+- assume H.
+  witness a.
+  apply andI.
+  + exact Ha.
+  + apply andI.
+    * exact (fun q H => H).
+    * exact H.
+Qed.
 
 // HOL Light: theorems.ml:212 / UNWIND_THM2
 // Source hash: md5:e8d8e93a8219ea0d4c61e00ac998b7dd
 // Status: generalization_required (bridges: empty_case:A)
 Theorem UNWIND_THM2 : forall A:set, forall P:set -> prop, forall a :e A, (exists x :e A, x = a /\ P x) <-> P a.
-Admitted.
+let A.
+let P.
+let a. assume Ha.
+apply iffI.
+- assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  exact ((andEL (x = a) (P x) H3) (fun hl__u hl__v => P hl__u) (andER (x = a) (P x) H3)).
+- assume H.
+  witness a.
+  apply andI.
+  + exact Ha.
+  + apply andI.
+    * exact (fun q H => H).
+    * exact H.
+Qed.
 
 // HOL Light: theorems.ml:217 / FORALL_UNWIND_THM2
 // Source hash: md5:7d11942b1403e24a33afde7223638f39
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_UNWIND_THM2 : forall A:set, forall P:set -> prop, forall a :e A, (forall x :e A, x = a -> P x) <-> P a.
-Admitted.
+let A.
+let P.
+let a. assume Ha.
+apply iffI.
+- assume H2.
+  exact (H2 (a) Ha (fun q H => H)).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  exact ((H1 (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => P hl__u) H).
+Qed.
 
 // HOL Light: theorems.ml:224 / FORALL_UNWIND_THM1
 // Source hash: md5:c29e48c57e6988d9b8de51887e94c310
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_UNWIND_THM1 : forall A:set, forall P:set -> prop, forall a :e A, (forall x :e A, a = x -> P x) <-> P a.
-Admitted.
+let A.
+let P.
+let a. assume Ha.
+apply iffI.
+- assume H2.
+  exact (H2 (a) Ha (fun q H => H)).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  exact (H1 (fun hl__u hl__v => P hl__u) H).
+Qed.
 
 // HOL Light: theorems.ml:233 / SWAP_FORALL_THM
 // Source hash: md5:df4989caae04c5ecc3e98a343479c369
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem SWAP_FORALL_THM : forall A B:set, forall P:set -> set -> prop, (forall x :e A, forall y :e B, P x y) <-> forall y :e B, forall x :e A, P x y.
-Admitted.
+let A.
+let B.
+let P.
+apply iffI.
+- assume H1.
+  let y1. assume Hy1.
+  let x1. assume Hx1.
+  exact (H1 (x1) Hx1 (y1) Hy1).
+- assume H.
+  let x. assume Hx.
+  let y. assume Hy.
+  exact (H (y) Hy (x) Hx).
+Qed.
 
 // HOL Light: theorems.ml:237 / SWAP_EXISTS_THM
 // Source hash: md5:68425fa12a3aa533a8d863f53ba19aa1
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem SWAP_EXISTS_THM : forall A B:set, forall P:set -> set -> prop, (exists x :e A, exists y :e B, P x y) <-> exists y :e B, exists x :e A, P x y.
-Admitted.
+let A.
+let B.
+let P.
+apply iffI.
+- assume H5.
+  apply H5. let x1. assume H6. apply H6. assume Hx1 H7.
+  apply H7. let y1. assume H8. apply H8. assume Hy1 H9.
+  witness y1.
+  apply andI.
+  + exact Hy1.
+  + witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact H9.
+- assume H.
+  apply H. let y. assume H1. apply H1. assume Hy H2.
+  apply H2. let x. assume H3. apply H3. assume Hx H4.
+  witness x.
+  apply andI.
+  + exact Hx.
+  + witness y.
+    apply andI.
+    * exact Hy.
+    * exact H4.
+Qed.
 
 // HOL Light: theorems.ml:245 / FORALL_AND_THM
 // Source hash: md5:75e6b56a5e3738f48b8fb06a01e01c5c
@@ -264,37 +787,165 @@ Admitted.
 // Source hash: md5:174d261bd6d0c9a4df5fae53976158d3
 // Status: generalization_required (bridges: empty_case:A)
 Theorem LEFT_EXISTS_AND_THM : forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x /\ Q) <-> (exists x :e A, P x) /\ Q.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H3.
+  apply H3. let x1. assume H4. apply H4. assume Hx1 H5.
+  apply andI.
+  + witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (andEL (P x1) (Q) H5).
+  + exact (andER (P x1) (Q) H5).
+- assume H.
+  apply (andEL (exists x :e A, P x) (Q) H). let x. assume H1. apply H1. assume Hx H2.
+  witness x.
+  apply andI.
+  + exact Hx.
+  + apply andI.
+    * exact H2.
+    * exact (andER (exists x :e A, P x) (Q) H).
+Qed.
 
 // HOL Light: theorems.ml:289 / RIGHT_EXISTS_AND_THM
 // Source hash: md5:5b92102c260f0a6d245defde7c3af61f
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RIGHT_EXISTS_AND_THM : forall A:set, forall P:prop, forall Q:set -> prop, (exists x :e A, P /\ Q x) <-> P /\ exists x :e A, Q x.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H3.
+  apply H3. let x1. assume H4. apply H4. assume Hx1 H5.
+  apply andI.
+  + exact (andEL (P) (Q x1) H5).
+  + witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (andER (P) (Q x1) H5).
+- assume H.
+  apply (andER (P) (exists x :e A, Q x) H). let x. assume H1. apply H1. assume Hx H2.
+  witness x.
+  apply andI.
+  + exact Hx.
+  + apply andI.
+    * exact (andEL (P) (exists x :e A, Q x) H).
+    * exact H2.
+Qed.
 
 // HOL Light: theorems.ml:293 / TRIV_EXISTS_AND_THM
 // Source hash: md5:0de49eaf0c1adf3904ba0ac67ea7bcbf
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TRIV_EXISTS_AND_THM : forall A:set, forall P Q:prop, (exists x :e A, P /\ Q) <-> (exists x :e A, P) /\ exists x :e A, Q.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H5.
+  apply H5. let x2. assume H6. apply H6. assume Hx2 H7.
+  apply andI.
+  + witness x2.
+    apply andI.
+    * exact Hx2.
+    * exact (andEL (P) (Q) H7).
+  + witness x2.
+    apply andI.
+    * exact Hx2.
+    * exact (andER (P) (Q) H7).
+- assume H.
+  apply (andEL (exists x :e A, P) (exists x :e A, Q) H). let x. assume H1. apply H1. assume Hx H2.
+  apply (andER (exists x :e A, P) (exists x :e A, Q) H). let x1. assume H3. apply H3. assume Hx1 H4.
+  witness x1.
+  apply andI.
+  + exact Hx1.
+  + apply andI.
+    * exact H2.
+    * exact H4.
+Qed.
 
 // HOL Light: theorems.ml:297 / LEFT_AND_EXISTS_THM
 // Source hash: md5:65f7ae7917946d1349165a2813d15f15
 // Status: generalization_required (bridges: empty_case:A)
 Theorem LEFT_AND_EXISTS_THM : forall A:set, forall P:set -> prop, forall Q:prop, (exists x :e A, P x) /\ Q <-> exists x :e A, P x /\ Q.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H3.
+  apply (andEL (exists x :e A, P x) (Q) H3). let x1. assume H4. apply H4. assume Hx1 H5.
+  witness x1.
+  apply andI.
+  + exact Hx1.
+  + apply andI.
+    * exact H5.
+    * exact (andER (exists x :e A, P x) (Q) H3).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  apply andI.
+  + witness x.
+    apply andI.
+    * exact Hx.
+    * exact (andEL (P x) (Q) H2).
+  + exact (andER (P x) (Q) H2).
+Qed.
 
 // HOL Light: theorems.ml:301 / RIGHT_AND_EXISTS_THM
 // Source hash: md5:8e95ec474ffede053f33ad8095d8a09f
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RIGHT_AND_EXISTS_THM : forall A:set, forall P:prop, forall Q:set -> prop, P /\ (exists x :e A, Q x) <-> exists x :e A, P /\ Q x.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H3.
+  apply (andER (P) (exists x :e A, Q x) H3). let x1. assume H4. apply H4. assume Hx1 H5.
+  witness x1.
+  apply andI.
+  + exact Hx1.
+  + apply andI.
+    * exact (andEL (P) (exists x :e A, Q x) H3).
+    * exact H5.
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  apply andI.
+  + exact (andEL (P) (Q x) H2).
+  + witness x.
+    apply andI.
+    * exact Hx.
+    * exact (andER (P) (Q x) H2).
+Qed.
 
 // HOL Light: theorems.ml:305 / TRIV_AND_EXISTS_THM
 // Source hash: md5:d98a270e9b300e2cbf422699a6457f7d
 // Status: generalization_required (bridges: empty_case:A)
 Theorem TRIV_AND_EXISTS_THM : forall A:set, forall P Q:prop, (exists x :e A, P) /\ (exists x :e A, Q) <-> exists x :e A, P /\ Q.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H3.
+  apply (andEL (exists x :e A, P) (exists x :e A, Q) H3). let x1. assume H4. apply H4. assume Hx1 H5.
+  apply (andER (exists x :e A, P) (exists x :e A, Q) H3). let x2. assume H6. apply H6. assume Hx2 H7.
+  witness x2.
+  apply andI.
+  + exact Hx2.
+  + apply andI.
+    * exact H5.
+    * exact H7.
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  apply andI.
+  + witness x.
+    apply andI.
+    * exact Hx.
+    * exact (andEL (P) (Q) H2).
+  + witness x.
+    apply andI.
+    * exact Hx.
+    * exact (andER (P) (Q) H2).
+Qed.
 
 // HOL Light: theorems.ml:313 / TRIV_FORALL_OR_THM
 // Source hash: md5:ef955ba74e738b664b318652bd77aa21
@@ -312,13 +963,37 @@ Admitted.
 // Source hash: md5:c00ea28ad44fb8f262759a876ced5e51
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RIGHT_IMP_FORALL_THM : forall A:set, forall P:prop, forall Q:set -> prop, P -> (forall x :e A, Q x) <-> forall x :e A, P -> Q x.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H2.
+  let x1. assume Hx1.
+  assume H3.
+  exact (H2 H3 (x1) Hx1).
+- assume H.
+  assume H1.
+  let x. assume Hx.
+  exact (H (x) Hx H1).
+Qed.
 
 // HOL Light: theorems.ml:329 / RIGHT_FORALL_IMP_THM
 // Source hash: md5:49dae7a1bd9dbbdf2c18e68591909be9
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RIGHT_FORALL_IMP_THM : forall A:set, forall P:prop, forall Q:set -> prop, (forall x :e A, P -> Q x) <-> P -> forall x :e A, Q x.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H2.
+  assume H3.
+  let x1. assume Hx1.
+  exact (H2 (x1) Hx1 H3).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  exact (H H1 (x) Hx).
+Qed.
 
 // HOL Light: theorems.ml:333 / LEFT_IMP_EXISTS_THM
 // Source hash: md5:d793fa8a6744565ded8518fb3f09de3c
@@ -348,19 +1023,49 @@ Admitted.
 // Source hash: md5:84b21299680648a101ec81f4a4edbf15
 // Status: exact_native
 Theorem MONO_AND : forall A B C D:prop, (A -> B) /\ (C -> D) -> A /\ C -> B /\ D.
-Admitted.
+let A.
+let B.
+let C.
+let D.
+assume H.
+assume H1.
+apply andI.
+- exact ((andEL (A -> B) (C -> D) H) (andEL (A) (C) H1)).
+- exact ((andER (A -> B) (C -> D) H) (andER (A) (C) H1)).
+Qed.
 
 // HOL Light: theorems.ml:355 / MONO_OR
 // Source hash: md5:9ba2497fd2426d0f601d403fe59036b3
 // Status: exact_native
 Theorem MONO_OR : forall A B C D:prop, (A -> B) /\ (C -> D) -> A \/ C -> B \/ D.
-Admitted.
+let A.
+let B.
+let C.
+let D.
+assume H.
+assume H1.
+apply H1.
+- assume H6.
+  apply orIL.
+  exact ((andEL (A -> B) (C -> D) H) H6).
+- assume H7.
+  apply orIR.
+  exact ((andER (A -> B) (C -> D) H) H7).
+Qed.
 
 // HOL Light: theorems.ml:357 / MONO_IMP
 // Source hash: md5:b6b356d2e9d76083ffa88b0986af798f
 // Status: exact_native
 Theorem MONO_IMP : forall B A C D:prop, (B -> A) /\ (C -> D) -> (A -> C) -> B -> D.
-Admitted.
+let B.
+let A.
+let C.
+let D.
+assume H.
+assume H1.
+assume H2.
+exact ((andER (B -> A) (C -> D) H) (H1 ((andEL (B -> A) (C -> D) H) H2))).
+Qed.
 
 // HOL Light: theorems.ml:359 / MONO_NOT
 // Source hash: md5:f70b61870f971356e881aa6a56b2136b
@@ -372,13 +1077,30 @@ Admitted.
 // Source hash: md5:32c8690ef1e35ecb9a776a51c3db2049
 // Status: generalization_required (bridges: empty_case:A)
 Theorem MONO_FORALL : forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (forall x :e A, P x) -> forall x :e A, Q x.
-Admitted.
+let A.
+let P.
+let Q.
+assume H.
+assume H1.
+let x. assume Hx.
+exact (H (x) Hx (H1 (x) Hx)).
+Qed.
 
 // HOL Light: theorems.ml:366 / MONO_EXISTS
 // Source hash: md5:4025fabd3eb4e3c1e0e82ec526e01240
 // Status: generalization_required (bridges: empty_case:A)
 Theorem MONO_EXISTS : forall A:set, forall P Q:set -> prop, (forall x :e A, P x -> Q x) -> (exists x :e A, P x) -> exists x :e A, Q x.
-Admitted.
+let A.
+let P.
+let Q.
+assume H.
+assume H1.
+apply H1. let x. assume H2. apply H2. assume Hx H3.
+witness x.
+apply andI.
+- exact Hx.
+- exact (H (x) Hx H3).
+Qed.
 
 // HOL Light: theorems.ml:376 / WLOG_RELATION
 // Source hash: md5:3b7f91a78da7595edabc7bbf2d9ddc5e

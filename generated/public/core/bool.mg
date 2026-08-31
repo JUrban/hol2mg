@@ -6,7 +6,17 @@
 // Source hash: md5:0f884614e334e71c404506d560fc3b72
 // Status: exact_native
 Theorem T_DEF : True <-> forall p:prop, p <-> p.
-Admitted.
+apply iffI.
+- assume H1.
+  let p.
+  apply iffI.
+  + assume H3.
+    exact H3.
+  + assume H2.
+    exact H2.
+- assume H.
+  exact (fun p:prop => fun H:p => H).
+Qed.
 
 // HOL Light: bool.ml:79 / TRUTH
 // Source hash: md5:e09aad94aa2e20c97a7a0ada09e7924e

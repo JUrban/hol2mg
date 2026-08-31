@@ -126,7 +126,17 @@ Admitted.
 // Source hash: md5:abb01e8d84ce430691bf20436f40529b
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, nat_lt_SNoLt)
 Theorem MEASURE : forall A:set, forall m:set -> set, (forall x :e A, m x :e omega) -> forall x y :e A, m x < m y <-> m x < m y.
-Admitted.
+let A.
+let m.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H2.
+  exact H2.
+- assume H1.
+  exact H1.
+Qed.
 
 // HOL Light: wf.ml:260 / WF_MEASURE
 // Source hash: md5:5d1b43ae387330061cca4c569f00754a

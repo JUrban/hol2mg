@@ -96,7 +96,10 @@ Admitted.
 // Source hash: md5:3f6f8954e52c4d38ffbcfa9d9984644d
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_OF_NUM_POW : forall x n :e omega, x ^ n = x ^ n.
-Admitted.
+let x. assume Hx.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: calc_int.ml:157 / REAL_POW_NEG
 // Source hash: md5:b6df1bfc4c450ce11672fb5a990555bb

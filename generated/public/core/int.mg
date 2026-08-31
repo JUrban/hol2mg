@@ -42,37 +42,74 @@ Admitted.
 // Source hash: md5:fd2f6c28a41c04c5ff22528384474bc8
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem INTEGER_REAL_OF_INT : forall x :e int, x :e int.
-Admitted.
+let x. assume Hx.
+exact Hx.
+Qed.
 
 // HOL Light: int.ml:51 / int_eq
 // Source hash: md5:46113566031fb84ffc62c9a77bf47d91
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_eq : forall x y :e int, x = y <-> x = y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:76 / int_le
 // Source hash: md5:de5ef357afac93cc21ebb312eb6ee2f5
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_le : forall x y :e int, x <= y <-> x <= y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:79 / int_lt
 // Source hash: md5:e120c5df36564347bd92f4a0fdd90d63
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_lt : forall x y :e int, x < y <-> x < y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:82 / int_ge
 // Source hash: md5:b4c39bb8f6566b51ddc8294bfa353ea5
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_ge : forall x y :e int, y <= x <-> y <= x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:85 / int_gt
 // Source hash: md5:671447e0e4c03145ccdd6dae44981bba
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_gt : forall x y :e int, y < x <-> y < x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:88 / int_of_num
 // Source hash: md5:988ee0a1ee8fbc1cc8ee2a39e110cf83
@@ -84,7 +121,9 @@ Admitted.
 // Source hash: md5:35261390244301170f26ee50449b494b
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, int_Subq_R, omega_Subq_R, omega_Subq_int)
 Theorem int_of_num_th : forall n :e omega, n = n.
-Admitted.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:96 / int_neg
 // Source hash: md5:10fd991057cc4493daa239eac7a378c7
@@ -96,7 +135,9 @@ Admitted.
 // Source hash: md5:0e6ea77f7aef87db9e256366e757337f
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_neg_th : forall x :e int, - x = - x.
-Admitted.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:106 / int_add
 // Source hash: md5:452ea8afad01dc3e00abecf4bfb405b7
@@ -108,7 +149,10 @@ Admitted.
 // Source hash: md5:dd9f80506f6d99ceaf3f0d9bb1319597
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_add_th : forall x y :e int, x + y = x + y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:123 / int_sub
 // Source hash: md5:da9658dcf1adb65471b3df2d7a5508a8
@@ -120,7 +164,10 @@ Admitted.
 // Source hash: md5:51c4bd357f334aa376dfd10187f92210
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_sub_th : forall x y :e int, x + - y = x + - y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:131 / int_mul
 // Source hash: md5:0ee164d776cf3bfe7b2c2fb604061cc9
@@ -132,7 +179,10 @@ Admitted.
 // Source hash: md5:b83b17b818c1f7162261a657aaa93495
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_mul_th : forall x y :e int, x * y = x * y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:143 / int_abs
 // Source hash: md5:71eaa84cc4df60cef62cde4868205e2e
@@ -144,7 +194,9 @@ Admitted.
 // Source hash: md5:a9976c1ab23add8bc895ffeea6543c61
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_abs_th : forall x :e int, abs_SNo x = abs_SNo x.
-Admitted.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:151 / int_sgn
 // Source hash: md5:e8703bd63d689c63e0255e2e03bba69c
@@ -156,7 +208,9 @@ Admitted.
 // Source hash: md5:b6c4c1d56066eb2f173bcd00597562bf
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_sgn_th : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
-Admitted.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:160 / int_max
 // Source hash: md5:27b81a3591ba69db6f036db60e5e9b3a
@@ -168,7 +222,10 @@ Admitted.
 // Source hash: md5:390313eb8b350c97d5e579bffe6d908c
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_max_th : forall x y :e int, (if x <= y then y else x) = if x <= y then y else x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:168 / int_min
 // Source hash: md5:1f287113561b3b6b2727a82204d4c51b
@@ -180,7 +237,10 @@ Admitted.
 // Source hash: md5:32a75428ddb4e7a53b604c2d95cb3a3b
 // Status: transport_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_min_th : forall x y :e int, (if x <= y then x else y) = if x <= y then x else y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:176 / int_pow
 // Source hash: md5:9a1afde4bd0a4bfd52629c819bd94038
@@ -192,13 +252,99 @@ Admitted.
 // Source hash: md5:cf684b2503467aef2a5269df4f2ea181
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, int_Subq_R)
 Theorem int_pow_th : forall x :e int, forall n :e omega, x ^ n = x ^ n.
-Admitted.
+let x. assume Hx.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:191 / REAL_OF_INT_CLAUSES
 // Source hash: md5:35e75d9d55eee1ca382038fbab169cd4
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, int_Subq_R, omega_Subq_R, omega_Subq_int)
 Theorem REAL_OF_INT_CLAUSES : (forall x y :e int, x = y <-> x = y) /\ ((forall x y :e int, y <= x <-> y <= x) /\ ((forall x y :e int, y < x <-> y < x) /\ ((forall x y :e int, x <= y <-> x <= y) /\ ((forall x y :e int, x < y <-> x < y) /\ ((forall x y :e int, (if x <= y then y else x) = if x <= y then y else x) /\ ((forall x y :e int, (if x <= y then x else y) = if x <= y then x else y) /\ ((forall n :e omega, n = n) /\ ((forall x :e int, - x = - x) /\ ((forall x :e int, abs_SNo x = abs_SNo x) /\ ((forall x y :e int, (if x <= y then y else x) = if x <= y then y else x) /\ ((forall x y :e int, (if x <= y then x else y) = if x <= y then x else y) /\ ((forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0) /\ ((forall x y :e int, x + y = x + y) /\ ((forall x y :e int, x + - y = x + - y) /\ ((forall x y :e int, x * y = x * y) /\ forall x :e int, forall n :e omega, x ^ n = x ^ n))))))))))))))).
-Admitted.
+apply andI.
+- let x15. assume Hx15.
+  let y11. assume Hy11.
+  apply iffI.
+  + assume H9.
+    exact H9.
+  + assume H8.
+    exact H8.
+- apply andI.
+  + let x14. assume Hx14.
+    let y10. assume Hy10.
+    apply iffI.
+    * assume H7.
+      exact H7.
+    * assume H6.
+      exact H6.
+  + apply andI.
+    * let x13. assume Hx13.
+      let y9. assume Hy9.
+      apply iffI.
+      assume H5.
+      exact H5.
+      assume H4.
+      exact H4.
+    * apply andI.
+      let x12. assume Hx12.
+      let y8. assume Hy8.
+      apply iffI.
+      assume H3.
+      exact H3.
+      assume H2.
+      exact H2.
+      apply andI.
+      let x11. assume Hx11.
+      let y7. assume Hy7.
+      apply iffI.
+      assume H1.
+      exact H1.
+      assume H.
+      exact H.
+      apply andI.
+      let x10. assume Hx10.
+      let y6. assume Hy6.
+      exact (fun q H => H).
+      apply andI.
+      let x9. assume Hx9.
+      let y5. assume Hy5.
+      exact (fun q H => H).
+      apply andI.
+      let n1. assume Hn1.
+      exact (fun q H => H).
+      apply andI.
+      let x8. assume Hx8.
+      exact (fun q H => H).
+      apply andI.
+      let x7. assume Hx7.
+      exact (fun q H => H).
+      apply andI.
+      let x6. assume Hx6.
+      let y4. assume Hy4.
+      exact (fun q H => H).
+      apply andI.
+      let x5. assume Hx5.
+      let y3. assume Hy3.
+      exact (fun q H => H).
+      apply andI.
+      let x4. assume Hx4.
+      exact (fun q H => H).
+      apply andI.
+      let x3. assume Hx3.
+      let y2. assume Hy2.
+      exact (fun q H => H).
+      apply andI.
+      let x2. assume Hx2.
+      let y1. assume Hy1.
+      exact (fun q H => H).
+      apply andI.
+      let x1. assume Hx1.
+      let y. assume Hy.
+      exact (fun q H => H).
+      let x. assume Hx.
+      let n. assume Hn.
+      exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:217 / INT_IMAGE
 // Source hash: md5:0bd47f16227bd2c8d3e8927e838606ef
@@ -1368,55 +1514,158 @@ Admitted.
 // Source hash: md5:51a2e415bbd755081b9c29ecbf28821f
 // Status: transport_required (bridges: add_nat_add_SNo, hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_OF_NUM_ADD : forall m n :e omega, m + n = m + n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:516 / INT_OF_NUM_CLAUSES
 // Source hash: md5:e2166bce1be5ab5d7e88b86f155103bc
 // Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_int_int, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe, nat_lt_SNoLt, omega_Subq_int)
 Theorem INT_OF_NUM_CLAUSES : (forall m n :e omega, m = n <-> m = n) /\ ((forall m n :e omega, n <= m <-> n <= m) /\ ((forall m n :e omega, n < m <-> n < m) /\ ((forall m n :e omega, m <= n <-> m <= n) /\ ((forall m n :e omega, m < n <-> m < n) /\ ((forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m) /\ ((forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n) /\ ((forall m n :e omega, m + n = m + n) /\ ((forall m n :e omega, m * n = m * n) /\ forall x n :e omega, x ^ n = x ^ n)))))))).
-Admitted.
+apply andI.
+- let m8. assume Hm8.
+  let n9. assume Hn9.
+  apply iffI.
+  + assume H9.
+    exact H9.
+  + assume H8.
+    exact H8.
+- apply andI.
+  + let m7. assume Hm7.
+    let n8. assume Hn8.
+    apply iffI.
+    * assume H7.
+      exact H7.
+    * assume H6.
+      exact H6.
+  + apply andI.
+    * let m6. assume Hm6.
+      let n7. assume Hn7.
+      apply iffI.
+      assume H5.
+      exact H5.
+      assume H4.
+      exact H4.
+    * apply andI.
+      let m5. assume Hm5.
+      let n6. assume Hn6.
+      apply iffI.
+      assume H3.
+      exact H3.
+      assume H2.
+      exact H2.
+      apply andI.
+      let m4. assume Hm4.
+      let n5. assume Hn5.
+      apply iffI.
+      assume H1.
+      exact H1.
+      assume H.
+      exact H.
+      apply andI.
+      let m3. assume Hm3.
+      let n4. assume Hn4.
+      exact (fun q H => H).
+      apply andI.
+      let m2. assume Hm2.
+      let n3. assume Hn3.
+      exact (fun q H => H).
+      apply andI.
+      let m1. assume Hm1.
+      let n2. assume Hn2.
+      exact (fun q H => H).
+      apply andI.
+      let m. assume Hm.
+      let n1. assume Hn1.
+      exact (fun q H => H).
+      let x. assume Hx.
+      let n. assume Hn.
+      exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:517 / INT_OF_NUM_EQ
 // Source hash: md5:2578eace0c8cdf688dd12c778a481b3d
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_OF_NUM_EQ : forall m n :e omega, m = n <-> m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:518 / INT_OF_NUM_GE
 // Source hash: md5:ecc684c514b31030595f699a5de6a5ec
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, nat_le_SNoLe, omega_Subq_int)
 Theorem INT_OF_NUM_GE : forall m n :e omega, n <= m <-> n <= m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:519 / INT_OF_NUM_GT
 // Source hash: md5:c31b1004b074ab75f75ac7fc1429b0aa
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, nat_lt_SNoLt, omega_Subq_int)
 Theorem INT_OF_NUM_GT : forall m n :e omega, n < m <-> n < m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:520 / INT_OF_NUM_LE
 // Source hash: md5:53690ea40fece03b586674a186a39288
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, nat_le_SNoLe, omega_Subq_int)
 Theorem INT_OF_NUM_LE : forall m n :e omega, m <= n <-> m <= n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:521 / INT_OF_NUM_LT
 // Source hash: md5:11cd1ab0cfebd244f4e56700a4f8d111
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, nat_lt_SNoLt, omega_Subq_int)
 Theorem INT_OF_NUM_LT : forall m n :e omega, m < n <-> m < n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:522 / INT_OF_NUM_MAX
 // Source hash: md5:389ea67e647b0276d6e88fc56043475a
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_OF_NUM_MAX : forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:523 / INT_OF_NUM_MIN
 // Source hash: md5:c5f328eea9ddd9225ff9ef5c7d758b17
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_OF_NUM_MIN : forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:524 / INT_OF_NUM_MOD
 // Source hash: md5:99de5085f6ae3185d8f283e39d9d93b3
@@ -1428,13 +1677,19 @@ Admitted.
 // Source hash: md5:074ef7f7775777b088df541e705b5e23
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, mul_nat_mul_SNo, omega_Subq_int)
 Theorem INT_OF_NUM_MUL : forall m n :e omega, m * n = m * n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:526 / INT_OF_NUM_POW
 // Source hash: md5:6f9e29b75231871a8ee4b931ab67b1cb
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_OF_NUM_POW : forall x n :e omega, x ^ n = x ^ n.
-Admitted.
+let x. assume Hx.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:527 / INT_OF_NUM_SUB
 // Source hash: md5:2fee42fd10e6e989d0259ae8725e48e8
@@ -2094,7 +2349,16 @@ Admitted.
 // Source hash: md5:d0373dc2bc02e675cdb61c053cc647b6
 // Status: generalization_required (bridges: empty_case:A)
 Theorem cong : forall A:set, forall rel:set -> set -> prop, forall x y :e A, rel x y <-> rel x y.
-Admitted.
+let A.
+let rel.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:1170 / real_mod
 // Source hash: md5:66e08ca96f3f09be49b9be03c590342a
@@ -2118,7 +2382,15 @@ Admitted.
 // Source hash: md5:17852779413c6e485a026b4cf6b38fb6
 // Status: transport_required (bridges: hol_int_int)
 Theorem int_mod : forall n x y :e int, divides_int n (x + - y) <-> divides_int n (x + - y).
-Admitted.
+let n. assume Hn.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:1202 / int_congruent
 // Source hash: md5:0740c3eb73e17b56c164104cffc9d0d4
@@ -2706,7 +2978,14 @@ Admitted.
 // Source hash: md5:a033603383a8113f0137bd5bbb618384
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
 Theorem num_coprime : forall a b :e omega, gcd_int a b = 1 <-> gcd_int a b = 1.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: int.ml:2127 / num_gcd
 // Source hash: md5:88962877646a99de9617e2dde9640448
@@ -2748,13 +3027,19 @@ Admitted.
 // Source hash: md5:71b969f4ff9cc7292e8e593f142bdcc9
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
 Theorem NUM_GCD : forall a b :e omega, gcd_int a b = gcd_int a b.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:2383 / NUM_LCM
 // Source hash: md5:5835913443b97f15ffa6ce8be615afcb
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, omega_Subq_int)
 Theorem NUM_LCM : forall a b :e omega, lcm_int a b = lcm_int a b.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: int.ml:2387 / CONG
 // Source hash: md5:724c7646174213ceafea3e62084f528f

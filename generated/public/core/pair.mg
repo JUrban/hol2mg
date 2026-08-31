@@ -6,7 +6,13 @@
 // Source hash: md5:b500f0ea638d009d27d0410e5045329f
 // Status: generalization_required (bridges: empty_case:A, empty_case:B)
 Theorem LET_DEF : forall A B:set, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, f x = f x.
-Admitted.
+let A.
+let B.
+let f.
+assume H.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:20 / LET_END_DEF
 // Source hash: md5:3540107cfa54c763381fa257e545baa3
@@ -42,13 +48,23 @@ Admitted.
 // Source hash: md5:e9c3a4a3164ca2f9e6fad2d535f8ab0f
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem FST : forall A B:set, forall x :e A, forall y :e B, x = x.
-Admitted.
+let A.
+let B.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:100 / SND
 // Source hash: md5:e4ac88e20ba11cb060769e77dcb122fe
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem SND : forall A B:set, forall x :e A, forall y :e B, y = y.
-Admitted.
+let A.
+let B.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:108 / PAIR
 // Source hash: md5:23613fb98ddd9bc0b8abe81386bec32f
@@ -72,13 +88,29 @@ Admitted.
 // Source hash: md5:cede113a4abd362ecff19b551d8931ed
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, hol_prod_setprod)
 Theorem CURRY_DEF : forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y).
-Admitted.
+let A.
+let B.
+let C.
+let f.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:190 / UNCURRY_DEF
 // Source hash: md5:3f03a0bbd511648cd075ac39bfcfc4bb
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, hol_prod_setprod)
 Theorem UNCURRY_DEF : forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall x :e A, forall y :e B, f x y = f x y.
-Admitted.
+let A.
+let B.
+let C.
+let f.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:295 / FORALL_PAIR_THM
 // Source hash: md5:259d29f2f6087c2bd6a11a52412f4491
@@ -102,7 +134,14 @@ Admitted.
 // Source hash: md5:586467ad9feb215fbc9e08d6caadf6c7
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, hol_prod_setprod)
 Theorem LAMBDA_PAIR : forall A B C:set, forall f:set -> set -> set, (forall x :e A, forall y :e B, f x y :e C) -> forall p :e A :*: B, f (p 0) (p 1) = f (p 0) (p 1).
-Admitted.
+let A.
+let B.
+let C.
+let f.
+assume H.
+let p. assume Hp.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:311 / LAMBDA_TRIPLE_THM
 // Source hash: md5:85e4aaa45bf38442ceebb65097fe1b7d
@@ -114,7 +153,15 @@ Admitted.
 // Source hash: md5:0cd632bb91bd111d0fb856a95916279d
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, empty_case:C, empty_case:D, hol_prod_setprod)
 Theorem LAMBDA_TRIPLE : forall A B C D:set, forall f:set -> set -> set -> set, (forall x :e A, forall y :e B, forall z :e C, f x y z :e D) -> forall t :e A :*: (B :*: C), f (t 0) (t 1 0) (t 1 1) = f (t 0) (t 1 0) (t 1 1).
-Admitted.
+let A.
+let B.
+let C.
+let D.
+let f.
+assume H.
+let t. assume Ht.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: pair.ml:320 / PAIRED_ETA_THM
 // Source hash: md5:eabdd9bb450ee7e823a340945ab828f6

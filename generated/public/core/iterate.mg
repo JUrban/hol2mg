@@ -192,7 +192,35 @@ Admitted.
 // Source hash: md5:1e35c2b254c00f1756dbaa5d27dddeb9
 // Status: generalization_required (bridges: empty_case:A)
 Theorem monoidal : forall A:set, forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> ((forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) <-> (forall x y :e A, op x y = op y x) /\ ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x)).
-Admitted.
+let A.
+let op.
+assume H.
+apply iffI.
+- assume H2.
+  apply andI.
+  + let x5. assume Hx5.
+    let y3. assume Hy3.
+    exact ((andEL (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2)) (x5) Hx5 (y3) Hy3).
+  + apply andI.
+    * let x4. assume Hx4.
+      let y2. assume Hy2.
+      let z1. assume Hz1.
+      exact ((andER (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2)) (x4) Hx4 (y2) Hy2 (z1) Hz1).
+    * let x3. assume Hx3.
+      exact ((andER ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) H2) (x3) Hx3).
+- assume H1.
+  apply andI.
+  + apply andI.
+    * let x2. assume Hx2.
+      let y1. assume Hy1.
+      exact ((andEL (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1) (x2) Hx2 (y1) Hy1).
+    * let x1. assume Hx1.
+      let y. assume Hy.
+      let z. assume Hz.
+      exact ((andEL (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1)) (x1) Hx1 (y) Hy (z) Hz).
+  + let x. assume Hx.
+    exact ((andER (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1)) (x) Hx).
+Qed.
 
 // HOL Light: iterate.ml:289 / MONOIDAL_AC
 // Source hash: md5:f04691f7be5cd5861ed14d28792f5cd2
@@ -1476,7 +1504,13 @@ Admitted.
 // Source hash: md5:5ddff68d965fb2efd936b7d447eefa06
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
 Theorem REAL_OF_NUM_SUM : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finsum s f = finsum s f.
-Admitted.
+let A.
+let f.
+assume H.
+let s. assume Hs.
+assume H1.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: iterate.ml:2391 / SUM_SUBSET
 // Source hash: md5:9fbe449a414156cf9fc147c1e841e0e1
@@ -1596,7 +1630,13 @@ Admitted.
 // Source hash: md5:d008569d378fafe41bdfabdf038831bf
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
 Theorem REAL_OF_NUM_SUM_GEN : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite {i :e A | i :e s /\ ~ f i = 0} -> finsum s f = finsum s f.
-Admitted.
+let A.
+let f.
+assume H.
+let s. assume Hs.
+assume H1.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: iterate.ml:2602 / SUM_ADD_NUMSEG
 // Source hash: md5:6b1d66a883efc7487986daea754a220e
@@ -1734,7 +1774,12 @@ Admitted.
 // Source hash: md5:925d3afdfe70576ecfc0d85ec647f7e1
 // Status: transport_required (bridges: hol_nsum_finsum, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
 Theorem REAL_OF_NUM_SUM_NUMSEG : forall f:set -> set, (forall x :e omega, f x :e omega) -> forall m n :e omega, finsum {i :e omega | m <= i /\ i <= n} f = finsum {i :e omega | m <= i /\ i <= n} f.
-Admitted.
+let f.
+assume H.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: iterate.ml:2719 / SUM_PARTIAL_SUC
 // Source hash: md5:e6f366048c2242915ce80ddd23d6be94

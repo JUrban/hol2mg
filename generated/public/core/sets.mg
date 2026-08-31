@@ -6,7 +6,15 @@
 // Source hash: md5:3bfe2ada95e5a21aec33d25662746d45
 // Status: generalization_required (bridges: empty_case:A)
 Theorem IN : forall A:set, forall P c= A, forall x :e A, x :e P <-> x :e P.
-Admitted.
+let A.
+let P. assume HP.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: sets.ml:45 / EXTENSION
 // Source hash: md5:f7141c939edd744d7d6f135168a24813
@@ -30,7 +38,14 @@ Admitted.
 // Source hash: md5:9b0de6b0d242dd9a3fabf6a8c72fe02c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem UNIV : forall A:set, forall x :e A, x :e A <-> True.
-Admitted.
+let A.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact (fun p:prop => fun H:p => H).
+- assume H.
+  exact Hx.
+Qed.
 
 // HOL Light: sets.ml:90 / UNION
 // Source hash: md5:eebb0c8c259b85ac701c2e562f874397
@@ -84,13 +99,36 @@ Admitted.
 // Source hash: md5:717c482d7dfca1a816d9b2e50f86d826
 // Status: exact_native
 Theorem PSUBSET : forall A:set, A <> Empty -> forall s t c= A, s c= t /\ s <> t <-> s c= t /\ ~ s = t.
-Admitted.
+let A.
+assume H.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H3.
+  apply andI.
+  + exact (andEL (s c= t) (s <> t) H3).
+  + assume H4.
+    exact ((andER (s c= t) (s <> t) H3) H4).
+- assume H1.
+  apply andI.
+  + exact (andEL (s c= t) (~ s = t) H1).
+  + assume H2.
+    exact ((andER (s c= t) (~ s = t) H1) H2).
+Qed.
 
 // HOL Light: sets.ml:122 / DISJOINT
 // Source hash: md5:06faad16c446a9a1f851e720b49c06e3
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DISJOINT : forall A:set, forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: sets.ml:125 / SING
 // Source hash: md5:01a566d782ab2c62a0090eeb3600d3f4
@@ -150,13 +188,19 @@ Admitted.
 // Source hash: md5:64272369e982cded412e001f071aefd5
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem CHOICE : forall A:set, forall s c= A, choose_in A (fun x:set => x :e s) = choose_in A (fun x:set => x :e s).
-Admitted.
+let A.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:167 / REST
 // Source hash: md5:e0f633a0788602734c7ec5f0f8e48f26
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem REST : forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :e s)} = s :\: {choose_in A (fun x:set => x :e s)}.
-Admitted.
+let A.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:174 / NOT_IN_EMPTY
 // Source hash: md5:ebe8471d5c357b956cf0f5e515fe3511
@@ -336,7 +380,11 @@ Admitted.
 // Source hash: md5:a4bc3abddb3a8964bf4d2475feff03ef
 // Status: exact_native
 Theorem UNIV_NOT_EMPTY : forall A:set, A <> Empty -> ~ A = Empty.
-Admitted.
+let A.
+assume H.
+assume H1.
+exact (H H1).
+Qed.
 
 // HOL Light: sets.ml:371 / EMPTY_NOT_UNIV
 // Source hash: md5:e882b1ce44890b0d529523d678d8a5e5
@@ -390,7 +438,10 @@ Admitted.
 // Source hash: md5:c0ebb156bc6d1a31bb01d11b4818cecc
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SUBSET_UNIV : forall A:set, forall s c= A, s c= A.
-Admitted.
+let A.
+let s. assume Hs.
+exact Hs.
+Qed.
 
 // HOL Light: sets.ml:411 / UNIV_SUBSET
 // Source hash: md5:b3d14bc364eb0f572d7bf080c2756639
@@ -1068,7 +1119,10 @@ Admitted.
 // Source hash: md5:01b246c997525053fc5b3cc2cf50bc5d
 // Status: generalization_required (bridges: empty_case:A)
 Theorem IMAGE_ID : forall A:set, forall s c= A, s = s.
-Admitted.
+let A.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:968 / IMAGE_I
 // Source hash: md5:8eaf7e71839341a7ce6527d0469812cb
@@ -2196,7 +2250,10 @@ Admitted.
 // Source hash: md5:16a8e64b599f4aab9ff422318e793382
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem CROSS_UNIV : forall A B:set, A :*: B = A :*: B.
-Admitted.
+let A.
+let B.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:2771 / FINITE_CROSS_EQ
 // Source hash: md5:12a659d68de9aa50de346ff179cd4a23
@@ -2340,7 +2397,9 @@ Admitted.
 // Source hash: md5:b453496b4bba3b6602eb4a8f4e4f7fa5
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem ARB : forall A:set, choose_in A (fun x:set => False) = choose_in A (fun x:set => False).
-Admitted.
+let A.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:2933 / EXTENSIONAL
 // Source hash: md5:808c8312c2dcfe2200f0e3a3f1f627e0
@@ -2370,7 +2429,15 @@ Admitted.
 // Source hash: md5:e2852671891d25590d389c532b1b3cf4
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem EXTENSIONAL_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e A -> f x = choose_in B (fun y:set => False).
-Admitted.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+let x. assume Hx.
+assume H2.
+exact (FalseE (H2 Hx) (f x = choose_in B (fun y:set => False))).
+Qed.
 
 // HOL Light: sets.ml:2953 / EXTENSIONAL_EQ
 // Source hash: md5:d8e1dcae4fc83112898d0f3e3f784bf2
@@ -2598,7 +2665,16 @@ Admitted.
 // Source hash: md5:bbe1fe6bdf1975199489e5740d8cb88e
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A, empty_case:B, empty_case:K)
 Theorem product_map : forall A B K:set, forall k c= K, forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall x :e A :^: K, forall x0 :e K, (if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False).
-Admitted.
+let A.
+let B.
+let K.
+let k. assume Hk.
+let f.
+assume H.
+let x. assume Hx.
+let x0. assume Hx0.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:3244 / PRODUCT_MAP_RESTRICTION
 // Source hash: md5:97d0d0213691a97fc9748f7a4a89c3fa
@@ -2898,7 +2974,10 @@ Admitted.
 // Source hash: md5:8f405bc9630b9ef0a99fa9fabc53ce7e
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A, hol_card_finite_cardinality, hol_list_finseq, hol_num_omega)
 Theorem list_of_set : forall A:set, forall s c= A, choose_in (finseq A) (fun l:set => seq_set l = s /\ seq_len l = finite_cardinality s) = choose_in (finseq A) (fun l:set => seq_set l = s /\ seq_len l = finite_cardinality s).
-Admitted.
+let A.
+let s. assume Hs.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: sets.ml:3797 / LIST_OF_SET_PROPERTIES
 // Source hash: md5:2c60be58b84f78baa8469c2045186954
@@ -3114,7 +3193,13 @@ Admitted.
 // Source hash: md5:ebb3dfc9269b12bd3ecf47beb3fe4538
 // Status: generalization_required (bridges: empty_case:A)
 Theorem ARBITRARY : forall A:set, True <-> True.
-Admitted.
+let A.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: sets.ml:4062 / ARBITRARY_UNION_OF_ALT
 // Source hash: md5:92f9114949a5cf745172023efdca6c9c
@@ -3492,13 +3577,35 @@ Admitted.
 // Source hash: md5:13b201093c3daa680d60d59f5b054c6f
 // Status: transport_required (bridges: hol_le_c_atleastp)
 Theorem ge_c : forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, atleastp t s <-> atleastp t s.
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let t. assume Ht.
+let s. assume Hs.
+apply iffI.
+- assume H3.
+  exact H3.
+- assume H2.
+  exact H2.
+Qed.
 
 // HOL Light: sets.ml:4681 / gt_c
 // Source hash: md5:fc197b1dd7cc9085131c465c12792c6e
 // Status: transport_required (bridges: hol_eq_c_equip)
 Theorem gt_c : forall A B:set, A <> Empty -> B <> Empty -> forall t c= B, forall s c= A, atleastp t s /\ ~ equip t s <-> atleastp t s /\ ~ equip t s.
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let t. assume Ht.
+let s. assume Hs.
+apply iffI.
+- assume H3.
+  exact H3.
+- assume H2.
+  exact H2.
+Qed.
 
 // HOL Light: sets.ml:4684 / LE_C
 // Source hash: md5:500c823b8f92c73c7ac141ebb43e9157

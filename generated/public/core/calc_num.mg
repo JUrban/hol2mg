@@ -6,19 +6,24 @@
 // Source hash: md5:a1ff746f810d4dbbed251cb0965b071a
 // Status: transport_required (bridges: hol_num_omega)
 Theorem ARITH_ZERO : 0 = 0 /\ 0 = 0.
-Admitted.
+apply andI.
+- exact (fun q H => H).
+- exact (fun q H => H).
+Qed.
 
 // HOL Light: calc_num.ml:31 / BIT0_0
 // Source hash: md5:5041126541e1ff1410c062f122c51128
 // Status: transport_required (bridges: hol_num_omega)
 Theorem BIT0_0 : 0 = 0.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: calc_num.ml:35 / BIT1_0
 // Source hash: md5:a5a790e5ee28dcccc1d99249b7da7c0e
 // Status: transport_required (bridges: hol_num_omega)
 Theorem BIT1_0 : 1 = 1.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: calc_num.ml:39 / ARITH_SUC
 // Source hash: md5:1396369abb84d6976eda2f23b252e0cf
