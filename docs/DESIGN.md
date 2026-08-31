@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **193 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **207 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 3 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (193 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (207 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1904,6 +1904,15 @@ hypotheses (back-chaining); a built-in premise table of God1/prelude facts every
 contains (`EmptyE` — encoded in its definitionally equal `-> False` form so the matcher can
 apply it — and `choose_in_in`); and `False` goals fall through to the generic closings
 instead of stopping at the negation search (EMPTY, NOT_IN_EMPTY, EQ_CLAUSES, IMP_CLAUSES).
+
+N2e (193 → 207): more built-in God1 premises (`If_i_1`/`If_i_0`, `int_add_SNo`,
+`int_mul_SNo`, `int_minus_SNo`, `In_0_1`); hypothesis application also tries the *symmetric*
+form of an equational conclusion (wrapping in the standard symmetry motive) — that fires
+`If_i_1` backwards for the HOL Light int-transfer family (`int_add`, `int_neg`, ...:
+`x + y = if x + y :e int then x + y else 0`); and carriers known nonempty get the witness
+`choose_in A (fun _ => True)` — in back-chaining when a membership premise has no matching
+hypothesis, and directly for bounded existential goals (FORALL_SIMP, EXISTS_SIMP,
+LEFT/RIGHT_AND_FORALL_THM).
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

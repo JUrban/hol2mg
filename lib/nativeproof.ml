@@ -262,7 +262,11 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
         (* the conclusion itself, or a projection out of an /\ or <-> conclusion *)
         let variants =
           (concl, `Id)
-          :: (match dest_and concl with
+          :: (match dest_eq concl with
+              | Some (l, r) when not (aeq l r) ->
+                  [ (Mg.App (Mg.App (Mg.Cst "eq", r), l), `Sym l) ]
+              | _ -> [])
+          @ (match dest_and concl with
               | Some (a, b) -> [ (a, `AndL (a, b)); (b, `AndR (a, b)) ]
               | None ->
                   (match dest_iff concl with
@@ -289,7 +293,17 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                | Some pat ->
                    (match List.find_map (fun h2 -> match_tm miss pat h2.prop) hyps with
                     | Some ext -> ext @ bnd
-                    | None -> bnd))) bnd0 prems in
+                    | None ->
+                        (* a membership premise over a carrier known nonempty: choose an element *)
+                        (match pr with
+                         | PMem (x, a) when not (List.mem_assoc x bnd) ->
+                             let a' = Mg.subst bnd a in
+                             if List.exists (fun h2 ->
+                                  aeq h2.prop (Mg.App (Mg.App (Mg.Cst "neq", a'), Mg.Cst "Empty"))) hyps
+                             then (x, Mg.App (Mg.App (Mg.Cst "choose_in", a'),
+                                              Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True"))) :: bnd
+                             else bnd
+                         | _ -> bnd)))) bnd0 prems in
             if not (List.for_all (fun v -> List.mem_assoc v bnd) pvars) then None else
             let inst t = Mg.subst bnd t in
             let rec args = function
@@ -314,6 +328,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                  let base = Printf.sprintf "(%s %s)" h.hname (String.concat " " l) in
                  Some (match wrap with
                        | `Id -> base
+                       | `Sym l -> Printf.sprintf "(%s (fun hl__u hl__v => hl__u = %s) %s)" base (ppp (inst l)) refl_tm
                        | `AndL (a, b) -> Printf.sprintf "(andEL %s %s %s)" (ppp (inst a)) (ppp (inst b)) base
                        | `AndR (a, b) -> Printf.sprintf "(andER %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
              | None -> None)) variants) hyps)
@@ -426,6 +441,11 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
         match h.prop with
         | Mg.App (Mg.App (Mg.Cst "In", t), a') when aeq a a' -> Some t
         | _ -> None) hyps in
+      let cands = cands @
+        (if List.exists (fun h ->
+              aeq h.prop (Mg.App (Mg.App (Mg.Cst "neq", a), Mg.Cst "Empty"))) hyps
+         then [ Mg.App (Mg.App (Mg.Cst "choose_in", a), Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True")) ]
+         else []) in
       let rec try_wit = function
         | [] -> raise Give_up
         | t :: rest ->
@@ -498,7 +518,27 @@ let builtin_premises : (string * Mg.tm) list =
        Mg.Imp (Mg.App (Mg.App (Mg.Cst "neq", Mg.Var "hl__A"), Mg.Cst "Empty"),
          Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
            mg_in (Mg.App (Mg.App (Mg.Cst "choose_in", Mg.Var "hl__A"), Mg.Var "hl__P"))
-             (Mg.Var "hl__A"))))) ]
+             (Mg.Var "hl__A")))));
+    ("If_i_1",
+     Mg.All ("hl__p", Mg.Prop, Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set,
+       Mg.Imp (Mg.Var "hl__p",
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.If (Mg.Var "hl__p", Mg.Var "hl__x", Mg.Var "hl__y")), Mg.Var "hl__x"))))));
+    ("If_i_0",
+     Mg.All ("hl__p", Mg.Prop, Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "not", Mg.Var "hl__p"),
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.If (Mg.Var "hl__p", Mg.Var "hl__x", Mg.Var "hl__y")), Mg.Var "hl__y"))))));
+    ("int_add_SNo",
+     Mg.AllIn ("hl__x", Mg.Cst "int", Mg.AllIn ("hl__y", Mg.Cst "int",
+       mg_in (Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")) (Mg.Cst "int"))));
+    ("int_mul_SNo",
+     Mg.AllIn ("hl__x", Mg.Cst "int", Mg.AllIn ("hl__y", Mg.Cst "int",
+       mg_in (Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")) (Mg.Cst "int"))));
+    ("int_minus_SNo",
+     Mg.AllIn ("hl__x", Mg.Cst "int",
+       mg_in (Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")) (Mg.Cst "int")));
+    ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1)) ]
 
 let prove ?(budget = 6000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =

@@ -398,13 +398,34 @@ Qed.
 // Source hash: md5:5b2bbb121df4deed7a734bfc92ca8777
 // Status: exact_native
 Theorem FORALL_SIMP : forall A:set, A <> Empty -> forall t:prop, (forall x :e A, t) <-> t.
-Admitted.
+let A.
+assume H.
+let t.
+apply iffI.
+- assume H2.
+  exact (H2 (choose_in A (fun hl__w:set => True)) (choose_in_in (A) H (fun hl__w:set => True))).
+- assume H1.
+  let x. assume Hx.
+  exact H1.
+Qed.
 
 // HOL Light: theorems.ml:121 / EXISTS_SIMP
 // Source hash: md5:b5ababf3666ca1bcaccce45441156521
 // Status: exact_native
 Theorem EXISTS_SIMP : forall A:set, A <> Empty -> forall t:prop, (exists x :e A, t) <-> t.
-Admitted.
+let A.
+assume H.
+let t.
+apply iffI.
+- assume H2.
+  apply H2. let x. assume H3. apply H3. assume Hx H4.
+  exact H4.
+- assume H1.
+  witness choose_in A (fun hl__w:set => True).
+  apply andI.
+  + exact (choose_in_in (A) H (fun hl__w:set => True)).
+  + exact H1.
+Qed.
 
 // HOL Light: theorems.ml:129 / EQ_IMP
 // Source hash: md5:889b227d11bb9b8ec4e1b0134eb5b325
@@ -803,13 +824,39 @@ Qed.
 // Source hash: md5:1a818b23117872a17bce344ded21ccc4
 // Status: exact_native
 Theorem LEFT_AND_FORALL_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (forall x :e A, P x) /\ Q <-> forall x :e A, P x /\ Q.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H2.
+  let x1. assume Hx1.
+  exact (andI (P x1) (Q) ((andEL (forall x :e A, P x) (Q) H2) (x1) Hx1) (andER (forall x :e A, P x) (Q) H2)).
+- assume H1.
+  apply andI.
+  + let x. assume Hx.
+    exact (andEL (P x) (Q) (H1 (x) Hx)).
+  + exact (andER (P (choose_in A (fun hl__w:set => True))) (Q) (H1 (choose_in A (fun hl__w:set => True)) (choose_in_in (A) H (fun hl__w:set => True)))).
+Qed.
 
 // HOL Light: theorems.ml:257 / RIGHT_AND_FORALL_THM
 // Source hash: md5:d1de553f0e426609dda135a2047295df
 // Status: exact_native
 Theorem RIGHT_AND_FORALL_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P /\ (forall x :e A, Q x) <-> forall x :e A, P /\ Q x.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H2.
+  let x1. assume Hx1.
+  exact (andI (P) (Q x1) (andEL (P) (forall x :e A, Q x) H2) ((andER (P) (forall x :e A, Q x) H2) (x1) Hx1)).
+- assume H1.
+  apply andI.
+  + exact (andEL (P) (Q (choose_in A (fun hl__w:set => True))) (H1 (choose_in A (fun hl__w:set => True)) (choose_in_in (A) H (fun hl__w:set => True)))).
+  + let x. assume Hx.
+    exact (andER (P) (Q x) (H1 (x) Hx)).
+Qed.
 
 // HOL Light: theorems.ml:265 / EXISTS_OR_THM
 // Source hash: md5:4d21283ecdaa6cc6acfad8726c3265d6

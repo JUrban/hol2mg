@@ -24,7 +24,9 @@ Admitted.
 // Source hash: md5:5e62030b8cb4e642efde5ca482a7495d
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_abstr : forall a :e int, (if a :e int then a else 0) = a.
-Admitted.
+let a. assume Ha.
+exact (If_i_1 (a :e int) (a) (0) Ha).
+Qed.
 
 // HOL Light: int.ml:36 / int_rep
 // Source hash: md5:6de190fa190911804f434ec111c53f52
@@ -129,7 +131,9 @@ Qed.
 // Source hash: md5:10fd991057cc4493daa239eac7a378c7
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_neg : forall i :e int, - i = if - i :e int then - i else 0.
-Admitted.
+let i. assume Hi.
+exact ((If_i_1 (- i :e int) (- i) (0) (int_minus_SNo (i) Hi)) (fun hl__u hl__v => hl__u = (if - i :e int then - i else 0)) (fun q H => H)).
+Qed.
 
 // HOL Light: int.ml:99 / int_neg_th
 // Source hash: md5:0e6ea77f7aef87db9e256366e757337f
@@ -143,7 +147,10 @@ Qed.
 // Source hash: md5:452ea8afad01dc3e00abecf4bfb405b7
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_add : forall x y :e int, x + y = if x + y :e int then x + y else 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact ((If_i_1 (x + y :e int) (x + y) (0) (int_add_SNo (x) Hx (y) Hy)) (fun hl__u hl__v => hl__u = (if x + y :e int then x + y else 0)) (fun q H => H)).
+Qed.
 
 // HOL Light: int.ml:109 / int_add_th
 // Source hash: md5:dd9f80506f6d99ceaf3f0d9bb1319597
@@ -158,7 +165,10 @@ Qed.
 // Source hash: md5:da9658dcf1adb65471b3df2d7a5508a8
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_sub : forall x y :e int, x + - y = if x + - y :e int then x + - y else 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact ((If_i_1 (x + - y :e int) (x + - y) (0) (int_add_SNo (x) Hx (- y) (int_minus_SNo (y) Hy))) (fun hl__u hl__v => hl__u = (if x + - y :e int then x + - y else 0)) (fun q H => H)).
+Qed.
 
 // HOL Light: int.ml:126 / int_sub_th
 // Source hash: md5:51c4bd357f334aa376dfd10187f92210
@@ -173,7 +183,10 @@ Qed.
 // Source hash: md5:0ee164d776cf3bfe7b2c2fb604061cc9
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_mul : forall x y :e int, x * y = if x * y :e int then x * y else 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact ((If_i_1 (x * y :e int) (x * y) (0) (int_mul_SNo (x) Hx (y) Hy)) (fun hl__u hl__v => hl__u = (if x * y :e int then x * y else 0)) (fun q H => H)).
+Qed.
 
 // HOL Light: int.ml:134 / int_mul_th
 // Source hash: md5:b83b17b818c1f7162261a657aaa93495
@@ -2955,7 +2968,9 @@ Admitted.
 // Source hash: md5:c009afb9d7386914218b003872a341e8
 // Status: generalization_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem NUM_OF_INT_OF_NUM : forall n :e omega, (if n :e omega then n else 0) = n.
-Admitted.
+let n. assume Hn.
+exact (If_i_1 (n :e omega) (n) (0) Hn).
+Qed.
 
 // HOL Light: int.ml:2078 / INT_OF_NUM_OF_INT
 // Source hash: md5:9dd43ce894f2017692e90eededc92bb8

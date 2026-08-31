@@ -15,3 +15,17 @@ apply iffI.
   exact H1.
 Qed.
 
+// HOL Light: wf.ml / WF_FALSE
+Theorem WF_FALSE : forall A:set, A <> Empty -> forall P c= A, P <> Empty -> exists x :e P, forall y :e P, ~ False.
+let A.
+assume H.
+let P. assume HP.
+assume H1.
+witness choose_in P (fun hl__w:set => True).
+apply andI.
+- exact (choose_in_in (P) H1 (fun hl__w:set => True)).
+- let y. assume Hy.
+  assume H2.
+  exact H2.
+Qed.
+

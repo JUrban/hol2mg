@@ -178,6 +178,43 @@ assume H2.
 exact (FalseE (H2 Hx) (f x = choose_in B (fun y:set => False))).
 Qed.
 
+// HOL Light: sets.ml / RESTRICTION_DEFINED
+Theorem RESTRICTION_DEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = f x.
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+assume H2.
+exact (If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) H2).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_EQ
+Theorem RESTRICTION_EQ : forall A B:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall y :e B, x :e s /\ f x = y -> (if x :e s then f x else choose_in B (fun y:set => False)) = y.
+let A.
+let B.
+let s. assume Hs.
+let f.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+assume H1.
+exact ((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => (if x :e s then f x else choose_in B (fun y:set => False)) = hl__u) (((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => hl__u = (f x)) (fun q H => H)) (fun hl__u hl__v => (if x :e s then hl__u else choose_in B (fun y:set => False)) = hl__u) (If_i_1 (x :e s) (y) (choose_in B (fun y:set => False)) (andEL (x :e s) (f x = y) H1)))).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_UNIV
+Theorem RESTRICTION_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e A then f x else choose_in B (fun y:set => False)) = f x.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+let x. assume Hx.
+exact (If_i_1 (x :e A) (f x) (choose_in B (fun y:set => False)) Hx).
+Qed.
+
 // HOL Light: sets.ml / product_map
 Theorem product_map : forall A B K:set, forall k c= K, forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall x :e A :^: K, forall x0 :e K, (if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)) = if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False).
 let A.

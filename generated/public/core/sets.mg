@@ -2497,7 +2497,16 @@ Admitted.
 // Source hash: md5:acd43b56eebe5ea59eeec9cb964a20c0
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem RESTRICTION_DEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = f x.
-Admitted.
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+assume H2.
+exact (If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) H2).
+Qed.
 
 // HOL Light: sets.ml:2976 / RESTRICTION_UNDEFINED
 // Source hash: md5:90dd98b7049b1877dcc901afa13c4757
@@ -2509,7 +2518,16 @@ Admitted.
 // Source hash: md5:b98d44a91318565adc80432231067c3c
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A, empty_case:B)
 Theorem RESTRICTION_EQ : forall A B:set, forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall y :e B, x :e s /\ f x = y -> (if x :e s then f x else choose_in B (fun y:set => False)) = y.
-Admitted.
+let A.
+let B.
+let s. assume Hs.
+let f.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+assume H1.
+exact ((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => (if x :e s then f x else choose_in B (fun y:set => False)) = hl__u) (((andER (x :e s) (f x = y) H1) (fun hl__u hl__v => hl__u = (f x)) (fun q H => H)) (fun hl__u hl__v => (if x :e s then hl__u else choose_in B (fun y:set => False)) = hl__u) (If_i_1 (x :e s) (y) (choose_in B (fun y:set => False)) (andEL (x :e s) (f x = y) H1)))).
+Qed.
 
 // HOL Light: sets.ml:2984 / RESTRICTION_IN_EXTENSIONAL
 // Source hash: md5:d5712d4726595006dd2f72834f5583f1
@@ -2533,7 +2551,14 @@ Admitted.
 // Source hash: md5:0a774ea29febeded6bb4d7772c6b2414
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem RESTRICTION_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e A then f x else choose_in B (fun y:set => False)) = f x.
-Admitted.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+let x. assume Hx.
+exact (If_i_1 (x :e A) (f x) (choose_in B (fun y:set => False)) Hx).
+Qed.
 
 // HOL Light: sets.ml:3001 / RESTRICTION_RESTRICTION
 // Source hash: md5:6fed62274557a83f6f0a7a552cdf5ec0
