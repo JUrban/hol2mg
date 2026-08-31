@@ -16,22 +16,14 @@ Qed.
 Theorem REAL_OF_NUM_GE : forall m n :e omega, n <= m <-> n <= m.
 let m. assume Hm.
 let n. assume Hn.
-apply iffI.
-- assume H1.
-  exact H1.
-- assume H.
-  exact H.
+exact (GE (n) Hn (m) Hm).
 Qed.
 
 // HOL Light: real.ml / REAL_OF_NUM_GT
 Theorem REAL_OF_NUM_GT : forall m n :e omega, n < m <-> n < m.
 let m. assume Hm.
 let n. assume Hn.
-apply iffI.
-- assume H1.
-  exact H1.
-- assume H.
-  exact H.
+exact (GT (n) Hn (m) Hm).
 Qed.
 
 // HOL Light: real.ml / REAL_OF_NUM_MAX

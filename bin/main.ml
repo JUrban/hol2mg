@@ -266,6 +266,42 @@ let () =
        | None -> ()
        | Some npdir ->
            mkdir_p npdir;
+           (* named leaves of the recorded HOL proofs guide premise selection; a fixpoint over
+              rounds ensures a native proof cites only theorems that are themselves natively
+              proved (docs/DESIGN.md 23.5 N2b) *)
+           let leaves : (string, string list) Hashtbl.t = Hashtbl.create 2048 in
+           (try
+              let f = open_in ("generated/internal/" ^ profile ^ ".leaves.json") in
+              let n = in_channel_length f in
+              let txt = really_input_string f n in close_in f;
+              (match Yojson.Safe.from_string txt with
+               | `Assoc l -> List.iter (function (k, `List v) -> Hashtbl.replace leaves k (List.filter_map (function `String s -> Some s | _ -> None) v) | _ -> ()) l
+               | _ -> ())
+            with _ -> ());
+           let by_source : (string, string) Hashtbl.t = Hashtbl.create 4096 in
+           List.iter (fun i -> Hashtbl.replace by_source i.Manifest.source_name i.Manifest.name) items;
+           let proved : (string, string) Hashtbl.t = Hashtbl.create 512 in  (* name -> proof text *)
+           let pubs = List.filter (fun i -> public i && i.Manifest.status <> "native_reuse") items in
+           let changed = ref true in
+           while !changed do
+             changed := false;
+             List.iter (fun i ->
+               if not (Hashtbl.mem proved i.Manifest.name) then
+                 match Hashtbl.find_opt np_asts i.Manifest.name with
+                 | None -> ()
+                 | Some ast ->
+                     let prem = (match Hashtbl.find_opt leaves i.Manifest.source_name with
+                       | None -> []
+                       | Some ls ->
+                           List.filter_map (fun l ->
+                             match Hashtbl.find_opt by_source l with
+                             | Some n when n <> i.Manifest.name && Hashtbl.mem proved n ->
+                                 (match Hashtbl.find_opt np_asts n with Some a -> Some (n, a) | None -> None)
+                             | _ -> None) ls) in
+                     (match (try Nativeproof.prove ~premises:prem ast with _ -> None) with
+                      | None -> ()
+                      | Some pf -> Hashtbl.replace proved i.Manifest.name pf; changed := true)) pubs
+           done;
            let n_ok = ref 0 and n_try = ref 0 in
            List.iter (fun s ->
              let l = List.filter (fun i -> i.Manifest.shard = s && public i && i.Manifest.status <> "native_reuse") items in
@@ -273,9 +309,9 @@ let () =
              let outs = List.filter_map (fun i ->
                match Hashtbl.find_opt np_asts i.Manifest.name with
                | None -> None
-               | Some ast ->
+               | Some _ ->
                    incr n_try;
-                   (match (try Nativeproof.prove ast with _ -> None) with
+                   (match Hashtbl.find_opt proved i.Manifest.name with
                     | None -> None
                     | Some pf ->
                         incr n_ok;

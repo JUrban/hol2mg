@@ -107,7 +107,7 @@ Qed.
 Theorem DIMINDEX_CLAUSES : forall A:set, 1 = 1 /\ (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1).
 let A.
 apply andI.
-- exact (fun q H => H).
+- exact DIMINDEX_1.
 - apply andI.
   + exact (fun q H => H).
   + exact (fun q H => H).

@@ -25,6 +25,31 @@ let aeq a b = pp a = pp b
 
 let refl_tm = "(fun q H => H)"
 
+(* replace every occurrence (up to printing equality) of [old_t] by [by_t] *)
+let rec replace_tm old_t by_t t =
+  if aeq t old_t then by_t else
+  match t with
+  | Mg.App (a, b) -> Mg.App (replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.Imp (a, b) -> Mg.Imp (replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.Tuple l -> Mg.Tuple (List.map (replace_tm old_t by_t) l)
+  | Mg.SetEnum l -> Mg.SetEnum (List.map (replace_tm old_t by_t) l)
+  | Mg.If (a, b, c) -> Mg.If (replace_tm old_t by_t a, replace_tm old_t by_t b, replace_tm old_t by_t c)
+  | Mg.Lam (x, m, b) -> Mg.Lam (x, m, replace_tm old_t by_t b)
+  | Mg.All (x, m, b) -> Mg.All (x, m, replace_tm old_t by_t b)
+  | Mg.Ex (x, m, b) -> Mg.Ex (x, m, replace_tm old_t by_t b)
+  | Mg.LamIn (x, a, b) -> Mg.LamIn (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.AllIn (x, a, b) -> Mg.AllIn (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.AllSub (x, a, b) -> Mg.AllSub (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.ExIn (x, a, b) -> Mg.ExIn (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.ExSub (x, a, b) -> Mg.ExSub (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.Sep (x, a, b) -> Mg.Sep (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.Repl (x, a, b) -> Mg.Repl (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.ReplSep (x, a, pr, b) -> Mg.ReplSep (x, replace_tm old_t by_t a, replace_tm old_t by_t pr, replace_tm old_t by_t b)
+  | Mg.SigmaIn (x, a, b) -> Mg.SigmaIn (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.PiIn (x, a, b) -> Mg.PiIn (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | Mg.FamUnion (x, a, b) -> Mg.FamUnion (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
+  | t -> t
+
 type st = { mutable fuel : int; mutable names : (string, unit) Hashtbl.t }
 
 let spend st n = st.fuel <- st.fuel - n; if st.fuel < 0 then raise Give_up
@@ -124,9 +149,25 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
          | Some (x, y) when aeq x b && aeq y a ->
              Some (Printf.sprintf "(%s (fun hl__u hl__v => hl__u = %s) %s)" h.hname (ppp b) refl_tm)
          | _ -> None) hyps in
+       let cong () =
+         (* rewriting with one equality hypothesis: goal l = r with r = l[e1 := e2] *)
+         List.find_map (fun h ->
+           match dest_eq h.prop with
+           | Some (e1, e2) when not (aeq e1 e2) ->
+               if aeq (replace_tm e1 e2 a) b && not (aeq a b) then
+                 Some (Printf.sprintf "(%s (fun hl__u hl__v => %s = %s) %s)"
+                         h.hname (ppp a) (ppp (replace_tm e1 (Mg.Var "hl__u") b)) refl_tm)
+               else if aeq (replace_tm e2 e1 b) a then
+                 Some (Printf.sprintf "((%s (fun hl__u hl__v => hl__u = %s) %s) (fun hl__u hl__v => %s = %s) %s)"
+                         h.hname (ppp e1) refl_tm (ppp a) (ppp (replace_tm e2 (Mg.Var "hl__u") b)) refl_tm)
+               else None
+           | _ -> None) hyps in
        (match sym with
         | Some t -> Some t
         | None ->
+            (match cong () with
+             | Some t -> Some t
+             | None ->
             (* one transitivity step through a hypothesis chain a = c, c = b *)
             List.find_map (fun h1 ->
               match dest_eq h1.prop with
@@ -136,7 +177,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                     | Some (y, z) when aeq y c && aeq z b ->
                         Some (Printf.sprintf "(%s (fun hl__u hl__v => %s = hl__u) %s)" h2.hname (ppp a) h1.hname)
                     | _ -> None) hyps
-              | _ -> None) hyps)
+              | _ -> None) hyps))
    | None -> None)
   |> function
   | Some t -> Some t
@@ -308,10 +349,13 @@ and or_elim st hyps goal d =
           @ block d (Printf.sprintf "assume %s." h2 :: push st goal h2 q hyps' (fun hy -> prove_goal st hy goal (d + 1))))
   | None -> raise Give_up
 
-let prove ?(budget = 6000) ?(max_lines = 200) (goal : Mg.tm) : string option =
+let prove ?(budget = 6000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
+    (goal : Mg.tm) : string option =
   let st = { fuel = budget; names = Hashtbl.create 64 } in
   ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
+  List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
+  let hyps0 = List.map (fun (n, p) -> { hname = n; prop = p }) premises in
   try
-    let lines = prove_goal st [] goal 0 in
+    let lines = prove_goal st hyps0 goal 0 in
     if List.length lines > max_lines then None else Some (String.concat "\n" lines)
   with Give_up | Stack_overflow -> None
