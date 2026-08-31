@@ -1786,3 +1786,66 @@ the cap-1 000 run the top blockers were all above the cap: `EQ_CLAUSES` (301 the
 `is_int` (298, since turned into a model theorem), `EXCLUDED_MIDDLE` (225),
 `REAL_NEG_NEG` (151), `REAL_EQ_NEG2` (123), `int_mul_th` (112), `int_add_th` (94),
 `real_pow` (94), `BIT0_DEF` (93), `LE` (92), `IN_ELIM_THM` (73).
+
+## 23. Native proof synthesis (started 2026-08-31)
+
+Goal: public theorems proved by *native* Megalodon proofs in the God1 / `examples/form100`
+style — declarative (`let`/`assume`/`prove`/`claim`/`apply`/`exact`/`witness`, bullets),
+mentioning only native constants and previously available native theorems (no `hl_*`, no
+uniform-model layer), readable, and of a size comparable to a hand-written proof.  The
+uniform-model import (§22) remains the semantic safety net (`fully_proved`); §23 changes the
+*presentation*: a natively proved theorem is emitted with its native proof and `Qed` (new
+status `natively_proved`), the bridge chain stays as the fallback for everything else.
+
+### 23.1 Why not replay the kernel
+
+The recorded DAGs have 10^2–10^5 primitive inferences, and the public statement is the
+*elaborated* form (bounded quantifiers, subsets as sets, meta-level functions), so kernel
+inferences do not correspond 1:1 to native steps; a literal replay is exactly the alien
+implant this phase is meant to remove.  The usable signal in the DAG is its *step skeleton*
+at named-lemma granularity: which library lemmas are applied, with which instantiations, in
+which rewrite contexts, under which intro/case structure.
+
+### 23.2 Architecture
+
+1. **Step mining.**  In the recorded DAG (§22.1), a maximal congruence tree — `REFL`,
+   `MK_COMB`, `ABS`, `BETA`, `TRANS` — whose only non-reflexive input is one instance
+   (`INST`/`INST_TYPE`) of a named equation is one *rewrite step* (lemma, substitution,
+   context); an `EQ_MP` with such an equation applies it to a sequent.  Applications of named
+   implications, `ASSUME`/`DEDUCT_ANTISYM_RULE` pairs (implication intro / `iffI`),
+   case splits and induction leaves are further step kinds.  Output: a step skeleton of
+   typically 5–50 steps per theorem.
+2. **Native transport.**  Every intermediate sequent is elaborated by the statement
+   translator (§14, §21).  The pilot fragment is the *rigid* one — statements whose
+   elaboration is compositional (propositional structure, `omega`/`int`/`R` arithmetic with
+   mapped operations, no binder-view changes).  There each mined step maps to one native
+   step: a rewrite becomes a Leibniz application with an explicit motive (never the
+   `rewrite` tactic near `mul_SNo`/recursion, §20 lessons), a lemma application becomes the
+   translated native lemma applied to elaborated arguments, a `DEDUCT` pair becomes `iffI`,
+   the intro structure becomes `let`/`assume` mirroring the native statement.
+3. **Emission.**  Declarative God1 style; `claim` for shared intermediates; bullets for case
+   splits; pure proof terms for one-liners.
+4. **Checking and status.**  Generated proofs go to `generated/nativeproof/<profile>/` and are
+   Megalodon-checked like certification shards; on success the public shard carries the
+   native proof with `Qed` and the manifest records `natively_proved` (with the bridge-derived
+   emission as fallback).
+
+### 23.3 Quality criteria (the no-alien-implant bar)
+
+- the proof text contains only native constants and names of public/God1/prelude theorems;
+- the declarative skeleton follows the native statement (binders in order, case bullets);
+- size within ~3× of a comparable hand-written proof; pilot hard cap ≈ 200 lines per theorem
+  (bigger proofs stay bridge-derived until compression improves);
+- deterministic: the same input yields the same proof text.
+
+### 23.4 Phases
+
+- **N1** — step-mining analytics over the round-8 export (1 725 recorded proofs):
+  classification (pure rewrite chain / lemma application tree with propositional glue /
+  induction / other), mined step counts versus kernel node counts, and the rigidity of the
+  intermediate sequents (`tools/native_proof_stats.py`).
+- **N2** — emitter for the rigid rewrite/`MP` class; pilot slice: equational lemmas of
+  `arith.ml`/`real.ml`.
+- **N3** — intro structure, case splits, existentials; **N4** — induction via the native
+  induction lemmas; **N5** — scale-up, readability review against §23.3, integration into
+  `tools/update.sh` as an optional stage.
