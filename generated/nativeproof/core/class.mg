@@ -43,6 +43,31 @@ apply iffI.
   exact (H3 (x) Hx).
 Qed.
 
+// HOL Light: class.ml / SELECT_AX
+Theorem SELECT_AX : forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A P).
+let A.
+let P.
+let x. assume Hx.
+assume H.
+exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H)))).
+Qed.
+
+// HOL Light: class.ml / EXISTS_THM
+Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A P).
+let A.
+assume H.
+let P.
+apply iffI.
+- assume H2.
+  apply H2. let x. assume H3. apply H3. assume Hx H4.
+  exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H4)))).
+- assume H1.
+  witness choose_in A P.
+  apply andI.
+  + exact (choose_in_in (A) H (P)).
+  + exact H1.
+Qed.
+
 // HOL Light: class.ml / NOT_CLAUSES
 Theorem NOT_CLAUSES : (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True)).
 apply andI.

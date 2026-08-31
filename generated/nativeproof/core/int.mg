@@ -68,6 +68,12 @@ apply iffI.
   exact H.
 Qed.
 
+// HOL Light: int.ml / int_of_num
+Theorem int_of_num : forall n :e omega, n = if n :e int then n else 0.
+let n. assume Hn.
+exact ((If_i_1 (n :e int) (n) (0) (Subq_omega_int (n) Hn)) (fun hl__u hl__v => hl__u = (if n :e int then n else 0)) (fun q H => H)).
+Qed.
+
 // HOL Light: int.ml / int_of_num_th
 Theorem int_of_num_th : forall n :e omega, n = n.
 let n. assume Hn.

@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **298 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **301 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (298 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (301 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1968,6 +1968,12 @@ closing with `FalseE` (Megalodon caught the unwrapped first version: after `appl
 the branch goal is still `g`, not `False`) — COMPL_COMPL; and existential goals with no
 witness candidates fall through to disjunction elimination instead of giving up, which
 lets the or-hypothesis surface the witnesses — the EXISTS_OR family.
+
+N3f (298 → 301): existential witnesses are also *mined by matching* — the ∃-body is
+matched against each hypothesis, so `P (choose_in A P)` yields the witness `choose_in A P`
+(EXISTS_THM); and two more built-in premises, `Subq_omega_int` (int_of_num and friends
+through the subset rule) and `choose_in_spec` (SELECT_AX and the choice direction of
+EXISTS_THM).
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

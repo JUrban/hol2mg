@@ -117,7 +117,9 @@ Qed.
 // Source hash: md5:988ee0a1ee8fbc1cc8ee2a39e110cf83
 // Status: generalization_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R, omega_Subq_int)
 Theorem int_of_num : forall n :e omega, n = if n :e int then n else 0.
-Admitted.
+let n. assume Hn.
+exact ((If_i_1 (n :e int) (n) (0) (Subq_omega_int (n) Hn)) (fun hl__u hl__v => hl__u = (if n :e int then n else 0)) (fun q H => H)).
+Qed.
 
 // HOL Light: int.ml:91 / int_of_num_th
 // Source hash: md5:35261390244301170f26ee50449b494b

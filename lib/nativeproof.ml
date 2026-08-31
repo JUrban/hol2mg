@@ -298,6 +298,10 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
              match h.prop with
              | Mg.App (Mg.App (Mg.Cst "In", t), a') when aeq a a' -> Some t
              | _ -> None) hyps
+             @ List.filter_map (fun h ->
+                 match match_tm [ x ] p h.prop with
+                 | Some [ (x', t) ] when x' = x -> Some t
+                 | _ -> None) hyps
              @ (if List.exists (fun h ->
                      aeq h.prop (Mg.App (Mg.App (Mg.Cst "neq", a), Mg.Cst "Empty"))) hyps
                 then [ Mg.App (Mg.App (Mg.Cst "choose_in", a), Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True")) ]
@@ -663,8 +667,12 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
         match h.prop with
         | Mg.App (Mg.App (Mg.Cst "In", t), a') when aeq a a' -> Some t
         | _ -> None) hyps in
-      let cands = cands @
-        (if List.exists (fun h ->
+      let cands = cands
+        @ List.filter_map (fun h ->
+            match match_tm [ x ] b h.prop with
+            | Some [ (x', t) ] when x' = x -> Some t
+            | _ -> None) hyps
+        @ (if List.exists (fun h ->
               aeq h.prop (Mg.App (Mg.App (Mg.Cst "neq", a), Mg.Cst "Empty"))) hyps
          then [ Mg.App (Mg.App (Mg.Cst "choose_in", a), Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True")) ]
          else []) in
@@ -826,7 +834,17 @@ let builtin_premises : (string * Mg.tm) list =
     ("int_minus_SNo",
      Mg.AllIn ("hl__x", Mg.Cst "int",
        mg_in (Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")) (Mg.Cst "int")));
-    ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1)) ]
+    ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1));
+    ("Subq_omega_int", Mg.App (Mg.App (Mg.Cst "Subq", Mg.Cst "omega"), Mg.Cst "int"));
+    ("choose_in_spec",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+         Mg.Imp (Mg.ExIn ("hl__w", Mg.Var "hl__A", Mg.App (Mg.Var "hl__P", Mg.Var "hl__w")),
+           Mg.App (Mg.App (Mg.Cst "and",
+             mg_in (Mg.App (Mg.App (Mg.Cst "choose_in", Mg.Var "hl__A"), Mg.Var "hl__P"))
+               (Mg.Var "hl__A")),
+             Mg.App (Mg.Var "hl__P",
+               Mg.App (Mg.App (Mg.Cst "choose_in", Mg.Var "hl__A"), Mg.Var "hl__P"))))))) ]
 
 let prove ?(budget = 4000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =

@@ -54,13 +54,30 @@ Qed.
 // Source hash: md5:4e877f34f5dc642b1b50fc1ef7367fcd
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem SELECT_AX : forall A:set, forall P:set -> prop, forall x :e A, P x -> P (choose_in A P).
-Admitted.
+let A.
+let P.
+let x. assume Hx.
+assume H.
+exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H)))).
+Qed.
 
 // HOL Light: class.ml:60 / EXISTS_THM
 // Source hash: md5:a89cb4aa5c0e6a37ab368e12856a3e84
 // Status: exact_native (bridges: choose_in_spec)
 Theorem EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, (exists x :e A, P x) <-> P (choose_in A P).
-Admitted.
+let A.
+assume H.
+let P.
+apply iffI.
+- assume H2.
+  apply H2. let x. assume H3. apply H3. assume Hx H4.
+  exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H4)))).
+- assume H1.
+  witness choose_in A P.
+  apply andI.
+  + exact (choose_in_in (A) H (P)).
+  + exact H1.
+Qed.
 
 // HOL Light: class.ml:102 / SELECT_REFL
 // Source hash: md5:5d89ddfdd48e07285ef4152ba2f87957
