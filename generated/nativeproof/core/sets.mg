@@ -100,6 +100,18 @@ apply (set_ext (s :\: t) ({x :e A | x :e s /\ ~ x :e t})).
   exact (setminusI (s) (t) (x) (andEL (x :e s) (~ x :e t) (SepE2 (A) (fun x:set => x :e s /\ ~ x :e t) (x) Hx)) (andER (x :e s) (~ x :e t) (SepE2 (A) (fun x:set => x :e s /\ ~ x :e t) (x) Hx))).
 Qed.
 
+// HOL Light: sets.ml / DELETE
+Theorem DELETE : forall A:set, forall s c= A, forall x :e A, s :\: {x} = {y :e A | y :e s /\ ~ y = x}.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+apply (set_ext (s :\: {x}) ({y :e A | y :e s /\ ~ y = x})).
+- let x2. assume Hx2.
+  exact (SepI (A) (fun y:set => y :e s /\ ~ y = x) (x2) (Hs (x2) (setminusE1 (s) ({x}) (x2) Hx2)) (andI (x2 :e s) (~ x2 = x) (setminusE1 (s) ({x}) (x2) Hx2) (fun hl__H1 : x2 = x => ((setminusE2 (s) ({x}) (x2) Hx2) (hl__H1 (fun hl__u hl__v => x2 :e {hl__u}) (SingI (x2))))))).
+- let x1. assume Hx1.
+  exact (setminusI (s) ({x}) (x1) (andEL (x1 :e s) (~ x1 = x) (SepE2 (A) (fun y:set => y :e s /\ ~ y = x) (x1) Hx1)) (fun hl__H : x1 :e {x} => ((andER (x1 :e s) (~ x1 = x) (SepE2 (A) (fun y:set => y :e s /\ ~ y = x) (x1) Hx1)) (SingE (x) (x1) hl__H)))).
+Qed.
+
 // HOL Light: sets.ml / SUBSET
 Theorem SUBSET : forall A:set, forall s t c= A, s c= t <-> forall x :e A, x :e s -> x :e t.
 let A.
@@ -212,6 +224,22 @@ apply iffI.
   exact (setminusI (s) (t) (x) (andEL (x :e s) (~ x :e t) H) (andER (x :e s) (~ x :e t) H)).
 Qed.
 
+// HOL Light: sets.ml / IN_DELETE
+Theorem IN_DELETE : forall A:set, forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  apply andI.
+  + exact (setminusE1 (s) ({y}) (x) H1).
+  + assume H2.
+    exact ((setminusE2 (s) ({y}) (x) H1) (H2 (fun hl__u hl__v => x :e {hl__u}) (SingI (x)))).
+- assume H.
+  exact (setminusI (s) ({y}) (x) (andEL (x :e s) (~ x = y) H) (fun hl__H : x :e {y} => ((andER (x :e s) (~ x = y) H) (SingE (y) (x) hl__H)))).
+Qed.
+
 // HOL Light: sets.ml / IN_SING
 Theorem IN_SING : forall A:set, forall x y :e A, x :e {y} <-> x = y.
 let A.
@@ -222,6 +250,21 @@ apply iffI.
   exact (SingE (y) (x) H1).
 - assume H.
   exact (H (fun hl__u hl__v => x :e {hl__u}) (SingI (x))).
+Qed.
+
+// HOL Light: sets.ml / IN_REST
+Theorem IN_REST : forall A:set, forall x :e A, forall s c= A, x :e s :\: {choose_in A (fun x:set => x :e s)} <-> x :e s /\ ~ x = choose_in A (fun x:set => x :e s).
+let A.
+let x. assume Hx.
+let s. assume Hs.
+apply iffI.
+- assume H1.
+  apply andI.
+  + exact (setminusE1 (s) ({choose_in A (fun x:set => x :e s)}) (x) H1).
+  + assume H2.
+    exact ((setminusE2 (s) ({choose_in A (fun x:set => x :e s)}) (x) H1) (H2 (fun hl__u hl__v => x :e {hl__u}) (SingI (x)))).
+- assume H.
+  exact (setminusI (s) ({choose_in A (fun x:set => x :e s)}) (x) (andEL (x :e s) (~ x = choose_in A (fun x:set => x :e s)) H) (fun hl__H : x :e {choose_in A (fun x:set => x :e s)} => ((andER (x :e s) (~ x = choose_in A (fun x:set => x :e s)) H) (SingE (choose_in A (fun x:set => x :e s)) (x) hl__H)))).
 Qed.
 
 // HOL Light: sets.ml / FORALL_IN_UNION
@@ -481,7 +524,7 @@ apply andI.
   + let x3. assume Hx3.
     apply (binunionE (Empty) (s1) (x3) Hx3).
     * assume H2.
-      exact ((andEL (x3 :e s1 -> x3 :e s1) (x3 :e s1 -> x3 :e s1) (IN (A) (s1) Hs1 (x3) (FalseE (EmptyE (x3) H2) (x3 :e A)))) (FalseE (EmptyE (x3) H2) (x3 :e s1))).
+      exact ((andEL (x3 :e s1 -> x3 :e s1) (x3 :e s1 -> x3 :e s1) (IN (A) (s1) Hs1 (x3) (FalseE ((NOT_IN_EMPTY (Empty) (x3) H2) H2) (x3 :e A)))) (FalseE ((NOT_IN_EMPTY (Empty) (x3) H2) H2) (x3 :e s1))).
     * assume H3.
       exact H3.
   + let x2. assume Hx2.
@@ -493,7 +536,7 @@ apply andI.
     * assume H.
       exact H.
     * assume H1.
-      exact ((andEL (x1 :e s -> x1 :e s) (x1 :e s -> x1 :e s) (IN (A) (s) Hs (x1) (FalseE (EmptyE (x1) H1) (x1 :e A)))) (FalseE (EmptyE (x1) H1) (x1 :e s))).
+      exact ((andEL (x1 :e s -> x1 :e s) (x1 :e s -> x1 :e s) (IN (A) (s) Hs (x1) (FalseE ((NOT_IN_EMPTY (Empty) (x1) H1) H1) (x1 :e A)))) (FalseE ((NOT_IN_EMPTY (Empty) (x1) H1) H1) (x1 :e s))).
   + let x. assume Hx.
     exact (binunionI1 (s) (Empty) (x) Hx).
 Qed.
@@ -626,13 +669,13 @@ apply andI.
   + let x3. assume Hx3.
     exact (binintersectE1 (Empty) (s1) (x3) Hx3).
   + let x2. assume Hx2.
-    exact (binintersectI (Empty) (s1) (x2) Hx2 (FalseE (EmptyE (x2) Hx2) (x2 :e s1))).
+    exact (binintersectI (Empty) (s1) (x2) Hx2 ((andEL (x2 :e s1 -> x2 :e s1) (x2 :e s1 -> x2 :e s1) (IN (A) (s1) Hs1 (x2) (FalseE (EmptyE (x2) Hx2) (x2 :e A)))) (FalseE (EmptyE (x2) Hx2) (x2 :e s1)))).
 - let s. assume Hs.
   apply (set_ext (s :/\: Empty) (Empty)).
   + let x1. assume Hx1.
     exact (binintersectE2 (s) (Empty) (x1) Hx1).
   + let x. assume Hx.
-    exact (binintersectI (s) (Empty) (x) (FalseE (EmptyE (x) Hx) (x :e s)) Hx).
+    exact (binintersectI (s) (Empty) (x) ((andEL (x :e s -> x :e s) (x :e s -> x :e s) (IN (A) (s) Hs (x) (FalseE (EmptyE (x) Hx) (x :e A)))) (FalseE (EmptyE (x) Hx) (x :e s))) Hx).
 Qed.
 
 // HOL Light: sets.ml / INTER_UNIV
@@ -777,7 +820,7 @@ apply iffI.
     * assume H2.
       exact ((andER (s :/\: u = Empty) (t :/\: u = Empty) H) (fun hl__u hl__v => x1 :e hl__u) (binintersectI (t) (u) (x1) H2 (binintersectE2 (s :\/: t) (u) (x1) Hx1))).
   + let x. assume Hx.
-    exact (binintersectI (s :\/: t) (u) (x) (FalseE (EmptyE (x) Hx) (x :e s :\/: t)) (FalseE (EmptyE (x) Hx) (x :e u))).
+    exact (binintersectI (s :\/: t) (u) (x) (binunionI1 (s) (t) (x) (FalseE (EmptyE (x) Hx) (x :e s))) (FalseE (EmptyE (x) Hx) (x :e u))).
 Qed.
 
 // HOL Light: sets.ml / DIFF_EMPTY
@@ -843,6 +886,19 @@ let s. assume Hs.
 let t. assume Ht.
 let x. assume Hx.
 exact (setminusE1 (s) (t) (x) Hx).
+Qed.
+
+// HOL Light: sets.ml / DIFF_RESTRICT
+Theorem DIFF_RESTRICT : forall A:set, forall P:set -> prop, forall s t c= A, {x :e A | x :e s :\: t /\ P x} = {x :e A | x :e s /\ P x} :\: {x :e A | x :e t /\ P x}.
+let A.
+let P.
+let s. assume Hs.
+let t. assume Ht.
+apply (set_ext ({x :e A | x :e s :\: t /\ P x}) ({x :e A | x :e s /\ P x} :\: {x :e A | x :e t /\ P x})).
+- let x1. assume Hx1.
+  exact (setminusI ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x1) (SepI (A) (fun x:set => x :e s /\ P x) (x1) (SepE1 (A) (fun x:set => x :e s :\: t /\ P x) (x1) Hx1) (andI (x1 :e s) (P x1) (setminusE1 (s) (t) (x1) (andEL (x1 :e s :\: t) (P x1) (SepE2 (A) (fun x:set => x :e s :\: t /\ P x) (x1) Hx1))) (andER (x1 :e s :\: t) (P x1) (SepE2 (A) (fun x:set => x :e s :\: t /\ P x) (x1) Hx1)))) (fun hl__H1 : x1 :e {x :e A | x :e t /\ P x} => ((setminusE2 (s) (t) (x1) (andEL (x1 :e s :\: t) (P x1) (SepE2 (A) (fun x:set => x :e s :\: t /\ P x) (x1) Hx1))) (andEL (x1 :e t) (P x1) (SepE2 (A) (fun x:set => x :e t /\ P x) (x1) hl__H1))))).
+- let x. assume Hx.
+  exact (SepI (A) (fun x:set => x :e s :\: t /\ P x) (x) (SepE1 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx)) (andI (x :e s :\: t) (P x) (setminusI (s) (t) (x) (andEL (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx))) (fun hl__H : x :e t => ((setminusE2 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx) (SepI (A) (fun x:set => x :e t /\ P x) (x) (SepE1 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx)) (andI (x :e t) (P x) hl__H (andER (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx)))))))) (andER (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx))))).
 Qed.
 
 // HOL Light: sets.ml / INTER_ACI
@@ -1037,13 +1093,13 @@ apply iffI.
   + let x4. assume Hx4.
     exact (H1 (fun hl__u hl__v => x4 :e hl__u) (binintersectI (s :\: {x}) (t) (x4) (setminusI (s) ({x}) (x4) (binintersectE2 (t :\: {x}) (s) (x4) Hx4) (setminusE2 (t) ({x}) (x4) (binintersectE1 (t :\: {x}) (s) (x4) Hx4))) (setminusE1 (t) ({x}) (x4) (binintersectE1 (t :\: {x}) (s) (x4) Hx4)))).
   + let x3. assume Hx3.
-    exact (binintersectI (t :\: {x}) (s) (x3) (FalseE (EmptyE (x3) Hx3) (x3 :e t :\: {x})) (FalseE (EmptyE (x3) Hx3) (x3 :e s))).
+    exact (binintersectI (t :\: {x}) (s) (x3) (setminusI (t) ({x}) (x3) (FalseE (EmptyE (x3) Hx3) (x3 :e t)) (fun hl__H1 : x3 :e {x} => (EmptyE (x3) Hx3))) (FalseE (EmptyE (x3) Hx3) (x3 :e s))).
 - assume H.
   apply (set_ext ((s :\: {x}) :/\: t) (Empty)).
   + let x2. assume Hx2.
     exact (H (fun hl__u hl__v => x2 :e hl__u) (binintersectI (t :\: {x}) (s) (x2) (setminusI (t) ({x}) (x2) (binintersectE2 (s :\: {x}) (t) (x2) Hx2) (setminusE2 (s) ({x}) (x2) (binintersectE1 (s :\: {x}) (t) (x2) Hx2))) (setminusE1 (s) ({x}) (x2) (binintersectE1 (s :\: {x}) (t) (x2) Hx2)))).
   + let x1. assume Hx1.
-    exact (binintersectI (s :\: {x}) (t) (x1) (FalseE (EmptyE (x1) Hx1) (x1 :e s :\: {x})) (FalseE (EmptyE (x1) Hx1) (x1 :e t))).
+    exact (binintersectI (s :\: {x}) (t) (x1) (setminusI (s) ({x}) (x1) (FalseE (EmptyE (x1) Hx1) (x1 :e s)) (fun hl__H : x1 :e {x} => (EmptyE (x1) Hx1))) (FalseE (EmptyE (x1) Hx1) (x1 :e t))).
 Qed.
 
 // HOL Light: sets.ml / INTERS_SUBSET_STRONG
@@ -1174,10 +1230,7 @@ let A.
 let a. assume Ha.
 let b. assume Hb.
 assume H.
-apply andI.
-- exact (andEL (a c= b) (~ finite_cardinality a = finite_cardinality b) H).
-- assume H1.
-  exact ((andER (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (H1 (fun hl__u hl__v => (finite_cardinality a) = (finite_cardinality hl__u)) (fun q H => H))).
+exact (andI (a c= b) (a <> b) (andEL (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (fun hl__H : a = b => ((andER (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (hl__H (fun hl__u hl__v => (finite_cardinality a) = (finite_cardinality hl__u)) (fun q H => H))))).
 Qed.
 
 // HOL Light: sets.ml / CROSS_UNIV
@@ -1262,6 +1315,24 @@ let s. assume Hs.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: sets.ml / pairwise
+Theorem pairwise : forall A:set, forall s c= A, forall r:set -> set -> prop, (forall x y :e s, x <> y -> r x y) <-> forall x y :e A, x :e s /\ (y :e s /\ ~ x = y) -> r x y.
+let A.
+let s. assume Hs.
+let r.
+apply iffI.
+- assume H2.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  assume H3.
+  exact (H2 (x1) (andEL (x1 :e s) (y1 :e s /\ ~ x1 = y1) H3) (y1) (andEL (y1 :e s) (~ x1 = y1) (andER (x1 :e s) (y1 :e s /\ ~ x1 = y1) H3)) (fun hl__H1 : x1 = y1 => ((andER (y1 :e s) (~ x1 = y1) (andER (x1 :e s) (y1 :e s /\ ~ x1 = y1) H3)) hl__H1))).
+- assume H.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H1.
+  exact (H (x) (Hs (x) Hx) (y) (Hs (y) Hy) (andI (x :e s) (y :e s /\ ~ x = y) Hx (andI (y :e s) (~ x = y) Hy (fun hl__H : x = y => (H1 hl__H))))).
+Qed.
+
 // HOL Light: sets.ml / PAIRWISE_EMPTY
 Theorem PAIRWISE_EMPTY : forall A:set, forall r:set -> set -> prop, (forall x y :e Empty, x <> y -> r x y) <-> True.
 let A.
@@ -1273,7 +1344,7 @@ apply iffI.
   let x. assume Hx.
   let y. assume Hy.
   assume H1.
-  exact (FalseE (EmptyE (y) Hy) (r x y)).
+  exact (FalseE ((NOT_IN_EMPTY (Empty) (y) Hy) Hy) (r x y)).
 Qed.
 
 // HOL Light: sets.ml / PAIRWISE_SING
@@ -1289,6 +1360,19 @@ apply iffI.
   let y. assume Hy.
   assume H1.
   exact (FalseE (H1 (((SingE (x) (y) Hy) (fun hl__u hl__v => hl__u = (y)) (fun q H => H)) (fun hl__u hl__v => x0 = hl__u) (SingE (x) (x0) Hx0))) (r x0 y)).
+Qed.
+
+// HOL Light: sets.ml / PAIRWISE_IMP
+Theorem PAIRWISE_IMP : forall A:set, forall P Q:set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> P x y) /\ (forall x y :e A, x :e s /\ (y :e s /\ (P x y /\ ~ x = y)) -> Q x y) -> forall x y :e s, x <> y -> Q x y.
+let A.
+let P.
+let Q.
+let s. assume Hs.
+assume H.
+let x. assume Hx.
+let y. assume Hy.
+assume H1.
+exact ((andER (forall x y :e s, x <> y -> P x y) (forall x y :e A, x :e s /\ (y :e s /\ (P x y /\ ~ x = y)) -> Q x y) H) (x) (Hs (x) Hx) (y) (Hs (y) Hy) (andI (x :e s) (y :e s /\ (P x y /\ ~ x = y)) Hx (andI (y :e s) (P x y /\ ~ x = y) Hy (andI (P x y) (~ x = y) ((andEL (forall x y :e s, x <> y -> P x y) (forall x y :e A, x :e s /\ (y :e s /\ (P x y /\ ~ x = y)) -> Q x y) H) (x) Hx (y) Hy H1) (fun hl__H : x = y => (H1 hl__H)))))).
 Qed.
 
 // HOL Light: sets.ml / PAIRWISE_MONO

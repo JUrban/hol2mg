@@ -125,6 +125,49 @@ let rec strip_hyp t : prem list * Mg.tm =
   | Mg.Imp (p, q) -> let ps, c = strip_hyp q in (PProp p :: ps, c)
   | c -> ([], c)
 
+(* enrich a hypothesis with its derived term projections (no script): conjunction and
+   iff components, memberships in separations / boolean set operations / enumerations *)
+let rec augment (name : string) (prop : Mg.tm) (acc : hyp list) : hyp list =
+  let h = { hname = name; prop } in
+  match dest_and prop with
+  | Some (a, b) ->
+      let sa = ppp a and sb = ppp b in
+      augment (Printf.sprintf "(andEL %s %s %s)" sa sb name) a
+        (augment (Printf.sprintf "(andER %s %s %s)" sa sb name) b (h :: acc))
+  | None ->
+  match dest_iff prop with
+  | Some (p, q) ->
+      let i1 = Mg.Imp (p, q) and i2 = Mg.Imp (q, p) in
+      let sa = ppp i1 and sb = ppp i2 in
+      augment (Printf.sprintf "(andEL %s %s %s)" sa sb name) i1
+        (augment (Printf.sprintf "(andER %s %s %s)" sa sb name) i2 (h :: acc))
+  | None ->
+  match prop with
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.Sep (x, a, pbody)) ->
+      let pl = Printf.sprintf "(fun %s:set => %s)" x (pp pbody) in
+      augment (Printf.sprintf "(SepE1 %s %s %s %s)" (ppp a) pl (ppp z) name) (mg_in z a)
+        (augment (Printf.sprintf "(SepE2 %s %s %s %s)" (ppp a) pl (ppp z) name)
+           (Mg.subst [ (x, z) ] pbody) (h :: acc))
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "binintersect", a), b)) ->
+      augment (Printf.sprintf "(binintersectE1 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name) (mg_in z a)
+        (augment (Printf.sprintf "(binintersectE2 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name)
+           (mg_in z b) (h :: acc))
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "setminus", a), b)) ->
+      augment (Printf.sprintf "(setminusE1 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name) (mg_in z a)
+        (augment (Printf.sprintf "(setminusE2 %s %s %s %s)" (ppp a) (ppp b) (ppp z) name)
+           (Mg.App (Mg.Cst "not", mg_in z b)) (h :: acc))
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "binunion", a), b)) ->
+      { hname = Printf.sprintf "(binunionE %s %s %s %s)" (ppp a) (ppp b) (ppp z) name;
+        prop = Mg.App (Mg.App (Mg.Cst "or", mg_in z a), mg_in z b) } :: h :: acc
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.SetEnum [ a ]) ->
+      { hname = Printf.sprintf "(SingE %s %s %s)" (ppp a) (ppp z) name;
+        prop = Mg.App (Mg.App (Mg.Cst "eq", z), a) } :: h :: acc
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.SetEnum [ a; b ]) ->
+      { hname = Printf.sprintf "(UPairE %s %s %s %s)" (ppp z) (ppp a) (ppp b) name;
+        prop = Mg.App (Mg.App (Mg.Cst "or",
+          Mg.App (Mg.App (Mg.Cst "eq", z), a)), Mg.App (Mg.App (Mg.Cst "eq", z), b)) } :: h :: acc
+  | _ -> h :: acc
+
 (* term-level closing of a goal: hypothesis, reflexivity, symmetry/transitivity motives,
    True, False from a contradiction, and application of a stripped hypothesis whose
    conclusion matches (premises closed recursively at smaller depth) *)
@@ -216,19 +259,19 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
       (* introductions as proof terms: andI / orIL / orIR *)
       (match dest_and goal with
        | Some (a, b) ->
-           (match close_term st hyps a (adepth - 1) with
+           (match close_term st hyps a adepth with
             | Some ta ->
-                (match close_term st hyps b (adepth - 1) with
+                (match close_term st hyps b adepth with
                  | Some tb -> Some (Printf.sprintf "(andI %s %s %s %s)" (ppp a) (ppp b) ta tb)
                  | None -> None)
             | None -> None)
        | None ->
            match dest_or goal with
            | Some (a, b) ->
-               (match close_term st hyps a (adepth - 1) with
+               (match close_term st hyps a adepth with
                 | Some ta -> Some (Printf.sprintf "(orIL %s %s %s)" (ppp a) (ppp b) ta)
                 | None ->
-                    (match close_term st hyps b (adepth - 1) with
+                    (match close_term st hyps b adepth with
                      | Some tb -> Some (Printf.sprintf "(orIR %s %s %s)" (ppp a) (ppp b) tb)
                      | None -> None))
            | None -> None)
@@ -240,7 +283,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
        | Some p ->
            spend st 3;
            let hn = fresh st "hl__H" in
-           (match close_term st ({ hname = hn; prop = p } :: hyps) (Mg.Cst "False") (adepth - 1) with
+           (match close_term st (augment hn p hyps) (Mg.Cst "False") adepth with
             | Some t -> Some (Printf.sprintf "(fun %s : %s => %s)" hn (pp p) t)
             | None -> None)
        | None -> None)
@@ -291,34 +334,34 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
        | Mg.App (Mg.App (Mg.Cst "In", z), sset) ->
            (match sset with
             | Mg.Sep (x, a, pbody) ->
-                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                (match close_term st hyps (mg_in z a) adepth with
                  | None -> None
                  | Some t1 ->
-                     (match close_term st hyps (Mg.subst [ (x, z) ] pbody) (adepth - 1) with
+                     (match close_term st hyps (Mg.subst [ (x, z) ] pbody) adepth with
                       | None -> None
                       | Some t2 ->
                           Some (Printf.sprintf "(SepI %s (fun %s:set => %s) %s %s %s)"
                                   (ppp a) x (pp pbody) (ppp z) t1 t2)))
             | Mg.App (Mg.App (Mg.Cst "binintersect", a), b) ->
-                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                (match close_term st hyps (mg_in z a) adepth with
                  | None -> None
                  | Some t1 ->
-                     (match close_term st hyps (mg_in z b) (adepth - 1) with
+                     (match close_term st hyps (mg_in z b) adepth with
                       | None -> None
                       | Some t2 -> Some (Printf.sprintf "(binintersectI %s %s %s %s %s)"
                                            (ppp a) (ppp b) (ppp z) t1 t2)))
             | Mg.App (Mg.App (Mg.Cst "binunion", a), b) ->
-                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                (match close_term st hyps (mg_in z a) adepth with
                  | Some t1 -> Some (Printf.sprintf "(binunionI1 %s %s %s %s)" (ppp a) (ppp b) (ppp z) t1)
                  | None ->
-                     (match close_term st hyps (mg_in z b) (adepth - 1) with
+                     (match close_term st hyps (mg_in z b) adepth with
                       | Some t2 -> Some (Printf.sprintf "(binunionI2 %s %s %s %s)" (ppp a) (ppp b) (ppp z) t2)
                       | None -> None))
             | Mg.App (Mg.App (Mg.Cst "setminus", a), b) ->
-                (match close_term st hyps (mg_in z a) (adepth - 1) with
+                (match close_term st hyps (mg_in z a) adepth with
                  | None -> None
                  | Some t1 ->
-                     (match close_term st hyps (Mg.App (Mg.Cst "not", mg_in z b)) (adepth - 1) with
+                     (match close_term st hyps (Mg.App (Mg.Cst "not", mg_in z b)) adepth with
                       | Some t2 -> Some (Printf.sprintf "(setminusI %s %s %s %s %s)"
                                            (ppp a) (ppp b) (ppp z) t1 t2)
                       | None -> None))
@@ -373,7 +416,10 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
         (* the conclusion itself, or a projection out of an /\ or <-> conclusion *)
         let variants =
           (concl, `Id)
-          :: (match dest_eq concl with
+          :: (match dest_not concl with
+              | Some np' -> [ (Mg.Cst "False", `NotApp np') ]
+              | None -> [])
+          @ (match dest_eq concl with
               | Some (l, r) when not (aeq l r) ->
                   [ (Mg.App (Mg.App (Mg.Cst "eq", r), l), `Sym l) ]
               | _ -> [])
@@ -454,6 +500,11 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                        match close_term st hyps (inst q) (adepth - 1) with
                        | Some tq -> Some (Printf.sprintf "((andER %s %s %s) %s)"
                                             (ppp (inst i1)) (ppp (inst i2)) base tq)
+                       | None -> None)
+                  | `NotApp np' ->
+                      (spend st 2;
+                       match close_term st hyps (inst np') (adepth - 1) with
+                       | Some tp -> Some (Printf.sprintf "(%s %s)" base tp)
                        | None -> None))
              | None -> None)) variants) hyps)
       |> function
@@ -543,8 +594,11 @@ let rec push st (gl : Mg.tm) (name : string) (prop : Mg.tm) (hyps : hyp list)
         (h :: hyps) cont
   | _ -> cont (h :: hyps)
 
+let np_debug = Sys.getenv_opt "NPDEBUG" <> None
+
 let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
   spend st 2;
+  if np_debug then Printf.eprintf "[np] goal(d=%d,fuel=%d): %s\n%!" d st.fuel (String.concat " ; " (List.map (fun h -> h.hname ^ " : " ^ pp h.prop) (match hyps with a :: b :: _ -> [a; b] | l -> l)) ^ " |- " ^ pp goal);
   match goal with
   | Mg.All (x, _, b) ->
       let x' = fresh st x in

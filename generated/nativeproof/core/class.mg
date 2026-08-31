@@ -70,14 +70,42 @@ apply andI.
       exact H1.
 Qed.
 
+// HOL Light: class.ml / NOT_EXISTS_THM
+Theorem NOT_EXISTS_THM : forall A:set, forall P:set -> prop, ~ (exists x :e A, P x) <-> forall x :e A, ~ P x.
+let A.
+let P.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  assume H5.
+  exact (H4 (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x1) (andI (x1 :e A) (P x1) Hx1 H5))).
+- assume H.
+  assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  exact ((H (x) Hx) H3).
+Qed.
+
+// HOL Light: class.ml / FORALL_NOT_THM
+Theorem FORALL_NOT_THM : forall A:set, forall P:set -> prop, (forall x :e A, ~ P x) <-> ~ exists x :e A, P x.
+let A.
+let P.
+apply iffI.
+- assume H2.
+  assume H3.
+  apply H3. let x1. assume H4. apply H4. assume Hx1 H5.
+  exact ((H2 (x1) Hx1) H5).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  exact (H (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H1))).
+Qed.
+
 // HOL Light: class.ml / COND_CLAUSES
 Theorem COND_CLAUSES : forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2.
 let A.
 let t1. assume Ht1.
 let t2. assume Ht2.
-apply andI.
-- exact (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)).
-- exact (If_i_0 (False) (t1) (t2) (fun hl__H : False => hl__H)).
+exact (andI ((if True then t1 else t2) = t1) ((if False then t1 else t2) = t2) (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)) (If_i_0 (False) (t1) (t2) (fun hl__H : False => hl__H))).
 Qed.
 
 // HOL Light: class.ml / COND_ID

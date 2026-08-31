@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **284 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **292 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (284 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (292 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1950,6 +1950,16 @@ also fires on a variable-variable equation when both sides carry subset evidence
 and closes the other as a premise (`((andEL i1 i2 (H x Hx)) Hx)`) — which finishes
 EXTENSION and SUBSET_ANTISYM.  The synthesis phase went *down* to ~3.6 min: contradictory
 contexts now close early instead of exhausting the search.
+
+N3d (284 → 292): hypothesis application can conclude `False` through a `~`-concluded
+lemma (NOT_EXISTS_THM, FORALL_NOT_THM); *structural* rules — conjunction/disjunction parts,
+Sep and boolean-set membership parts, the negation lambda — no longer consume the
+application-depth budget (only search rules do; fuel still bounds everything); and a
+hypothesis assumed inside a lambda proof term is *augmented* with its derived projections
+(the term-level mirror of the script destructuring: `andEL/andER`, `SepE1/2`, `SingE`, ...),
+which was the missing link for DELETE (`~ x1 = x` vs `x1 :e {x}` never met before).
+Diagnosed with a new `NPDEBUG=1` trace on `--only DELETE`; hand-simulation had missed it
+twice.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
