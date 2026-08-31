@@ -235,6 +235,18 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
       |> function
       | Some t -> Some t
       | None ->
+      (* negations as lambda proof terms *)
+      (match dest_not goal with
+       | Some p ->
+           spend st 3;
+           let hn = fresh st "hl__H" in
+           (match close_term st ({ hname = hn; prop = p } :: hyps) (Mg.Cst "False") (adepth - 1) with
+            | Some t -> Some (Printf.sprintf "(fun %s : %s => %s)" hn (pp p) t)
+            | None -> None)
+       | None -> None)
+      |> function
+      | Some t -> Some t
+      | None ->
       (* existential introduction as a proof term (God1 ex_intro); witnesses from
          membership hypotheses, or choose_in on a carrier known nonempty *)
       (match goal with
@@ -318,6 +330,17 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                 else if aeq z b then Some (Printf.sprintf "(UPairI2 %s %s)" (ppp a) (ppp b))
                 else None
             | _ -> None)
+           |> (function
+               | Some t -> Some t
+               | None ->
+                   (* membership through a subset hypothesis *)
+                   List.find_map (fun h ->
+                     match h.prop with
+                     | Mg.App (Mg.App (Mg.Cst "Subq", s1), t1) when aeq t1 sset ->
+                         (match close_term st hyps (mg_in z s1) (adepth - 1) with
+                          | Some t -> Some (Printf.sprintf "(%s %s %s)" h.hname (ppp z) t)
+                          | None -> None)
+                     | _ -> None) hyps)
        | _ -> None)
       |> function
       | Some t -> Some t

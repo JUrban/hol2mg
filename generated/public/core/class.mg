@@ -227,7 +227,13 @@ Admitted.
 // Source hash: md5:0917c6f97e746313156fb948ae4a0a66
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_CLAUSES : forall A:set, forall t1 t2 :e A, (if True then t1 else t2) = t1 /\ (if False then t1 else t2) = t2.
-Admitted.
+let A.
+let t1. assume Ht1.
+let t2. assume Ht2.
+apply andI.
+- exact (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)).
+- exact (If_i_0 (False) (t1) (t2) (fun hl__H : False => hl__H)).
+Qed.
 
 // HOL Light: class.ml:342 / COND_EXPAND
 // Source hash: md5:a0ffc58d882ed08bb9ceb976d7d87a07

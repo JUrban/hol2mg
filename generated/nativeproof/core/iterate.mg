@@ -36,6 +36,41 @@ apply iffI.
   exact (andI ((forall x y :e A, op x y = op y x) /\ forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andI (forall x y :e A, op x y = op y x) (forall x y z :e A, op x (op y z) = op (op x y) z) (andEL (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1) (andEL (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1))) (andER (forall x y z :e A, op x (op y z) = op (op x y) z) (forall x :e A, op (neutral_of A op) x = x) (andER (forall x y :e A, op x y = op y x) ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x) H1))).
 Qed.
 
+// HOL Light: iterate.ml / support
+Theorem support : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> {x :e s | f x <> neutral_of B op} = {x :e A | x :e s /\ ~ f x = neutral_of B op}.
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let op.
+assume H2.
+apply (set_ext ({x :e s | f x <> neutral_of B op}) ({x :e A | x :e s /\ ~ f x = neutral_of B op})).
+- let x1. assume Hx1.
+  exact (SepI (A) (fun x:set => x :e s /\ ~ f x = neutral_of B op) (x1) (Hs (x1) (SepE1 (s) (fun x:set => f x <> neutral_of B op) (x1) Hx1)) (andI (x1 :e s) (~ f x1 = neutral_of B op) (SepE1 (s) (fun x:set => f x <> neutral_of B op) (x1) Hx1) (fun hl__H1 : f x1 = neutral_of B op => ((SepE2 (s) (fun x:set => f x <> neutral_of B op) (x1) Hx1) hl__H1)))).
+- let x. assume Hx.
+  exact (SepI (s) (fun x:set => f x <> neutral_of B op) (x) (andEL (x :e s) (~ f x = neutral_of B op) (SepE2 (A) (fun x:set => x :e s /\ ~ f x = neutral_of B op) (x) Hx)) (fun hl__H : f x = neutral_of B op => ((andER (x :e s) (~ f x = neutral_of B op) (SepE2 (A) (fun x:set => x :e s /\ ~ f x = neutral_of B op) (x) Hx)) hl__H))).
+Qed.
+
+// HOL Light: iterate.ml / IN_SUPPORT
+Theorem IN_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, forall s c= A, x :e {x :e s | f x <> neutral_of B op} <-> x :e s /\ ~ f x = neutral_of B op.
+let A.
+let B.
+assume H.
+let op.
+assume H1.
+let f.
+assume H2.
+let x. assume Hx.
+let s. assume Hs.
+apply iffI.
+- assume H4.
+  exact (andI (x :e s) (~ f x = neutral_of B op) (SepE1 (s) (fun x:set => f x <> neutral_of B op) (x) H4) (fun hl__H1 : f x = neutral_of B op => ((SepE2 (s) (fun x:set => f x <> neutral_of B op) (x) H4) hl__H1))).
+- assume H3.
+  exact (SepI (s) (fun x:set => f x <> neutral_of B op) (x) (andEL (x :e s) (~ f x = neutral_of B op) H3) (fun hl__H : f x = neutral_of B op => ((andER (x :e s) (~ f x = neutral_of B op) H3) hl__H))).
+Qed.
+
 // HOL Light: iterate.ml / SUPPORT_SUPPORT
 Theorem SUPPORT_SUPPORT : forall A B:set, B <> Empty -> forall op:set -> set -> set, (forall x y :e B, op x y :e B) -> forall f:set -> set, (forall x :e A, f x :e B) -> forall s c= A, {x :e {x :e s | f x <> neutral_of B op} | f x <> neutral_of B op} = {x :e s | f x <> neutral_of B op}.
 let A.
