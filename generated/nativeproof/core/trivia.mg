@@ -76,3 +76,14 @@ witness True.
 exact (fun p:prop => fun H:p => H).
 Qed.
 
+// HOL Light: trivia.ml / one_RECURSION
+Theorem one_RECURSION : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0.
+let A.
+let e0. assume He0.
+witness fun hl__w:set => e0.
+apply andI.
+- let x. assume Hx.
+  exact He0.
+- exact (fun q H => H).
+Qed.
+

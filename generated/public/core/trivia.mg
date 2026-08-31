@@ -122,7 +122,14 @@ Admitted.
 // Source hash: md5:eacc0c8048865239c11b49bfd682565d
 // Status: generalization_required (bridges: empty_case:A, hol_one_1)
 Theorem one_RECURSION : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0.
-Admitted.
+let A.
+let e0. assume He0.
+witness fun hl__w:set => e0.
+apply andI.
+- let x. assume Hx.
+  exact He0.
+- exact (fun q H => H).
+Qed.
 
 // HOL Light: trivia.ml:80 / one_Axiom
 // Source hash: md5:ed14c7f387dfc73cd6603c753781f4bf

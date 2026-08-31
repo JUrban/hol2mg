@@ -803,10 +803,17 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
       in try_wit cands
   | Mg.Ex (x, m, b) ->
-      (* unbounded existential: True/False for prop binders, else membership terms *)
+      (* unbounded existential: True/False for prop binders, constant lambdas for
+         function binders, else membership terms *)
       let wits =
         (match m with
          | Mg.Prop -> [ Mg.Cst "True"; Mg.Cst "False" ]
+         | Mg.Arr (Mg.Set, Mg.Set) ->
+             List.filter_map (fun h ->
+               match h.prop with
+               | Mg.App (Mg.App (Mg.Cst "In", t), _) ->
+                   Some (Mg.Lam ("hl__w", Mg.Set, t))
+               | _ -> None) hyps
          | _ ->
              List.filter_map (fun h ->
                match h.prop with
