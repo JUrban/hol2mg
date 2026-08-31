@@ -20,7 +20,24 @@ Qed.
 // Source hash: md5:f7141c939edd744d7d6f135168a24813
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXTENSION : forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  let x2. assume Hx2.
+  apply iffI.
+  + assume H3.
+    exact (H1 (fun hl__u hl__v => x2 :e hl__u) H3).
+  + assume H2.
+    exact ((H1 (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => x2 :e hl__u) H2).
+- assume H.
+  apply (set_ext (s) (t)).
+  + let x1. assume Hx1.
+    exact ((andEL (x1 :e s -> x1 :e t) (x1 :e t -> x1 :e s) (H (x1) (Hs (x1) Hx1))) Hx1).
+  + let x. assume Hx.
+    exact ((andER (x :e s -> x :e t) (x :e t -> x :e s) (H (x) (Ht (x) Hx))) Hx).
+Qed.
 
 // HOL Light: sets.ml:77 / EMPTY
 // Source hash: md5:1989ccecebe524300c28d988fa7a6bf4
@@ -541,19 +558,44 @@ Qed.
 // Source hash: md5:66de716356ea282ff6b32df51c0f0aeb
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SUBSET_ANTISYM : forall A:set, forall s t c= A, s c= t /\ t c= s -> s = t.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+assume H.
+apply (set_ext (s) (t)).
+- exact (andEL (s c= t) (t c= s) H).
+- exact (andER (s c= t) (t c= s) H).
+Qed.
 
 // HOL Light: sets.ml:395 / SUBSET_ANTISYM_EQ
 // Source hash: md5:d9309a654d96d9922b997772e0050c46
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SUBSET_ANTISYM_EQ : forall A:set, forall s t c= A, s c= t /\ t c= s <-> s = t.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  apply (set_ext (s) (t)).
+  + exact (andEL (s c= t) (t c= s) H1).
+  + exact (andER (s c= t) (t c= s) H1).
+- assume H.
+  apply andI.
+  + let x1. assume Hx1.
+    exact (H (fun hl__u hl__v => x1 :e hl__u) Hx1).
+  + let x. assume Hx.
+    exact ((H (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => x :e hl__u) Hx).
+Qed.
 
 // HOL Light: sets.ml:399 / EMPTY_SUBSET
 // Source hash: md5:ac5fdc02e4441a076caae461078fbdcc
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EMPTY_SUBSET : forall A:set, forall s c= A, Empty c= s.
-Admitted.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+exact (FalseE (EmptyE (x) Hx) (x :e s)).
+Qed.
 
 // HOL Light: sets.ml:403 / SUBSET_EMPTY
 // Source hash: md5:493907018ceb1d85891186aae6223bef
@@ -574,7 +616,17 @@ Qed.
 // Source hash: md5:b3d14bc364eb0f572d7bf080c2756639
 // Status: generalization_required (bridges: empty_case:A)
 Theorem UNIV_SUBSET : forall A:set, forall s c= A, A c= s <-> s = A.
-Admitted.
+let A.
+let s. assume Hs.
+apply iffI.
+- assume H1.
+  apply (set_ext (s) (A)).
+  + exact Hs.
+  + exact H1.
+- assume H.
+  let x. assume Hx.
+  exact ((H (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => x :e hl__u) Hx).
+Qed.
 
 // HOL Light: sets.ml:415 / SING_SUBSET
 // Source hash: md5:a4c53a78289631b6fae60c0b033e2b45
@@ -768,7 +820,29 @@ Qed.
 // Source hash: md5:ec993fcaff0982e1d8addb344b5a71fd
 // Status: generalization_required (bridges: empty_case:A)
 Theorem UNION_EMPTY : forall A:set, (forall s c= A, Empty :\/: s = s) /\ forall s c= A, s :\/: Empty = s.
-Admitted.
+let A.
+apply andI.
+- let s1. assume Hs1.
+  apply (set_ext (Empty :\/: s1) (s1)).
+  + let x3. assume Hx3.
+    apply (binunionE (Empty) (s1) (x3) Hx3).
+    * assume H2.
+      exact (FalseE (EmptyE (x3) H2) (x3 :e s1)).
+    * assume H3.
+      exact H3.
+  + let x2. assume Hx2.
+    exact (binunionI2 (Empty) (s1) (x2) Hx2).
+- let s. assume Hs.
+  apply (set_ext (s :\/: Empty) (s)).
+  + let x1. assume Hx1.
+    apply (binunionE (s) (Empty) (x1) Hx1).
+    * assume H.
+      exact H.
+    * assume H1.
+      exact (FalseE (EmptyE (x1) H1) (x1 :e s)).
+  + let x. assume Hx.
+    exact (binunionI1 (s) (Empty) (x) Hx).
+Qed.
 
 // HOL Light: sets.ml:489 / UNION_UNIV
 // Source hash: md5:759e4ed1aec02b2a8d70ae9ae05aa90f
@@ -943,7 +1017,21 @@ Admitted.
 // Source hash: md5:a368e04158e4fc209fae1e662960520b
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INTER_EMPTY : forall A:set, (forall s c= A, Empty :/\: s = Empty) /\ forall s c= A, s :/\: Empty = Empty.
-Admitted.
+let A.
+apply andI.
+- let s1. assume Hs1.
+  apply (set_ext (Empty :/\: s1) (Empty)).
+  + let x3. assume Hx3.
+    exact (binintersectE1 (Empty) (s1) (x3) Hx3).
+  + let x2. assume Hx2.
+    exact (binintersectI (Empty) (s1) (x2) Hx2 (FalseE (EmptyE (x2) Hx2) (x2 :e s1))).
+- let s. assume Hs.
+  apply (set_ext (s :/\: Empty) (Empty)).
+  + let x1. assume Hx1.
+    exact (binintersectE2 (s) (Empty) (x1) Hx1).
+  + let x. assume Hx.
+    exact (binintersectI (s) (Empty) (x) (FalseE (EmptyE (x) Hx) (x :e s)) Hx).
+Qed.
 
 // HOL Light: sets.ml:571 / INTER_UNIV
 // Source hash: md5:e65272f672b7c7fb7ed6ff0a33c850ab
@@ -1046,13 +1134,42 @@ Admitted.
 // Source hash: md5:1085f25cd461c6e326b39221496104b5
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DISJOINT_SYM : forall A:set, forall s t c= A, s :/\: t = Empty <-> t :/\: s = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  apply (set_ext (t :/\: s) (Empty)).
+  + let x3. assume Hx3.
+    exact (H1 (fun hl__u hl__v => x3 :e hl__u) (binintersectI (s) (t) (x3) (binintersectE2 (t) (s) (x3) Hx3) (binintersectE1 (t) (s) (x3) Hx3))).
+  + let x2. assume Hx2.
+    exact (binintersectI (t) (s) (x2) (FalseE (EmptyE (x2) Hx2) (x2 :e t)) (FalseE (EmptyE (x2) Hx2) (x2 :e s))).
+- assume H.
+  apply (set_ext (s :/\: t) (Empty)).
+  + let x1. assume Hx1.
+    exact (H (fun hl__u hl__v => x1 :e hl__u) (binintersectI (t) (s) (x1) (binintersectE2 (s) (t) (x1) Hx1) (binintersectE1 (s) (t) (x1) Hx1))).
+  + let x. assume Hx.
+    exact (binintersectI (s) (t) (x) (FalseE (EmptyE (x) Hx) (x :e s)) (FalseE (EmptyE (x) Hx) (x :e t))).
+Qed.
 
 // HOL Light: sets.ml:610 / DISJOINT_EMPTY
 // Source hash: md5:99bba4253192eb19f3c4941d92f01c4b
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DISJOINT_EMPTY : forall A:set, forall s c= A, Empty :/\: s = Empty /\ s :/\: Empty = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+apply andI.
+- apply (set_ext (Empty :/\: s) (Empty)).
+  + let x3. assume Hx3.
+    exact (binintersectE1 (Empty) (s) (x3) Hx3).
+  + let x2. assume Hx2.
+    exact (binintersectI (Empty) (s) (x2) Hx2 (FalseE (EmptyE (x2) Hx2) (x2 :e s))).
+- apply (set_ext (s :/\: Empty) (Empty)).
+  + let x1. assume Hx1.
+    exact (binintersectE2 (s) (Empty) (x1) Hx1).
+  + let x. assume Hx.
+    exact (binintersectI (s) (Empty) (x) (FalseE (EmptyE (x) Hx) (x :e s)) Hx).
+Qed.
 
 // HOL Light: sets.ml:614 / DISJOINT_EMPTY_REFL
 // Source hash: md5:fbfa1763f28e63e0f3658065877cffb6
@@ -1064,7 +1181,34 @@ Admitted.
 // Source hash: md5:3356fa969b76da166022b8f3328d2730
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DISJOINT_UNION : forall A:set, forall s t u c= A, (s :\/: t) :/\: u = Empty <-> s :/\: u = Empty /\ t :/\: u = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+let u. assume Hu.
+apply iffI.
+- assume H3.
+  apply andI.
+  + apply (set_ext (s :/\: u) (Empty)).
+    * let x5. assume Hx5.
+      exact (H3 (fun hl__u hl__v => x5 :e hl__u) (binintersectI (s :\/: t) (u) (x5) (binunionI1 (s) (t) (x5) (binintersectE1 (s) (u) (x5) Hx5)) (binintersectE2 (s) (u) (x5) Hx5))).
+    * let x4. assume Hx4.
+      exact (binintersectI (s) (u) (x4) (FalseE (EmptyE (x4) Hx4) (x4 :e s)) (FalseE (EmptyE (x4) Hx4) (x4 :e u))).
+  + apply (set_ext (t :/\: u) (Empty)).
+    * let x3. assume Hx3.
+      exact (H3 (fun hl__u hl__v => x3 :e hl__u) (binintersectI (s :\/: t) (u) (x3) (binunionI2 (s) (t) (x3) (binintersectE1 (t) (u) (x3) Hx3)) (binintersectE2 (t) (u) (x3) Hx3))).
+    * let x2. assume Hx2.
+      exact (binintersectI (t) (u) (x2) (FalseE (EmptyE (x2) Hx2) (x2 :e t)) (FalseE (EmptyE (x2) Hx2) (x2 :e u))).
+- assume H.
+  apply (set_ext ((s :\/: t) :/\: u) (Empty)).
+  + let x1. assume Hx1.
+    apply (binunionE (s) (t) (x1) (binintersectE1 (s :\/: t) (u) (x1) Hx1)).
+    * assume H1.
+      exact ((andEL (s :/\: u = Empty) (t :/\: u = Empty) H) (fun hl__u hl__v => x1 :e hl__u) (binintersectI (s) (u) (x1) H1 (binintersectE2 (s :\/: t) (u) (x1) Hx1))).
+    * assume H2.
+      exact ((andER (s :/\: u = Empty) (t :/\: u = Empty) H) (fun hl__u hl__v => x1 :e hl__u) (binintersectI (t) (u) (x1) H2 (binintersectE2 (s :\/: t) (u) (x1) Hx1))).
+  + let x. assume Hx.
+    exact (binintersectI (s :\/: t) (u) (x) (FalseE (EmptyE (x) Hx) (x :e s :\/: t)) (FalseE (EmptyE (x) Hx) (x :e u))).
+Qed.
 
 // HOL Light: sets.ml:622 / DISJOINT_SING
 // Source hash: md5:88d37dfb31d4c032074a211deb4af883
@@ -1076,19 +1220,40 @@ Admitted.
 // Source hash: md5:b5e5e5858b7fee878ce9b37b99ebfbca
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DIFF_EMPTY : forall A:set, forall s c= A, s :\: Empty = s.
-Admitted.
+let A.
+let s. assume Hs.
+apply (set_ext (s :\: Empty) (s)).
+- let x1. assume Hx1.
+  exact (setminusE1 (s) (Empty) (x1) Hx1).
+- let x. assume Hx.
+  exact (setminusI (s) (Empty) (x) Hx (fun hl__H : x :e Empty => (EmptyE (x) hl__H))).
+Qed.
 
 // HOL Light: sets.ml:635 / EMPTY_DIFF
 // Source hash: md5:7906091f27d7e317ac1408ff4d9d9f4c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EMPTY_DIFF : forall A:set, forall s c= A, Empty :\: s = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+apply (set_ext (Empty :\: s) (Empty)).
+- let x1. assume Hx1.
+  exact (setminusE1 (Empty) (s) (x1) Hx1).
+- let x. assume Hx.
+  exact (setminusI (Empty) (s) (x) Hx (fun hl__H : x :e s => (EmptyE (x) Hx))).
+Qed.
 
 // HOL Light: sets.ml:639 / DIFF_UNIV
 // Source hash: md5:7b2bb4d821dacafa70d64b592be4ed0c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DIFF_UNIV : forall A:set, forall s c= A, s :\: A = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+apply (set_ext (s :\: A) (Empty)).
+- let x1. assume Hx1.
+  exact (FalseE ((setminusE2 (s) (A) (x1) Hx1) (Hs (x1) (setminusE1 (s) (A) (x1) Hx1))) (x1 :e Empty)).
+- let x. assume Hx.
+  exact (setminusI (s) (A) (x) (FalseE (EmptyE (x) Hx) (x :e s)) (fun hl__H : x :e A => (EmptyE (x) Hx))).
+Qed.
 
 // HOL Light: sets.ml:643 / DIFF_DIFF
 // Source hash: md5:bfb1a9c784278520a24c0dd41d35a022
@@ -1108,7 +1273,14 @@ Qed.
 // Source hash: md5:7052563cbccc60da11568414ffbd034f
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DIFF_EQ_EMPTY : forall A:set, forall s c= A, s :\: s = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+apply (set_ext (s :\: s) (Empty)).
+- let x1. assume Hx1.
+  exact (FalseE ((setminusE2 (s) (s) (x1) Hx1) (setminusE1 (s) (s) (x1) Hx1)) (x1 :e Empty)).
+- let x. assume Hx.
+  exact (setminusI (s) (s) (x) (FalseE (EmptyE (x) Hx) (x :e s)) (fun hl__H : x :e s => (EmptyE (x) Hx))).
+Qed.
 
 // HOL Light: sets.ml:651 / SUBSET_DIFF
 // Source hash: md5:4d18a77fc13a927b4410774aa0392690
@@ -1377,7 +1549,14 @@ Admitted.
 // Source hash: md5:a816ba184a6e97f3a6d74dbcf7d143cb
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EMPTY_DELETE : forall A:set, forall x :e A, Empty :\: {x} = Empty.
-Admitted.
+let A.
+let x. assume Hx.
+apply (set_ext (Empty :\: {x}) (Empty)).
+- let x2. assume Hx2.
+  exact (setminusE1 (Empty) ({x}) (x2) Hx2).
+- let x1. assume Hx1.
+  exact (setminusI (Empty) ({x}) (x1) Hx1 (fun hl__H : x1 :e {x} => (EmptyE (x1) Hx1))).
+Qed.
 
 // HOL Light: sets.ml:775 / DELETE_DELETE
 // Source hash: md5:dd03b55506d92979a9e8afe8ef8d4cca
@@ -1474,7 +1653,24 @@ Qed.
 // Source hash: md5:2ad853455d2a68dd10a80c06f3c54763
 // Status: generalization_required (bridges: empty_case:A)
 Theorem DISJOINT_DELETE_SYM : forall A:set, forall s t c= A, forall x :e A, (s :\: {x}) :/\: t = Empty <-> (t :\: {x}) :/\: s = Empty.
-Admitted.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  apply (set_ext ((t :\: {x}) :/\: s) (Empty)).
+  + let x4. assume Hx4.
+    exact (H1 (fun hl__u hl__v => x4 :e hl__u) (binintersectI (s :\: {x}) (t) (x4) (setminusI (s) ({x}) (x4) (binintersectE2 (t :\: {x}) (s) (x4) Hx4) (setminusE2 (t) ({x}) (x4) (binintersectE1 (t :\: {x}) (s) (x4) Hx4))) (setminusE1 (t) ({x}) (x4) (binintersectE1 (t :\: {x}) (s) (x4) Hx4)))).
+  + let x3. assume Hx3.
+    exact (binintersectI (t :\: {x}) (s) (x3) (FalseE (EmptyE (x3) Hx3) (x3 :e t :\: {x})) (FalseE (EmptyE (x3) Hx3) (x3 :e s))).
+- assume H.
+  apply (set_ext ((s :\: {x}) :/\: t) (Empty)).
+  + let x2. assume Hx2.
+    exact (H (fun hl__u hl__v => x2 :e hl__u) (binintersectI (t :\: {x}) (s) (x2) (setminusI (t) ({x}) (x2) (binintersectE2 (s :\: {x}) (t) (x2) Hx2) (setminusE2 (s) ({x}) (x2) (binintersectE1 (s :\: {x}) (t) (x2) Hx2))) (setminusE1 (s) ({x}) (x2) (binintersectE1 (s :\: {x}) (t) (x2) Hx2)))).
+  + let x1. assume Hx1.
+    exact (binintersectI (s :\: {x}) (t) (x1) (FalseE (EmptyE (x1) Hx1) (x1 :e s :\: {x})) (FalseE (EmptyE (x1) Hx1) (x1 :e t))).
+Qed.
 
 // HOL Light: sets.ml:826 / UNIONS_0
 // Source hash: md5:4755ffa5a5126b386b54c0e903355e25
@@ -1776,7 +1972,13 @@ Admitted.
 // Source hash: md5:2ed1d6bb1a68368f8a68975d3784bf02
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EMPTY_GSPEC : forall A:set, {x :e A | False} = Empty.
-Admitted.
+let A.
+apply (set_ext ({x :e A | False}) (Empty)).
+- let x1. assume Hx1.
+  exact (FalseE (SepE2 (A) (fun x:set => False) (x1) Hx1) (x1 :e Empty)).
+- let x. assume Hx.
+  exact (SepI (A) (fun x:set => False) (x) (FalseE (EmptyE (x) Hx) (x :e A)) (EmptyE (x) Hx)).
+Qed.
 
 // HOL Light: sets.ml:1064 / UNIV_GSPEC
 // Source hash: md5:0539fd35817a901f982ff7c3a597321a
@@ -1989,13 +2191,53 @@ Admitted.
 // Source hash: md5:5aee535e3e22536e337c3681ed0346dc
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INJECTIVE_ON_ALT : forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, P x /\ (P y /\ f x = f y) -> x = y) <-> forall x y :e A, P x /\ P y -> (f x = f y <-> x = y)).
-Admitted.
+let A.
+let B.
+assume H.
+let P.
+let f.
+assume H1.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  assume H5.
+  apply iffI.
+  + assume H7.
+    exact (H4 (x1) Hx1 (y1) Hy1 (andI (P x1) (P y1 /\ f x1 = f y1) (andEL (P x1) (P y1) H5) (andI (P y1) (f x1 = f y1) (andER (P x1) (P y1) H5) H7))).
+  + assume H6.
+    exact (H6 (fun hl__u hl__v => (f x1) = (f hl__u)) (fun q H => H)).
+- assume H2.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H3.
+  exact ((andEL (f x = f y -> x = y) (x = y -> f x = f y) (H2 (x) Hx (y) Hy (andI (P x) (P y) (andEL (P x) (P y /\ f x = f y) H3) (andEL (P y) (f x = f y) (andER (P x) (P y /\ f x = f y) H3))))) (andER (P y) (f x = f y) (andER (P x) (P y /\ f x = f y) H3))).
+Qed.
 
 // HOL Light: sets.ml:1282 / INJECTIVE_ALT
 // Source hash: md5:ebd3888b66e3605c8fe2ff868e0465f1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INJECTIVE_ALT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x y :e A, f x = f y <-> x = y).
-Admitted.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  apply iffI.
+  + assume H6.
+    exact (H4 (x1) Hx1 (y1) Hy1 H6).
+  + assume H5.
+    exact (H5 (fun hl__u hl__v => (f x1) = (f hl__u)) (fun q H => H)).
+- assume H2.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H3.
+  exact ((andEL (f x = f y -> x = y) (x = y -> f x = f y) (H2 (x) Hx (y) Hy)) H3).
+Qed.
 
 // HOL Light: sets.ml:1286 / SURJECTIVE_ON_RIGHT_INVERSE
 // Source hash: md5:f53ec7165bd583fe34bb981fc48bcde2
@@ -3661,13 +3903,34 @@ Admitted.
 // Source hash: md5:2e05512263770e402cde83a5757d60b2
 // Status: generalization_required (bridges: empty_case:A)
 Theorem PAIRWISE_EMPTY : forall A:set, forall r:set -> set -> prop, (forall x y :e Empty, x <> y -> r x y) <-> True.
-Admitted.
+let A.
+let r.
+apply iffI.
+- assume H2.
+  exact (fun p:prop => fun H:p => H).
+- assume H.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H1.
+  exact (FalseE (EmptyE (y) Hy) (r x y)).
+Qed.
 
 // HOL Light: sets.ml:3901 / PAIRWISE_SING
 // Source hash: md5:0276e64753da57534c56a2ad177ca991
 // Status: generalization_required (bridges: empty_case:A)
 Theorem PAIRWISE_SING : forall A:set, forall r:set -> set -> prop, forall x :e A, (forall x0 y :e {x}, x0 <> y -> r x0 y) <-> True.
-Admitted.
+let A.
+let r.
+let x. assume Hx.
+apply iffI.
+- assume H2.
+  exact (fun p:prop => fun H:p => H).
+- assume H.
+  let x0. assume Hx0.
+  let y. assume Hy.
+  assume H1.
+  exact (FalseE (H1 (((SingE (x) (y) Hy) (fun hl__u hl__v => hl__u = (y)) (fun q H => H)) (fun hl__u hl__v => x0 = hl__u) (SingE (x) (x0) Hx0))) (r x0 y)).
+Qed.
 
 // HOL Light: sets.ml:3905 / PAIRWISE_IMP
 // Source hash: md5:1a5ec442af15f04e4e6248a9e1f80e37

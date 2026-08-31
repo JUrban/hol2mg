@@ -318,11 +318,9 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                 (match close_term st hyps (mg_in z a) (adepth - 1) with
                  | None -> None
                  | Some t1 ->
-                     (match List.find_opt (fun h ->
-                        match dest_not h.prop with
-                        | Some pp' -> aeq pp' (mg_in z b) | None -> false) hyps with
-                      | Some h -> Some (Printf.sprintf "(setminusI %s %s %s %s %s)"
-                                          (ppp a) (ppp b) (ppp z) t1 h.hname)
+                     (match close_term st hyps (Mg.App (Mg.Cst "not", mg_in z b)) (adepth - 1) with
+                      | Some t2 -> Some (Printf.sprintf "(setminusI %s %s %s %s %s)"
+                                           (ppp a) (ppp b) (ppp z) t1 t2)
                       | None -> None))
             | Mg.SetEnum [ a ] when aeq z a -> Some (Printf.sprintf "(SingI %s)" (ppp a))
             | Mg.SetEnum [ a; b ] ->
@@ -385,7 +383,8 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                   (match dest_iff concl with
                    | Some (p, q) ->
                        let i1 = Mg.Imp (p, q) and i2 = Mg.Imp (q, p) in
-                       [ (i1, `AndL (i1, i2)); (i2, `AndR (i1, i2)) ]
+                       [ (i1, `AndL (i1, i2)); (i2, `AndR (i1, i2));
+                         (q, `IffFwd (p, i1, i2)); (p, `IffBwd (q, i1, i2)) ]
                    | None -> [])) in
         List.find_map (fun (cpat, wrap) ->
         match match_tm pvars cpat goal with
@@ -439,12 +438,33 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
             (match args prems with
              | Some l ->
                  let base = Printf.sprintf "(%s %s)" h.hname (String.concat " " l) in
-                 Some (match wrap with
-                       | `Id -> base
-                       | `Sym l -> Printf.sprintf "(%s (fun hl__u hl__v => hl__u = %s) %s)" base (ppp (inst l)) refl_tm
-                       | `AndL (a, b) -> Printf.sprintf "(andEL %s %s %s)" (ppp (inst a)) (ppp (inst b)) base
-                       | `AndR (a, b) -> Printf.sprintf "(andER %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
+                 (match wrap with
+                  | `Id -> Some base
+                  | `Sym l -> Some (Printf.sprintf "(%s (fun hl__u hl__v => hl__u = %s) %s)" base (ppp (inst l)) refl_tm)
+                  | `AndL (a, b) -> Some (Printf.sprintf "(andEL %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
+                  | `AndR (a, b) -> Some (Printf.sprintf "(andER %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
+                  | `IffFwd (p, i1, i2) ->
+                      (spend st 2;
+                       match close_term st hyps (inst p) (adepth - 1) with
+                       | Some tp -> Some (Printf.sprintf "((andEL %s %s %s) %s)"
+                                            (ppp (inst i1)) (ppp (inst i2)) base tp)
+                       | None -> None)
+                  | `IffBwd (q, i1, i2) ->
+                      (spend st 2;
+                       match close_term st hyps (inst q) (adepth - 1) with
+                       | Some tq -> Some (Printf.sprintf "((andER %s %s %s) %s)"
+                                            (ppp (inst i1)) (ppp (inst i2)) base tq)
+                       | None -> None))
              | None -> None)) variants) hyps)
+      |> function
+      | Some t -> Some t
+      | None ->
+          (* last resort: a contradictory context proves anything *)
+          if goal = Mg.Cst "False" || adepth <= 1 then None
+          else (spend st 5;
+                match close_term st hyps (Mg.Cst "False") (adepth - 1) with
+                | Some t -> Some (Printf.sprintf "(FalseE %s (%s))" t (pp goal))
+                | None -> None)
 
 (* bullets by depth; deeper levels run sequentially *)
 let bullet d = match d with 0 -> Some "-" | 1 -> Some "+" | 2 -> Some "*" | _ -> None
@@ -647,8 +667,12 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                  | Mg.Sep _ | Mg.SetEnum _
                  | Mg.App (Mg.App (Mg.Cst ("binintersect" | "binunion" | "setminus"), _), _) -> true
                  | _ -> false in
+               let has_sub v = List.exists (fun h ->
+                 match h.prop with
+                 | Mg.App (Mg.App (Mg.Cst "Subq", v'), _) -> aeq v' v
+                 | _ -> false) hyps in
                (match dest_eq g with
-                | Some (l, r) when is_setop l || is_setop r ->
+                | Some (l, r) when is_setop l || is_setop r || (has_sub l && has_sub r) ->
                     Printf.sprintf "apply (set_ext %s %s)." (ppp l) (ppp r)
                     :: (block d (prove_goal st hyps (mg_subq l r) (d + 1))
                         @ block d (prove_goal st hyps (mg_subq r l) (d + 1)))

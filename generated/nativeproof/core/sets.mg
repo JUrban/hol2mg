@@ -13,6 +13,27 @@ apply iffI.
   exact H.
 Qed.
 
+// HOL Light: sets.ml / EXTENSION
+Theorem EXTENSION : forall A:set, forall s t c= A, s = t <-> forall x :e A, x :e s <-> x :e t.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  let x2. assume Hx2.
+  apply iffI.
+  + assume H3.
+    exact (H1 (fun hl__u hl__v => x2 :e hl__u) H3).
+  + assume H2.
+    exact ((H1 (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => x2 :e hl__u) H2).
+- assume H.
+  apply (set_ext (s) (t)).
+  + let x1. assume Hx1.
+    exact ((andEL (x1 :e s -> x1 :e t) (x1 :e t -> x1 :e s) (H (x1) (Hs (x1) Hx1))) Hx1).
+  + let x. assume Hx.
+    exact ((andER (x :e s -> x :e t) (x :e t -> x :e s) (H (x) (Ht (x) Hx))) Hx).
+Qed.
+
 // HOL Light: sets.ml / EMPTY
 Theorem EMPTY : forall A:set, forall x :e A, x :e Empty <-> False.
 let A.
@@ -138,7 +159,7 @@ Theorem NOT_IN_EMPTY : forall A:set, forall x :e A, ~ x :e Empty.
 let A.
 let x. assume Hx.
 assume H.
-exact (EmptyE (x) H).
+exact ((andEL (x :e Empty -> False) (False -> x :e Empty) (EMPTY (Empty) (x) H)) H).
 Qed.
 
 // HOL Light: sets.ml / IN_UNIV
@@ -263,11 +284,62 @@ let x. assume Hx.
 exact Hx.
 Qed.
 
+// HOL Light: sets.ml / SUBSET_ANTISYM
+Theorem SUBSET_ANTISYM : forall A:set, forall s t c= A, s c= t /\ t c= s -> s = t.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+assume H.
+apply (set_ext (s) (t)).
+- exact (andEL (s c= t) (t c= s) H).
+- exact (andER (s c= t) (t c= s) H).
+Qed.
+
+// HOL Light: sets.ml / SUBSET_ANTISYM_EQ
+Theorem SUBSET_ANTISYM_EQ : forall A:set, forall s t c= A, s c= t /\ t c= s <-> s = t.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  apply (set_ext (s) (t)).
+  + exact (andEL (s c= t) (t c= s) H1).
+  + exact (andER (s c= t) (t c= s) H1).
+- assume H.
+  apply andI.
+  + let x1. assume Hx1.
+    exact (H (fun hl__u hl__v => x1 :e hl__u) Hx1).
+  + let x. assume Hx.
+    exact ((H (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => x :e hl__u) Hx).
+Qed.
+
+// HOL Light: sets.ml / EMPTY_SUBSET
+Theorem EMPTY_SUBSET : forall A:set, forall s c= A, Empty c= s.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+exact (FalseE (EmptyE (x) Hx) (x :e s)).
+Qed.
+
 // HOL Light: sets.ml / SUBSET_UNIV
 Theorem SUBSET_UNIV : forall A:set, forall s c= A, s c= A.
 let A.
 let s. assume Hs.
 exact Hs.
+Qed.
+
+// HOL Light: sets.ml / UNIV_SUBSET
+Theorem UNIV_SUBSET : forall A:set, forall s c= A, A c= s <-> s = A.
+let A.
+let s. assume Hs.
+apply iffI.
+- assume H1.
+  apply (set_ext (s) (A)).
+  + exact Hs.
+  + exact H1.
+- assume H.
+  let x. assume Hx.
+  exact ((H (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => x :e hl__u) Hx).
 Qed.
 
 // HOL Light: sets.ml / SING_SUBSET
@@ -400,6 +472,32 @@ apply iffI.
   exact (H (fun hl__u hl__v => x :e hl__u) (binunionI1 (s) (t) (x) Hx)).
 Qed.
 
+// HOL Light: sets.ml / UNION_EMPTY
+Theorem UNION_EMPTY : forall A:set, (forall s c= A, Empty :\/: s = s) /\ forall s c= A, s :\/: Empty = s.
+let A.
+apply andI.
+- let s1. assume Hs1.
+  apply (set_ext (Empty :\/: s1) (s1)).
+  + let x3. assume Hx3.
+    apply (binunionE (Empty) (s1) (x3) Hx3).
+    * assume H2.
+      exact ((andEL (x3 :e s1 -> x3 :e s1) (x3 :e s1 -> x3 :e s1) (IN (A) (s1) Hs1 (x3) (FalseE (EmptyE (x3) H2) (x3 :e A)))) (FalseE (EmptyE (x3) H2) (x3 :e s1))).
+    * assume H3.
+      exact H3.
+  + let x2. assume Hx2.
+    exact (binunionI2 (Empty) (s1) (x2) Hx2).
+- let s. assume Hs.
+  apply (set_ext (s :\/: Empty) (s)).
+  + let x1. assume Hx1.
+    apply (binunionE (s) (Empty) (x1) Hx1).
+    * assume H.
+      exact H.
+    * assume H1.
+      exact ((andEL (x1 :e s -> x1 :e s) (x1 :e s -> x1 :e s) (IN (A) (s) Hs (x1) (FalseE (EmptyE (x1) H1) (x1 :e A)))) (FalseE (EmptyE (x1) H1) (x1 :e s))).
+  + let x. assume Hx.
+    exact (binunionI1 (s) (Empty) (x) Hx).
+Qed.
+
 // HOL Light: sets.ml / UNION_UNIV
 Theorem UNION_UNIV : forall A:set, (forall s c= A, A :\/: s = A) /\ forall s c= A, s :\/: A = A.
 let A.
@@ -519,6 +617,24 @@ apply andI.
   exact (binintersectE2 (t) (s) (x) Hx).
 Qed.
 
+// HOL Light: sets.ml / INTER_EMPTY
+Theorem INTER_EMPTY : forall A:set, (forall s c= A, Empty :/\: s = Empty) /\ forall s c= A, s :/\: Empty = Empty.
+let A.
+apply andI.
+- let s1. assume Hs1.
+  apply (set_ext (Empty :/\: s1) (Empty)).
+  + let x3. assume Hx3.
+    exact (binintersectE1 (Empty) (s1) (x3) Hx3).
+  + let x2. assume Hx2.
+    exact (binintersectI (Empty) (s1) (x2) Hx2 (FalseE (EmptyE (x2) Hx2) (x2 :e s1))).
+- let s. assume Hs.
+  apply (set_ext (s :/\: Empty) (Empty)).
+  + let x1. assume Hx1.
+    exact (binintersectE2 (s) (Empty) (x1) Hx1).
+  + let x. assume Hx.
+    exact (binintersectI (s) (Empty) (x) (FalseE (EmptyE (x) Hx) (x :e s)) Hx).
+Qed.
+
 // HOL Light: sets.ml / INTER_UNIV
 Theorem INTER_UNIV : forall A:set, (forall s c= A, A :/\: s = s) /\ forall s c= A, s :/\: A = s.
 let A.
@@ -596,6 +712,107 @@ apply (set_ext (s :\/: t :/\: u) ((s :\/: t) :/\: (s :\/: u))).
       exact (binunionI2 (s) (t :/\: u) (x) (binintersectI (t) (u) (x) H3 H1)).
 Qed.
 
+// HOL Light: sets.ml / DISJOINT_SYM
+Theorem DISJOINT_SYM : forall A:set, forall s t c= A, s :/\: t = Empty <-> t :/\: s = Empty.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H1.
+  apply (set_ext (t :/\: s) (Empty)).
+  + let x3. assume Hx3.
+    exact (H1 (fun hl__u hl__v => x3 :e hl__u) (binintersectI (s) (t) (x3) (binintersectE2 (t) (s) (x3) Hx3) (binintersectE1 (t) (s) (x3) Hx3))).
+  + let x2. assume Hx2.
+    exact (binintersectI (t) (s) (x2) (FalseE (EmptyE (x2) Hx2) (x2 :e t)) (FalseE (EmptyE (x2) Hx2) (x2 :e s))).
+- assume H.
+  apply (set_ext (s :/\: t) (Empty)).
+  + let x1. assume Hx1.
+    exact (H (fun hl__u hl__v => x1 :e hl__u) (binintersectI (t) (s) (x1) (binintersectE2 (s) (t) (x1) Hx1) (binintersectE1 (s) (t) (x1) Hx1))).
+  + let x. assume Hx.
+    exact (binintersectI (s) (t) (x) (FalseE (EmptyE (x) Hx) (x :e s)) (FalseE (EmptyE (x) Hx) (x :e t))).
+Qed.
+
+// HOL Light: sets.ml / DISJOINT_EMPTY
+Theorem DISJOINT_EMPTY : forall A:set, forall s c= A, Empty :/\: s = Empty /\ s :/\: Empty = Empty.
+let A.
+let s. assume Hs.
+apply andI.
+- apply (set_ext (Empty :/\: s) (Empty)).
+  + let x3. assume Hx3.
+    exact (binintersectE1 (Empty) (s) (x3) Hx3).
+  + let x2. assume Hx2.
+    exact (binintersectI (Empty) (s) (x2) Hx2 (FalseE (EmptyE (x2) Hx2) (x2 :e s))).
+- apply (set_ext (s :/\: Empty) (Empty)).
+  + let x1. assume Hx1.
+    exact (binintersectE2 (s) (Empty) (x1) Hx1).
+  + let x. assume Hx.
+    exact (binintersectI (s) (Empty) (x) (FalseE (EmptyE (x) Hx) (x :e s)) Hx).
+Qed.
+
+// HOL Light: sets.ml / DISJOINT_UNION
+Theorem DISJOINT_UNION : forall A:set, forall s t u c= A, (s :\/: t) :/\: u = Empty <-> s :/\: u = Empty /\ t :/\: u = Empty.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+let u. assume Hu.
+apply iffI.
+- assume H3.
+  apply andI.
+  + apply (set_ext (s :/\: u) (Empty)).
+    * let x5. assume Hx5.
+      exact (H3 (fun hl__u hl__v => x5 :e hl__u) (binintersectI (s :\/: t) (u) (x5) (binunionI1 (s) (t) (x5) (binintersectE1 (s) (u) (x5) Hx5)) (binintersectE2 (s) (u) (x5) Hx5))).
+    * let x4. assume Hx4.
+      exact (binintersectI (s) (u) (x4) (FalseE (EmptyE (x4) Hx4) (x4 :e s)) (FalseE (EmptyE (x4) Hx4) (x4 :e u))).
+  + apply (set_ext (t :/\: u) (Empty)).
+    * let x3. assume Hx3.
+      exact (H3 (fun hl__u hl__v => x3 :e hl__u) (binintersectI (s :\/: t) (u) (x3) (binunionI2 (s) (t) (x3) (binintersectE1 (t) (u) (x3) Hx3)) (binintersectE2 (t) (u) (x3) Hx3))).
+    * let x2. assume Hx2.
+      exact (binintersectI (t) (u) (x2) (FalseE (EmptyE (x2) Hx2) (x2 :e t)) (FalseE (EmptyE (x2) Hx2) (x2 :e u))).
+- assume H.
+  apply (set_ext ((s :\/: t) :/\: u) (Empty)).
+  + let x1. assume Hx1.
+    apply (binunionE (s) (t) (x1) (binintersectE1 (s :\/: t) (u) (x1) Hx1)).
+    * assume H1.
+      exact ((andEL (s :/\: u = Empty) (t :/\: u = Empty) H) (fun hl__u hl__v => x1 :e hl__u) (binintersectI (s) (u) (x1) H1 (binintersectE2 (s :\/: t) (u) (x1) Hx1))).
+    * assume H2.
+      exact ((andER (s :/\: u = Empty) (t :/\: u = Empty) H) (fun hl__u hl__v => x1 :e hl__u) (binintersectI (t) (u) (x1) H2 (binintersectE2 (s :\/: t) (u) (x1) Hx1))).
+  + let x. assume Hx.
+    exact (binintersectI (s :\/: t) (u) (x) (FalseE (EmptyE (x) Hx) (x :e s :\/: t)) (FalseE (EmptyE (x) Hx) (x :e u))).
+Qed.
+
+// HOL Light: sets.ml / DIFF_EMPTY
+Theorem DIFF_EMPTY : forall A:set, forall s c= A, s :\: Empty = s.
+let A.
+let s. assume Hs.
+apply (set_ext (s :\: Empty) (s)).
+- let x1. assume Hx1.
+  exact (setminusE1 (s) (Empty) (x1) Hx1).
+- let x. assume Hx.
+  exact (setminusI (s) (Empty) (x) Hx (fun hl__H : x :e Empty => (EmptyE (x) hl__H))).
+Qed.
+
+// HOL Light: sets.ml / EMPTY_DIFF
+Theorem EMPTY_DIFF : forall A:set, forall s c= A, Empty :\: s = Empty.
+let A.
+let s. assume Hs.
+apply (set_ext (Empty :\: s) (Empty)).
+- let x1. assume Hx1.
+  exact (setminusE1 (Empty) (s) (x1) Hx1).
+- let x. assume Hx.
+  exact (setminusI (Empty) (s) (x) Hx (fun hl__H : x :e s => (EmptyE (x) Hx))).
+Qed.
+
+// HOL Light: sets.ml / DIFF_UNIV
+Theorem DIFF_UNIV : forall A:set, forall s c= A, s :\: A = Empty.
+let A.
+let s. assume Hs.
+apply (set_ext (s :\: A) (Empty)).
+- let x1. assume Hx1.
+  exact (FalseE ((setminusE2 (s) (A) (x1) Hx1) (Hs (x1) (setminusE1 (s) (A) (x1) Hx1))) (x1 :e Empty)).
+- let x. assume Hx.
+  exact (setminusI (s) (A) (x) (FalseE (EmptyE (x) Hx) (x :e s)) (fun hl__H : x :e A => (EmptyE (x) Hx))).
+Qed.
+
 // HOL Light: sets.ml / DIFF_DIFF
 Theorem DIFF_DIFF : forall A:set, forall s t c= A, (s :\: t) :\: t = s :\: t.
 let A.
@@ -606,6 +823,17 @@ apply (set_ext ((s :\: t) :\: t) (s :\: t)).
   exact (setminusE1 (s :\: t) (t) (x1) Hx1).
 - let x. assume Hx.
   exact (setminusI (s :\: t) (t) (x) Hx (setminusE2 (s) (t) (x) Hx)).
+Qed.
+
+// HOL Light: sets.ml / DIFF_EQ_EMPTY
+Theorem DIFF_EQ_EMPTY : forall A:set, forall s c= A, s :\: s = Empty.
+let A.
+let s. assume Hs.
+apply (set_ext (s :\: s) (Empty)).
+- let x1. assume Hx1.
+  exact (FalseE ((setminusE2 (s) (s) (x1) Hx1) (setminusE1 (s) (s) (x1) Hx1)) (x1 :e Empty)).
+- let x. assume Hx.
+  exact (setminusI (s) (s) (x) (FalseE (EmptyE (x) Hx) (x :e s)) (fun hl__H : x :e s => (EmptyE (x) Hx))).
 Qed.
 
 // HOL Light: sets.ml / SUBSET_DIFF
@@ -739,6 +967,17 @@ apply andI.
       exact (binunionI2 (p) (p :\/: q) (x) Hx).
 Qed.
 
+// HOL Light: sets.ml / EMPTY_DELETE
+Theorem EMPTY_DELETE : forall A:set, forall x :e A, Empty :\: {x} = Empty.
+let A.
+let x. assume Hx.
+apply (set_ext (Empty :\: {x}) (Empty)).
+- let x2. assume Hx2.
+  exact (setminusE1 (Empty) ({x}) (x2) Hx2).
+- let x1. assume Hx1.
+  exact (setminusI (Empty) ({x}) (x1) Hx1 (fun hl__H : x1 :e {x} => (EmptyE (x1) Hx1))).
+Qed.
+
 // HOL Light: sets.ml / DELETE_DELETE
 Theorem DELETE_DELETE : forall A:set, forall x :e A, forall s c= A, (s :\: {x}) :\: {x} = s :\: {x}.
 let A.
@@ -786,6 +1025,27 @@ apply (set_ext ((s :\: {x}) :/\: t) (s :/\: t :\: {x})).
   exact (binintersectI (s :\: {x}) (t) (x1) (setminusI (s) ({x}) (x1) (binintersectE1 (s) (t) (x1) (setminusE1 (s :/\: t) ({x}) (x1) Hx1)) (setminusE2 (s :/\: t) ({x}) (x1) Hx1)) (binintersectE2 (s) (t) (x1) (setminusE1 (s :/\: t) ({x}) (x1) Hx1))).
 Qed.
 
+// HOL Light: sets.ml / DISJOINT_DELETE_SYM
+Theorem DISJOINT_DELETE_SYM : forall A:set, forall s t c= A, forall x :e A, (s :\: {x}) :/\: t = Empty <-> (t :\: {x}) :/\: s = Empty.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  apply (set_ext ((t :\: {x}) :/\: s) (Empty)).
+  + let x4. assume Hx4.
+    exact (H1 (fun hl__u hl__v => x4 :e hl__u) (binintersectI (s :\: {x}) (t) (x4) (setminusI (s) ({x}) (x4) (binintersectE2 (t :\: {x}) (s) (x4) Hx4) (setminusE2 (t) ({x}) (x4) (binintersectE1 (t :\: {x}) (s) (x4) Hx4))) (setminusE1 (t) ({x}) (x4) (binintersectE1 (t :\: {x}) (s) (x4) Hx4)))).
+  + let x3. assume Hx3.
+    exact (binintersectI (t :\: {x}) (s) (x3) (FalseE (EmptyE (x3) Hx3) (x3 :e t :\: {x})) (FalseE (EmptyE (x3) Hx3) (x3 :e s))).
+- assume H.
+  apply (set_ext ((s :\: {x}) :/\: t) (Empty)).
+  + let x2. assume Hx2.
+    exact (H (fun hl__u hl__v => x2 :e hl__u) (binintersectI (t :\: {x}) (s) (x2) (setminusI (t) ({x}) (x2) (binintersectE2 (s :\: {x}) (t) (x2) Hx2) (setminusE2 (s) ({x}) (x2) (binintersectE1 (s :\: {x}) (t) (x2) Hx2))) (setminusE1 (s) ({x}) (x2) (binintersectE1 (s :\: {x}) (t) (x2) Hx2)))).
+  + let x1. assume Hx1.
+    exact (binintersectI (s :\: {x}) (t) (x1) (FalseE (EmptyE (x1) Hx1) (x1 :e s :\: {x})) (FalseE (EmptyE (x1) Hx1) (x1 :e t))).
+Qed.
+
 // HOL Light: sets.ml / INTERS_SUBSET_STRONG
 Theorem INTERS_SUBSET_STRONG : forall A:set, forall u c= Power A, forall s c= A, (exists t c= A, t :e u /\ t c= s) -> {x :e A | forall Y :e u, x :e Y} c= s.
 let A.
@@ -809,6 +1069,16 @@ Theorem IMAGE_I : forall A:set, forall s c= A, s = s.
 let A.
 let s. assume Hs.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / EMPTY_GSPEC
+Theorem EMPTY_GSPEC : forall A:set, {x :e A | False} = Empty.
+let A.
+apply (set_ext ({x :e A | False}) (Empty)).
+- let x1. assume Hx1.
+  exact (FalseE (SepE2 (A) (fun x:set => False) (x1) Hx1) (x1 :e Empty)).
+- let x. assume Hx.
+  exact (SepI (A) (fun x:set => False) (x) (FalseE (EmptyE (x) Hx) (x :e A)) (EmptyE (x) Hx)).
 Qed.
 
 // HOL Light: sets.ml / UNIV_GSPEC
@@ -848,6 +1118,54 @@ apply (set_ext ({x :e A | x :e s}) (s)).
   exact (SepE2 (A) (fun x:set => x :e s) (x1) Hx1).
 - let x. assume Hx.
   exact (SepI (A) (fun x:set => x :e s) (x) (Hs (x) Hx) Hx).
+Qed.
+
+// HOL Light: sets.ml / INJECTIVE_ON_ALT
+Theorem INJECTIVE_ON_ALT : forall A B:set, B <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, P x /\ (P y /\ f x = f y) -> x = y) <-> forall x y :e A, P x /\ P y -> (f x = f y <-> x = y)).
+let A.
+let B.
+assume H.
+let P.
+let f.
+assume H1.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  assume H5.
+  apply iffI.
+  + assume H7.
+    exact (H4 (x1) Hx1 (y1) Hy1 (andI (P x1) (P y1 /\ f x1 = f y1) (andEL (P x1) (P y1) H5) (andI (P y1) (f x1 = f y1) (andER (P x1) (P y1) H5) H7))).
+  + assume H6.
+    exact (H6 (fun hl__u hl__v => (f x1) = (f hl__u)) (fun q H => H)).
+- assume H2.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H3.
+  exact ((andEL (f x = f y -> x = y) (x = y -> f x = f y) (H2 (x) Hx (y) Hy (andI (P x) (P y) (andEL (P x) (P y /\ f x = f y) H3) (andEL (P y) (f x = f y) (andER (P x) (P y /\ f x = f y) H3))))) (andER (P y) (f x = f y) (andER (P x) (P y /\ f x = f y) H3))).
+Qed.
+
+// HOL Light: sets.ml / INJECTIVE_ALT
+Theorem INJECTIVE_ALT : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x y :e A, f x = f y <-> x = y).
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let y1. assume Hy1.
+  apply iffI.
+  + assume H6.
+    exact (H4 (x1) Hx1 (y1) Hy1 H6).
+  + assume H5.
+    exact (H5 (fun hl__u hl__v => (f x1) = (f hl__u)) (fun q H => H)).
+- assume H2.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H3.
+  exact ((andEL (f x = f y -> x = y) (x = y -> f x = f y) (H2 (x) Hx (y) Hy)) H3).
 Qed.
 
 // HOL Light: sets.ml / CARD_PSUBSET_IMP
@@ -942,6 +1260,35 @@ Theorem list_of_set : forall A:set, forall s c= A, choose_in (finseq A) (fun l:s
 let A.
 let s. assume Hs.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / PAIRWISE_EMPTY
+Theorem PAIRWISE_EMPTY : forall A:set, forall r:set -> set -> prop, (forall x y :e Empty, x <> y -> r x y) <-> True.
+let A.
+let r.
+apply iffI.
+- assume H2.
+  exact (fun p:prop => fun H:p => H).
+- assume H.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H1.
+  exact (FalseE (EmptyE (y) Hy) (r x y)).
+Qed.
+
+// HOL Light: sets.ml / PAIRWISE_SING
+Theorem PAIRWISE_SING : forall A:set, forall r:set -> set -> prop, forall x :e A, (forall x0 y :e {x}, x0 <> y -> r x0 y) <-> True.
+let A.
+let r.
+let x. assume Hx.
+apply iffI.
+- assume H2.
+  exact (fun p:prop => fun H:p => H).
+- assume H.
+  let x0. assume Hx0.
+  let y. assume Hy.
+  assume H1.
+  exact (FalseE (H1 (((SingE (x) (y) Hy) (fun hl__u hl__v => hl__u = (y)) (fun q H => H)) (fun hl__u hl__v => x0 = hl__u) (SingE (x) (x0) Hx0))) (r x0 y)).
 Qed.
 
 // HOL Light: sets.ml / PAIRWISE_MONO

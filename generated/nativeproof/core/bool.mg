@@ -36,6 +36,23 @@ apply iffI.
   exact (andER (p) (q) ((andER (p /\ q -> p) (p -> p /\ q) H) H1)).
 Qed.
 
+// HOL Light: bool.ml / FORALL_DEF
+Theorem FORALL_DEF : forall A:set, forall P:set -> prop, (forall x :e A, P x) <-> forall x :e A, P x <-> True.
+let A.
+let P.
+apply iffI.
+- assume H1.
+  let x1. assume Hx1.
+  apply iffI.
+  + assume H3.
+    exact (fun p:prop => fun H:p => H).
+  + assume H2.
+    exact (H1 (x1) Hx1).
+- assume H.
+  let x. assume Hx.
+  exact ((andER (P x -> True) (True -> P x) (H (x) Hx)) (fun p:prop => fun H:p => H)).
+Qed.
+
 // HOL Light: bool.ml / F_DEF
 Theorem F_DEF : False <-> forall p:prop, p.
 apply iffI.

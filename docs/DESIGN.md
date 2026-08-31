@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **262 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **284 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (262 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (284 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1941,6 +1941,15 @@ SUBSET_TRANS, IN_GSPEC and the remaining `sets.ml` equalities that carry `forall
 binders.  An implication-lambda variant was tried and dropped: it blew the search space
 (the synthesis phase must stay within minutes; it now costs ~9 min, and memoizing failed
 subgoals is the next perf item).
+
+N3c (262 → 284): a last-resort ex falso that *derives* the contradiction with the full
+term prover instead of only pattern-matching hypothesis pairs (EMPTY_SUBSET, the EMPTY/
+DISJOINT families); `setminusI`'s non-membership premise closes recursively; `set_ext`
+also fires on a variable-variable equation when both sides carry subset evidence; and an
+`<->`-concluded hypothesis can be *applied* — the matcher targets either side of the iff
+and closes the other as a premise (`((andEL i1 i2 (H x Hx)) Hx)`) — which finishes
+EXTENSION and SUBSET_ANTISYM.  The synthesis phase went *down* to ~3.6 min: contradictory
+contexts now close early instead of exhausting the search.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

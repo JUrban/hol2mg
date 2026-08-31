@@ -54,7 +54,20 @@ Qed.
 // Source hash: md5:29d652bfd2edf45c3b3120e4323bcaae
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_DEF : forall A:set, forall P:set -> prop, (forall x :e A, P x) <-> forall x :e A, P x <-> True.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H1.
+  let x1. assume Hx1.
+  apply iffI.
+  + assume H3.
+    exact (fun p:prop => fun H:p => H).
+  + assume H2.
+    exact (H1 (x1) Hx1).
+- assume H.
+  let x. assume Hx.
+  exact ((andER (P x -> True) (True -> P x) (H (x) Hx)) (fun p:prop => fun H:p => H)).
+Qed.
 
 // HOL Light: bool.ml:313 / EXISTS_DEF
 // Source hash: md5:029809946a273ac40abebea56d822664
