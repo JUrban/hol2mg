@@ -28,6 +28,31 @@ let aeq a b = pp a = pp b
 
 let refl_tm = "(fun q H => H)"
 
+(* bottom-up beta normalization (bounded); printed-form comparison then treats
+   (fun x => b) t and b[x:=t] as equal, matching Megalodon's conversion *)
+let rec beta_n n t =
+  if n <= 0 then t else
+  match t with
+  | Mg.App (a, b) ->
+      let a = beta_n (n - 1) a and b = beta_n (n - 1) b in
+      (match a with
+       | Mg.Lam (x, _, body) -> beta_n (n - 1) (Mg.subst [ (x, b) ] body)
+       | _ -> Mg.App (a, b))
+  | Mg.Imp (a, b) -> Mg.Imp (beta_n (n - 1) a, beta_n (n - 1) b)
+  | Mg.Lam (x, m, b) -> Mg.Lam (x, m, beta_n (n - 1) b)
+  | Mg.All (x, m, b) -> Mg.All (x, m, beta_n (n - 1) b)
+  | Mg.Ex (x, m, b) -> Mg.Ex (x, m, beta_n (n - 1) b)
+  | Mg.AllIn (x, a, b) -> Mg.AllIn (x, beta_n (n - 1) a, beta_n (n - 1) b)
+  | Mg.ExIn (x, a, b) -> Mg.ExIn (x, beta_n (n - 1) a, beta_n (n - 1) b)
+  | Mg.AllSub (x, a, b) -> Mg.AllSub (x, beta_n (n - 1) a, beta_n (n - 1) b)
+  | Mg.ExSub (x, a, b) -> Mg.ExSub (x, beta_n (n - 1) a, beta_n (n - 1) b)
+  | Mg.Sep (x, a, b) -> Mg.Sep (x, beta_n (n - 1) a, beta_n (n - 1) b)
+  | Mg.If (a, b, c) -> Mg.If (beta_n (n - 1) a, beta_n (n - 1) b, beta_n (n - 1) c)
+  | Mg.Tuple l -> Mg.Tuple (List.map (beta_n (n - 1)) l)
+  | Mg.SetEnum l -> Mg.SetEnum (List.map (beta_n (n - 1)) l)
+  | t -> t
+let beta t = beta_n 200 t
+
 (* replace every occurrence (up to printing equality) of [old_t] by [by_t] *)
 let rec replace_tm old_t by_t t =
   if aeq t old_t then by_t else
@@ -349,7 +374,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
              Mg.App (Mg.App (Mg.Cst "and", mg_in (Mg.Var "hl__w") a),
                      Mg.subst [ (x, Mg.Var "hl__w") ] p)) in
            List.find_map (fun w ->
-             let pw = Mg.subst [ (x, w) ] p in
+             let pw = beta (Mg.subst [ (x, w) ] p) in
              match close_term st hyps (mg_in w a) (adepth - 1) with
              | None -> None
              | Some tm ->
@@ -365,7 +390,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
              | _ -> None) hyps in
            let pred = Mg.Lam ("hl__w", Mg.Set, Mg.subst [ (x, Mg.Var "hl__w") ] p) in
            List.find_map (fun w ->
-             match close_term st hyps (Mg.subst [ (x, w) ] p) (adepth - 1) with
+             match close_term st hyps (beta (Mg.subst [ (x, w) ] p)) (adepth - 1) with
              | None -> None
              | Some tp -> Some (Printf.sprintf "(ex_intro %s %s %s)" (ppp pred) (ppp w) tp)) wits
        | _ -> None)
@@ -443,7 +468,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                     (match match_tm pvars l tgt with
                      | None -> None
                      | Some bnd when List.for_all (fun v -> List.mem_assoc v bnd) pvars ->
-                         let inst t = Mg.subst bnd t in
+                         let inst t = beta (Mg.subst bnd t) in
                          let rec args = function
                            | [] -> Some []
                            | PVar x :: rest ->
@@ -553,7 +578,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                              else bnd
                          | _ -> bnd)))) bnd0 prems in
             if not (List.for_all (fun v -> List.mem_assoc v bnd) pvars) then None else
-            let inst t = Mg.subst bnd t in
+            let inst t = beta (Mg.subst bnd t) in
             let rec args = function
               | [] -> Some []
               | PVar x :: rest ->
@@ -739,7 +764,10 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                @ block d (prove_goal st hyps (Mg.Imp (q, p)) (d + 1))))
   | g when dest_or g <> None ->
       let p, q = (match dest_or g with Some pq -> pq | None -> assert false) in
-      (match close_term st hyps g 2 with
+      (match dest_not q with
+       | Some p' when aeq p' p -> [ Printf.sprintf "exact (xm (%s))." (pp p) ]
+       | _ ->
+      match close_term st hyps g 2 with
        | Some t -> [ Printf.sprintf "exact %s." t ]
        | None ->
            let fuel0 = st.fuel in
@@ -771,7 +799,7 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                :: "apply andI."
                :: (block d [ Printf.sprintf "exact %s."
                                (match close_term st hyps (mg_in t a) 2 with Some s -> s | None -> raise Give_up) ]
-                   @ block d (prove_goal st hyps (Mg.subst [ (x, t) ] b) (d + 1)))
+                   @ block d (prove_goal st hyps (beta (Mg.subst [ (x, t) ] b)) (d + 1)))
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
       in try_wit cands
   | Mg.Ex (x, m, b) ->
@@ -789,7 +817,7 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
         | [] -> or_elim st hyps goal d
         | t :: rest ->
             let fuel0 = st.fuel in
-            (try Printf.sprintf "witness %s." (pp t) :: prove_goal st hyps (Mg.subst [ (x, t) ] b) d
+            (try Printf.sprintf "witness %s." (pp t) :: prove_goal st hyps (beta (Mg.subst [ (x, t) ] b)) d
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
       in try_wit wits
   | Mg.App (Mg.App (Mg.Cst c, ux), uy) when unfold_def2 c ux uy <> None ->

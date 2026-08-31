@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **304 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **305 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (304 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (305 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1975,7 +1975,7 @@ matched against each hypothesis, so `P (choose_in A P)` yields the witness `choo
 through the subset rule) and `choose_in_spec` (SELECT_AX and the choice direction of
 EXISTS_THM).
 
-**Standard profile** (same rule set, no recorded leaves yet): **337 of 4 290 public
+**Standard profile** (same rule set, no recorded leaves yet): **338 of 4 290 public
 theorems receive generated native proofs**, checked as one composition in seconds and
 emitted with `Qed` in the public shards (`natively_proved` in the standard manifest);
 certification state is untouched (3 839 transport_checked, 36 shards OK).
@@ -1997,7 +1997,13 @@ equational goal (`forall y :e A, P y -> y = x1` at `x2` and at `x'`), the instan
 the hypotheses as proof terms, and the existing symmetry/transitivity/transport machinery
 chains them.
 
-Next (N4c): *derived equations generalized* — factor the application core so matching can
+N4c (304 → 305, 337 → 338): substitution results are beta-normalized at witness and
+instantiation sites (`(fun w => e) t` and `e[w:=t]` now compare equal, matching Megalodon's
+conversion), and an or-goal of the exact shape `p \/ ~ p` closes with `exact (xm p)`
+(EXCLUDED_MIDDLE).  SELECT_REFL-style goals (a lambda-valued predicate variable applied to
+a choice term) would need genuine higher-order matching — deferred.
+
+Next (N4d): *derived equations generalized* — factor the application core so matching can
 produce facts beyond goal-side equations — instantiate equation-concluding hypotheses
 (`forall y :e A, P y -> y = x1` at `x2` and at `x'`) into term-level equality hypotheses,
 then let the existing symmetry/transitivity/transport machinery chain them (the
