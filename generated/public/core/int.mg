@@ -3022,7 +3022,14 @@ Admitted.
 // Source hash: md5:c56d7381d5153af98b96af09f7a0ea7c
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem num_divides : forall a b :e omega, divides_nat a b <-> divides_int a b.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H1.
+  exact (divides_nat_divides_int (a) (b) H1).
+- assume H.
+  exact (divides_int_divides_nat (a) Ha (b) Hb H).
+Qed.
 
 // HOL Light: int.ml:2117 / num_mod
 // Source hash: md5:e4335a2cd1f189968a27e39cf7c9bec0

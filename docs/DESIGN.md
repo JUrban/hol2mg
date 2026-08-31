@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **301 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **302 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (301 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (302 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1975,10 +1975,21 @@ matched against each hypothesis, so `P (choose_in A P)` yields the witness `choo
 through the subset rule) and `choose_in_spec` (SELECT_AX and the choice direction of
 EXISTS_THM).
 
-**Standard profile** (same rule set, no recorded leaves yet): **334 of 4 290 public
+**Standard profile** (same rule set, no recorded leaves yet): **335 of 4 290 public
 theorems receive generated native proofs**, checked as one composition in seconds and
 emitted with `Qed` in the public shards (`natively_proved` in the standard manifest);
 certification state is untouched (3 839 transport_checked, 36 shards OK).
+
+N4a — definition unfolding (301 → 302, 334 → 335: num_divides on both profiles): a curated
+table maps defined predicates (`divides_int`, `divides_nat`) to their definitional
+expansions; a goal with a defined head that nothing closes directly is restated with
+`prove <unfolded>.` and proved by parts, with every binder in the expansion *freshened
+against the proof's name table* — the prover compares printed forms, so an unfolded binder
+shadowing a context variable silently corrupts rewriting (Megalodon caught one such proof;
+another *hung* the checker through `mul_SNo` convertibility).  Unfolding hypotheses was
+tried and reverted: a term of the folded type used where the unfolded form is expected is
+not converted by `exact`, so only the goal-side restatement (plus the God1 bridging
+premises `divides_nat_divides_int`, `divides_int_divides_nat`) is kept.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

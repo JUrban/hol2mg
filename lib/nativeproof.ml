@@ -125,6 +125,22 @@ let rec strip_hyp t : prem list * Mg.tm =
   | Mg.Imp (p, q) -> let ps, c = strip_hyp q in (PProp p :: ps, c)
   | c -> ([], c)
 
+(* curated definitional unfoldings of binary predicates: constant -> unfolded prop *)
+let mg_and a b = Mg.App (Mg.App (Mg.Cst "and", a), b)
+let unfold_def2 (c : string) (x : Mg.tm) (y : Mg.tm) : Mg.tm option =
+  match c with
+  | "divides_int" ->
+      Some (mg_and (mg_and (mg_in x (Mg.Cst "int")) (mg_in y (Mg.Cst "int")))
+              (Mg.ExIn ("hl__k", Mg.Cst "int",
+                 Mg.App (Mg.App (Mg.Cst "eq",
+                   Mg.App (Mg.App (Mg.Cst "mul_SNo", x), Mg.Var "hl__k")), y))))
+  | "divides_nat" ->
+      Some (mg_and (mg_and (mg_in x (Mg.Cst "omega")) (mg_in y (Mg.Cst "omega")))
+              (Mg.ExIn ("hl__k", Mg.Cst "omega",
+                 Mg.App (Mg.App (Mg.Cst "eq",
+                   Mg.App (Mg.App (Mg.Cst "mul_SNo", x), Mg.Var "hl__k")), y))))
+  | _ -> None
+
 (* enrich a hypothesis with its derived term projections (no script): conjunction and
    iff components, memberships in separations / boolean set operations / enumerations *)
 let rec augment (name : string) (prop : Mg.tm) (acc : hyp list) : hyp list =
@@ -167,6 +183,29 @@ let rec augment (name : string) (prop : Mg.tm) (acc : hyp list) : hyp list =
         prop = Mg.App (Mg.App (Mg.Cst "or",
           Mg.App (Mg.App (Mg.Cst "eq", z), a)), Mg.App (Mg.App (Mg.Cst "eq", z), b)) } :: h :: acc
   | _ -> h :: acc
+
+(* rename every binder in a term to a fresh name (st-aware), so unfolded definitions
+   never shadow context variables: replace_tm/aeq compare printed forms and would
+   otherwise confuse bound and free occurrences of the same name *)
+let rec freshen_binders st t =
+  let fr x b re =
+    let x' = fresh st x in
+    re x' (Mg.subst [ (x, Mg.Var x') ] b) in
+  match t with
+  | Mg.App (a, b) -> Mg.App (freshen_binders st a, freshen_binders st b)
+  | Mg.Imp (a, b) -> Mg.Imp (freshen_binders st a, freshen_binders st b)
+  | Mg.If (a, b, c) -> Mg.If (freshen_binders st a, freshen_binders st b, freshen_binders st c)
+  | Mg.Tuple l -> Mg.Tuple (List.map (freshen_binders st) l)
+  | Mg.SetEnum l -> Mg.SetEnum (List.map (freshen_binders st) l)
+  | Mg.Lam (x, m, b) -> fr x b (fun x' b' -> Mg.Lam (x', m, freshen_binders st b'))
+  | Mg.All (x, m, b) -> fr x b (fun x' b' -> Mg.All (x', m, freshen_binders st b'))
+  | Mg.Ex (x, m, b) -> fr x b (fun x' b' -> Mg.Ex (x', m, freshen_binders st b'))
+  | Mg.AllIn (x, a, b) -> let a' = freshen_binders st a in fr x b (fun x' b' -> Mg.AllIn (x', a', freshen_binders st b'))
+  | Mg.ExIn (x, a, b) -> let a' = freshen_binders st a in fr x b (fun x' b' -> Mg.ExIn (x', a', freshen_binders st b'))
+  | Mg.AllSub (x, a, b) -> let a' = freshen_binders st a in fr x b (fun x' b' -> Mg.AllSub (x', a', freshen_binders st b'))
+  | Mg.ExSub (x, a, b) -> let a' = freshen_binders st a in fr x b (fun x' b' -> Mg.ExSub (x', a', freshen_binders st b'))
+  | Mg.Sep (x, a, b) -> let a' = freshen_binders st a in fr x b (fun x' b' -> Mg.Sep (x', a', freshen_binders st b'))
+  | t -> t
 
 (* term-level closing of a goal: hypothesis, reflexivity, symmetry/transitivity motives,
    True, False from a contradiction, and application of a stripped hypothesis whose
@@ -706,6 +745,15 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
             (try Printf.sprintf "witness %s." (pp t) :: prove_goal st hyps (Mg.subst [ (x, t) ] b) d
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
       in try_wit wits
+  | Mg.App (Mg.App (Mg.Cst c, ux), uy) when unfold_def2 c ux uy <> None ->
+      (match close_term st hyps goal 3 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None ->
+           (match unfold_def2 c ux uy with
+            | Some u ->
+                let u = freshen_binders st u in
+                Printf.sprintf "prove %s." (pp u) :: prove_goal st hyps u d
+            | None -> assert false))
   | g ->
       (match close_term st hyps g 3 with
        | Some t -> [ Printf.sprintf "exact %s." t ]
@@ -835,6 +883,14 @@ let builtin_premises : (string * Mg.tm) list =
      Mg.AllIn ("hl__x", Mg.Cst "int",
        mg_in (Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")) (Mg.Cst "int")));
     ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1));
+    ("divides_nat_divides_int",
+     Mg.All ("hl__m", Mg.Set, Mg.All ("hl__n", Mg.Set,
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "divides_nat", Mg.Var "hl__m"), Mg.Var "hl__n"),
+               Mg.App (Mg.App (Mg.Cst "divides_int", Mg.Var "hl__m"), Mg.Var "hl__n")))));
+    ("divides_int_divides_nat",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "divides_int", Mg.Var "hl__m"), Mg.Var "hl__n"),
+               Mg.App (Mg.App (Mg.Cst "divides_nat", Mg.Var "hl__m"), Mg.Var "hl__n")))));
     ("Subq_omega_int", Mg.App (Mg.App (Mg.Cst "Subq", Mg.Cst "omega"), Mg.Cst "int"));
     ("choose_in_spec",
      Mg.All ("hl__A", Mg.Set,
