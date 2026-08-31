@@ -269,7 +269,7 @@ Theorem COND_CLAUSES : forall A:set, forall t1 t2 :e A, (if True then t1 else t2
 let A.
 let t1. assume Ht1.
 let t2. assume Ht2.
-exact (andI ((if True then t1 else t2) = t1) ((if False then t1 else t2) = t2) (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)) (If_i_0 (False) (t1) (t2) (fun hl__H : False => hl__H))).
+exact (andI ((if True then t1 else t2) = t1) ((if False then t1 else t2) = t2) (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)) (If_i_0 (False) (t1) (t2) (fun hl__H1 : False => hl__H1))).
 Qed.
 
 // HOL Light: class.ml:342 / COND_EXPAND

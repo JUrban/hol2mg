@@ -429,6 +429,53 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
       |> function
       | Some t -> Some t
       | None ->
+      (* derived equations: instantiate an equation-concluding hypothesis at either side
+         of an equational goal, then chain with symmetry/transitivity/transport *)
+      (match dest_eq goal with
+       | Some (a, b) when adepth >= 2 ->
+           let derive h =
+             let prems, concl = strip_hyp h.prop in
+             if prems = [] then None else
+             let pvars = List.filter_map (function PVar x -> Some x | _ -> None) prems in
+             (match dest_eq concl with
+              | Some (l, _) ->
+                  let try_tgt tgt =
+                    (match match_tm pvars l tgt with
+                     | None -> None
+                     | Some bnd when List.for_all (fun v -> List.mem_assoc v bnd) pvars ->
+                         let inst t = Mg.subst bnd t in
+                         let rec args = function
+                           | [] -> Some []
+                           | PVar x :: rest ->
+                               (match args rest with Some r -> Some (ppp (List.assoc x bnd) :: r) | None -> None)
+                           | PMem (x, aa) :: rest ->
+                               (match close_term st hyps (mg_in (inst (Mg.Var x)) (inst aa)) (adepth - 1) with
+                                | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
+                                | None -> None)
+                           | PSub (x, aa) :: rest ->
+                               (match close_term st hyps (mg_subq (inst (Mg.Var x)) (inst aa)) (adepth - 1) with
+                                | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
+                                | None -> None)
+                           | PProp pp' :: rest ->
+                               (match close_term st hyps (inst pp') (adepth - 1) with
+                                | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
+                                | None -> None)
+                         in
+                         (match args prems with
+                          | Some lst -> Some { hname = Printf.sprintf "(%s %s)" h.hname (String.concat " " lst);
+                                               prop = inst concl }
+                          | None -> None)
+                     | Some _ -> None) in
+                  (match try_tgt a with Some d -> Some d | None -> try_tgt b)
+              | None -> None) in
+           let derived = List.filter_map derive hyps in
+           let fresh_d = List.filter (fun d -> not (List.exists (fun h -> aeq h.prop d.prop) hyps)) derived in
+           if fresh_d = [] then None
+           else (spend st 3; close_term st (fresh_d @ hyps) goal (adepth - 1))
+       | _ -> None)
+      |> function
+      | Some t -> Some t
+      | None ->
       (* transport along an equality hypothesis: close goal[e2 := e1] and rewrite *)
       (match List.find_map (fun h ->
          match dest_eq h.prop with

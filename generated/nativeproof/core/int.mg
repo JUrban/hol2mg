@@ -152,9 +152,9 @@ let x. assume Hx.
 let y. assume Hy.
 apply (xm (x <= y)).
 - assume H.
-  exact (((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (y :e int) (y) (0) Hy) (fun hl__u hl__v => hl__u = (if y :e int then y else 0)) (fun q H => H))).
+  exact ((If_i_1 ((if x <= y then y else x) :e int) (if x <= y then y else x) (0) (((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hy)) (fun hl__u hl__v => hl__u = (if (if x <= y then y else x) :e int then if x <= y then y else x else 0)) (fun q H => H)).
 - assume H1.
-  exact (((If_i_0 (x <= y) (y) (x) H1) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (x :e int) (x) (0) Hx) (fun hl__u hl__v => hl__u = (if x :e int then x else 0)) (fun q H => H))).
+  exact ((If_i_1 ((if x <= y then y else x) :e int) (if x <= y then y else x) (0) (((If_i_0 (x <= y) (y) (x) H1) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hx)) (fun hl__u hl__v => hl__u = (if (if x <= y then y else x) :e int then if x <= y then y else x else 0)) (fun q H => H)).
 Qed.
 
 // HOL Light: int.ml / int_max_th
@@ -170,9 +170,9 @@ let x. assume Hx.
 let y. assume Hy.
 apply (xm (x <= y)).
 - assume H.
-  exact (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (x :e int) (x) (0) Hx) (fun hl__u hl__v => hl__u = (if x :e int then x else 0)) (fun q H => H))).
+  exact ((If_i_1 ((if x <= y then x else y) :e int) (if x <= y then x else y) (0) (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hx)) (fun hl__u hl__v => hl__u = (if (if x <= y then x else y) :e int then if x <= y then x else y else 0)) (fun q H => H)).
 - assume H1.
-  exact (((If_i_0 (x <= y) (x) (y) H1) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (y :e int) (y) (0) Hy) (fun hl__u hl__v => hl__u = (if y :e int then y else 0)) (fun q H => H))).
+  exact ((If_i_1 ((if x <= y then x else y) :e int) (if x <= y then x else y) (0) (((If_i_0 (x <= y) (x) (y) H1) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hy)) (fun hl__u hl__v => hl__u = (if (if x <= y then x else y) :e int then if x <= y then x else y else 0)) (fun q H => H)).
 Qed.
 
 // HOL Light: int.ml / int_min_th

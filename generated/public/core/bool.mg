@@ -111,5 +111,29 @@ Qed.
 // Source hash: md5:f70acb0782b4d00ef544e0b446ba3d20
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_UNIQUE_DEF : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x y :e A, P x /\ P y -> x = y.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H4.
+  apply H4. let x1. assume H5. apply H5. assume Hx1 H6.
+  apply andI.
+  + witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (andEL (P x1) (forall y :e A, P y -> y = x1) H6).
+  + let x2. assume Hx2.
+    let y1. assume Hy1.
+    assume H7.
+    exact ((((andER (P x1) (forall y :e A, P y -> y = x1) H6) (x2) Hx2 (andEL (P x2) (P y1) H7)) (fun hl__u hl__v => hl__u = (x2)) (fun q H => H)) (fun hl__u hl__v => hl__u = y1) (((andER (P x1) (forall y :e A, P y -> y = x1) H6) (y1) Hy1 (andER (P x2) (P y1) H7)) (fun hl__u hl__v => hl__u = (y1)) (fun q H => H))).
+- assume H.
+  apply (andEL (exists x :e A, P x) (forall x y :e A, P x /\ P y -> x = y) H). let x. assume H1. apply H1. assume Hx H2.
+  witness x.
+  apply andI.
+  + exact Hx.
+  + apply andI.
+    * exact H2.
+    * let y. assume Hy.
+      assume H3.
+      exact ((andER (exists x :e A, P x) (forall x y :e A, P x /\ P y -> x = y) H) (y) Hy (x) Hx (andI (P y) (P x) H3 H2)).
+Qed.
 
