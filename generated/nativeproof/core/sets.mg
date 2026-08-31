@@ -13,6 +13,17 @@ apply iffI.
   exact H.
 Qed.
 
+// HOL Light: sets.ml / EMPTY
+Theorem EMPTY : forall A:set, forall x :e A, x :e Empty <-> False.
+let A.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact (EmptyE (x) H1).
+- assume H.
+  exact (FalseE H (x :e Empty)).
+Qed.
+
 // HOL Light: sets.ml / UNIV
 Theorem UNIV : forall A:set, forall x :e A, x :e A <-> True.
 let A.
@@ -67,6 +78,14 @@ Theorem REST : forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :
 let A.
 let s. assume Hs.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / NOT_IN_EMPTY
+Theorem NOT_IN_EMPTY : forall A:set, forall x :e A, ~ x :e Empty.
+let A.
+let x. assume Hx.
+assume H.
+exact (EmptyE (x) H).
 Qed.
 
 // HOL Light: sets.ml / IN_UNIV
@@ -177,6 +196,30 @@ Theorem list_of_set : forall A:set, forall s c= A, choose_in (finseq A) (fun l:s
 let A.
 let s. assume Hs.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / PAIRWISE_AND
+Theorem PAIRWISE_AND : forall A:set, forall R0 R':set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> R0 x y) /\ (forall x y :e s, x <> y -> R' x y) <-> forall x y :e s, x <> y -> R0 x y /\ R' x y.
+let A.
+let R0.
+let R'.
+let s. assume Hs.
+apply iffI.
+- assume H3.
+  let x2. assume Hx2.
+  let y2. assume Hy2.
+  assume H4.
+  exact (andI (R0 x2 y2) (R' x2 y2) ((andEL (forall x y :e s, x <> y -> R0 x y) (forall x y :e s, x <> y -> R' x y) H3) (x2) Hx2 (y2) Hy2 H4) ((andER (forall x y :e s, x <> y -> R0 x y) (forall x y :e s, x <> y -> R' x y) H3) (x2) Hx2 (y2) Hy2 H4)).
+- assume H.
+  apply andI.
+  + let x1. assume Hx1.
+    let y1. assume Hy1.
+    assume H2.
+    exact (andEL (R0 x1 y1) (R' x1 y1) (H (x1) Hx1 (y1) Hy1 H2)).
+  + let x. assume Hx.
+    let y. assume Hy.
+    assume H1.
+    exact (andER (R0 x y) (R' x y) (H (x) Hx (y) Hy H1)).
 Qed.
 
 // HOL Light: sets.ml / ARBITRARY

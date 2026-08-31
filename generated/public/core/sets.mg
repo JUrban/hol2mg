@@ -26,7 +26,14 @@ Admitted.
 // Source hash: md5:1989ccecebe524300c28d988fa7a6bf4
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EMPTY : forall A:set, forall x :e A, x :e Empty <-> False.
-Admitted.
+let A.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact (EmptyE (x) H1).
+- assume H.
+  exact (FalseE H (x :e Empty)).
+Qed.
 
 // HOL Light: sets.ml:80 / INSERT_DEF
 // Source hash: md5:bc4aedb68c8fa7e24483a802d7b666f8
@@ -206,7 +213,11 @@ Qed.
 // Source hash: md5:ebe8471d5c357b956cf0f5e515fe3511
 // Status: generalization_required (bridges: empty_case:A)
 Theorem NOT_IN_EMPTY : forall A:set, forall x :e A, ~ x :e Empty.
-Admitted.
+let A.
+let x. assume Hx.
+assume H.
+exact (EmptyE (x) H).
+Qed.
 
 // HOL Light: sets.ml:178 / IN_UNIV
 // Source hash: md5:eee80073ec9a8663b3ed94c2504d029b
@@ -3104,7 +3115,27 @@ Admitted.
 // Source hash: md5:67023d03a94a293bcd04f67c7b99dbf1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem PAIRWISE_AND : forall A:set, forall R0 R':set -> set -> prop, forall s c= A, (forall x y :e s, x <> y -> R0 x y) /\ (forall x y :e s, x <> y -> R' x y) <-> forall x y :e s, x <> y -> R0 x y /\ R' x y.
-Admitted.
+let A.
+let R0.
+let R'.
+let s. assume Hs.
+apply iffI.
+- assume H3.
+  let x2. assume Hx2.
+  let y2. assume Hy2.
+  assume H4.
+  exact (andI (R0 x2 y2) (R' x2 y2) ((andEL (forall x y :e s, x <> y -> R0 x y) (forall x y :e s, x <> y -> R' x y) H3) (x2) Hx2 (y2) Hy2 H4) ((andER (forall x y :e s, x <> y -> R0 x y) (forall x y :e s, x <> y -> R' x y) H3) (x2) Hx2 (y2) Hy2 H4)).
+- assume H.
+  apply andI.
+  + let x1. assume Hx1.
+    let y1. assume Hy1.
+    assume H2.
+    exact (andEL (R0 x1 y1) (R' x1 y1) (H (x1) Hx1 (y1) Hy1 H2)).
+  + let x. assume Hx.
+    let y. assume Hy.
+    assume H1.
+    exact (andER (R0 x y) (R' x y) (H (x) Hx (y) Hy H1)).
+Qed.
 
 // HOL Light: sets.ml:3921 / PAIRWISE_INSERT
 // Source hash: md5:bdcf223e063494cab1c69de3864505f3

@@ -20,3 +20,41 @@ Theorem TRUTH : True.
 exact (fun p:prop => fun H:p => H).
 Qed.
 
+// HOL Light: bool.ml / IMP_DEF
+Theorem IMP_DEF : forall p q:prop, p -> q <-> (p /\ q <-> p).
+let p.
+let q.
+apply iffI.
+- assume H2.
+  apply iffI.
+  + assume H4.
+    exact (andEL (p) (q) H4).
+  + assume H3.
+    exact (andI (p) (q) H3 (H2 H3)).
+- assume H.
+  assume H1.
+  exact (andER (p) (q) ((andER (p /\ q -> p) (p -> p /\ q) H) H1)).
+Qed.
+
+// HOL Light: bool.ml / F_DEF
+Theorem F_DEF : False <-> forall p:prop, p.
+apply iffI.
+- assume H1.
+  let p.
+  exact (FalseE H1 (p)).
+- assume H.
+  exact (H (False)).
+Qed.
+
+// HOL Light: bool.ml / NOT_DEF
+Theorem NOT_DEF : forall p:prop, ~ p <-> p -> False.
+let p.
+apply iffI.
+- assume H2.
+  assume H3.
+  exact (H2 H3).
+- assume H.
+  assume H1.
+  exact (H H1).
+Qed.
+

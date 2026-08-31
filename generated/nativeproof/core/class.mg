@@ -50,8 +50,8 @@ apply andI.
   apply iffI.
   + assume H8.
     apply (xm (t)).
-    - assume H9. exact H9.
-    - assume H9. exact (FalseE (H8 H9) (t)).
+    * assume H9. exact H9.
+    * assume H9. exact (FalseE (H8 H9) (t)).
   + assume H6.
     assume H7.
     exact (H7 H6).

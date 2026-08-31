@@ -365,6 +365,52 @@ assume H1.
 exact ((andEL (a -> b) (b -> a) H) H1).
 Qed.
 
+// HOL Light: theorems.ml / EQ_CLAUSES
+Theorem EQ_CLAUSES : forall t:prop, ((True <-> t) <-> t) /\ (((t <-> True) <-> t) /\ (((False <-> t) <-> ~ t) /\ ((t <-> False) <-> ~ t))).
+let t.
+apply andI.
+- apply iffI.
+  + assume H17.
+    exact ((andEL (True -> t) (t -> True) H17) (fun p:prop => fun H:p => H)).
+  + assume H14.
+    apply iffI.
+    * assume H16.
+      exact H14.
+    * assume H15.
+      exact (fun p:prop => fun H:p => H).
+- apply andI.
+  + apply iffI.
+    * assume H13.
+      exact ((andER (t -> True) (True -> t) H13) (fun p:prop => fun H:p => H)).
+    * assume H10.
+      apply iffI.
+      assume H12.
+      exact (fun p:prop => fun H:p => H).
+      assume H11.
+      exact H10.
+  + apply andI.
+    * apply iffI.
+      assume H8.
+      assume H9.
+      exact ((andER (False -> t) (t -> False) H8) H9).
+      assume H5.
+      apply iffI.
+      assume H7.
+      exact (FalseE H7 (t)).
+      assume H6.
+      exact (H5 H6).
+    * apply iffI.
+      assume H3.
+      assume H4.
+      exact ((andEL (t -> False) (False -> t) H3) H4).
+      assume H.
+      apply iffI.
+      assume H2.
+      exact (H H2).
+      assume H1.
+      exact (FalseE H1 (t)).
+Qed.
+
 // HOL Light: theorems.ml / NOT_CLAUSES_WEAK
 Theorem NOT_CLAUSES_WEAK : (~ True <-> False) /\ (~ False <-> True).
 apply andI.
@@ -460,6 +506,46 @@ apply andI.
       exact H3.
       assume H.
       exact (orIL (t) (t) H).
+Qed.
+
+// HOL Light: theorems.ml / IMP_CLAUSES
+Theorem IMP_CLAUSES : forall t:prop, (True -> t <-> t) /\ ((t -> True <-> True) /\ ((False -> t <-> True) /\ ((t -> t <-> True) /\ (t -> False <-> ~ t)))).
+let t.
+apply andI.
+- apply iffI.
+  + assume H15.
+    exact (H15 (fun p:prop => fun H:p => H)).
+  + assume H13.
+    assume H14.
+    exact H13.
+- apply andI.
+  + apply iffI.
+    * assume H12.
+      exact (fun p:prop => fun H:p => H).
+    * assume H10.
+      assume H11.
+      exact H10.
+  + apply andI.
+    * apply iffI.
+      assume H9.
+      exact (fun p:prop => fun H:p => H).
+      assume H7.
+      assume H8.
+      exact (FalseE H8 (t)).
+    * apply andI.
+      apply iffI.
+      assume H6.
+      exact (fun p:prop => fun H:p => H).
+      assume H4.
+      assume H5.
+      exact H5.
+      apply iffI.
+      assume H2.
+      assume H3.
+      exact (H2 H3).
+      assume H.
+      assume H1.
+      exact (H H1).
 Qed.
 
 // HOL Light: theorems.ml / EXISTS_REFL
@@ -588,6 +674,40 @@ apply iffI.
     apply andI.
     * exact Hy.
     * exact H4.
+Qed.
+
+// HOL Light: theorems.ml / FORALL_AND_THM
+Theorem FORALL_AND_THM : forall A:set, forall P Q:set -> prop, (forall x :e A, P x /\ Q x) <-> (forall x :e A, P x) /\ forall x :e A, Q x.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H1.
+  apply andI.
+  + let x2. assume Hx2.
+    exact (andEL (P x2) (Q x2) (H1 (x2) Hx2)).
+  + let x1. assume Hx1.
+    exact (andER (P x1) (Q x1) (H1 (x1) Hx1)).
+- assume H.
+  let x. assume Hx.
+  exact (andI (P x) (Q x) ((andEL (forall x :e A, P x) (forall x :e A, Q x) H) (x) Hx) ((andER (forall x :e A, P x) (forall x :e A, Q x) H) (x) Hx)).
+Qed.
+
+// HOL Light: theorems.ml / AND_FORALL_THM
+Theorem AND_FORALL_THM : forall A:set, forall P Q:set -> prop, (forall x :e A, P x) /\ (forall x :e A, Q x) <-> forall x :e A, P x /\ Q x.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H1.
+  let x2. assume Hx2.
+  exact (andI (P x2) (Q x2) ((andEL (forall x :e A, P x) (forall x :e A, Q x) H1) (x2) Hx2) ((andER (forall x :e A, P x) (forall x :e A, Q x) H1) (x2) Hx2)).
+- assume H.
+  apply andI.
+  + let x1. assume Hx1.
+    exact (andEL (P x1) (Q x1) (H (x1) Hx1)).
+  + let x. assume Hx.
+    exact (andER (P x) (Q x) (H (x) Hx)).
 Qed.
 
 // HOL Light: theorems.ml / LEFT_EXISTS_AND_THM

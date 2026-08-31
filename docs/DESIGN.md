@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **183 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **193 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 3 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (183 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (193 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1896,6 +1896,14 @@ firing of the broken branch (CARD_PSUBSET_IMP).  `native_reuse` theorems (propos
 already has, under other names) are now *re-proved natively* too: that makes them citable
 premises under their HOL names, and the public shards show a readable proof instead of a
 bare reuse comment (Megalodon only warns about re-proving).
+
+N2d (same day, 183 → 193): hypothesis application can match *inside* an `/\` or `<->`
+conclusion, projecting with `andEL`/`andER` (the FORALL_AND family); pattern variables the
+conclusion leaves open are bound by matching the lemma's own premises against the available
+hypotheses (back-chaining); a built-in premise table of God1/prelude facts every composition
+contains (`EmptyE` — encoded in its definitionally equal `-> False` form so the matcher can
+apply it — and `choose_in_in`); and `False` goals fall through to the generic closings
+instead of stopping at the negation search (EMPTY, NOT_IN_EMPTY, EQ_CLAUSES, IMP_CLAUSES).
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

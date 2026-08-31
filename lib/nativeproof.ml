@@ -135,19 +135,24 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
   | None ->
   match goal with
   | Mg.Cst "True" -> Some "(fun p:prop => fun H:p => H)"
-  | Mg.Cst "False" ->
-      List.find_map (fun h ->
-        match dest_not h.prop with
-        | Some p ->
-            (match List.find_opt (fun h2 -> aeq h2.prop p) hyps with
-             | Some h2 -> Some (Printf.sprintf "(%s %s)" h.hname h2.hname)
-             | None ->
-                 if adepth <= 0 then None else
-                 (match close_term st (List.filter (fun h2 -> h2.hname <> h.hname) hyps) p (adepth - 1) with
-                  | Some t -> Some (Printf.sprintf "(%s %s)" h.hname t)
-                  | None -> None))
-        | None -> None) hyps
   | _ ->
+  (* a False goal from a negation hypothesis (recursively closing the positive side);
+     other closings below (e.g. hypothesis application) still apply to False goals *)
+  (if goal <> Mg.Cst "False" then None else
+     List.find_map (fun h ->
+       match dest_not h.prop with
+       | Some p ->
+           (match List.find_opt (fun h2 -> aeq h2.prop p) hyps with
+            | Some h2 -> Some (Printf.sprintf "(%s %s)" h.hname h2.hname)
+            | None ->
+                if adepth <= 0 then None else
+                (match close_term st (List.filter (fun h2 -> h2.hname <> h.hname) hyps) p (adepth - 1) with
+                 | Some t -> Some (Printf.sprintf "(%s %s)" h.hname t)
+                 | None -> None))
+       | None -> None) hyps)
+  |> function
+  | Some t -> Some t
+  | None ->
   (* ex falso: any goal follows from a False hypothesis or a direct contradiction *)
   (match List.find_opt (fun h -> h.prop = Mg.Cst "False") hyps with
    | Some h -> Some (Printf.sprintf "(FalseE %s (%s))" h.hname (pp goal))
@@ -254,9 +259,38 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
         let prems, concl = strip_hyp h.prop in
         if prems = [] then None else
         let pvars = List.filter_map (function PVar x -> Some x | _ -> None) prems in
-        match match_tm pvars concl goal with
+        (* the conclusion itself, or a projection out of an /\ or <-> conclusion *)
+        let variants =
+          (concl, `Id)
+          :: (match dest_and concl with
+              | Some (a, b) -> [ (a, `AndL (a, b)); (b, `AndR (a, b)) ]
+              | None ->
+                  (match dest_iff concl with
+                   | Some (p, q) ->
+                       let i1 = Mg.Imp (p, q) and i2 = Mg.Imp (q, p) in
+                       [ (i1, `AndL (i1, i2)); (i2, `AndR (i1, i2)) ]
+                   | None -> [])) in
+        List.find_map (fun (cpat, wrap) ->
+        match match_tm pvars cpat goal with
         | None -> None
-        | Some bnd when List.for_all (fun v -> List.mem_assoc v bnd) pvars ->
+        | Some bnd0 ->
+            (* pattern variables the conclusion leaves open are bound by matching the
+               hypothesis' own premises against the available hypotheses (back-chaining) *)
+            let bnd = List.fold_left (fun bnd pr ->
+              let miss = List.filter (fun v -> not (List.mem_assoc v bnd)) pvars in
+              if miss = [] then bnd else
+              let pat = (match pr with
+                | PProp p -> Some (Mg.subst bnd p)
+                | PMem (x, a) -> Some (Mg.subst bnd (mg_in (Mg.Var x) a))
+                | PSub (x, a) -> Some (Mg.subst bnd (mg_subq (Mg.Var x) a))
+                | PVar _ -> None) in
+              (match pat with
+               | None -> bnd
+               | Some pat ->
+                   (match List.find_map (fun h2 -> match_tm miss pat h2.prop) hyps with
+                    | Some ext -> ext @ bnd
+                    | None -> bnd))) bnd0 prems in
+            if not (List.for_all (fun v -> List.mem_assoc v bnd) pvars) then None else
             let inst t = Mg.subst bnd t in
             let rec args = function
               | [] -> Some []
@@ -276,9 +310,13 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                    | None -> None)
             in
             (match args prems with
-             | Some l -> Some (Printf.sprintf "(%s %s)" h.hname (String.concat " " l))
-             | None -> None)
-        | Some _ -> None) hyps)
+             | Some l ->
+                 let base = Printf.sprintf "(%s %s)" h.hname (String.concat " " l) in
+                 Some (match wrap with
+                       | `Id -> base
+                       | `AndL (a, b) -> Printf.sprintf "(andEL %s %s %s)" (ppp (inst a)) (ppp (inst b)) base
+                       | `AndR (a, b) -> Printf.sprintf "(andER %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
+             | None -> None)) variants) hyps)
 
 (* bullets by depth; deeper levels run sequentially *)
 let bullet d = match d with 0 -> Some "-" | 1 -> Some "+" | 2 -> Some "*" | _ -> None
@@ -429,9 +467,12 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
              | None -> false) hyps with
            | Some h ->
                let h1 = fresh st "H" in
-               [ Printf.sprintf "apply (xm (%s))." (pp g);
-                 Printf.sprintf "- assume %s. exact %s." h1 h1;
-                 Printf.sprintf "- assume %s. exact (FalseE (%s %s) (%s))." h1 h.hname h1 (pp g) ]
+               let bl lines = (match bullet d with
+                 | Some _ -> block d lines
+                 | None -> (match lines with f :: r -> ("- " ^ f) :: List.map (fun l -> "  " ^ l) r | [] -> [])) in
+               Printf.sprintf "apply (xm (%s))." (pp g)
+               :: (bl [ Printf.sprintf "assume %s. exact %s." h1 h1 ]
+                   @ bl [ Printf.sprintf "assume %s. exact (FalseE (%s %s) (%s))." h1 h.hname h1 (pp g) ])
            | None -> or_elim st hyps g d)
 
 and or_elim st hyps goal d =
@@ -445,9 +486,24 @@ and or_elim st hyps goal d =
           @ block d (Printf.sprintf "assume %s." h2 :: push st goal h2 q hyps' (fun hy -> prove_goal st hy goal (d + 1))))
   | None -> raise Give_up
 
+(* God1/prelude facts available in every composition the generated proofs check in
+   (docs/DESIGN.md 23.5).  Statements are hand-built ASTs of the library lemmas; EmptyE
+   is stated in its definitionally equal `-> False` form so hypothesis application fires. *)
+let builtin_premises : (string * Mg.tm) list =
+  [ ("EmptyE",
+     Mg.All ("hl__x", Mg.Set,
+       Mg.Imp (mg_in (Mg.Var "hl__x") (Mg.Cst "Empty"), Mg.Cst "False")));
+    ("choose_in_in",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "neq", Mg.Var "hl__A"), Mg.Cst "Empty"),
+         Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+           mg_in (Mg.App (Mg.App (Mg.Cst "choose_in", Mg.Var "hl__A"), Mg.Var "hl__P"))
+             (Mg.Var "hl__A"))))) ]
+
 let prove ?(budget = 6000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
   let st = { fuel = budget; names = Hashtbl.create 64 } in
+  let premises = premises @ builtin_premises in
   ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.map (fun (n, p) -> { hname = n; prop = p }) premises in
