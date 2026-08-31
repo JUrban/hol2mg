@@ -1,0 +1,317 @@
+(* Bounded declarative prover for native statements (docs/DESIGN.md 23, phase N2).
+   Emits God1-style proofs -- let/assume/prove/apply/exact/witness with -/+/* bullets --
+   using only definitional logic (andI, orIL, orIR, iffI, inline Leibniz equality) and
+   instantiations of universally quantified hypotheses.  No hl_* symbols, no literal layer:
+   the proofs check against the native context (God1 signature + native prelude + public
+   definitions) alone. *)
+
+let pp = Mg.to_string
+let ppp t = "(" ^ Mg.to_string t ^ ")"
+
+exception Give_up
+
+type hyp = { hname : string; prop : Mg.tm }
+
+let dest_and = function Mg.App (Mg.App (Mg.Cst "and", a), b) -> Some (a, b) | _ -> None
+let dest_or = function Mg.App (Mg.App (Mg.Cst "or", a), b) -> Some (a, b) | _ -> None
+let dest_iff = function Mg.App (Mg.App (Mg.Cst "iff", a), b) -> Some (a, b) | _ -> None
+let dest_not = function Mg.App (Mg.Cst "not", a) -> Some a | _ -> None
+let dest_eq = function Mg.App (Mg.App (Mg.Cst "eq", a), b) -> Some (a, b) | _ -> None
+let mg_in x a = Mg.App (Mg.App (Mg.Cst "In", x), a)
+let mg_subq x a = Mg.App (Mg.App (Mg.Cst "Subq", x), a)
+
+(* printing is canonical enough for the pilot's equality of formulas *)
+let aeq a b = pp a = pp b
+
+let refl_tm = "(fun q H => H)"
+
+type st = { mutable fuel : int; mutable names : (string, unit) Hashtbl.t }
+
+let spend st n = st.fuel <- st.fuel - n; if st.fuel < 0 then raise Give_up
+
+let fresh st base =
+  let base = if base = "" then "x" else base in
+  let rec go i =
+    let n = if i = 0 then base else base ^ string_of_int i in
+    if Hashtbl.mem st.names n then go (i + 1) else (Hashtbl.replace st.names n (); n)
+  in go 0
+
+let rec collect_names t =
+  let acc = ref [] in
+  let rec go t = match t with
+    | Mg.Var v | Mg.Cst v -> acc := v :: !acc
+    | Mg.Meta _ | Mg.Num _ -> ()
+    | Mg.App (a, b) | Mg.If (a, b, Mg.Num 0) -> go a; go b
+    | Mg.Lam (x, _, b) | Mg.All (x, _, b) | Mg.Ex (x, _, b) -> acc := x :: !acc; go b
+    | Mg.LamIn (x, a, b) | Mg.AllIn (x, a, b) | Mg.AllSub (x, a, b)
+    | Mg.ExIn (x, a, b) | Mg.ExSub (x, a, b) | Mg.Sep (x, a, b) | Mg.Repl (x, a, b)
+    | Mg.SigmaIn (x, a, b) | Mg.PiIn (x, a, b) | Mg.FamUnion (x, a, b) ->
+        acc := x :: !acc; go a; go b
+    | Mg.ReplSep (x, a, p, b) -> acc := x :: !acc; go a; go p; go b
+    | Mg.Imp (a, b) -> go a; go b
+    | Mg.SetEnum l | Mg.Tuple l -> List.iter go l
+    | Mg.If (a, b, c) -> go a; go b; go c
+  in go t; !acc
+
+(* first-order matching: pattern variables pvars (bound in the hypothesis) against a goal *)
+let match_tm (pvars : string list) (pat : Mg.tm) (goal : Mg.tm) : (string * Mg.tm) list option =
+  let bnd = ref [] in
+  let rec go pv pat goal =
+    match pat, goal with
+    | Mg.Var v, _ when List.mem v pv ->
+        (match List.assoc_opt v !bnd with
+         | Some t -> aeq t goal
+         | None -> bnd := (v, goal) :: !bnd; true)
+    | Mg.Var a, Mg.Var b | Mg.Cst a, Mg.Cst b -> a = b
+    | Mg.Num a, Mg.Num b -> a = b
+    | Mg.App (a1, b1), Mg.App (a2, b2) -> go pv a1 a2 && go pv b1 b2
+    | Mg.Imp (a1, b1), Mg.Imp (a2, b2) -> go pv a1 a2 && go pv b1 b2
+    | Mg.Tuple l1, Mg.Tuple l2 | Mg.SetEnum l1, Mg.SetEnum l2 ->
+        List.length l1 = List.length l2 && List.for_all2 (go pv) l1 l2
+    | Mg.If (a1, b1, c1), Mg.If (a2, b2, c2) -> go pv a1 a2 && go pv b1 b2 && go pv c1 c2
+    | Mg.Lam (x1, _, b1), Mg.Lam (x2, _, b2)
+    | Mg.All (x1, _, b1), Mg.All (x2, _, b2) | Mg.Ex (x1, _, b1), Mg.Ex (x2, _, b2) ->
+        x1 = x2 && go (List.filter (( <> ) x1) pv) b1 b2
+    | Mg.AllIn (x1, a1, b1), Mg.AllIn (x2, a2, b2) | Mg.ExIn (x1, a1, b1), Mg.ExIn (x2, a2, b2)
+    | Mg.AllSub (x1, a1, b1), Mg.AllSub (x2, a2, b2) | Mg.ExSub (x1, a1, b1), Mg.ExSub (x2, a2, b2)
+    | Mg.LamIn (x1, a1, b1), Mg.LamIn (x2, a2, b2)
+    | Mg.Sep (x1, a1, b1), Mg.Sep (x2, a2, b2) | Mg.Repl (x1, a1, b1), Mg.Repl (x2, a2, b2)
+    | Mg.SigmaIn (x1, a1, b1), Mg.SigmaIn (x2, a2, b2) | Mg.PiIn (x1, a1, b1), Mg.PiIn (x2, a2, b2)
+    | Mg.FamUnion (x1, a1, b1), Mg.FamUnion (x2, a2, b2) ->
+        x1 = x2 && go pv a1 a2 && go (List.filter (( <> ) x1) pv) b1 b2
+    | Mg.ReplSep (x1, a1, p1, b1), Mg.ReplSep (x2, a2, p2, b2) ->
+        x1 = x2 && go pv a1 a2 &&
+        (let pv' = List.filter (( <> ) x1) pv in go pv' p1 p2 && go pv' b1 b2)
+    | _ -> false
+  in
+  if go pvars pat goal then Some !bnd else None
+
+(* strip a hypothesis into (binders-and-premises, conclusion) *)
+type prem = PVar of string | PMem of string * Mg.tm | PSub of string * Mg.tm | PProp of Mg.tm
+
+let rec strip_hyp t : prem list * Mg.tm =
+  match t with
+  | Mg.All (x, _, b) -> let p, c = strip_hyp b in (PVar x :: p, c)
+  | Mg.AllIn (x, a, b) -> let p, c = strip_hyp b in (PVar x :: PMem (x, a) :: p, c)
+  | Mg.AllSub (x, a, b) -> let p, c = strip_hyp b in (PVar x :: PSub (x, a) :: p, c)
+  | Mg.Imp (p, q) -> let ps, c = strip_hyp q in (PProp p :: ps, c)
+  | c -> ([], c)
+
+(* term-level closing of a goal: hypothesis, reflexivity, symmetry/transitivity motives,
+   True, False from a contradiction, and application of a stripped hypothesis whose
+   conclusion matches (premises closed recursively at smaller depth) *)
+let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string option =
+  spend st 1;
+  match List.find_opt (fun h -> aeq h.prop goal) hyps with
+  | Some h -> Some h.hname
+  | None ->
+  match goal with
+  | Mg.Cst "True" -> Some "(fun p:prop => fun H:p => H)"
+  | Mg.Cst "False" ->
+      List.find_map (fun h ->
+        match dest_not h.prop with
+        | Some p ->
+            (match List.find_opt (fun h2 -> aeq h2.prop p) hyps with
+             | Some h2 -> Some (Printf.sprintf "(%s %s)" h.hname h2.hname)
+             | None -> None)
+        | None -> None) hyps
+  | _ ->
+  (match dest_eq goal with
+   | Some (a, b) when aeq a b -> Some refl_tm
+   | Some (a, b) ->
+       let sym = List.find_map (fun h ->
+         match dest_eq h.prop with
+         | Some (x, y) when aeq x b && aeq y a ->
+             Some (Printf.sprintf "(%s (fun hl__u hl__v => hl__u = %s) %s)" h.hname (ppp b) refl_tm)
+         | _ -> None) hyps in
+       (match sym with
+        | Some t -> Some t
+        | None ->
+            (* one transitivity step through a hypothesis chain a = c, c = b *)
+            List.find_map (fun h1 ->
+              match dest_eq h1.prop with
+              | Some (x, c) when aeq x a ->
+                  List.find_map (fun h2 ->
+                    match dest_eq h2.prop with
+                    | Some (y, z) when aeq y c && aeq z b ->
+                        Some (Printf.sprintf "(%s (fun hl__u hl__v => %s = hl__u) %s)" h2.hname (ppp a) h1.hname)
+                    | _ -> None) hyps
+              | _ -> None) hyps)
+   | None -> None)
+  |> function
+  | Some t -> Some t
+  | None ->
+      if adepth <= 0 then None else
+      List.find_map (fun h ->
+        let prems, concl = strip_hyp h.prop in
+        if prems = [] then None else
+        let pvars = List.filter_map (function PVar x -> Some x | _ -> None) prems in
+        match match_tm pvars concl goal with
+        | None -> None
+        | Some bnd when List.for_all (fun v -> List.mem_assoc v bnd) pvars ->
+            let inst t = Mg.subst bnd t in
+            let rec args = function
+              | [] -> Some []
+              | PVar x :: rest ->
+                  (match args rest with Some r -> Some (ppp (List.assoc x bnd) :: r) | None -> None)
+              | PMem (x, a) :: rest ->
+                  (match close_term st hyps (mg_in (inst (Mg.Var x)) (inst a)) (adepth - 1) with
+                   | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
+                   | None -> None)
+              | PSub (x, a) :: rest ->
+                  (match close_term st hyps (mg_subq (inst (Mg.Var x)) (inst a)) (adepth - 1) with
+                   | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
+                   | None -> None)
+              | PProp p :: rest ->
+                  (match close_term st hyps (inst p) (adepth - 1) with
+                   | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
+                   | None -> None)
+            in
+            (match args prems with
+             | Some l -> Some (Printf.sprintf "(%s %s)" h.hname (String.concat " " l))
+             | None -> None)
+        | Some _ -> None) hyps
+
+(* bullets by depth; deeper levels run sequentially *)
+let bullet d = match d with 0 -> Some "-" | 1 -> Some "+" | 2 -> Some "*" | _ -> None
+
+let block d (lines : string list) : string list =
+  match bullet d, lines with
+  | Some b, first :: rest -> (b ^ " " ^ first) :: List.map (fun l -> "  " ^ l) rest
+  | _, l -> l
+
+(* add a hypothesis; conjunctions and iffs contribute their components as derived *term*
+   hypotheses (no script, so a goal equal to the hypothesis is never closed by accident);
+   existential hypotheses are eliminated by script unless they are the goal itself *)
+let rec push st (gl : Mg.tm) (name : string) (prop : Mg.tm) (hyps : hyp list)
+    (cont : hyp list -> string list) : string list =
+  spend st 1;
+  let h = { hname = name; prop } in
+  let comps = (match dest_and prop with
+    | Some (a, b) -> Some (a, b, ppp a, ppp b)
+    | None ->
+        (match dest_iff prop with
+         | Some (p, q) ->
+             let a = Mg.Imp (p, q) and b = Mg.Imp (q, p) in
+             Some (a, b, ppp a, ppp b)
+         | None -> None)) in
+  match comps with
+  | Some (a, b, sa, sb) ->
+      let ta = Printf.sprintf "(andEL %s %s %s)" sa sb name in
+      let tb = Printf.sprintf "(andER %s %s %s)" sa sb name in
+      push st gl ta a (h :: hyps) (fun hyps -> push st gl tb b hyps cont)
+  | None ->
+  match prop with
+  | (Mg.ExIn _ | Mg.Ex _ | Mg.ExSub _) when aeq prop gl -> cont (h :: hyps)
+  | Mg.ExIn (x, a, p) ->
+      let x' = fresh st x in
+      let p = Mg.subst [ (x, Mg.Var x') ] p in
+      let h0 = fresh st "H" and hm = fresh st ("H" ^ x') and hp = fresh st "H" in
+      Printf.sprintf "apply %s. let %s. assume %s. apply %s. assume %s %s." name x' h0 h0 hm hp
+      :: push st gl hm (mg_in (Mg.Var x') a) hyps (fun hyps -> push st gl hp p hyps cont)
+  | Mg.ExSub (x, a, p) ->
+      let x' = fresh st x in
+      let p = Mg.subst [ (x, Mg.Var x') ] p in
+      let h0 = fresh st "H" and hm = fresh st ("H" ^ x') and hp = fresh st "H" in
+      Printf.sprintf "apply %s. let %s. assume %s. apply %s. assume %s %s." name x' h0 h0 hm hp
+      :: push st gl hm (mg_subq (Mg.Var x') a) hyps (fun hyps -> push st gl hp p hyps cont)
+  | Mg.Ex (x, _, p) ->
+      let x' = fresh st x in
+      let p = Mg.subst [ (x, Mg.Var x') ] p in
+      let hp = fresh st "H" in
+      Printf.sprintf "apply %s. let %s. assume %s." name x' hp
+      :: push st gl hp p hyps cont
+  | _ -> cont (h :: hyps)
+
+let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
+  spend st 2;
+  match goal with
+  | Mg.All (x, _, b) ->
+      let x' = fresh st x in
+      Printf.sprintf "let %s." x' :: prove_goal st hyps (Mg.subst [ (x, Mg.Var x') ] b) d
+  | Mg.AllIn (x, a, b) ->
+      let x' = fresh st x in
+      let hx = fresh st ("H" ^ x') in
+      let b' = Mg.subst [ (x, Mg.Var x') ] b in
+      Printf.sprintf "let %s. assume %s." x' hx
+      :: push st b' hx (mg_in (Mg.Var x') a) hyps (fun hyps -> prove_goal st hyps b' d)
+  | Mg.AllSub (x, a, b) ->
+      let x' = fresh st x in
+      let hx = fresh st ("H" ^ x') in
+      let b' = Mg.subst [ (x, Mg.Var x') ] b in
+      Printf.sprintf "let %s. assume %s." x' hx
+      :: push st b' hx (mg_subq (Mg.Var x') a) hyps (fun hyps -> prove_goal st hyps b' d)
+  | Mg.Imp (p, q) ->
+      let hn = fresh st "H" in
+      Printf.sprintf "assume %s." hn :: push st q hn p hyps (fun hyps -> prove_goal st hyps q d)
+  | g when dest_not g <> None ->
+      let p = (match dest_not g with Some p -> p | None -> assert false) in
+      let hn = fresh st "H" in
+      Printf.sprintf "assume %s." hn
+      :: push st (Mg.Cst "False") hn p hyps (fun hyps -> prove_goal st hyps (Mg.Cst "False") d)
+  | g when dest_and g <> None ->
+      let p, q = (match dest_and g with Some pq -> pq | None -> assert false) in
+      (match close_term st hyps g 2 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None ->
+           "apply andI."
+           :: (block d (prove_goal st hyps p (d + 1)) @ block d (prove_goal st hyps q (d + 1))))
+  | g when dest_iff g <> None ->
+      let p, q = (match dest_iff g with Some pq -> pq | None -> assert false) in
+      (match close_term st hyps g 2 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None ->
+           "apply iffI."
+           :: (block d (prove_goal st hyps (Mg.Imp (p, q)) (d + 1))
+               @ block d (prove_goal st hyps (Mg.Imp (q, p)) (d + 1))))
+  | g when dest_or g <> None ->
+      let p, q = (match dest_or g with Some pq -> pq | None -> assert false) in
+      (match close_term st hyps g 2 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None ->
+           let fuel0 = st.fuel in
+           (try "apply orIL." :: prove_goal st hyps p d
+            with Give_up when fuel0 - st.fuel < fuel0 / 2 ->
+              (try "apply orIR." :: prove_goal st hyps q d
+               with Give_up -> or_elim st hyps g d)))
+  | Mg.ExIn (x, a, b) ->
+      (* witnesses from membership hypotheses of the right carrier *)
+      let cands = List.filter_map (fun h ->
+        match h.prop with
+        | Mg.App (Mg.App (Mg.Cst "In", t), a') when aeq a a' -> Some t
+        | _ -> None) hyps in
+      let rec try_wit = function
+        | [] -> raise Give_up
+        | t :: rest ->
+            let fuel0 = st.fuel in
+            (try
+               Printf.sprintf "witness %s." (pp t)
+               :: "apply andI."
+               :: (block d [ Printf.sprintf "exact %s."
+                               (match close_term st hyps (mg_in t a) 2 with Some s -> s | None -> raise Give_up) ]
+                   @ block d (prove_goal st hyps (Mg.subst [ (x, t) ] b) (d + 1)))
+             with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
+      in try_wit cands
+  | g ->
+      (match close_term st hyps g 3 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None -> or_elim st hyps g d)
+
+and or_elim st hyps goal d =
+  match List.find_opt (fun h -> dest_or h.prop <> None) hyps with
+  | Some h ->
+      let p, q = (match dest_or h.prop with Some pq -> pq | None -> assert false) in
+      let hyps' = List.filter (fun h2 -> h2.hname <> h.hname) hyps in
+      let h1 = fresh st "H" and h2 = fresh st "H" in
+      Printf.sprintf "apply %s." h.hname
+      :: (block d (Printf.sprintf "assume %s." h1 :: push st goal h1 p hyps' (fun hy -> prove_goal st hy goal (d + 1)))
+          @ block d (Printf.sprintf "assume %s." h2 :: push st goal h2 q hyps' (fun hy -> prove_goal st hy goal (d + 1))))
+  | None -> raise Give_up
+
+let prove ?(budget = 6000) ?(max_lines = 200) (goal : Mg.tm) : string option =
+  let st = { fuel = budget; names = Hashtbl.create 64 } in
+  ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
+  try
+    let lines = prove_goal st [] goal 0 in
+    if List.length lines > max_lines then None else Some (String.concat "\n" lines)
+  with Give_up | Stack_overflow -> None

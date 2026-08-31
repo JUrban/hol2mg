@@ -16,9 +16,10 @@ cert=generated/cert/$prof
 run() { ./bin/hol2mg translate --export "$exp" --sig mglib/God1.mgs --mappings "$maps" --out "$out" --literal-out "$lit" --cert-out "$cert" --profile "$prof" --srcindex generated/internal/$prof.srcindex.json --timeout 10 --known-props "$out/known_props.txt" "$@"; }
 run
 tools/check_public.sh "$out" || true
-run
+run --native-proofs generated/nativeproof/$prof
 tools/check_public.sh "$out"
 tools/check_literal.sh "$lit"
+tools/check_nativeproof.sh "$prof" || true
 tools/check_cert.sh "$prof" | tee "$cert/check.log" | grep -v "^OK   [a-z_]* (0 bridges" || true
 python3 tools/cert_finalize.py "$prof" "$cert/check.log" || true
 cp "$out/$prof.report.md" generated/reports/$prof.report.md
