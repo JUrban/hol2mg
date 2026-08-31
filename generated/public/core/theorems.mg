@@ -862,25 +862,125 @@ Qed.
 // Source hash: md5:4d21283ecdaa6cc6acfad8726c3265d6
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_OR_THM : forall A:set, forall P Q:set -> prop, (exists x :e A, P x \/ Q x) <-> (exists x :e A, P x) \/ exists x :e A, Q x.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H7.
+  apply H7. let x2. assume H8. apply H8. assume Hx2 H9.
+  apply H9.
+  + assume H18.
+    exact (orIL (exists x :e A, P x) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x2) (andI (x2 :e A) (P x2) Hx2 H18))).
+  + assume H19.
+    exact (orIR (exists x :e A, P x) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x2) (andI (x2 :e A) (Q x2) Hx2 H19))).
+- assume H.
+  apply H.
+  + assume H1.
+    apply H1. let x1. assume H5. apply H5. assume Hx1 H6.
+    witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (orIL (P x1) (Q x1) H6).
+  + assume H2.
+    apply H2. let x. assume H3. apply H3. assume Hx H4.
+    witness x.
+    apply andI.
+    * exact Hx.
+    * exact (orIR (P x) (Q x) H4).
+Qed.
 
 // HOL Light: theorems.ml:269 / OR_EXISTS_THM
 // Source hash: md5:90eb72cc8cdc71781fd4760c248ec42c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem OR_EXISTS_THM : forall A:set, forall P Q:set -> prop, (exists x :e A, P x) \/ (exists x :e A, Q x) <-> exists x :e A, P x \/ Q x.
-Admitted.
+let A.
+let P.
+let Q.
+apply iffI.
+- assume H13.
+  apply H13.
+  + assume H14.
+    apply H14. let x2. assume H18. apply H18. assume Hx2 H19.
+    witness x2.
+    apply andI.
+    * exact Hx2.
+    * exact (orIL (P x2) (Q x2) H19).
+  + assume H15.
+    apply H15. let x1. assume H16. apply H16. assume Hx1 H17.
+    witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (orIR (P x1) (Q x1) H17).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  apply H2.
+  + assume H11.
+    exact (orIL (exists x :e A, P x) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H11))).
+  + assume H12.
+    exact (orIR (exists x :e A, P x) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H12))).
+Qed.
 
 // HOL Light: theorems.ml:273 / LEFT_OR_EXISTS_THM
 // Source hash: md5:a673b3117cfb5d8398c737191e4b922d
 // Status: exact_native
 Theorem LEFT_OR_EXISTS_THM : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (exists x :e A, P x) \/ Q <-> exists x :e A, P x \/ Q.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H26.
+  apply H26.
+  + assume H47.
+    apply H47. let x3. assume H49. apply H49. assume Hx3 H50.
+    witness x3.
+    apply andI.
+    * exact Hx3.
+    * exact (orIL (P x3) (Q) H50).
+  + assume H48.
+    witness choose_in A (fun hl__w:set => True).
+    apply andI.
+    * exact (choose_in_in (A) H (fun hl__w:set => True)).
+    * exact (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H48).
+- assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  apply H3.
+  + assume H24.
+    exact (orIL (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H24))).
+  + assume H25.
+    exact (orIR (exists x :e A, P x) (Q) H25).
+Qed.
 
 // HOL Light: theorems.ml:277 / RIGHT_OR_EXISTS_THM
 // Source hash: md5:d2105ebd3af898181bee555d72947726
 // Status: exact_native
 Theorem RIGHT_OR_EXISTS_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P \/ (exists x :e A, Q x) <-> exists x :e A, P \/ Q x.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H26.
+  apply H26.
+  + assume H49.
+    witness choose_in A (fun hl__w:set => True).
+    apply andI.
+    * exact (choose_in_in (A) H (fun hl__w:set => True)).
+    * exact (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H49).
+  + assume H50.
+    apply H50. let x4. assume H51. apply H51. assume Hx4 H52.
+    witness x4.
+    apply andI.
+    * exact Hx4.
+    * exact (orIR (P) (Q x4) H52).
+- assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  apply H3.
+  + assume H24.
+    exact (orIL (P) (exists x :e A, Q x) H24).
+  + assume H25.
+    exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H25))).
+Qed.
 
 // HOL Light: theorems.ml:285 / LEFT_EXISTS_AND_THM
 // Source hash: md5:174d261bd6d0c9a4df5fae53976158d3

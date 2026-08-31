@@ -292,6 +292,36 @@ apply iffI.
     exact ((andER (forall x :e A, x :e s -> P x) (forall x :e A, x :e t -> P x) H) (x) Hx H3).
 Qed.
 
+// HOL Light: sets.ml / EXISTS_IN_UNION
+Theorem EXISTS_IN_UNION : forall A:set, forall P:set -> prop, forall s t c= A, (exists x :e A, x :e s :\/: t /\ P x) <-> (exists x :e A, x :e s /\ P x) \/ exists x :e A, x :e t /\ P x.
+let A.
+let P.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H7.
+  apply H7. let x2. assume H8. apply H8. assume Hx2 H9.
+  apply (binunionE (s) (t) (x2) (andEL (x2 :e s :\/: t) (P x2) H9)).
+  + assume H18.
+    exact (orIL (exists x :e A, x :e s /\ P x) (exists x :e A, x :e t /\ P x) (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s /\ P hl__w)) (x2) (andI (x2 :e A) (x2 :e s /\ P x2) Hx2 (andI (x2 :e s) (P x2) H18 (andER (x2 :e s :\/: t) (P x2) H9))))).
+  + assume H19.
+    exact (orIR (exists x :e A, x :e s /\ P x) (exists x :e A, x :e t /\ P x) (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e t /\ P hl__w)) (x2) (andI (x2 :e A) (x2 :e t /\ P x2) Hx2 (andI (x2 :e t) (P x2) H19 (andER (x2 :e s :\/: t) (P x2) H9))))).
+- assume H.
+  apply H.
+  + assume H1.
+    apply H1. let x1. assume H5. apply H5. assume Hx1 H6.
+    witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (andI (x1 :e s :\/: t) (P x1) (binunionI1 (s) (t) (x1) (andEL (x1 :e s) (P x1) H6)) (andER (x1 :e s) (P x1) H6)).
+  + assume H2.
+    apply H2. let x. assume H3. apply H3. assume Hx H4.
+    witness x.
+    apply andI.
+    * exact Hx.
+    * exact (andI (x :e s :\/: t) (P x) (binunionI2 (s) (t) (x) (andEL (x :e t) (P x) H4)) (andER (x :e t) (P x) H4)).
+Qed.
+
 // HOL Light: sets.ml / UNIV_NOT_EMPTY
 Theorem UNIV_NOT_EMPTY : forall A:set, A <> Empty -> ~ A = Empty.
 let A.
@@ -886,6 +916,22 @@ let s. assume Hs.
 let t. assume Ht.
 let x. assume Hx.
 exact (setminusE1 (s) (t) (x) Hx).
+Qed.
+
+// HOL Light: sets.ml / COMPL_COMPL
+Theorem COMPL_COMPL : forall A:set, forall s c= A, A :\: (A :\: s) = s.
+let A.
+let s. assume Hs.
+apply (set_ext (A :\: (A :\: s)) (s)).
+- let x1. assume Hx1.
+  apply (xm (x1 :e s)).
+  + assume H. exact H.
+  + assume H1.
+    claim L: False.
+    { exact ((setminusE2 (A) (A :\: s) (x1) Hx1) (setminusI (A) (s) (x1) (setminusE1 (A) (A :\: s) (x1) Hx1) H1)). }
+    exact (FalseE L (x1 :e s)).
+- let x. assume Hx.
+  exact (setminusI (A) (A :\: s) (x) (Hs (x) Hx) (fun hl__H : x :e A :\: s => ((setminusE2 (A) (s) (x) hl__H) Hx))).
 Qed.
 
 // HOL Light: sets.ml / DIFF_RESTRICT

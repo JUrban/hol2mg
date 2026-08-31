@@ -669,7 +669,7 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
          then [ Mg.App (Mg.App (Mg.Cst "choose_in", a), Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True")) ]
          else []) in
       let rec try_wit = function
-        | [] -> raise Give_up
+        | [] -> or_elim st hyps goal d
         | t :: rest ->
             let fuel0 = st.fuel in
             (try
@@ -692,7 +692,7 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                | _ -> None) hyps
              @ [ Mg.Cst "Empty" ]) in
       let rec try_wit = function
-        | [] -> raise Give_up
+        | [] -> or_elim st hyps goal d
         | t :: rest ->
             let fuel0 = st.fuel in
             (try Printf.sprintf "witness %s." (pp t) :: prove_goal st hyps (Mg.subst [ (x, t) ] b) d
@@ -740,7 +740,7 @@ and if_split st hyps goal d =
     | Mg.Tuple l | Mg.SetEnum l -> List.fold_left (fun acc x -> match acc with Some _ -> acc | None -> find_if x) None l
     | _ -> None in
   match find_if goal with
-  | None -> raise Give_up
+  | None -> xm_split st hyps goal d
   | Some (c, u, v) ->
       spend st 100;  (* case splits are expensive: cap them via the fuel budget *)
       let bl lines = (match bullet d with
@@ -754,6 +754,34 @@ and if_split st hyps goal d =
       let h1 = fresh st "H" and h2 = fresh st "H" in
       Printf.sprintf "apply (xm (%s))." (pp c)
       :: (bl (branch "If_i_1" u h1) @ bl (branch "If_i_0" v h2))
+
+and xm_split st hyps goal d =
+  (* only worthwhile when a negation hypothesis can feed the refutation; the guard
+     also keeps or-heavy searches from draining their fuel here *)
+  if goal = Mg.Cst "False" || not (List.exists (fun h -> dest_not h.prop <> None) hyps)
+  then raise Give_up else begin
+    spend st 100;  (* classical splits are expensive: cap them via the fuel budget *)
+    let bl lines = (match bullet d with
+      | Some _ -> block d lines
+      | None -> (match lines with f :: r -> ("- " ^ f) :: List.map (fun l -> "  " ^ l) r | [] -> [])) in
+    let h1 = fresh st "H" and h2 = fresh st "H" in
+    let lname = fresh st "L" in
+    let body = push st (Mg.Cst "False") h2 (Mg.App (Mg.Cst "not", goal)) hyps
+                 (fun hyps -> prove_goal st hyps (Mg.Cst "False") (d + 1)) in
+    let body = (match body with
+      | [] -> []
+      | [ x ] -> [ "{ " ^ x ^ " }" ]
+      | x :: rest ->
+          (match List.rev rest with
+           | last :: mid -> ("{ " ^ x) :: List.rev ((last ^ " }") :: mid)
+           | [] -> [ "{ " ^ x ^ " }" ])) in
+    Printf.sprintf "apply (xm (%s))." (pp goal)
+    :: (bl [ Printf.sprintf "assume %s. exact %s." h1 h1 ]
+        @ bl (Printf.sprintf "assume %s." h2
+              :: Printf.sprintf "claim %s: False." lname
+              :: body
+              @ [ Printf.sprintf "exact (FalseE %s (%s))." lname (pp goal) ]))
+  end
 
 and or_elim st hyps goal d =
   match List.find_opt (fun h -> dest_or h.prop <> None) hyps with
