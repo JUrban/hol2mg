@@ -15,7 +15,10 @@ type hyp = { hname : string; prop : Mg.tm }
 let dest_and = function Mg.App (Mg.App (Mg.Cst "and", a), b) -> Some (a, b) | _ -> None
 let dest_or = function Mg.App (Mg.App (Mg.Cst "or", a), b) -> Some (a, b) | _ -> None
 let dest_iff = function Mg.App (Mg.App (Mg.Cst "iff", a), b) -> Some (a, b) | _ -> None
-let dest_not = function Mg.App (Mg.Cst "not", a) -> Some a | _ -> None
+let dest_not = function
+  | Mg.App (Mg.Cst "not", a) -> Some a
+  | Mg.App (Mg.App (Mg.Cst "neq", a), b) -> Some (Mg.App (Mg.App (Mg.Cst "eq", a), b))
+  | _ -> None
 let dest_eq = function Mg.App (Mg.App (Mg.Cst "eq", a), b) -> Some (a, b) | _ -> None
 let mg_in x a = Mg.App (Mg.App (Mg.Cst "In", x), a)
 let mg_subq x a = Mg.App (Mg.App (Mg.Cst "Subq", x), a)
@@ -141,6 +144,21 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
              | None -> None)
         | None -> None) hyps
   | _ ->
+  (* ex falso: any goal follows from a False hypothesis or a direct contradiction *)
+  (match List.find_opt (fun h -> h.prop = Mg.Cst "False") hyps with
+   | Some h -> Some (Printf.sprintf "(FalseE %s (%s))" h.hname (pp goal))
+   | None ->
+       match List.find_map (fun h ->
+         match dest_not h.prop with
+         | Some p -> (match List.find_opt (fun h2 -> aeq h2.prop p) hyps with
+                      | Some h2 -> Some (Printf.sprintf "(FalseE (%s %s) (%s))" h.hname h2.hname (pp goal))
+                      | None -> None)
+         | None -> None) hyps with
+       | Some t -> Some t
+       | None -> None)
+  |> function
+  | Some t -> Some t
+  | None ->
   (match dest_eq goal with
    | Some (a, b) when aeq a b -> Some refl_tm
    | Some (a, b) ->
@@ -183,6 +201,26 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
   | Some t -> Some t
   | None ->
       if adepth <= 0 then None else
+      (* transport along an equality hypothesis: close goal[e2 := e1] and rewrite *)
+      (match List.find_map (fun h ->
+         match dest_eq h.prop with
+         | Some (e1, e2) when not (aeq e1 e2) ->
+             let g' = replace_tm e2 e1 goal in
+             if aeq g' goal then
+               (let g2 = replace_tm e1 e2 goal in
+                if aeq g2 goal then None
+                else match close_term st hyps g2 (adepth - 1) with
+                  | Some t -> Some (Printf.sprintf "((%s (fun hl__u hl__v => hl__u = %s) %s) (fun hl__u hl__v => %s) %s)"
+                                      h.hname (ppp e1) refl_tm (pp (replace_tm e1 (Mg.Var "hl__u") goal)) t)
+                  | None -> None)
+             else
+               (match close_term st hyps g' (adepth - 1) with
+                | Some t -> Some (Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)"
+                                    h.hname (pp (replace_tm e2 (Mg.Var "hl__u") goal)) t)
+                | None -> None)
+         | _ -> None) hyps with
+       | Some t -> Some t
+       | None ->
       List.find_map (fun h ->
         let prems, concl = strip_hyp h.prop in
         if prems = [] then None else
@@ -211,7 +249,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
             (match args prems with
              | Some l -> Some (Printf.sprintf "(%s %s)" h.hname (String.concat " " l))
              | None -> None)
-        | Some _ -> None) hyps
+        | Some _ -> None) hyps)
 
 (* bullets by depth; deeper levels run sequentially *)
 let bullet d = match d with 0 -> Some "-" | 1 -> Some "+" | 2 -> Some "*" | _ -> None
@@ -336,7 +374,18 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
   | g ->
       (match close_term st hyps g 3 with
        | Some t -> [ Printf.sprintf "exact %s." t ]
-       | None -> or_elim st hyps g d)
+       | None ->
+           (* classical: a double-negation hypothesis of the goal *)
+           match List.find_opt (fun h ->
+             match dest_not h.prop with
+             | Some p -> (match dest_not p with Some q -> aeq q g | None -> false)
+             | None -> false) hyps with
+           | Some h ->
+               let h1 = fresh st "H" in
+               [ Printf.sprintf "apply (xm (%s))." (pp g);
+                 Printf.sprintf "- assume %s. exact %s." h1 h1;
+                 Printf.sprintf "- assume %s. exact (FalseE (%s %s) (%s))." h1 h.hname h1 (pp g) ]
+           | None -> or_elim st hyps g d)
 
 and or_elim st hyps goal d =
   match List.find_opt (fun h -> dest_or h.prop <> None) hyps with

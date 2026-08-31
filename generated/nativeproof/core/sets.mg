@@ -24,6 +24,25 @@ apply iffI.
   exact Hx.
 Qed.
 
+// HOL Light: sets.ml / PSUBSET
+Theorem PSUBSET : forall A:set, A <> Empty -> forall s t c= A, s c= t /\ s <> t <-> s c= t /\ ~ s = t.
+let A.
+assume H.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H3.
+  apply andI.
+  + exact (andEL (s c= t) (s <> t) H3).
+  + assume H4.
+    exact ((andER (s c= t) (s <> t) H3) H4).
+- assume H1.
+  apply andI.
+  + exact (andEL (s c= t) (~ s = t) H1).
+  + assume H2.
+    exact ((andER (s c= t) (~ s = t) H1) H2).
+Qed.
+
 // HOL Light: sets.ml / DISJOINT
 Theorem DISJOINT : forall A:set, forall s t c= A, s :/\: t = Empty <-> s :/\: t = Empty.
 let A.
@@ -48,6 +67,14 @@ Theorem REST : forall A:set, forall s c= A, s :\: {choose_in A (fun x:set => x :
 let A.
 let s. assume Hs.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / UNIV_NOT_EMPTY
+Theorem UNIV_NOT_EMPTY : forall A:set, A <> Empty -> ~ A = Empty.
+let A.
+assume H.
+assume H1.
+exact (H H1).
 Qed.
 
 // HOL Light: sets.ml / SUBSET_UNIV
@@ -75,6 +102,18 @@ Qed.
 Theorem ARB : forall A:set, choose_in A (fun x:set => False) = choose_in A (fun x:set => False).
 let A.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: sets.ml / EXTENSIONAL_UNIV
+Theorem EXTENSIONAL_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e A -> f x = choose_in B (fun y:set => False).
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+let x. assume Hx.
+assume H2.
+exact (FalseE (H2 Hx) (f x = choose_in B (fun y:set => False))).
 Qed.
 
 // HOL Light: sets.ml / product_map
