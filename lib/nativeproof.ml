@@ -235,23 +235,65 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
       |> function
       | Some t -> Some t
       | None ->
+      (* existential introduction as a proof term (God1 ex_intro); witnesses from
+         membership hypotheses, or choose_in on a carrier known nonempty *)
+      (match goal with
+       | Mg.ExIn (x, a, p) ->
+           let wits = List.filter_map (fun h ->
+             match h.prop with
+             | Mg.App (Mg.App (Mg.Cst "In", t), a') when aeq a a' -> Some t
+             | _ -> None) hyps
+             @ (if List.exists (fun h ->
+                     aeq h.prop (Mg.App (Mg.App (Mg.Cst "neq", a), Mg.Cst "Empty"))) hyps
+                then [ Mg.App (Mg.App (Mg.Cst "choose_in", a), Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True")) ]
+                else []) in
+           let pred = Mg.Lam ("hl__w", Mg.Set,
+             Mg.App (Mg.App (Mg.Cst "and", mg_in (Mg.Var "hl__w") a),
+                     Mg.subst [ (x, Mg.Var "hl__w") ] p)) in
+           List.find_map (fun w ->
+             let pw = Mg.subst [ (x, w) ] p in
+             match close_term st hyps (mg_in w a) (adepth - 1) with
+             | None -> None
+             | Some tm ->
+                 (match close_term st hyps pw (adepth - 1) with
+                  | None -> None
+                  | Some tp ->
+                      Some (Printf.sprintf "(ex_intro %s %s (andI %s %s %s %s))"
+                              (ppp pred) (ppp w) (ppp (mg_in w a)) (ppp pw) tm tp))) wits
+       | Mg.Ex (x, Mg.Set, p) ->
+           let wits = List.filter_map (fun h ->
+             match h.prop with
+             | Mg.App (Mg.App (Mg.Cst "In", t), _) -> Some t
+             | _ -> None) hyps in
+           let pred = Mg.Lam ("hl__w", Mg.Set, Mg.subst [ (x, Mg.Var "hl__w") ] p) in
+           List.find_map (fun w ->
+             match close_term st hyps (Mg.subst [ (x, w) ] p) (adepth - 1) with
+             | None -> None
+             | Some tp -> Some (Printf.sprintf "(ex_intro %s %s %s)" (ppp pred) (ppp w) tp)) wits
+       | _ -> None)
+      |> function
+      | Some t -> Some t
+      | None ->
       (* transport along an equality hypothesis: close goal[e2 := e1] and rewrite *)
       (match List.find_map (fun h ->
          match dest_eq h.prop with
          | Some (e1, e2) when not (aeq e1 e2) ->
+             spend st 2;
              let g' = replace_tm e2 e1 goal in
-             if aeq g' goal then
-               (let g2 = replace_tm e1 e2 goal in
-                if aeq g2 goal then None
-                else match close_term st hyps g2 (adepth - 1) with
-                  | Some t -> Some (Printf.sprintf "((%s (fun hl__u hl__v => hl__u = %s) %s) (fun hl__u hl__v => %s) %s)"
-                                      h.hname (ppp e1) refl_tm (pp (replace_tm e1 (Mg.Var "hl__u") goal)) t)
-                  | None -> None)
-             else
+             let d1 () =
+               if aeq g' goal then None else
                (match close_term st hyps g' (adepth - 1) with
                 | Some t -> Some (Printf.sprintf "(%s (fun hl__u hl__v => %s) %s)"
                                     h.hname (pp (replace_tm e2 (Mg.Var "hl__u") goal)) t)
-                | None -> None)
+                | None -> None) in
+             let d2 () =
+               let g2 = replace_tm e1 e2 goal in
+               if aeq g2 goal then None else
+               (match close_term st hyps g2 (adepth - 1) with
+                | Some t -> Some (Printf.sprintf "((%s (fun hl__u hl__v => hl__u = %s) %s) (fun hl__u hl__v => %s) %s)"
+                                    h.hname (ppp e1) refl_tm (pp (replace_tm e1 (Mg.Var "hl__u") goal)) t)
+                | None -> None) in
+             (match d1 () with Some t -> Some t | None -> d2 ())
          | _ -> None) hyps with
        | Some t -> Some t
        | None ->
@@ -495,6 +537,29 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                    @ bl [ Printf.sprintf "assume %s. exact (FalseE (%s %s) (%s))." h1 h.hname h1 (pp g) ])
            | None -> or_elim st hyps g d)
 
+and if_split st hyps goal d =
+  (* first if-subterm of the goal, outside binders *)
+  let rec find_if t = match t with
+    | Mg.If (c, u, v) -> Some (c, u, v)
+    | Mg.App (a, b) | Mg.Imp (a, b) -> (match find_if a with Some r -> Some r | None -> find_if b)
+    | Mg.Tuple l | Mg.SetEnum l -> List.fold_left (fun acc x -> match acc with Some _ -> acc | None -> find_if x) None l
+    | _ -> None in
+  match find_if goal with
+  | None -> raise Give_up
+  | Some (c, u, v) ->
+      spend st 100;  (* case splits are expensive: cap them via the fuel budget *)
+      let bl lines = (match bullet d with
+        | Some _ -> block d lines
+        | None -> (match lines with f :: r -> ("- " ^ f) :: List.map (fun l -> "  " ^ l) r | [] -> [])) in
+      let branch lemma keep h1 =
+        let eq_name = Printf.sprintf "(%s %s %s %s %s)" lemma (ppp c) (ppp u) (ppp v) h1 in
+        let eq_prop = Mg.App (Mg.App (Mg.Cst "eq", Mg.If (c, u, v)), keep) in
+        Printf.sprintf "assume %s." h1
+        :: push st goal eq_name eq_prop hyps (fun hyps -> prove_goal st hyps goal (d + 1)) in
+      let h1 = fresh st "H" and h2 = fresh st "H" in
+      Printf.sprintf "apply (xm (%s))." (pp c)
+      :: (bl (branch "If_i_1" u h1) @ bl (branch "If_i_0" v h2))
+
 and or_elim st hyps goal d =
   match List.find_opt (fun h -> dest_or h.prop <> None) hyps with
   | Some h ->
@@ -504,7 +569,7 @@ and or_elim st hyps goal d =
       Printf.sprintf "apply %s." h.hname
       :: (block d (Printf.sprintf "assume %s." h1 :: push st goal h1 p hyps' (fun hy -> prove_goal st hy goal (d + 1)))
           @ block d (Printf.sprintf "assume %s." h2 :: push st goal h2 q hyps' (fun hy -> prove_goal st hy goal (d + 1))))
-  | None -> raise Give_up
+  | None -> if_split st hyps goal d
 
 (* God1/prelude facts available in every composition the generated proofs check in
    (docs/DESIGN.md 23.5).  Statements are hand-built ASTs of the library lemmas; EmptyE
@@ -540,7 +605,7 @@ let builtin_premises : (string * Mg.tm) list =
        mg_in (Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")) (Mg.Cst "int")));
     ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1)) ]
 
-let prove ?(budget = 6000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
+let prove ?(budget = 4000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
   let st = { fuel = budget; names = Hashtbl.create 64 } in
   let premises = premises @ builtin_premises in

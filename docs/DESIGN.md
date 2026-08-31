@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **207 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **213 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 3 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (207 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (213 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -1913,6 +1913,17 @@ form of an equational conclusion (wrapping in the standard symmetry motive) — 
 `choose_in A (fun _ => True)` — in back-chaining when a membership premise has no matching
 hypothesis, and directly for bounded existential goals (FORALL_SIMP, EXISTS_SIMP,
 LEFT/RIGHT_AND_FORALL_THM).
+
+N2f (207 → 213): term-level bounded-existential introduction through God1's `ex_intro`
+(with `choose_in` witnesses — LEFT_IMP_EXISTS_THM, LEFT_FORALL_IMP_THM); an *If-split* rule —
+when nothing else closes a goal containing `if c then u else v`, case-split on `c` with `xm`
+and push the matching `If_i_1`/`If_i_0` instance as an equality term hypothesis for
+transport (int_max, int_min, COND_ID); equality transport tries both rewrite directions.
+Fuel discipline learned here: the split charge must be paid only when a split actually
+happens — charging on every fallback drained or-heavy searches (DISJ_ACI); with the guards
+(premise-growth check in the fixpoint, per-transport charges, 100-fuel split charge) the
+whole synthesis phase costs ~4.7 min at budget 4000 with strictly more theorems proved
+than the unguarded 6000-budget search.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

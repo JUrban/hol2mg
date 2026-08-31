@@ -261,6 +261,7 @@ let () =
            let by_source : (string, string) Hashtbl.t = Hashtbl.create 4096 in
            List.iter (fun i -> Hashtbl.replace by_source i.Manifest.source_name i.Manifest.name) items;
            let np_proved : (string, string) Hashtbl.t = Hashtbl.create 512 in  (* name -> proof text *)
+           let tried : (string, int) Hashtbl.t = Hashtbl.create 4096 in  (* name -> premise count at last failed attempt *)
            (* native_reuse propositions are already God1 theorems, but under other names:
               re-prove them natively so they are citable premises and readable statements *)
            let pubs = List.filter public items in
@@ -280,9 +281,12 @@ let () =
                              | Some n when n <> i.Manifest.name && Hashtbl.mem np_proved n ->
                                  (match Hashtbl.find_opt np_asts n with Some a -> Some (n, a) | None -> None)
                              | _ -> None) ls) in
-                     (match (try Nativeproof.prove ~premises:prem ast with _ -> None) with
-                      | None -> ()
-                      | Some pf -> Hashtbl.replace np_proved i.Manifest.name pf; changed := true)) pubs
+                     let np = List.length prem in
+                     if (match Hashtbl.find_opt tried i.Manifest.name with
+                         | Some np0 -> np > np0 | None -> true) then
+                       (match (try Nativeproof.prove ~premises:prem ast with _ -> None) with
+                        | None -> Hashtbl.replace tried i.Manifest.name np
+                        | Some pf -> Hashtbl.replace np_proved i.Manifest.name pf; changed := true)) pubs
            done;
            Hashtbl.iter (fun n _ ->
              match Hashtbl.find_opt np_asts n with

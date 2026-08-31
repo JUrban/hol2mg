@@ -70,6 +70,18 @@ apply andI.
       exact H1.
 Qed.
 
+// HOL Light: class.ml / COND_ID
+Theorem COND_ID : forall A:set, forall b:prop, forall t :e A, (if b then t else t) = t.
+let A.
+let b.
+let t. assume Ht.
+apply (xm (b)).
+- assume H.
+  exact (If_i_1 (b) (t) (t) H).
+- assume H1.
+  exact (If_i_0 (b) (t) (t) H1).
+Qed.
+
 // HOL Light: class.ml / COND_RATOR
 Theorem COND_RATOR : forall A B:set, forall b:prop, forall f g :e B :^: A, forall x :e A, (if b then f x else g x) = if b then f x else g x.
 let A.

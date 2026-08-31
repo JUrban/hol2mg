@@ -239,7 +239,15 @@ Admitted.
 // Source hash: md5:6cd454b7a60ebc592010064af1887257
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_ID : forall A:set, forall b:prop, forall t :e A, (if b then t else t) = t.
-Admitted.
+let A.
+let b.
+let t. assume Ht.
+apply (xm (b)).
+- assume H.
+  exact (If_i_1 (b) (t) (t) H).
+- assume H1.
+  exact (If_i_0 (b) (t) (t) H1).
+Qed.
 
 // HOL Light: class.ml:351 / COND_RAND
 // Source hash: md5:abd733d2ca6bac4ed355d508eb6d38ff

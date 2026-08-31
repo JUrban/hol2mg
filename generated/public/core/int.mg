@@ -229,7 +229,14 @@ Qed.
 // Source hash: md5:27b81a3591ba69db6f036db60e5e9b3a
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_max : forall x y :e int, (if x <= y then y else x) = if (if x <= y then y else x) :e int then if x <= y then y else x else 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply (xm (x <= y)).
+- assume H.
+  exact (((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (y :e int) (y) (0) Hy) (fun hl__u hl__v => hl__u = (if y :e int then y else 0)) (fun q H => H))).
+- assume H1.
+  exact (((If_i_0 (x <= y) (y) (x) H1) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (x :e int) (x) (0) Hx) (fun hl__u hl__v => hl__u = (if x :e int then x else 0)) (fun q H => H))).
+Qed.
 
 // HOL Light: int.ml:163 / int_max_th
 // Source hash: md5:390313eb8b350c97d5e579bffe6d908c
@@ -244,7 +251,14 @@ Qed.
 // Source hash: md5:1f287113561b3b6b2727a82204d4c51b
 // Status: generalization_required (bridges: hol_int_int, hol_real_R, int_Subq_R)
 Theorem int_min : forall x y :e int, (if x <= y then x else y) = if (if x <= y then x else y) :e int then if x <= y then x else y else 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply (xm (x <= y)).
+- assume H.
+  exact (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (x :e int) (x) (0) Hx) (fun hl__u hl__v => hl__u = (if x :e int then x else 0)) (fun q H => H))).
+- assume H1.
+  exact (((If_i_0 (x <= y) (x) (y) H1) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (y :e int) (y) (0) Hy) (fun hl__u hl__v => hl__u = (if y :e int then y else 0)) (fun q H => H))).
+Qed.
 
 // HOL Light: int.ml:171 / int_min_th
 // Source hash: md5:32a75428ddb4e7a53b604c2d95cb3a3b
