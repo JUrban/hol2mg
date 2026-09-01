@@ -161,8 +161,11 @@ Admitted.
 // HOL Light: realarith.ml:145 / REAL_POS
 // Source hash: md5:c44c7f782ae05e05f8bd631540fe8820
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_POS : forall n :e omega, 0 <= n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_POS : forall n :e omega, 0 <= n.
+let n. assume Hn.
+exact (omega_nonneg (n) Hn).
+Qed.
 
 // HOL Light: realarith.ml:149 / REAL_LT_NZ
 // Source hash: md5:a30a85766a8dbbc964242396cfce7cc1

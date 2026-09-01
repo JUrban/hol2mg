@@ -89,8 +89,11 @@ Admitted.
 // HOL Light:  / REAL_LE_REFL
 // Source hash: md5:597f574f403c13d75887c264bf98d7ab
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_LE_REFL : forall x :e R, x <= x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_LE_REFL : forall x :e R, x <= x.
+let x. assume Hx.
+exact (SNoLe_ref (x)).
+Qed.
 
 // HOL Light:  / REAL_LE_TOTAL
 // Source hash: md5:f100ea3864b4736d03f4488873b9fdf2
