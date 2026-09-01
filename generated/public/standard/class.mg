@@ -110,7 +110,38 @@ Admitted.
 // Source hash: md5:8b8cb517996be6435d3c18d9fc7bbe23
 // Status: exact_native
 Theorem DE_MORGAN_THM : forall t1 t2:prop, (~ (t1 /\ t2) <-> ~ t1 \/ ~ t2) /\ (~ (t1 \/ t2) <-> ~ t1 /\ ~ t2).
-Admitted.
+let t1.
+let t2.
+apply andI.
+- apply iffI.
+  + assume H9.
+    apply (xm (~ t1 \/ ~ t2)).
+    * assume H16. exact H16.
+    * assume H17.
+      claim L2: False.
+      { apply H17.
+      apply orIL.
+      assume H18.
+      exact (H17 (orIR (~ t1) (~ t2) (fun hl__H11 : t2 => (H9 (andI (t1) (t2) H18 hl__H11))))). }
+      exact (FalseE L2 (~ t1 \/ ~ t2)).
+  + assume H5.
+    assume H6.
+    apply H5.
+    * assume H7.
+      exact (H7 (andEL (t1) (t2) H6)).
+    * assume H8.
+      exact (H8 (andER (t1) (t2) H6)).
+- apply iffI.
+  + assume H4.
+    exact (andI (~ t1) (~ t2) (fun hl__H : t1 => (H4 (orIL (t1) (t2) hl__H))) (fun hl__H1 : t2 => (H4 (orIR (t1) (t2) hl__H1)))).
+  + assume H.
+    assume H1.
+    apply H1.
+    * assume H2.
+      exact ((andER (~ t1) (~ t2) H) (FalseE ((andEL (~ t1) (~ t2) H) H2) (t2))).
+    * assume H3.
+      exact ((andER (~ t1) (~ t2) H) H3).
+Qed.
 
 // HOL Light: class.ml:188 / NOT_CLAUSES
 // Source hash: md5:3b3c3e9efdbcbcbfc4b0cad619ffceaa
@@ -190,13 +221,55 @@ Qed.
 // Source hash: md5:6cc8add8ef8d6ef2111d93d16002aab6
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_NOT_THM : forall A:set, forall P:set -> prop, (exists x :e A, ~ P x) <-> ~ forall x :e A, P x.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H5.
+  apply H5. let x1. assume H6. apply H6. assume Hx1 H7.
+  assume H8.
+  exact (H7 (H8 (x1) Hx1)).
+- assume H.
+  apply (xm (exists x :e A, ~ P x)).
+  + assume H1. exact H1.
+  + assume H2.
+    claim L: False.
+    { apply H.
+    let x. assume Hx.
+    apply (xm (P x)).
+    - assume H3. exact H3.
+    - assume H4.
+      claim L1: False.
+      { exact (H2 (ex_intro (fun hl__w:set => hl__w :e A /\ ~ P hl__w) (x) (andI (x :e A) (~ P x) Hx H4))). }
+      exact (FalseE L1 (P x)). }
+    exact (FalseE L (exists x :e A, ~ P x)).
+Qed.
 
 // HOL Light: class.ml:245 / NOT_FORALL_THM
 // Source hash: md5:2ea21d2081aa28f6bd8bb8c2f039cb31
 // Status: generalization_required (bridges: empty_case:A)
 Theorem NOT_FORALL_THM : forall A:set, forall P:set -> prop, ~ (forall x :e A, P x) <-> exists x :e A, ~ P x.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H4.
+  apply (xm (exists x :e A, ~ P x)).
+  + assume H5. exact H5.
+  + assume H6.
+    claim L: False.
+    { apply H4.
+    let x1. assume Hx1.
+    apply (xm (P x1)).
+    - assume H7. exact H7.
+    - assume H8.
+      claim L1: False.
+      { exact (H6 (ex_intro (fun hl__w:set => hl__w :e A /\ ~ P hl__w) (x1) (andI (x1 :e A) (~ P x1) Hx1 H8))). }
+      exact (FalseE L1 (P x1)). }
+    exact (FalseE L (exists x :e A, ~ P x)).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  assume H3.
+  exact (H2 (H3 (x) Hx)).
+Qed.
 
 // HOL Light: class.ml:249 / FORALL_NOT_THM
 // Source hash: md5:46d579bbfb2d94977204d7499747c02c

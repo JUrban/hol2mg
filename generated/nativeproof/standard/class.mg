@@ -74,6 +74,41 @@ let t.
 exact (xm (t)).
 Qed.
 
+// HOL Light: class.ml / DE_MORGAN_THM
+Theorem DE_MORGAN_THM : forall t1 t2:prop, (~ (t1 /\ t2) <-> ~ t1 \/ ~ t2) /\ (~ (t1 \/ t2) <-> ~ t1 /\ ~ t2).
+let t1.
+let t2.
+apply andI.
+- apply iffI.
+  + assume H9.
+    apply (xm (~ t1 \/ ~ t2)).
+    * assume H16. exact H16.
+    * assume H17.
+      claim L2: False.
+      { apply H17.
+      apply orIL.
+      assume H18.
+      exact (H17 (orIR (~ t1) (~ t2) (fun hl__H11 : t2 => (H9 (andI (t1) (t2) H18 hl__H11))))). }
+      exact (FalseE L2 (~ t1 \/ ~ t2)).
+  + assume H5.
+    assume H6.
+    apply H5.
+    * assume H7.
+      exact (H7 (andEL (t1) (t2) H6)).
+    * assume H8.
+      exact (H8 (andER (t1) (t2) H6)).
+- apply iffI.
+  + assume H4.
+    exact (andI (~ t1) (~ t2) (fun hl__H : t1 => (H4 (orIL (t1) (t2) hl__H))) (fun hl__H1 : t2 => (H4 (orIR (t1) (t2) hl__H1)))).
+  + assume H.
+    assume H1.
+    apply H1.
+    * assume H2.
+      exact ((andER (~ t1) (~ t2) H) (FalseE ((andEL (~ t1) (~ t2) H) H2) (t2))).
+    * assume H3.
+      exact ((andER (~ t1) (~ t2) H) H3).
+Qed.
+
 // HOL Light: class.ml / NOT_CLAUSES
 Theorem NOT_CLAUSES : (forall t:prop, ~ ~ t <-> t) /\ ((~ True <-> False) /\ (~ False <-> True)).
 apply andI.
@@ -134,6 +169,56 @@ apply iffI.
   assume H1.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   exact ((H (x) Hx) H3).
+Qed.
+
+// HOL Light: class.ml / EXISTS_NOT_THM
+Theorem EXISTS_NOT_THM : forall A:set, forall P:set -> prop, (exists x :e A, ~ P x) <-> ~ forall x :e A, P x.
+let A.
+let P.
+apply iffI.
+- assume H5.
+  apply H5. let x1. assume H6. apply H6. assume Hx1 H7.
+  assume H8.
+  exact (H7 (H8 (x1) Hx1)).
+- assume H.
+  apply (xm (exists x :e A, ~ P x)).
+  + assume H1. exact H1.
+  + assume H2.
+    claim L: False.
+    { apply H.
+    let x. assume Hx.
+    apply (xm (P x)).
+    - assume H3. exact H3.
+    - assume H4.
+      claim L1: False.
+      { exact (H2 (ex_intro (fun hl__w:set => hl__w :e A /\ ~ P hl__w) (x) (andI (x :e A) (~ P x) Hx H4))). }
+      exact (FalseE L1 (P x)). }
+    exact (FalseE L (exists x :e A, ~ P x)).
+Qed.
+
+// HOL Light: class.ml / NOT_FORALL_THM
+Theorem NOT_FORALL_THM : forall A:set, forall P:set -> prop, ~ (forall x :e A, P x) <-> exists x :e A, ~ P x.
+let A.
+let P.
+apply iffI.
+- assume H4.
+  apply (xm (exists x :e A, ~ P x)).
+  + assume H5. exact H5.
+  + assume H6.
+    claim L: False.
+    { apply H4.
+    let x1. assume Hx1.
+    apply (xm (P x1)).
+    - assume H7. exact H7.
+    - assume H8.
+      claim L1: False.
+      { exact (H6 (ex_intro (fun hl__w:set => hl__w :e A /\ ~ P hl__w) (x1) (andI (x1 :e A) (~ P x1) Hx1 H8))). }
+      exact (FalseE L1 (P x1)). }
+    exact (FalseE L (exists x :e A, ~ P x)).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  assume H3.
+  exact (H2 (H3 (x) Hx)).
 Qed.
 
 // HOL Light: class.ml / FORALL_NOT_THM

@@ -953,26 +953,26 @@ assume H.
 let P.
 let Q.
 apply iffI.
-- assume H26.
-  apply H26.
-  + assume H47.
-    apply H47. let x3. assume H49. apply H49. assume Hx3 H50.
+- assume H30.
+  apply H30.
+  + assume H55.
+    apply H55. let x3. assume H57. apply H57. assume Hx3 H58.
     witness x3.
     apply andI.
     * exact Hx3.
-    * exact (orIL (P x3) (Q) H50).
-  + assume H48.
+    * exact (orIL (P x3) (Q) H58).
+  + assume H56.
     witness choose_in A (fun hl__w:set => True).
     apply andI.
     * exact (choose_in_in (A) H (fun hl__w:set => True)).
-    * exact (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H48).
+    * exact (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H56).
 - assume H1.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   apply H3.
-  + assume H24.
-    exact (orIL (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H24))).
-  + assume H25.
-    exact (orIR (exists x :e A, P x) (Q) H25).
+  + assume H28.
+    exact (orIL (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H28))).
+  + assume H29.
+    exact (orIR (exists x :e A, P x) (Q) H29).
 Qed.
 
 // HOL Light: theorems.ml:277 / RIGHT_OR_EXISTS_THM
@@ -984,26 +984,26 @@ assume H.
 let P.
 let Q.
 apply iffI.
-- assume H26.
-  apply H26.
-  + assume H49.
+- assume H30.
+  apply H30.
+  + assume H57.
     witness choose_in A (fun hl__w:set => True).
     apply andI.
     * exact (choose_in_in (A) H (fun hl__w:set => True)).
-    * exact (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H49).
-  + assume H50.
-    apply H50. let x4. assume H51. apply H51. assume Hx4 H52.
+    * exact (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H57).
+  + assume H58.
+    apply H58. let x4. assume H59. apply H59. assume Hx4 H60.
     witness x4.
     apply andI.
     * exact Hx4.
-    * exact (orIR (P) (Q x4) H52).
+    * exact (orIR (P) (Q x4) H60).
 - assume H1.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   apply H3.
-  + assume H24.
-    exact (orIL (P) (exists x :e A, Q x) H24).
-  + assume H25.
-    exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H25))).
+  + assume H28.
+    exact (orIL (P) (exists x :e A, Q x) H28).
+  + assume H29.
+    exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H29))).
 Qed.
 
 // HOL Light: theorems.ml:285 / LEFT_EXISTS_AND_THM
