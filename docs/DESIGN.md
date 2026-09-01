@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **306 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **311 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (306 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (311 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -2042,6 +2042,14 @@ hypothesis): these need N6 — following the recorded proof's case structure
 (`DEDUCT_ANTISYM_RULE`/`ASSUME` segments) rather than pure normalization; and 1 576 of
 1 901 recorded-leaf attempts still lack a first rule because their leaf lemmas have no
 native proofs yet — that pool shrinks as the self-contained frontier grows.
+
+N5c (307 -> 311): the builtin premise table gains the God1 ordinal/arithmetic base —
+`neq_ordsucc_0`, `ordsucc_inj`, `omega_SNo`/`omega_nat_p`/`nat_p_omega`,
+`add/mul_SNo_In_omega`, `add_SNo_0L/0R`, `add/mul_SNo_com`, `mul_SNo_oneL` — chosen by
+ranking the leaves that block the 608 guided targets (num_INDUCTION 90, ADD_CLAUSES 58,
+MULT_CLAUSES 47, ... are the top of that list).  ADD_0, ADD_SYM, MULT_SYM and SUC_INJ
+become self-contained; each proved leaf also feeds the guided premise pool.  Synthesis
+phase now ~5 min.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
