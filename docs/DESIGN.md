@@ -2033,6 +2033,16 @@ level, and ordering-flip lemma instances; 1 576 of 1 901 recorded-leaf attempts 
 find no first rewrite because their leaf lemmas lack native proofs — the count grows
 with the self-contained frontier.
 
+N5b (no new yield yet, machinery in place): congruence leaves also close by
+*equality-instance Leibniz* — an equation instance `X = Y` from the premise rules that
+explains `l -> r = l[X:=Y]`, closed in context and applied through the standard motive.
+Full-width failure sampling confirms the dominant remaining class is **genuinely
+conditional rewrites** (`0 ^ n = if n = 0 then 1 else 0` collapsing under a case
+hypothesis): these need N6 — following the recorded proof's case structure
+(`DEDUCT_ANTISYM_RULE`/`ASSUME` segments) rather than pure normalization; and 1 576 of
+1 901 recorded-leaf attempts still lack a first rule because their leaf lemmas have no
+native proofs yet — that pool shrinks as the self-contained frontier grows.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

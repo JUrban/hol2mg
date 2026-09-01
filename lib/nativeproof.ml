@@ -1016,9 +1016,43 @@ let rec iff_congruence st (hyps : hyp list) (l : Mg.tm) (r : Mg.tm) : string opt
     match close_term st hyps (Mg.App (Mg.App (Mg.Cst "iff", l), r)) 3 with
     | Some t -> Some t
     | None ->
+    (* an equality-instance rewrite at set level: r = l[X:=Y] with X = Y closable *)
+    match
+      List.find_map (fun h ->
+        let prems, concl = strip_hyp h.prop in
+        let pvars = List.filter_map (function PVar x -> Some x | _ -> None) prems in
+        let rec eqs_of c =
+          (match dest_and c with
+           | Some (a, b) -> eqs_of a @ eqs_of b
+           | None -> (match dest_eq c with Some lr -> [ lr ] | None -> [])) in
+        List.find_map (fun (xp, yp) ->
+          (match xp with Mg.Var v when List.mem v pvars -> None | _ ->
+           let cands = ref [] in
+           let rec sub t = (match match_tm pvars xp t with
+             | Some bnd when List.for_all (fun v -> List.mem_assoc v bnd) pvars -> cands := bnd :: !cands
+             | _ -> ());
+             (match t with
+              | Mg.App (a, b) -> sub a; sub b
+              | Mg.Imp (a, b) -> sub a; sub b
+              | Mg.If (a, b, c) -> sub a; sub b; sub c
+              | _ -> ()) in
+           sub l;
+           List.find_map (fun bnd ->
+             let xi = beta (Mg.subst bnd xp) and yi = beta (Mg.subst bnd yp) in
+             if aeq xi yi then None else
+             if not (aeq (replace_tm xi yi l) r) then None else
+             match close_term st hyps (Mg.App (Mg.App (Mg.Cst "eq", xi), yi)) 3 with
+             | None -> None
+             | Some pe ->
+                 Some (Printf.sprintf "(%s (fun hl__u hl__v => (%s) <-> (%s)) (iff_refl (%s)))"
+                         pe (pp l) (pp (replace_tm xi (Mg.Var "hl__u") l)) (pp l))
+           ) !cands)) (eqs_of concl)) hyps
+    with
+    | Some t -> Some t
+    | None ->
         (if np_debug then Printf.eprintf "[cg] leaf fail: %s ||| %s\n%!"
-           (String.sub (pp l) 0 (min 110 (String.length (pp l))))
-           (String.sub (pp r) 0 (min 110 (String.length (pp r)))));
+           (String.sub (pp l) 0 (min 300 (String.length (pp l))))
+           (String.sub (pp r) 0 (min 300 (String.length (pp r)))));
         None in
   let bin cong a b a' b' =
     (match iff_congruence st hyps a a' with
