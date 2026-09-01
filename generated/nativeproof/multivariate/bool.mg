@@ -83,10 +83,7 @@ apply iffI.
 - assume H4.
   apply H4. let x1. assume H5. apply H5. assume Hx1 H6.
   apply andI.
-  + witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact (andEL (P x1) (forall y :e A, P y -> y = x1) H6).
+  + exact (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x1) (andI (x1 :e A) (P x1) Hx1 (andEL (P x1) (forall y :e A, P y -> y = x1) H6))).
   + let x2. assume Hx2.
     let y1. assume Hy1.
     assume H7.

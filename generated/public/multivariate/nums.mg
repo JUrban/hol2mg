@@ -80,7 +80,12 @@ Qed.
 // Source hash: md5:b287304fbed4be3d30468df5802532bb
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega)
 Theorem num_RECURSION : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n).
-Admitted.
+let A.
+let e0. assume He0.
+let f.
+assume H.
+exact (num_recursion (A) (e0) He0 (f) H).
+Qed.
 
 // HOL Light: nums.ml:177 / num_CASES
 // Source hash: md5:f202972a2e9786d2257c90d475eac48a
