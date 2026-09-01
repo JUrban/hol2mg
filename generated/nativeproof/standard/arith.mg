@@ -72,10 +72,50 @@ let m. assume Hm.
 exact ((add_SNo_1_ordsucc (m) Hm) (fun hl__u hl__v => hl__u = (m + 1)) (fun q H => H)).
 Qed.
 
+// HOL Light: arith.ml / MULT
+Theorem MULT : (forall n :e omega, 0 * n = 0) /\ forall m n :e omega, ordsucc m * n = m * n + n.
+apply andI.
+- let n1. assume Hn1.
+  exact (mul_SNo_zeroL (n1) (omega_SNo (n1) Hn1)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (((mul_SNo_SL_omega (m) Hm (n) Hn) (fun hl__u hl__v => hl__u = (ordsucc m * n)) (fun q H => H)) (fun hl__u hl__v => hl__u = m * n + n) ((add_SNo_com (m * n) (n) (omega_SNo (m * n) (mul_SNo_In_omega (m) Hm (n) Hn)) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (m * n + n)) (fun q H => H))).
+Qed.
+
 // HOL Light: arith.ml / MULT_0
 Theorem MULT_0 : forall m :e omega, m * 0 = 0.
 let m. assume Hm.
 exact (mul_SNo_zeroR (m) (omega_SNo (m) Hm)).
+Qed.
+
+// HOL Light: arith.ml / MULT_SUC
+Theorem MULT_SUC : forall m n :e omega, m * ordsucc n = m + m * n.
+let m. assume Hm.
+let n. assume Hn.
+exact (mul_SNo_SR_omega (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / MULT_CLAUSES
+Theorem MULT_CLAUSES : (forall n :e omega, 0 * n = 0) /\ ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n)))).
+apply andI.
+- let n3. assume Hn3.
+  exact (mul_SNo_zeroL (n3) (omega_SNo (n3) Hn3)).
+- apply andI.
+  + let m3. assume Hm3.
+    exact (mul_SNo_zeroR (m3) (omega_SNo (m3) Hm3)).
+  + apply andI.
+    * let n2. assume Hn2.
+      exact (mul_SNo_oneL (n2) (omega_SNo (n2) Hn2)).
+    * apply andI.
+      let m2. assume Hm2.
+      exact (mul_SNo_oneR (m2) (omega_SNo (m2) Hm2)).
+      apply andI.
+      let m1. assume Hm1.
+      let n1. assume Hn1.
+      exact (((mul_SNo_SL_omega (m1) Hm1 (n1) Hn1) (fun hl__u hl__v => hl__u = (ordsucc m1 * n1)) (fun q H => H)) (fun hl__u hl__v => hl__u = m1 * n1 + n1) ((add_SNo_com (m1 * n1) (n1) (omega_SNo (m1 * n1) (mul_SNo_In_omega (m1) Hm1 (n1) Hn1)) (omega_SNo (n1) Hn1)) (fun hl__u hl__v => hl__u = (m1 * n1 + n1)) (fun q H => H))).
+      let m. assume Hm.
+      let n. assume Hn.
+      exact (mul_SNo_SR_omega (m) Hm (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / MULT_SYM

@@ -161,7 +161,13 @@ Qed.
 // Source hash: md5:1363aa619553a725237435daed5df58b
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT : (forall n :e omega, 0 * n = 0) /\ forall m n :e omega, ordsucc m * n = m * n + n.
-Admitted.
+apply andI.
+- let n1. assume Hn1.
+  exact (mul_SNo_zeroL (n1) (omega_SNo (n1) Hn1)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (((mul_SNo_SL_omega (m) Hm (n) Hn) (fun hl__u hl__v => hl__u = (ordsucc m * n)) (fun q H => H)) (fun hl__u hl__v => hl__u = m * n + n) ((add_SNo_com (m * n) (n) (omega_SNo (m * n) (mul_SNo_In_omega (m) Hm (n) Hn)) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (m * n + n)) (fun q H => H))).
+Qed.
 
 // HOL Light: arith.ml:149 / MULT_0
 // Source hash: md5:3326845f7ea3ff59c385f3b0c8ad95ca
@@ -175,13 +181,35 @@ Qed.
 // Source hash: md5:31a7b833a9ea33d4468ca3acf0bc397f
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_SUC : forall m n :e omega, m * ordsucc n = m + m * n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (mul_SNo_SR_omega (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:157 / MULT_CLAUSES
 // Source hash: md5:feb467b9ce3d44927a3c5047681ce915
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_CLAUSES : (forall n :e omega, 0 * n = 0) /\ ((forall m :e omega, m * 0 = 0) /\ ((forall n :e omega, 1 * n = n) /\ ((forall m :e omega, m * 1 = m) /\ ((forall m n :e omega, ordsucc m * n = m * n + n) /\ forall m n :e omega, m * ordsucc n = m + m * n)))).
-Admitted.
+apply andI.
+- let n3. assume Hn3.
+  exact (mul_SNo_zeroL (n3) (omega_SNo (n3) Hn3)).
+- apply andI.
+  + let m3. assume Hm3.
+    exact (mul_SNo_zeroR (m3) (omega_SNo (m3) Hm3)).
+  + apply andI.
+    * let n2. assume Hn2.
+      exact (mul_SNo_oneL (n2) (omega_SNo (n2) Hn2)).
+    * apply andI.
+      let m2. assume Hm2.
+      exact (mul_SNo_oneR (m2) (omega_SNo (m2) Hm2)).
+      apply andI.
+      let m1. assume Hm1.
+      let n1. assume Hn1.
+      exact (((mul_SNo_SL_omega (m1) Hm1 (n1) Hn1) (fun hl__u hl__v => hl__u = (ordsucc m1 * n1)) (fun q H => H)) (fun hl__u hl__v => hl__u = m1 * n1 + n1) ((add_SNo_com (m1 * n1) (n1) (omega_SNo (m1 * n1) (mul_SNo_In_omega (m1) Hm1 (n1) Hn1)) (omega_SNo (n1) Hn1)) (fun hl__u hl__v => hl__u = (m1 * n1 + n1)) (fun q H => H))).
+      let m. assume Hm.
+      let n. assume Hn.
+      exact (mul_SNo_SR_omega (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:166 / MULT_SYM
 // Source hash: md5:7103233ece91e4b797b0f67782824327
