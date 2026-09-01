@@ -104,7 +104,23 @@ Qed.
 // Source hash: md5:2d73cf3d9340a07496060ebb19e89f36
 // Status: exact_native
 Theorem BOOL_CASES_AX : forall t:prop, (t <-> True) \/ (t <-> False).
-Admitted.
+let t.
+apply (xm (t)).
+- assume H5.
+  apply orIL.
+  apply iffI.
+  + assume H11.
+    exact (fun p:prop => fun H:p => H).
+  + assume H10.
+    exact H5.
+- assume H6.
+  apply orIR.
+  apply iffI.
+  + assume H9.
+    exact (H6 H9).
+  + assume H8.
+    exact (FalseE H8 (t)).
+Qed.
 
 // HOL Light: class.ml:185 / DE_MORGAN_THM
 // Source hash: md5:8b8cb517996be6435d3c18d9fc7bbe23
@@ -198,7 +214,21 @@ Qed.
 // Source hash: md5:57fb40ff0c7c85aa21a80031583ca69d
 // Status: exact_native
 Theorem CONTRAPOS_THM : forall t1 t2:prop, ~ t1 -> ~ t2 <-> t2 -> t1.
-Admitted.
+let t1.
+let t2.
+apply iffI.
+- assume H3.
+  assume H4.
+  apply (xm (t1)).
+  + assume H5.
+    exact H5.
+  + assume H6.
+    exact (FalseE ((H3 H6) H4) (t1)).
+- assume H.
+  assume H1.
+  assume H2.
+  exact (H1 (H H2)).
+Qed.
 
 // HOL Light: class.ml:233 / NOT_EXISTS_THM
 // Source hash: md5:bd9e48e90e3a55c73b430ea13ad14537
@@ -368,7 +398,45 @@ Qed.
 // Source hash: md5:a0ffc58d882ed08bb9ceb976d7d87a07
 // Status: exact_native
 Theorem COND_EXPAND : forall b t1 t2:prop, (b -> t1) /\ (~ b -> t2) <-> (~ b \/ t1) /\ (b \/ t2).
-Admitted.
+let b.
+let t1.
+let t2.
+apply iffI.
+- assume H11.
+  apply andI.
+  + apply (xm (b)).
+    * assume H21.
+      exact (orIR (~ b) (t1) ((andEL (b -> t1) (~ b -> t2) H11) H21)).
+    * assume H22.
+      exact (orIL (~ b) (t1) H22).
+  + apply (xm (b)).
+    * assume H16.
+      exact (orIL (b) (t2) H16).
+    * assume H17.
+      exact (orIR (b) (t2) ((andER (b -> t1) (~ b -> t2) H11) H17)).
+- assume H.
+  apply andI.
+  + assume H4.
+    apply (andER (~ b \/ t1) (b \/ t2) H).
+    * assume H5.
+      apply (andEL (~ b \/ t1) (b \/ t2) H).
+      assume H9.
+      exact (FalseE (H9 H5) (t1)).
+      assume H10.
+      exact H10.
+    * assume H6.
+      apply (andEL (~ b \/ t1) (b \/ t2) H).
+      assume H7.
+      exact (FalseE (H7 H4) (t1)).
+      assume H8.
+      exact H8.
+  + assume H1.
+    apply (andER (~ b \/ t1) (b \/ t2) H).
+    * assume H2.
+      exact (FalseE (H1 H2) (t2)).
+    * assume H3.
+      exact H3.
+Qed.
 
 // HOL Light: class.ml:347 / COND_ID
 // Source hash: md5:6cd454b7a60ebc592010064af1887257

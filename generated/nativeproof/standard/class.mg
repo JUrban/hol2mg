@@ -74,6 +74,26 @@ let t.
 exact (xm (t)).
 Qed.
 
+// HOL Light: class.ml / BOOL_CASES_AX
+Theorem BOOL_CASES_AX : forall t:prop, (t <-> True) \/ (t <-> False).
+let t.
+apply (xm (t)).
+- assume H5.
+  apply orIL.
+  apply iffI.
+  + assume H11.
+    exact (fun p:prop => fun H:p => H).
+  + assume H10.
+    exact H5.
+- assume H6.
+  apply orIR.
+  apply iffI.
+  + assume H9.
+    exact (H6 H9).
+  + assume H8.
+    exact (FalseE H8 (t)).
+Qed.
+
 // HOL Light: class.ml / DE_MORGAN_THM
 Theorem DE_MORGAN_THM : forall t1 t2:prop, (~ (t1 /\ t2) <-> ~ t1 \/ ~ t2) /\ (~ (t1 \/ t2) <-> ~ t1 /\ ~ t2).
 let t1.
@@ -154,6 +174,24 @@ apply iffI.
 - assume H.
   assume H1.
   exact ((andER (t1) (~ t2) H) (H1 (andEL (t1) (~ t2) H))).
+Qed.
+
+// HOL Light: class.ml / CONTRAPOS_THM
+Theorem CONTRAPOS_THM : forall t1 t2:prop, ~ t1 -> ~ t2 <-> t2 -> t1.
+let t1.
+let t2.
+apply iffI.
+- assume H3.
+  assume H4.
+  apply (xm (t1)).
+  + assume H5.
+    exact H5.
+  + assume H6.
+    exact (FalseE ((H3 H6) H4) (t1)).
+- assume H.
+  assume H1.
+  assume H2.
+  exact (H1 (H H2)).
 Qed.
 
 // HOL Light: class.ml / NOT_EXISTS_THM
@@ -242,6 +280,48 @@ let A.
 let t1. assume Ht1.
 let t2. assume Ht2.
 exact (andI ((if True then t1 else t2) = t1) ((if False then t1 else t2) = t2) (If_i_1 (True) (t1) (t2) (fun p:prop => fun H:p => H)) (If_i_0 (False) (t1) (t2) (fun hl__H1 : False => hl__H1))).
+Qed.
+
+// HOL Light: class.ml / COND_EXPAND
+Theorem COND_EXPAND : forall b t1 t2:prop, (b -> t1) /\ (~ b -> t2) <-> (~ b \/ t1) /\ (b \/ t2).
+let b.
+let t1.
+let t2.
+apply iffI.
+- assume H11.
+  apply andI.
+  + apply (xm (b)).
+    * assume H21.
+      exact (orIR (~ b) (t1) ((andEL (b -> t1) (~ b -> t2) H11) H21)).
+    * assume H22.
+      exact (orIL (~ b) (t1) H22).
+  + apply (xm (b)).
+    * assume H16.
+      exact (orIL (b) (t2) H16).
+    * assume H17.
+      exact (orIR (b) (t2) ((andER (b -> t1) (~ b -> t2) H11) H17)).
+- assume H.
+  apply andI.
+  + assume H4.
+    apply (andER (~ b \/ t1) (b \/ t2) H).
+    * assume H5.
+      apply (andEL (~ b \/ t1) (b \/ t2) H).
+      assume H9.
+      exact (FalseE (H9 H5) (t1)).
+      assume H10.
+      exact H10.
+    * assume H6.
+      apply (andEL (~ b \/ t1) (b \/ t2) H).
+      assume H7.
+      exact (FalseE (H7 H4) (t1)).
+      assume H8.
+      exact H8.
+  + assume H1.
+    apply (andER (~ b \/ t1) (b \/ t2) H).
+    * assume H2.
+      exact (FalseE (H1 H2) (t2)).
+    * assume H3.
+      exact H3.
 Qed.
 
 // HOL Light: class.ml / COND_ID

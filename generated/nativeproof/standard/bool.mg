@@ -53,6 +53,29 @@ apply iffI.
   exact ((andER (P x -> True) (True -> P x) (H (x) Hx)) (fun p:prop => fun H:p => H)).
 Qed.
 
+// HOL Light: bool.ml / OR_DEF
+Theorem OR_DEF : forall p q:prop, p \/ q <-> forall r:prop, (p -> r) -> (q -> r) -> r.
+let p.
+let q.
+apply iffI.
+- assume H7.
+  let r.
+  assume H8.
+  assume H9.
+  apply H7.
+  + assume H10.
+    exact (H8 H10).
+  + assume H11.
+    exact (H9 H11).
+- assume H.
+  apply (xm (p)).
+  + assume H5.
+    exact (orIL (p) (q) H5).
+  + assume H6.
+    apply orIR.
+    exact (H (q) (fun hl__H6 : p => (FalseE (H6 hl__H6) (q))) (fun hl__H7 : q => hl__H7)).
+Qed.
+
 // HOL Light: bool.ml / F_DEF
 Theorem F_DEF : False <-> forall p:prop, p.
 apply iffI.
