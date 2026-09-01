@@ -1249,6 +1249,15 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y"),
                Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__y"), Mg.Var "hl__z"),
                  Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("not_SNoLt_0_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega",
+       Mg.App (Mg.Cst "not",
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__m"), Mg.Num 0))));
+    ("SNoLe_0_iff_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.Num 0)),
+         Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Num 0))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

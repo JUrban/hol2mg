@@ -192,3 +192,18 @@ apply iffI.
   + assume H1. exact ((eq_sym_i m (ordsucc n) H1) (fun hl__u hl__v => hl__u <= ordsucc n) (SNoLe_ref (ordsucc n))).
   + assume H1. exact (SNoLtLe m (ordsucc n) (SNoLeLt_tra m n (ordsucc n) Hsm Hsn Hssn H1 (ordinal_In_SNoLt (ordsucc n) (nat_p_ordinal (ordsucc n) (omega_nat_p (ordsucc n) (omega_ordsucc n Hn))) n (ordsuccI2 n)))).
 Qed.
+
+Theorem not_SNoLt_0_omega : forall m :e omega, ~ m < 0.
+let m. assume Hm. assume H.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hmm: m < m. { exact (SNoLtLe_tra m 0 m Hsm SNo_0 Hsm H (omega_nonneg m Hm)). }
+exact (SNoLt_irref m Hmm).
+Qed.
+
+Theorem SNoLe_0_iff_omega : forall m :e omega, m <= 0 <-> m = 0.
+let m. assume Hm.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+apply iffI.
+- assume H. exact (SNoLe_antisym m 0 Hsm SNo_0 H (omega_nonneg m Hm)).
+- assume H. exact ((eq_sym_i m 0 H) (fun hl__u hl__v => hl__u <= 0) (SNoLe_ref 0)).
+Qed.

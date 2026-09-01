@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **351 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **353 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (351 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (353 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -2089,6 +2089,10 @@ N5j (346 -> 351): implication lambda terms return (gated to depth >= 2 and charg
 memoization makes them affordable; NOT_IMP), hand-bridged successor-order lemmas
 `SNoLt/SNoLe_ordsucc_iff_omega` in logic.mg via the ordinal-membership bridges, and the
 four SNo transitivity builtins — landing the LE/LT/LET/LTE_TRANS family.
+
+N5k (351 -> 353): the order 0-clauses as hand lemmas (`not_SNoLt_0_omega`,
+`SNoLe_0_iff_omega`) complete the recursive characterizations — LT and LE themselves now
+carry native proofs, opening their 37 guided premise slots.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

@@ -149,6 +149,30 @@ let p. assume Hp.
 exact (mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
+// HOL Light: arith.ml / LE
+Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
+apply andI.
+- let m1. assume Hm1.
+  exact (SNoLe_0_iff_omega (m1) Hm1).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (SNoLe_ordsucc_iff_omega (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / LT
+Theorem LT : (forall m :e omega, m < 0 <-> False) /\ forall m n :e omega, m < ordsucc n <-> m = n \/ m < n.
+apply andI.
+- let m1. assume Hm1.
+  apply iffI.
+  + assume H1.
+    exact ((not_SNoLt_0_omega (m1) Hm1) H1).
+  + assume H.
+    exact (FalseE H (m1 < 0)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (SNoLt_ordsucc_iff_omega (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / GE
 Theorem GE : forall n m :e omega, n <= m <-> n <= m.
 let n. assume Hn.
