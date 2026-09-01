@@ -29,7 +29,7 @@ jobs:
         if: steps.cache-megalodon.outputs.cache-hit != 'true'
         run: |
           mkdir -p ../repos && cd ../repos
-          git clone https://github.com/ai4reason/Megalodon.git
+          git clone https://github.com/mgwiki/Megalodon.git
           cd Megalodon && git checkout "$MEGALODON_COMMIT" && ./makeopt
           ls -l bin/megalodon
       - name: Lint (no Axiom, no hand edits, manifest/doc consistency)

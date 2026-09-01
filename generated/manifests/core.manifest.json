@@ -4665,12 +4665,19 @@
    "cert_error": "",
    "bridge": "BOOL_CASES_AX_bridge",
    "literal_proved": true,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "EQ_CLAUSES",
+    "EXCLUDED_MIDDLE",
+    "NOT_CLAUSES_WEAK",
+    "OR_CLAUSES",
+    "TRUTH"
+   ],
    "proof_error": "",
    "natively_proved": false,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "BOTTOM",
@@ -8999,12 +9006,19 @@
    "cert_error": "",
    "bridge": "CONS_11_bridge",
    "literal_proved": true,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "FORALL_SIMP",
+    "PAIR_EQ",
+    "REFL_CLAUSE",
+    "TRUTH",
+    "list_RECURSION"
+   ],
    "proof_error": "",
    "natively_proved": false,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "CONS_HD_TL",
@@ -16320,12 +16334,13 @@
    "cert_error": "",
    "bridge": "ETA_AX_bridge",
    "literal_proved": true,
-   "proof_imported": false,
+   "proof_imported": true,
    "proof_leaves": [],
    "proof_error": "",
    "natively_proved": true,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "ETA_ONE",
@@ -31620,12 +31635,13 @@
    "cert_error": "",
    "bridge": "",
    "literal_proved": true,
-   "proof_imported": false,
+   "proof_imported": true,
    "proof_leaves": [],
    "proof_error": "",
    "natively_proved": false,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": false,
+   "proof_source": "pilot"
   },
   {
    "name": "INF_APPROACH",
@@ -85022,12 +85038,19 @@
    "cert_error": "",
    "bridge": "REAL_OF_NUM_SUC_bridge",
    "literal_proved": true,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "ADD1",
+    "FORALL_SIMP",
+    "REAL_OF_NUM_ADD",
+    "REFL_CLAUSE",
+    "TRUTH"
+   ],
    "proof_error": "",
    "natively_proved": false,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "REAL_OF_NUM_SUM",
@@ -91712,12 +91735,13 @@
    "cert_error": "",
    "bridge": "SELECT_AX_bridge",
    "literal_proved": true,
-   "proof_imported": false,
+   "proof_imported": true,
    "proof_leaves": [],
    "proof_error": "",
    "natively_proved": true,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "SELECT_REFL",
@@ -107893,12 +107917,28 @@
    "cert_error": "",
    "bridge": "int_mul_th_bridge",
    "literal_proved": true,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "EXISTS_OR_THM",
+    "EXISTS_REFL",
+    "OR_CLAUSES",
+    "REAL_EQ_NEG2",
+    "REAL_MUL_LNEG",
+    "REAL_MUL_RNEG",
+    "REAL_NEG_NEG",
+    "REAL_OF_NUM_EQ",
+    "REAL_OF_NUM_MUL",
+    "TRUTH",
+    "dest_int_rep",
+    "int_mul",
+    "int_rep",
+    "is_int"
+   ],
    "proof_error": "",
    "natively_proved": true,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "int_neg",
@@ -110740,12 +110780,17 @@
    "cert_error": "",
    "bridge": "one_axiom_bridge",
    "literal_proved": true,
-   "proof_imported": false,
-   "proof_leaves": [],
+   "proof_imported": true,
+   "proof_leaves": [
+    "FUN_EQ_THM",
+    "TRUTH",
+    "one"
+   ],
    "proof_error": "",
    "natively_proved": false,
    "literal_fact_proved": true,
-   "fully_proved": false
+   "fully_proved": true,
+   "proof_source": "pilot"
   },
   {
    "name": "one_tydef",
@@ -112984,6 +113029,7 @@
   "failed_shards": {},
   "transport_checked": 2592,
   "literal_proved": 57,
-  "fully_proved": 840
+  "fully_proved": 847,
+  "model_and_imported": 7
  }
 }

@@ -19,9 +19,9 @@ tools/check_public.sh "$out" || true
 run --native-proofs generated/nativeproof/$prof
 tools/check_public.sh "$out"
 tools/check_literal.sh "$lit"
-tools/check_nativeproof.sh "$prof" || true
+tools/check_nativeproof.sh "$prof"
 tools/check_cert.sh "$prof" | tee "$cert/check.log" | grep -v "^OK   [a-z_]* (0 bridges" || true
-python3 tools/cert_finalize.py "$prof" "$cert/check.log" || true
+python3 tools/cert_finalize.py "$prof" "$cert/check.log"
 cp "$out/$prof.report.md" generated/reports/$prof.report.md
 cp "$out/$prof.manifest.json" generated/manifests/$prof.manifest.json
 python3 tools/review_page.py "$prof" >/dev/null && echo "review page: generated/reports/$prof.review.html"

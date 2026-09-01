@@ -36,7 +36,9 @@ works: set `HOL_LIGHT_DIR`), create/adjust a profile pinning the commit, run `to
 then `tools/diff_manifests.py` between the previous and the new manifest gives the change report
 (new / removed / renamed / changed statements); unchanged shards stay byte-identical.
 
-Every generated theorem is `Admitted` (never an axiom), carries its HOL source, hash and
+Every generated theorem is emitted with a generated native proof and `Qed` when the
+synthesizer closes it (306 core, 339 standard; DESIGN 23), and `Admitted` otherwise
+(never an axiom); each carries its HOL source, hash and
 status (`exact_native`, `transport_required`, `generalization_required`, `native_reuse`,
 `pending_mapping`), and all shards must print `Everything looks good.` under Megalodon.
 
@@ -53,12 +55,15 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 
 | profile | public statements | literal statements checked | `transport_checked` | `literal_proved` | `fully_proved` |
 |---|---|---|---|---|---|
-| core | 2685 | 2697 | 2592 | 57 | 840 (recorded from pilot rounds 7–8, DESIGN 22.6) |
+| core | 2685 | 2697 | 2592 | 57 | 847 (recorded from pilot rounds 7–8, DESIGN 22.6) |
+| standard | 4290 | 4396 | 3839 | 57 | — |
 
 Native proof synthesis (DESIGN §23): 306 Core and 339 standard public theorems additionally carry *generated
 native proofs* in the God1 declarative style (`natively_proved`, emitted with `Qed` in the
-public shards; `generated/nativeproof/`, `tools/check_nativeproof.sh`).
-| standard | 4290 | 4396 | 3839 | 57 | — |
+public shards; `generated/nativeproof/`, `tools/check_nativeproof.sh`).  Seven theorems
+are counted under both `literal_proved` and `fully_proved` (`model_and_imported` in the
+manifest); an eighth, INFINITY_AX, has both discharges recorded but is not yet
+`transport_checked`.
 
 A theorem is `transport_checked` (formerly `native_certified`) only when Megalodon `Qed`-checked
 the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/check_cert.sh`,
@@ -66,13 +71,15 @@ the generated bridge `literal -> native` (`generated/cert/<profile>/`, `tools/ch
 `literal_proved` when that admission is discharged too, by a model-soundness theorem of the
 primitive interface (`mglib/literal/model_theorems.mg`, DESIGN §21.4): nothing is admitted.
 `fully_proved` (discharge by an imported HOL Light proof) comes from the proof-export pilot
-(DESIGN §22, `tools/proof_pilot.sh`): its artifacts are regenerated, not committed, so the committed
-manifest carries no imported proofs; the pilot round 6 of 2026-08-30 (cap 2 000 inferences plus 29 forced leaves, split shards, 42 of 45 parts) proved 682
-public Core theorems fully (report 16).  Compatibility theorems for mapped
+(DESIGN §22, `tools/proof_pilot.sh`): the large proof modules are regenerated, not
+committed, while the committed sidecar (`generated/proofcert/*.pilot_results.json`)
+records the results of pilot rounds 7–8 with statement hashes and literal digests,
+re-validated by every certification cycle: 847 public Core theorems are `fully_proved`
+(report 16–17).  Compatibility theorems for mapped
 constants are hand-proved in `mglib/literal/compat.mg` from the literal definitions.
 
 Unmapped `new_definition`/`new_specification` constants and `new_type_definition` types are
 translated automatically into `generated/public/<profile>/_definitions.mg` (status `auto`,
 listed in the report and review page; a reviewed hand mapping or `override` always wins).
-Native infrastructure (`mglib/native/`): `prelude.mg`, `finseq.mg`, `order.mg`; 62 of its 67
-theorems are proved (`Qed`), the rest are `Admitted` and listed in the reports.
+Native infrastructure (`mglib/native/`): `prelude.mg`, `finseq.mg`, `order.mg`; all 73
+theorems are proved (`Qed`); nothing there is admitted.

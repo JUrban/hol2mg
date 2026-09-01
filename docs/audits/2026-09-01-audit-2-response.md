@@ -40,3 +40,10 @@ structure. Making the synthesizer follow the recorded DAG is the next milestone
 The forward plan (new branch `dev/proofs-v1`) is DESIGN §24: P0 hardening (CI, gates,
 docs, bookkeeping), P1 full Multivariate statement import to `transport_checked`,
 P2 mg-friendly, skeleton-following proof import, P3 native proofs at Multivariate scale.
+
+**Update (same day, after the P0 fix):** the sidecar application now records an imported
+proof for theorems already discharged by a model theorem; the core manifest reports
+**847 fully_proved with 7 counted under both statuses** (`model_and_imported`) — the
+auditor's seven exactly; the eighth overlap candidate, INFINITY_AX, carries both
+discharges but is `pending_mapping`, hence not `transport_checked`, and this also
+resolves the 57/58 count difference.

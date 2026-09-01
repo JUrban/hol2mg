@@ -2034,8 +2034,11 @@ CI clones `mgwiki/Megalodon` (pinned `e0fba57`) instead of `ai4reason/Megalodon`
 `tools/update.sh` drops `|| true` on `check_nativeproof.sh` and `cert_finalize.py`;
 README repairs (the "every generated theorem is Admitted" claim, the split certification
 table, the stale 62/67 infrastructure count, the pilot-round-6-era paragraph); the
-literal-proved/imported-proof overlap (8 theorems) reported explicitly and the 57/58
-count reconciled; pilot rounds retain checker digests and logs as release artifacts.
+literal-proved/imported-proof overlap reported explicitly and the 57/58 count reconciled.
+Status 2026-09-01: all of the above done (847 fully_proved, 7 `model_and_imported`;
+INFINITY_AX carries both discharges but stays `pending_mapping`).  Remaining: pilot
+rounds retain checker digests and logs as release artifacts — lands with the next
+pilot round, since those artifacts exist only while a round runs.
 
 ### 24.2 P1 — all Multivariate statements into Megalodon
 
