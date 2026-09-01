@@ -21,6 +21,13 @@ apply iffI.
   exact (H2 (x) Hx (y) Hy H3).
 Qed.
 
+// HOL Light: nums.ml / NOT_SUC
+Theorem NOT_SUC : forall n :e omega, ~ ordsucc n = 0.
+let n. assume Hn.
+assume H.
+exact ((neq_ordsucc_0 (n)) H).
+Qed.
+
 // HOL Light: nums.ml / SUC_INJ
 Theorem SUC_INJ : forall m n :e omega, ordsucc m = ordsucc n <-> m = n.
 let m. assume Hm.
@@ -30,6 +37,14 @@ apply iffI.
   exact (ordsucc_inj (m) (n) H1).
 - assume H.
   exact (H (fun hl__u hl__v => (ordsucc m) = (ordsucc hl__u)) (fun q H => H)).
+Qed.
+
+// HOL Light: nums.ml / num_INDUCTION
+Theorem num_INDUCTION : forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n.
+let P.
+assume H.
+let n. assume Hn.
+exact (nat_ind (fun n:set => P n) (andEL (P 0) (forall n :e omega, P n -> P (ordsucc n)) H) (fun hl__k Hk IH => (andER (P 0) (forall n :e omega, P n -> P (ordsucc n)) H) hl__k (nat_p_omega hl__k Hk) IH) n (omega_nat_p n Hn)).
 Qed.
 
 // HOL Light: nums.ml / NUMERAL

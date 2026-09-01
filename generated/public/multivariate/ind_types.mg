@@ -48,7 +48,13 @@ Admitted.
 // Source hash: md5:e24a8b3534d12615232f89c947dd6ab3
 // Status: transport_required (bridges: hol_list_finseq)
 Theorem list_INDUCT : forall A:set, A <> Empty -> forall P:set -> prop, P seq_nil /\ (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) -> forall x :e finseq A, P x.
-Admitted.
+let A.
+assume H.
+let P.
+assume H1.
+let x. assume Hx.
+exact (seq_induct (A) (fun x:set => P x) (andEL (P seq_nil) (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) H1) (andER (P seq_nil) (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) H1) x Hx).
+Qed.
 
 // HOL Light: ind_types.ml:885 / list_RECURSION
 // Source hash: md5:21b923915525c3b3ed6c44a773a64671

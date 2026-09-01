@@ -1231,7 +1231,10 @@ Admitted.
 // Source hash: md5:d903866d2c80a41d56ac686e49a4c122
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_LT_REFL : forall x :e int, ~ x < x.
-Admitted.
+let x. assume Hx.
+assume H.
+exact ((SNoLt_irref (x)) H).
+Qed.
 
 // HOL Light: int.ml:463 / INT_LT_RMUL
 // Source hash: md5:e68a88bfda44fa2a76b9415ec8c68581
@@ -1741,8 +1744,11 @@ Admitted.
 // HOL Light: int.ml:529 / INT_OF_NUM_SUC
 // Source hash: md5:97ae1d2133bd1e3fcb96eec95c1f37cd
 // Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
+let n. assume Hn.
+exact (add_SNo_1_ordsucc (n) Hn).
+Qed.
 
 // HOL Light: int.ml:530 / INT_POS
 // Source hash: md5:98964a3ff0f5b863a58d239a4e1da89c
