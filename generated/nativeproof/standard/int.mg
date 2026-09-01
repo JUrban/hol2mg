@@ -290,6 +290,13 @@ let x. assume Hx.
 exact (SNoLe_ref (x)).
 Qed.
 
+// HOL Light: int.ml / INT_LT_REFL
+Theorem INT_LT_REFL : forall x :e int, ~ x < x.
+let x. assume Hx.
+assume H.
+exact ((SNoLt_irref (x)) H).
+Qed.
+
 // HOL Light: int.ml / INT_OF_NUM_ADD
 Theorem INT_OF_NUM_ADD : forall m n :e omega, m + n = m + n.
 let m. assume Hm.
@@ -441,6 +448,12 @@ Theorem INT_OF_NUM_POW : forall x n :e omega, x ^ n = x ^ n.
 let x. assume Hx.
 let n. assume Hn.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: int.ml / INT_OF_NUM_SUC
+Theorem INT_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
+let n. assume Hn.
+exact (add_SNo_1_ordsucc (n) Hn).
 Qed.
 
 // HOL Light: int.ml / INT_POS
