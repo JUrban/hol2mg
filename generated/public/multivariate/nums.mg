@@ -36,7 +36,7 @@ Admitted.
 Theorem NOT_SUC : forall n :e omega, ~ ordsucc n = 0.
 let n. assume Hn.
 assume H.
-exact ((neq_ordsucc_0 (n)) H).
+exact ((not_SNoLt_0_omega (n) Hn) (FalseE ((neq_ordsucc_0 (n)) H) (n < 0))).
 Qed.
 
 // HOL Light: nums.ml:80 / SUC_INJ
