@@ -18,7 +18,16 @@ Admitted.
 // Source hash: md5:3ef027801213877da04628f269452000
 // Status: transport_required (bridges: hol_list_finseq)
 Theorem APPEND : forall A:set, A <> Empty -> (forall l :e finseq A, seq_append seq_nil l = l) /\ forall h :e A, forall t l :e finseq A, seq_append (seq_cons h t) l = seq_cons h (seq_append t l).
-Admitted.
+let A.
+assume H.
+apply andI.
+- let l1. assume Hl1.
+  exact (seq_append_nil (A) (l1) Hl1).
+- let h. assume Hh.
+  let t. assume Ht.
+  let l. assume Hl.
+  exact (seq_append_cons (A) (h) Hh (t) Ht (l) Hl).
+Qed.
 
 // HOL Light: lists.ml:38 / REVERSE
 // Source hash: md5:7a7d177a687f80c4814a45c86aef55f8
@@ -30,13 +39,33 @@ Admitted.
 // Source hash: md5:17c615469c05a454f2fd034489234849
 // Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
 Theorem LENGTH : forall A:set, A <> Empty -> seq_len seq_nil = 0 /\ forall h :e A, forall t :e finseq A, seq_len (seq_cons h t) = ordsucc (seq_len t).
-Admitted.
+let A.
+assume H.
+apply andI.
+- exact seq_len_nil.
+- let h. assume Hh.
+  let t. assume Ht.
+  exact (seq_len_cons (A) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:46 / MAP
 // Source hash: md5:1cd1ca7bb70cda875ad5749c1ca01729
 // Status: transport_required (bridges: hol_list_finseq)
 Theorem MAP : forall A B:set, A <> Empty -> B <> Empty -> (forall f:set -> set, (forall x :e A, f x :e B) -> seq_map f seq_nil = seq_nil) /\ forall f:set -> set, (forall x :e A, f x :e B) -> forall h :e A, forall t :e finseq A, seq_map f (seq_cons h t) = seq_cons (f h) (seq_map f t).
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+apply andI.
+- let f1.
+  assume H3.
+  exact (seq_map_nil (f1)).
+- let f.
+  assume H2.
+  let h. assume Hh.
+  let t. assume Ht.
+  exact (seq_map_cons (A) (f) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:50 / LAST
 // Source hash: md5:8ceaa343a4f12fbf270147102b54e937
@@ -66,7 +95,12 @@ Admitted.
 // Source hash: md5:4e7ccd881d3b6b76b557162de933a2a1
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem ALL : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_all P seq_nil <-> True) /\ (seq_all P (seq_cons h t) <-> P h /\ seq_all P t).
-Admitted.
+let A.
+let P.
+let h. assume Hh.
+let t. assume Ht.
+exact (andI (seq_all P seq_nil <-> True) (seq_all P (seq_cons h t) <-> P h /\ seq_all P t) (seq_all_nil (P)) (seq_all_cons (A) (P) (h) Hh (t) Ht)).
+Qed.
 
 // HOL Light: lists.ml:69 / EX
 // Source hash: md5:8b0dcace39404907876ae25859ceb0ce

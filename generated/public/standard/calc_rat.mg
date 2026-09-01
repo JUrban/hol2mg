@@ -45,7 +45,16 @@ Admitted.
 // Source hash: md5:be9a7b4b2ad6d3308531b51967e3076a
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_TRANS_LE : forall x y :e R, x <= y <-> forall z :e R, y <= z -> x <= z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  let z. assume Hz.
+  assume H2.
+  exact (SNoLe_tra (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) H1 H2).
+- assume H.
+  exact (H (y) Hy (SNoLe_ref (y))).
+Qed.
 
 // HOL Light: calc_rat.ml:567 / REAL_LE_TRANS_LTE
 // Source hash: md5:1068e1c4a588cddd354422ab876ed0f1

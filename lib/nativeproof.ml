@@ -192,10 +192,11 @@ let unfold_def2 (c : string) (x : Mg.tm) (y : Mg.tm) : Mg.tm option =
                  Mg.App (Mg.App (Mg.Cst "eq",
                    Mg.App (Mg.App (Mg.Cst "mul_SNo", x), Mg.Var "hl__k")), y))))
   | "divides_nat" ->
+      (* God1 defines divides_nat before mul_SNo exists: its `*` is mul_nat *)
       Some (mg_and (mg_and (mg_in x (Mg.Cst "omega")) (mg_in y (Mg.Cst "omega")))
               (Mg.ExIn ("hl__k", Mg.Cst "omega",
                  Mg.App (Mg.App (Mg.Cst "eq",
-                   Mg.App (Mg.App (Mg.Cst "mul_SNo", x), Mg.Var "hl__k")), y))))
+                   Mg.App (Mg.App (Mg.Cst "mul_nat", x), Mg.Var "hl__k")), y))))
   | _ -> None
 
 (* enrich a hypothesis with its derived term projections (no script): conjunction and

@@ -29,14 +29,20 @@ Admitted.
 // HOL Light: calc_int.ml:86 / REAL_MUL_RZERO
 // Source hash: md5:7ea0eb7bbd0309ffcf17a00c946f188f
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_MUL_RZERO : forall x :e R, x * 0 = 0.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_MUL_RZERO : forall x :e R, x * 0 = 0.
+let x. assume Hx.
+exact (mul_SNo_zeroR (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light: calc_int.ml:90 / REAL_MUL_LZERO
 // Source hash: md5:73fbc71a53aae64340fb9634fb267ed8
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_MUL_LZERO : forall x :e R, 0 * x = 0.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_MUL_LZERO : forall x :e R, 0 * x = 0.
+let x. assume Hx.
+exact (mul_SNo_zeroL (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light: calc_int.ml:94 / REAL_NEG_NEG
 // Source hash: md5:cb8faab7f2739dfbcdbfbe9981364aaa
@@ -65,8 +71,11 @@ Admitted.
 // HOL Light: calc_int.ml:116 / REAL_ADD_RID
 // Source hash: md5:d0c6ae778bf72860e2d9d9e713fa9d96
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_ADD_RID : forall x :e R, x + 0 = x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_ADD_RID : forall x :e R, x + 0 = x.
+let x. assume Hx.
+exact (add_SNo_0R (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light: calc_int.ml:120 / REAL_NEG_0
 // Source hash: md5:09b549c26384798305571589b87f85bb
