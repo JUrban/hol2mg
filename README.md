@@ -37,7 +37,7 @@ then `tools/diff_manifests.py` between the previous and the new manifest gives t
 (new / removed / renamed / changed statements); unchanged shards stay byte-identical.
 
 Every generated theorem is emitted with a generated native proof and `Qed` when the
-synthesizer closes it (306 core, 339 standard; DESIGN 23), and `Admitted` otherwise
+synthesizer closes it (DESIGN 23; per-profile counts below), and `Admitted` otherwise
 (never an axiom); each carries its HOL source, hash and
 status (`exact_native`, `transport_required`, `generalization_required`, `native_reuse`,
 `pending_mapping`), and all shards must print `Everything looks good.` under Megalodon.

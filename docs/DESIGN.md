@@ -2134,7 +2134,12 @@ before the witness search (a bare existential goal never reached hypothesis appl
 before).  Lands SKOLEM_THM (33 blockers), num_RECURSION (10), LT_SUC_LE, LE_SUC_LT,
 LT_SUC, LE_SUC, LT_IMP_LE, EXISTS_UNIQUE, EXTENSIONAL, IN_EXTENSIONAL(_UNDEFINED),
 RESTRICTION_UNDEFINED, SING; zero lost.  Remaining machinery blocker of this class:
-list_RECURSION (needs a finseq recursor in `finseq.mg`).
+list_RECURSION (needs a finseq recursor in `finseq.mg`).  Propagation: standard
+396 -> 411, multivariate 373 -> 386 (with `NPCLASSICAL=0 NPBUDGET=4000`).  One repair
+rode along: the hand lemmas duplicate four public propositions, so `check_public.sh`'s
+known-props harvest aliased them to `native_reuse` on plain runs while `--native-proofs`
+runs kept them public — the harvest now excludes names whose proposition is stated
+verbatim by the native infrastructure files (native statements must stay single-line).
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
