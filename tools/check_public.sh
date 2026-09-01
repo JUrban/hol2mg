@@ -26,6 +26,17 @@ printf '%s\n' "${shards[@]}" | xargs -P ${JOBS:-4} -I{} bash -c 'check_one {}'
 fail=0
 for s in "${shards[@]}"; do cat "$tmp/$s.res"; grep -q "^FAIL" "$tmp/$s.res" && fail=1; done
 cat "$tmp"/*.known 2>/dev/null | sort -u > "$known.sorted"
+# drop names whose proposition is stated by the native infrastructure (hand-bridged
+# lemmas, e.g. logic.mg): those public theorems keep their own natively proved statements
+if [ -s "$known.sorted" ]; then
+  sed -n "s/^Theorem [A-Za-z_0-9']* : \(.*\)$/\1/p" "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" "$HERE/mglib/native/logic.mg" > "$tmp/native_props.txt"
+  : > "$tmp/keep.txt"
+  while read -r n; do
+    prop=$(grep -h "^Theorem $n : " "$dir"/*.mg | head -1 | sed "s/^Theorem $n : //")
+    if [ -n "$prop" ] && grep -qF "$prop" "$tmp/native_props.txt"; then :; else echo "$n" >> "$tmp/keep.txt"; fi
+  done < "$known.sorted"
+  sort -u "$tmp/keep.txt" > "$known.sorted"
+fi
 if [ -s "$known.sorted" ]; then
   if ! cmp -s "$known.sorted" "$known" 2>/dev/null; then
     cat "$known.sorted" >> "$known"; sort -u -o "$known" "$known"
