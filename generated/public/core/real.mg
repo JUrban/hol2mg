@@ -62,8 +62,11 @@ Qed.
 // HOL Light: real.ml:37 / REAL_OF_NUM_SUC
 // Source hash: md5:54dc57e66aeb4c39062a5b0df2ff68d2
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
+let n. assume Hn.
+exact (add_SNo_1_ordsucc (n) Hn).
+Qed.
 
 // HOL Light: real.ml:41 / REAL_OF_NUM_SUB
 // Source hash: md5:5b5ff38e684439b10f02add17633150b

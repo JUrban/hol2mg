@@ -34,7 +34,10 @@ Admitted.
 // Source hash: md5:08c916fb9a846af5b7a22a1e10f97142
 // Status: transport_required (bridges: hol_num_omega)
 Theorem NOT_SUC : forall n :e omega, ~ ordsucc n = 0.
-Admitted.
+let n. assume Hn.
+assume H.
+exact ((neq_ordsucc_0 (n)) H).
+Qed.
 
 // HOL Light: nums.ml:80 / SUC_INJ
 // Source hash: md5:5224521fb640c43e425c96e6462ab6d0
@@ -53,7 +56,11 @@ Qed.
 // Source hash: md5:95f125bb90820dfc772fce4559903527
 // Status: transport_required (bridges: hol_num_omega)
 Theorem num_INDUCTION : forall P:set -> prop, P 0 /\ (forall n :e omega, P n -> P (ordsucc n)) -> forall n :e omega, P n.
-Admitted.
+let P.
+assume H.
+let n. assume Hn.
+exact (nat_ind (fun n:set => P n) (andEL (P 0) (forall n :e omega, P n -> P (ordsucc n)) H) (fun hl__k Hk IH => (andER (P 0) (forall n :e omega, P n -> P (ordsucc n)) H) hl__k (nat_p_omega hl__k Hk) IH) n (omega_nat_p n Hn)).
+Qed.
 
 // HOL Light: nums.ml:116 / num_Axiom
 // Source hash: md5:22351265077b01108064d138b673a797

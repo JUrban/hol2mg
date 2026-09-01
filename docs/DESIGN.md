@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **331 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **340 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (331 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (340 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -2059,6 +2059,19 @@ LE_0/LE_REFL/LT_REFL/LE_ANTISYM families and ADD_ASSOC/MULT_ASSOC self-contained
 the num/int/real transfers — and the guided pool immediately grows with them (five
 leaf-guided imports now).  The mutual growth loop works: every self-contained proof feeds
 the recorded-leaf premise pool.
+
+N5e (331 -> 333): two *schema rules* in the goal prover — a goal `forall n :e omega, B n`
+whose hypothesis is exactly `B 0 /\ (forall n :e omega, B n -> B (ordsucc n))` closes by a
+direct `nat_ind` application (with the `omega_nat_p`/`nat_p_omega` bridging lambdas), and
+the analogous sequence rule closes through `seq_induct`.  num_INDUCTION and list_INDUCT —
+the top two blocking leaves (87 and 39 guided premise slots) — now carry native proofs.
+
+N5f (333 -> 340): a search fix — the `NotApp` application variant now binds its pattern
+variables by matching the negated conclusion itself against the hypotheses (NOT_SUC's
+`ordsucc n = 0` case) — and the SUC-arithmetic builtins (`add_SNo_1_ordsucc`,
+`add_SNo_ordinal_SL/SR`, `nat_p_ordinal`) land ADD_CLAUSES itself along with ADD, ADD1,
+ADD_SUC and the INT/REAL `SUC` transfer lemmas; three earlier leaf-guided imports upgrade
+to self-contained proofs.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

@@ -595,6 +595,13 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                                               Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True"))) :: bnd
                              else bnd
                          | _ -> bnd)))) bnd0 prems in
+            let bnd = (match wrap with
+              | `NotApp np' when not (List.for_all (fun v -> List.mem_assoc v bnd) pvars) ->
+                  let miss = List.filter (fun v -> not (List.mem_assoc v bnd)) pvars in
+                  (match List.find_map (fun h2 -> match_tm miss (Mg.subst bnd np') h2.prop) hyps with
+                   | Some ext -> ext @ bnd
+                   | None -> bnd)
+              | _ -> bnd) in
             if not (List.for_all (fun v -> List.mem_assoc v bnd) pvars) then None else
             let inst t = beta (Mg.subst bnd t) in
             let rec args = function
@@ -739,6 +746,57 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
   | Mg.All (x, _, b) ->
       let x' = fresh st x in
       Printf.sprintf "let %s." x' :: prove_goal st hyps (Mg.subst [ (x, Mg.Var x') ] b) d
+  | Mg.AllIn (x, a, b) when a = Mg.Cst "omega" &&
+      (let b0 = beta (Mg.subst [ (x, Mg.Num 0) ] b) in
+       let bs = beta (Mg.subst [ (x, Mg.App (Mg.Cst "ordsucc", Mg.Var x)) ] b) in
+       let want = Mg.App (Mg.App (Mg.Cst "and", b0), Mg.AllIn (x, Mg.Cst "omega", Mg.Imp (b, bs))) in
+       List.exists (fun h -> aeq h.prop want) hyps) ->
+      (* natural-number induction: the hypothesis is exactly base /\ step *)
+      let b0 = beta (Mg.subst [ (x, Mg.Num 0) ] b) in
+      let bs = beta (Mg.subst [ (x, Mg.App (Mg.Cst "ordsucc", Mg.Var x)) ] b) in
+      let want = Mg.App (Mg.App (Mg.Cst "and", b0), Mg.AllIn (x, Mg.Cst "omega", Mg.Imp (b, bs))) in
+      let h = List.find (fun h -> aeq h.prop want) hyps in
+      let sstep = ppp (Mg.AllIn (x, Mg.Cst "omega", Mg.Imp (b, bs))) in
+      let x' = fresh st x in
+      let hx = fresh st ("H" ^ x') in
+      let k = fresh st "hl__k" and hk = fresh st "Hk" and ih = fresh st "IH" in
+      [ Printf.sprintf "let %s. assume %s." x' hx;
+        Printf.sprintf "exact (nat_ind (fun %s:set => %s) (andEL %s %s %s) (fun %s %s %s => (andER %s %s %s) %s (nat_p_omega %s %s) %s) %s (omega_nat_p %s %s))."
+          x (pp b)
+          (ppp b0) sstep h.hname
+          k hk ih (ppp b0) sstep h.hname k k hk ih
+          x' x' hx ]
+  | Mg.AllIn (x, dom, b) when
+      (match dom with Mg.App (Mg.Cst "finseq", _) -> true | _ -> false) &&
+      (let elt = (match dom with Mg.App (Mg.Cst "finseq", e) -> e | _ -> assert false) in
+       List.exists (fun h ->
+         match h.prop with
+         | Mg.App (Mg.App (Mg.Cst "and", c1), Mg.AllIn (av, elt', Mg.AllIn (yv, dom', Mg.Imp (pp', q)))) ->
+             aeq elt' elt && aeq dom' dom
+             && aeq c1 (beta (Mg.subst [ (x, Mg.Cst "seq_nil") ] b))
+             && aeq pp' (beta (Mg.subst [ (x, Mg.Var yv) ] b))
+             && aeq q (beta (Mg.subst [ (x, Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var av), Mg.Var yv)) ] b))
+         | _ -> false) hyps) ->
+      (* sequence induction (mglib/native/finseq.mg seq_induct): hypothesis is base /\ step *)
+      let elt = (match dom with Mg.App (Mg.Cst "finseq", e) -> e | _ -> assert false) in
+      let h = List.find (fun h ->
+        match h.prop with
+        | Mg.App (Mg.App (Mg.Cst "and", c1), Mg.AllIn (av, elt', Mg.AllIn (yv, dom', Mg.Imp (pp', q)))) ->
+            aeq elt' elt && aeq dom' dom
+            && aeq c1 (beta (Mg.subst [ (x, Mg.Cst "seq_nil") ] b))
+            && aeq pp' (beta (Mg.subst [ (x, Mg.Var yv) ] b))
+            && aeq q (beta (Mg.subst [ (x, Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var av), Mg.Var yv)) ] b))
+        | _ -> false) hyps in
+      let step = (match h.prop with Mg.App (Mg.App (Mg.Cst "and", _), st') -> st' | _ -> assert false) in
+      let c1 = beta (Mg.subst [ (x, Mg.Cst "seq_nil") ] b) in
+      let x' = fresh st x in
+      let hx = fresh st ("H" ^ x') in
+      [ Printf.sprintf "let %s. assume %s." x' hx;
+        Printf.sprintf "exact (seq_induct %s (fun %s:set => %s) (andEL %s %s %s) (andER %s %s %s) %s %s)."
+          (ppp elt) x (pp b)
+          (ppp c1) (ppp step) h.hname
+          (ppp c1) (ppp step) h.hname
+          x' hx ]
   | Mg.AllIn (x, a, b) ->
       let x' = fresh st x in
       let hx = fresh st ("H" ^ x') in
@@ -1029,6 +1087,31 @@ let builtin_premises : (string * Mg.tm) list =
            Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y"),
              Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__x"),
                Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__x"), Mg.Var "hl__y"))))))));
+    ("add_SNo_1_ordsucc",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__n"), Mg.Num 1)),
+         Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))));
+    ("nat_p_ordinal",
+     Mg.All ("hl__n", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "nat_p", Mg.Var "hl__n"),
+         Mg.App (Mg.Cst "ordinal", Mg.Var "hl__n"))));
+    ("add_SNo_ordinal_SL",
+     Mg.All ("hl__a", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "ordinal", Mg.Var "hl__a"),
+         Mg.All ("hl__b", Mg.Set,
+           Mg.Imp (Mg.App (Mg.Cst "ordinal", Mg.Var "hl__b"),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Var "hl__b")),
+               Mg.App (Mg.Cst "ordsucc", Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__a"), Mg.Var "hl__b"))))))));
+    ("add_SNo_ordinal_SR",
+     Mg.All ("hl__a", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "ordinal", Mg.Var "hl__a"),
+         Mg.All ("hl__b", Mg.Set,
+           Mg.Imp (Mg.App (Mg.Cst "ordinal", Mg.Var "hl__b"),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__a"), Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__b"))),
+               Mg.App (Mg.Cst "ordsucc", Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__a"), Mg.Var "hl__b"))))))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

@@ -12,7 +12,13 @@ Admitted.
 // Source hash: md5:1f8f01fbee723861c7f85ddd9b79a210
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD : (forall n :e omega, 0 + n = n) /\ forall m n :e omega, ordsucc m + n = ordsucc (m + n).
-Admitted.
+apply andI.
+- let n1. assume Hn1.
+  exact (add_SNo_0L (n1) (omega_SNo (n1) Hn1)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (add_SNo_ordinal_SL (m) (nat_p_ordinal (m) (omega_nat_p (m) Hm)) (n) (nat_p_ordinal (n) (omega_nat_p (n) Hn))).
+Qed.
 
 // HOL Light: arith.ml:52 / ADD_0
 // Source hash: md5:16b4fd0a8548e0b4289e91620d77d9f2
@@ -26,13 +32,29 @@ Qed.
 // Source hash: md5:7ccc9d50841b340629a487dbe8cf4f39
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_SUC : forall m n :e omega, m + ordsucc n = ordsucc (m + n).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (add_SNo_ordinal_SR (m) (nat_p_ordinal (m) (omega_nat_p (m) Hm)) (n) (nat_p_ordinal (n) (omega_nat_p (n) Hn))).
+Qed.
 
 // HOL Light: arith.ml:60 / ADD_CLAUSES
 // Source hash: md5:126d9cc9e3ac78967da56121163e2515
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_CLAUSES : (forall n :e omega, 0 + n = n) /\ ((forall m :e omega, m + 0 = m) /\ ((forall m n :e omega, ordsucc m + n = ordsucc (m + n)) /\ forall m n :e omega, m + ordsucc n = ordsucc (m + n))).
-Admitted.
+apply andI.
+- let n2. assume Hn2.
+  exact (add_SNo_0L (n2) (omega_SNo (n2) Hn2)).
+- apply andI.
+  + let m2. assume Hm2.
+    exact (add_SNo_0R (m2) (omega_SNo (m2) Hm2)).
+  + apply andI.
+    * let m1. assume Hm1.
+      let n1. assume Hn1.
+      exact (add_SNo_ordinal_SL (m1) (nat_p_ordinal (m1) (omega_nat_p (m1) Hm1)) (n1) (nat_p_ordinal (n1) (omega_nat_p (n1) Hn1))).
+    * let m. assume Hm.
+      let n. assume Hn.
+      exact (add_SNo_ordinal_SR (m) (nat_p_ordinal (m) (omega_nat_p (m) Hm)) (n) (nat_p_ordinal (n) (omega_nat_p (n) Hn))).
+Qed.
 
 // HOL Light: arith.ml:67 / ADD_SYM
 // Source hash: md5:7d864f1eb0ef77376b9bc72e88019c32
@@ -131,7 +153,9 @@ Qed.
 // Source hash: md5:8e785bb94d248c4825a2f2f92a968d33
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD1 : forall m :e omega, ordsucc m = m + 1.
-Admitted.
+let m. assume Hm.
+exact ((add_SNo_1_ordsucc (m) Hm) (fun hl__u hl__v => hl__u = (m + 1)) (fun q H => H)).
+Qed.
 
 // HOL Light: arith.ml:145 / MULT
 // Source hash: md5:1363aa619553a725237435daed5df58b
@@ -398,7 +422,10 @@ Qed.
 // Source hash: md5:7819f1e250c885a3217b6e30017a6c3a
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem LT_REFL : forall n :e omega, ~ n < n.
-Admitted.
+let n. assume Hn.
+assume H.
+exact ((SNoLt_irref (n)) H).
+Qed.
 
 // HOL Light: arith.ml:342 / LT_IMP_NE
 // Source hash: md5:a139a253e154048d708fd7993a4641bd

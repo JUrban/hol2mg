@@ -96,7 +96,10 @@ Admitted.
 // Source hash: md5:2aafb55745197a56ff930d9170ecc6da
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LT_REFL : forall x :e R, ~ x < x.
-Admitted.
+let x. assume Hx.
+assume H.
+exact ((SNoLt_irref (x)) H).
+Qed.
 
 // HOL Light: realarith.ml:84 / REAL_LTE_ADD
 // Source hash: md5:d56ca94b60a9febdcbf26cad23b0c384

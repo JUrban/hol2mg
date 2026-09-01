@@ -40,6 +40,12 @@ let n. assume Hn.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: real.ml / REAL_OF_NUM_SUC
+Theorem REAL_OF_NUM_SUC : forall n :e omega, n + 1 = ordsucc n.
+let n. assume Hn.
+exact (add_SNo_1_ordsucc (n) Hn).
+Qed.
+
 // HOL Light: real.ml / REAL_OF_NUM_CLAUSES
 Theorem REAL_OF_NUM_CLAUSES : (forall m n :e omega, m = n <-> m = n) /\ ((forall m n :e omega, n <= m <-> n <= m) /\ ((forall m n :e omega, n < m <-> n < m) /\ ((forall m n :e omega, m <= n <-> m <= n) /\ ((forall m n :e omega, m < n <-> m < n) /\ ((forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m) /\ ((forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n) /\ ((forall m n :e omega, m + n = m + n) /\ ((forall m n :e omega, m * n = m * n) /\ forall x n :e omega, x ^ n = x ^ n)))))))).
 apply andI.
