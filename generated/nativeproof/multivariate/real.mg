@@ -111,6 +111,14 @@ apply andI.
       exact (fun q H => H).
 Qed.
 
+// HOL Light: real.ml / REAL_EQ_IMP_LE
+Theorem REAL_EQ_IMP_LE : forall x y :e R, x = y -> x <= y.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (H (fun hl__u hl__v => x <= hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (y)))).
+Qed.
+
 // HOL Light: real.ml / real_sgn
 Theorem real_sgn : forall x :e R, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
 let x. assume Hx.

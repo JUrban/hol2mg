@@ -47,7 +47,11 @@ Qed.
 // Source hash: md5:b97e64f9ddf8b94f1c6e0e8c8b245bbd
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_ASSOC : forall m n p :e omega, m + n + p = (m + n) + p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
 
 // HOL Light: arith.ml:75 / ADD_AC
 // Source hash: md5:986342ad66e066e99f66eb58c051f208
@@ -178,7 +182,11 @@ Admitted.
 // Source hash: md5:94cf93020d8a503bb6e41afb0cc57313
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_ASSOC : forall m n p :e omega, m * n * p = (m * n) * p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
 
 // HOL Light: arith.ml:182 / MULT_AC
 // Source hash: md5:533f0ad0b78c23e472c2cbcad79fe15c
@@ -365,8 +373,11 @@ Admitted.
 // HOL Light: arith.ml:322 / LE_0
 // Source hash: md5:31dc48e876d64098aef66243629de91c
 // Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem LE_0 : forall n :e omega, 0 <= n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem LE_0 : forall n :e omega, 0 <= n.
+let n. assume Hn.
+exact (omega_nonneg (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:326 / LT_0
 // Source hash: md5:8f8b430afef3f06700473ea3f3647503
@@ -377,8 +388,11 @@ Admitted.
 // HOL Light: arith.ml:334 / LE_REFL
 // Source hash: md5:1b16a90917428cf3f87995a218f16789
 // Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem LE_REFL : forall n :e omega, n <= n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem LE_REFL : forall n :e omega, n <= n.
+let n. assume Hn.
+exact (SNoLe_ref (n)).
+Qed.
 
 // HOL Light: arith.ml:338 / LT_REFL
 // Source hash: md5:7819f1e250c885a3217b6e30017a6c3a
@@ -396,7 +410,14 @@ Admitted.
 // Source hash: md5:92cfc4f4d9868c364256f8b2facfa1c3
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem LE_ANTISYM : forall m n :e omega, m <= n /\ n <= m <-> m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (SNoLe_antisym (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (andEL (m <= n) (n <= m) H1) (andER (m <= n) (n <= m) H1)).
+- assume H.
+  exact (andI (m <= n) (n <= m) (H (fun hl__u hl__v => m <= hl__u) (SNoLe_ref (m))) (H (fun hl__u hl__v => hl__u <= m) (SNoLe_ref (m)))).
+Qed.
 
 // HOL Light: arith.ml:355 / LT_ANTISYM
 // Source hash: md5:3099ea5ceef206eb8d09eb669f29afae
@@ -498,7 +519,11 @@ Admitted.
 // Source hash: md5:262c4f6f42a248b8f4fa0198836befeb
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem EQ_IMP_LE : forall m n :e omega, m = n -> m <= n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (H (fun hl__u hl__v => m <= hl__u) ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (n)))).
+Qed.
 
 // HOL Light: arith.ml:459 / LT_NZ
 // Source hash: md5:44fb2896bb81711114737091050171b2

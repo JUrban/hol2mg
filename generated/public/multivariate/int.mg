@@ -685,7 +685,11 @@ Admitted.
 // Source hash: md5:5ce1c379fbca6ad7da6d754ab44d6fb9
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_EQ_IMP_LE : forall x y :e int, x = y -> x <= y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (H (fun hl__u hl__v => x <= hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (y)))).
+Qed.
 
 // HOL Light: int.ml:373 / INT_EQ_LCANCEL_IMP
 // Source hash: md5:f4f2aa8dedfc1491637581a2ee577cef
@@ -943,7 +947,9 @@ Admitted.
 // Source hash: md5:e851b7726a596e1a6f90779efc99df7f
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_LE_REFL : forall x :e int, x <= x.
-Admitted.
+let x. assume Hx.
+exact (SNoLe_ref (x)).
+Qed.
 
 // HOL Light: int.ml:416 / INT_LE_RMUL
 // Source hash: md5:eb445a42902dfa187b9742ecf668d309
@@ -1741,8 +1747,11 @@ Admitted.
 // HOL Light: int.ml:530 / INT_POS
 // Source hash: md5:98964a3ff0f5b863a58d239a4e1da89c
 // Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_POS : forall n :e omega, 0 <= n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_POS : forall n :e omega, 0 <= n.
+let n. assume Hn.
+exact (omega_nonneg (n) Hn).
+Qed.
 
 // HOL Light: int.ml:531 / INT_POS_EQ_SQUARE
 // Source hash: md5:a4fa86348e52a1273f3f397cd8b9229b
@@ -3312,13 +3321,19 @@ Admitted.
 // Source hash: md5:2c8d138e360d550e693ef1f3cf1b679d
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
 Theorem REAL_POW_ZPOW : forall x :e R, forall n :e omega, x ^ n = if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
-Admitted.
+let x. assume Hx.
+let n. assume Hn.
+exact ((If_i_1 (0 <= n) (x ^ n) (recip_SNo (x ^ (- n))) (omega_nonneg (n) Hn)) (fun hl__u hl__v => hl__u = (if 0 <= n then x ^ n else recip_SNo (x ^ (- n)))) (fun q H => H)).
+Qed.
 
 // HOL Light: int.ml:2646 / REAL_ZPOW_NUM
 // Source hash: md5:2fde84e34605fdc86b0dbc1168d69d93
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_int)
 Theorem REAL_ZPOW_NUM : forall x :e R, forall n :e omega, (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = x ^ n.
-Admitted.
+let x. assume Hx.
+let n. assume Hn.
+exact (If_i_1 (0 <= n) (x ^ n) (recip_SNo (x ^ (- n))) (omega_nonneg (n) Hn)).
+Qed.
 
 // HOL Light: int.ml:2650 / REAL_ZPOW_0
 // Source hash: md5:90483bad4d23245d9f65f0717469c8bf

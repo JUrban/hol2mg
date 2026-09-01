@@ -617,8 +617,11 @@ Admitted.
 // HOL Light:  / GE_REFL
 // Source hash: md5:83c5b0f5937aae6185b2cf1affe4c820
 // Status: native_reuse (bridges: hol_num_omega, nat_le_SNoLe)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem GE_REFL : forall n :e omega, n <= n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem GE_REFL : forall n :e omega, n <= n.
+let n. assume Hn.
+exact (SNoLe_ref (n)).
+Qed.
 
 // HOL Light:  / GROUP_ENDOMORPHISM_INTEGER_GROUP_EQ
 // Source hash: md5:30186b5b32bffe655be53413c027ba55
@@ -1925,8 +1928,11 @@ Admitted.
 // HOL Light:  / REAL_LE_REFL
 // Source hash: md5:597f574f403c13d75887c264bf98d7ab
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_LE_REFL : forall x :e R, x <= x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_LE_REFL : forall x :e R, x <= x.
+let x. assume Hx.
+exact (SNoLe_ref (x)).
+Qed.
 
 // HOL Light:  / REAL_LE_TOTAL
 // Source hash: md5:f100ea3864b4736d03f4488873b9fdf2

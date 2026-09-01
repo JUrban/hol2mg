@@ -24,6 +24,27 @@ apply iffI.
   exact (SepI (omega) (fun i:set => m <= i /\ i <= n) (p) Hp H).
 Qed.
 
+// HOL Light: iterate.ml / IN_NUMSEG_0
+Theorem IN_NUMSEG_0 : forall m n :e omega, m :e {i :e omega | 0 <= i /\ i <= n} <-> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (andER (0 <= m) (m <= n) (SepE2 (omega) (fun i:set => 0 <= i /\ i <= n) (m) H1)).
+- assume H.
+  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (m) Hm (andI (0 <= m) (m <= n) (omega_nonneg (m) Hm) H)).
+Qed.
+
+// HOL Light: iterate.ml / NUMSEG_LE
+Theorem NUMSEG_LE : forall n :e omega, {x :e omega | x <= n} = {i :e omega | 0 <= i /\ i <= n}.
+let n. assume Hn.
+apply (set_ext ({x :e omega | x <= n}) ({i :e omega | 0 <= i /\ i <= n})).
+- let x1. assume Hx1.
+  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1) (andI (0 <= x1) (x1 <= n) (omega_nonneg (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1)) (SepE2 (omega) (fun x:set => x <= n) (x1) Hx1))).
+- let x. assume Hx.
+  exact (SepI (omega) (fun x:set => x <= n) (x) (SepE1 (omega) (fun i:set => 0 <= i /\ i <= n) (x) Hx) (andER (0 <= x) (x <= n) (SepE2 (omega) (fun i:set => 0 <= i /\ i <= n) (x) Hx))).
+Qed.
+
 // HOL Light: iterate.ml / monoidal
 Theorem monoidal : forall A:set, forall op:set -> set -> set, (forall x y :e A, op x y :e A) -> ((forall x y :e A, op x y = op y x) /\ (forall x y z :e A, op x (op y z) = op (op x y) z) /\ (forall x :e A, op (neutral_of A op) x = x) <-> (forall x y :e A, op x y = op y x) /\ ((forall x y z :e A, op x (op y z) = op (op x y) z) /\ forall x :e A, op (neutral_of A op) x = x)).
 let A.
