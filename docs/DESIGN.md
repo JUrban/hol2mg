@@ -2022,3 +2022,62 @@ only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity a
 facts, arithmetic units), witnesses beyond membership hypotheses, dependency-ordered emission
 so premise-using proofs can go public, and DAG-guided rewriting steps for equational
 theorems.
+
+
+## 24. Roadmap (dev/proofs-v1, 2026-09-01): Multivariate statements and mg-friendly proof import
+
+Adopted after audit 2 (docs/audits/2026-09-01-audit-2.md, response alongside).
+
+### 24.1 P0 — hardening (immediate)
+
+CI clones `mgwiki/Megalodon` (pinned `e0fba57`) instead of `ai4reason/Megalodon`;
+`tools/update.sh` drops `|| true` on `check_nativeproof.sh` and `cert_finalize.py`;
+README repairs (the "every generated theorem is Admitted" claim, the split certification
+table, the stale 62/67 infrastructure count, the pilot-round-6-era paragraph); the
+literal-proved/imported-proof overlap (8 theorems) reported explicitly and the 57/58
+count reconciled; pilot rounds retain checker digests and logs as release artifacts.
+
+### 24.2 P1 — all Multivariate statements into Megalodon
+
+Baseline: 17 526 theorems, 17 138 public statements already translate (manifest committed);
+no literal/certification layer yet (`cert` empty, 388 `pending_mapping`).
+
+1. Close `pending_mapping`: grow `mappings/multivariate.json` from the review page,
+   concept classes first (vector/matrix/topology constants); unknowns stay `pending`.
+2. Generate and check the literal layer and bridges *incrementally by shard*: at this
+   scale (~13-15k bridges, ~4 s each) a monolithic check is ~2 h at 10 jobs, so
+   certification cycles run per shard with committed partial `cert_status`, the same
+   validation discipline as core (nothing marked by hand, `tools/cert_finalize.py` only).
+   Expect a new round of `_pow` compat variants and nested subset-type instantiations at
+   vector/cart types; extend `mglib/literal/compat_multivariate.mg` as they surface.
+3. Residue classification pass (the §21.10 analogue) for what cannot transport, for
+   Multivariate and retroactively for standard's 451.
+4. CI gains the Multivariate statement checks once green.
+
+### 24.3 P2 — mg-friendly proof import (parallel track)
+
+From synthesis to translation-shaped synthesis:
+
+1. Factor the hypothesis-application core (matching + back-chaining + premise closure)
+   into a reusable engine that can *produce* facts as well as close goals (N4d).
+2. Skeleton-following: for a theorem with a recorded proof, emit the proof as the
+   recorded chain of named-lemma steps — one `claim` per surviving HOL step, each claim
+   closed by the engine with the mapped native premises; steps the engine cannot close
+   fall back to whole-goal synthesis. Ground truth first: the 236 theorems that are both
+   fully_proved (imported) and natively proved; then the 604 fully_proved without native
+   proofs.
+3. Quality bar unchanged: God1 style, native names only, no `hl_*`, reads as hand-written;
+   every emission Megalodon-checked before commit.
+4. Extend proof recording beyond core (standard first) to feed the same pipeline.
+
+### 24.4 P3 — native proofs at Multivariate scale
+
+After P1: run the synthesizer on the Multivariate profile (self-contained first),
+dependency-ordered premise emission so premise-using proofs can go public, and periodic
+readability reviews sampling emitted proofs against the God1 corpus.
+
+### 24.5 Operational notes
+
+Foreground staged flows for certification cycles (translate -> check_cert JOBS=10 ->
+update -> golden -> commit) are the reliable path when background tasks are killed;
+resource envelope stays within ~10 CPUs, with brief JOBS=10-14 bursts during checks.
