@@ -179,7 +179,8 @@ Qed.
 
 // HOL Light: arith.ml:153 / MULT_SUC
 // Source hash: md5:31a7b833a9ea33d4468ca3acf0bc397f
-// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
 Theorem MULT_SUC : forall m n :e omega, m * ordsucc n = m + m * n.
 let m. assume Hm.
 let n. assume Hn.
@@ -506,25 +507,45 @@ Admitted.
 // Source hash: md5:b00bbaad61f29417226e4ac6eab95845
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem LE_TRANS : forall m n p :e omega, m <= n /\ n <= p -> m <= p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLe_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m <= n) (n <= p) H) (andER (m <= n) (n <= p) H)).
+Qed.
 
 // HOL Light: arith.ml:377 / LT_TRANS
 // Source hash: md5:b1d4795a239cf0b833ba1123d70dc41d
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem LT_TRANS : forall m n p :e omega, m < n /\ n < p -> m < p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLt_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m < n) (n < p) H) (andER (m < n) (n < p) H)).
+Qed.
 
 // HOL Light: arith.ml:382 / LET_TRANS
 // Source hash: md5:14ba2504db894f01b0234794b010713c
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem LET_TRANS : forall m n p :e omega, m <= n /\ n < p -> m < p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLeLt_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m <= n) (n < p) H) (andER (m <= n) (n < p) H)).
+Qed.
 
 // HOL Light: arith.ml:387 / LTE_TRANS
 // Source hash: md5:3ca846af73949857fc9f6ed7116412a9
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem LTE_TRANS : forall m n p :e omega, m < n /\ n <= p -> m < p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLtLe_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m < n) (n <= p) H) (andER (m < n) (n <= p) H)).
+Qed.
 
 // HOL Light: arith.ml:396 / LE_CASES
 // Source hash: md5:26689a7db69e89c438744524cb7b50c4

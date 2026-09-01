@@ -88770,7 +88770,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -89846,7 +89846,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -90389,7 +90389,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -91246,7 +91246,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -95494,7 +95494,7 @@
     "MULT_SUC"
    ],
    "hash": "31a7b833a9ea33d4468ca3acf0bc397f",
-   "status": "transport_required",
+   "status": "native_reuse",
    "shard": "arith",
    "src_file": "arith.ml",
    "src_line": 153,
@@ -98437,7 +98437,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
