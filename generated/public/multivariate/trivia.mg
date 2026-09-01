@@ -98,13 +98,16 @@ Qed.
 // Source hash: md5:e2591fc32bec2328753ba82d3aeb61dd
 // Status: transport_required (bridges: choose_in_spec, hol_one_1)
 Theorem one_DEF : 0 = choose_in 1 (fun x:set => True).
-Admitted.
+exact ((in_1_eq_0 (choose_in 1 (fun x:set => True)) (andEL (choose_in 1 (fun x:set => True) :e 1) (True) (choose_in_spec (1) (fun x:set => True) (ex_intro (fun hl__w:set => hl__w :e 1 /\ True) (0) (andI (0 :e 1) (True) In_0_1 (fun p:prop => fun H:p => H)))))) (fun hl__u hl__v => hl__u = (choose_in 1 (fun x:set => True))) (fun q H => H)).
+Qed.
 
 // HOL Light: trivia.ml:60 / one
 // Source hash: md5:8221571543fa874800f76ce863e0cf84
 // Status: transport_required (bridges: hol_one_1)
 Theorem one : forall v :e 1, v = 0.
-Admitted.
+let v. assume Hv.
+exact (in_1_eq_0 (v) Hv).
+Qed.
 
 // HOL Light: trivia.ml:67 / one_axiom
 // Source hash: md5:1d5dc2e3ae749e7020d13e448211d911

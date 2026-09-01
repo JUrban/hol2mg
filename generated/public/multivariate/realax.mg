@@ -129,7 +129,10 @@ Qed.
 // Source hash: md5:93a3a1e8d142b40e99dd3655980cdbc1
 // Status: transport_required (bridges: hol_real_R)
 Theorem real_lt : forall y x :e R, x < y <-> ~ y <= x.
-Admitted.
+let y. assume Hy.
+let x. assume Hx.
+exact (real_lt_iff (y) Hy (x) Hx).
+Qed.
 
 // HOL Light: realax.ml:1788 / real_ge
 // Source hash: md5:6da252bdb6156ab67419ba3c8372a3d3

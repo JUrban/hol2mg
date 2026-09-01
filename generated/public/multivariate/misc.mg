@@ -1808,20 +1808,32 @@ Admitted.
 // HOL Light:  / REAL_ADD_ASSOC
 // Source hash: md5:74a76cf70ce019499736a9012b5e2bae
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_ADD_ASSOC : forall x y z :e R, x + y + z = (x + y) + z.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_ADD_ASSOC : forall x y z :e R, x + y + z = (x + y) + z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (add_SNo_assoc (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
 
 // HOL Light:  / REAL_ADD_LDISTRIB
 // Source hash: md5:9504058edead67a0aafeb005184604d1
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_ADD_LDISTRIB : forall x y z :e R, x * (y + z) = x * y + x * z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (mul_SNo_distrL (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
 
 // HOL Light:  / REAL_ADD_LID
 // Source hash: md5:bc28e0af8830dd84eb7843fab3060c61
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_ADD_LID : forall x :e R, 0 + x = x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_ADD_LID : forall x :e R, 0 + x = x.
+let x. assume Hx.
+exact (add_SNo_0L (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light:  / REAL_ADD_LINV
 // Source hash: md5:69b62ed94b5a39a5cb6b939e9fd25fcf
@@ -1832,8 +1844,12 @@ Admitted.
 // HOL Light:  / REAL_ADD_SYM
 // Source hash: md5:69f4343bec6bd235a399ba23a38d19cf
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_ADD_SYM : forall x y :e R, x + y = y + x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_ADD_SYM : forall x y :e R, x + y = y + x.
+let x. assume Hx.
+let y. assume Hy.
+exact (add_SNo_com (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
 
 // HOL Light:  / REAL_ARCH_RDIV_EQ_0
 // Source hash: md5:04ed96a2a351279f4bb0d661e355759d
@@ -1899,19 +1915,42 @@ Admitted.
 // Source hash: md5:8ded4a221cc0c69e4657371588e7b297
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LET_BETWEEN : forall a b :e R, a < b <-> exists x :e R, a <= x /\ x < b.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H3.
+  exact (ex_intro (fun hl__w:set => hl__w :e R /\ (a <= hl__w /\ hl__w < b)) (a) (andI (a :e R) (a <= a /\ a < b) Ha (andI (a <= a) (a < b) (SNoLe_ref (a)) H3))).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  exact (SNoLeLt_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a <= x) (x < b) H2) (andER (a <= x) (x < b) H2)).
+Qed.
 
 // HOL Light:  / REAL_LE_ANTISYM
 // Source hash: md5:2a36fae7a764e7b6f8d1470ecbd9d3be
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_ANTISYM : forall x y :e R, x <= y /\ y <= x <-> x = y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact (SNoLe_antisym (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) (andEL (x <= y) (y <= x) H1) (andER (x <= y) (y <= x) H1)).
+- assume H.
+  exact (andI (x <= y) (y <= x) (H (fun hl__u hl__v => x <= hl__u) (SNoLe_ref (x))) (H (fun hl__u hl__v => hl__u <= x) (SNoLe_ref (x)))).
+Qed.
 
 // HOL Light:  / REAL_LE_BETWEEN
 // Source hash: md5:e6c510df10145d6664cfc9ed815d8460
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_BETWEEN : forall a b :e R, a <= b <-> exists x :e R, a <= x /\ x <= b.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H3.
+  exact (ex_intro (fun hl__w:set => hl__w :e R /\ (a <= hl__w /\ hl__w <= b)) (b) (andI (b :e R) (a <= b /\ b <= b) Hb (andI (a <= b) (b <= b) H3 (SNoLe_ref (b))))).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  exact (SNoLe_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a <= x) (x <= b) H2) (andER (a <= x) (x <= b) H2)).
+Qed.
 
 // HOL Light:  / REAL_LE_LADD_IMP
 // Source hash: md5:e8653e43300f16893ae7f5529f64d7cf
@@ -1944,13 +1983,26 @@ Admitted.
 // Source hash: md5:650af3c1406ad5babc239cd1e46503bc
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_TRANS : forall x y z :e R, x <= y /\ y <= z -> x <= z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (SNoLe_tra (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) (andEL (x <= y) (y <= z) H) (andER (x <= y) (y <= z) H)).
+Qed.
 
 // HOL Light:  / REAL_LTE_BETWEEN
 // Source hash: md5:f5bc722130d30916e847a44ca3a81102
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LTE_BETWEEN : forall a b :e R, a < b <-> exists x :e R, a < x /\ x <= b.
-Admitted.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H3.
+  exact (ex_intro (fun hl__w:set => hl__w :e R /\ (a < hl__w /\ hl__w <= b)) (b) (andI (b :e R) (a < b /\ b <= b) Hb (andI (a < b) (b <= b) H3 (SNoLe_ref (b))))).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  exact (SNoLtLe_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a < x) (x <= b) H2) (andER (a < x) (x <= b) H2)).
+Qed.
 
 // HOL Light:  / REAL_LT_BETWEEN
 // Source hash: md5:c54a729daba7483f8b0f6cc52cced18a
@@ -1967,14 +2019,22 @@ Admitted.
 // HOL Light:  / REAL_MUL_ASSOC
 // Source hash: md5:9ea7c36e21183fa79ec8bfdc791ec8c6
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_MUL_ASSOC : forall x y z :e R, x * y * z = (x * y) * z.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_MUL_ASSOC : forall x y z :e R, x * y * z = (x * y) * z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (mul_SNo_assoc (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
 
 // HOL Light:  / REAL_MUL_LID
 // Source hash: md5:fa6266f855ff7b740d82e448c2b4c45d
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_MUL_LID : forall x :e R, 1 * x = x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_MUL_LID : forall x :e R, 1 * x = x.
+let x. assume Hx.
+exact (mul_SNo_oneL (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light:  / REAL_MUL_LINV
 // Source hash: md5:a9878dfb3f8f4e0493a76e9de2ddf29c
@@ -1985,8 +2045,12 @@ Admitted.
 // HOL Light:  / REAL_MUL_SYM
 // Source hash: md5:863e7ca45d4101c0041b89d44ea64c52
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_MUL_SYM : forall x y :e R, x * y = y * x.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_MUL_SYM : forall x y :e R, x * y = y * x.
+let x. assume Hx.
+let y. assume Hy.
+exact (mul_SNo_com (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
 
 // HOL Light:  / REAL_NON_MONOTONE
 // Source hash: md5:7e0ed4b9297266aab12dc589bcaf6e1a

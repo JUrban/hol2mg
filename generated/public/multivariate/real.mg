@@ -155,7 +155,11 @@ Admitted.
 // Source hash: md5:0238d020218e2221a762aeb73326f3c9
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_ADD_RDISTRIB : forall x y z :e R, (x + y) * z = x * z + y * z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (mul_SNo_distrR (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
 
 // HOL Light: real.ml:87 / REAL_LT_LADD_IMP
 // Source hash: md5:c540e203a0aead265ae133df5ac2300d
@@ -293,13 +297,16 @@ Admitted.
 // Source hash: md5:19ff8b65d5972f210deb5f4d4f3bca10
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LE_01 : 0 <= 1.
-Admitted.
+exact (omega_nonneg (1) (omega_ordsucc (0) (nat_p_omega (0) nat_0))).
+Qed.
 
 // HOL Light: real.ml:196 / REAL_LT_01
 // Source hash: md5:c6778a8fda619be4b6b9f533e4978591
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_LT_01 : 0 < 1.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_LT_01 : 0 < 1.
+exact ((andER (0 < ordsucc 0 -> 0 = 0 \/ 0 < 0) (0 = 0 \/ 0 < 0 -> 0 < ordsucc 0) (SNoLt_ordsucc_iff_omega (0) (nat_p_omega (0) nat_0) (0) (nat_p_omega (0) nat_0))) (orIL (0 = 0) (0 < 0) (fun q H => H))).
+Qed.
 
 // HOL Light: real.ml:200 / REAL_LE_LADD
 // Source hash: md5:09e23f78214806a82299b2693d267f41

@@ -117,6 +117,24 @@ apply andI.
       exact (fun q H => H).
 Qed.
 
+// HOL Light: real.ml / REAL_ADD_RDISTRIB
+Theorem REAL_ADD_RDISTRIB : forall x y z :e R, (x + y) * z = x * z + y * z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (mul_SNo_distrR (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
+
+// HOL Light: real.ml / REAL_LE_01
+Theorem REAL_LE_01 : 0 <= 1.
+exact (omega_nonneg (1) (omega_ordsucc (0) (nat_p_omega (0) nat_0))).
+Qed.
+
+// HOL Light: real.ml / REAL_LT_01
+Theorem REAL_LT_01 : 0 < 1.
+exact ((andER (0 < ordsucc 0 -> 0 = 0 \/ 0 < 0) (0 = 0 \/ 0 < 0 -> 0 < ordsucc 0) (SNoLt_ordsucc_iff_omega (0) (nat_p_omega (0) nat_0) (0) (nat_p_omega (0) nat_0))) (orIL (0 = 0) (0 < 0) (fun q H => H))).
+Qed.
+
 // HOL Light: real.ml / REAL_EQ_IMP_LE
 Theorem REAL_EQ_IMP_LE : forall x y :e R, x = y -> x <= y.
 let x. assume Hx.

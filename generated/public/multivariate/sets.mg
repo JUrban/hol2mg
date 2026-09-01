@@ -56,7 +56,24 @@ Qed.
 // Source hash: md5:bc4aedb68c8fa7e24483a802d7b666f8
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INSERT_DEF : forall A:set, forall s c= A, forall x y :e A, y :e SetAdjoin s x <-> y :e s \/ y = x.
-Admitted.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H3.
+  apply (SetAdjoinE (s) (x) (y) H3).
+  + assume H8.
+    exact (orIL (y :e s) (y = x) H8).
+  + assume H9.
+    exact (orIR (y :e s) (y = x) (SingE (x) (y) H9)).
+- assume H.
+  apply H.
+  + assume H1.
+    exact (SetAdjoinI1 (s) (x) (y) H1).
+  + assume H2.
+    exact (H2 (fun hl__u hl__v => y :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (y) (y) (SingI (y)))).
+Qed.
 
 // HOL Light: sets.ml:87 / UNIV
 // Source hash: md5:9b0de6b0d242dd9a3fabf6a8c72fe02c
@@ -137,7 +154,23 @@ Qed.
 // Source hash: md5:f9ad530f26a69054b867be5fb530e000
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INSERT : forall A:set, forall x :e A, forall s c= A, SetAdjoin s x = {y :e A | y :e s \/ y = x}.
-Admitted.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+apply (set_ext (SetAdjoin s x) ({y :e A | y :e s \/ y = x})).
+- let x2. assume Hx2.
+  apply (SetAdjoinE (s) (x) (x2) Hx2).
+  + assume H2.
+    exact (SepI (A) (fun y:set => y :e s \/ y = x) (x2) (Hs (x2) H2) (orIL (x2 :e s) (x2 = x) H2)).
+  + assume H3.
+    exact (SepI (A) (fun y:set => y :e s \/ y = x) (x2) (((SingE (x) (x2) H3) (fun hl__u hl__v => hl__u = (x2)) (fun q H => H)) (fun hl__u hl__v => hl__u :e A) Hx) (orIR (x2 :e s) (x2 = x) (SingE (x) (x2) H3))).
+- let x1. assume Hx1.
+  apply (SepE2 (A) (fun y:set => y :e s \/ y = x) (x1) Hx1).
+  + assume H.
+    exact (SetAdjoinI1 (s) (x) (x1) H).
+  + assume H1.
+    exact (H1 (fun hl__u hl__v => x1 :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (x1) (x1) (SingI (x1)))).
+Qed.
 
 // HOL Light: sets.ml:109 / DELETE
 // Source hash: md5:6cceb30a7fe2c086008d4dff1a7846b2
@@ -363,7 +396,24 @@ Qed.
 // Source hash: md5:62243c550f1aaf57081e91ad62c42ada
 // Status: generalization_required (bridges: empty_case:A)
 Theorem IN_INSERT : forall A:set, forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s.
-Admitted.
+let A.
+let x. assume Hx.
+let y. assume Hy.
+let s. assume Hs.
+apply iffI.
+- assume H3.
+  apply (SetAdjoinE (s) (y) (x) H3).
+  + assume H8.
+    exact (orIR (x = y) (x :e s) H8).
+  + assume H9.
+    exact (orIL (x = y) (x :e s) (SingE (y) (x) H9)).
+- assume H.
+  apply H.
+  + assume H1.
+    exact (H1 (fun hl__u hl__v => x :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (x) (x) (SingI (x)))).
+  + assume H2.
+    exact (SetAdjoinI1 (s) (y) (x) H2).
+Qed.
 
 // HOL Light: sets.ml:206 / IN_DELETE
 // Source hash: md5:9a7c37f71f31bb294187bc2cad212525
@@ -424,13 +474,51 @@ Qed.
 // Source hash: md5:41425e040abb9d9e3c7494571128938c
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_IN_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
-Admitted.
+let A.
+let P.
+let a. assume Ha.
+let s. assume Hs.
+apply iffI.
+- assume H4.
+  apply andI.
+  + exact (H4 (a) Ha (SetAdjoinI2 (s) (a) (a) (SingI (a)))).
+  + let x1. assume Hx1.
+    assume H5.
+    exact (H4 (x1) Hx1 (SetAdjoinI1 (s) (a) (x1) H5)).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  apply (SetAdjoinE (s) (a) (x) H1).
+  + assume H2.
+    exact ((andER (P a) (forall x :e A, x :e s -> P x) H) (x) Hx H2).
+  + assume H3.
+    exact (((SingE (a) (x) H3) (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => P hl__u) (andEL (P a) (forall x :e A, x :e s -> P x) H)).
+Qed.
 
 // HOL Light: sets.ml:226 / EXISTS_IN_INSERT
 // Source hash: md5:9700f13ce4d7831725775ef791c7ebd1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_IN_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
-Admitted.
+let A.
+let P.
+let a. assume Ha.
+let s. assume Hs.
+apply iffI.
+- assume H9.
+  apply H9. let x2. assume H10. apply H10. assume Hx2 H11.
+  apply (SetAdjoinE (s) (a) (x2) (andEL (x2 :e SetAdjoin s a) (P x2) H11)).
+  + assume H20.
+    exact (orIR (P a) (exists x :e A, x :e s /\ P x) (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s /\ P hl__w)) (x2) (andI (x2 :e A) (x2 :e s /\ P x2) Hx2 (andI (x2 :e s) (P x2) H20 (andER (x2 :e SetAdjoin s a) (P x2) H11))))).
+  + assume H21.
+    exact (orIL (P a) (exists x :e A, x :e s /\ P x) ((SingE (a) (x2) H21) (fun hl__u hl__v => P hl__u) (andER (x2 :e SetAdjoin s a) (P x2) H11))).
+- assume H.
+  apply H.
+  + assume H5.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (a) (andI (a :e A) (a :e SetAdjoin s a /\ P a) Ha (andI (a :e SetAdjoin s a) (P a) (SetAdjoinI2 (s) (a) (a) (SingI (a))) H5))).
+  + assume H6.
+    apply H6. let x1. assume H7. apply H7. assume Hx1 H8.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (x1) (andI (x1 :e A) (x1 :e SetAdjoin s a /\ P x1) Hx1 (andI (x1 :e SetAdjoin s a) (P x1) (SetAdjoinI1 (s) (a) (x1) (andEL (x1 :e s) (P x1) H8)) (andER (x1 :e s) (P x1) H8)))).
+Qed.
 
 // HOL Light: sets.ml:230 / FORALL_IN_UNION
 // Source hash: md5:eb1e2d3608d968c21bd6d06de108a222
@@ -1388,7 +1476,11 @@ Qed.
 // Source hash: md5:d352e4050e23691455489b429f32dab1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COMPONENT : forall A:set, forall x :e A, forall s c= A, x :e SetAdjoin s x.
-Admitted.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+exact (SetAdjoinI2 (s) (x) (x) (SingI (x))).
+Qed.
 
 // HOL Light: sets.ml:673 / DECOMPOSITION
 // Source hash: md5:d6cc4952ea5ce419eabb0276af7b40bb
@@ -1448,7 +1540,32 @@ Admitted.
 // Source hash: md5:908e574a47a4f828a5c73cac0e622a21
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INSERT_UNION_EQ : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\/: t = SetAdjoin (s :\/: t) x.
-Admitted.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+let t. assume Ht.
+apply (set_ext (SetAdjoin s x :\/: t) (SetAdjoin (s :\/: t) x)).
+- let x2. assume Hx2.
+  apply (binunionE (SetAdjoin s x) (t) (x2) Hx2).
+  + assume H4.
+    apply (SetAdjoinE (s) (x) (x2) H4).
+    * assume H6.
+      exact (SetAdjoinI1 (s :\/: t) (x) (x2) (binunionI1 (s) (t) (x2) H6)).
+    * assume H7.
+      exact ((SingE (x) (x2) H7) (fun hl__u hl__v => x2 :e SetAdjoin (s :\/: t) hl__u) (SetAdjoinI2 (s :\/: t) (x2) (x2) (SingI (x2)))).
+  + assume H5.
+    exact (SetAdjoinI1 (s :\/: t) (x) (x2) (binunionI2 (s) (t) (x2) H5)).
+- let x1. assume Hx1.
+  apply (SetAdjoinE (s :\/: t) (x) (x1) Hx1).
+  + assume H.
+    apply (binunionE (s) (t) (x1) H).
+    * assume H2.
+      exact (binunionI1 (SetAdjoin s x) (t) (x1) (SetAdjoinI1 (s) (x) (x1) H2)).
+    * assume H3.
+      exact (binunionI2 (SetAdjoin s x) (t) (x1) H3).
+  + assume H1.
+    exact (binunionI1 (SetAdjoin s x) (t) (x1) ((SingE (x) (x1) H1) (fun hl__u hl__v => x1 :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (x1) (x1) (SingI (x1))))).
+Qed.
 
 // HOL Light: sets.ml:717 / INSERT_INTER
 // Source hash: md5:09b20f8e778ba32a8e8f878a4b714919
@@ -1466,7 +1583,24 @@ Admitted.
 // Source hash: md5:5a05c6364a30b639bab502c24188f136
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INSERT_SUBSET : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t.
-Admitted.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H3.
+  apply andI.
+  + exact (H3 (x) (SetAdjoinI2 (s) (x) (x) (SingI (x)))).
+  + let x2. assume Hx2.
+    exact (H3 (x2) (SetAdjoinI1 (s) (x) (x2) Hx2)).
+- assume H.
+  let x1. assume Hx1.
+  apply (SetAdjoinE (s) (x) (x1) Hx1).
+  + assume H1.
+    exact ((andER (x :e t) (s c= t) H) (x1) H1).
+  + assume H2.
+    exact (((SingE (x) (x1) H2) (fun hl__u hl__v => hl__u = (x1)) (fun q H => H)) (fun hl__u hl__v => hl__u :e t) (andEL (x :e t) (s c= t) H)).
+Qed.
 
 // HOL Light: sets.ml:731 / SUBSET_INSERT
 // Source hash: md5:eb0caccfd3d3a545ef7bf11f463b4198
@@ -4491,13 +4625,68 @@ Admitted.
 // Source hash: md5:c707a7044e9e7098b7e5a5ad0ed9c3ca
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_IN_CLAUSES : forall A:set, (forall P:set -> prop, (forall x :e A, x :e Empty -> P x) <-> True) /\ forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
-Admitted.
+let A.
+apply andI.
+- let P1.
+  apply iffI.
+  + assume H8.
+    exact (fun p:prop => fun H:p => H).
+  + assume H6.
+    let x2. assume Hx2.
+    assume H7.
+    exact (FalseE (EmptyE (x2) H7) (P1 x2)).
+- let P.
+  let a. assume Ha.
+  let s. assume Hs.
+  apply iffI.
+  + assume H4.
+    apply andI.
+    * exact (H4 (a) Ha (SetAdjoinI2 (s) (a) (a) (SingI (a)))).
+    * let x1. assume Hx1.
+      assume H5.
+      exact (H4 (x1) Hx1 (SetAdjoinI1 (s) (a) (x1) H5)).
+  + assume H.
+    let x. assume Hx.
+    assume H1.
+    apply (SetAdjoinE (s) (a) (x) H1).
+    * assume H2.
+      exact ((andER (P a) (forall x :e A, x :e s -> P x) H) (x) Hx H2).
+    * assume H3.
+      exact (((SingE (a) (x) H3) (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => P hl__u) (andEL (P a) (forall x :e A, x :e s -> P x) H)).
+Qed.
 
 // HOL Light: sets.ml:4480 / EXISTS_IN_CLAUSES
 // Source hash: md5:254995967a069e2c0c3e67b72a21d698
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_IN_CLAUSES : forall A:set, (forall P:set -> prop, (exists x :e A, x :e Empty /\ P x) <-> False) /\ forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
-Admitted.
+let A.
+apply andI.
+- let P1.
+  apply iffI.
+  + assume H23.
+    apply H23. let x3. assume H24. apply H24. assume Hx3 H25.
+    exact (EmptyE (x3) (andEL (x3 :e Empty) (P1 x3) H25)).
+  + assume H22.
+    exact (FalseE H22 (exists x :e A, x :e Empty /\ P1 x)).
+- let P.
+  let a. assume Ha.
+  let s. assume Hs.
+  apply iffI.
+  + assume H9.
+    apply H9. let x2. assume H10. apply H10. assume Hx2 H11.
+    apply (SetAdjoinE (s) (a) (x2) (andEL (x2 :e SetAdjoin s a) (P x2) H11)).
+    * assume H20.
+      exact (orIR (P a) (exists x :e A, x :e s /\ P x) (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s /\ P hl__w)) (x2) (andI (x2 :e A) (x2 :e s /\ P x2) Hx2 (andI (x2 :e s) (P x2) H20 (andER (x2 :e SetAdjoin s a) (P x2) H11))))).
+    * assume H21.
+      exact (orIL (P a) (exists x :e A, x :e s /\ P x) ((SingE (a) (x2) H21) (fun hl__u hl__v => P hl__u) (andER (x2 :e SetAdjoin s a) (P x2) H11))).
+  + assume H.
+    apply H.
+    * assume H5.
+      exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (a) (andI (a :e A) (a :e SetAdjoin s a /\ P a) Ha (andI (a :e SetAdjoin s a) (P a) (SetAdjoinI2 (s) (a) (a) (SingI (a))) H5))).
+    * assume H6.
+      apply H6. let x1. assume H7. apply H7. assume Hx1 H8.
+      exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (x1) (andI (x1 :e A) (x1 :e SetAdjoin s a /\ P x1) Hx1 (andI (x1 :e SetAdjoin s a) (P x1) (SetAdjoinI1 (s) (a) (x1) (andEL (x1 :e s) (P x1) H8)) (andER (x1 :e s) (P x1) H8)))).
+Qed.
 
 // HOL Light: sets.ml:4489 / INJECTIVE_ON_IMAGE
 // Source hash: md5:a3957f03c3b22a6228c5cc636a067262

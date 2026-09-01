@@ -56,6 +56,30 @@ let p. assume Hp.
 exact (add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
+// HOL Light: arith.ml / BIT0
+Theorem BIT0 : forall n :e omega, 2 * n = n + n.
+let n. assume Hn.
+exact (bit0_eq_omega (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / BIT1
+Theorem BIT1 : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+let n. assume Hn.
+exact (bit1_eq_omega (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / BIT0_THM
+Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
+let n. assume Hn.
+exact (bit0_eq_omega (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / BIT1_THM
+Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+let n. assume Hn.
+exact (bit1_eq_omega (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / ONE
 Theorem ONE : 1 = 1.
 exact (fun q H => H).
@@ -147,6 +171,12 @@ let m. assume Hm.
 let n. assume Hn.
 let p. assume Hp.
 exact (mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
+
+// HOL Light: arith.ml / MULT_2
+Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
+let n. assume Hn.
+exact (bit0_eq_omega (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / LE
@@ -243,7 +273,13 @@ Qed.
 // HOL Light: arith.ml / LE_0
 Theorem LE_0 : forall n :e omega, 0 <= n.
 let n. assume Hn.
-exact (omega_nonneg (n) Hn).
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (omega_nonneg (n) Hn))).
+Qed.
+
+// HOL Light: arith.ml / LT_0
+Theorem LT_0 : forall n :e omega, 0 < ordsucc n.
+let n. assume Hn.
+exact ((andER (0 < ordsucc n -> 0 <= n) (0 <= n -> 0 < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (0) (nat_p_omega (0) nat_0) (n) Hn)) (omega_nonneg (n) Hn)).
 Qed.
 
 // HOL Light: arith.ml / LE_REFL
@@ -304,6 +340,13 @@ let n. assume Hn.
 let p. assume Hp.
 assume H.
 exact (SNoLtLe_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m < n) (n <= p) H) (andER (m < n) (n <= p) H)).
+Qed.
+
+// HOL Light: arith.ml / LTE_CASES
+Theorem LTE_CASES : forall m n :e omega, m < n \/ n <= m.
+let m. assume Hm.
+let n. assume Hn.
+exact (SNoLtLe_or (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
 Qed.
 
 // HOL Light: arith.ml / LT_IMP_LE

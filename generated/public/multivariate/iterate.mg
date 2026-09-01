@@ -75,7 +75,7 @@ apply iffI.
 - assume H1.
   exact (andER (0 <= m) (m <= n) (SepE2 (omega) (fun i:set => 0 <= i /\ i <= n) (m) H1)).
 - assume H.
-  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (m) Hm (andI (0 <= m) (m <= n) (omega_nonneg (m) Hm) H)).
+  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (m) Hm (andI (0 <= m) (m <= n) (seq_len_nil (fun hl__u hl__v => hl__u <= m) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= m) (omega_nonneg (m) Hm))) H)).
 Qed.
 
 // HOL Light: iterate.ml:55 / NUMSEG_SING
@@ -187,7 +187,7 @@ Theorem NUMSEG_LE : forall n :e omega, {x :e omega | x <= n} = {i :e omega | 0 <
 let n. assume Hn.
 apply (set_ext ({x :e omega | x <= n}) ({i :e omega | 0 <= i /\ i <= n})).
 - let x1. assume Hx1.
-  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1) (andI (0 <= x1) (x1 <= n) (omega_nonneg (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1)) (SepE2 (omega) (fun x:set => x <= n) (x1) Hx1))).
+  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1) (andI (0 <= x1) (x1 <= n) (seq_len_nil (fun hl__u hl__v => hl__u <= x1) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x1) (omega_nonneg (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1)))) (SepE2 (omega) (fun x:set => x <= n) (x1) Hx1))).
 - let x. assume Hx.
   exact (SepI (omega) (fun x:set => x <= n) (x) (SepE1 (omega) (fun i:set => 0 <= i /\ i <= n) (x) Hx) (andER (0 <= x) (x <= n) (SepE2 (omega) (fun i:set => 0 <= i /\ i <= n) (x) Hx))).
 Qed.

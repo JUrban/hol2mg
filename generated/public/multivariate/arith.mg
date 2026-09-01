@@ -115,25 +115,35 @@ Admitted.
 // Source hash: md5:430d599f5e1293326bc126e234c8d908
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem BIT0 : forall n :e omega, 2 * n = n + n.
-Admitted.
+let n. assume Hn.
+exact (bit0_eq_omega (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:109 / BIT1
 // Source hash: md5:f52a9257f8a571885f7a8e7cb5953364
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem BIT1 : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
-Admitted.
+let n. assume Hn.
+exact (bit1_eq_omega (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:113 / BIT0_THM
 // Source hash: md5:559c2f7303610dd8ed299cfea6532bed
 // Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
+let n. assume Hn.
+exact (bit0_eq_omega (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:117 / BIT1_THM
 // Source hash: md5:5654419bb755d5c6a785a1195805b6b3
 // Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+let n. assume Hn.
+exact (bit1_eq_omega (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:125 / ONE
 // Source hash: md5:8296249074f69ba4d09cec1afc913c50
@@ -278,8 +288,11 @@ Admitted.
 // HOL Light: arith.ml:203 / MULT_2
 // Source hash: md5:aefb67ed10cad5150806e529a2aa3bae
 // Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
+let n. assume Hn.
+exact (bit0_eq_omega (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:207 / MULT_EQ_1
 // Source hash: md5:97b70f4fd951132f2f6772a1745544f6
@@ -470,14 +483,16 @@ Qed.
 // Reuse: this proposition is already a theorem of the target library (reproved natively).
 Theorem LE_0 : forall n :e omega, 0 <= n.
 let n. assume Hn.
-exact (omega_nonneg (n) Hn).
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (omega_nonneg (n) Hn))).
 Qed.
 
 // HOL Light: arith.ml:326 / LT_0
 // Source hash: md5:8f8b430afef3f06700473ea3f3647503
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem LT_0 : forall n :e omega, 0 < ordsucc n.
-Admitted.
+let n. assume Hn.
+exact ((andER (0 < ordsucc n -> 0 <= n) (0 <= n -> 0 < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (0) (nat_p_omega (0) nat_0) (n) Hn)) (omega_nonneg (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:334 / LE_REFL
 // Source hash: md5:1b16a90917428cf3f87995a218f16789
@@ -600,7 +615,10 @@ Admitted.
 // Source hash: md5:fd3ac78a80446b1c4612541c2b636917
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem LTE_CASES : forall m n :e omega, m < n \/ n <= m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (SNoLtLe_or (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:419 / LE_LT
 // Source hash: md5:6140d6b3b95f4fd84a26710124a9d8ab

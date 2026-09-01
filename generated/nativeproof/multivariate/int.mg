@@ -284,10 +284,28 @@ assume H.
 exact (H (fun hl__u hl__v => x <= hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (y)))).
 Qed.
 
+// HOL Light: int.ml / INT_LE_01
+Theorem INT_LE_01 : 0 <= 1.
+exact (omega_nonneg (1) (omega_ordsucc (0) (nat_p_omega (0) nat_0))).
+Qed.
+
 // HOL Light: int.ml / INT_LE_REFL
 Theorem INT_LE_REFL : forall x :e int, x <= x.
 let x. assume Hx.
 exact (SNoLe_ref (x)).
+Qed.
+
+// HOL Light: int.ml / INT_LT_01
+Theorem INT_LT_01 : 0 < 1.
+exact ((andER (0 < ordsucc 0 -> 0 = 0 \/ 0 < 0) (0 = 0 \/ 0 < 0 -> 0 < ordsucc 0) (SNoLt_ordsucc_iff_omega (0) (nat_p_omega (0) nat_0) (0) (nat_p_omega (0) nat_0))) (orIL (0 = 0) (0 < 0) (fun q H => H))).
+Qed.
+
+// HOL Light: int.ml / INT_LT_IMP_LE
+Theorem INT_LT_IMP_LE : forall x y :e int, x < y -> x <= y.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (SNoLtLe (x) (y) H).
 Qed.
 
 // HOL Light: int.ml / INT_LT_REFL
@@ -459,7 +477,7 @@ Qed.
 // HOL Light: int.ml / INT_POS
 Theorem INT_POS : forall n :e omega, 0 <= n.
 let n. assume Hn.
-exact (omega_nonneg (n) Hn).
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (omega_nonneg (n) Hn))).
 Qed.
 
 // HOL Light: int.ml / INT_SGN

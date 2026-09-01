@@ -785,7 +785,8 @@ Admitted.
 // Source hash: md5:813902ac692ac708fe1f4721c3df2e13
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_LE_01 : 0 <= 1.
-Admitted.
+exact (omega_nonneg (1) (omega_ordsucc (0) (nat_p_omega (0) nat_0))).
+Qed.
 
 // HOL Light: int.ml:389 / INT_LE_ADD
 // Source hash: md5:1564670369463531ce40d33d3b9d01db
@@ -1044,8 +1045,10 @@ Admitted.
 // HOL Light: int.ml:431 / INT_LT_01
 // Source hash: md5:497d72e7729d5c4ea49d37b04827d1ac
 // Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_LT_01 : 0 < 1.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_LT_01 : 0 < 1.
+exact ((andER (0 < ordsucc 0 -> 0 = 0 \/ 0 < 0) (0 = 0 \/ 0 < 0 -> 0 < ordsucc 0) (SNoLt_ordsucc_iff_omega (0) (nat_p_omega (0) nat_0) (0) (nat_p_omega (0) nat_0))) (orIL (0 = 0) (0 < 0) (fun q H => H))).
+Qed.
 
 // HOL Light: int.ml:432 / INT_LT_ADD
 // Source hash: md5:8b6456d2cf8006f621132d9047ca2a89
@@ -1111,7 +1114,11 @@ Admitted.
 // Source hash: md5:41037c46f2332bfd0fcd7764bbd856f6
 // Status: transport_required (bridges: hol_int_int)
 Theorem INT_LT_IMP_LE : forall x y :e int, x < y -> x <= y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (SNoLtLe (x) (y) H).
+Qed.
 
 // HOL Light: int.ml:443 / INT_LT_IMP_NE
 // Source hash: md5:4425abf78b4e7be9e2eef5ee8de3fc99
@@ -1756,7 +1763,7 @@ Qed.
 // Reuse: this proposition is already a theorem of the target library (reproved natively).
 Theorem INT_POS : forall n :e omega, 0 <= n.
 let n. assume Hn.
-exact (omega_nonneg (n) Hn).
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (omega_nonneg (n) Hn))).
 Qed.
 
 // HOL Light: int.ml:531 / INT_POS_EQ_SQUARE

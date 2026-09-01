@@ -7,10 +7,116 @@ let n. assume Hn.
 exact (SNoLe_ref (n)).
 Qed.
 
+// HOL Light:  / REAL_ADD_ASSOC
+Theorem REAL_ADD_ASSOC : forall x y z :e R, x + y + z = (x + y) + z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (add_SNo_assoc (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
+
+// HOL Light:  / REAL_ADD_LDISTRIB
+Theorem REAL_ADD_LDISTRIB : forall x y z :e R, x * (y + z) = x * y + x * z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (mul_SNo_distrL (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
+
+// HOL Light:  / REAL_ADD_LID
+Theorem REAL_ADD_LID : forall x :e R, 0 + x = x.
+let x. assume Hx.
+exact (add_SNo_0L (x) (real_SNo (x) Hx)).
+Qed.
+
+// HOL Light:  / REAL_ADD_SYM
+Theorem REAL_ADD_SYM : forall x y :e R, x + y = y + x.
+let x. assume Hx.
+let y. assume Hy.
+exact (add_SNo_com (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
+
+// HOL Light:  / REAL_LET_BETWEEN
+Theorem REAL_LET_BETWEEN : forall a b :e R, a < b <-> exists x :e R, a <= x /\ x < b.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H3.
+  exact (ex_intro (fun hl__w:set => hl__w :e R /\ (a <= hl__w /\ hl__w < b)) (a) (andI (a :e R) (a <= a /\ a < b) Ha (andI (a <= a) (a < b) (SNoLe_ref (a)) H3))).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  exact (SNoLeLt_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a <= x) (x < b) H2) (andER (a <= x) (x < b) H2)).
+Qed.
+
+// HOL Light:  / REAL_LE_ANTISYM
+Theorem REAL_LE_ANTISYM : forall x y :e R, x <= y /\ y <= x <-> x = y.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact (SNoLe_antisym (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) (andEL (x <= y) (y <= x) H1) (andER (x <= y) (y <= x) H1)).
+- assume H.
+  exact (andI (x <= y) (y <= x) (H (fun hl__u hl__v => x <= hl__u) (SNoLe_ref (x))) (H (fun hl__u hl__v => hl__u <= x) (SNoLe_ref (x)))).
+Qed.
+
+// HOL Light:  / REAL_LE_BETWEEN
+Theorem REAL_LE_BETWEEN : forall a b :e R, a <= b <-> exists x :e R, a <= x /\ x <= b.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H3.
+  exact (ex_intro (fun hl__w:set => hl__w :e R /\ (a <= hl__w /\ hl__w <= b)) (b) (andI (b :e R) (a <= b /\ b <= b) Hb (andI (a <= b) (b <= b) H3 (SNoLe_ref (b))))).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  exact (SNoLe_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a <= x) (x <= b) H2) (andER (a <= x) (x <= b) H2)).
+Qed.
+
 // HOL Light:  / REAL_LE_REFL
 Theorem REAL_LE_REFL : forall x :e R, x <= x.
 let x. assume Hx.
 exact (SNoLe_ref (x)).
+Qed.
+
+// HOL Light:  / REAL_LE_TRANS
+Theorem REAL_LE_TRANS : forall x y z :e R, x <= y /\ y <= z -> x <= z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (SNoLe_tra (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) (andEL (x <= y) (y <= z) H) (andER (x <= y) (y <= z) H)).
+Qed.
+
+// HOL Light:  / REAL_LTE_BETWEEN
+Theorem REAL_LTE_BETWEEN : forall a b :e R, a < b <-> exists x :e R, a < x /\ x <= b.
+let a. assume Ha.
+let b. assume Hb.
+apply iffI.
+- assume H3.
+  exact (ex_intro (fun hl__w:set => hl__w :e R /\ (a < hl__w /\ hl__w <= b)) (b) (andI (b :e R) (a < b /\ b <= b) Hb (andI (a < b) (b <= b) H3 (SNoLe_ref (b))))).
+- assume H.
+  apply H. let x. assume H1. apply H1. assume Hx H2.
+  exact (SNoLtLe_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a < x) (x <= b) H2) (andER (a < x) (x <= b) H2)).
+Qed.
+
+// HOL Light:  / REAL_MUL_ASSOC
+Theorem REAL_MUL_ASSOC : forall x y z :e R, x * y * z = (x * y) * z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (mul_SNo_assoc (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+Qed.
+
+// HOL Light:  / REAL_MUL_LID
+Theorem REAL_MUL_LID : forall x :e R, 1 * x = x.
+let x. assume Hx.
+exact (mul_SNo_oneL (x) (real_SNo (x) Hx)).
+Qed.
+
+// HOL Light:  / REAL_MUL_SYM
+Theorem REAL_MUL_SYM : forall x y :e R, x * y = y * x.
+let x. assume Hx.
+let y. assume Hy.
+exact (mul_SNo_com (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
 Qed.
 
 // HOL Light:  / REAL_OF_NUM_ADD

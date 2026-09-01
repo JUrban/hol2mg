@@ -84,7 +84,7 @@ let A.
 let e0. assume He0.
 let f.
 assume H.
-exact (num_recursion (A) (e0) He0 (f) H).
+exact (seq_len_nil (fun hl__u hl__v => exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn hl__u = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n)) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn hl__u = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n)) (num_recursion (A) (e0) He0 (f) H))).
 Qed.
 
 // HOL Light: nums.ml:177 / num_CASES
