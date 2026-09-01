@@ -101,6 +101,26 @@ apply andI.
       exact H1.
 Qed.
 
+// HOL Light: class.ml / NOT_IMP
+Theorem NOT_IMP : forall t1 t2:prop, ~ (t1 -> t2) <-> t1 /\ ~ t2.
+let t1.
+let t2.
+apply iffI.
+- assume H2.
+  apply andI.
+  + apply (xm (t1)).
+    * assume H4. exact H4.
+    * assume H5.
+      claim L: False.
+      { exact (H2 (fun hl__H1 : t1 => (FalseE (H5 hl__H1) (t2)))). }
+      exact (FalseE L (t1)).
+  + assume H3.
+    exact (H2 (fun hl__H : t1 => H3)).
+- assume H.
+  assume H1.
+  exact ((andER (t1) (~ t2) H) (H1 (andEL (t1) (~ t2) H))).
+Qed.
+
 // HOL Light: class.ml / NOT_EXISTS_THM
 Theorem NOT_EXISTS_THM : forall A:set, forall P:set -> prop, ~ (exists x :e A, P x) <-> forall x :e A, ~ P x.
 let A.
