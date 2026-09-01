@@ -206,7 +206,12 @@ Admitted.
 // Source hash: md5:ea2ffbd1f3fd55a4f9075bedca1a4ab1
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem real_pow : forall x :e R, x ^ 0 = 1 /\ forall n :e omega, x ^ ordsucc n = x * x ^ n.
-Admitted.
+let x. assume Hx.
+apply andI.
+- exact (exp_SNo_nat_0 (x) (real_SNo (x) Hx)).
+- let n. assume Hn.
+  exact (exp_SNo_nat_S (x) (real_SNo (x) Hx) (n) (omega_nat_p (n) Hn)).
+Qed.
 
 // HOL Light: realax.ml:1801 / real_div
 // Source hash: md5:ad6d79fef4b7aa275eff6be876bf8ab5

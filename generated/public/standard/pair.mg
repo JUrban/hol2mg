@@ -74,7 +74,11 @@ Qed.
 // Source hash: md5:23613fb98ddd9bc0b8abe81386bec32f
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem PAIR : forall A B:set, forall x :e A :*: B, (x 0,x 1) = x.
-Admitted.
+let A.
+let B.
+let x. assume Hx.
+exact (seq_len_nil (fun hl__u hl__v => (x hl__u,x 1) = x) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => (x hl__u,x 1) = x) (pair_eta_setprod (A) (B) (x) Hx))).
+Qed.
 
 // HOL Light: pair.ml:115 / pair_INDUCT
 // Source hash: md5:77b383354fddaa2478d8ab26c6548c60

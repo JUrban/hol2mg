@@ -179,6 +179,16 @@ let n. assume Hn.
 exact (bit0_eq_omega (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / EXP
+Theorem EXP : (forall m :e omega, m ^ 0 = 1) /\ forall m n :e omega, m ^ ordsucc n = m * m ^ n.
+apply andI.
+- let m1. assume Hm1.
+  exact (exp_SNo_nat_0 (m1) (omega_SNo (m1) Hm1)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (exp_SNo_nat_S (m) (omega_SNo (m) Hm) (n) (omega_nat_p (n) Hn)).
+Qed.
+
 // HOL Light: arith.ml / LE
 Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
 exact (andI (forall m :e omega, m <= 0 <-> m = 0) (forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n) SNoLe_0_iff_omega SNoLe_ordsucc_iff_omega).

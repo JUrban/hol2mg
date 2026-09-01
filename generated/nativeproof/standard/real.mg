@@ -135,6 +135,23 @@ Theorem REAL_LT_01 : 0 < 1.
 exact ((andER (0 < ordsucc 0 -> 0 = 0 \/ 0 < 0) (0 = 0 \/ 0 < 0 -> 0 < ordsucc 0) (SNoLt_ordsucc_iff_omega (0) (nat_p_omega (0) nat_0) (0) (nat_p_omega (0) nat_0))) (orIL (0 = 0) (0 < 0) (fun q H => H))).
 Qed.
 
+// HOL Light: real.ml / REAL_NEG_EQ
+Theorem REAL_NEG_EQ : forall x y :e R, - x = y <-> x = - y.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact (H1 (fun hl__u hl__v => x = - hl__u) ((minus_SNo_invol (x) (real_SNo (x) Hx)) (fun hl__u hl__v => hl__u = (- - x)) (fun q H => H))).
+- assume H.
+  exact ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => - hl__u = y) (minus_SNo_invol (y) (real_SNo (y) Hy))).
+Qed.
+
+// HOL Light: real.ml / REAL_SUB_RZERO
+Theorem REAL_SUB_RZERO : forall x :e R, x + - 0 = x.
+let x. assume Hx.
+exact ((minus_SNo_0 (fun hl__u hl__v => hl__u = (- 0)) (fun q H => H)) (fun hl__u hl__v => x + hl__u = x) (add_SNo_0R (x) (real_SNo (x) Hx))).
+Qed.
+
 // HOL Light: real.ml / REAL_EQ_IMP_LE
 Theorem REAL_EQ_IMP_LE : forall x y :e R, x = y -> x <= y.
 let x. assume Hx.

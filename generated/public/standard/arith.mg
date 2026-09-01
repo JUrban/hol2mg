@@ -304,7 +304,13 @@ Admitted.
 // Source hash: md5:f0b2e89bd72b2ed4f06143255e61c5ee
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
 Theorem EXP : (forall m :e omega, m ^ 0 = 1) /\ forall m n :e omega, m ^ ordsucc n = m * m ^ n.
-Admitted.
+apply andI.
+- let m1. assume Hm1.
+  exact (exp_SNo_nat_0 (m1) (omega_SNo (m1) Hm1)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (exp_SNo_nat_S (m) (omega_SNo (m) Hm) (n) (omega_nat_p (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:222 / EXP_EQ_0
 // Source hash: md5:200ce7eb2e9d1e4094a26e883f454e19

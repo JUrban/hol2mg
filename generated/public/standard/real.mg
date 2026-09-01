@@ -414,7 +414,14 @@ Admitted.
 // Source hash: md5:db4160e66787d3eb48fd5ef7f3c11cb8
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_NEG_EQ : forall x y :e R, - x = y <-> x = - y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H1.
+  exact (H1 (fun hl__u hl__v => x = - hl__u) ((minus_SNo_invol (x) (real_SNo (x) Hx)) (fun hl__u hl__v => hl__u = (- - x)) (fun q H => H))).
+- assume H.
+  exact ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => - hl__u = y) (minus_SNo_invol (y) (real_SNo (y) Hy))).
+Qed.
 
 // HOL Light: real.ml:272 / REAL_NEG_MINUS1
 // Source hash: md5:ad95c4f69dd20778d06a0eb3f702f41c
@@ -504,7 +511,9 @@ Admitted.
 // Source hash: md5:f8cfd3628ac7652bc4ec6ae7c548b1f4
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_SUB_RZERO : forall x :e R, x + - 0 = x.
-Admitted.
+let x. assume Hx.
+exact ((minus_SNo_0 (fun hl__u hl__v => hl__u = (- 0)) (fun q H => H)) (fun hl__u hl__v => x + hl__u = x) (add_SNo_0R (x) (real_SNo (x) Hx))).
+Qed.
 
 // HOL Light: real.ml:332 / REAL_LET_ADD2
 // Source hash: md5:d0b362250644ecc98b56e81d12b860a4

@@ -37,6 +37,15 @@ apply iffI.
   exact H.
 Qed.
 
+// HOL Light: realax.ml / real_pow
+Theorem real_pow : forall x :e R, x ^ 0 = 1 /\ forall n :e omega, x ^ ordsucc n = x * x ^ n.
+let x. assume Hx.
+apply andI.
+- exact (exp_SNo_nat_0 (x) (real_SNo (x) Hx)).
+- let n. assume Hn.
+  exact (exp_SNo_nat_S (x) (real_SNo (x) Hx) (n) (omega_nat_p (n) Hn)).
+Qed.
+
 // HOL Light: realax.ml / real_max
 Theorem real_max : forall n m :e R, (if m <= n then n else m) = if m <= n then n else m.
 let n. assume Hn.

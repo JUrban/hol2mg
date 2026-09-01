@@ -315,6 +315,11 @@ assume H.
 exact ((SNoLt_irref (x)) H).
 Qed.
 
+// HOL Light: int.ml / INT_NEG_0
+Theorem INT_NEG_0 : - 0 = 0.
+exact minus_SNo_0.
+Qed.
+
 // HOL Light: int.ml / INT_OF_NUM_ADD
 Theorem INT_OF_NUM_ADD : forall m n :e omega, m + n = m + n.
 let m. assume Hm.

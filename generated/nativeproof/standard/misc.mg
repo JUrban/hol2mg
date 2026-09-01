@@ -23,6 +23,12 @@ let x. assume Hx.
 exact (add_SNo_0L (x) (real_SNo (x) Hx)).
 Qed.
 
+// HOL Light:  / REAL_ADD_LINV
+Theorem REAL_ADD_LINV : forall x :e R, - x + x = 0.
+let x. assume Hx.
+exact (add_SNo_minus_SNo_linv (x) (real_SNo (x) Hx)).
+Qed.
+
 // HOL Light:  / REAL_ADD_SYM
 Theorem REAL_ADD_SYM : forall x y :e R, x + y = y + x.
 let x. assume Hx.

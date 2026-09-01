@@ -13,10 +13,21 @@ let x. assume Hx.
 exact (mul_SNo_zeroL (x) (real_SNo (x) Hx)).
 Qed.
 
+// HOL Light: calc_int.ml / REAL_NEG_NEG
+Theorem REAL_NEG_NEG : forall x :e R, - - x = x.
+let x. assume Hx.
+exact (minus_SNo_invol (x) (real_SNo (x) Hx)).
+Qed.
+
 // HOL Light: calc_int.ml / REAL_ADD_RID
 Theorem REAL_ADD_RID : forall x :e R, x + 0 = x.
 let x. assume Hx.
 exact (add_SNo_0R (x) (real_SNo (x) Hx)).
+Qed.
+
+// HOL Light: calc_int.ml / REAL_NEG_0
+Theorem REAL_NEG_0 : - 0 = 0.
+exact minus_SNo_0.
 Qed.
 
 // HOL Light: calc_int.ml / REAL_OF_NUM_POW
