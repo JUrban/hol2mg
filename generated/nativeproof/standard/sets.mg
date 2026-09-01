@@ -152,6 +152,17 @@ apply iffI.
   exact H.
 Qed.
 
+// HOL Light: sets.ml / SING
+Theorem SING : forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, s = {x}.
+let A.
+let s. assume Hs.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
+
 // HOL Light: sets.ml / CHOICE
 Theorem CHOICE : forall A:set, forall s c= A, choose_in A (fun x:set => x :e s) = choose_in A (fun x:set => x :e s).
 let A.
@@ -310,16 +321,10 @@ apply iffI.
   apply H.
   + assume H1.
     apply H1. let x1. assume H5. apply H5. assume Hx1 H6.
-    witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact (andI (x1 :e s :\/: t) (P x1) (binunionI1 (s) (t) (x1) (andEL (x1 :e s) (P x1) H6)) (andER (x1 :e s) (P x1) H6)).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s :\/: t /\ P hl__w)) (x1) (andI (x1 :e A) (x1 :e s :\/: t /\ P x1) Hx1 (andI (x1 :e s :\/: t) (P x1) (binunionI1 (s) (t) (x1) (andEL (x1 :e s) (P x1) H6)) (andER (x1 :e s) (P x1) H6)))).
   + assume H2.
     apply H2. let x. assume H3. apply H3. assume Hx H4.
-    witness x.
-    apply andI.
-    * exact Hx.
-    * exact (andI (x :e s :\/: t) (P x) (binunionI2 (s) (t) (x) (andEL (x :e t) (P x) H4)) (andER (x :e t) (P x) H4)).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s :\/: t /\ P hl__w)) (x) (andI (x :e A) (x :e s :\/: t /\ P x) Hx (andI (x :e s :\/: t) (P x) (binunionI2 (s) (t) (x) (andEL (x :e t) (P x) H4)) (andER (x :e t) (P x) H4)))).
 Qed.
 
 // HOL Light: sets.ml / UNIV_NOT_EMPTY
@@ -1356,6 +1361,52 @@ let A.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: sets.ml / EXTENSIONAL
+Theorem EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall x :e B :^: A, (forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)) <-> x :e {f :e B :^: A | forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => False)}.
+let A.
+let B.
+assume H.
+assume H1.
+let s. assume Hs.
+let x. assume Hx.
+apply iffI.
+- assume H4.
+  exact (SepI (B :^: A) (fun f:set => forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => False)) (x) Hx H4).
+- assume H2.
+  let x0. assume Hx0.
+  assume H3.
+  exact ((SepE2 (B :^: A) (fun f:set => forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => False)) (x) H2) (x0) Hx0 H3).
+Qed.
+
+// HOL Light: sets.ml / IN_EXTENSIONAL
+Theorem IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => False).
+let A.
+let B.
+assume H.
+assume H1.
+let s. assume Hs.
+let f. assume Hf.
+apply iffI.
+- assume H3.
+  let x. assume Hx.
+  assume H4.
+  exact ((SepE2 (B :^: A) (fun x:set => forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)) (f) H3) (x) Hx H4).
+- assume H2.
+  exact (SepI (B :^: A) (fun x:set => forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)) (f) Hf H2).
+Qed.
+
+// HOL Light: sets.ml / IN_EXTENSIONAL_UNDEFINED
+Theorem IN_EXTENSIONAL_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)} /\ ~ x :e s -> f x = choose_in B (fun x:set => False).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f. assume Hf.
+let x. assume Hx.
+assume H1.
+exact ((SepE2 (B :^: A) (fun x0:set => forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)) (f) (andEL (f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)}) (~ x :e s) H1)) (x) Hx (andER (f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)}) (~ x :e s) H1)).
+Qed.
+
 // HOL Light: sets.ml / EXTENSIONAL_UNIV
 Theorem EXTENSIONAL_UNIV : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e A -> f x = choose_in B (fun y:set => False).
 let A.
@@ -1379,6 +1430,19 @@ assume H1.
 let x. assume Hx.
 assume H2.
 exact (If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) H2).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_UNDEFINED
+Theorem RESTRICTION_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = choose_in B (fun x:set => False).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+assume H2.
+exact (If_i_0 (x :e s) (f x) (choose_in B (fun y:set => False)) H2).
 Qed.
 
 // HOL Light: sets.ml / RESTRICTION_EQ

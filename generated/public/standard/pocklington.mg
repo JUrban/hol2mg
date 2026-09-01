@@ -12,7 +12,15 @@ Admitted.
 // Source hash: md5:4bc6db4032bd0e3f5b60234fafe6cff0
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem nat_mod : forall x y n :e omega, (exists q1 q2 :e omega, x + n * q1 = y + n * q2) <-> exists q1 q2 :e omega, x + n * q1 = y + n * q2.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/pocklington.ml:44 / FINITE_NUMBER_SEGMENT
 // Source hash: md5:2c90784697bc24fb5b7ffb07d63a1eb6
@@ -98,13 +106,7 @@ Admitted.
 Theorem CONG_REFL : forall x n :e omega, exists q1 q2 :e omega, x + n * q1 = x + n * q2.
 let x. assume Hx.
 let n. assume Hn.
-witness n.
-apply andI.
-- exact Hn.
-- witness n.
-  apply andI.
-  + exact Hn.
-  + exact (fun q H => H).
+exact (ex_intro (fun hl__w:set => hl__w :e omega /\ exists q2 :e omega, x + n * hl__w = x + n * q2) (n) (andI (n :e omega) (exists q2 :e omega, x + n * n = x + n * q2) Hn (ex_intro (fun hl__w:set => hl__w :e omega /\ x + n * n = x + n * hl__w) (n) (andI (n :e omega) (x + n * n = x + n * n) Hn (fun q H => H))))).
 Qed.
 
 // HOL Light: Library/pocklington.ml:151 / EQ_IMP_CONG
@@ -115,13 +117,7 @@ let a. assume Ha.
 let b. assume Hb.
 let n. assume Hn.
 assume H.
-witness n.
-apply andI.
-- exact Hn.
-- witness n.
-  apply andI.
-  + exact Hn.
-  + exact (H (fun hl__u hl__v => (a + n * n) = (hl__u + n * n)) (fun q H => H)).
+exact (ex_intro (fun hl__w:set => hl__w :e omega /\ exists q2 :e omega, a + n * hl__w = b + n * q2) (n) (andI (n :e omega) (exists q2 :e omega, a + n * n = b + n * q2) Hn (ex_intro (fun hl__w:set => hl__w :e omega /\ a + n * n = b + n * hl__w) (n) (andI (n :e omega) (a + n * n = b + n * n) Hn (H (fun hl__u hl__v => (a + n * n) = (hl__u + n * n)) (fun q H => H)))))).
 Qed.
 
 // HOL Light: Library/pocklington.ml:155 / CONG_SYM
@@ -135,23 +131,11 @@ apply iffI.
 - assume H5.
   apply H5. let q11. assume H6. apply H6. assume Hq11 H7.
   apply H7. let q21. assume H8. apply H8. assume Hq21 H9.
-  witness q21.
-  apply andI.
-  + exact Hq21.
-  + witness q11.
-    apply andI.
-    * exact Hq11.
-    * exact (H9 (fun hl__u hl__v => hl__u = (x + n * q11)) (fun q H => H)).
+  exact (ex_intro (fun hl__w:set => hl__w :e omega /\ exists q2 :e omega, y + n * hl__w = x + n * q2) (q21) (andI (q21 :e omega) (exists q2 :e omega, y + n * q21 = x + n * q2) Hq21 (ex_intro (fun hl__w:set => hl__w :e omega /\ y + n * q21 = x + n * hl__w) (q11) (andI (q11 :e omega) (y + n * q21 = x + n * q11) Hq11 (H9 (fun hl__u hl__v => hl__u = (x + n * q11)) (fun q H => H)))))).
 - assume H.
   apply H. let q1. assume H1. apply H1. assume Hq1 H2.
   apply H2. let q2. assume H3. apply H3. assume Hq2 H4.
-  witness q2.
-  apply andI.
-  + exact Hq2.
-  + witness q1.
-    apply andI.
-    * exact Hq1.
-    * exact (H4 (fun hl__u hl__v => hl__u = (y + n * q1)) (fun q H => H)).
+  exact (ex_intro (fun hl__w:set => hl__w :e omega /\ exists q2 :e omega, x + n * hl__w = y + n * q2) (q2) (andI (q2 :e omega) (exists q20 :e omega, x + n * q2 = y + n * q20) Hq2 (ex_intro (fun hl__w:set => hl__w :e omega /\ x + n * q2 = y + n * hl__w) (q1) (andI (q1 :e omega) (x + n * q2 = y + n * q1) Hq1 (H4 (fun hl__u hl__v => hl__u = (y + n * q1)) (fun q H => H)))))).
 Qed.
 
 // HOL Light: Library/pocklington.ml:159 / CONG_TRANS
@@ -1218,7 +1202,14 @@ Admitted.
 // Source hash: md5:8d1d234fe0ce07d33a5b1017bfc13c44
 // Status: transport_required (bridges: hol_list_finseq, hol_num_omega, mul_nat_mul_SNo)
 Theorem primefact : forall n :e omega, forall ps :e finseq omega, seq_foldr (fun p:set => fun acc:set => p * acc) ps 1 = n /\ (forall p :e omega, seq_mem p ps -> prime_nat p) <-> seq_foldr (fun x:set => fun x0:set => x * x0) ps 1 = n /\ forall p :e omega, seq_mem p ps -> prime_nat p.
-Admitted.
+let n. assume Hn.
+let ps. assume Hps.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: Library/pocklington.ml:2178 / PRIMEFACT
 // Source hash: md5:1e7b573abe2bd2ee509333c2fa2834a3
