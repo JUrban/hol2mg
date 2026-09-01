@@ -45,6 +45,27 @@ apply iffI.
   exact (FalseE H (x :e Empty)).
 Qed.
 
+// HOL Light: sets.ml / INSERT_DEF
+Theorem INSERT_DEF : forall A:set, forall s c= A, forall x y :e A, y :e SetAdjoin s x <-> y :e s \/ y = x.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+let y. assume Hy.
+apply iffI.
+- assume H3.
+  apply (SetAdjoinE (s) (x) (y) H3).
+  + assume H8.
+    exact (orIL (y :e s) (y = x) H8).
+  + assume H9.
+    exact (orIR (y :e s) (y = x) (SingE (x) (y) H9)).
+- assume H.
+  apply H.
+  + assume H1.
+    exact (SetAdjoinI1 (s) (x) (y) H1).
+  + assume H2.
+    exact (H2 (fun hl__u hl__v => y :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (y) (y) (SingI (y)))).
+Qed.
+
 // HOL Light: sets.ml / UNIV
 Theorem UNIV : forall A:set, forall x :e A, x :e A <-> True.
 let A.
@@ -98,6 +119,26 @@ apply (set_ext (s :\: t) ({x :e A | x :e s /\ ~ x :e t})).
   exact (SepI (A) (fun x:set => x :e s /\ ~ x :e t) (x1) (Hs (x1) (setminusE1 (s) (t) (x1) Hx1)) (andI (x1 :e s) (~ x1 :e t) (setminusE1 (s) (t) (x1) Hx1) (setminusE2 (s) (t) (x1) Hx1))).
 - let x. assume Hx.
   exact (setminusI (s) (t) (x) (andEL (x :e s) (~ x :e t) (SepE2 (A) (fun x:set => x :e s /\ ~ x :e t) (x) Hx)) (andER (x :e s) (~ x :e t) (SepE2 (A) (fun x:set => x :e s /\ ~ x :e t) (x) Hx))).
+Qed.
+
+// HOL Light: sets.ml / INSERT
+Theorem INSERT : forall A:set, forall x :e A, forall s c= A, SetAdjoin s x = {y :e A | y :e s \/ y = x}.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+apply (set_ext (SetAdjoin s x) ({y :e A | y :e s \/ y = x})).
+- let x2. assume Hx2.
+  apply (SetAdjoinE (s) (x) (x2) Hx2).
+  + assume H2.
+    exact (SepI (A) (fun y:set => y :e s \/ y = x) (x2) (Hs (x2) H2) (orIL (x2 :e s) (x2 = x) H2)).
+  + assume H3.
+    exact (SepI (A) (fun y:set => y :e s \/ y = x) (x2) (((SingE (x) (x2) H3) (fun hl__u hl__v => hl__u = (x2)) (fun q H => H)) (fun hl__u hl__v => hl__u :e A) Hx) (orIR (x2 :e s) (x2 = x) (SingE (x) (x2) H3))).
+- let x1. assume Hx1.
+  apply (SepE2 (A) (fun y:set => y :e s \/ y = x) (x1) Hx1).
+  + assume H.
+    exact (SetAdjoinI1 (s) (x) (x1) H).
+  + assume H1.
+    exact (H1 (fun hl__u hl__v => x1 :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (x1) (x1) (SingI (x1)))).
 Qed.
 
 // HOL Light: sets.ml / DELETE
@@ -235,6 +276,27 @@ apply iffI.
   exact (setminusI (s) (t) (x) (andEL (x :e s) (~ x :e t) H) (andER (x :e s) (~ x :e t) H)).
 Qed.
 
+// HOL Light: sets.ml / IN_INSERT
+Theorem IN_INSERT : forall A:set, forall x y :e A, forall s c= A, x :e SetAdjoin s y <-> x = y \/ x :e s.
+let A.
+let x. assume Hx.
+let y. assume Hy.
+let s. assume Hs.
+apply iffI.
+- assume H3.
+  apply (SetAdjoinE (s) (y) (x) H3).
+  + assume H8.
+    exact (orIR (x = y) (x :e s) H8).
+  + assume H9.
+    exact (orIL (x = y) (x :e s) (SingE (y) (x) H9)).
+- assume H.
+  apply H.
+  + assume H1.
+    exact (H1 (fun hl__u hl__v => x :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (x) (x) (SingI (x)))).
+  + assume H2.
+    exact (SetAdjoinI1 (s) (y) (x) H2).
+Qed.
+
 // HOL Light: sets.ml / IN_DELETE
 Theorem IN_DELETE : forall A:set, forall s c= A, forall x y :e A, x :e s :\: {y} <-> x :e s /\ ~ x = y.
 let A.
@@ -276,6 +338,52 @@ apply iffI.
     exact ((setminusE2 (s) ({choose_in A (fun x:set => x :e s)}) (x) H1) (H2 (fun hl__u hl__v => x :e {hl__u}) (SingI (x)))).
 - assume H.
   exact (setminusI (s) ({choose_in A (fun x:set => x :e s)}) (x) (andEL (x :e s) (~ x = choose_in A (fun x:set => x :e s)) H) (fun hl__H : x :e {choose_in A (fun x:set => x :e s)} => ((andER (x :e s) (~ x = choose_in A (fun x:set => x :e s)) H) (SingE (choose_in A (fun x:set => x :e s)) (x) hl__H)))).
+Qed.
+
+// HOL Light: sets.ml / FORALL_IN_INSERT
+Theorem FORALL_IN_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
+let A.
+let P.
+let a. assume Ha.
+let s. assume Hs.
+apply iffI.
+- assume H4.
+  apply andI.
+  + exact (H4 (a) Ha (SetAdjoinI2 (s) (a) (a) (SingI (a)))).
+  + let x1. assume Hx1.
+    assume H5.
+    exact (H4 (x1) Hx1 (SetAdjoinI1 (s) (a) (x1) H5)).
+- assume H.
+  let x. assume Hx.
+  assume H1.
+  apply (SetAdjoinE (s) (a) (x) H1).
+  + assume H2.
+    exact ((andER (P a) (forall x :e A, x :e s -> P x) H) (x) Hx H2).
+  + assume H3.
+    exact (((SingE (a) (x) H3) (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => P hl__u) (andEL (P a) (forall x :e A, x :e s -> P x) H)).
+Qed.
+
+// HOL Light: sets.ml / EXISTS_IN_INSERT
+Theorem EXISTS_IN_INSERT : forall A:set, forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
+let A.
+let P.
+let a. assume Ha.
+let s. assume Hs.
+apply iffI.
+- assume H9.
+  apply H9. let x2. assume H10. apply H10. assume Hx2 H11.
+  apply (SetAdjoinE (s) (a) (x2) (andEL (x2 :e SetAdjoin s a) (P x2) H11)).
+  + assume H20.
+    exact (orIR (P a) (exists x :e A, x :e s /\ P x) (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s /\ P hl__w)) (x2) (andI (x2 :e A) (x2 :e s /\ P x2) Hx2 (andI (x2 :e s) (P x2) H20 (andER (x2 :e SetAdjoin s a) (P x2) H11))))).
+  + assume H21.
+    exact (orIL (P a) (exists x :e A, x :e s /\ P x) ((SingE (a) (x2) H21) (fun hl__u hl__v => P hl__u) (andER (x2 :e SetAdjoin s a) (P x2) H11))).
+- assume H.
+  apply H.
+  + assume H5.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (a) (andI (a :e A) (a :e SetAdjoin s a /\ P a) Ha (andI (a :e SetAdjoin s a) (P a) (SetAdjoinI2 (s) (a) (a) (SingI (a))) H5))).
+  + assume H6.
+    apply H6. let x1. assume H7. apply H7. assume Hx1 H8.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (x1) (andI (x1 :e A) (x1 :e SetAdjoin s a /\ P x1) Hx1 (andI (x1 :e SetAdjoin s a) (P x1) (SetAdjoinI1 (s) (a) (x1) (andEL (x1 :e s) (P x1) H8)) (andER (x1 :e s) (P x1) H8)))).
 Qed.
 
 // HOL Light: sets.ml / FORALL_IN_UNION
@@ -1016,6 +1124,64 @@ apply (set_ext ({x :e A | x :e s :\: t /\ P x}) ({x :e A | x :e s /\ P x} :\: {x
   exact (SepI (A) (fun x:set => x :e s :\: t /\ P x) (x) (SepE1 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx)) (andI (x :e s :\: t) (P x) (setminusI (s) (t) (x) (andEL (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx))) (fun hl__H : x :e t => ((setminusE2 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx) (SepI (A) (fun x:set => x :e t /\ P x) (x) (SepE1 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx)) (andI (x :e t) (P x) hl__H (andER (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx)))))))) (andER (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) (setminusE1 ({x :e A | x :e s /\ P x}) ({x :e A | x :e t /\ P x}) (x) Hx))))).
 Qed.
 
+// HOL Light: sets.ml / COMPONENT
+Theorem COMPONENT : forall A:set, forall x :e A, forall s c= A, x :e SetAdjoin s x.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+exact (SetAdjoinI2 (s) (x) (x) (SingI (x))).
+Qed.
+
+// HOL Light: sets.ml / INSERT_UNION_EQ
+Theorem INSERT_UNION_EQ : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x :\/: t = SetAdjoin (s :\/: t) x.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+let t. assume Ht.
+apply (set_ext (SetAdjoin s x :\/: t) (SetAdjoin (s :\/: t) x)).
+- let x2. assume Hx2.
+  apply (binunionE (SetAdjoin s x) (t) (x2) Hx2).
+  + assume H4.
+    apply (SetAdjoinE (s) (x) (x2) H4).
+    * assume H6.
+      exact (SetAdjoinI1 (s :\/: t) (x) (x2) (binunionI1 (s) (t) (x2) H6)).
+    * assume H7.
+      exact ((SingE (x) (x2) H7) (fun hl__u hl__v => x2 :e SetAdjoin (s :\/: t) hl__u) (SetAdjoinI2 (s :\/: t) (x2) (x2) (SingI (x2)))).
+  + assume H5.
+    exact (SetAdjoinI1 (s :\/: t) (x) (x2) (binunionI2 (s) (t) (x2) H5)).
+- let x1. assume Hx1.
+  apply (SetAdjoinE (s :\/: t) (x) (x1) Hx1).
+  + assume H.
+    apply (binunionE (s) (t) (x1) H).
+    * assume H2.
+      exact (binunionI1 (SetAdjoin s x) (t) (x1) (SetAdjoinI1 (s) (x) (x1) H2)).
+    * assume H3.
+      exact (binunionI2 (SetAdjoin s x) (t) (x1) H3).
+  + assume H1.
+    exact (binunionI1 (SetAdjoin s x) (t) (x1) ((SingE (x) (x1) H1) (fun hl__u hl__v => x1 :e SetAdjoin s hl__u) (SetAdjoinI2 (s) (x1) (x1) (SingI (x1))))).
+Qed.
+
+// HOL Light: sets.ml / INSERT_SUBSET
+Theorem INSERT_SUBSET : forall A:set, forall x :e A, forall s t c= A, SetAdjoin s x c= t <-> x :e t /\ s c= t.
+let A.
+let x. assume Hx.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H3.
+  apply andI.
+  + exact (H3 (x) (SetAdjoinI2 (s) (x) (x) (SingI (x)))).
+  + let x2. assume Hx2.
+    exact (H3 (x2) (SetAdjoinI1 (s) (x) (x2) Hx2)).
+- assume H.
+  let x1. assume Hx1.
+  apply (SetAdjoinE (s) (x) (x1) Hx1).
+  + assume H1.
+    exact ((andER (x :e t) (s c= t) H) (x1) H1).
+  + assume H2.
+    exact (((SingE (x) (x1) H2) (fun hl__u hl__v => hl__u = (x1)) (fun q H => H)) (fun hl__u hl__v => hl__u :e t) (andEL (x :e t) (s c= t) H)).
+Qed.
+
 // HOL Light: sets.ml / INTER_ACI
 Theorem INTER_ACI : forall A:set, forall p q r c= A, p :/\: q = q :/\: p /\ (p :/\: q :/\: r = p :/\: (q :/\: r) /\ (p :/\: (q :/\: r) = q :/\: (p :/\: r) /\ (p :/\: p = p /\ p :/\: (p :/\: q) = p :/\: q))).
 let A.
@@ -1649,6 +1815,69 @@ apply iffI.
   exact H1.
 - assume H.
   exact H.
+Qed.
+
+// HOL Light: sets.ml / FORALL_IN_CLAUSES
+Theorem FORALL_IN_CLAUSES : forall A:set, (forall P:set -> prop, (forall x :e A, x :e Empty -> P x) <-> True) /\ forall P:set -> prop, forall a :e A, forall s c= A, (forall x :e A, x :e SetAdjoin s a -> P x) <-> P a /\ forall x :e A, x :e s -> P x.
+let A.
+apply andI.
+- let P1.
+  apply iffI.
+  + assume H8.
+    exact (fun p:prop => fun H:p => H).
+  + assume H6.
+    let x2. assume Hx2.
+    assume H7.
+    exact (FalseE (EmptyE (x2) H7) (P1 x2)).
+- let P.
+  let a. assume Ha.
+  let s. assume Hs.
+  apply iffI.
+  + assume H4.
+    apply andI.
+    * exact (H4 (a) Ha (SetAdjoinI2 (s) (a) (a) (SingI (a)))).
+    * let x1. assume Hx1.
+      assume H5.
+      exact (H4 (x1) Hx1 (SetAdjoinI1 (s) (a) (x1) H5)).
+  + assume H.
+    let x. assume Hx.
+    assume H1.
+    apply (SetAdjoinE (s) (a) (x) H1).
+    * assume H2.
+      exact ((andER (P a) (forall x :e A, x :e s -> P x) H) (x) Hx H2).
+    * assume H3.
+      exact (((SingE (a) (x) H3) (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => P hl__u) (andEL (P a) (forall x :e A, x :e s -> P x) H)).
+Qed.
+
+// HOL Light: sets.ml / EXISTS_IN_CLAUSES
+Theorem EXISTS_IN_CLAUSES : forall A:set, (forall P:set -> prop, (exists x :e A, x :e Empty /\ P x) <-> False) /\ forall P:set -> prop, forall a :e A, forall s c= A, (exists x :e A, x :e SetAdjoin s a /\ P x) <-> P a \/ exists x :e A, x :e s /\ P x.
+let A.
+apply andI.
+- let P1.
+  apply iffI.
+  + assume H23.
+    apply H23. let x3. assume H24. apply H24. assume Hx3 H25.
+    exact (EmptyE (x3) (andEL (x3 :e Empty) (P1 x3) H25)).
+  + assume H22.
+    exact (FalseE H22 (exists x :e A, x :e Empty /\ P1 x)).
+- let P.
+  let a. assume Ha.
+  let s. assume Hs.
+  apply iffI.
+  + assume H9.
+    apply H9. let x2. assume H10. apply H10. assume Hx2 H11.
+    apply (SetAdjoinE (s) (a) (x2) (andEL (x2 :e SetAdjoin s a) (P x2) H11)).
+    * assume H20.
+      exact (orIR (P a) (exists x :e A, x :e s /\ P x) (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s /\ P hl__w)) (x2) (andI (x2 :e A) (x2 :e s /\ P x2) Hx2 (andI (x2 :e s) (P x2) H20 (andER (x2 :e SetAdjoin s a) (P x2) H11))))).
+    * assume H21.
+      exact (orIL (P a) (exists x :e A, x :e s /\ P x) ((SingE (a) (x2) H21) (fun hl__u hl__v => P hl__u) (andER (x2 :e SetAdjoin s a) (P x2) H11))).
+  + assume H.
+    apply H.
+    * assume H5.
+      exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (a) (andI (a :e A) (a :e SetAdjoin s a /\ P a) Ha (andI (a :e SetAdjoin s a) (P a) (SetAdjoinI2 (s) (a) (a) (SingI (a))) H5))).
+    * assume H6.
+      apply H6. let x1. assume H7. apply H7. assume Hx1 H8.
+      exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e SetAdjoin s a /\ P hl__w)) (x1) (andI (x1 :e A) (x1 :e SetAdjoin s a /\ P x1) Hx1 (andI (x1 :e SetAdjoin s a) (P x1) (SetAdjoinI1 (s) (a) (x1) (andEL (x1 :e s) (P x1) H8)) (andER (x1 :e s) (P x1) H8)))).
 Qed.
 
 // HOL Light: sets.ml / ge_c

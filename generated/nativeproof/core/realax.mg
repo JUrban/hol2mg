@@ -8,6 +8,13 @@ let y. assume Hy.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: realax.ml / real_lt
+Theorem real_lt : forall y x :e R, x < y <-> ~ y <= x.
+let y. assume Hy.
+let x. assume Hx.
+exact (real_lt_iff (y) Hy (x) Hx).
+Qed.
+
 // HOL Light: realax.ml / real_ge
 Theorem real_ge : forall y x :e R, y <= x <-> y <= x.
 let y. assume Hy.

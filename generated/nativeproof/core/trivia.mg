@@ -76,6 +76,17 @@ witness True.
 exact (fun p:prop => fun H:p => H).
 Qed.
 
+// HOL Light: trivia.ml / one_DEF
+Theorem one_DEF : 0 = choose_in 1 (fun x:set => True).
+exact ((in_1_eq_0 (choose_in 1 (fun x:set => True)) (andEL (choose_in 1 (fun x:set => True) :e 1) (True) (choose_in_spec (1) (fun x:set => True) (ex_intro (fun hl__w:set => hl__w :e 1 /\ True) (0) (andI (0 :e 1) (True) In_0_1 (fun p:prop => fun H:p => H)))))) (fun hl__u hl__v => hl__u = (choose_in 1 (fun x:set => True))) (fun q H => H)).
+Qed.
+
+// HOL Light: trivia.ml / one
+Theorem one : forall v :e 1, v = 0.
+let v. assume Hv.
+exact (in_1_eq_0 (v) Hv).
+Qed.
+
 // HOL Light: trivia.ml / one_RECURSION
 Theorem one_RECURSION : forall A:set, forall e0 :e A, exists fn:set -> set, (forall x :e 1, fn x :e A) /\ fn 0 = e0.
 let A.

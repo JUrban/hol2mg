@@ -330,3 +330,95 @@ apply andI.
     { exact ((andEL (((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 0) = a1) (((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 1) :e Z) (Linv a1 Ha1)) (fun hl__u hl__v => CONS' a0 ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 0) ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 1) = CONS' a0 hl__u ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 1)) (fun q H => H)). }
     exact (eq_trans_i ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) (seq_cons a0 a1) (seq_nil, NIL')) 1) (CONS' a0 ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 0) ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 1)) (CONS' a0 a1 ((seq_foldr (fun x:set => fun p:set => (seq_cons x (p 0), CONS' x (p 0) (p 1))) a1 (seq_nil, NIL')) 1)) P12 R1).
 Qed.
+
+Theorem seq_all_nil : forall P:set -> prop, seq_all P seq_nil <-> True.
+let P.
+claim L: seq_all P seq_nil.
+{ let i. assume Hi.
+  claim Hi0: i :e 0. { exact (seq_len_nil (fun hl__u hl__v => i :e hl__u) Hi). }
+  exact (FalseE (EmptyE i Hi0) (P (seq_nth seq_nil i))). }
+exact (iff_true_intro (seq_all P seq_nil) L).
+Qed.
+
+Theorem seq_all_cons : forall A:set, forall P:set -> prop, forall a :e A, forall l :e finseq A, seq_all P (seq_cons a l) <-> P a /\ seq_all P l.
+let A. let P. let a. assume Ha. let l. assume Hl.
+claim Hlen: seq_len (seq_cons a l) = ordsucc (seq_len l). { exact (seq_len_cons A a Ha l Hl). }
+claim Hlom: seq_len l :e omega. { exact (seq_len_omega A l Hl). }
+claim Hlnat: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) Hlom). }
+apply iffI.
+- assume H.
+  apply andI.
+  + claim H0: 0 :e seq_len (seq_cons a l).
+    { exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => 0 :e hl__u) (nat_0_in_ordsucc (seq_len l) Hlnat)). }
+    exact ((seq_nth_cons_0 A a Ha l Hl) (fun hl__u hl__v => P hl__u) (H 0 H0)).
+  + prove forall i :e seq_len l, P (seq_nth l i).
+    let i. assume Hi.
+    claim Hsi: ordsucc i :e seq_len (seq_cons a l).
+    { exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => ordsucc i :e hl__u) (ordinal_ordsucc_In (seq_len l) (nat_p_ordinal (seq_len l) Hlnat) i Hi)). }
+    exact ((seq_nth_cons_S A a Ha l Hl i Hi) (fun hl__u hl__v => P hl__u) (H (ordsucc i) Hsi)).
+- assume H.
+  prove forall i :e seq_len (seq_cons a l), P (seq_nth (seq_cons a l) i).
+  let i. assume Hi.
+  claim Hio: i :e ordsucc (seq_len l).
+  { exact (Hlen (fun hl__u hl__v => i :e hl__u) Hi). }
+  claim Hinat: nat_p i.
+  { exact (nat_p_trans (ordsucc (seq_len l)) (nat_ordsucc (seq_len l) Hlnat) i Hio). }
+  apply (nat_inv i Hinat).
+  + assume Hi0.
+    claim HP0: P (seq_nth (seq_cons a l) 0).
+    { exact ((eq_sym_i (seq_nth (seq_cons a l) 0) a (seq_nth_cons_0 A a Ha l Hl)) (fun hl__u hl__v => P hl__u) (andEL (P a) (seq_all P l) H)). }
+    exact ((eq_sym_i i 0 Hi0) (fun hl__u hl__v => P (seq_nth (seq_cons a l) hl__u)) HP0).
+  + assume Hex. apply Hex. let j. assume Hj0. apply Hj0. assume Hjn Hij.
+    claim Hji: ordsucc j :e ordsucc (seq_len l).
+    { exact (Hij (fun hl__u hl__v => hl__u :e ordsucc (seq_len l)) Hio). }
+    claim Hjl: j :e seq_len l.
+    { apply (ordsuccE (seq_len l) (ordsucc j) Hji).
+      assume H1.
+      exact (nat_trans (seq_len l) Hlnat (ordsucc j) H1 j (ordsuccI2 j)).
+      assume H1.
+      exact (H1 (fun hl__u hl__v => j :e hl__u) (ordsuccI2 j)). }
+    claim HPj: P (seq_nth l j).
+    { exact (andER (P a) (seq_all P l) H j Hjl). }
+    claim HPsj: P (seq_nth (seq_cons a l) (ordsucc j)).
+    { exact ((eq_sym_i (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth l j) (seq_nth_cons_S A a Ha l Hl j Hjl)) (fun hl__u hl__v => P hl__u) HPj). }
+    exact ((eq_sym_i i (ordsucc j) Hij) (fun hl__u hl__v => P (seq_nth (seq_cons a l) hl__u)) HPsj).
+Qed.
+
+Theorem in_1_eq_0 : forall v :e 1, v = 0.
+let v. assume Hv.
+exact (cases_1 v Hv (fun hl__u:set => hl__u = 0) (fun q H => H)).
+Qed.
+
+Theorem real_lt_iff : forall y x :e R, x < y <-> ~ y <= x.
+let y. assume Hy. let x. assume Hx.
+claim Hsx: SNo x. { exact (real_SNo x Hx). }
+claim Hsy: SNo y. { exact (real_SNo y Hy). }
+apply iffI.
+- assume H. assume H2.
+  exact (SNoLt_irref x (SNoLtLe_tra x y x Hsx Hsy Hsx H H2)).
+- assume H.
+  apply (SNoLtLe_or x y Hsx Hsy).
+  + assume H1. exact H1.
+  + assume H1. exact (FalseE (H H1) (x < y)).
+Qed.
+
+Theorem bit0_eq_omega : forall n :e omega, 2 * n = n + n.
+let n. assume Hn.
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim H1om: 1 :e omega. { exact (nat_p_omega 1 (nat_ordsucc 0 nat_0)). }
+claim E1: 2 * n = n + 1 * n.
+{ exact (mul_SNo_SL_omega 1 H1om n Hn). }
+claim E2: 1 * n = n. { exact (mul_SNo_oneL n Hsn). }
+exact (eq_trans_i (2 * n) (n + 1 * n) (n + n) E1 (f_equal (fun hl__u:set => n + hl__u) (1 * n) (n) E2)).
+Qed.
+
+Theorem bit1_eq_omega : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
+let n. assume Hn.
+claim Hnn: n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+claim E0: 2 * n = n + n. { exact (bit0_eq_omega n Hn). }
+claim E1: 2 * n + 1 = (n + n) + 1.
+{ exact (f_equal (fun hl__u:set => hl__u + 1) (2 * n) (n + n) E0). }
+claim E2: (n + n) + 1 = ordsucc (n + n).
+{ exact (add_SNo_1_ordsucc (n + n) Hnn). }
+exact (eq_trans_i (2 * n + 1) ((n + n) + 1) (ordsucc (n + n)) E1 E2).
+Qed.

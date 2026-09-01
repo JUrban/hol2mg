@@ -2152,6 +2152,36 @@ cascade: their guided proofs must *use* the existential premise to derive equati
 their own defined constants — that is the recorded-proof replay / conditional rewrite
 machinery of §24.3, still open.
 
+N9 (landed with N10, below): the list/order/real frontier by citing what already exists.
+Twelve finseq.mg theorems become builtin premises (seq_len/map/append nil+cons equations,
+seq_nil/cons/append/map_finseq memberships, seq_nth_cons_0/S) — no new proofs, just
+hand-built ASTs; APPEND, MAP, LENGTH then close immediately (their HOL "recursion
+equations" are the definitional lemmas of the finseq model, not uses of list_RECURSION).
+Four new logic.mg lemmas (all Megalodon-checked first try): `seq_all_nil`/`seq_all_cons`
+(index-shifting proofs over the seq_all definition; lands ALL), `in_1_eq_0` (`cases_1`;
+lands one — the HO motive is beyond `match_tm`, so it is hand-instantiated once),
+`real_lt_iff` (`SNoLtLe_or` dichotomy; lands real_lt).  Further builtins: nat_0,
+nat_ordsucc, ordsuccE, real_SNo, SNoLtLe, SNoLtLe_or — real_SNo alone lands
+REAL_LT_REFL, REAL_LE_REFL, REAL_LE_ANTISYM, REAL_LT_IMP_LE; the order builtins land
+LT_0, LT_SUC.  Still open in this cluster: EVEN (parity induction hand lemma),
+BIT0/BIT1 (numeral arithmetic chains), IN_ELIM_THM/INSERT (set comprehension).
+
+N10 (with N9: 378 -> 430, +52, zero lost, 3 leaf-guided): the SetAdjoin/numeral tier.
+The combined landing cascades through the guided fixpoint far beyond the probed names:
+the whole REAL_* order/ring block (REAL_ADD/MUL_SYM/ASSOC/LID/RID/LZERO/RZERO,
+REAL_ADD_L/RDISTRIB, REAL_LE/LT/LET/LTE_TRANS, REAL_LTE_TOTAL, REAL_NOT_LT, REAL_LT_LE,
+REAL_POS_LT, REAL_LE_01/LT_01, INT_LE_01/LT_01/LT_IMP_LE, LTE_CASES), the INSERT block
+(INSERT_DEF, INSERT_SUBSET, INSERT_UNION_EQ, FORALL/EXISTS_IN_INSERT,
+FORALL/EXISTS_IN_CLAUSES), BIT0/1_THM, MULT_2, one_DEF.  Builtins SetAdjoinE/I1/I2 +
+SingI plus two new `push` derivations (a membership in `SetAdjoin a b` or `ordsucc a`
+contributes its disjunction `z :e a \/ z :e {b}` / `z :e a \/ z = a` as a derived term
+hypothesis, mirroring the binunion pattern) land INSERT, IN_INSERT, COMPONENT,
+NOT_IN_EMPTY, EMPTY_GSPEC.  `match_tm` learns that numerals are definitionally ordsucc
+towers (`ordsucc`-pattern vs `Num k` crosses the boundary in both directions).  logic.mg
+gains `bit0_eq_omega`/`bit1_eq_omega` (2n = n+n via `mul_SNo_SL_omega` at m=1; 2n+1 =
+ordsucc (n+n) via `add_SNo_1_ordsucc`), landing BIT0 and BIT1.  Still open: BIT0_DEF /
+BIT1_DEF aggregates, ARITH_* bundles, EVEN/ODD (parity induction).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

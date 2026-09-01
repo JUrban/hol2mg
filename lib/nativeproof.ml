@@ -140,6 +140,11 @@ let match_tm (pvars : string list) (pat : Mg.tm) (goal : Mg.tm) : (string * Mg.t
          | None -> a = b && not (List.exists (fun (_, g) -> g = b) env))
     | Mg.Cst a, Mg.Cst b -> a = b
     | Mg.Num a, Mg.Num b -> a = b
+    (* numerals are definitionally ordsucc towers: let patterns cross the boundary *)
+    | Mg.App (Mg.Cst "ordsucc", p'), Mg.Num k when k > 0 ->
+        go env pv p' (Mg.Num (k - 1))
+    | Mg.Num k, Mg.App (Mg.Cst "ordsucc", g') when k > 0 ->
+        go env pv (Mg.Num (k - 1)) g'
     | Mg.App (a1, b1), Mg.App (a2, b2) -> go env pv a1 a2 && go env pv b1 b2
     | Mg.Imp (a1, b1), Mg.Imp (a2, b2) -> go env pv a1 a2 && go env pv b1 b2
     | Mg.Tuple l1, Mg.Tuple l2 | Mg.SetEnum l1, Mg.SetEnum l2 ->
@@ -784,6 +789,14 @@ let rec push st (gl : Mg.tm) (name : string) (prop : Mg.tm) (hyps : hyp list)
   | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "binunion", a), b)) ->
       let t = Printf.sprintf "(binunionE %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
       push st gl t (Mg.App (Mg.App (Mg.Cst "or", mg_in z a), mg_in z b)) (h :: hyps) cont
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.App (Mg.Cst "SetAdjoin", a), b)) ->
+      let t = Printf.sprintf "(SetAdjoinE %s %s %s %s)" (ppp a) (ppp b) (ppp z) name in
+      push st gl t (Mg.App (Mg.App (Mg.Cst "or", mg_in z a), mg_in z (Mg.SetEnum [ b ])))
+        (h :: hyps) cont
+  | Mg.App (Mg.App (Mg.Cst "In", z), Mg.App (Mg.Cst "ordsucc", a)) ->
+      let t = Printf.sprintf "(ordsuccE %s %s %s)" (ppp a) (ppp z) name in
+      push st gl t (Mg.App (Mg.App (Mg.Cst "or", mg_in z a),
+                     Mg.App (Mg.App (Mg.Cst "eq", z), a))) (h :: hyps) cont
   | Mg.App (Mg.App (Mg.Cst "In", z), Mg.SetEnum [ a ]) ->
       push st gl (Printf.sprintf "(SingE %s %s %s)" (ppp a) (ppp z) name)
         (Mg.App (Mg.App (Mg.Cst "eq", z), a)) (h :: hyps) cont
@@ -1437,6 +1450,169 @@ let builtin_premises : (string * Mg.tm) list =
                              Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__b"))),
                            Mg.App (Mg.App (Mg.App (Mg.Var "hl__c", Mg.Var "hl__a"), Mg.Var "hl__b"),
                              Mg.App (Mg.Var "hl__fn", Mg.Var "hl__b")))))))))))))));
+    ("seq_len_nil",
+     Mg.App (Mg.App (Mg.Cst "eq",
+       Mg.App (Mg.Cst "seq_len", Mg.Cst "seq_nil")), Mg.Num 0));
+    ("seq_len_cons",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__a", Mg.Var "hl__A",
+       Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.Cst "seq_len",
+             Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l"))),
+           Mg.App (Mg.Cst "ordsucc", Mg.App (Mg.Cst "seq_len", Mg.Var "hl__l")))))));
+    ("seq_map_nil",
+     Mg.All ("hl__f", Mg.Arr (Mg.Set, Mg.Set),
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "seq_map", Mg.Var "hl__f"), Mg.Cst "seq_nil")),
+         Mg.Cst "seq_nil")));
+    ("seq_map_cons",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__f", Mg.Arr (Mg.Set, Mg.Set),
+       Mg.AllIn ("hl__a", Mg.Var "hl__A",
+         Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "seq_map", Mg.Var "hl__f"),
+               Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l"))),
+             Mg.App (Mg.App (Mg.Cst "seq_cons",
+               Mg.App (Mg.Var "hl__f", Mg.Var "hl__a")),
+               Mg.App (Mg.App (Mg.Cst "seq_map", Mg.Var "hl__f"), Mg.Var "hl__l"))))))));
+    ("seq_append_nil",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.AllIn ("hl__m", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.App (Mg.Cst "seq_append", Mg.Cst "seq_nil"), Mg.Var "hl__m")),
+           Mg.Var "hl__m"))));
+    ("seq_append_cons",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__a", Mg.Var "hl__A",
+       Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.AllIn ("hl__m", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "seq_append",
+               Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l")),
+               Mg.Var "hl__m")),
+             Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"),
+               Mg.App (Mg.App (Mg.Cst "seq_append", Mg.Var "hl__l"), Mg.Var "hl__m"))))))));
+    ("seq_nil_finseq",
+     Mg.All ("hl__A", Mg.Set,
+       mg_in (Mg.Cst "seq_nil") (Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"))));
+    ("seq_cons_finseq",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__a", Mg.Var "hl__A",
+       Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         mg_in (Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l"))
+           (Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"))))));
+    ("seq_nth_cons_0",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__a", Mg.Var "hl__A",
+       Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.App (Mg.Cst "seq_nth",
+             Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l")),
+             Mg.Num 0)),
+           Mg.Var "hl__a")))));
+    ("seq_nth_cons_S",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__a", Mg.Var "hl__A",
+       Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.AllIn ("hl__i", Mg.App (Mg.Cst "seq_len", Mg.Var "hl__l"),
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "seq_nth",
+               Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l")),
+               Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__i"))),
+             Mg.App (Mg.App (Mg.Cst "seq_nth", Mg.Var "hl__l"), Mg.Var "hl__i")))))));
+    ("seq_append_finseq",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.AllIn ("hl__m", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+           mg_in (Mg.App (Mg.App (Mg.Cst "seq_append", Mg.Var "hl__l"), Mg.Var "hl__m"))
+             (Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"))))));
+    ("seq_map_finseq",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.All ("hl__f", Mg.Arr (Mg.Set, Mg.Set),
+         Mg.Imp (
+           Mg.AllIn ("hl__x", Mg.Var "hl__A",
+             mg_in (Mg.App (Mg.Var "hl__f", Mg.Var "hl__x")) (Mg.Var "hl__B")),
+           Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+             mg_in (Mg.App (Mg.App (Mg.Cst "seq_map", Mg.Var "hl__f"), Mg.Var "hl__l"))
+               (Mg.App (Mg.Cst "finseq", Mg.Var "hl__B"))))))));
+    ("seq_all_nil",
+     Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "seq_all", Mg.Var "hl__P"), Mg.Cst "seq_nil")),
+         Mg.Cst "True")));
+    ("seq_all_cons",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+       Mg.AllIn ("hl__a", Mg.Var "hl__A",
+         Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+           Mg.App (Mg.App (Mg.Cst "iff",
+             Mg.App (Mg.App (Mg.Cst "seq_all", Mg.Var "hl__P"),
+               Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__l"))),
+             Mg.App (Mg.App (Mg.Cst "and",
+               Mg.App (Mg.Var "hl__P", Mg.Var "hl__a")),
+               Mg.App (Mg.App (Mg.Cst "seq_all", Mg.Var "hl__P"), Mg.Var "hl__l"))))))));
+    ("ordsuccE",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set,
+       Mg.Imp (mg_in (Mg.Var "hl__y") (Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__x")),
+         Mg.App (Mg.App (Mg.Cst "or",
+           mg_in (Mg.Var "hl__y") (Mg.Var "hl__x")),
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__y"), Mg.Var "hl__x"))))));
+    ("real_SNo",
+     Mg.AllIn ("hl__x", Mg.Cst "R",
+       Mg.App (Mg.Cst "SNo", Mg.Var "hl__x")));
+    ("SNoLtLe",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set,
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__y"),
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y")))));
+    ("SNoLtLe_or",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.App (Mg.App (Mg.Cst "or",
+             Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__y")),
+             Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__x")))))));
+    ("in_1_eq_0",
+     Mg.AllIn ("hl__v", Mg.Num 1,
+       Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__v"), Mg.Num 0)));
+    ("real_lt_iff",
+     Mg.AllIn ("hl__y", Mg.Cst "R", Mg.AllIn ("hl__x", Mg.Cst "R",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__y")),
+         Mg.App (Mg.Cst "not",
+           Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__x"))))));
+    ("SetAdjoinE",
+     Mg.All ("hl__X", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (mg_in (Mg.Var "hl__z")
+                 (Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Var "hl__X"), Mg.Var "hl__y")),
+         Mg.App (Mg.App (Mg.Cst "or",
+           mg_in (Mg.Var "hl__z") (Mg.Var "hl__X")),
+           mg_in (Mg.Var "hl__z") (Mg.SetEnum [ Mg.Var "hl__y" ])))))));
+    ("SetAdjoinI1",
+     Mg.All ("hl__X", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (mg_in (Mg.Var "hl__z") (Mg.Var "hl__X"),
+         mg_in (Mg.Var "hl__z")
+           (Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Var "hl__X"), Mg.Var "hl__y")))))));
+    ("SetAdjoinI2",
+     Mg.All ("hl__X", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (mg_in (Mg.Var "hl__z") (Mg.SetEnum [ Mg.Var "hl__y" ]),
+         mg_in (Mg.Var "hl__z")
+           (Mg.App (Mg.App (Mg.Cst "SetAdjoin", Mg.Var "hl__X"), Mg.Var "hl__y")))))));
+    ("SingI",
+     Mg.All ("hl__x", Mg.Set,
+       mg_in (Mg.Var "hl__x") (Mg.SetEnum [ Mg.Var "hl__x" ])));
+    ("bit0_eq_omega",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var "hl__n")),
+         Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__n"), Mg.Var "hl__n"))));
+    ("bit1_eq_omega",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "add_SNo",
+           Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var "hl__n")),
+           Mg.Num 1)),
+         Mg.App (Mg.Cst "ordsucc",
+           Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__n"), Mg.Var "hl__n")))));
+    ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
+    ("nat_ordsucc",
+     Mg.All ("hl__n", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "nat_p", Mg.Var "hl__n"),
+         Mg.App (Mg.Cst "nat_p", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n")))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));
