@@ -158,26 +158,26 @@ let t1.
 let t2.
 let t3.
 apply iffI.
-- assume H29.
-  apply H29.
-  + assume H50.
-    exact (orIL (t1 \/ t2) (t3) (orIL (t1) (t2) H50)).
-  + assume H51.
-    apply H51.
-    * assume H60.
-      exact (orIL (t1 \/ t2) (t3) (orIR (t1) (t2) H60)).
-    * assume H61.
-      exact (orIR (t1 \/ t2) (t3) H61).
+- assume H33.
+  apply H33.
+  + assume H54.
+    exact (orIL (t1 \/ t2) (t3) (orIL (t1) (t2) H54)).
+  + assume H55.
+    apply H55.
+    * assume H64.
+      exact (orIL (t1 \/ t2) (t3) (orIR (t1) (t2) H64)).
+    * assume H65.
+      exact (orIR (t1 \/ t2) (t3) H65).
 - assume H.
   apply H.
-  + assume H17.
-    apply H17.
-    * assume H27.
-      exact (orIL (t1) (t2 \/ t3) H27).
-    * assume H28.
-      exact (orIR (t1) (t2 \/ t3) (orIL (t2) (t3) H28)).
-  + assume H18.
-    exact (orIR (t1) (t2 \/ t3) (orIR (t2) (t3) H18)).
+  + assume H21.
+    apply H21.
+    * assume H31.
+      exact (orIL (t1) (t2 \/ t3) H31).
+    * assume H32.
+      exact (orIR (t1) (t2 \/ t3) (orIL (t2) (t3) H32)).
+  + assume H22.
+    exact (orIR (t1) (t2 \/ t3) (orIR (t2) (t3) H22)).
 Qed.
 
 // HOL Light: theorems.ml:79 / DISJ_SYM
@@ -187,18 +187,18 @@ Theorem DISJ_SYM : forall t1 t2:prop, t1 \/ t2 <-> t2 \/ t1.
 let t1.
 let t2.
 apply iffI.
-- assume H7.
-  apply H7.
-  + assume H12.
-    exact (orIR (t2) (t1) H12).
-  + assume H13.
-    exact (orIL (t2) (t1) H13).
+- assume H11.
+  apply H11.
+  + assume H20.
+    exact (orIR (t2) (t1) H20).
+  + assume H21.
+    exact (orIL (t2) (t1) H21).
 - assume H.
   apply H.
-  + assume H5.
-    exact (orIR (t1) (t2) H5).
-  + assume H6.
-    exact (orIL (t1) (t2) H6).
+  + assume H9.
+    exact (orIR (t1) (t2) H9).
+  + assume H10.
+    exact (orIL (t1) (t2) H10).
 Qed.
 
 // HOL Light: theorems.ml:83 / DISJ_ACI
@@ -1255,10 +1255,10 @@ let D.
 assume H.
 assume H1.
 apply H1.
-- assume H6.
-  exact (orIL (B) (D) ((andEL (A -> B) (C -> D) H) H6)).
-- assume H7.
-  exact (orIR (B) (D) ((andER (A -> B) (C -> D) H) H7)).
+- assume H10.
+  exact (orIL (B) (D) ((andEL (A -> B) (C -> D) H) H10)).
+- assume H11.
+  exact (orIR (B) (D) ((andER (A -> B) (C -> D) H) H11)).
 Qed.
 
 // HOL Light: theorems.ml:357 / MONO_IMP

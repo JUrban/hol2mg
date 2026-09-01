@@ -2112,6 +2112,12 @@ window (17k theorems, most failing), so `NPBUDGET` and `NPCLASSICAL` environment
 were added and multivariate runs with `NPCLASSICAL=0 NPBUDGET=4000` (373/17138, 6m19 —
 the pre-N6a search shape; revisit when the pass is sharded or the search is cheaper).
 
+N6b (361 -> 364): atom split — when no negation hypothesis exists, `xm_split` hands over
+to a classical split on the first propositional *atom* (a prop variable) in the goal's
+boolean skeleton (depth <= 2, both branches re-prove the goal, `NPCLASSICAL`-gated).
+BOOL_CASES_AX — the top blocker with 65 dependents — becomes a self-contained public Qed
+(previously only leaf-guided), plus COND_EXPAND, CONTRAPOS_THM, OR_DEF; zero lost.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

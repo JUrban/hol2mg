@@ -1031,10 +1031,13 @@ and if_split st hyps goal d =
 and xm_split st hyps goal d =
   (* only worthwhile when a negation hypothesis can feed the refutation; the guard
      also keeps or-heavy searches from draining their fuel here *)
-  if goal = Mg.Cst "False" || not (List.exists (fun h -> dest_not h.prop <> None) hyps)
+  if goal = Mg.Cst "False"
      || List.exists (fun h ->
           match dest_not h.prop with Some p -> aeq p goal | None -> false) hyps
-  then raise Give_up else begin
+  then raise Give_up
+  else if not (List.exists (fun h -> dest_not h.prop <> None) hyps) then
+    atom_split st hyps goal d
+  else begin
     spend st 100;  (* classical splits are expensive: cap them via the fuel budget *)
     let bl lines = (match bullet d with
       | Some _ -> block d lines
@@ -1057,6 +1060,46 @@ and xm_split st hyps goal d =
               :: body
               @ [ Printf.sprintf "exact (FalseE %s (%s))." lname (pp goal) ]))
   end
+
+and atom_split st hyps goal d =
+  (* no negation hypothesis to refute with: classical split on the first propositional
+     atom (a prop variable) in the goal's boolean skeleton (docs/DESIGN.md 23.5 N6b) *)
+  if not np_classical || d > 2 then raise Give_up else
+  let rec atom t =
+    match dest_and t with
+    | Some (a, b) -> (match atom a with Some v -> Some v | None -> atom b)
+    | None ->
+    match dest_or t with
+    | Some (a, b) -> (match atom a with Some v -> Some v | None -> atom b)
+    | None ->
+    match dest_iff t with
+    | Some (a, b) -> (match atom a with Some v -> Some v | None -> atom b)
+    | None ->
+    match dest_not t with
+    | Some a -> atom a
+    | None ->
+    match t with
+    | Mg.Imp (a, b) -> (match atom a with Some v -> Some v | None -> atom b)
+    | Mg.Var _ -> Some t
+    | _ -> None in
+  (match atom goal with
+   | None -> raise Give_up
+   | Some v ->
+       if List.exists (fun h -> aeq h.prop v
+            || (match dest_not h.prop with Some p -> aeq p v | None -> false)) hyps
+       then raise Give_up else begin
+         spend st 100;
+         let bl lines = (match bullet d with
+           | Some _ -> block d lines
+           | None -> (match lines with f :: r -> ("- " ^ f) :: List.map (fun l -> "  " ^ l) r | [] -> [])) in
+         let h1 = fresh st "H" and h2 = fresh st "H" in
+         Printf.sprintf "apply (xm (%s))." (pp v)
+         :: (bl (Printf.sprintf "assume %s." h1
+                 :: push st goal h1 v hyps (fun hyps -> prove_goal st hyps goal (d + 1)))
+             @ bl (Printf.sprintf "assume %s." h2
+                   :: push st goal h2 (Mg.App (Mg.Cst "not", v)) hyps
+                        (fun hyps -> prove_goal st hyps goal (d + 1))))
+       end)
 
 and or_elim st hyps goal d =
   match List.find_opt (fun h -> dest_or h.prop <> None) hyps with
