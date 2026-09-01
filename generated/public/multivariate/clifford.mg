@@ -72,7 +72,11 @@ Admitted.
 // Source hash: md5:4b9416e3f0ee10f6f0b39aac928dec88
 // Status: generalization_required (bridges: empty_case:N, hol_dimindex, hol_num_omega, hol_typedef_multivector)
 Theorem DEST_MK_MULTIVECTOR : forall N:set, forall s c= omega, s c= idx N -> s = s.
-Admitted.
+let N.
+let s. assume Hs.
+assume H.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Multivariate/clifford.ml:92 / FORALL_MULTIVECTOR
 // Source hash: md5:603026e764406ba35c8ef0cc2939a9e9

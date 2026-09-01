@@ -1975,10 +1975,11 @@ matched against each hypothesis, so `P (choose_in A P)` yields the witness `choo
 through the subset rule) and `choose_in_spec` (SELECT_AX and the choice direction of
 EXISTS_THM).
 
-**Standard profile** (same rule set, no recorded leaves yet): **339 of 4 290 public
-theorems receive generated native proofs**, checked as one composition in seconds and
-emitted with `Qed` in the public shards (`natively_proved` in the standard manifest);
-certification state is untouched (3 839 transport_checked, 36 shards OK).
+**Standard profile** (same rule set, no recorded leaves yet): **343 of 4 290 public
+theorems receive generated native proofs**, and the first **Multivariate** native-proof
+pass yields **331 of 17 138** — both checked as single compositions and emitted with
+`Qed` in the public shards (`natively_proved`); certification state is untouched.
+
 
 N4a — definition unfolding (301 → 302, 334 → 335: num_divides on both profiles): a curated
 table maps defined predicates (`divides_int`, `divides_nat`) to their definitional

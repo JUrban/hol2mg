@@ -120,7 +120,10 @@ Admitted.
 // Source hash: md5:4a314d6ac46d393a0829c387e4212582
 // Status: transport_required (bridges: hol_real_R)
 Theorem real_sub : forall x y :e R, x + - y = x + - y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: realax.ml:1785 / real_lt
 // Source hash: md5:93a3a1e8d142b40e99dd3655980cdbc1
@@ -132,13 +135,27 @@ Admitted.
 // Source hash: md5:6da252bdb6156ab67419ba3c8372a3d3
 // Status: transport_required (bridges: hol_real_R)
 Theorem real_ge : forall y x :e R, y <= x <-> y <= x.
-Admitted.
+let y. assume Hy.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: realax.ml:1791 / real_gt
 // Source hash: md5:5f96069132d1c942b6fde02171b97613
 // Status: transport_required (bridges: hol_real_R)
 Theorem real_gt : forall y x :e R, y < x <-> y < x.
-Admitted.
+let y. assume Hy.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: realax.ml:1794 / real_abs
 // Source hash: md5:959e0be66162db5443361d9557a2d2cb
@@ -162,13 +179,19 @@ Admitted.
 // Source hash: md5:ff1873e78d4b7f77582ddd7455494247
 // Status: transport_required (bridges: hol_real_R)
 Theorem real_max : forall n m :e R, (if m <= n then n else m) = if m <= n then n else m.
-Admitted.
+let n. assume Hn.
+let m. assume Hm.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: realax.ml:1807 / real_min
 // Source hash: md5:0635a4e371255e7eb6948729796d63a8
 // Status: transport_required (bridges: hol_real_R)
 Theorem real_min : forall m n :e R, (if m <= n then m else n) = if m <= n then m else n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: realax.ml:1862 / REAL_COMPLETE_SOMEPOS
 // Source hash: md5:6c0aaa2e98058d204e2ffe9a68c78fa6

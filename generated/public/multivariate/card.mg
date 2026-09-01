@@ -36,7 +36,25 @@ Admitted.
 // Source hash: md5:e7470743d2d33643525f9f0328ebf3bd
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FLATTEN_LEMMA : forall A B:set, B <> Empty -> forall s c= A, forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e A, x :e s -> g (f x) = x) <-> forall y :e B, forall x :e A, x :e s /\ y = f x -> g y = x).
-Admitted.
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let g.
+assume H1.
+let f.
+assume H2.
+apply iffI.
+- assume H5.
+  let y. assume Hy.
+  let x1. assume Hx1.
+  assume H6.
+  exact (((andER (x1 :e s) (y = f x1) H6) (fun hl__u hl__v => hl__u = (y)) (fun q H => H)) (fun hl__u hl__v => g hl__u = x1) (H5 (x1) Hx1 (andEL (x1 :e s) (y = f x1) H6))).
+- assume H3.
+  let x. assume Hx.
+  assume H4.
+  exact (H3 (f x) (H2 (x) Hx) (x) Hx (andI (x :e s) (f x = f x) H4 (fun q H => H))).
+Qed.
 
 // HOL Light: Library/card.ml:40 / TARSKI_SET
 // Source hash: md5:23b816c18716c0a44b6b64a89274f1db
@@ -150,7 +168,15 @@ Admitted.
 // Source hash: md5:c684f6694a2ba06fabeeb361d4d22c0d
 // Status: transport_required (bridges: hol_eq_c_equip, hol_le_c_atleastp)
 Theorem CARD_LT_IMP_LE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, atleastp s t /\ ~ equip s t -> atleastp s t.
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let s. assume Hs.
+let t. assume Ht.
+assume H2.
+exact (andEL (atleastp s t) (~ equip s t) H2).
+Qed.
 
 // HOL Light: Library/card.ml:200 / CARD_LE_RELATIONAL
 // Source hash: md5:c89e1f6c9ef193a71fe6c587f3e7d81d
@@ -222,7 +248,18 @@ Admitted.
 // Source hash: md5:9752e47ba9cccdc82441d3f361bb13c3
 // Status: transport_required (bridges: hol_eq_c_equip, hol_le_c_atleastp)
 Theorem CARD_LT_LE : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall t c= B, atleastp s t /\ ~ equip s t <-> atleastp s t /\ ~ equip s t.
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H3.
+  exact H3.
+- assume H2.
+  exact H2.
+Qed.
 
 // HOL Light: Library/card.ml:307 / CARD_LE_LT
 // Source hash: md5:2fac85f8627a7baef25cd3eb157e463e
@@ -516,7 +553,10 @@ Admitted.
 // Source hash: md5:44bc86d30920b3e14619f6ad2647b272
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem MUL_C_UNIV : forall A B:set, A :*: B = A :*: B.
-Admitted.
+let A.
+let B.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/card.ml:700 / CARD_FUNSPACE_CURRY
 // Source hash: md5:54634333f2fc4c578ece61aef1602b20

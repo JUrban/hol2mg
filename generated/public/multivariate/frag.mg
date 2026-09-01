@@ -54,7 +54,16 @@ Admitted.
 // Source hash: md5:7f1ad9b989fa9586e455aafbe70d56ab
 // Status: transport_required (bridges: hol_int_int, hol_typedef_frag)
 Theorem FRAG_EQ : forall A:set, A <> Empty -> forall c1 c2 :e frag A, c1 = c2 <-> c1 = c2.
-Admitted.
+let A.
+assume H.
+let c1. assume Hc1.
+let c2. assume Hc2.
+apply iffI.
+- assume H2.
+  exact H2.
+- assume H1.
+  exact H1.
+Qed.
 
 // HOL Light: Library/frag.ml:37 / DEST_FRAG_0
 // Source hash: md5:7647a644a73a2f6c0914602be1358d41

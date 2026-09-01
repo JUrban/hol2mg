@@ -6,7 +6,23 @@
 // Source hash: md5:288a0d40e8446caae45da4ca6cd746c2
 // Status: generalization_required (bridges: empty_case:A)
 Theorem ONE_ONE : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x y :e A, f x = f y -> x = y) <-> forall x1 x2 :e A, f x1 = f x2 -> x1 = x2).
-Admitted.
+let A.
+let B.
+assume H.
+let f.
+assume H1.
+apply iffI.
+- assume H4.
+  let x1. assume Hx1.
+  let x2. assume Hx2.
+  assume H5.
+  exact (H4 (x1) Hx1 (x2) Hx2 H5).
+- assume H2.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H3.
+  exact (H2 (x) Hx (y) Hy H3).
+Qed.
 
 // HOL Light: nums.ml:25 / ONTO
 // Source hash: md5:069712bfe0b0449845d319d1a7497175
@@ -24,7 +40,14 @@ Admitted.
 // Source hash: md5:5224521fb640c43e425c96e6462ab6d0
 // Status: transport_required (bridges: hol_num_omega)
 Theorem SUC_INJ : forall m n :e omega, ordsucc m = ordsucc n <-> m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (ordsucc_inj (m) (n) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (ordsucc m) = (ordsucc hl__u)) (fun q H => H)).
+Qed.
 
 // HOL Light: nums.ml:96 / num_INDUCTION
 // Source hash: md5:95f125bb90820dfc772fce4559903527
@@ -42,7 +65,9 @@ Admitted.
 // Source hash: md5:2426be4ee095601a3317c8072e5b59f9
 // Status: transport_required (bridges: hol_num_omega)
 Theorem NUMERAL : forall n :e omega, n = n.
-Admitted.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: nums.ml:169 / num_RECURSION
 // Source hash: md5:b287304fbed4be3d30468df5802532bb

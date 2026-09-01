@@ -720,7 +720,16 @@ Admitted.
 // Source hash: md5:771f46d2caf0c2c331bb437e429b9350
 // Status: transport_required (bridges: hol_typedef_topology)
 Theorem HEREDITARILY_MONO : forall A:set, A <> Empty -> forall t :e topology A, forall P c= topology A, forall Q:set -> prop, (forall top :e topology A, top :e P -> Q t) -> forall top :e topology A, hereditarily A P top -> hereditarily A P top.
-Admitted.
+let A.
+assume H.
+let t. assume Ht.
+let P. assume HP.
+let Q.
+assume H1.
+let top. assume Htop.
+assume H2.
+exact H2.
+Qed.
 
 // HOL Light: Multivariate/metric.ml:924 / HEREDITARILY_INC
 // Source hash: md5:7923e8018caace42f88d388ff527c6b1

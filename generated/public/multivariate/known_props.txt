@@ -11,8 +11,12 @@ DEST_FRAG_OF
 DIMINDEX_GE_1
 EQ_IMP
 EQ_REFL
+eq_sym_i
+eq_trans_i
 EXCLUDED_MIDDLE
 FACT_LT
+f_equal
+f_equal2
 FORALL_DIMINDEX_1
 GE_REFL
 group_identity_R_add

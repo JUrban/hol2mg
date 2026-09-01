@@ -5154,7 +5154,20 @@ Admitted.
 // Source hash: md5:0a6c099171d0dc55d06881c2dedfb21c
 // Status: exact_native
 Theorem ISOMORPHISM_EXPAND : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f (g x) = x) /\ (forall x :e B, g (f x) = x) <-> (forall x :e A, f (g x) = x) /\ forall x :e B, g (f x) = x).
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let f.
+assume H2.
+let g.
+assume H3.
+apply iffI.
+- assume H5.
+  exact H5.
+- assume H4.
+  exact H4.
+Qed.
 
 // HOL Light: Multivariate/vectors.ml:6403 / LINEAR_INJECTIVE_ISOMORPHISM
 // Source hash: md5:68ad555fb4729748b6a975ef30e7d8a4

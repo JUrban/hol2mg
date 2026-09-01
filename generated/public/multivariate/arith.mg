@@ -18,7 +18,9 @@ Admitted.
 // Source hash: md5:16b4fd0a8548e0b4289e91620d77d9f2
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_0 : forall m :e omega, m + 0 = m.
-Admitted.
+let m. assume Hm.
+exact (add_SNo_0R (m) (omega_SNo (m) Hm)).
+Qed.
 
 // HOL Light: arith.ml:56 / ADD_SUC
 // Source hash: md5:7ccc9d50841b340629a487dbe8cf4f39
@@ -36,7 +38,10 @@ Admitted.
 // Source hash: md5:7d864f1eb0ef77376b9bc72e88019c32
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_SYM : forall m n :e omega, m + n = n + m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (add_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:71 / ADD_ASSOC
 // Source hash: md5:b97e64f9ddf8b94f1c6e0e8c8b245bbd
@@ -108,13 +113,15 @@ Admitted.
 // Source hash: md5:8296249074f69ba4d09cec1afc913c50
 // Status: transport_required (bridges: hol_num_omega)
 Theorem ONE : 1 = 1.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: arith.ml:129 / TWO
 // Source hash: md5:0326ab129d5eb6c0d9f12e5b919e0e71
 // Status: transport_required (bridges: hol_num_omega)
 Theorem TWO : 2 = 2.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: arith.ml:137 / ADD1
 // Source hash: md5:8e785bb94d248c4825a2f2f92a968d33
@@ -150,7 +157,10 @@ Admitted.
 // Source hash: md5:7103233ece91e4b797b0f67782824327
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_SYM : forall m n :e omega, m * n = n * m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:170 / LEFT_ADD_DISTRIB
 // Source hash: md5:95fb7903cf74df59ac85cd362dabe182
@@ -288,25 +298,45 @@ Admitted.
 // Source hash: md5:eb4cce02a75248e9a4da989b61be86cf
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem GE : forall n m :e omega, n <= m <-> n <= m.
-Admitted.
+let n. assume Hn.
+let m. assume Hm.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: arith.ml:284 / GT
 // Source hash: md5:cf5cd2515d0dc3275295a791b645d774
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem GT : forall n m :e omega, n < m <-> n < m.
-Admitted.
+let n. assume Hn.
+let m. assume Hm.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: arith.ml:291 / MAX
 // Source hash: md5:dec7206fd153d46948a1a7573a250572
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem MAX : forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: arith.ml:294 / MIN
 // Source hash: md5:cac117c9eae33edc6db6da231d420222
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem MIN : forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: arith.ml:301 / LE_SUC_LT
 // Source hash: md5:a059e9b50769a59dbd1b228f22a762b2

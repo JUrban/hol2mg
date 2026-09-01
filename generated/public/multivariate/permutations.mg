@@ -348,7 +348,15 @@ Admitted.
 // Source hash: md5:991dd3be3219898bbf70f6d8a5e8f094
 // Status: generalization_required (bridges: empty_case:A)
 Theorem RESTRICT_I : forall A:set, forall t c= A, forall x :e A, (if x :e t then x else x) = x.
-Admitted.
+let A.
+let t. assume Ht.
+let x. assume Hx.
+apply (xm (x :e t)).
+- assume H.
+  exact (If_i_1 (x :e t) (x) (x) H).
+- assume H1.
+  exact (If_i_0 (x :e t) (x) (x) H1).
+Qed.
 
 // HOL Light: Library/permutations.ml:461 / RESTRICT_COMPOSE
 // Source hash: md5:be4fc018bceaea4184c91aeea75fac42

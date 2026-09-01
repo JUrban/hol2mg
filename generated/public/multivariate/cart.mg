@@ -24,7 +24,9 @@ Admitted.
 // Source hash: md5:6d36efb94145933ec1aa58b078c73e98
 // Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_num_omega)
 Theorem DIMINDEX_UNIV : forall A:set, dimindex A = dimindex A.
-Admitted.
+let A.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:30 / DIMINDEX_UNIQUE
 // Source hash: md5:88a36c49579122ac8804e8363815cddd
@@ -54,7 +56,8 @@ Admitted.
 // Source hash: md5:49a9d44c0dac1fb1c010affe48096fff
 // Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1)
 Theorem DIMINDEX_1 : 1 = 1.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:54 / finite_image_tybij
 // Source hash: md5:f0d14a9c0235c438b189e2ac2ee50929
@@ -66,7 +69,9 @@ Admitted.
 // Source hash: md5:2f5c954f5fc2c6948e501c8f48cea905
 // Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_finite_image_idx, hol_num_omega)
 Theorem FINITE_IMAGE_IMAGE : forall A:set, idx A = idx A.
-Admitted.
+let A.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:69 / HAS_SIZE_FINITE_IMAGE
 // Source hash: md5:bd453ada18d19f4873e5fb3bed116dd0
@@ -102,7 +107,17 @@ Admitted.
 // Source hash: md5:ed3f2b168a80aa1187743fa433a8d6e6
 // Status: generalization_required (bridges: hol_dimindex, hol_finite_image_idx, hol_num_omega, nat_le_SNoLe)
 Theorem FINITE_INDEX_INJ : forall A:set, A <> Empty -> forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j).
-Admitted.
+let A.
+assume H.
+let i. assume Hi.
+let j. assume Hj.
+assume H1.
+apply iffI.
+- assume H3.
+  exact H3.
+- assume H2.
+  exact H2.
+Qed.
 
 // HOL Light: cart.ml:102 / FORALL_FINITE_INDEX
 // Source hash: md5:43ac0aa393472f102dd0f56823d962d3
@@ -114,13 +129,29 @@ Admitted.
 // Source hash: md5:131fcfadc4569b53594fb6d3afe4208b
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_cart_setexp, hol_finite_image_idx)
 Theorem cart_tybij : forall A B:set, (forall a :e A :^: idx B, a = a) /\ forall r :e A :^: idx B, True <-> r = r.
-Admitted.
+let A.
+let B.
+apply andI.
+- let a. assume Ha.
+  exact (fun q H => H).
+- let r. assume Hr.
+  apply iffI.
+  + assume H1.
+    exact (fun q H => H).
+  + assume H.
+    exact (fun p:prop => fun H:p => H).
+Qed.
 
 // HOL Light: cart.ml:117 / finite_index
 // Source hash: md5:9217c3b619651f33cf632eea33df50fd
 // Status: generalization_required (bridges: empty_case:A, empty_case:N, hol_cart_setexp, hol_finite_image_idx, hol_num_omega)
 Theorem finite_index : forall A N:set, forall x :e A :^: idx N, forall i :e omega, x i = x i.
-Admitted.
+let A.
+let N.
+let x. assume Hx.
+let i. assume Hi.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:120 / CART_EQ
 // Source hash: md5:12d2a2739958dbd8cafb139a4bfa94c3
@@ -198,7 +229,10 @@ Admitted.
 // Source hash: md5:e0d0c0b3edf6d1958b0df8612704ce3f
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, empty_case:B, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
 Theorem FINITE_SUM_IMAGE : forall A B:set, idx_n (dimindex A + dimindex B) = idx_n (dimindex A + dimindex B).
-Admitted.
+let A.
+let B.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:199 / DIMINDEX_HAS_SIZE_FINITE_SUM
 // Source hash: md5:bf62af096e5852240b46a2bcac0c7182
@@ -210,7 +244,10 @@ Admitted.
 // Source hash: md5:9c92b496f688797b7d7b3bea395b3a9d
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:M, empty_case:N, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
 Theorem DIMINDEX_FINITE_SUM : forall M N:set, dimindex M + dimindex N = dimindex M + dimindex N.
-Admitted.
+let M.
+let N.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:211 / FSTCART_PASTECART
 // Source hash: md5:b2889d73733e2663083534f610fe26ec
@@ -282,7 +319,10 @@ Admitted.
 // Source hash: md5:d51e953337acbc3ea1493f1b4055c668
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_dimindex, hol_finite_diff_idx, hol_num_omega, nat_lt_SNoLt)
 Theorem FINITE_DIFF_IMAGE : forall A B:set, idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1) = idx_n (if dimindex B < dimindex A then minus_nat (dimindex A) (dimindex B) else 1).
-Admitted.
+let A.
+let B.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:294 / DIMINDEX_HAS_SIZE_FINITE_DIFF
 // Source hash: md5:6d6170cc672bc6cae12e288b5cec6547
@@ -306,7 +346,10 @@ Admitted.
 // Source hash: md5:a5ee3cdead3b443082a051624eb564f2
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo)
 Theorem FINITE_PROD_IMAGE : forall A B:set, idx_n (dimindex A * dimindex B) = idx_n (dimindex A * dimindex B).
-Admitted.
+let A.
+let B.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:325 / DIMINDEX_HAS_SIZE_FINITE_PROD
 // Source hash: md5:90b3f294442e548ae34f01c37b5d1098
@@ -318,7 +361,10 @@ Admitted.
 // Source hash: md5:1149f086d1eb0f908226b89aaa56b44b
 // Status: generalization_required (bridges: empty_case:M, empty_case:N, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo)
 Theorem DIMINDEX_FINITE_PROD : forall M N:set, dimindex M * dimindex N = dimindex M * dimindex N.
-Admitted.
+let M.
+let N.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:341 / tybit0_INDUCT
 // Source hash: md5:78d927b0732f0cf2715fce6ad6aa283b
@@ -360,19 +406,25 @@ Admitted.
 // Source hash: md5:2726109efadf953501db3fedb4c44ec0
 // Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_num_omega, hol_tybit_idx, mul_nat_mul_SNo)
 Theorem DIMINDEX_TYBIT0 : forall A:set, 2 * dimindex A = 2 * dimindex A.
-Admitted.
+let A.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:377 / DIMINDEX_TYBIT1
 // Source hash: md5:18db18f4fd77000629321bf157fb1353
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_dimindex, hol_num_omega, hol_tybit_idx, mul_nat_mul_SNo)
 Theorem DIMINDEX_TYBIT1 : forall A:set, 2 * dimindex A + 1 = 2 * dimindex A + 1.
-Admitted.
+let A.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:381 / DIMINDEX_CLAUSES
 // Source hash: md5:1c9164d9e863112afb3e9f170701e014
 // Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx, mul_nat_mul_SNo)
 Theorem DIMINDEX_CLAUSES : forall A:set, 1 = 1 /\ (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1).
-Admitted.
+let A.
+exact (andI (1 = 1) (2 * dimindex A = 2 * dimindex A /\ 2 * dimindex A + 1 = 2 * dimindex A + 1) (fun q H => H) (andI (2 * dimindex A = 2 * dimindex A) (2 * dimindex A + 1 = 2 * dimindex A + 1) (fun q H => H) (fun q H => H))).
+Qed.
 
 // HOL Light: cart.ml:389 / FINITE_1
 // Source hash: md5:90a6cd0195246fd82f4fbaf42c36e52d
@@ -402,19 +454,22 @@ Admitted.
 // Source hash: md5:d0a8da4f2034656bd4d9e0714a4c82f2
 // Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx)
 Theorem DIMINDEX_2 : 2 = 2.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:467 / DIMINDEX_3
 // Source hash: md5:51e4181dfc4fc784261ccfc05b5c00b7
 // Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx)
 Theorem DIMINDEX_3 : 3 = 3.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:471 / DIMINDEX_4
 // Source hash: md5:75e488850afa71d3a191d143cb618282
 // Status: transport_required (bridges: hol_dimindex, hol_num_omega, hol_one_1, hol_tybit_idx)
 Theorem DIMINDEX_4 : 4 = 4.
-Admitted.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: cart.ml:475 / HAS_SIZE_2
 // Source hash: md5:f82c0a70f6705c7e235e4e36d867a1a2

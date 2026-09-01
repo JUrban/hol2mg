@@ -522,7 +522,13 @@ Admitted.
 // Source hash: md5:b9749c696c5515c7e8e32e0f97f658df
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_int_int, hol_nproduct_finprod, hol_num_omega, hol_product_finprod, omega_Subq_int)
 Theorem INT_OF_NUM_NPRODUCT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finprod s f = finprod s f.
-Admitted.
+let A.
+let f.
+assume H.
+let s. assume Hs.
+assume H1.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/products.ml:605 / IPRODUCT_SUPERSET
 // Source hash: md5:8f94a58c03a4ddf9fcb394b95a999c95
@@ -833,8 +839,15 @@ Admitted.
 // HOL Light: Library/products.ml:919 / REAL_OF_NUM_NPRODUCT
 // Source hash: md5:7af83aae8ca258670ee9a8d1a4e3d3c0
 // Status: native_reuse (bridges: empty_case:A, hol_finite_finite, hol_nproduct_finprod, hol_num_omega, hol_product_finprod, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_OF_NUM_NPRODUCT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finprod s f = finprod s f.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_OF_NUM_NPRODUCT : forall A:set, forall f:set -> set, (forall x :e A, f x :e omega) -> forall s c= A, finite s -> finprod s f = finprod s f.
+let A.
+let f.
+assume H.
+let s. assume Hs.
+assume H1.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: Library/products.ml:924 / PRODUCT_SUPERSET
 // Source hash: md5:5661cdebe54d5f589960012b354a3c89

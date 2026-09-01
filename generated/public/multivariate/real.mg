@@ -6,31 +6,58 @@
 // Source hash: md5:e7fb371ee0fa6301ee0e301d14d22d9d
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, nat_lt_SNoLt, omega_Subq_R)
 Theorem REAL_OF_NUM_LT : forall m n :e omega, m < n <-> m < n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: real.ml:21 / REAL_OF_NUM_GE
 // Source hash: md5:ac8ad8e9f705eaaef9e61fdb8c8f87f6
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, nat_le_SNoLe, omega_Subq_R)
 Theorem REAL_OF_NUM_GE : forall m n :e omega, n <= m <-> n <= m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: real.ml:25 / REAL_OF_NUM_GT
 // Source hash: md5:54fafed050edb02b2191bc1d7859d034
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, nat_lt_SNoLt, omega_Subq_R)
 Theorem REAL_OF_NUM_GT : forall m n :e omega, n < m <-> n < m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: real.ml:29 / REAL_OF_NUM_MAX
 // Source hash: md5:45388de062050d37a96ef6971ca9a057
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_OF_NUM_MAX : forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: real.ml:33 / REAL_OF_NUM_MIN
 // Source hash: md5:1aae7dd9d4ab753bc61690f1ff6a2e3e
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_OF_NUM_MIN : forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: real.ml:37 / REAL_OF_NUM_SUC
 // Source hash: md5:54dc57e66aeb4c39062a5b0df2ff68d2
@@ -54,7 +81,66 @@ Admitted.
 // Source hash: md5:f78072bc00e29a6284e396b047cfbcbe
 // Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_num_omega, hol_real_R, mul_nat_mul_SNo, nat_le_SNoLe, nat_lt_SNoLt, omega_Subq_R)
 Theorem REAL_OF_NUM_CLAUSES : (forall m n :e omega, m = n <-> m = n) /\ ((forall m n :e omega, n <= m <-> n <= m) /\ ((forall m n :e omega, n < m <-> n < m) /\ ((forall m n :e omega, m <= n <-> m <= n) /\ ((forall m n :e omega, m < n <-> m < n) /\ ((forall m n :e omega, (if m <= n then n else m) = if m <= n then n else m) /\ ((forall m n :e omega, (if m <= n then m else n) = if m <= n then m else n) /\ ((forall m n :e omega, m + n = m + n) /\ ((forall m n :e omega, m * n = m * n) /\ forall x n :e omega, x ^ n = x ^ n)))))))).
-Admitted.
+apply andI.
+- let m8. assume Hm8.
+  let n9. assume Hn9.
+  apply iffI.
+  + assume H9.
+    exact H9.
+  + assume H8.
+    exact H8.
+- apply andI.
+  + let m7. assume Hm7.
+    let n8. assume Hn8.
+    apply iffI.
+    * assume H7.
+      exact H7.
+    * assume H6.
+      exact H6.
+  + apply andI.
+    * let m6. assume Hm6.
+      let n7. assume Hn7.
+      apply iffI.
+      assume H5.
+      exact H5.
+      assume H4.
+      exact H4.
+    * apply andI.
+      let m5. assume Hm5.
+      let n6. assume Hn6.
+      apply iffI.
+      assume H3.
+      exact H3.
+      assume H2.
+      exact H2.
+      apply andI.
+      let m4. assume Hm4.
+      let n5. assume Hn5.
+      apply iffI.
+      assume H1.
+      exact H1.
+      assume H.
+      exact H.
+      apply andI.
+      let m3. assume Hm3.
+      let n4. assume Hn4.
+      exact (fun q H => H).
+      apply andI.
+      let m2. assume Hm2.
+      let n3. assume Hn3.
+      exact (fun q H => H).
+      apply andI.
+      let m1. assume Hm1.
+      let n2. assume Hn2.
+      exact (fun q H => H).
+      apply andI.
+      let m. assume Hm.
+      let n1. assume Hn1.
+      exact (fun q H => H).
+      let x. assume Hx.
+      let n. assume Hn.
+      exact (fun q H => H).
+Qed.
 
 // HOL Light: real.ml:76 / REAL_MUL_AC
 // Source hash: md5:b738b9b0879647f11343593272b18b92
@@ -1602,7 +1688,9 @@ Admitted.
 // Source hash: md5:02d5b83e3d627c6214a6504a3d20a12b
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem real_sgn : forall x :e R, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
-Admitted.
+let x. assume Hx.
+exact (fun q H => H).
+Qed.
 
 // HOL Light: real.ml:1525 / REAL_SGN_0
 // Source hash: md5:0ba61872340d167031fe1bf0c7ce87fe

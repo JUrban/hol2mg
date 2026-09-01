@@ -6,13 +6,25 @@
 // Source hash: md5:0f884614e334e71c404506d560fc3b72
 // Status: exact_native
 Theorem T_DEF : True <-> forall p:prop, p <-> p.
-Admitted.
+apply iffI.
+- assume H1.
+  let p.
+  apply iffI.
+  + assume H3.
+    exact H3.
+  + assume H2.
+    exact H2.
+- assume H.
+  exact (fun p:prop => fun H:p => H).
+Qed.
 
 // HOL Light: bool.ml:79 / TRUTH
 // Source hash: md5:e09aad94aa2e20c97a7a0ada09e7924e
 // Status: native_reuse
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem TRUTH : True.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem TRUTH : True.
+exact (fun p:prop => fun H:p => H).
+Qed.
 
 // HOL Light: bool.ml:97 / AND_DEF
 // Source hash: md5:1e545f23ac30b03a6b3d65a9471dee0b
@@ -24,13 +36,38 @@ Admitted.
 // Source hash: md5:64d9653b8db8f770541ed08321ebb192
 // Status: exact_native
 Theorem IMP_DEF : forall p q:prop, p -> q <-> (p /\ q <-> p).
-Admitted.
+let p.
+let q.
+apply iffI.
+- assume H2.
+  apply iffI.
+  + assume H4.
+    exact (andEL (p) (q) H4).
+  + assume H3.
+    exact (andI (p) (q) H3 (H2 H3)).
+- assume H.
+  assume H1.
+  exact (andER (p) (q) ((andER (p /\ q -> p) (p -> p /\ q) H) H1)).
+Qed.
 
 // HOL Light: bool.ml:243 / FORALL_DEF
 // Source hash: md5:29d652bfd2edf45c3b3120e4323bcaae
 // Status: generalization_required (bridges: empty_case:A)
 Theorem FORALL_DEF : forall A:set, forall P:set -> prop, (forall x :e A, P x) <-> forall x :e A, P x <-> True.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H1.
+  let x1. assume Hx1.
+  apply iffI.
+  + assume H3.
+    exact (fun p:prop => fun H:p => H).
+  + assume H2.
+    exact (H1 (x1) Hx1).
+- assume H.
+  let x. assume Hx.
+  exact ((andER (P x -> True) (True -> P x) (H (x) Hx)) (fun p:prop => fun H:p => H)).
+Qed.
 
 // HOL Light: bool.ml:313 / EXISTS_DEF
 // Source hash: md5:029809946a273ac40abebea56d822664
@@ -48,17 +85,55 @@ Admitted.
 // Source hash: md5:21ccb8ca324e484598309c2a386ab253
 // Status: exact_native
 Theorem F_DEF : False <-> forall p:prop, p.
-Admitted.
+apply iffI.
+- assume H1.
+  let p.
+  exact (FalseE H1 (p)).
+- assume H.
+  exact (H (False)).
+Qed.
 
 // HOL Light: bool.ml:416 / NOT_DEF
 // Source hash: md5:0d46b5ba4ccdb304fe3a3e6cdf669602
 // Status: exact_native
 Theorem NOT_DEF : forall p:prop, ~ p <-> p -> False.
-Admitted.
+let p.
+apply iffI.
+- assume H2.
+  assume H3.
+  exact (H2 H3).
+- assume H.
+  assume H1.
+  exact (H H1).
+Qed.
 
 // HOL Light: bool.ml:469 / EXISTS_UNIQUE_DEF
 // Source hash: md5:f70acb0782b4d00ef544e0b446ba3d20
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_UNIQUE_DEF : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> (exists x :e A, P x) /\ forall x y :e A, P x /\ P y -> x = y.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H4.
+  apply H4. let x1. assume H5. apply H5. assume Hx1 H6.
+  apply andI.
+  + witness x1.
+    apply andI.
+    * exact Hx1.
+    * exact (andEL (P x1) (forall y :e A, P y -> y = x1) H6).
+  + let x2. assume Hx2.
+    let y1. assume Hy1.
+    assume H7.
+    exact ((((andER (P x1) (forall y :e A, P y -> y = x1) H6) (x2) Hx2 (andEL (P x2) (P y1) H7)) (fun hl__u hl__v => hl__u = (x2)) (fun q H => H)) (fun hl__u hl__v => hl__u = y1) (((andER (P x1) (forall y :e A, P y -> y = x1) H6) (y1) Hy1 (andER (P x2) (P y1) H7)) (fun hl__u hl__v => hl__u = (y1)) (fun q H => H))).
+- assume H.
+  apply (andEL (exists x :e A, P x) (forall x y :e A, P x /\ P y -> x = y) H). let x. assume H1. apply H1. assume Hx H2.
+  witness x.
+  apply andI.
+  + exact Hx.
+  + apply andI.
+    * exact H2.
+    * let y. assume Hy.
+      assume H3.
+      exact ((andER (exists x :e A, P x) (forall x y :e A, P x /\ P y -> x = y) H) (y) Hy (x) Hx (andI (P y) (P x) H3 H2)).
+Qed.
 
