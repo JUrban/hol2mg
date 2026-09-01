@@ -2172,7 +2172,12 @@ the whole REAL_* order/ring block (REAL_ADD/MUL_SYM/ASSOC/LID/RID/LZERO/RZERO,
 REAL_ADD_L/RDISTRIB, REAL_LE/LT/LET/LTE_TRANS, REAL_LTE_TOTAL, REAL_NOT_LT, REAL_LT_LE,
 REAL_POS_LT, REAL_LE_01/LT_01, INT_LE_01/LT_01/LT_IMP_LE, LTE_CASES), the INSERT block
 (INSERT_DEF, INSERT_SUBSET, INSERT_UNION_EQ, FORALL/EXISTS_IN_INSERT,
-FORALL/EXISTS_IN_CLAUSES), BIT0/1_THM, MULT_2, one_DEF.  Builtins SetAdjoinE/I1/I2 +
+FORALL/EXISTS_IN_CLAUSES), BIT0/1_THM, MULT_2, one_DEF.  Propagation: standard
+412 -> 462, multivariate 387 -> 440 (totals 430/462/440 = 1332 native Qed).  One
+repair surfaced by the standard pass: `unfold_def2` unfolded `divides_nat` with
+`mul_SNo`, but God1 defines divides_nat *before* mul_SNo exists — its `*` is
+`mul_nat` (divides_int, defined after, really is mul_SNo); DIVIDES_1's generated
+proof was the only casualty and is Admitted again until a mul_nat bridge lands.  Builtins SetAdjoinE/I1/I2 +
 SingI plus two new `push` derivations (a membership in `SetAdjoin a b` or `ordsucc a`
 contributes its disjunction `z :e a \/ z :e {b}` / `z :e a \/ z = a` as a derived term
 hypothesis, mirroring the binunion pattern) land INSERT, IN_INSERT, COMPONENT,
