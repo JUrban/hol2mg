@@ -357,13 +357,29 @@ Admitted.
 // Source hash: md5:faba27e5932bc554f7f404897a05b278
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
-Admitted.
+apply andI.
+- let m1. assume Hm1.
+  exact (SNoLe_0_iff_omega (m1) Hm1).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (SNoLe_ordsucc_iff_omega (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:277 / LT
 // Source hash: md5:7e2059e249b42a196a46a83ca219490a
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem LT : (forall m :e omega, m < 0 <-> False) /\ forall m n :e omega, m < ordsucc n <-> m = n \/ m < n.
-Admitted.
+apply andI.
+- let m1. assume Hm1.
+  apply iffI.
+  + assume H1.
+    exact ((not_SNoLt_0_omega (m1) Hm1) H1).
+  + assume H.
+    exact (FalseE H (m1 < 0)).
+- let m. assume Hm.
+  let n. assume Hn.
+  exact (SNoLt_ordsucc_iff_omega (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:281 / GE
 // Source hash: md5:eb4cce02a75248e9a4da989b61be86cf
