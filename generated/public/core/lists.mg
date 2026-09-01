@@ -106,7 +106,12 @@ Qed.
 // Source hash: md5:8b0dcace39404907876ae25859ceb0ce
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem EX : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_ex P seq_nil <-> False) /\ (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t).
-Admitted.
+let A.
+let P.
+let h. assume Hh.
+let t. assume Ht.
+exact (andI (seq_ex P seq_nil <-> False) (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t) (seq_ex_nil (P)) (seq_ex_cons (A) (P) (h) Hh (t) Ht)).
+Qed.
 
 // HOL Light: lists.ml:73 / ITLIST
 // Source hash: md5:6a2990196b8ccb95c42ea9572b77c762

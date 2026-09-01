@@ -41,9 +41,15 @@ Qed.
 // HOL Light: int.ml / INT_SGN_0 (leaf-guided)
 Theorem INT_SGN_0 : (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0.
 claim E1 : ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0) <-> ((if 0 < 0 then - 1 else 0) = 0).
-{ exact ((If_i_0 (0 < 0) (1) (if 0 < 0 then - 1 else 0) (fun hl__H8 : 0 < 0 => ((andER (False -> False) (False -> False) (iff_false_intro (False) (fun hl__H9 : False => hl__H9))) ((SNoLt_irref (0)) hl__H8)))) (fun hl__u hl__v => ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0) <-> (hl__u = 0)) (iff_refl ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0))). }
+{ exact ((If_i_0 (0 < 0) (1) (if 0 < 0 then - 1 else 0) (fun hl__H9 : 0 < 0 => ((andER (False -> False) (False -> False) (iff_false_intro (False) (fun hl__H10 : False => hl__H10))) ((SNoLt_irref (0)) hl__H9)))) (fun hl__u hl__v => ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0) <-> (hl__u = 0)) (iff_refl ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0))). }
 claim F0 : (if 0 < 0 then - 1 else 0) = 0.
 { exact (If_i_0 (0 < 0) (- 1) (0) (fun hl__H : 0 < 0 => ((SNoLt_irref (0)) hl__H))). }
 exact (iffER ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0) ((if 0 < 0 then - 1 else 0) = 0) E1 F0).
+Qed.
+
+// HOL Light: int.ml / REAL_ZPOW_0 (leaf-guided)
+Theorem REAL_ZPOW_0 : forall x :e R, (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ (- 0))) = 1.
+let x. assume Hx.
+exact (((REAL_ZPOW_NUM (x) Hx (0) (nat_p_omega (0) nat_0)) (fun hl__u hl__v => hl__u = (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ (- 0)))) (fun q H => H)) (fun hl__u hl__v => hl__u = 1) (andEL (x ^ 0 = 1) (forall n :e omega, x ^ ordsucc n = x * x ^ n) (real_pow (x) Hx))).
 Qed.
 

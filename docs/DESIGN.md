@@ -2187,6 +2187,20 @@ gains `bit0_eq_omega`/`bit1_eq_omega` (2n = n+n via `mul_SNo_SL_omega` at m=1; 2
 ordsucc (n+n) via `add_SNo_1_ordsucc`), landing BIT0 and BIT1.  Still open: BIT0_DEF /
 BIT1_DEF aggregates, ARITH_* bundles, EVEN/ODD (parity induction).
 
+N11 (430 -> 442, zero lost): the minus/exp/pair tier.  The cascade also brings
+REAL_POLY_CLAUSES, REAL_NEG_0/EQ, REAL_SUB_RZERO, REAL_ZPOW_0, INT_NEG_0.  The
+fuel-sensitive LEFT/RIGHT_OR_EXISTS_THM pair regressed once more under the enlarged
+builtin table (each equation-concluding builtin feeds the derived-equations search, so
+fuel per node inflates with the table); rather than raise the budget again, their
+committed generated proofs were transplanted verbatim into logic.mg
+(`left/right_or_exists_thm`) and cited as builtins — fuel-independent from now on.  Builtins minus_SNo_invol,
+add_SNo_minus_SNo_linv, minus_SNo_0, exp_SNo_nat_0/S (lands REAL_NEG_NEG, EXP,
+real_pow); logic.mg gains `seq_ex_nil`/`seq_ex_cons` (mirroring the seq_all pair; lands
+EX) and `pair_eta_setprod` (one-line citation of God1 `tuple_Sigma_eta`; lands PAIR).
+Still open: FORALL_PAIR_THM (Sigma-quantifier bridging), COND_ELIM_THM (equation-
+hypothesis goal transport), EVEN (parity induction), DIVISION/MOD (divmod theory),
+LE_EXISTS (witnessing subtraction).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

@@ -51,6 +51,15 @@ let t. assume Ht.
 exact (andI (seq_all P seq_nil <-> True) (seq_all P (seq_cons h t) <-> P h /\ seq_all P t) (seq_all_nil (P)) (seq_all_cons (A) (P) (h) Hh (t) Ht)).
 Qed.
 
+// HOL Light: lists.ml / EX
+Theorem EX : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_ex P seq_nil <-> False) /\ (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t).
+let A.
+let P.
+let h. assume Hh.
+let t. assume Ht.
+exact (andI (seq_ex P seq_nil <-> False) (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t) (seq_ex_nil (P)) (seq_ex_cons (A) (P) (h) Hh (t) Ht)).
+Qed.
+
 // HOL Light: lists.ml / ALLPAIRS_SYM
 Theorem ALLPAIRS_SYM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i).
 let A.

@@ -48,7 +48,9 @@ Qed.
 // Source hash: md5:cb8faab7f2739dfbcdbfbe9981364aaa
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_NEG_NEG : forall x :e R, - - x = x.
-Admitted.
+let x. assume Hx.
+exact (minus_SNo_invol (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light: calc_int.ml:99 / REAL_MUL_RNEG
 // Source hash: md5:cf4d4c0c36409257ee0e252ecfc87058
@@ -80,8 +82,10 @@ Qed.
 // HOL Light: calc_int.ml:120 / REAL_NEG_0
 // Source hash: md5:09b549c26384798305571589b87f85bb
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_NEG_0 : - 0 = 0.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_NEG_0 : - 0 = 0.
+exact minus_SNo_0.
+Qed.
 
 // HOL Light: calc_int.ml:124 / REAL_LE_LNEG
 // Source hash: md5:7c5e5b4ed605155dae012148a5a99030

@@ -913,21 +913,7 @@ let A.
 assume H.
 let P.
 let Q.
-apply iffI.
-- assume H30.
-  apply H30.
-  + assume H55.
-    apply H55. let x3. assume H57. apply H57. assume Hx3 H58.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (x3) (andI (x3 :e A) (P x3 \/ Q) Hx3 (orIL (P x3) (Q) H58))).
-  + assume H56.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P (choose_in A (fun hl__w:set => True)) \/ Q) (choose_in_in (A) H (fun hl__w:set => True)) (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H56))).
-- assume H1.
-  apply H1. let x. assume H2. apply H2. assume Hx H3.
-  apply H3.
-  + assume H28.
-    exact (orIL (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H28))).
-  + assume H29.
-    exact (orIR (exists x :e A, P x) (Q) H29).
+exact (left_or_exists_thm (A) H (P) (Q)).
 Qed.
 
 // HOL Light: theorems.ml:277 / RIGHT_OR_EXISTS_THM
@@ -938,21 +924,7 @@ let A.
 assume H.
 let P.
 let Q.
-apply iffI.
-- assume H30.
-  apply H30.
-  + assume H57.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P \/ Q (choose_in A (fun hl__w:set => True))) (choose_in_in (A) H (fun hl__w:set => True)) (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H57))).
-  + assume H58.
-    apply H58. let x4. assume H59. apply H59. assume Hx4 H60.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (x4) (andI (x4 :e A) (P \/ Q x4) Hx4 (orIR (P) (Q x4) H60))).
-- assume H1.
-  apply H1. let x. assume H2. apply H2. assume Hx H3.
-  apply H3.
-  + assume H28.
-    exact (orIL (P) (exists x :e A, Q x) H28).
-  + assume H29.
-    exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H29))).
+exact (right_or_exists_thm (A) H (P) (Q)).
 Qed.
 
 // HOL Light: theorems.ml:285 / LEFT_EXISTS_AND_THM

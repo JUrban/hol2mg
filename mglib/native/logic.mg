@@ -422,3 +422,116 @@ claim E2: (n + n) + 1 = ordsucc (n + n).
 { exact (add_SNo_1_ordsucc (n + n) Hnn). }
 exact (eq_trans_i (2 * n + 1) ((n + n) + 1) (ordsucc (n + n)) E1 E2).
 Qed.
+
+Theorem seq_ex_nil : forall P:set -> prop, seq_ex P seq_nil <-> False.
+let P.
+claim L: ~ seq_ex P seq_nil.
+{ assume H.
+  apply H. let i. assume Hi0. apply Hi0. assume Hi HP.
+  claim Hi00: i :e 0. { exact (seq_len_nil (fun hl__u hl__v => i :e hl__u) Hi). }
+  exact (EmptyE i Hi00). }
+exact (iff_false_intro (seq_ex P seq_nil) L).
+Qed.
+
+Theorem seq_ex_cons : forall A:set, forall P:set -> prop, forall a :e A, forall l :e finseq A, seq_ex P (seq_cons a l) <-> P a \/ seq_ex P l.
+let A. let P. let a. assume Ha. let l. assume Hl.
+claim Hlen: seq_len (seq_cons a l) = ordsucc (seq_len l). { exact (seq_len_cons A a Ha l Hl). }
+claim Hlom: seq_len l :e omega. { exact (seq_len_omega A l Hl). }
+claim Hlnat: nat_p (seq_len l). { exact (omega_nat_p (seq_len l) Hlom). }
+apply iffI.
+- assume H.
+  apply H. let i. assume Hi0. apply Hi0. assume Hi HP.
+  claim Hio: i :e ordsucc (seq_len l).
+  { exact (Hlen (fun hl__u hl__v => i :e hl__u) Hi). }
+  claim Hinat: nat_p i.
+  { exact (nat_p_trans (ordsucc (seq_len l)) (nat_ordsucc (seq_len l) Hlnat) i Hio). }
+  apply (nat_inv i Hinat).
+  + assume Hi00.
+    apply orIL.
+    claim HP0: P (seq_nth (seq_cons a l) 0).
+    { exact ((Hi00 (fun hl__u hl__v => P (seq_nth (seq_cons a l) hl__u))) HP). }
+    exact ((seq_nth_cons_0 A a Ha l Hl) (fun hl__u hl__v => P hl__u) HP0).
+  + assume Hex. apply Hex. let j. assume Hj0. apply Hj0. assume Hjn Hij.
+    claim Hji: ordsucc j :e ordsucc (seq_len l).
+    { exact (Hij (fun hl__u hl__v => hl__u :e ordsucc (seq_len l)) Hio). }
+    claim Hjl: j :e seq_len l.
+    { apply (ordsuccE (seq_len l) (ordsucc j) Hji).
+      assume H1.
+      exact (nat_trans (seq_len l) Hlnat (ordsucc j) H1 j (ordsuccI2 j)).
+      assume H1.
+      exact (H1 (fun hl__u hl__v => j :e hl__u) (ordsuccI2 j)). }
+    claim HPs: P (seq_nth (seq_cons a l) (ordsucc j)).
+    { exact ((Hij (fun hl__u hl__v => P (seq_nth (seq_cons a l) hl__u))) HP). }
+    claim HPj: P (seq_nth l j).
+    { exact ((seq_nth_cons_S A a Ha l Hl j Hjl) (fun hl__u hl__v => P hl__u) HPs). }
+    apply orIR.
+    prove exists hl__i :e seq_len l, P (seq_nth l hl__i).
+    witness j.
+    apply andI.
+    * exact Hjl.
+    * exact HPj.
+- assume H.
+  apply H.
+  + assume HPa.
+    prove exists hl__i :e seq_len (seq_cons a l), P (seq_nth (seq_cons a l) hl__i).
+    witness 0.
+    apply andI.
+    * exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => 0 :e hl__u) (nat_0_in_ordsucc (seq_len l) Hlnat)).
+    * exact ((eq_sym_i (seq_nth (seq_cons a l) 0) a (seq_nth_cons_0 A a Ha l Hl)) (fun hl__u hl__v => P hl__u) HPa).
+  + assume Hex.
+    apply Hex. let j. assume Hj0. apply Hj0. assume Hjl HPj.
+    prove exists hl__i :e seq_len (seq_cons a l), P (seq_nth (seq_cons a l) hl__i).
+    witness (ordsucc j).
+    apply andI.
+    * exact ((eq_sym_i (seq_len (seq_cons a l)) (ordsucc (seq_len l)) Hlen) (fun hl__u hl__v => ordsucc j :e hl__u) (ordinal_ordsucc_In (seq_len l) (nat_p_ordinal (seq_len l) Hlnat) j Hjl)).
+    * exact ((eq_sym_i (seq_nth (seq_cons a l) (ordsucc j)) (seq_nth l j) (seq_nth_cons_S A a Ha l Hl j Hjl)) (fun hl__u hl__v => P hl__u) HPj).
+Qed.
+
+Theorem pair_eta_setprod : forall A B:set, forall x :e A :*: B, (x 0,x 1) = x.
+let A. let B. let x. assume Hx.
+exact (tuple_Sigma_eta A (fun hl__w:set => B) x Hx).
+Qed.
+
+Theorem left_or_exists_thm : forall A:set, A <> Empty -> forall P:set -> prop, forall Q:prop, (exists x :e A, P x) \/ Q <-> exists x :e A, P x \/ Q.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H30.
+  apply H30.
+  + assume H55.
+    apply H55. let x3. assume H57. apply H57. assume Hx3 H58.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (x3) (andI (x3 :e A) (P x3 \/ Q) Hx3 (orIL (P x3) (Q) H58))).
+  + assume H56.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P (choose_in A (fun hl__w:set => True)) \/ Q) (choose_in_in (A) H (fun hl__w:set => True)) (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H56))).
+- assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  apply H3.
+  + assume H28.
+    exact (orIL (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H28))).
+  + assume H29.
+    exact (orIR (exists x :e A, P x) (Q) H29).
+Qed.
+
+Theorem right_or_exists_thm : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P \/ (exists x :e A, Q x) <-> exists x :e A, P \/ Q x.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H30.
+  apply H30.
+  + assume H57.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P \/ Q (choose_in A (fun hl__w:set => True))) (choose_in_in (A) H (fun hl__w:set => True)) (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H57))).
+  + assume H58.
+    apply H58. let x4. assume H59. apply H59. assume Hx4 H60.
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (x4) (andI (x4 :e A) (P \/ Q x4) Hx4 (orIR (P) (Q x4) H60))).
+- assume H1.
+  apply H1. let x. assume H2. apply H2. assume Hx H3.
+  apply H3.
+  + assume H28.
+    exact (orIL (P) (exists x :e A, Q x) H28).
+  + assume H29.
+    exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H29))).
+Qed.
