@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **343 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **346 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (343 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (346 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -2078,6 +2078,12 @@ agreement bridges and closure, SNo units and distributivity — lands MULT_0 and
 ADD_DISTRIBs; MULT_CLAUSES' successor equations still need the full nat/SNo chain strung
 together (next batch's target, with the synthesis phase now ~7 min a further reason to
 move to memoization).
+
+N5h/i (343 -> 346, phase 7m -> ~3m45): failed-subgoal *memoization* in `close_term`
+(context-keyed, adepth-aware; identical outputs, half the time — and the Multivariate
+pass fits its window again), plus two hand-bridged lemmas in `mglib/native/logic.mg` —
+`mul_SNo_SR_omega`/`mul_SNo_SL_omega` (the nat/SNo recursion chain composed once, then
+cited as builtins) — landing MULT_CLAUSES, MULT and MULT_SUC.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

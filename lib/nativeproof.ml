@@ -1183,6 +1183,18 @@ let builtin_premises : (string * Mg.tm) list =
                Mg.App (Mg.App (Mg.Cst "add_SNo",
                  Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__z")),
                  Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__y"), Mg.Var "hl__z"))))))))));
+    ("mul_SNo_SR_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__m"), Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+         Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__m"),
+           Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__m"), Mg.Var "hl__n"))))));
+    ("mul_SNo_SL_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__m")), Mg.Var "hl__n")),
+         Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__n"),
+           Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__m"), Mg.Var "hl__n"))))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

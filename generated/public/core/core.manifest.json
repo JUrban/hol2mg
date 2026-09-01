@@ -61467,7 +61467,7 @@
     "num_RECURSION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -61696,7 +61696,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -61955,7 +61955,7 @@
     "num_INDUCTION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true

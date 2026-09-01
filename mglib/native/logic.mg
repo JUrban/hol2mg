@@ -133,3 +133,26 @@ apply iffI.
   + exact Hs.
   + exact (iffER (P s) (Q s) (H s Hs) HQ).
 Qed.
+
+Theorem mul_SNo_SR_omega : forall m n :e omega, m * ordsucc n = m + m * n.
+let m. assume Hm. let n. assume Hn.
+claim Hmn: mul_nat m n :e omega. { exact (nat_p_omega (mul_nat m n) (mul_nat_p m (omega_nat_p m Hm) n (omega_nat_p n Hn))). }
+claim H1: m * ordsucc n = mul_nat m (ordsucc n). { exact (eq_sym_i (mul_nat m (ordsucc n)) (m * ordsucc n) (mul_nat_mul_SNo m Hm (ordsucc n) (omega_ordsucc n Hn))). }
+claim H2: mul_nat m (ordsucc n) = add_nat m (mul_nat m n). { exact (mul_nat_SR m n (omega_nat_p n Hn)). }
+claim H3: add_nat m (mul_nat m n) = m + mul_nat m n. { exact (add_nat_add_SNo m Hm (mul_nat m n) Hmn). }
+claim H4: mul_nat m n = m * n. { exact (mul_nat_mul_SNo m Hm n Hn). }
+claim H5: m + mul_nat m n = m + m * n. { exact (H4 (fun hl__u hl__v => m + mul_nat m n = m + hl__u) (fun q H => H)). }
+exact (eq_trans_i (m * ordsucc n) (mul_nat m (ordsucc n)) (m + m * n) H1 (eq_trans_i (mul_nat m (ordsucc n)) (add_nat m (mul_nat m n)) (m + m * n) H2 (eq_trans_i (add_nat m (mul_nat m n)) (m + mul_nat m n) (m + m * n) H3 H5))).
+Qed.
+
+Theorem mul_SNo_SL_omega : forall m n :e omega, ordsucc m * n = n + m * n.
+let m. assume Hm. let n. assume Hn.
+claim Hsm: SNo (ordsucc m). { exact (omega_SNo (ordsucc m) (omega_ordsucc m Hm)). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsm0: SNo m. { exact (omega_SNo m Hm). }
+claim H1: ordsucc m * n = n * ordsucc m. { exact (mul_SNo_com (ordsucc m) n Hsm Hsn). }
+claim H2: n * ordsucc m = n + n * m. { exact (mul_SNo_SR_omega n Hn m Hm). }
+claim H3: n * m = m * n. { exact (mul_SNo_com n m Hsn Hsm0). }
+claim H4: n + n * m = n + m * n. { exact (H3 (fun hl__u hl__v => n + n * m = n + hl__u) (fun q H => H)). }
+exact (eq_trans_i (ordsucc m * n) (n * ordsucc m) (n + m * n) H1 (eq_trans_i (n * ordsucc m) (n + n * m) (n + m * n) H2 H4)).
+Qed.
