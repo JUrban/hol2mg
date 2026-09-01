@@ -10,9 +10,9 @@ let m. assume Hm.
 let n. assume Hn.
 apply (set_ext ({i :e omega | m <= i /\ i <= n}) ({x :e omega | m <= x /\ x <= n})).
 - let x1. assume Hx1.
-  exact (SepI (omega) (fun x:set => m <= x /\ x <= n) (x1) (SepE1 (omega) (fun i:set => m <= i /\ i <= n) (x1) Hx1) (SepE2 (omega) (fun i:set => m <= i /\ i <= n) (x1) Hx1)).
+  exact Hx1.
 - let x. assume Hx.
-  exact (SepI (omega) (fun i:set => m <= i /\ i <= n) (x) (SepE1 (omega) (fun x:set => m <= x /\ x <= n) (x) Hx) (SepE2 (omega) (fun x:set => m <= x /\ x <= n) (x) Hx)).
+  exact Hx.
 Qed.
 
 // HOL Light: iterate.ml:21 / FINITE_NUMSEG

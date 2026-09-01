@@ -53,3 +53,12 @@ let n. assume Hn.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: nums.ml / num_RECURSION
+Theorem num_RECURSION : forall A:set, forall e0 :e A, forall f:set -> set -> set, (forall x :e A, forall y :e omega, f x y :e A) -> exists fn:set -> set, (forall x :e omega, fn x :e A) /\ (fn 0 = e0 /\ forall n :e omega, fn (ordsucc n) = f (fn n) n).
+let A.
+let e0. assume He0.
+let f.
+assume H.
+exact (num_recursion (A) (e0) He0 (f) H).
+Qed.
+

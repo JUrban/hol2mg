@@ -203,7 +203,14 @@ Qed.
 // Source hash: md5:01a566d782ab2c62a0090eeb3600d3f4
 // Status: generalization_required (bridges: empty_case:A)
 Theorem SING : forall A:set, forall s c= A, (exists x :e A, s = {x}) <-> exists x :e A, s = {x}.
-Admitted.
+let A.
+let s. assume Hs.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 
 // HOL Light: sets.ml:132 / FINITE_CASES
 // Source hash: md5:0fbfbcb380f92d787b57d378756085a4
@@ -472,16 +479,10 @@ apply iffI.
   apply H.
   + assume H1.
     apply H1. let x1. assume H5. apply H5. assume Hx1 H6.
-    witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact (andI (x1 :e s :\/: t) (P x1) (binunionI1 (s) (t) (x1) (andEL (x1 :e s) (P x1) H6)) (andER (x1 :e s) (P x1) H6)).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s :\/: t /\ P hl__w)) (x1) (andI (x1 :e A) (x1 :e s :\/: t /\ P x1) Hx1 (andI (x1 :e s :\/: t) (P x1) (binunionI1 (s) (t) (x1) (andEL (x1 :e s) (P x1) H6)) (andER (x1 :e s) (P x1) H6)))).
   + assume H2.
     apply H2. let x. assume H3. apply H3. assume Hx H4.
-    witness x.
-    apply andI.
-    * exact Hx.
-    * exact (andI (x :e s :\/: t) (P x) (binunionI2 (s) (t) (x) (andEL (x :e t) (P x) H4)) (andER (x :e t) (P x) H4)).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w :e s :\/: t /\ P hl__w)) (x) (andI (x :e A) (x :e s :\/: t /\ P x) Hx (andI (x :e s :\/: t) (P x) (binunionI2 (s) (t) (x) (andEL (x :e t) (P x) H4)) (andER (x :e t) (P x) H4)))).
 Qed.
 
 // HOL Light: sets.ml:242 / FORALL_IN_IMAGE
@@ -3351,19 +3352,53 @@ Qed.
 // Source hash: md5:808c8312c2dcfe2200f0e3a3f1f627e0
 // Status: exact_native (bridges: choose_in_spec)
 Theorem EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall x :e B :^: A, (forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)) <-> x :e {f :e B :^: A | forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => False)}.
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let s. assume Hs.
+let x. assume Hx.
+apply iffI.
+- assume H4.
+  exact (SepI (B :^: A) (fun f:set => forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => False)) (x) Hx H4).
+- assume H2.
+  let x0. assume Hx0.
+  assume H3.
+  exact ((SepE2 (B :^: A) (fun f:set => forall x0 :e A, ~ x0 :e s -> f x0 = choose_in B (fun x:set => False)) (x) H2) (x0) Hx0 H3).
+Qed.
 
 // HOL Light: sets.ml:2936 / IN_EXTENSIONAL
 // Source hash: md5:1281e60a81a928da3c2aa7f8780a8486
 // Status: exact_native (bridges: choose_in_spec)
 Theorem IN_EXTENSIONAL : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall f :e B :^: A, f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)} <-> forall x :e A, ~ x :e s -> f x = choose_in B (fun x:set => False).
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let s. assume Hs.
+let f. assume Hf.
+apply iffI.
+- assume H3.
+  let x. assume Hx.
+  assume H4.
+  exact ((SepE2 (B :^: A) (fun x:set => forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)) (f) H3) (x) Hx H4).
+- assume H2.
+  exact (SepI (B :^: A) (fun x:set => forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)) (f) Hf H2).
+Qed.
 
 // HOL Light: sets.ml:2940 / IN_EXTENSIONAL_UNDEFINED
 // Source hash: md5:472505a56a2a4b7d06a83bb229c409b0
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem IN_EXTENSIONAL_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f :e B :^: A, forall x :e A, f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)} /\ ~ x :e s -> f x = choose_in B (fun x:set => False).
-Admitted.
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f. assume Hf.
+let x. assume Hx.
+assume H1.
+exact ((SepE2 (B :^: A) (fun x0:set => forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)) (f) (andEL (f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)}) (~ x :e s) H1)) (x) Hx (andER (f :e {x0 :e B :^: A | forall x :e A, ~ x :e s -> x0 x = choose_in B (fun y:set => False)}) (~ x :e s) H1)).
+Qed.
 
 // HOL Light: sets.ml:2944 / EXTENSIONAL_EMPTY
 // Source hash: md5:a0a42c58948cc1b730a2b77104679357
@@ -3422,7 +3457,16 @@ Qed.
 // Source hash: md5:90dd98b7049b1877dcc901afa13c4757
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A)
 Theorem RESTRICTION_UNDEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, ~ x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = choose_in B (fun x:set => False).
-Admitted.
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+assume H2.
+exact (If_i_0 (x :e s) (f x) (choose_in B (fun y:set => False)) H2).
+Qed.
 
 // HOL Light: sets.ml:2980 / RESTRICTION_EQ
 // Source hash: md5:b98d44a91318565adc80432231067c3c

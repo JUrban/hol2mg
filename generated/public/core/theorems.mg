@@ -421,10 +421,7 @@ apply iffI.
   apply H2. let x. assume H3. apply H3. assume Hx H4.
   exact H4.
 - assume H1.
-  witness choose_in A (fun hl__w:set => True).
-  apply andI.
-  + exact (choose_in_in (A) H (fun hl__w:set => True)).
-  + exact H1.
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ t) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (t) (choose_in_in (A) H (fun hl__w:set => True)) H1)).
 Qed.
 
 // HOL Light: theorems.ml:129 / EQ_IMP
@@ -642,10 +639,7 @@ apply iffI.
 - assume H4.
   apply H4. let x1. assume H5. apply H5. assume Hx1 H6.
   apply andI.
-  + witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact (andEL (P x1) (forall y :e A, P y -> y = x1) H6).
+  + exact (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x1) (andI (x1 :e A) (P x1) Hx1 (andEL (P x1) (forall y :e A, P y -> y = x1) H6))).
   + let x2. assume Hx2.
     let x'. assume Hx'.
     assume H7.
@@ -668,10 +662,7 @@ Qed.
 Theorem EXISTS_REFL : forall A:set, forall a :e A, exists x :e A, x = a.
 let A.
 let a. assume Ha.
-witness a.
-apply andI.
-- exact Ha.
-- exact (fun q H => H).
+exact (ex_intro (fun hl__w:set => hl__w :e A /\ hl__w = a) (a) (andI (a :e A) (a = a) Ha (fun q H => H))).
 Qed.
 
 // HOL Light: theorems.ml:193 / EXISTS_UNIQUE_REFL
@@ -702,10 +693,7 @@ apply iffI.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   exact (((andEL (a = x) (P x) H3) (fun hl__u hl__v => hl__u = (a)) (fun q H => H)) (fun hl__u hl__v => P hl__u) (andER (a = x) (P x) H3)).
 - assume H.
-  witness a.
-  apply andI.
-  + exact Ha.
-  + exact (andI (a = a) (P a) (fun q H => H) H).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (a = hl__w /\ P hl__w)) (a) (andI (a :e A) (a = a /\ P a) Ha (andI (a = a) (P a) (fun q H => H) H))).
 Qed.
 
 // HOL Light: theorems.ml:212 / UNWIND_THM2
@@ -720,10 +708,7 @@ apply iffI.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   exact ((andEL (x = a) (P x) H3) (fun hl__u hl__v => P hl__u) (andER (x = a) (P x) H3)).
 - assume H.
-  witness a.
-  apply andI.
-  + exact Ha.
-  + exact (andI (a = a) (P a) (fun q H => H) H).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (hl__w = a /\ P hl__w)) (a) (andI (a :e A) (a = a /\ P a) Ha (andI (a = a) (P a) (fun q H => H) H))).
 Qed.
 
 // HOL Light: theorems.ml:217 / FORALL_UNWIND_THM2
@@ -787,23 +772,11 @@ apply iffI.
 - assume H5.
   apply H5. let x1. assume H6. apply H6. assume Hx1 H7.
   apply H7. let y1. assume H8. apply H8. assume Hy1 H9.
-  witness y1.
-  apply andI.
-  + exact Hy1.
-  + witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact H9.
+  exact (ex_intro (fun hl__w:set => hl__w :e B /\ exists x :e A, P x hl__w) (y1) (andI (y1 :e B) (exists x :e A, P x y1) Hy1 (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w y1) (x1) (andI (x1 :e A) (P x1 y1) Hx1 H9)))).
 - assume H.
   apply H. let y. assume H1. apply H1. assume Hy H2.
   apply H2. let x. assume H3. apply H3. assume Hx H4.
-  witness x.
-  apply andI.
-  + exact Hx.
-  + witness y.
-    apply andI.
-    * exact Hy.
-    * exact H4.
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ exists y :e B, P hl__w y) (x) (andI (x :e A) (exists y :e B, P x y) Hx (ex_intro (fun hl__w:set => hl__w :e B /\ P x hl__w) (y) (andI (y :e B) (P x y) Hy H4)))).
 Qed.
 
 // HOL Light: theorems.ml:245 / FORALL_AND_THM
@@ -901,16 +874,10 @@ apply iffI.
   apply H.
   + assume H1.
     apply H1. let x1. assume H5. apply H5. assume Hx1 H6.
-    witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact (orIL (P x1) (Q x1) H6).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q hl__w)) (x1) (andI (x1 :e A) (P x1 \/ Q x1) Hx1 (orIL (P x1) (Q x1) H6))).
   + assume H2.
     apply H2. let x. assume H3. apply H3. assume Hx H4.
-    witness x.
-    apply andI.
-    * exact Hx.
-    * exact (orIR (P x) (Q x) H4).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q hl__w)) (x) (andI (x :e A) (P x \/ Q x) Hx (orIR (P x) (Q x) H4))).
 Qed.
 
 // HOL Light: theorems.ml:269 / OR_EXISTS_THM
@@ -925,16 +892,10 @@ apply iffI.
   apply H13.
   + assume H14.
     apply H14. let x2. assume H18. apply H18. assume Hx2 H19.
-    witness x2.
-    apply andI.
-    * exact Hx2.
-    * exact (orIL (P x2) (Q x2) H19).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q hl__w)) (x2) (andI (x2 :e A) (P x2 \/ Q x2) Hx2 (orIL (P x2) (Q x2) H19))).
   + assume H15.
     apply H15. let x1. assume H16. apply H16. assume Hx1 H17.
-    witness x1.
-    apply andI.
-    * exact Hx1.
-    * exact (orIR (P x1) (Q x1) H17).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q hl__w)) (x1) (andI (x1 :e A) (P x1 \/ Q x1) Hx1 (orIR (P x1) (Q x1) H17))).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   apply H2.
@@ -957,15 +918,9 @@ apply iffI.
   apply H30.
   + assume H55.
     apply H55. let x3. assume H57. apply H57. assume Hx3 H58.
-    witness x3.
-    apply andI.
-    * exact Hx3.
-    * exact (orIL (P x3) (Q) H58).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (x3) (andI (x3 :e A) (P x3 \/ Q) Hx3 (orIL (P x3) (Q) H58))).
   + assume H56.
-    witness choose_in A (fun hl__w:set => True).
-    apply andI.
-    * exact (choose_in_in (A) H (fun hl__w:set => True)).
-    * exact (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H56).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P (choose_in A (fun hl__w:set => True)) \/ Q) (choose_in_in (A) H (fun hl__w:set => True)) (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H56))).
 - assume H1.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   apply H3.
@@ -987,16 +942,10 @@ apply iffI.
 - assume H30.
   apply H30.
   + assume H57.
-    witness choose_in A (fun hl__w:set => True).
-    apply andI.
-    * exact (choose_in_in (A) H (fun hl__w:set => True)).
-    * exact (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H57).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P \/ Q (choose_in A (fun hl__w:set => True))) (choose_in_in (A) H (fun hl__w:set => True)) (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H57))).
   + assume H58.
     apply H58. let x4. assume H59. apply H59. assume Hx4 H60.
-    witness x4.
-    apply andI.
-    * exact Hx4.
-    * exact (orIR (P) (Q x4) H60).
+    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (x4) (andI (x4 :e A) (P \/ Q x4) Hx4 (orIR (P) (Q x4) H60))).
 - assume H1.
   apply H1. let x. assume H2. apply H2. assume Hx H3.
   apply H3.
@@ -1019,10 +968,7 @@ apply iffI.
   exact (andI (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x1) (andI (x1 :e A) (P x1) Hx1 (andEL (P x1) (Q) H5))) (andER (P x1) (Q) H5)).
 - assume H.
   apply (andEL (exists x :e A, P x) (Q) H). let x. assume H1. apply H1. assume Hx H2.
-  witness x.
-  apply andI.
-  + exact Hx.
-  + exact (andI (P x) (Q) H2 (andER (exists x :e A, P x) (Q) H)).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w /\ Q)) (x) (andI (x :e A) (P x /\ Q) Hx (andI (P x) (Q) H2 (andER (exists x :e A, P x) (Q) H)))).
 Qed.
 
 // HOL Light: theorems.ml:289 / RIGHT_EXISTS_AND_THM
@@ -1038,10 +984,7 @@ apply iffI.
   exact (andI (P) (exists x :e A, Q x) (andEL (P) (Q x1) H5) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x1) (andI (x1 :e A) (Q x1) Hx1 (andER (P) (Q x1) H5)))).
 - assume H.
   apply (andER (P) (exists x :e A, Q x) H). let x. assume H1. apply H1. assume Hx H2.
-  witness x.
-  apply andI.
-  + exact Hx.
-  + exact (andI (P) (Q x) (andEL (P) (exists x :e A, Q x) H) H2).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P /\ Q hl__w)) (x) (andI (x :e A) (P /\ Q x) Hx (andI (P) (Q x) (andEL (P) (exists x :e A, Q x) H) H2))).
 Qed.
 
 // HOL Light: theorems.ml:293 / TRIV_EXISTS_AND_THM
@@ -1058,10 +1001,7 @@ apply iffI.
 - assume H.
   apply (andEL (exists x :e A, P) (exists x :e A, Q) H). let x. assume H1. apply H1. assume Hx H2.
   apply (andER (exists x :e A, P) (exists x :e A, Q) H). let x1. assume H3. apply H3. assume Hx1 H4.
-  witness x1.
-  apply andI.
-  + exact Hx1.
-  + exact (andI (P) (Q) H2 H4).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P /\ Q)) (x1) (andI (x1 :e A) (P /\ Q) Hx1 (andI (P) (Q) H2 H4))).
 Qed.
 
 // HOL Light: theorems.ml:297 / LEFT_AND_EXISTS_THM
@@ -1074,10 +1014,7 @@ let Q.
 apply iffI.
 - assume H3.
   apply (andEL (exists x :e A, P x) (Q) H3). let x1. assume H4. apply H4. assume Hx1 H5.
-  witness x1.
-  apply andI.
-  + exact Hx1.
-  + exact (andI (P x1) (Q) H5 (andER (exists x :e A, P x) (Q) H3)).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w /\ Q)) (x1) (andI (x1 :e A) (P x1 /\ Q) Hx1 (andI (P x1) (Q) H5 (andER (exists x :e A, P x) (Q) H3)))).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   exact (andI (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx (andEL (P x) (Q) H2))) (andER (P x) (Q) H2)).
@@ -1093,10 +1030,7 @@ let Q.
 apply iffI.
 - assume H3.
   apply (andER (P) (exists x :e A, Q x) H3). let x1. assume H4. apply H4. assume Hx1 H5.
-  witness x1.
-  apply andI.
-  + exact Hx1.
-  + exact (andI (P) (Q x1) (andEL (P) (exists x :e A, Q x) H3) H5).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P /\ Q hl__w)) (x1) (andI (x1 :e A) (P /\ Q x1) Hx1 (andI (P) (Q x1) (andEL (P) (exists x :e A, Q x) H3) H5))).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   exact (andI (P) (exists x :e A, Q x) (andEL (P) (Q x) H2) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx (andER (P) (Q x) H2)))).
@@ -1113,10 +1047,7 @@ apply iffI.
 - assume H3.
   apply (andEL (exists x :e A, P) (exists x :e A, Q) H3). let x1. assume H4. apply H4. assume Hx1 H5.
   apply (andER (exists x :e A, P) (exists x :e A, Q) H3). let x2. assume H6. apply H6. assume Hx2 H7.
-  witness x2.
-  apply andI.
-  + exact Hx2.
-  + exact (andI (P) (Q) H5 H7).
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P /\ Q)) (x2) (andI (x2 :e A) (P /\ Q) Hx2 (andI (P) (Q) H5 H7))).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   exact (andI (exists x :e A, P) (exists x :e A, Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P) (x) (andI (x :e A) (P) Hx (andEL (P) (Q) H2))) (ex_intro (fun hl__w:set => hl__w :e A /\ Q) (x) (andI (x :e A) (Q) Hx (andER (P) (Q) H2)))).
@@ -1310,10 +1241,7 @@ let Q.
 assume H.
 assume H1.
 apply H1. let x. assume H2. apply H2. assume Hx H3.
-witness x.
-apply andI.
-- exact Hx.
-- exact (H (x) Hx H3).
+exact (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx (H (x) Hx H3))).
 Qed.
 
 // HOL Light: theorems.ml:376 / WLOG_RELATION
@@ -1332,5 +1260,12 @@ Admitted.
 // Source hash: md5:ad104165c45f1735d28d0c6950611def
 // Status: generalization_required (bridges: empty_case:A)
 Theorem EXISTS_UNIQUE : forall A:set, forall P:set -> prop, (exists x :e A, P x /\ forall y :e A, P y -> y = x) <-> exists x :e A, P x /\ forall y :e A, P y -> y = x.
-Admitted.
+let A.
+let P.
+apply iffI.
+- assume H1.
+  exact H1.
+- assume H.
+  exact H.
+Qed.
 

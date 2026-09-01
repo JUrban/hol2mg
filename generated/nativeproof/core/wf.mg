@@ -21,11 +21,6 @@ let A.
 assume H.
 let P. assume HP.
 assume H1.
-witness choose_in P (fun hl__w:set => True).
-apply andI.
-- exact (choose_in_in (P) H1 (fun hl__w:set => True)).
-- let y. assume Hy.
-  assume H2.
-  exact H2.
+exact (ex_intro (fun hl__w:set => hl__w :e P /\ forall y :e P, ~ False) (choose_in P (fun hl__w:set => True)) (andI (choose_in P (fun hl__w:set => True) :e P) (forall y :e P, ~ False) (choose_in_in (P) H1 (fun hl__w:set => True)) ((andER ((forall x :e P, ~ False) -> ~ False) (~ False -> forall x :e P, ~ False) (FORALL_SIMP (P) H1 (~ False))) (fun hl__H : False => hl__H)))).
 Qed.
 

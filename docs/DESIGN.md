@@ -2118,6 +2118,24 @@ boolean skeleton (depth <= 2, both branches re-prove the goal, `NPCLASSICAL`-gat
 BOOL_CASES_AX — the top blocker with 65 dependents — becomes a self-contained public Qed
 (previously only leaf-guided), plus COND_EXPAND, CONTRAPOS_THM, OR_DEF; zero lost.
 
+N7 (364 -> 377): choice and recursion by hand-bridged lemmas plus a matcher upgrade.
+`mglib/native/logic.mg` gains four lemmas (all Megalodon-checked on first composition):
+`SNoLt_ordsucc_SNoLe_omega` / `SNoLe_ordsucc_SNoLt_omega` (the `<=`-forms the LT_SUC_LE
+family needs), `skolem_thm` (the bounded HO choice principle — witness
+`fun x => choose_in {y :e B | P x y} (fun _ => True)`) and `num_recursion` (witness
+`nat_primrec e0 (fun k r => f r k)`, membership by `nat_ind`, equations by
+`nat_primrec_0/S` up to beta).  All four are builtin premises.  Firing them required
+three prover fixes: `match_tm` is now alpha-aware (binder correspondence environment
+instead of literal binder-name equality — the old matcher could never instantiate a
+builtin whose conclusion contains binders); `close_term` falls back to an alpha-equal
+hypothesis lookup (gated on `has_binders`) so quantified premises discharge across
+binder-name differences; and `prove_goal`'s `Ex`/`ExIn` cases consult `close_term`
+before the witness search (a bare existential goal never reached hypothesis application
+before).  Lands SKOLEM_THM (33 blockers), num_RECURSION (10), LT_SUC_LE, LE_SUC_LT,
+LT_SUC, LE_SUC, LT_IMP_LE, EXISTS_UNIQUE, EXTENSIONAL, IN_EXTENSIONAL(_UNDEFINED),
+RESTRICTION_UNDEFINED, SING; zero lost.  Remaining machinery blocker of this class:
+list_RECURSION (needs a finseq recursor in `finseq.mg`).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

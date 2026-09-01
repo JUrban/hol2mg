@@ -151,12 +151,7 @@ Qed.
 
 // HOL Light: arith.ml / LE
 Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
-apply andI.
-- let m1. assume Hm1.
-  exact (SNoLe_0_iff_omega (m1) Hm1).
-- let m. assume Hm.
-  let n. assume Hn.
-  exact (SNoLe_ordsucc_iff_omega (m) Hm (n) Hn).
+exact (andI (forall m :e omega, m <= 0 <-> m = 0) (forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n) SNoLe_0_iff_omega SNoLe_ordsucc_iff_omega).
 Qed.
 
 // HOL Light: arith.ml / LT
@@ -207,6 +202,42 @@ Theorem MIN : forall m n :e omega, (if m <= n then m else n) = if m <= n then m 
 let m. assume Hm.
 let n. assume Hn.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: arith.ml / LE_SUC_LT
+Theorem LE_SUC_LT : forall m n :e omega, ordsucc m <= n <-> m < n.
+let m. assume Hm.
+let n. assume Hn.
+exact (SNoLe_ordsucc_SNoLt_omega (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / LT_SUC_LE
+Theorem LT_SUC_LE : forall m n :e omega, m < ordsucc n <-> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+exact (SNoLt_ordsucc_SNoLe_omega (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / LE_SUC
+Theorem LE_SUC : forall m n :e omega, ordsucc m <= ordsucc n <-> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact ((andEL (m < ordsucc n -> m <= n) (m <= n -> m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (m) Hm (n) Hn)) ((andEL (ordsucc m <= ordsucc n -> m < ordsucc n) (m < ordsucc n -> ordsucc m <= ordsucc n) (SNoLe_ordsucc_SNoLt_omega (m) Hm (ordsucc n) (omega_ordsucc (n) Hn))) H1)).
+- assume H.
+  exact ((andER (ordsucc m <= ordsucc n -> m < ordsucc n) (m < ordsucc n -> ordsucc m <= ordsucc n) (SNoLe_ordsucc_SNoLt_omega (m) Hm (ordsucc n) (omega_ordsucc (n) Hn))) ((andER (m < ordsucc n -> m <= n) (m <= n -> m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (m) Hm (n) Hn)) H)).
+Qed.
+
+// HOL Light: arith.ml / LT_SUC
+Theorem LT_SUC : forall m n :e omega, ordsucc m < ordsucc n <-> m < n.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact ((andEL (ordsucc m <= n -> m < n) (m < n -> ordsucc m <= n) (LE_SUC_LT (m) Hm (n) Hn)) ((andEL (ordsucc m < ordsucc n -> ordsucc m <= n) (ordsucc m <= n -> ordsucc m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (ordsucc m) (omega_ordsucc (m) Hm) (n) Hn)) H1)).
+- assume H.
+  exact ((andER (ordsucc m < ordsucc n -> ordsucc m <= n) (ordsucc m <= n -> ordsucc m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (ordsucc m) (omega_ordsucc (m) Hm) (n) Hn)) ((andER (ordsucc m <= n -> m < n) (m < n -> ordsucc m <= n) (LE_SUC_LT (m) Hm (n) Hn)) H)).
 Qed.
 
 // HOL Light: arith.ml / LE_0
@@ -273,6 +304,14 @@ let n. assume Hn.
 let p. assume Hp.
 assume H.
 exact (SNoLtLe_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m < n) (n <= p) H) (andER (m < n) (n <= p) H)).
+Qed.
+
+// HOL Light: arith.ml / LT_IMP_LE
+Theorem LT_IMP_LE : forall m n :e omega, m < n -> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact ((andEL (m < ordsucc n -> m <= n) (m <= n -> m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (m) Hm (n) Hn)) ((andER (m < ordsucc n -> m = n \/ m < n) (m = n \/ m < n -> m < ordsucc n) (SNoLt_ordsucc_iff_omega (m) Hm (n) Hn)) (orIR (m = n) (m < n) H))).
 Qed.
 
 // HOL Light: arith.ml / EQ_IMP_LE

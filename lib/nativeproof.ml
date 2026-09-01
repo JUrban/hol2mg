@@ -26,6 +26,16 @@ let mg_subq x a = Mg.App (Mg.App (Mg.Cst "Subq", x), a)
 (* printing is canonical enough for the pilot's equality of formulas *)
 let aeq a b = pp a = pp b
 
+(* does the term contain any binder (used to gate alpha-equality fallbacks) *)
+let rec has_binders = function
+  | Mg.All _ | Mg.AllIn _ | Mg.AllSub _ | Mg.Ex _ | Mg.ExIn _ | Mg.ExSub _
+  | Mg.Lam _ | Mg.LamIn _ | Mg.Sep _ | Mg.Repl _ | Mg.ReplSep _
+  | Mg.SigmaIn _ | Mg.PiIn _ | Mg.FamUnion _ -> true
+  | Mg.App (a, b) | Mg.Imp (a, b) -> has_binders a || has_binders b
+  | Mg.If (a, b, c) -> has_binders a || has_binders b || has_binders c
+  | Mg.Tuple l | Mg.SetEnum l -> List.exists has_binders l
+  | _ -> false
+
 let refl_tm = "(fun q H => H)"
 
 (* bottom-up beta normalization (bounded); printed-form comparison then treats
@@ -117,35 +127,44 @@ let match_tm (pvars : string list) (pat : Mg.tm) (goal : Mg.tm) : (string * Mg.t
     let ok = f () in
     ok && List.for_all (fun (_, t) -> not (List.mem x (Mg.free_vars t)))
             (List.filteri (fun i _ -> i < List.length !bnd - before) !bnd) in
-  let rec go pv pat goal =
+  (* env maps pattern-side binder names to goal-side binder names (alpha matching) *)
+  let rec go env pv pat goal =
     match pat, goal with
     | Mg.Var v, _ when List.mem v pv ->
         (match List.assoc_opt v !bnd with
          | Some t -> aeq t goal
          | None -> bnd := (v, goal) :: !bnd; true)
-    | Mg.Var a, Mg.Var b | Mg.Cst a, Mg.Cst b -> a = b
+    | Mg.Var a, Mg.Var b ->
+        (match List.assoc_opt a env with
+         | Some b' -> b = b'
+         | None -> a = b && not (List.exists (fun (_, g) -> g = b) env))
+    | Mg.Cst a, Mg.Cst b -> a = b
     | Mg.Num a, Mg.Num b -> a = b
-    | Mg.App (a1, b1), Mg.App (a2, b2) -> go pv a1 a2 && go pv b1 b2
-    | Mg.Imp (a1, b1), Mg.Imp (a2, b2) -> go pv a1 a2 && go pv b1 b2
+    | Mg.App (a1, b1), Mg.App (a2, b2) -> go env pv a1 a2 && go env pv b1 b2
+    | Mg.Imp (a1, b1), Mg.Imp (a2, b2) -> go env pv a1 a2 && go env pv b1 b2
     | Mg.Tuple l1, Mg.Tuple l2 | Mg.SetEnum l1, Mg.SetEnum l2 ->
-        List.length l1 = List.length l2 && List.for_all2 (go pv) l1 l2
-    | Mg.If (a1, b1, c1), Mg.If (a2, b2, c2) -> go pv a1 a2 && go pv b1 b2 && go pv c1 c2
+        List.length l1 = List.length l2 && List.for_all2 (go env pv) l1 l2
+    | Mg.If (a1, b1, c1), Mg.If (a2, b2, c2) ->
+        go env pv a1 a2 && go env pv b1 b2 && go env pv c1 c2
     | Mg.Lam (x1, _, b1), Mg.Lam (x2, _, b2)
     | Mg.All (x1, _, b1), Mg.All (x2, _, b2) | Mg.Ex (x1, _, b1), Mg.Ex (x2, _, b2) ->
-        x1 = x2 && scoped x1 (fun () -> go (List.filter (( <> ) x1) pv) b1 b2)
+        scoped x2 (fun () -> go ((x1, x2) :: env) (List.filter (( <> ) x1) pv) b1 b2)
     | Mg.AllIn (x1, a1, b1), Mg.AllIn (x2, a2, b2) | Mg.ExIn (x1, a1, b1), Mg.ExIn (x2, a2, b2)
     | Mg.AllSub (x1, a1, b1), Mg.AllSub (x2, a2, b2) | Mg.ExSub (x1, a1, b1), Mg.ExSub (x2, a2, b2)
     | Mg.LamIn (x1, a1, b1), Mg.LamIn (x2, a2, b2)
     | Mg.Sep (x1, a1, b1), Mg.Sep (x2, a2, b2) | Mg.Repl (x1, a1, b1), Mg.Repl (x2, a2, b2)
     | Mg.SigmaIn (x1, a1, b1), Mg.SigmaIn (x2, a2, b2) | Mg.PiIn (x1, a1, b1), Mg.PiIn (x2, a2, b2)
     | Mg.FamUnion (x1, a1, b1), Mg.FamUnion (x2, a2, b2) ->
-        x1 = x2 && go pv a1 a2 && scoped x1 (fun () -> go (List.filter (( <> ) x1) pv) b1 b2)
+        go env pv a1 a2
+        && scoped x2 (fun () -> go ((x1, x2) :: env) (List.filter (( <> ) x1) pv) b1 b2)
     | Mg.ReplSep (x1, a1, p1, b1), Mg.ReplSep (x2, a2, p2, b2) ->
-        x1 = x2 && go pv a1 a2 &&
-        scoped x1 (fun () -> let pv' = List.filter (( <> ) x1) pv in go pv' p1 p2 && go pv' b1 b2)
+        go env pv a1 a2 &&
+        scoped x2 (fun () ->
+          let env' = (x1, x2) :: env in
+          let pv' = List.filter (( <> ) x1) pv in go env' pv' p1 p2 && go env' pv' b1 b2)
     | _ -> false
   in
-  if go pvars pat goal then Some !bnd else None
+  if go [] pvars pat goal then Some !bnd else None
 
 (* strip a hypothesis into (binders-and-premises, conclusion) *)
 type prem = PVar of string | PMem of string * Mg.tm | PSub of string * Mg.tm | PProp of Mg.tm
@@ -268,6 +287,12 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
 
 and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string option =
   match List.find_opt (fun h -> aeq h.prop goal) hyps with
+  | Some h -> Some h.hname
+  | None ->
+  (* alpha-equal hypothesis (binder names differ; Megalodon accepts the citation) *)
+  match (if has_binders goal
+         then List.find_opt (fun h -> match_tm [] goal h.prop <> None) hyps
+         else None) with
   | Some h -> Some h.hname
   | None ->
   match goal with
@@ -892,6 +917,9 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
               (try "apply orIR." :: prove_goal st hyps q d
                with Give_up -> or_elim st hyps g d)))
   | Mg.ExIn (x, a, b) ->
+      (match close_term st hyps goal 3 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None ->
       (* witnesses from membership hypotheses of the right carrier *)
       let cands = List.filter_map (fun h ->
         match h.prop with
@@ -917,8 +945,11 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                                (match close_term st hyps (mg_in t a) 2 with Some s -> s | None -> raise Give_up) ]
                    @ block d (prove_goal st hyps (beta (Mg.subst [ (x, t) ] b)) (d + 1)))
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
-      in try_wit cands
+      in try_wit cands)
   | Mg.Ex (x, m, b) ->
+      (match close_term st hyps goal 3 with
+       | Some t -> [ Printf.sprintf "exact %s." t ]
+       | None ->
       (* unbounded existential: True/False for prop binders, constant lambdas for
          function binders, else membership terms *)
       let wits =
@@ -942,7 +973,7 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
             let fuel0 = st.fuel in
             (try Printf.sprintf "witness %s." (pp t) :: prove_goal st hyps (beta (Mg.subst [ (x, t) ] b)) d
              with Give_up -> if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_wit rest)
-      in try_wit wits
+      in try_wit wits)
   | Mg.App (Mg.App (Mg.Cst c, ux), uy) when unfold_def2 c ux uy <> None ->
       (match close_term st hyps goal 3 with
        | Some t -> [ Printf.sprintf "exact %s." t ]
@@ -1333,6 +1364,53 @@ let builtin_premises : (string * Mg.tm) list =
        Mg.App (Mg.App (Mg.Cst "iff",
          Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.Num 0)),
          Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Num 0))));
+    ("SNoLt_ordsucc_SNoLe_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__m"),
+           Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.Var "hl__n")))));
+    ("SNoLe_ordsucc_SNoLt_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLe",
+           Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__m")), Mg.Var "hl__n")),
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__m"), Mg.Var "hl__n")))));
+    ("num_recursion",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__e", Mg.Var "hl__A",
+       Mg.All ("hl__f", Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Set)),
+         Mg.Imp (
+           Mg.AllIn ("hl__x", Mg.Var "hl__A", Mg.AllIn ("hl__y", Mg.Cst "omega",
+             mg_in (Mg.App (Mg.App (Mg.Var "hl__f", Mg.Var "hl__x"), Mg.Var "hl__y"))
+               (Mg.Var "hl__A"))),
+           Mg.Ex ("hl__fn", Mg.Arr (Mg.Set, Mg.Set),
+             Mg.App (Mg.App (Mg.Cst "and",
+               Mg.AllIn ("hl__x", Mg.Cst "omega",
+                 mg_in (Mg.App (Mg.Var "hl__fn", Mg.Var "hl__x")) (Mg.Var "hl__A"))),
+               Mg.App (Mg.App (Mg.Cst "and",
+                 Mg.App (Mg.App (Mg.Cst "eq",
+                   Mg.App (Mg.Var "hl__fn", Mg.Num 0)), Mg.Var "hl__e")),
+                 Mg.AllIn ("hl__n", Mg.Cst "omega",
+                   Mg.App (Mg.App (Mg.Cst "eq",
+                     Mg.App (Mg.Var "hl__fn", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+                     Mg.App (Mg.App (Mg.Var "hl__f",
+                       Mg.App (Mg.Var "hl__fn", Mg.Var "hl__n")), Mg.Var "hl__n")))))))))));
+    ("skolem_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "neq", Mg.Var "hl__A"), Mg.Cst "Empty"),
+         Mg.Imp (Mg.App (Mg.App (Mg.Cst "neq", Mg.Var "hl__B"), Mg.Cst "Empty"),
+           Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Prop)),
+             Mg.App (Mg.App (Mg.Cst "iff",
+               Mg.AllIn ("hl__x", Mg.Var "hl__A",
+                 Mg.ExIn ("hl__y", Mg.Var "hl__B",
+                   Mg.App (Mg.App (Mg.Var "hl__P", Mg.Var "hl__x"), Mg.Var "hl__y")))),
+               Mg.Ex ("hl__g", Mg.Arr (Mg.Set, Mg.Set),
+                 Mg.App (Mg.App (Mg.Cst "and",
+                   Mg.AllIn ("hl__x", Mg.Var "hl__A",
+                     mg_in (Mg.App (Mg.Var "hl__g", Mg.Var "hl__x")) (Mg.Var "hl__B"))),
+                   Mg.AllIn ("hl__x", Mg.Var "hl__A",
+                     Mg.App (Mg.App (Mg.Var "hl__P", Mg.Var "hl__x"),
+                       Mg.App (Mg.Var "hl__g", Mg.Var "hl__x"))))))))))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

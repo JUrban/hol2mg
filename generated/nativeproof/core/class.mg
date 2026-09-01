@@ -62,10 +62,7 @@ apply iffI.
   apply H2. let x. assume H3. apply H3. assume Hx H4.
   exact (andER (choose_in A P :e A) (P (choose_in A P)) (choose_in_spec (A) (P) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H4)))).
 - assume H1.
-  witness choose_in A P.
-  apply andI.
-  + exact (choose_in_in (A) H (P)).
-  + exact H1.
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (choose_in A P) (andI (choose_in A P :e A) (P (choose_in A P)) (choose_in_in (A) H (P)) H1)).
 Qed.
 
 // HOL Light: class.ml / EXCLUDED_MIDDLE
@@ -240,12 +237,7 @@ let A.
 let P.
 apply iffI.
 - assume H4.
-  apply (xm (exists x :e A, ~ P x)).
-  + assume H5. exact H5.
-  + assume H6.
-    claim L: False.
-    { exact (H6 ((andER ((exists x :e A, ~ P x) -> ~ forall x :e A, P x) (~ (forall x :e A, P x) -> exists x :e A, ~ P x) (EXISTS_NOT_THM (A) (P))) H4)). }
-    exact (FalseE L (exists x :e A, ~ P x)).
+  exact ((andER ((exists x :e A, ~ P x) -> ~ forall x :e A, P x) (~ (forall x :e A, P x) -> exists x :e A, ~ P x) (EXISTS_NOT_THM (A) (P))) H4).
 - assume H.
   apply H. let x. assume H1. apply H1. assume Hx H2.
   assume H3.
@@ -367,5 +359,15 @@ apply andI.
   exact ((andEL (A -> B) (C -> D) H) ((andEL (b -> A) (~ b -> C) H1) H3)).
 - assume H2.
   exact ((andER (A -> B) (C -> D) H) ((andER (b -> A) (~ b -> C) H1) H2)).
+Qed.
+
+// HOL Light: class.ml / SKOLEM_THM
+Theorem SKOLEM_THM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, (forall x :e A, exists y :e B, P x y) <-> exists y:set -> set, (forall x :e A, y x :e B) /\ forall x :e A, P x (y x).
+let A.
+let B.
+assume H.
+assume H1.
+let P.
+exact (skolem_thm (A) (B) H H1 (P)).
 Qed.
 
