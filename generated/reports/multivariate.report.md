@@ -11,10 +11,10 @@
 | status | count |
 |---|---|
 | transport_required | 14802 |
-| generalization_required | 1884 |
+| generalization_required | 1883 |
 | pending_mapping | 388 |
 | exact_native | 348 |
-| native_reuse | 104 |
+| native_reuse | 105 |
 
 ## Public statements per shard
 
@@ -44,7 +44,7 @@
 | integration | 904 | 0 | 0 |
 | iter | 12 | 0 | 0 |
 | iterate | 313 | 11 | 0 |
-| lists | 130 | 2 | 0 |
+| lists | 129 | 2 | 0 |
 | matroids | 159 | 0 | 0 |
 | measure | 731 | 0 | 0 |
 | metric | 2561 | 0 | 0 |

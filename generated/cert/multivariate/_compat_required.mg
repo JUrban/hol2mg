@@ -1982,10 +1982,6 @@ Admitted.
 Theorem hl_bitset_compat : forall l1 :e omega, hl_rep omega (hl_bitset l1) = bitset l1.
 Admitted.
 
-// vec : num->(real,N)cart (not in compat.mg)
-Theorem hl_vec_compat : forall N:set, N <> Empty -> forall l1 :e omega, hl_vec N l1 = vec N l1.
-Admitted.
-
 // OUTL : (A,B)sum->A (not in compat.mg)
 Theorem hl_OUTL_compat : forall A B:set, A <> Empty -> B <> Empty -> hl_OUTL A B = OUTL A B.
 Admitted.

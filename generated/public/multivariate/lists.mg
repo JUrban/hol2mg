@@ -220,9 +220,9 @@ Admitted.
 
 // HOL Light: lists.ml:182 / list_CASES
 // Source hash: md5:6c9a307f18507870c827834056fdffa7
-// Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
-Theorem list_CASES : forall A:set, forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t.
-Admitted.
+// Status: native_reuse (bridges: empty_case:A, hol_list_finseq)
+// Reuse: this proposition is already a theorem of the target library.
+// Theorem list_CASES : forall A:set, forall l :e finseq A, l = seq_nil \/ exists h :e A, exists t :e finseq A, l = seq_cons h t.
 
 // HOL Light: lists.ml:187 / LIST_EQ
 // Source hash: md5:e80393494d2381101e2f9fdd59b8a934

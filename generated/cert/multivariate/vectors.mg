@@ -104,8 +104,13 @@ Theorem vector_mul_thm : forall N:set, N <> Empty -> forall c :e R, forall x :e 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:87 / vec   (hash md5:30096d8f13cf1131dafdc22864d253b6)
-// not bridged: 
+Theorem hlt_vec_thm : forall N:set, N <> Empty -> forall n :e omega, hl_vec N n = hl_lambda R N (fun i :e omega => hl_real_of_num n).
+Admitted.
+Theorem vec_thm_bridge : (forall N:set, N <> Empty -> forall n :e omega, hl_vec N n = hl_lambda R N (fun i :e omega => hl_real_of_num n)) -> (forall N:set, N <> Empty -> forall n :e omega, vec N n = fun i :e idx N => n).
+exact (fun H__top N HNne => ((imp_forall_in (omega) (fun n => hl_vec N n = hl_lambda R N (fun i :e omega => hl_real_of_num n)) (fun n => vec N n = fun i :e idx N => n) (fun n Hn => (imp_eq (hl_vec N n) (vec N n) (hl_lambda R N (fun i :e omega => hl_real_of_num n)) (fun i :e idx N => n) ((hl_vec_compat) (N) HNne (n) Hn) ((hl_lambda_compat) (R) (N) R_nonempty HNne (fun i :e omega => hl_real_of_num n) (lam_Pi (omega) (fun _ => R) (fun i => hl_real_of_num n) (fun i Hi => (setexp_ap (omega) (R) (hl_real_of_num) ((hl_real_of_num_in)) (n) Hn))) (fun i:set => n) ((fun i Hi => (eq_trans_i ((fun i :e omega => hl_real_of_num n) i) (hl_real_of_num n) (n) (beta (omega) (fun i:set => hl_real_of_num n) i Hi) ((hl_real_of_num_compat) (n) Hn)))))))) (H__top N HNne))).
+Qed.
 Theorem vec_thm : forall N:set, N <> Empty -> forall n :e omega, vec N n = fun i :e idx N => n.
+exact (vec_thm_bridge hlt_vec_thm).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:96 / dot   (hash md5:f77bdce32f07ee2346fb807f2448c783)
@@ -329,8 +334,13 @@ Theorem VECTOR_ADD_AC : forall N:set, N <> Empty -> forall m n p :e R :^: idx N,
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:262 / VEC_EQ   (hash md5:a18df28a73299cb9a106895635103c62)
-// not bridged: 
+Theorem hlt_VEC_EQ : forall A:set, A <> Empty -> forall m n :e omega, hl_vec A m = hl_vec A n <-> m = n.
+Admitted.
+Theorem VEC_EQ_bridge : (forall A:set, A <> Empty -> forall m n :e omega, hl_vec A m = hl_vec A n <-> m = n) -> (forall A:set, A <> Empty -> forall m n :e omega, vec A m = vec A n <-> m = n).
+exact (fun H__top A HAne => ((imp_forall_in (omega) (fun m => forall n :e omega, hl_vec A m = hl_vec A n <-> m = n) (fun m => forall n :e omega, vec A m = vec A n <-> m = n) (fun m Hm => (imp_forall_in (omega) (fun n => hl_vec A m = hl_vec A n <-> m = n) (fun n => vec A m = vec A n <-> m = n) (fun n Hn => (imp_iff (hl_vec A m = hl_vec A n) (vec A m = vec A n) (m = n) (m = n) (imp_eq (hl_vec A m) (vec A m) (hl_vec A n) (vec A n) ((hl_vec_compat) (A) HAne (m) Hm) ((hl_vec_compat) (A) HAne (n) Hn)) (imp_eq (vec A m) (hl_vec A m) (vec A n) (hl_vec A n) (eq_sym_i (hl_vec A m) (vec A m) ((hl_vec_compat) (A) HAne (m) Hm)) (eq_sym_i (hl_vec A n) (vec A n) ((hl_vec_compat) (A) HAne (n) Hn))) (imp_eq (m) (m) (n) (n) (fun q H => H) (fun q H => H)) (imp_eq (m) (m) (n) (n) (eq_sym_i (m) (m) (fun q H => H)) (eq_sym_i (n) (n) (fun q H => H)))))))) (H__top A HAne))).
+Qed.
 Theorem VEC_EQ : forall A:set, A <> Empty -> forall m n :e omega, vec A m = vec A n <-> m = n.
+exact (VEC_EQ_bridge hlt_VEC_EQ).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:271 / SUMS_SYM   (hash md5:056df0b78b6de6a5004062c20cdaf9d6)
@@ -3177,8 +3187,13 @@ Theorem LINEAR_SNDCART : forall A B:set, A <> Empty -> B <> Empty -> linear (idx
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4243 / FSTCART_VEC   (hash md5:1e159242fd045b03edd1f39997f2655a)
-// not bridged: 
+Theorem hlt_FSTCART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, hl_fstcart R B A (hl_vec (hl_ty_finite_sum B A) n) = hl_vec B n.
+Admitted.
+Theorem FSTCART_VEC_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, hl_fstcart R B A (hl_vec (hl_ty_finite_sum B A) n) = hl_vec B n) -> (forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, fstcart B (vec (idx_n (dimindex B + dimindex A)) n) = vec B n).
+exact (fun H__top A B HAne HBne => ((imp_forall_in (omega) (fun n => hl_fstcart R B A (hl_vec (idx_n (dimindex B + dimindex A)) n) = hl_vec B n) (fun n => fstcart B (vec (idx_n (dimindex B + dimindex A)) n) = vec B n) (fun n Hn => (imp_eq (hl_fstcart R B A (hl_vec (idx_n (dimindex B + dimindex A)) n)) (fstcart B (vec (idx_n (dimindex B + dimindex A)) n)) (hl_vec B n) (vec B n) (((hl_vec_compat) (idx_n (dimindex B + dimindex A)) (hl_ty_finite_sum_native_nonempty (B) (A) HBne HAne) (n) Hn) (fun hl__u hl__v => hl_fstcart R B A (hl_vec (idx_n (dimindex B + dimindex A)) n) = fstcart B hl__u) ((hl_fstcart_compat) (R) (B) (A) R_nonempty HBne HAne (hl_vec (idx_n (dimindex B + dimindex A)) n) (setexp_ap (omega) (R :^: idx (idx_n (dimindex B + dimindex A))) (hl_vec (idx_n (dimindex B + dimindex A))) ((hl_vec_in) (idx_n (dimindex B + dimindex A)) (hl_ty_finite_sum_native_nonempty (B) (A) HBne HAne)) (n) Hn))) ((hl_vec_compat) (B) HBne (n) Hn)))) ((hl_ty_finite_sum_native (B) (A) HBne HAne) (fun hl__u hl__v => forall n :e omega, hl_fstcart R B A (hl_vec hl__u n) = hl_vec B n) (H__top A B HAne HBne)))).
+Qed.
 Theorem FSTCART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, fstcart B (vec (idx_n (dimindex B + dimindex A)) n) = vec B n.
+exact (FSTCART_VEC_bridge hlt_FSTCART_VEC).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4248 / FSTCART_ADD   (hash md5:6b069b03f05010aa40453938fdff2d61)
@@ -3207,8 +3222,13 @@ Theorem FSTCART_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4271 / SNDCART_VEC   (hash md5:40ee1fe9cb8a2f11c7fcf71079ddd6ce)
-// not bridged: 
+Theorem hlt_SNDCART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, hl_sndcart R A B (hl_vec (hl_ty_finite_sum A B) n) = hl_vec B n.
+Admitted.
+Theorem SNDCART_VEC_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, hl_sndcart R A B (hl_vec (hl_ty_finite_sum A B) n) = hl_vec B n) -> (forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, sndcart A B (vec (idx_n (dimindex A + dimindex B)) n) = vec B n).
+exact (fun H__top A B HAne HBne => ((imp_forall_in (omega) (fun n => hl_sndcart R A B (hl_vec (idx_n (dimindex A + dimindex B)) n) = hl_vec B n) (fun n => sndcart A B (vec (idx_n (dimindex A + dimindex B)) n) = vec B n) (fun n Hn => (imp_eq (hl_sndcart R A B (hl_vec (idx_n (dimindex A + dimindex B)) n)) (sndcart A B (vec (idx_n (dimindex A + dimindex B)) n)) (hl_vec B n) (vec B n) (((hl_vec_compat) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native_nonempty (A) (B) HAne HBne) (n) Hn) (fun hl__u hl__v => hl_sndcart R A B (hl_vec (idx_n (dimindex A + dimindex B)) n) = sndcart A B hl__u) ((hl_sndcart_compat) (R) (A) (B) R_nonempty HAne HBne (hl_vec (idx_n (dimindex A + dimindex B)) n) (setexp_ap (omega) (R :^: idx (idx_n (dimindex A + dimindex B))) (hl_vec (idx_n (dimindex A + dimindex B))) ((hl_vec_in) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native_nonempty (A) (B) HAne HBne)) (n) Hn))) ((hl_vec_compat) (B) HBne (n) Hn)))) ((hl_ty_finite_sum_native (A) (B) HAne HBne) (fun hl__u hl__v => forall n :e omega, hl_sndcart R A B (hl_vec hl__u n) = hl_vec B n) (H__top A B HAne HBne)))).
+Qed.
 Theorem SNDCART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, sndcart A B (vec (idx_n (dimindex A + dimindex B)) n) = vec B n.
+exact (SNDCART_VEC_bridge hlt_SNDCART_VEC).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4277 / SNDCART_ADD   (hash md5:311f480775c840f7c88a23d86c2b9495)
@@ -3237,8 +3257,13 @@ Theorem SNDCART_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty 
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4300 / PASTECART_VEC   (hash md5:0012fc7ecaa9a6f22965314abc379f04)
-// not bridged: 
+Theorem hlt_PASTECART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, hl_pastecart R A B (hl_vec A n) (hl_vec B n) = hl_vec (hl_ty_finite_sum A B) n.
+Admitted.
+Theorem PASTECART_VEC_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, hl_pastecart R A B (hl_vec A n) (hl_vec B n) = hl_vec (hl_ty_finite_sum A B) n) -> (forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, pastecart A B (vec A n) (vec B n) = vec (idx_n (dimindex A + dimindex B)) n).
+exact (fun H__top A B HAne HBne => ((imp_forall_in (omega) (fun n => hl_pastecart R A B (hl_vec A n) (hl_vec B n) = hl_vec (idx_n (dimindex A + dimindex B)) n) (fun n => pastecart A B (vec A n) (vec B n) = vec (idx_n (dimindex A + dimindex B)) n) (fun n Hn => (imp_eq (hl_pastecart R A B (hl_vec A n) (hl_vec B n)) (pastecart A B (vec A n) (vec B n)) (hl_vec (idx_n (dimindex A + dimindex B)) n) (vec (idx_n (dimindex A + dimindex B)) n) (((hl_vec_compat) (B) HBne (n) Hn) (fun hl__u hl__v => hl_pastecart R A B (hl_vec A n) (hl_vec B n) = pastecart A B (vec A n) hl__u) (((hl_vec_compat) (A) HAne (n) Hn) (fun hl__u hl__v => hl_pastecart R A B (hl_vec A n) (hl_vec B n) = pastecart A B hl__u (hl_vec B n)) ((hl_pastecart_compat) (R) (A) (B) R_nonempty HAne HBne (hl_vec A n) (setexp_ap (omega) (R :^: idx A) (hl_vec A) ((hl_vec_in) (A) HAne) (n) Hn) (hl_vec B n) (setexp_ap (omega) (R :^: idx B) (hl_vec B) ((hl_vec_in) (B) HBne) (n) Hn)))) ((hl_vec_compat) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native_nonempty (A) (B) HAne HBne) (n) Hn)))) ((hl_ty_finite_sum_native (A) (B) HAne HBne) (fun hl__u hl__v => forall n :e omega, hl_pastecart R A B (hl_vec A n) (hl_vec B n) = hl_vec hl__u n) (H__top A B HAne HBne)))).
+Qed.
 Theorem PASTECART_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall n :e omega, pastecart A B (vec A n) (vec B n) = vec (idx_n (dimindex A + dimindex B)) n.
+exact (PASTECART_VEC_bridge hlt_PASTECART_VEC).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4305 / PASTECART_ADD   (hash md5:3c3cbc83ec65ec530b489ae7a8b3ba9f)
@@ -3267,8 +3292,13 @@ Theorem PASTECART_VSUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empt
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4332 / PASTECART_EQ_VEC   (hash md5:839c3f874da2881e7ff1f3aaa67d5f4c)
-// not bridged: 
+Theorem hlt_PASTECART_EQ_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall x :e hl_ty_cart R A, forall y :e hl_ty_cart R B, forall n :e omega, hl_pastecart R A B x y = hl_vec (hl_ty_finite_sum A B) n <-> x = hl_vec A n /\ y = hl_vec B n.
+Admitted.
+Theorem PASTECART_EQ_VEC_bridge : (forall A B:set, A <> Empty -> B <> Empty -> forall x :e hl_ty_cart R A, forall y :e hl_ty_cart R B, forall n :e omega, hl_pastecart R A B x y = hl_vec (hl_ty_finite_sum A B) n <-> x = hl_vec A n /\ y = hl_vec B n) -> (forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, forall n :e omega, pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n <-> x = vec A n /\ y = vec B n).
+exact (fun H__top A B HAne HBne => ((imp_forall_in (R :^: idx A) (fun x => forall y :e R :^: idx B, forall n :e omega, hl_pastecart R A B x y = hl_vec (idx_n (dimindex A + dimindex B)) n <-> x = hl_vec A n /\ y = hl_vec B n) (fun x => forall y :e R :^: idx B, forall n :e omega, pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n <-> x = vec A n /\ y = vec B n) (fun x Hx => (imp_forall_in (R :^: idx B) (fun y => forall n :e omega, hl_pastecart R A B x y = hl_vec (idx_n (dimindex A + dimindex B)) n <-> x = hl_vec A n /\ y = hl_vec B n) (fun y => forall n :e omega, pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n <-> x = vec A n /\ y = vec B n) (fun y Hy => (imp_forall_in (omega) (fun n => hl_pastecart R A B x y = hl_vec (idx_n (dimindex A + dimindex B)) n <-> x = hl_vec A n /\ y = hl_vec B n) (fun n => pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n <-> x = vec A n /\ y = vec B n) (fun n Hn => (imp_iff (hl_pastecart R A B x y = hl_vec (idx_n (dimindex A + dimindex B)) n) (pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n) (x = hl_vec A n /\ y = hl_vec B n) (x = vec A n /\ y = vec B n) (imp_eq (hl_pastecart R A B x y) (pastecart A B x y) (hl_vec (idx_n (dimindex A + dimindex B)) n) (vec (idx_n (dimindex A + dimindex B)) n) ((hl_pastecart_compat) (R) (A) (B) R_nonempty HAne HBne (x) Hx (y) Hy) ((hl_vec_compat) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native_nonempty (A) (B) HAne HBne) (n) Hn)) (imp_eq (pastecart A B x y) (hl_pastecart R A B x y) (vec (idx_n (dimindex A + dimindex B)) n) (hl_vec (idx_n (dimindex A + dimindex B)) n) (eq_sym_i (hl_pastecart R A B x y) (pastecart A B x y) ((hl_pastecart_compat) (R) (A) (B) R_nonempty HAne HBne (x) Hx (y) Hy)) (eq_sym_i (hl_vec (idx_n (dimindex A + dimindex B)) n) (vec (idx_n (dimindex A + dimindex B)) n) ((hl_vec_compat) (idx_n (dimindex A + dimindex B)) (hl_ty_finite_sum_native_nonempty (A) (B) HAne HBne) (n) Hn))) (imp_and_dep (x = hl_vec A n) (x = vec A n) (y = hl_vec B n) (y = vec B n) (imp_eq (x) (x) (hl_vec A n) (vec A n) (fun q H => H) ((hl_vec_compat) (A) HAne (n) Hn)) (fun H__and4 : (x = vec A n) => (imp_eq (y) (y) (hl_vec B n) (vec B n) (fun q H => H) ((hl_vec_compat) (B) HBne (n) Hn)))) (imp_and_dep_bwd (x = hl_vec A n) (x = vec A n) (y = hl_vec B n) (y = vec B n) (imp_eq (x) (x) (vec A n) (hl_vec A n) (eq_sym_i (x) (x) (fun q H => H)) (eq_sym_i (hl_vec A n) (vec A n) ((hl_vec_compat) (A) HAne (n) Hn))) (fun H__and3 : (x = vec A n) => (imp_eq (y) (y) (vec B n) (hl_vec B n) (eq_sym_i (y) (y) (fun q H => H)) (eq_sym_i (hl_vec B n) (vec B n) ((hl_vec_compat) (B) HBne (n) Hn)))))))))))) ((hl_ty_cart_native (R) (B) R_nonempty HBne) (fun hl__u hl__v => forall x :e R :^: idx A, forall y :e hl__u, forall n :e omega, hl_pastecart R A B x y = hl_vec (idx_n (dimindex A + dimindex B)) n <-> x = hl_vec A n /\ y = hl_vec B n) ((hl_ty_cart_native (R) (A) R_nonempty HAne) (fun hl__u hl__v => forall x :e hl__u, forall y :e hl_ty_cart R B, forall n :e omega, hl_pastecart R A B x y = hl_vec (idx_n (dimindex A + dimindex B)) n <-> x = hl_vec A n /\ y = hl_vec B n) ((hl_ty_finite_sum_native (A) (B) HAne HBne) (fun hl__u hl__v => forall x :e hl_ty_cart R A, forall y :e hl_ty_cart R B, forall n :e omega, hl_pastecart R A B x y = hl_vec hl__u n <-> x = hl_vec A n /\ y = hl_vec B n) (H__top A B HAne HBne)))))).
+Qed.
 Theorem PASTECART_EQ_VEC : forall A B:set, A <> Empty -> B <> Empty -> forall x :e R :^: idx A, forall y :e R :^: idx B, forall n :e omega, pastecart A B x y = vec (idx_n (dimindex A + dimindex B)) n <-> x = vec A n /\ y = vec B n.
+exact (PASTECART_EQ_VEC_bridge hlt_PASTECART_EQ_VEC).
 Admitted.
 
 // HOL Light: Multivariate/vectors.ml:4337 / FSTCART_SNDCART_MAT_ZERO   (hash md5:b6ed4bd06dab4deaa5492c819794f612)

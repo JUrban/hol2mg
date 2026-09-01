@@ -2059,6 +2059,18 @@ constants; such lemmas are now `hl_<c>_in1`; core and standard outputs byte-iden
 campaign: 515 distinct missing compat lemmas, the top thirty (linear, group carrier,
 topspace, convex, continuity, open/closed/compact/bounded, ...) covering the bulk.
 
+Campaign prototype (same day): `hl_vec_compat` in `mglib/literal/compat_multivariate.mg`
+(literal `hl_vec` vs the auto-translated native `vec`, via `hl_vec_unfold`,
+`hl_lambda_compat_idx` and `hl_real_of_num_ap`) checks first try and unlocks six theorems
+(3 305 → 3 311).  Two conclusions: the required equivalences are *systematic* — both sides
+of each lemma are translations of the same HOL defining equation (the native side is an
+auto-definition for essentially all 515) — and per-lemma unlock counts are small because
+most blocked theorems need several lemmas at once.  The campaign therefore calls for
+*generator-emitted* compat lemmas: derive the statement (already synthesized for
+`_compat_required.mg`) together with a proof, by running the bridge deriver on the
+defining equation, mirroring `hl_vec_compat`'s shape.  That auto-compat emitter is the
+next implementation milestone for P1.
+
 1. Close `pending_mapping`: grow `mappings/multivariate.json` from the review page,
    concept classes first (vector/matrix/topology constants); unknowns stay `pending`.
 2. Generate and check the literal layer and bridges *incrementally by shard*: at this
