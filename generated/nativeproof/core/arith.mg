@@ -72,11 +72,33 @@ let m. assume Hm.
 exact ((add_SNo_1_ordsucc (m) Hm) (fun hl__u hl__v => hl__u = (m + 1)) (fun q H => H)).
 Qed.
 
+// HOL Light: arith.ml / MULT_0
+Theorem MULT_0 : forall m :e omega, m * 0 = 0.
+let m. assume Hm.
+exact (mul_SNo_zeroR (m) (omega_SNo (m) Hm)).
+Qed.
+
 // HOL Light: arith.ml / MULT_SYM
 Theorem MULT_SYM : forall m n :e omega, m * n = n * m.
 let m. assume Hm.
 let n. assume Hn.
 exact (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
+
+// HOL Light: arith.ml / LEFT_ADD_DISTRIB
+Theorem LEFT_ADD_DISTRIB : forall m n p :e omega, m * (n + p) = m * n + m * p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mul_SNo_distrL (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
+
+// HOL Light: arith.ml / RIGHT_ADD_DISTRIB
+Theorem RIGHT_ADD_DISTRIB : forall m n p :e omega, (m + n) * p = m * p + n * p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mul_SNo_distrR (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
 // HOL Light: arith.ml / MULT_ASSOC

@@ -167,7 +167,9 @@ Admitted.
 // Source hash: md5:3326845f7ea3ff59c385f3b0c8ad95ca
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_0 : forall m :e omega, m * 0 = 0.
-Admitted.
+let m. assume Hm.
+exact (mul_SNo_zeroR (m) (omega_SNo (m) Hm)).
+Qed.
 
 // HOL Light: arith.ml:153 / MULT_SUC
 // Source hash: md5:31a7b833a9ea33d4468ca3acf0bc397f
@@ -194,13 +196,21 @@ Qed.
 // Source hash: md5:95fb7903cf74df59ac85cd362dabe182
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem LEFT_ADD_DISTRIB : forall m n p :e omega, m * (n + p) = m * n + m * p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mul_SNo_distrL (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
 
 // HOL Light: arith.ml:174 / RIGHT_ADD_DISTRIB
 // Source hash: md5:2ee7dfe27ea7de6c31efbe4fa277f1a1
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem RIGHT_ADD_DISTRIB : forall m n p :e omega, (m + n) * p = m * p + n * p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mul_SNo_distrR (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
 
 // HOL Light: arith.ml:178 / MULT_ASSOC
 // Source hash: md5:94cf93020d8a503bb6e41afb0cc57313
