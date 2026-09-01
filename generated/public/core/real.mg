@@ -560,7 +560,11 @@ Admitted.
 // Source hash: md5:13a44c4f570fa7205597bdbee0db1740
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_EQ_IMP_LE : forall x y :e R, x = y -> x <= y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (H (fun hl__u hl__v => x <= hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (y)))).
+Qed.
 
 // HOL Light: real.ml:376 / REAL_LT_IMP_NZ
 // Source hash: md5:203d6d33aa3dcd23b06a048f430c5328

@@ -1869,7 +1869,7 @@ Leibniz equality in the God1 motive style — reflexivity `(fun q H => H)`, symm
 instantiation of universally quantified hypotheses with recursively closed premises).
 On Core, after the first rule iterations (ex falso `FalseE`, classical double negation via
 `xm`, `<>` negations, Leibniz transport of arbitrary goals along equality hypotheses, and
-equality congruence by motive replacement): **311 of 2 685 public theorems receive generated
+equality congruence by motive replacement): **331 of 2 685 public theorems receive generated
 native proofs, and the whole set checks in 4 s against the native context alone** — God1
 signature, native prelude and the profile's `_definitions.mg`; no literal layer, no `hl_*`
 symbol anywhere.  Among them are the clause and MONO families of `bool.ml`, the
@@ -1882,7 +1882,7 @@ indistinguishable in style from the hand-written God1 proofs of this project (e.
 **Emission switch (§23.2 step 4, done).**  Self-contained generated proofs (no premises, so
 shard composition order cannot break) replace `Admitted` in the *public* shards: the theorem
 is emitted with its declarative proof and `Qed`, and the manifest records
-`natively_proved: true` (311 on Core).  `tools/check_public.sh` now proof-checks these as
+`natively_proved: true` (331 on Core).  `tools/check_public.sh` now proof-checks these as
 part of the normal pipeline.  Premise-using proofs stay in `generated/nativeproof/` until the
 emission is made dependency-ordered.
 
@@ -2051,6 +2051,14 @@ ranking the leaves that block the 608 guided targets (num_INDUCTION 90, ADD_CLAU
 MULT_CLAUSES 47, ... are the top of that list).  ADD_0, ADD_SYM, MULT_SYM and SUC_INJ
 become self-contained; each proved leaf also feeds the guided premise pool.  Synthesis
 phase now ~5 min.
+
+N5d (311 -> 331, and 1 -> 5 leaf-guided): the second God1 order/arithmetic builtin batch
+(`omega_nonneg`, `omega_ordsucc`, `SNoLe_ref`, `SNoLt_irref`, `SNoLe_antisym`,
+`SNoLe/SNoLt_tra` omitted for now, `mul_SNo_zeroL`, `add/mul_SNo_assoc`) makes the
+LE_0/LE_REFL/LT_REFL/LE_ANTISYM families and ADD_ASSOC/MULT_ASSOC self-contained across
+the num/int/real transfers — and the guided pool immediately grows with them (five
+leaf-guided imports now).  The mutual growth loop works: every self-contained proof feeds
+the recorded-leaf premise pool.
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites

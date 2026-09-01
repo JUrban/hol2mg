@@ -986,6 +986,49 @@ let builtin_premises : (string * Mg.tm) list =
      Mg.AllIn ("hl__x", Mg.Cst "int",
        mg_in (Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")) (Mg.Cst "int")));
     ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1));
+    ("omega_nonneg",
+     Mg.AllIn ("hl__m", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), Mg.Var "hl__m")));
+    ("omega_ordsucc",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       mg_in (Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n")) (Mg.Cst "omega")));
+    ("SNoLe_ref",
+     Mg.All ("hl__x", Mg.Set,
+       Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__x")));
+    ("SNoLt_irref",
+     Mg.All ("hl__x", Mg.Set,
+       Mg.App (Mg.Cst "not", Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__x"))));
+    ("mul_SNo_zeroL",
+     Mg.All ("hl__x", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.App (Mg.App (Mg.Cst "eq", Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 0), Mg.Var "hl__x")), Mg.Num 0))));
+    ("mul_SNo_assoc",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"),
+                 Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__y"), Mg.Var "hl__z"))),
+               Mg.App (Mg.App (Mg.Cst "mul_SNo",
+                 Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")), Mg.Var "hl__z")))))))));
+    ("add_SNo_assoc",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"),
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__y"), Mg.Var "hl__z"))),
+               Mg.App (Mg.App (Mg.Cst "add_SNo",
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")), Mg.Var "hl__z")))))))));
+    ("SNoLe_antisym",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__x"),
+               Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__x"), Mg.Var "hl__y"))))))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

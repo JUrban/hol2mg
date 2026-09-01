@@ -14,6 +14,14 @@ let n. assume Hn.
 exact (add_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
 Qed.
 
+// HOL Light: arith.ml / ADD_ASSOC
+Theorem ADD_ASSOC : forall m n p :e omega, m + n + p = (m + n) + p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
+
 // HOL Light: arith.ml / ONE
 Theorem ONE : 1 = 1.
 exact (fun q H => H).
@@ -29,6 +37,14 @@ Theorem MULT_SYM : forall m n :e omega, m * n = n * m.
 let m. assume Hm.
 let n. assume Hn.
 exact (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
+
+// HOL Light: arith.ml / MULT_ASSOC
+Theorem MULT_ASSOC : forall m n p :e omega, m * n * p = (m * n) * p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
 // HOL Light: arith.ml / GE
@@ -65,5 +81,36 @@ Theorem MIN : forall m n :e omega, (if m <= n then m else n) = if m <= n then m 
 let m. assume Hm.
 let n. assume Hn.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: arith.ml / LE_0
+Theorem LE_0 : forall n :e omega, 0 <= n.
+let n. assume Hn.
+exact (omega_nonneg (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / LE_REFL
+Theorem LE_REFL : forall n :e omega, n <= n.
+let n. assume Hn.
+exact (SNoLe_ref (n)).
+Qed.
+
+// HOL Light: arith.ml / LE_ANTISYM
+Theorem LE_ANTISYM : forall m n :e omega, m <= n /\ n <= m <-> m = n.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (SNoLe_antisym (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (andEL (m <= n) (n <= m) H1) (andER (m <= n) (n <= m) H1)).
+- assume H.
+  exact (andI (m <= n) (n <= m) (H (fun hl__u hl__v => m <= hl__u) (SNoLe_ref (m))) (H (fun hl__u hl__v => hl__u <= m) (SNoLe_ref (m)))).
+Qed.
+
+// HOL Light: arith.ml / EQ_IMP_LE
+Theorem EQ_IMP_LE : forall m n :e omega, m = n -> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (H (fun hl__u hl__v => m <= hl__u) ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (n)))).
 Qed.
 

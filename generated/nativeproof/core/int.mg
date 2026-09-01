@@ -276,6 +276,20 @@ apply andI.
       exact (fun q H => H).
 Qed.
 
+// HOL Light: int.ml / INT_EQ_IMP_LE
+Theorem INT_EQ_IMP_LE : forall x y :e int, x = y -> x <= y.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (H (fun hl__u hl__v => x <= hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (y)))).
+Qed.
+
+// HOL Light: int.ml / INT_LE_REFL
+Theorem INT_LE_REFL : forall x :e int, x <= x.
+let x. assume Hx.
+exact (SNoLe_ref (x)).
+Qed.
+
 // HOL Light: int.ml / INT_OF_NUM_ADD
 Theorem INT_OF_NUM_ADD : forall m n :e omega, m + n = m + n.
 let m. assume Hm.
@@ -429,6 +443,12 @@ let n. assume Hn.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: int.ml / INT_POS
+Theorem INT_POS : forall n :e omega, 0 <= n.
+let n. assume Hn.
+exact (omega_nonneg (n) Hn).
+Qed.
+
 // HOL Light: int.ml / INT_SGN
 Theorem INT_SGN : forall x :e int, (if 0 < x then 1 else if x < 0 then - 1 else 0) = if 0 < x then 1 else if x < 0 then - 1 else 0.
 let x. assume Hx.
@@ -543,5 +563,19 @@ Theorem NUM_LCM : forall a b :e omega, lcm_int a b = lcm_int a b.
 let a. assume Ha.
 let b. assume Hb.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: int.ml / REAL_POW_ZPOW
+Theorem REAL_POW_ZPOW : forall x :e R, forall n :e omega, x ^ n = if 0 <= n then x ^ n else recip_SNo (x ^ (- n)).
+let x. assume Hx.
+let n. assume Hn.
+exact ((If_i_1 (0 <= n) (x ^ n) (recip_SNo (x ^ (- n))) (INT_POS (n) Hn)) (fun hl__u hl__v => hl__u = (if 0 <= n then x ^ n else recip_SNo (x ^ (- n)))) (fun q H => H)).
+Qed.
+
+// HOL Light: int.ml / REAL_ZPOW_NUM
+Theorem REAL_ZPOW_NUM : forall x :e R, forall n :e omega, (if 0 <= n then x ^ n else recip_SNo (x ^ (- n))) = x ^ n.
+let x. assume Hx.
+let n. assume Hn.
+exact (If_i_1 (0 <= n) (x ^ n) (recip_SNo (x ^ (- n))) (INT_POS (n) Hn)).
 Qed.
 

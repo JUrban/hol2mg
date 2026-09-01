@@ -69,7 +69,14 @@ Qed.
 // Source hash: md5:acb324168827d0a9abef183064cfb422
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem IN_NUMSEG_0 : forall m n :e omega, m :e {i :e omega | 0 <= i /\ i <= n} <-> m <= n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (andER (0 <= m) (m <= n) (SepE2 (omega) (fun i:set => 0 <= i /\ i <= n) (m) H1)).
+- assume H.
+  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (m) Hm (andI (0 <= m) (m <= n) (omega_nonneg (m) Hm) H)).
+Qed.
 
 // HOL Light: iterate.ml:55 / NUMSEG_SING
 // Source hash: md5:26b52c29fbbe30281546a89185a9bbed
@@ -177,7 +184,13 @@ Admitted.
 // Source hash: md5:a6926698841c99950bbff41516b4c375
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe)
 Theorem NUMSEG_LE : forall n :e omega, {x :e omega | x <= n} = {i :e omega | 0 <= i /\ i <= n}.
-Admitted.
+let n. assume Hn.
+apply (set_ext ({x :e omega | x <= n}) ({i :e omega | 0 <= i /\ i <= n})).
+- let x1. assume Hx1.
+  exact (SepI (omega) (fun i:set => 0 <= i /\ i <= n) (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1) (andI (0 <= x1) (x1 <= n) (omega_nonneg (x1) (SepE1 (omega) (fun x:set => x <= n) (x1) Hx1)) (SepE2 (omega) (fun x:set => x <= n) (x1) Hx1))).
+- let x. assume Hx.
+  exact (SepI (omega) (fun x:set => x <= n) (x) (SepE1 (omega) (fun i:set => 0 <= i /\ i <= n) (x) Hx) (andER (0 <= x) (x <= n) (SepE2 (omega) (fun i:set => 0 <= i /\ i <= n) (x) Hx))).
+Qed.
 
 // HOL Light: iterate.ml:165 / NUMSEG_LT
 // Source hash: md5:d480490c5354aa8bc74a7e7081dce406
