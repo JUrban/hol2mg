@@ -100,8 +100,8 @@ Admitted.
 
 // HOL Light: cart.ml:95 / FINITE_INDEX_INJ
 // Source hash: md5:ed3f2b168a80aa1187743fa433a8d6e6
-// Status: generalization_required (bridges: empty_case:A, hol_dimindex, hol_finite_image_idx, hol_num_omega, nat_le_SNoLe)
-Theorem FINITE_INDEX_INJ : forall A:set, forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j).
+// Status: generalization_required (bridges: hol_dimindex, hol_finite_image_idx, hol_num_omega, nat_le_SNoLe)
+Theorem FINITE_INDEX_INJ : forall A:set, A <> Empty -> forall i j :e omega, 1 <= i /\ (i <= dimindex A /\ (1 <= j /\ j <= dimindex A)) -> (i = j <-> i = j).
 Admitted.
 
 // HOL Light: cart.ml:102 / FORALL_FINITE_INDEX
@@ -124,8 +124,8 @@ Admitted.
 
 // HOL Light: cart.ml:120 / CART_EQ
 // Source hash: md5:12d2a2739958dbd8cafb139a4bfa94c3
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
-Theorem CART_EQ : forall A B:set, B <> Empty -> forall x y :e A :^: idx B, x = y <-> forall i :e omega, 1 <= i /\ i <= dimindex B -> x i = y i.
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem CART_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall x y :e A :^: idx B, x = y <-> forall i :e omega, 1 <= i /\ i <= dimindex B -> x i = y i.
 Admitted.
 
 // HOL Light: cart.ml:128 / lambda
@@ -142,14 +142,14 @@ Admitted.
 
 // HOL Light: cart.ml:143 / LAMBDA_UNIQUE
 // Source hash: md5:98f52daf731bf32f6aa2183889e678e4
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
-Theorem LAMBDA_UNIQUE : forall A B:set, B <> Empty -> forall f :e A :^: idx B, forall g:set -> set, (forall x :e omega, g x :e A) -> ((forall i :e omega, 1 <= i /\ i <= dimindex B -> f i = g i) <-> (fun i :e idx B => g i) = f).
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_num_omega, nat_le_SNoLe)
+Theorem LAMBDA_UNIQUE : forall A B:set, A <> Empty -> B <> Empty -> forall f :e A :^: idx B, forall g:set -> set, (forall x :e omega, g x :e A) -> ((forall i :e omega, 1 <= i /\ i <= dimindex B -> f i = g i) <-> (fun i :e idx B => g i) = f).
 Admitted.
 
 // HOL Light: cart.ml:149 / LAMBDA_ETA
 // Source hash: md5:bf7a9034dc52575b2f124f169fb89276
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega)
-Theorem LAMBDA_ETA : forall A B:set, B <> Empty -> forall g :e A :^: idx B, (fun i :e idx B => g i) = g.
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega)
+Theorem LAMBDA_ETA : forall A B:set, A <> Empty -> B <> Empty -> forall g :e A :^: idx B, (fun i :e idx B => g i) = g.
 Admitted.
 
 // HOL Light: cart.ml:157 / FINITE_INDEX_INRANGE
@@ -166,8 +166,8 @@ Admitted.
 
 // HOL Light: cart.ml:166 / CART_EQ_FULL
 // Source hash: md5:955cf716b47b18c6a131edcb1725c1c6
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega)
-Theorem CART_EQ_FULL : forall A N:set, N <> Empty -> forall x y :e A :^: idx N, x = y <-> forall i :e omega, x i = y i.
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega)
+Theorem CART_EQ_FULL : forall A N:set, A <> Empty -> N <> Empty -> forall x y :e A :^: idx N, x = y <-> forall i :e omega, x i = y i.
 Admitted.
 
 // HOL Light: cart.ml:174 / finite_sum_tybij
@@ -178,20 +178,20 @@ Admitted.
 
 // HOL Light: cart.ml:181 / pastecart
 // Source hash: md5:970d4141355f6d6f39b68b7eb74facb6
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
-Theorem pastecart_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx M, forall g :e A :^: idx N, pastecart M N f g = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M)).
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem pastecart_thm : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall f :e A :^: idx M, forall g :e A :^: idx N, pastecart M N f g = fun i :e idx_n (dimindex M + dimindex N) => if i <= dimindex M then f i else g (minus_nat i (dimindex M)).
 Admitted.
 
 // HOL Light: cart.ml:186 / fstcart
 // Source hash: md5:076ed5c08efac66eaf24e72ed8087ff0
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx, hol_num_omega)
-Theorem fstcart_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), fstcart M f = fun i :e idx M => f i.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx, hol_num_omega)
+Theorem fstcart_thm : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), fstcart M f = fun i :e idx M => f i.
 Admitted.
 
 // HOL Light: cart.ml:189 / sndcart
 // Source hash: md5:442acce9e11ba375a5854f0ad07e5d3d
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
-Theorem sndcart_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), sndcart M N f = fun i :e idx N => f (i + dimindex M).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega)
+Theorem sndcart_thm : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall f :e A :^: idx_n (dimindex M + dimindex N), sndcart M N f = fun i :e idx N => f (i + dimindex M).
 Admitted.
 
 // HOL Light: cart.ml:193 / FINITE_SUM_IMAGE
@@ -214,62 +214,62 @@ Admitted.
 
 // HOL Light: cart.ml:211 / FSTCART_PASTECART
 // Source hash: md5:b2889d73733e2663083534f610fe26ec
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem FSTCART_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, fstcart M (pastecart M N x y) = x.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem FSTCART_PASTECART : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, fstcart M (pastecart M N x y) = x.
 Admitted.
 
 // HOL Light: cart.ml:216 / SNDCART_PASTECART
 // Source hash: md5:5b9d48344251d0303100de806e31cd7c
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem SNDCART_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, sndcart M N (pastecart M N x y) = y.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem SNDCART_PASTECART : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, sndcart M N (pastecart M N x y) = y.
 Admitted.
 
 // HOL Light: cart.ml:227 / PASTECART_FST_SND
 // Source hash: md5:cd1c341f949d2e3cc3661e480bad612d
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PASTECART_FST_SND : forall A M N:set, M <> Empty -> N <> Empty -> forall z :e A :^: idx_n (dimindex M + dimindex N), pastecart M N (fstcart M z) (sndcart M N z) = z.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_FST_SND : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall z :e A :^: idx_n (dimindex M + dimindex N), pastecart M N (fstcart M z) (sndcart M N z) = z.
 Admitted.
 
 // HOL Light: cart.ml:236 / PASTECART_EQ
 // Source hash: md5:4acc7a40e97f7ac44ece1a7ded40cc5e
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PASTECART_EQ : forall A M N:set, M <> Empty -> N <> Empty -> forall x y :e A :^: idx_n (dimindex M + dimindex N), x = y <-> fstcart M x = fstcart M y /\ sndcart M N x = sndcart M N y.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_EQ : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x y :e A :^: idx_n (dimindex M + dimindex N), x = y <-> fstcart M x = fstcart M y /\ sndcart M N x = sndcart M N y.
 Admitted.
 
 // HOL Light: cart.ml:241 / FORALL_PASTECART
 // Source hash: md5:24bf22d217fff4040bd926669c496c75
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem FORALL_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (forall p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, P (pastecart M N x y).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem FORALL_PASTECART : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall P:set -> prop, (forall p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, P (pastecart M N x y).
 Admitted.
 
 // HOL Light: cart.ml:245 / EXISTS_PASTECART
 // Source hash: md5:a53a9dbdade76ad7d49219b1a7ed0865
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem EXISTS_PASTECART : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, (exists p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, P (pastecart M N x y).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem EXISTS_PASTECART : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall P:set -> prop, (exists p :e A :^: idx_n (dimindex M + dimindex N), P p) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, P (pastecart M N x y).
 Admitted.
 
 // HOL Light: cart.ml:249 / PASTECART_INJ
 // Source hash: md5:870f4c2845b9ddb14f21953c1d4ea97e
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PASTECART_INJ : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, forall w :e A :^: idx M, forall z :e A :^: idx N, pastecart M N x y = pastecart M N w z <-> x = w /\ y = z.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_INJ : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, forall w :e A :^: idx M, forall z :e A :^: idx N, pastecart M N x y = pastecart M N w z <-> x = w /\ y = z.
 Admitted.
 
 // HOL Light: cart.ml:253 / FSTCART_COMPONENT
 // Source hash: md5:254b42d30d51ff285f5b66d3f841e710
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
-Theorem FSTCART_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\ i <= dimindex M -> fstcart M x i = x i.
+// Status: transport_required (bridges: hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem FSTCART_COMPONENT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\ i <= dimindex M -> fstcart M x i = x i.
 Admitted.
 
 // HOL Light: cart.ml:258 / SNDCART_COMPONENT
 // Source hash: md5:2b6160de571744152be36a7b149e5233
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
-Theorem SNDCART_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\ i <= dimindex N -> sndcart M N x i = x (i + dimindex M).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem SNDCART_COMPONENT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M + dimindex N), forall i :e omega, 1 <= i /\ i <= dimindex N -> sndcart M N x i = x (i + dimindex M).
 Admitted.
 
 // HOL Light: cart.ml:263 / PASTECART_COMPONENT
 // Source hash: md5:3f9168ec3097f0cde3fbc786aea3cc91
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
-Theorem PASTECART_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> (forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\ i <= dimindex M -> pastecart M N u v i = u i) /\ forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, dimindex M + 1 <= i /\ i <= dimindex M + dimindex N -> pastecart M N u v i = v (minus_nat i (dimindex M)).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_sum_idx, hol_num_omega, nat_le_SNoLe)
+Theorem PASTECART_COMPONENT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, 1 <= i /\ i <= dimindex M -> pastecart M N u v i = u i) /\ forall u :e A :^: idx M, forall v :e A :^: idx N, forall i :e omega, dimindex M + 1 <= i /\ i <= dimindex M + dimindex N -> pastecart M N u v i = v (minus_nat i (dimindex M)).
 Admitted.
 
 // HOL Light: cart.ml:279 / finite_diff_tybij
@@ -454,8 +454,8 @@ Admitted.
 
 // HOL Light: cart.ml:546 / FINITE_CART_UNIV
 // Source hash: md5:dcf8ffbb9fadf298b171451ec20ea6dc
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_finite)
-Theorem FINITE_CART_UNIV : forall A N:set, N <> Empty -> finite A -> finite (A :^: idx N).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite)
+Theorem FINITE_CART_UNIV : forall A N:set, A <> Empty -> N <> Empty -> finite A -> finite (A :^: idx N).
 Admitted.
 
 // HOL Light: cart.ml:554 / vector
@@ -466,62 +466,62 @@ Admitted.
 
 // HOL Light: cart.ml:561 / IN_ELIM_PASTECART_THM
 // Source hash: md5:2ad6de4e0f69d9906298f4dbf228d6e8
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem IN_ELIM_PASTECART_THM : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> set -> prop, forall a :e A :^: idx M, forall b :e A :^: idx N, pastecart M N a b :e (\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N, P x y}) <-> P a b.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem IN_ELIM_PASTECART_THM : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall P:set -> set -> prop, forall a :e A :^: idx M, forall b :e A :^: idx N, pastecart M N a b :e (\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N, P x y}) <-> P a b.
 Admitted.
 
 // HOL Light: cart.ml:573 / PCROSS
 // Source hash: md5:4c3ed6c9a2b5bd49814870b71a43923b
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) = \/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N, x :e s /\ y :e t}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) = \/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N, x :e s /\ y :e t}.
 Admitted.
 
 // HOL Light: cart.ml:576 / FORALL_IN_PCROSS
 // Source hash: md5:5f6f894c5b71d64c9d7a1f98b79c6e60
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem FORALL_IN_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall P:set -> prop, (forall z :e A :^: idx_n (dimindex M + dimindex N), z :e (\/_ x :e s, {pastecart M N x y | y :e t}) -> P z) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, x :e s /\ y :e t -> P (pastecart M N x y).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem FORALL_IN_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall P:set -> prop, (forall z :e A :^: idx_n (dimindex M + dimindex N), z :e (\/_ x :e s, {pastecart M N x y | y :e t}) -> P z) <-> forall x :e A :^: idx M, forall y :e A :^: idx N, x :e s /\ y :e t -> P (pastecart M N x y).
 Admitted.
 
 // HOL Light: cart.ml:581 / EXISTS_IN_PCROSS
 // Source hash: md5:b9d75a090fc50040b27d19413f0c2df8
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem EXISTS_IN_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall P:set -> prop, (exists z :e A :^: idx_n (dimindex M + dimindex N), z :e (\/_ x :e s, {pastecart M N x y | y :e t}) /\ P z) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, x :e s /\ (y :e t /\ P (pastecart M N x y)).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem EXISTS_IN_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall P:set -> prop, (exists z :e A :^: idx_n (dimindex M + dimindex N), z :e (\/_ x :e s, {pastecart M N x y | y :e t}) /\ P z) <-> exists x :e A :^: idx M, exists y :e A :^: idx N, x :e s /\ (y :e t /\ P (pastecart M N x y)).
 Admitted.
 
 // HOL Light: cart.ml:586 / PASTECART_IN_PCROSS
 // Source hash: md5:5519d9a3f604fa1e01459dcf9f17cbb7
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PASTECART_IN_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall x :e A :^: idx M, forall y :e A :^: idx N, pastecart M N x y :e (\/_ x :e s, {pastecart M N x y | y :e t}) <-> x :e s /\ y :e t.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PASTECART_IN_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall x :e A :^: idx M, forall y :e A :^: idx N, pastecart M N x y :e (\/_ x :e s, {pastecart M N x y | y :e t}) <-> x :e s /\ y :e t.
 Admitted.
 
 // HOL Light: cart.ml:590 / PCROSS_EQ_EMPTY
 // Source hash: md5:aec27866ecd08507b739be96df61dc0e
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_EQ_EMPTY : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) = Empty <-> s = Empty \/ t = Empty.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_EQ_EMPTY : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) = Empty <-> s = Empty \/ t = Empty.
 Admitted.
 
 // HOL Light: cart.ml:594 / PCROSS_EMPTY
 // Source hash: md5:9ac51b926d6b0e134aa418d49e786547
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_EMPTY : forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, (\/_ x :e s, {pastecart M N x y | y :e Empty}) = Empty) /\ forall t c= A :^: idx N, (\/_ x :e Empty, {pastecart M N x y | y :e t}) = Empty.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_EMPTY : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, (\/_ x :e s, {pastecart M N x y | y :e Empty}) = Empty) /\ forall t c= A :^: idx N, (\/_ x :e Empty, {pastecart M N x y | y :e t}) = Empty.
 Admitted.
 
 // HOL Light: cart.ml:599 / PCROSS_SING
 // Source hash: md5:5a48e2461c22736e0c34cb481388dda6
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_SING : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (\/_ x0 :e {x}, {pastecart M N x0 y0 | y0 :e {y}}) = {pastecart M N x y}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_SING : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx M, forall y :e A :^: idx N, (\/_ x0 :e {x}, {pastecart M N x0 y0 | y0 :e {y}}) = {pastecart M N x y}.
 Admitted.
 
 // HOL Light: cart.ml:604 / SUBSET_PCROSS
 // Source hash: md5:7076fe873cf40994e6b8cf4f6e8fc324
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem SUBSET_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) c= (\/_ x :e s', {pastecart M N x y | y :e t'}) <-> s = Empty \/ (t = Empty \/ s c= s' /\ t c= t').
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem SUBSET_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) c= (\/_ x :e s', {pastecart M N x y | y :e t'}) <-> s = Empty \/ (t = Empty \/ s c= s' /\ t c= t').
 Admitted.
 
 // HOL Light: cart.ml:611 / PCROSS_MONO
 // Source hash: md5:26edf076c18f053a8eb2e451ae39276c
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_MONO : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, s c= s' /\ t c= t' -> (\/_ x :e s, {pastecart M N x y | y :e t}) c= \/_ x :e s', {pastecart M N x y | y :e t'}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_MONO : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, s c= s' /\ t c= t' -> (\/_ x :e s, {pastecart M N x y | y :e t}) c= \/_ x :e s', {pastecart M N x y | y :e t'}.
 Admitted.
 
 // HOL Light: cart.ml:616 / PCROSS_EQ
@@ -532,8 +532,8 @@ Admitted.
 
 // HOL Light: cart.ml:622 / UNIV_PCROSS_UNIV
 // Source hash: md5:3441e60d806d8492ac377d9acc2edc65
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem UNIV_PCROSS_UNIV : forall A M N:set, M <> Empty -> N <> Empty -> (\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N}) = A :^: idx_n (dimindex M + dimindex N).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem UNIV_PCROSS_UNIV : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (\/_ x :e A :^: idx M, {pastecart M N x y | y :e A :^: idx N}) = A :^: idx_n (dimindex M + dimindex N).
 Admitted.
 
 // HOL Light: cart.ml:626 / HAS_SIZE_PCROSS
@@ -568,26 +568,26 @@ Admitted.
 
 // HOL Light: cart.ml:674 / PCROSS_INTER
 // Source hash: md5:e18b66815ca8b5d95550d6d271cc2e0e
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_INTER : forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t :/\: u}) = (\/_ x :e s, {pastecart M N x y | y :e t}) :/\: \/_ x :e s, {pastecart M N x y | y :e u}) /\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\/_ x :e s :/\: t, {pastecart M N x y | y :e u}) = (\/_ x :e s, {pastecart M N x y | y :e u}) :/\: \/_ x :e t, {pastecart M N x y | y :e u}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_INTER : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t :/\: u}) = (\/_ x :e s, {pastecart M N x y | y :e t}) :/\: \/_ x :e s, {pastecart M N x y | y :e u}) /\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\/_ x :e s :/\: t, {pastecart M N x y | y :e u}) = (\/_ x :e s, {pastecart M N x y | y :e u}) :/\: \/_ x :e t, {pastecart M N x y | y :e u}.
 Admitted.
 
 // HOL Light: cart.ml:682 / PCROSS_UNION
 // Source hash: md5:66504b072fc4aef85c50f35c8cfebe7c
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_UNION : forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t :\/: u}) = (\/_ x :e s, {pastecart M N x y | y :e t}) :\/: \/_ x :e s, {pastecart M N x y | y :e u}) /\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\/_ x :e s :\/: t, {pastecart M N x y | y :e u}) = (\/_ x :e s, {pastecart M N x y | y :e u}) :\/: \/_ x :e t, {pastecart M N x y | y :e u}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_UNION : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t :\/: u}) = (\/_ x :e s, {pastecart M N x y | y :e t}) :\/: \/_ x :e s, {pastecart M N x y | y :e u}) /\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\/_ x :e s :\/: t, {pastecart M N x y | y :e u}) = (\/_ x :e s, {pastecart M N x y | y :e u}) :\/: \/_ x :e t, {pastecart M N x y | y :e u}.
 Admitted.
 
 // HOL Light: cart.ml:690 / PCROSS_DIFF
 // Source hash: md5:0d8964837a044408993a3f0bfcea3da8
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem PCROSS_DIFF : forall A M N:set, M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t :\: u}) = (\/_ x :e s, {pastecart M N x y | y :e t}) :\: \/_ x :e s, {pastecart M N x y | y :e u}) /\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\/_ x :e s :\: t, {pastecart M N x y | y :e u}) = (\/_ x :e s, {pastecart M N x y | y :e u}) :\: \/_ x :e t, {pastecart M N x y | y :e u}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem PCROSS_DIFF : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> (forall s c= A :^: idx M, forall t u c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t :\: u}) = (\/_ x :e s, {pastecart M N x y | y :e t}) :\: \/_ x :e s, {pastecart M N x y | y :e u}) /\ forall s t c= A :^: idx M, forall u c= A :^: idx N, (\/_ x :e s :\: t, {pastecart M N x y | y :e u}) = (\/_ x :e s, {pastecart M N x y | y :e u}) :\: \/_ x :e t, {pastecart M N x y | y :e u}.
 Admitted.
 
 // HOL Light: cart.ml:698 / INTER_PCROSS
 // Source hash: md5:006b27b152528c9897c1c1f338f459a2
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem INTER_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s s' c= A :^: idx M, forall t t' c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) :/\: (\/_ x :e s', {pastecart M N x y | y :e t'}) = \/_ x :e s :/\: s', {pastecart M N x y | y :e t :/\: t'}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem INTER_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s s' c= A :^: idx M, forall t t' c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) :/\: (\/_ x :e s', {pastecart M N x y | y :e t'}) = \/_ x :e s :/\: s', {pastecart M N x y | y :e t :/\: t'}.
 Admitted.
 
 // HOL Light: cart.ml:704 / PCROSS_UNIONS
@@ -616,7 +616,7 @@ Admitted.
 
 // HOL Light: cart.ml:729 / DISJOINT_PCROSS
 // Source hash: md5:99147df9e75446aca97f8965affc61d9
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_sum_idx)
-Theorem DISJOINT_PCROSS : forall A M N:set, M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) :/\: (\/_ x :e s', {pastecart M N x y | y :e t'}) = Empty <-> s :/\: s' = Empty \/ t :/\: t' = Empty.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_sum_idx)
+Theorem DISJOINT_PCROSS : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall s c= A :^: idx M, forall t c= A :^: idx N, forall s' c= A :^: idx M, forall t' c= A :^: idx N, (\/_ x :e s, {pastecart M N x y | y :e t}) :/\: (\/_ x :e s', {pastecart M N x y | y :e t'}) = Empty <-> s :/\: s' = Empty \/ t :/\: t' = Empty.
 Admitted.
 

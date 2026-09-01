@@ -130,8 +130,8 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:126 / INVOLUTION_MOVES_2_IS_SWAP
 // Source hash: md5:10bd5e936e4e2c36a8440f1c26a62f16
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_prod_setprod)
-Theorem INVOLUTION_MOVES_2_IS_SWAP : forall A:set, A <> Empty -> forall s c= A, forall p:set -> set, (forall x :e A, p x :e A) -> finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ ((forall x :e A, x :e s -> p (p x) = x) /\ finite_cardinality {x :e A | x :e s /\ ~ p x = x} = 2)) -> exists a b :e A, a :e s /\ (b :e s /\ (~ a = b /\ forall x :e A, x :e s -> p x = swap A (a,b) x)).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_prod_setprod)
+Theorem INVOLUTION_MOVES_2_IS_SWAP : forall A:set, forall s c= A, forall p:set -> set, (forall x :e A, p x :e A) -> finite s /\ ((forall x :e A, x :e s -> p x :e s) /\ ((forall x :e A, x :e s -> p (p x) = x) /\ finite_cardinality {x :e A | x :e s /\ ~ p x = x} = 2)) -> exists a b :e A, a :e s /\ (b :e s /\ (~ a = b /\ forall x :e A, x :e s -> p x = swap A (a,b) x)).
 Admitted.
 
 // HOL Light: Library/permutations.ml:141 / PERMUTES_IN_IMAGE
@@ -172,8 +172,8 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:168 / PERMUTES_SUBSET
 // Source hash: md5:a5c119709523b1d4bf20b631905b5442
-// Status: generalization_required (bridges: empty_case:A)
-Theorem PERMUTES_SUBSET : forall A:set, forall p:set -> set, (forall x :e A, p x :e A) -> forall s t c= A, permutes A p s /\ s c= t -> permutes A p t.
+// Status: exact_native
+Theorem PERMUTES_SUBSET : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s t c= A, permutes A p s /\ s c= t -> permutes A p t.
 Admitted.
 
 // HOL Light: Library/permutations.ml:172 / PERMUTES_EMPTY
@@ -208,8 +208,8 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:192 / PERMUTES_SUPERSET
 // Source hash: md5:61136862c4b21ae71f030ce71ce6fadb
-// Status: generalization_required (bridges: empty_case:A)
-Theorem PERMUTES_SUPERSET : forall A:set, forall p:set -> set, (forall x :e A, p x :e A) -> forall s t c= A, permutes A p s /\ (forall x :e A, x :e s :\: t -> p x = x) -> permutes A p t.
+// Status: exact_native
+Theorem PERMUTES_SUPERSET : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> forall s t c= A, permutes A p s /\ (forall x :e A, x :e s :\: t -> p x = x) -> permutes A p t.
 Admitted.
 
 // HOL Light: Library/permutations.ml:197 / PERMUTES_BIJECTIONS
@@ -616,8 +616,8 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:892 / PERMUTATION_FINITE_SUPPORT
 // Source hash: md5:c5b4a221279f1db0d6e17085e4a5e1e7
-// Status: transport_required (bridges: hol_finite_finite)
-Theorem PERMUTATION_FINITE_SUPPORT : forall A:set, A <> Empty -> forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> finite {x :e A | ~ p x = x}.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
+Theorem PERMUTATION_FINITE_SUPPORT : forall A:set, forall p:set -> set, (forall x :e A, p x :e A) -> permutation A p -> finite {x :e A | ~ p x = x}.
 Admitted.
 
 // HOL Light: Library/permutations.ml:903 / PERMUTATION_LEMMA
@@ -814,8 +814,8 @@ Admitted.
 
 // HOL Light: Library/permutations.ml:1316 / CARD_EVEN_PERMUTATIONS
 // Source hash: md5:0120b7286dfde8a2c862da208d0af416
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_fact_factorial, hol_finite_finite, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
-Theorem CARD_EVEN_PERMUTATIONS : forall A:set, A <> Empty -> forall s c= A, finite s /\ 2 <= finite_cardinality s -> 2 * finite_cardinality {p :e A :^: A | permutes A (fun x:set => p x) s /\ evenperm A (fun x:set => p x)} = factorial (finite_cardinality s).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_fact_factorial, hol_finite_finite, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem CARD_EVEN_PERMUTATIONS : forall A:set, forall s c= A, finite s /\ 2 <= finite_cardinality s -> 2 * finite_cardinality {p :e A :^: A | permutes A (fun x:set => p x) s /\ evenperm A (fun x:set => p x)} = factorial (finite_cardinality s).
 Admitted.
 
 // HOL Light: Library/permutations.ml:1361 / PERMUTES_INVOLUTION

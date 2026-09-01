@@ -658,8 +658,8 @@ Admitted.
 
 // HOL Light: Multivariate/integration.ml:1683 / FINE_SUBSET
 // Source hash: md5:9611cffa743c87cb99b17082c509d07b
-// Status: generalization_required (bridges: empty_case:A, hol_prod_setprod)
-Theorem FINE_SUBSET : forall A B:set, B <> Empty -> forall d:set -> set -> prop, forall p q c= A :*: Power B, p c= q /\ fine B A d q -> fine B A d p.
+// Status: transport_required (bridges: hol_prod_setprod)
+Theorem FINE_SUBSET : forall A B:set, A <> Empty -> B <> Empty -> forall d:set -> set -> prop, forall p q c= A :*: Power B, p c= q /\ fine B A d q -> fine B A d p.
 Admitted.
 
 // HOL Light: Multivariate/integration.ml:1695 / has_integral_compact_interval

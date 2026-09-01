@@ -2045,6 +2045,20 @@ pilot round, since those artifacts exist only while a round runs.
 Baseline: 17 526 theorems, 17 138 public statements already translate (manifest committed);
 no literal/certification layer yet (`cert` empty, 388 `pending_mapping`).
 
+Status 2026-09-01, first certification pass: the literal/cert layer generates in ~22 s;
+the base needed two new subtype-carrier nonemptiness proofs — `hl_ty_group_nonempty`
+(trivial group on `choose_in A (fun _ => True)`; `mglib/literal/carriers_multivariate.mg`,
+via local `hl_FST_pair2`/`hl_SND_pair2`/`grp_choose_unique` helpers derived from
+`hl_select_eq`, since `compat.mg` composes later) and `hl_ty_multivector_nonempty`
+(empty index set; `mglib/literal/carriers2_multivariate.mg`) — plus per-profile carrier
+slots in `tools/check_cert.sh` and a typing-lemma naming fix in `lib/bridge.ml`
+(`hl_<c>_in` collides with the literal constant of HOL's `<c>_in` for nine topology
+constants; such lemmas are now `hl_<c>_in1`; core and standard outputs byte-identical).
+**Result: 3 305 of 17 138 public statements `transport_checked` (48 shards, 0 failures,
+0 mismatches).**  The remaining 13 833 `bridge_unsupported` need the §24.2(2) compat
+campaign: 515 distinct missing compat lemmas, the top thirty (linear, group carrier,
+topspace, convex, continuity, open/closed/compact/bounded, ...) covering the bulk.
+
 1. Close `pending_mapping`: grow `mappings/multivariate.json` from the review page,
    concept classes first (vector/matrix/topology constants); unknowns stay `pending`.
 2. Generate and check the literal layer and bridges *incrementally by shard*: at this

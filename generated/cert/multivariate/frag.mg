@@ -1,0 +1,240 @@
+// hol2mg certification module (private): shard frag of profile multivariate.
+// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),
+// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,
+// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
+
+// HOL Light: Library/frag.ml:5 / frag_tybij   (hash md5:f94e2843347f90420904dde878042c4f)
+// not bridged: 
+Theorem frag_tybij : forall A:set, (forall a :e frag A, a = a) /\ forall r :e int :^: A, finite {x :e A | ~ r x = 0} <-> r = r.
+Admitted.
+
+// HOL Light: Library/frag.ml:12 / frag_support   (hash md5:edc1457054e0ab10f576f6c3a4a56347)
+// not bridged: 
+Theorem frag_support_thm : forall A:set, A <> Empty -> forall x :e frag A, frag_support A x = {a :e A | ~ x a = 0}.
+Admitted.
+
+// HOL Light: Library/frag.ml:15 / frag_0   (hash md5:26c5d318ab10b11559b7ba8bb9877a6b)
+// not bridged: 
+Theorem frag_0_thm : forall A:set, A <> Empty -> frag_0 A = fun x :e A => 0.
+Admitted.
+
+// HOL Light: Library/frag.ml:18 / frag_of   (hash md5:df74599eb41ad7f06282a24c4b085ca6)
+// not bridged: 
+Theorem frag_of_thm : forall A:set, forall c :e A, frag_of A c = fun a :e A => if a = c then 1 else 0.
+Admitted.
+
+// HOL Light: Library/frag.ml:21 / frag_neg   (hash md5:505c4f84b144f6add08782838b129726)
+// not bridged: 
+Theorem frag_neg_thm : forall A:set, A <> Empty -> forall x :e frag A, frag_neg A x = fun a :e A => - x a.
+Admitted.
+
+// HOL Light: Library/frag.ml:24 / frag_cmul   (hash md5:2ba4b203fd93e0583b1f279f506e126e)
+// not bridged: 
+Theorem frag_cmul_thm : forall A:set, A <> Empty -> forall c :e int, forall x :e frag A, frag_cmul A c x = fun a :e A => c * x a.
+Admitted.
+
+// HOL Light: Library/frag.ml:27 / frag_add   (hash md5:a82fd610b3623be46bb4fe8a330899d4)
+// not bridged: 
+Theorem frag_add_thm : forall A:set, A <> Empty -> forall x y :e frag A, frag_add A x y = fun a :e A => x a + y a.
+Admitted.
+
+// HOL Light: Library/frag.ml:30 / frag_sub   (hash md5:e6f78064d23dbbd11c22d8f111771078)
+// not bridged: 
+Theorem frag_sub_thm : forall A:set, A <> Empty -> forall x y :e frag A, frag_sub A x y = fun a :e A => x a + - y a.
+Admitted.
+
+// HOL Light: Library/frag.ml:33 / FRAG_EQ   (hash md5:7f1ad9b989fa9586e455aafbe70d56ab)
+// not bridged: 
+Theorem FRAG_EQ : forall A:set, A <> Empty -> forall c1 c2 :e frag A, c1 = c2 <-> c1 = c2.
+Admitted.
+
+// HOL Light: Library/frag.ml:37 / DEST_FRAG_0   (hash md5:7647a644a73a2f6c0914602be1358d41)
+// not bridged: 
+Theorem DEST_FRAG_0 : forall A:set, forall x :e A, frag_0 A x = 0.
+Admitted.
+
+// HOL Light: Library/frag.ml:42 / DEST_FRAG_OF   (hash md5:5d05f4c2f34f56ca8adec79c7b490d6d)
+// not bridged: 
+Theorem DEST_FRAG_OF : forall A:set, forall c a :e A, frag_of A c a = if a = c then 1 else 0.
+Admitted.
+
+// HOL Light: Library/frag.ml:50 / DEST_FRAG_NEG   (hash md5:32acf233a18b32692fe2829746bff710)
+// not bridged: 
+Theorem DEST_FRAG_NEG : forall A:set, forall x :e frag A, forall a :e A, frag_neg A x a = - x a.
+Admitted.
+
+// HOL Light: Library/frag.ml:55 / DEST_FRAG_CMUL   (hash md5:02500476abd5734ca388c9311df2f14f)
+// not bridged: 
+Theorem DEST_FRAG_CMUL : forall A:set, forall c :e int, forall x :e frag A, forall a :e A, frag_cmul A c x a = c * x a.
+Admitted.
+
+// HOL Light: Library/frag.ml:63 / DEST_FRAG_ADD   (hash md5:d17824c43518a82eb98c53234ca182b4)
+// not bridged: 
+Theorem DEST_FRAG_ADD : forall A:set, forall x y :e frag A, forall a :e A, frag_add A x y a = x a + y a.
+Admitted.
+
+// HOL Light: Library/frag.ml:72 / DEST_FRAG_SUB   (hash md5:2aca7a2c07bb9d7e3ad4a5e54177fa98)
+// not bridged: 
+Theorem DEST_FRAG_SUB : forall A:set, forall x y :e frag A, forall a :e A, frag_sub A x y a = x a + - y a.
+Admitted.
+
+// HOL Light: Library/frag.ml:81 / FRAG_OF_NONZERO   (hash md5:415145607584c1890a197478f9183308)
+// not bridged: 
+Theorem FRAG_OF_NONZERO : forall A:set, forall a :e A, ~ frag_of A a = frag_0 A.
+Admitted.
+
+// HOL Light: Library/frag.ml:104 / FINITE_FRAG_SUPPORT   (hash md5:755996d96ac4a7cd70a08c8236c33c60)
+// not bridged: 
+Theorem FINITE_FRAG_SUPPORT : forall A:set, A <> Empty -> forall x :e frag A, finite (frag_support A x).
+Admitted.
+
+// HOL Light: Library/frag.ml:108 / FRAG_SUPPORT_0   (hash md5:4ce09c6cfd506ac34029ef640398c04e)
+// not bridged: 
+Theorem FRAG_SUPPORT_0 : forall A:set, A <> Empty -> frag_support A (frag_0 A) = Empty.
+Admitted.
+
+// HOL Light: Library/frag.ml:112 / FRAG_SUPPORT_OF   (hash md5:3675048f1ba54191d5d31a0bef583a7c)
+// not bridged: 
+Theorem FRAG_SUPPORT_OF : forall A:set, forall a :e A, frag_support A (frag_of A a) = {a}.
+Admitted.
+
+// HOL Light: Library/frag.ml:120 / FRAG_SUPPORT_NEG   (hash md5:c6b8f30f91221487ea0acb2597c15c93)
+// not bridged: 
+Theorem FRAG_SUPPORT_NEG : forall A:set, A <> Empty -> forall x :e frag A, frag_support A (frag_neg A x) = frag_support A x.
+Admitted.
+
+// HOL Light: Library/frag.ml:124 / FRAG_SUPPORT_CMUL   (hash md5:8bf0a6c87d996dc043e73a8fad194805)
+// not bridged: 
+Theorem FRAG_SUPPORT_CMUL : forall A:set, A <> Empty -> forall a :e int, forall x :e frag A, frag_support A (frag_cmul A a x) c= frag_support A x.
+Admitted.
+
+// HOL Light: Library/frag.ml:130 / FRAG_SUPPORT_ADD   (hash md5:fa0aea46917b793ef41af32cf1a704bb)
+// not bridged: 
+Theorem FRAG_SUPPORT_ADD : forall A:set, A <> Empty -> forall x y :e frag A, frag_support A (frag_add A x y) c= frag_support A x :\/: frag_support A y.
+Admitted.
+
+// HOL Light: Library/frag.ml:137 / FRAG_SUPPORT_SUB   (hash md5:22238439b0147f8736174a25ba84510b)
+// not bridged: 
+Theorem FRAG_SUPPORT_SUB : forall A:set, A <> Empty -> forall x y :e frag A, frag_support A (frag_sub A x y) c= frag_support A x :\/: frag_support A y.
+Admitted.
+
+// HOL Light: Library/frag.ml:144 / FRAG_SUPPORT_EQ_EMPTY   (hash md5:c5aff3c5597ed7194caaf95e4a070d90)
+// not bridged: 
+Theorem FRAG_SUPPORT_EQ_EMPTY : forall A:set, A <> Empty -> forall c :e frag A, frag_support A c = Empty <-> c = frag_0 A.
+Admitted.
+
+// HOL Light: Library/frag.ml:150 / FRAG_OF_EQ   (hash md5:c51be5662bf13c2c28fd59277332bda3)
+// not bridged: 
+Theorem FRAG_OF_EQ : forall A:set, forall x y :e A, frag_of A x = frag_of A y <-> x = y.
+Admitted.
+
+// HOL Light: Library/frag.ml:154 / FRAG_ADD_EQ_0   (hash md5:0481f0627fd1728fe83a0b176257cea8)
+// not bridged: 
+Theorem FRAG_ADD_EQ_0 : forall A:set, A <> Empty -> forall c1 c2 :e frag A, frag_support A c1 :/\: frag_support A c2 = Empty /\ frag_add A c1 c2 = frag_0 A -> c1 = frag_0 A /\ c2 = frag_0 A.
+Admitted.
+
+// HOL Light: Library/frag.ml:166 / NEUTRAL_FRAG_ADD   (hash md5:954fd3d86c22c3fa2ce219c40bbf9d6b)
+// not bridged: 
+Theorem NEUTRAL_FRAG_ADD : forall A:set, A <> Empty -> neutral_of (frag A) (frag_add A) = frag_0 A.
+Admitted.
+
+// HOL Light: Library/frag.ml:172 / MONOIDAL_FRAG_ADD   (hash md5:39b91b3246efb27f3a48bdf03ed09625)
+// not bridged: 
+Theorem MONOIDAL_FRAG_ADD : forall A:set, A <> Empty -> (forall x y :e frag A, frag_add A x y = frag_add A y x) /\ (forall x y z :e frag A, frag_add A x (frag_add A y z) = frag_add A (frag_add A x y) z) /\ forall x :e frag A, frag_add A (neutral_of (frag A) (frag_add A)) x = x.
+Admitted.
+
+// HOL Light: Library/frag.ml:176 / FRAG_CMUL_SUM   (hash md5:ebd946d5fd2494d123892b41b4343c86)
+// not bridged: 
+Theorem FRAG_CMUL_SUM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e frag A) -> forall k c= B, forall a :e int, frag_cmul A a (iterate_op (frag A) (frag_add A) k f) = iterate_op (frag A) (frag_add A) k (fun b:set => frag_cmul A a (f b)).
+Admitted.
+
+// HOL Light: Library/frag.ml:198 / FRAG_SUPPORT_SUM   (hash md5:47dba8dccdded9d6d7d139cf25188f39)
+// not bridged: 
+Theorem FRAG_SUPPORT_SUM : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e B, f x :e frag A) -> forall k c= B, frag_support A (iterate_op (frag A) (frag_add A) k f) c= Union {frag_support A (f i) | i :e B, i :e k}.
+Admitted.
+
+// HOL Light: Library/frag.ml:220 / frag_extend   (hash md5:0d6967de68309fd6895fcf28bb33e20a)
+// not bridged: 
+Theorem frag_extend_thm : forall A B:set, A <> Empty -> B <> Empty -> forall x :e frag A, forall f:set -> set, (forall x0 :e A, f x0 :e frag B) -> frag_extend A B f x = iterate_op (frag B) (frag_add B) (frag_support A x) (fun a:set => frag_cmul B (x a) (f a)).
+Admitted.
+
+// HOL Light: Library/frag.ml:225 / FRAG_EXTEND   (hash md5:c88d85c5ff610ce98e5ad9736f6908cd)
+// not bridged: 
+Theorem FRAG_EXTEND : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall x :e frag A, frag_extend A B f x = iterate_op (frag B) (frag_add B) A (fun a:set => frag_cmul B (x a) (f a)).
+Admitted.
+
+// HOL Light: Library/frag.ml:235 / FRAG_EXTEND_0   (hash md5:7e2df2a3c79ecf1fed46a18998fcf6ca)
+// not bridged: 
+Theorem FRAG_EXTEND_0 : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> frag_extend A B f (frag_0 A) = frag_0 B.
+Admitted.
+
+// HOL Light: Library/frag.ml:241 / FRAG_EXTEND_OF   (hash md5:d71b040e5b9e1738c3aca9f0a62ee9eb)
+// not bridged: 
+Theorem FRAG_EXTEND_OF : forall A B:set, B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall a :e A, frag_extend A B f (frag_of A a) = f a.
+Admitted.
+
+// HOL Light: Library/frag.ml:248 / FRAG_EXTEND_CMUL   (hash md5:f251deb2e470446fe0195e69e4e44130)
+// not bridged: 
+Theorem FRAG_EXTEND_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall c :e int, forall x :e frag A, frag_extend A B f (frag_cmul A c x) = frag_cmul B c (frag_extend A B f x).
+Admitted.
+
+// HOL Light: Library/frag.ml:257 / FRAG_EXTEND_NEG   (hash md5:272d50e05818aaadb49401494823627a)
+// not bridged: 
+Theorem FRAG_EXTEND_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall x :e frag A, frag_extend A B f (frag_neg A x) = frag_neg B (frag_extend A B f x).
+Admitted.
+
+// HOL Light: Library/frag.ml:263 / FRAG_EXTEND_ADD   (hash md5:668234617e59c0714fd31df15b73415a)
+// not bridged: 
+Theorem FRAG_EXTEND_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall x y :e frag A, frag_extend A B f (frag_add A x y) = frag_add B (frag_extend A B f x) (frag_extend A B f y).
+Admitted.
+
+// HOL Light: Library/frag.ml:282 / FRAG_EXTEND_SUB   (hash md5:dade3d20efc6c8007096ce40de888f91)
+// not bridged: 
+Theorem FRAG_EXTEND_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall x y :e frag A, frag_extend A B f (frag_sub A x y) = frag_sub B (frag_extend A B f x) (frag_extend A B f y).
+Admitted.
+
+// HOL Light: Library/frag.ml:290 / FRAG_EXTEND_SUM   (hash md5:7513318f437b0ba02c2c5d1fb7ef954b)
+// not bridged: 
+Theorem FRAG_EXTEND_SUM : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall g:set -> set, (forall x :e C, g x :e frag A) -> forall k c= C, finite k -> frag_extend A B f (iterate_op (frag A) (frag_add A) k g) = iterate_op (frag B) (frag_add B) k (fun x:set => frag_extend A B f (g x)).
+Admitted.
+
+// HOL Light: Library/frag.ml:300 / FRAG_EXTEND_EQ   (hash md5:0bbbfaf992fea31cfb0f5473a5ffba07)
+// not bridged: 
+Theorem FRAG_EXTEND_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e A, g x :e frag B) -> forall h:set -> set, (forall x :e A, h x :e frag B) -> forall c :e frag A, (forall f :e A, f :e frag_support A c -> g f = h f) -> frag_extend A B g c = frag_extend A B h c.
+Admitted.
+
+// HOL Light: Library/frag.ml:308 / FRAG_EXTEND_EQ_0   (hash md5:5153eaf08f1dfc07c6869c9e752326a6)
+// not bridged: 
+Theorem FRAG_EXTEND_EQ_0 : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall c :e frag A, (forall a :e A, a :e frag_support A c -> f a = frag_0 B) -> frag_extend A B f c = frag_0 B.
+Admitted.
+
+// HOL Light: Library/frag.ml:318 / FRAG_SUPPORT_FRAG_EXTEND   (hash md5:1a835c1494fd122abecdd797786fd4c3)
+// not bridged: 
+Theorem FRAG_SUPPORT_FRAG_EXTEND : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e A, f x :e frag B) -> forall c :e frag A, frag_support B (frag_extend A B f c) c= Union {frag_support B (f a) | a :e A, a :e frag_support A c}.
+Admitted.
+
+// HOL Light: Library/frag.ml:328 / FRAG_EXPANSION   (hash md5:3cb80b38a34657054b5099e1baa00519)
+// not bridged: 
+Theorem FRAG_EXPANSION : forall A:set, A <> Empty -> forall x :e frag A, x = frag_extend A A (frag_of A) x.
+Admitted.
+
+// HOL Light: Library/frag.ml:348 / FRAG_CLOSURE_SUB_CMUL   (hash md5:b2a4350d71e05f418840a8875e9f799b)
+// not bridged: 
+Theorem FRAG_CLOSURE_SUB_CMUL : forall A:set, A <> Empty -> forall P:set -> prop, P (frag_0 A) /\ (forall c1 c2 :e frag A, P c1 /\ P c2 -> P (frag_sub A c1 c2)) -> forall a :e int, forall c :e frag A, P c -> P (frag_cmul A a c).
+Admitted.
+
+// HOL Light: Library/frag.ml:370 / FRAG_INDUCTION   (hash md5:37a73729baebbf60b215b9397971db86)
+// not bridged: 
+Theorem FRAG_INDUCTION : forall A:set, A <> Empty -> forall P:set -> prop, forall s c= A, P (frag_0 A) /\ ((forall a :e A, a :e s -> P (frag_of A a)) /\ (forall c1 c2 :e frag A, P c1 /\ P c2 -> P (frag_sub A c1 c2))) -> forall c :e frag A, frag_support A c c= s -> P c.
+Admitted.
+
+// HOL Light: Library/frag.ml:392 / FRAG_EXTEND_COMPOSE   (hash md5:42aed3f45de2b1fc3ac7a2d34ddf1c94)
+// not bridged: 
+Theorem FRAG_EXTEND_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e B, f x :e frag C) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag A, frag_extend B C f (frag_extend A B (fun x:set => frag_of B (g x)) c) = frag_extend A C (fun x:set => f (g x)) c.
+Admitted.
+
+// HOL Light: Library/frag.ml:400 / FRAG_SPLIT   (hash md5:35abe568d23d68a5598b0c2ae89c1f43)
+// not bridged: 
+Theorem FRAG_SPLIT : forall A:set, A <> Empty -> forall c :e frag A, forall s t c= A, frag_support A c c= s :\/: t -> exists d e0 :e frag A, frag_support A d c= s /\ (frag_support A e0 c= t /\ frag_add A d e0 = c).
+Admitted.
+

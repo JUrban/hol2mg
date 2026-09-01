@@ -23,13 +23,13 @@ Admitted.
 // HOL Light: Multivariate/derivatives.ml:52 / HAS_DERIVATIVE_WITHIN
 // Source hash: md5:d24749c772378d1fde6c84fa146397cf
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem HAS_DERIVATIVE_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall f':set -> set, (forall x0 :e R :^: idx B, f' x0 :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, has_derivative A B f f' (within (R :^: idx B) (at_hl B x) s) <-> linear B A f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, x' :e s /\ (0 < vector_norm B (vector_sub B x' x) /\ vector_norm B (vector_sub B x' x) < d) -> vector_norm A (vector_sub A (vector_sub A (f x') (f x)) (f' (vector_sub B x' x))) :/: vector_norm B (vector_sub B x' x) < e0.
+Theorem HAS_DERIVATIVE_WITHIN : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, has_derivative A B f f' (within (R :^: idx B) (at_hl B x) s) <-> linear B A f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, x' :e s /\ (0 < vector_norm B (vector_sub B x' x) /\ vector_norm B (vector_sub B x' x) < d) -> vector_norm A (vector_sub A (vector_sub A (f x') (f x)) (f' (vector_sub B x' x))) :/: vector_norm B (vector_sub B x' x) < e0.
 Admitted.
 
 // HOL Light: Multivariate/derivatives.ml:66 / HAS_DERIVATIVE_AT
 // Source hash: md5:142a96245616205601990ee30109fb43
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem HAS_DERIVATIVE_AT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall f':set -> set, (forall x0 :e R :^: idx B, f' x0 :e R :^: idx A) -> forall x :e R :^: idx B, has_derivative A B f f' (at_hl B x) <-> linear B A f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, 0 < vector_norm B (vector_sub B x' x) /\ vector_norm B (vector_sub B x' x) < d -> vector_norm A (vector_sub A (vector_sub A (f x') (f x)) (f' (vector_sub B x' x))) :/: vector_norm B (vector_sub B x' x) < e0.
+Theorem HAS_DERIVATIVE_AT : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall f':set -> set, (forall x :e R :^: idx B, f' x :e R :^: idx A) -> forall x :e R :^: idx B, has_derivative A B f f' (at_hl B x) <-> linear B A f' /\ forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, 0 < vector_norm B (vector_sub B x' x) /\ vector_norm B (vector_sub B x' x) < d -> vector_norm A (vector_sub A (vector_sub A (f x') (f x)) (f' (vector_sub B x' x))) :/: vector_norm B (vector_sub B x' x) < e0.
 Admitted.
 
 // HOL Light: Multivariate/derivatives.ml:77 / HAS_DERIVATIVE_AT_WITHIN
@@ -1187,7 +1187,7 @@ Admitted.
 // HOL Light: Multivariate/derivatives.ml:5463 / RESTRICTION_HAS_DERIVATIVE
 // Source hash: md5:939f3a0d88d9a2f7e7421d06065cf3f8
 // Status: transport_required (bridges: choose_in_spec, hol_cart_setexp, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem RESTRICTION_HAS_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall s c= R :^: idx 1, forall x :e R :^: idx 1, x :e s -> (has_vector_derivative N (fun x:set => if x :e s then f x else choose_in (R :^: idx N) (fun y:set => True)) f' (within (R :^: idx 1) (at_hl 1 x) s) <-> has_vector_derivative N f f' (within (R :^: idx 1) (at_hl 1 x) s)).
+Theorem RESTRICTION_HAS_DERIVATIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx N) -> forall f' :e R :^: idx N, forall s c= R :^: idx 1, forall x :e R :^: idx 1, x :e s -> (has_vector_derivative N (fun x:set => if x :e s then f x else choose_in (R :^: idx N) (fun y:set => False)) f' (within (R :^: idx 1) (at_hl 1 x) s) <-> has_vector_derivative N f f' (within (R :^: idx 1) (at_hl 1 x) s)).
 Admitted.
 
 // HOL Light: Multivariate/derivatives.ml:5480 / BAIRE1_VECTOR_DERIVATIVE

@@ -52,8 +52,8 @@ Admitted.
 
 // HOL Light:  / APPROACHABLE_LT_LE
 // Source hash: md5:54afdab4ade10def5b20fc16157570d6
-// Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem APPROACHABLE_LT_LE : forall A:set, forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> ((exists d :e R, 0 < d /\ forall x :e A, f x < d -> P x) <-> exists d :e R, 0 < d /\ forall x :e A, f x <= d -> P x).
+// Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
+Theorem APPROACHABLE_LT_LE : forall A:set, A <> Empty -> forall P:set -> prop, forall f:set -> set, (forall x :e A, f x :e R) -> ((exists d :e R, 0 < d /\ forall x :e A, f x < d -> P x) <-> exists d :e R, 0 < d /\ forall x :e A, f x <= d -> P x).
 Admitted.
 
 // HOL Light:  / ARBITRARY_INTERSECTION_OF_RELATIVE_TO
@@ -136,14 +136,14 @@ Admitted.
 
 // HOL Light:  / COMPACT_IN_IMP_TOTALLY_BOUNDED_IN_EXPLICIT
 // Source hash: md5:5680bb063b2f944f57970baf7961d0cc
-// Status: transport_required (bridges: hol_finite_finite, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_topology, omega_Subq_R)
-Theorem COMPACT_IN_IMP_TOTALLY_BOUNDED_IN_EXPLICIT : forall A:set, A <> Empty -> forall m :e metric A, forall s c= A, forall e0 :e R, compact_in A (mtopology A m) s /\ 0 < e0 -> exists k c= A, finite k /\ (k c= s /\ s c= Union {mball A m (x,e0) | x :e A, x :e k}).
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_topology, omega_Subq_R)
+Theorem COMPACT_IN_IMP_TOTALLY_BOUNDED_IN_EXPLICIT : forall A:set, forall m :e metric A, forall s c= A, forall e0 :e R, compact_in A (mtopology A m) s /\ 0 < e0 -> exists k c= A, finite k /\ (k c= s /\ s c= Union {mball A m (x,e0) | x :e A, x :e k}).
 Admitted.
 
 // HOL Light:  / COMPACT_IN_SEQUENTIALLY
 // Source hash: md5:0632322df2f76776cb3c9d201b6638ee
 // Status: transport_required (bridges: hol_num_omega, hol_typedef_metric, hol_typedef_net, hol_typedef_topology, nat_lt_SNoLt)
-Theorem COMPACT_IN_SEQUENTIALLY : forall A:set, A <> Empty -> forall m :e metric A, forall s c= A, compact_in A (mtopology A m) s <-> s c= mspace A m /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e s) -> exists l :e A, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (l :e s /\ ((forall m0 n :e omega, m0 < n -> r m0 < r n) /\ limit omega A (mtopology A m) (fun x0:set => x (r x0)) l sequentially)).
+Theorem COMPACT_IN_SEQUENTIALLY : forall A:set, A <> Empty -> forall m :e metric A, forall s c= A, compact_in A (mtopology A m) s <-> s c= mspace A m /\ forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e s) -> exists l :e A, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (l :e s /\ ((forall m0 n :e omega, m0 < n -> r m0 < r n) /\ limit omega A (mtopology A m) (fun x0:set => x (r x0)) l sequentially)).
 Admitted.
 
 // HOL Light:  / COMPLETELY_METRIZABLE_SPACE_PRODUCT_TOPOLOGY
@@ -233,13 +233,13 @@ Admitted.
 // HOL Light:  / CONTINUOUS_WITHIN_SEQUENTIALLY_ALT
 // Source hash: md5:4a13dbc5847d1e9786ca96fcdb2793c2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M a) s) <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s :\: {a}) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M a) s) <-> forall e0 :e R, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s :\: {a}) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
 Admitted.
 
 // HOL Light:  / CONTINUOUS_WITHIN_SEQUENTIALLY_INJ
 // Source hash: md5:cb1e660e38ee18415a478d281e5a792b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, continuous N (R :^: idx M) f (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light:  / CONVERGENT_BOUNDED_INCREASING
@@ -407,37 +407,37 @@ Admitted.
 // HOL Light:  / EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY
 // Source hash: md5:f054ae7a1103797b2d0f5445b47c935e
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_typedef_metric, hol_typedef_net, hol_typedef_topology)
-Theorem EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY : forall A:set, forall met :e metric A, forall P s c= A, forall a :e A, eventually A P (within A (atpointof A (mtopology A met) a) s) <-> forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e s :/\: mspace A met :\: {a}) /\ limit omega A (mtopology A met) x a sequentially -> eventually omega {n :e omega | x n :e P} sequentially.
+Theorem EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY : forall A:set, forall met :e metric A, forall P s c= A, forall a :e A, eventually A P (within A (atpointof A (mtopology A met) a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e s :/\: mspace A met :\: {a}) /\ limit omega A (mtopology A met) x a sequentially -> eventually omega {n :e omega | x n :e P} sequentially.
 Admitted.
 
 // HOL Light:  / EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY_DECREASING
 // Source hash: md5:aad4d33b89c7d473fdee2074e0496f7f
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_net, hol_typedef_topology, nat_lt_SNoLt)
-Theorem EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY_DECREASING : forall A:set, forall met :e metric A, forall P s c= A, forall a :e A, eventually A P (within A (atpointof A (mtopology A met) a) s) <-> forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e s :/\: mspace A met :\: {a}) /\ ((forall m n :e omega, m < n -> mdist A met (x n,a) < mdist A met (x m,a)) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ limit omega A (mtopology A met) x a sequentially)) -> eventually omega {n :e omega | x n :e P} sequentially.
+Theorem EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY_DECREASING : forall A:set, forall met :e metric A, forall P s c= A, forall a :e A, eventually A P (within A (atpointof A (mtopology A met) a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e s :/\: mspace A met :\: {a}) /\ ((forall m n :e omega, m < n -> mdist A met (x n,a) < mdist A met (x m,a)) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ limit omega A (mtopology A met) x a sequentially)) -> eventually omega {n :e omega | x n :e P} sequentially.
 Admitted.
 
 // HOL Light:  / EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY_INJ
 // Source hash: md5:907bb2d49fe31f1a548a9575976046e8
 // Status: generalization_required (bridges: empty_case:A, hol_num_omega, hol_typedef_metric, hol_typedef_net, hol_typedef_topology)
-Theorem EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY_INJ : forall A:set, forall met :e metric A, forall P s c= A, forall a :e A, eventually A P (within A (atpointof A (mtopology A met) a) s) <-> forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e s :/\: mspace A met :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ limit omega A (mtopology A met) x a sequentially) -> eventually omega {n :e omega | x n :e P} sequentially.
+Theorem EVENTUALLY_ATPOINTOF_WITHIN_SEQUENTIALLY_INJ : forall A:set, forall met :e metric A, forall P s c= A, forall a :e A, eventually A P (within A (atpointof A (mtopology A met) a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e s :/\: mspace A met :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ limit omega A (mtopology A met) x a sequentially) -> eventually omega {n :e omega | x n :e P} sequentially.
 Admitted.
 
 // HOL Light:  / EXISTS_DIFF
 // Source hash: md5:7859370bccab7dc8be1d8dbd9464ea9f
-// Status: generalization_required (bridges: empty_case:A)
-Theorem EXISTS_DIFF : forall A:set, forall P:set -> prop, (exists s c= A, P (A :\: s)) <-> exists s c= A, P s.
+// Status: exact_native
+Theorem EXISTS_DIFF : forall A:set, A <> Empty -> forall P:set -> prop, (exists s c= A, P (A :\: s)) <-> exists s c= A, P s.
 Admitted.
 
 // HOL Light:  / EXISTS_MATRIFY
 // Source hash: md5:3b8d7ac1201e43c74ef27dc03cb1624a
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem EXISTS_MATRIFY : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx B :^: idx C, P x) <-> exists x :e A :^: idx_n (dimindex C * dimindex B), P (matrify A C B x).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem EXISTS_MATRIFY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx B :^: idx C, P x) <-> exists x :e A :^: idx_n (dimindex C * dimindex B), P (matrify A C B x).
 Admitted.
 
 // HOL Light:  / EXISTS_VECTORIZE
 // Source hash: md5:0d832bd30fef52490f0e3b27205440e6
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem EXISTS_VECTORIZE : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> exists x :e A :^: idx C :^: idx B, P (vectorize A B C x).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem EXISTS_VECTORIZE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (exists x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> exists x :e A :^: idx C :^: idx B, P (vectorize A B C x).
 Admitted.
 
 // HOL Light:  / FGSIGMA_BAIRE_PREIMAGE_OPEN_ALT
@@ -490,26 +490,26 @@ Admitted.
 
 // HOL Light:  / FORALL_DIFF
 // Source hash: md5:2db9d4e153e36aa0f6b1eb8c3cefed1e
-// Status: generalization_required (bridges: empty_case:A)
-Theorem FORALL_DIFF : forall A:set, forall P:set -> prop, (forall s c= A, P (A :\: s)) <-> forall s c= A, P s.
+// Status: exact_native
+Theorem FORALL_DIFF : forall A:set, A <> Empty -> forall P:set -> prop, (forall s c= A, P (A :\: s)) <-> forall s c= A, P s.
 Admitted.
 
 // HOL Light:  / FORALL_DIFF_ALT
 // Source hash: md5:e67eec2c1b4fbdc7ecaeff14b2b6b8a3
-// Status: generalization_required (bridges: empty_case:A)
-Theorem FORALL_DIFF_ALT : forall A:set, forall P:set -> prop, forall u c= A, (forall s c= A, s c= u -> P (u :\: s)) <-> forall s c= A, s c= u -> P s.
+// Status: exact_native
+Theorem FORALL_DIFF_ALT : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= A, (forall s c= A, s c= u -> P (u :\: s)) <-> forall s c= A, s c= u -> P s.
 Admitted.
 
 // HOL Light:  / FORALL_DIFF_GEN
 // Source hash: md5:cb7f859259bbd06218007baa4f116537
-// Status: generalization_required (bridges: empty_case:A)
-Theorem FORALL_DIFF_GEN : forall A:set, forall P:set -> prop, forall u c= A, (forall s c= A, P (u :\: s)) <-> forall s c= A, s c= u -> P s.
+// Status: exact_native
+Theorem FORALL_DIFF_GEN : forall A:set, A <> Empty -> forall P:set -> prop, forall u c= A, (forall s c= A, P (u :\: s)) <-> forall s c= A, s c= u -> P s.
 Admitted.
 
 // HOL Light:  / FORALL_MATRIFY
 // Source hash: md5:f1abbb15565e193b79ae12a618a41fad
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem FORALL_MATRIFY : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (forall x :e A :^: idx B :^: idx C, P x) <-> forall x :e A :^: idx_n (dimindex C * dimindex B), P (matrify A C B x).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem FORALL_MATRIFY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall x :e A :^: idx B :^: idx C, P x) <-> forall x :e A :^: idx_n (dimindex C * dimindex B), P (matrify A C B x).
 Admitted.
 
 // HOL Light:  / FORALL_POS_MONO
@@ -550,8 +550,8 @@ Admitted.
 
 // HOL Light:  / FORALL_VECTORIZE
 // Source hash: md5:4e14865e4dd21d209c6e0c6e13465df7
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem FORALL_VECTORIZE : forall A B C:set, B <> Empty -> C <> Empty -> forall P:set -> prop, (forall x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> forall x :e A :^: idx C :^: idx B, P (vectorize A B C x).
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem FORALL_VECTORIZE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall P:set -> prop, (forall x :e A :^: idx_n (dimindex B * dimindex C), P x) <-> forall x :e A :^: idx C :^: idx B, P (vectorize A B C x).
 Admitted.
 
 // HOL Light:  / FROM_0
@@ -610,8 +610,8 @@ Admitted.
 
 // HOL Light:  / GENERAL_REDUCTION_THEOREM_2
 // Source hash: md5:f5e0fb736c2f6b08dc334c551d3ca0dc
-// Status: generalization_required (bridges: empty_case:A, hol_countable)
-Theorem GENERAL_REDUCTION_THEOREM_2 : forall A:set, forall P:set -> prop, P Empty /\ ((forall s t c= A, P s /\ P t -> P (s :\/: t)) /\ (forall s t c= A, P s /\ P t -> P (s :\: t))) -> forall s t c= A, (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = t) -> exists s' t' c= A, (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = s') /\ ((exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = t') /\ (s' c= s /\ (t' c= t /\ (s' :/\: t' = Empty /\ s' :\/: t' = s :\/: t)))).
+// Status: transport_required (bridges: hol_countable)
+Theorem GENERAL_REDUCTION_THEOREM_2 : forall A:set, A <> Empty -> forall P:set -> prop, P Empty /\ ((forall s t c= A, P s /\ P t -> P (s :\/: t)) /\ (forall s t c= A, P s /\ P t -> P (s :\: t))) -> forall s t c= A, (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = s) /\ (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = t) -> exists s' t' c= A, (exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = s') /\ ((exists u c= Power A, countable u /\ (forall c :e u, P c) /\ Union u = t') /\ (s' c= s /\ (t' c= t /\ (s' :/\: t' = Empty /\ s' :\/: t' = s :\/: t)))).
 Admitted.
 
 // HOL Light:  / GE_REFL
@@ -820,14 +820,14 @@ Admitted.
 
 // HOL Light:  / HOM_BOUNDARY_RESTRICT
 // Source hash: md5:62a8148849543bf0abdb8515515a20e4
-// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology)
-Theorem HOM_BOUNDARY_RESTRICT : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, hom_boundary A p (top,s) = hom_boundary A p (top,topspace A top :/\: s).
+// Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology)
+Theorem HOM_BOUNDARY_RESTRICT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, hom_boundary A p (top,s) = hom_boundary A p (top,topspace A top :/\: s).
 Admitted.
 
 // HOL Light:  / HOM_BOUNDARY_TRIVIAL
 // Source hash: md5:d2635e3bb5622fe8f116b1e103927993
 // Status: transport_required (bridges: choose_in_spec, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology, omega_Subq_int)
-Theorem HOM_BOUNDARY_TRIVIAL : forall A:set, A <> Empty -> forall p :e int, p <= 0 -> forall q :e topology A :*: Power A, forall r c= frag (A :^: (R :^: omega)), hom_boundary A p q r = choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => True).
+Theorem HOM_BOUNDARY_TRIVIAL : forall A:set, A <> Empty -> forall p :e int, p <= 0 -> forall q :e topology A :*: Power A, forall r c= frag (A :^: (R :^: omega)), hom_boundary A p q r = choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => False).
 Admitted.
 
 // HOL Light:  / HOM_INDUCED
@@ -857,7 +857,7 @@ Admitted.
 // HOL Light:  / HOM_INDUCED_TRIVIAL
 // Source hash: md5:063a5b6d5d7cce0c77e7a5dda58f74df
 // Status: transport_required (bridges: choose_in_spec, hol_int_int, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_frag, hol_typedef_topology, omega_Subq_int)
-Theorem HOM_INDUCED_TRIVIAL : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, p < 0 -> forall q :e topology A :*: Power A, forall r :e topology B :*: Power B, forall s :e B :^: A, forall t c= frag (A :^: (R :^: omega)), hom_induced A B p q r s t = choose_in (Power (frag (B :^: (R :^: omega)))) (fun x:set => True).
+Theorem HOM_INDUCED_TRIVIAL : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, p < 0 -> forall q :e topology A :*: Power A, forall r :e topology B :*: Power B, forall s :e B :^: A, forall t c= frag (A :^: (R :^: omega)), hom_induced A B p q r s t = choose_in (Power (frag (B :^: (R :^: omega)))) (fun x:set => False).
 Admitted.
 
 // HOL Light:  / HULLS_EQ
@@ -1384,8 +1384,8 @@ Admitted.
 
 // HOL Light:  / MATRIFY_COMPONENT
 // Source hash: md5:ac1c34f3d005490d930a3251802f3547
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
-Theorem MATRIFY_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> forall v :e A :^: idx_n (dimindex M * dimindex N), forall i j :e omega, 1 <= i /\ (i <= dimindex M /\ (1 <= j /\ j <= dimindex N)) -> matrify A M N v i j = v (minus_nat i 1 * dimindex N + j).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem MATRIFY_COMPONENT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall v :e A :^: idx_n (dimindex M * dimindex N), forall i j :e omega, 1 <= i /\ (i <= dimindex M /\ (1 <= j /\ j <= dimindex N)) -> matrify A M N v i j = v (minus_nat i 1 * dimindex N + j).
 Admitted.
 
 // HOL Light:  / MATRIFY_EQ
@@ -1396,8 +1396,8 @@ Admitted.
 
 // HOL Light:  / MATRIFY_VECTORIZE
 // Source hash: md5:ca02d881dc0bb1ca498410e58a1e926d
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem MATRIFY_VECTORIZE : forall A M N:set, M <> Empty -> N <> Empty -> forall m :e A :^: idx N :^: idx M, matrify A M N (vectorize A M N m) = m.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem MATRIFY_VECTORIZE : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall m :e A :^: idx N :^: idx M, matrify A M N (vectorize A M N m) = m.
 Admitted.
 
 // HOL Light:  / MATROID_FINITE_DIM
@@ -1847,13 +1847,13 @@ Admitted.
 // HOL Light:  / REAL_CONVEX_SUM_BOUND_LE
 // Source hash: md5:9098db0d6d34d4dfaa0548f6250b774b
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem REAL_CONVEX_SUM_BOUND_LE : forall A:set, A <> Empty -> forall s c= A, forall d :e R, forall a:set -> set, (forall x :e A, a x :e R) -> forall b :e R, forall x:set -> set, (forall x :e A, x x :e R) -> (forall i :e A, i :e s -> 0 <= x i) /\ (finsum s x = 1 /\ (forall i :e A, i :e s -> abs_SNo (a i + - b) <= d)) -> abs_SNo (finsum s (fun i:set => a i * x i) + - b) <= d.
+Theorem REAL_CONVEX_SUM_BOUND_LE : forall A:set, A <> Empty -> forall s c= A, forall d :e R, forall a:set -> set, (forall x :e A, a x :e R) -> forall b :e R, forall x:set -> set, (forall x0 :e A, x x0 :e R) -> (forall i :e A, i :e s -> 0 <= x i) /\ (finsum s x = 1 /\ (forall i :e A, i :e s -> abs_SNo (a i + - b) <= d)) -> abs_SNo (finsum s (fun i:set => a i * x i) + - b) <= d.
 Admitted.
 
 // HOL Light:  / REAL_CONVEX_SUM_BOUND_LT
 // Source hash: md5:8eb30549a2459ddee344c8a36afcf885
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem REAL_CONVEX_SUM_BOUND_LT : forall A:set, A <> Empty -> forall s c= A, forall d :e R, forall a:set -> set, (forall x :e A, a x :e R) -> forall b :e R, forall x:set -> set, (forall x :e A, x x :e R) -> (forall i :e A, i :e s -> 0 <= x i) /\ (finsum s x = 1 /\ (forall i :e A, i :e s -> abs_SNo (a i + - b) < d)) -> abs_SNo (finsum s (fun i:set => a i * x i) + - b) < d.
+Theorem REAL_CONVEX_SUM_BOUND_LT : forall A:set, A <> Empty -> forall s c= A, forall d :e R, forall a:set -> set, (forall x :e A, a x :e R) -> forall b :e R, forall x:set -> set, (forall x0 :e A, x x0 :e R) -> (forall i :e A, i :e s -> 0 <= x i) /\ (finsum s x = 1 /\ (forall i :e A, i :e s -> abs_SNo (a i + - b) < d)) -> abs_SNo (finsum s (fun i:set => a i * x i) + - b) < d.
 Admitted.
 
 // HOL Light:  / REAL_HALF
@@ -2086,8 +2086,8 @@ Admitted.
 
 // HOL Light:  / RELATIVE_TO_SUBSET_TRANS
 // Source hash: md5:48370076e23d2798505477b9ea52ff14
-// Status: generalization_required (bridges: empty_case:A)
-Theorem RELATIVE_TO_SUBSET_TRANS : forall A:set, forall P c= Power A, forall u s t c= A, s :e relative_to A P u /\ (s c= t /\ t c= u) -> s :e relative_to A P t.
+// Status: exact_native
+Theorem RELATIVE_TO_SUBSET_TRANS : forall A:set, A <> Empty -> forall P c= Power A, forall u s t c= A, s :e relative_to A P u /\ (s c= t /\ t c= u) -> s :e relative_to A P t.
 Admitted.
 
 // HOL Light:  / RELATIVE_TO_UNION
@@ -2243,25 +2243,25 @@ Admitted.
 // HOL Light:  / UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY
 // Source hash: md5:78ac3d74078805c1d1dab138193b09f2
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_net, hol_typedef_topology, omega_Subq_R)
-Theorem UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY : forall A B:set, A <> Empty -> B <> Empty -> forall m1 :e metric A, forall m2 :e metric B, forall f:set -> set, (forall x :e A, f x :e B) -> (uniformly_continuous_map B A (m1,m2) f <-> {f x | x :e mspace A m1} c= mspace B m2 /\ forall x:set -> set, (forall x :e omega, x x :e A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e A) -> (forall n :e omega, x n :e mspace A m1) /\ ((forall n :e omega, y n :e mspace A m1) /\ limit omega R euclideanreal (fun n:set => mdist A m1 (x n,y n)) 0 sequentially) -> limit omega R euclideanreal (fun n:set => mdist B m2 (f (x n),f (y n))) 0 sequentially).
+Theorem UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY : forall A B:set, A <> Empty -> B <> Empty -> forall m1 :e metric A, forall m2 :e metric B, forall f:set -> set, (forall x :e A, f x :e B) -> (uniformly_continuous_map B A (m1,m2) f <-> {f x | x :e mspace A m1} c= mspace B m2 /\ forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e A) -> (forall n :e omega, x n :e mspace A m1) /\ ((forall n :e omega, y n :e mspace A m1) /\ limit omega R euclideanreal (fun n:set => mdist A m1 (x n,y n)) 0 sequentially) -> limit omega R euclideanreal (fun n:set => mdist B m2 (f (x n),f (y n))) 0 sequentially).
 Admitted.
 
 // HOL Light:  / UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY_ALT
 // Source hash: md5:e793140ee0be01d1463ba40de4ba1630
 // Status: transport_required (bridges: hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_metric, hol_typedef_net, hol_typedef_topology, omega_Subq_R)
-Theorem UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall m1 :e metric A, forall m2 :e metric B, forall f:set -> set, (forall x :e A, f x :e B) -> (uniformly_continuous_map B A (m1,m2) f <-> {f x | x :e mspace A m1} c= mspace B m2 /\ forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e A) -> 0 < e0 /\ ((forall n :e omega, x n :e mspace A m1) /\ ((forall n :e omega, y n :e mspace A m1) /\ limit omega R euclideanreal (fun n:set => mdist A m1 (x n,y n)) 0 sequentially)) -> exists n :e omega, mdist B m2 (f (x n),f (y n)) < e0).
+Theorem UNIFORMLY_CONTINUOUS_MAP_SEQUENTIALLY_ALT : forall A B:set, A <> Empty -> B <> Empty -> forall m1 :e metric A, forall m2 :e metric B, forall f:set -> set, (forall x :e A, f x :e B) -> (uniformly_continuous_map B A (m1,m2) f <-> {f x | x :e mspace A m1} c= mspace B m2 /\ forall e0 :e R, forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e A) -> 0 < e0 /\ ((forall n :e omega, x n :e mspace A m1) /\ ((forall n :e omega, y n :e mspace A m1) /\ limit omega R euclideanreal (fun n:set => mdist A m1 (x n,y n)) 0 sequentially)) -> exists n :e omega, mdist B m2 (f (x n),f (y n)) < e0).
 Admitted.
 
 // HOL Light:  / UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY
 // Source hash: md5:4026f6470c798d877396fe3cb0503112
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx M) -> (forall n :e omega, x n :e s) /\ ((forall n :e omega, y n :e s) /\ tendsto M omega (fun n:set => vector_sub M (x n) (y n)) (vec M 0) sequentially) -> tendsto N omega (fun n:set => vector_sub N (f (x n)) (f (y n))) (vec N 0) sequentially.
+Theorem UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx M) -> (forall n :e omega, x n :e s) /\ ((forall n :e omega, y n :e s) /\ tendsto M omega (fun n:set => vector_sub M (x n) (y n)) (vec M 0) sequentially) -> tendsto N omega (fun n:set => vector_sub N (f (x n)) (f (y n))) (vec N 0) sequentially.
 Admitted.
 
 // HOL Light:  / UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY_ALT
 // Source hash: md5:33372305f98e0eb3205db0b5b92a8b0f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s) /\ ((forall n :e omega, y n :e s) /\ tendsto M omega (fun n:set => vector_sub M (x n) (y n)) (vec M 0) sequentially)) -> exists n :e omega, distance N (f (x n),f (y n)) < e0.
+Theorem UNIFORMLY_CONTINUOUS_ON_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s <-> forall e0 :e R, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, x n :e s) /\ ((forall n :e omega, y n :e s) /\ tendsto M omega (fun n:set => vector_sub M (x n) (y n)) (vec M 0) sequentially)) -> exists n :e omega, distance N (f (x n),f (y n)) < e0.
 Admitted.
 
 // HOL Light:  / UPPER_BOUND_FINITE_SET
@@ -2278,8 +2278,8 @@ Admitted.
 
 // HOL Light:  / VECTORIZE_COMPONENT
 // Source hash: md5:15dc8a4dbc7780133707c250547f72ef
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
-Theorem VECTORIZE_COMPONENT : forall A M N:set, M <> Empty -> N <> Empty -> forall m :e A :^: idx N :^: idx M, forall i :e omega, 1 <= i /\ i <= dimindex M * dimindex N -> vectorize A M N m i = m (1 + div_nat (minus_nat i 1) (dimindex N)) (1 + mod_nat (minus_nat i 1) (dimindex N)).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
+Theorem VECTORIZE_COMPONENT : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall m :e A :^: idx N :^: idx M, forall i :e omega, 1 <= i /\ i <= dimindex M * dimindex N -> vectorize A M N m i = m (1 + div_nat (minus_nat i 1) (dimindex N)) (1 + mod_nat (minus_nat i 1) (dimindex N)).
 Admitted.
 
 // HOL Light:  / VECTORIZE_EQ
@@ -2290,14 +2290,14 @@ Admitted.
 
 // HOL Light:  / VECTORIZE_GSPEC
 // Source hash: md5:6dc1cf0af913969f63896733951c1107
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem VECTORIZE_GSPEC : forall A M N:set, M <> Empty -> N <> Empty -> forall P:set -> prop, {vectorize A M N m | m :e A :^: idx N :^: idx M, P m} = {v :e A :^: idx_n (dimindex M * dimindex N) | P (matrify A M N v)}.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem VECTORIZE_GSPEC : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall P:set -> prop, {vectorize A M N m | m :e A :^: idx N :^: idx M, P m} = {v :e A :^: idx_n (dimindex M * dimindex N) | P (matrify A M N v)}.
 Admitted.
 
 // HOL Light:  / VECTORIZE_MATRIFY
 // Source hash: md5:a9e4fe245e083b1a6ef9624cdd2870e5
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_finite_prod_idx)
-Theorem VECTORIZE_MATRIFY : forall A M N:set, M <> Empty -> N <> Empty -> forall a :e A :^: idx_n (dimindex M * dimindex N), vectorize A M N (matrify A M N a) = a.
+// Status: transport_required (bridges: hol_cart_setexp, hol_finite_prod_idx)
+Theorem VECTORIZE_MATRIFY : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall a :e A :^: idx_n (dimindex M * dimindex N), vectorize A M N (matrify A M N a) = a.
 Admitted.
 
 // HOL Light:  / VECTOR_VARIATION_COMPOSE_INCREASING
@@ -2369,13 +2369,13 @@ Admitted.
 // HOL Light:  / WQOSET_NOBAD
 // Source hash: md5:2335184538662ee9cce85cc928a9851d
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
-Theorem WQOSET_NOBAD : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists i j :e omega, i < j /\ l (x i) (x j).
+Theorem WQOSET_NOBAD : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists i j :e omega, i < j /\ l (x i) (x j).
 Admitted.
 
 // HOL Light:  / WQOSET_NOBAD_SUBSEQ
 // Source hash: md5:50d5416656b450467dc4740b717acb55
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem WQOSET_NOBAD_SUBSEQ : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x :e omega, x x :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ forall i j :e omega, i <= j -> l (x (r i)) (x (r j))).
+Theorem WQOSET_NOBAD_SUBSEQ : forall A:set, A <> Empty -> forall l:set -> set -> prop, wqoset_on A l <-> qoset_on A l /\ forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> (forall n :e omega, x n :e fld_on A l) -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ forall i j :e omega, i <= j -> l (x (r i)) (x (r j))).
 Admitted.
 
 // HOL Light:  / closed_real_interval
@@ -2404,8 +2404,8 @@ Admitted.
 
 // HOL Light:  / matrify
 // Source hash: md5:c95bb6c03e86089bf4e1de99b578bac0
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo)
-Theorem matrify_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M * dimindex N), matrify A M N x = fun i :e idx M => fun j :e idx N => x (minus_nat i 1 * dimindex N + j).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega, mul_nat_mul_SNo)
+Theorem matrify_thm : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx_n (dimindex M * dimindex N), matrify A M N x = fun i :e idx M => fun j :e idx N => x (minus_nat i 1 * dimindex N + j).
 Admitted.
 
 // HOL Light:  / open_real_interval
@@ -2440,8 +2440,8 @@ Admitted.
 
 // HOL Light:  / vectorize
 // Source hash: md5:f340a8700d8db2d6ac414db8ae798f7b
-// Status: generalization_required (bridges: add_nat_add_SNo, empty_case:A, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega)
-Theorem vectorize_thm : forall A M N:set, M <> Empty -> N <> Empty -> forall x :e A :^: idx N :^: idx M, vectorize A M N x = fun i :e idx_n (dimindex M * dimindex N) => x (1 + div_nat (minus_nat i 1) (dimindex N)) (1 + mod_nat (minus_nat i 1) (dimindex N)).
+// Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_dimindex, hol_finite_prod_idx, hol_num_omega)
+Theorem vectorize_thm : forall A M N:set, A <> Empty -> M <> Empty -> N <> Empty -> forall x :e A :^: idx N :^: idx M, vectorize A M N x = fun i :e idx_n (dimindex M * dimindex N) => x (1 + div_nat (minus_nat i 1) (dimindex N)) (1 + mod_nat (minus_nat i 1) (dimindex N)).
 Admitted.
 
 // HOL Light: EC/misc.ml:120 / SYMMETRY_LEMMA

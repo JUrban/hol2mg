@@ -555,8 +555,15 @@ let const_carriers g c ty =
   let sub = L.match_ty generic ty [] in
   List.map (fun a -> let t = List.assoc a sub in (L.carrier g.lctx t, t)) (L.tyvars_ordered generic [])
 
-let typing_lemma_name c = L.mg_name_of_const c ^ "_in"
-let typing_lemma_name_of g c = L.mg_name_of_const c ^ (if g.lit_typing && not (List.mem_assoc c L.primitive_consts) then "_in_lit" else "_in")
+(* the typing lemma of constant c is hl_<c>_in -- unless a HOL constant named c_in exists
+   (open/open_in, closed/closed_in, ... in Multivariate), whose literal constant would take
+   the same name; then hl_<c>_in1 *)
+let typing_suffix consts c = if Hashtbl.mem consts (c ^ "_in") then "_in1" else "_in"
+let typing_lemma_name consts c = L.mg_name_of_const c ^ typing_suffix consts c
+let typing_lemma_name_of g c =
+  L.mg_name_of_const c
+  ^ (if g.lit_typing && not (List.mem_assoc c L.primitive_consts) then "_in_lit"
+     else typing_suffix g.an.L.consts c)
 
 (* proof of  L[t] :e L[type_of t] *)
 let rec typ g (t : tm) : string =
@@ -3169,7 +3176,7 @@ let typing_lemma (an : L.analysis) (typing_ok : (string, unit) Hashtbl.t) (c : s
       if params = [] then Printf.sprintf "%sexact %s." (carrier_conv stmt_nat) pf'
       else Printf.sprintf "let %s. assume %s. %sexact %s." (String.concat " " params) (String.concat " " hyps) (carrier_conv stmt_nat) pf'
     end in
-  [ (lit_name, Mg.to_string stmt_lit, "exact " ^ proof ^ "."); (typing_lemma_name c, Mg.to_string stmt_nat, native_proof) ]
+  [ (lit_name, Mg.to_string stmt_lit, "exact " ^ proof ^ "."); (typing_lemma_name an.L.consts c, Mg.to_string stmt_nat, native_proof) ]
 
 (* lemmas of a translated type definition: the (admitted) literal nonemptiness fact, the
    nonemptiness of the subtype carrier, and the typing lemmas of abs and rep *)

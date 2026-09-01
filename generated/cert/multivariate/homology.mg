@@ -1,0 +1,1750 @@
+// hol2mg certification module (private): shard homology of profile multivariate.
+// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),
+// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,
+// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
+
+// HOL Light: Multivariate/homology.ml:13 / standard_simplex   (hash md5:cf91fdd12d1c0d51baec93c170f355ea)
+// not bridged: 
+Theorem standard_simplex_thm : forall p :e omega, standard_simplex p = {x :e R :^: omega | (forall i :e omega, 0 <= x i /\ x i <= 1) /\ ((forall i :e omega, p < i -> x i = 0) /\ finsum {i :e omega | 0 <= i /\ i <= p} (fun x0:set => x x0) = 1)}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:19 / TOPSPACE_STANDARD_SIMPLEX   (hash md5:6e666b7b7a7627db405d4d48b9108219)
+// not bridged: 
+Theorem TOPSPACE_STANDARD_SIMPLEX : forall p :e omega, topspace (R :^: omega) (subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex p)) = standard_simplex p.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:26 / BASIS_IN_STANDARD_SIMPLEX   (hash md5:962aba35e7ed1ec1d64e512b54d711bd)
+// not bridged: 
+Theorem BASIS_IN_STANDARD_SIMPLEX : forall p i :e omega, (fun j :e omega => if j = i then 1 else 0) :e standard_simplex p <-> i <= p.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:32 / NONEMPTY_STANDARD_SIMPLEX   (hash md5:e36f4c91369cabfbcc81b7331990d4d5)
+// not bridged: 
+Theorem NONEMPTY_STANDARD_SIMPLEX : forall p :e omega, ~ standard_simplex p = Empty.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:38 / STANDARD_SIMPLEX_0   (hash md5:189de30d3251e91906e730d838df96f3)
+// not bridged: 
+Theorem STANDARD_SIMPLEX_0 : standard_simplex 0 = {fun j :e omega => if j = 0 then 1 else 0}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:47 / STANDARD_SIMPLEX_MONO   (hash md5:3ba75e764c852022ad6a8e4563dc5e37)
+// not bridged: 
+Theorem STANDARD_SIMPLEX_MONO : forall p q :e omega, p <= q -> standard_simplex p c= standard_simplex q.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:55 / CLOSED_IN_STANDARD_SIMPLEX   (hash md5:b69eb959eda4a9de5716be753182a2c5)
+// not bridged: 
+Theorem CLOSED_IN_STANDARD_SIMPLEX : forall p :e omega, closed_in (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex p).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:88 / COMPACT_IN_STANDARD_SIMPLEX   (hash md5:af76c3cdf4035e5ebf88dd38cf7bcb40)
+// not bridged: 
+Theorem COMPACT_IN_STANDARD_SIMPLEX : forall p :e omega, compact_in (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex p).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:100 / CONVEX_STANDARD_SIMPLEX   (hash md5:5fd733c18ad7bcca7c55ccb8dee912d3)
+// not bridged: 
+Theorem CONVEX_STANDARD_SIMPLEX : forall p :e omega, forall x y :e R :^: omega, forall u :e R, x :e standard_simplex p /\ (y :e standard_simplex p /\ (0 <= u /\ u <= 1)) -> (fun i :e omega => (1 + - u) * x i + u * y i) :e standard_simplex p.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:113 / PATH_CONNECTED_IN_STANDARD_SIMPLEX   (hash md5:1e482495f5c7d2fae162e460e38351b3)
+// not bridged: 
+Theorem PATH_CONNECTED_IN_STANDARD_SIMPLEX : forall p :e omega, path_connected_in (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex p).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:135 / CONNECTED_IN_STANDARD_SIMPLEX   (hash md5:2423c9a3efdd2c82152f2f9c9f00e8ed)
+// not bridged: 
+Theorem CONNECTED_IN_STANDARD_SIMPLEX : forall p :e omega, connected_in (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex p).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:145 / simplicial_face   (hash md5:5f3c3797160255a6a20c889163c45be0)
+// not bridged: 
+Theorem simplicial_face_thm : forall k :e omega, forall x:set -> set, (forall x0 :e omega, x x0 :e R) -> forall i :e omega, simplicial_face k x i = if i < k then x i else if i = k then 0 else x (minus_nat i 1).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:149 / SIMPLICIAL_FACE_IN_STANDARD_SIMPLEX   (hash md5:e328c266f882062f1bf53d13ae57adeb)
+// not bridged: 
+Theorem SIMPLICIAL_FACE_IN_STANDARD_SIMPLEX : forall p k :e omega, forall x :e R :^: omega, 1 <= p /\ (k <= p /\ x :e standard_simplex (minus_nat p 1)) -> (fun x0 :e omega => simplicial_face k (fun x1:set => x x1) x0) :e standard_simplex p.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:180 / singular_simplex   (hash md5:c8861af7645a8555bf4be00c077b2d4d)
+// not bridged: 
+Theorem singular_simplex_thm : forall A:set, A <> Empty -> forall top :e topology A, forall p :e omega, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> (singular_simplex A (p,top) f <-> continuous_map (R :^: omega) A (subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex p),top) f /\ forall x :e R :^: omega, ~ x :e standard_simplex p -> f x = choose_in A (fun y:set => False)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:187 / SINGULAR_SIMPLEX_EMPTY   (hash md5:31883897ad3a18c85bffbfb2c2bc5b4b)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_EMPTY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> topspace A top = Empty -> ~ singular_simplex A (p,top) f.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:194 / SINGULAR_SIMPLEX_MONO   (hash md5:169096545fa4e8fd288623844029af68)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_MONO : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s t c= A, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> t c= s /\ singular_simplex A (p,subtopology A top t) f -> singular_simplex A (p,subtopology A top s) f.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:201 / SINGULAR_SIMPLEX_SUBTOPOLOGY   (hash md5:4e86cb7ed25f6f87f9436070f19b34b4)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_SUBTOPOLOGY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> (singular_simplex A (p,subtopology A top s) f <-> singular_simplex A (p,top) f /\ {f x | x :e standard_simplex p} c= s).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:214 / singular_face   (hash md5:8fac1202e8a0fffe10d4ce58920fed75)
+// not bridged: 
+Theorem singular_face_thm : forall A:set, A <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> forall k :e omega, forall x :e R :^: omega, singular_face A p k f x = if x :e standard_simplex (minus_nat p 1) then f (fun x1 :e omega => simplicial_face k (fun x2:set => x x2) x1) else choose_in A (fun y:set => False).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:218 / SINGULAR_SIMPLEX_SINGULAR_FACE   (hash md5:ed5db340bdf34f3aaa2f6972154fc12c)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_SINGULAR_FACE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall k :e omega, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> singular_simplex A (p,top) f /\ (1 <= p /\ k <= p) -> singular_simplex A (minus_nat p 1,top) (singular_face A p k f).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:244 / singular_chain   (hash md5:a6a449a166710cb4df2647815e04080a)
+// not bridged: 
+Theorem singular_chain_thm : forall A:set, A <> Empty -> forall c :e frag (A :^: (R :^: omega)), forall p :e omega, forall top :e topology A, singular_chain A (p,top) c <-> frag_support (A :^: (R :^: omega)) c c= {x :e A :^: (R :^: omega) | singular_simplex A (p,top) (fun x0:set => x x0)}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:248 / SINGULAR_CHAIN_EMPTY   (hash md5:07af6a45e16ed9a589c4af4b9191746d)
+// not bridged: 
+Theorem SINGULAR_CHAIN_EMPTY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), topspace A top = Empty -> (singular_chain A (p,top) c <-> c = frag_0 (A :^: (R :^: omega))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:258 / SINGULAR_CHAIN_MONO   (hash md5:f379607d965ebaf3afb1356eb37a18e7)
+// not bridged: 
+Theorem SINGULAR_CHAIN_MONO : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s t c= A, forall c :e frag (A :^: (R :^: omega)), t c= s /\ singular_chain A (p,subtopology A top t) c -> singular_chain A (p,subtopology A top s) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:267 / SINGULAR_CHAIN_SUBTOPOLOGY   (hash md5:c55a1736c0d1cd166b80f67b51d4ff93)
+// not bridged: 
+Theorem SINGULAR_CHAIN_SUBTOPOLOGY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,subtopology A top s) c <-> singular_chain A (p,top) c /\ forall f :e A :^: (R :^: omega), f :e frag_support (A :^: (R :^: omega)) c -> {f x | x :e standard_simplex p} c= s.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:275 / SINGULAR_CHAIN_0   (hash md5:52fa1d76adce7aa6d5438317fbd296ef)
+// not bridged: 
+Theorem SINGULAR_CHAIN_0 : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, singular_chain A (p,top) (frag_0 (A :^: (R :^: omega))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:279 / SINGULAR_CHAIN_OF   (hash md5:2d3d6eb9a05a93b1ca36ffe4473995b8)
+// not bridged: 
+Theorem SINGULAR_CHAIN_OF : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e A :^: (R :^: omega), singular_chain A (p,top) (frag_of (A :^: (R :^: omega)) c) <-> singular_simplex A (p,top) (fun x:set => c x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:284 / SINGULAR_CHAIN_CMUL   (hash md5:e7a13011625a24afc79950b00b4f36a5)
+// not bridged: 
+Theorem SINGULAR_CHAIN_CMUL : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall a :e int, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> singular_chain A (p,top) (frag_cmul (A :^: (R :^: omega)) a c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:290 / SINGULAR_CHAIN_NEG   (hash md5:3d706bef15b62ff617102a03e4ade8a9)
+// not bridged: 
+Theorem SINGULAR_CHAIN_NEG : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) (frag_neg (A :^: (R :^: omega)) c) <-> singular_chain A (p,top) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:295 / SINGULAR_CHAIN_ADD   (hash md5:202d9696522e289d381d4031bc444b27)
+// not bridged: 
+Theorem SINGULAR_CHAIN_ADD : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c1 /\ singular_chain A (p,top) c2 -> singular_chain A (p,top) (frag_add (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:302 / SINGULAR_CHAIN_SUB   (hash md5:45cb5b0f9bfb279854299e1e5508a225)
+// not bridged: 
+Theorem SINGULAR_CHAIN_SUB : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c1 /\ singular_chain A (p,top) c2 -> singular_chain A (p,top) (frag_sub (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:309 / SINGULAR_CHAIN_SUM   (hash md5:c542ed98f04d95234456f1d02ba7a44c)
+// not bridged: 
+Theorem SINGULAR_CHAIN_SUM : forall B A:set, B <> Empty -> A <> Empty -> forall p :e omega, forall top :e topology A, forall f:set -> set, (forall x :e B, f x :e frag (A :^: (R :^: omega))) -> forall k c= B, (forall c :e B, c :e k -> singular_chain A (p,top) (f c)) -> singular_chain A (p,top) (iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k f).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:317 / SINGULAR_CHAIN_EXTEND   (hash md5:46ffb89e346a31c53a0634dadda19c65)
+// not bridged: 
+Theorem SINGULAR_CHAIN_EXTEND : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology B, forall f:set -> set, (forall x :e A :^: (R :^: omega), f x :e frag (B :^: (R :^: omega))) -> forall x :e frag (A :^: (R :^: omega)), (forall c :e A :^: (R :^: omega), c :e frag_support (A :^: (R :^: omega)) x -> singular_chain B (p,top) (f c)) -> singular_chain B (p,top) (frag_extend (A :^: (R :^: omega)) (B :^: (R :^: omega)) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:329 / chain_boundary   (hash md5:a50e8cb67e24b2cf2208fdcf123ebcd6)
+// not bridged: 
+Theorem chain_boundary_thm : forall A:set, A <> Empty -> forall p :e omega, forall c :e frag (A :^: (R :^: omega)), chain_boundary A p c = if p = 0 then frag_0 (A :^: (R :^: omega)) else frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) {i :e omega | 0 <= i /\ i <= p} (fun k:set => frag_cmul (A :^: (R :^: omega)) ((- 1) ^ k) (frag_of (A :^: (R :^: omega)) (fun x :e R :^: omega => singular_face A p k (fun x:set => f x) x)))) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:337 / SINGULAR_CHAIN_BOUNDARY   (hash md5:a1be5d83c0dee7eee9c1ff9cc6000c29)
+// not bridged: 
+Theorem SINGULAR_CHAIN_BOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> singular_chain A (minus_nat p 1,top) (chain_boundary A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:351 / SINGULAR_CHAIN_BOUNDARY_ALT   (hash md5:45263773559a1a97b040cbe6cca0cb49)
+// not bridged: 
+Theorem SINGULAR_CHAIN_BOUNDARY_ALT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p + 1,top) c -> singular_chain A (p,top) (chain_boundary A (p + 1) c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:359 / CHAIN_BOUNDARY_0   (hash md5:82dd42f503faae75867476bbbb27b241)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_0 : forall A:set, A <> Empty -> forall p :e omega, chain_boundary A p (frag_0 (A :^: (R :^: omega))) = frag_0 (A :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:365 / CHAIN_BOUNDARY_CMUL   (hash md5:ce3ad80e79a07b496e3e031be6799bf9)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_CMUL : forall A:set, A <> Empty -> forall p :e omega, forall a :e int, forall c :e frag (A :^: (R :^: omega)), chain_boundary A p (frag_cmul (A :^: (R :^: omega)) a c) = frag_cmul (A :^: (R :^: omega)) a (chain_boundary A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:373 / CHAIN_BOUNDARY_NEG   (hash md5:c2ecf5dd9b3213d7d547e2cad4c38b38)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_NEG : forall A:set, A <> Empty -> forall p :e omega, forall c :e frag (A :^: (R :^: omega)), chain_boundary A p (frag_neg (A :^: (R :^: omega)) c) = frag_neg (A :^: (R :^: omega)) (chain_boundary A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:379 / CHAIN_BOUNDARY_ADD   (hash md5:76ee595fb22e507595c1ca4181f4de93)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_ADD : forall A:set, A <> Empty -> forall p :e omega, forall c1 c2 :e frag (A :^: (R :^: omega)), chain_boundary A p (frag_add (A :^: (R :^: omega)) c1 c2) = frag_add (A :^: (R :^: omega)) (chain_boundary A p c1) (chain_boundary A p c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:387 / CHAIN_BOUNDARY_SUB   (hash md5:83858ddc56afc328442eb435605c02b4)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_SUB : forall A:set, A <> Empty -> forall p :e omega, forall c1 c2 :e frag (A :^: (R :^: omega)), chain_boundary A p (frag_sub (A :^: (R :^: omega)) c1 c2) = frag_sub (A :^: (R :^: omega)) (chain_boundary A p c1) (chain_boundary A p c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:394 / CHAIN_BOUNDARY_SUM   (hash md5:067ac82e75962bda04d86bdf44e7ae96)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_SUM : forall A K:set, A <> Empty -> K <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e K, g x :e frag (A :^: (R :^: omega))) -> forall k c= K, finite k -> chain_boundary A p (iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k g) = iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k (fun x:set => chain_boundary A p (g x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:406 / CHAIN_BOUNDARY_OF   (hash md5:53391a04d3e4e4e037b29be5c46ccc35)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_OF : forall A:set, A <> Empty -> forall p :e omega, forall f :e A :^: (R :^: omega), chain_boundary A p (frag_of (A :^: (R :^: omega)) f) = if p = 0 then frag_0 (A :^: (R :^: omega)) else iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) {i :e omega | 0 <= i /\ i <= p} (fun k:set => frag_cmul (A :^: (R :^: omega)) ((- 1) ^ k) (frag_of (A :^: (R :^: omega)) (fun x :e R :^: omega => singular_face A p k (fun x:set => f x) x))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:418 / mod_subset   (hash md5:c2a405bd3b873b0d010603876b5479f8)
+// not bridged: 
+Theorem mod_subset_thm : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c1 c2 :e frag (A :^: (R :^: omega)), mod_subset A (p,top) c1 c2 <-> singular_chain A (p,top) (frag_sub (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:421 / MOD_SUBSET_EMPTY   (hash md5:0061c51187acff98a342fb375bc6af72)
+// not bridged: 
+Theorem MOD_SUBSET_EMPTY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c1 c2 :e frag (A :^: (R :^: omega)), mod_subset A (p,subtopology A top Empty) c1 c2 <-> c1 = c2.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:428 / MOD_SUBSET_REFL   (hash md5:17e32ae28b79665ee60e29fb90693931)
+// not bridged: 
+Theorem MOD_SUBSET_REFL : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), mod_subset A (p,top) c c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:433 / MOD_SUBSET_CMUL   (hash md5:cb921f639578c94c17e305baaa135c95)
+// not bridged: 
+Theorem MOD_SUBSET_CMUL : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall a :e int, forall c1 c2 :e frag (A :^: (R :^: omega)), mod_subset A (p,top) c1 c2 -> mod_subset A (p,top) (frag_cmul (A :^: (R :^: omega)) a c1) (frag_cmul (A :^: (R :^: omega)) a c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:441 / MOD_SUBSET_ADD   (hash md5:be9265342b5edc68103864db0daf0804)
+// not bridged: 
+Theorem MOD_SUBSET_ADD : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c1 c2 d1 d2 :e frag (A :^: (R :^: omega)), mod_subset A (p,top) c1 c2 /\ mod_subset A (p,top) d1 d2 -> mod_subset A (p,top) (frag_add (A :^: (R :^: omega)) c1 d1) (frag_add (A :^: (R :^: omega)) c2 d2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:453 / singular_relcycle   (hash md5:1efb09db8d1d2b51efd6a803f2be3e29)
+// not bridged: 
+Theorem singular_relcycle_thm : forall A:set, A <> Empty -> forall c :e frag (A :^: (R :^: omega)), forall p :e omega, forall top :e topology A, forall s c= A, singular_relcycle A (p,(top,s)) c <-> singular_chain A (p,top) c /\ mod_subset A (minus_nat p 1,subtopology A top s) (chain_boundary A p c) (frag_0 (A :^: (R :^: omega))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:458 / SINGULAR_RELCYCLE_RESTRICT   (hash md5:f5488c8a34303028bfc7442993cc8caf)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_RESTRICT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall x :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) x <-> singular_relcycle A (p,(top,topspace A top :/\: s)) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:464 / SINGULAR_RELCYCLE   (hash md5:62290ff54072bf14d46aeb91bea4f7d7)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c <-> singular_chain A (p,top) c /\ singular_chain A (minus_nat p 1,subtopology A top s) (chain_boundary A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:472 / SINGULAR_RELCYCLE_0   (hash md5:7c1bd6582f411b1617900b752b42ab64)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_0 : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, singular_relcycle A (p,(top,s)) (frag_0 (A :^: (R :^: omega))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:477 / SINGULAR_RELCYCLE_CMUL   (hash md5:16ff99cfbbd46cb921135427b2655fe3)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_CMUL : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall a :e int, forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c -> singular_relcycle A (p,(top,s)) (frag_cmul (A :^: (R :^: omega)) a c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:486 / SINGULAR_RELCYCLE_NEG   (hash md5:4190fbe227f21415f2445b06269e728f)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_NEG : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) (frag_neg (A :^: (R :^: omega)) c) <-> singular_relcycle A (p,(top,s)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:494 / SINGULAR_RELCYCLE_ADD   (hash md5:fc62f180e255f07c1971aae76aba4e44)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_ADD : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c1 /\ singular_relcycle A (p,(top,s)) c2 -> singular_relcycle A (p,(top,s)) (frag_add (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:504 / SINGULAR_RELCYCLE_SUM   (hash md5:521c349b4f99fe2cb302087132786586)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_SUM : forall A K:set, A <> Empty -> K <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall f:set -> set, (forall x :e K, f x :e frag (A :^: (R :^: omega))) -> forall k c= K, finite k /\ (forall c :e K, c :e k -> singular_relcycle A (p,(top,s)) (f c)) -> singular_relcycle A (p,(top,s)) (iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k f).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:514 / SINGULAR_RELCYCLE_SUB   (hash md5:8b80e0027213060c8ea39ac4b8fa51b6)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_SUB : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c1 /\ singular_relcycle A (p,(top,s)) c2 -> singular_relcycle A (p,(top,s)) (frag_sub (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:521 / SINGULAR_CYCLE   (hash md5:3efe207e5df8e7f282a4e10dee480841)
+// not bridged: 
+Theorem SINGULAR_CYCLE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,Empty)) c <-> singular_chain A (p,top) c /\ chain_boundary A p c = frag_0 (A :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:527 / SINGULAR_CYCLE_MONO   (hash md5:86935f53f79e778fff0286b8be7ee502)
+// not bridged: 
+Theorem SINGULAR_CYCLE_MONO : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s t c= A, forall c :e frag (A :^: (R :^: omega)), t c= s /\ singular_relcycle A (p,(subtopology A top t,Empty)) c -> singular_relcycle A (p,(subtopology A top s,Empty)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:537 / singular_relboundary   (hash md5:3c1005c0a76c3c794ca81441edb55190)
+// not bridged: 
+Theorem singular_relboundary_thm : forall A:set, A <> Empty -> forall c :e frag (A :^: (R :^: omega)), forall p :e omega, forall top :e topology A, forall s c= A, singular_relboundary A (p,(top,s)) c <-> exists d :e frag (A :^: (R :^: omega)), singular_chain A (p + 1,top) d /\ mod_subset A (p,subtopology A top s) (chain_boundary A (p + 1) d) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:542 / SINGULAR_RELBOUNDARY_RESTRICT   (hash md5:95ced77eacad6a88d91bd09f63c3a272)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_RESTRICT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall x :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) x <-> singular_relboundary A (p,(top,topspace A top :/\: s)) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:548 / SINGULAR_RELBOUNDARY_ALT   (hash md5:2c325141e6ba281d8291f6aaa6555821)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_ALT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c <-> exists d e0 :e frag (A :^: (R :^: omega)), singular_chain A (p + 1,top) d /\ (singular_chain A (p,subtopology A top s) e0 /\ chain_boundary A (p + 1) d = frag_add (A :^: (R :^: omega)) c e0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:558 / SINGULAR_RELBOUNDARY   (hash md5:aa39c0ca8c8dcce9acbda2b6633f12be)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c <-> exists d e0 :e frag (A :^: (R :^: omega)), singular_chain A (p + 1,top) d /\ (singular_chain A (p,subtopology A top s) e0 /\ frag_add (A :^: (R :^: omega)) (chain_boundary A (p + 1) d) e0 = c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:568 / SINGULAR_BOUNDARY   (hash md5:8dfa0b9a709e2bbc9aae3d75aa8cceea)
+// not bridged: 
+Theorem SINGULAR_BOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,Empty)) c <-> exists d :e frag (A :^: (R :^: omega)), singular_chain A (p + 1,top) d /\ chain_boundary A (p + 1) d = c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:574 / SINGULAR_BOUNDARY_IMP_CHAIN   (hash md5:a8e5535fcc032172fe2be676f95d4f00)
+// not bridged: 
+Theorem SINGULAR_BOUNDARY_IMP_CHAIN : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,Empty)) c -> singular_chain A (p,top) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:583 / SINGULAR_BOUNDARY_MONO   (hash md5:c7e7d67ef66bb10e63abaaa5d16a9176)
+// not bridged: 
+Theorem SINGULAR_BOUNDARY_MONO : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s t c= A, forall c :e frag (A :^: (R :^: omega)), t c= s /\ singular_relboundary A (p,(subtopology A top t,Empty)) c -> singular_relboundary A (p,(subtopology A top s,Empty)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:589 / SINGULAR_RELBOUNDARY_IMP_CHAIN   (hash md5:5397b8759696bee91579060fc39afd54)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_IMP_CHAIN : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c -> singular_chain A (p,top) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:604 / SINGULAR_CHAIN_IMP_RELBOUNDARY   (hash md5:50689319b29357dc4d19c9112f955ded)
+// not bridged: 
+Theorem SINGULAR_CHAIN_IMP_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,subtopology A top s) c -> singular_relboundary A (p,(top,s)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:614 / SINGULAR_RELBOUNDARY_0   (hash md5:885e3c08d46350c37cd5595eb59bda44)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_0 : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, singular_relboundary A (p,(top,s)) (frag_0 (A :^: (R :^: omega))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:620 / SINGULAR_RELBOUNDARY_CMUL   (hash md5:5cfa9cdd81c95811038342ddcf3337a2)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_CMUL : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall a :e int, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c -> singular_relboundary A (p,(top,s)) (frag_cmul (A :^: (R :^: omega)) a c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:627 / SINGULAR_RELBOUNDARY_NEG   (hash md5:a4ce72844dadf538c1c886b184ea3626)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_NEG : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) (frag_neg (A :^: (R :^: omega)) c) <-> singular_relboundary A (p,(top,s)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:635 / SINGULAR_RELBOUNDARY_ADD   (hash md5:e9dc601f362b6390b7790d985021468f)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_ADD : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c1 /\ singular_relboundary A (p,(top,s)) c2 -> singular_relboundary A (p,(top,s)) (frag_add (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:642 / SINGULAR_RELBOUNDARY_SUB   (hash md5:9fc3165c435e5b05b7141c7cb8254948)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_SUB : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c1 /\ singular_relboundary A (p,(top,s)) c2 -> singular_relboundary A (p,(top,s)) (frag_sub (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:653 / homologous_rel   (hash md5:5053a40190df8e30e7d093facfb1009d)
+// not bridged: 
+Theorem homologous_rel_thm : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c2 <-> singular_relboundary A (p,(top,s)) (frag_sub (A :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:657 / HOMOLOGOUS_REL_RESTRICT   (hash md5:0bba17c08b1212816b5fcd3c5a396ba9)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_RESTRICT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall x x0 :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) x x0 <-> homologous_rel A (p,(top,topspace A top :/\: s)) x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:664 / HOMOLOGOUS_REL_REFL   (hash md5:13c0927379cc1f8ba9f7959a80d547ed)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_REFL : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:669 / HOMOLOGOUS_REL_SYM   (hash md5:a3326f8e7d251aeaae4676f5ff7f3f07)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_SYM : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c2 <-> homologous_rel A (p,(top,s)) c2 c1.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:676 / HOMOLOGOUS_REL_TRANS   (hash md5:8e692a56614e0d1c7c2c233cca735787)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_TRANS : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 c3 :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c2 /\ homologous_rel A (p,(top,s)) c2 c3 -> homologous_rel A (p,(top,s)) c1 c3.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:684 / HOMOLOGOUS_REL_EQ   (hash md5:30a391ce3d458d9339577039b6e61106)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_EQ : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), (forall x :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 x <-> homologous_rel A (p,(top,s)) c2 x) <-> homologous_rel A (p,(top,s)) c1 c2.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:691 / HOMOLOGOUS_REL_SINGULAR_CHAIN   (hash md5:bcd69793dbbb5b9ddd2309175d6f4bd1)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_SINGULAR_CHAIN : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c2 -> (singular_chain A (p,top) c1 <-> singular_chain A (p,top) c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:706 / HOMOLOGOUS_REL_ADD   (hash md5:acb29be9489f8f3615bfcf1421efc088)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_ADD : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c1' c2 c2' :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c1' /\ homologous_rel A (p,(top,s)) c2 c2' -> homologous_rel A (p,(top,s)) (frag_add (A :^: (R :^: omega)) c1 c2) (frag_add (A :^: (R :^: omega)) c1' c2').
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:714 / HOMOLOGOUS_REL_SUB   (hash md5:65642740c84e593f671b663d73a597ef)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_SUB : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c1' c2 c2' :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c1' /\ homologous_rel A (p,(top,s)) c2 c2' -> homologous_rel A (p,(top,s)) (frag_sub (A :^: (R :^: omega)) c1 c2) (frag_sub (A :^: (R :^: omega)) c1' c2').
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:722 / HOMOLOGOUS_REL_SUM   (hash md5:36d7f4c76797d2377882471f90d7f21e)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_SUM : forall A K:set, A <> Empty -> K <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall f:set -> set, (forall x :e K, f x :e frag (A :^: (R :^: omega))) -> forall g:set -> set, (forall x :e K, g x :e frag (A :^: (R :^: omega))) -> forall k c= K, (forall i :e K, i :e k -> homologous_rel A (p,(top,s)) (f i) (g i)) /\ (finite {i :e K | i :e k /\ ~ f i = frag_0 (A :^: (R :^: omega))} /\ finite {i :e K | i :e k /\ ~ g i = frag_0 (A :^: (R :^: omega))}) -> homologous_rel A (p,(top,s)) (iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k f) (iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k g).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:750 / CHAIN_HOMOTOPIC_IMP_HOMOLOGOUS_REL   (hash md5:1532c0e474650de1a8de3904bd86fdd3)
+// not bridged: 
+Theorem CHAIN_HOMOTOPIC_IMP_HOMOLOGOUS_REL : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall h:set -> set, (forall x :e frag (A :^: (R :^: omega)), h x :e frag (B :^: (R :^: omega))) -> forall h':set -> set, (forall x :e frag (A :^: (R :^: omega)), h' x :e frag (B :^: (R :^: omega))) -> forall f:set -> set, (forall x :e frag (A :^: (R :^: omega)), f x :e frag (B :^: (R :^: omega))) -> forall g:set -> set, (forall x :e frag (A :^: (R :^: omega)), g x :e frag (B :^: (R :^: omega))) -> (forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> singular_chain B (p + 1,top') (h c)) /\ ((forall c :e frag (A :^: (R :^: omega)), singular_chain A (minus_nat p 1,subtopology A top s) c -> singular_chain B (p,subtopology B top' t) (h' c)) /\ (forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> frag_add (B :^: (R :^: omega)) (chain_boundary B (p + 1) (h c)) (h' (chain_boundary A p c)) = frag_sub (B :^: (R :^: omega)) (f c) (g c))) -> forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c -> homologous_rel B (p,(top',t)) (f c) (g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:776 / CHAIN_BOUNDARY_BOUNDARY   (hash md5:5ea7871455a897d462ee6787ff3ca53a)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_BOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> chain_boundary A (minus_nat p 1) (chain_boundary A p c) = frag_0 (A :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:855 / CHAIN_BOUNDARY_BOUNDARY_ALT   (hash md5:45b105995601b1be021bedd8ba34db9d)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_BOUNDARY_ALT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p + 1,top) c -> chain_boundary A p (chain_boundary A (p + 1) c) = frag_0 (A :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:863 / SINGULAR_RELBOUNDARY_IMP_RELCYCLE   (hash md5:72e8fe16a072c36fa213d3569e5eba45)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_IMP_RELCYCLE : forall A:set, A <> Empty -> forall p :e omega, forall s c= A, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c -> singular_relcycle A (p,(top,s)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:880 / HOMOLOGOUS_REL_SINGULAR_RELCYCLE   (hash md5:5b1d80ad16863b868ac88d4451d98ec7)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_SINGULAR_RELCYCLE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c1 c2 :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c1 c2 -> (singular_relcycle A (p,(top,s)) c1 <-> singular_relcycle A (p,(top,s)) c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:904 / simplex_map   (hash md5:1545473ed6873fa385c778c3b51ec133)
+// not bridged: 
+Theorem simplex_map_thm : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall c:set -> set, (forall x :e R :^: omega, c x :e A) -> forall x :e R :^: omega, simplex_map A B p g c x = if x :e standard_simplex p then g (c x) else choose_in B (fun y:set => False).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:908 / SINGULAR_SIMPLEX_SIMPLEX_MAP   (hash md5:6ab22cf463715fcab2d9531a16984b5a)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_SIMPLEX_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall top' :e topology B, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> forall g:set -> set, (forall x :e A, g x :e B) -> singular_simplex A (p,top) f /\ continuous_map A B (top,top') g -> singular_simplex B (p,top') (simplex_map A B p g f).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:917 / SIMPLEX_MAP_EQ   (hash md5:0e16265e3194cff4ec4a80dee725aa8f)
+// not bridged: 
+Theorem SIMPLEX_MAP_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall top :e topology A, forall c:set -> set, (forall x :e R :^: omega, c x :e A) -> singular_simplex A (p,top) c /\ (forall x :e A, x :e topspace A top -> f x = g x) -> forall x :e R :^: omega, simplex_map A B p f c x = simplex_map A B p g c x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:929 / SIMPLEX_MAP_ID_GEN   (hash md5:dd9c4f04f0923c8bd3ced8cd332f4988)
+// not bridged: 
+Theorem SIMPLEX_MAP_ID_GEN : forall A:set, A <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e A, f x :e A) -> forall top :e topology A, forall c:set -> set, (forall x :e R :^: omega, c x :e A) -> singular_simplex A (p,top) c /\ (forall x :e A, x :e topspace A top -> f x = x) -> forall x :e R :^: omega, simplex_map A A p f c x = c x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:941 / SIMPLEX_MAP_I   (hash md5:27d3a80d3589907aa2e70cdd08805e15)
+// not bridged: 
+Theorem SIMPLEX_MAP_I : forall A:set, A <> Empty -> forall p :e omega, forall x:set -> set, (forall x0 :e R :^: omega, x x0 :e A) -> forall x0 :e R :^: omega, simplex_map A A p (fun x:set => x) x x0 = if x0 :e standard_simplex p then x x0 else choose_in A (fun y:set => False).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:946 / SIMPLEX_MAP_COMPOSE   (hash md5:6003de3be11dd27726a2c30428ae0e2b)
+// not bridged: 
+Theorem SIMPLEX_MAP_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall h:set -> set, (forall x :e B, h x :e C) -> forall x :e A :^: (R :^: omega), forall x0 :e R :^: omega, simplex_map A C p (fun x:set => h (g x)) (fun x1:set => x x1) x0 = (fun x2 :e R :^: omega => simplex_map B C p h (fun x2:set => (fun x2 :e R :^: omega => simplex_map A B p g (fun x2:set => x x2) x2) x2) x2) x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:953 / SINGULAR_FACE_SIMPLEX_MAP   (hash md5:5eaa3c67fe3843a516f8789d253d0334)
+// not bridged: 
+Theorem SINGULAR_FACE_SIMPLEX_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p k :e omega, forall f:set -> set, (forall x :e A, f x :e B) -> forall c:set -> set, (forall x :e R :^: omega, c x :e A) -> 1 <= p /\ k <= p -> forall x :e R :^: omega, singular_face B p k (simplex_map A B p f c) x = simplex_map A B (minus_nat p 1) f (fun x:set => c (fun x1 :e omega => simplicial_face k (fun x2:set => x x2) x1)) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:961 / chain_map   (hash md5:596309eca7679785df4276fa5b366da9)
+// not bridged: 
+Theorem chain_map_thm : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), chain_map A B p g c = frag_extend (A :^: (R :^: omega)) (B :^: (R :^: omega)) (fun x:set => frag_of (B :^: (R :^: omega)) (fun x0 :e R :^: omega => simplex_map A B p g (fun x0:set => x x0) x0)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:965 / SINGULAR_CHAIN_CHAIN_MAP   (hash md5:213a4218dee171e230e604eb28accb8e)
+// not bridged: 
+Theorem SINGULAR_CHAIN_CHAIN_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall top' :e topology B, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c /\ continuous_map A B (top,top') g -> singular_chain B (p,top') (chain_map A B p g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:976 / CHAIN_MAP_0   (hash md5:22fb48f264196db8e94d5fb901bbc00b)
+// not bridged: 
+Theorem CHAIN_MAP_0 : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> chain_map A B p g (frag_0 (A :^: (R :^: omega))) = frag_0 (B :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:980 / CHAIN_MAP_OF   (hash md5:fea033dfbdd91d7d96f5a378092b7746)
+// not bridged: 
+Theorem CHAIN_MAP_OF : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall f :e A :^: (R :^: omega), chain_map A B p g (frag_of (A :^: (R :^: omega)) f) = frag_of (B :^: (R :^: omega)) (fun x :e R :^: omega => simplex_map A B p g (fun x:set => f x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:984 / CHAIN_MAP_CMUL   (hash md5:8d78a74c6b86c26dc592917161aa1a86)
+// not bridged: 
+Theorem CHAIN_MAP_CMUL : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall a :e int, forall c :e frag (A :^: (R :^: omega)), chain_map A B p g (frag_cmul (A :^: (R :^: omega)) a c) = frag_cmul (B :^: (R :^: omega)) a (chain_map A B p g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:990 / CHAIN_MAP_NEG   (hash md5:71e9c4cd0c323fe28cca2d68638f6cbb)
+// not bridged: 
+Theorem CHAIN_MAP_NEG : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), chain_map A B p g (frag_neg (A :^: (R :^: omega)) c) = frag_neg (B :^: (R :^: omega)) (chain_map A B p g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:995 / CHAIN_MAP_ADD   (hash md5:4bb44984aacd5904360a69b772c9773d)
+// not bridged: 
+Theorem CHAIN_MAP_ADD : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall c1 c2 :e frag (A :^: (R :^: omega)), chain_map A B p g (frag_add (A :^: (R :^: omega)) c1 c2) = frag_add (B :^: (R :^: omega)) (chain_map A B p g c1) (chain_map A B p g c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1001 / CHAIN_MAP_SUB   (hash md5:f7dfeb5ff75c227f0e8965e1070925a1)
+// not bridged: 
+Theorem CHAIN_MAP_SUB : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall c1 c2 :e frag (A :^: (R :^: omega)), chain_map A B p g (frag_sub (A :^: (R :^: omega)) c1 c2) = frag_sub (B :^: (R :^: omega)) (chain_map A B p g c1) (chain_map A B p g c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1007 / CHAIN_MAP_SUM   (hash md5:b3fabe92d8f570ad989bdfd142ed6b48)
+// not bridged: 
+Theorem CHAIN_MAP_SUM : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall f:set -> set, (forall x :e K, f x :e frag (A :^: (R :^: omega))) -> forall k c= K, finite k -> chain_map A B p g (iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) k f) = iterate_op (frag (B :^: (R :^: omega))) (frag_add (B :^: (R :^: omega))) k (fun x:set => chain_map A B p g (f x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1014 / CHAIN_MAP_EQ   (hash md5:fc02fe78bfdc08676ec4e33ce1475b84)
+// not bridged: 
+Theorem CHAIN_MAP_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c /\ (forall x :e A, x :e topspace A top -> f x = g x) -> chain_map A B p f c = chain_map A B p g c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1025 / CHAIN_MAP_ID_GEN   (hash md5:cc63be3742a208cb85e4fcf455107a39)
+// not bridged: 
+Theorem CHAIN_MAP_ID_GEN : forall A:set, A <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e A, f x :e A) -> forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c /\ (forall x :e A, x :e topspace A top -> f x = x) -> chain_map A A p f c = c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1036 / CHAIN_MAP_ID   (hash md5:d48e092e891c7efb651e62bc4b48c212)
+// not bridged: 
+Theorem CHAIN_MAP_ID : forall B:set, B <> Empty -> forall p :e omega, forall top :e topology B, forall c :e frag (B :^: (R :^: omega)), singular_chain B (p,top) c -> chain_map B B p (fun x:set => x) c = c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1042 / CHAIN_MAP_I   (hash md5:78282b9ab28f5c6ad2104fbe82784d40)
+// not bridged: 
+Theorem CHAIN_MAP_I : forall A:set, A <> Empty -> forall p :e omega, forall x :e frag (A :^: (R :^: omega)), chain_map A A p (fun x:set => x) x = frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun x:set => frag_of (A :^: (R :^: omega)) (fun x1 :e R :^: omega => if x1 :e standard_simplex p then x x1 else choose_in A (fun y:set => False))) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1047 / CHAIN_MAP_COMPOSE   (hash md5:8d61ad91c4931bcb9e9af8827fda5c3d)
+// not bridged: 
+Theorem CHAIN_MAP_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall p :e omega, forall g:set -> set, (forall x :e A, g x :e B) -> forall h:set -> set, (forall x :e B, h x :e C) -> forall x :e frag (A :^: (R :^: omega)), chain_map A C p (fun x:set => h (g x)) x = chain_map B C p h (chain_map A B p g x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1058 / SINGULAR_SIMPLEX_CHAIN_MAP_I   (hash md5:e55a7ac1e8210dd31c2db9d6c938d372)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_CHAIN_MAP_I : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall f :e A :^: (R :^: omega), singular_simplex A (p,top) (fun x:set => f x) -> chain_map (R :^: omega) A p (fun x:set => f x) (frag_of (R :^: omega :^: (R :^: omega)) (fun x :e R :^: omega => if x :e standard_simplex p then x else choose_in (R :^: omega) (fun y:set => False))) = frag_of (A :^: (R :^: omega)) f.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1071 / CHAIN_BOUNDARY_CHAIN_MAP   (hash md5:480fb9284b7d62b7268e7ecd90d5df68)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_CHAIN_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> chain_boundary B p (chain_map A B p g c) = chain_map A B (minus_nat p 1) g (chain_boundary A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1093 / SINGULAR_RELCYCLE_CHAIN_MAP   (hash md5:78ceba4f01e5a0b97df65256407a8f97)
+// not bridged: 
+Theorem SINGULAR_RELCYCLE_CHAIN_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c /\ (continuous_map A B (top,top') g /\ {g x | x :e s} c= t) -> singular_relcycle B (p,(top',t)) (chain_map A B p g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1109 / SINGULAR_RELBOUNDARY_CHAIN_MAP   (hash md5:c3693307b8b64ddcd6ae376e7e7e9231)
+// not bridged: 
+Theorem SINGULAR_RELBOUNDARY_CHAIN_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), singular_relboundary A (p,(top,s)) c /\ (continuous_map A B (top,top') g /\ {g x | x :e s} c= t) -> singular_relboundary B (p,(top',t)) (chain_map A B p g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1131 / SINGULAR_SIMPLEX_SING   (hash md5:0cfaf6d9d65d3b47f95df6502a8f3f60)
+// not bridged: 
+Theorem SINGULAR_SIMPLEX_SING : forall A:set, forall p :e omega, forall top :e topology A, forall a :e A, forall f:set -> set, (forall x :e R :^: omega, f x :e A) -> topspace A top = {a} -> (singular_simplex A (p,top) f <-> forall x :e R :^: omega, f x = if x :e standard_simplex p then a else choose_in A (fun y:set => False)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1150 / SINGULAR_CHAIN_SING   (hash md5:bcb609d965e174bac81aae25e4abd822)
+// not bridged: 
+Theorem SINGULAR_CHAIN_SING : forall A:set, forall p :e omega, forall top :e topology A, forall a :e A, forall c :e frag (A :^: (R :^: omega)), topspace A top = {a} -> (singular_chain A (p,top) c <-> exists b :e int, c = frag_cmul (A :^: (R :^: omega)) b (frag_of (A :^: (R :^: omega)) (fun x :e R :^: omega => if x :e standard_simplex p then a else choose_in A (fun y:set => False)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1170 / CHAIN_BOUNDARY_OF_SING   (hash md5:a5200ebdb758813c8646b6ec0f68e14a)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_OF_SING : forall A:set, forall p :e omega, forall top :e topology A, forall a :e A, forall c :e frag (A :^: (R :^: omega)), topspace A top = {a} /\ singular_chain A (p,top) c -> chain_boundary A p c = if p = 0 \/ odd_nat p then frag_0 (A :^: (R :^: omega)) else frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => frag_of (A :^: (R :^: omega)) (fun x :e R :^: omega => if x :e standard_simplex (minus_nat p 1) then a else choose_in A (fun y:set => False))) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1216 / SINGULAR_CYCLE_SING   (hash md5:25f7aae19779c7cf662942b2901ae8e5)
+// not bridged: 
+Theorem SINGULAR_CYCLE_SING : forall A:set, forall p :e omega, forall top :e topology A, forall a :e A, forall c :e frag (A :^: (R :^: omega)), topspace A top = {a} -> (singular_relcycle A (p,(top,Empty)) c <-> singular_chain A (p,top) c /\ (p = 0 \/ (odd_nat p \/ c = frag_0 (A :^: (R :^: omega))))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1234 / SINGULAR_BOUNDARY_SING   (hash md5:d0c565a3d749bd0792aac26a2fd6218e)
+// not bridged: 
+Theorem SINGULAR_BOUNDARY_SING : forall A:set, forall p :e omega, forall top :e topology A, forall a :e A, forall c :e frag (A :^: (R :^: omega)), topspace A top = {a} -> (singular_relboundary A (p,(top,Empty)) c <-> singular_chain A (p,top) c /\ (odd_nat p \/ c = frag_0 (A :^: (R :^: omega)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1255 / SINGULAR_BOUNDARY_EQ_CYCLE_SING   (hash md5:dfc8dd141b2f957b90e3a89be2b5a3dd)
+// not bridged: 
+Theorem SINGULAR_BOUNDARY_EQ_CYCLE_SING : forall A:set, forall p :e omega, forall top :e topology A, forall a :e A, forall c :e frag (A :^: (R :^: omega)), topspace A top = {a} /\ 1 <= p -> (singular_relboundary A (p,(top,Empty)) c <-> singular_relcycle A (p,(top,Empty)) c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1269 / oriented_simplex   (hash md5:7b82cb1b627cf2bb06c75d11a5794b12)
+// not bridged: 
+Theorem oriented_simplex_thm : forall p :e omega, forall l:set -> set -> set, (forall x y :e omega, l x y :e R) -> forall x :e R :^: omega, forall x0 :e omega, oriented_simplex p l x x0 = (if x :e standard_simplex p then fun x2 :e omega => finsum {i :e omega | 0 <= i /\ i <= p} (fun j:set => l j x2 * x j) else choose_in (R :^: omega) (fun y:set => False)) x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1274 / simplicial_simplex   (hash md5:35bc367f562d5cb8bf91d005d9f082f3)
+// not bridged: 
+Theorem simplicial_simplex_thm : forall s c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), forall p :e omega, simplicial_simplex (p,s) (fun x:set => fun x0:set => f x x0) <-> singular_simplex (R :^: omega) (p,subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) s) (fun x:set => f x) /\ exists l:set -> set -> set, (forall x y :e omega, l x y :e R) /\ forall x :e R :^: omega, forall x0 :e omega, f x x0 = oriented_simplex p l x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1280 / SIMPLICIAL_SIMPLEX   (hash md5:0fa80f8d8c2a4a79ecd4d1a65dd65e1e)
+// not bridged: 
+Theorem SIMPLICIAL_SIMPLEX : forall p :e omega, forall s c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), simplicial_simplex (p,s) (fun x:set => fun x0:set => f x x0) <-> {f x | x :e standard_simplex p} c= s /\ exists l:set -> set -> set, (forall x y :e omega, l x y :e R) /\ forall x :e R :^: omega, forall x0 :e omega, f x x0 = oriented_simplex p l x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1300 / SIMPLICIAL_SIMPLEX_EMPTY   (hash md5:c84da7156227e0830820f475fb0b42e9)
+// not bridged: 
+Theorem SIMPLICIAL_SIMPLEX_EMPTY : forall p :e omega, forall f:set -> set -> set, (forall x :e R :^: omega, forall y :e omega, f x y :e R) -> ~ simplicial_simplex (p,Empty) f.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1305 / simplicial_chain   (hash md5:0e97897e55c30921a79effed58642143)
+// not bridged: 
+Theorem simplicial_chain_thm : forall c :e frag (R :^: omega :^: (R :^: omega)), forall p :e omega, forall s c= R :^: omega, simplicial_chain (p,s) c <-> frag_support (R :^: omega :^: (R :^: omega)) c c= {x :e R :^: omega :^: (R :^: omega) | simplicial_simplex (p,s) (fun x0:set => fun x1:set => x x0 x1)}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1309 / SIMPLICIAL_CHAIN_0   (hash md5:c78ffe9b17d69ec16e1c5de68f57b4d6)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_0 : forall p :e omega, forall s c= R :^: omega, simplicial_chain (p,s) (frag_0 (R :^: omega :^: (R :^: omega))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1313 / SIMPLICIAL_CHAIN_OF   (hash md5:e65607d60313824a93a319e31c9d0d46)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_OF : forall p :e omega, forall s c= R :^: omega, forall c :e R :^: omega :^: (R :^: omega), simplicial_chain (p,s) (frag_of (R :^: omega :^: (R :^: omega)) c) <-> simplicial_simplex (p,s) (fun x:set => fun x0:set => c x x0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1317 / SIMPLICIAL_CHAIN_CMUL   (hash md5:897327ff8b46df8c05ff29abb50e690c)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_CMUL : forall p :e omega, forall s c= R :^: omega, forall a :e int, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> simplicial_chain (p,s) (frag_cmul (R :^: omega :^: (R :^: omega)) a c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1323 / SIMPLICIAL_CHAIN_SUB   (hash md5:5cff53d18463442b3e6c412c6086a84b)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_SUB : forall p :e omega, forall s c= R :^: omega, forall c1 c2 :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c1 /\ simplicial_chain (p,s) c2 -> simplicial_chain (p,s) (frag_sub (R :^: omega :^: (R :^: omega)) c1 c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1330 / SIMPLICIAL_CHAIN_SUM   (hash md5:2c88a6fc4f0c60e28ddf4bb0556bcd86)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_SUM : forall A:set, A <> Empty -> forall p :e omega, forall s c= R :^: omega, forall f:set -> set, (forall x :e A, f x :e frag (R :^: omega :^: (R :^: omega))) -> forall k c= A, (forall c :e A, c :e k -> simplicial_chain (p,s) (f c)) -> simplicial_chain (p,s) (iterate_op (frag (R :^: omega :^: (R :^: omega))) (frag_add (R :^: omega :^: (R :^: omega))) k f).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1338 / SIMPLICIAL_SIMPLEX_ORIENTED_SIMPLEX   (hash md5:6aa63f9cffc682382a8ab66b9361d8fc)
+// not bridged: 
+Theorem SIMPLICIAL_SIMPLEX_ORIENTED_SIMPLEX : forall p :e omega, forall s c= R :^: omega, forall l:set -> set -> set, (forall x y :e omega, l x y :e R) -> (simplicial_simplex (p,s) (fun x:set => fun x0:set => oriented_simplex p l x x0) <-> {(fun x0 :e omega => finsum {i :e omega | 0 <= i /\ i <= p} (fun j:set => l j x0 * x j)) | x :e standard_simplex p} c= s).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1347 / SIMPLICIAL_IMP_SINGULAR_SIMPLEX   (hash md5:dc8b09f51817220436eb44fbb496dac5)
+// not bridged: 
+Theorem SIMPLICIAL_IMP_SINGULAR_SIMPLEX : forall p :e omega, forall s c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), simplicial_simplex (p,s) (fun x:set => fun x0:set => f x x0) -> singular_simplex (R :^: omega) (p,subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) s) (fun x:set => f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1354 / SIMPLICIAL_IMP_SINGULAR_CHAIN   (hash md5:2b60c8df64764733d77943ad70746c46)
+// not bridged: 
+Theorem SIMPLICIAL_IMP_SINGULAR_CHAIN : forall p :e omega, forall s c= R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> singular_chain (R :^: omega) (p,subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) s) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1361 / ORIENTED_SIMPLEX_EQ   (hash md5:cbe5637a10f5c74741b38734b45e2f38)
+// not bridged: 
+Theorem ORIENTED_SIMPLEX_EQ : forall p :e omega, forall l:set -> set -> set, (forall x y :e omega, l x y :e R) -> forall l':set -> set -> set, (forall x y :e omega, l' x y :e R) -> ((forall x :e R :^: omega, forall x0 :e omega, oriented_simplex p l x x0 = oriented_simplex p l' x x0) <-> forall i :e omega, i <= p -> forall x :e omega, l i x = l' i x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1373 / SINGULAR_FACE_ORIENTED_SIMPLEX   (hash md5:a6ab6635de55a0933fba3a422723b749)
+// not bridged: 
+Theorem SINGULAR_FACE_ORIENTED_SIMPLEX : forall p k :e omega, forall l:set -> set -> set, (forall x y :e omega, l x y :e R) -> 1 <= p /\ k <= p -> forall x :e R :^: omega, forall x0 :e omega, singular_face (R :^: omega) p k (oriented_simplex p l) x x0 = oriented_simplex (minus_nat p 1) (fun j:set => fun x1:set => if j < k then l j x1 else l (j + 1) x1) x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1402 / SIMPLICIAL_SIMPLEX_SINGULAR_FACE   (hash md5:bda74633c2ff862a51d615931764ceeb)
+// not bridged: 
+Theorem SIMPLICIAL_SIMPLEX_SINGULAR_FACE : forall p :e omega, forall s c= R :^: omega, forall k :e omega, forall f :e R :^: omega :^: (R :^: omega), simplicial_simplex (p,s) (fun x:set => fun x0:set => f x x0) /\ (1 <= p /\ k <= p) -> simplicial_simplex (minus_nat p 1,s) (fun x:set => fun x0:set => singular_face (R :^: omega) p k (fun x:set => f x) x x0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1430 / SIMPLICIAL_CHAIN_BOUNDARY   (hash md5:27343626638bd157c4efc334554638b8)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_BOUNDARY : forall p :e omega, forall s c= R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> simplicial_chain (minus_nat p 1,s) (chain_boundary (R :^: omega) p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1454 / simplex_cone   (hash md5:2764c8b30799b628d0c4ef7ee09f7ab0)
+// not bridged: 
+Theorem simplex_cone_thm : forall p :e omega, forall v :e R :^: omega, forall l:set -> set -> set, (forall x y :e omega, l x y :e R) -> forall x :e R :^: omega, forall x0 :e omega, simplex_cone p v (fun x1 :e R :^: omega => oriented_simplex p l x1) x x0 = oriented_simplex (p + 1) (fun i:set => fun x1:set => if i = 0 then v x1 else l (minus_nat i 1) x1) x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1469 / SIMPLICIAL_SIMPLEX_SIMPLEX_CONE   (hash md5:7bb093caa7c28610e325652a361eea3f)
+// not bridged: 
+Theorem SIMPLICIAL_SIMPLEX_SIMPLEX_CONE : forall p :e omega, forall s t c= R :^: omega, forall v :e R :^: omega, forall f :e R :^: omega :^: (R :^: omega), simplicial_simplex (p,s) (fun x:set => fun x0:set => f x x0) /\ (forall x :e R :^: omega, forall u :e R, 0 <= u /\ (u <= 1 /\ x :e s) -> (fun i :e omega => (1 + - u) * v i + u * x i) :e t) -> simplicial_simplex (p + 1,t) (fun x:set => fun x0:set => simplex_cone p v f x x0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1527 / simplicial_cone   (hash md5:8df13432ff3ea2994953fba9319e52d5)
+// not bridged: 
+Theorem simplicial_cone_thm : forall p :e omega, forall v :e R :^: omega, forall x :e frag (R :^: omega :^: (R :^: omega)), simplicial_cone p (fun x0:set => v x0) x = frag_extend (R :^: omega :^: (R :^: omega)) (R :^: omega :^: (R :^: omega)) (fun x:set => frag_of (R :^: omega :^: (R :^: omega)) (simplex_cone p v x)) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1530 / SIMPLICIAL_CHAIN_SIMPLICIAL_CONE   (hash md5:bdab16f180197f52803e0be29c248fda)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_SIMPLICIAL_CONE : forall p :e omega, forall s t c= R :^: omega, forall v:set -> set, (forall x :e omega, v x :e R) -> forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c /\ (forall x :e R :^: omega, forall u :e R, 0 <= u /\ (u <= 1 /\ x :e s) -> (fun i :e omega => (1 + - u) * v i + u * x i) :e t) -> simplicial_chain (p + 1,t) (simplicial_cone p v c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1547 / CHAIN_BOUNDARY_SIMPLICIAL_CONE_OF   (hash md5:3ed0203af3209040ce1183525f33f20c)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_SIMPLICIAL_CONE_OF : forall p :e omega, forall s c= R :^: omega, forall v :e R :^: omega, forall f :e R :^: omega :^: (R :^: omega), simplicial_simplex (p,s) (fun x:set => fun x0:set => f x x0) -> chain_boundary (R :^: omega) (p + 1) (simplicial_cone p (fun x:set => v x) (frag_of (R :^: omega :^: (R :^: omega)) f)) = frag_sub (R :^: omega :^: (R :^: omega)) (frag_of (R :^: omega :^: (R :^: omega)) f) (if p = 0 then frag_of (R :^: omega :^: (R :^: omega)) (fun x :e R :^: omega => if x :e standard_simplex p then fun x0 :e omega => v x0 else choose_in (R :^: omega) (fun y:set => False)) else simplicial_cone (minus_nat p 1) (fun x:set => v x) (chain_boundary (R :^: omega) p (frag_of (R :^: omega :^: (R :^: omega)) f))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1600 / CHAIN_BOUNDARY_SIMPLICIAL_CONE   (hash md5:06a68cc9f2e41d123b43c4be78d01400)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_SIMPLICIAL_CONE : forall p :e omega, forall s c= R :^: omega, forall v :e R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> chain_boundary (R :^: omega) (p + 1) (simplicial_cone p (fun x:set => v x) c) = frag_sub (R :^: omega :^: (R :^: omega)) c (if p = 0 then frag_extend (R :^: omega :^: (R :^: omega)) (R :^: omega :^: (R :^: omega)) (fun f:set => frag_of (R :^: omega :^: (R :^: omega)) (fun x :e R :^: omega => if x :e standard_simplex p then fun x0 :e omega => v x0 else choose_in (R :^: omega) (fun y:set => False))) c else simplicial_cone (minus_nat p 1) (fun x:set => v x) (chain_boundary (R :^: omega) p c)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1623 / SIMPLEX_MAP_ORIENTED_SIMPLEX   (hash md5:26cf671012341abf8a2e0b0a3c3b63ab)
+// not bridged: 
+Theorem SIMPLEX_MAP_ORIENTED_SIMPLEX : forall p q r :e omega, forall g :e R :^: omega :^: (R :^: omega), forall l :e R :^: omega :^: omega, forall s c= R :^: omega, simplicial_simplex (p,standard_simplex q) (fun x:set => fun x0:set => oriented_simplex p (fun x:set => fun x0:set => l x x0) x x0) /\ (simplicial_simplex (r,s) (fun x:set => fun x0:set => g x x0) /\ q <= r) -> forall x :e R :^: omega, forall x0 :e omega, simplex_map (R :^: omega) (R :^: omega) p (fun x1:set => g x1) (oriented_simplex p (fun x1:set => fun x2:set => l x1 x2)) x x0 = oriented_simplex p (fun x1:set => fun x2:set => g (l x1) x2) x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1657 / CHAIN_MAP_SIMPLICIAL_CONE   (hash md5:4bdfd9e5c3331662e0c3e8e520a0bd36)
+// not bridged: 
+Theorem CHAIN_MAP_SIMPLICIAL_CONE : forall s c= R :^: omega, forall p q r :e omega, forall v :e R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), forall g :e R :^: omega :^: (R :^: omega), simplicial_simplex (r,s) (fun x:set => fun x0:set => g x x0) /\ (simplicial_chain (p,standard_simplex q) c /\ (v :e standard_simplex q /\ q <= r)) -> chain_map (R :^: omega) (R :^: omega) (p + 1) (fun x:set => g x) (simplicial_cone p (fun x:set => v x) c) = simplicial_cone p (fun x:set => g v x) (chain_map (R :^: omega) (R :^: omega) p (fun x:set => g x) c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1701 / simplicial_vertex   (hash md5:898773ba07cafb3bef0e6b46115510ee)
+// not bridged: 
+Theorem simplicial_vertex_thm : forall f:set -> set -> set, (forall x :e R :^: omega, forall y :e omega, f x y :e R) -> forall i x :e omega, simplicial_vertex i f x = f (fun j :e omega => if j = i then 1 else 0) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1705 / SIMPLICIAL_VERTEX_ORIENTED_SIMPLEX   (hash md5:4199009c79468ef84cca67f414e13c96)
+// not bridged: 
+Theorem SIMPLICIAL_VERTEX_ORIENTED_SIMPLEX : forall i p :e omega, forall l:set -> set -> set, (forall x y :e omega, l x y :e R) -> forall x :e omega, simplicial_vertex i (fun x0:set => fun x1:set => oriented_simplex p l x0 x1) x = if i <= p then l i x else choose_in (R :^: omega) (fun x:set => False) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1715 / simplicial_subdivision   (hash md5:16f6b927aa711289a01866609777cb2b)
+// not bridged: 
+Theorem simplicial_subdivision_thm : forall p :e omega, (forall x :e frag (R :^: omega :^: (R :^: omega)), simplicial_subdivision 0 x = x) /\ forall x :e frag (R :^: omega :^: (R :^: omega)), simplicial_subdivision (ordsucc p) x = frag_extend (R :^: omega :^: (R :^: omega)) (R :^: omega :^: (R :^: omega)) (fun f:set => simplicial_cone p (fun i:set => finsum {i :e omega | 0 <= i /\ i <= ordsucc p} (fun j:set => simplicial_vertex j (fun x0:set => fun x1:set => f x0 x1) i) :/: (p + 2)) (simplicial_subdivision p (chain_boundary (R :^: omega) (ordsucc p) (frag_of (R :^: omega :^: (R :^: omega)) f)))) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1723 / SIMPLICIAL_SUBDIVISION_0   (hash md5:c814f62741481c434790ab1ecb70ff32)
+// not bridged: 
+Theorem SIMPLICIAL_SUBDIVISION_0 : forall p :e omega, simplicial_subdivision p (frag_0 (R :^: omega :^: (R :^: omega))) = frag_0 (R :^: omega :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1727 / SIMPLICIAL_SUBDIVISION_SUB   (hash md5:b0a44bfecfa0c7e2719a79e2bea9fb33)
+// not bridged: 
+Theorem SIMPLICIAL_SUBDIVISION_SUB : forall p :e omega, forall c1 c2 :e frag (R :^: omega :^: (R :^: omega)), simplicial_subdivision p (frag_sub (R :^: omega :^: (R :^: omega)) c1 c2) = frag_sub (R :^: omega :^: (R :^: omega)) (simplicial_subdivision p c1) (simplicial_subdivision p c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1735 / SIMPLICIAL_SUBDIVISION_OF   (hash md5:fecae0a2c0973bd0dc2920140d3e7a99)
+// not bridged: 
+Theorem SIMPLICIAL_SUBDIVISION_OF : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), simplicial_subdivision p (frag_of (R :^: omega :^: (R :^: omega)) f) = if p = 0 then frag_of (R :^: omega :^: (R :^: omega)) f else simplicial_cone (minus_nat p 1) (fun i:set => finsum {i :e omega | 0 <= i /\ i <= p} (fun j:set => simplicial_vertex j (fun x:set => fun x0:set => f x x0) i) :/: (p + 1)) (simplicial_subdivision (minus_nat p 1) (chain_boundary (R :^: omega) p (frag_of (R :^: omega :^: (R :^: omega)) f))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1746 / SIMPLICIAL_CHAIN_SIMPLICIAL_SUBDIVISION   (hash md5:6adb25f6e3522aba0bc509507db522d9)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_SIMPLICIAL_SUBDIVISION : forall p :e omega, forall s c= R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> simplicial_chain (p,s) (simplicial_subdivision p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1796 / CHAIN_BOUNDARY_SIMPLICIAL_SUBDIVISION   (hash md5:d7cb4107cc284a250dcc7508b366821e)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_SIMPLICIAL_SUBDIVISION : forall p :e omega, forall s c= R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> chain_boundary (R :^: omega) p (simplicial_subdivision p c) = simplicial_subdivision (minus_nat p 1) (chain_boundary (R :^: omega) p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:1846 / SIMPLICIAL_SUBDIVISION_SHRINKS   (hash md5:39653c2902d1e96765c179192ed74fe0)
+// not bridged: 
+Theorem SIMPLICIAL_SUBDIVISION_SHRINKS : forall s c= R :^: omega, forall k p :e omega, forall d :e R, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c /\ (forall f :e R :^: omega :^: (R :^: omega), forall x y :e R :^: omega, f :e frag_support (R :^: omega :^: (R :^: omega)) c /\ (x :e standard_simplex p /\ y :e standard_simplex p) -> abs_SNo (f x k + - f y k) <= d) -> forall f :e R :^: omega :^: (R :^: omega), forall x y :e R :^: omega, f :e frag_support (R :^: omega :^: (R :^: omega)) (simplicial_subdivision p c) /\ (x :e standard_simplex p /\ y :e standard_simplex p) -> abs_SNo (f x k + - f y k) <= p :/: (p + 1) * d.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2030 / singular_subdivision   (hash md5:3a3651584d42f8eaf3d66d9c5f1d10e9)
+// not bridged: 
+Theorem singular_subdivision_thm : forall A:set, A <> Empty -> forall p :e omega, forall x :e frag (A :^: (R :^: omega)), singular_subdivision A p x = frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => chain_map (R :^: omega) A p (fun x0:set => f x0) (simplicial_subdivision p (frag_of (R :^: omega :^: (R :^: omega)) (fun x0 :e R :^: omega => if x0 :e standard_simplex p then x0 else choose_in (R :^: omega) (fun y:set => False))))) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2037 / SINGULAR_SUBDIVISION_0   (hash md5:97070bde26fe3e0c2d36286531e6355c)
+// not bridged: 
+Theorem SINGULAR_SUBDIVISION_0 : forall A:set, A <> Empty -> forall p :e omega, singular_subdivision A p (frag_0 (A :^: (R :^: omega))) = frag_0 (A :^: (R :^: omega)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2041 / SINGULAR_SUBDIVISION_SUB   (hash md5:4297935787b8cf7cc2f66ca024d902d4)
+// not bridged: 
+Theorem SINGULAR_SUBDIVISION_SUB : forall A:set, A <> Empty -> forall p :e omega, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_subdivision A p (frag_sub (A :^: (R :^: omega)) c1 c2) = frag_sub (A :^: (R :^: omega)) (singular_subdivision A p c1) (singular_subdivision A p c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2046 / SINGULAR_SUBDIVISION_ADD   (hash md5:42ef4f26597b051b5b1c3149f414bc35)
+// not bridged: 
+Theorem SINGULAR_SUBDIVISION_ADD : forall A:set, A <> Empty -> forall p :e omega, forall c1 c2 :e frag (A :^: (R :^: omega)), singular_subdivision A p (frag_add (A :^: (R :^: omega)) c1 c2) = frag_add (A :^: (R :^: omega)) (singular_subdivision A p c1) (singular_subdivision A p c2).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2051 / SIMPLICIAL_SIMPLEX_I   (hash md5:a34cc0c829428b063bb2afe9aa7b001c)
+// not bridged: 
+Theorem SIMPLICIAL_SIMPLEX_I : forall p :e omega, forall s c= R :^: omega, simplicial_simplex (p,s) (fun x:set => fun x0:set => (if x :e standard_simplex p then x else choose_in (R :^: omega) (fun y:set => False)) x0) <-> standard_simplex p c= s.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2069 / SINGULAR_CHAIN_SINGULAR_SUBDIVISION   (hash md5:ae60ed1b70e86ff07ec3a74b615a9571)
+// not bridged: 
+Theorem SINGULAR_CHAIN_SINGULAR_SUBDIVISION : forall A:set, A <> Empty -> forall p :e omega, forall s :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,s) c -> singular_chain A (p,s) (singular_subdivision A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2087 / NATURALITY_SINGULAR_SUBDIVISION   (hash md5:c05683f751eb17ddd1a155ced4776dbd)
+// not bridged: 
+Theorem NATURALITY_SINGULAR_SUBDIVISION : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall s :e topology A, forall g:set -> set, (forall x :e A, g x :e B) -> forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,s) c -> singular_subdivision B p (chain_map A B p g c) = chain_map A B p g (singular_subdivision A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2116 / SIMPLICIAL_CHAIN_CHAIN_MAP   (hash md5:cb2b979c0f7c612ac83b47ab8c1d91f9)
+// not bridged: 
+Theorem SIMPLICIAL_CHAIN_CHAIN_MAP : forall p q :e omega, forall s c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_simplex (q,s) (fun x:set => fun x0:set => f x x0) /\ simplicial_chain (p,standard_simplex q) c -> simplicial_chain (p,s) (chain_map (R :^: omega) (R :^: omega) p (fun x:set => f x) c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2160 / SINGULAR_SUBDIVISION_SIMPLICIAL_SIMPLEX   (hash md5:18f0e1af410c062d08c6f93e39d5b013)
+// not bridged: 
+Theorem SINGULAR_SUBDIVISION_SIMPLICIAL_SIMPLEX : forall p :e omega, forall s c= R :^: omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,s) c -> singular_subdivision (R :^: omega) p c = simplicial_subdivision p c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2273 / NATURALITY_SIMPLICIAL_SUBDIVISION   (hash md5:749e1a41a76a2e121edb4521767c3526)
+// not bridged: 
+Theorem NATURALITY_SIMPLICIAL_SUBDIVISION : forall p q :e omega, forall s c= R :^: omega, forall g :e R :^: omega :^: (R :^: omega), forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,standard_simplex q) c /\ simplicial_simplex (q,s) (fun x:set => fun x0:set => g x x0) -> simplicial_subdivision p (chain_map (R :^: omega) (R :^: omega) p (fun x:set => g x) c) = chain_map (R :^: omega) (R :^: omega) p (fun x:set => g x) (simplicial_subdivision p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2292 / CHAIN_BOUNDARY_SINGULAR_SUBDIVISION   (hash md5:37acc6361d28f4daab3703f83bd33e20)
+// not bridged: 
+Theorem CHAIN_BOUNDARY_SINGULAR_SUBDIVISION : forall A:set, A <> Empty -> forall p :e omega, forall s :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,s) c -> chain_boundary A p (singular_subdivision A p c) = singular_subdivision A (minus_nat p 1) (chain_boundary A p c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2353 / SINGULAR_SUBDIVISION_ZERO   (hash md5:4926ac91282b3d1a25053400153686b9)
+// not bridged: 
+Theorem SINGULAR_SUBDIVISION_ZERO : forall A:set, A <> Empty -> forall s :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (0,s) c -> singular_subdivision A 0 c = c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2367 / CHAIN_HOMOTOPIC_SIMPLICIAL_SUBDIVISION   (hash md5:5c93edd35ed1cd65ded4453363f0eeb2)
+// not bridged: 
+Theorem CHAIN_HOMOTOPIC_SIMPLICIAL_SUBDIVISION : exists h:set -> set -> set, (forall x :e omega, forall y :e frag (R :^: omega :^: (R :^: omega)), h x y :e frag (R :^: omega :^: (R :^: omega))) /\ ((forall p :e omega, h p (frag_0 (R :^: omega :^: (R :^: omega))) = frag_0 (R :^: omega :^: (R :^: omega))) /\ ((forall p :e omega, forall c1 c2 :e frag (R :^: omega :^: (R :^: omega)), h p (frag_sub (R :^: omega :^: (R :^: omega)) c1 c2) = frag_sub (R :^: omega :^: (R :^: omega)) (h p c1) (h p c2)) /\ ((forall p q r :e omega, forall g :e R :^: omega :^: (R :^: omega), forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,standard_simplex q) c /\ simplicial_simplex (q,standard_simplex r) (fun x:set => fun x0:set => g x x0) -> chain_map (R :^: omega) (R :^: omega) (p + 1) (fun x:set => g x) (h p c) = h p (chain_map (R :^: omega) (R :^: omega) p (fun x:set => g x) c)) /\ ((forall p q :e omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,standard_simplex q) c -> simplicial_chain (p + 1,standard_simplex q) (h p c)) /\ forall p q :e omega, forall c :e frag (R :^: omega :^: (R :^: omega)), simplicial_chain (p,standard_simplex q) c -> frag_add (R :^: omega :^: (R :^: omega)) (chain_boundary (R :^: omega) (p + 1) (h p c)) (h (minus_nat p 1) (chain_boundary (R :^: omega) p c)) = frag_sub (R :^: omega :^: (R :^: omega)) (simplicial_subdivision p c) c)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2597 / CHAIN_HOMOTOPIC_SINGULAR_SUBDIVISION   (hash md5:4d60815cd5c777cc99fa55249ecb5e81)
+// not bridged: 
+Theorem CHAIN_HOMOTOPIC_SINGULAR_SUBDIVISION : forall A:set, A <> Empty -> exists h:set -> set -> set, (forall x :e omega, forall y :e frag (A :^: (R :^: omega)), h x y :e frag (A :^: (R :^: omega))) /\ ((forall p :e omega, h p (frag_0 (A :^: (R :^: omega))) = frag_0 (A :^: (R :^: omega))) /\ ((forall p :e omega, forall c1 c2 :e frag (A :^: (R :^: omega)), h p (frag_sub (A :^: (R :^: omega)) c1 c2) = frag_sub (A :^: (R :^: omega)) (h p c1) (h p c2)) /\ ((forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> singular_chain A (p + 1,top) (h p c)) /\ forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> frag_add (A :^: (R :^: omega)) (chain_boundary A (p + 1) (h p c)) (h (minus_nat p 1) (chain_boundary A p c)) = frag_sub (A :^: (R :^: omega)) (singular_subdivision A p c) c))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2774 / HOMOLOGOUS_REL_SINGULAR_SUBDIVISION   (hash md5:a643eac8d0094e6f279df43fd1aca8a0)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_SINGULAR_SUBDIVISION : forall A:set, A <> Empty -> forall p :e omega, forall s :e topology A, forall t c= A, forall c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(s,t)) c -> homologous_rel A (p,(s,t)) (singular_subdivision A p c) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2794 / ITERATED_SINGULAR_SUBDIVISION   (hash md5:b8242fab999b69f07d9cc933df90ae29)
+// not bridged: 
+Theorem ITERATED_SINGULAR_SUBDIVISION : forall A:set, A <> Empty -> forall p :e omega, forall s :e topology A, forall n :e omega, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,s) c -> iter_fun n (singular_subdivision A p) c = frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => chain_map (R :^: omega) A p (fun x:set => f x) (iter_fun n (fun x:set => simplicial_subdivision p x) (frag_of (R :^: omega :^: (R :^: omega)) (fun x :e R :^: omega => if x :e standard_simplex p then x else choose_in (R :^: omega) (fun y:set => False))))) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2849 / CHAIN_HOMOTOPIC_ITERATED_SINGULAR_SUBDIVISION   (hash md5:4e548cbee6d2e532e591050fedc6610a)
+// not bridged: 
+Theorem CHAIN_HOMOTOPIC_ITERATED_SINGULAR_SUBDIVISION : forall A:set, A <> Empty -> forall n :e omega, exists h:set -> set -> set, (forall x :e omega, forall y :e frag (A :^: (R :^: omega)), h x y :e frag (A :^: (R :^: omega))) /\ ((forall p :e omega, h p (frag_0 (A :^: (R :^: omega))) = frag_0 (A :^: (R :^: omega))) /\ ((forall p :e omega, forall c1 c2 :e frag (A :^: (R :^: omega)), h p (frag_sub (A :^: (R :^: omega)) c1 c2) = frag_sub (A :^: (R :^: omega)) (h p c1) (h p c2)) /\ ((forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> singular_chain A (p + 1,top) (h p c)) /\ forall p :e omega, forall top :e topology A, forall c :e frag (A :^: (R :^: omega)), singular_chain A (p,top) c -> frag_add (A :^: (R :^: omega)) (chain_boundary A (p + 1) (h p c)) (h (minus_nat p 1) (chain_boundary A p c)) = frag_sub (A :^: (R :^: omega)) (iter_fun n (singular_subdivision A p) c) c))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:2916 / SUFFICIENT_ITERATED_SINGULAR_SUBDIVISION_EXISTS   (hash md5:aa15ee52d041c3bdc6d6dfafdacf826b)
+// not bridged: 
+Theorem SUFFICIENT_ITERATED_SINGULAR_SUBDIVISION_EXISTS : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall u c= Power A, forall c :e frag (A :^: (R :^: omega)), (forall v c= A, v :e u -> v :e top) /\ (topspace A top c= Union u /\ singular_chain A (p,top) c) -> exists n :e omega, forall m :e omega, forall f :e A :^: (R :^: omega), n <= m /\ f :e frag_support (A :^: (R :^: omega)) (iter_fun m (singular_subdivision A p) c) -> exists v c= A, v :e u /\ {f x | x :e standard_simplex p} c= v.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3189 / SMALL_HOMOLOGOUS_REL_RELCYCLE_EXISTS   (hash md5:ef1934e7b0b8b712797aa34365b85fa0)
+// not bridged: 
+Theorem SMALL_HOMOLOGOUS_REL_RELCYCLE_EXISTS : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall u c= Power A, forall c :e frag (A :^: (R :^: omega)), (forall v c= A, v :e u -> v :e top) /\ (topspace A top c= Union u /\ singular_relcycle A (p,(top,s)) c) -> exists c' :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c' /\ (homologous_rel A (p,(top,s)) c c' /\ forall f :e A :^: (R :^: omega), f :e frag_support (A :^: (R :^: omega)) c' -> exists v c= A, v :e u /\ {f x | x :e standard_simplex p} c= v).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3217 / EXCISED_CHAIN_EXISTS   (hash md5:d652b12b756517667a72e4007e0d38ef)
+// not bridged: 
+Theorem EXCISED_CHAIN_EXISTS : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s t u c= A, forall c :e frag (A :^: (R :^: omega)), closure_of A top u c= interior_of A top t /\ (t c= s /\ singular_chain A (p,subtopology A top s) c) -> exists n :e omega, exists d e0 :e frag (A :^: (R :^: omega)), singular_chain A (p,subtopology A top (s :\: u)) d /\ (singular_chain A (p,subtopology A top t) e0 /\ iter_fun n (singular_subdivision A p) c = frag_add (A :^: (R :^: omega)) d e0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3274 / EXCISED_RELCYCLE_EXISTS   (hash md5:edb5f83700524b8b22f3b15c3fe1411d)
+// not bridged: 
+Theorem EXCISED_RELCYCLE_EXISTS : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s t u c= A, forall c :e frag (A :^: (R :^: omega)), closure_of A top u c= interior_of A top t /\ (t c= s /\ singular_relcycle A (p,(subtopology A top s,t)) c) -> exists c' :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(subtopology A top (s :\: u),t :\: u)) c' /\ homologous_rel A (p,(subtopology A top s,t)) c c'.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3341 / HOMOTOPIC_IMP_HOMOLOGOUS_REL_CHAIN_MAPS   (hash md5:f9923af1377ccbc03c4d2f3ae2217139)
+// not bridged: 
+Theorem HOMOTOPIC_IMP_HOMOLOGOUS_REL_CHAIN_MAPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> forall s :e topology A, forall t c= A, forall u :e topology B, forall v c= B, forall c :e frag (A :^: (R :^: omega)), homotopic_with B A {h :e B :^: A | {h x | x :e t} c= v} (s,u) f g /\ singular_relcycle A (p,(s,t)) c -> homologous_rel B (p,(u,v)) (chain_map A B p f c) (chain_map A B p g c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3972 / chain_group   (hash md5:fa9dc9e0921ca0d21ce26570b9cb630d)
+// not bridged: 
+Theorem chain_group_thm : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, chain_group A (p,top) = free_abelian_group (A :^: (R :^: omega)) {x :e A :^: (R :^: omega) | singular_simplex A (p,top) (fun x0:set => x x0)}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3976 / CHAIN_GROUP   (hash md5:d146bfcbdba8c1a1b2d7d2211e7d909d)
+// not bridged: 
+Theorem CHAIN_GROUP : forall A:set, A <> Empty -> (forall p :e omega, forall top :e topology A, forall x :e frag (A :^: (R :^: omega)), x :e group_carrier (frag (A :^: (R :^: omega))) (chain_group A (p,top)) <-> singular_chain A (p,top) x) /\ ((forall p :e omega, forall top :e topology A, group_id (frag (A :^: (R :^: omega))) (chain_group A (p,top)) = frag_0 (A :^: (R :^: omega))) /\ ((forall p :e omega, forall top :e topology A, forall x :e frag (A :^: (R :^: omega)), group_inv (frag (A :^: (R :^: omega))) (chain_group A (p,top)) x = frag_neg (A :^: (R :^: omega)) x) /\ forall p :e omega, forall top :e topology A, forall x x0 :e frag (A :^: (R :^: omega)), group_mul (frag (A :^: (R :^: omega))) (chain_group A (p,top)) x x0 = frag_add (A :^: (R :^: omega)) x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3985 / ABELIAN_CHAIN_GROUP   (hash md5:0bbfeaf6aa043d1efb5466aefd7f6d6d)
+// not bridged: 
+Theorem ABELIAN_CHAIN_GROUP : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, abelian_group_hl (frag (A :^: (R :^: omega))) (chain_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3989 / SUBGROUP_SINGULAR_RELCYCLE   (hash md5:97e01fc59871631742bdc5eac056f3ec)
+// not bridged: 
+Theorem SUBGROUP_SINGULAR_RELCYCLE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, subgroup_of (frag (A :^: (R :^: omega))) {x :e frag (A :^: (R :^: omega)) | singular_relcycle A (p,(top,s)) x} (chain_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:3998 / relcycle_group   (hash md5:0ea30a81e8ddaf04e2fc640553e906e3)
+// not bridged: 
+Theorem relcycle_group_thm : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, relcycle_group A (p,(top,s)) = subgroup_generated (frag (A :^: (R :^: omega))) (chain_group A (p,top)) {x :e frag (A :^: (R :^: omega)) | singular_relcycle A (p,(top,s)) x}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4002 / RELCYCLE_GROUP   (hash md5:7a72c3c6f720d49878ae8409b3db27fb)
+// not bridged: 
+Theorem RELCYCLE_GROUP : forall A:set, A <> Empty -> (forall p :e omega, forall top :e topology A, forall s c= A, forall x :e frag (A :^: (R :^: omega)), x :e group_carrier (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))) <-> singular_relcycle A (p,(top,s)) x) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, group_id (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))) = frag_0 (A :^: (R :^: omega))) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall x :e frag (A :^: (R :^: omega)), group_inv (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))) x = frag_neg (A :^: (R :^: omega)) x) /\ forall p :e omega, forall top :e topology A, forall s c= A, forall x x0 :e frag (A :^: (R :^: omega)), group_mul (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))) x x0 = frag_add (A :^: (R :^: omega)) x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4012 / ABELIAN_RELCYCLE_GROUP   (hash md5:953dfef8ad0a714b1e1b1fab6082d9ed)
+// not bridged: 
+Theorem ABELIAN_RELCYCLE_GROUP : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, abelian_group_hl (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4017 / RELCYCLE_GROUP_RESTRICT   (hash md5:13dbda0bdcf11886b4a53a42e56e54e8)
+// not bridged: 
+Theorem RELCYCLE_GROUP_RESTRICT : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, relcycle_group A (p,(top,s)) = relcycle_group A (p,(top,topspace A top :/\: s)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4023 / relative_homology_group   (hash md5:efe676f9c87d90d95d776cdf7e5edbd5)
+// not bridged: 
+Theorem relative_homology_group_thm : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, relative_homology_group A (p,(top,s)) = if p < 0 then singleton_group (Power (frag (A :^: (R :^: omega)))) (choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => False)) else quotient_group (frag (A :^: (R :^: omega))) (relcycle_group A (if p :e omega then p else 0,(top,s))) {x :e frag (A :^: (R :^: omega)) | singular_relboundary A (if p :e omega then p else 0,(top,s)) x}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4029 / homology_group   (hash md5:d419e1dffb36cb36041a64f29520d994)
+// not bridged: 
+Theorem homology_group_thm : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, homology_group A (p,top) = relative_homology_group A (p,(top,Empty)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4032 / RELATIVE_HOMOLOGY_GROUP_RESTRICT   (hash md5:37ad61f3e4fd4a882396254792752f76)
+// not bridged: 
+Theorem RELATIVE_HOMOLOGY_GROUP_RESTRICT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, relative_homology_group A (p,(top,s)) = relative_homology_group A (p,(top,topspace A top :/\: s)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4041 / NONTRIVIAL_RELATIVE_HOMOLOGY_GROUP   (hash md5:0ceba1cd826e66129cc236132d7fc10b)
+// not bridged: 
+Theorem NONTRIVIAL_RELATIVE_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, relative_homology_group A (p,(top,s)) = quotient_group (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))) {x :e frag (A :^: (R :^: omega)) | singular_relboundary A (p,(top,s)) x}.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4049 / TRIVIAL_RELATIVE_HOMOLOGY_GROUP   (hash md5:cc9b847b7c8d819c474987f2d265f9da)
+// not bridged: 
+Theorem TRIVIAL_RELATIVE_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, p < 0 -> trivial_group (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4054 / SUBGROUP_SINGULAR_RELBOUNDARY   (hash md5:6df271b061c458c82c54dc431fce9728)
+// not bridged: 
+Theorem SUBGROUP_SINGULAR_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, subgroup_of (frag (A :^: (R :^: omega))) {x :e frag (A :^: (R :^: omega)) | singular_relboundary A (p,(top,s)) x} (chain_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4063 / SUBGROUP_SINGULAR_RELBOUNDARY_RELCYCLE   (hash md5:db6fe99467e46824520b73c69fd6360f)
+// not bridged: 
+Theorem SUBGROUP_SINGULAR_RELBOUNDARY_RELCYCLE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, subgroup_of (frag (A :^: (R :^: omega))) {x :e frag (A :^: (R :^: omega)) | singular_relboundary A (p,(top,s)) x} (relcycle_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4071 / NORMAL_SUBGROUP_SINGULAR_RELBOUNDARY_RELCYCLE   (hash md5:a98180b137de9ca8d77bdb3e7df2799d)
+// not bridged: 
+Theorem NORMAL_SUBGROUP_SINGULAR_RELBOUNDARY_RELCYCLE : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, normal_subgroup_of (frag (A :^: (R :^: omega))) {x :e frag (A :^: (R :^: omega)) | singular_relboundary A (p,(top,s)) x} (relcycle_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4077 / RIGHT_COSET_SINGULAR_RELBOUNDARY   (hash md5:46f57de2ea8ac580a59938b51cec9c33)
+// not bridged: 
+Theorem RIGHT_COSET_SINGULAR_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall x x0 :e frag (A :^: (R :^: omega)), x0 :e right_coset_hl (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s))) {x1 :e frag (A :^: (R :^: omega)) | singular_relboundary A (p,(top,s)) x1} x <-> homologous_rel A (p,(top,s)) x x0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4092 / RELATIVE_HOMOLOGY_GROUP   (hash md5:c0f2d357b842d7771ea9896e75080590)
+// not bridged: 
+Theorem RELATIVE_HOMOLOGY_GROUP : forall A:set, A <> Empty -> (forall p :e omega, forall top :e topology A, forall s c= A, group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) = {{x :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c x} | c :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c}) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall x :e frag (A :^: (R :^: omega)), x :e group_id (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) <-> singular_relboundary A (p,(top,s)) x) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall r c= frag (A :^: (R :^: omega)), forall x :e frag (A :^: (R :^: omega)), x :e group_inv (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) r <-> x :e {frag_neg (A :^: (R :^: omega)) c | c :e frag (A :^: (R :^: omega)), c :e r}) /\ forall p :e omega, forall top :e topology A, forall s c= A, forall r1 r2 c= frag (A :^: (R :^: omega)), forall x :e frag (A :^: (R :^: omega)), x :e group_mul (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) r1 r2 <-> x :e \/_ c1 :e frag (A :^: (R :^: omega)), {frag_add (A :^: (R :^: omega)) c1 c2 | c2 :e frag (A :^: (R :^: omega)), c1 :e r1 /\ c2 :e r2})).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4112 / HOMOLOGOUS_REL_EQ_RELBOUNDARY   (hash md5:d9676ca801b6b79afbcdb242164dc783)
+// not bridged: 
+Theorem HOMOLOGOUS_REL_EQ_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall c :e frag (A :^: (R :^: omega)), (forall x :e frag (A :^: (R :^: omega)), homologous_rel A (p,(top,s)) c x <-> singular_relboundary A (p,(top,s)) x) <-> singular_relboundary A (p,(top,s)) c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4127 / GROUP_HOMOMORPHISM_CHAIN_BOUNDARY   (hash md5:208790d2a19f87f0a4f134f488de206c)
+// not bridged: 
+Theorem GROUP_HOMOMORPHISM_CHAIN_BOUNDARY : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, group_homomorphism_hl (frag (A :^: (R :^: omega))) (frag (A :^: (R :^: omega))) (relcycle_group A (p,(top,s)),relcycle_group A (minus_nat p 1,(subtopology A top s,Empty))) (chain_boundary A p).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4295 / GROUP_HOMOMORPHISM_CHAIN_MAP   (hash md5:d21aba98b80d7d6adb13d0fce1828656)
+// not bridged: 
+Theorem GROUP_HOMOMORPHISM_CHAIN_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> continuous_map A B (top,top') f /\ {f x | x :e s} c= t -> group_homomorphism_hl (frag (A :^: (R :^: omega))) (frag (B :^: (R :^: omega))) (relcycle_group A (p,(top,s)),relcycle_group B (p,(top',t))) (chain_map A B p f).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4477 / HOM_INDUCED_CHAIN_MAP   (hash md5:16233d602be6622f9df1e63d52288e1e)
+// not bridged: 
+Theorem HOM_INDUCED_CHAIN_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c :e frag (A :^: (R :^: omega)), continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e s} c= t /\ singular_relcycle A (p,(top,s)) c) -> forall x :e frag (B :^: (R :^: omega)), x :e hom_induced A B p (top,s) (top',t) f {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c x0} <-> homologous_rel B (p,(top',t)) (chain_map A B p (fun x0:set => f x0) c) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4488 / HOM_INDUCED_EQ   (hash md5:b0cec0d86c1ccf8f94506a92cb6d536e)
+// not bridged: 
+Theorem HOM_INDUCED_EQ : forall A B:set, B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f g :e B :^: A, (forall x :e A, x :e topspace A top -> f x = g x) -> hom_induced A B p (top,s) (top',t) f = hom_induced A B p (top,s) (top',t) g.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4545 / ABELIAN_RELATIVE_HOMOLOGY_GROUP   (hash md5:b7b548e6679d5afc0ad4a98546c59962)
+// not bridged: 
+Theorem ABELIAN_RELATIVE_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, abelian_group_hl (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4552 / HOM_INDUCED_ID_GEN   (hash md5:4ff2a56d6413bba0160c158d8308a709)
+// not bridged: 
+Theorem HOM_INDUCED_ID_GEN : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall f :e A :^: A, forall s c= A, forall c c= frag (A :^: (R :^: omega)), continuous_map A A (top,top) (fun x:set => f x) /\ ((forall x :e A, x :e topspace A top -> f x = x) /\ c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)))) -> hom_induced A A p (top,s) (top,s) f c = c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4575 / HOM_INDUCED_ID   (hash md5:52538d69bda92bb14f9dddc4cdaad821)
+// not bridged: 
+Theorem HOM_INDUCED_ID : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall c c= frag (A :^: (R :^: omega)), c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) -> hom_induced A A p (top,s) (top,s) (fun x :e A => x) c = c.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4583 / HOM_INDUCED_COMPOSE   (hash md5:3619bdf5e1c19d34e9b0cda7fdc7a0d6)
+// not bridged: 
+Theorem HOM_INDUCED_COMPOSE : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall top'' :e topology C, forall u c= C, forall f :e B :^: A, forall g :e C :^: B, continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e s} c= t /\ (continuous_map B C (top',top'') (fun x:set => g x) /\ {g x | x :e t} c= u)) -> forall x c= frag (A :^: (R :^: omega)), forall x0 :e frag (C :^: (R :^: omega)), x0 :e hom_induced A C p (top,s) (top'',u) (fun x1 :e A => g (f x1)) x <-> x0 :e hom_induced B C p (top',t) (top'',u) g (hom_induced A B p (top,s) (top',t) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4613 / NATURALITY_HOM_INDUCED   (hash md5:76e853008a6456c7e5d8017d0233dc0a)
+// not bridged: 
+Theorem NATURALITY_HOM_INDUCED : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, continuous_map A B (top,top') (fun x:set => f x) /\ {f x | x :e s} c= t -> forall x c= frag (A :^: (R :^: omega)), forall x0 :e frag (B :^: (R :^: omega)), x0 :e hom_boundary B p (top',t) (hom_induced A B p (top,s) (top',t) f x) <-> x0 :e hom_induced A B (p + - 1) (subtopology A top s,Empty) (subtopology B top' t,Empty) f (hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4660 / HOMOLOGY_EXACTNESS_AXIOM_1   (hash md5:24c328c8c149cc2590728c4b43a1249e)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_AXIOM_1 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top),(relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s))) (hom_induced A A p (top,Empty) (top,s) (fun x :e A => x),hom_boundary A p (top,s)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4764 / HOMOLOGY_EXACTNESS_AXIOM_2   (hash md5:e1ce48f303c00dea3b28a28a0fb4f314)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_AXIOM_2 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),(homology_group A (p + - 1,subtopology A top s),homology_group A (p + - 1,top))) (hom_boundary A p (top,s),hom_induced A A (p + - 1) (subtopology A top s,Empty) (top,Empty) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4833 / HOMOLOGY_EXACTNESS_AXIOM_3   (hash md5:1695b4cd468024e1508f2bcd4d49d051)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_AXIOM_3 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s),(homology_group A (p,top),relative_homology_group A (p,(top,s)))) (hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x),hom_induced A A p (top,Empty) (top,s) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4915 / HOMOLOGY_DIMENSION_AXIOM   (hash md5:b29e4a228c0fe3d604c0cfbc7301b999)
+// not bridged: 
+Theorem HOMOLOGY_DIMENSION_AXIOM : forall A:set, forall p :e int, forall top :e topology A, forall a :e A, topspace A top = {a} /\ ~ p = 0 -> trivial_group (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4928 / HOMOLOGY_HOMOTOPY_AXIOM   (hash md5:33a53416c086e69762801a265783a5e4)
+// not bridged: 
+Theorem HOMOLOGY_HOMOTOPY_AXIOM : forall A B:set, B <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f g :e B :^: A, homotopic_with B A {h :e B :^: A | {h x | x :e s} c= t} (top,top') (fun x:set => f x) (fun x:set => g x) -> hom_induced A B p (top,s) (top',t) f = hom_induced A B p (top,s) (top',t) g.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:4951 / HOMOLOGY_EXCISION_AXIOM   (hash md5:478151d5c2f3972057f9af602364ddd2)
+// not bridged: 
+Theorem HOMOLOGY_EXCISION_AXIOM : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t u c= A, closure_of A top u c= interior_of A top t /\ t c= s -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(subtopology A top (s :\: u),t :\: u)),relative_homology_group A (p,(subtopology A top s,t))) (fun x:set => hom_induced A A p (subtopology A top (s :\: u),t :\: u) (subtopology A top s,t) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5095 / GROUP_ISOMORPHISM_CHAIN_GROUP_SUM   (hash md5:27e1ad9179bb705faad56a90eac60e7f)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_CHAIN_GROUP_SUM : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall u c= Power A, (forall x y :e u, x <> y -> x :/\: y = Empty) /\ (Union u = topspace A top /\ (forall c t c= A, compact_in A top c /\ (path_connected_in A top c /\ (t :e u /\ ~ c :/\: t = Empty)) -> c c= t)) -> group_isomorphism_hl (frag (A :^: (R :^: omega)) :^: Power A) (frag (A :^: (R :^: omega))) (sum_group (frag (A :^: (R :^: omega))) (Power A) u (fun s:set => chain_group A (p,subtopology A top s)),chain_group A (p,top)) (fun x:set => iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) u (fun x0:set => x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5148 / GROUP_ISOMORPHISM_CYCLE_GROUP_SUM   (hash md5:6a5864ee1428904cffb79aa538ac74a4)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_CYCLE_GROUP_SUM : forall A:set, A <> Empty -> forall p :e omega, forall top :e topology A, forall u c= Power A, (forall x y :e u, x <> y -> x :/\: y = Empty) /\ (Union u = topspace A top /\ (forall c t c= A, compact_in A top c /\ (path_connected_in A top c /\ (t :e u /\ ~ c :/\: t = Empty)) -> c c= t)) -> group_isomorphism_hl (frag (A :^: (R :^: omega)) :^: Power A) (frag (A :^: (R :^: omega))) (sum_group (frag (A :^: (R :^: omega))) (Power A) u (fun t:set => relcycle_group A (p,(subtopology A top t,Empty))),relcycle_group A (p,(top,Empty))) (fun x:set => iterate_op (frag (A :^: (R :^: omega))) (frag_add (A :^: (R :^: omega))) u (fun x0:set => x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5232 / HOMOLOGY_ADDITIVITY_AXIOM_GEN   (hash md5:5f01561039df638e01c7018b25623182)
+// not bridged: 
+Theorem HOMOLOGY_ADDITIVITY_AXIOM_GEN : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall u c= Power A, (forall x y :e u, x <> y -> x :/\: y = Empty) /\ (Union u = topspace A top /\ (forall c t c= A, compact_in A top c /\ (path_connected_in A top c /\ (t :e u /\ ~ c :/\: t = Empty)) -> c c= t)) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega))) :^: Power A) (Power (frag (A :^: (R :^: omega)))) (sum_group (Power (frag (A :^: (R :^: omega)))) (Power A) u (fun s:set => homology_group A (p,subtopology A top s)),homology_group A (p,top)) (fun x:set => {x0 :e frag (A :^: (R :^: omega)) | x0 :e iterate_op (Power (frag (A :^: (R :^: omega)))) (fun a:set => fun b:set => {x2 :e frag (A :^: (R :^: omega)) | x2 :e group_add (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) a b}) u (fun x0:set => {x1 :e frag (A :^: (R :^: omega)) | x1 :e hom_induced A A p (subtopology A top x0,Empty) (top,Empty) (fun z :e A => z) (x x0)})}).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5488 / HOMOLOGY_ADDITIVITY_AXIOM   (hash md5:c354dc7a80c7b91ffcd5f2e6e4b83a15)
+// not bridged: 
+Theorem HOMOLOGY_ADDITIVITY_AXIOM : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall u c= Power A, (forall v c= A, v :e u -> v :e top) /\ ((forall x y :e u, x <> y -> x :/\: y = Empty) /\ Union u = topspace A top) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega))) :^: Power A) (Power (frag (A :^: (R :^: omega)))) (sum_group (Power (frag (A :^: (R :^: omega)))) (Power A) u (fun s:set => homology_group A (p,subtopology A top s)),homology_group A (p,top)) (fun x:set => {x0 :e frag (A :^: (R :^: omega)) | x0 :e iterate_op (Power (frag (A :^: (R :^: omega)))) (fun a:set => fun b:set => {x2 :e frag (A :^: (R :^: omega)) | x2 :e group_add (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) a b}) u (fun x0:set => {x1 :e frag (A :^: (R :^: omega)) | x1 :e hom_induced A A p (subtopology A top x0,Empty) (top,Empty) (fun z :e A => z) (x x0)})}).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5517 / GROUP_ISOMORPHISM_INTEGER_ZEROTH_HOMOLOGY_GROUP   (hash md5:af9302266a8914630adedb55793e0cf2)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_INTEGER_ZEROTH_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall top :e topology A, forall f :e A :^: (R :^: omega), path_connected_space A top /\ singular_simplex A (0,top) (fun x:set => f x) -> group_isomorphism_hl int (Power (frag (A :^: (R :^: omega)))) (integer_group,homology_group A (0,top)) (fun x:set => {x0 :e frag (A :^: (R :^: omega)) | x0 :e group_zpow (Power (frag (A :^: (R :^: omega)))) (homology_group A (0,top)) {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (0,(top,Empty)) (frag_of (A :^: (R :^: omega)) f) x0} x}).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5657 / ISOMORPHIC_GROUP_INTEGER_ZEROTH_HOMOLOGY_GROUP   (hash md5:e08aaf79ad1bff36d82c6665ea171c18)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_INTEGER_ZEROTH_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall top :e topology A, path_connected_space A top /\ ~ topspace A top = Empty -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) int (homology_group A (0,top)) integer_group.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5675 / HOMOLOGY_COEFFICIENTS   (hash md5:be126427ced9d8c49d8371c4502d237b)
+// not bridged: 
+Theorem HOMOLOGY_COEFFICIENTS : forall A:set, forall top :e topology A, forall a :e A, topspace A top = {a} -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) int (homology_group A (0,top)) integer_group.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5684 / ZEROTH_HOMOLOGY_GROUP   (hash md5:fde820fcf74db063a5d6f405b061f641)
+// not bridged: 
+Theorem ZEROTH_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall top :e topology A, isomorphic_group (Power (frag (A :^: (R :^: omega)))) (frag (Power A)) (homology_group A (0,top)) (free_abelian_group (Power A) (path_components_of A top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5712 / ISOMORPHIC_HOMOLOGY_IMP_PATH_COMPONENTS   (hash md5:e8f50f569d2c511f0e29e631d555af0b)
+// not bridged: 
+Theorem ISOMORPHIC_HOMOLOGY_IMP_PATH_COMPONENTS : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall top' :e topology B, isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (0,top)) (homology_group B (0,top')) -> equip (path_components_of A top) (path_components_of B top').
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5725 / ISOMORPHIC_HOMOLOGY_IMP_PATH_CONNECTEDNESS   (hash md5:bab756c8b8a8eee4fa2604ffa82a7dcc)
+// not bridged: 
+Theorem ISOMORPHIC_HOMOLOGY_IMP_PATH_CONNECTEDNESS : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall top' :e topology B, isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (0,top)) (homology_group B (0,top')) -> (path_connected_space A top <-> path_connected_space B top').
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5740 / TRIVIAL_HOMOLOGY_GROUP   (hash md5:fbbd9975e2231588d6044f8c81a79db8)
+// not bridged: 
+Theorem TRIVIAL_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, p < 0 -> trivial_group (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5744 / ABELIAN_HOMOLOGY_GROUP   (hash md5:83caf3592bc695f2ebacc57ce5abec3f)
+// not bridged: 
+Theorem ABELIAN_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, abelian_group_hl (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5748 / GROUP_HOMOMORPHISM_HOM_INDUCED_EMPTY   (hash md5:2a677920bf822eb3738ccd9dffed17aa)
+// not bridged: 
+Theorem GROUP_HOMOMORPHISM_HOM_INDUCED_EMPTY : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top),homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5755 / HOM_INDUCED_COMPOSE_EMPTY   (hash md5:e2496ce299fbf67063c3fc7c0e705613)
+// not bridged: 
+Theorem HOM_INDUCED_COMPOSE_EMPTY : forall A B C:set, A <> Empty -> B <> Empty -> C <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall top'' :e topology C, forall f :e B :^: A, forall g :e C :^: B, continuous_map A B (top,top') (fun x:set => f x) /\ continuous_map B C (top',top'') (fun x:set => g x) -> forall x c= frag (A :^: (R :^: omega)), forall x0 :e frag (C :^: (R :^: omega)), x0 :e hom_induced A C p (top,Empty) (top'',Empty) (fun x1 :e A => g (f x1)) x <-> x0 :e hom_induced B C p (top',Empty) (top'',Empty) g (hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5766 / HOMOLOGY_HOMOTOPY_EMPTY   (hash md5:3be20a60f4d902b3f0ab1299101dea9a)
+// not bridged: 
+Theorem HOMOLOGY_HOMOTOPY_EMPTY : forall A B:set, B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f g :e B :^: A, homotopic_with B A {h :e B :^: A | True} (top,top') (fun x:set => f x) (fun x:set => g x) -> hom_induced A B p (top,Empty) (top',Empty) f = hom_induced A B p (top,Empty) (top',Empty) g.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5774 / HOMOTOPY_EQUIVALENCE_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS   (hash md5:beb25c9db9dd1c388ba587e9f83f2fa3)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENCE_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall s c= A, forall t c= B, forall f :e B :^: A, forall g :e A :^: B, continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e s} c= t /\ (continuous_map B A (top',top) (fun x:set => g x) /\ ({g x | x :e t} c= s /\ (homotopic_with A A {h :e A :^: A | {h x | x :e s} c= s} (top,top) (fun x:set => g (f x)) (fun x:set => x) /\ homotopic_with B B {k :e B :^: B | {k x | x :e t} c= t} (top',top') (fun x:set => f (g x)) (fun x:set => x))))) -> group_isomorphisms (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (hom_induced A B p (top,s) (top',t) f,hom_induced B A p (top',t) (top,s) g).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5799 / HOMOTOPY_EQUIVALENCE_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM   (hash md5:a26d2b98ccaf7f65f4a720e6deed2532)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENCE_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall s c= A, forall t c= B, forall f :e B :^: A, forall g:set -> set, (forall x :e B, g x :e A) -> continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e s} c= t /\ (continuous_map B A (top',top) g /\ ({g x | x :e t} c= s /\ (homotopic_with A A {h :e A :^: A | {h x | x :e s} c= s} (top,top) (fun x:set => g (f x)) (fun x:set => x) /\ homotopic_with B B {k :e B :^: B | {k x | x :e t} c= t} (top',top') (fun x:set => f (g x)) (fun x:set => x))))) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (fun x:set => hom_induced A B p (top,s) (top',t) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5812 / HOMOTOPY_EQUIVALENCE_HOMOLOGY_GROUP_ISOMORPHISM   (hash md5:73f4840f0708d73b05412bab5be57abb)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENCE_HOMOLOGY_GROUP_ISOMORPHISM : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, forall g:set -> set, (forall x :e B, g x :e A) -> continuous_map A B (top,top') (fun x:set => f x) /\ (continuous_map B A (top',top) g /\ (homotopic_with A A {h :e A :^: A | True} (top,top) (fun x:set => g (f x)) (fun x:set => x) /\ homotopic_with B B {k :e B :^: B | True} (top',top') (fun x:set => f (g x)) (fun x:set => x))) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top),homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5823 / HOMOTOPY_EQUIVALENT_SPACE_IMP_ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS   (hash md5:9285784746a44f7710f137944d462604)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENT_SPACE_IMP_ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall s c= A, forall t c= B, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e A) -> continuous_map A B (top,top') f /\ ({f x | x :e s} c= t /\ (continuous_map B A (top',top) g /\ ({g x | x :e t} c= s /\ (homotopic_with A A {h :e A :^: A | {h x | x :e s} c= s} (top,top) (fun x:set => g (f x)) (fun x:set => x) /\ homotopic_with B B {k :e B :^: B | {k x | x :e t} c= t} (top',top') (fun x:set => f (g x)) (fun x:set => x))))) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) (relative_homology_group B (p,(top',t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5835 / HOMOTOPY_EQUIVALENT_SPACE_IMP_ISOMORPHIC_HOMOLOGY_GROUPS   (hash md5:2349edc26224291d6906b2d152a71a94)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENT_SPACE_IMP_ISOMORPHIC_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, homotopy_equivalent_space A B top top' -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top)) (homology_group B (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5844 / HOMEOMORPHIC_SPACE_IMP_ISOMORPHIC_HOMOLOGY_GROUPS   (hash md5:71aacd2fcc2662abab85a1428aa2c79c)
+// not bridged: 
+Theorem HOMEOMORPHIC_SPACE_IMP_ISOMORPHIC_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, homeomorphic_space A B top top' -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top)) (homology_group B (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5851 / TRIVIAL_RELATIVE_HOMOLOGY_GROUP_GEN   (hash md5:2f802eaef2588e36107628edb5065917)
+// not bridged: 
+Theorem TRIVIAL_RELATIVE_HOMOLOGY_GROUP_GEN : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> continuous_map A A (top,subtopology A top s) f /\ (homotopic_with A A {h :e A :^: A | True} (subtopology A top s,subtopology A top s) f (fun x:set => x) /\ homotopic_with A A {k :e A :^: A | True} (top,top) f (fun x:set => x)) -> trivial_group (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5878 / TRIVIAL_RELATIVE_HOMOLOGY_GROUP_TOPSPACE   (hash md5:776801ce2928a926c4b80f31f87e20ce)
+// not bridged: 
+Theorem TRIVIAL_RELATIVE_HOMOLOGY_GROUP_TOPSPACE : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, trivial_group (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,topspace A top))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5886 / TRIVIAL_RELATIVE_HOMOLOGY_GROUP_EMPTY   (hash md5:a24817548275731a8ece4f1a1cef08b3)
+// not bridged: 
+Theorem TRIVIAL_RELATIVE_HOMOLOGY_GROUP_EMPTY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, topspace A top = Empty -> trivial_group (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5894 / TRIVIAL_HOMOLOGY_GROUP_EMPTY   (hash md5:7c5a8cd47ad7f63c4b954beb5c658560)
+// not bridged: 
+Theorem TRIVIAL_HOMOLOGY_GROUP_EMPTY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, topspace A top = Empty -> trivial_group (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5899 / TRIVIAL_HOMOLOGY_GROUP_CONTRACTIBLE_SPACE   (hash md5:3c8d211f746c64e940eb944a4a120ffb)
+// not bridged: 
+Theorem TRIVIAL_HOMOLOGY_GROUP_CONTRACTIBLE_SPACE : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, contractible_space A top /\ ~ p = 0 -> trivial_group (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5913 / HOMEOMORPHIC_MAPS_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS   (hash md5:2cebdbbd1cbe0dd9fe82047c301ef86d)
+// not bridged: 
+Theorem HOMEOMORPHIC_MAPS_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall s c= A, forall t c= B, forall f :e B :^: A, forall g :e A :^: B, homeomorphic_maps A B (top,top') (f,g) /\ ({f x | x :e s} c= t /\ {g x | x :e t} c= s) -> group_isomorphisms (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (hom_induced A B p (top,s) (top',t) f,hom_induced B A p (top',t) (top,s) g).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5930 / HOMEOMORPHIC_MAP_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM   (hash md5:ded9564825656859f5fe24b3ec08190e)
+// not bridged: 
+Theorem HOMEOMORPHIC_MAP_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall s c= A, forall t c= B, forall f :e B :^: A, homeomorphic_map A B (top,top') (fun x:set => f x) /\ (s c= topspace A top /\ {f x | x :e s} = t) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (fun x:set => hom_induced A B p (top,s) (top',t) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5945 / GROUP_MONOMORPHISM_HOM_INDUCED_SECTION_MAP   (hash md5:e63ca8bcec822024fda9b5e97eeb3afd)
+// not bridged: 
+Theorem GROUP_MONOMORPHISM_HOM_INDUCED_SECTION_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, section_map A B (top,top') (fun x:set => f x) -> group_monomorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top),homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5967 / GROUP_EPIMORPHISM_HOM_INDUCED_RETRACTION_MAP   (hash md5:9675f196c1bd7c2aaf8ac9813d6c86dd)
+// not bridged: 
+Theorem GROUP_EPIMORPHISM_HOM_INDUCED_RETRACTION_MAP : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, retraction_map A B (top,top') (fun x:set => f x) -> group_epimorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top),homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:5989 / HOMEOMORPHIC_MAP_HOMOLOGY_GROUP_ISOMORPHISM   (hash md5:4554d0debfc842f1a9d49cc0509854cd)
+// not bridged: 
+Theorem HOMEOMORPHIC_MAP_HOMOLOGY_GROUP_ISOMORPHISM : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, homeomorphic_map A B (top,top') (fun x:set => f x) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top),homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6000 / GROUP_MONOMORPHISM_HOM_INDUCED_INCLUSION   (hash md5:6070ce65618f9e27abb31c18bbb756e9)
+// not bridged: 
+Theorem GROUP_MONOMORPHISM_HOM_INDUCED_INCLUSION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, s = Empty \/ retract_of_space A s top -> group_monomorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s),homology_group A (p,top)) (fun x:set => hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6017 / TRIVIAL_HOMOMORPHISM_HOM_BOUNDARY_INCLUSION   (hash md5:2bd7c2474308d7435b8329127647f411)
+// not bridged: 
+Theorem TRIVIAL_HOMOMORPHISM_HOM_BOUNDARY_INCLUSION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, s = Empty \/ retract_of_space A s top -> trivial_homomorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s)) (fun x:set => hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6033 / GROUP_EPIMORPHISM_HOM_INDUCED_RELATIVIZATION   (hash md5:8c51e777c4e9f88f98d766119121b522)
+// not bridged: 
+Theorem GROUP_EPIMORPHISM_HOM_INDUCED_RELATIVIZATION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, s = Empty \/ retract_of_space A s top -> group_epimorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top),relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,Empty) (top,s) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6048 / SHORT_EXACT_SEQUENCE_HOM_INDUCED_INCLUSION   (hash md5:79a03ce4c76ba5eee1393ba722d9761d)
+// not bridged: 
+Theorem SHORT_EXACT_SEQUENCE_HOM_INDUCED_INCLUSION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, s = Empty \/ retract_of_space A s top -> short_exact_sequence (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s),(homology_group A (p,top),relative_homology_group A (p,(top,s)))) (hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x),hom_induced A A p (top,Empty) (top,s) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6061 / GROUP_ISOMORPHISMS_HOMOLOGY_GROUP_PROD_RETRACT   (hash md5:997b95d85b45bdc707659386991e22af)
+// not bridged: 
+Theorem GROUP_ISOMORPHISMS_HOMOLOGY_GROUP_PROD_RETRACT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, s = Empty \/ retract_of_space A s top -> exists h k c= Power (frag (A :^: (R :^: omega))), subgroup_of (Power (frag (A :^: (R :^: omega)))) h (homology_group A (p,top)) /\ (subgroup_of (Power (frag (A :^: (R :^: omega)))) k (homology_group A (p,top)) /\ (group_isomorphism_hl (Power (frag (A :^: (R :^: omega))) :*: Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (prod_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) h) (subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) k),homology_group A (p,top)) (fun x:set => {x0 :e frag (A :^: (R :^: omega)) | x0 :e group_mul (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (x 0) (x 1)}) /\ (group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s),subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) h) (fun x:set => hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x) x) /\ group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) k,relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,Empty) (top,s) (fun x :e A => x) x)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6113 / ISOMORPHIC_GROUP_HOMOLOGY_GROUP_PROD_RETRACT   (hash md5:6ee4ffe50b7057e0175819fdd5c7404d)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_HOMOLOGY_GROUP_PROD_RETRACT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, s = Empty \/ retract_of_space A s top -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega))) :*: Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (prod_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) (relative_homology_group A (p,(top,s)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6135 / HOMOLOGY_ADDITIVITY_EXPLICIT   (hash md5:01dab03537e307a72724e27b2b9a64b7)
+// not bridged: 
+Theorem HOMOLOGY_ADDITIVITY_EXPLICIT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, s :e top /\ (t :e top /\ (s :/\: t = Empty /\ s :\/: t = topspace A top)) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega))) :*: Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (prod_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) (homology_group A (p,subtopology A top t)),homology_group A (p,top)) (fun x:set => {x0 :e frag (A :^: (R :^: omega)) | x0 :e group_mul (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x1 :e A => x1) (x 0)) (hom_induced A A p (subtopology A top t,Empty) (top,Empty) (fun x1 :e A => x1) (x 1))}).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6189 / hom_relboundary   (hash md5:4a7be715af2c4175e52129c36a66e988)
+// not bridged: 
+Theorem hom_relboundary_thm : forall A:set, A <> Empty -> forall t c= A, forall p :e int, forall top :e topology A, forall s c= A, forall x c= frag (A :^: (R :^: omega)), forall x0 :e frag (A :^: (R :^: omega)), x0 :e hom_relboundary A p (top,(s,t)) x <-> x0 :e hom_induced A A (p + - 1) (subtopology A top s,Empty) (subtopology A top s,t) (fun x1 :e A => x1) (hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6194 / GROUP_HOMOMORPHISM_HOM_RELBOUNDARY   (hash md5:613e589036e4dba5c81bbb23f699a4c4)
+// not bridged: 
+Theorem GROUP_HOMOMORPHISM_HOM_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group A (p + - 1,(subtopology A top s,t))) (hom_relboundary A p (top,(s,t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6206 / HOM_RELBOUNDARY   (hash md5:0376ea646249b3ce691c70029b2a6fd7)
+// not bridged: 
+Theorem HOM_RELBOUNDARY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, forall c c= frag (A :^: (R :^: omega)), hom_relboundary A p (top,(s,t)) c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p + - 1,(subtopology A top s,t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6212 / HOM_RELBOUNDARY_EMPTY   (hash md5:6285af1f3a8d683bc66d60efea21197e)
+// not bridged: 
+Theorem HOM_RELBOUNDARY_EMPTY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall x c= frag (A :^: (R :^: omega)), forall x0 :e frag (A :^: (R :^: omega)), x0 :e hom_relboundary A p (top,(s,Empty)) x <-> x0 :e hom_boundary A p (top,s) x.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6218 / NATURALITY_HOM_INDUCED_RELBOUNDARY   (hash md5:415bba5bb660a3e8a2cef6484b46a31e)
+// not bridged: 
+Theorem NATURALITY_HOM_INDUCED_RELBOUNDARY : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, forall top' :e topology B, forall u v c= B, forall f :e B :^: A, continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e s} c= u /\ {f x | x :e t} c= v) -> forall x c= frag (A :^: (R :^: omega)), forall x0 :e frag (B :^: (R :^: omega)), x0 :e hom_relboundary B p (top',(u,v)) (hom_induced A B p (top,s) (top',u) f x) <-> x0 :e hom_induced A B (p + - 1) (subtopology A top s,t) (subtopology B top' u,v) f (hom_relboundary A p (top,(s,t)) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6237 / HOMOLOGY_EXACTNESS_TRIPLE_1   (hash md5:8d43673a138a328828ef932e564f7b49)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_TRIPLE_1 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, t c= s -> group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,t)),(relative_homology_group A (p,(top,s)),relative_homology_group A (p + - 1,(subtopology A top s,t)))) (hom_induced A A p (top,t) (top,s) (fun x :e A => x),fun x :e Power (frag (A :^: (R :^: omega))) => hom_relboundary A p (top,(s,t)) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6350 / HOMOLOGY_EXACTNESS_TRIPLE_2   (hash md5:606f161c9766354887f657dd4d8edeb6)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_TRIPLE_2 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, t c= s -> group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),(relative_homology_group A (p + - 1,(subtopology A top s,t)),relative_homology_group A (p + - 1,(top,t)))) (fun x :e Power (frag (A :^: (R :^: omega))) => hom_relboundary A p (top,(s,t)) x,hom_induced A A (p + - 1) (subtopology A top s,t) (top,t) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6489 / HOMOLOGY_EXACTNESS_TRIPLE_3   (hash md5:57cf37e7e608fce957ca8a321df1b0a6)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_TRIPLE_3 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s t c= A, t c= s -> group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(subtopology A top s,t)),(relative_homology_group A (p,(top,t)),relative_homology_group A (p,(top,s)))) (hom_induced A A p (subtopology A top s,t) (top,t) (fun x :e A => x),hom_induced A A p (top,t) (top,s) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6625 / reduced_homology_group   (hash md5:af7fba1b1ab3230de76092c04ae36256)
+// not bridged: 
+Theorem reduced_homology_group_thm : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, reduced_homology_group A (p,top) = subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (group_kernel (Power (frag (A :^: (R :^: omega)))) (Power (frag (1 :^: (R :^: omega)))) (homology_group A (p,top),homology_group 1 (p,discrete_topology 1 {0})) (fun x:set => hom_induced A 1 p (top,Empty) (discrete_topology 1 {0},Empty) (fun x :e A => 0) x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6633 / GROUP_CARRIER_REDUCED_HOMOLOGY_GROUP   (hash md5:149c13a016689cc1de74498fa579f8c8)
+// not bridged: 
+Theorem GROUP_CARRIER_REDUCED_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, group_carrier (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)) = group_kernel (Power (frag (A :^: (R :^: omega)))) (Power (frag (1 :^: (R :^: omega)))) (homology_group A (p,top),homology_group 1 (p,discrete_topology 1 {0})) (fun x:set => hom_induced A 1 p (top,Empty) (discrete_topology 1 {0},Empty) (fun x :e A => 0) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6643 / GROUP_CARRIER_REDUCED_HOMOLOGY_GROUP_SUBSET   (hash md5:414d1e8fa8f5b7a6b656d06a196f8907)
+// not bridged: 
+Theorem GROUP_CARRIER_REDUCED_HOMOLOGY_GROUP_SUBSET : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, group_carrier (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)) c= group_carrier (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6650 / UN_REDUCED_HOMOLOGY_GROUP   (hash md5:dad5ac0e7f9293f7cbf331266c5e9027)
+// not bridged: 
+Theorem UN_REDUCED_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, ~ p = 0 -> reduced_homology_group A (p,top) = homology_group A (p,top).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6663 / TRIVIAL_REDUCED_HOMOLOGY_GROUP   (hash md5:6d497f18cee8543b6040b9a49dfcabd1)
+// not bridged: 
+Theorem TRIVIAL_REDUCED_HOMOLOGY_GROUP : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, p < 0 -> trivial_group (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6669 / GROUP_HOMOMORPHISM_HOM_INDUCED_REDUCED   (hash md5:0d50b1d9cda950aef032e2eb917b2c41)
+// not bridged: 
+Theorem GROUP_HOMOMORPHISM_HOM_INDUCED_REDUCED : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (reduced_homology_group A (p,top),reduced_homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6701 / HOM_INDUCED_REDUCED   (hash md5:97024f5cc02a8dadfeefe4d9ea79eeff)
+// not bridged: 
+Theorem HOM_INDUCED_REDUCED : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, forall c c= frag (A :^: (R :^: omega)), c :e group_carrier (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)) -> hom_induced A B p (top,Empty) (top',Empty) f c :e group_carrier (Power (frag (B :^: (R :^: omega)))) (reduced_homology_group B (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6709 / GROUP_HOMOMORPHISM_HOM_BOUNDARY_REDUCED   (hash md5:499eeaf0de786336fa97ffbb1110989a)
+// not bridged: 
+Theorem GROUP_HOMOMORPHISM_HOM_BOUNDARY_REDUCED : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),reduced_homology_group A (p + - 1,subtopology A top s)) (fun x:set => hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6743 / HOMOTOPY_EQUIVALENCE_REDUCED_HOMOLOGY_GROUP_ISOMORPHISMS   (hash md5:3745c81c684036e3c5081c742b6d8d0f)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENCE_REDUCED_HOMOLOGY_GROUP_ISOMORPHISMS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, forall g :e A :^: B, continuous_map A B (top,top') (fun x:set => f x) /\ (continuous_map B A (top',top) (fun x:set => g x) /\ (homotopic_with A A {h :e A :^: A | True} (top,top) (fun x:set => g (f x)) (fun x:set => x) /\ homotopic_with B B {k :e B :^: B | True} (top',top') (fun x:set => f (g x)) (fun x:set => x))) -> group_isomorphisms (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (reduced_homology_group A (p,top),reduced_homology_group B (p,top')) (hom_induced A B p (top,Empty) (top',Empty) f,hom_induced B A p (top',Empty) (top,Empty) g).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6770 / HOMOTOPY_EQUIVALENCE_REDUCED_HOMOLOGY_GROUP_ISOMORPHISM   (hash md5:600bc0bbe7cdf82fc21e27986da0fe5a)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENCE_REDUCED_HOMOLOGY_GROUP_ISOMORPHISM : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall f :e B :^: A, forall g:set -> set, (forall x :e B, g x :e A) -> continuous_map A B (top,top') (fun x:set => f x) /\ (continuous_map B A (top',top) g /\ (homotopic_with A A {h :e A :^: A | True} (top,top) (fun x:set => g (f x)) (fun x:set => x) /\ homotopic_with B B {k :e B :^: B | True} (top',top') (fun x:set => f (g x)) (fun x:set => x))) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (reduced_homology_group A (p,top),reduced_homology_group B (p,top')) (fun x:set => hom_induced A B p (top,Empty) (top',Empty) f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6782 / HOMOTOPY_EQUIVALENT_SPACE_IMP_ISOMORPHIC_REDUCED_HOMOLOGY_GROUPS   (hash md5:bc663c162aa8ddd738bfca85738e6bc1)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENT_SPACE_IMP_ISOMORPHIC_REDUCED_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, homotopy_equivalent_space A B top top' -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (reduced_homology_group A (p,top)) (reduced_homology_group B (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6795 / HOMEOMORPHIC_SPACE_IMP_ISOMORPHIC_REDUCED_HOMOLOGY_GROUPS   (hash md5:09375469e1d2fedb292615bfb69e79bd)
+// not bridged: 
+Theorem HOMEOMORPHIC_SPACE_IMP_ISOMORPHIC_REDUCED_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, homeomorphic_space A B top top' -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (reduced_homology_group A (p,top)) (reduced_homology_group B (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6803 / TRIVIAL_REDUCED_HOMOLOGY_GROUP_EMPTY   (hash md5:b83a604bd4660a28e0ba5fb51afc3755)
+// not bridged: 
+Theorem TRIVIAL_REDUCED_HOMOLOGY_GROUP_EMPTY : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, topspace A top = Empty -> trivial_group (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6809 / HOMOLOGY_DIMENSION_REDUCED   (hash md5:524bd0b0814933fac4ed0f26e276adc2)
+// not bridged: 
+Theorem HOMOLOGY_DIMENSION_REDUCED : forall A:set, forall p :e int, forall top :e topology A, forall a :e A, topspace A top = {a} -> trivial_group (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6823 / TRIVIAL_REDUCED_HOMOLOGY_GROUP_CONTRACTIBLE_SPACE   (hash md5:cdd20262e28c7def1fc51f5c85d25909)
+// not bridged: 
+Theorem TRIVIAL_REDUCED_HOMOLOGY_GROUP_CONTRACTIBLE_SPACE : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, contractible_space A top -> trivial_group (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6838 / GROUP_IMAGE_REDUCED_HOMOLOGY_GROUP   (hash md5:7cac13a729fc77c7a170b79e41c615da)
+// not bridged: 
+Theorem GROUP_IMAGE_REDUCED_HOMOLOGY_GROUP : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, ~ topspace A top :/\: s = Empty -> group_image (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top),relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,Empty) (top,s) (fun x :e A => x) x) = group_image (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top),relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,Empty) (top,s) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6933 / HOMOLOGY_EXACTNESS_REDUCED_1   (hash md5:1a7157238d85f5a6789275bab107f045)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_REDUCED_1 : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, ~ topspace A top :/\: s = Empty -> group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top),(relative_homology_group A (p,(top,s)),reduced_homology_group A (p + - 1,subtopology A top s))) (hom_induced A A p (top,Empty) (top,s) (fun x :e A => x),hom_boundary A p (top,s)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6958 / HOMOLOGY_EXACTNESS_REDUCED_2   (hash md5:982f01ade4cbd4ee867629aed71ea907)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_REDUCED_2 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),(reduced_homology_group A (p + - 1,subtopology A top s),reduced_homology_group A (p + - 1,top))) (hom_boundary A p (top,s),hom_induced A A (p + - 1) (subtopology A top s,Empty) (top,Empty) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:6986 / HOMOLOGY_EXACTNESS_REDUCED_3   (hash md5:7867c296f3a5feea1541b5f865fa2498)
+// not bridged: 
+Theorem HOMOLOGY_EXACTNESS_REDUCED_3 : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, group_exactness (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,subtopology A top s),(reduced_homology_group A (p,top),relative_homology_group A (p,(top,s)))) (hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x),hom_induced A A p (top,Empty) (top,s) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7048 / GROUP_ISOMORPHISM_RELATIVE_HOMOLOGY_OF_CONTRACTIBLE   (hash md5:bd223c3623a5ca11438d0531873fea64)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_RELATIVE_HOMOLOGY_OF_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A top /\ ~ topspace A top :/\: s = Empty -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),reduced_homology_group A (p + - 1,subtopology A top s)) (fun x:set => hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7068 / ISOMORPHIC_GROUP_RELATIVE_HOMOLOGY_OF_CONTRACTIBLE   (hash md5:6a6408cc5e976b3cf363f30c7c26ff43)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_RELATIVE_HOMOLOGY_OF_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A top /\ ~ topspace A top :/\: s = Empty -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) (reduced_homology_group A (p + - 1,subtopology A top s)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7077 / ISOMORPHIC_GROUP_REDUCED_HOMOLOGY_OF_CONTRACTIBLE   (hash md5:01f1414484d55179ec06937c265f8599)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_REDUCED_HOMOLOGY_OF_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A top /\ ~ topspace A top :/\: s = Empty -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,subtopology A top s)) (relative_homology_group A (p + 1,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7087 / GROUP_ISOMORPHISM_REDUCED_HOMOLOGY_BY_CONTRACTIBLE   (hash md5:bc68e8c07cf8d28d9a069afebdf3790a)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_REDUCED_HOMOLOGY_BY_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A (subtopology A top s) /\ ~ topspace A top :/\: s = Empty -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top),relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,Empty) (top,s) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7107 / ISOMORPHIC_GROUP_REDUCED_HOMOLOGY_BY_CONTRACTIBLE   (hash md5:06db134140337c047c7195b5917db7a7)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_REDUCED_HOMOLOGY_BY_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A (subtopology A top s) /\ ~ topspace A top :/\: s = Empty -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7116 / ISOMORPHIC_GROUP_RELATIVE_HOMOLOGY_BY_CONTRACTIBLE   (hash md5:e60ff37b9609e5ba566ad1b7655e87f0)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_RELATIVE_HOMOLOGY_BY_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A (subtopology A top s) /\ ~ topspace A top :/\: s = Empty -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) (reduced_homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7124 / ISOMORPHIC_GROUP_REDUCED_HOMOLOGY_BY_SING   (hash md5:02dac516d0025696f060bcb7f3621710)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_REDUCED_HOMOLOGY_BY_SING : forall A:set, forall p :e int, forall top :e topology A, forall a :e A, a :e topspace A top -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,top)) (relative_homology_group A (p,(top,{a}))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7133 / ISOMORPHIC_GROUP_RELATIVE_HOMOLOGY_BY_SING   (hash md5:b89870f6563dfff68fa1d18ad2011a34)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_RELATIVE_HOMOLOGY_BY_SING : forall A:set, forall p :e int, forall top :e topology A, forall a :e A, a :e topspace A top -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,{a}))) (reduced_homology_group A (p,top)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7141 / REDUCED_HOMOLOGY_GROUP_PAIR   (hash md5:8a28171e2edb3a8286701e9bb58180e4)
+// not bridged: 
+Theorem REDUCED_HOMOLOGY_GROUP_PAIR : forall A:set, forall p :e int, forall top :e topology A, forall a b :e A, t1_space A top /\ (a :e topspace A top /\ (b :e topspace A top /\ ~ a = b)) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (reduced_homology_group A (p,subtopology A top {a,b})) (homology_group A (p,subtopology A top {a})).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7168 / DEFORMATION_RETRACTION_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS   (hash md5:eac0751fe634e471447edd7b4aa59a43)
+// not bridged: 
+Theorem DEFORMATION_RETRACTION_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall u c= A, forall v c= B, forall r :e B :^: A, forall s :e A :^: B, retraction_maps A B (top,top') (r,s) /\ ({r x | x :e u} c= v /\ ({s x | x :e v} c= u /\ homotopic_with A A {h :e A :^: A | {h x | x :e u} c= u} (top,top) (fun x:set => s (r x)) (fun x:set => x))) -> group_isomorphisms (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,u)),relative_homology_group B (p,(top',v))) (hom_induced A B p (top,u) (top',v) r,hom_induced B A p (top',v) (top,u) s).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7184 / DEFORMATION_RETRACT_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS   (hash md5:560a9064349bec6fb0e89c40ae045775)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISMS : forall A:set, A <> Empty -> forall p :e int, forall top top' :e topology A, forall u v c= A, forall r :e A :^: A, retraction_maps A A (top,top') (r,fun x :e A => x) /\ (v c= u /\ ({r x | x :e u} c= v /\ homotopic_with A A {h :e A :^: A | {h x | x :e u} c= u} (top,top) (fun x:set => r x) (fun x:set => x))) -> group_isomorphisms (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,u)),relative_homology_group A (p,(top',v))) (hom_induced A A p (top,u) (top',v) r,hom_induced A A p (top',v) (top,u) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7197 / DEFORMATION_RETRACT_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM   (hash md5:ff5f95c5a71949b24b648060407fc5cf)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM : forall A:set, A <> Empty -> forall p :e int, forall top top' :e topology A, forall u v c= A, forall r :e A :^: A, retraction_maps A A (top,top') (r,fun x :e A => x) /\ (v c= u /\ ({r x | x :e u} c= v /\ homotopic_with A A {h :e A :^: A | {h x | x :e u} c= u} (top,top) (fun x:set => r x) (fun x:set => x))) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,u)),relative_homology_group A (p,(top',v))) (fun x:set => hom_induced A A p (top,u) (top',v) r x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7209 / DEFORMATION_RETRACT_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM_ID   (hash md5:bb30a9911a210da8fdbe9232f2aa0332)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_RELATIVE_HOMOLOGY_GROUP_ISOMORPHISM_ID : forall A:set, A <> Empty -> forall p :e int, forall top top' :e topology A, forall u v c= A, forall r :e A :^: A, retraction_maps A A (top,top') (r,fun x :e A => x) /\ (v c= u /\ ({r x | x :e u} c= v /\ homotopic_with A A {h :e A :^: A | {h x | x :e u} c= u} (top,top) (fun x:set => r x) (fun x:set => x))) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top',v)),relative_homology_group A (p,(top,u))) (fun x:set => hom_induced A A p (top',v) (top,u) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7221 / DEFORMATION_RETRACTION_IMP_ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS   (hash md5:c4462cb492a39f5f87898dc8d88491d4)
+// not bridged: 
+Theorem DEFORMATION_RETRACTION_IMP_ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall u c= A, forall v c= B, forall r :e B :^: A, forall s :e A :^: B, retraction_maps A B (top,top') (r,s) /\ ({r x | x :e u} c= v /\ ({s x | x :e v} c= u /\ homotopic_with A A {h :e A :^: A | {h x | x :e u} c= u} (top,top) (fun x:set => s (r x)) (fun x:set => x))) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,u))) (relative_homology_group B (p,(top',v))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7232 / DEFORMATION_RETRACTION_IMP_ISOMORPHIC_HOMOLOGY_GROUPS   (hash md5:51ef984ca48cc5f6d676bff0f7d0251f)
+// not bridged: 
+Theorem DEFORMATION_RETRACTION_IMP_ISOMORPHIC_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall p :e int, forall top :e topology A, forall top' :e topology B, forall r :e B :^: A, forall s :e A :^: B, retraction_maps A B (top,top') (r,s) /\ homotopic_with A A {h :e A :^: A | True} (top,top) (fun x:set => s (r x)) (fun x:set => x) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,top)) (homology_group B (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7242 / DEFORMATION_RETRACT_IMP_ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS   (hash md5:47d22b5a9b15d3305f797d4291adadee)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_IMP_ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS : forall A:set, A <> Empty -> forall p :e int, forall top top' :e topology A, forall u v c= A, forall r :e A :^: A, retraction_maps A A (top,top') (r,fun x :e A => x) /\ (v c= u /\ ({r x | x :e u} c= v /\ homotopic_with A A {h :e A :^: A | {h x | x :e u} c= u} (top,top) (fun x:set => r x) (fun x:set => x))) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,u))) (relative_homology_group A (p,(top',v))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7252 / DEFORMATION_RETRACT_IMP_ISOMORPHIC_HOMOLOGY_GROUPS   (hash md5:5f24e63b840883bdff948ea529593b80)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_IMP_ISOMORPHIC_HOMOLOGY_GROUPS : forall A:set, A <> Empty -> forall p :e int, forall top top' :e topology A, forall r :e A :^: A, retraction_maps A A (top,top') (r,fun x :e A => x) /\ homotopic_with A A {h :e A :^: A | True} (top,top) (fun x:set => r x) (fun x:set => x) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (homology_group A (p,top')).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7262 / ISOMORPHIC_GROUP_HOMOLOGY_BY_SING   (hash md5:63d4c5b33dab774dc6da042a54bb7322)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_HOMOLOGY_BY_SING : forall A:set, (forall top :e topology A, forall a :e A, a :e topspace A top -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (int :*: Power (frag (A :^: (R :^: omega)))) (homology_group A (0,top)) (prod_group int (Power (frag (A :^: (R :^: omega)))) integer_group (relative_homology_group A (0,(top,{a}))))) /\ forall p :e int, forall top :e topology A, forall a :e A, a :e topspace A top /\ ~ p = 0 -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (relative_homology_group A (p,(top,{a}))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7284 / GROUP_EPIMORPHISM_HOM_INDUCED_INCLUSION   (hash md5:705be4601746a9b6ff679d25ba8d531d)
+// not bridged: 
+Theorem GROUP_EPIMORPHISM_HOM_INDUCED_INCLUSION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, (exists f:set -> set, (forall x :e A, f x :e A) /\ (homotopic_with A A {x :e A :^: A | True} (top,top) (fun x:set => x) f /\ {f x | x :e topspace A top} c= s)) -> group_epimorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s),homology_group A (p,top)) (fun x:set => hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7306 / TRIVIAL_HOMOMORPHISM_HOM_INDUCED_RELATIVIZATION   (hash md5:b1fce98ea38ce0f2bfe8b5c70d2792df)
+// not bridged: 
+Theorem TRIVIAL_HOMOMORPHISM_HOM_INDUCED_RELATIVIZATION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, (exists f:set -> set, (forall x :e A, f x :e A) /\ (homotopic_with A A {x :e A :^: A | True} (top,top) (fun x:set => x) f /\ {f x | x :e topspace A top} c= s)) -> trivial_homomorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top),relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,Empty) (top,s) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7324 / GROUP_MONOMORPHISM_HOM_BOUNDARY_INCLUSION   (hash md5:b723ac4d6b379b4170d545711ac269be)
+// not bridged: 
+Theorem GROUP_MONOMORPHISM_HOM_BOUNDARY_INCLUSION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, (exists f:set -> set, (forall x :e A, f x :e A) /\ (homotopic_with A A {x :e A :^: A | True} (top,top) (fun x:set => x) f /\ {f x | x :e topspace A top} c= s)) -> group_monomorphism (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s)) (fun x:set => hom_boundary A p (top,s) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7344 / SHORT_EXACT_SEQUENCE_HOM_INDUCED_RELATIVIZATION   (hash md5:b2cebd9460e6c8d67a88d335687b7345)
+// not bridged: 
+Theorem SHORT_EXACT_SEQUENCE_HOM_INDUCED_RELATIVIZATION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, (exists f:set -> set, (forall x :e A, f x :e A) /\ (homotopic_with A A {x :e A :^: A | True} (top,top) (fun x:set => x) f /\ {f x | x :e topspace A top} c= s)) -> short_exact_sequence (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),(homology_group A (p + - 1,subtopology A top s),homology_group A (p + - 1,top))) (hom_boundary A p (top,s),hom_induced A A (p + - 1) (subtopology A top s,Empty) (top,Empty) (fun x :e A => x)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7358 / GROUP_ISOMORPHISMS_HOMOLOGY_GROUP_PROD_DEFORMATION   (hash md5:450567690c1b76c1c1028e7c80253f55)
+// not bridged: 
+Theorem GROUP_ISOMORPHISMS_HOMOLOGY_GROUP_PROD_DEFORMATION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, (exists f:set -> set, (forall x :e A, f x :e A) /\ (homotopic_with A A {x :e A :^: A | True} (top,top) (fun x:set => x) f /\ {f x | x :e topspace A top} c= s)) -> exists h k c= Power (frag (A :^: (R :^: omega))), subgroup_of (Power (frag (A :^: (R :^: omega)))) h (homology_group A (p,subtopology A top s)) /\ (subgroup_of (Power (frag (A :^: (R :^: omega)))) k (homology_group A (p,subtopology A top s)) /\ (group_isomorphism_hl (Power (frag (A :^: (R :^: omega))) :*: Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (prod_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) h) (subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) k),homology_group A (p,subtopology A top s)) (fun x:set => {x0 :e frag (A :^: (R :^: omega)) | x0 :e group_mul (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) (x 0) (x 1)}) /\ (group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p + 1,(top,s)),subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) h) (fun x:set => hom_boundary A (p + 1) (top,s) x) /\ group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (subgroup_generated (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) k,homology_group A (p,top)) (fun x:set => hom_induced A A p (subtopology A top s,Empty) (top,Empty) (fun x :e A => x) x)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7405 / ISOMORPHIC_GROUP_HOMOLOGY_GROUP_PROD_DEFORMATION   (hash md5:254cbabda0da5c1069ef179becede69d)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_HOMOLOGY_GROUP_PROD_DEFORMATION : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, (exists f:set -> set, (forall x :e A, f x :e A) /\ (homotopic_with A A {x :e A :^: A | True} (top,top) (fun x:set => x) f /\ {f x | x :e topspace A top} c= s)) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega))) :*: Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) (prod_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,top)) (relative_homology_group A (p + 1,(top,s)))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7431 / ISOMORPHIC_GROUP_HOMOLOGY_CONTRACTIBLE_SPACE_SUBTOPOLOGY   (hash md5:05b4a35d5041681b4c44f0b0ccbedc66)
+// not bridged: 
+Theorem ISOMORPHIC_GROUP_HOMOLOGY_CONTRACTIBLE_SPACE_SUBTOPOLOGY : forall A:set, (forall top :e topology A, forall s c= A, contractible_space A top /\ (s c= topspace A top /\ ~ s = Empty) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (int :*: Power (frag (A :^: (R :^: omega)))) (homology_group A (0,subtopology A top s)) (prod_group int (Power (frag (A :^: (R :^: omega)))) integer_group (relative_homology_group A (1,(top,s))))) /\ forall p :e int, forall top :e topology A, forall s c= A, ~ p = 0 /\ (contractible_space A top /\ (s c= topspace A top /\ ~ s = Empty)) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) (relative_homology_group A (p + 1,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7459 / TRIVIAL_RELATIVE_HOMOLOGY_GROUP_CONTRACTIBLE_SPACES   (hash md5:094d241973f87fd07b92e47507c58e4d)
+// not bridged: 
+Theorem TRIVIAL_RELATIVE_HOMOLOGY_GROUP_CONTRACTIBLE_SPACES : forall A:set, forall p :e int, forall top :e topology A, forall s c= A, contractible_space A top /\ (contractible_space A (subtopology A top s) /\ ~ topspace A top :/\: s = Empty) -> trivial_group (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7471 / TRIVIAL_RELATIVE_HOMOLOGY_GROUP_ALT   (hash md5:65eb08de874838068945656799bb0a4e)
+// not bridged: 
+Theorem TRIVIAL_RELATIVE_HOMOLOGY_GROUP_ALT : forall A:set, A <> Empty -> forall p :e int, forall top :e topology A, forall s c= A, forall f:set -> set, (forall x :e A, f x :e A) -> continuous_map A A (top,subtopology A top s) f /\ homotopic_with A A {k :e A :^: A | {k x | x :e s} c= s} (top,top) f (fun x:set => x) -> trivial_group (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7486 / GROUP_ISOMORPHISM_HOM_INDUCED_RELATIVIZATION_CONTRACTIBLE   (hash md5:658fd070a094cd85ec0a02a3854fb614)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_HOM_INDUCED_RELATIVIZATION_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s t c= A, contractible_space A (subtopology A top s) /\ (contractible_space A (subtopology A top t) /\ (t c= s /\ ~ topspace A top :/\: t = Empty)) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,t)),relative_homology_group A (p,(top,s))) (fun x:set => hom_induced A A p (top,t) (top,s) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7512 / ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_RELATIVIZATION_CONTRACTIBLE   (hash md5:810e35a7eba2536f3a1ecb862d32a7be)
+// not bridged: 
+Theorem ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_RELATIVIZATION_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s t c= A, contractible_space A (subtopology A top s) /\ (contractible_space A (subtopology A top t) /\ (t c= s /\ ~ topspace A top :/\: t = Empty)) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,t))) (relative_homology_group A (p,(top,s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7523 / GROUP_ISOMORPHISM_HOM_INDUCED_INCLUSION_CONTRACTIBLE   (hash md5:3b9f7e63f4df4fdd66e77ebc55267d79)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_HOM_INDUCED_INCLUSION_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s t c= A, contractible_space A top /\ (contractible_space A (subtopology A top s) /\ (t c= s /\ ~ topspace A top :/\: s = Empty)) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(subtopology A top s,t)),relative_homology_group A (p,(top,t))) (fun x:set => hom_induced A A p (subtopology A top s,t) (top,t) (fun x :e A => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7552 / ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_INCLUSION_CONTRACTIBLE   (hash md5:4cc974363eeadff92520bc45c7430081)
+// not bridged: 
+Theorem ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_INCLUSION_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s t c= A, contractible_space A top /\ (contractible_space A (subtopology A top s) /\ (t c= s /\ ~ topspace A top :/\: s = Empty)) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(subtopology A top s,t))) (relative_homology_group A (p,(top,t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7563 / GROUP_ISOMORPHISM_HOM_RELBOUNDARY_CONTRACTIBLE   (hash md5:a0cc55ee88dc2493f16b6129fbbd73f8)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_HOM_RELBOUNDARY_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s t c= A, contractible_space A top /\ (contractible_space A (subtopology A top t) /\ (t c= s /\ ~ topspace A top :/\: t = Empty)) -> group_isomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group A (p + - 1,(subtopology A top s,t))) (hom_relboundary A p (top,(s,t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7588 / ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_RELBOUNDARY_CONTRACTIBLE   (hash md5:21574fc384ee92508e2a3d8e9083f1a3)
+// not bridged: 
+Theorem ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_RELBOUNDARY_CONTRACTIBLE : forall A:set, forall p :e int, forall top :e topology A, forall s t c= A, contractible_space A top /\ (contractible_space A (subtopology A top t) /\ (t c= s /\ ~ topspace A top :/\: t = Empty)) -> isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) (relative_homology_group A (p + - 1,(subtopology A top s,t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7599 / ISOMORPHIC_RELATIVE_CONTRACTIBLE_SPACE_IMP_HOMOLOGY_GROUPS   (hash md5:d776fcb477410ae44eca203875860aef)
+// not bridged: 
+Theorem ISOMORPHIC_RELATIVE_CONTRACTIBLE_SPACE_IMP_HOMOLOGY_GROUPS : forall A B:set, A <> Empty -> B <> Empty -> forall top :e topology A, forall top' :e topology B, forall s c= A, forall t c= B, contractible_space A top /\ (contractible_space B top' /\ (s c= topspace A top /\ (t c= topspace B top' /\ ((s = Empty <-> t = Empty) /\ (forall p :e int, isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) (relative_homology_group B (p,(top',t)))))))) -> forall p :e int, isomorphic_group (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (homology_group A (p,subtopology A top s)) (homology_group B (p,subtopology B top' t)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7629 / GROUP_ISOMORPHISM_REDUCED_HOMOLOGY_GROUP_LOWER_HEMISPHERE   (hash md5:cd9fa563302998025f69cac169f65d94)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_REDUCED_HOMOLOGY_GROUP_LOWER_HEMISPHERE : forall p :e int, forall n k :e omega, k :e idx_n (n + 1) -> group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n),relative_homology_group (R :^: omega) (p,(nsphere n,{x :e R :^: omega | x k <= 0}))) (fun x:set => hom_induced (R :^: omega) (R :^: omega) p (nsphere n,Empty) (nsphere n,{x :e R :^: omega | x k <= 0}) (fun x :e R :^: omega => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7648 / GROUP_ISOMORPHISM_RELATIVE_HOMOLOGY_GROUP_UPPER_HEMISPHERE   (hash md5:96204b75c8e237264a4cbf03cfaf067d)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_RELATIVE_HOMOLOGY_GROUP_UPPER_HEMISPHERE : forall p :e int, forall n k :e omega, group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (relative_homology_group (R :^: omega) (p,(subtopology (R :^: omega) (nsphere n) {x :e R :^: omega | 0 <= x k},{x :e R :^: omega | x k = 0})),relative_homology_group (R :^: omega) (p,(nsphere n,{x :e R :^: omega | x k <= 0}))) (fun x:set => hom_induced (R :^: omega) (R :^: omega) p (subtopology (R :^: omega) (nsphere n) {x :e R :^: omega | 0 <= x k},{x :e R :^: omega | x k = 0}) (nsphere n,{x :e R :^: omega | x k <= 0}) (fun x :e R :^: omega => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7947 / GROUP_ISOMORPHISM_UPPER_HEMISPHERE_REDUCED_HOMOLOGY_GROUP   (hash md5:2711bfe248a9d598277e339146e8183e)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_UPPER_HEMISPHERE_REDUCED_HOMOLOGY_GROUP : forall p :e int, forall n :e omega, group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (relative_homology_group (R :^: omega) (p + 1,(subtopology (R :^: omega) (nsphere (n + 1)) {x :e R :^: omega | 0 <= x (n + 2)},{x :e R :^: omega | x (n + 2) = 0})),reduced_homology_group (R :^: omega) (p,nsphere n)) (fun x:set => hom_boundary (R :^: omega) (p + 1) (subtopology (R :^: omega) (nsphere (n + 1)) {x :e R :^: omega | 0 <= x (n + 2)},{x :e R :^: omega | x (n + 2) = 0}) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:7987 / GROUP_ISOMORPHISM_REDUCED_HOMOLOGY_GROUP_UPPER_HEMISPHERE   (hash md5:d35408ded226519c25469f3dcf5f53ae)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_REDUCED_HOMOLOGY_GROUP_UPPER_HEMISPHERE : forall p :e int, forall n k :e omega, k :e idx_n (n + 1) -> group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n),relative_homology_group (R :^: omega) (p,(nsphere n,{x :e R :^: omega | 0 <= x k}))) (fun x:set => hom_induced (R :^: omega) (R :^: omega) p (nsphere n,Empty) (nsphere n,{x :e R :^: omega | 0 <= x k}) (fun x :e R :^: omega => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8006 / GROUP_ISOMORPHISM_RELATIVE_HOMOLOGY_GROUP_LOWER_HEMISPHERE   (hash md5:cc7386b940ecd69be4cfe671c7421991)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_RELATIVE_HOMOLOGY_GROUP_LOWER_HEMISPHERE : forall p :e int, forall n k :e omega, group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (relative_homology_group (R :^: omega) (p,(subtopology (R :^: omega) (nsphere n) {x :e R :^: omega | x k <= 0},{x :e R :^: omega | x k = 0})),relative_homology_group (R :^: omega) (p,(nsphere n,{x :e R :^: omega | 0 <= x k}))) (fun x:set => hom_induced (R :^: omega) (R :^: omega) p (subtopology (R :^: omega) (nsphere n) {x :e R :^: omega | x k <= 0},{x :e R :^: omega | x k = 0}) (nsphere n,{x :e R :^: omega | 0 <= x k}) (fun x :e R :^: omega => x) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8067 / GROUP_ISOMORPHISM_LOWER_HEMISPHERE_REDUCED_HOMOLOGY_GROUP   (hash md5:7d0e98b7b8e7f9baf69f62284fd31a44)
+// not bridged: 
+Theorem GROUP_ISOMORPHISM_LOWER_HEMISPHERE_REDUCED_HOMOLOGY_GROUP : forall p :e int, forall n :e omega, group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (relative_homology_group (R :^: omega) (p + 1,(subtopology (R :^: omega) (nsphere (n + 1)) {x :e R :^: omega | x (n + 2) <= 0},{x :e R :^: omega | x (n + 2) = 0})),reduced_homology_group (R :^: omega) (p,nsphere n)) (fun x:set => hom_boundary (R :^: omega) (p + 1) (subtopology (R :^: omega) (nsphere (n + 1)) {x :e R :^: omega | x (n + 2) <= 0},{x :e R :^: omega | x (n + 2) = 0}) x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8115 / REDUCED_HOMOLOGY_GROUP_NSPHERE_STEP   (hash md5:f65d3d6aad8b4de0780b730771c46de7)
+// not bridged: 
+Theorem REDUCED_HOMOLOGY_GROUP_NSPHERE_STEP : forall p :e int, forall n :e omega, exists f :e Power (frag (R :^: omega :^: (R :^: omega))) :^: Power (frag (R :^: omega :^: (R :^: omega))), group_isomorphism_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n),reduced_homology_group (R :^: omega) (p + 1,nsphere (n + 1))) (fun x:set => f x) /\ forall c c= frag (R :^: omega :^: (R :^: omega)), c :e group_carrier (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n)) -> hom_induced (R :^: omega) (R :^: omega) (p + 1) (nsphere (n + 1),Empty) (nsphere (n + 1),Empty) (fun x :e R :^: omega => fun i :e omega => if i = 1 then - x i else x i) (f c) = f (hom_induced (R :^: omega) (R :^: omega) p (nsphere n,Empty) (nsphere n,Empty) (fun x :e R :^: omega => fun i :e omega => if i = 1 then - x i else x i) c).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8246 / REDUCED_HOMOLOGY_GROUP_NSPHERE   (hash md5:dd6a2b376495d8706f9f95d503542e9b)
+// not bridged: 
+Theorem REDUCED_HOMOLOGY_GROUP_NSPHERE : (forall n :e omega, isomorphic_group (Power (frag (R :^: omega :^: (R :^: omega)))) int (reduced_homology_group (R :^: omega) (n,nsphere n)) integer_group) /\ forall n :e omega, forall p :e int, ~ p = n -> trivial_group (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8313 / CYCLIC_REDUCED_HOMOLOGY_GROUP_NSPHERE   (hash md5:f9310739f2cdf976f6ad2a40b80c8824)
+// not bridged: 
+Theorem CYCLIC_REDUCED_HOMOLOGY_GROUP_NSPHERE : forall p :e int, forall n :e omega, cyclic_group_hl (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8319 / TRIVIAL_REDUCED_HOMOLOGY_GROUP_NSPHERE   (hash md5:8f31b202f304f5078749a931bed3ee52)
+// not bridged: 
+Theorem TRIVIAL_REDUCED_HOMOLOGY_GROUP_NSPHERE : forall p :e int, forall n :e omega, trivial_group (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere n)) <-> ~ p = n.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8324 / NON_CONTRACTIBLE_SPACE_NSPHERE   (hash md5:b8e1ac59737a2dc199e7dfe69d932b6b)
+// not bridged: 
+Theorem NON_CONTRACTIBLE_SPACE_NSPHERE : forall n :e omega, ~ contractible_space (R :^: omega) (nsphere n).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8340 / brouwer_degree2   (hash md5:562590fa468c81a1da2e53b173ee389e)
+// not bridged: 
+Theorem brouwer_degree2_thm : forall f :e R :^: omega :^: (R :^: omega), forall p :e omega, brouwer_degree2 p (fun x:set => fun x0:set => f x x0) = choose_in int (fun d:set => forall x c= frag (R :^: omega :^: (R :^: omega)), x :e group_carrier (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) -> hom_induced (R :^: omega) (R :^: omega) p (nsphere p,Empty) (nsphere p,Empty) f x = group_zpow (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) x d).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8346 / BROUWER_DEGREE2_EQ   (hash md5:6ef1e7a51658877c65dec3de2cecd0db)
+// not bridged: 
+Theorem BROUWER_DEGREE2_EQ : forall p :e omega, forall f:set -> set -> set, (forall x :e R :^: omega, forall y :e omega, f x y :e R) -> forall g:set -> set -> set, (forall x :e R :^: omega, forall y :e omega, g x y :e R) -> (forall x :e R :^: omega, x :e topspace (R :^: omega) (nsphere p) -> forall x0 :e omega, f x x0 = g x x0) -> brouwer_degree2 p f = brouwer_degree2 p g.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8354 / BROUWER_DEGREE2   (hash md5:162f85d3e09da8057781a75df4946b6d)
+// not bridged: 
+Theorem BROUWER_DEGREE2 : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), forall x c= frag (R :^: omega :^: (R :^: omega)), x :e group_carrier (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) -> hom_induced (R :^: omega) (R :^: omega) p (nsphere p,Empty) (nsphere p,Empty) f x = group_zpow (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) x (brouwer_degree2 p (fun x0:set => fun x1:set => f x0 x1)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8387 / BROUWER_DEGREE2_IFF   (hash md5:8d65fbd014586ebe31e75710a22f6af1)
+// not bridged: 
+Theorem BROUWER_DEGREE2_IFF : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), forall x c= frag (R :^: omega :^: (R :^: omega)), forall d :e int, continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x0:set => f x0) /\ x :e group_carrier (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) -> (hom_induced (R :^: omega) (R :^: omega) p (nsphere p,Empty) (nsphere p,Empty) f x = group_zpow (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) x d <-> x = group_id (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) \/ brouwer_degree2 p (fun x0:set => fun x1:set => f x0 x1) = d).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8414 / BROUWER_DEGREE2_UNIQUE   (hash md5:1a2dfc39e7b4310d1811996319ee61fd)
+// not bridged: 
+Theorem BROUWER_DEGREE2_UNIQUE : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), forall d :e int, continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ (forall x c= frag (R :^: omega :^: (R :^: omega)), x :e group_carrier (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) -> hom_induced (R :^: omega) (R :^: omega) p (nsphere p,Empty) (nsphere p,Empty) f x = group_zpow (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) x d) -> brouwer_degree2 p (fun x:set => fun x0:set => f x x0) = d.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8432 / BROUWER_DEGREE2_UNIQUE_GENERATOR   (hash md5:1ffca7d0a480bd46dfd719d897df53fd)
+// not bridged: 
+Theorem BROUWER_DEGREE2_UNIQUE_GENERATOR : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), forall d :e int, forall a c= frag (R :^: omega :^: (R :^: omega)), continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ (subgroup_generated (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) {a} = reduced_homology_group (R :^: omega) (p,nsphere p) /\ hom_induced (R :^: omega) (R :^: omega) p (nsphere p,Empty) (nsphere p,Empty) f a = group_zpow (Power (frag (R :^: omega :^: (R :^: omega)))) (reduced_homology_group (R :^: omega) (p,nsphere p)) a d) -> brouwer_degree2 p (fun x:set => fun x0:set => f x x0) = d.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8458 / BROUWER_DEGREE2_HOMOTOPIC   (hash md5:1dae88fc7928b6122fc28d646d865ab6)
+// not bridged: 
+Theorem BROUWER_DEGREE2_HOMOTOPIC : forall p :e omega, forall f g :e R :^: omega :^: (R :^: omega), homotopic_with (R :^: omega) (R :^: omega) {x :e R :^: omega :^: (R :^: omega) | True} (nsphere p,nsphere p) (fun x:set => f x) (fun x:set => g x) -> brouwer_degree2 p (fun x:set => fun x0:set => f x x0) = brouwer_degree2 p (fun x:set => fun x0:set => g x x0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8471 / BROUWER_DEGREE2_ID   (hash md5:5a14655a684a673e90d3850ac6ada9ee)
+// not bridged: 
+Theorem BROUWER_DEGREE2_ID : forall p :e omega, brouwer_degree2 p (fun x:set => fun x0:set => x x0) = 1.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8479 / BROUWER_DEGREE2_COMPOSE   (hash md5:63f2cfb247993b2b8396cd7e0dc9ab9d)
+// not bridged: 
+Theorem BROUWER_DEGREE2_COMPOSE : forall p :e omega, forall f g :e R :^: omega :^: (R :^: omega), continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => g x) -> brouwer_degree2 p (fun x:set => fun x0:set => g (f x) x0) = brouwer_degree2 p (fun x:set => fun x0:set => g x x0) * brouwer_degree2 p (fun x:set => fun x0:set => f x x0).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8493 / BROUWER_DEGREE2_HOMOTOPY_EQUIVALENCE   (hash md5:f8b2a7a867e310f39682886b14efc2b5)
+// not bridged: 
+Theorem BROUWER_DEGREE2_HOMOTOPY_EQUIVALENCE : forall p :e omega, forall f g :e R :^: omega :^: (R :^: omega), continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ (continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => g x) /\ homotopic_with (R :^: omega) (R :^: omega) {x :e R :^: omega :^: (R :^: omega) | True} (nsphere p,nsphere p) (fun x:set => f (g x)) (fun x:set => x)) -> abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => f x x0)) = 1 /\ (abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => g x x0)) = 1 /\ brouwer_degree2 p (fun x:set => fun x0:set => g x x0) = brouwer_degree2 p (fun x:set => fun x0:set => f x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8505 / BROUWER_DEGREE2_HOMEOMORPHIC_MAPS   (hash md5:a594fb2b9814449b381e36ae6b302483)
+// not bridged: 
+Theorem BROUWER_DEGREE2_HOMEOMORPHIC_MAPS : forall p :e omega, forall f g :e R :^: omega :^: (R :^: omega), homeomorphic_maps (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (f,g) -> abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => f x x0)) = 1 /\ (abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => g x x0)) = 1 /\ brouwer_degree2 p (fun x:set => fun x0:set => g x x0) = brouwer_degree2 p (fun x:set => fun x0:set => f x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8515 / BROUWER_DEGREE2_RETRACTION_MAP   (hash md5:27f35736b20cbec2d1ae6c574cd86d7a)
+// not bridged: 
+Theorem BROUWER_DEGREE2_RETRACTION_MAP : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), retraction_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) -> abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => f x x0)) = 1.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8528 / BROUWER_DEGREE2_SECTION_MAP   (hash md5:e312cc7cd64f7e7364afd34284719104)
+// not bridged: 
+Theorem BROUWER_DEGREE2_SECTION_MAP : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), section_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) -> abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => f x x0)) = 1.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8541 / BROUWER_DEGREE2_HOMEOMORPHIC_MAP   (hash md5:3a08ad4799f73bfee5657ffd7cdd295a)
+// not bridged: 
+Theorem BROUWER_DEGREE2_HOMEOMORPHIC_MAP : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), homeomorphic_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) -> abs_SNo (brouwer_degree2 p (fun x:set => fun x0:set => f x x0)) = 1.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8547 / BROUWER_DEGREE2_NULLHOMOTOPIC   (hash md5:6b74b8fa4d7b9a03e506635cb3673131)
+// not bridged: 
+Theorem BROUWER_DEGREE2_NULLHOMOTOPIC : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), forall a :e R :^: omega, homotopic_with (R :^: omega) (R :^: omega) {x :e R :^: omega :^: (R :^: omega) | True} (nsphere p,nsphere p) (fun x:set => f x) (fun x:set => fun x0 :e omega => a x0) -> brouwer_degree2 p (fun x:set => fun x0:set => f x x0) = 0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8583 / BROUWER_DEGREE2_CONST   (hash md5:1038fd1fb8693818d0cf562188c1483d)
+// not bridged: 
+Theorem BROUWER_DEGREE2_CONST : forall p :e omega, forall a :e R :^: omega, brouwer_degree2 p (fun x:set => fun x0:set => a x0) = 0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8613 / BROUWER_DEGREE2_NONSURJECTIVE   (hash md5:987553cfceb5a2c19063186a293ff1d8)
+// not bridged: 
+Theorem BROUWER_DEGREE2_NONSURJECTIVE : forall p :e omega, forall f :e R :^: omega :^: (R :^: omega), continuous_map (R :^: omega) (R :^: omega) (nsphere p,nsphere p) (fun x:set => f x) /\ ~ {f x | x :e topspace (R :^: omega) (nsphere p)} = topspace (R :^: omega) (nsphere p) -> brouwer_degree2 p (fun x:set => fun x0:set => f x x0) = 0.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8622 / BROUWER_DEGREE2_REFLECTION   (hash md5:6f37e9bb946118fe0b0f8aba39b7a865)
+// not bridged: 
+Theorem BROUWER_DEGREE2_REFLECTION : forall p :e omega, brouwer_degree2 p (fun x:set => fun i:set => if i = 1 then - x i else x i) = - 1.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:8821 / BORSUK_ODD_MAPPING_DEGREE_STEP   (hash md5:47a8e0b1ce2ae9e8781c300ff5211d85)
+// not bridged: 
+Theorem BORSUK_ODD_MAPPING_DEGREE_STEP : forall f :e R :^: omega :^: (R :^: omega), forall n :e omega, continuous_map (R :^: omega) (R :^: omega) (nsphere n,nsphere n) (fun x:set => f x) /\ ((forall x :e R :^: omega, x :e topspace (R :^: omega) (nsphere n) -> forall x0 :e omega, f (fun x2 :e omega => - x x2) x0 = (fun x2 :e omega => - f x x2) x0) /\ {f x | x :e topspace (R :^: omega) (nsphere (minus_nat n 1))} c= topspace (R :^: omega) (nsphere (minus_nat n 1))) -> divides_int 2 (brouwer_degree2 n (fun x:set => fun x0:set => f x x0) + - brouwer_degree2 (minus_nat n 1) (fun x:set => fun x0:set => f x x0)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:9441 / RELATIVE_HOMOLOGY_GROUP_EUCLIDEAN_COMPLEMENT_STEP   (hash md5:448f0479e1153d4b950921d07cf1319c)
+// not bridged: 
+Theorem RELATIVE_HOMOLOGY_GROUP_EUCLIDEAN_COMPLEMENT_STEP : forall p :e int, forall n k :e omega, forall s c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s -> isomorphic_group (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (relative_homology_group (R :^: omega) (p,(euclidean_space n,topspace (R :^: omega) (euclidean_space n) :\: s))) (relative_homology_group (R :^: omega) (p + k,(euclidean_space (n + k),topspace (R :^: omega) (euclidean_space (n + k)) :\: s))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:9973 / ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_EUCLIDEAN_COMPLEMENTS   (hash md5:bde60df479cb30e7d0247b9dde8fb926)
+// not bridged: 
+Theorem ISOMORPHIC_RELATIVE_HOMOLOGY_GROUPS_EUCLIDEAN_COMPLEMENTS : forall p :e int, forall n :e omega, forall s t c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s /\ (closed_in (R :^: omega) (euclidean_space n) t /\ homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (subtopology (R :^: omega) (euclidean_space n) t)) -> isomorphic_group (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (relative_homology_group (R :^: omega) (p,(euclidean_space n,topspace (R :^: omega) (euclidean_space n) :\: s))) (relative_homology_group (R :^: omega) (p,(euclidean_space n,topspace (R :^: omega) (euclidean_space n) :\: t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10252 / INVARIANCE_OF_DIMENSION_CLOSED_IN_EUCLIDEAN_SPACE   (hash md5:b0b761b11e53e9bde945bf781ca65bd7)
+// not bridged: 
+Theorem INVARIANCE_OF_DIMENSION_CLOSED_IN_EUCLIDEAN_SPACE : forall n :e omega, forall s c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s -> (homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (euclidean_space n) <-> s = topspace (R :^: omega) (euclidean_space n)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10435 / ISOMORPHIC_HOMOLOGY_GROUPS_EUCLIDEAN_COMPLEMENTS   (hash md5:d3660689c7ba791fb40681d11f1b16c3)
+// not bridged: 
+Theorem ISOMORPHIC_HOMOLOGY_GROUPS_EUCLIDEAN_COMPLEMENTS : forall p :e int, forall n :e omega, forall s t c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s /\ (closed_in (R :^: omega) (euclidean_space n) t /\ homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (subtopology (R :^: omega) (euclidean_space n) t)) -> isomorphic_group (Power (frag (R :^: omega :^: (R :^: omega)))) (Power (frag (R :^: omega :^: (R :^: omega)))) (homology_group (R :^: omega) (p,subtopology (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: s))) (homology_group (R :^: omega) (p,subtopology (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10458 / CARD_EQ_PATH_COMPONENTS_EUCLIDEAN_COMPLEMENTS   (hash md5:87f0d7e1837c3ef4dd76023c9759e612)
+// not bridged: 
+Theorem CARD_EQ_PATH_COMPONENTS_EUCLIDEAN_COMPLEMENTS : forall n :e omega, forall s t c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s /\ (closed_in (R :^: omega) (euclidean_space n) t /\ homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (subtopology (R :^: omega) (euclidean_space n) t)) -> equip (path_components_of (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: s))) (path_components_of (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10473 / PATH_CONNECTED_IN_EUCLIDEAN_COMPLEMENTS   (hash md5:5cfd5470baa4f97ed28a22497be917d4)
+// not bridged: 
+Theorem PATH_CONNECTED_IN_EUCLIDEAN_COMPLEMENTS : forall n :e omega, forall s t c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s /\ (closed_in (R :^: omega) (euclidean_space n) t /\ homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (subtopology (R :^: omega) (euclidean_space n) t)) -> (path_connected_in (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: s) <-> path_connected_in (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: t)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10488 / CARD_EQ_CONNECTED_COMPONENTS_EUCLIDEAN_COMPLEMENTS   (hash md5:aa1a3db7a64cd5122fc7ba571a0f6f30)
+// not bridged: 
+Theorem CARD_EQ_CONNECTED_COMPONENTS_EUCLIDEAN_COMPLEMENTS : forall n :e omega, forall s t c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s /\ (closed_in (R :^: omega) (euclidean_space n) t /\ homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (subtopology (R :^: omega) (euclidean_space n) t)) -> equip (connected_components_of (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: s))) (connected_components_of (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: t))).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10508 / CONNECTED_IN_EUCLIDEAN_COMPLEMENTS   (hash md5:fbe3bfa3793fe2d232c25f59c9a26bfb)
+// not bridged: 
+Theorem CONNECTED_IN_EUCLIDEAN_COMPLEMENTS : forall n :e omega, forall s t c= R :^: omega, closed_in (R :^: omega) (euclidean_space n) s /\ (closed_in (R :^: omega) (euclidean_space n) t /\ homeomorphic_space (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) s) (subtopology (R :^: omega) (euclidean_space n) t)) -> (connected_in (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: s) <-> connected_in (R :^: omega) (euclidean_space n) (topspace (R :^: omega) (euclidean_space n) :\: t)).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10525 / INVARIANCE_OF_DIMENSION_EUCLIDEAN_SPACE   (hash md5:42b81c1b1a0d64dc9e70269426a68d30)
+// not bridged: 
+Theorem INVARIANCE_OF_DIMENSION_EUCLIDEAN_SPACE : forall m n :e omega, homeomorphic_space (R :^: omega) (R :^: omega) (euclidean_space m) (euclidean_space n) <-> m = n.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:10553 / INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE   (hash md5:e76a6a0bb85350564b26c28d1591cbd2)
+// not bridged: 
+Theorem INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE : forall n :e omega, forall u c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), u :e euclidean_space n /\ (continuous_map (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) u,euclidean_space n) (fun x:set => f x) /\ (forall x y :e R :^: omega, x :e u /\ (y :e u /\ f x = f y) -> x = y)) -> {f x | x :e u} :e euclidean_space n.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:11382 / INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE_EMBEDDING_MAP   (hash md5:7d2da20a838505749cbad9b8f9643370)
+// not bridged: 
+Theorem INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE_EMBEDDING_MAP : forall n :e omega, forall u c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), u :e euclidean_space n /\ (continuous_map (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) u,euclidean_space n) (fun x:set => f x) /\ (forall x y :e R :^: omega, x :e u /\ (y :e u /\ f x = f y) -> x = y)) -> embedding_map (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space n) u,euclidean_space n) (fun x:set => f x).
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:11398 / INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE_GEN   (hash md5:8e41ddc2618986a1cf25d4a527589b57)
+// not bridged: 
+Theorem INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE_GEN : forall m n :e omega, forall u c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), n <= m /\ (u :e euclidean_space m /\ (continuous_map (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space m) u,euclidean_space n) (fun x:set => f x) /\ (forall x y :e R :^: omega, x :e u /\ (y :e u /\ f x = f y) -> x = y))) -> {f x | x :e u} :e euclidean_space n.
+Admitted.
+
+// HOL Light: Multivariate/homology.ml:11420 / INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE_EMBEDDING_MAP_GEN   (hash md5:9c6473bf5517d8a66eb82e2b0ab2c91d)
+// not bridged: 
+Theorem INVARIANCE_OF_DOMAIN_EUCLIDEAN_SPACE_EMBEDDING_MAP_GEN : forall m n :e omega, forall u c= R :^: omega, forall f :e R :^: omega :^: (R :^: omega), n <= m /\ (u :e euclidean_space m /\ (continuous_map (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space m) u,euclidean_space n) (fun x:set => f x) /\ (forall x y :e R :^: omega, x :e u /\ (y :e u /\ f x = f y) -> x = y))) -> embedding_map (R :^: omega) (R :^: omega) (subtopology (R :^: omega) (euclidean_space m) u,euclidean_space n) (fun x:set => f x).
+Admitted.
+

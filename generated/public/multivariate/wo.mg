@@ -100,14 +100,14 @@ Admitted.
 
 // HOL Light: Library/wo.ml:118 / CHAIN_SUBSET
 // Source hash: md5:0e132e0e962bf13bad20814aecba4159
-// Status: generalization_required (bridges: empty_case:A)
-Theorem CHAIN_SUBSET : forall A:set, forall l:set -> set -> prop, forall s t c= A, chain_on A l s /\ t c= s -> chain_on A l t.
+// Status: exact_native
+Theorem CHAIN_SUBSET : forall A:set, A <> Empty -> forall l:set -> set -> prop, forall s t c= A, chain_on A l s /\ t c= s -> chain_on A l t.
 Admitted.
 
 // HOL Light: Library/wo.ml:122 / ANTICHAIN_SUBSET
 // Source hash: md5:d8f6358187463e5150715b1f4afc280f
-// Status: generalization_required (bridges: empty_case:A)
-Theorem ANTICHAIN_SUBSET : forall A:set, forall l:set -> set -> prop, forall s t c= A, antichain_on A l s /\ t c= s -> antichain_on A l t.
+// Status: exact_native
+Theorem ANTICHAIN_SUBSET : forall A:set, A <> Empty -> forall l:set -> set -> prop, forall s t c= A, antichain_on A l s /\ t c= s -> antichain_on A l t.
 Admitted.
 
 // HOL Light: Library/wo.ml:130 / QOSET_REFL
@@ -521,7 +521,7 @@ Admitted.
 // HOL Light: Library/wo.ml:719 / DICKSON
 // Source hash: md5:196bd61a5962492b4642b1f9b4c5c489
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
-Theorem DICKSON : forall n :e omega, forall x:set -> set -> set, (forall x y :e omega, x x y :e omega) -> exists i j :e omega, i < j /\ forall k :e omega, k < n -> x i k <= x j k.
+Theorem DICKSON : forall n :e omega, forall x:set -> set -> set, (forall x0 y :e omega, x x0 y :e omega) -> exists i j :e omega, i < j /\ forall k :e omega, k < n -> x i k <= x j k.
 Admitted.
 
 // HOL Light: Library/wo.ml:735 / inseg
@@ -808,8 +808,8 @@ Admitted.
 
 // HOL Light: Library/wo.ml:1331 / SUBWOSET_ISO_INSEG
 // Source hash: md5:3a8643a52e442769e3fc98df04935dfd
-// Status: generalization_required (bridges: empty_case:A)
-Theorem SUBWOSET_ISO_INSEG : forall A:set, forall l:set -> set -> prop, forall s c= A, woset_on A l /\ fld_on A l = A -> exists f:set -> set, (forall x :e A, f x :e A) /\ ((forall x y :e A, x :e s /\ y :e s -> (l (f x) (f y) <-> l x y)) /\ forall x y :e A, y :e {f x | x :e s} /\ l x y -> x :e {f x | x :e s}).
+// Status: exact_native
+Theorem SUBWOSET_ISO_INSEG : forall A:set, A <> Empty -> forall l:set -> set -> prop, forall s c= A, woset_on A l /\ fld_on A l = A -> exists f:set -> set, (forall x :e A, f x :e A) /\ ((forall x y :e A, x :e s /\ y :e s -> (l (f x) (f y) <-> l x y)) /\ forall x y :e A, y :e {f x | x :e s} /\ l x y -> x :e {f x | x :e s}).
 Admitted.
 
 // HOL Light: Library/wo.ml:1402 / HP
@@ -838,8 +838,8 @@ Admitted.
 
 // HOL Light: Library/wo.ml:1552 / KL
 // Source hash: md5:f9ba27018d285fec89ae2222daf18bf0
-// Status: generalization_required (bridges: empty_case:A)
-Theorem KL : forall A:set, forall l:set -> set -> prop, poset_on A l -> forall C c= A, chain_on A l C -> exists P c= A, chain_on A l P /\ C c= P /\ forall R0 c= A, chain_on A l R0 /\ P c= R0 -> R0 = P.
+// Status: exact_native
+Theorem KL : forall A:set, A <> Empty -> forall l:set -> set -> prop, poset_on A l -> forall C c= A, chain_on A l C -> exists P c= A, chain_on A l P /\ C c= P /\ forall R0 c= A, chain_on A l R0 /\ P c= R0 -> R0 = P.
 Admitted.
 
 // HOL Light: Library/wo.ml:1609 / POSET_RESTRICTED_SUBSET

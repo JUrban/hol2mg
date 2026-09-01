@@ -4,8 +4,8 @@
 
 // HOL Light: Library/frag.ml:5 / frag_tybij
 // Source hash: md5:f94e2843347f90420904dde878042c4f
-// Status: generalization_required (bridges: hol_finite_finite, hol_int_int, hol_num_omega, hol_typedef_frag, omega_Subq_int)
-Theorem frag_tybij : forall A:set, A <> Empty -> (forall a :e frag A, a = a) /\ forall r :e int :^: A, finite {x :e A | ~ r x = 0} <-> r = r.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_int_int, hol_num_omega, hol_typedef_frag, omega_Subq_int)
+Theorem frag_tybij : forall A:set, (forall a :e frag A, a = a) /\ forall r :e int :^: A, finite {x :e A | ~ r x = 0} <-> r = r.
 Admitted.
 
 // HOL Light: Library/frag.ml:12 / frag_support
@@ -52,8 +52,8 @@ Admitted.
 
 // HOL Light: Library/frag.ml:33 / FRAG_EQ
 // Source hash: md5:7f1ad9b989fa9586e455aafbe70d56ab
-// Status: generalization_required (bridges: empty_case:A, hol_int_int, hol_typedef_frag)
-Theorem FRAG_EQ : forall A:set, forall c1 c2 :e frag A, c1 = c2 <-> c1 = c2.
+// Status: transport_required (bridges: hol_int_int, hol_typedef_frag)
+Theorem FRAG_EQ : forall A:set, A <> Empty -> forall c1 c2 :e frag A, c1 = c2 <-> c1 = c2.
 Admitted.
 
 // HOL Light: Library/frag.ml:37 / DEST_FRAG_0

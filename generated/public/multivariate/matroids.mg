@@ -214,8 +214,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:294 / MATROID_INDEPENDENT_MONO
 // Source hash: md5:95c82addc0721a6fcf720ed1fc35c4f4
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_matroid)
-Theorem MATROID_INDEPENDENT_MONO : forall A:set, forall m :e matroid A, forall s t c= A, matroid_independent A m t /\ s c= t -> matroid_independent A m s.
+// Status: transport_required (bridges: hol_typedef_matroid)
+Theorem MATROID_INDEPENDENT_MONO : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, matroid_independent A m t /\ s c= t -> matroid_independent A m s.
 Admitted.
 
 // HOL Light: Library/matroids.ml:304 / MATROID_INDEPENDENT_FINITARY
@@ -292,8 +292,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:495 / MATROID_INTERMEDIATE_SPAN
 // Source hash: md5:325a145375a242ade1ac8564f023420a
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_matroid)
-Theorem MATROID_INTERMEDIATE_SPAN : forall A:set, forall m :e matroid A, forall s t c= A, matroid_independent A m s /\ (t c= matroid_set A m /\ s c= {x :e A | matroid_span A m t x}) -> exists b c= A, s c= b /\ (b c= s :\/: t /\ (matroid_independent A m b /\ forall x :e A, matroid_span A m b x <-> matroid_span A m t x)).
+// Status: transport_required (bridges: hol_typedef_matroid)
+Theorem MATROID_INTERMEDIATE_SPAN : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, matroid_independent A m s /\ (t c= matroid_set A m /\ s c= {x :e A | matroid_span A m t x}) -> exists b c= A, s c= b /\ (b c= s :\/: t /\ (matroid_independent A m b /\ forall x :e A, matroid_span A m b x <-> matroid_span A m t x)).
 Admitted.
 
 // HOL Light: Library/matroids.ml:525 / MATROID_INTERMEDIATE_BASIS
@@ -328,14 +328,14 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:575 / MATROID_STEINITZ_EXCHANGE
 // Source hash: md5:b05c149fcdcc83cadf09eda481842fb6
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
-Theorem MATROID_STEINITZ_EXCHANGE : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, t c= matroid_set A m /\ (finite s /\ (matroid_independent A m s /\ s c= {x :e A | matroid_span A m t x})) -> exists t' c= A, t' c= t /\ (equip t' (finite_cardinality s) /\ forall x :e A, matroid_span A m ((t :\: t') :\/: s) x <-> matroid_span A m t x).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
+Theorem MATROID_STEINITZ_EXCHANGE : forall A:set, forall m :e matroid A, forall s t c= A, t c= matroid_set A m /\ (finite s /\ (matroid_independent A m s /\ s c= {x :e A | matroid_span A m t x})) -> exists t' c= A, t' c= t /\ (equip t' (finite_cardinality s) /\ forall x :e A, matroid_span A m ((t :\: t') :\/: s) x <-> matroid_span A m t x).
 Admitted.
 
 // HOL Light: Library/matroids.ml:634 / MATROID_INDEPENDENT_CARD_LE_SPAN_FINITE
 // Source hash: md5:76c2b6b98e7bf293202527c524e8bfab
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_typedef_matroid, nat_le_SNoLe)
-Theorem MATROID_INDEPENDENT_CARD_LE_SPAN_FINITE : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, finite t /\ (t c= matroid_set A m /\ (matroid_independent A m s /\ s c= {x :e A | matroid_span A m t x})) -> finite s /\ finite_cardinality s <= finite_cardinality t.
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_typedef_matroid, nat_le_SNoLe)
+Theorem MATROID_INDEPENDENT_CARD_LE_SPAN_FINITE : forall A:set, forall m :e matroid A, forall s t c= A, finite t /\ (t c= matroid_set A m /\ (matroid_independent A m s /\ s c= {x :e A | matroid_span A m t x})) -> finite s /\ finite_cardinality s <= finite_cardinality t.
 Admitted.
 
 // HOL Light: Library/matroids.ml:652 / MATROID_EQ_SPANS_FINITE
@@ -346,8 +346,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:660 / MATROID_EQ_SPANS_SIZE
 // Source hash: md5:1e1579dc8c349eb39db6c6b159f30fda
-// Status: generalization_required (bridges: empty_case:A, hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
-Theorem MATROID_EQ_SPANS_SIZE : forall A:set, forall m :e matroid A, forall s t c= A, forall n :e omega, matroid_independent A m s /\ (matroid_independent A m t /\ (forall x :e A, matroid_span A m s x <-> matroid_span A m t x)) -> (equip s n <-> equip t n).
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
+Theorem MATROID_EQ_SPANS_SIZE : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, forall n :e omega, matroid_independent A m s /\ (matroid_independent A m t /\ (forall x :e A, matroid_span A m s x <-> matroid_span A m t x)) -> (equip s n <-> equip t n).
 Admitted.
 
 // HOL Light: Library/matroids.ml:669 / MATROID_BASES_FINITE
@@ -358,8 +358,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:675 / MATROID_BASES_SIZE
 // Source hash: md5:e8b95d9d3152fbf2840fd48ef2105e52
-// Status: generalization_required (bridges: empty_case:A, hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
-Theorem MATROID_BASES_SIZE : forall A:set, forall m :e matroid A, forall s t c= A, forall n :e omega, matroid_basis A m s /\ matroid_basis A m t -> (equip s n <-> equip t n).
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
+Theorem MATROID_BASES_SIZE : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, forall n :e omega, matroid_basis A m s /\ matroid_basis A m t -> (equip s n <-> equip t n).
 Admitted.
 
 // HOL Light: Library/matroids.ml:682 / MATROID_INDEPENDENT_CARD_LE_SPAN
@@ -376,20 +376,20 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:747 / MATROID_EQ_SPANS_CARD_EQ
 // Source hash: md5:3eeb70d0bc6581c0ab3aaf8de1f332cc
-// Status: transport_required (bridges: hol_eq_c_equip, hol_typedef_matroid)
-Theorem MATROID_EQ_SPANS_CARD_EQ : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, matroid_independent A m s /\ (matroid_independent A m t /\ (forall x :e A, matroid_span A m s x <-> matroid_span A m t x)) -> equip s t.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_typedef_matroid)
+Theorem MATROID_EQ_SPANS_CARD_EQ : forall A:set, forall m :e matroid A, forall s t c= A, matroid_independent A m s /\ (matroid_independent A m t /\ (forall x :e A, matroid_span A m s x <-> matroid_span A m t x)) -> equip s t.
 Admitted.
 
 // HOL Light: Library/matroids.ml:756 / MATROID_BASES_CARD_EQ
 // Source hash: md5:bc1599f4319b1a7a34c293c5f7caca19
-// Status: transport_required (bridges: hol_eq_c_equip, hol_typedef_matroid)
-Theorem MATROID_BASES_CARD_EQ : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, matroid_basis A m s /\ matroid_basis A m t -> equip s t.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_typedef_matroid)
+Theorem MATROID_BASES_CARD_EQ : forall A:set, forall m :e matroid A, forall s t c= A, matroid_basis A m s /\ matroid_basis A m t -> equip s t.
 Admitted.
 
 // HOL Light: Library/matroids.ml:762 / MATROID_INDEPENDENT_SPANNING_FINITE
 // Source hash: md5:8b8901b779ba112b3ac7184c8640eafe
-// Status: transport_required (bridges: hol_finite_finite, hol_typedef_matroid)
-Theorem MATROID_INDEPENDENT_SPANNING_FINITE : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, matroid_independent A m s /\ (matroid_spanning A m t /\ finite t) -> finite s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_typedef_matroid)
+Theorem MATROID_INDEPENDENT_SPANNING_FINITE : forall A:set, forall m :e matroid A, forall s t c= A, matroid_independent A m s /\ (matroid_spanning A m t /\ finite t) -> finite s.
 Admitted.
 
 // HOL Light: Library/matroids.ml:768 / MATROID_DEPENDENT_FINITARY_MINIMAL
@@ -556,8 +556,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:1008 / MATROID_STEINITZ_EXCHANGE_FINITE
 // Source hash: md5:6e58ae8775c824608ab0452b7f6a2752
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
-Theorem MATROID_STEINITZ_EXCHANGE_FINITE : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, finite t /\ (t c= matroid_set A m /\ (matroid_independent A m s /\ s c= {x :e A | matroid_span A m t x})) -> exists t' c= A, equip t' (finite_cardinality t) /\ (s c= t' /\ (t' c= s :\/: t /\ forall x :e A, matroid_span A m t' x <-> matroid_span A m t x)).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_has_size_equip, hol_num_omega, hol_typedef_matroid)
+Theorem MATROID_STEINITZ_EXCHANGE_FINITE : forall A:set, forall m :e matroid A, forall s t c= A, finite t /\ (t c= matroid_set A m /\ (matroid_independent A m s /\ s c= {x :e A | matroid_span A m t x})) -> exists t' c= A, equip t' (finite_cardinality t) /\ (s c= t' /\ (t' c= s :\/: t /\ forall x :e A, matroid_span A m t' x <-> matroid_span A m t x)).
 Admitted.
 
 // HOL Light: Library/matroids.ml:1036 / MATROID_STEINITZ_EXCHANGE_ALT
@@ -610,14 +610,14 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:1087 / MATROID_FINITE_DIM_SPAN_EQ
 // Source hash: md5:4fea48a6eb761c0e8949126c6bfa6add
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_matroid)
-Theorem MATROID_FINITE_DIM_SPAN_EQ : forall A:set, forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\ {x :e A | matroid_span A m s x} :e matroid_finite_dim A m.
+// Status: transport_required (bridges: hol_typedef_matroid)
+Theorem MATROID_FINITE_DIM_SPAN_EQ : forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m <-> s c= matroid_set A m /\ {x :e A | matroid_span A m s x} :e matroid_finite_dim A m.
 Admitted.
 
 // HOL Light: Library/matroids.ml:1094 / MATROID_FINITE_DIM_SPAN
 // Source hash: md5:fa223005cf59154693a53c81356965d0
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_matroid)
-Theorem MATROID_FINITE_DIM_SPAN : forall A:set, forall m :e matroid A, forall s c= A, s c= matroid_set A m -> ({x :e A | matroid_span A m s x} :e matroid_finite_dim A m <-> s :e matroid_finite_dim A m).
+// Status: transport_required (bridges: hol_typedef_matroid)
+Theorem MATROID_FINITE_DIM_SPAN : forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s c= matroid_set A m -> ({x :e A | matroid_span A m s x} :e matroid_finite_dim A m <-> s :e matroid_finite_dim A m).
 Admitted.
 
 // HOL Light: Library/matroids.ml:1101 / MATROID_DIM_SPAN
@@ -676,8 +676,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:1200 / MATROID_FINITE_DIM_MONO
 // Source hash: md5:c7782b18a8783d577c576b5857ae1a00
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_matroid)
-Theorem MATROID_FINITE_DIM_MONO : forall A:set, forall m :e matroid A, forall s t c= A, t :e matroid_finite_dim A m /\ s c= t -> s :e matroid_finite_dim A m.
+// Status: transport_required (bridges: hol_typedef_matroid)
+Theorem MATROID_FINITE_DIM_MONO : forall A:set, A <> Empty -> forall m :e matroid A, forall s t c= A, t :e matroid_finite_dim A m /\ s c= t -> s :e matroid_finite_dim A m.
 Admitted.
 
 // HOL Light: Library/matroids.ml:1205 / MATROID_FINITE_DIM_UNION
@@ -862,8 +862,8 @@ Admitted.
 
 // HOL Light: Library/matroids.ml:1469 / MATROID_INDEPENDENT_IMP_FINITE
 // Source hash: md5:73c168142fa58ac13ff4c06bfdfbd67f
-// Status: transport_required (bridges: hol_finite_finite, hol_typedef_matroid)
-Theorem MATROID_INDEPENDENT_IMP_FINITE : forall A:set, A <> Empty -> forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m /\ matroid_independent A m s -> finite s.
+// Status: generalization_required (bridges: empty_case:A, hol_finite_finite, hol_typedef_matroid)
+Theorem MATROID_INDEPENDENT_IMP_FINITE : forall A:set, forall m :e matroid A, forall s c= A, s :e matroid_finite_dim A m /\ matroid_independent A m s -> finite s.
 Admitted.
 
 // HOL Light: Library/matroids.ml:1475 / MATROID_DIM_EQ_FINITE_CARD_EQ

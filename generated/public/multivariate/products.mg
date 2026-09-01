@@ -233,7 +233,7 @@ Admitted.
 // HOL Light: Library/products.ml:240 / NPRODUCT_REFLECT
 // Source hash: md5:eb52959794caca5dc9187377397fd3d4
 // Status: transport_required (bridges: hol_nproduct_finprod, hol_num_omega, nat_lt_SNoLt)
-Theorem NPRODUCT_REFLECT : forall x:set -> set, (forall x :e omega, x x :e omega) -> forall m n :e omega, finprod {i :e omega | m <= i /\ i <= n} x = if n < m then 1 else finprod {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
+Theorem NPRODUCT_REFLECT : forall x:set -> set, (forall x0 :e omega, x x0 :e omega) -> forall m n :e omega, finprod {i :e omega | m <= i /\ i <= n} x = if n < m then 1 else finprod {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
 Admitted.
 
 // HOL Light: Library/products.ml:247 / NPRODUCT_DELETE
@@ -545,7 +545,7 @@ Admitted.
 // HOL Light: Library/products.ml:623 / IPRODUCT_REFLECT
 // Source hash: md5:ee40b76504f563679eeed52b51ffb0fe
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_product_finprod, nat_lt_SNoLt, omega_Subq_int)
-Theorem IPRODUCT_REFLECT : forall x:set -> set, (forall x :e omega, x x :e int) -> forall m n :e omega, finprod {i :e omega | m <= i /\ i <= n} x = if n < m then 1 else finprod {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
+Theorem IPRODUCT_REFLECT : forall x:set -> set, (forall x0 :e omega, x x0 :e int) -> forall m n :e omega, finprod {i :e omega | m <= i /\ i <= n} x = if n < m then 1 else finprod {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
 Admitted.
 
 // HOL Light: Library/products.ml:630 / IPRODUCT_DELETE
@@ -857,7 +857,7 @@ Admitted.
 // HOL Light: Library/products.ml:942 / PRODUCT_REFLECT
 // Source hash: md5:0499689526ef9fa924e8d24eeb39657c
 // Status: transport_required (bridges: hol_num_omega, hol_product_finprod, hol_real_R, nat_lt_SNoLt, omega_Subq_R)
-Theorem PRODUCT_REFLECT : forall x:set -> set, (forall x :e omega, x x :e R) -> forall m n :e omega, finprod {i :e omega | m <= i /\ i <= n} x = if n < m then 1 else finprod {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
+Theorem PRODUCT_REFLECT : forall x:set -> set, (forall x0 :e omega, x x0 :e R) -> forall m n :e omega, finprod {i :e omega | m <= i /\ i <= n} x = if n < m then 1 else finprod {i :e omega | 0 <= i /\ i <= minus_nat n m} (fun i:set => x (minus_nat n i)).
 Admitted.
 
 // HOL Light: Library/products.ml:949 / PRODUCT_DELETE

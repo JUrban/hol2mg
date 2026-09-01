@@ -1,0 +1,1945 @@
+// hol2mg certification module (private): shard degree of profile multivariate.
+// For each theorem: the admitted literal source fact hlt_N, the checked bridge N_bridge : literal -> native (Qed),
+// and the public statement N derived from them.  Checked after mglib/native/*.mg, mglib/literal/{model,bridge,compat}.mg,
+// _definitions.mg, _literal.mg and _literal_typing.mg.  Generated; do not edit.
+
+// HOL Light: Multivariate/degree.ml:16 / brouwer_degree1   (hash md5:c08ebcbb0fac6a52a4184efafa521eae)
+// not bridged: 
+Theorem brouwer_degree1_thm : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall n :e omega, brouwer_degree1 N n f = if 1 <= n /\ n <= dimindex N then brouwer_degree2 (minus_nat n 1) (fun x:set => fun x0:set => (fun x0 :e omega => if 1 <= x0 /\ x0 <= n then f (fun i :e idx N => if 1 <= i /\ i <= n then x i else 0) x0 else 0) x0) else 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:25 / brouwer_degree   (hash md5:2b65ab3af81ed77de5fa60844ccf7aa6)
+// not bridged: 
+Theorem brouwer_degree_thm : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> brouwer_degree N f = brouwer_degree1 N (dimindex N) f.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:28 / BROUWER_DEGREE1_EQ   (hash md5:6a3c3f6089ffd39158a9fddae3c87911)
+// not bridged: 
+Theorem BROUWER_DEGREE1_EQ : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (forall x :e R :^: idx N, x :e sphere N (vec N 0,1) :/\: span N {basis N x0 | x0 :e idx_n n} -> f x = g x) -> brouwer_degree1 N n f = brouwer_degree1 N n g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:48 / BROUWER_DEGREE1_ID   (hash md5:e82b263382b6c81d77421a9f6d220904)
+// not bridged: 
+Theorem BROUWER_DEGREE1_ID : forall N:set, N <> Empty -> forall n :e omega, brouwer_degree1 N n (fun x:set => x) = 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:61 / BROUWER_DEGREE1_COMPOSE   (hash md5:5f98bca3cc31efa4e64e611e82285db8)
+// not bridged: 
+Theorem BROUWER_DEGREE1_COMPOSE : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> continuous_on_hl N N f (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}) /\ (continuous_on_hl N N g (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}) /\ ({f x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} c= sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n} /\ {g x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} c= sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n})) -> brouwer_degree1 N n (fun x:set => g (f x)) = brouwer_degree1 N n g * brouwer_degree1 N n f.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:90 / BROUWER_DEGREE1_HOMOTOPIC   (hash md5:3096dea6521f24b03bc0d88c68fe04db)
+// not bridged: 
+Theorem BROUWER_DEGREE1_HOMOTOPIC : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n})) f g -> brouwer_degree1 N n f = brouwer_degree1 N n g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:109 / BROUWER_DEGREE1_CONST   (hash md5:425a51bf47ae87c28c7f64a43f783f1a)
+// not bridged: 
+Theorem BROUWER_DEGREE1_CONST : forall N:set, N <> Empty -> forall n :e omega, forall a :e R :^: idx N, 1 <= n /\ n <= dimindex N -> brouwer_degree1 N n (fun x:set => a) = 0.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:115 / BROUWER_DEGREE1_REFLECT_ALONG   (hash md5:dda91a759003bbe4ddbe2cf59356e761)
+// not bridged: 
+Theorem BROUWER_DEGREE1_REFLECT_ALONG : forall N:set, N <> Empty -> forall n :e omega, forall a :e R :^: idx N, 1 <= n /\ (n <= dimindex N /\ a :e span N {basis N x | x :e idx_n n} :\: {vec N 0}) -> brouwer_degree1 N n (reflect_along N a) = - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:150 / BROUWER_DEGREE1_NONSURJECTIVE   (hash md5:383088192dd440d1434d3e41688c0ddb)
+// not bridged: 
+Theorem BROUWER_DEGREE1_NONSURJECTIVE : forall N:set, N <> Empty -> forall n :e omega, forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> 1 <= n /\ (n <= dimindex N /\ (continuous_on_hl N N f (sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}) /\ ({f x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} c= sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n} /\ {f x | x :e sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}} <> sphere N (vec N 0,1) :/\: span N {basis N x | x :e idx_n n}))) -> brouwer_degree1 N n f = 0.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:177 / BROUWER_DEGREE_EQ   (hash md5:503c8bc982b97e14c6c104b065fd3cf2)
+// not bridged: 
+Theorem BROUWER_DEGREE_EQ : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> (forall x :e R :^: idx N, x :e sphere N (vec N 0,1) -> f x = g x) -> brouwer_degree N f = brouwer_degree N g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:186 / BROUWER_DEGREE_ID   (hash md5:3c4d2565d090b725cd9fb359818ada88)
+// not bridged: 
+Theorem BROUWER_DEGREE_ID : forall N:set, N <> Empty -> brouwer_degree N (fun x:set => x) = 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:190 / BROUWER_DEGREE_COMPOSE   (hash md5:0321885f49181dde520027fb3b95f82e)
+// not bridged: 
+Theorem BROUWER_DEGREE_COMPOSE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> continuous_on_hl N N f (sphere N (vec N 0,1)) /\ (continuous_on_hl N N g (sphere N (vec N 0,1)) /\ ({f x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1) /\ {g x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1))) -> brouwer_degree N (fun x:set => g (f x)) = brouwer_degree N g * brouwer_degree N f.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:202 / BROUWER_DEGREE_HOMOTOPIC   (hash md5:2e761a1bb2616b2dc54518f40ee21afa)
+// not bridged: 
+Theorem BROUWER_DEGREE_HOMOTOPIC : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) f g -> brouwer_degree N f = brouwer_degree N g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:214 / BROUWER_DEGREE_CONST   (hash md5:10c670aab5bc536e0dc97350fd669d18)
+// not bridged: 
+Theorem BROUWER_DEGREE_CONST : forall N:set, N <> Empty -> forall a :e R :^: idx N, brouwer_degree N (fun x:set => a) = 0.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:220 / BROUWER_DEGREE_REFLECT_ALONG   (hash md5:38335ee9f39d464d87110dae8fdb5538)
+// not bridged: 
+Theorem BROUWER_DEGREE_REFLECT_ALONG : forall N:set, N <> Empty -> forall a :e R :^: idx N, ~ a = vec N 0 -> brouwer_degree N (reflect_along N a) = - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:228 / BROUWER_DEGREE_NONSURJECTIVE   (hash md5:e53ea6c05784fa58eaac624bd8470fc1)
+// not bridged: 
+Theorem BROUWER_DEGREE_NONSURJECTIVE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> continuous_on_hl N N f (sphere N (vec N 0,1)) /\ ({f x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1) /\ {f x | x :e sphere N (vec N 0,1)} <> sphere N (vec N 0,1)) -> brouwer_degree N f = 0.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:238 / BROUWER_DEGREE_ORTHOGONAL_TRANSFORMATION   (hash md5:83b8ae95cc5ac91d934005a7d3c75ddb)
+// not bridged: 
+Theorem BROUWER_DEGREE_ORTHOGONAL_TRANSFORMATION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> orthogonal_transformation N f -> brouwer_degree N f = det N (matrix N N f).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:264 / HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS   (hash md5:505dff85564730fe04e78215e735af7c)
+// not bridged: 
+Theorem HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> orthogonal_transformation N f /\ orthogonal_transformation N g -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) f g <-> det N (matrix N N f) = det N (matrix N N g)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:278 / HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS_ALT   (hash md5:54f1e244f08d4eca77cab1e290807151)
+// not bridged: 
+Theorem HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> orthogonal_transformation N f /\ orthogonal_transformation N g -> (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g <-> det N (matrix N N f) = det N (matrix N N g)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:320 / HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS_IMP   (hash md5:394d68544fb63fee4799c136e0c01b9d)
+// not bridged: 
+Theorem HOMOTOPIC_ORTHOGONAL_TRANSFORMATIONS_IMP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> orthogonal_transformation N f /\ (orthogonal_transformation N g /\ homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) f g) -> det N (matrix N N f) = det N (matrix N N g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:329 / HOMOTOPIC_LINEAR_MAPS_IMP   (hash md5:d42974f1c0d80124a8c02d7727d928f5)
+// not bridged: 
+Theorem HOMOTOPIC_LINEAR_MAPS_IMP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> linear N N f /\ (linear N N g /\ homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g) -> (if 0 < det N (matrix N N f) then 1 else if det N (matrix N N f) < 0 then - 1 else 0) = if 0 < det N (matrix N N g) then 1 else if det N (matrix N N g) < 0 then - 1 else 0.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:383 / HOMOTOPIC_LINEAR_MAPS_ALT   (hash md5:05478388f1aca3e3542ff984cbd21f79)
+// not bridged: 
+Theorem HOMOTOPIC_LINEAR_MAPS_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> linear N N f /\ (linear N N g /\ homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0}),subtopology (R :^: idx N) (euclidean N) ((R :^: idx N) :\: {vec N 0})) f g) -> 0 < det N (matrix N N f) * det N (matrix N N g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:408 / FIXPOINT_HOMOTOPIC_IDENTITY_SPHERE   (hash md5:6d3dad98eb3967af96e386c7dbb389fc)
+// not bridged: 
+Theorem FIXPOINT_HOMOTOPIC_IDENTITY_SPHERE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> odd_nat (dimindex N) /\ homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1)),subtopology (R :^: idx N) (euclidean N) (sphere N (vec N 0,1))) (fun x:set => x) f -> exists x :e R :^: idx N, x :e sphere N (vec N 0,1) /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:438 / FIXPOINT_OR_NEG_MAPPING_SPHERE   (hash md5:e32f4015720d72724d0e85dc2800bea3)
+// not bridged: 
+Theorem FIXPOINT_OR_NEG_MAPPING_SPHERE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> odd_nat (dimindex N) /\ (continuous_on_hl N N f (sphere N (vec N 0,1)) /\ {f x | x :e sphere N (vec N 0,1)} c= sphere N (vec N 0,1)) -> exists x :e R :^: idx N, x :e sphere N (vec N 0,1) /\ (f x = vector_neg N x \/ f x = x).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:453 / HAIRY_BALL_THEOREM   (hash md5:58eaf5ce5e51a02cdb8380f1e531f76f)
+// not bridged: 
+Theorem HAIRY_BALL_THEOREM : forall N:set, N <> Empty -> forall r :e R, (exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (continuous_on_hl N N f (sphere N (vec N 0,r)) /\ ({f x | x :e sphere N (vec N 0,r)} c= sphere N (vec N 0,r) /\ forall x :e R :^: idx N, x :e sphere N (vec N 0,r) -> ~ f x = vec N 0 /\ orthogonal N x (f x)))) <-> r < 0 \/ 0 < r /\ even_nat (dimindex N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:453 / HAIRY_BALL_THEOREM_ALT   (hash md5:2174667bc5fada601922d1a3dfc67f1e)
+// not bridged: 
+Theorem HAIRY_BALL_THEOREM_ALT : forall N:set, N <> Empty -> forall r :e R, (exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (continuous_on_hl N N f (sphere N (vec N 0,r)) /\ forall x :e R :^: idx N, x :e sphere N (vec N 0,r) -> ~ f x = vec N 0 /\ orthogonal N x (f x))) <-> r <= 0 \/ even_nat (dimindex N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:539 / CONTINUOUS_FUNCTION_HAS_EIGENVALUES_ODD_DIM   (hash md5:72b90e8144d6ad9030a780d1212dee4f)
+// not bridged: 
+Theorem CONTINUOUS_FUNCTION_HAS_EIGENVALUES_ODD_DIM : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> odd_nat (dimindex N) /\ continuous_on_hl N N f (sphere N (vec N 0,1)) -> exists v :e R :^: idx N, exists c :e R, v :e sphere N (vec N 0,1) /\ f v = vector_mul N c v.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:561 / EULER_ROTATION_THEOREM_GEN   (hash md5:14f06d0ddc6e67cfcff107db9d16b2ca)
+// not bridged: 
+Theorem EULER_ROTATION_THEOREM_GEN : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, odd_nat (dimindex N) /\ rotation_matrix N A -> exists v :e R :^: idx N, vector_norm N v = 1 /\ matrix_vector_mul N N A v = v.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:594 / retraction   (hash md5:1bf228b27566fe3327be5ddd22883cd7)
+// not bridged: 
+Theorem retraction_thm : forall N:set, N <> Empty -> forall s t c= R :^: idx N, forall r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) -> (retraction N (s,t) r <-> t c= s /\ (continuous_on_hl N N r s /\ ({r x | x :e s} c= t /\ forall x :e R :^: idx N, x :e t -> r x = x))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:599 / retract_of   (hash md5:a4855fba056079a5a6e2f69b48bf2ade)
+// not bridged: 
+Theorem retract_of_thm : forall A:set, A <> Empty -> forall s t c= R :^: idx A, retract_of A t s <-> exists r:set -> set, (forall x :e R :^: idx A, r x :e R :^: idx A) /\ retraction A (s,t) r.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:602 / RETRACTION_MAPS_EUCLIDEAN   (hash md5:a6ed0273d368a4ec8bac2bae6a8e755a)
+// not bridged: 
+Theorem RETRACTION_MAPS_EUCLIDEAN : forall N:set, N <> Empty -> forall r :e R :^: idx N :^: (R :^: idx N), forall s t c= R :^: idx N, retraction_maps (R :^: idx N) (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) t) (r,fun x :e R :^: idx N => x) <-> retraction N (s,t) (fun x:set => r x).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:612 / RETRACT_OF_SPACE_EUCLIDEAN   (hash md5:e91adf72e1abb30f3df7aca13b61b310)
+// not bridged: 
+Theorem RETRACT_OF_SPACE_EUCLIDEAN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of_space (R :^: idx N) t (subtopology (R :^: idx N) (euclidean N) s) <-> retract_of N t s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:619 / RETRACTION   (hash md5:dc4961a866a139b9e5909a9e8d0477ba)
+// not bridged: 
+Theorem RETRACTION : forall A:set, A <> Empty -> forall s t c= R :^: idx A, forall r:set -> set, (forall x :e R :^: idx A, r x :e R :^: idx A) -> (retraction A (s,t) r <-> t c= s /\ (continuous_on_hl A A r s /\ ({r x | x :e s} = t /\ forall x :e R :^: idx A, x :e t -> r x = x))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:627 / RETRACT_OF_IMP_EXTENSIBLE   (hash md5:4c3a2c1b7c77cedd2e277c9125341d6f)
+// not bridged: 
+Theorem RETRACT_OF_IMP_EXTENSIBLE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall u c= R :^: idx N, forall s t c= R :^: idx M, retract_of M s t /\ (continuous_on_hl M N f s /\ {f x | x :e s} c= u) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g t /\ ({g x | x :e t} c= u /\ forall x :e R :^: idx M, x :e s -> g x = f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:641 / RETRACTION_IDEMPOTENT   (hash md5:7b8e99fd78525493ae404100432c11e7)
+// not bridged: 
+Theorem RETRACTION_IDEMPOTENT : forall A:set, A <> Empty -> forall r:set -> set, (forall x :e R :^: idx A, r x :e R :^: idx A) -> forall s t c= R :^: idx A, retraction A (s,t) r -> forall x :e R :^: idx A, x :e s -> r (r x) = r x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:645 / IDEMPOTENT_IMP_RETRACTION   (hash md5:26fd6a15149d2972eb35e9d79fb2e04a)
+// not bridged: 
+Theorem IDEMPOTENT_IMP_RETRACTION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, continuous_on_hl N N f s /\ ({f x | x :e s} c= s /\ (forall x :e R :^: idx N, x :e s -> f (f x) = f x)) -> retraction N (s,{f x | x :e s}) f.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:652 / RETRACTION_SUBSET   (hash md5:d4226d85f340091ad72f5ced6bf0eea8)
+// not bridged: 
+Theorem RETRACTION_SUBSET : forall A:set, A <> Empty -> forall r:set -> set, (forall x :e R :^: idx A, r x :e R :^: idx A) -> forall s s' t c= R :^: idx A, retraction A (s,t) r /\ (t c= s' /\ s' c= s) -> retraction A (s',t) r.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:658 / RETRACT_OF_SUBSET   (hash md5:d455c9e1e2f9aa96b39b54a0db9d86e1)
+// not bridged: 
+Theorem RETRACT_OF_SUBSET : forall A:set, A <> Empty -> forall s s' t c= R :^: idx A, retract_of A t s /\ (t c= s' /\ s' c= s) -> retract_of A t s'.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:665 / RETRACT_OF_TRANSLATION   (hash md5:2a6445f5c0c3e0e446d0a7f1f069fb82)
+// not bridged: 
+Theorem RETRACT_OF_TRANSLATION : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall t s c= R :^: idx N, retract_of N t s -> retract_of N {vector_add N a x | x :e t} {vector_add N a x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:683 / RETRACT_OF_TRANSLATION_EQ   (hash md5:1601d751ef5921909005985437b606f0)
+// not bridged: 
+Theorem RETRACT_OF_TRANSLATION_EQ : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall t s c= R :^: idx N, retract_of N {vector_add N a x | x :e t} {vector_add N a x | x :e s} <-> retract_of N t s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:694 / RETRACT_OF_INJECTIVE_LINEAR_IMAGE   (hash md5:82b33771c54f1eba91c9fba18f9235d6)
+// not bridged: 
+Theorem RETRACT_OF_INJECTIVE_LINEAR_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, linear M N f /\ ((forall x y :e R :^: idx M, f x = f y -> x = y) /\ retract_of M t s) -> retract_of N {f x | x :e t} {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:717 / RETRACT_OF_LINEAR_IMAGE_EQ   (hash md5:57fb575d6419f38ec09f8f8ee34e1fc3)
+// not bridged: 
+Theorem RETRACT_OF_LINEAR_IMAGE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, linear M N f /\ ((forall x y :e R :^: idx M, f x = f y -> x = y) /\ (forall y :e R :^: idx N, exists x :e R :^: idx M, f x = y)) -> (retract_of N {f x | x :e t} {f x | x :e s} <-> retract_of M t s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:733 / RETRACTION_REFL   (hash md5:b8703a2cc02937417c50d0b4c0fcc5fe)
+// not bridged: 
+Theorem RETRACTION_REFL : forall A:set, A <> Empty -> forall s c= R :^: idx A, retraction A (s,s) (fun x:set => x).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:737 / RETRACT_OF_REFL   (hash md5:13d4317a441897a95968338dc809d1d6)
+// not bridged: 
+Theorem RETRACT_OF_REFL : forall A:set, A <> Empty -> forall s c= R :^: idx A, retract_of A s s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:741 / RETRACTION_CLOSEST_POINT   (hash md5:c00d424516efecc9a5aca14335c4075f)
+// not bridged: 
+Theorem RETRACTION_CLOSEST_POINT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N t /\ (closed N t /\ (~ t = Empty /\ t c= s)) -> retraction N (s,t) (closest_point N t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:749 / RETRACT_OF_IMP_SUBSET   (hash md5:5207ca70411572f8d880857559a82ed8)
+// not bridged: 
+Theorem RETRACT_OF_IMP_SUBSET : forall A:set, A <> Empty -> forall s t c= R :^: idx A, retract_of A s t -> s c= t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:753 / RETRACT_OF_EMPTY   (hash md5:09b8a84e93d63449aa8f3ed237fdb9df)
+// not bridged: 
+Theorem RETRACT_OF_EMPTY : forall N:set, N <> Empty -> (forall s c= R :^: idx N, retract_of N Empty s <-> s = Empty) /\ forall s c= R :^: idx N, retract_of N s Empty <-> s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:762 / RETRACT_OF_SING   (hash md5:79d8d2535acb67ac482fbeb34e3498dd)
+// not bridged: 
+Theorem RETRACT_OF_SING : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, retract_of N {x} s <-> x :e s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:769 / RETRACT_OF_OPEN_UNION   (hash md5:165983a5962516e14bbd7592e2c227e7)
+// not bridged: 
+Theorem RETRACT_OF_OPEN_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s :e subtopology (R :^: idx N) (euclidean N) (s :\/: t) /\ (t :e subtopology (R :^: idx N) (euclidean N) (s :\/: t) /\ (s :/\: t = Empty /\ (s = Empty -> t = Empty))) -> retract_of N s (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:788 / RETRACT_OF_SEPARATED_UNION   (hash md5:fcc958a5022f941e916db6b61c38cc7f)
+// not bridged: 
+Theorem RETRACT_OF_SEPARATED_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s :/\: closure N t = Empty /\ (t :/\: closure N s = Empty /\ (s = Empty -> t = Empty)) -> retract_of N s (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:796 / RETRACT_OF_CLOSED_UNION   (hash md5:8d881f14cf49e93d1379413665388dd0)
+// not bridged: 
+Theorem RETRACT_OF_CLOSED_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) t /\ (s :/\: t = Empty /\ (s = Empty -> t = Empty))) -> retract_of N s (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:806 / RETRACTION_o   (hash md5:33e14a3ea3b93135118506e89a4b78eb)
+// not bridged: 
+Theorem RETRACTION_o : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> forall s t u c= R :^: idx N, retraction N (s,t) f /\ retraction N (t,u) g -> retraction N (s,u) (fun x:set => g (f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:817 / RETRACT_OF_TRANS   (hash md5:260ed500204de002daa40da71928a5e1)
+// not bridged: 
+Theorem RETRACT_OF_TRANS : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, retract_of N s t /\ retract_of N t u -> retract_of N s u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:822 / CLOSED_IN_RETRACT   (hash md5:253255d01a872001ea273f4de4fa3721)
+// not bridged: 
+Theorem CLOSED_IN_RETRACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of N s t -> closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) t) s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:836 / RETRACT_OF_CONTRACTIBLE   (hash md5:959e15e84f5ed76552c9e04416dd65b7)
+// not bridged: 
+Theorem RETRACT_OF_CONTRACTIBLE : forall N:set, N <> Empty -> forall s t c= R :^: idx N, contractible N t /\ retract_of N s t -> contractible N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:853 / RETRACT_OF_COMPACT   (hash md5:0abb9c869e301584558de0124bc5f0f3)
+// not bridged: 
+Theorem RETRACT_OF_COMPACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N t /\ retract_of N s t -> compact N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:858 / RETRACT_OF_CLOSED   (hash md5:302ca14faf01581bbb704b886b8d2e9e)
+// not bridged: 
+Theorem RETRACT_OF_CLOSED : forall A:set, A <> Empty -> forall s t c= R :^: idx A, closed A t /\ retract_of A s t -> closed A s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:862 / RETRACT_OF_CONNECTED   (hash md5:12ed1cb338c3a631f4eb82081a9477a1)
+// not bridged: 
+Theorem RETRACT_OF_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, connected N t /\ retract_of N s t -> connected N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:867 / RETRACT_OF_PATH_CONNECTED   (hash md5:cb572fbde55fa1ba9f2378659c5ee72b)
+// not bridged: 
+Theorem RETRACT_OF_PATH_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, path_connected N t /\ retract_of N s t -> path_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:872 / RETRACT_OF_SIMPLY_CONNECTED   (hash md5:3e77edc72f6be064a0fce56f6c7aeb0a)
+// not bridged: 
+Theorem RETRACT_OF_SIMPLY_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, simply_connected N t /\ retract_of N s t -> simply_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:883 / RETRACT_OF_HOMOTOPICALLY_TRIVIAL   (hash md5:f5c751d3d466af096cf8779415c02c93)
+// not bridged: 
+Theorem RETRACT_OF_HOMOTOPICALLY_TRIVIAL : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx N, forall u c= R :^: idx M, retract_of N t s /\ (forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> continuous_on_hl M N f u /\ ({f x | x :e u} c= s /\ (continuous_on_hl M N g u /\ {g x | x :e u} c= s)) -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) u,subtopology (R :^: idx N) (euclidean N) s) f g) -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> continuous_on_hl M N f u /\ ({f x | x :e u} c= t /\ (continuous_on_hl M N g u /\ {g x | x :e u} c= t)) -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) u,subtopology (R :^: idx N) (euclidean N) t) f g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:903 / RETRACT_OF_HOMOTOPICALLY_TRIVIAL_NULL   (hash md5:dcb6d664a2141922ec20eddb8f79660d)
+// not bridged: 
+Theorem RETRACT_OF_HOMOTOPICALLY_TRIVIAL_NULL : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx N, forall u c= R :^: idx M, retract_of N t s /\ (forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> continuous_on_hl M N f u /\ {f x | x :e u} c= s -> exists c :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) u,subtopology (R :^: idx N) (euclidean N) s) f (fun x:set => c)) -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> continuous_on_hl M N f u /\ {f x | x :e u} c= t -> exists c :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) u,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => c).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:923 / RETRACT_OF_COHOMOTOPICALLY_TRIVIAL   (hash md5:dea30eb97770d781b9ac454114a8b328)
+// not bridged: 
+Theorem RETRACT_OF_COHOMOTOPICALLY_TRIVIAL : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx N, forall u c= R :^: idx M, retract_of N t s /\ (forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> continuous_on_hl N M f s /\ ({f x | x :e s} c= u /\ (continuous_on_hl N M g s /\ {g x | x :e s} c= u)) -> homotopic_with (R :^: idx M) (R :^: idx N) {x :e R :^: idx M :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx M) (euclidean M) u) f g) -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx M) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> continuous_on_hl N M f t /\ ({f x | x :e t} c= u /\ (continuous_on_hl N M g t /\ {g x | x :e t} c= u)) -> homotopic_with (R :^: idx M) (R :^: idx N) {x :e R :^: idx M :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) t,subtopology (R :^: idx M) (euclidean M) u) f g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:943 / RETRACT_OF_COHOMOTOPICALLY_TRIVIAL_NULL   (hash md5:97bc4ceed2cf78bdd431a7b592c08c3e)
+// not bridged: 
+Theorem RETRACT_OF_COHOMOTOPICALLY_TRIVIAL_NULL : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx N, forall u c= R :^: idx M, retract_of N t s /\ (forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx M) -> continuous_on_hl N M f s /\ {f x | x :e s} c= u -> exists c :e R :^: idx M, homotopic_with (R :^: idx M) (R :^: idx N) {x :e R :^: idx M :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx M) (euclidean M) u) f (fun x:set => c)) -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx M) -> continuous_on_hl N M f t /\ {f x | x :e t} c= u -> exists c :e R :^: idx M, homotopic_with (R :^: idx M) (R :^: idx N) {x :e R :^: idx M :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) t,subtopology (R :^: idx M) (euclidean M) u) f (fun x:set => c).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:963 / RETRACTION_IMP_QUOTIENT_MAP_EXPLICIT   (hash md5:04ef6bc20ef6d9211552db9b0ca7fbef)
+// not bridged: 
+Theorem RETRACTION_IMP_QUOTIENT_MAP_EXPLICIT : forall N:set, N <> Empty -> forall r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) -> forall s t c= R :^: idx N, retraction N (s,t) r -> forall u c= R :^: idx N, u c= t -> ({x :e R :^: idx N | x :e s /\ r x :e u} :e subtopology (R :^: idx N) (euclidean N) s <-> u :e subtopology (R :^: idx N) (euclidean N) t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:974 / RETRACT_OF_LOCALLY_CONNECTED   (hash md5:6f3eda5d03a7dd25ab08954e8af00e84)
+// not bridged: 
+Theorem RETRACT_OF_LOCALLY_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of N s t /\ locally N {x :e Power (R :^: idx N) | connected N x} t -> locally N {x :e Power (R :^: idx N) | connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:985 / RETRACT_OF_LOCALLY_PATH_CONNECTED   (hash md5:1897d1f716bd11dc2f3864de475fc3c7)
+// not bridged: 
+Theorem RETRACT_OF_LOCALLY_PATH_CONNECTED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of N s t /\ locally N {x :e Power (R :^: idx N) | path_connected N x} t -> locally N {x :e Power (R :^: idx N) | path_connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:998 / RETRACT_OF_LOCALLY_COMPACT   (hash md5:a7f475846bbbd32614777bccd9b7ca8e)
+// not bridged: 
+Theorem RETRACT_OF_LOCALLY_COMPACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, locally N {x :e Power (R :^: idx N) | compact N x} s /\ retract_of N t s -> locally N {x :e Power (R :^: idx N) | compact N x} t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1003 / RETRACT_OF_PCROSS   (hash md5:c69e93b67a0a06fbcee8ddb63fc2ad47)
+// not bridged: 
+Theorem RETRACT_OF_PCROSS : forall M N:set, M <> Empty -> N <> Empty -> forall s s' c= R :^: idx M, forall t t' c= R :^: idx N, retract_of M s s' /\ retract_of N t t' -> retract_of (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}) (\/_ x :e s', {pastecart M N x y | y :e t'}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1025 / RETRACT_OF_PCROSS_EQ   (hash md5:cc771506a7eaf6133b2483510323c932)
+// not bridged: 
+Theorem RETRACT_OF_PCROSS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s s' c= R :^: idx M, forall t t' c= R :^: idx N, retract_of (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}) (\/_ x :e s', {pastecart M N x y | y :e t'}) <-> (s = Empty \/ t = Empty) /\ (s' = Empty \/ t' = Empty) \/ retract_of M s s' /\ retract_of N t t'.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1081 / HOMOTOPIC_INTO_RETRACT   (hash md5:17a38b56e9b93364e9f87d9af6ec388a)
+// not bridged: 
+Theorem HOMOTOPIC_INTO_RETRACT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s c= R :^: idx M, forall t u c= R :^: idx N, {f x | x :e s} c= t /\ ({g x | x :e s} c= t /\ (retract_of N t u /\ homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) u) f g)) -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1106 / CONTRACTIBLE_SPHERE   (hash md5:f93830e619f8b8dfbcb6501fbc490e73)
+// not bridged: 
+Theorem CONTRACTIBLE_SPHERE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, contractible N (sphere N (a,r)) <-> r <= 0.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1137 / NO_RETRACTION_CBALL   (hash md5:673ae5bd27f9b18e23de5f9a0cf5fe70)
+// not bridged: 
+Theorem NO_RETRACTION_CBALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall e0 :e R, 0 < e0 -> ~ retract_of N (sphere N (a,e0)) (cball N (a,e0)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1145 / BROUWER_BALL   (hash md5:c1aa2c45bf0779135b585903e58f310f)
+// not bridged: 
+Theorem BROUWER_BALL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall a :e R :^: idx N, forall e0 :e R, 0 < e0 /\ (continuous_on_hl N N f (cball N (a,e0)) /\ {f x | x :e cball N (a,e0)} c= cball N (a,e0)) -> exists x :e R :^: idx N, x :e cball N (a,e0) /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1225 / BROUWER   (hash md5:acbe00a4e3a0b40193b448e7518d9909)
+// not bridged: 
+Theorem BROUWER : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (convex N s /\ (~ s = Empty /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= s))) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1257 / BROUWER_WEAK   (hash md5:0b2676323acd84588de61ddb77f2a23e)
+// not bridged: 
+Theorem BROUWER_WEAK : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (convex N s /\ (~ interior N s = Empty /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= s))) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1265 / BROUWER_CUBE   (hash md5:12e710e7d75834243a080adaac0feb15)
+// not bridged: 
+Theorem BROUWER_CUBE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> continuous_on_hl N N f (closed_interval N (seq_cons (vec N 0,vec N 1) seq_nil)) /\ {f x | x :e closed_interval N (seq_cons (vec N 0,vec N 1) seq_nil)} c= closed_interval N (seq_cons (vec N 0,vec N 1) seq_nil) -> exists x :e R :^: idx N, x :e closed_interval N (seq_cons (vec N 0,vec N 1) seq_nil) /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1278 / DIMENSION_EQ_AFF_DIM   (hash md5:d739b1ac49399ed6ee156adb31ffe7b6)
+// not bridged: 
+Theorem DIMENSION_EQ_AFF_DIM : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s -> dimension N s = aff_dim N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1582 / AFF_DIM_DIMENSION   (hash md5:233fbd9952d84e93774ee9572b7ec038)
+// not bridged: 
+Theorem AFF_DIM_DIMENSION : forall N:set, N <> Empty -> forall s c= R :^: idx N, aff_dim N s = dimension N (hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1587 / AFF_DIM_DIMENSION_ALT   (hash md5:672eeaee254daf3e3fef61a0b84298c8)
+// not bridged: 
+Theorem AFF_DIM_DIMENSION_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, aff_dim N s = dimension N (hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1592 / DIMENSION_SUBSPACE   (hash md5:e65c756b52a67b8ed48900955b332371)
+// not bridged: 
+Theorem DIMENSION_SUBSPACE : forall N:set, N <> Empty -> forall s c= R :^: idx N, subspace N s -> dimension N s = dim N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1596 / DIM_DIMENSION   (hash md5:dab4f53a9dcf86a87af7c7c5ac1d475a)
+// not bridged: 
+Theorem DIM_DIMENSION : forall N:set, N <> Empty -> forall s c= R :^: idx N, dim N s = dimension N (span N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1600 / DIMENSION_OPEN_IN_CONVEX   (hash md5:80d3ec8390a2e7206b7f5c692b0d8c61)
+// not bridged: 
+Theorem DIMENSION_OPEN_IN_CONVEX : forall N:set, N <> Empty -> forall u s c= R :^: idx N, convex N u /\ s :e subtopology (R :^: idx N) (euclidean N) u -> dimension N s = if s = Empty then - 1 else aff_dim N u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1635 / DIMENSION_OPEN   (hash md5:ee452500655777007b8cfd722d5f97e5)
+// not bridged: 
+Theorem DIMENSION_OPEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, open N s -> dimension N s = if s = Empty then - 1 else dimindex N.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1642 / DIMENSION_UNIV   (hash md5:534f80cc38bf5952045c1454687cc040)
+// not bridged: 
+Theorem DIMENSION_UNIV : forall N:set, N <> Empty -> dimension N (R :^: idx N) = dimindex N.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1646 / DIMENSION_NONEMPTY_INTERIOR   (hash md5:b4840c4edfde86d0cc2eaf9f07b350fd)
+// not bridged: 
+Theorem DIMENSION_NONEMPTY_INTERIOR : forall N:set, N <> Empty -> forall s c= R :^: idx N, ~ interior N s = Empty -> dimension N s = dimindex N.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1654 / DIMENSION_ATMOST_RATIONAL_COORDINATES   (hash md5:c5dbf9915b31eabad2910810d26e5369)
+// not bridged: 
+Theorem DIMENSION_ATMOST_RATIONAL_COORDINATES : forall N:set, N <> Empty -> forall n :e omega, n <= dimindex N -> dimension N {x :e R :^: idx N | finite_cardinality {i :e omega | i :e idx N /\ x i :e rational} <= n} = n.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1710 / DIMENSION_COMPLEMENT_RATIONAL_COORDINATES   (hash md5:b898c76185649ab5ccce6e4989f8b80b)
+// not bridged: 
+Theorem DIMENSION_COMPLEMENT_RATIONAL_COORDINATES : forall N:set, N <> Empty -> dimension N ((R :^: idx N) :\: {x :e R :^: idx N | forall i :e omega, 1 <= i /\ i <= dimindex N -> x i :e rational}) = dimindex N + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1731 / DIMENSION_EQ_FULL_GEN   (hash md5:72d6c84bcccceedf56a8ecd29d19979f)
+// not bridged: 
+Theorem DIMENSION_EQ_FULL_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, dimension N s = aff_dim N s <-> s = Empty \/ ~ relative_interior N s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1878 / DIMENSION_LT_FULL_GEN   (hash md5:a90d726cfd86d5051ba6475c98fc2b98)
+// not bridged: 
+Theorem DIMENSION_LT_FULL_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, dimension N s < aff_dim N s <-> ~ s = Empty /\ relative_interior N s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1885 / DIMENSION_EQ_FULL_ALT   (hash md5:23a724c10d0048922fc9541e9e9e7320)
+// not bridged: 
+Theorem DIMENSION_EQ_FULL_ALT : forall N:set, N <> Empty -> forall u s c= R :^: idx N, convex N u /\ s c= u -> (dimension N s = aff_dim N u <-> s = Empty /\ u = Empty \/ ~ interior_of (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s = Empty).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1917 / DIMENSION_LT_FULL_ALT   (hash md5:7d7e377df9962c98ea98c71d99c4c9e4)
+// not bridged: 
+Theorem DIMENSION_LT_FULL_ALT : forall N:set, N <> Empty -> forall u s c= R :^: idx N, convex N u /\ s c= u -> (dimension N s < aff_dim N u <-> ~ u = Empty /\ interior_of (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s = Empty).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1928 / DIMENSION_EQ_FULL   (hash md5:aac864e118aa5d6c8a4c6fd9c5e49d02)
+// not bridged: 
+Theorem DIMENSION_EQ_FULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, dimension N s = dimindex N <-> ~ interior N s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1942 / DIMENSION_LT_FULL   (hash md5:fba2875d758be7195e497d77002137c6)
+// not bridged: 
+Theorem DIMENSION_LT_FULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, dimension N s < dimindex N <-> interior N s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:1946 / DIMENSION_RELATIVE_FRONTIER_BOUNDED_OPEN   (hash md5:3cb626e48fa359fd14925077c9de2206)
+// not bridged: 
+Theorem DIMENSION_RELATIVE_FRONTIER_BOUNDED_OPEN : forall N:set, N <> Empty -> forall u s c= R :^: idx N, affine N u /\ (s :e subtopology (R :^: idx N) (euclidean N) u /\ bounded_hl N s) -> dimension N (relative_frontier N s) = if s = Empty then - 1 else aff_dim N u + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2076 / DIMENSION_FRONTIER_BOUNDED_OPEN   (hash md5:bdcf85d14fb8f8e44c3345ebb96a644c)
+// not bridged: 
+Theorem DIMENSION_FRONTIER_BOUNDED_OPEN : forall N:set, N <> Empty -> forall u c= R :^: idx N, open N u /\ bounded_hl N u -> dimension N (frontier N u) = if u = Empty then - 1 else dimindex N + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2087 / DIMENSION_RELATIVE_FRONTIER_NONDENSE_OPEN   (hash md5:1efc0d72ac96ff93126812ce86b863bd)
+// not bridged: 
+Theorem DIMENSION_RELATIVE_FRONTIER_NONDENSE_OPEN : forall N:set, N <> Empty -> forall u s c= R :^: idx N, affine N u /\ (s :e subtopology (R :^: idx N) (euclidean N) u /\ (~ s = Empty /\ ~ closure_of (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s = u)) -> dimension N (relative_frontier N s) = aff_dim N u + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2255 / DIMENSION_FRONTIER_NONDENSE_OPEN   (hash md5:6afd1630d74b10778507a534fa31f530)
+// not bridged: 
+Theorem DIMENSION_FRONTIER_NONDENSE_OPEN : forall N:set, N <> Empty -> forall u c= R :^: idx N, open N u /\ (~ u = Empty /\ ~ closure N u = R :^: idx N) -> dimension N (frontier N u) = dimindex N + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2266 / DIMENSION_RELATIVE_FRONTIER_CONVEX   (hash md5:b1d96672d0e5eb71657c3748753be612)
+// not bridged: 
+Theorem DIMENSION_RELATIVE_FRONTIER_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ ~ s = Empty) -> dimension N (relative_frontier N s) = aff_dim N s + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2277 / DIMENSION_SPHERE_INTER_AFFINE   (hash md5:28fbb0ca12bf32cef0a8c6cbcbf9364b)
+// not bridged: 
+Theorem DIMENSION_SPHERE_INTER_AFFINE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, forall t c= R :^: idx N, 0 < r /\ (affine N t /\ a :e t) -> dimension N (sphere N (a,r) :/\: t) = aff_dim N t + - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2304 / DIMENSION_SPHERE   (hash md5:dc3d6ed91f0f48bf383e5f04b2311c25)
+// not bridged: 
+Theorem DIMENSION_SPHERE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, dimension N (sphere N (a,r)) = if 0 < r then dimindex N + - 1 else if r = 0 then 0 else - 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2322 / CONNECTED_OPEN_IN_CONVEX_DIFF_LOWDIM   (hash md5:d3ddbd0ea39ccbb43b4acafb10420a8a)
+// not bridged: 
+Theorem CONNECTED_OPEN_IN_CONVEX_DIFF_LOWDIM : forall N:set, N <> Empty -> forall c s t c= R :^: idx N, convex N c /\ (s :e subtopology (R :^: idx N) (euclidean N) c /\ (connected N s /\ dimension N t <= aff_dim N c + - 2)) -> connected N (s :\: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2541 / CONNECTED_CONVEX_DIFF_LOWDIM   (hash md5:8a5e12ed7c187cc4b7ec420356522368)
+// not bridged: 
+Theorem CONNECTED_CONVEX_DIFF_LOWDIM : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ dimension N t <= aff_dim N s + - 2 -> connected N (s :\: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2548 / CONNECTED_OPEN_IN_DIFF_LOWDIM   (hash md5:ae6eb0003fa7c31448b9398103321a54)
+// not bridged: 
+Theorem CONNECTED_OPEN_IN_DIFF_LOWDIM : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s :e subtopology (R :^: idx N) (euclidean N) (hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s) /\ (connected N s /\ dimension N t <= aff_dim N s + - 2) -> connected N (s :\: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2558 / CONNECTED_OPEN_DIFF_LOWDIM   (hash md5:5a7226e8c1640b492b88eb2bf0f9358d)
+// not bridged: 
+Theorem CONNECTED_OPEN_DIFF_LOWDIM : forall N:set, N <> Empty -> forall s t c= R :^: idx N, open N s /\ (connected N s /\ dimension N t <= dimindex N + - 2) -> connected N (s :\: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2568 / CONNECTED_FULL_CONVEX_DIFF_LOWDIM   (hash md5:5209a21b1822cb45d68002f03751453a)
+// not bridged: 
+Theorem CONNECTED_FULL_CONVEX_DIFF_LOWDIM : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (~ interior N s = Empty /\ dimension N t <= dimindex N + - 2) -> connected N (s :\: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2575 / CONNECTED_UNIV_DIFF_LOWDIM   (hash md5:0551f0f7b3ccfd80e5ac88346cb43592)
+// not bridged: 
+Theorem CONNECTED_UNIV_DIFF_LOWDIM : forall N:set, N <> Empty -> forall s c= R :^: idx N, dimension N s <= dimindex N + - 2 -> connected N ((R :^: idx N) :\: s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2582 / CONNECTED_FULL_REGULAR_DIFF_LOWDIM   (hash md5:486ee9bea51f0811cc4bcfb7d8c8f647)
+// not bridged: 
+Theorem CONNECTED_FULL_REGULAR_DIFF_LOWDIM : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s c= closure N (interior N s) /\ (connected N (interior N s) /\ dimension N t <= dimindex N + - 2) -> connected N (s :\: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2623 / AR   (hash md5:45eb2d5b120740c2d6558f0005176950)
+// not bridged: 
+Theorem AR_thm : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s <-> forall u s' c= R :^: idx_n (dimindex N + 1), homeomorphic (idx_n (dimindex N + 1)) N s s' /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) s' -> retract_of (idx_n (dimindex N + 1)) s' u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2629 / ANR   (hash md5:a9fec9fb39250a9430bae8521ec683b0)
+// not bridged: 
+Theorem ANR_thm : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s <-> forall u s' c= R :^: idx_n (dimindex N + 1), homeomorphic (idx_n (dimindex N + 1)) N s s' /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) s' -> exists t c= R :^: idx_n (dimindex N + 1), t :e subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u /\ retract_of (idx_n (dimindex N + 1)) s' t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2636 / ENR   (hash md5:bbb5bc4278102ef1d85163aa02861244)
+// not bridged: 
+Theorem ENR_thm : forall A:set, A <> Empty -> forall s c= R :^: idx A, ENR A s <-> exists u c= R :^: idx A, open A u /\ retract_of A s u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2643 / AR_IMP_ABSOLUTE_EXTENSOR   (hash md5:c3e09ef71d91ea1b96ec3039d7d7037a)
+// not bridged: 
+Theorem AR_IMP_ABSOLUTE_EXTENSOR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall u t c= R :^: idx M, forall s c= R :^: idx N, AR N s /\ (continuous_on_hl M N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) t)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g u /\ ({g x | x :e u} c= s /\ forall x :e R :^: idx M, x :e t -> g x = f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2694 / AR_IMP_ABSOLUTE_RETRACT   (hash md5:2cf66ae8de519204d46bd49d2269032c)
+// not bridged: 
+Theorem AR_IMP_ABSOLUTE_RETRACT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall u s' c= R :^: idx M, AR N s /\ (homeomorphic M N s s' /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) s') -> retract_of M s' u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2716 / AR_IMP_ABSOLUTE_RETRACT_UNIV   (hash md5:79c0451259e14bb3ef938ee06ebe4f51)
+// not bridged: 
+Theorem AR_IMP_ABSOLUTE_RETRACT_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall s' c= R :^: idx M, AR N s /\ (homeomorphic M N s s' /\ closed M s') -> retract_of M s' (R :^: idx M).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2722 / ABSOLUTE_EXTENSOR_IMP_AR   (hash md5:c6eea516f2cbedb4f0f5fa91de0ca377)
+// not bridged: 
+Theorem ABSOLUTE_EXTENSOR_IMP_AR : forall N:set, N <> Empty -> forall s c= R :^: idx N, (forall f:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), f x :e R :^: idx N) -> forall u t c= R :^: idx_n (dimindex N + 1), continuous_on_hl (idx_n (dimindex N + 1)) N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) t) -> exists g:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), g x :e R :^: idx N) /\ (continuous_on_hl (idx_n (dimindex N + 1)) N g u /\ ({g x | x :e u} c= s /\ forall x :e R :^: idx_n (dimindex N + 1), x :e t -> g x = f x))) -> AR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2751 / AR_EQ_ABSOLUTE_EXTENSOR   (hash md5:87c9d10660da13a88b0087a9b7218e71)
+// not bridged: 
+Theorem AR_EQ_ABSOLUTE_EXTENSOR : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s <-> forall f:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), f x :e R :^: idx N) -> forall u t c= R :^: idx_n (dimindex N + 1), continuous_on_hl (idx_n (dimindex N + 1)) N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) t) -> exists g:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), g x :e R :^: idx N) /\ (continuous_on_hl (idx_n (dimindex N + 1)) N g u /\ ({g x | x :e u} c= s /\ forall x :e R :^: idx_n (dimindex N + 1), x :e t -> g x = f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2762 / AR_IMP_RETRACT   (hash md5:ac8c3ee4fb27b229ba16c05e46bdaa5d)
+// not bridged: 
+Theorem AR_IMP_RETRACT : forall N:set, N <> Empty -> forall s u c= R :^: idx N, AR N s /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s -> retract_of N s u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2767 / HOMEOMORPHIC_ARNESS   (hash md5:b4d04cf1d23afbeffb42a103fa5fef97)
+// not bridged: 
+Theorem HOMEOMORPHIC_ARNESS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, homeomorphic N M s t -> (AR M s <-> AR N t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2784 / AR_TRANSLATION   (hash md5:ad191fadf8722004916de2112365766f)
+// not bridged: 
+Theorem AR_TRANSLATION : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, AR N {vector_add N a x | x :e s} <-> AR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2791 / AR_LINEAR_IMAGE_EQ   (hash md5:1831352353c5836916dd44e7f2b20d72)
+// not bridged: 
+Theorem AR_LINEAR_IMAGE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, linear M N f /\ (forall x y :e R :^: idx M, f x = f y -> x = y) -> (AR N {f x | x :e s} <-> AR M s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2800 / HOMEOMORPHISM_ARNESS   (hash md5:da83519efa521b95a189adf3b2c9e10a)
+// not bridged: 
+Theorem HOMEOMORPHISM_ARNESS : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall g :e R :^: idx M :^: (R :^: idx N), forall s c= R :^: idx M, forall t c= R :^: idx N, forall k c= R :^: idx M, homeomorphism M N (s,t) (f,g) /\ k c= s -> (AR N {f x | x :e k} <-> AR M k).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2811 / ANR_IMP_ABSOLUTE_NEIGHBOURHOOD_EXTENSOR   (hash md5:e9730d316e7b0cc41b7be3b544d05500)
+// not bridged: 
+Theorem ANR_IMP_ABSOLUTE_NEIGHBOURHOOD_EXTENSOR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall u t c= R :^: idx M, forall s c= R :^: idx N, ANR N s /\ (continuous_on_hl M N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) t)) -> exists v c= R :^: idx M, exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (t c= v /\ (v :e subtopology (R :^: idx M) (euclidean M) u /\ (continuous_on_hl M N g v /\ ({g x | x :e v} c= s /\ forall x :e R :^: idx M, x :e t -> g x = f x)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2870 / ANR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT   (hash md5:d24c8aba03a5db74c09f6a35112b7305)
+// not bridged: 
+Theorem ANR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall u s' c= R :^: idx M, ANR N s /\ (homeomorphic M N s s' /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) s') -> exists v c= R :^: idx M, v :e subtopology (R :^: idx M) (euclidean M) u /\ retract_of M s' v.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2894 / ANR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT_UNIV   (hash md5:ee8f24c773091a56f0b201569c5048b7)
+// not bridged: 
+Theorem ANR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall s' c= R :^: idx M, ANR N s /\ (homeomorphic M N s s' /\ closed M s') -> exists v c= R :^: idx M, open M v /\ retract_of M s' v.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2900 / ABSOLUTE_NEIGHBOURHOOD_EXTENSOR_IMP_ANR   (hash md5:a1e5dc10fabe9e05819f51b8ba1ed3ab)
+// not bridged: 
+Theorem ABSOLUTE_NEIGHBOURHOOD_EXTENSOR_IMP_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, (forall f:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), f x :e R :^: idx N) -> forall u t c= R :^: idx_n (dimindex N + 1), continuous_on_hl (idx_n (dimindex N + 1)) N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) t) -> exists v c= R :^: idx_n (dimindex N + 1), exists g:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), g x :e R :^: idx N) /\ (t c= v /\ (v :e subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u /\ (continuous_on_hl (idx_n (dimindex N + 1)) N g v /\ ({g x | x :e v} c= s /\ forall x :e R :^: idx_n (dimindex N + 1), x :e t -> g x = f x))))) -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2932 / ANR_EQ_ABSOLUTE_NEIGHBOURHOOD_EXTENSOR   (hash md5:49400afe1ed712fa1e04741ce15bf6ae)
+// not bridged: 
+Theorem ANR_EQ_ABSOLUTE_NEIGHBOURHOOD_EXTENSOR : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s <-> forall f:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), f x :e R :^: idx N) -> forall u t c= R :^: idx_n (dimindex N + 1), continuous_on_hl (idx_n (dimindex N + 1)) N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx_n (dimindex N + 1)) (subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u) t) -> exists v c= R :^: idx_n (dimindex N + 1), exists g:set -> set, (forall x :e R :^: idx_n (dimindex N + 1), g x :e R :^: idx N) /\ (t c= v /\ (v :e subtopology (R :^: idx_n (dimindex N + 1)) (euclidean (idx_n (dimindex N + 1))) u /\ (continuous_on_hl (idx_n (dimindex N + 1)) N g v /\ ({g x | x :e v} c= s /\ forall x :e R :^: idx_n (dimindex N + 1), x :e t -> g x = f x)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2945 / ANR_IMP_ABSOLUTE_CLOSED_NEIGHBOURHOOD_RETRACT   (hash md5:59d417eb34496cc71d040968ec875b56)
+// not bridged: 
+Theorem ANR_IMP_ABSOLUTE_CLOSED_NEIGHBOURHOOD_RETRACT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall u s' c= R :^: idx M, ANR N s /\ (homeomorphic M N s s' /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) s') -> exists v w c= R :^: idx M, v :e subtopology (R :^: idx M) (euclidean M) u /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) w /\ (s' c= v /\ (v c= w /\ retract_of M s' w))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:2973 / ANR_IMP_ABSOLUTE_CLOSED_NEIGHBOURHOOD_EXTENSOR   (hash md5:9a6cabb1231a359fc882787960ebca78)
+// not bridged: 
+Theorem ANR_IMP_ABSOLUTE_CLOSED_NEIGHBOURHOOD_EXTENSOR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall u t c= R :^: idx M, forall s c= R :^: idx N, ANR N s /\ (continuous_on_hl M N f t /\ ({f x | x :e t} c= s /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) t)) -> exists v w c= R :^: idx M, exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (v :e subtopology (R :^: idx M) (euclidean M) u /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) u) w /\ (t c= v /\ (v c= w /\ (continuous_on_hl M N g w /\ ({g x | x :e w} c= s /\ forall x :e R :^: idx M, x :e t -> g x = f x)))))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3008 / ANR_IMP_NEIGHBOURHOOD_RETRACT   (hash md5:1f1c1b597926f0bbb13b2e13820825e2)
+// not bridged: 
+Theorem ANR_IMP_NEIGHBOURHOOD_RETRACT : forall N:set, N <> Empty -> forall s u c= R :^: idx N, ANR N s /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s -> exists v c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) u /\ retract_of N s v.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3015 / ANR_IMP_CLOSED_NEIGHBOURHOOD_RETRACT   (hash md5:19149712c93e945af204575c03986534)
+// not bridged: 
+Theorem ANR_IMP_CLOSED_NEIGHBOURHOOD_RETRACT : forall N:set, N <> Empty -> forall s u c= R :^: idx N, ANR N s /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s -> exists v w c= R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) u /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) w /\ (s c= v /\ (v c= w /\ retract_of N s w))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3024 / HOMEOMORPHIC_ANRNESS   (hash md5:46e8cb22014ad8f7a0914092f72165f1)
+// not bridged: 
+Theorem HOMEOMORPHIC_ANRNESS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, homeomorphic N M s t -> (ANR M s <-> ANR N t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3041 / ANR_TRANSLATION   (hash md5:6f7637f293b6c8aa7bc1e2cd77aed74c)
+// not bridged: 
+Theorem ANR_TRANSLATION : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, ANR N {vector_add N a x | x :e s} <-> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3048 / ANR_LINEAR_IMAGE_EQ   (hash md5:cddaa8a611292d8bcd7a531f39a9739e)
+// not bridged: 
+Theorem ANR_LINEAR_IMAGE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, linear M N f /\ (forall x y :e R :^: idx M, f x = f y -> x = y) -> (ANR N {f x | x :e s} <-> ANR M s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3057 / HOMEOMORPHISM_ANRNESS   (hash md5:42d2a153bb7b5f677bf1f9257546e524)
+// not bridged: 
+Theorem HOMEOMORPHISM_ANRNESS : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall g :e R :^: idx M :^: (R :^: idx N), forall s c= R :^: idx M, forall t c= R :^: idx N, forall k c= R :^: idx M, homeomorphism M N (s,t) (f,g) /\ k c= s -> (ANR N {f x | x :e k} <-> ANR M k).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3068 / HOMOTOPIC_ON_NEIGHBOURHOOD_INTO_ANR   (hash md5:ba0fb9a6566494b4c88ef6fb28c31f99)
+// not bridged: 
+Theorem HOMOTOPIC_ON_NEIGHBOURHOOD_INTO_ANR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s t c= R :^: idx M, forall v c= R :^: idx N, ANR N v /\ (continuous_on_hl M N f s /\ ({f x | x :e s} c= v /\ (continuous_on_hl M N g s /\ ({g x | x :e s} c= v /\ (t c= s /\ (forall x :e R :^: idx M, x :e t -> f x = g x)))))) -> exists u c= R :^: idx M, u :e subtopology (R :^: idx M) (euclidean M) s /\ (t c= u /\ homotopic_with (R :^: idx N) (R :^: idx M) {h :e R :^: idx N :^: (R :^: idx M) | forall x :e R :^: idx M, x :e t -> h x = f x} (subtopology (R :^: idx M) (euclidean M) u,subtopology (R :^: idx N) (euclidean N) v) f g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3173 / ENR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT   (hash md5:e7c69f587356994bf378cd2cf2df244d)
+// not bridged: 
+Theorem ENR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall s' u c= R :^: idx N, ENR M s /\ (homeomorphic N M s s' /\ s' c= u) -> exists t' c= R :^: idx N, t' :e subtopology (R :^: idx N) (euclidean N) u /\ retract_of N s' t'.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3228 / ENR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT_UNIV   (hash md5:8554e9bffcd5e8997d449b81105dda4a)
+// not bridged: 
+Theorem ENR_IMP_ABSOLUTE_NEIGHBOURHOOD_RETRACT_UNIV : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall s' c= R :^: idx N, ENR M s /\ homeomorphic N M s s' -> exists t' c= R :^: idx N, open N t' /\ retract_of N s' t'.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3236 / HOMEOMORPHIC_ENRNESS   (hash md5:8891e3e034229608c0fbef28dc4e257d)
+// not bridged: 
+Theorem HOMEOMORPHIC_ENRNESS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, homeomorphic N M s t -> (ENR M s <-> ENR N t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3248 / ENR_TRANSLATION   (hash md5:f6c6849493ba3976b6657bd4c2520b0a)
+// not bridged: 
+Theorem ENR_TRANSLATION : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall s c= R :^: idx N, ENR N {vector_add N a x | x :e s} <-> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3255 / ENR_LINEAR_IMAGE_EQ   (hash md5:65304535027b19a1d35869f7e75d8145)
+// not bridged: 
+Theorem ENR_LINEAR_IMAGE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, linear M N f /\ (forall x y :e R :^: idx M, f x = f y -> x = y) -> (ENR N {f x | x :e s} <-> ENR M s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3264 / HOMEOMORPHISM_ENRNESS   (hash md5:54f75d4b8aee199cf9c53217fc4f2f72)
+// not bridged: 
+Theorem HOMEOMORPHISM_ENRNESS : forall M N:set, M <> Empty -> N <> Empty -> forall f :e R :^: idx N :^: (R :^: idx M), forall g :e R :^: idx M :^: (R :^: idx N), forall s c= R :^: idx M, forall t c= R :^: idx N, forall k c= R :^: idx M, homeomorphism M N (s,t) (f,g) /\ k c= s -> (ENR N {f x | x :e k} <-> ENR M k).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3280 / AR_IMP_ANR   (hash md5:e346752b26e4469b4be0fa8b20be6263)
+// not bridged: 
+Theorem AR_IMP_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3284 / ENR_IMP_ANR   (hash md5:b5dfec302d4545f7d8b66872a347c3fe)
+// not bridged: 
+Theorem ENR_IMP_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3289 / ENR_ANR   (hash md5:50501ba7d55f546c63572fe9928598b5)
+// not bridged: 
+Theorem ENR_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s <-> ANR N s /\ locally N {x :e Power (R :^: idx N) | compact N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3305 / AR_ANR   (hash md5:917b5de0f7765f810c72738756574cfa)
+// not bridged: 
+Theorem AR_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s <-> ANR N s /\ (contractible N s /\ ~ s = Empty).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3384 / ANR_RETRACT_OF_ANR   (hash md5:8fd70c01f931c256f83cfdbdce65c77d)
+// not bridged: 
+Theorem ANR_RETRACT_OF_ANR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ANR N t /\ retract_of N s t -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3405 / AR_RETRACT_OF_AR   (hash md5:a20ceff653b9e82cbe7fc775a8000121)
+// not bridged: 
+Theorem AR_RETRACT_OF_AR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, AR N t /\ retract_of N s t -> AR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3410 / ENR_RETRACT_OF_ENR   (hash md5:8535e392a352abc22d390d0e4deee193)
+// not bridged: 
+Theorem ENR_RETRACT_OF_ENR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ENR N t /\ retract_of N s t -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3414 / RETRACT_OF_UNIV   (hash md5:b2a394855b2040079cf09d3d0e7dd035)
+// not bridged: 
+Theorem RETRACT_OF_UNIV : forall N:set, N <> Empty -> forall s c= R :^: idx N, retract_of N s (R :^: idx N) <-> AR N s /\ closed N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3425 / COMPACT_AR   (hash md5:734fcb7aa746a5d295e4d463d124e4bc)
+// not bridged: 
+Theorem COMPACT_AR : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ AR N s <-> compact N s /\ retract_of N s (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3433 / NOT_AR_EMPTY   (hash md5:16f88e68e0960d2c0b81aefa52680768)
+// not bridged: 
+Theorem NOT_AR_EMPTY : forall N:set, N <> Empty -> ~ AR N Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3437 / AR_IMP_NONEMPTY   (hash md5:fea915890a403639701161500557773d)
+// not bridged: 
+Theorem AR_IMP_NONEMPTY : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> ~ s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3441 / ENR_EMPTY   (hash md5:20c921b71118e40dc77c5e1490674bf3)
+// not bridged: 
+Theorem ENR_EMPTY : forall A:set, A <> Empty -> ENR A Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3445 / ANR_EMPTY   (hash md5:6029f07e5f40a912a37452f67cec7b37)
+// not bridged: 
+Theorem ANR_EMPTY : forall A:set, A <> Empty -> ANR A Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3449 / CONVEX_IMP_AR   (hash md5:e60da5656f42b917cbdf797d32c0f681)
+// not bridged: 
+Theorem CONVEX_IMP_AR : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ ~ s = Empty -> AR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3456 / CONVEX_IMP_ANR   (hash md5:a9534d91de55b54c33f1d5a363c7b72c)
+// not bridged: 
+Theorem CONVEX_IMP_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3460 / IS_INTERVAL_IMP_ENR   (hash md5:5e106f81d66671c5958ffe8071b37597)
+// not bridged: 
+Theorem IS_INTERVAL_IMP_ENR : forall N:set, N <> Empty -> forall s c= R :^: idx N, is_interval N s -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3465 / ENR_CONVEX_CLOSED   (hash md5:198db5bca3019720bad6a2cf81e0c9d2)
+// not bridged: 
+Theorem ENR_CONVEX_CLOSED : forall N:set, N <> Empty -> forall s c= R :^: idx N, closed N s /\ convex N s -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3469 / AR_UNIV   (hash md5:6bf04fcfc0356be1f0a312ca4a4532f1)
+// not bridged: 
+Theorem AR_UNIV : forall N:set, N <> Empty -> AR N (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3473 / ANR_UNIV   (hash md5:773c6bb259ed7026a5ef92b4d399b2fc)
+// not bridged: 
+Theorem ANR_UNIV : forall N:set, N <> Empty -> ANR N (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3477 / ENR_UNIV   (hash md5:a83c957f4dd42d46b74dacbf4263745e)
+// not bridged: 
+Theorem ENR_UNIV : forall N:set, N <> Empty -> ENR N (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3481 / AR_SING   (hash md5:b94ace4072f805b39d797c3df1861b04)
+// not bridged: 
+Theorem AR_SING : forall N:set, N <> Empty -> forall a :e R :^: idx N, AR N {a}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3485 / ANR_SING   (hash md5:f5ba57b1ad33a9fd1ee2910d7a3509e2)
+// not bridged: 
+Theorem ANR_SING : forall N:set, N <> Empty -> forall a :e R :^: idx N, ANR N {a}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3489 / ENR_SING   (hash md5:20c74de05b9156701de7e7ce14d4d5ce)
+// not bridged: 
+Theorem ENR_SING : forall N:set, N <> Empty -> forall a :e R :^: idx N, ENR N {a}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3493 / ANR_OPEN_IN   (hash md5:afc87d3bd7ec208c103393cd0121dd68)
+// not bridged: 
+Theorem ANR_OPEN_IN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s :e subtopology (R :^: idx N) (euclidean N) t /\ ANR N t -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3517 / ENR_OPEN_IN   (hash md5:1ea8eb6b9897d77c321e654df56531d3)
+// not bridged: 
+Theorem ENR_OPEN_IN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, s :e subtopology (R :^: idx N) (euclidean N) t /\ ENR N t -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3522 / ANR_NEIGHBORHOOD_RETRACT   (hash md5:aee491ee5d28321b5c86f84fcc0f4f51)
+// not bridged: 
+Theorem ANR_NEIGHBORHOOD_RETRACT : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, retract_of N s t /\ (t :e subtopology (R :^: idx N) (euclidean N) u /\ ANR N u) -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3528 / ENR_NEIGHBORHOOD_RETRACT   (hash md5:2c4012104fc2717a45680fe8b5528257)
+// not bridged: 
+Theorem ENR_NEIGHBORHOOD_RETRACT : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, retract_of N s t /\ (t :e subtopology (R :^: idx N) (euclidean N) u /\ ENR N u) -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3534 / ANR_RELATIVE_INTERIOR   (hash md5:4411529598dacf2c0e44bcf20adf49ea)
+// not bridged: 
+Theorem ANR_RELATIVE_INTERIOR : forall A:set, A <> Empty -> forall s c= R :^: idx A, ANR A s -> ANR A (relative_interior A s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3538 / ANR_DELETE   (hash md5:b80578d670193ddab2e7e86e815fcad5)
+// not bridged: 
+Theorem ANR_DELETE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, ANR N s -> ANR N (s :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3542 / ENR_RELATIVE_INTERIOR   (hash md5:c23ce00f50a3ac4151994059101a8746)
+// not bridged: 
+Theorem ENR_RELATIVE_INTERIOR : forall A:set, A <> Empty -> forall s c= R :^: idx A, ENR A s -> ENR A (relative_interior A s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3546 / ENR_DELETE   (hash md5:c9f8666746ff95f203b8d12a44aab85b)
+// not bridged: 
+Theorem ENR_DELETE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, ENR N s -> ENR N (s :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3550 / OPEN_IMP_ENR   (hash md5:0ee31ea4472e5659a3850140ead6168e)
+// not bridged: 
+Theorem OPEN_IMP_ENR : forall N:set, N <> Empty -> forall s c= R :^: idx N, open N s -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3556 / OPEN_IMP_ANR   (hash md5:a4b4c060f0053cfc5fb5223ffeb4ac4c)
+// not bridged: 
+Theorem OPEN_IMP_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, open N s -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3560 / ANR_BALL   (hash md5:7ec49c9b8838ac0ff7535396acab03e0)
+// not bridged: 
+Theorem ANR_BALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, ANR N (ball N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3564 / ENR_BALL   (hash md5:92c0beb9b0272413b9e8d4f76b491b40)
+// not bridged: 
+Theorem ENR_BALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, ENR N (ball N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3568 / AR_BALL   (hash md5:0f55d4de70af399cf88d06432c942000)
+// not bridged: 
+Theorem AR_BALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, AR N (ball N (a,r)) <-> 0 < r.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3573 / ANR_CBALL   (hash md5:af3d661d108800d467a9c2a965e65418)
+// not bridged: 
+Theorem ANR_CBALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, ANR N (cball N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3577 / ENR_CBALL   (hash md5:ce5d5d7ae04a19d647d3f9dc076a9e6f)
+// not bridged: 
+Theorem ENR_CBALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, ENR N (cball N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3581 / AR_CBALL   (hash md5:9e1ee06292df5bb26ce90dba64f8c78f)
+// not bridged: 
+Theorem AR_CBALL : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, AR N (cball N (a,r)) <-> 0 <= r.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3586 / ANR_INTERVAL   (hash md5:776d4b4303e0f8698f71873f6ba9d3c9)
+// not bridged: 
+Theorem ANR_INTERVAL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, ANR N (closed_interval N (seq_cons (a,b) seq_nil))) /\ forall a b :e R :^: idx N, ANR N (open_interval N (a,b)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3591 / ENR_INTERVAL   (hash md5:50cd6c79caca73af3b7897be36fb5fe6)
+// not bridged: 
+Theorem ENR_INTERVAL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, ENR N (closed_interval N (seq_cons (a,b) seq_nil))) /\ forall a b :e R :^: idx N, ENR N (open_interval N (a,b)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3596 / AR_INTERVAL   (hash md5:ef6f51a96c1a32fc6ac4f8f0a4d5b709)
+// not bridged: 
+Theorem AR_INTERVAL : forall N:set, N <> Empty -> (forall a b :e R :^: idx N, AR N (closed_interval N (seq_cons (a,b) seq_nil)) <-> ~ closed_interval N (seq_cons (a,b) seq_nil) = Empty) /\ forall a b :e R :^: idx N, AR N (open_interval N (a,b)) <-> ~ open_interval N (a,b) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3601 / ANR_INTERIOR   (hash md5:28e74f4fc91e4ed8c3afb7b0fe10d4a5)
+// not bridged: 
+Theorem ANR_INTERIOR : forall A:set, A <> Empty -> forall s c= R :^: idx A, ANR A (interior A s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3605 / ENR_INTERIOR   (hash md5:df363a5401503f6784fd440808523885)
+// not bridged: 
+Theorem ENR_INTERIOR : forall A:set, A <> Empty -> forall s c= R :^: idx A, ENR A (interior A s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3609 / AR_IMP_CONTRACTIBLE   (hash md5:f70a0b7f0d171ef85b1a9653031d0745)
+// not bridged: 
+Theorem AR_IMP_CONTRACTIBLE : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> contractible N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3613 / AR_IMP_PATH_CONNECTED   (hash md5:51dc430880636ae4e5fcb139e4875f49)
+// not bridged: 
+Theorem AR_IMP_PATH_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> path_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3617 / AR_IMP_CONNECTED   (hash md5:56770eacb4fdf62f006518873a1a7111)
+// not bridged: 
+Theorem AR_IMP_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> connected N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3621 / ENR_IMP_LOCALLY_COMPACT   (hash md5:f8c10a392600b0b0d00565c88fc2bf2d)
+// not bridged: 
+Theorem ENR_IMP_LOCALLY_COMPACT : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> locally N {x :e Power (R :^: idx N) | compact N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3625 / ANR_IMP_LOCALLY_PATH_CONNECTED   (hash md5:2c34d0746f9a4b11d7c655c792a6a936)
+// not bridged: 
+Theorem ANR_IMP_LOCALLY_PATH_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s -> locally N {x :e Power (R :^: idx N) | path_connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3646 / ANR_IMP_LOCALLY_CONNECTED   (hash md5:c5b59c7fafe40bc830a99a4e002fd2af)
+// not bridged: 
+Theorem ANR_IMP_LOCALLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s -> locally N {x :e Power (R :^: idx N) | connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3651 / AR_IMP_LOCALLY_PATH_CONNECTED   (hash md5:30a129238506320feed80e39f95e5b34)
+// not bridged: 
+Theorem AR_IMP_LOCALLY_PATH_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> locally N {x :e Power (R :^: idx N) | path_connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3655 / AR_IMP_LOCALLY_CONNECTED   (hash md5:ce7a1e5ad8f9e076afd3f142ae6e29f6)
+// not bridged: 
+Theorem AR_IMP_LOCALLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, AR N s -> locally N {x :e Power (R :^: idx N) | connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3660 / ENR_IMP_LOCALLY_PATH_CONNECTED   (hash md5:10922c8c18ebd47f2522e9868681a542)
+// not bridged: 
+Theorem ENR_IMP_LOCALLY_PATH_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> locally N {x :e Power (R :^: idx N) | path_connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3664 / ENR_IMP_LOCALLY_CONNECTED   (hash md5:c73b2d8e29baa89d112f6dc06efec3df)
+// not bridged: 
+Theorem ENR_IMP_LOCALLY_CONNECTED : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> locally N {x :e Power (R :^: idx N) | connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3668 / COUNTABLE_ANR_COMPONENTS   (hash md5:780fcd7af974f09b7773caa2202e7670)
+// not bridged: 
+Theorem COUNTABLE_ANR_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s -> countable (components N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3672 / COUNTABLE_ANR_CONNECTED_COMPONENTS   (hash md5:8945467a0777e80488fceda7b1d27e70)
+// not bridged: 
+Theorem COUNTABLE_ANR_CONNECTED_COMPONENTS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ANR N s -> countable {{x0 :e R :^: idx N | connected_component N s x x0} | x :e R :^: idx N, x :e t}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3677 / COUNTABLE_ANR_PATH_COMPONENTS   (hash md5:93de286f6f0c20bc8c89778145cd2821)
+// not bridged: 
+Theorem COUNTABLE_ANR_PATH_COMPONENTS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ANR N s -> countable {{x0 :e R :^: idx N | path_component N s x x0} | x :e R :^: idx N, x :e t}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3682 / FINITE_ANR_COMPONENTS   (hash md5:5205e0653afd75b915e48ad15d3de8ef)
+// not bridged: 
+Theorem FINITE_ANR_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s /\ compact N s -> finite (components N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3686 / FINITE_ENR_COMPONENTS   (hash md5:ab2ee0a3ab0ad294441e5bf9b71fc134)
+// not bridged: 
+Theorem FINITE_ENR_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s /\ compact N s -> finite (components N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3690 / ANR_PCROSS   (hash md5:a5428cdeca8628bccc20f618b4909583)
+// not bridged: 
+Theorem ANR_PCROSS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, ANR M s /\ ANR N t -> ANR (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3731 / ANR_PCROSS_EQ   (hash md5:64e1392395d6de93db134cf6c2a48e8a)
+// not bridged: 
+Theorem ANR_PCROSS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, ANR (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}) <-> s = Empty \/ (t = Empty \/ ANR M s /\ ANR N t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3759 / AR_PCROSS   (hash md5:3b9a9f14a1ef98ea88f93b6d7abe99b0)
+// not bridged: 
+Theorem AR_PCROSS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, AR M s /\ AR N t -> AR (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3763 / ENR_PCROSS   (hash md5:386c766a9941fc3466a755dfe7df009a)
+// not bridged: 
+Theorem ENR_PCROSS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, ENR M s /\ ENR N t -> ENR (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3767 / ENR_PCROSS_EQ   (hash md5:6804baf9b163d64a65c7f0f2ee715471)
+// not bridged: 
+Theorem ENR_PCROSS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, ENR (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}) <-> s = Empty \/ (t = Empty \/ ENR M s /\ ENR N t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3773 / AR_PCROSS_EQ   (hash md5:8b081007e06f65ef0cc836a9db225724)
+// not bridged: 
+Theorem AR_PCROSS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, AR (idx_n (dimindex M + dimindex N)) (\/_ x :e s, {pastecart M N x y | y :e t}) <-> AR M s /\ (AR N t /\ (~ s = Empty /\ ~ t = Empty)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3779 / AR_CLOSED_UNION_LOCAL   (hash md5:177b05e6db674af333df8fb72400fee0)
+// not bridged: 
+Theorem AR_CLOSED_UNION_LOCAL : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) t /\ (AR N s /\ (AR N t /\ AR N (s :/\: t)))) -> AR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:3950 / ANR_UNION_EXTENSION_LEMMA   (hash md5:4887ba15ebdd197f479f9627a0722568)
+// not bridged: 
+Theorem ANR_UNION_EXTENSION_LEMMA : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s t c= R :^: idx M, forall u c= R :^: idx N, forall s1 s2 c= R :^: idx M, forall u1 u2 c= R :^: idx N, continuous_on_hl M N f t /\ ({f x | x :e t} c= u /\ (ANR N u1 /\ (ANR N u2 /\ (ANR N (u1 :/\: u2) /\ (u1 :\/: u2 = u /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) t /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) s1 /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) s2 /\ (s1 :\/: s2 = s /\ ({f x | x :e t :/\: s1} c= u1 /\ {f x | x :e t :/\: s2} c= u2)))))))))) -> exists v c= R :^: idx M, exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (t c= v /\ (v :e subtopology (R :^: idx M) (euclidean M) s /\ (continuous_on_hl M N g v /\ ({g x | x :e v} c= u /\ forall x :e R :^: idx M, x :e t -> g x = f x)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4186 / ANR_CLOSED_UNION_LOCAL   (hash md5:2d461a0694f2a87c1c1b2309855f042a)
+// not bridged: 
+Theorem ANR_CLOSED_UNION_LOCAL : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) t /\ (ANR N s /\ (ANR N t /\ ANR N (s :/\: t)))) -> ANR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4275 / ENR_CLOSED_UNION_LOCAL   (hash md5:6737eff6a523da263ef30e9548acf439)
+// not bridged: 
+Theorem ENR_CLOSED_UNION_LOCAL : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) t /\ (ENR N s /\ (ENR N t /\ ENR N (s :/\: t)))) -> ENR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4284 / AR_CLOSED_UNION   (hash md5:00e20dfb80089e33669ca481a92def32)
+// not bridged: 
+Theorem AR_CLOSED_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (closed N t /\ (AR N s /\ (AR N t /\ AR N (s :/\: t)))) -> AR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4290 / ANR_CLOSED_UNION   (hash md5:feb40e0647a8f83fd21743aabd6114d1)
+// not bridged: 
+Theorem ANR_CLOSED_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (closed N t /\ (ANR N s /\ (ANR N t /\ ANR N (s :/\: t)))) -> ANR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4296 / ENR_CLOSED_UNION   (hash md5:214a3550cdbed03e07141cb5298efe87)
+// not bridged: 
+Theorem ENR_CLOSED_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (closed N t /\ (ENR N s /\ (ENR N t /\ ENR N (s :/\: t)))) -> ENR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4302 / ABSOLUTE_RETRACT_UNION   (hash md5:84fa2352711fe8ab0b7a703c510f595c)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_UNION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of N s (R :^: idx N) /\ (retract_of N t (R :^: idx N) /\ retract_of N (s :/\: t) (R :^: idx N)) -> retract_of N (s :\/: t) (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4309 / RETRACT_FROM_UNION_AND_INTER   (hash md5:40aff31e01cc027414305533581b203b)
+// not bridged: 
+Theorem RETRACT_FROM_UNION_AND_INTER : forall N:set, N <> Empty -> forall u s t c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) t /\ (retract_of N (s :\/: t) u /\ retract_of N (s :/\: t) t)) -> retract_of N s u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4327 / AR_FROM_UNION_AND_INTER_LOCAL   (hash md5:f848a3265a41e2b9b0d7ade533a30ca1)
+// not bridged: 
+Theorem AR_FROM_UNION_AND_INTER_LOCAL : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) t /\ (AR N (s :\/: t) /\ AR N (s :/\: t))) -> AR N s /\ AR N t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4348 / AR_FROM_UNION_AND_INTER   (hash md5:49b0862475a7feae678ec7f97ee02081)
+// not bridged: 
+Theorem AR_FROM_UNION_AND_INTER : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (closed N t /\ (AR N (s :\/: t) /\ AR N (s :/\: t))) -> AR N s /\ AR N t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4356 / ANR_FROM_UNION_AND_INTER_LOCAL   (hash md5:d76fff441347d5222fc427d75c42abe6)
+// not bridged: 
+Theorem ANR_FROM_UNION_AND_INTER_LOCAL : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) t /\ (ANR N (s :\/: t) /\ ANR N (s :/\: t))) -> ANR N s /\ ANR N t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4405 / ANR_FROM_UNION_AND_INTER   (hash md5:a5ffd0381ba506dd8526b4c8ad988532)
+// not bridged: 
+Theorem ANR_FROM_UNION_AND_INTER : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (closed N t /\ (ANR N (s :\/: t) /\ ANR N (s :/\: t))) -> ANR N s /\ ANR N t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4413 / ANR_FINITE_UNIONS_CONVEX_CLOSED   (hash md5:fcb529f182453effbd1ff4667e2a6941)
+// not bridged: 
+Theorem ANR_FINITE_UNIONS_CONVEX_CLOSED : forall N:set, N <> Empty -> forall t c= Power (R :^: idx N), finite t /\ (forall c c= R :^: idx N, c :e t -> closed N c /\ convex N c) -> ANR N (Union t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4433 / FINITE_IMP_ANR   (hash md5:ef5acb7fbf8acba71b010caee4e6653a)
+// not bridged: 
+Theorem FINITE_IMP_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4442 / ANR_INSERT   (hash md5:a1dfc764f2e9d293e1e115b09ca8d1ad)
+// not bridged: 
+Theorem ANR_INSERT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, closed N s /\ ANR N s -> ANR N (SetAdjoin s a).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4450 / ANR_TRIANGULATION   (hash md5:49e87f98bf5907633b6dd706658b40c6)
+// not bridged: 
+Theorem ANR_TRIANGULATION : forall A:set, A <> Empty -> forall tr c= Power (R :^: idx A), triangulation A tr -> ANR A (Union tr).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4456 / ANR_SIMPLICIAL_COMPLEX   (hash md5:2a2e75448a1f65869298bea6477bb8b2)
+// not bridged: 
+Theorem ANR_SIMPLICIAL_COMPLEX : forall A:set, A <> Empty -> forall c c= Power (R :^: idx A), simplicial_complex A c -> ANR A (Union c).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4460 / ANR_PATH_COMPONENT_ANR   (hash md5:48d564a14673635bde902b39a6ac23ae)
+// not bridged: 
+Theorem ANR_PATH_COMPONENT_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, ANR N s -> ANR N {x0 :e R :^: idx N | path_component N s x x0}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4468 / ANR_CONNECTED_COMPONENT_ANR   (hash md5:4d9518bd35ab52dc56d2703d44ac8806)
+// not bridged: 
+Theorem ANR_CONNECTED_COMPONENT_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, ANR N s -> ANR N {x0 :e R :^: idx N | connected_component N s x x0}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4476 / ANR_COMPONENT_ANR   (hash md5:bdfbfc0b5478abf749d5772150d2e7ad)
+// not bridged: 
+Theorem ANR_COMPONENT_ANR : forall N:set, N <> Empty -> forall c s c= R :^: idx N, ANR N s /\ c :e components N s -> ANR N c.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4485 / ANR_OPEN_UNION   (hash md5:ed0f28e7841467f7250d38d5d205d22e)
+// not bridged: 
+Theorem ANR_OPEN_UNION : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, s :e subtopology (R :^: idx N) (euclidean N) u /\ (t :e subtopology (R :^: idx N) (euclidean N) u /\ (ANR N s /\ ANR N t)) -> ANR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4560 / ENR_OPEN_UNION   (hash md5:9abb7ce94618e0b0ad466e2f08a06098)
+// not bridged: 
+Theorem ENR_OPEN_UNION : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, s :e subtopology (R :^: idx N) (euclidean N) u /\ (t :e subtopology (R :^: idx N) (euclidean N) u /\ (ENR N s /\ ENR N t)) -> ENR N (s :\/: t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:4569 / ANR_OPEN_UNIONS   (hash md5:b66cc2511ebfd1b0443c6ed1946f6c17)
+// not bridged: 
+Theorem ANR_OPEN_UNIONS : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), forall u c= R :^: idx N, (forall s c= R :^: idx N, s :e f -> ANR N s) /\ (forall s c= R :^: idx N, s :e f -> s :e subtopology (R :^: idx N) (euclidean N) u) -> ANR N (Union f).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5086 / ENR_OPEN_UNIONS   (hash md5:d416e4a83da71e87c7a5a71e2288b41d)
+// not bridged: 
+Theorem ENR_OPEN_UNIONS : forall N:set, N <> Empty -> forall f c= Power (R :^: idx N), forall u c= R :^: idx N, (forall s c= R :^: idx N, s :e f -> ENR N s) /\ (forall s c= R :^: idx N, s :e f -> s :e subtopology (R :^: idx N) (euclidean N) u) -> ENR N (Union f).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5094 / LOCALLY_ANR_ALT   (hash md5:ff932a5bc064151d3ffdb78055b5c7a4)
+// not bridged: 
+Theorem LOCALLY_ANR_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | ANR N x} s <-> forall v c= R :^: idx N, forall x :e R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ x :e v -> exists u c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (ANR N u /\ (x :e u /\ u c= v)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5114 / LOCALLY_ANR   (hash md5:b19fd8fcd2fc73ac564cc2d108757412)
+// not bridged: 
+Theorem LOCALLY_ANR : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | ANR N x} s <-> forall x :e R :^: idx N, x :e s -> exists v c= R :^: idx N, x :e v /\ (v :e subtopology (R :^: idx N) (euclidean N) s /\ ANR N v).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5137 / ANR_LOCALLY   (hash md5:dd58e9c0c707ed03ba2b7c2c34eea821)
+// not bridged: 
+Theorem ANR_LOCALLY : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | ANR N x} s <-> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5151 / LOCALLY_ENR_ALT   (hash md5:adde5126601048655b07867b830b100c)
+// not bridged: 
+Theorem LOCALLY_ENR_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | ENR N x} s <-> forall v c= R :^: idx N, forall x :e R :^: idx N, v :e subtopology (R :^: idx N) (euclidean N) s /\ x :e v -> exists u c= R :^: idx N, u :e subtopology (R :^: idx N) (euclidean N) s /\ (ENR N u /\ (x :e u /\ u c= v)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5171 / LOCALLY_ENR   (hash md5:d8969c1819b28ea9220c9b9d3ec7ebd2)
+// not bridged: 
+Theorem LOCALLY_ENR : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | ENR N x} s <-> forall x :e R :^: idx N, x :e s -> exists v c= R :^: idx N, x :e v /\ (v :e subtopology (R :^: idx N) (euclidean N) s /\ ENR N v).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5194 / ENR_LOCALLY   (hash md5:4d0967eb7d85b885faafef01f06d15fe)
+// not bridged: 
+Theorem ENR_LOCALLY : forall N:set, N <> Empty -> forall s c= R :^: idx N, locally N {x :e Power (R :^: idx N) | ENR N x} s <-> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5208 / ANR_COVERING_SPACE_EQ   (hash md5:cc76d7bcaa2e2d378f1af2da420158e8)
+// not bridged: 
+Theorem ANR_COVERING_SPACE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx N, forall c c= R :^: idx M, covering_space M N (c,p) s -> (ANR N s <-> ANR M c).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5218 / ANR_COVERING_SPACE   (hash md5:bc60b978ba854d236c5234fc2f53a18b)
+// not bridged: 
+Theorem ANR_COVERING_SPACE : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx N, forall c c= R :^: idx M, covering_space M N (c,p) s /\ ANR M c -> ANR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5223 / ENR_COVERING_SPACE_EQ   (hash md5:39ad5b8afd44a5b412ba3338c5645895)
+// not bridged: 
+Theorem ENR_COVERING_SPACE_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx N, forall c c= R :^: idx M, covering_space M N (c,p) s -> (ENR N s <-> ENR M c).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5229 / ENR_COVERING_SPACE   (hash md5:c9f6ded815c1a8f8c5f4d07f8b8f77a3)
+// not bridged: 
+Theorem ENR_COVERING_SPACE : forall M N:set, M <> Empty -> N <> Empty -> forall p :e R :^: idx N :^: (R :^: idx M), forall s c= R :^: idx N, forall c c= R :^: idx M, covering_space M N (c,p) s /\ ENR M c -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5239 / ENR_BOUNDED   (hash md5:89968472382ad0259e662c929b9a0ce3)
+// not bridged: 
+Theorem ENR_BOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s -> (ENR N s <-> exists u c= R :^: idx N, open N u /\ (bounded_hl N u /\ retract_of N s u)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5254 / ABSOLUTE_RETRACT_IMP_AR_GEN   (hash md5:9797302f86c31141932d0e766ec78ae3)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_IMP_AR_GEN : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall s' c= R :^: idx N, forall t c= R :^: idx M, forall u c= R :^: idx N, retract_of M s t /\ (convex M t /\ (~ t = Empty /\ (homeomorphic N M s s' /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s'))) -> retract_of N s' u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5263 / ABSOLUTE_RETRACT_IMP_AR   (hash md5:4778e2100f5ffb2619a07c38b845d29a)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_IMP_AR : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall s' c= R :^: idx N, retract_of M s (R :^: idx M) /\ (homeomorphic N M s s' /\ closed N s') -> retract_of N s' (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5271 / HOMEOMORPHIC_COMPACT_ARNESS   (hash md5:f7572b3b2b8534421e2892cd62df6e86)
+// not bridged: 
+Theorem HOMEOMORPHIC_COMPACT_ARNESS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall s' c= R :^: idx N, homeomorphic N M s s' -> (compact M s /\ retract_of M s (R :^: idx M) <-> compact N s' /\ retract_of N s' (R :^: idx N)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5282 / EXTENSION_INTO_AR_LOCAL   (hash md5:02fce812d43ba40214b0e1c87b255273)
+// not bridged: 
+Theorem EXTENSION_INTO_AR_LOCAL : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall c s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f c /\ ({f x | x :e c} c= t /\ (retract_of N t (R :^: idx N) /\ closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) c)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g s /\ ({g x | x :e R :^: idx M} c= t /\ forall x :e R :^: idx M, x :e c -> g x = f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5305 / EXTENSION_INTO_AR   (hash md5:2f434dc25f0be9e24cfb9f6b76654ff2)
+// not bridged: 
+Theorem EXTENSION_INTO_AR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ (retract_of N t (R :^: idx N) /\ closed M s)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (R :^: idx M) /\ ({g x | x :e R :^: idx M} c= t /\ forall x :e R :^: idx M, x :e s -> g x = f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5317 / NEIGHBOURHOOD_EXTENSION_INTO_ANR   (hash md5:e1505365c8e9db050c92cddbeea5db8e)
+// not bridged: 
+Theorem NEIGHBOURHOOD_EXTENSION_INTO_ANR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ (ANR N t /\ closed M s)) -> exists v c= R :^: idx M, exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (s c= v /\ (open M v /\ (continuous_on_hl M N g v /\ ({g x | x :e v} c= t /\ forall x :e R :^: idx M, x :e s -> g x = f x)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5329 / EXTENSION_FROM_COMPONENT   (hash md5:36b8f02ba4d755b86dab2dda30cf439d)
+// not bridged: 
+Theorem EXTENSION_FROM_COMPONENT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c c= R :^: idx M, forall u c= R :^: idx N, (locally M {x :e Power (R :^: idx M) | connected M x} s \/ compact M s /\ ANR N u) /\ (c :e components M s /\ (continuous_on_hl M N f c /\ {f x | x :e c} c= u)) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g s /\ ({g x | x :e s} c= u /\ forall x :e R :^: idx M, x :e c -> g x = f x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5381 / ABSOLUTE_RETRACT_FROM_UNION_AND_INTER   (hash md5:94cdfbab7834a7124720a532cf02eae4)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_FROM_UNION_AND_INTER : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of N (s :\/: t) (R :^: idx N) /\ (retract_of N (s :/\: t) (R :^: idx N) /\ (closed N s /\ closed N t)) -> retract_of N s (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5388 / COUNTABLE_ENR_COMPONENTS   (hash md5:019ffa50633545c0f1416886b3533fac)
+// not bridged: 
+Theorem COUNTABLE_ENR_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> countable (components N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5392 / COUNTABLE_ENR_CONNECTED_COMPONENTS   (hash md5:a3ad49486e6b0083a6ff95c52c7def4f)
+// not bridged: 
+Theorem COUNTABLE_ENR_CONNECTED_COMPONENTS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ENR N s -> countable {{x0 :e R :^: idx N | connected_component N s x x0} | x :e R :^: idx N, x :e t}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5397 / COUNTABLE_ENR_PATH_COMPONENTS   (hash md5:c3a8ba710b7867b3e0518d6fa1b14d6e)
+// not bridged: 
+Theorem COUNTABLE_ENR_PATH_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> countable {{x0 :e R :^: idx N | path_component N s x x0} | x :e R :^: idx N, x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5402 / ENR_FROM_UNION_AND_INTER_GEN   (hash md5:d594d53c847b6265e1b363c752572f06)
+// not bridged: 
+Theorem ENR_FROM_UNION_AND_INTER_GEN : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) s /\ (closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) (s :\/: t)) t /\ (ENR N (s :\/: t) /\ ENR N (s :/\: t))) -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5411 / ENR_FROM_UNION_AND_INTER   (hash md5:bcec15bf09bae27bf24e27395e1a1de9)
+// not bridged: 
+Theorem ENR_FROM_UNION_AND_INTER : forall N:set, N <> Empty -> forall s t c= R :^: idx N, closed N s /\ (closed N t /\ (ENR N (s :\/: t) /\ ENR N (s :/\: t))) -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5419 / ENR_CLOSURE_FROM_FRONTIER   (hash md5:569d960a9d18af28beb15870f563df40)
+// not bridged: 
+Theorem ENR_CLOSURE_FROM_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N (frontier N s) -> ENR N (closure N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5432 / ANR_CLOSURE_FROM_FRONTIER   (hash md5:ecf05cbd609e1f9e5cfe7be5de7c7304)
+// not bridged: 
+Theorem ANR_CLOSURE_FROM_FRONTIER : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N (frontier N s) -> ANR N (closure N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5438 / ENR_FINITE_UNIONS_CONVEX_CLOSED   (hash md5:a1ebbb43c28a1b6c15a678564b1f7496)
+// not bridged: 
+Theorem ENR_FINITE_UNIONS_CONVEX_CLOSED : forall N:set, N <> Empty -> forall t c= Power (R :^: idx N), finite t /\ (forall c c= R :^: idx N, c :e t -> closed N c /\ convex N c) -> ENR N (Union t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5444 / FINITE_IMP_ENR   (hash md5:abea22d05056cfe52917c78e2a6db8ec)
+// not bridged: 
+Theorem FINITE_IMP_ENR : forall N:set, N <> Empty -> forall s c= R :^: idx N, finite s -> ENR N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5449 / ENR_INSERT   (hash md5:d58175805edf1fe5832bf988f499268a)
+// not bridged: 
+Theorem ENR_INSERT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, closed N s /\ ENR N s -> ENR N (SetAdjoin s a).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5457 / ENR_TRIANGULATION   (hash md5:65c04bf79cdd371bd4824902f84abbf5)
+// not bridged: 
+Theorem ENR_TRIANGULATION : forall A:set, A <> Empty -> forall tr c= Power (R :^: idx A), triangulation A tr -> ENR A (Union tr).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5463 / ENR_SIMPLICIAL_COMPLEX   (hash md5:ad5cecd8e878bea692ae1373fc5ef98f)
+// not bridged: 
+Theorem ENR_SIMPLICIAL_COMPLEX : forall A:set, A <> Empty -> forall c c= Power (R :^: idx A), simplicial_complex A c -> ENR A (Union c).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5467 / ENR_PATH_COMPONENT_ENR   (hash md5:2f884f6ee3f6eaedb76356ef10b5e8cb)
+// not bridged: 
+Theorem ENR_PATH_COMPONENT_ENR : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, ENR N s -> ENR N {x0 :e R :^: idx N | path_component N s x x0}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5476 / ENR_CONNECTED_COMPONENT_ENR   (hash md5:e2cab11eb86351e309e4e9e66ff2e63d)
+// not bridged: 
+Theorem ENR_CONNECTED_COMPONENT_ENR : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x :e R :^: idx N, ENR N s -> ENR N {x0 :e R :^: idx N | connected_component N s x x0}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5485 / ENR_COMPONENT_ENR   (hash md5:35b4dc7787f60a01690738fffbf55738)
+// not bridged: 
+Theorem ENR_COMPONENT_ENR : forall N:set, N <> Empty -> forall c s c= R :^: idx N, ENR N s /\ c :e components N s -> ENR N c.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5490 / ENR_INTER_CLOSED_OPEN   (hash md5:65e90a065ad5652527bb88b6686c94ba)
+// not bridged: 
+Theorem ENR_INTER_CLOSED_OPEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> exists t u c= R :^: idx N, closed N t /\ (open N u /\ s = t :/\: u).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5497 / ENR_IMP_FSGIMA   (hash md5:715ec4e0040650d8c66090996d83c1cc)
+// not bridged: 
+Theorem ENR_IMP_FSGIMA : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> fsigma N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5503 / ENR_IMP_GDELTA   (hash md5:4ad5f9a51d4dd932716beef1e33bbda6)
+// not bridged: 
+Theorem ENR_IMP_GDELTA : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s -> gdelta N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5509 / IS_INTERVAL_IMP_FSIGMA   (hash md5:f77e69da2f27e522eb9a9463efb2ab50)
+// not bridged: 
+Theorem IS_INTERVAL_IMP_FSIGMA : forall N:set, N <> Empty -> forall s c= R :^: idx N, is_interval N s -> fsigma N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5513 / IS_INTERVAL_IMP_GDELTA   (hash md5:1f9cc3982fec7ace9961650353162298)
+// not bridged: 
+Theorem IS_INTERVAL_IMP_GDELTA : forall N:set, N <> Empty -> forall s c= R :^: idx N, is_interval N s -> gdelta N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5517 / IS_INTERVAL_IMP_BAIRE1_INDICATOR   (hash md5:8ea58c8c21c6d88788fcf248792889e8)
+// not bridged: 
+Theorem IS_INTERVAL_IMP_BAIRE1_INDICATOR : forall N:set, N <> Empty -> forall s c= R :^: idx N, is_interval N s -> (fun x :e R :^: idx N => indicator N s x) :e baire N 1 1 (R :^: idx N).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5521 / ANR_COMPONENTWISE   (hash md5:8ba0e0820772e910029cf25a04f53357)
+// not bridged: 
+Theorem ANR_COMPONENTWISE : forall N:set, N <> Empty -> forall s c= R :^: idx N, ANR N s <-> countable (components N s) /\ forall c c= R :^: idx N, c :e components N s -> c :e subtopology (R :^: idx N) (euclidean N) s /\ ANR N c.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5536 / ENR_COMPONENTWISE   (hash md5:877eb837cf400fe10c05ab9483a3d457)
+// not bridged: 
+Theorem ENR_COMPONENTWISE : forall N:set, N <> Empty -> forall s c= R :^: idx N, ENR N s <-> countable (components N s) /\ forall c c= R :^: idx N, c :e components N s -> c :e subtopology (R :^: idx N) (euclidean N) s /\ ENR N c.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5551 / ABSOLUTE_RETRACT_HOMEOMORPHIC_CONVEX_COMPACT   (hash md5:25ae997280a9858b6f3e28d14f651b00)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_HOMEOMORPHIC_CONVEX_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx N, forall u c= R :^: idx M, homeomorphic M N s u /\ (~ s = Empty /\ (s c= t /\ (convex M u /\ compact M u))) -> retract_of N s t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5562 / ABSOLUTE_RETRACT_PATH_IMAGE_ARC   (hash md5:e8c67ba952d786ef8fca40b902ce75ec)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_PATH_IMAGE_ARC : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, arc N g /\ path_image N g c= s -> retract_of N (path_image N g) s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5577 / AR_ARC_IMAGE   (hash md5:ebe02b68b925dc56b40488c7123c0408)
+// not bridged: 
+Theorem AR_ARC_IMAGE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> arc N g -> AR N (path_image N g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5581 / RELATIVE_FRONTIER_DEFORMATION_RETRACT_OF_PUNCTURED_CONVEX   (hash md5:a4f0217d697765c0211e2b1375f755c8)
+// not bridged: 
+Theorem RELATIVE_FRONTIER_DEFORMATION_RETRACT_OF_PUNCTURED_CONVEX : forall N:set, N <> Empty -> forall s t c= R :^: idx N, forall a :e R :^: idx N, convex N s /\ (convex N t /\ (bounded_hl N s /\ (a :e relative_interior N s /\ (relative_frontier N s c= t /\ t c= hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s)))) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (t :\: {a}),subtopology (R :^: idx N) (euclidean N) (t :\: {a})) (fun x:set => x) r /\ (retraction N (t :\: {a},relative_frontier N s) r /\ forall x :e R :^: idx N, exists c :e R, 0 < c /\ vector_sub N (r x) a = vector_mul N c (vector_sub N x a))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5757 / RELATIVE_FRONTIER_RETRACT_OF_PUNCTURED_AFFINE_HULL   (hash md5:60d09316799330f6a3dc7a55710a061c)
+// not bridged: 
+Theorem RELATIVE_FRONTIER_RETRACT_OF_PUNCTURED_AFFINE_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, convex N s /\ (bounded_hl N s /\ a :e relative_interior N s) -> retract_of N (relative_frontier N s) (hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5770 / RELATIVE_BOUNDARY_RETRACT_OF_PUNCTURED_AFFINE_HULL   (hash md5:7fa56fd4ce6e4c6df80eec0fca928b25)
+// not bridged: 
+Theorem RELATIVE_BOUNDARY_RETRACT_OF_PUNCTURED_AFFINE_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, convex N s /\ (compact N s /\ a :e relative_interior N s) -> retract_of N (s :\: relative_interior N s) (hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5781 / PATH_CONNECTED_SPHERE_GEN   (hash md5:43b8dd63ebdbc06c27c39c5685bfae62)
+// not bridged: 
+Theorem PATH_CONNECTED_SPHERE_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ ~ aff_dim N s = 1) -> path_connected N (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5797 / CONNECTED_SPHERE_GEN   (hash md5:cddb712d51e6b82a940372c5fba67b1f)
+// not bridged: 
+Theorem CONNECTED_SPHERE_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s /\ (bounded_hl N s /\ ~ aff_dim N s = 1) -> connected N (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5803 / ENR_RELATIVE_FRONTIER_CONVEX   (hash md5:da56808faad848371a207e7370d634fd)
+// not bridged: 
+Theorem ENR_RELATIVE_FRONTIER_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ convex N s -> ENR N (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5834 / ANR_RELATIVE_FRONTIER_CONVEX   (hash md5:85ab92768bca392f9360e56dd6860dfe)
+// not bridged: 
+Theorem ANR_RELATIVE_FRONTIER_CONVEX : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ convex N s -> ANR N (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5838 / FRONTIER_RETRACT_OF_PUNCTURED_UNIVERSE   (hash md5:04e7b53637ff7068134cb0ea83e7b433)
+// not bridged: 
+Theorem FRONTIER_RETRACT_OF_PUNCTURED_UNIVERSE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, convex N s /\ (bounded_hl N s /\ a :e interior N s) -> retract_of N (frontier N s) ((R :^: idx N) :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5849 / SPHERE_RETRACT_OF_PUNCTURED_UNIVERSE_GEN   (hash md5:4f16c8e3dc7a9101a199ce7df6be1e4c)
+// not bridged: 
+Theorem SPHERE_RETRACT_OF_PUNCTURED_UNIVERSE_GEN : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, forall b :e R :^: idx N, b :e ball N (a,r) -> retract_of N (sphere N (a,r)) ((R :^: idx N) :\: {b}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5856 / SPHERE_RETRACT_OF_PUNCTURED_UNIVERSE   (hash md5:f253c4dfef2d8c993f9c59add45ef0f1)
+// not bridged: 
+Theorem SPHERE_RETRACT_OF_PUNCTURED_UNIVERSE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, 0 < r -> retract_of N (sphere N (a,r)) ((R :^: idx N) :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5862 / ENR_SPHERE   (hash md5:52cada1608d89ce5d79c97ddf1807e25)
+// not bridged: 
+Theorem ENR_SPHERE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, ENR N (sphere N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5870 / ANR_SPHERE   (hash md5:8333f7932a301ff334ba0d03062655dc)
+// not bridged: 
+Theorem ANR_SPHERE : forall N:set, N <> Empty -> forall a :e R :^: idx N, forall r :e R, ANR N (sphere N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5874 / LOCALLY_PATH_CONNECTED_SPHERE_GEN   (hash md5:5dff360479db067e793803b2a7ec309b)
+// not bridged: 
+Theorem LOCALLY_PATH_CONNECTED_SPHERE_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ convex N s -> locally N {x :e Power (R :^: idx N) | path_connected N x} (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5893 / LOCALLY_CONNECTED_SPHERE_GEN   (hash md5:2899c7a6efd39c391b47cd45d4c5a042)
+// not bridged: 
+Theorem LOCALLY_CONNECTED_SPHERE_GEN : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ convex N s -> locally N {x :e Power (R :^: idx N) | connected N x} (relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5899 / ABSOLUTE_RETRACTION_CONVEX_CLOSED_RELATIVE   (hash md5:933b6562270ac7dc973fa88b8683155e)
+// not bridged: 
+Theorem ABSOLUTE_RETRACTION_CONVEX_CLOSED_RELATIVE : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (closed N s /\ (~ s = Empty /\ s c= t)) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (retraction N (t,s) r /\ forall x :e R :^: idx N, x :e hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} s :\: relative_interior N s -> r x :e relative_frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5912 / ABSOLUTE_RETRACTION_CONVEX_CLOSED   (hash md5:b8a12137a81a169932de249853a20299)
+// not bridged: 
+Theorem ABSOLUTE_RETRACTION_CONVEX_CLOSED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (closed N s /\ (~ s = Empty /\ s c= t)) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (retraction N (t,s) r /\ forall x :e R :^: idx N, ~ x :e s -> r x :e frontier N s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5924 / ABSOLUTE_RETRACT_CONVEX_CLOSED   (hash md5:3f40c32ed66b04b2d11cf5419b6b5834)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_CONVEX_CLOSED : forall N:set, N <> Empty -> forall s t c= R :^: idx N, convex N s /\ (closed N s /\ (~ s = Empty /\ s c= t)) -> retract_of N s t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5930 / ABSOLUTE_RETRACT_CONVEX   (hash md5:7f9adb11154a36a42d9e7ae9a6a70de2)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_CONVEX : forall N:set, N <> Empty -> forall s u c= R :^: idx N, convex N s /\ (~ s = Empty /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s) -> retract_of N s u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5940 / ENR_PATH_IMAGE_SIMPLE_PATH   (hash md5:4d74296bde85e1407a5e373f9bb42654)
+// not bridged: 
+Theorem ENR_PATH_IMAGE_SIMPLE_PATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> simple_path N g -> ENR N (path_image N g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5954 / ANR_PATH_IMAGE_SIMPLE_PATH   (hash md5:7015ed8267d8e37c55ceb2a65e4a38af)
+// not bridged: 
+Theorem ANR_PATH_IMAGE_SIMPLE_PATH : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> simple_path N g -> ANR N (path_image N g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:5963 / BORSUK_HOMOTOPY_EXTENSION_HOMOTOPIC   (hash md5:c6c52a2c3e3adb15c7bbfb467697e7e9)
+// not bridged: 
+Theorem BORSUK_HOMOTOPY_EXTENSION_HOMOTOPIC : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s t c= R :^: idx M, forall u c= R :^: idx N, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) t) s /\ ((ANR M s /\ ANR M t \/ ANR N u) /\ (continuous_on_hl M N f t /\ ({f x | x :e t} c= u /\ homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) u) f g))) -> exists g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) t,subtopology (R :^: idx N) (euclidean N) u) f g' /\ (continuous_on_hl M N g' t /\ ({g' x | x :e t} c= u /\ forall x :e R :^: idx M, x :e s -> g' x = g x))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6170 / BORSUK_HOMOTOPY_EXTENSION   (hash md5:77e8a4ec20747d1a4a8df4d472cb759b)
+// not bridged: 
+Theorem BORSUK_HOMOTOPY_EXTENSION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s t c= R :^: idx M, forall u c= R :^: idx N, closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) t) s /\ ((ANR M s /\ ANR M t \/ ANR N u) /\ (continuous_on_hl M N f t /\ ({f x | x :e t} c= u /\ homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) u) f g))) -> exists g':set -> set, (forall x :e R :^: idx M, g' x :e R :^: idx N) /\ (continuous_on_hl M N g' t /\ ({g' x | x :e t} c= u /\ forall x :e R :^: idx M, x :e s -> g' x = g x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6183 / NULLHOMOTOPIC_INTO_ANR_EXTENSION   (hash md5:2c179686532335a2b3464e96e72fa68a)
+// not bridged: 
+Theorem NULLHOMOTOPIC_INTO_ANR_EXTENSION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, closed M s /\ (continuous_on_hl M N f s /\ (~ s = Empty /\ ({f x | x :e s} c= t /\ ANR N t))) -> ((exists c :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => c)) <-> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (R :^: idx M) /\ ({g x | x :e R :^: idx M} c= t /\ forall x :e R :^: idx M, x :e s -> g x = f x))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6210 / NULLHOMOTOPIC_INTO_RELATIVE_FRONTIER_EXTENSION   (hash md5:b14e3cf88f50bb65f7f2a8fc7d62324b)
+// not bridged: 
+Theorem NULLHOMOTOPIC_INTO_RELATIVE_FRONTIER_EXTENSION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, closed M s /\ (continuous_on_hl M N f s /\ (~ s = Empty /\ ({f x | x :e s} c= relative_frontier N t /\ (convex N t /\ bounded_hl N t)))) -> ((exists c :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) (relative_frontier N t)) f (fun x:set => c)) <-> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (R :^: idx M) /\ ({g x | x :e R :^: idx M} c= relative_frontier N t /\ forall x :e R :^: idx M, x :e s -> g x = f x))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6224 / NULLHOMOTOPIC_INTO_SPHERE_EXTENSION   (hash md5:055702b0bba4bda8d26ff815333c6507)
+// not bridged: 
+Theorem NULLHOMOTOPIC_INTO_SPHERE_EXTENSION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx N, forall r :e R, closed M s /\ (continuous_on_hl M N f s /\ (~ s = Empty /\ {f x | x :e s} c= sphere N (a,r))) -> ((exists c :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) (sphere N (a,r))) f (fun x:set => c)) <-> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (R :^: idx M) /\ ({g x | x :e R :^: idx M} c= sphere N (a,r) /\ forall x :e R :^: idx M, x :e s -> g x = f x))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6247 / ABSOLUTE_RETRACT_CONTRACTIBLE_ANR   (hash md5:6ffe03f180e7881c76e05f5abc8f0747)
+// not bridged: 
+Theorem ABSOLUTE_RETRACT_CONTRACTIBLE_ANR : forall N:set, N <> Empty -> forall s u c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s /\ (contractible N s /\ (~ s = Empty /\ ANR N s)) -> retract_of N s u.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6259 / HOMOTOPIC_ON_COMPONENTS   (hash md5:392f2720857edd93cf6afab98cd999e9)
+// not bridged: 
+Theorem HOMOTOPIC_ON_COMPONENTS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> locally M {x :e Power (R :^: idx M) | connected M x} s /\ (forall c c= R :^: idx M, c :e components M s -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) c,subtopology (R :^: idx N) (euclidean N) t) f g) -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6275 / INESSENTIAL_ON_COMPONENTS   (hash md5:7f8655d9d294c01c77f7311edbc27451)
+// not bridged: 
+Theorem INESSENTIAL_ON_COMPONENTS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, locally M {x :e Power (R :^: idx M) | connected M x} s /\ (path_connected N t /\ (forall c c= R :^: idx M, c :e components M s -> exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) c,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a))) -> exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6312 / HOMOTOPIC_NEIGHBOURHOOD_EXTENSION   (hash md5:928a44d9f5985c2f97849c1e7881bdf8)
+// not bridged: 
+Theorem HOMOTOPIC_NEIGHBOURHOOD_EXTENSION : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> forall s t c= R :^: idx M, forall u c= R :^: idx N, continuous_on_hl M N f s /\ ({f x | x :e s} c= u /\ (continuous_on_hl M N g s /\ ({g x | x :e s} c= u /\ (closed_in (R :^: idx M) (subtopology (R :^: idx M) (euclidean M) s) t /\ (ANR N u /\ homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) t,subtopology (R :^: idx N) (euclidean N) u) f g))))) -> exists v c= R :^: idx M, t c= v /\ (v :e subtopology (R :^: idx M) (euclidean M) s /\ homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) v,subtopology (R :^: idx N) (euclidean N) u) f g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6407 / HOMOTOPIC_ON_COMPONENTS_EQ   (hash md5:a74e45f881a42a6618009dd3dc20a554)
+// not bridged: 
+Theorem HOMOTOPIC_ON_COMPONENTS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> locally M {x :e Power (R :^: idx M) | connected M x} s \/ compact M s /\ ANR N t -> (homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f g <-> continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ (continuous_on_hl M N g s /\ ({g x | x :e s} c= t /\ forall c c= R :^: idx M, c :e components M s -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) c,subtopology (R :^: idx N) (euclidean N) t) f g)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6480 / INESSENTIAL_ON_COMPONENTS_EQ   (hash md5:a5331dbb41e68e25e89061e4da38a6f5)
+// not bridged: 
+Theorem INESSENTIAL_ON_COMPONENTS_EQ : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> (locally M {x :e Power (R :^: idx M) | connected M x} s \/ compact M s /\ ANR N t) /\ path_connected N t -> ((exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a)) <-> continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ forall c c= R :^: idx M, c :e components M s -> exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) c,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6526 / COHOMOTOPICALLY_TRIVIAL_ON_COMPONENTS   (hash md5:175788a9e4360035a03dcdeda93336f1)
+// not bridged: 
+Theorem COHOMOTOPICALLY_TRIVIAL_ON_COMPONENTS : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, locally M {x :e Power (R :^: idx M) | connected M x} s \/ compact M s /\ ANR N t -> ((forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ (continuous_on_hl M N g s /\ {g x | x :e s} c= t)) -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f g) <-> forall c c= R :^: idx M, c :e components M s -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) -> continuous_on_hl M N f c /\ ({f x | x :e c} c= t /\ (continuous_on_hl M N g c /\ {g x | x :e c} c= t)) -> homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) c,subtopology (R :^: idx N) (euclidean N) t) f g).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6569 / COHOMOTOPICALLY_TRIVIAL_ON_COMPONENTS_NULL   (hash md5:8c6e05d544a9c1d8828771d55d71ac82)
+// not bridged: 
+Theorem COHOMOTOPICALLY_TRIVIAL_ON_COMPONENTS_NULL : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, (locally M {x :e Power (R :^: idx M) | connected M x} s \/ compact M s /\ ANR N t) /\ path_connected N t -> ((forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> continuous_on_hl M N f s /\ {f x | x :e s} c= t -> exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a)) <-> forall c c= R :^: idx M, c :e components M s -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> continuous_on_hl M N f c /\ {f x | x :e c} c= t -> exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) c,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6586 / COHOMOTOPICALLY_TRIVIAL_1D   (hash md5:6c59c256720d43cc04c06f4336740ed5)
+// not bridged: 
+Theorem COHOMOTOPICALLY_TRIVIAL_1D : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ (ANR N t /\ (connected N t /\ (dimindex M = 1 \/ (exists r c= R :^: idx 1, homeomorphic 1 M s r))))) -> exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx M) {x :e R :^: idx N :^: (R :^: idx M) | True} (subtopology (R :^: idx M) (euclidean M) s,subtopology (R :^: idx N) (euclidean N) t) f (fun x:set => a).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6684 / DEFORMATION_RETRACTION_COMPOSE   (hash md5:1026991e636cfb494ab596bc7e12dd43)
+// not bridged: 
+Theorem DEFORMATION_RETRACTION_COMPOSE : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, forall r1:set -> set, (forall x :e R :^: idx N, r1 x :e R :^: idx N) -> forall r2:set -> set, (forall x :e R :^: idx N, r2 x :e R :^: idx N) -> homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r1 /\ (retraction N (s,t) r1 /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) t,subtopology (R :^: idx N) (euclidean N) t) (fun x:set => x) r2 /\ retraction N (t,u) r2)) -> homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) (fun x:set => r2 (r1 x)) /\ retraction N (s,u) (fun x:set => r2 (r1 x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6708 / DEFORMATION_RETRACT_TRANS   (hash md5:4cb513903598e5f8916554b3543810ea)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_TRANS : forall N:set, N <> Empty -> forall s t u c= R :^: idx N, (exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r)) /\ (exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) t,subtopology (R :^: idx N) (euclidean N) t) (fun x:set => x) r /\ retraction N (t,u) r)) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,u) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6721 / DEFORMATION_RETRACT_IMP_HOMOTOPY_EQUIVALENT   (hash md5:7b020a9f426a10643680549a86cc2458)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_IMP_HOMOTOPY_EQUIVALENT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, (exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r)) -> homotopy_equivalent N N s t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6733 / DEFORMATION_RETRACT   (hash md5:e7e14b53c4b1447b0ecd7292dc799ef1)
+// not bridged: 
+Theorem DEFORMATION_RETRACT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, (exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r)) <-> retract_of N t s /\ exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) f /\ {f x | x :e s} c= t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6752 / ANR_STRONG_DEFORMATION_RETRACTION   (hash md5:db8c55e079dc5b8cf4435a7f42644b67)
+// not bridged: 
+Theorem ANR_STRONG_DEFORMATION_RETRACTION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, ANR N s /\ (exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r)) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {h :e R :^: idx N :^: (R :^: idx N) | forall x :e R :^: idx N, x :e t -> h x = x} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6968 / DEFORMATION_RETRACT_OF_CONTRACTIBLE   (hash md5:9762193975aa8b0c103712ba36ff57f8)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_OF_CONTRACTIBLE : forall N:set, N <> Empty -> forall s t c= R :^: idx N, contractible N s /\ retract_of N t s -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:6998 / AR_DEFORMATION_RETRACT_OF_CONTRACTIBLE   (hash md5:fd82edda903a02cb8391d13dc0ff2e55)
+// not bridged: 
+Theorem AR_DEFORMATION_RETRACT_OF_CONTRACTIBLE : forall N:set, N <> Empty -> forall s t c= R :^: idx N, contractible N s /\ (AR N t /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) t) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7006 / DEFORMATION_RETRACT_OF_CONTRACTIBLE_SING   (hash md5:406cdeb177ef315ffb0293fdc429ac6e)
+// not bridged: 
+Theorem DEFORMATION_RETRACT_OF_CONTRACTIBLE_SING : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, contractible N s /\ a :e s -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,{a}) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7016 / STRONG_DEFORMATION_RETRACT_OF_AR   (hash md5:45d777d28aae108a9a9dcd196eb48fbb)
+// not bridged: 
+Theorem STRONG_DEFORMATION_RETRACT_OF_AR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, AR N s /\ retract_of N t s -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {h :e R :^: idx N :^: (R :^: idx N) | forall x :e R :^: idx N, x :e t -> h x = x} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7028 / AR_STRONG_DEFORMATION_RETRACT_OF_AR   (hash md5:4f8c8d9069748405d91b245f972d86ca)
+// not bridged: 
+Theorem AR_STRONG_DEFORMATION_RETRACT_OF_AR : forall N:set, N <> Empty -> forall s t c= R :^: idx N, AR N s /\ (AR N t /\ closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) s) t) -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {h :e R :^: idx N :^: (R :^: idx N) | forall x :e R :^: idx N, x :e t -> h x = x} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,t) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7040 / SING_STRONG_DEFORMATION_RETRACT_OF_AR   (hash md5:cc1849b240df787fd17ffd8d6900c36c)
+// not bridged: 
+Theorem SING_STRONG_DEFORMATION_RETRACT_OF_AR : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, AR N s /\ a :e s -> exists r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) /\ (homotopic_with (R :^: idx N) (R :^: idx N) {h :e R :^: idx N :^: (R :^: idx N) | h a = a} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) (fun x:set => x) r /\ retraction N (s,{a}) r).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7052 / HOMOTOPY_EQUIVALENT_RELATIVE_FRONTIER_PUNCTURED_CONVEX   (hash md5:766de69015908bf1cff80f0d5d945aa4)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENT_RELATIVE_FRONTIER_PUNCTURED_CONVEX : forall N:set, N <> Empty -> forall s t c= R :^: idx N, forall a :e R :^: idx N, convex N s /\ (bounded_hl N s /\ (a :e relative_interior N s /\ (convex N t /\ (relative_frontier N s c= t /\ t c= hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s)))) -> homotopy_equivalent N N (relative_frontier N s) (t :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7061 / HOMOTOPY_EQUIVALENT_RELATIVE_FRONTIER_PUNCTURED_AFFINE_HULL   (hash md5:715b9b80768145fb8bc31000066cbf76)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENT_RELATIVE_FRONTIER_PUNCTURED_AFFINE_HULL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall a :e R :^: idx N, convex N s /\ (bounded_hl N s /\ a :e relative_interior N s) -> homotopy_equivalent N N (relative_frontier N s) (hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s :\: {a}).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7072 / HOMOTOPY_EQUIVALENT_PUNCTURED_UNIV_SPHERE   (hash md5:7dbbb4074a7eb274588cab84f4774375)
+// not bridged: 
+Theorem HOMOTOPY_EQUIVALENT_PUNCTURED_UNIV_SPHERE : forall N:set, N <> Empty -> forall c a :e R :^: idx N, forall r :e R, 0 < r -> homotopy_equivalent N N ((R :^: idx N) :\: {c}) (sphere N (a,r)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7090 / INVERTIBLE_FIXPOINT_PROPERTY   (hash md5:0f5e4a698763b1b0a80f4d3dc3f806c8)
+// not bridged: 
+Theorem INVERTIBLE_FIXPOINT_PROPERTY : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall i:set -> set, (forall x :e R :^: idx N, i x :e R :^: idx M) -> forall r:set -> set, (forall x :e R :^: idx M, r x :e R :^: idx N) -> continuous_on_hl N M i t /\ ({i x | x :e t} c= s /\ (continuous_on_hl M N r s /\ ({r x | x :e s} c= t /\ (forall y :e R :^: idx N, y :e t -> r (i y) = y)))) -> (forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx M) -> continuous_on_hl M M f s /\ {f x | x :e s} c= s -> exists x :e R :^: idx M, x :e s /\ f x = x) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> continuous_on_hl N N g t /\ {g x | x :e t} c= t -> exists y :e R :^: idx N, y :e t /\ g y = y.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7108 / HOMEOMORPHIC_FIXPOINT_PROPERTY   (hash md5:50bdab4c0e5a261bb9ea5c97de88d902)
+// not bridged: 
+Theorem HOMEOMORPHIC_FIXPOINT_PROPERTY : forall A B:set, A <> Empty -> B <> Empty -> forall s c= R :^: idx A, forall t c= R :^: idx B, homeomorphic B A s t -> ((forall f:set -> set, (forall x :e R :^: idx A, f x :e R :^: idx A) -> continuous_on_hl A A f s /\ {f x | x :e s} c= s -> exists x :e R :^: idx A, x :e s /\ f x = x) <-> forall g:set -> set, (forall x :e R :^: idx B, g x :e R :^: idx B) -> continuous_on_hl B B g t /\ {g x | x :e t} c= t -> exists y :e R :^: idx B, y :e t /\ g y = y).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7118 / RETRACT_FIXPOINT_PROPERTY   (hash md5:345634d3d68cc831f301b868a64ffe81)
+// not bridged: 
+Theorem RETRACT_FIXPOINT_PROPERTY : forall N:set, N <> Empty -> forall s t c= R :^: idx N, retract_of N t s /\ (forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> continuous_on_hl N N f s /\ {f x | x :e s} c= s -> exists x :e R :^: idx N, x :e s /\ f x = x) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx N) -> continuous_on_hl N N g t /\ {g x | x :e t} c= t -> exists y :e R :^: idx N, y :e t /\ g y = y.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7132 / FRONTIER_SUBSET_RETRACTION   (hash md5:defed8315a091bf1180a87dbb53804e2)
+// not bridged: 
+Theorem FRONTIER_SUBSET_RETRACTION : forall N:set, N <> Empty -> forall s t c= R :^: idx N, forall r:set -> set, (forall x :e R :^: idx N, r x :e R :^: idx N) -> bounded_hl N s /\ (frontier N s c= t /\ (continuous_on_hl N N r (closure N s) /\ ({r x | x :e s} c= t /\ (forall x :e R :^: idx N, x :e t -> r x = x)))) -> s c= t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7207 / NO_RETRACTION_FRONTIER_BOUNDED   (hash md5:acb62e1f3c1b4da907e5f669d0d03db9)
+// not bridged: 
+Theorem NO_RETRACTION_FRONTIER_BOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ ~ interior N s = Empty -> ~ retract_of N (frontier N s) s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7218 / COMPACT_SUBSET_FRONTIER_RETRACTION   (hash md5:7b9608e41b3662a098ab0952195efaea)
+// not bridged: 
+Theorem COMPACT_SUBSET_FRONTIER_RETRACTION : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (continuous_on_hl N N f s /\ (forall x :e R :^: idx N, x :e frontier N s -> f x = x)) -> s c= {f x | x :e s}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7274 / NOT_ABSOLUTE_RETRACT_COBOUNDED   (hash md5:bdcc38fd9e3e0e4254aa23ca9b07454d)
+// not bridged: 
+Theorem NOT_ABSOLUTE_RETRACT_COBOUNDED : forall N:set, N <> Empty -> forall s c= R :^: idx N, bounded_hl N s /\ retract_of N ((R :^: idx N) :\: s) (R :^: idx N) -> s = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7299 / BOHL   (hash md5:924d120dfd2b4a482d8d3ac3e4018282)
+// not bridged: 
+Theorem BOHL : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall a :e R :^: idx N, continuous_on_hl N N f s /\ (convex N s /\ (compact N s /\ a :e interior N s)) -> (exists x :e R :^: idx N, x :e s /\ f x = x) \/ exists x :e R :^: idx N, x :e frontier N s /\ x :e open_segment N (a,f x).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7374 / BOHL_ALT   (hash md5:f86b2be24bf89eaebba94fd995e05f6b)
+// not bridged: 
+Theorem BOHL_ALT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall a :e R :^: idx N, continuous_on_hl N N f s /\ (convex N s /\ (compact N s /\ (a :e interior N s /\ {f x | x :e s} c= (R :^: idx N) :\: {a}))) -> exists x :e R :^: idx N, x :e frontier N s /\ a :e open_segment N (x,f x).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7395 / BOHL_SIMPLE   (hash md5:ad8cb98a5cc2fa13d1bac8a48d333f38)
+// not bridged: 
+Theorem BOHL_SIMPLE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, forall a :e R :^: idx N, compact N s /\ (a :e s /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= (R :^: idx N) :\: {a})) -> exists x :e R :^: idx N, x :e frontier N s /\ ~ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7409 / BOUNDED_COMPONENT_RETRACT_COMPLEMENT_MEETS   (hash md5:9581851cd4f5d6ea4aaef80df2b10552)
+// not bridged: 
+Theorem BOUNDED_COMPONENT_RETRACT_COMPLEMENT_MEETS : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, closed N s /\ (retract_of N s t /\ (c :e components N ((R :^: idx N) :\: s) /\ bounded_hl N c)) -> ~ c c= t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7434 / COMPONENT_RETRACT_COMPLEMENT_MEETS   (hash md5:94701244a6e26ccdd4301dc3b558c8cb)
+// not bridged: 
+Theorem COMPONENT_RETRACT_COMPLEMENT_MEETS : forall N:set, N <> Empty -> forall s t c c= R :^: idx N, closed N s /\ (retract_of N s t /\ (bounded_hl N t /\ c :e components N ((R :^: idx N) :\: s))) -> ~ c c= t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7444 / FINITE_COMPLEMENT_ENR_COMPONENTS   (hash md5:e2e23ffc332a2e68436b60635a26a4eb)
+// not bridged: 
+Theorem FINITE_COMPLEMENT_ENR_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ ENR N s -> finite (components N ((R :^: idx N) :\: s)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7500 / FINITE_COMPLEMENT_ANR_COMPONENTS   (hash md5:8dca2d968684a64b149f3a3bbf17c960)
+// not bridged: 
+Theorem FINITE_COMPLEMENT_ANR_COMPONENTS : forall N:set, N <> Empty -> forall s c= R :^: idx N, compact N s /\ ANR N s -> finite (components N ((R :^: idx N) :\: s)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7505 / CARD_LE_RETRACT_COMPLEMENT_COMPONENTS   (hash md5:c6f1cf165beecaed446429a5e72a1754)
+// not bridged: 
+Theorem CARD_LE_RETRACT_COMPLEMENT_COMPONENTS : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (retract_of N s t /\ bounded_hl N t) -> atleastp (components N ((R :^: idx N) :\: s)) (components N ((R :^: idx N) :\: t)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7541 / CONNECTED_RETRACT_COMPLEMENT   (hash md5:763b081918d14a186e3cb784068d40a4)
+// not bridged: 
+Theorem CONNECTED_RETRACT_COMPLEMENT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (retract_of N s t /\ (bounded_hl N t /\ connected N ((R :^: idx N) :\: t))) -> connected N ((R :^: idx N) :\: s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7573 / BROUWER_INESSENTIAL_ANR   (hash md5:064457f3b17a51b33db0628291e3d5f0)
+// not bridged: 
+Theorem BROUWER_INESSENTIAL_ANR : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (~ s = Empty /\ (ANR N s /\ (continuous_on_hl N N f s /\ ({f x | x :e s} c= s /\ (exists a :e R :^: idx N, homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) s,subtopology (R :^: idx N) (euclidean N) s) f (fun x:set => a)))))) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7597 / BROUWER_CONTRACTIBLE_ANR   (hash md5:673407d5f00353b3eea72bb40405010a)
+// not bridged: 
+Theorem BROUWER_CONTRACTIBLE_ANR : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (contractible N s /\ (~ s = Empty /\ (ANR N s /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= s)))) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7606 / FIXED_POINT_INESSENTIAL_SPHERE_MAP   (hash md5:08f772bb4b9c7eec905dc6efbc8922f3)
+// not bridged: 
+Theorem FIXED_POINT_INESSENTIAL_SPHERE_MAP : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall a :e R :^: idx N, forall r :e R, forall c :e R :^: idx N, 0 < r /\ homotopic_with (R :^: idx N) (R :^: idx N) {x :e R :^: idx N :^: (R :^: idx N) | True} (subtopology (R :^: idx N) (euclidean N) (sphere N (a,r)),subtopology (R :^: idx N) (euclidean N) (sphere N (a,r))) f (fun x:set => c) -> exists x :e R :^: idx N, x :e sphere N (a,r) /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7620 / BROUWER_AR   (hash md5:bb65e6b2074e1c37f95e756aab8d824e)
+// not bridged: 
+Theorem BROUWER_AR : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (AR N s /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= s)) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7628 / BROUWER_ABSOLUTE_RETRACT   (hash md5:36ce3377da94554e7618bb2ad9495c9c)
+// not bridged: 
+Theorem BROUWER_ABSOLUTE_RETRACT : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, compact N s /\ (retract_of N s (R :^: idx N) /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= s)) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7640 / SCHAUDER_PROJECTION   (hash md5:7d4ab9467005281df3938f0a061270c3)
+// not bridged: 
+Theorem SCHAUDER_PROJECTION : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall e0 :e R, compact N s /\ 0 < e0 -> exists t c= R :^: idx N, exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (finite t /\ (t c= s /\ (continuous_on_hl N N f s /\ ({f x | x :e s} c= hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} t /\ forall x :e R :^: idx N, x :e s -> vector_norm N (vector_sub N (f x) x) < e0)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7708 / BROUWER_FACTOR_THROUGH_AR   (hash md5:8d8d4420db0f3b67bfb4f47b53d6f7fc)
+// not bridged: 
+Theorem BROUWER_FACTOR_THROUGH_AR : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall g:set -> set, (forall x :e R :^: idx N, g x :e R :^: idx M) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ ({f x | x :e s} c= t /\ (continuous_on_hl N M g t /\ ({g x | x :e t} c= s /\ (compact M s /\ AR N t)))) -> exists x :e R :^: idx M, x :e s /\ g (f x) = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7731 / BROUWER_ABSOLUTE_RETRACT_GEN   (hash md5:8c3b69b2439e94ec98f68b35ff82c8a8)
+// not bridged: 
+Theorem BROUWER_ABSOLUTE_RETRACT_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, retract_of N s (R :^: idx N) /\ (continuous_on_hl N N f s /\ ({f x | x :e s} c= s /\ bounded_hl N {f x | x :e s})) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7746 / SCHAUDER_GEN   (hash md5:5d2678a0d6937c12da45b6a0b166486b)
+// not bridged: 
+Theorem SCHAUDER_GEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s t c= R :^: idx N, AR N s /\ (continuous_on_hl N N f s /\ ({f x | x :e s} c= t /\ (t c= s /\ compact N t))) -> exists x :e R :^: idx N, x :e t /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7756 / SCHAUDER   (hash md5:f3be30122822e389d0a1c734ee58ed89)
+// not bridged: 
+Theorem SCHAUDER : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s t c= R :^: idx N, convex N s /\ (~ s = Empty /\ (t c= s /\ (compact N t /\ (continuous_on_hl N N f s /\ {f x | x :e s} c= t)))) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7766 / SCHAUDER_UNIV   (hash md5:8c83fac818a1a276fa4cdbbc1cfb5a94)
+// not bridged: 
+Theorem SCHAUDER_UNIV : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> continuous_on_hl N N f (R :^: idx N) /\ bounded_hl N {f x | x :e R :^: idx N} -> exists x :e R :^: idx N, f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7776 / ROTHE   (hash md5:cf097587aacd9e4bfd2d8d97e2403597)
+// not bridged: 
+Theorem ROTHE : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) -> forall s c= R :^: idx N, closed N s /\ (convex N s /\ (~ s = Empty /\ (continuous_on_hl N N f s /\ (bounded_hl N {f x | x :e s} /\ {f x | x :e frontier N s} c= s)))) -> exists x :e R :^: idx N, x :e s /\ f x = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7805 / PERRON_FROBENIUS   (hash md5:49100c81d0f4b5ca5c7cf91e14de3454)
+// not bridged: 
+Theorem PERRON_FROBENIUS : forall N:set, N <> Empty -> forall A :e R :^: idx N :^: idx N, (forall i j :e omega, 1 <= i /\ (i <= dimindex N /\ (1 <= j /\ j <= dimindex N)) -> 0 <= A i j) -> exists v :e R :^: idx N, exists c :e R, vector_norm N v = 1 /\ (0 <= c /\ matrix_vector_mul N N A v = vector_mul N c v).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7904 / interval_bij   (hash md5:b0393a8fb25c5ec6d0dd54339100d628)
+// not bridged: 
+Theorem interval_bij_thm : forall N:set, N <> Empty -> forall x b a v u :e R :^: idx N, interval_bij N (a,b) (u,v) x = fun i :e idx N => u i + (x i + - a i) :/: (b i + - a i) * (v i + - u i).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7908 / INTERVAL_BIJ_AFFINE   (hash md5:62443890a6f96ad95adfca014af63229)
+// not bridged: 
+Theorem INTERVAL_BIJ_AFFINE : forall A:set, A <> Empty -> forall a b u v x :e R :^: idx A, interval_bij A (a,b) (u,v) x = vector_add A (fun i :e idx A => (v i + - u i) :/: (b i + - a i) * x i) (fun i :e idx A => u i + - (v i + - u i) :/: (b i + - a i) * a i).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7916 / CONTINUOUS_INTERVAL_BIJ   (hash md5:497ccb94c84ffed443784a0eb19ff0ea)
+// not bridged: 
+Theorem CONTINUOUS_INTERVAL_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, continuous N (R :^: idx N) (interval_bij N (a,b) (u,v)) (at_hl N x).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7926 / CONTINUOUS_ON_INTERVAL_BIJ   (hash md5:91ed74767c312649c7955b2654c34267)
+// not bridged: 
+Theorem CONTINUOUS_ON_INTERVAL_BIJ : forall A:set, A <> Empty -> forall a b u v :e R :^: idx A, forall s c= R :^: idx A, continuous_on_hl A A (interval_bij A (a,b) (u,v)) s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7931 / IN_INTERVAL_INTERVAL_BIJ   (hash md5:64071316262353dd76fb60eaa5ea1f95)
+// not bridged: 
+Theorem IN_INTERVAL_INTERVAL_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, x :e closed_interval N (seq_cons (a,b) seq_nil) /\ ~ closed_interval N (seq_cons (u,v) seq_nil) = Empty -> interval_bij N (a,b) (u,v) x :e closed_interval N (seq_cons (u,v) seq_nil).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7951 / INTERVAL_BIJ_BIJ   (hash md5:0f323b2145c332594d63f4164df9d53d)
+// not bridged: 
+Theorem INTERVAL_BIJ_BIJ : forall N:set, N <> Empty -> forall a b u v x :e R :^: idx N, (forall i :e omega, 1 <= i /\ i <= dimindex N -> a i < b i /\ u i < v i) -> interval_bij N (a,b) (u,v) (interval_bij N (u,v) (a,b) x) = x.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7964 / INFNORM_2   (hash md5:db2c9d4c5bf79b92764ce1cf221aa625)
+// not bridged: 
+Theorem INFNORM_2 : forall x :e R :^: idx_n 2, infnorm (idx_n 2) x = if abs_SNo (x 1) <= abs_SNo (x 2) then abs_SNo (x 2) else abs_SNo (x 1).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7969 / INFNORM_EQ_1_2   (hash md5:29cee215bd1075d8a0b478ce39e7a98c)
+// not bridged: 
+Theorem INFNORM_EQ_1_2 : forall x :e R :^: idx_n 2, infnorm (idx_n 2) x = 1 <-> abs_SNo (x 1) <= 1 /\ (abs_SNo (x 2) <= 1 /\ (x 1 = - 1 \/ (x 1 = 1 \/ (x 2 = - 1 \/ x 2 = 1)))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7975 / INFNORM_EQ_1_IMP   (hash md5:acf21fe3095c6a7e40d4d4d39f209322)
+// not bridged: 
+Theorem INFNORM_EQ_1_IMP : forall x :e R :^: idx_n 2, infnorm (idx_n 2) x = 1 -> abs_SNo (x 1) <= 1 /\ abs_SNo (x 2) <= 1.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:7979 / FASHODA_UNIT   (hash md5:6387fbde067f7a9d0e1d54c36bbf683d)
+// not bridged: 
+Theorem FASHODA_UNIT : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx_n 2) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx_n 2) -> {f x | x :e closed_interval 1 (seq_cons (vector_neg 1 (vec 1 1),vec 1 1) seq_nil)} c= closed_interval (idx_n 2) (seq_cons (vector_neg (idx_n 2) (vec (idx_n 2) 1),vec (idx_n 2) 1) seq_nil) /\ ({g x | x :e closed_interval 1 (seq_cons (vector_neg 1 (vec 1 1),vec 1 1) seq_nil)} c= closed_interval (idx_n 2) (seq_cons (vector_neg (idx_n 2) (vec (idx_n 2) 1),vec (idx_n 2) 1) seq_nil) /\ (continuous_on_hl 1 (idx_n 2) f (closed_interval 1 (seq_cons (vector_neg 1 (vec 1 1),vec 1 1) seq_nil)) /\ (continuous_on_hl 1 (idx_n 2) g (closed_interval 1 (seq_cons (vector_neg 1 (vec 1 1),vec 1 1) seq_nil)) /\ (f (vector_neg 1 (vec 1 1)) 1 = - 1 /\ (f (vec 1 1) 1 = 1 /\ (g (vector_neg 1 (vec 1 1)) 2 = - 1 /\ g (vec 1 1) 2 = 1)))))) -> exists s t :e R :^: idx 1, s :e closed_interval 1 (seq_cons (vector_neg 1 (vec 1 1),vec 1 1) seq_nil) /\ (t :e closed_interval 1 (seq_cons (vector_neg 1 (vec 1 1),vec 1 1) seq_nil) /\ f s = g t).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8118 / FASHODA_UNIT_PATH   (hash md5:cce4b19432c257594bf1623e5a747b7d)
+// not bridged: 
+Theorem FASHODA_UNIT_PATH : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx_n 2) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx_n 2) -> path (idx_n 2) f /\ (path (idx_n 2) g /\ (path_image (idx_n 2) f c= closed_interval (idx_n 2) (seq_cons (vector_neg (idx_n 2) (vec (idx_n 2) 1),vec (idx_n 2) 1) seq_nil) /\ (path_image (idx_n 2) g c= closed_interval (idx_n 2) (seq_cons (vector_neg (idx_n 2) (vec (idx_n 2) 1),vec (idx_n 2) 1) seq_nil) /\ (pathstart (idx_n 2) f 1 = - 1 /\ (pathfinish (idx_n 2) f 1 = 1 /\ (pathstart (idx_n 2) g 2 = - 1 /\ pathfinish (idx_n 2) g 2 = 1)))))) -> exists z :e R :^: idx_n 2, z :e path_image (idx_n 2) f /\ z :e path_image (idx_n 2) g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8157 / FASHODA   (hash md5:4dd150dda1f0508cd032e8016593c231)
+// not bridged: 
+Theorem FASHODA : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx_n 2) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx_n 2) -> forall a b :e R :^: idx_n 2, path (idx_n 2) f /\ (path (idx_n 2) g /\ (path_image (idx_n 2) f c= closed_interval (idx_n 2) (seq_cons (a,b) seq_nil) /\ (path_image (idx_n 2) g c= closed_interval (idx_n 2) (seq_cons (a,b) seq_nil) /\ (pathstart (idx_n 2) f 1 = a 1 /\ (pathfinish (idx_n 2) f 1 = b 1 /\ (pathstart (idx_n 2) g 2 = a 2 /\ pathfinish (idx_n 2) g 2 = b 2)))))) -> exists z :e R :^: idx_n 2, z :e path_image (idx_n 2) f /\ z :e path_image (idx_n 2) g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8261 / SEGMENT_VERTICAL   (hash md5:c99d073d5892ea886b3ef3434e0c4371)
+// not bridged: 
+Theorem SEGMENT_VERTICAL : forall a b x :e R :^: idx_n 2, a 1 = b 1 -> (x :e closed_segment (idx_n 2) (seq_cons (a,b) seq_nil) <-> x 1 = a 1 /\ (x 1 = b 1 /\ (a 2 <= x 2 /\ x 2 <= b 2 \/ b 2 <= x 2 /\ x 2 <= a 2))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8279 / SEGMENT_HORIZONTAL   (hash md5:3ed87bb77907158cf0a7da5ce13909b1)
+// not bridged: 
+Theorem SEGMENT_HORIZONTAL : forall a b x :e R :^: idx_n 2, a 2 = b 2 -> (x :e closed_segment (idx_n 2) (seq_cons (a,b) seq_nil) <-> x 2 = a 2 /\ (x 2 = b 2 /\ (a 1 <= x 1 /\ x 1 <= b 1 \/ b 1 <= x 1 /\ x 1 <= a 1))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8301 / FASHODA_INTERLACE   (hash md5:4a108c07f6d2a2c48c2e4fa414e2a4a3)
+// not bridged: 
+Theorem FASHODA_INTERLACE : forall f:set -> set, (forall x :e R :^: idx 1, f x :e R :^: idx_n 2) -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx_n 2) -> forall a b :e R :^: idx_n 2, path (idx_n 2) f /\ (path (idx_n 2) g /\ (path_image (idx_n 2) f c= closed_interval (idx_n 2) (seq_cons (a,b) seq_nil) /\ (path_image (idx_n 2) g c= closed_interval (idx_n 2) (seq_cons (a,b) seq_nil) /\ (pathstart (idx_n 2) f 2 = a 2 /\ (pathfinish (idx_n 2) f 2 = a 2 /\ (pathstart (idx_n 2) g 2 = a 2 /\ (pathfinish (idx_n 2) g 2 = a 2 /\ (pathstart (idx_n 2) f 1 < pathstart (idx_n 2) g 1 /\ (pathstart (idx_n 2) g 1 < pathfinish (idx_n 2) f 1 /\ pathfinish (idx_n 2) f 1 < pathfinish (idx_n 2) g 1))))))))) -> exists z :e R :^: idx_n 2, z :e path_image (idx_n 2) f /\ z :e path_image (idx_n 2) g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8398 / UNBOUNDED_COMPONENTS_COMPLEMENT_ABSOLUTE_RETRACT   (hash md5:9fb0fc0f65deecbaa7fa2ee9423b9e89)
+// not bridged: 
+Theorem UNBOUNDED_COMPONENTS_COMPLEMENT_ABSOLUTE_RETRACT : forall N:set, N <> Empty -> forall s c c= R :^: idx N, compact N s /\ (AR N s /\ c :e components N ((R :^: idx N) :\: s)) -> ~ bounded_hl N c.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8429 / CONNECTED_COMPLEMENT_ABSOLUTE_RETRACT   (hash md5:b76adb297b6a60fb2482ea0664a6014b)
+// not bridged: 
+Theorem CONNECTED_COMPLEMENT_ABSOLUTE_RETRACT : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ (compact N s /\ AR N s) -> connected N ((R :^: idx N) :\: s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8441 / PATH_CONNECTED_COMPLEMENT_ABSOLUTE_RETRACT   (hash md5:805b364853e96b06d9f700d66c6c6e74)
+// not bridged: 
+Theorem PATH_CONNECTED_COMPLEMENT_ABSOLUTE_RETRACT : forall N:set, N <> Empty -> forall s c= R :^: idx N, 2 <= dimindex N /\ (compact N s /\ AR N s) -> path_connected N ((R :^: idx N) :\: s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8453 / CONNECTED_COMPLEMENT_HOMEOMORPHIC_CONVEX_COMPACT   (hash md5:641c890fea595edc6a522ad210dd7cab)
+// not bridged: 
+Theorem CONNECTED_COMPLEMENT_HOMEOMORPHIC_CONVEX_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall t c= R :^: idx M, 2 <= dimindex N /\ (homeomorphic M N s t /\ (convex M t /\ compact M t)) -> connected N ((R :^: idx N) :\: s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8466 / PATH_CONNECTED_COMPLEMENT_HOMEOMORPHIC_CONVEX_COMPACT   (hash md5:3e004d1a06e049a4dcb7afaad0189cb8)
+// not bridged: 
+Theorem PATH_CONNECTED_COMPLEMENT_HOMEOMORPHIC_CONVEX_COMPACT : forall M N:set, M <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall t c= R :^: idx M, 2 <= dimindex N /\ (homeomorphic M N s t /\ (convex M t /\ compact M t)) -> path_connected N ((R :^: idx N) :\: s).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8482 / RETRACTION_ARC   (hash md5:9fddc1a793ee0de103ad28a67b4dd075)
+// not bridged: 
+Theorem RETRACTION_ARC : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> arc N p -> exists f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx N) /\ (continuous_on_hl N N f (R :^: idx N) /\ ({f x | x :e R :^: idx N} c= path_image N p /\ forall x :e R :^: idx N, x :e path_image N p -> f x = x)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8492 / PATH_CONNECTED_ARC_COMPLEMENT   (hash md5:f8af714dc996ab06cc62fff5e894cb5d)
+// not bridged: 
+Theorem PATH_CONNECTED_ARC_COMPLEMENT : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> 2 <= dimindex N /\ arc N p -> path_connected N ((R :^: idx N) :\: path_image N p).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8503 / CONNECTED_ARC_COMPLEMENT   (hash md5:69ae6594415c46c053506ce7de679608)
+// not bridged: 
+Theorem CONNECTED_ARC_COMPLEMENT : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> 2 <= dimindex N /\ arc N p -> connected N ((R :^: idx N) :\: path_image N p).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8508 / INSIDE_ARC_EMPTY   (hash md5:c05a7581bca65b062dc3b22d78649493)
+// not bridged: 
+Theorem INSIDE_ARC_EMPTY : forall N:set, N <> Empty -> forall p:set -> set, (forall x :e R :^: idx 1, p x :e R :^: idx N) -> arc N p -> inside N (path_image N p) = Empty.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8519 / INSIDE_SIMPLE_CURVE_IMP_CLOSED   (hash md5:772658bbedf1a29d1ef897aba716c184)
+// not bridged: 
+Theorem INSIDE_SIMPLE_CURVE_IMP_CLOSED : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall x :e R :^: idx N, simple_path N g /\ x :e inside N (path_image N g) -> pathfinish N g = pathstart N g.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8530 / FINITE_ANR_COMPLEMENT_COMPONENTS_CONCENTRIC   (hash md5:5b976fa1b01feabdf14bed6a3d7f811e)
+// not bridged: 
+Theorem FINITE_ANR_COMPLEMENT_COMPONENTS_CONCENTRIC : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall p :e R :^: idx N, forall a b :e R, compact N s /\ (ANR N s /\ a < b) -> finite {c :e Power (R :^: idx N) | c :e components N (cball N (p,b) :\: s) /\ ~ closure N c :/\: cball N (p,a) = Empty}.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:8780 / ACCESSIBLE_FRONTIER_ANR_INTER_COMPLEMENT_COMPONENT   (hash md5:47e21e6cff84774f38347b83619e2c55)
+// not bridged: 
+Theorem ACCESSIBLE_FRONTIER_ANR_INTER_COMPLEMENT_COMPONENT : forall N:set, N <> Empty -> forall s c c= R :^: idx N, forall p :e R :^: idx N, forall b c= R :^: idx N, compact N s /\ (ANR N s /\ (c :e components N (b :\: s) /\ (p :e frontier N c /\ p :e interior N b))) -> exists g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) /\ (arc N g /\ (pathfinish N g = p /\ forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) :\: {vec 1 1} -> g t :e c)).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9221 / ACCESSIBLE_FRONTIER_ANR_COMPLEMENT_COMPONENT   (hash md5:26926aa682ea480512823ce986a81ac6)
+// not bridged: 
+Theorem ACCESSIBLE_FRONTIER_ANR_COMPLEMENT_COMPONENT : forall N:set, N <> Empty -> forall s c c= R :^: idx N, forall x y :e R :^: idx N, compact N s /\ (ANR N s /\ (c :e components N ((R :^: idx N) :\: s) /\ (x :e c /\ y :e frontier N c))) -> exists g:set -> set, (forall x0 :e R :^: idx 1, g x0 :e R :^: idx N) /\ (arc N g /\ (pathstart N g = x /\ (pathfinish N g = y /\ forall t :e R :^: idx 1, t :e closed_interval 1 (seq_cons (vec 1 0,vec 1 1) seq_nil) :\: {vec 1 1} -> g t :e c))).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9297 / LPC_INTERMEDIATE_CLOSURE_ANR_COMPLEMENT_COMPONENT   (hash md5:e4fa73a5ddd53a2e0dc722d98cb08715)
+// not bridged: 
+Theorem LPC_INTERMEDIATE_CLOSURE_ANR_COMPLEMENT_COMPONENT : forall N:set, N <> Empty -> forall s c t c= R :^: idx N, compact N s /\ (ANR N s /\ (c :e components N ((R :^: idx N) :\: s) /\ (c c= t /\ t c= closure N c))) -> locally N {x :e Power (R :^: idx N) | path_connected N x} t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9480 / LPC_INTERMEDIATE_CLOSURE_ANR_COMPLEMENT   (hash md5:2894145212ceaf8795aee6f1478a5e8d)
+// not bridged: 
+Theorem LPC_INTERMEDIATE_CLOSURE_ANR_COMPLEMENT : forall N:set, N <> Empty -> forall s t c= R :^: idx N, compact N s /\ (ANR N s /\ ((R :^: idx N) :\: s c= t /\ t :/\: interior N s = Empty)) -> locally N {x :e Power (R :^: idx N) | path_connected N x} t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9642 / LPC_SUPERSET_COMPLEMENT_SIMPLE_PATH_IMAGE   (hash md5:fc2e33dc40f7510b57412f7f83648a7a)
+// not bridged: 
+Theorem LPC_SUPERSET_COMPLEMENT_SIMPLE_PATH_IMAGE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, 2 <= dimindex N /\ (simple_path N g /\ (R :^: idx N) :\: path_image N g c= s) -> locally N {x :e Power (R :^: idx N) | path_connected N x} s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9654 / LPC_OPEN_SIMPLE_PATH_COMPLEMENT   (hash md5:8182fc51f07a15b5438ccc62c0991e0b)
+// not bridged: 
+Theorem LPC_OPEN_SIMPLE_PATH_COMPLEMENT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> simple_path N g -> locally N {x :e Power (R :^: idx N) | path_connected N x} ((R :^: idx N) :\: (path_image N g :\: {pathstart N g,pathfinish N g})).
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9669 / PATH_CONNECTED_INTERMEDIATE_CLOSURE_ANR_COMPLEMENT_COMPONENT   (hash md5:7790893a818efe93e9625de919900a43)
+// not bridged: 
+Theorem PATH_CONNECTED_INTERMEDIATE_CLOSURE_ANR_COMPLEMENT_COMPONENT : forall N:set, N <> Empty -> forall s c t c= R :^: idx N, compact N s /\ (ANR N s /\ (c :e components N ((R :^: idx N) :\: s) /\ (c c= t /\ t c= closure N c))) -> path_connected N t.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9683 / PATH_CONNECTED_SUPERSET_COMPLEMENT_ARC_IMAGE   (hash md5:9b9c51c4f5d6b9914dd801757352740e)
+// not bridged: 
+Theorem PATH_CONNECTED_SUPERSET_COMPLEMENT_ARC_IMAGE : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> forall s c= R :^: idx N, 2 <= dimindex N /\ (arc N g /\ (R :^: idx N) :\: path_image N g c= s) -> path_connected N s.
+Admitted.
+
+// HOL Light: Multivariate/degree.ml:9699 / PATH_CONNECTED_OPEN_ARC_COMPLEMENT   (hash md5:901f1b58b3f834cbef74e43885152eef)
+// not bridged: 
+Theorem PATH_CONNECTED_OPEN_ARC_COMPLEMENT : forall N:set, N <> Empty -> forall g:set -> set, (forall x :e R :^: idx 1, g x :e R :^: idx N) -> 2 <= dimindex N /\ arc N g -> path_connected N ((R :^: idx N) :\: (path_image N g :\: {pathstart N g,pathfinish N g})).
+Admitted.
+

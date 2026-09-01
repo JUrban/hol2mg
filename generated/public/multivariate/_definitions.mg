@@ -216,11 +216,11 @@ Definition prod_group : set -> set -> set -> set -> set :=
 
 // HOL Light: Library/grouptheory.ml:2708 / product_group   (hash md5:70b6b5c78239254a611370edf1f62b31)
 Definition product_group : set -> set -> set -> (set -> set) -> set :=
-  fun A:set => fun K:set => fun k:set => fun G:set -> set => ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)},(fun x :e K => if x :e k then group_id A (G x) else choose_in A (fun y:set => True),(fun x :e A :^: K => fun x0 :e K => if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True),fun x :e A :^: K => fun y :e A :^: K => fun x0 :e K => if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True)))).
+  fun A:set => fun K:set => fun k:set => fun G:set -> set => ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)},(fun x :e K => if x :e k then group_id A (G x) else choose_in A (fun y:set => False),(fun x :e A :^: K => fun x0 :e K => if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => False),fun x :e A :^: K => fun y :e A :^: K => fun x0 :e K => if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => False)))).
 
 // HOL Light: Library/grouptheory.ml:2834 / sum_group   (hash md5:122a29b7397b287f97a96eb6d379b3b1)
 Definition sum_group : set -> set -> set -> (set -> set) -> set :=
-  fun A:set => fun K:set => fun k:set => fun G:set -> set => subgroup_generated (A :^: K) (product_group A K k G) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}.
+  fun A:set => fun K:set => fun k:set => fun G:set -> set => subgroup_generated (A :^: K) (product_group A K k G) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}.
 
 // HOL Light: Library/grouptheory.ml:3011 / group_homomorphism   (hash md5:155330f5ea369d08f51afdd324041be5)
 Definition group_homomorphism_hl : set -> set -> set -> (set -> set) -> prop :=
@@ -464,7 +464,7 @@ Definition simplicial_face : set -> (set -> set) -> set -> set :=
 
 // HOL Light: Multivariate/homology.ml:214 / singular_face   (hash md5:87b070de505849208d74addb118fde1f)
 Definition singular_face : set -> set -> set -> (set -> set) -> set -> set :=
-  fun A:set => fun p:set => fun k:set => fun f:set -> set => fun x:set => if x :e standard_simplex (minus_nat p 1) then f (fun x0 :e omega => simplicial_face k (fun x1:set => x x1) x0) else choose_in A (fun y:set => True).
+  fun A:set => fun p:set => fun k:set => fun f:set -> set => fun x:set => if x :e standard_simplex (minus_nat p 1) then f (fun x0 :e omega => simplicial_face k (fun x1:set => x x1) x0) else choose_in A (fun y:set => False).
 
 // HOL Light: Multivariate/homology.ml:329 / chain_boundary   (hash md5:af9f2d16e46763ec508c99534aab2fe5)
 Definition chain_boundary : set -> set -> set -> set :=
@@ -472,7 +472,7 @@ Definition chain_boundary : set -> set -> set -> set :=
 
 // HOL Light: Multivariate/homology.ml:904 / simplex_map   (hash md5:df8c758123197abd3acc153ffb9dc9e7)
 Definition simplex_map : set -> set -> set -> (set -> set) -> (set -> set) -> set -> set :=
-  fun A:set => fun B:set => fun p:set => fun g:set -> set => fun c:set -> set => fun x:set => if x :e standard_simplex p then g (c x) else choose_in B (fun y:set => True).
+  fun A:set => fun B:set => fun p:set => fun g:set -> set => fun c:set -> set => fun x:set => if x :e standard_simplex p then g (c x) else choose_in B (fun y:set => False).
 
 // HOL Light: Multivariate/homology.ml:961 / chain_map   (hash md5:f8b8d8a7a1889432c96a511e8bcbc02c)
 Definition chain_map : set -> set -> set -> (set -> set) -> set -> set :=
@@ -480,7 +480,7 @@ Definition chain_map : set -> set -> set -> (set -> set) -> set -> set :=
 
 // HOL Light: Multivariate/homology.ml:1269 / oriented_simplex   (hash md5:29f86a1ec0fe4b1484e9073adb9151df)
 Definition oriented_simplex : set -> (set -> set -> set) -> set -> set :=
-  fun p:set => fun l:set -> set -> set => fun x:set => if x :e standard_simplex p then fun x0 :e omega => finsum {i :e omega | 0 <= i /\ i <= p} (fun j:set => l j x0 * x j) else choose_in (R :^: omega) (fun y:set => True).
+  fun p:set => fun l:set -> set -> set => fun x:set => if x :e standard_simplex p then fun x0 :e omega => finsum {i :e omega | 0 <= i /\ i <= p} (fun j:set => l j x0 * x j) else choose_in (R :^: omega) (fun y:set => False).
 
 // HOL Light: Multivariate/homology.ml:1454 / simplex_cone   (hash md5:278eb6c411d15b89182dbf15c32adb7e)
 Definition simplex_cone : set :=
@@ -500,7 +500,7 @@ Definition simplicial_subdivision : set :=
 
 // HOL Light: Multivariate/homology.ml:2030 / singular_subdivision   (hash md5:d9691bb5a226c81d351685a9a0e04a2b)
 Definition singular_subdivision : set -> set -> set -> set :=
-  fun A:set => fun p:set => frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => chain_map (R :^: omega) A p (fun x0:set => f x0) (simplicial_subdivision p (frag_of (R :^: omega :^: (R :^: omega)) (fun x0 :e R :^: omega => if x0 :e standard_simplex p then x0 else choose_in (R :^: omega) (fun y:set => True))))).
+  fun A:set => fun p:set => frag_extend (A :^: (R :^: omega)) (A :^: (R :^: omega)) (fun f:set => chain_map (R :^: omega) A p (fun x0:set => f x0) (simplicial_subdivision p (frag_of (R :^: omega :^: (R :^: omega)) (fun x0 :e R :^: omega => if x0 :e standard_simplex p then x0 else choose_in (R :^: omega) (fun y:set => False))))).
 
 // HOL Light: Multivariate/vectors.ml:56 / vector_add   (hash md5:7391c24a21101f8713fc4e968feace1a)
 Definition vector_add : set -> set -> set -> set :=
@@ -1388,7 +1388,7 @@ Definition prod_topology : set -> set -> set -> set -> set :=
 
 // HOL Light: Multivariate/metric.ml:4096 / product_topology   (hash md5:25214740aa13211e87151bd57fc9a748)
 Definition product_topology : set -> set -> set -> (set -> set) -> set :=
-  fun A:set => fun K:set => fun t:set => fun tops:set -> set => {x :e Power (A :^: K) | exists u c= Power (A :^: K), True /\ (forall x0 :e u, x0 :e relative_to (A :^: K) {x01 :e Power (A :^: K) | exists u c= Power (A :^: K), finite u /\ (forall x1 :e u, x1 :e \/_ k :e K, {{x11 :e A :^: K | x11 k :e u} | u :e Power A, k :e t /\ u :e tops k}) /\ {x :e A :^: K | forall Y :e u, x :e Y} = x01} {x01 :e A :^: K | (forall x :e K, ~ x :e t -> x01 x = choose_in A (fun y:set => True)) /\ forall k :e K, k :e t -> x01 k :e topspace A (tops k)}) /\ Union u = x}.
+  fun A:set => fun K:set => fun t:set => fun tops:set -> set => {x :e Power (A :^: K) | exists u c= Power (A :^: K), True /\ (forall x0 :e u, x0 :e relative_to (A :^: K) {x01 :e Power (A :^: K) | exists u c= Power (A :^: K), finite u /\ (forall x1 :e u, x1 :e \/_ k :e K, {{x11 :e A :^: K | x11 k :e u} | u :e Power A, k :e t /\ u :e tops k}) /\ {x :e A :^: K | forall Y :e u, x :e Y} = x01} {x01 :e A :^: K | (forall x :e K, ~ x :e t -> x01 x = choose_in A (fun y:set => False)) /\ forall k :e K, k :e t -> x01 k :e topspace A (tops k)}) /\ Union u = x}.
 
 // HOL Light: Multivariate/metric.ml:4925 / sum_topology   (hash md5:a17960b3f759b90792140f14f7165142)
 Definition sum_topology : set -> set -> set -> (set -> set) -> set :=
@@ -1736,7 +1736,7 @@ Definition uniformly_continuous_map : set -> set -> set -> (set -> set) -> prop 
 
 // HOL Light: Multivariate/metric.ml:30591 / cauchy_continuous_map   (hash md5:e7d22d594b87a4abce0a1aa2f6bf0d48)
 Definition cauchy_continuous_map : set -> set -> set -> (set -> set) -> prop :=
-  fun A:set => fun B:set => fun f:set => fun y:set -> set => forall x:set -> set, (forall x :e omega, x x :e A) -> cauchy_in A (f 0) x -> cauchy_in B (f 1) (fun x0:set => y (x x0)).
+  fun A:set => fun B:set => fun f:set => fun y:set -> set => forall x:set -> set, (forall x0 :e omega, x x0 :e A) -> cauchy_in A (f 0) x -> cauchy_in B (f 1) (fun x0:set => y (x x0)).
 
 // HOL Light: Multivariate/metric.ml:32615 / mdiameter   (hash md5:dad51025b774a08bee56fac67aa85f78)
 Definition mdiameter : set -> set -> set -> set :=
@@ -1768,7 +1768,7 @@ Definition nsphere : set -> set :=
 
 // HOL Light: Multivariate/metric.ml:39263 / funspace   (hash md5:b00f6851bad3d63cc7edd2a8bbb4fcce)
 Definition funspace : set -> set -> set -> set -> set :=
-  fun A:set => fun B:set => fun s:set => fun m:set => ({f :e B :^: A | (forall x :e A, x :e s -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => True)} /\ mbounded B m {f x | x :e s})},fun p :e B :^: A :*: B :^: A => if s = Empty then 0 else sup {mdist B m (p 0 x,p 1 x) | x :e A, x :e s}).
+  fun A:set => fun B:set => fun s:set => fun m:set => ({f :e B :^: A | (forall x :e A, x :e s -> f x :e mspace B m) /\ (f :e {x :e B :^: A | forall x0 :e A, ~ x0 :e s -> x x0 = choose_in B (fun y:set => False)} /\ mbounded B m {f x | x :e s})},fun p :e B :^: A :*: B :^: A => if s = Empty then 0 else sup {mdist B m (p 0 x,p 1 x) | x :e A, x :e s}).
 
 // HOL Light: Multivariate/metric.ml:39556 / cfunspace   (hash md5:d142d93b1351421054c8898857027510)
 Definition cfunspace : set -> set -> set -> set -> set :=
@@ -1800,7 +1800,7 @@ Definition cantor_set : set :=
 
 // HOL Light: Multivariate/homology.ml:180 / singular_simplex   (hash md5:9df8cef1f2013d05eb5054821cc22dac)
 Definition singular_simplex : set -> set -> (set -> set) -> prop :=
-  fun A:set => fun f:set => fun y:set -> set => continuous_map (R :^: omega) A (subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex (f 0)),f 1) y /\ forall x :e R :^: omega, ~ x :e standard_simplex (f 0) -> y x = choose_in A (fun y0:set => True).
+  fun A:set => fun f:set => fun y:set -> set => continuous_map (R :^: omega) A (subtopology (R :^: omega) (product_topology R omega omega (fun i:set => euclideanreal)) (standard_simplex (f 0)),f 1) y /\ forall x :e R :^: omega, ~ x :e standard_simplex (f 0) -> y x = choose_in A (fun y0:set => False).
 
 // HOL Light: Multivariate/homology.ml:244 / singular_chain   (hash md5:ad8181ad41af9dfeebba999eccaf2559)
 Definition singular_chain : set -> set -> set -> prop :=
@@ -1840,7 +1840,7 @@ Definition relcycle_group : set -> set -> set :=
 
 // HOL Light: Multivariate/homology.ml:4023 / relative_homology_group   (hash md5:ef009336f93dc148bb9293932134bd2f)
 Definition relative_homology_group : set -> set -> set :=
-  fun A:set => fun x:set => if x 0 < 0 then singleton_group (Power (frag (A :^: (R :^: omega)))) (choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => True)) else quotient_group (frag (A :^: (R :^: omega))) (relcycle_group A (if x 0 :e omega then x 0 else 0,(x 1 0,x 1 1))) {x0 :e frag (A :^: (R :^: omega)) | singular_relboundary A (if x 0 :e omega then x 0 else 0,(x 1 0,x 1 1)) x0}.
+  fun A:set => fun x:set => if x 0 < 0 then singleton_group (Power (frag (A :^: (R :^: omega)))) (choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => False)) else quotient_group (frag (A :^: (R :^: omega))) (relcycle_group A (if x 0 :e omega then x 0 else 0,(x 1 0,x 1 1))) {x0 :e frag (A :^: (R :^: omega)) | singular_relboundary A (if x 0 :e omega then x 0 else 0,(x 1 0,x 1 1)) x0}.
 
 // HOL Light: Multivariate/homology.ml:4029 / homology_group   (hash md5:1ab77cdb89f56b5ed04eb8ce5d836d98)
 Definition homology_group : set -> set -> set :=
@@ -1848,11 +1848,11 @@ Definition homology_group : set -> set -> set :=
 
 // HOL Light:  / hom_boundary   (hash md5:cdb049da7a75141104ce8315f600fe68)
 Definition hom_boundary : set -> set :=
-  fun A:set => choose_in (Power (frag (A :^: (R :^: omega))) :^: Power (frag (A :^: (R :^: omega))) :^: (topology A :*: Power A) :^: int) (fun c:set => (forall p :e int, forall top :e topology A, forall s c= A, forall c0 c= frag (A :^: (R :^: omega)), ~ c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) -> c p (top,s) c0 = group_id (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s))) /\ ((forall p :e int, forall top :e topology A, forall s c= A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s)) (fun x:set => c p (top,s) x)) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall c0 :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c0 /\ 1 <= p -> forall x :e frag (A :^: (R :^: omega)), x :e c p (top,s) {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c0 x0} <-> homologous_rel A (minus_nat p 1,(subtopology A top s,Empty)) (chain_boundary A p c0) x) /\ ((forall p :e int, forall top :e topology A, forall s c= A, c p (top,s) = c p (top,topspace A top :/\: s)) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall c0 c= frag (A :^: (R :^: omega)), c p (top,s) c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s))) /\ forall p :e int, p <= 0 -> forall q :e topology A :*: Power A, forall r c= frag (A :^: (R :^: omega)), c p q r = choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => True)))))).
+  fun A:set => choose_in (Power (frag (A :^: (R :^: omega))) :^: Power (frag (A :^: (R :^: omega))) :^: (topology A :*: Power A) :^: int) (fun c:set => (forall p :e int, forall top :e topology A, forall s c= A, forall c0 c= frag (A :^: (R :^: omega)), ~ c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))) -> c p (top,s) c0 = group_id (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s))) /\ ((forall p :e int, forall top :e topology A, forall s c= A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),homology_group A (p + - 1,subtopology A top s)) (fun x:set => c p (top,s) x)) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall c0 :e frag (A :^: (R :^: omega)), singular_relcycle A (p,(top,s)) c0 /\ 1 <= p -> forall x :e frag (A :^: (R :^: omega)), x :e c p (top,s) {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c0 x0} <-> homologous_rel A (minus_nat p 1,(subtopology A top s,Empty)) (chain_boundary A p c0) x) /\ ((forall p :e int, forall top :e topology A, forall s c= A, c p (top,s) = c p (top,topspace A top :/\: s)) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall c0 c= frag (A :^: (R :^: omega)), c p (top,s) c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (homology_group A (p + - 1,subtopology A top s))) /\ forall p :e int, p <= 0 -> forall q :e topology A :*: Power A, forall r c= frag (A :^: (R :^: omega)), c p q r = choose_in (Power (frag (A :^: (R :^: omega)))) (fun x:set => False)))))).
 
 // HOL Light:  / hom_induced   (hash md5:b8bc3133a307da2c46b3e1cad3328d28)
 Definition hom_induced : set -> set -> set :=
-  fun A:set => fun B:set => choose_in (Power (frag (B :^: (R :^: omega))) :^: Power (frag (A :^: (R :^: omega))) :^: (B :^: A) :^: (topology B :*: Power B) :^: (topology A :*: Power A) :^: int) (fun c:set => (forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c0 c= frag (A :^: (R :^: omega)), ~ (continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))))) -> c p (top,s) (top',t) f c0 = group_id (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t)))) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (fun x:set => c p (top,s) (top',t) f x)) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c0 :e frag (A :^: (R :^: omega)), continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ singular_relcycle A (p,(top,s)) c0) -> forall x :e frag (B :^: (R :^: omega)), x :e c p (top,s) (top',t) f {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c0 x0} <-> homologous_rel B (p,(top',t)) (chain_map A B p (fun x0:set => f x0) c0) x) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, c p (top,s) (top',t) = c p (top,topspace A top :/\: s) (top',topspace B top' :/\: t)) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall f :e B :^: A, forall t c= B, forall c0 c= frag (A :^: (R :^: omega)), c p (top,s) (top',t) f c0 :e group_carrier (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t)))) /\ forall p :e int, p < 0 -> forall q :e topology A :*: Power A, forall r :e topology B :*: Power B, forall s :e B :^: A, forall t c= frag (A :^: (R :^: omega)), c p q r s t = choose_in (Power (frag (B :^: (R :^: omega)))) (fun x:set => True)))))).
+  fun A:set => fun B:set => choose_in (Power (frag (B :^: (R :^: omega))) :^: Power (frag (A :^: (R :^: omega))) :^: (B :^: A) :^: (topology B :*: Power B) :^: (topology A :*: Power A) :^: int) (fun c:set => (forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c0 c= frag (A :^: (R :^: omega)), ~ (continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ c0 :e group_carrier (Power (frag (A :^: (R :^: omega)))) (relative_homology_group A (p,(top,s))))) -> c p (top,s) (top',t) f c0 = group_id (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t)))) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, group_homomorphism_hl (Power (frag (A :^: (R :^: omega)))) (Power (frag (B :^: (R :^: omega)))) (relative_homology_group A (p,(top,s)),relative_homology_group B (p,(top',t))) (fun x:set => c p (top,s) (top',t) f x)) /\ ((forall p :e omega, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, forall f :e B :^: A, forall c0 :e frag (A :^: (R :^: omega)), continuous_map A B (top,top') (fun x:set => f x) /\ ({f x | x :e topspace A top :/\: s} c= t /\ singular_relcycle A (p,(top,s)) c0) -> forall x :e frag (B :^: (R :^: omega)), x :e c p (top,s) (top',t) f {x0 :e frag (A :^: (R :^: omega)) | homologous_rel A (p,(top,s)) c0 x0} <-> homologous_rel B (p,(top',t)) (chain_map A B p (fun x0:set => f x0) c0) x) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall t c= B, c p (top,s) (top',t) = c p (top,topspace A top :/\: s) (top',topspace B top' :/\: t)) /\ ((forall p :e int, forall top :e topology A, forall s c= A, forall top' :e topology B, forall f :e B :^: A, forall t c= B, forall c0 c= frag (A :^: (R :^: omega)), c p (top,s) (top',t) f c0 :e group_carrier (Power (frag (B :^: (R :^: omega)))) (relative_homology_group B (p,(top',t)))) /\ forall p :e int, p < 0 -> forall q :e topology A :*: Power A, forall r :e topology B :*: Power B, forall s :e B :^: A, forall t c= frag (A :^: (R :^: omega)), c p q r s t = choose_in (Power (frag (B :^: (R :^: omega)))) (fun x:set => False)))))).
 
 // HOL Light: Multivariate/homology.ml:6189 / hom_relboundary   (hash md5:854a9ad0f00b9cac8debb34f697aa61f)
 Definition hom_relboundary : set -> set -> set -> set -> set :=

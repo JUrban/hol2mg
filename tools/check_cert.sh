@@ -21,10 +21,12 @@ cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/
 [ -s "$pub/_definitions.mg" ] && cat "$pub/_definitions.mg" >> "$base"
 cat "$lit/_literal.mg" "$cert/_literal_unfold.mg" >> "$base"
 [ -s "$HERE/mglib/literal/carriers.mg" ] && cat "$HERE/mglib/literal/carriers.mg" >> "$base"
+[ -s "$HERE/mglib/literal/carriers_$prof.mg" ] && cat "$HERE/mglib/literal/carriers_$prof.mg" >> "$base"
 cat "$cert/_literal_typing.mg" >> "$base"
 [ -s "$HERE/mglib/literal/compat.mg" ] && cat "$HERE/mglib/literal/compat.mg" >> "$base"
 # stage 2 (docs/DESIGN.md 21.9): carrier facts of parametrised translated types, their typing lemmas, their compat lemmas
 [ -s "$HERE/mglib/literal/carriers2.mg" ] && cat "$HERE/mglib/literal/carriers2.mg" >> "$base"
+[ -s "$HERE/mglib/literal/carriers2_$prof.mg" ] && cat "$HERE/mglib/literal/carriers2_$prof.mg" >> "$base"
 [ -s "$cert/_literal_typing2.mg" ] && cat "$cert/_literal_typing2.mg" >> "$base"
 [ -s "$HERE/mglib/literal/compat2.mg" ] && cat "$HERE/mglib/literal/compat2.mg" >> "$base"
 # profile-specific compat lemmas (constants of the profile's Library files, docs/DESIGN.md 21.9a)

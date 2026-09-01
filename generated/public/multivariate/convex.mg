@@ -239,25 +239,25 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:292 / AFFINE_VSUM
 // Source hash: md5:be42933a2f469439b51d56447a05deaf
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem AFFINE_VSUM : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> finite k /\ (affine N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> x i :e s))) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
+Theorem AFFINE_VSUM : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> finite k /\ (affine N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> x i :e s))) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:316 / AFFINE_VSUM_STRONG
 // Source hash: md5:f64a56d275efed4b80afd816f136a58b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem AFFINE_VSUM_STRONG : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> affine N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> u i = 0 \/ x i :e s)) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
+Theorem AFFINE_VSUM_STRONG : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> affine N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> u i = 0 \/ x i :e s)) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:335 / AFFINE_INDEXED
 // Source hash: md5:de02f5c6e939e0b8db5206cae769ee3c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
-Theorem AFFINE_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, affine N s <-> forall k :e omega, forall u:set -> set, (forall x :e omega, u x :e R) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall i :e omega, 1 <= i /\ i <= k -> x i :e s) /\ finsum (idx_n k) u = 1 -> vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) :e s.
+Theorem AFFINE_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, affine N s <-> forall k :e omega, forall u:set -> set, (forall x :e omega, u x :e R) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall i :e omega, 1 <= i /\ i <= k -> x i :e s) /\ finsum (idx_n k) u = 1 -> vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) :e s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:353 / AFFINE_HULL_INDEXED
 // Source hash: md5:0b925c04a12b4b5c1ef8be82fae2d282
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
-Theorem AFFINE_HULL_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s = {y :e R :^: idx N | exists k :e omega, exists u:set -> set, (forall x :e omega, u x :e R) /\ exists x:set -> set, (forall x :e omega, x x :e R :^: idx N) /\ ((forall i :e omega, 1 <= i /\ i <= k -> x i :e s) /\ (finsum (idx_n k) u = 1 /\ vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) = y))}.
+Theorem AFFINE_HULL_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, hull (R :^: idx N) {x :e Power (R :^: idx N) | affine N x} s = {y :e R :^: idx N | exists k :e omega, exists u:set -> set, (forall x :e omega, u x :e R) /\ exists x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) /\ ((forall i :e omega, 1 <= i /\ i <= k -> x i :e s) /\ (finsum (idx_n k) u = 1 /\ vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) = y))}.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:386 / AFFINE
@@ -617,19 +617,19 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:1054 / CONVEX_VSUM
 // Source hash: md5:5f64405ddd8a788d7b1385a8e27c076e
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem CONVEX_VSUM : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> finite k /\ (convex N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> 0 <= u i /\ x i :e s))) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
+Theorem CONVEX_VSUM : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> finite k /\ (convex N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> 0 <= u i /\ x i :e s))) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:1100 / CONVEX_VSUM_STRONG
 // Source hash: md5:e2273588f2e1c096e43a6156b5d91654
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem CONVEX_VSUM_STRONG : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> convex N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> 0 <= u i /\ (u i = 0 \/ x i :e s))) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
+Theorem CONVEX_VSUM_STRONG : forall A N:set, A <> Empty -> N <> Empty -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> convex N s /\ (finsum k u = 1 /\ (forall i :e A, i :e k -> 0 <= u i /\ (u i = 0 \/ x i :e s))) -> vsum A N k (fun i:set => vector_mul N (u i) (x i)) :e s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:1119 / CONVEX_INDEXED
 // Source hash: md5:5e4803885ffe6aacc93b5e4ed4a4a456
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
-Theorem CONVEX_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s <-> forall k :e omega, forall u:set -> set, (forall x :e omega, u x :e R) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall i :e omega, 1 <= i /\ i <= k -> 0 <= u i /\ x i :e s) /\ finsum (idx_n k) u = 1 -> vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) :e s.
+Theorem CONVEX_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, convex N s <-> forall k :e omega, forall u:set -> set, (forall x :e omega, u x :e R) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall i :e omega, 1 <= i /\ i <= k -> 0 <= u i /\ x i :e s) /\ finsum (idx_n k) u = 1 -> vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) :e s.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:1137 / CONVEX_EXPLICIT
@@ -1523,7 +1523,7 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:3016 / CONVEX_HULL_INDEXED
 // Source hash: md5:ee1e004415cfeafeaa494d59b332e849
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
-Theorem CONVEX_HULL_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s = {y :e R :^: idx N | exists k :e omega, exists u:set -> set, (forall x :e omega, u x :e R) /\ exists x:set -> set, (forall x :e omega, x x :e R :^: idx N) /\ ((forall i :e omega, 1 <= i /\ i <= k -> 0 <= u i /\ x i :e s) /\ (finsum (idx_n k) u = 1 /\ vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) = y))}.
+Theorem CONVEX_HULL_INDEXED : forall N:set, N <> Empty -> forall s c= R :^: idx N, hull (R :^: idx N) {x :e Power (R :^: idx N) | convex N x} s = {y :e R :^: idx N | exists k :e omega, exists u:set -> set, (forall x :e omega, u x :e R) /\ exists x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) /\ ((forall i :e omega, 1 <= i /\ i <= k -> 0 <= u i /\ x i :e s) /\ (finsum (idx_n k) u = 1 /\ vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i)) = y))}.
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:3049 / CONVEX_HULL_FINITE_IMAGE_EXPLICIT
@@ -2453,13 +2453,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:5202 / RIGID_TRANSFORMATION_BETWEEN_CONGRUENT_SETS
 // Source hash: md5:0912c98cbdef9897fd73808d21e1c002
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem RIGID_TRANSFORMATION_BETWEEN_CONGRUENT_SETS : forall A N:set, A <> Empty -> N <> Empty -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> forall y:set -> set, (forall x0 :e A, y x0 :e R :^: idx N) -> forall s c= A, (forall i j :e A, i :e s /\ j :e s -> distance N (x i,x j) = distance N (y i,y j)) -> exists a :e R :^: idx N, exists f:set -> set, (forall x0 :e R :^: idx N, f x0 :e R :^: idx N) /\ (orthogonal_transformation N f /\ forall i :e A, i :e s -> y i = vector_add N a (f (x i))).
+Theorem RIGID_TRANSFORMATION_BETWEEN_CONGRUENT_SETS : forall A N:set, A <> Empty -> N <> Empty -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> forall y:set -> set, (forall x0 :e A, y x0 :e R :^: idx N) -> forall s c= A, (forall i j :e A, i :e s /\ j :e s -> distance N (x i,x j) = distance N (y i,y j)) -> exists a :e R :^: idx N, exists f:set -> set, (forall x0 :e R :^: idx N, f x0 :e R :^: idx N) /\ (orthogonal_transformation N f /\ forall i :e A, i :e s -> y i = vector_add N a (f (x i))).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:5354 / RIGID_TRANSFORMATION_BETWEEN_CONGRUENT_SETS_STRONG
 // Source hash: md5:5d9e8f4046343bd457fa98169efe4551
 // Status: transport_required (bridges: hol_cart_setexp, hol_prod_setprod, hol_real_R)
-Theorem RIGID_TRANSFORMATION_BETWEEN_CONGRUENT_SETS_STRONG : forall A N:set, A <> Empty -> N <> Empty -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> forall y:set -> set, (forall x0 :e A, y x0 :e R :^: idx N) -> forall s t c= A, t c= s /\ (hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} {y x | x :e t} = hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} {y x | x :e s} /\ (forall i j :e A, i :e s /\ j :e t -> distance N (x i,x j) = distance N (y i,y j))) -> exists a :e R :^: idx N, exists f:set -> set, (forall x0 :e R :^: idx N, f x0 :e R :^: idx N) /\ (orthogonal_transformation N f /\ forall i :e A, i :e s -> y i = vector_add N a (f (x i))).
+Theorem RIGID_TRANSFORMATION_BETWEEN_CONGRUENT_SETS_STRONG : forall A N:set, A <> Empty -> N <> Empty -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> forall y:set -> set, (forall x0 :e A, y x0 :e R :^: idx N) -> forall s t c= A, t c= s /\ (hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} {y x | x :e t} = hull (R :^: idx N) {x0 :e Power (R :^: idx N) | affine N x0} {y x | x :e s} /\ (forall i j :e A, i :e s /\ j :e t -> distance N (x i,x j) = distance N (y i,y j))) -> exists a :e R :^: idx N, exists f:set -> set, (forall x0 :e R :^: idx N, f x0 :e R :^: idx N) /\ (orthogonal_transformation N f /\ forall i :e A, i :e s -> y i = vector_add N a (f (x i))).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:5383 / RIGID_TRANSFORMATION_BETWEEN_3
@@ -3659,13 +3659,13 @@ Admitted.
 // HOL Light: Multivariate/convex.ml:10234 / CONVEX_ON_JENSEN
 // Source hash: md5:a34a8b0abffac43956ad3215791b4c01
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, nat_le_SNoLe, omega_Subq_R)
-Theorem CONVEX_ON_JENSEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex N s -> (convex_on N f s <-> forall k :e omega, forall u:set -> set, (forall x :e omega, u x :e R) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall i :e omega, 1 <= i /\ i <= k -> 0 <= u i /\ x i :e s) /\ finsum (idx_n k) u = 1 -> f (vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i))) <= finsum (idx_n k) (fun i:set => u i * f (x i))).
+Theorem CONVEX_ON_JENSEN : forall N:set, N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, convex N s -> (convex_on N f s <-> forall k :e omega, forall u:set -> set, (forall x :e omega, u x :e R) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall i :e omega, 1 <= i /\ i <= k -> 0 <= u i /\ x i :e s) /\ finsum (idx_n k) u = 1 -> f (vsum omega N (idx_n k) (fun i:set => vector_mul N (u i) (x i))) <= finsum (idx_n k) (fun i:set => u i * f (x i))).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10266 / CONVEX_ON_IMP_JENSEN
 // Source hash: md5:18e61e5e257824e4398d34c3d54fa13b
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_sum_finsum, omega_Subq_R)
-Theorem CONVEX_ON_IMP_JENSEN : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x :e A, x x :e R :^: idx N) -> convex_on N f s /\ (convex N s /\ (finite k /\ ((forall i :e A, i :e k -> 0 <= u i /\ x i :e s) /\ finsum k u = 1))) -> f (vsum A N k (fun i:set => vector_mul N (u i) (x i))) <= finsum k (fun i:set => u i * f (x i)).
+Theorem CONVEX_ON_IMP_JENSEN : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R) -> forall s c= R :^: idx N, forall k c= A, forall u:set -> set, (forall x :e A, u x :e R) -> forall x:set -> set, (forall x0 :e A, x x0 :e R :^: idx N) -> convex_on N f s /\ (convex N s /\ (finite k /\ ((forall i :e A, i :e k -> 0 <= u i /\ x i :e s) /\ finsum k u = 1))) -> f (vsum A N k (fun i:set => vector_mul N (u i) (x i))) <= finsum k (fun i:set => u i * f (x i)).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:10288 / IVT_INCREASING_COMPONENT_ON_1
@@ -5206,8 +5206,8 @@ Admitted.
 
 // HOL Light: Multivariate/convex.ml:16311 / GRAPH_EMBEDS_IN_R3
 // Source hash: md5:58f6cf3d2e65362f49885ce05cf46f11
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_le_c_atleastp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_tybit_idx)
-Theorem GRAPH_EMBEDS_IN_R3 : forall A:set, forall s c= A, atleastp s R -> exists v:set -> set, (forall x :e A, v x :e R :^: idx_n 3) /\ ((forall a b :e A, a :e s /\ b :e s -> (v a = v b <-> a = b)) /\ forall a b c d :e A, ~ {v a,v b} = {v c,v d} -> closed_segment (idx_n 3) (seq_cons (v a,v b) seq_nil) :/\: closed_segment (idx_n 3) (seq_cons (v c,v d) seq_nil) c= {v a,v b} :/\: {v c,v d}).
+// Status: transport_required (bridges: hol_cart_setexp, hol_le_c_atleastp, hol_list_finseq, hol_one_1, hol_prod_setprod, hol_real_R, hol_tybit_idx)
+Theorem GRAPH_EMBEDS_IN_R3 : forall A:set, A <> Empty -> forall s c= A, atleastp s R -> exists v:set -> set, (forall x :e A, v x :e R :^: idx_n 3) /\ ((forall a b :e A, a :e s /\ b :e s -> (v a = v b <-> a = b)) /\ forall a b c d :e A, ~ {v a,v b} = {v c,v d} -> closed_segment (idx_n 3) (seq_cons (v a,v b) seq_nil) :/\: closed_segment (idx_n 3) (seq_cons (v c,v d) seq_nil) c= {v a,v b} :/\: {v c,v d}).
 Admitted.
 
 // HOL Light: Multivariate/convex.ml:16436 / MIDPOINT_CONVEX_DYADIC_RATIONALS

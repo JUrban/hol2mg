@@ -719,7 +719,7 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:1788 / ABELIAN_GROUP_ITERATE
 // Source hash: md5:4647ccfbc609a3a3b156905b2c2c9c5f
 // Status: transport_required (bridges: hol_iterate, hol_typedef_group)
-Theorem ABELIAN_GROUP_ITERATE : forall A K:set, A <> Empty -> K <> Empty -> forall G :e group_hl A, forall x:set -> set, (forall x :e K, x x :e A) -> forall k c= K, abelian_group_hl A G /\ (forall i :e K, i :e k -> x i :e group_carrier A G) -> iterate_op A (group_add A G) k x :e group_carrier A G.
+Theorem ABELIAN_GROUP_ITERATE : forall A K:set, A <> Empty -> K <> Empty -> forall G :e group_hl A, forall x:set -> set, (forall x0 :e K, x x0 :e A) -> forall k c= K, abelian_group_hl A G /\ (forall i :e K, i :e k -> x i :e group_carrier A G) -> iterate_op A (group_add A G) k x :e group_carrier A G.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:1799 / group_conjugation
@@ -1337,25 +1337,25 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:2708 / product_group
 // Source hash: md5:5a6ab471af52632c66c93d6ab27ab3c3
 // Status: generalization_required (bridges: choose_in_spec, hol_fun_setexp, hol_prod_setprod, hol_typedef_group)
-Theorem product_group_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> product_group A K k G = ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)},(fun x :e K => if x :e k then group_id A (G x) else choose_in A (fun y:set => True),(fun x :e A :^: K => fun x0 :e K => if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True),fun x :e A :^: K => fun y :e A :^: K => fun x0 :e K => if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True)))).
+Theorem product_group_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> product_group A K k G = ({f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)},(fun x :e K => if x :e k then group_id A (G x) else choose_in A (fun y:set => False),(fun x :e A :^: K => fun x0 :e K => if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => False),fun x :e A :^: K => fun y :e A :^: K => fun x0 :e K => if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => False)))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2715 / PRODUCT_GROUP
 // Source hash: md5:8b03aeac91e07e372034b420034915d9
 // Status: transport_required (bridges: choose_in_spec, hol_fun_setexp, hol_typedef_group)
-Theorem PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> (forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> group_carrier (A :^: K) (product_group A K k G) = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e K, group_id (A :^: K) (product_group A K k G) x = if x :e k then group_id A (G x) else choose_in A (fun y:set => True)) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e A :^: K, forall x0 :e K, group_inv (A :^: K) (product_group A K k G) x x0 = if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True)) /\ forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x y :e A :^: K, forall x0 :e K, group_mul (A :^: K) (product_group A K k G) x y x0 = if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True))).
+Theorem PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> (forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> group_carrier (A :^: K) (product_group A K k G) = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e K, group_id (A :^: K) (product_group A K k G) x = if x :e k then group_id A (G x) else choose_in A (fun y:set => False)) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e A :^: K, forall x0 :e K, group_inv (A :^: K) (product_group A K k G) x x0 = if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => False)) /\ forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x y :e A :^: K, forall x0 :e K, group_mul (A :^: K) (product_group A K k G) x y x0 = if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => False))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2741 / GROUP_POW_PRODUCT_GROUP
 // Source hash: md5:a079cb989c5675e4b11877cfe839f404
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_num_omega, hol_typedef_group)
-Theorem GROUP_POW_PRODUCT_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e omega, forall x0 :e K, group_pow (A :^: K) (product_group A K k G) x n x0 = if x0 :e k then group_pow A (G x0) (x x0) n else choose_in A (fun y:set => True).
+Theorem GROUP_POW_PRODUCT_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e omega, forall x0 :e K, group_pow (A :^: K) (product_group A K k G) x n x0 = if x0 :e k then group_pow A (G x0) (x x0) n else choose_in A (fun y:set => False).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2749 / GROUP_ZPOW_PRODUCT_GROUP
 // Source hash: md5:1a93234cd50e8da89e8c4450d7905199
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_int_int, hol_typedef_group)
-Theorem GROUP_ZPOW_PRODUCT_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e int, forall x0 :e K, group_zpow (A :^: K) (product_group A K k G) x n x0 = if x0 :e k then group_zpow A (G x0) (x x0) n else choose_in A (fun y:set => True).
+Theorem GROUP_ZPOW_PRODUCT_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e int, forall x0 :e K, group_zpow (A :^: K) (product_group A K k G) x n x0 = if x0 :e k then group_zpow A (G x0) (x x0) n else choose_in A (fun y:set => False).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2757 / OPPOSITE_PRODUCT_GROUP
@@ -1367,7 +1367,7 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:2764 / GROUP_PRODUCT_INJECTION
 // Source hash: md5:3c411aa40d94f5a02bd9ff013aa60d44
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A, empty_case:K, hol_typedef_group)
-Theorem GROUP_PRODUCT_INJECTION : forall A K:set, forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall a :e A, forall i :e K, (fun x :e K => if x :e k then if x = i then a else group_id A (G x) else choose_in A (fun y:set => True)) :e group_carrier (A :^: K) (product_group A K k G) <-> i :e k -> a :e group_carrier A (G i).
+Theorem GROUP_PRODUCT_INJECTION : forall A K:set, forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall a :e A, forall i :e K, (fun x :e K => if x :e k then if x = i then a else group_id A (G x) else choose_in A (fun y:set => False)) :e group_carrier (A :^: K) (product_group A K k G) <-> i :e k -> a :e group_carrier A (G i).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2772 / TRIVIAL_PRODUCT_GROUP
@@ -1379,13 +1379,13 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:2781 / CARTESIAN_PRODUCT_SUBGROUP_OF_PRODUCT_GROUP
 // Source hash: md5:66192b552454729aa53fd2896713cdd3
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem CARTESIAN_PRODUCT_SUBGROUP_OF_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall h :e Power A :^: K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> (subgroup_of (A :^: K) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} (product_group A K k G) <-> forall i :e K, i :e k -> subgroup_of A (h i) (G i)).
+Theorem CARTESIAN_PRODUCT_SUBGROUP_OF_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall h :e Power A :^: K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> (subgroup_of (A :^: K) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} (product_group A K k G) <-> forall i :e K, i :e k -> subgroup_of A (h i) (G i)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2796 / PRODUCT_GROUP_SUBGROUP_GENERATED
 // Source hash: md5:10dbcb73e0f1dd25742333d26118a312
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem PRODUCT_GROUP_SUBGROUP_GENERATED : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, (forall i :e K, i :e k -> subgroup_of A (h i) (G i)) -> product_group A K k (fun i:set => subgroup_generated A (G i) (h i)) = subgroup_generated (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}.
+Theorem PRODUCT_GROUP_SUBGROUP_GENERATED : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, (forall i :e K, i :e k -> subgroup_of A (h i) (G i)) -> product_group A K k (fun i:set => subgroup_generated A (G i) (h i)) = subgroup_generated (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2808 / FINITE_PRODUCT_GROUP
@@ -1403,7 +1403,7 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:2834 / sum_group
 // Source hash: md5:7ceb44aecfcd1ec4fa1786450c1b576b
 // Status: transport_required (bridges: hol_finite_finite, hol_fun_setexp, hol_typedef_group)
-Theorem sum_group_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> sum_group A K k G = subgroup_generated (A :^: K) (product_group A K k G) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}.
+Theorem sum_group_thm : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> sum_group A K k G = subgroup_generated (A :^: K) (product_group A K k G) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2841 / SUM_GROUP_ALT
@@ -1421,31 +1421,31 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:2856 / SUBGROUP_SUM_GROUP
 // Source hash: md5:532246afa42c55fc4d980fbde21c1f86
 // Status: transport_required (bridges: hol_finite_finite, hol_fun_setexp, hol_typedef_group)
-Theorem SUBGROUP_SUM_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> subgroup_of (A :^: K) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}} (product_group A K k G).
+Theorem SUBGROUP_SUM_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> subgroup_of (A :^: K) {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}} (product_group A K k G).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2875 / SUM_GROUP_CLAUSES
 // Source hash: md5:c18d9f98c223318f60693a49095ea2a4
 // Status: transport_required (bridges: choose_in_spec, hol_finite_finite, hol_fun_setexp, hol_typedef_group)
-Theorem SUM_GROUP_CLAUSES : forall A K:set, A <> Empty -> K <> Empty -> (forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> group_carrier (A :^: K) (sum_group A K k G) = {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e K, group_id (A :^: K) (sum_group A K k G) x = if x :e k then group_id A (G x) else choose_in A (fun y:set => True)) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e A :^: K, forall x0 :e K, group_inv (A :^: K) (sum_group A K k G) x x0 = if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => True)) /\ forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x y :e A :^: K, forall x0 :e K, group_mul (A :^: K) (sum_group A K k G) x y x0 = if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => True))).
+Theorem SUM_GROUP_CLAUSES : forall A K:set, A <> Empty -> K <> Empty -> (forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> group_carrier (A :^: K) (sum_group A K k G) = {x :e A :^: K | x :e {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e group_carrier A (G i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} /\ finite {i :e K | i :e k /\ ~ x i = group_id A (G i)}}) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e K, group_id (A :^: K) (sum_group A K k G) x = if x :e k then group_id A (G x) else choose_in A (fun y:set => False)) /\ ((forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x :e A :^: K, forall x0 :e K, group_inv (A :^: K) (sum_group A K k G) x x0 = if x0 :e k then group_inv A (G x0) (x x0) else choose_in A (fun y:set => False)) /\ forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall x y :e A :^: K, forall x0 :e K, group_mul (A :^: K) (sum_group A K k G) x y x0 = if x0 :e k then group_mul A (G x0) (x x0) (y x0) else choose_in A (fun y0:set => False))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2893 / GROUP_POW_SUM_GROUP
 // Source hash: md5:2b11a7217997f96dab4f1fbf95caa0c7
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_num_omega, hol_typedef_group)
-Theorem GROUP_POW_SUM_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e omega, forall x0 :e K, group_pow (A :^: K) (sum_group A K k G) x n x0 = if x0 :e k then group_pow A (G x0) (x x0) n else choose_in A (fun y:set => True).
+Theorem GROUP_POW_SUM_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e omega, forall x0 :e K, group_pow (A :^: K) (sum_group A K k G) x n x0 = if x0 :e k then group_pow A (G x0) (x x0) n else choose_in A (fun y:set => False).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2900 / GROUP_ZPOW_SUM_GROUP
 // Source hash: md5:91f562d954759bf101f4aba506ef0e1f
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_int_int, hol_typedef_group)
-Theorem GROUP_ZPOW_SUM_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e int, forall x0 :e K, group_zpow (A :^: K) (sum_group A K k G) x n x0 = if x0 :e k then group_zpow A (G x0) (x x0) n else choose_in A (fun y:set => True).
+Theorem GROUP_ZPOW_SUM_GROUP : forall A K:set, A <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall x :e A :^: K, forall n :e int, forall x0 :e K, group_zpow (A :^: K) (sum_group A K k G) x n x0 = if x0 :e k then group_zpow A (G x0) (x x0) n else choose_in A (fun y:set => False).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2907 / GROUP_SUM_INJECTION
 // Source hash: md5:ce9931e20dad69aa1c74126ca4616c91
 // Status: generalization_required (bridges: choose_in_spec, empty_case:A, empty_case:K, hol_typedef_group)
-Theorem GROUP_SUM_INJECTION : forall A K:set, forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall a :e A, forall i :e K, (fun x :e K => if x :e k then if x = i then a else group_id A (G x) else choose_in A (fun y:set => True)) :e group_carrier (A :^: K) (sum_group A K k G) <-> i :e k -> a :e group_carrier A (G i).
+Theorem GROUP_SUM_INJECTION : forall A K:set, forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall a :e A, forall i :e K, (fun x :e K => if x :e k then if x = i then a else group_id A (G x) else choose_in A (fun y:set => False)) :e group_carrier (A :^: K) (sum_group A K k G) <-> i :e k -> a :e group_carrier A (G i).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2920 / TRIVIAL_SUM_GROUP
@@ -1457,13 +1457,13 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:2945 / CARTESIAN_PRODUCT_SUBGROUP_OF_SUM_GROUP
 // Source hash: md5:a0865121708a1b4e96c7b95d29b3b2a6
 // Status: transport_required (bridges: hol_finite_finite, hol_fun_setexp, hol_typedef_group)
-Theorem CARTESIAN_PRODUCT_SUBGROUP_OF_SUM_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall h :e Power A :^: K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> (subgroup_of (A :^: K) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} (sum_group A K k G) <-> (forall i :e K, i :e k -> subgroup_of A (h i) (G i)) /\ forall z :e A :^: K, z :e {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} -> finite {i :e K | i :e k /\ ~ z i = group_id A (G i)}).
+Theorem CARTESIAN_PRODUCT_SUBGROUP_OF_SUM_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall h :e Power A :^: K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> (subgroup_of (A :^: K) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} (sum_group A K k G) <-> (forall i :e K, i :e k -> subgroup_of A (h i) (G i)) /\ forall z :e A :^: K, z :e {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} -> finite {i :e K | i :e k /\ ~ z i = group_id A (G i)}).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2963 / SUM_GROUP_SUBGROUP_GENERATED
 // Source hash: md5:24b58a475584a7dab0e2803c655333f9
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem SUM_GROUP_SUBGROUP_GENERATED : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, (forall i :e K, i :e k -> subgroup_of A (h i) (G i)) -> sum_group A K k (fun i:set => subgroup_generated A (G i) (h i)) = subgroup_generated (A :^: K) (sum_group A K k G) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}.
+Theorem SUM_GROUP_SUBGROUP_GENERATED : forall A K:set, A <> Empty -> K <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, (forall i :e K, i :e k -> subgroup_of A (h i) (G i)) -> sum_group A K k (fun i:set => subgroup_generated A (G i) (h i)) = subgroup_generated (A :^: K) (sum_group A K k G) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:2991 / ABELIAN_SUM_GROUP
@@ -2165,7 +2165,7 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:3958 / GROUP_HOMOMORPHISM_COMPONENTWISE
 // Source hash: md5:ed816dbc66a02b0e073715adb12a5801
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_COMPONENTWISE : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall G :e group_hl A, forall k c= K, forall H:set -> set, (forall x :e K, H x :e group_hl B) -> forall f :e B :^: K :^: A, group_homomorphism_hl A (B :^: K) (G,product_group B K k H) (fun x:set => f x) <-> {f x | x :e group_carrier A G} c= {x :e B :^: K | forall x0 :e K, ~ x0 :e k -> x x0 = choose_in B (fun y:set => True)} /\ forall i :e K, i :e k -> group_homomorphism_hl A B (G,H i) (fun x:set => f x i).
+Theorem GROUP_HOMOMORPHISM_COMPONENTWISE : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall G :e group_hl A, forall k c= K, forall H:set -> set, (forall x :e K, H x :e group_hl B) -> forall f :e B :^: K :^: A, group_homomorphism_hl A (B :^: K) (G,product_group B K k H) (fun x:set => f x) <-> {f x | x :e group_carrier A G} c= {x :e B :^: K | forall x0 :e K, ~ x0 :e k -> x x0 = choose_in B (fun y:set => False)} /\ forall i :e K, i :e k -> group_homomorphism_hl A B (G,H i) (fun x:set => f x i).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:3974 / GROUP_HOMOMORPHISM_COMPONENTWISE_UNIV
@@ -2189,25 +2189,25 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:3999 / GROUP_HOMOMORPHISM_PRODUCT_INJECTION
 // Source hash: md5:83eb5f31dbad963db3a99398144e5496
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_PRODUCT_INJECTION : forall A K:set, A <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall i :e K, group_homomorphism_hl A (A :^: K) (G i,product_group A K k G) (fun x:set => fun x0 :e K => if x0 :e k then if x0 = i then x else group_id A (G x0) else choose_in A (fun y:set => True)).
+Theorem GROUP_HOMOMORPHISM_PRODUCT_INJECTION : forall A K:set, A <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall i :e K, group_homomorphism_hl A (A :^: K) (G i,product_group A K k G) (fun x:set => fun x0 :e K => if x0 :e k then if x0 = i then x else group_id A (G x0) else choose_in A (fun y:set => False)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4010 / GROUP_HOMOMORPHISM_SUM_INJECTION
 // Source hash: md5:43dfc7cf0a6d7c1fc0f4bf61ad2d7c6e
 // Status: generalization_required (bridges: choose_in_spec, empty_case:K, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_SUM_INJECTION : forall A K:set, A <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall i :e K, group_homomorphism_hl A (A :^: K) (G i,sum_group A K k G) (fun x:set => fun x0 :e K => if x0 :e k then if x0 = i then x else group_id A (G x0) else choose_in A (fun y:set => True)).
+Theorem GROUP_HOMOMORPHISM_SUM_INJECTION : forall A K:set, A <> Empty -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall i :e K, group_homomorphism_hl A (A :^: K) (G i,sum_group A K k G) (fun x:set => fun x0 :e K => if x0 :e k then if x0 = i then x else group_id A (G x0) else choose_in A (fun y:set => False)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4024 / GROUP_HOMOMORPHISM_PRODUCT
 // Source hash: md5:674a05cbbba6d6b41240e26c483757c0
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_PRODUCT : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall H:set -> set, (forall x :e K, H x :e group_hl B) -> (group_homomorphism_hl (A :^: K) (B :^: K) (product_group A K k G,product_group B K k H) (fun x:set => fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)) <-> forall i :e K, i :e k -> group_homomorphism_hl A B (G i,H i) (f i)).
+Theorem GROUP_HOMOMORPHISM_PRODUCT : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall H:set -> set, (forall x :e K, H x :e group_hl B) -> (group_homomorphism_hl (A :^: K) (B :^: K) (product_group A K k G,product_group B K k H) (fun x:set => fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)) <-> forall i :e K, i :e k -> group_homomorphism_hl A B (G i,H i) (f i)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4050 / GROUP_HOMOMORPHISM_SUM
 // Source hash: md5:cf6fc13813d3dcebc79611aea2563f13
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_SUM : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall H:set -> set, (forall x :e K, H x :e group_hl B) -> (group_homomorphism_hl (A :^: K) (B :^: K) (sum_group A K k G,sum_group B K k H) (fun x:set => fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => True)) <-> forall i :e K, i :e k -> group_homomorphism_hl A B (G i,H i) (f i)).
+Theorem GROUP_HOMOMORPHISM_SUM : forall A B K:set, A <> Empty -> B <> Empty -> K <> Empty -> forall f:set -> set -> set, (forall x :e K, forall y :e A, f x y :e B) -> forall k c= K, forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall H:set -> set, (forall x :e K, H x :e group_hl B) -> (group_homomorphism_hl (A :^: K) (B :^: K) (sum_group A K k G,sum_group B K k H) (fun x:set => fun x0 :e K => if x0 :e k then f x0 (x x0) else choose_in B (fun y:set => False)) <-> forall i :e K, i :e k -> group_homomorphism_hl A B (G i,H i) (f i)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4081 / GROUP_EPIMORPHISM_PRODUCT_PROJECTION
@@ -2441,25 +2441,25 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:4466 / GROUP_ISOMORPHISMS_PRODUCT_GROUP_DISJOINT_UNION
 // Source hash: md5:7bbf7599b28192ee905f81a904bc9cd7
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISMS_PRODUCT_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphisms (A :^: K) (A :^: K :*: A :^: K) (product_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (product_group A K k f) (product_group A K l f)) (fun f0 :e A :^: K => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => True),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => True)),fun p :e A :^: K :*: A :^: K => fun x :e K => if x :e k then p 0 x else p 1 x).
+Theorem GROUP_ISOMORPHISMS_PRODUCT_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphisms (A :^: K) (A :^: K :*: A :^: K) (product_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (product_group A K k f) (product_group A K l f)) (fun f0 :e A :^: K => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => False),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => False)),fun p :e A :^: K :*: A :^: K => fun x :e K => if x :e k then p 0 x else p 1 x).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4485 / GROUP_ISOMORPHISMS_SUM_GROUP_DISJOINT_UNION
 // Source hash: md5:691c2fc8bbfb1d07cf154d139cc4b2bc
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISMS_SUM_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphisms (A :^: K) (A :^: K :*: A :^: K) (sum_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (sum_group A K k f) (sum_group A K l f)) (fun f0 :e A :^: K => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => True),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => True)),fun p :e A :^: K :*: A :^: K => fun x :e K => if x :e k then p 0 x else p 1 x).
+Theorem GROUP_ISOMORPHISMS_SUM_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphisms (A :^: K) (A :^: K :*: A :^: K) (sum_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (sum_group A K k f) (sum_group A K l f)) (fun f0 :e A :^: K => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => False),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => False)),fun p :e A :^: K :*: A :^: K => fun x :e K => if x :e k then p 0 x else p 1 x).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4520 / GROUP_ISOMORPHISM_PRODUCT_GROUP_DISJOINT_UNION
 // Source hash: md5:7ea81ed73d4534f03fb92b48d38b4050
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_PRODUCT_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphism_hl (A :^: K) (A :^: K :*: A :^: K) (product_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (product_group A K k f) (product_group A K l f)) (fun f0:set => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => True),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => True))).
+Theorem GROUP_ISOMORPHISM_PRODUCT_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphism_hl (A :^: K) (A :^: K :*: A :^: K) (product_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (product_group A K k f) (product_group A K l f)) (fun f0:set => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => False),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => False))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4530 / GROUP_ISOMORPHISM_SUM_GROUP_DISJOINT_UNION
 // Source hash: md5:8297539be8714c4de26837d69b58cdf8
 // Status: transport_required (bridges: choose_in_spec, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_SUM_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphism_hl (A :^: K) (A :^: K :*: A :^: K) (sum_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (sum_group A K k f) (sum_group A K l f)) (fun f0:set => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => True),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => True))).
+Theorem GROUP_ISOMORPHISM_SUM_GROUP_DISJOINT_UNION : forall A K:set, A <> Empty -> K <> Empty -> forall f:set -> set, (forall x :e K, f x :e group_hl A) -> forall k l c= K, k :/\: l = Empty -> group_isomorphism_hl (A :^: K) (A :^: K :*: A :^: K) (sum_group A K (k :\/: l) f,prod_group (A :^: K) (A :^: K) (sum_group A K k f) (sum_group A K l f)) (fun f0:set => (fun x :e K => if x :e k then f0 x else choose_in A (fun y:set => False),fun x :e K => if x :e l then f0 x else choose_in A (fun y:set => False))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:4540 / ISOMORPHIC_PRODUCT_GROUP_DISJOINT_UNION
@@ -2830,8 +2830,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:5191 / GROUP_ACTION_ON_SUBSET
 // Source hash: md5:2e2f8e48dbc46009e6a923301ad4be1d
-// Status: generalization_required (bridges: empty_case:X, hol_typedef_group)
-Theorem GROUP_ACTION_ON_SUBSET : forall A X:set, A <> Empty -> forall G :e group_hl A, forall s t c= X, forall a:set -> set -> set, (forall x :e A, forall y :e X, a x y :e X) -> group_action_hl A X G s a /\ (t c= s /\ (forall g :e A, forall x :e X, g :e group_carrier A G /\ x :e t -> a g x :e t)) -> group_action_hl A X G t a.
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_ACTION_ON_SUBSET : forall A X:set, A <> Empty -> X <> Empty -> forall G :e group_hl A, forall s t c= X, forall a:set -> set -> set, (forall x :e A, forall y :e X, a x y :e X) -> group_action_hl A X G s a /\ (t c= s /\ (forall g :e A, forall x :e X, g :e group_carrier A G /\ x :e t -> a g x :e t)) -> group_action_hl A X G t a.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:5199 / GROUP_ACTION_FROM_SUBGROUP
@@ -3184,8 +3184,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:5706 / CARD_GROUP_SETMUL_GEN
 // Source hash: md5:8eaaac836df4d8779a45779726bf3b85
-// Status: transport_required (bridges: hol_eq_c_equip, hol_prod_setprod, hol_typedef_group)
-Theorem CARD_GROUP_SETMUL_GEN : forall A:set, A <> Empty -> forall G :e group_hl A, forall g h c= A, subgroup_of A g G /\ subgroup_of A h G -> equip (group_setmul A G g h :*: g :/\: h) (g :*: h).
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_prod_setprod, hol_typedef_group)
+Theorem CARD_GROUP_SETMUL_GEN : forall A:set, forall G :e group_hl A, forall g h c= A, subgroup_of A g G /\ subgroup_of A h G -> equip (group_setmul A G g h :*: g :/\: h) (g :*: h).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:5766 / CARD_GROUP_SETMUL_MUL
@@ -3478,14 +3478,14 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:6165 / CARD_EQ_LEFT_RIGHT_COSETS
 // Source hash: md5:629af28f837894425cefa3458be33315
-// Status: transport_required (bridges: hol_eq_c_equip, hol_typedef_group)
-Theorem CARD_EQ_LEFT_RIGHT_COSETS : forall A:set, A <> Empty -> forall G :e group_hl A, forall h c= A, subgroup_of A h G -> equip {left_coset_hl A G x h | x :e A, x :e group_carrier A G} {right_coset_hl A G h x | x :e A, x :e group_carrier A G}.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_typedef_group)
+Theorem CARD_EQ_LEFT_RIGHT_COSETS : forall A:set, forall G :e group_hl A, forall h c= A, subgroup_of A h G -> equip {left_coset_hl A G x h | x :e A, x :e group_carrier A G} {right_coset_hl A G h x | x :e A, x :e group_carrier A G}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:6178 / HAS_SIZE_LEFT_RIGHT_COSETS
 // Source hash: md5:55020199f44be25d5c4ee52e5d249f7c
-// Status: generalization_required (bridges: empty_case:A, hol_has_size_equip, hol_num_omega, hol_typedef_group)
-Theorem HAS_SIZE_LEFT_RIGHT_COSETS : forall A:set, forall n :e omega, forall G :e group_hl A, forall h c= A, subgroup_of A h G -> (equip {left_coset_hl A G x h | x :e A, x :e group_carrier A G} n <-> equip {right_coset_hl A G h x | x :e A, x :e group_carrier A G} n).
+// Status: transport_required (bridges: hol_has_size_equip, hol_num_omega, hol_typedef_group)
+Theorem HAS_SIZE_LEFT_RIGHT_COSETS : forall A:set, A <> Empty -> forall n :e omega, forall G :e group_hl A, forall h c= A, subgroup_of A h G -> (equip {left_coset_hl A G x h | x :e A, x :e group_carrier A G} n <-> equip {right_coset_hl A G h x | x :e A, x :e group_carrier A G} n).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:6186 / CARD_EQ_RIGHT_COSETS
@@ -3677,19 +3677,19 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:6500 / GROUP_SETMUL_PRODUCT_GROUP
 // Source hash: md5:36ecc27211beade00453e7b0696ded66
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem GROUP_SETMUL_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall s t :e Power A :^: K, group_setmul (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} {f :e A :^: K | (forall i :e k, f i :e t i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_setmul A (G i) (s i) (t i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}.
+Theorem GROUP_SETMUL_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall k c= K, forall s t :e Power A :^: K, group_setmul (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e s i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} {f :e A :^: K | (forall i :e k, f i :e t i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall i :e k, f i :e {x0 :e A | x0 :e group_setmul A (G i) (s i) (t i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:6523 / RIGHT_COSET_PRODUCT_GROUP
 // Source hash: md5:9fbd6d954de8ba3950790a83a1eb2d88
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem RIGHT_COSET_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, forall x :e A :^: K, forall k c= K, right_coset_hl (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} x = {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e right_coset_hl A (G i) (h i) (x i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}.
+Theorem RIGHT_COSET_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, forall x :e A :^: K, forall k c= K, right_coset_hl (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} x = {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e right_coset_hl A (G i) (h i) (x i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:6536 / LEFT_COSET_PRODUCT_GROUP
 // Source hash: md5:f3f7709a17f9d4466123294ef1f369ce
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem LEFT_COSET_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, forall x :e A :^: K, forall k c= K, left_coset_hl (A :^: K) (product_group A K k G) x {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} = {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e left_coset_hl A (G i) (x i) (h i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}.
+Theorem LEFT_COSET_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, forall x :e A :^: K, forall k c= K, left_coset_hl (A :^: K) (product_group A K k G) x {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} = {f :e A :^: K | (forall i :e k, f i :e {x1 :e A | x1 :e left_coset_hl A (G i) (x i) (h i)}) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:6543 / GROUP_SETINV_SUBGROUP_GENERATED
@@ -3922,8 +3922,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:7117 / GROUP_CONJUGATE_SYM
 // Source hash: md5:919ab22e7bab21d93b5eb630bf8b0445
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_CONJUGATE_SYM : forall A:set, forall G :e group_hl A, forall s t c= A, group_conjugate A G s t <-> group_conjugate A G t s.
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_CONJUGATE_SYM : forall A:set, A <> Empty -> forall G :e group_hl A, forall s t c= A, group_conjugate A G s t <-> group_conjugate A G t s.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7124 / GROUP_CONJUGATE_TRANS
@@ -3946,8 +3946,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:7156 / GROUP_CONJUGATE_IMP_CARD_EQ
 // Source hash: md5:cf71fcc4128a10aacce6665d3bbe6185
-// Status: transport_required (bridges: hol_eq_c_equip, hol_typedef_group)
-Theorem GROUP_CONJUGATE_IMP_CARD_EQ : forall A:set, A <> Empty -> forall G :e group_hl A, forall s t c= A, group_conjugate A G s t -> equip s t.
+// Status: generalization_required (bridges: empty_case:A, hol_eq_c_equip, hol_typedef_group)
+Theorem GROUP_CONJUGATE_IMP_CARD_EQ : forall A:set, forall G :e group_hl A, forall s t c= A, group_conjugate A G s t -> equip s t.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7163 / GROUP_ORBIT_CONJUGATE_STABILIZERS
@@ -4403,19 +4403,19 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:7849 / CARTESIAN_PRODUCT_NORMAL_SUBGROUP_OF_PRODUCT_GROUP
 // Source hash: md5:b94e8e8854c399424b6a52f330408957
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem CARTESIAN_PRODUCT_NORMAL_SUBGROUP_OF_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, forall k c= K, normal_subgroup_of (A :^: K) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)} (product_group A K k G) <-> forall i :e K, i :e k -> normal_subgroup_of A (h i) (G i).
+Theorem CARTESIAN_PRODUCT_NORMAL_SUBGROUP_OF_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall h :e Power A :^: K, forall k c= K, normal_subgroup_of (A :^: K) {f :e A :^: K | (forall i :e k, f i :e h i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)} (product_group A K k G) <-> forall i :e K, i :e k -> normal_subgroup_of A (h i) (G i).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7864 / GROUP_ISOMORPHISM_PRODUCT_QUOTIENT_GROUP
 // Source hash: md5:146ef7fee86048d5b756e9940ea657df
 // Status: transport_required (bridges: hol_fun_setexp, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_ISOMORPHISM_PRODUCT_QUOTIENT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall n :e Power A :^: K, forall k c= K, (forall i :e K, i :e k -> normal_subgroup_of A (n i) (G i)) -> group_isomorphism_hl (Power A :^: K) (Power (A :^: K)) (product_group (Power A) K k (fun i:set => quotient_group A (G i) (n i)),quotient_group (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e n i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}) (fun x:set => {x0 :e A :^: K | x0 :e {f :e A :^: K | (forall i :e k, f i :e x i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}}).
+Theorem GROUP_ISOMORPHISM_PRODUCT_QUOTIENT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall n :e Power A :^: K, forall k c= K, (forall i :e K, i :e k -> normal_subgroup_of A (n i) (G i)) -> group_isomorphism_hl (Power A :^: K) (Power (A :^: K)) (product_group (Power A) K k (fun i:set => quotient_group A (G i) (n i)),quotient_group (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e n i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}) (fun x:set => {x0 :e A :^: K | x0 :e {f :e A :^: K | (forall i :e k, f i :e x i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}}).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7905 / ISOMORPHIC_QUOTIENT_PRODUCT_GROUP
 // Source hash: md5:e444a70e7de0fc2f962fe0c6d8871060
 // Status: transport_required (bridges: hol_fun_setexp, hol_typedef_group)
-Theorem ISOMORPHIC_QUOTIENT_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall n :e Power A :^: K, forall k c= K, (forall i :e K, i :e k -> normal_subgroup_of A (n i) (G i)) -> isomorphic_group (Power (A :^: K)) (Power A :^: K) (quotient_group (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e n i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => True)}) (product_group (Power A) K k (fun i:set => quotient_group A (G i) (n i))).
+Theorem ISOMORPHIC_QUOTIENT_PRODUCT_GROUP : forall A K:set, A <> Empty -> K <> Empty -> forall G:set -> set, (forall x :e K, G x :e group_hl A) -> forall n :e Power A :^: K, forall k c= K, (forall i :e K, i :e k -> normal_subgroup_of A (n i) (G i)) -> isomorphic_group (Power (A :^: K)) (Power A :^: K) (quotient_group (A :^: K) (product_group A K k G) {f :e A :^: K | (forall i :e k, f i :e n i) /\ forall i :e K, ~ i :e k -> f i = choose_in A (fun y:set => False)}) (product_group (Power A) K k (fun i:set => quotient_group A (G i) (n i))).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:7915 / SUBGROUP_OF_QUOTIENT_GROUP
@@ -4660,8 +4660,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:8403 / GROUP_HOMOMORPHISM_IMAGE_PREIMAGE
 // Source hash: md5:48da75a643294d8fc97c14916f794e65
-// Status: generalization_required (bridges: empty_case:B, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_IMAGE_PREIMAGE : forall A B:set, A <> Empty -> forall G :e group_hl A, forall H :e group_hl B, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, group_homomorphism_hl A B (G,H) f -> {f x | x :e {x :e A | x :e group_carrier A G /\ f x :e t}} = t :/\: group_image A B (G,H) f.
+// Status: transport_required (bridges: hol_prod_setprod, hol_typedef_group)
+Theorem GROUP_HOMOMORPHISM_IMAGE_PREIMAGE : forall A B:set, A <> Empty -> B <> Empty -> forall G :e group_hl A, forall H :e group_hl B, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, group_homomorphism_hl A B (G,H) f -> {f x | x :e {x :e A | x :e group_carrier A G /\ f x :e t}} = t :/\: group_image A B (G,H) f.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:8410 / GROUP_HOMOMORPHISM_PREIMAGE_IMAGE
@@ -4672,8 +4672,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:8425 / GROUP_HOMOMORPHISM_IMAGE_PREIMAGE_EQ
 // Source hash: md5:da31f088b73f875354a80e9bfbaf98a1
-// Status: generalization_required (bridges: empty_case:B, hol_prod_setprod, hol_typedef_group)
-Theorem GROUP_HOMOMORPHISM_IMAGE_PREIMAGE_EQ : forall A B:set, A <> Empty -> forall G :e group_hl A, forall H :e group_hl B, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, group_homomorphism_hl A B (G,H) f /\ t c= group_image A B (G,H) f -> {f x | x :e {x :e A | x :e group_carrier A G /\ f x :e t}} = t.
+// Status: transport_required (bridges: hol_prod_setprod, hol_typedef_group)
+Theorem GROUP_HOMOMORPHISM_IMAGE_PREIMAGE_EQ : forall A B:set, A <> Empty -> B <> Empty -> forall G :e group_hl A, forall H :e group_hl B, forall f:set -> set, (forall x :e A, f x :e B) -> forall t c= B, group_homomorphism_hl A B (G,H) f /\ t c= group_image A B (G,H) f -> {f x | x :e {x :e A | x :e group_carrier A G /\ f x :e t}} = t.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:8431 / GROUP_EPIMORPHISM_SUBGROUP_CORRESPONDENCE
@@ -4732,14 +4732,14 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:8588 / GROUP_CONJUGATE_SUBGROUP_OF
 // Source hash: md5:f4038dc69162d9dbf94e6b3e348e44c2
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_CONJUGATE_SUBGROUP_OF : forall A:set, forall G :e group_hl A, forall s t c= A, group_conjugate A G s t -> (subgroup_of A s G <-> subgroup_of A t G).
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_CONJUGATE_SUBGROUP_OF : forall A:set, A <> Empty -> forall G :e group_hl A, forall s t c= A, group_conjugate A G s t -> (subgroup_of A s G <-> subgroup_of A t G).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:8599 / GROUP_CONJUGATE_NORMAL_SUBGROUP_OF
 // Source hash: md5:06f83c0fbe345a80094c104f0a594ef8
-// Status: generalization_required (bridges: empty_case:A, hol_typedef_group)
-Theorem GROUP_CONJUGATE_NORMAL_SUBGROUP_OF : forall A:set, forall G :e group_hl A, forall s t c= A, group_conjugate A G s t -> (normal_subgroup_of A s G <-> normal_subgroup_of A t G).
+// Status: transport_required (bridges: hol_typedef_group)
+Theorem GROUP_CONJUGATE_NORMAL_SUBGROUP_OF : forall A:set, A <> Empty -> forall G :e group_hl A, forall s t c= A, group_conjugate A G s t -> (normal_subgroup_of A s G <-> normal_subgroup_of A t G).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:8610 / NORMAL_SUBGROUP_CONJUGATE
@@ -5584,8 +5584,8 @@ Admitted.
 
 // HOL Light: Library/grouptheory.ml:10750 / FINITELY_GENERATED_ABELIAN_SUBGROUP_EXPLICIT
 // Source hash: md5:156bcb49ad1a608c87c3138759bd7e66
-// Status: transport_required (bridges: hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_typedef_group, nat_le_SNoLe)
-Theorem FINITELY_GENERATED_ABELIAN_SUBGROUP_EXPLICIT : forall A:set, A <> Empty -> forall G :e group_hl A, forall s h c= A, finite s /\ (s c= group_carrier A G /\ (abelian_group_hl A G /\ subgroup_of A h (subgroup_generated A G s))) -> exists t c= A, finite t /\ (t c= group_carrier A G /\ (finite_cardinality t <= finite_cardinality s /\ subgroup_generated A G t = subgroup_generated A G h)).
+// Status: generalization_required (bridges: empty_case:A, hol_card_finite_cardinality, hol_finite_finite, hol_num_omega, hol_typedef_group, nat_le_SNoLe)
+Theorem FINITELY_GENERATED_ABELIAN_SUBGROUP_EXPLICIT : forall A:set, forall G :e group_hl A, forall s h c= A, finite s /\ (s c= group_carrier A G /\ (abelian_group_hl A G /\ subgroup_of A h (subgroup_generated A G s))) -> exists t c= A, finite t /\ (t c= group_carrier A G /\ (finite_cardinality t <= finite_cardinality s /\ subgroup_generated A G t = subgroup_generated A G h)).
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:11115 / FINITELY_GENERATED_ABELIAN_SUBGROUP
@@ -6593,7 +6593,7 @@ Admitted.
 // HOL Light: Library/grouptheory.ml:15448 / CARD_EQ_HOMOMORPHISMS_FROM_FREE_ABELIAN_GROUP
 // Source hash: md5:8390b13426f35461c386c42654ab1414
 // Status: transport_required (bridges: choose_in_spec, hol_eq_c_equip, hol_fun_setexp, hol_prod_setprod, hol_typedef_frag, hol_typedef_group)
-Theorem CARD_EQ_HOMOMORPHISMS_FROM_FREE_ABELIAN_GROUP : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall G :e group_hl B, abelian_group_hl B G -> equip {f :e B :^: frag A | (forall x :e frag A, ~ x :e group_carrier (frag A) (free_abelian_group A s) -> f x = choose_in B (fun y:set => True)) /\ group_homomorphism_hl (frag A) B (free_abelian_group A s,G) (fun x:set => f x)} {f :e B :^: A | (forall x :e s, f x :e group_carrier B G) /\ forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)}.
+Theorem CARD_EQ_HOMOMORPHISMS_FROM_FREE_ABELIAN_GROUP : forall A B:set, A <> Empty -> B <> Empty -> forall s c= A, forall G :e group_hl B, abelian_group_hl B G -> equip {f :e B :^: frag A | (forall x :e frag A, ~ x :e group_carrier (frag A) (free_abelian_group A s) -> f x = choose_in B (fun y:set => False)) /\ group_homomorphism_hl (frag A) B (free_abelian_group A s,G) (fun x:set => f x)} {f :e B :^: A | (forall x :e s, f x :e group_carrier B G) /\ forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)}.
 Admitted.
 
 // HOL Light: Library/grouptheory.ml:15503 / ISOMORPHIC_FREE_ABELIAN_GROUPS

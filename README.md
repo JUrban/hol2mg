@@ -57,6 +57,7 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 |---|---|---|---|---|---|
 | core | 2685 | 2697 | 2592 | 57 | 847 (recorded from pilot rounds 7–8, DESIGN 22.6) |
 | standard | 4290 | 4396 | 3839 | 57 | — |
+| multivariate | 17138 | 17332 | 3305 | 57 | — |
 
 Native proof synthesis (DESIGN §23): 306 Core and 339 standard public theorems additionally carry *generated
 native proofs* in the God1 declarative style (`natively_proved`, emitted with `Qed` in the

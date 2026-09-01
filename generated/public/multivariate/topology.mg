@@ -3179,25 +3179,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:4505 / CLOSURE_SEQUENTIAL
 // Source hash: md5:b26f9c957618ba1753bcb016623dcf12
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CLOSURE_SEQUENTIAL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall l :e R :^: idx N, l :e closure N s <-> exists x:set -> set, (forall x :e omega, x x :e R :^: idx N) /\ ((forall n :e omega, x n :e s) /\ tendsto N omega x l sequentially).
+Theorem CLOSURE_SEQUENTIAL : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall l :e R :^: idx N, l :e closure N s <-> exists x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) /\ ((forall n :e omega, x n :e s) /\ tendsto N omega x l sequentially).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4515 / CLOSED_CONTAINS_SEQUENTIAL_LIMIT
 // Source hash: md5:93c080750e994ea530041fbafa8aa326
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CLOSED_CONTAINS_SEQUENTIAL_LIMIT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall l :e R :^: idx N, closed N s /\ ((forall n :e omega, x n :e s) /\ tendsto N omega x l sequentially) -> l :e s.
+Theorem CLOSED_CONTAINS_SEQUENTIAL_LIMIT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall l :e R :^: idx N, closed N s /\ ((forall n :e omega, x n :e s) /\ tendsto N omega x l sequentially) -> l :e s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4520 / CLOSED_SEQUENTIAL_LIMITS
 // Source hash: md5:e89256d8d33c0f2700f2629fb098973a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CLOSED_SEQUENTIAL_LIMITS : forall A:set, A <> Empty -> forall s c= R :^: idx A, closed A s <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall l :e R :^: idx A, (forall n :e omega, x n :e s) /\ tendsto A omega x l sequentially -> l :e s.
+Theorem CLOSED_SEQUENTIAL_LIMITS : forall A:set, A <> Empty -> forall s c= R :^: idx A, closed A s <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall l :e R :^: idx A, (forall n :e omega, x n :e s) /\ tendsto A omega x l sequentially -> l :e s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4526 / CLOSED_IN_SEQUENTIAL_LIMITS
 // Source hash: md5:7d777a4d830bfadf159c39c5716dbe57
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, hol_typedef_topology)
-Theorem CLOSED_IN_SEQUENTIAL_LIMITS : forall N:set, N <> Empty -> forall u s c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s <-> s c= u /\ forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall l :e R :^: idx N, (forall n :e omega, x n :e s) /\ (l :e u /\ tendsto N omega x l sequentially) -> l :e s.
+Theorem CLOSED_IN_SEQUENTIAL_LIMITS : forall N:set, N <> Empty -> forall u s c= R :^: idx N, closed_in (R :^: idx N) (subtopology (R :^: idx N) (euclidean N) u) s <-> s c= u /\ forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall l :e R :^: idx N, (forall n :e omega, x n :e s) /\ (l :e u /\ tendsto N omega x l sequentially) -> l :e s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:4537 / CLOSED_APPROACHABLE
@@ -3971,13 +3971,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:5691 / CAUCHY_SUBSEQUENCE
 // Source hash: md5:7ee146026392b62635679d2b0c3c5fbc
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, nat_lt_SNoLt)
-Theorem CAUCHY_SUBSEQUENCE : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall r:set -> set, (forall x0 :e omega, r x0 :e omega) -> (forall m n :e omega, m < n -> r m < r n) /\ cauchy N x -> cauchy N (fun x0:set => x (r x0)).
+Theorem CAUCHY_SUBSEQUENCE : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall r:set -> set, (forall x0 :e omega, r x0 :e omega) -> (forall m n :e omega, m < n -> r m < r n) /\ cauchy N x -> cauchy N (fun x0:set => x (r x0)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:5698 / CAUCHY_OFFSET
 // Source hash: md5:ec6275f3dc2fd6ffa302c15befb0a1c2
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CAUCHY_OFFSET : forall N:set, N <> Empty -> forall k :e omega, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (cauchy N (fun i:set => x (i + k)) <-> cauchy N x).
+Theorem CAUCHY_OFFSET : forall N:set, N <> Empty -> forall k :e omega, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (cauchy N (fun i:set => x (i + k)) <-> cauchy N x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:5705 / CONVERGENT_IMP_CAUCHY
@@ -3995,7 +3995,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:5719 / CAUCHY_CONVERGENT_SUBSEQUENCE
 // Source hash: md5:7e11fb619a486b56a855d33c89c6c71b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem CAUCHY_CONVERGENT_SUBSEQUENCE : forall N:set, N <> Empty -> forall l :e R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall r:set -> set, (forall x0 :e omega, r x0 :e omega) -> cauchy N x /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) l sequentially) -> tendsto N omega x l sequentially.
+Theorem CAUCHY_CONVERGENT_SUBSEQUENCE : forall N:set, N <> Empty -> forall l :e R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall r:set -> set, (forall x0 :e omega, r x0 :e omega) -> cauchy N x /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) l sequentially) -> tendsto N omega x l sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:5734 / COMPACT_IMP_COMPLETE
@@ -4397,19 +4397,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:6343 / SEQUENCE_ESCAPES
 // Source hash: md5:9f8ce4c52ac892d4cb9a0edd3d492771
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem SEQUENCE_ESCAPES : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall n :e omega, x n :e s) -> ((forall k c= R :^: idx N, k c= s /\ compact N k -> finite {n :e omega | x n :e k}) <-> ~ exists y :e R :^: idx N, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (y :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) y sequentially))).
+Theorem SEQUENCE_ESCAPES : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall n :e omega, x n :e s) -> ((forall k c= R :^: idx N, k c= s /\ compact N k -> finite {n :e omega | x n :e k}) <-> ~ exists y :e R :^: idx N, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (y :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) y sequentially))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6377 / SEQUENCE_ESCAPES_ALT
 // Source hash: md5:662c4ebf41f7640c4190e240adc6f684
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem SEQUENCE_ESCAPES_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall n :e omega, x n :e s) -> ((forall k c= R :^: idx N, k c= s /\ compact N k -> eventually omega {n :e omega | ~ x n :e k} sequentially) <-> ~ exists y :e R :^: idx N, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (y :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) y sequentially))).
+Theorem SEQUENCE_ESCAPES_ALT : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall n :e omega, x n :e s) -> ((forall k c= R :^: idx N, k c= s /\ compact N k -> eventually omega {n :e omega | ~ x n :e k} sequentially) <-> ~ exists y :e R :^: idx N, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (y :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) y sequentially))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6387 / CONVERGENT_SUBSEQUENCE
 // Source hash: md5:26f64a5d238ed7c0d474b62acdda22b0
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem CONVERGENT_SUBSEQUENCE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall n :e omega, x n :e s) -> ((exists y :e R :^: idx N, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (y :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) y sequentially))) <-> exists k c= R :^: idx N, k c= s /\ (compact N k /\ infinite {n :e omega | x n :e k})).
+Theorem CONVERGENT_SUBSEQUENCE : forall N:set, N <> Empty -> forall s c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall n :e omega, x n :e s) -> ((exists y :e R :^: idx N, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (y :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => x (r x0)) y sequentially))) <-> exists k c= R :^: idx N, k c= s /\ (compact N k /\ infinite {n :e omega | x n :e k})).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6404 / UNIFORMLY_CONVERGENT_EQ_CAUCHY
@@ -4426,8 +4426,8 @@ Admitted.
 
 // HOL Light: Multivariate/topology.ml:6449 / UNIFORMLY_CAUCHY_IMP_UNIFORMLY_CONVERGENT
 // Source hash: md5:1facf7372fbad65a59f78c1764a2d49e
-// Status: generalization_required (bridges: empty_case:A, hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, omega_Subq_R)
-Theorem UNIFORMLY_CAUCHY_IMP_UNIFORMLY_CONVERGENT : forall A N:set, N <> Empty -> forall P:set -> prop, forall s:set -> set -> set, (forall x :e omega, forall y :e A, s x y :e R :^: idx N) -> forall l:set -> set, (forall x :e A, l x :e R :^: idx N) -> (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, forall x :e A, N0 <= m /\ (N0 <= n /\ P x) -> distance N (s m x,s n x) < e0) /\ (forall x :e A, P x -> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, N0 <= n -> distance N (s n x,l x) < e0) -> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e A, N0 <= n /\ P x -> distance N (s n x,l x) < e0.
+// Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, nat_le_SNoLe, omega_Subq_R)
+Theorem UNIFORMLY_CAUCHY_IMP_UNIFORMLY_CONVERGENT : forall A N:set, A <> Empty -> N <> Empty -> forall P:set -> prop, forall s:set -> set -> set, (forall x :e omega, forall y :e A, s x y :e R :^: idx N) -> forall l:set -> set, (forall x :e A, l x :e R :^: idx N) -> (forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall m n :e omega, forall x :e A, N0 <= m /\ (N0 <= n /\ P x) -> distance N (s m x,s n x) < e0) /\ (forall x :e A, P x -> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, N0 <= n -> distance N (s n x,l x) < e0) -> forall e0 :e R, 0 < e0 -> exists N0 :e omega, forall n :e omega, forall x :e A, N0 <= n /\ P x -> distance N (s n x,l x) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6470 / continuous
@@ -4511,13 +4511,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:6551 / continuous_within
 // Source hash: md5:a2a73b80b4481ba9fdaabe111a4a46f0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem continuous_within : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, continuous A (R :^: idx B) f (within (R :^: idx B) (at_hl B x) s) <-> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, x' :e s /\ distance B (x',x) < d -> distance A (f x',f x) < e0.
+Theorem continuous_within : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall x :e R :^: idx B, forall s c= R :^: idx B, continuous A (R :^: idx B) f (within (R :^: idx B) (at_hl B x) s) <-> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, x' :e s /\ distance B (x',x) < d -> distance A (f x',f x) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6559 / continuous_at
 // Source hash: md5:64c9a3032772bcac9be4406c74ec1fcf
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem continuous_at_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall x :e R :^: idx B, continuous A (R :^: idx B) f (at_hl B x) <-> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, distance B (x',x) < d -> distance A (f x',f x) < e0.
+Theorem continuous_at_thm : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall x :e R :^: idx B, continuous A (R :^: idx B) f (at_hl B x) <-> forall e0 :e R, 0 < e0 -> exists d :e R, 0 < d /\ forall x' :e R :^: idx B, distance B (x',x) < d -> distance A (f x',f x) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6566 / CONTINUOUS_WITHIN_COMPARISON
@@ -4751,55 +4751,55 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:6850 / CONTINUOUS_WITHIN_SEQUENTIALLY
 // Source hash: md5:f6c06fcc692a244fbb3095bc7d0256bb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_WITHIN_SEQUENTIALLY : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall s c= R :^: idx N, forall a :e R :^: idx N, continuous A (R :^: idx N) f (within (R :^: idx N) (at_hl N a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (forall n :e omega, x n :e s) /\ tendsto N omega x a sequentially -> tendsto A omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_WITHIN_SEQUENTIALLY : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall s c= R :^: idx N, forall a :e R :^: idx N, continuous A (R :^: idx N) f (within (R :^: idx N) (at_hl N a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (forall n :e omega, x n :e s) /\ tendsto N omega x a sequentially -> tendsto A omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6874 / CONTINUOUS_AT_SEQUENTIALLY
 // Source hash: md5:2806e8b57c0ab4f6d14765ec9540075b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_AT_SEQUENTIALLY : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall a :e R :^: idx N, continuous A (R :^: idx N) f (at_hl N a) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> tendsto N omega x a sequentially -> tendsto A omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_AT_SEQUENTIALLY : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall a :e R :^: idx N, continuous A (R :^: idx N) f (at_hl N a) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> tendsto N omega x a sequentially -> tendsto A omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6882 / CONTINUOUS_ON_SEQUENTIALLY
 // Source hash: md5:7cedfce0dd2c2cf9d4531ddb4cabc1f8
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_ON_SEQUENTIALLY : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall s c= R :^: idx N, continuous_on_hl N A f s <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall a :e R :^: idx N, a :e s /\ ((forall n :e omega, x n :e s) /\ tendsto N omega x a sequentially) -> tendsto A omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_ON_SEQUENTIALLY : forall A N:set, A <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx N, f x :e R :^: idx A) -> forall s c= R :^: idx N, continuous_on_hl N A f s <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall a :e R :^: idx N, a :e s /\ ((forall n :e omega, x n :e s) /\ tendsto N omega x a sequentially) -> tendsto A omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6941 / LIM_WITHIN_SEQUENTIALLY
 // Source hash: md5:33b4741620cbcc3b03e6f76199bc3600
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem LIM_WITHIN_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ tendsto M omega x a sequentially -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
+Theorem LIM_WITHIN_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ tendsto M omega x a sequentially -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6952 / LIM_WITHIN_SEQUENTIALLY_INJ
 // Source hash: md5:145741ac72565b959ebe0b36de8c1285
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem LIM_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
+Theorem LIM_WITHIN_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6964 / LIM_WITHIN_SEQUENTIALLY_DECREASING
 // Source hash: md5:fa46dd320e71b04479dfe9a1bce393ec
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem LIM_WITHIN_SEQUENTIALLY_DECREASING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, m < n -> distance M (x n,a) < distance M (x m,a)) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
+Theorem LIM_WITHIN_SEQUENTIALLY_DECREASING : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (within (R :^: idx M) (at_hl M a) s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, x n :e s :\: {a}) /\ ((forall m n :e omega, m < n -> distance M (x n,a) < distance M (x m,a)) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:6979 / LIM_AT_SEQUENTIALLY
 // Source hash: md5:010818929ba43e92fe0ab783014280c0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem LIM_AT_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (at_hl M a) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, ~ x n = a) /\ tendsto M omega x a sequentially -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
+Theorem LIM_AT_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, forall l :e R :^: idx N, tendsto N (R :^: idx M) f l (at_hl M a) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, ~ x n = a) /\ tendsto M omega x a sequentially -> tendsto N omega (fun x0:set => f (x x0)) l sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:7049 / CONTINUOUS_AT_SEQUENTIALLY_ALT
 // Source hash: md5:f399feb8935b6547f7be0f7b26a9eb15
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_prod_setprod, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem CONTINUOUS_AT_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, continuous N (R :^: idx M) f (at_hl M a) <-> forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, ~ x n = a) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
+Theorem CONTINUOUS_AT_SEQUENTIALLY_ALT : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, continuous N (R :^: idx M) f (at_hl M a) <-> forall e0 :e R, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> 0 < e0 /\ ((forall n :e omega, ~ x n = a) /\ (tendsto M omega x a sequentially /\ (forall m n :e omega, x m = x n <-> m = n))) -> exists n :e omega, distance N (f (x n),f a) < e0.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:7060 / CONTINUOUS_AT_SEQUENTIALLY_INJ
 // Source hash: md5:620119343d357760534daf12f2be4dcf
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_AT_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, continuous N (R :^: idx M) f (at_hl M a) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, ~ x n = a) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_AT_SEQUENTIALLY_INJ : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall a :e R :^: idx M, continuous N (R :^: idx M) f (at_hl M a) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, ~ x n = a) /\ ((forall m n :e omega, x m = x n <-> m = n) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:7070 / LIM_CONTINUOUS
@@ -5255,7 +5255,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:7864 / RESTRICTION_CONTINUOUS_ON
 // Source hash: md5:fb73a5e68a4689ba63af11effbd64fe3
 // Status: transport_required (bridges: choose_in_spec, hol_cart_setexp, hol_real_R)
-Theorem RESTRICTION_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx M, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> s c= t -> (continuous_on_hl M N (fun x:set => if x :e t then f x else choose_in (R :^: idx N) (fun y:set => True)) s <-> continuous_on_hl M N f s).
+Theorem RESTRICTION_CONTINUOUS_ON : forall M N:set, M <> Empty -> N <> Empty -> forall s t c= R :^: idx M, forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> s c= t -> (continuous_on_hl M N (fun x:set => if x :e t then f x else choose_in (R :^: idx N) (fun y:set => False)) s <-> continuous_on_hl M N f s).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:7878 / LINEAR_LIM_0
@@ -5861,31 +5861,31 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:9280 / PROPER_MAP_SEQUENTIALLY_IMP
 // Source hash: md5:cc40746b479927af5df8bc12a08a0178
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem PROPER_MAP_SEQUENTIALLY_IMP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y :e R :^: idx N, {f x | x :e s} c= t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x0 :e R :^: idx M | x0 :e s /\ f x0 :e k}) /\ ((forall n :e omega, x n :e s) /\ (y :e t /\ tendsto N omega (fun x0:set => f (x x0)) y sequentially))) -> exists z :e R :^: idx M, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (z :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto M omega (fun x0:set => x (r x0)) z sequentially)).
+Theorem PROPER_MAP_SEQUENTIALLY_IMP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y :e R :^: idx N, {f x | x :e s} c= t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x0 :e R :^: idx M | x0 :e s /\ f x0 :e k}) /\ ((forall n :e omega, x n :e s) /\ (y :e t /\ tendsto N omega (fun x0:set => f (x x0)) y sequentially))) -> exists z :e R :^: idx M, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (z :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto M omega (fun x0:set => x (r x0)) z sequentially)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:9296 / PROPER_MAP_SEQUENTIALLY_REV
 // Source hash: md5:3412eb644008916ec19bc92ce6fc0b16
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem PROPER_MAP_SEQUENTIALLY_REV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ (forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, x n :e s) /\ (y :e t /\ tendsto N omega (fun x0:set => f (x x0)) y sequentially) -> exists z :e R :^: idx M, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (z :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto M omega (fun x0:set => x (r x0)) z sequentially))) -> forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}.
+Theorem PROPER_MAP_SEQUENTIALLY_REV : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ (forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, x n :e s) /\ (y :e t /\ tendsto N omega (fun x0:set => f (x x0)) y sequentially) -> exists z :e R :^: idx M, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (z :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto M omega (fun x0:set => x (r x0)) z sequentially))) -> forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:9323 / PROPER_MAP_SEQUENTIALLY
 // Source hash: md5:3d455fc44cd2efed3ee8fd0801ba9bad
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem PROPER_MAP_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ {f x | x :e s} c= t -> ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, x n :e s) /\ (y :e t /\ tendsto N omega (fun x0:set => f (x x0)) y sequentially) -> exists z :e R :^: idx M, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (z :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto M omega (fun x0:set => x (r x0)) z sequentially))).
+Theorem PROPER_MAP_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ {f x | x :e s} c= t -> ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y :e R :^: idx N, (forall n :e omega, x n :e s) /\ (y :e t /\ tendsto N omega (fun x0:set => f (x x0)) y sequentially) -> exists z :e R :^: idx M, exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ (z :e s /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto M omega (fun x0:set => x (r x0)) z sequentially))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:9337 / PROPER_MAP_ESCAPES_IMP
 // Source hash: md5:cd46daa9bb78a1941a274a2fd6c0844b
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
-Theorem PROPER_MAP_ESCAPES_IMP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> {f x | x :e s} c= t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x0 :e R :^: idx M | x0 :e s /\ f x0 :e k}) /\ ((forall n :e omega, x n :e s) /\ (forall c c= R :^: idx M, c c= s /\ compact M c -> finite {n :e omega | x n :e c}))) -> forall k c= R :^: idx N, k c= t /\ compact N k -> finite {n :e omega | f (x n) :e k}.
+Theorem PROPER_MAP_ESCAPES_IMP : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> {f x | x :e s} c= t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x0 :e R :^: idx M | x0 :e s /\ f x0 :e k}) /\ ((forall n :e omega, x n :e s) /\ (forall c c= R :^: idx M, c c= s /\ compact M c -> finite {n :e omega | x n :e c}))) -> forall k c= R :^: idx N, k c= t /\ compact N k -> finite {n :e omega | f (x n) :e k}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:9362 / PROPER_MAP_ESCAPES
 // Source hash: md5:5d2993d0cb2a71f4011fdddab809058c
 // Status: transport_required (bridges: hol_cart_setexp, hol_finite_finite, hol_num_omega, hol_real_R)
-Theorem PROPER_MAP_ESCAPES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ {f x | x :e s} c= t -> ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> (forall n :e omega, x n :e s) /\ (forall c c= R :^: idx M, c c= s /\ compact M c -> finite {n :e omega | x n :e c}) -> forall k c= R :^: idx N, k c= t /\ compact N k -> finite {n :e omega | f (x n) :e k}).
+Theorem PROPER_MAP_ESCAPES : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, continuous_on_hl M N f s /\ {f x | x :e s} c= t -> ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x :e R :^: idx M | x :e s /\ f x :e k}) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> (forall n :e omega, x n :e s) /\ (forall c c= R :^: idx M, c c= s /\ compact M c -> finite {n :e omega | x n :e c}) -> forall k c= R :^: idx N, k c= t /\ compact N k -> finite {n :e omega | f (x n) :e k}).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:9395 / CONTINUOUS_ON_UNION_LOCAL_OPEN
@@ -6317,7 +6317,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:10095 / CONTINUOUS_ON_CLOSURE_SEQUENTIALLY
 // Source hash: md5:2b0a18ae2fb87eb4c95ad7bee919e603
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net)
-Theorem CONTINUOUS_ON_CLOSURE_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, continuous_on_hl M N f (closure M s) <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall a :e R :^: idx M, a :e closure M s /\ ((forall n :e omega, x n :e s) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
+Theorem CONTINUOUS_ON_CLOSURE_SEQUENTIALLY : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, continuous_on_hl M N f (closure M s) <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall a :e R :^: idx M, a :e closure M s /\ ((forall n :e omega, x n :e s) /\ tendsto M omega x a sequentially) -> tendsto N omega (fun x0:set => f (x x0)) (f a) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10105 / CONTINUOUS_ON_INTERMEDIATE_CLOSURE_POINTWISE
@@ -6383,19 +6383,19 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:10234 / UNIFORMLY_CONTINUOUS_IMP_CAUCHY_CONTINUOUS
 // Source hash: md5:cfa9873f2421ad5853b9cdf65b99a588
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem UNIFORMLY_CONTINUOUS_IMP_CAUCHY_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0)).
+Theorem UNIFORMLY_CONTINUOUS_IMP_CAUCHY_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, uniformly_continuous_on_hl M N f s -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10241 / CONTINUOUS_CLOSED_IMP_CAUCHY_CONTINUOUS
 // Source hash: md5:70d279cc4cf68c2c4f79dbec2db1b054
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CONTINUOUS_CLOSED_IMP_CAUCHY_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, continuous_on_hl M N f s /\ closed M s -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0)).
+Theorem CONTINUOUS_CLOSED_IMP_CAUCHY_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, continuous_on_hl M N f s /\ closed M s -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10248 / CAUCHY_CONTINUOUS_EXTENDS_TO_CLOSURE
 // Source hash: md5:a901a4d9df9a073f45de22cd4dd52cef
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CAUCHY_CONTINUOUS_EXTENDS_TO_CLOSURE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (closure M s) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
+Theorem CAUCHY_CONTINUOUS_EXTENDS_TO_CLOSURE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (closure M s) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10260 / UNIFORMLY_CONTINUOUS_EXTENDS_TO_CLOSURE
@@ -6407,7 +6407,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:10274 / CAUCHY_CONTINUOUS_IMP_CONTINUOUS
 // Source hash: md5:af5e85d0905420fcc640dc90cf641d85
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CAUCHY_CONTINUOUS_IMP_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) -> continuous_on_hl M N f s.
+Theorem CAUCHY_CONTINUOUS_IMP_CONTINUOUS : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) -> continuous_on_hl M N f s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:10282 / BOUNDED_UNIFORMLY_CONTINUOUS_IMAGE
@@ -7235,25 +7235,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:12048 / CONTINUOUS_EQ_CAUCHY_CONTINUOUS_CLOSED
 // Source hash: md5:983f243d5bf636f0bf5b580ad9cc5f7e
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CONTINUOUS_EQ_CAUCHY_CONTINUOUS_CLOSED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, closed M s -> (continuous_on_hl M N f s <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))).
+Theorem CONTINUOUS_EQ_CAUCHY_CONTINUOUS_CLOSED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, closed M s -> (continuous_on_hl M N f s <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12056 / UNIFORMLY_CONTINUOUS_EQ_CAUCHY_CONTINUOUS_BOUNDED
 // Source hash: md5:c54462a99851fdf4bfe4977f387fc610
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem UNIFORMLY_CONTINUOUS_EQ_CAUCHY_CONTINUOUS_BOUNDED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, bounded_hl M s -> (uniformly_continuous_on_hl M N f s <-> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))).
+Theorem UNIFORMLY_CONTINUOUS_EQ_CAUCHY_CONTINUOUS_BOUNDED : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, bounded_hl M s -> (uniformly_continuous_on_hl M N f s <-> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12072 / CAUCHY_CONTINUOUS_EXTENDS_TO_CAUCHY_CONTINUOUS_CLOSURE
 // Source hash: md5:aa695d17910a2ddcded7c3e3798bd5a3
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CAUCHY_CONTINUOUS_EXTENDS_TO_CAUCHY_CONTINUOUS_CLOSURE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e closure M s) -> cauchy N (fun x0:set => g (x x0))) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
+Theorem CAUCHY_CONTINUOUS_EXTENDS_TO_CAUCHY_CONTINUOUS_CLOSURE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) -> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ ((forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e closure M s) -> cauchy N (fun x0:set => g (x x0))) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12080 / CAUCHY_CONTINUOUS_EQ_EXTENDS_TO_CLOSURE
 // Source hash: md5:211136655a83f8008200d776c0d8a6fd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CAUCHY_CONTINUOUS_EQ_EXTENDS_TO_CLOSURE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) <-> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (closure M s) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
+Theorem CAUCHY_CONTINUOUS_EQ_EXTENDS_TO_CLOSURE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, (forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> cauchy M x /\ (forall n :e omega, x n :e s) -> cauchy N (fun x0:set => f (x x0))) <-> exists g:set -> set, (forall x :e R :^: idx M, g x :e R :^: idx N) /\ (continuous_on_hl M N g (closure M s) /\ forall x :e R :^: idx M, x :e s -> g x = f x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:12090 / UNIFORMLY_CONTINUOUS_ON_UNION
@@ -8687,7 +8687,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:15270 / PROPER_MAP_ESCAPES_FROM_IMAGE
 // Source hash: md5:6d61e5eb72fe8a448414d0ecab44b471
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, nat_lt_SNoLt)
-Theorem PROPER_MAP_ESCAPES_FROM_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall r:set -> set, (forall x0 :e omega, r x0 :e omega) -> forall a :e R :^: idx M, forall b :e R :^: idx N, {f x | x :e s} c= t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x0 :e R :^: idx M | x0 :e s /\ f x0 :e k}) /\ ((forall n :e omega, x n :e s) /\ (~ a :e s /\ (tendsto M omega x a sequentially /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => f (x (r x0))) b sequentially))))) -> ~ b :e {f x | x :e s}.
+Theorem PROPER_MAP_ESCAPES_FROM_IMAGE : forall M N:set, M <> Empty -> N <> Empty -> forall f:set -> set, (forall x :e R :^: idx M, f x :e R :^: idx N) -> forall s c= R :^: idx M, forall t c= R :^: idx N, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall r:set -> set, (forall x0 :e omega, r x0 :e omega) -> forall a :e R :^: idx M, forall b :e R :^: idx N, {f x | x :e s} c= t /\ ((forall k c= R :^: idx N, k c= t /\ compact N k -> compact M {x0 :e R :^: idx M | x0 :e s /\ f x0 :e k}) /\ ((forall n :e omega, x n :e s) /\ (~ a :e s /\ (tendsto M omega x a sequentially /\ ((forall m n :e omega, m < n -> r m < r n) /\ tendsto N omega (fun x0:set => f (x (r x0))) b sequentially))))) -> ~ b :e {f x | x :e s}.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:15293 / FRONTIER_PROPER_MAP_IMAGE_SUBSET_GEN
@@ -8735,7 +8735,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:15393 / LIM_WITHIN_UNION
 // Source hash: md5:1a2aa8cb8875ea28902ac64134b8a3ef
 // Status: transport_required (bridges: hol_cart_setexp, hol_real_R, hol_typedef_net)
-Theorem LIM_WITHIN_UNION : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x0 :e R :^: idx B, f x0 :e R :^: idx A) -> forall l :e R :^: idx A, forall x :e R :^: idx B, forall s t c= R :^: idx B, tendsto A (R :^: idx B) f l (within (R :^: idx B) (at_hl B x) (s :\/: t)) <-> tendsto A (R :^: idx B) f l (within (R :^: idx B) (at_hl B x) s) /\ tendsto A (R :^: idx B) f l (within (R :^: idx B) (at_hl B x) t).
+Theorem LIM_WITHIN_UNION : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall l :e R :^: idx A, forall x :e R :^: idx B, forall s t c= R :^: idx B, tendsto A (R :^: idx B) f l (within (R :^: idx B) (at_hl B x) (s :\/: t)) <-> tendsto A (R :^: idx B) f l (within (R :^: idx B) (at_hl B x) s) /\ tendsto A (R :^: idx B) f l (within (R :^: idx B) (at_hl B x) t).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:15404 / CONTINUOUS_ON_UNION
@@ -9761,7 +9761,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:18008 / CAUCHY_ISOMETRIC
 // Source hash: md5:9ef96be4b655a6054321f585c4ce72ad
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, omega_Subq_R)
-Theorem CAUCHY_ISOMETRIC : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall e0 :e R, forall x:set -> set, (forall x :e omega, x x :e R :^: idx B) -> 0 < e0 /\ (subspace B s /\ (linear B A f /\ ((forall x0 :e R :^: idx B, x0 :e s -> e0 * vector_norm B x0 <= vector_norm A (f x0)) /\ ((forall n :e omega, x n :e s) /\ cauchy A (fun x0:set => f (x x0)))))) -> cauchy B x.
+Theorem CAUCHY_ISOMETRIC : forall A B:set, A <> Empty -> B <> Empty -> forall f:set -> set, (forall x :e R :^: idx B, f x :e R :^: idx A) -> forall s c= R :^: idx B, forall e0 :e R, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx B) -> 0 < e0 /\ (subspace B s /\ (linear B A f /\ ((forall x0 :e R :^: idx B, x0 :e s -> e0 * vector_norm B x0 <= vector_norm A (f x0)) /\ ((forall n :e omega, x n :e s) /\ cauchy A (fun x0:set => f (x x0)))))) -> cauchy B x.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:18023 / COMPLETE_ISOMETRIC_IMAGE
@@ -10847,25 +10847,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22067 / SERIES_ADD
 // Source hash: md5:af248999cbe56ec6d8d331cf4c0fc28d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SERIES_ADD : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall x0 :e R :^: idx A, forall y:set -> set, (forall x1 :e omega, y x1 :e R :^: idx A) -> forall y0 :e R :^: idx A, forall s c= omega, sums A x x0 s /\ sums A y y0 s -> sums A (fun n:set => vector_add A (x n) (y n)) (vector_add A x0 y0) s.
+Theorem SERIES_ADD : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall x0 :e R :^: idx A, forall y:set -> set, (forall x1 :e omega, y x1 :e R :^: idx A) -> forall y0 :e R :^: idx A, forall s c= omega, sums A x x0 s /\ sums A y y0 s -> sums A (fun n:set => vector_add A (x n) (y n)) (vector_add A x0 y0) s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22072 / SERIES_SUB
 // Source hash: md5:883524132213d22bd73da7daeda902eb
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SERIES_SUB : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall x0 :e R :^: idx A, forall y:set -> set, (forall x1 :e omega, y x1 :e R :^: idx A) -> forall y0 :e R :^: idx A, forall s c= omega, sums A x x0 s /\ sums A y y0 s -> sums A (fun n:set => vector_sub A (x n) (y n)) (vector_sub A x0 y0) s.
+Theorem SERIES_SUB : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall x0 :e R :^: idx A, forall y:set -> set, (forall x1 :e omega, y x1 :e R :^: idx A) -> forall y0 :e R :^: idx A, forall s c= omega, sums A x x0 s /\ sums A y y0 s -> sums A (fun n:set => vector_sub A (x n) (y n)) (vector_sub A x0 y0) s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22077 / SERIES_CMUL
 // Source hash: md5:ea5becb762fd85621d22a3abbd8ae0e2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SERIES_CMUL : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall x0 :e R :^: idx A, forall c :e R, forall s c= omega, sums A x x0 s -> sums A (fun n:set => vector_mul A c (x n)) (vector_mul A c x0) s.
+Theorem SERIES_CMUL : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall x0 :e R :^: idx A, forall c :e R, forall s c= omega, sums A x x0 s -> sums A (fun n:set => vector_mul A c (x n)) (vector_mul A c x0) s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22081 / SERIES_NEG
 // Source hash: md5:f5e76c095c59af43a39732b50772390d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SERIES_NEG : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall x0 :e R :^: idx A, forall s c= omega, sums A x x0 s -> sums A (fun n:set => vector_neg A (x n)) (vector_neg A x0) s.
+Theorem SERIES_NEG : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall x0 :e R :^: idx A, forall s c= omega, sums A x x0 s -> sums A (fun n:set => vector_neg A (x n)) (vector_neg A x0) s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22085 / SUMS_IFF
@@ -10967,25 +10967,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22255 / SUMMABLE_ADD
 // Source hash: md5:d791a9568a8be8a068382de9b182e46c
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SUMMABLE_ADD : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> summable A s (fun n:set => vector_add A (x n) (y n)).
+Theorem SUMMABLE_ADD : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> summable A s (fun n:set => vector_add A (x n) (y n)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22259 / SUMMABLE_SUB
 // Source hash: md5:86b6e0aa3b2c5e29010fe943434b85e0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SUMMABLE_SUB : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> summable A s (fun n:set => vector_sub A (x n) (y n)).
+Theorem SUMMABLE_SUB : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> summable A s (fun n:set => vector_sub A (x n) (y n)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22263 / SUMMABLE_CMUL
 // Source hash: md5:d8a5b9cc19218a4b3dfa23088921f242
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SUMMABLE_CMUL : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall c :e R, summable A s x -> summable A s (fun n:set => vector_mul A c (x n)).
+Theorem SUMMABLE_CMUL : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall c :e R, summable A s x -> summable A s (fun n:set => vector_mul A c (x n)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22267 / SUMMABLE_NEG
 // Source hash: md5:80e72b7ce711eefcde129b8516ff78b5
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SUMMABLE_NEG : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall s c= omega, summable A s x -> summable A s (fun n:set => vector_neg A (x n)).
+Theorem SUMMABLE_NEG : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall s c= omega, summable A s x -> summable A s (fun n:set => vector_neg A (x n)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22271 / SUMMABLE_IFF
@@ -11015,13 +11015,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22292 / SERIES_SUBSET
 // Source hash: md5:2baa002369eb6b11f2001b7f56e917bd
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SERIES_SUBSET : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall s t c= omega, forall l :e R :^: idx A, s c= t /\ sums A (fun i:set => if i :e s then x i else vec A 0) l t -> sums A x l s.
+Theorem SERIES_SUBSET : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall s t c= omega, forall l :e R :^: idx A, s c= t /\ sums A (fun i:set => if i :e s then x i else vec A 0) l t -> sums A x l s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22303 / SUMMABLE_SUBSET
 // Source hash: md5:140a596ebbbda5e1348389c96220cde3
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SUMMABLE_SUBSET : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall s t c= omega, s c= t /\ summable A t (fun i:set => if i :e s then x i else vec A 0) -> summable A s x.
+Theorem SUMMABLE_SUBSET : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall s t c= omega, s c= t /\ summable A t (fun i:set => if i :e s then x i else vec A 0) -> summable A s x.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22310 / SUMMABLE_TRIVIAL
@@ -11111,25 +11111,25 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22459 / INFSUM_ADD
 // Source hash: md5:5fffbbf6ffec2d74d4a4f4b9af85e6da
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem INFSUM_ADD : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> infsum A s (fun i:set => vector_add A (x i) (y i)) = vector_add A (infsum A s x) (infsum A s y).
+Theorem INFSUM_ADD : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> infsum A s (fun i:set => vector_add A (x i) (y i)) = vector_add A (infsum A s x) (infsum A s y).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22465 / INFSUM_SUB
 // Source hash: md5:441ff4f63b967394e261cc708324c628
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem INFSUM_SUB : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> infsum A s (fun i:set => vector_sub A (x i) (y i)) = vector_sub A (infsum A s x) (infsum A s y).
+Theorem INFSUM_SUB : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx A) -> forall s c= omega, summable A s x /\ summable A s y -> infsum A s (fun i:set => vector_sub A (x i) (y i)) = vector_sub A (infsum A s x) (infsum A s y).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22471 / INFSUM_CMUL
 // Source hash: md5:3c5f1f6d7daf5a3293c974b411ca97a2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem INFSUM_CMUL : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall c :e R, summable A s x -> infsum A s (fun n:set => vector_mul A c (x n)) = vector_mul A c (infsum A s x).
+Theorem INFSUM_CMUL : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall c :e R, summable A s x -> infsum A s (fun n:set => vector_mul A c (x n)) = vector_mul A c (infsum A s x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22476 / INFSUM_NEG
 // Source hash: md5:0c613122906a5d3990c09296b9cef4c1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem INFSUM_NEG : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> summable A s x -> infsum A s (fun n:set => vector_neg A (x n)) = vector_neg A (infsum A s x).
+Theorem INFSUM_NEG : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> summable A s x -> infsum A s (fun n:set => vector_neg A (x n)) = vector_neg A (infsum A s x).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22481 / INFSUM_EQ
@@ -11243,7 +11243,7 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22702 / SERIES_GOESTOZERO
 // Source hash: md5:ab7da8edb86a6b215fcafe78f682fe18
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem SERIES_GOESTOZERO : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> summable A s x -> forall e0 :e R, 0 < e0 -> eventually omega {n :e omega | n :e s -> vector_norm A (x n) < e0} sequentially.
+Theorem SERIES_GOESTOZERO : forall A:set, A <> Empty -> forall s c= omega, forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> summable A s x -> forall e0 :e R, 0 < e0 -> eventually omega {n :e omega | n :e s -> vector_norm A (x n) < e0} sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22715 / SUMMABLE_IMP_TOZERO
@@ -11279,13 +11279,13 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:22781 / SERIES_LIFT_ABSCONV_IMP_CONV
 // Source hash: md5:85d1e131d1b612477d9f386c1e4846f0
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SERIES_LIFT_ABSCONV_IMP_CONV : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall k c= omega, summable 1 k (fun n:set => lift (vector_norm N (x n))) -> summable N k x.
+Theorem SERIES_LIFT_ABSCONV_IMP_CONV : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall k c= omega, summable 1 k (fun n:set => lift (vector_norm N (x n))) -> summable N k x.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22788 / SUMMABLE_SUBSET_ABSCONV
 // Source hash: md5:71db73221779f8f06d6c2b3213a36afe
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SUMMABLE_SUBSET_ABSCONV : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall s t c= omega, summable 1 s (fun n:set => lift (vector_norm N (x n))) /\ t c= s -> summable 1 t (fun n:set => lift (vector_norm N (x n))).
+Theorem SUMMABLE_SUBSET_ABSCONV : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall s t c= omega, summable 1 s (fun n:set => lift (vector_norm N (x n))) /\ t c= s -> summable 1 t (fun n:set => lift (vector_norm N (x n))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:22800 / SERIES_COMPARISON_BOUND
@@ -11345,49 +11345,49 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:23099 / SERIES_INJECTIVE_IMAGE_STRONG
 // Source hash: md5:ecda8e5cb743d1204f544e2db1167953
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R, hol_typedef_net)
-Theorem SERIES_INJECTIVE_IMAGE_STRONG : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall s c= omega, forall f:set -> set, (forall x0 :e omega, f x0 :e omega) -> summable 1 {f x | x :e s} (fun n:set => lift (vector_norm N (x n))) /\ (forall m n :e omega, m :e s /\ (n :e s /\ f m = f n) -> m = n) -> tendsto N omega (fun n:set => vector_sub N (vsum omega N ({f x | x :e s} :/\: {i :e omega | 0 <= i /\ i <= n}) x) (vsum omega N (s :/\: {i :e omega | 0 <= i /\ i <= n}) (fun x0:set => x (f x0)))) (vec N 0) sequentially.
+Theorem SERIES_INJECTIVE_IMAGE_STRONG : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall s c= omega, forall f:set -> set, (forall x0 :e omega, f x0 :e omega) -> summable 1 {f x | x :e s} (fun n:set => lift (vector_norm N (x n))) /\ (forall m n :e omega, m :e s /\ (n :e s /\ f m = f n) -> m = n) -> tendsto N omega (fun n:set => vector_sub N (vsum omega N ({f x | x :e s} :/\: {i :e omega | 0 <= i /\ i <= n}) x) (vsum omega N (s :/\: {i :e omega | 0 <= i /\ i <= n}) (fun x0:set => x (f x0)))) (vec N 0) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23172 / SERIES_INJECTIVE_IMAGE
 // Source hash: md5:48ad5769762ecbf65abb8ccc3377dbc2
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SERIES_INJECTIVE_IMAGE : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall s c= omega, forall f:set -> set, (forall x0 :e omega, f x0 :e omega) -> forall l :e R :^: idx N, summable 1 {f x | x :e s} (fun n:set => lift (vector_norm N (x n))) /\ (forall m n :e omega, m :e s /\ (n :e s /\ f m = f n) -> m = n) -> (sums N (fun x0:set => x (f x0)) l s <-> sums N x l {f x | x :e s}).
+Theorem SERIES_INJECTIVE_IMAGE : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall s c= omega, forall f:set -> set, (forall x0 :e omega, f x0 :e omega) -> forall l :e R :^: idx N, summable 1 {f x | x :e s} (fun n:set => lift (vector_norm N (x n))) /\ (forall m n :e omega, m :e s /\ (n :e s /\ f m = f n) -> m = n) -> (sums N (fun x0:set => x (f x0)) l s <-> sums N x l {f x | x :e s}).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23182 / SERIES_REARRANGE_EQ
 // Source hash: md5:e8031f1edf437b6636f2d8522c7f7227
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SERIES_REARRANGE_EQ : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall s c= omega, forall p:set -> set, (forall x0 :e omega, p x0 :e omega) -> forall l :e R :^: idx N, summable 1 s (fun n:set => lift (vector_norm N (x n))) /\ permutes omega p s -> (sums N (fun x0:set => x (p x0)) l s <-> sums N x l s).
+Theorem SERIES_REARRANGE_EQ : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall s c= omega, forall p:set -> set, (forall x0 :e omega, p x0 :e omega) -> forall l :e R :^: idx N, summable 1 s (fun n:set => lift (vector_norm N (x n))) /\ permutes omega p s -> (sums N (fun x0:set => x (p x0)) l s <-> sums N x l s).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23192 / SERIES_REARRANGE
 // Source hash: md5:1f24ac3458762293fc6c6c46ec1a86a8
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SERIES_REARRANGE : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall s c= omega, forall p:set -> set, (forall x0 :e omega, p x0 :e omega) -> forall l :e R :^: idx N, summable 1 s (fun n:set => lift (vector_norm N (x n))) /\ (permutes omega p s /\ sums N x l s) -> sums N (fun x0:set => x (p x0)) l s.
+Theorem SERIES_REARRANGE : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall s c= omega, forall p:set -> set, (forall x0 :e omega, p x0 :e omega) -> forall l :e R :^: idx N, summable 1 s (fun n:set => lift (vector_norm N (x n))) /\ (permutes omega p s /\ sums N x l s) -> sums N (fun x0:set => x (p x0)) l s.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23198 / SUMMABLE_REARRANGE
 // Source hash: md5:3ef6ff922a368c6cc8657c89e175ce1b
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SUMMABLE_REARRANGE : forall A:set, A <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx A) -> forall s c= omega, forall p:set -> set, (forall x0 :e omega, p x0 :e omega) -> summable 1 s (fun n:set => lift (vector_norm A (x n))) /\ permutes omega p s -> summable A s (fun x0:set => x (p x0)).
+Theorem SUMMABLE_REARRANGE : forall A:set, A <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx A) -> forall s c= omega, forall p:set -> set, (forall x0 :e omega, p x0 :e omega) -> summable 1 s (fun n:set => lift (vector_norm A (x n))) /\ permutes omega p s -> summable A s (fun x0:set => x (p x0)).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23208 / TOEPLITZ_BILINEAR_SERIES_NULL
 // Source hash: md5:6d66e335bfd334bdbf6491948604b3d1
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, hol_typedef_net)
-Theorem TOEPLITZ_BILINEAR_SERIES_NULL : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx M) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall m :e omega, forall b :e R, bilinear N P M bop /\ (tendsto N omega x (vec N 0) sequentially /\ ((forall p :e omega, tendsto M omega (fun n:set => a n p) (vec M 0) sequentially) /\ (forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => vector_norm M (a n i)) <= b))) -> tendsto P omega (fun n:set => vsum omega P {i :e omega | m <= i /\ i <= n} (fun i:set => bop (a n i) (x i))) (vec P 0) sequentially.
+Theorem TOEPLITZ_BILINEAR_SERIES_NULL : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx M) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall m :e omega, forall b :e R, bilinear N P M bop /\ (tendsto N omega x (vec N 0) sequentially /\ ((forall p :e omega, tendsto M omega (fun n:set => a n p) (vec M 0) sequentially) /\ (forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun i:set => vector_norm M (a n i)) <= b))) -> tendsto P omega (fun n:set => vsum omega P {i :e omega | m <= i /\ i <= n} (fun i:set => bop (a n i) (x i))) (vec P 0) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23294 / TOEPLITZ_BILINEAR_SERIES
 // Source hash: md5:7336bc75fa46742f6ac5934b49e267d5
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_sum_finsum, hol_typedef_net)
-Theorem TOEPLITZ_BILINEAR_SERIES : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx M) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> forall m r :e omega, forall l :e R :^: idx N, forall i :e R :^: idx M, forall b :e R, bilinear N P M bop /\ (tendsto N omega x l sequentially /\ ((forall p :e omega, tendsto M omega (fun n:set => a n p) (vec M 0) sequentially) /\ (tendsto M omega (fun n:set => vsum omega M {i :e omega | r <= i /\ i <= n} (a n)) i sequentially /\ (forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun i0:set => vector_norm M (a n i0)) <= b)))) -> tendsto P omega (fun n:set => vsum omega P {i :e omega | m <= i /\ i <= n} (fun i0:set => bop (a n i0) (x i0))) (bop i l) sequentially.
+Theorem TOEPLITZ_BILINEAR_SERIES : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall a:set -> set -> set, (forall x y :e omega, a x y :e R :^: idx M) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> forall m r :e omega, forall l :e R :^: idx N, forall i :e R :^: idx M, forall b :e R, bilinear N P M bop /\ (tendsto N omega x l sequentially /\ ((forall p :e omega, tendsto M omega (fun n:set => a n p) (vec M 0) sequentially) /\ (tendsto M omega (fun n:set => vsum omega M {i :e omega | r <= i /\ i <= n} (a n)) i sequentially /\ (forall n :e omega, finsum {i :e omega | 0 <= i /\ i <= n} (fun i0:set => vector_norm M (a n i0)) <= b)))) -> tendsto P omega (fun n:set => vsum omega P {i :e omega | m <= i /\ i <= n} (fun i0:set => bop (a n i0) (x i0))) (bop i l) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23336 / LIM_BILINEAR_CONVOLUTION
 // Source hash: md5:74b946ce7b69b13a3a9d056ba634da9f
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R, hol_typedef_net, omega_Subq_R)
-Theorem LIM_BILINEAR_CONVOLUTION : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall m :e omega, forall k :e R, forall a :e R :^: idx M, forall b :e R :^: idx N, bilinear N P M bop /\ (tendsto M omega x a sequentially /\ tendsto N omega y b sequentially) -> tendsto P omega (fun n:set => vector_mul P (recip_SNo (n + k)) (vsum omega P {i :e omega | m <= i /\ i <= n} (fun i:set => bop (x i) (y (minus_nat n i))))) (bop a b) sequentially.
+Theorem LIM_BILINEAR_CONVOLUTION : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall m :e omega, forall k :e R, forall a :e R :^: idx M, forall b :e R :^: idx N, bilinear N P M bop /\ (tendsto M omega x a sequentially /\ tendsto N omega y b sequentially) -> tendsto P omega (fun n:set => vector_mul P (recip_SNo (n + k)) (vsum omega P {i :e omega | m <= i /\ i <= n} (fun i:set => bop (x i) (y (minus_nat n i))))) (bop a b) sequentially.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23505 / LIM_CESARO
@@ -11399,43 +11399,43 @@ Admitted.
 // HOL Light: Multivariate/topology.ml:23520 / SERIES_BILINEAR
 // Source hash: md5:5b8c0c578b64e271a1d84ecf7234c45d
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SERIES_BILINEAR : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall a :e R :^: idx M, forall b :e R :^: idx N, bilinear N P M bop /\ (sums M x a (from 0) /\ (sums N y b (from 0) /\ (summable 1 (from 0) (fun n:set => lift (vector_norm M (x n))) \/ summable 1 (from 0) (fun n:set => lift (vector_norm N (y n)))))) -> sums P (fun n:set => vsum omega P {i :e omega | 0 <= i /\ i <= n} (fun i:set => bop (x i) (y (minus_nat n i)))) (bop a b) (from 0).
+Theorem SERIES_BILINEAR : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall a :e R :^: idx M, forall b :e R :^: idx N, bilinear N P M bop /\ (sums M x a (from 0) /\ (sums N y b (from 0) /\ (summable 1 (from 0) (fun n:set => lift (vector_norm M (x n))) \/ summable 1 (from 0) (fun n:set => lift (vector_norm N (y n)))))) -> sums P (fun n:set => vsum omega P {i :e omega | 0 <= i /\ i <= n} (fun i:set => bop (x i) (y (minus_nat n i)))) (bop a b) (from 0).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23601 / SERIES_BILINEAR_UNIQUE
 // Source hash: md5:ba212e08d57020d5184842d281477f07
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem SERIES_BILINEAR_UNIQUE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall a :e R :^: idx M, forall b :e R :^: idx N, forall c :e R :^: idx P, bilinear N P M bop /\ (sums M x a (from 0) /\ (sums N y b (from 0) /\ sums P (fun n:set => vsum omega P {i :e omega | 0 <= i /\ i <= n} (fun i:set => bop (x i) (y (minus_nat n i)))) c (from 0))) -> bop a b = c.
+Theorem SERIES_BILINEAR_UNIQUE : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall a :e R :^: idx M, forall b :e R :^: idx N, forall c :e R :^: idx P, bilinear N P M bop /\ (sums M x a (from 0) /\ (sums N y b (from 0) /\ sums P (fun n:set => vsum omega P {i :e omega | 0 <= i /\ i <= n} (fun i:set => bop (x i) (y (minus_nat n i)))) c (from 0))) -> bop a b = c.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23618 / SUMMABLE_BILINEAR_LEFT
 // Source hash: md5:f3dc44b3c11246301a8e5d8b4ddde035
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SUMMABLE_BILINEAR_LEFT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall m n p :e omega, bilinear N P M bop /\ (summable 1 (from m) (fun n0:set => lift (vector_norm M (x n0))) /\ summable N (from n) y) -> summable P (from p) (fun n0:set => vsum omega P {i :e omega | 0 <= i /\ i <= n0} (fun i:set => bop (x i) (y (minus_nat n0 i)))).
+Theorem SUMMABLE_BILINEAR_LEFT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall m n p :e omega, bilinear N P M bop /\ (summable 1 (from m) (fun n0:set => lift (vector_norm M (x n0))) /\ summable N (from n) y) -> summable P (from p) (fun n0:set => vsum omega P {i :e omega | 0 <= i /\ i <= n0} (fun i:set => bop (x i) (y (minus_nat n0 i)))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23633 / SUMMABLE_BILINEAR_RIGHT
 // Source hash: md5:019030d2eaaaf786712cf142fe3655c9
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega, hol_one_1, hol_real_R)
-Theorem SUMMABLE_BILINEAR_RIGHT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall m n p :e omega, bilinear N P M bop /\ (summable M (from m) x /\ summable 1 (from n) (fun n0:set => lift (vector_norm N (y n0)))) -> summable P (from p) (fun n0:set => vsum omega P {i :e omega | 0 <= i /\ i <= n0} (fun i:set => bop (x i) (y (minus_nat n0 i)))).
+Theorem SUMMABLE_BILINEAR_RIGHT : forall M N P:set, M <> Empty -> N <> Empty -> P <> Empty -> forall bop:set -> set -> set, (forall x :e R :^: idx M, forall y :e R :^: idx N, bop x y :e R :^: idx P) -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx M) -> forall y:set -> set, (forall x0 :e omega, y x0 :e R :^: idx N) -> forall m n p :e omega, bilinear N P M bop /\ (summable M (from m) x /\ summable 1 (from n) (fun n0:set => lift (vector_norm N (y n0)))) -> summable P (from p) (fun n0:set => vsum omega P {i :e omega | 0 <= i /\ i <= n0} (fun i:set => bop (x i) (y (minus_nat n0 i)))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23652 / CAUCHY_EQ_SUMMABLE
 // Source hash: md5:667646afbe0485f6e70b622139a90fee
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_real_R)
-Theorem CAUCHY_EQ_SUMMABLE : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> (cauchy N x <-> summable N (from 0) (fun n:set => vector_sub N (x (n + 1)) (x n))).
+Theorem CAUCHY_EQ_SUMMABLE : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> (cauchy N x <-> summable N (from 0) (fun n:set => vector_sub N (x (n + 1)) (x n))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23673 / CAUCHY_ABSOLUTELY_SUMMABLE_SUBSEQUENCE
 // Source hash: md5:59aac788f0a00eb78b73485c72e3f3a5
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R, nat_lt_SNoLt)
-Theorem CAUCHY_ABSOLUTELY_SUMMABLE_SUBSEQUENCE : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> cauchy N x -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ summable 1 (from 0) (fun n:set => lift (distance N (x (r (n + 1)),x (r n))))).
+Theorem CAUCHY_ABSOLUTELY_SUMMABLE_SUBSEQUENCE : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> cauchy N x -> exists r:set -> set, (forall x0 :e omega, r x0 :e omega) /\ ((forall m n :e omega, m < n -> r m < r n) /\ summable 1 (from 0) (fun n:set => lift (distance N (x (r (n + 1)),x (r n))))).
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23704 / ABSOLUTELY_SUMMABLE_IMP_CAUCHY
 // Source hash: md5:6fc17fc1e6e9a7dd7e85ef4e781a7fe9
 // Status: transport_required (bridges: add_nat_add_SNo, hol_cart_setexp, hol_num_omega, hol_one_1, hol_prod_setprod, hol_real_R)
-Theorem ABSOLUTELY_SUMMABLE_IMP_CAUCHY : forall N:set, N <> Empty -> forall x:set -> set, (forall x :e omega, x x :e R :^: idx N) -> summable 1 (from 0) (fun n:set => lift (distance N (x (n + 1),x n))) -> cauchy N x.
+Theorem ABSOLUTELY_SUMMABLE_IMP_CAUCHY : forall N:set, N <> Empty -> forall x:set -> set, (forall x0 :e omega, x x0 :e R :^: idx N) -> summable 1 (from 0) (fun n:set => lift (distance N (x (n + 1),x n))) -> cauchy N x.
 Admitted.
 
 // HOL Light: Multivariate/topology.ml:23711 / COMPLETE_ABSOLUTELY_SUMMABLE
