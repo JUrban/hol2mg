@@ -2094,6 +2094,20 @@ N5k (351 -> 353): the order 0-clauses as hand lemmas (`not_SNoLt_0_omega`,
 `SNoLe_0_iff_omega`) complete the recursive characterizations — LT and LE themselves now
 carry native proofs, opening their 37 guided premise slots.
 
+N6a (353 -> 361): classical refutation rule — with goal `False`, `apply` a negation
+hypothesis and prove its body (up to 3 candidates, only at depth <= 4 and only when no
+disjunction hypothesis is present, so `or_elim` keeps priority and the
+`xm_split`/`apply`-negation mutual recursion stays bounded); `xm_split` additionally skips
+goals whose negation is already a hypothesis; the `close_term` failure memo keys on
+hypothesis *props* instead of names (same-prop contexts under fresh names now hit the
+cache); prover fuel budget 4000 -> 6000 (the gated classical searches need the headroom —
+LEFT/RIGHT_OR_EXISTS_THM regressed at 4000 and recovered at 6000; full core pass ~9 min).
+Lands DE_MORGAN_THM, NOT_FORALL_THM, EXISTS_NOT_THM, PAIRWISE_UNION and the PSUBSET
+family (NOT_UNIV_PSUBSET, PSUBSET_TRANS, PSUBSET_SUBSET_TRANS, SUBSET_PSUBSET_TRANS),
+zero lost.  Still open in this cluster: COND_ELIM_THM (needs an equation-hypothesis
+goal-transport rule — `if_split` pushes `(if c then x else y) = y` but nothing rewrites
+the goal with it).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

@@ -437,6 +437,58 @@ let x. assume Hx.
 exact (andEL (x :e s) (P x) (SepE2 (A) (fun x:set => x :e s /\ P x) (x) Hx)).
 Qed.
 
+// HOL Light: sets.ml / PSUBSET_TRANS
+Theorem PSUBSET_TRANS : forall A:set, A <> Empty -> forall s t u c= A, s c= t /\ s <> t /\ (t c= u /\ t <> u) -> s c= u /\ s <> u.
+let A.
+assume H.
+let s. assume Hs.
+let t. assume Ht.
+let u. assume Hu.
+assume H1.
+apply andI.
+- let x. assume Hx.
+  exact ((andEL (t c= u) (t <> u) (andER (s c= t /\ s <> t) (t c= u /\ t <> u) H1)) (x) ((andEL (s c= t) (s <> t) (andEL (s c= t /\ s <> t) (t c= u /\ t <> u) H1)) (x) Hx)).
+- assume H2.
+  apply (andER (t c= u) (t <> u) (andER (s c= t /\ s <> t) (t c= u /\ t <> u) H1)).
+  apply (set_ext (t) (u)).
+  * exact (andEL (t c= u) (t <> u) (andER (s c= t /\ s <> t) (t c= u /\ t <> u) H1)).
+  * exact (H2 (fun hl__u hl__v => hl__u c= t) (andEL (s c= t) (s <> t) (andEL (s c= t /\ s <> t) (t c= u /\ t <> u) H1))).
+Qed.
+
+// HOL Light: sets.ml / PSUBSET_SUBSET_TRANS
+Theorem PSUBSET_SUBSET_TRANS : forall A:set, forall s t u c= A, s c= t /\ s <> t /\ t c= u -> s c= u /\ s <> u.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+let u. assume Hu.
+assume H.
+apply andI.
+- let x. assume Hx.
+  exact ((andER (s c= t /\ s <> t) (t c= u) H) (x) ((andEL (s c= t) (s <> t) (andEL (s c= t /\ s <> t) (t c= u) H)) (x) Hx)).
+- assume H1.
+  apply (andER (s c= t) (s <> t) (andEL (s c= t /\ s <> t) (t c= u) H)).
+  apply (set_ext (s) (t)).
+  * exact (andEL (s c= t) (s <> t) (andEL (s c= t /\ s <> t) (t c= u) H)).
+  * exact ((H1 (fun hl__u hl__v => hl__u = (s)) (fun q H => H)) (fun hl__u hl__v => t c= hl__u) (andER (s c= t /\ s <> t) (t c= u) H)).
+Qed.
+
+// HOL Light: sets.ml / SUBSET_PSUBSET_TRANS
+Theorem SUBSET_PSUBSET_TRANS : forall A:set, forall s t u c= A, s c= t /\ (t c= u /\ t <> u) -> s c= u /\ s <> u.
+let A.
+let s. assume Hs.
+let t. assume Ht.
+let u. assume Hu.
+assume H.
+apply andI.
+- let x. assume Hx.
+  exact ((andEL (t c= u) (t <> u) (andER (s c= t) (t c= u /\ t <> u) H)) (x) ((andEL (s c= t) (t c= u /\ t <> u) H) (x) Hx)).
+- assume H1.
+  apply (andER (t c= u) (t <> u) (andER (s c= t) (t c= u /\ t <> u) H)).
+  apply (set_ext (t) (u)).
+  * exact (andEL (t c= u) (t <> u) (andER (s c= t) (t c= u /\ t <> u) H)).
+  * exact (H1 (fun hl__u hl__v => hl__u c= t) (andEL (s c= t) (t c= u /\ t <> u) H)).
+Qed.
+
 // HOL Light: sets.ml / PSUBSET_IRREFL
 Theorem PSUBSET_IRREFL : forall A:set, A <> Empty -> forall s c= A, ~ (s c= s /\ s <> s).
 let A.
@@ -444,6 +496,18 @@ assume H.
 let s. assume Hs.
 assume H1.
 exact ((andER (s c= s) (s <> s) H1) (fun q H => H)).
+Qed.
+
+// HOL Light: sets.ml / NOT_UNIV_PSUBSET
+Theorem NOT_UNIV_PSUBSET : forall A:set, A <> Empty -> forall s c= A, ~ (A c= s /\ A <> s).
+let A.
+assume H.
+let s. assume Hs.
+assume H1.
+apply (andER (A c= s) (A <> s) H1).
+apply (set_ext (A) (s)).
++ exact (andEL (A c= s) (A <> s) H1).
++ exact Hs.
 Qed.
 
 // HOL Light: sets.ml / UNION_ASSOC
@@ -1456,6 +1520,61 @@ apply iffI.
     let y. assume Hy.
     assume H1.
     exact (andER (R0 x y) (R' x y) (H (x) Hx (y) Hy H1)).
+Qed.
+
+// HOL Light: sets.ml / PAIRWISE_UNION
+Theorem PAIRWISE_UNION : forall A:set, forall R0:set -> set -> prop, forall s t c= A, (forall x y :e s :\/: t, x <> y -> R0 x y) <-> (forall x y :e s, x <> y -> R0 x y) /\ ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x).
+let A.
+let R0.
+let s. assume Hs.
+let t. assume Ht.
+apply iffI.
+- assume H12.
+  apply andI.
+  + let x3. assume Hx3.
+    let y3. assume Hy3.
+    assume H15.
+    exact (H12 (x3) (binunionI1 (s) (t) (x3) Hx3) (y3) (binunionI1 (s) (t) (y3) Hy3) H15).
+  + apply andI.
+    * let x2. assume Hx2.
+      let y2. assume Hy2.
+      assume H14.
+      exact (H12 (x2) (binunionI2 (s) (t) (x2) Hx2) (y2) (binunionI2 (s) (t) (y2) Hy2) H14).
+    * let x1. assume Hx1.
+      let y1. assume Hy1.
+      assume H13.
+      apply andI.
+      exact (H12 (x1) (binunionI1 (s) (t) (x1) (setminusE1 (s) (t) (x1) (andEL (x1 :e s :\: t) (y1 :e t :\: s) H13))) (y1) (binunionI2 (s) (t) (y1) (setminusE1 (t) (s) (y1) (andER (x1 :e s :\: t) (y1 :e t :\: s) H13))) (fun hl__H10 : x1 = y1 => ((setminusE2 (t) (s) (y1) (andER (x1 :e s :\: t) (y1 :e t :\: s) H13)) (hl__H10 (fun hl__u hl__v => hl__u :e s) (setminusE1 (s) (t) (x1) (andEL (x1 :e s :\: t) (y1 :e t :\: s) H13)))))).
+      exact (H12 (y1) (binunionI2 (s) (t) (y1) (setminusE1 (t) (s) (y1) (andER (x1 :e s :\: t) (y1 :e t :\: s) H13))) (x1) (binunionI1 (s) (t) (x1) (setminusE1 (s) (t) (x1) (andEL (x1 :e s :\: t) (y1 :e t :\: s) H13))) (fun hl__H9 : y1 = x1 => ((setminusE2 (t) (s) (y1) (andER (x1 :e s :\: t) (y1 :e t :\: s) H13)) ((hl__H9 (fun hl__u hl__v => hl__u = (y1)) (fun q H => H)) (fun hl__u hl__v => hl__u :e s) (setminusE1 (s) (t) (x1) (andEL (x1 :e s :\: t) (y1 :e t :\: s) H13)))))).
+- assume H.
+  let x. assume Hx.
+  let y. assume Hy.
+  assume H1.
+  apply (binunionE (s) (t) (y) Hy).
+  + assume H2.
+    apply (binunionE (s) (t) (x) Hx).
+    * assume H8.
+      exact ((andEL (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H) (x) H8 (y) H2 H1).
+    * assume H9.
+      apply (xm (R0 x y)).
+      - assume H10. exact H10.
+      - assume H11.
+        claim L1: False.
+        { apply H11.
+        exact (andER (R0 y x) (R0 x y) ((andER (forall x y :e t, x <> y -> R0 x y) (forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) (andER (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H)) (y) (Hs (y) H2) (x) (Ht (x) H9) (andI (y :e s :\: t) (x :e t :\: s) (setminusI (s) (t) (y) H2 (fun hl__H4 : y :e t => (H11 ((andEL (forall x y :e t, x <> y -> R0 x y) (forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) (andER (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H)) (x) H9 (y) hl__H4 H1)))) (setminusI (t) (s) (x) H9 (fun hl__H5 : x :e s => (H11 ((andEL (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H) (x) hl__H5 (y) H2 H1))))))). }
+        exact (FalseE L1 (R0 x y)).
+  + assume H3.
+    apply (binunionE (s) (t) (x) Hx).
+    * assume H4.
+      apply (xm (R0 x y)).
+      - assume H6. exact H6.
+      - assume H7.
+        claim L: False.
+        { apply H7.
+        exact (andEL (R0 x y) (R0 y x) ((andER (forall x y :e t, x <> y -> R0 x y) (forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) (andER (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H)) (x) (Hs (x) H4) (y) (Ht (y) H3) (andI (x :e s :\: t) (y :e t :\: s) (setminusI (s) (t) (x) H4 (fun hl__H1 : x :e t => (H7 ((andEL (forall x y :e t, x <> y -> R0 x y) (forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) (andER (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H)) (x) hl__H1 (y) H3 H1)))) (setminusI (t) (s) (y) H3 (fun hl__H2 : y :e s => (H7 ((andEL (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H) (x) H4 (y) hl__H2 H1))))))). }
+        exact (FalseE L (R0 x y)).
+    * assume H5.
+      exact ((andEL (forall x y :e t, x <> y -> R0 x y) (forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) (andER (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H)) (x) H5 (y) H3 H1).
 Qed.
 
 // HOL Light: sets.ml / ARBITRARY

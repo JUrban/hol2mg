@@ -247,7 +247,7 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
   let key = lazy (
     let b = Buffer.create 256 in
     Buffer.add_string b (pp goal); Buffer.add_char b '|';
-    List.iter (fun h -> Buffer.add_string b h.hname; Buffer.add_char b ';') hyps;
+    List.iter (fun h -> Buffer.add_string b (pp h.prop); Buffer.add_char b ';') hyps;
     Buffer.contents b) in
   match Hashtbl.find_opt st.memo (Lazy.force key) with
   | Some a when a >= adepth -> None
@@ -973,7 +973,26 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                     Printf.sprintf "apply (set_ext %s %s)." (ppp l) (ppp r)
                     :: (block d (prove_goal st hyps (mg_subq l r) (d + 1))
                         @ block d (prove_goal st hyps (mg_subq r l) (d + 1)))
-                | _ -> or_elim st hyps g d))
+                | _ ->
+                    (* refutation: with goal False, apply a negation hypothesis and
+                       prove its body (classical steps then come from xm_split) *)
+                    let neg_cands =
+                      if g = Mg.Cst "False" && d <= 4
+                         && not (List.exists (fun h -> dest_or h.prop <> None) hyps) then
+                        List.filteri (fun i _ -> i < 3)
+                          (List.filter_map (fun h ->
+                             match dest_not h.prop with
+                             | Some p when not (aeq p (Mg.Cst "False")) -> Some (h, p)
+                             | _ -> None) hyps)
+                      else [] in
+                    let rec try_neg = function
+                      | [] -> or_elim st hyps g d
+                      | (h, p) :: rest ->
+                          let fuel0 = st.fuel in
+                          (try Printf.sprintf "apply %s." h.hname :: prove_goal st hyps p (d + 1)
+                           with Give_up ->
+                             if fuel0 - st.fuel > fuel0 / 2 then raise Give_up else try_neg rest)
+                    in try_neg neg_cands))
 
 and if_split st hyps goal d =
   (* first if-subterm of the goal, outside binders *)
@@ -1002,6 +1021,8 @@ and xm_split st hyps goal d =
   (* only worthwhile when a negation hypothesis can feed the refutation; the guard
      also keeps or-heavy searches from draining their fuel here *)
   if goal = Mg.Cst "False" || not (List.exists (fun h -> dest_not h.prop <> None) hyps)
+     || List.exists (fun h ->
+          match dest_not h.prop with Some p -> aeq p goal | None -> false) hyps
   then raise Give_up else begin
     spend st 100;  (* classical splits are expensive: cap them via the fuel budget *)
     let bl lines = (match bullet d with
@@ -1515,7 +1536,7 @@ let congruence_iff ?(budget = 4000) ~(premises : (string * Mg.tm) list) (l : Mg.
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
   try iff_congruence st hyps0 l r with Give_up | Stack_overflow -> None
 
-let prove ?(budget = 4000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
+let prove ?(budget = 6000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
   let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
   let premises = premises @ builtin_premises in
