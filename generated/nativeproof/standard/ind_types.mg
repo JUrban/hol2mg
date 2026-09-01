@@ -11,6 +11,17 @@ let x. assume Hx.
 exact (seq_induct (A) (fun x:set => P x) (andEL (P seq_nil) (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) H1) (andER (P seq_nil) (forall a0 :e A, forall a1 :e finseq A, P a1 -> P (seq_cons a0 a1)) H1) x Hx).
 Qed.
 
+// HOL Light: ind_types.ml / list_RECURSION
+Theorem list_RECURSION : forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1)).
+let A.
+let Z.
+assume H.
+let NIL'. assume HNIL'.
+let CONS'.
+assume H1.
+exact (list_recursion (A) (Z) H (NIL') HNIL' (CONS') H1).
+Qed.
+
 // HOL Light: ind_types.ml / ISO
 Theorem ISO : forall A B:set, A <> Empty -> B <> Empty -> forall g:set -> set, (forall x :e B, g x :e A) -> forall f:set -> set, (forall x :e A, f x :e B) -> ((forall x :e B, f (g x) = x) /\ (forall y :e A, g (f y) = y) <-> (forall x :e B, f (g x) = x) /\ forall y :e A, g (f y) = y).
 let A.

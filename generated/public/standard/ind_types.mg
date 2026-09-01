@@ -60,7 +60,14 @@ Qed.
 // Source hash: md5:21b923915525c3b3ed6c44a773a64671
 // Status: generalization_required (bridges: empty_case:Z, hol_list_finseq)
 Theorem list_RECURSION : forall A Z:set, A <> Empty -> forall NIL' :e Z, forall CONS':set -> set -> set -> set, (forall x :e A, forall y :e finseq A, forall z :e Z, CONS' x y z :e Z) -> exists fn:set -> set, (forall x :e finseq A, fn x :e Z) /\ (fn seq_nil = NIL' /\ forall a0 :e A, forall a1 :e finseq A, fn (seq_cons a0 a1) = CONS' a0 a1 (fn a1)).
-Admitted.
+let A.
+let Z.
+assume H.
+let NIL'. assume HNIL'.
+let CONS'.
+assume H1.
+exact (list_recursion (A) (Z) H (NIL') HNIL' (CONS') H1).
+Qed.
 
 // HOL Light: ind_types.ml:889 / FORALL_OPTION_THM
 // Source hash: md5:938df231e9f8dddad4567e29e4b8be69
