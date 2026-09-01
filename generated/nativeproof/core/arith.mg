@@ -215,6 +215,42 @@ apply iffI.
   exact (andI (m <= n) (n <= m) (H (fun hl__u hl__v => m <= hl__u) (SNoLe_ref (m))) (H (fun hl__u hl__v => hl__u <= m) (SNoLe_ref (m)))).
 Qed.
 
+// HOL Light: arith.ml / LE_TRANS
+Theorem LE_TRANS : forall m n p :e omega, m <= n /\ n <= p -> m <= p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLe_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m <= n) (n <= p) H) (andER (m <= n) (n <= p) H)).
+Qed.
+
+// HOL Light: arith.ml / LT_TRANS
+Theorem LT_TRANS : forall m n p :e omega, m < n /\ n < p -> m < p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLt_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m < n) (n < p) H) (andER (m < n) (n < p) H)).
+Qed.
+
+// HOL Light: arith.ml / LET_TRANS
+Theorem LET_TRANS : forall m n p :e omega, m <= n /\ n < p -> m < p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLeLt_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m <= n) (n < p) H) (andER (m <= n) (n < p) H)).
+Qed.
+
+// HOL Light: arith.ml / LTE_TRANS
+Theorem LTE_TRANS : forall m n p :e omega, m < n /\ n <= p -> m < p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (SNoLtLe_tra (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andEL (m < n) (n <= p) H) (andER (m < n) (n <= p) H)).
+Qed.
+
 // HOL Light: arith.ml / EQ_IMP_LE
 Theorem EQ_IMP_LE : forall m n :e omega, m = n -> m <= n.
 let m. assume Hm.

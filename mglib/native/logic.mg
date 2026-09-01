@@ -156,3 +156,39 @@ claim H3: n * m = m * n. { exact (mul_SNo_com n m Hsn Hsm0). }
 claim H4: n + n * m = n + m * n. { exact (H3 (fun hl__u hl__v => n + n * m = n + hl__u) (fun q H => H)). }
 exact (eq_trans_i (ordsucc m * n) (n * ordsucc m) (n + m * n) H1 (eq_trans_i (n * ordsucc m) (n + n * m) (n + m * n) H2 H4)).
 Qed.
+
+Theorem SNoLt_ordsucc_iff_omega : forall m n :e omega, m < ordsucc n <-> m = n \/ m < n.
+let m. assume Hm. let n. assume Hn.
+claim Hom: ordinal m. { exact (nat_p_ordinal m (omega_nat_p m Hm)). }
+claim Hon: ordinal n. { exact (nat_p_ordinal n (omega_nat_p n Hn)). }
+claim Hosn: ordinal (ordsucc n). { exact (nat_p_ordinal (ordsucc n) (omega_nat_p (ordsucc n) (omega_ordsucc n Hn))). }
+apply iffI.
+- assume H.
+  claim Hin: m :e ordsucc n. { exact (ordinal_SNoLt_In m (ordsucc n) Hom Hosn H). }
+  apply (ordsuccE n m Hin).
+  + assume H1. exact (orIR (m = n) (m < n) (ordinal_In_SNoLt n Hon m H1)).
+  + assume H1. exact (orIL (m = n) (m < n) H1).
+- assume H. apply H.
+  + assume H1. exact ((eq_sym_i m n H1) (fun hl__u hl__v => hl__u < ordsucc n) (ordinal_In_SNoLt (ordsucc n) Hosn n (ordsuccI2 n))).
+  + assume H1.
+    claim Hin: m :e n. { exact (ordinal_SNoLt_In m n Hom Hon H1). }
+    exact (ordinal_In_SNoLt (ordsucc n) Hosn m (ordsuccI1 n m Hin)).
+Qed.
+
+Theorem SNoLe_ordsucc_iff_omega : forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
+let m. assume Hm. let n. assume Hn.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hssn: SNo (ordsucc n). { exact (omega_SNo (ordsucc n) (omega_ordsucc n Hn)). }
+apply iffI.
+- assume H.
+  apply (SNoLeE m (ordsucc n) Hsm Hssn H).
+  + assume H1.
+    apply (iffEL (m < ordsucc n) (m = n \/ m < n) (SNoLt_ordsucc_iff_omega m Hm n Hn) H1).
+    * assume H2. exact (orIR (m = ordsucc n) (m <= n) ((eq_sym_i m n H2) (fun hl__u hl__v => hl__u <= n) (SNoLe_ref n))).
+    * assume H2. exact (orIR (m = ordsucc n) (m <= n) (SNoLtLe m n H2)).
+  + assume H1. exact (orIL (m = ordsucc n) (m <= n) H1).
+- assume H. apply H.
+  + assume H1. exact ((eq_sym_i m (ordsucc n) H1) (fun hl__u hl__v => hl__u <= ordsucc n) (SNoLe_ref (ordsucc n))).
+  + assume H1. exact (SNoLtLe m (ordsucc n) (SNoLeLt_tra m n (ordsucc n) Hsm Hsn Hssn H1 (ordinal_In_SNoLt (ordsucc n) (nat_p_ordinal (ordsucc n) (omega_nat_p (ordsucc n) (omega_ordsucc n Hn))) n (ordsuccI2 n)))).
+Qed.

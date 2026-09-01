@@ -145,7 +145,23 @@ Qed.
 // Source hash: md5:045dca8754fe888ab0bd299f74e2ef6c
 // Status: exact_native
 Theorem NOT_IMP : forall t1 t2:prop, ~ (t1 -> t2) <-> t1 /\ ~ t2.
-Admitted.
+let t1.
+let t2.
+apply iffI.
+- assume H2.
+  apply andI.
+  + apply (xm (t1)).
+    * assume H4. exact H4.
+    * assume H5.
+      claim L: False.
+      { exact (H2 (fun hl__H1 : t1 => (FalseE (H5 hl__H1) (t2)))). }
+      exact (FalseE L (t1)).
+  + assume H3.
+    exact (H2 (fun hl__H : t1 => H3)).
+- assume H.
+  assume H1.
+  exact ((andER (t1) (~ t2) H) (H1 (andEL (t1) (~ t2) H))).
+Qed.
 
 // HOL Light: class.ml:193 / CONTRAPOS_THM
 // Source hash: md5:57fb40ff0c7c85aa21a80031583ca69d

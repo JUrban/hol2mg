@@ -366,7 +366,7 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
       |> function
       | Some t -> Some t
       | None ->
-      (* negations as lambda proof terms *)
+      (* negations and implications as lambda proof terms *)
       (match dest_not goal with
        | Some p ->
            spend st 3;
@@ -374,7 +374,15 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
            (match close_term st (augment hn p hyps) (Mg.Cst "False") adepth with
             | Some t -> Some (Printf.sprintf "(fun %s : %s => %s)" hn (pp p) t)
             | None -> None)
-       | None -> None)
+       | None ->
+           (match goal with
+            | Mg.Imp (p, q) when adepth >= 2 ->
+                spend st 5;
+                let hn = fresh st "hl__H" in
+                (match close_term st (augment hn p hyps) q (adepth - 1) with
+                 | Some t -> Some (Printf.sprintf "(fun %s : %s => %s)" hn (pp p) t)
+                 | None -> None)
+            | _ -> None))
       |> function
       | Some t -> Some t
       | None ->
@@ -1195,6 +1203,52 @@ let builtin_premises : (string * Mg.tm) list =
          Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__m")), Mg.Var "hl__n")),
          Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__n"),
            Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__m"), Mg.Var "hl__n"))))));
+    ("SNoLt_ordsucc_iff_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__m"), Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+         Mg.App (Mg.App (Mg.Cst "or",
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Var "hl__n")),
+           Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__m"), Mg.Var "hl__n"))))));
+    ("SNoLe_ordsucc_iff_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+         Mg.App (Mg.App (Mg.Cst "or",
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+           Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.Var "hl__n"))))));
+    ("SNoLt_tra",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__y"),
+               Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__y"), Mg.Var "hl__z"),
+                 Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("SNoLe_tra",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y"),
+               Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__z"),
+                 Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("SNoLtLe_tra",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__y"),
+               Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__z"),
+                 Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("SNoLeLt_tra",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y"),
+               Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__y"), Mg.Var "hl__z"),
+                 Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

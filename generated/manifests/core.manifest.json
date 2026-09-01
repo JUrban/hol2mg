@@ -55048,7 +55048,7 @@
     "num_INDUCTION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -56151,7 +56151,7 @@
     "num_INDUCTION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -56635,7 +56635,7 @@
     "num_INDUCTION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -57699,7 +57699,7 @@
     "num_INDUCTION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -61922,7 +61922,7 @@
     "MULT_SUC"
    ],
    "hash": "31a7b833a9ea33d4468ca3acf0bc397f",
-   "status": "transport_required",
+   "status": "native_reuse",
    "shard": "arith",
    "src_file": "arith.ml",
    "src_line": 153,
@@ -64731,7 +64731,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true

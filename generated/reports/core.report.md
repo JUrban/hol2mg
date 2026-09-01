@@ -10,17 +10,17 @@
 
 | status | count |
 |---|---|
-| transport_required | 1821 |
+| transport_required | 1820 |
 | generalization_required | 615 |
 | pending_mapping | 299 |
 | exact_native | 174 |
-| native_reuse | 75 |
+| native_reuse | 76 |
 
 ## Public statements per shard
 
 | shard | public | pending | error |
 |---|---|---|---|
-| arith | 259 | 0 | 0 |
+| arith | 258 | 0 | 0 |
 | bool | 9 | 0 | 0 |
 | calc_int | 11 | 0 | 0 |
 | calc_num | 18 | 0 | 0 |
