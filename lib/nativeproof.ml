@@ -79,7 +79,8 @@ let rec replace_tm old_t by_t t =
   | t -> t
 
 type st = { mutable fuel : int; mutable names : (string, unit) Hashtbl.t;
-            memo : (string, int) Hashtbl.t (* failed close_term: context key -> max adepth tried *) }
+            memo : (string, int) Hashtbl.t; (* failed close_term: context key -> max adepth tried *)
+            pps : (Mg.tm, string) Hashtbl.t (* memoized pp of hypothesis props (memo keys) *) }
 
 let spend st n = st.fuel <- st.fuel - n; if st.fuel < 0 then raise Give_up
 
@@ -242,12 +243,17 @@ let rec freshen_binders st t =
 (* term-level closing of a goal: hypothesis, reflexivity, symmetry/transitivity motives,
    True, False from a contradiction, and application of a stripped hypothesis whose
    conclusion matches (premises closed recursively at smaller depth) *)
+let pp_st st t =
+  match Hashtbl.find_opt st.pps t with
+  | Some s -> s
+  | None -> let s = pp t in Hashtbl.add st.pps t s; s
+
 let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string option =
   spend st 1;
   let key = lazy (
     let b = Buffer.create 256 in
     Buffer.add_string b (pp goal); Buffer.add_char b '|';
-    List.iter (fun h -> Buffer.add_string b (pp h.prop); Buffer.add_char b ';') hyps;
+    List.iter (fun h -> Buffer.add_string b (pp_st st h.prop); Buffer.add_char b ';') hyps;
     Buffer.contents b) in
   match Hashtbl.find_opt st.memo (Lazy.force key) with
   | Some a when a >= adepth -> None
@@ -765,6 +771,11 @@ let rec push st (gl : Mg.tm) (name : string) (prop : Mg.tm) (hyps : hyp list)
 
 let np_debug = Sys.getenv_opt "NPDEBUG" <> None
 
+(* NPCLASSICAL=0 disables the classical refutation rule (docs/DESIGN.md 23.5 N6a) —
+   used for the very large profiles where the extra search cost per failing theorem
+   dominates the pass time (multivariate) *)
+let np_classical = Sys.getenv_opt "NPCLASSICAL" <> Some "0"
+
 let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
   spend st 2;
   if np_debug then Printf.eprintf "[np] goal(d=%d,fuel=%d): %s\n%!" d st.fuel (String.concat " ; " (List.map (fun h -> h.hname ^ " : " ^ pp h.prop) (List.filteri (fun i _ -> i < 6) hyps)) ^ " |- " ^ pp goal);
@@ -977,7 +988,7 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                     (* refutation: with goal False, apply a negation hypothesis and
                        prove its body (classical steps then come from xm_split) *)
                     let neg_cands =
-                      if g = Mg.Cst "False" && d <= 4
+                      if g = Mg.Cst "False" && np_classical && d <= 4
                          && not (List.exists (fun h -> dest_or h.prop <> None) hyps) then
                         List.filteri (fun i _ -> i < 3)
                           (List.filter_map (fun h ->
@@ -1531,14 +1542,20 @@ let iff_builtins : (string * Mg.tm) list =
 (* congruence closing of `l <-> r` as a proof term, for the recorded-proof import
    (docs/DESIGN.md 24.3): premises are citable named facts (instances, previous claims) *)
 let congruence_iff ?(budget = 4000) ~(premises : (string * Mg.tm) list) (l : Mg.tm) (r : Mg.tm) : string option =
-  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
   try iff_congruence st hyps0 l r with Give_up | Stack_overflow -> None
 
-let prove ?(budget = 6000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
+let default_budget =
+  match Sys.getenv_opt "NPBUDGET" with
+  | Some s -> (try int_of_string s with _ -> 6000)
+  | None -> 6000
+
+let prove ?budget ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
-  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
+  let budget = match budget with Some b -> b | None -> default_budget in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
   let premises = premises @ builtin_premises in
   ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
@@ -1555,7 +1572,7 @@ let prove_via_rewrites ?(budget = 6000) ~(premises : (string * Mg.tm) list) (goa
   if premises = [] then None else
   let dbg = np_debug in
   (if dbg then Printf.eprintf "[rw] goal: %s | premises: %s\n%!" (String.sub (pp goal) 0 (min 120 (String.length (pp goal)))) (String.concat "," (List.map fst premises)));
-  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
   let trivially cur =

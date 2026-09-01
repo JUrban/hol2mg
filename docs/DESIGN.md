@@ -2106,7 +2106,11 @@ Lands DE_MORGAN_THM, NOT_FORALL_THM, EXISTS_NOT_THM, PAIRWISE_UNION and the PSUB
 family (NOT_UNIV_PSUBSET, PSUBSET_TRANS, PSUBSET_SUBSET_TRANS, SUBSET_PSUBSET_TRANS),
 zero lost.  Still open in this cluster: COND_ELIM_THM (needs an equation-hypothesis
 goal-transport rule — `if_split` pushes `(if c then x else y) = y` but nothing rewrites
-the goal with it).
+the goal with it).  Propagation: standard 384 -> 392 with the full rule set; the
+multivariate pass at 6000 fuel with the classical rule exceeds the 10-minute foreground
+window (17k theorems, most failing), so `NPBUDGET` and `NPCLASSICAL` environment knobs
+were added and multivariate runs with `NPCLASSICAL=0 NPBUDGET=4000` (373/17138, 6m19 —
+the pre-N6a search shape; revisit when the pass is sharded or the search is cheaper).
 
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
