@@ -1411,6 +1411,32 @@ let builtin_premises : (string * Mg.tm) list =
                    Mg.AllIn ("hl__x", Mg.Var "hl__A",
                      Mg.App (Mg.App (Mg.Var "hl__P", Mg.Var "hl__x"),
                        Mg.App (Mg.Var "hl__g", Mg.Var "hl__x"))))))))))));
+    ("list_recursion",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__Z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "neq", Mg.Var "hl__A"), Mg.Cst "Empty"),
+         Mg.AllIn ("hl__e", Mg.Var "hl__Z",
+           Mg.All ("hl__c", Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Arr (Mg.Set, Mg.Set))),
+             Mg.Imp (
+               Mg.AllIn ("hl__x", Mg.Var "hl__A",
+                 Mg.AllIn ("hl__y", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+                   Mg.AllIn ("hl__z", Mg.Var "hl__Z",
+                     mg_in (Mg.App (Mg.App (Mg.App (Mg.Var "hl__c", Mg.Var "hl__x"),
+                                      Mg.Var "hl__y"), Mg.Var "hl__z"))
+                       (Mg.Var "hl__Z")))),
+               Mg.Ex ("hl__fn", Mg.Arr (Mg.Set, Mg.Set),
+                 Mg.App (Mg.App (Mg.Cst "and",
+                   Mg.AllIn ("hl__x", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+                     mg_in (Mg.App (Mg.Var "hl__fn", Mg.Var "hl__x")) (Mg.Var "hl__Z"))),
+                   Mg.App (Mg.App (Mg.Cst "and",
+                     Mg.App (Mg.App (Mg.Cst "eq",
+                       Mg.App (Mg.Var "hl__fn", Mg.Cst "seq_nil")), Mg.Var "hl__e")),
+                     Mg.AllIn ("hl__a", Mg.Var "hl__A",
+                       Mg.AllIn ("hl__b", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+                         Mg.App (Mg.App (Mg.Cst "eq",
+                           Mg.App (Mg.Var "hl__fn",
+                             Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__a"), Mg.Var "hl__b"))),
+                           Mg.App (Mg.App (Mg.App (Mg.Var "hl__c", Mg.Var "hl__a"), Mg.Var "hl__b"),
+                             Mg.App (Mg.Var "hl__fn", Mg.Var "hl__b")))))))))))))));
     ("neq_ordsucc_0",
      Mg.All ("hl__a", Mg.Set,
        Mg.App (Mg.App (Mg.Cst "neq", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__a")), Mg.Num 0)));

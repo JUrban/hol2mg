@@ -2141,6 +2141,17 @@ known-props harvest aliased them to `native_reuse` on plain runs while `--native
 runs kept them public — the harvest now excludes names whose proposition is stated
 verbatim by the native infrastructure files (native statements must stay single-line).
 
+N8 (377 -> 378): list_RECURSION via a hand-bridged `list_recursion` in logic.mg — a
+genuine primitive recursor from `seq_foldr` by the pair trick: fold with
+`g x p := (seq_cons x (p 0), c0 x (p 0) (p 1))` from `(seq_nil, e0)` rebuilds the
+suffix alongside the value, so `fn l := (fold l) 1` satisfies the CONS equation with
+the tail argument; the invariant `(fold l) 0 = l /\ (fold l) 1 :e Z` goes by
+`seq_induct`, the equations by `seq_foldr_nil/cons` + `tuple_2_0/1_eq` (Megalodon-checked
+first try, 45 lines).  The 17 one-leaf-away dependents (ALL, APPEND, MAP, ...) did NOT
+cascade: their guided proofs must *use* the existential premise to derive equations of
+their own defined constants — that is the recorded-proof replay / conditional rewrite
+machinery of §24.3, still open.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
