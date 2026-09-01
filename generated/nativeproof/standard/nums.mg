@@ -21,6 +21,17 @@ apply iffI.
   exact (H2 (x) Hx (y) Hy H3).
 Qed.
 
+// HOL Light: nums.ml / SUC_INJ
+Theorem SUC_INJ : forall m n :e omega, ordsucc m = ordsucc n <-> m = n.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (ordsucc_inj (m) (n) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (ordsucc m) = (ordsucc hl__u)) (fun q H => H)).
+Qed.
+
 // HOL Light: nums.ml / NUMERAL
 Theorem NUMERAL : forall n :e omega, n = n.
 let n. assume Hn.

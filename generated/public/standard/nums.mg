@@ -40,7 +40,14 @@ Admitted.
 // Source hash: md5:5224521fb640c43e425c96e6462ab6d0
 // Status: transport_required (bridges: hol_num_omega)
 Theorem SUC_INJ : forall m n :e omega, ordsucc m = ordsucc n <-> m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (ordsucc_inj (m) (n) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (ordsucc m) = (ordsucc hl__u)) (fun q H => H)).
+Qed.
 
 // HOL Light: nums.ml:96 / num_INDUCTION
 // Source hash: md5:95f125bb90820dfc772fce4559903527

@@ -253,7 +253,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -607,7 +607,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -95554,7 +95554,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -143606,7 +143606,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": true,
    "fully_proved": false
   },
@@ -164993,6 +164993,7 @@
   "failed_shards": {},
   "transport_checked": 3839,
   "literal_proved": 57,
-  "fully_proved": 0
+  "fully_proved": 0,
+  "model_and_imported": 0
  }
 }

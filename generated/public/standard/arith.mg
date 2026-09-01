@@ -18,7 +18,9 @@ Admitted.
 // Source hash: md5:16b4fd0a8548e0b4289e91620d77d9f2
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_0 : forall m :e omega, m + 0 = m.
-Admitted.
+let m. assume Hm.
+exact (add_SNo_0R (m) (omega_SNo (m) Hm)).
+Qed.
 
 // HOL Light: arith.ml:56 / ADD_SUC
 // Source hash: md5:7ccc9d50841b340629a487dbe8cf4f39
@@ -36,7 +38,10 @@ Admitted.
 // Source hash: md5:7d864f1eb0ef77376b9bc72e88019c32
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_SYM : forall m n :e omega, m + n = n + m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (add_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:71 / ADD_ASSOC
 // Source hash: md5:b97e64f9ddf8b94f1c6e0e8c8b245bbd
@@ -152,7 +157,10 @@ Admitted.
 // Source hash: md5:7103233ece91e4b797b0f67782824327
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_SYM : forall m n :e omega, m * n = n * m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:170 / LEFT_ADD_DISTRIB
 // Source hash: md5:95fb7903cf74df59ac85cd362dabe182
