@@ -78,7 +78,8 @@ let rec replace_tm old_t by_t t =
   | Mg.FamUnion (x, a, b) -> Mg.FamUnion (x, replace_tm old_t by_t a, replace_tm old_t by_t b)
   | t -> t
 
-type st = { mutable fuel : int; mutable names : (string, unit) Hashtbl.t }
+type st = { mutable fuel : int; mutable names : (string, unit) Hashtbl.t;
+            memo : (string, int) Hashtbl.t (* failed close_term: context key -> max adepth tried *) }
 
 let spend st n = st.fuel <- st.fuel - n; if st.fuel < 0 then raise Give_up
 
@@ -243,6 +244,23 @@ let rec freshen_binders st t =
    conclusion matches (premises closed recursively at smaller depth) *)
 let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string option =
   spend st 1;
+  let key = lazy (
+    let b = Buffer.create 256 in
+    Buffer.add_string b (pp goal); Buffer.add_char b '|';
+    List.iter (fun h -> Buffer.add_string b h.hname; Buffer.add_char b ';') hyps;
+    Buffer.contents b) in
+  match Hashtbl.find_opt st.memo (Lazy.force key) with
+  | Some a when a >= adepth -> None
+  | _ ->
+      (match close_term_inner st hyps goal adepth with
+       | Some t -> Some t
+       | None ->
+           (match Hashtbl.find_opt st.memo (Lazy.force key) with
+            | Some a when a >= adepth -> ()
+            | _ -> Hashtbl.replace st.memo (Lazy.force key) adepth);
+           None)
+
+and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string option =
   match List.find_opt (fun h -> aeq h.prop goal) hyps with
   | Some h -> Some h.hname
   | None ->
@@ -1417,14 +1435,14 @@ let iff_builtins : (string * Mg.tm) list =
 (* congruence closing of `l <-> r` as a proof term, for the recorded-proof import
    (docs/DESIGN.md 24.3): premises are citable named facts (instances, previous claims) *)
 let congruence_iff ?(budget = 4000) ~(premises : (string * Mg.tm) list) (l : Mg.tm) (r : Mg.tm) : string option =
-  let st = { fuel = budget; names = Hashtbl.create 64 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
   try iff_congruence st hyps0 l r with Give_up | Stack_overflow -> None
 
 let prove ?(budget = 4000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
-  let st = { fuel = budget; names = Hashtbl.create 64 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
   let premises = premises @ builtin_premises in
   ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
@@ -1441,7 +1459,7 @@ let prove_via_rewrites ?(budget = 6000) ~(premises : (string * Mg.tm) list) (goa
   if premises = [] then None else
   let dbg = np_debug in
   (if dbg then Printf.eprintf "[rw] goal: %s | premises: %s\n%!" (String.sub (pp goal) 0 (min 120 (String.length (pp goal)))) (String.concat "," (List.map fst premises)));
-  let st = { fuel = budget; names = Hashtbl.create 64 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096 } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
   let trivially cur =
