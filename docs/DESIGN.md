@@ -2016,6 +2016,23 @@ hypothesis-application core factored out so the same matching/back-chaining can 
 facts as well as close goals — the entry point for DAG-guided rewriting from the §22
 recordings.
 
+N5a — leaf-guided proof import, first milestone (306 → 307): the machinery of §24.3 is
+built and regression-free.  `mglib/native/logic.mg` (composed into the native contexts
+only) carries the `<->`-congruence toolkit — connective and binder congruence including
+`c=`-bounded quantifiers, `iff_true_intro`/`iff_false_intro`, equality helpers.  The
+prover gained `iff_congruence` (structural congruence proof terms between similar props)
+and `prove_via_rewrites`: rewrite-normalization of the goal to `True` using the recorded
+proof leaves as rules — nested-conjunction clause splitting, plain facts as `p <-> True`
+rules, candidate lists with chain-level retry, and termination by the general prover.
+First import: BOOL_CASES_AX, emitted as a claim chain over the intermediate forms with a
+final classical step.  A soundness fix fell out: `match_tm` now rejects bindings that
+capture a binder variable (silent captures had produced wrong rewrite candidates).
+Failure taxonomy for the next increment: conditional clause rewrites whose conditions
+need discharge (`0 ^ n` under `n = 0` splits), equality-instance Leibniz leaves at set
+level, and ordering-flip lemma instances; 1 576 of 1 901 recorded-leaf attempts still
+find no first rewrite because their leaf lemmas lack native proofs — the count grows
+with the self-contained frontier.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

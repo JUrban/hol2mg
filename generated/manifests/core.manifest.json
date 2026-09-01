@@ -4675,9 +4675,9 @@
    ],
    "proof_error": "",
    "natively_proved": false,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "BOTTOM",
@@ -9016,9 +9016,9 @@
    ],
    "proof_error": "",
    "natively_proved": false,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "CONS_HD_TL",
@@ -16338,9 +16338,9 @@
    "proof_leaves": [],
    "proof_error": "",
    "natively_proved": true,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "ETA_ONE",
@@ -31639,9 +31639,9 @@
    "proof_leaves": [],
    "proof_error": "",
    "natively_proved": false,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": false,
-   "proof_source": "pilot"
+   "fully_proved": false
   },
   {
    "name": "INF_APPROACH",
@@ -85048,9 +85048,9 @@
    ],
    "proof_error": "",
    "natively_proved": false,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "REAL_OF_NUM_SUM",
@@ -91739,9 +91739,9 @@
    "proof_leaves": [],
    "proof_error": "",
    "natively_proved": true,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "SELECT_REFL",
@@ -107936,9 +107936,9 @@
    ],
    "proof_error": "",
    "natively_proved": true,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "int_neg",
@@ -110788,9 +110788,9 @@
    ],
    "proof_error": "",
    "natively_proved": false,
+   "proof_source": "pilot",
    "literal_fact_proved": true,
-   "fully_proved": true,
-   "proof_source": "pilot"
+   "fully_proved": true
   },
   {
    "name": "one_tydef",

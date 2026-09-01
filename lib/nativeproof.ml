@@ -109,6 +109,12 @@ let rec collect_names t =
 (* first-order matching: pattern variables pvars (bound in the hypothesis) against a goal *)
 let match_tm (pvars : string list) (pat : Mg.tm) (goal : Mg.tm) : (string * Mg.tm) list option =
   let bnd = ref [] in
+  (* bindings made inside a binder's scope must not capture the bound variable *)
+  let scoped x f =
+    let before = List.length !bnd in
+    let ok = f () in
+    ok && List.for_all (fun (_, t) -> not (List.mem x (Mg.free_vars t)))
+            (List.filteri (fun i _ -> i < List.length !bnd - before) !bnd) in
   let rec go pv pat goal =
     match pat, goal with
     | Mg.Var v, _ when List.mem v pv ->
@@ -124,17 +130,17 @@ let match_tm (pvars : string list) (pat : Mg.tm) (goal : Mg.tm) : (string * Mg.t
     | Mg.If (a1, b1, c1), Mg.If (a2, b2, c2) -> go pv a1 a2 && go pv b1 b2 && go pv c1 c2
     | Mg.Lam (x1, _, b1), Mg.Lam (x2, _, b2)
     | Mg.All (x1, _, b1), Mg.All (x2, _, b2) | Mg.Ex (x1, _, b1), Mg.Ex (x2, _, b2) ->
-        x1 = x2 && go (List.filter (( <> ) x1) pv) b1 b2
+        x1 = x2 && scoped x1 (fun () -> go (List.filter (( <> ) x1) pv) b1 b2)
     | Mg.AllIn (x1, a1, b1), Mg.AllIn (x2, a2, b2) | Mg.ExIn (x1, a1, b1), Mg.ExIn (x2, a2, b2)
     | Mg.AllSub (x1, a1, b1), Mg.AllSub (x2, a2, b2) | Mg.ExSub (x1, a1, b1), Mg.ExSub (x2, a2, b2)
     | Mg.LamIn (x1, a1, b1), Mg.LamIn (x2, a2, b2)
     | Mg.Sep (x1, a1, b1), Mg.Sep (x2, a2, b2) | Mg.Repl (x1, a1, b1), Mg.Repl (x2, a2, b2)
     | Mg.SigmaIn (x1, a1, b1), Mg.SigmaIn (x2, a2, b2) | Mg.PiIn (x1, a1, b1), Mg.PiIn (x2, a2, b2)
     | Mg.FamUnion (x1, a1, b1), Mg.FamUnion (x2, a2, b2) ->
-        x1 = x2 && go pv a1 a2 && go (List.filter (( <> ) x1) pv) b1 b2
+        x1 = x2 && go pv a1 a2 && scoped x1 (fun () -> go (List.filter (( <> ) x1) pv) b1 b2)
     | Mg.ReplSep (x1, a1, p1, b1), Mg.ReplSep (x2, a2, p2, b2) ->
         x1 = x2 && go pv a1 a2 &&
-        (let pv' = List.filter (( <> ) x1) pv in go pv' p1 p2 && go pv' b1 b2)
+        scoped x1 (fun () -> let pv' = List.filter (( <> ) x1) pv in go pv' p1 p2 && go pv' b1 b2)
     | _ -> false
   in
   if go pvars pat goal then Some !bnd else None
@@ -528,25 +534,37 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
         let prems, concl = strip_hyp h.prop in
         if prems = [] then None else
         let pvars = List.filter_map (function PVar x -> Some x | _ -> None) prems in
-        (* the conclusion itself, or a projection out of an /\ or <-> conclusion *)
+        (* the conclusion itself, or a projection path through nested /\ and <->
+           conclusions (each variant: target pattern + projection spec from concl) *)
         let variants =
-          (concl, `Id)
-          :: (match dest_not concl with
+          let rec proj depth c path =
+            (c, `Proj (List.rev path))
+            :: (if depth <= 0 then [] else
+                match dest_and c with
+                | Some (a, b) ->
+                    proj (depth - 1) a ((`L, a, b) :: path) @ proj (depth - 1) b ((`R, a, b) :: path)
+                | None ->
+                    (match dest_iff c with
+                     | Some (p, q) ->
+                         let i1 = Mg.Imp (p, q) and i2 = Mg.Imp (q, p) in
+                         [ (i1, `Proj (List.rev ((`L, i1, i2) :: path)));
+                           (i2, `Proj (List.rev ((`R, i1, i2) :: path))) ]
+                     | None -> [])) in
+          (match proj 4 concl [] with
+           | (_, _) :: rest -> (concl, `Id) :: rest
+           | [] -> [ (concl, `Id) ])
+          @ (match dest_not concl with
               | Some np' -> [ (Mg.Cst "False", `NotApp np') ]
               | None -> [])
           @ (match dest_eq concl with
               | Some (l, r) when not (aeq l r) ->
                   [ (Mg.App (Mg.App (Mg.Cst "eq", r), l), `Sym l) ]
               | _ -> [])
-          @ (match dest_and concl with
-              | Some (a, b) -> [ (a, `AndL (a, b)); (b, `AndR (a, b)) ]
-              | None ->
-                  (match dest_iff concl with
-                   | Some (p, q) ->
-                       let i1 = Mg.Imp (p, q) and i2 = Mg.Imp (q, p) in
-                       [ (i1, `AndL (i1, i2)); (i2, `AndR (i1, i2));
-                         (q, `IffFwd (p, i1, i2)); (p, `IffBwd (q, i1, i2)) ]
-                   | None -> [])) in
+          @ (match dest_iff concl with
+              | Some (p, q) ->
+                  let i1 = Mg.Imp (p, q) and i2 = Mg.Imp (q, p) in
+                  [ (q, `IffFwd (p, i1, i2)); (p, `IffBwd (q, i1, i2)) ]
+              | None -> []) in
         List.find_map (fun (cpat, wrap) ->
         match match_tm pvars cpat goal with
         | None -> None
@@ -602,8 +620,11 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
                  (match wrap with
                   | `Id -> Some base
                   | `Sym l -> Some (Printf.sprintf "(%s (fun hl__u hl__v => hl__u = %s) %s)" base (ppp (inst l)) refl_tm)
-                  | `AndL (a, b) -> Some (Printf.sprintf "(andEL %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
-                  | `AndR (a, b) -> Some (Printf.sprintf "(andER %s %s %s)" (ppp (inst a)) (ppp (inst b)) base)
+                  | `Proj path ->
+                      Some (List.fold_left (fun acc (side, a, b) ->
+                        match side with
+                        | `L -> Printf.sprintf "(andEL %s %s %s)" (ppp (inst a)) (ppp (inst b)) acc
+                        | `R -> Printf.sprintf "(andER %s %s %s)" (ppp (inst a)) (ppp (inst b)) acc) base path)
                   | `IffFwd (p, i1, i2) ->
                       (spend st 2;
                        match close_term st hyps (inst p) (adepth - 1) with
@@ -965,6 +986,7 @@ let builtin_premises : (string * Mg.tm) list =
      Mg.AllIn ("hl__x", Mg.Cst "int",
        mg_in (Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")) (Mg.Cst "int")));
     ("In_0_1", mg_in (Mg.Num 0) (Mg.Num 1));
+
     ("divides_nat_divides_int",
      Mg.All ("hl__m", Mg.Set, Mg.All ("hl__n", Mg.Set,
        Mg.Imp (Mg.App (Mg.App (Mg.Cst "divides_nat", Mg.Var "hl__m"), Mg.Var "hl__n"),
@@ -984,6 +1006,162 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.App (Mg.Var "hl__P",
                Mg.App (Mg.App (Mg.Cst "choose_in", Mg.Var "hl__A"), Mg.Var "hl__P"))))))) ]
 
+(* congruence closing of an iff between structurally similar props (docs/DESIGN.md 24.3):
+   recurse through shared connectives and binders with the mglib/native/logic.mg congruence
+   lemmas; mismatching leaves close via close_term (premise instances).  Pure term output. *)
+let rec iff_congruence st (hyps : hyp list) (l : Mg.tm) (r : Mg.tm) : string option =
+  spend st 2;
+  if aeq l r then Some (Printf.sprintf "(iff_refl %s)" (ppp l)) else
+  let leaf () =
+    match close_term st hyps (Mg.App (Mg.App (Mg.Cst "iff", l), r)) 3 with
+    | Some t -> Some t
+    | None ->
+        (if np_debug then Printf.eprintf "[cg] leaf fail: %s ||| %s\n%!"
+           (String.sub (pp l) 0 (min 110 (String.length (pp l))))
+           (String.sub (pp r) 0 (min 110 (String.length (pp r)))));
+        None in
+  let bin cong a b a' b' =
+    (match iff_congruence st hyps a a' with
+     | None -> None
+     | Some pa ->
+         (match iff_congruence st hyps b b' with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(%s %s %s %s %s %s %s)" cong (ppp a) (ppp a') (ppp b) (ppp b') pa pb))) in
+  let res =
+    (match l, r with
+     | Mg.App (Mg.App (Mg.Cst "and", a), b), Mg.App (Mg.App (Mg.Cst "and", a'), b') -> bin "and_iff_cong" a b a' b'
+     | Mg.App (Mg.App (Mg.Cst "or", a), b), Mg.App (Mg.App (Mg.Cst "or", a'), b') -> bin "or_iff_cong" a b a' b'
+     | Mg.App (Mg.App (Mg.Cst "iff", a), b), Mg.App (Mg.App (Mg.Cst "iff", a'), b') -> bin "iff_iff_cong" a b a' b'
+     | Mg.Imp (a, b), Mg.Imp (a', b') -> bin "imp_iff_cong" a b a' b'
+     | Mg.App (Mg.Cst "not", a), Mg.App (Mg.Cst "not", a') ->
+         (match iff_congruence st hyps a a' with
+          | None -> None
+          | Some pa -> Some (Printf.sprintf "(not_iff_cong %s %s %s)" (ppp a) (ppp a') pa))
+     | Mg.AllIn (x, d, b), Mg.AllIn (x', d', b') when aeq d d' ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let hf = fresh st ("H" ^ xf) in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st ({ hname = hf; prop = mg_in (Mg.Var xf) d } :: hyps) bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(all_in_iff_cong %s (fun %s:set => %s) (fun %s:set => %s) (fun %s %s => %s))"
+                               (ppp d) xf (pp bl) xf (pp br) xf hf pb))
+     | Mg.ExIn (x, d, b), Mg.ExIn (x', d', b') when aeq d d' ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let hf = fresh st ("H" ^ xf) in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st ({ hname = hf; prop = mg_in (Mg.Var xf) d } :: hyps) bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(ex_in_iff_cong %s (fun %s:set => %s) (fun %s:set => %s) (fun %s %s => %s))"
+                               (ppp d) xf (pp bl) xf (pp br) xf hf pb))
+     | Mg.AllSub (x, d, b), Mg.AllSub (x', d', b') when aeq d d' ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let hf = fresh st ("H" ^ xf) in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st ({ hname = hf; prop = mg_subq (Mg.Var xf) d } :: hyps) bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(all_sub_iff_cong %s (fun %s:set => %s) (fun %s:set => %s) (fun %s %s => %s))"
+                               (ppp d) xf (pp bl) xf (pp br) xf hf pb))
+     | Mg.ExSub (x, d, b), Mg.ExSub (x', d', b') when aeq d d' ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let hf = fresh st ("H" ^ xf) in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st ({ hname = hf; prop = mg_subq (Mg.Var xf) d } :: hyps) bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(ex_sub_iff_cong %s (fun %s:set => %s) (fun %s:set => %s) (fun %s %s => %s))"
+                               (ppp d) xf (pp bl) xf (pp br) xf hf pb))
+     | Mg.All (x, Mg.Set, b), Mg.All (x', Mg.Set, b') ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st hyps bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(all_iff_cong (fun %s:set => %s) (fun %s:set => %s) (fun %s:set => %s))"
+                               xf (pp bl) xf (pp br) xf pb))
+     | Mg.Ex (x, Mg.Set, b), Mg.Ex (x', Mg.Set, b') ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st hyps bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(ex_iff_cong (fun %s:set => %s) (fun %s:set => %s) (fun %s:set => %s))"
+                               xf (pp bl) xf (pp br) xf pb))
+     | Mg.All (x, Mg.Prop, b), Mg.All (x', Mg.Prop, b') ->
+         let xf = fresh st (if x = x' then x else "hl__c") in
+         let bl = Mg.subst [ (x, Mg.Var xf) ] b and br = Mg.subst [ (x', Mg.Var xf) ] b' in
+         (match iff_congruence st hyps bl br with
+          | None -> None
+          | Some pb -> Some (Printf.sprintf "(allp_iff_cong (fun %s:prop => %s) (fun %s:prop => %s) (fun %s:prop => %s))"
+                               xf (pp bl) xf (pp br) xf pb))
+     | _ -> None) in
+  (match res with Some t -> Some t | None -> leaf ())
+
+(* one-step rewrite of [t] by a purely universally quantified iff/eq premise
+   (docs/DESIGN.md 24.3): find a subterm matching a premise's left side, replace by the
+   instantiated right side.  Returns the rewritten whole term. *)
+let rec find_rewrites (hyps : hyp list) (t : Mg.tm) : Mg.tm list =
+  let rec rules_of concl =
+    (match dest_and concl with
+     | Some (a, b) -> rules_of a @ rules_of b
+     | None ->
+         (match dest_iff concl with
+          | Some lr -> [ lr ]
+          | None ->
+              (match dest_eq concl with
+               | Some lr -> [ lr ]
+               (* a plain fact rewrites to True (HOL's implicit p = T rule) *)
+               | None -> [ (concl, Mg.Cst "True") ]))) in
+  let here =
+    List.concat_map (fun h ->
+      let prems, concl = strip_hyp h.prop in
+      let pvars = List.filter_map (function PVar x -> Some x | _ -> None) prems in
+      List.filter_map (fun (lp, rp) ->
+        (* a bare-variable left side matches everything: not a rewrite rule *)
+        (match lp with Mg.Var v when List.mem v pvars -> None | _ ->
+         if aeq lp rp then None else
+         match match_tm pvars lp t with
+         | Some bnd when List.for_all (fun v -> List.mem_assoc v bnd) pvars ->
+             let t' = beta (Mg.subst bnd rp) in
+             if aeq t' t then None else Some t'
+         | _ -> None)) (rules_of concl)) hyps in
+  let deeper =
+      let rec collect = function
+        | [] -> []
+        | (sub, rebuild) :: rest ->
+            (match find_rewrites hyps sub with
+             | sub' :: _ -> [ rebuild sub' ]
+             | [] -> collect rest) in
+      collect in
+  here
+  @ (match t with
+     | Mg.App (a, b) -> deeper [ (a, (fun a' -> Mg.App (a', b))); (b, (fun b' -> Mg.App (a, b'))) ]
+     | Mg.Imp (a, b) -> deeper [ (a, (fun a' -> Mg.Imp (a', b))); (b, (fun b' -> Mg.Imp (a, b'))) ]
+     | Mg.AllIn (x, d, b) -> deeper [ (b, (fun b' -> Mg.AllIn (x, d, b'))) ]
+     | Mg.ExIn (x, d, b) -> deeper [ (b, (fun b' -> Mg.ExIn (x, d, b'))) ]
+     | Mg.AllSub (x, d, b) -> deeper [ (b, (fun b' -> Mg.AllSub (x, d, b'))) ]
+     | Mg.ExSub (x, d, b) -> deeper [ (b, (fun b' -> Mg.ExSub (x, d, b'))) ]
+     | Mg.All (x, m, b) -> deeper [ (b, (fun b' -> Mg.All (x, m, b'))) ]
+     | Mg.Ex (x, m, b) -> deeper [ (b, (fun b' -> Mg.Ex (x, m, b'))) ]
+     | Mg.Lam (x, m, b) -> deeper [ (b, (fun b' -> Mg.Lam (x, m, b'))) ]
+     | _ -> [])
+
+(* iff intro lemmas (mglib/native/logic.mg): available to the congruence/rewrite paths
+   only, so the general prover's search is unchanged *)
+let iff_builtins : (string * Mg.tm) list =
+  [ ("iff_true_intro",
+     Mg.All ("hl__p", Mg.Prop,
+       Mg.Imp (Mg.Var "hl__p",
+         Mg.App (Mg.App (Mg.Cst "iff", Mg.Var "hl__p"), Mg.Cst "True"))));
+    ("iff_false_intro",
+     Mg.All ("hl__p", Mg.Prop,
+       Mg.Imp (Mg.App (Mg.Cst "not", Mg.Var "hl__p"),
+         Mg.App (Mg.App (Mg.Cst "iff", Mg.Var "hl__p"), Mg.Cst "False")))) ]
+
+(* congruence closing of `l <-> r` as a proof term, for the recorded-proof import
+   (docs/DESIGN.md 24.3): premises are citable named facts (instances, previous claims) *)
+let congruence_iff ?(budget = 4000) ~(premises : (string * Mg.tm) list) (l : Mg.tm) (r : Mg.tm) : string option =
+  let st = { fuel = budget; names = Hashtbl.create 64 } in
+  List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
+  let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
+  try iff_congruence st hyps0 l r with Give_up | Stack_overflow -> None
+
 let prove ?(budget = 4000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
   let st = { fuel = budget; names = Hashtbl.create 64 } in
@@ -995,3 +1173,53 @@ let prove ?(budget = 4000) ?(max_lines = 200) ?(premises : (string * Mg.tm) list
     let lines = prove_goal st hyps0 goal 0 in
     if List.length lines > max_lines then None else Some (String.concat "\n" lines)
   with Give_up | Stack_overflow -> None
+
+(* rewrite-normalization to True (docs/DESIGN.md 24.3): chain the goal through one-step
+   premise rewrites, each step proved by congruence, until it collapses to True.  Emitted
+   as a readable claim chain E1..En over the intermediate forms. *)
+let prove_via_rewrites ?(budget = 6000) ~(premises : (string * Mg.tm) list) (goal : Mg.tm) : string option =
+  if premises = [] then None else
+  let dbg = np_debug in
+  (if dbg then Printf.eprintf "[rw] goal: %s | premises: %s\n%!" (String.sub (pp goal) 0 (min 120 (String.length (pp goal)))) (String.concat "," (List.map fst premises)));
+  let st = { fuel = budget; names = Hashtbl.create 64 } in
+  List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
+  let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
+  let trivially cur =
+    if cur = Mg.Cst "True" then Some "exact (fun p:prop => fun H:p => H)." else
+    match prove ~budget:800 ~premises cur with
+    | Some scr -> Some scr
+    | None -> None in
+  let rec chain acc cur k =
+    if k > 40 then None
+    else match trivially cur with
+    | Some fin -> Some (List.rev acc, cur, fin)
+    | None ->
+    let cands = find_rewrites hyps0 cur in
+    (if dbg && cands = [] then Printf.eprintf "[rw] no rewrite at step %d: %s\n%!" k (String.sub (pp cur) 0 (min 150 (String.length (pp cur)))));
+    let rec try_c seen = function
+      | [] -> None
+      | nxt :: rest when List.exists (aeq nxt) seen -> try_c seen rest
+      | nxt :: rest ->
+          (if dbg then Printf.eprintf "[rw] step %d: -> %s\n%!" k (String.sub (pp nxt) 0 (min 150 (String.length (pp nxt)))));
+          (match (try iff_congruence st hyps0 cur nxt with Give_up | Stack_overflow -> None) with
+           | None -> (if dbg then Printf.eprintf "[rw] congruence failed, next candidate\n%!"); try_c (nxt :: seen) rest
+           | Some pf ->
+               (match chain ((cur, nxt, pf) :: acc) nxt (k + 1) with
+                | Some r -> Some r
+                | None -> try_c (nxt :: seen) rest)) in
+    try_c [] (List.filteri (fun i _ -> i < 6) cands) in
+  match chain [] goal 0 with
+  | None | Some ([], _, _) -> None
+  | Some (steps, final, fin) ->
+      let buf = Buffer.create 1024 in
+      List.iteri (fun i (l, r, pf) ->
+        Buffer.add_string buf (Printf.sprintf "claim E%d : (%s) <-> (%s).\n{ exact %s. }\n" (i + 1) (Mg.to_string l) (Mg.to_string r) pf)) steps;
+      Buffer.add_string buf (Printf.sprintf "claim F0 : %s.\n{ %s }\n" (Mg.to_string final) fin);
+      let n = List.length steps in
+      let rec compose i =
+        if i > n then "F0"
+        else (let (l, r, _) = List.nth steps (i - 1) in
+              Printf.sprintf "(iffER (%s) (%s) E%d %s)" (Mg.to_string l) (Mg.to_string r) i (compose (i + 1))) in
+      Buffer.add_string buf (Printf.sprintf "exact %s." (compose 1));
+      Some (Buffer.contents buf)
+

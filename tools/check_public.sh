@@ -7,10 +7,10 @@ shards=("$@")
 if [ ${#shards[@]} -eq 0 ]; then shards=($(cd "$dir" && ls *.mg 2>/dev/null | sed 's/\.mg$//' | sort)); fi
 tmp=$(mktemp -d)
 known=$dir/known_props.txt
-off=$(cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" | wc -l)
+off=$(cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" "$HERE/mglib/native/logic.mg" | wc -l)
 check_one() {
   s=$1; f=$tmp/$s.mg
-  cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" > "$f"
+  cat "$HERE/mglib/native/prelude.mg" "$HERE/mglib/native/finseq.mg" "$HERE/mglib/native/order.mg" "$HERE/mglib/native/logic.mg" > "$f"
   [ -s "$dir/_definitions.mg" ] && [ "$s" != "_definitions" ] && cat "$dir/_definitions.mg" >> "$f"
   cat "$dir/$s.mg" >> "$f"
   out=$(timeout ${MGTIMEOUT:-600} "$MG" -ind "$HERE/mglib/God1.index" -I "$HERE/mglib/God1.mgs" -warnaboutleadingspaces -warnaboutreproven "$f" 2>&1)
