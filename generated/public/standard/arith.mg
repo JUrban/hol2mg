@@ -1243,31 +1243,43 @@ Admitted.
 // Source hash: md5:4d62f93e321c9a6c4063524ca0db99cc
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem DIVISION_0 : forall m n :e omega, (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) /\ (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (andI (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n) (andEL (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n) (division_0_thm (m) Hm (n) Hn)) (fun hl__H1 : ~ n = 0 => (andI (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (andEL (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn hl__H1)) (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn hl__H1))))).
+Qed.
 
 // HOL Light: arith.ml:1094 / DIVISION
 // Source hash: md5:b59e2104560227deeca73507054e0663
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem DIVISION : forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (andI (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (andEL (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn H)) (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn H))).
+Qed.
 
 // HOL Light: arith.ml:1098 / DIV_ZERO
 // Source hash: md5:fffca388349f8cf72b76018fd969603f
 // Status: transport_required (bridges: hol_num_omega)
 Theorem DIV_ZERO : forall n :e omega, div_nat n 0 = 0.
-Admitted.
+let n. assume Hn.
+exact (div_zero_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:1102 / MOD_ZERO
 // Source hash: md5:938d8f28a97891aabbf2c8a0abc4ff5b
 // Status: transport_required (bridges: hol_num_omega)
 Theorem MOD_ZERO : forall n :e omega, mod_nat n 0 = n.
-Admitted.
+let n. assume Hn.
+exact (mod_zero_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:1106 / DIVISION_SIMP
 // Source hash: md5:901b98beaf280ff178890c22675d5f82
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem DIVISION_SIMP : (forall m n :e omega, div_nat m n * n + mod_nat m n = m) /\ forall m n :e omega, n * div_nat m n + mod_nat m n = m.
-Admitted.
+exact division_simp_thm.
+Qed.
 
 // HOL Light: arith.ml:1113 / EQ_DIVMOD
 // Source hash: md5:93cea4fcb42a3a08455a37ff33313dc5

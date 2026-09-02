@@ -103,7 +103,10 @@ Qed.
 // Source hash: md5:7c5e5b4ed605155dae012148a5a99030
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LE_LNEG : forall x y :e R, - x <= y <-> 0 <= x + y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_lneg (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: calc_int.ml:134 / REAL_LE_NEG2
 // Source hash: md5:85c3ab5d47bd2b0c864b2ca1fc5d711f
