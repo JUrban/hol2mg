@@ -584,3 +584,15 @@ assume H.
 exact (((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => div_nat hl__u n = q) ((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => div_nat hl__u n = q) (andEL (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)))).
 Qed.
 
+// HOL Light: arith.ml / DIV_0
+Theorem DIV_0 : forall n :e omega, div_nat 0 n = 0.
+let n. assume Hn.
+exact (div_0_thm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / MOD_0
+Theorem MOD_0 : forall n :e omega, mod_nat 0 n = 0.
+let n. assume Hn.
+exact (mod_0_thm (n) Hn).
+Qed.
+

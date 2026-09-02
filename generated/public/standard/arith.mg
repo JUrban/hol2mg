@@ -1367,13 +1367,17 @@ Qed.
 // Source hash: md5:21468dd00b62ee403ed635ebbcf16770
 // Status: transport_required (bridges: hol_num_omega)
 Theorem DIV_0 : forall n :e omega, div_nat 0 n = 0.
-Admitted.
+let n. assume Hn.
+exact (div_0_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:1168 / MOD_0
 // Source hash: md5:59d2eea9d1d94d71402abff29261e900
 // Status: transport_required (bridges: hol_num_omega)
 Theorem MOD_0 : forall n :e omega, mod_nat 0 n = 0.
-Admitted.
+let n. assume Hn.
+exact (mod_0_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:1175 / DIV_MULT
 // Source hash: md5:3a8beeb323ea04d1de30bfcba2c25ac4
