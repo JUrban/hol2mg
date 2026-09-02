@@ -175,7 +175,11 @@ Admitted.
 // Source hash: md5:6df047178a154b6dd44c0e5989f496c1
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LT_MUL : forall x y :e R, 0 < x /\ 0 < y -> 0 < x * y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (mul_SNo_pos_pos (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) (andEL (0 < x) (0 < y) H) (andER (0 < x) (0 < y) H)).
+Qed.
 
 // HOL Light: real.ml:112 / REAL_EQ_ADD_LCANCEL_0
 // Source hash: md5:dac4cce3f5dbc0539871cc19e913744f
@@ -205,13 +209,19 @@ Admitted.
 // Source hash: md5:ba8f12b8011fac8df663ad4cb15b6162
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_NEG_LMUL : forall x y :e R, - x * y = (- x) * y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact ((mul_SNo_minus_distrL (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)) (fun hl__u hl__v => hl__u = ((- x) * y)) (fun q H => H)).
+Qed.
 
 // HOL Light: real.ml:132 / REAL_NEG_RMUL
 // Source hash: md5:0d857bec0c0fc518c2fe5dc7cd67c4ed
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_NEG_RMUL : forall x y :e R, - x * y = x * (- y).
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact ((mul_SNo_minus_distrR (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)) (fun hl__u hl__v => hl__u = (x * (- y))) (fun q H => H)).
+Qed.
 
 // HOL Light: real.ml:136 / REAL_NEG_MUL2
 // Source hash: md5:3f879509bf9f1b12f36535f1ef11ba5f
@@ -993,7 +1003,12 @@ Admitted.
 // Source hash: md5:b611cca81cabe04be52e5712d710425e
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LT_LMUL : forall x y z :e R, 0 < x /\ y < z -> x * y < x * z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (pos_mul_SNo_Lt (x) (y) (z) (real_SNo (x) Hx) (andEL (0 < x) (y < z) H) (real_SNo (y) Hy) (real_SNo (z) Hz) (andER (0 < x) (y < z) H)).
+Qed.
 
 // HOL Light: real.ml:658 / REAL_LT_RMUL
 // Source hash: md5:997f1942a225543795540931c4705a2e
@@ -1497,7 +1512,12 @@ Admitted.
 // Source hash: md5:f078387ba2c2dd4b70bd235228b70eef
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_EQ_LCANCEL_IMP : forall x y z :e R, ~ z = 0 /\ z * x = z * y -> x = y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (mul_SNo_nonzero_cancel (z) (x) (y) (real_SNo (z) Hz) (fun hl__H : z = 0 => ((andEL (~ z = 0) (z * x = z * y) H) hl__H)) (real_SNo (x) Hx) (real_SNo (y) Hy) (andER (~ z = 0) (z * x = z * y) H)).
+Qed.
 
 // HOL Light: real.ml:1193 / REAL_LT_DIV
 // Source hash: md5:1593fa15ca56d084d524fae465a8d52a

@@ -133,6 +133,28 @@ let z. assume Hz.
 exact (mul_SNo_distrR (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz)).
 Qed.
 
+// HOL Light: real.ml / REAL_LT_MUL
+Theorem REAL_LT_MUL : forall x y :e R, 0 < x /\ 0 < y -> 0 < x * y.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (mul_SNo_pos_pos (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) (andEL (0 < x) (0 < y) H) (andER (0 < x) (0 < y) H)).
+Qed.
+
+// HOL Light: real.ml / REAL_NEG_LMUL
+Theorem REAL_NEG_LMUL : forall x y :e R, - x * y = (- x) * y.
+let x. assume Hx.
+let y. assume Hy.
+exact ((mul_SNo_minus_distrL (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)) (fun hl__u hl__v => hl__u = ((- x) * y)) (fun q H => H)).
+Qed.
+
+// HOL Light: real.ml / REAL_NEG_RMUL
+Theorem REAL_NEG_RMUL : forall x y :e R, - x * y = x * (- y).
+let x. assume Hx.
+let y. assume Hy.
+exact ((mul_SNo_minus_distrR (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)) (fun hl__u hl__v => hl__u = (x * (- y))) (fun q H => H)).
+Qed.
+
 // HOL Light: real.ml / REAL_LT_RADD
 Theorem REAL_LT_RADD : forall x y z :e R, x + z < y + z <-> x < y.
 let x. assume Hx.
@@ -254,6 +276,24 @@ apply (xm (x <= y)).
   exact ((eq_sym_i (if x <= y then x else y) (x) (If_i_1 (x <= y) (x) (y) H)) (fun hl__u hl__v => hl__u = if y <= x then y else x) L).
 - assume H1.
   exact (((If_i_1 (y <= x) (y) (x) (SNoLtLe (y) (x) ((andER (y < x -> ~ x <= y) (~ x <= y -> y < x) (real_lt_iff (x) Hx (y) Hy)) H1))) (fun hl__u hl__v => hl__u = (if y <= x then y else x)) (fun q H => H)) (fun hl__u hl__v => (if x <= y then x else y) = hl__u) (If_i_0 (x <= y) (x) (y) H1)).
+Qed.
+
+// HOL Light: real.ml / REAL_LT_LMUL
+Theorem REAL_LT_LMUL : forall x y z :e R, 0 < x /\ y < z -> x * y < x * z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (pos_mul_SNo_Lt (x) (y) (z) (real_SNo (x) Hx) (andEL (0 < x) (y < z) H) (real_SNo (y) Hy) (real_SNo (z) Hz) (andER (0 < x) (y < z) H)).
+Qed.
+
+// HOL Light: real.ml / REAL_EQ_LCANCEL_IMP
+Theorem REAL_EQ_LCANCEL_IMP : forall x y z :e R, ~ z = 0 /\ z * x = z * y -> x = y.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (mul_SNo_nonzero_cancel (z) (x) (y) (real_SNo (z) Hz) (fun hl__H : z = 0 => ((andEL (~ z = 0) (z * x = z * y) H) hl__H)) (real_SNo (x) Hx) (real_SNo (y) Hy) (andER (~ z = 0) (z * x = z * y) H)).
 Qed.
 
 // HOL Light: real.ml / real_sgn

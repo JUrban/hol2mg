@@ -39,6 +39,20 @@ let x. assume Hx.
 exact (minus_SNo_invol (x) (real_SNo (x) Hx)).
 Qed.
 
+// HOL Light: calc_int.ml / REAL_MUL_RNEG
+Theorem REAL_MUL_RNEG : forall x y :e R, x * (- y) = - x * y.
+let x. assume Hx.
+let y. assume Hy.
+exact (mul_SNo_minus_distrR (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
+
+// HOL Light: calc_int.ml / REAL_MUL_LNEG
+Theorem REAL_MUL_LNEG : forall x y :e R, (- x) * y = - x * y.
+let x. assume Hx.
+let y. assume Hy.
+exact (mul_SNo_minus_distrL (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
+
 // HOL Light: calc_int.ml / REAL_ADD_RID
 Theorem REAL_ADD_RID : forall x :e R, x + 0 = x.
 let x. assume Hx.

@@ -68,13 +68,20 @@ Qed.
 // Source hash: md5:cf4d4c0c36409257ee0e252ecfc87058
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MUL_RNEG : forall x y :e R, x * (- y) = - x * y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (mul_SNo_minus_distrR (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
 
 // HOL Light: calc_int.ml:104 / REAL_MUL_LNEG
 // Source hash: md5:93526b113fa809e8948f559a5fb2edbb
 // Status: native_reuse (bridges: hol_real_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_MUL_LNEG : forall x y :e R, (- x) * y = - x * y.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_MUL_LNEG : forall x y :e R, (- x) * y = - x * y.
+let x. assume Hx.
+let y. assume Hy.
+exact (mul_SNo_minus_distrL (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy)).
+Qed.
 
 // HOL Light: calc_int.ml:108 / REAL_NEG_ADD
 // Source hash: md5:93ee3274f878c0cf401e52a6c0e0e30c

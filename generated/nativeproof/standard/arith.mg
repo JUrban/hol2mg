@@ -201,6 +201,14 @@ let p. assume Hp.
 exact (andI (m * n = n * m) ((m * n) * p = m * n * p /\ m * n * p = n * m * p) (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)) (andI ((m * n) * p = m * n * p) (m * n * p = n * m * p) ((mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m * n * p)) (fun q H => H)) (mul_SNo_com_3_0_1 (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)))).
 Qed.
 
+// HOL Light: arith.ml / EQ_MULT_LCANCEL
+Theorem EQ_MULT_LCANCEL : forall m n p :e omega, m * n = m * p <-> m = 0 \/ n = p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (eq_mult_lcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
 // HOL Light: arith.ml / MULT_2
 Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
@@ -410,6 +418,12 @@ assume H.
 exact (H (fun hl__u hl__v => m <= hl__u) ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (n)))).
 Qed.
 
+// HOL Light: arith.ml / LT_NZ
+Theorem LT_NZ : forall n :e omega, 0 < n <-> ~ n = 0.
+let n. assume Hn.
+exact (lt_nz_thm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / LE_EXISTS
 Theorem LE_EXISTS : forall m n :e omega, m <= n <-> exists d :e omega, n = m + d.
 let m. assume Hm.
@@ -446,6 +460,15 @@ apply iffI.
   exact (add_SNo_Lt1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
 - assume H.
   exact (add_SNo_Lt1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
+Qed.
+
+// HOL Light: arith.ml / LT_LMULT
+Theorem LT_LMULT : forall m n p :e omega, ~ m = 0 /\ n < p -> m * n < m * p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (pos_mul_SNo_Lt (m) (n) (p) (omega_SNo (m) Hm) ((andER (0 < m -> ~ m = 0) (~ m = 0 -> 0 < m) (lt_nz_thm (m) Hm)) (andEL (~ m = 0) (n < p) H)) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andER (~ m = 0) (n < p) H)).
 Qed.
 
 // HOL Light: arith.ml / EVEN
@@ -510,5 +533,16 @@ Qed.
 // HOL Light: arith.ml / DIVISION_SIMP
 Theorem DIVISION_SIMP : (forall m n :e omega, div_nat m n * n + mod_nat m n = m) /\ forall m n :e omega, n * div_nat m n + mod_nat m n = m.
 exact division_simp_thm.
+Qed.
+
+// HOL Light: arith.ml / MOD_LT_EQ_LT
+Theorem MOD_LT_EQ_LT : forall m n :e omega, mod_nat m n < n <-> 0 < n.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (SNoLeLt_tra (0) (mod_nat m n) (n) (omega_SNo (0) (nat_p_omega (0) nat_0)) (omega_SNo (mod_nat m n) (mod_nat_omega (m) Hm (n) Hn)) (omega_SNo (n) Hn) (omega_nonneg (mod_nat m n) (mod_nat_omega (m) Hm (n) Hn)) H1).
+- assume H.
+  exact (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn ((andEL (0 < n -> ~ n = 0) (~ n = 0 -> 0 < n) (lt_nz_thm (n) Hn)) H))).
 Qed.
 
