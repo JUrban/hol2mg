@@ -6,13 +6,21 @@
 // Source hash: md5:e48111d0d8d0854a2e64b2dfd1f92b7e
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem HD : forall A:set, forall h :e A, forall t :e finseq A, seq_hd (seq_cons h t) = h.
-Admitted.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+exact (hd_cons_thm (A) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:31 / TL
 // Source hash: md5:a461f6927361fce88089ebdcecc03cd9
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem TL : forall A:set, forall h :e A, forall t :e finseq A, seq_tl (seq_cons h t) = t.
-Admitted.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+exact (tl_cons_thm (A) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:34 / APPEND
 // Source hash: md5:3ef027801213877da04628f269452000
@@ -265,7 +273,13 @@ Admitted.
 // Source hash: md5:50a941211ca5b773825052d4a811750c
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem CONS_11 : forall A:set, forall h1 h2 :e A, forall t1 t2 :e finseq A, seq_cons h1 t1 = seq_cons h2 t2 <-> h1 = h2 /\ t1 = t2.
-Admitted.
+let A.
+let h1. assume Hh1.
+let h2. assume Hh2.
+let t1. assume Ht1.
+let t2. assume Ht2.
+exact (cons_11_thm (A) (h1) Hh1 (h2) Hh2 (t1) Ht1 (t2) Ht2).
+Qed.
 
 // HOL Light: lists.ml:182 / list_CASES
 // Source hash: md5:6c9a307f18507870c827834056fdffa7
