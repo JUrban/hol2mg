@@ -1908,6 +1908,21 @@ let builtin_premises : (string * Mg.tm) list =
            Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__m")),
            Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
          Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Var "hl__n")))));
+    ("filter_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+       Mg.AllIn ("hl__h", Mg.Var "hl__A",
+         Mg.AllIn ("hl__t", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+           Mg.App (Mg.App (Mg.Cst "and",
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "seq_filter", Mg.Var "hl__P"), Mg.Cst "seq_nil")),
+               Mg.Cst "seq_nil")),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "seq_filter", Mg.Var "hl__P"),
+                 Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"), Mg.Var "hl__t"))),
+               Mg.If (Mg.App (Mg.Var "hl__P", Mg.Var "hl__h"),
+                 Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"),
+                   Mg.App (Mg.App (Mg.Cst "seq_filter", Mg.Var "hl__P"), Mg.Var "hl__t")),
+                 Mg.App (Mg.App (Mg.Cst "seq_filter", Mg.Var "hl__P"), Mg.Var "hl__t")))))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

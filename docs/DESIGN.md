@@ -2248,6 +2248,10 @@ Ifs case-split together via the succ-monotonicity of `<=` (add_SNo_Le1/its cance
 God1's `god1_negative_successor_add_one` (`- ordsucc n + 1 = - n`); lands SUB_SUC.
 ADD_SUB/ADD_SUB2 should follow via guided premises in the fixpoint.
 
+N17 (480 -> 481, +1, zero lost): filtering.  logic.mg `filter_thm` — both FILTER equations are the
+seq_foldr_nil/cons instances *up to definitional conversion* (seq_filter unfolds to the
+fold, the fold step beta-reduces to the If), so the whole proof is two `exact`s.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
