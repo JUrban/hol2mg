@@ -1450,6 +1450,17 @@ assume H.
 exact (andI (a c= b) (a <> b) (andEL (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (fun hl__H : a = b => ((andER (a c= b) (~ finite_cardinality a = finite_cardinality b) H) (hl__H (fun hl__u hl__v => (finite_cardinality a) = (finite_cardinality hl__u)) (fun q H => H))))).
 Qed.
 
+// HOL Light: sets.ml / IN_CROSS
+Theorem IN_CROSS : forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t.
+let A.
+let B.
+let x. assume Hx.
+let y. assume Hy.
+let s. assume Hs.
+let t. assume Ht.
+exact (in_cross_thm (A) (B) (x) Hx (y) Hy (s) Hs (t) Ht).
+Qed.
+
 // HOL Light: sets.ml / CROSS_UNIV
 Theorem CROSS_UNIV : forall A B:set, A :*: B = A :*: B.
 let A.

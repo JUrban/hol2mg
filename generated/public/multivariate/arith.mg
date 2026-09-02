@@ -1030,7 +1030,9 @@ Admitted.
 // Source hash: md5:533b88c32d6d67d4698f922841e53724
 // Status: transport_required (bridges: hol_num_omega)
 Theorem SUB_0 : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
-Admitted.
+let m. assume Hm.
+exact (andI (minus_nat 0 m = 0) (minus_nat m 0 = m) (andEL (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm (m) Hm)) (andER (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm (m) Hm))).
+Qed.
 
 // HOL Light: arith.ml:849 / SUB_PRESUC
 // Source hash: md5:a5079a26282b7054790fd007d87d2b2e

@@ -264,13 +264,29 @@ Admitted.
 // Source hash: md5:ae462839da6097103bc5fa0e21a1130c
 // Status: exact_native
 Theorem RIGHT_IMP_EXISTS_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P -> (exists x :e A, Q x) <-> exists x :e A, P -> Q x.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+exact (right_imp_exists_thm (A) H (P) (Q)).
+Qed.
 
 // HOL Light: class.ml:307 / RIGHT_EXISTS_IMP_THM
 // Source hash: md5:61b7e26ac74778c0e8ccdd9a6727daaa
 // Status: exact_native
 Theorem RIGHT_EXISTS_IMP_THM : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, (exists x :e A, P -> Q x) <-> P -> exists x :e A, Q x.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+apply iffI.
+- assume H2.
+  apply H2. let x. assume H3. apply H3. assume Hx H4.
+  assume H5.
+  exact (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx (H4 H5))).
+- assume H1.
+  exact ((andEL ((P -> (exists hl__x :e A, Q hl__x)) -> exists hl__x :e A, P -> Q hl__x) ((exists hl__x :e A, P -> Q hl__x) -> P -> exists hl__x :e A, Q hl__x) (right_imp_exists_thm (A) H (P) (Q))) H1).
+Qed.
 
 // HOL Light: class.ml:315 / COND_DEF
 // Source hash: md5:4b7321c4b0ce36e9d6ae573b04198d8e

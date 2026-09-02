@@ -574,7 +574,14 @@ Admitted.
 // Source hash: md5:51ec27be80a97c0aef589f0cf8d5693a
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem IN_CARD_MUL : forall A B:set, forall s c= A, forall t c= B, forall x :e A, forall y :e B, (x,y) :e s :*: t <-> x :e s /\ y :e t.
-Admitted.
+let A.
+let B.
+let s. assume Hs.
+let t. assume Ht.
+let x. assume Hx.
+let y. assume Hy.
+exact (in_cross_thm (A) (B) (x) Hx (y) Hy (s) Hs (t) Ht).
+Qed.
 
 // HOL Light: Library/card.ml:718 / CARD_LE_SQUARE
 // Source hash: md5:a052816c22df5b5ff7c7fc2817d31014
