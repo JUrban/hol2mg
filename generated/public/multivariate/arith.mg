@@ -705,7 +705,10 @@ Admitted.
 // Source hash: md5:fc24da01a419be1c250ebb180c054ce7
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
 Theorem LE_EXISTS : forall m n :e omega, m <= n <-> exists d :e omega, n = m + d.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (le_exists_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:492 / LT_EXISTS
 // Source hash: md5:fceb9b438eb7a0d431cb8377b206b932
@@ -1092,7 +1095,11 @@ Admitted.
 // Source hash: md5:0a5b1061c758157ba0232b8361b301a2
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
 Theorem SUB_ADD : forall m n :e omega, n <= m -> minus_nat m n + n = m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (((add_SNo_com (minus_nat m n) (n) (omega_SNo (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm)) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (minus_nat m n + n)) (fun q H => H)) (fun hl__u hl__v => hl__u = m) (add_minus_nat_le (n) Hn (m) Hm H)).
+Qed.
 
 // HOL Light: arith.ml:888 / SUB_ADD_LCANCEL
 // Source hash: md5:ff83e90d7a1fc7da870abbdb60a0f3cf
