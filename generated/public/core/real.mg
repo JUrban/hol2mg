@@ -225,7 +225,15 @@ Admitted.
 // Source hash: md5:74f4501bb259838e77df340cfb0bd438
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LT_RADD : forall x y z :e R, x + z < y + z <-> x < y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Lt1_cancel (x) (z) (y) (real_SNo (x) Hx) (real_SNo (z) Hz) (real_SNo (y) Hy) H1).
+- assume H.
+  exact (add_SNo_Lt1 (x) (z) (y) (real_SNo (x) Hx) (real_SNo (z) Hz) (real_SNo (y) Hy) H).
+Qed.
 
 // HOL Light: real.ml:148 / REAL_LT_ANTISYM
 // Source hash: md5:1dc1d001a47145b1cbab2870f7cd32e0
@@ -318,7 +326,15 @@ Admitted.
 // Source hash: md5:76772e0e00860d12b575f9c0c3cc595a
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_RADD : forall x y z :e R, x + z <= y + z <-> x <= y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Le1_cancel (x) (z) (y) (real_SNo (x) Hx) (real_SNo (z) Hz) (real_SNo (y) Hy) H1).
+- assume H.
+  exact (add_SNo_Le1 (x) (z) (y) (real_SNo (x) Hx) (real_SNo (z) Hz) (real_SNo (y) Hy) H).
+Qed.
 
 // HOL Light: real.ml:208 / REAL_LT_ADD2
 // Source hash: md5:101c8e158dd8204b7f989f403022c1bf
@@ -793,25 +809,73 @@ Admitted.
 // Source hash: md5:032fe5d0ff458d8adeef2c2d3a7c5a96
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MAX_MAX : forall x y :e R, x <= (if x <= y then y else x) /\ y <= if x <= y then y else x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply andI.
+- exact ((andER (x <= (if x <= y then y else x) -> (x <= y -> x <= y) /\ (~ x <= y -> x <= x)) ((x <= y -> x <= y) /\ (~ x <= y -> x <= x) -> x <= if x <= y then y else x) (cond_elim_thm (R) (fun hl__w:set => x <= hl__w) (x <= y) (y) Hy (x) Hx)) (andI (x <= y -> x <= y) (~ x <= y -> x <= x) (fun hl__H2 : x <= y => hl__H2) (fun hl__H3 : ~ x <= y => (SNoLe_ref (x))))).
+- apply (xm (x <= y)).
+  + assume H.
+    exact (((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => y <= hl__u) ((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (if x <= y then y else x)))).
+  + assume H1.
+    exact (((If_i_0 (x <= y) (y) (x) H1) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => y <= hl__u) (SNoLtLe (y) (x) ((andER (y < x -> ~ x <= y) (~ x <= y -> y < x) (real_lt_iff (x) Hx (y) Hy)) H1))).
+Qed.
 
 // HOL Light: real.ml:526 / REAL_MIN_MIN
 // Source hash: md5:be67be6dab1d732d4acf52d7a1974204
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MIN_MIN : forall x y :e R, (if x <= y then x else y) <= x /\ (if x <= y then x else y) <= y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply andI.
+- apply (xm (x <= y)).
+  + assume H2.
+    exact (((If_i_1 (x <= y) (x) (y) H2) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x) ((If_i_1 (x <= y) (x) (y) H2) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (if x <= y then x else y)))).
+  + assume H3.
+    exact (((If_i_0 (x <= y) (x) (y) H3) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x) (SNoLtLe (y) (x) ((andER (y < x -> ~ x <= y) (~ x <= y -> y < x) (real_lt_iff (x) Hx (y) Hy)) H3))).
+- apply (xm (x <= y)).
+  + assume H.
+    exact ((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => (if hl__u <= y then hl__u else y) <= y) (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => (if hl__u <= y then hl__u else y) <= y) (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u <= y) H))).
+  + assume H1.
+    exact (((If_i_0 (x <= y) (x) (y) H1) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u <= y) ((If_i_0 (x <= y) (x) (y) H1) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (if x <= y then x else y)))).
+Qed.
 
 // HOL Light: real.ml:530 / REAL_MAX_SYM
 // Source hash: md5:ac6b44f051f42071d574a63ce3fb495b
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MAX_SYM : forall x y :e R, (if x <= y then y else x) = if y <= x then x else y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply (xm (x <= y)).
+- assume H.
+  claim L: y = if y <= x then x else y.
+  { apply (xm (y <= x)).
+  * assume H2.
+    exact (((If_i_1 (y <= x) (x) (y) H2) (fun hl__u hl__v => hl__u = (if y <= x then x else y)) (fun q H => H)) (fun hl__u hl__v => y = hl__u) (SNoLe_antisym (y) (x) (real_SNo (y) Hy) (real_SNo (x) Hx) H2 H)).
+  * assume H3.
+    exact ((If_i_0 (y <= x) (x) (y) H3) (fun hl__u hl__v => hl__u = (if y <= x then x else y)) (fun q H => H)). }
+  exact ((eq_sym_i (if x <= y then y else x) (y) (If_i_1 (x <= y) (y) (x) H)) (fun hl__u hl__v => hl__u = if y <= x then x else y) L).
+- assume H1.
+  exact (((If_i_1 (y <= x) (x) (y) (SNoLtLe (y) (x) ((andER (y < x -> ~ x <= y) (~ x <= y -> y < x) (real_lt_iff (x) Hx (y) Hy)) H1))) (fun hl__u hl__v => hl__u = (if y <= x then x else y)) (fun q H => H)) (fun hl__u hl__v => (if x <= y then y else x) = hl__u) (If_i_0 (x <= y) (y) (x) H1)).
+Qed.
 
 // HOL Light: real.ml:534 / REAL_MIN_SYM
 // Source hash: md5:a3a143b6fad322bbe8ecc762631df670
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MIN_SYM : forall x y :e R, (if x <= y then x else y) = if y <= x then y else x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+apply (xm (x <= y)).
+- assume H.
+  claim L: x = if y <= x then y else x.
+  { apply (xm (y <= x)).
+  * assume H2.
+    exact (((If_i_1 (y <= x) (y) (x) H2) (fun hl__u hl__v => hl__u = (if y <= x then y else x)) (fun q H => H)) (fun hl__u hl__v => x = hl__u) (SNoLe_antisym (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) H H2)).
+  * assume H3.
+    exact ((If_i_0 (y <= x) (y) (x) H3) (fun hl__u hl__v => hl__u = (if y <= x then y else x)) (fun q H => H)). }
+  exact ((eq_sym_i (if x <= y then x else y) (x) (If_i_1 (x <= y) (x) (y) H)) (fun hl__u hl__v => hl__u = if y <= x then y else x) L).
+- assume H1.
+  exact (((If_i_1 (y <= x) (y) (x) (SNoLtLe (y) (x) ((andER (y < x -> ~ x <= y) (~ x <= y -> y < x) (real_lt_iff (x) Hx (y) Hy)) H1))) (fun hl__u hl__v => hl__u = (if y <= x then y else x)) (fun q H => H)) (fun hl__u hl__v => (if x <= y then x else y) = hl__u) (If_i_0 (x <= y) (x) (y) H1)).
+Qed.
 
 // HOL Light: real.ml:538 / REAL_LE_MAX
 // Source hash: md5:c6867eb465c8d51bc6d536e2a6e7933a
@@ -1725,7 +1789,12 @@ Qed.
 // Source hash: md5:0ba61872340d167031fe1bf0c7ce87fe
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_SGN_0 : (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0.
-Admitted.
+apply (xm (0 < 0)).
+- assume H.
+  exact (in_1_eq_0 (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) (FalseE ((SNoLt_irref (0)) H) ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) :e 1))).
+- assume H1.
+  exact (((If_i_0 (0 < 0) (1) (if 0 < 0 then - 1 else 0) H1) (fun hl__u hl__v => hl__u = (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0)) (fun q H => H)) (fun hl__u hl__v => hl__u = 0) (If_i_0 (0 < 0) (- 1) (0) H1)).
+Qed.
 
 // HOL Light: real.ml:1529 / REAL_SGN_NEG
 // Source hash: md5:5498fc72438d73cc9d16f67f9faa3d0f

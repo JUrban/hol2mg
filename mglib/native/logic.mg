@@ -535,3 +535,42 @@ apply iffI.
   + assume H29.
     exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H29))).
 Qed.
+
+Theorem not_SNoLe_iff_omega : forall m n :e omega, ~ m <= n <-> n < m.
+let m. assume Hm. let n. assume Hn.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+apply iffI.
+- assume H.
+  apply (SNoLtLe_or n m Hsn Hsm).
+  + assume H1. exact H1.
+  + assume H1. exact (FalseE (H H1) (n < m)).
+- assume H. assume H2.
+  exact (SNoLt_irref n (SNoLtLe_tra n m n Hsn Hsm Hsn H H2)).
+Qed.
+
+Theorem cond_elim_thm : forall A:set, forall P:set -> prop, forall c:prop, forall x y :e A, P (if c then x else y) <-> (c -> P x) /\ (~ c -> P y).
+let A. let P. let c. let x. assume Hx. let y. assume Hy.
+apply iffI.
+- assume H.
+  apply andI.
+  + assume Hc.
+    exact ((If_i_1 c x y Hc) (fun hl__u hl__v => P hl__u) H).
+  + assume Hnc.
+    exact ((If_i_0 c x y Hnc) (fun hl__u hl__v => P hl__u) H).
+- assume H.
+  apply (xm c).
+  + assume Hc.
+    exact ((eq_sym_i (if c then x else y) x (If_i_1 c x y Hc)) (fun hl__u hl__v => P hl__u) (andEL (c -> P x) (~ c -> P y) H Hc)).
+  + assume Hnc.
+    exact ((eq_sym_i (if c then x else y) y (If_i_0 c x y Hnc)) (fun hl__u hl__v => P hl__u) (andER (c -> P x) (~ c -> P y) H Hnc)).
+Qed.
+
+Theorem SNoLe_add_omega : forall m n :e omega, m <= m + n.
+let m. assume Hm. let n. assume Hn.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim E: m + 0 = m. { exact (add_SNo_0R m Hsm). }
+claim L: m + 0 <= m + n. { exact (add_SNo_Le2 m 0 n Hsm SNo_0 Hsn (omega_nonneg n Hn)). }
+exact (E (fun hl__u hl__v => hl__u <= m + n) L).
+Qed.

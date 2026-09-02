@@ -223,7 +223,7 @@ Theorem NOT_IN_EMPTY : forall A:set, forall x :e A, ~ x :e Empty.
 let A.
 let x. assume Hx.
 assume H.
-exact ((andEL (x :e Empty -> False) (False -> x :e Empty) (EMPTY (Empty) (x) H)) H).
+exact (EmptyE (x) H).
 Qed.
 
 // HOL Light: sets.ml / IN_UNIV
@@ -731,7 +731,7 @@ apply andI.
   + let x3. assume Hx3.
     apply (binunionE (Empty) (s1) (x3) Hx3).
     * assume H2.
-      exact ((andEL (x3 :e s1 -> x3 :e s1) (x3 :e s1 -> x3 :e s1) (IN (A) (s1) Hs1 (x3) (FalseE ((NOT_IN_EMPTY (Empty) (x3) H2) H2) (x3 :e A)))) (FalseE ((NOT_IN_EMPTY (Empty) (x3) H2) H2) (x3 :e s1))).
+      exact (FalseE (EmptyE (x3) H2) (x3 :e s1)).
     * assume H3.
       exact H3.
   + let x2. assume Hx2.
@@ -743,7 +743,7 @@ apply andI.
     * assume H.
       exact H.
     * assume H1.
-      exact ((andEL (x1 :e s -> x1 :e s) (x1 :e s -> x1 :e s) (IN (A) (s) Hs (x1) (FalseE ((NOT_IN_EMPTY (Empty) (x1) H1) H1) (x1 :e A)))) (FalseE ((NOT_IN_EMPTY (Empty) (x1) H1) H1) (x1 :e s))).
+      exact (FalseE (EmptyE (x1) H1) (x1 :e s)).
   + let x. assume Hx.
     exact (binunionI1 (s) (Empty) (x) Hx).
 Qed.
@@ -876,13 +876,13 @@ apply andI.
   + let x3. assume Hx3.
     exact (binintersectE1 (Empty) (s1) (x3) Hx3).
   + let x2. assume Hx2.
-    exact (binintersectI (Empty) (s1) (x2) Hx2 ((andEL (x2 :e s1 -> x2 :e s1) (x2 :e s1 -> x2 :e s1) (IN (A) (s1) Hs1 (x2) (FalseE (EmptyE (x2) Hx2) (x2 :e A)))) (FalseE (EmptyE (x2) Hx2) (x2 :e s1)))).
+    exact (binintersectI (Empty) (s1) (x2) Hx2 (FalseE (EmptyE (x2) Hx2) (x2 :e s1))).
 - let s. assume Hs.
   apply (set_ext (s :/\: Empty) (Empty)).
   + let x1. assume Hx1.
     exact (binintersectE2 (s) (Empty) (x1) Hx1).
   + let x. assume Hx.
-    exact (binintersectI (s) (Empty) (x) ((andEL (x :e s -> x :e s) (x :e s -> x :e s) (IN (A) (s) Hs (x) (FalseE (EmptyE (x) Hx) (x :e A)))) (FalseE (EmptyE (x) Hx) (x :e s))) Hx).
+    exact (binintersectI (s) (Empty) (x) (FalseE (EmptyE (x) Hx) (x :e s)) Hx).
 Qed.
 
 // HOL Light: sets.ml / INTER_UNIV
@@ -1425,7 +1425,7 @@ apply (set_ext ({x :e A | True}) (A)).
 - let x1. assume Hx1.
   exact (SepE1 (A) (fun x:set => True) (x1) Hx1).
 - let x. assume Hx.
-  exact (SepI (A) (fun x:set => True) (x) Hx TRUTH).
+  exact (SepI (A) (fun x:set => True) (x) Hx (fun p:prop => fun H:p => H)).
 Qed.
 
 // HOL Light: sets.ml / SING_GSPEC
@@ -1585,6 +1585,38 @@ assume H2.
 exact (FalseE (H2 Hx) (f x = choose_in B (fun y:set => False))).
 Qed.
 
+// HOL Light: sets.ml / RESTRICTION
+Theorem RESTRICTION : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun x:set => False).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+apply (xm (x :e s)).
+- assume H2.
+  exact (((If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) H2) (fun hl__u hl__v => hl__u = (if x :e s then f x else choose_in B (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then f x else choose_in B (fun x:set => False)) ((If_i_1 (x :e s) (f x) (choose_in B (fun x:set => False)) H2) (fun hl__u hl__v => hl__u = (if x :e s then f x else choose_in B (fun x:set => False))) (fun q H => H))).
+- assume H3.
+  exact ((If_i_0 (x :e s) (f x) (choose_in B (fun y:set => False)) H3) (fun hl__u hl__v => (if x :e s then f x else hl__u) = if x :e s then f x else choose_in B (fun x:set => False)) (If_i_0 (x :e s) (f x) (if x :e s then f x else choose_in B (fun y:set => False)) H3)).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_THM
+Theorem RESTRICTION_THM : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun x:set => False).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+apply (xm (x :e s)).
+- assume H2.
+  exact (((If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) H2) (fun hl__u hl__v => hl__u = (if x :e s then f x else choose_in B (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then f x else choose_in B (fun x:set => False)) ((If_i_1 (x :e s) (f x) (choose_in B (fun x:set => False)) H2) (fun hl__u hl__v => hl__u = (if x :e s then f x else choose_in B (fun x:set => False))) (fun q H => H))).
+- assume H3.
+  exact ((If_i_0 (x :e s) (f x) (choose_in B (fun y:set => False)) H3) (fun hl__u hl__v => (if x :e s then f x else hl__u) = if x :e s then f x else choose_in B (fun x:set => False)) (If_i_0 (x :e s) (f x) (if x :e s then f x else choose_in B (fun y:set => False)) H3)).
+Qed.
+
 // HOL Light: sets.ml / RESTRICTION_DEFINED
 Theorem RESTRICTION_DEFINED : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, x :e s -> (if x :e s then f x else choose_in B (fun y:set => False)) = f x.
 let A.
@@ -1633,6 +1665,94 @@ let f.
 assume H1.
 let x. assume Hx.
 exact (If_i_1 (x :e A) (f x) (choose_in B (fun y:set => False)) Hx).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_RESTRICTION
+Theorem RESTRICTION_RESTRICTION : forall A B:set, B <> Empty -> forall s t c= A, forall f:set -> set, (forall x :e A, f x :e B) -> s c= t -> forall x :e A, (if x :e s then if x :e t then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun y:set => False).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let t. assume Ht.
+let f.
+assume H1.
+assume H2.
+let x. assume Hx.
+apply (xm (x :e s)).
+- assume H3.
+  exact (((If_i_1 (x :e s) (if x :e t then f x else choose_in B (fun y:set => False)) (choose_in B (fun y:set => False)) H3) (fun hl__u hl__v => hl__u = (if x :e s then if x :e t then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then f x else choose_in B (fun y:set => False)) ((If_i_1 (x :e s) (if x :e t then f x else choose_in B (fun y:set => False)) (choose_in B (fun y:set => False)) H3) (fun hl__u hl__v => hl__u = if x :e s then f x else choose_in B (fun y:set => False)) ((If_i_1 (x :e t) (f x) (choose_in B (fun y:set => False)) (H2 (x) H3)) (fun hl__u hl__v => (if x :e s then if x :e t then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False)) = (if x :e s then hl__u else choose_in B (fun y:set => False))) (fun q H => H)))).
+- assume H4.
+  exact (((If_i_0 (x :e s) (if x :e t then f x else choose_in B (fun y:set => False)) (choose_in B (fun y:set => False)) H4) (fun hl__u hl__v => hl__u = (if x :e s then if x :e t then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then f x else choose_in B (fun y:set => False)) ((If_i_0 (x :e s) (f x) (choose_in B (fun y:set => False)) H4) (fun hl__u hl__v => hl__u = (if x :e s then f x else choose_in B (fun y:set => False))) (fun q H => H))).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_IDEMP
+Theorem RESTRICTION_IDEMP : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall x :e A, (if x :e s then if x :e s then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False)) = if x :e s then f x else choose_in B (fun y:set => False).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let x. assume Hx.
+apply (xm (x :e s)).
+- assume H2.
+  exact (If_i_1 (x :e s) (if x :e s then f x else choose_in B (fun y:set => False)) (choose_in B (fun y:set => False)) H2).
+- assume H3.
+  exact (((If_i_0 (x :e s) (if x :e s then f x else choose_in B (fun y:set => False)) (choose_in B (fun y:set => False)) H3) (fun hl__u hl__v => hl__u = (if x :e s then if x :e s then f x else choose_in B (fun y:set => False) else choose_in B (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then f x else choose_in B (fun y:set => False)) ((If_i_0 (x :e s) (f x) (choose_in B (fun y:set => False)) H3) (fun hl__u hl__v => hl__u = (if x :e s then f x else choose_in B (fun y:set => False))) (fun q H => H))).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_COMPOSE_RIGHT
+Theorem RESTRICTION_COMPOSE_RIGHT : forall A B C:set, B <> Empty -> C <> Empty -> forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e B, g x :e C) -> forall s c= A, forall x :e A, (if x :e s then g (if x :e s then f x else choose_in B (fun y:set => False)) else choose_in C (fun y:set => False)) = if x :e s then g (f x) else choose_in C (fun y:set => False).
+let A.
+let B.
+let C.
+assume H.
+assume H1.
+let f.
+assume H2.
+let g.
+assume H3.
+let s. assume Hs.
+let x. assume Hx.
+apply (xm (x :e s)).
+- assume H4.
+  claim L: g (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then g (f x) else choose_in C (fun y:set => False).
+  { apply (xm (x :e s)).
+  * assume H6.
+    exact (((If_i_1 (x :e s) (g (f x)) (choose_in C (fun y:set => False)) H6) (fun hl__u hl__v => hl__u = (if x :e s then g (f x) else choose_in C (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => g (if x :e s then f x else choose_in B (fun y:set => False)) = hl__u) ((If_i_1 (x :e s) (f x) (choose_in B (fun y:set => False)) H6) (fun hl__u hl__v => (g (if x :e s then f x else choose_in B (fun y:set => False))) = (g hl__u)) (fun q H => H))).
+  * assume H7.
+    exact (FalseE (H7 H4) (g (if x :e s then f x else choose_in B (fun y:set => False)) = if x :e s then g (f x) else choose_in C (fun y:set => False))). }
+  exact ((eq_sym_i (if x :e s then g (if x :e s then f x else choose_in B (fun y:set => False)) else choose_in C (fun y:set => False)) (g (if x :e s then f x else choose_in B (fun y:set => False))) (If_i_1 (x :e s) (g (if x :e s then f x else choose_in B (fun y:set => False))) (choose_in C (fun y:set => False)) H4)) (fun hl__u hl__v => hl__u = if x :e s then g (f x) else choose_in C (fun y:set => False)) L).
+- assume H5.
+  exact (((If_i_0 (x :e s) (g (if x :e s then f x else choose_in B (fun y:set => False))) (choose_in C (fun y:set => False)) H5) (fun hl__u hl__v => hl__u = (if x :e s then g (if x :e s then f x else choose_in B (fun y:set => False)) else choose_in C (fun y:set => False))) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then g (f x) else choose_in C (fun y:set => False)) ((If_i_0 (x :e s) (g (f x)) (choose_in C (fun y:set => False)) H5) (fun hl__u hl__v => hl__u = (if x :e s then g (f x) else choose_in C (fun y:set => False))) (fun q H => H))).
+Qed.
+
+// HOL Light: sets.ml / RESTRICTION_UNIQUE_ALT
+Theorem RESTRICTION_UNIQUE_ALT : forall A B:set, B <> Empty -> forall s c= A, forall f:set -> set, (forall x :e A, f x :e B) -> forall g:set -> set, (forall x :e A, g x :e B) -> ((forall x :e A, f x = if x :e s then g x else choose_in B (fun y:set => False)) <-> (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)) /\ forall x :e A, x :e s -> f x = g x).
+let A.
+let B.
+assume H.
+let s. assume Hs.
+let f.
+assume H1.
+let g.
+assume H2.
+apply iffI.
+- assume H6.
+  apply andI.
+  + let x2. assume Hx2.
+    assume H8.
+    exact (((H6 (x2) Hx2) (fun hl__u hl__v => hl__u = (f x2)) (fun q H => H)) (fun hl__u hl__v => hl__u = choose_in B (fun y:set => False)) (If_i_0 (x2 :e s) (g x2) (choose_in B (fun y:set => False)) H8)).
+  + let x1. assume Hx1.
+    assume H7.
+    exact (((H6 (x1) Hx1) (fun hl__u hl__v => hl__u = (f x1)) (fun q H => H)) (fun hl__u hl__v => hl__u = g x1) (If_i_1 (x1 :e s) (g x1) (choose_in B (fun y:set => False)) H7)).
+- assume H3.
+  let x. assume Hx.
+  apply (xm (x :e s)).
+  + assume H4.
+    exact (((andER (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)) (forall x :e A, x :e s -> f x = g x) H3) (x) Hx H4) (fun hl__u hl__v => f x = if x :e s then hl__u else choose_in B (fun y:set => False)) ((((andER (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)) (forall x :e A, x :e s -> f x = g x) H3) (x) Hx H4) (fun hl__u hl__v => hl__u = (f x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then hl__u else choose_in B (fun y:set => False)) ((If_i_1 (x :e s) (g x) (choose_in B (fun y:set => False)) H4) (fun hl__u hl__v => hl__u = (if x :e s then g x else choose_in B (fun y:set => False))) (fun q H => H)))).
+  + assume H5.
+    exact (((andEL (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)) (forall x :e A, x :e s -> f x = g x) H3) (x) Hx H5) (fun hl__u hl__v => f x = if x :e s then g x else hl__u) ((((andEL (forall x :e A, ~ x :e s -> f x = choose_in B (fun y:set => False)) (forall x :e A, x :e s -> f x = g x) H3) (x) Hx H5) (fun hl__u hl__v => hl__u = (f x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if x :e s then g x else hl__u) ((If_i_0 (x :e s) (g x) (choose_in B (fun y:set => False)) H5) (fun hl__u hl__v => hl__u = (if x :e s then g x else choose_in B (fun y:set => False))) (fun q H => H)))).
 Qed.
 
 // HOL Light: sets.ml / product_map
@@ -1684,7 +1804,7 @@ apply iffI.
   let x. assume Hx.
   let y. assume Hy.
   assume H1.
-  exact (FalseE ((NOT_IN_EMPTY (Empty) (y) Hy) Hy) (r x y)).
+  exact (FalseE (EmptyE (y) Hy) (r x y)).
 Qed.
 
 // HOL Light: sets.ml / PAIRWISE_SING

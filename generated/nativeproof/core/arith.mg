@@ -31,7 +31,7 @@ apply andI.
   exact (add_SNo_0L (n2) (omega_SNo (n2) Hn2)).
 - apply andI.
   + let m2. assume Hm2.
-    exact (ADD_0 (m2) Hm2).
+    exact (add_SNo_0R (m2) (omega_SNo (m2) Hm2)).
   + apply andI.
     * let m1. assume Hm1.
       let n1. assume Hn1.
@@ -56,6 +56,18 @@ let p. assume Hp.
 exact (add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
+// HOL Light: arith.ml / EQ_ADD_LCANCEL
+Theorem EQ_ADD_LCANCEL : forall m n p :e omega, m + n = m + p <-> n = p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_cancel_L (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (m + n) = (m + hl__u)) (fun q H => H)).
+Qed.
+
 // HOL Light: arith.ml / BIT0
 Theorem BIT0 : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
@@ -71,13 +83,13 @@ Qed.
 // HOL Light: arith.ml / BIT0_THM
 Theorem BIT0_THM : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
-exact (BIT0 (n) Hn).
+exact (bit0_eq_omega (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / BIT1_THM
 Theorem BIT1_THM : forall n :e omega, 2 * n + 1 = ordsucc (n + n).
 let n. assume Hn.
-exact (BIT1 (n) Hn).
+exact (bit1_eq_omega (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / ONE
@@ -126,7 +138,7 @@ apply andI.
   exact (mul_SNo_zeroL (n3) (omega_SNo (n3) Hn3)).
 - apply andI.
   + let m3. assume Hm3.
-    exact (MULT_0 (m3) Hm3).
+    exact (mul_SNo_zeroR (m3) (omega_SNo (m3) Hm3)).
   + apply andI.
     * let n2. assume Hn2.
       exact (mul_SNo_oneL (n2) (omega_SNo (n2) Hn2)).
@@ -176,7 +188,7 @@ Qed.
 // HOL Light: arith.ml / MULT_2
 Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
-exact (BIT0_THM (n) Hn).
+exact (bit0_eq_omega (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / EXP
@@ -275,9 +287,9 @@ let m. assume Hm.
 let n. assume Hn.
 apply iffI.
 - assume H1.
-  exact ((andEL (ordsucc m <= n -> m < n) (m < n -> ordsucc m <= n) (LE_SUC_LT (m) Hm (n) Hn)) ((andEL (ordsucc m < ordsucc n -> ordsucc m <= n) (ordsucc m <= n -> ordsucc m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (ordsucc m) (omega_ordsucc (m) Hm) (n) Hn)) H1)).
+  exact ((andEL (ordsucc m <= n -> m < n) (m < n -> ordsucc m <= n) (SNoLe_ordsucc_SNoLt_omega (m) Hm (n) Hn)) ((andEL (ordsucc m < ordsucc n -> ordsucc m <= n) (ordsucc m <= n -> ordsucc m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (ordsucc m) (omega_ordsucc (m) Hm) (n) Hn)) H1)).
 - assume H.
-  exact ((andER (ordsucc m < ordsucc n -> ordsucc m <= n) (ordsucc m <= n -> ordsucc m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (ordsucc m) (omega_ordsucc (m) Hm) (n) Hn)) ((andER (ordsucc m <= n -> m < n) (m < n -> ordsucc m <= n) (LE_SUC_LT (m) Hm (n) Hn)) H)).
+  exact ((andER (ordsucc m < ordsucc n -> ordsucc m <= n) (ordsucc m <= n -> ordsucc m < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (ordsucc m) (omega_ordsucc (m) Hm) (n) Hn)) ((andER (ordsucc m <= n -> m < n) (m < n -> ordsucc m <= n) (SNoLe_ordsucc_SNoLt_omega (m) Hm (n) Hn)) H)).
 Qed.
 
 // HOL Light: arith.ml / LE_0
@@ -289,7 +301,7 @@ Qed.
 // HOL Light: arith.ml / LT_0
 Theorem LT_0 : forall n :e omega, 0 < ordsucc n.
 let n. assume Hn.
-exact ((andER (0 < ordsucc n -> 0 <= n) (0 <= n -> 0 < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (0) (nat_p_omega (0) nat_0) (n) Hn)) (LE_0 (n) Hn)).
+exact ((andER (0 < ordsucc n -> 0 <= n) (0 <= n -> 0 < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (0) (nat_p_omega (0) nat_0) (n) Hn)) (omega_nonneg (n) Hn)).
 Qed.
 
 // HOL Light: arith.ml / LE_REFL
@@ -359,6 +371,13 @@ let n. assume Hn.
 exact (SNoLtLe_or (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
 Qed.
 
+// HOL Light: arith.ml / NOT_LE
+Theorem NOT_LE : forall m n :e omega, ~ m <= n <-> n < m.
+let m. assume Hm.
+let n. assume Hn.
+exact (not_SNoLe_iff_omega (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / LT_IMP_LE
 Theorem LT_IMP_LE : forall m n :e omega, m < n -> m <= n.
 let m. assume Hm.
@@ -373,5 +392,36 @@ let m. assume Hm.
 let n. assume Hn.
 assume H.
 exact (H (fun hl__u hl__v => m <= hl__u) ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (n)))).
+Qed.
+
+// HOL Light: arith.ml / LE_ADD
+Theorem LE_ADD : forall m n :e omega, m <= m + n.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andEL (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) ((andER (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (SNoLe_add_omega (m) Hm (n) Hn))).
+Qed.
+
+// HOL Light: arith.ml / LE_ADD_RCANCEL
+Theorem LE_ADD_RCANCEL : forall m n p :e omega, m + p <= n + p <-> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Le1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
+- assume H.
+  exact (add_SNo_Le1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
+Qed.
+
+// HOL Light: arith.ml / LT_ADD_RCANCEL
+Theorem LT_ADD_RCANCEL : forall m n p :e omega, m + p < n + p <-> m < n.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Lt1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
+- assume H.
+  exact (add_SNo_Lt1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
 Qed.
 

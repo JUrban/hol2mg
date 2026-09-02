@@ -74,7 +74,12 @@ Qed.
 // Source hash: md5:e8653e43300f16893ae7f5529f64d7cf
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_LADD_IMP : forall x y z :e R, y <= z -> x + y <= x + z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (add_SNo_Le2 (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) H).
+Qed.
 
 // HOL Light:  / REAL_LE_MUL
 // Source hash: md5:c9eb15fcdfc4e3e8805ec06d0461d25f

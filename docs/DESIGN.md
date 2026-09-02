@@ -2201,6 +2201,21 @@ Still open: FORALL_PAIR_THM (Sigma-quantifier bridging), COND_ELIM_THM (equation
 hypothesis goal transport), EVEN (parity induction), DIVISION/MOD (divmod theory),
 LE_EXISTS (witnessing subtraction).
 
+N12 (442 -> 467, +25, zero lost): conditionals and additive order.  The cascade brings
+COND_RAND, COND_SWAP, EQ/LE/LT_ADD_RCANCEL, REAL_EQ_ADD_L/RCANCEL, REAL_LE_LADD_IMP,
+REAL_LE/LT_RADD, REAL_MAX/MIN_SYM and _MAX/_MIN, REAL_SGN_0, and the whole RESTRICTION
+block (RESTRICTION, _THM, _IDEMP, _RESTRICTION, _COMPOSE_RIGHT, _UNIQUE_ALT).  Two prover repairs: a goal-
+rewrite rule (with an equation hypothesis `t = s`, `t` non-variable and occurring in the
+goal, claim `goal[t:=s]` and transport back via `eq_sym_i` — fuel-guarded so failure
+falls through to the other rules), and `if_split` now pushes the assumed condition into
+the hypothesis list (it emitted `assume H` but forgot the hypothesis, so the branch
+never knew `c`/`~c` — the cause of the old COND_ELIM if-split loop).  Builtins:
+add_SNo_cancel_L, add_SNo_Le1/Le2, add_SNo_Le1_cancel, add_SNo_Lt1, add_SNo_Lt1_cancel
+(lands EQ_ADD_LCANCEL).  logic.mg: `not_SNoLe_iff_omega` (SNoLtLe_or dichotomy; lands
+NOT_LE), `cond_elim_thm` (If_i_1/0 Leibniz both ways; lands COND_ELIM_THM — the
+reverse direction rewrites a *hypothesis*, which stays out of the generic prover's
+reach), `SNoLe_add_omega` (add_SNo_Le2 at y:=0; lands LE_ADD).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

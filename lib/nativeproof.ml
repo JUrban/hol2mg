@@ -8,6 +8,15 @@
 let pp = Mg.to_string
 let ppp t = "(" ^ Mg.to_string t ^ ")"
 
+(* a metavariable bound to a partial application of an infix-notation constant must be
+   printed eta-expanded: bare `eq t` has no parse (the notation supplies the hidden
+   type argument), while `fun hl__w:set => t = hl__w` does *)
+let ppp_fn t = match t with
+  | Mg.App (Mg.Cst ("eq" | "In" | "Subq" | "neq" | "SNoLe" | "SNoLt"
+                    | "add_SNo" | "mul_SNo" | "iff" | "and" | "or"), _) ->
+      "(fun hl__w:set => " ^ Mg.to_string (Mg.App (t, Mg.Var "hl__w")) ^ ")"
+  | _ -> ppp t
+
 exception Give_up
 
 type hyp = { hname : string; prop : Mg.tm }
@@ -541,7 +550,7 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
                          let rec args = function
                            | [] -> Some []
                            | PVar x :: rest ->
-                               (match args rest with Some r -> Some (ppp (List.assoc x bnd) :: r) | None -> None)
+                               (match args rest with Some r -> Some (ppp_fn (List.assoc x bnd) :: r) | None -> None)
                            | PMem (x, aa) :: rest ->
                                (match close_term st hyps (mg_in (inst (Mg.Var x)) (inst aa)) (adepth - 1) with
                                 | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
@@ -670,7 +679,7 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
             let rec args = function
               | [] -> Some []
               | PVar x :: rest ->
-                  (match args rest with Some r -> Some (ppp (List.assoc x bnd) :: r) | None -> None)
+                  (match args rest with Some r -> Some (ppp_fn (List.assoc x bnd) :: r) | None -> None)
               | PMem (x, a) :: rest ->
                   (match close_term st hyps (mg_in (inst (Mg.Var x)) (inst a)) (adepth - 1) with
                    | Some t -> (match args rest with Some r -> Some (t :: r) | None -> None)
@@ -1030,6 +1039,42 @@ let rec prove_goal st (hyps : hyp list) (goal : Mg.tm) (d : int) : string list =
                     :: (block d (prove_goal st hyps (mg_subq l r) (d + 1))
                         @ block d (prove_goal st hyps (mg_subq r l) (d + 1)))
                 | _ ->
+                    (* rewrite the goal with an equation hypothesis: claim goal[t:=s],
+                       then transport back along the equation (N12) *)
+                    let eq_rw () =
+                      match List.find_map (fun h ->
+                        match dest_eq h.prop with
+                        | Some (t, s) when (match t with Mg.Var _ -> false | _ -> true)
+                                           && not (aeq t s)
+                                           && not (aeq (replace_tm t s g) g) ->
+                            Some (h, t, s)
+                        | _ -> None) hyps with
+                      | None -> None
+                      | Some (h, t, s) ->
+                          let fuel0 = st.fuel in
+                          (try
+                             spend st 30;
+                             let g' = replace_tm t s g in
+                             let ln = fresh st "L" in
+                             let body = prove_goal st hyps g' (d + 1) in
+                             let body = (match body with
+                               | [] -> []
+                               | [ x ] -> [ "{ " ^ x ^ " }" ]
+                               | x :: rest ->
+                                   (match List.rev rest with
+                                    | last :: mid ->
+                                        ("{ " ^ x) :: List.rev ((last ^ " }") :: mid)
+                                    | [] -> [ "{ " ^ x ^ " }" ])) in
+                             Some (Printf.sprintf "claim %s: %s." ln (pp g')
+                                   :: body
+                                   @ [ Printf.sprintf
+                                         "exact ((eq_sym_i %s %s %s) (fun hl__u hl__v => %s) %s)."
+                                         (ppp t) (ppp s) h.hname
+                                         (pp (replace_tm t (Mg.Var "hl__u") g)) ln ])
+                           with Give_up when fuel0 - st.fuel < fuel0 / 2 -> None) in
+                    match eq_rw () with
+                    | Some lines -> lines
+                    | None ->
                     (* refutation: with goal False, apply a negation hypothesis and
                        prove its body (classical steps then come from xm_split) *)
                     let neg_cands =
@@ -1064,14 +1109,16 @@ and if_split st hyps goal d =
       let bl lines = (match bullet d with
         | Some _ -> block d lines
         | None -> (match lines with f :: r -> ("- " ^ f) :: List.map (fun l -> "  " ^ l) r | [] -> [])) in
-      let branch lemma keep h1 =
+      let branch lemma keep cond h1 =
         let eq_name = Printf.sprintf "(%s %s %s %s %s)" lemma (ppp c) (ppp u) (ppp v) h1 in
         let eq_prop = Mg.App (Mg.App (Mg.Cst "eq", Mg.If (c, u, v)), keep) in
         Printf.sprintf "assume %s." h1
-        :: push st goal eq_name eq_prop hyps (fun hyps -> prove_goal st hyps goal (d + 1)) in
+        :: push st goal h1 cond hyps (fun hyps ->
+             push st goal eq_name eq_prop hyps (fun hyps -> prove_goal st hyps goal (d + 1))) in
       let h1 = fresh st "H" and h2 = fresh st "H" in
       Printf.sprintf "apply (xm (%s))." (pp c)
-      :: (bl (branch "If_i_1" u h1) @ bl (branch "If_i_0" v h2))
+      :: (bl (branch "If_i_1" u c h1)
+          @ bl (branch "If_i_0" v (Mg.App (Mg.Cst "not", c)) h2))
 
 and xm_split st hyps goal d =
   (* only worthwhile when a negation hypothesis can feed the refutation; the guard
@@ -1688,6 +1735,82 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.ExIn ("hl__x", Mg.Var "hl__A",
                Mg.App (Mg.App (Mg.Cst "or", Mg.Var "hl__P"),
                  Mg.App (Mg.Var "hl__Q", Mg.Var "hl__x")))))))));
+    ("add_SNo_cancel_L",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__z")),
+               Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__y"), Mg.Var "hl__z")))))))));
+    ("add_SNo_Le1",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__z"),
+               Mg.App (Mg.App (Mg.Cst "SNoLe",
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__z"), Mg.Var "hl__y"))))))))));
+    ("add_SNo_Le2",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__z"),
+               Mg.App (Mg.App (Mg.Cst "SNoLe",
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("add_SNo_Le1_cancel",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLe",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__z"), Mg.Var "hl__y")),
+               Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__z")))))))));
+    ("add_SNo_Lt1",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__z"),
+               Mg.App (Mg.App (Mg.Cst "SNoLt",
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__z"), Mg.Var "hl__y"))))))))));
+    ("add_SNo_Lt1_cancel",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.Imp (Mg.App (Mg.App (Mg.Cst "SNoLt",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__z"), Mg.Var "hl__y")),
+               Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__x"), Mg.Var "hl__z")))))))));
+    ("not_SNoLe_iff_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.Cst "not",
+           Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.Var "hl__n"))),
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__n"), Mg.Var "hl__m")))));
+    ("cond_elim_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+       Mg.All ("hl__c", Mg.Prop,
+         Mg.AllIn ("hl__x", Mg.Var "hl__A", Mg.AllIn ("hl__y", Mg.Var "hl__A",
+           Mg.App (Mg.App (Mg.Cst "iff",
+             Mg.App (Mg.Var "hl__P",
+               Mg.If (Mg.Var "hl__c", Mg.Var "hl__x", Mg.Var "hl__y"))),
+             Mg.App (Mg.App (Mg.Cst "and",
+               Mg.Imp (Mg.Var "hl__c",
+                 Mg.App (Mg.Var "hl__P", Mg.Var "hl__x"))),
+               Mg.Imp (Mg.App (Mg.Cst "not", Mg.Var "hl__c"),
+                 Mg.App (Mg.Var "hl__P", Mg.Var "hl__y"))))))))));
+    ("SNoLe_add_omega",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"),
+         Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__m"), Mg.Var "hl__n")))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

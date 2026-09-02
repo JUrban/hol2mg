@@ -69,27 +69,27 @@ apply andI.
     exact (add_SNo_com (x8) (y3) (real_SNo (x8) Hx8) (real_SNo (y3) Hy3)).
   + apply andI.
     * let x7. assume Hx7.
-      exact (REAL_ADD_LID (x7) Hx7).
+      exact (add_SNo_0L (x7) (real_SNo (x7) Hx7)).
     * apply andI.
       let x6. assume Hx6.
       let y2. assume Hy2.
       let z1. assume Hz1.
-      exact (REAL_MUL_ASSOC (x6) Hx6 (y2) Hy2 (z1) Hz1).
+      exact (mul_SNo_assoc (x6) (y2) (z1) (real_SNo (x6) Hx6) (real_SNo (y2) Hy2) (real_SNo (z1) Hz1)).
       apply andI.
       let x5. assume Hx5.
       let y1. assume Hy1.
-      exact (REAL_MUL_SYM (x5) Hx5 (y1) Hy1).
+      exact (mul_SNo_com (x5) (y1) (real_SNo (x5) Hx5) (real_SNo (y1) Hy1)).
       apply andI.
       let x4. assume Hx4.
-      exact (REAL_MUL_LID (x4) Hx4).
+      exact (mul_SNo_oneL (x4) (real_SNo (x4) Hx4)).
       apply andI.
       let x3. assume Hx3.
-      exact (REAL_MUL_LZERO (x3) Hx3).
+      exact (mul_SNo_zeroL (x3) (real_SNo (x3) Hx3)).
       apply andI.
       let x2. assume Hx2.
       let y. assume Hy.
       let z. assume Hz.
-      exact (REAL_ADD_LDISTRIB (x2) Hx2 (y) Hy (z) Hz).
+      exact (mul_SNo_distrL (x2) (y) (z) (real_SNo (x2) Hx2) (real_SNo (y) Hy) (real_SNo (z) Hz)).
       apply andI.
       let x1. assume Hx1.
       exact (exp_SNo_nat_0 (x1) (real_SNo (x1) Hx1)).
@@ -101,12 +101,12 @@ Qed.
 // HOL Light: realarith.ml / REAL_POS
 Theorem REAL_POS : forall n :e omega, 0 <= n.
 let n. assume Hn.
-exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (LE_0 (n) Hn))).
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (omega_nonneg (n) Hn))).
 Qed.
 
 // HOL Light: realarith.ml / REAL_POS_LT
 Theorem REAL_POS_LT : forall n :e omega, 0 < ordsucc n.
 let n. assume Hn.
-exact (seq_len_nil (fun hl__u hl__v => hl__u < ordsucc n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u < ordsucc n) (LT_0 (n) Hn))).
+exact ((andER (0 < ordsucc n -> 0 <= n) (0 <= n -> 0 < ordsucc n) (SNoLt_ordsucc_SNoLe_omega (0) (nat_p_omega (0) nat_0) (n) Hn)) (omega_nonneg (n) Hn)).
 Qed.
 
