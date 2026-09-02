@@ -36,6 +36,14 @@ let y. assume Hy.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: pair.ml / PAIR
+Theorem PAIR : forall A B:set, forall x :e A :*: B, (x 0,x 1) = x.
+let A.
+let B.
+let x. assume Hx.
+exact (seq_len_nil (fun hl__u hl__v => (x hl__u,x 1) = x) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => (x hl__u,x 1) = x) (pair_eta_setprod (A) (B) (x) Hx))).
+Qed.
+
 // HOL Light: pair.ml / CURRY_DEF
 Theorem CURRY_DEF : forall A B C:set, forall f:set -> set, (forall x :e A :*: B, f x :e C) -> forall x :e A, forall y :e B, f (x,y) = f (x,y).
 let A.

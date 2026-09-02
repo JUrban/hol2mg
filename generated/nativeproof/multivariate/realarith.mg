@@ -56,6 +56,48 @@ let x. assume Hx.
 exact (mul_SNo_oneR (x) (real_SNo (x) Hx)).
 Qed.
 
+// HOL Light: realarith.ml / REAL_POLY_CLAUSES
+Theorem REAL_POLY_CLAUSES : (forall x y z :e R, x + y + z = (x + y) + z) /\ ((forall x y :e R, x + y = y + x) /\ ((forall x :e R, 0 + x = x) /\ ((forall x y z :e R, x * y * z = (x * y) * z) /\ ((forall x y :e R, x * y = y * x) /\ ((forall x :e R, 1 * x = x) /\ ((forall x :e R, 0 * x = 0) /\ ((forall x y z :e R, x * (y + z) = x * y + x * z) /\ ((forall x :e R, x ^ 0 = 1) /\ forall x :e R, forall n :e omega, x ^ ordsucc n = x * x ^ n)))))))).
+apply andI.
+- let x9. assume Hx9.
+  let y4. assume Hy4.
+  let z2. assume Hz2.
+  exact (add_SNo_assoc (x9) (y4) (z2) (real_SNo (x9) Hx9) (real_SNo (y4) Hy4) (real_SNo (z2) Hz2)).
+- apply andI.
+  + let x8. assume Hx8.
+    let y3. assume Hy3.
+    exact (add_SNo_com (x8) (y3) (real_SNo (x8) Hx8) (real_SNo (y3) Hy3)).
+  + apply andI.
+    * let x7. assume Hx7.
+      exact (add_SNo_0L (x7) (real_SNo (x7) Hx7)).
+    * apply andI.
+      let x6. assume Hx6.
+      let y2. assume Hy2.
+      let z1. assume Hz1.
+      exact (mul_SNo_assoc (x6) (y2) (z1) (real_SNo (x6) Hx6) (real_SNo (y2) Hy2) (real_SNo (z1) Hz1)).
+      apply andI.
+      let x5. assume Hx5.
+      let y1. assume Hy1.
+      exact (mul_SNo_com (x5) (y1) (real_SNo (x5) Hx5) (real_SNo (y1) Hy1)).
+      apply andI.
+      let x4. assume Hx4.
+      exact (mul_SNo_oneL (x4) (real_SNo (x4) Hx4)).
+      apply andI.
+      let x3. assume Hx3.
+      exact (mul_SNo_zeroL (x3) (real_SNo (x3) Hx3)).
+      apply andI.
+      let x2. assume Hx2.
+      let y. assume Hy.
+      let z. assume Hz.
+      exact (mul_SNo_distrL (x2) (y) (z) (real_SNo (x2) Hx2) (real_SNo (y) Hy) (real_SNo (z) Hz)).
+      apply andI.
+      let x1. assume Hx1.
+      exact (exp_SNo_nat_0 (x1) (real_SNo (x1) Hx1)).
+      let x. assume Hx.
+      let n. assume Hn.
+      exact (exp_SNo_nat_S (x) (real_SNo (x) Hx) (n) (omega_nat_p (n) Hn)).
+Qed.
+
 // HOL Light: realarith.ml / REAL_POS
 Theorem REAL_POS : forall n :e omega, 0 <= n.
 let n. assume Hn.

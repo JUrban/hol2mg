@@ -1456,8 +1456,10 @@ Admitted.
 // HOL Light: int.ml:498 / INT_NEG_0
 // Source hash: md5:f1f5d00aebedc3af1018837c82fce628
 // Status: native_reuse (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem INT_NEG_0 : - 0 = 0.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem INT_NEG_0 : - 0 = 0.
+exact minus_SNo_0.
+Qed.
 
 // HOL Light: int.ml:499 / INT_NEG_ADD
 // Source hash: md5:ef8377f1d35cc5e057e02d00cc42e6c2

@@ -1838,8 +1838,11 @@ Qed.
 // HOL Light:  / REAL_ADD_LINV
 // Source hash: md5:69b62ed94b5a39a5cb6b939e9fd25fcf
 // Status: native_reuse (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
-// Reuse: this proposition is already a theorem of the target library.
-// Theorem REAL_ADD_LINV : forall x :e R, - x + x = 0.
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
+Theorem REAL_ADD_LINV : forall x :e R, - x + x = 0.
+let x. assume Hx.
+exact (add_SNo_minus_SNo_linv (x) (real_SNo (x) Hx)).
+Qed.
 
 // HOL Light:  / REAL_ADD_SYM
 // Source hash: md5:69f4343bec6bd235a399ba23a38d19cf

@@ -826,21 +826,7 @@ let A.
 assume H.
 let P.
 let Q.
-apply iffI.
-- assume H26.
-  apply H26.
-  + assume H47.
-    apply H47. let x3. assume H49. apply H49. assume Hx3 H50.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (x3) (andI (x3 :e A) (P x3 \/ Q) Hx3 (orIL (P x3) (Q) H50))).
-  + assume H48.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P hl__w \/ Q)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P (choose_in A (fun hl__w:set => True)) \/ Q) (choose_in_in (A) H (fun hl__w:set => True)) (orIR (P (choose_in A (fun hl__w:set => True))) (Q) H48))).
-- assume H1.
-  apply H1. let x. assume H2. apply H2. assume Hx H3.
-  apply H3.
-  + assume H24.
-    exact (orIL (exists x :e A, P x) (Q) (ex_intro (fun hl__w:set => hl__w :e A /\ P hl__w) (x) (andI (x :e A) (P x) Hx H24))).
-  + assume H25.
-    exact (orIR (exists x :e A, P x) (Q) H25).
+exact (left_or_exists_thm (A) H (P) (Q)).
 Qed.
 
 // HOL Light: theorems.ml / RIGHT_OR_EXISTS_THM
@@ -849,21 +835,7 @@ let A.
 assume H.
 let P.
 let Q.
-apply iffI.
-- assume H26.
-  apply H26.
-  + assume H49.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (choose_in A (fun hl__w:set => True)) (andI (choose_in A (fun hl__w:set => True) :e A) (P \/ Q (choose_in A (fun hl__w:set => True))) (choose_in_in (A) H (fun hl__w:set => True)) (orIL (P) (Q (choose_in A (fun hl__w:set => True))) H49))).
-  + assume H50.
-    apply H50. let x4. assume H51. apply H51. assume Hx4 H52.
-    exact (ex_intro (fun hl__w:set => hl__w :e A /\ (P \/ Q hl__w)) (x4) (andI (x4 :e A) (P \/ Q x4) Hx4 (orIR (P) (Q x4) H52))).
-- assume H1.
-  apply H1. let x. assume H2. apply H2. assume Hx H3.
-  apply H3.
-  + assume H24.
-    exact (orIL (P) (exists x :e A, Q x) H24).
-  + assume H25.
-    exact (orIR (P) (exists x :e A, Q x) (ex_intro (fun hl__w:set => hl__w :e A /\ Q hl__w) (x) (andI (x :e A) (Q x) Hx H25))).
+exact (right_or_exists_thm (A) H (P) (Q)).
 Qed.
 
 // HOL Light: theorems.ml / LEFT_EXISTS_AND_THM
