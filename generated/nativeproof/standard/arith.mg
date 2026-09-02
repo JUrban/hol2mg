@@ -447,3 +447,10 @@ let m. assume Hm.
 exact (andI (minus_nat 0 m = 0) (minus_nat m 0 = m) (andEL (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm (m) Hm)) (andER (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm (m) Hm))).
 Qed.
 
+// HOL Light: arith.ml / SUB_SUC
+Theorem SUB_SUC : forall m n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus_nat m n.
+let m. assume Hm.
+let n. assume Hn.
+exact (sub_suc_thm (m) Hm (n) Hn).
+Qed.
+
