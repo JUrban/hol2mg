@@ -60,6 +60,15 @@ let t. assume Ht.
 exact (andI (seq_ex P seq_nil <-> False) (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t) (seq_ex_nil (P)) (seq_ex_cons (A) (P) (h) Hh (t) Ht)).
 Qed.
 
+// HOL Light: lists.ml / FILTER
+Theorem FILTER : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, seq_filter P seq_nil = seq_nil /\ seq_filter P (seq_cons h t) = if P h then seq_cons h (seq_filter P t) else seq_filter P t.
+let A.
+let P.
+let h. assume Hh.
+let t. assume Ht.
+exact (filter_thm (A) (P) (h) Hh (t) Ht).
+Qed.
+
 // HOL Light: lists.ml / NOT_CONS_NIL
 Theorem NOT_CONS_NIL : forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil.
 let A.

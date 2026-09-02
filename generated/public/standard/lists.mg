@@ -159,7 +159,12 @@ Admitted.
 // Source hash: md5:5e58d440998c996ea4b717dc791fcf55
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem FILTER : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, seq_filter P seq_nil = seq_nil /\ seq_filter P (seq_cons h t) = if P h then seq_cons h (seq_filter P t) else seq_filter P t.
-Admitted.
+let A.
+let P.
+let h. assume Hh.
+let t. assume Ht.
+exact (filter_thm (A) (P) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:111 / ASSOC
 // Source hash: md5:5bd30847065b5a896bf69c7d1af89f00
