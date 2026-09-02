@@ -3289,7 +3289,14 @@ Admitted.
 // Source hash: md5:ed960ab7f490ac67ee857ac89ae420d6
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem IN_CROSS : forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t.
-Admitted.
+let A.
+let B.
+let x. assume Hx.
+let y. assume Hy.
+let s. assume Hs.
+let t. assume Ht.
+exact (in_cross_thm (A) (B) (x) Hx (y) Hy (s) Hs (t) Ht).
+Qed.
 
 // HOL Light: sets.ml:2741 / HAS_SIZE_CROSS
 // Source hash: md5:2c2012206b71d9a004233f611110f73f

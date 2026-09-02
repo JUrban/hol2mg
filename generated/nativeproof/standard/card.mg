@@ -57,3 +57,14 @@ let B.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: Library/card.ml / IN_CARD_MUL
+Theorem IN_CARD_MUL : forall A B:set, forall s c= A, forall t c= B, forall x :e A, forall y :e B, (x,y) :e s :*: t <-> x :e s /\ y :e t.
+let A.
+let B.
+let s. assume Hs.
+let t. assume Ht.
+let x. assume Hx.
+let y. assume Hy.
+exact (in_cross_thm (A) (B) (x) Hx (y) Hy (s) Hs (t) Ht).
+Qed.
+

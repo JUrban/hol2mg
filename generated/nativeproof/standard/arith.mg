@@ -441,3 +441,9 @@ apply iffI.
   exact (add_SNo_Lt1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
 Qed.
 
+// HOL Light: arith.ml / SUB_0
+Theorem SUB_0 : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
+let m. assume Hm.
+exact (andI (minus_nat 0 m = 0) (minus_nat m 0 = m) (andEL (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm (m) Hm)) (andER (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm (m) Hm))).
+Qed.
+
