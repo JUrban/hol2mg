@@ -1327,19 +1327,37 @@ Admitted.
 // Source hash: md5:29b11a223969eccd153f46182a0afc4f
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem DIVMOD_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q /\ mod_nat m n = r.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let q. assume Hq.
+let r. assume Hr.
+assume H.
+exact (andI (div_nat m n = q) (mod_nat m n = r) (andEL (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)) (andER (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H))).
+Qed.
 
 // HOL Light: arith.ml:1158 / MOD_UNIQ
 // Source hash: md5:16ed5e1f63bbda47186e23caa2fdaab3
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem MOD_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> mod_nat m n = r.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let q. assume Hq.
+let r. assume Hr.
+assume H.
+exact (((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => mod_nat hl__u n = r) ((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => mod_nat hl__u n = r) (andER (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)))).
+Qed.
 
 // HOL Light: arith.ml:1163 / DIV_UNIQ
 // Source hash: md5:03d3f8fe0608fede7fe54b37733e7d96
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem DIV_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let q. assume Hq.
+let r. assume Hr.
+assume H.
+exact (((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => div_nat hl__u n = q) ((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => div_nat hl__u n = q) (andEL (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)))).
+Qed.
 
 // HOL Light: arith.ml:1168 / DIV_0
 // Source hash: md5:21468dd00b62ee403ed635ebbcf16770

@@ -546,3 +546,33 @@ apply iffI.
   exact (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn ((andEL (0 < n -> ~ n = 0) (~ n = 0 -> 0 < n) (lt_nz_thm (n) Hn)) H))).
 Qed.
 
+// HOL Light: arith.ml / DIVMOD_UNIQ
+Theorem DIVMOD_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q /\ mod_nat m n = r.
+let m. assume Hm.
+let n. assume Hn.
+let q. assume Hq.
+let r. assume Hr.
+assume H.
+exact (andI (div_nat m n = q) (mod_nat m n = r) (andEL (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)) (andER (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H))).
+Qed.
+
+// HOL Light: arith.ml / MOD_UNIQ
+Theorem MOD_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> mod_nat m n = r.
+let m. assume Hm.
+let n. assume Hn.
+let q. assume Hq.
+let r. assume Hr.
+assume H.
+exact (((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => mod_nat hl__u n = r) ((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => mod_nat hl__u n = r) (andER (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)))).
+Qed.
+
+// HOL Light: arith.ml / DIV_UNIQ
+Theorem DIV_UNIQ : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q.
+let m. assume Hm.
+let n. assume Hn.
+let q. assume Hq.
+let r. assume Hr.
+assume H.
+exact (((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => div_nat hl__u n = q) ((andEL (m = q * n + r) (r < n) H) (fun hl__u hl__v => div_nat hl__u n = q) (andEL (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm (m) Hm (n) Hn (q) Hq (r) Hr H)))).
+Qed.
+
