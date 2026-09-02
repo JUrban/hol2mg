@@ -117,6 +117,14 @@ apply andI.
       exact (fun q H => H).
 Qed.
 
+// HOL Light: real.ml / REAL_MUL_AC
+Theorem REAL_MUL_AC : forall m n p :e R, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p).
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m * n = n * m) ((m * n) * p = m * n * p /\ m * n * p = n * m * p) (mul_SNo_com (m) (n) (real_SNo (m) Hm) (real_SNo (n) Hn)) (andI ((m * n) * p = m * n * p) (m * n * p = n * m * p) ((mul_SNo_assoc (m) (n) (p) (real_SNo (m) Hm) (real_SNo (n) Hn) (real_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m * n * p)) (fun q H => H)) (mul_SNo_com_3_0_1 (m) (n) (p) (real_SNo (m) Hm) (real_SNo (n) Hn) (real_SNo (p) Hp)))).
+Qed.
+
 // HOL Light: real.ml / REAL_ADD_RDISTRIB
 Theorem REAL_ADD_RDISTRIB : forall x y z :e R, (x + y) * z = x * z + y * z.
 let x. assume Hx.

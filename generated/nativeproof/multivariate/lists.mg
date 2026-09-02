@@ -60,6 +60,15 @@ let t. assume Ht.
 exact (andI (seq_ex P seq_nil <-> False) (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t) (seq_ex_nil (P)) (seq_ex_cons (A) (P) (h) Hh (t) Ht)).
 Qed.
 
+// HOL Light: lists.ml / NOT_CONS_NIL
+Theorem NOT_CONS_NIL : forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+assume H.
+exact ((not_cons_nil (A) (h) Hh (t) Ht) H).
+Qed.
+
 // HOL Light: lists.ml / ALLPAIRS_SYM
 Theorem ALLPAIRS_SYM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i).
 let A.

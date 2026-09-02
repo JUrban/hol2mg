@@ -56,6 +56,14 @@ let p. assume Hp.
 exact (add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
+// HOL Light: arith.ml / ADD_AC
+Theorem ADD_AC : forall m n p :e omega, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p).
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m + n = n + m) ((m + n) + p = m + n + p /\ m + n + p = n + m + p) (add_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)) (andI ((m + n) + p = m + n + p) (m + n + p = n + m + p) ((add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m + n + p)) (fun q H => H)) (add_SNo_com_3_0_1 (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)))).
+Qed.
+
 // HOL Light: arith.ml / EQ_ADD_LCANCEL
 Theorem EQ_ADD_LCANCEL : forall m n p :e omega, m + n = m + p <-> n = p.
 let m. assume Hm.
@@ -183,6 +191,14 @@ let m. assume Hm.
 let n. assume Hn.
 let p. assume Hp.
 exact (mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
+Qed.
+
+// HOL Light: arith.ml / MULT_AC
+Theorem MULT_AC : forall m n p :e omega, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p).
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m * n = n * m) ((m * n) * p = m * n * p /\ m * n * p = n * m * p) (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)) (andI ((m * n) * p = m * n * p) (m * n * p = n * m * p) ((mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m * n * p)) (fun q H => H)) (mul_SNo_com_3_0_1 (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)))).
 Qed.
 
 // HOL Light: arith.ml / MULT_2

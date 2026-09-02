@@ -213,7 +213,12 @@ Admitted.
 // Source hash: md5:77428f1d7d66f872892dab61338128c2
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem NOT_CONS_NIL : forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil.
-Admitted.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+assume H.
+exact ((not_cons_nil (A) (h) Hh (t) Ht) H).
+Qed.
 
 // HOL Light: lists.ml:152 / LAST_CLAUSES
 // Source hash: md5:327d7c7a2dd7f193d5e0edf3faaf28a2

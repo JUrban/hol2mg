@@ -149,7 +149,11 @@ Qed.
 // Source hash: md5:b738b9b0879647f11343593272b18b92
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_MUL_AC : forall m n p :e R, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m * n = n * m) ((m * n) * p = m * n * p /\ m * n * p = n * m * p) (mul_SNo_com (m) (n) (real_SNo (m) Hm) (real_SNo (n) Hn)) (andI ((m * n) * p = m * n * p) (m * n * p = n * m * p) ((mul_SNo_assoc (m) (n) (p) (real_SNo (m) Hm) (real_SNo (n) Hn) (real_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m * n * p)) (fun q H => H)) (mul_SNo_com_3_0_1 (m) (n) (p) (real_SNo (m) Hm) (real_SNo (n) Hn) (real_SNo (p) Hp)))).
+Qed.
 
 // HOL Light: real.ml:83 / REAL_ADD_RDISTRIB
 // Source hash: md5:0238d020218e2221a762aeb73326f3c9

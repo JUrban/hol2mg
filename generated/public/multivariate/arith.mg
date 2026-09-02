@@ -79,7 +79,11 @@ Qed.
 // Source hash: md5:986342ad66e066e99f66eb58c051f208
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_AC : forall m n p :e omega, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m + n = n + m) ((m + n) + p = m + n + p /\ m + n + p = n + m + p) (add_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)) (andI ((m + n) + p = m + n + p) (m + n + p = n + m + p) ((add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m + n + p)) (fun q H => H)) (add_SNo_com_3_0_1 (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)))).
+Qed.
 
 // HOL Light: arith.ml:81 / ADD_EQ_0
 // Source hash: md5:9b78bbcaf3f196403cda0263a3970934
@@ -273,7 +277,11 @@ Qed.
 // Source hash: md5:533f0ad0b78c23e472c2cbcad79fe15c
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_AC : forall m n p :e omega, m * n = n * m /\ ((m * n) * p = m * n * p /\ m * n * p = n * m * p).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m * n = n * m) ((m * n) * p = m * n * p /\ m * n * p = n * m * p) (mul_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)) (andI ((m * n) * p = m * n * p) (m * n * p = n * m * p) ((mul_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m * n * p)) (fun q H => H)) (mul_SNo_com_3_0_1 (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)))).
+Qed.
 
 // HOL Light: arith.ml:188 / MULT_EQ_0
 // Source hash: md5:d2c8d3697871de5ec75407210bed3147
