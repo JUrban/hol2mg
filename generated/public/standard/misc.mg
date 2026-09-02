@@ -115,7 +115,11 @@ Qed.
 // Source hash: md5:c9eb15fcdfc4e3e8805ec06d0461d25f
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LE_MUL : forall x y :e R, 0 <= x /\ 0 <= y -> 0 <= x * y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= x * y) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x * y) (real_le_mul_thm (x) Hx (y) Hy H))).
+Qed.
 
 // HOL Light:  / REAL_LE_REFL
 // Source hash: md5:597f574f403c13d75887c264bf98d7ab
@@ -130,7 +134,10 @@ Qed.
 // Source hash: md5:f100ea3864b4736d03f4488873b9fdf2
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_TOTAL : forall x y :e R, x <= y \/ y <= x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_total_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light:  / REAL_LE_TRANS
 // Source hash: md5:650af3c1406ad5babc239cd1e46503bc
@@ -167,7 +174,10 @@ Qed.
 // Source hash: md5:a9878dfb3f8f4e0493a76e9de2ddf29c
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_MUL_LINV : forall x :e R, ~ x = 0 -> recip_SNo x * x = 1.
-Admitted.
+let x. assume Hx.
+assume H.
+exact (real_mul_linv_thm (x) Hx H).
+Qed.
 
 // HOL Light:  / REAL_MUL_SYM
 // Source hash: md5:863e7ca45d4101c0041b89d44ea64c52

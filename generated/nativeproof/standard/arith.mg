@@ -83,6 +83,25 @@ apply iffI.
   exact (H (fun hl__u hl__v => (m + n) = (m + hl__u)) (fun q H => H)).
 Qed.
 
+// HOL Light: arith.ml / EQ_ADD_RCANCEL
+Theorem EQ_ADD_RCANCEL : forall m n p :e omega, m + p = n + p <-> m = n.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (eq_add_rcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
+// HOL Light: arith.ml / EQ_ADD_RCANCEL_0
+Theorem EQ_ADD_RCANCEL_0 : forall m n :e omega, m + n = n <-> m = 0.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact ((andEL (m + n = 0 + n -> m = 0) (m = 0 -> m + n = 0 + n) (eq_add_rcancel_thm (m) Hm (0) (nat_p_omega (0) nat_0) (n) Hn)) (((add_SNo_0L (n) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (0 + n)) (fun q H => H)) (fun hl__u hl__v => m + n = hl__u) H1)).
+- assume H.
+  exact ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u + n = n) (add_SNo_0L (n) (omega_SNo (n) Hn))).
+Qed.
+
 // HOL Light: arith.ml / BIT0
 Theorem BIT0 : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
