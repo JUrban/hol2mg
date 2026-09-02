@@ -56,10 +56,25 @@ assume H.
 exact (add_SNo_Le2 (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) H).
 Qed.
 
+// HOL Light:  / REAL_LE_MUL
+Theorem REAL_LE_MUL : forall x y :e R, 0 <= x /\ 0 <= y -> 0 <= x * y.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= x * y) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x * y) (real_le_mul_thm (x) Hx (y) Hy H))).
+Qed.
+
 // HOL Light:  / REAL_LE_REFL
 Theorem REAL_LE_REFL : forall x :e R, x <= x.
 let x. assume Hx.
 exact (SNoLe_ref (x)).
+Qed.
+
+// HOL Light:  / REAL_LE_TOTAL
+Theorem REAL_LE_TOTAL : forall x y :e R, x <= y \/ y <= x.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_total_thm (x) Hx (y) Hy).
 Qed.
 
 // HOL Light:  / REAL_LE_TRANS
@@ -83,6 +98,13 @@ Qed.
 Theorem REAL_MUL_LID : forall x :e R, 1 * x = x.
 let x. assume Hx.
 exact (mul_SNo_oneL (x) (real_SNo (x) Hx)).
+Qed.
+
+// HOL Light:  / REAL_MUL_LINV
+Theorem REAL_MUL_LINV : forall x :e R, ~ x = 0 -> recip_SNo x * x = 1.
+let x. assume Hx.
+assume H.
+exact (real_mul_linv_thm (x) Hx H).
 Qed.
 
 // HOL Light:  / REAL_MUL_SYM

@@ -1020,7 +1020,11 @@ Admitted.
 // Source hash: md5:77434096f794ecbda49184efdcd09ba1
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_EQ_MUL_LCANCEL : forall x y z :e R, x * y = x * z <-> x = 0 \/ y = z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (real_eq_mul_lcancel_thm (x) Hx (y) Hy (z) Hz).
+Qed.
 
 // HOL Light: real.ml:668 / REAL_EQ_MUL_RCANCEL
 // Source hash: md5:8289a329af7ef354b5c3755c64c97b38
@@ -1098,7 +1102,8 @@ Admitted.
 // Source hash: md5:f360e2364332dadf1d4e1bbd1529ae9f
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_INV_1 : recip_SNo 1 = 1.
-Admitted.
+exact real_inv_1_thm.
+Qed.
 
 // HOL Light: real.ml:752 / REAL_INV_EQ_1
 // Source hash: md5:5a5340582646f88dbc477867ddfbd395

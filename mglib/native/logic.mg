@@ -1726,3 +1726,441 @@ apply (set_ext (fun x :e X => F x) (fun x :e X => G x)).
   rewrite Hzeq.
   exact (lamI X F x HxX y HyF).
 Qed.
+
+Theorem real_mul_linv_thm : forall x :e R, ~ x = 0 -> recip_SNo x * x = 1.
+let x. assume Hx. assume Hnz.
+claim Hsx : SNo x. { exact (real_SNo x Hx). }
+claim Hsr : SNo (recip_SNo x). { exact (SNo_recip_SNo x Hsx). }
+claim E1 : recip_SNo x * x = x * recip_SNo x. { exact (mul_SNo_com (recip_SNo x) x Hsr Hsx). }
+exact (eq_trans_i (recip_SNo x * x) (x * recip_SNo x) 1 E1 (recip_SNo_invR x Hsx Hnz)).
+Qed.
+Theorem real_le_mul_thm : forall x y :e R, 0 <= x /\ 0 <= y -> 0 <= x * y.
+let x. assume Hx. let y. assume Hy. assume H.
+exact (mul_SNo_nonneg_nonneg x y (real_SNo x Hx) (real_SNo y Hy) (andEL (0 <= x) (0 <= y) H) (andER (0 <= x) (0 <= y) H)).
+Qed.
+Theorem real_le_rneg_thm : forall x y :e R, x <= - y <-> x + y <= 0.
+let x. assume Hx. let y. assume Hy.
+claim Hsx : SNo x. { exact (real_SNo x Hx). }
+claim Hsy : SNo y. { exact (real_SNo y Hy). }
+claim Hsny : SNo (- y). { exact (SNo_minus_SNo y Hsy). }
+apply iffI.
+- assume H.
+  claim H2 : x + y <= - y + y.
+  { exact (add_SNo_Le1 x y (- y) Hsx Hsy Hsny H). }
+  claim E : - y + y = 0. { exact (add_SNo_minus_SNo_linv y Hsy). }
+  exact (E (fun hl__u hl__v => x + y <= hl__u) H2).
+- assume H.
+  claim H2 : (x + y) + - y <= 0 + - y.
+  { exact (add_SNo_Le1 (x + y) (- y) 0 (real_SNo (x + y) (real_add_SNo x Hx y Hy)) Hsny SNo_0 H). }
+  claim E1 : (x + y) + - y = x. { exact (add_SNo_minus_R2 x y Hsx Hsy). }
+  claim E2 : 0 + - y = - y. { exact (add_SNo_0L (- y) Hsny). }
+  claim H3 : x <= 0 + - y.
+  { exact (E1 (fun hl__u hl__v => hl__u <= 0 + - y) H2). }
+  exact (E2 (fun hl__u hl__v => x <= hl__u) H3).
+Qed.
+Theorem real_le_total_thm : forall x y :e R, x <= y \/ y <= x.
+let x. assume Hx. let y. assume Hy.
+apply (SNoLtLe_or x y (real_SNo x Hx) (real_SNo y Hy)).
+- assume H. exact (orIL (x <= y) (y <= x) (SNoLtLe x y H)).
+- assume H. exact (orIR (x <= y) (y <= x) H).
+Qed.
+Theorem real_inv_1_thm : recip_SNo 1 = 1.
+claim E1 : 1 * recip_SNo 1 = 1. { exact (recip_SNo_invR 1 SNo_1 neq_1_0). }
+claim E2 : 1 * recip_SNo 1 = recip_SNo 1. { exact (mul_SNo_oneL (recip_SNo 1) (SNo_recip_SNo 1 SNo_1)). }
+exact (eq_trans_i (recip_SNo 1) (1 * recip_SNo 1) 1 (eq_sym_i (1 * recip_SNo 1) (recip_SNo 1) E2) E1).
+Qed.
+Theorem real_eq_add_rcancel_thm : forall x y z :e R, x + z = y + z <-> x = y.
+let x. assume Hx. let y. assume Hy. let z. assume Hz.
+apply iffI.
+- assume H. exact (add_SNo_cancel_R x z y (real_SNo x Hx) (real_SNo z Hz) (real_SNo y Hy) H).
+- assume H. exact (f_equal (fun hl__u:set => hl__u + z) x y H).
+Qed.
+Theorem real_eq_mul_lcancel_thm : forall x y z :e R, x * y = x * z <-> x = 0 \/ y = z.
+let x. assume Hx. let y. assume Hy. let z. assume Hz.
+claim Hsx : SNo x. { exact (real_SNo x Hx). }
+claim Hsy : SNo y. { exact (real_SNo y Hy). }
+claim Hsz : SNo z. { exact (real_SNo z Hz). }
+apply iffI.
+- assume H.
+  apply (xm (x = 0)).
+  + assume H0. exact (orIL (x = 0) (y = z) H0).
+  + assume H0. exact (orIR (x = 0) (y = z) (mul_SNo_nonzero_cancel x y z Hsx H0 Hsy Hsz H)).
+- assume H. apply H.
+  + assume H0.
+    claim E1 : x * y = 0.
+    { exact (H0 (fun hl__u hl__v => hl__v * y = 0) (mul_SNo_zeroL y Hsy)). }
+    claim E2 : x * z = 0.
+    { exact (H0 (fun hl__u hl__v => hl__v * z = 0) (mul_SNo_zeroL z Hsz)). }
+    exact (eq_trans_i (x * y) 0 (x * z) E1 (eq_sym_i (x * z) 0 E2)).
+  + assume H0. exact (f_equal (fun hl__u:set => x * hl__u) y z H0).
+Qed.
+Theorem real_le_neg2_thm : forall x y :e R, - x <= - y <-> y <= x.
+let x. assume Hx. let y. assume Hy.
+claim Hsx : SNo x. { exact (real_SNo x Hx). }
+claim Hsy : SNo y. { exact (real_SNo y Hy). }
+apply iffI.
+- assume H.
+  claim H2 : - - y <= - - x.
+  { exact (minus_SNo_Le_contra (- x) (- y) (SNo_minus_SNo x Hsx) (SNo_minus_SNo y Hsy) H). }
+  claim E1 : - - y = y. { exact (minus_SNo_invol y Hsy). }
+  claim E2 : - - x = x. { exact (minus_SNo_invol x Hsx). }
+  claim H3 : y <= - - x.
+  { exact (E1 (fun hl__u hl__v => hl__u <= - - x) H2). }
+  exact (E2 (fun hl__u hl__v => y <= hl__u) H3).
+- assume H. exact (minus_SNo_Le_contra y x Hsy Hsx H).
+Qed.
+Theorem in_inters_thm : forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t.
+let A. let s. assume Hs. let x. assume Hx.
+apply iffI.
+- assume H. let t. assume Ht. assume Hts.
+  exact (SepE2 A (fun hl__u => forall Y :e s, hl__u :e Y) x H t Hts).
+- assume H.
+  apply (SepI A (fun hl__u => forall Y :e s, hl__u :e Y) x Hx).
+  let Y. assume HY.
+  exact (H Y (PowerE A Y (Hs Y HY)) HY).
+Qed.
+
+Theorem eq_add_rcancel_thm : forall m n p :e omega, m + p = n + p <-> m = n.
+let m. assume Hm. let n. assume Hn. let p. assume Hp.
+apply iffI.
+- assume H. exact (add_SNo_cancel_R m p n (omega_SNo m Hm) (omega_SNo p Hp) (omega_SNo n Hn) H).
+- assume H. exact (f_equal (fun hl__u:set => hl__u + p) m n H).
+Qed.
+
+Theorem two_omega_thm : 2 :e omega.
+exact (nat_p_omega 2 (nat_ordsucc 1 nat_1)).
+Qed.
+Theorem two_ne_0_thm : ~ 2 = 0.
+exact (neq_ordsucc_0 1).
+Qed.
+Theorem even_double_thm : forall m :e omega, even_nat (m + m).
+let m. assume Hm.
+prove exists k :e omega, m + m = k + k.
+witness m.
+apply andI.
+- exact Hm.
+- exact (fun q H => H).
+Qed.
+Theorem two_mul_le_iff_thm : forall m n :e omega, 2 * m <= 2 * n <-> m <= n.
+let m. assume Hm. let n. assume Hn.
+claim Hsm : SNo m. { exact (omega_SNo m Hm). }
+claim Hsn : SNo n. { exact (omega_SNo n Hn). }
+claim Hs2 : SNo 2. { exact (omega_SNo 2 two_omega_thm). }
+claim Hs2m : SNo (2 * m). { exact (omega_SNo (2 * m) (mul_SNo_In_omega 2 two_omega_thm m Hm)). }
+claim Hs2n : SNo (2 * n). { exact (omega_SNo (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn)). }
+apply iffI.
+- assume H.
+  apply (SNoLtLe_or n m Hsn Hsm).
+  + assume Hlt.
+    claim Hlt2 : 2 * n < 2 * m.
+    { exact (pos_mul_SNo_Lt 2 n m Hs2 SNoLt_0_2 Hsn Hsm Hlt). }
+    exact (FalseE (SNoLt_irref (2 * m) (SNoLeLt_tra (2 * m) (2 * n) (2 * m) Hs2m Hs2n Hs2m H Hlt2)) (m <= n)).
+  + assume Hle. exact Hle.
+- assume H.
+  exact (nonneg_mul_SNo_Le 2 m n Hs2 (SNoLtLe 0 2 SNoLt_0_2) Hsm Hsn H).
+Qed.
+
+Theorem arith_le_thm : (forall m n :e omega, m <= n <-> m <= n) /\ ((0 <= 0 <-> True) /\ ((forall n :e omega, 2 * n <= 0 <-> n <= 0) /\ ((forall n :e omega, 2 * n + 1 <= 0 <-> False) /\ ((forall n :e omega, 0 <= 2 * n <-> True) /\ ((forall n :e omega, 0 <= 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n)))))))).
+claim T1 : forall m n :e omega, m <= n <-> m <= n.
+{ let m. assume Hm. let n. assume Hn. apply iffI.
+  - assume H. exact H.
+  - assume H. exact H. }
+claim T2 : 0 <= 0 <-> True.
+{ exact (iff_true_intro (0 <= 0) (SNoLe_ref 0)). }
+claim T3 : forall n :e omega, 2 * n <= 0 <-> n <= 0.
+{ let n. assume Hn.
+  claim Hsn : SNo n. { exact (omega_SNo n Hn). }
+  claim H2nw : 2 * n :e omega. { exact (mul_SNo_In_omega 2 two_omega_thm n Hn). }
+  apply iffI.
+  - assume H.
+    claim E : 2 * n = n + n. { exact (bit0_eq_omega n Hn). }
+    claim Hle1 : n <= n + n. { exact (SNoLe_add_omega n Hn n Hn). }
+    claim Hle2 : n <= 2 * n.
+    { exact (E (fun hl__u hl__v => n <= hl__v) Hle1). }
+    exact (SNoLe_tra n (2 * n) 0 Hsn (omega_SNo (2 * n) H2nw) SNo_0 Hle2 H).
+  - assume H.
+    claim Hn0 : n = 0. { exact (iffEL (n <= 0) (n = 0) (SNoLe_0_iff_omega n Hn) H). }
+    claim E0 : 2 * 0 <= 0.
+    { claim Ez : 2 * 0 = 0. { exact (mul_SNo_zeroR 2 (omega_SNo 2 two_omega_thm)). }
+      exact (Ez (fun hl__u hl__v => hl__v <= 0) (SNoLe_ref 0)). }
+    exact (Hn0 (fun hl__u hl__v => 2 * hl__v <= 0) E0). }
+claim T4 : forall n :e omega, 2 * n + 1 <= 0 <-> False.
+{ let n. assume Hn.
+  claim Hnnw : n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+  apply iffI.
+  - assume H.
+    claim E : 2 * n + 1 = ordsucc (n + n). { exact (bit1_eq_omega n Hn). }
+    claim H2 : ordsucc (n + n) <= 0.
+    { exact (E (fun hl__u hl__v => hl__u <= 0) H). }
+    claim Hlt : n + n < 0.
+    { exact (iffEL (ordsucc (n + n) <= 0) (n + n < 0) (SNoLe_ordsucc_SNoLt_omega (n + n) Hnnw 0 (nat_p_omega 0 nat_0)) H2). }
+    exact (SNoLt_irref (n + n) (SNoLtLe_tra (n + n) 0 (n + n) (omega_SNo (n + n) Hnnw) SNo_0 (omega_SNo (n + n) Hnnw) Hlt (omega_nonneg (n + n) Hnnw))).
+  - assume H. exact (FalseE H (2 * n + 1 <= 0)). }
+claim T5 : forall n :e omega, 0 <= 2 * n <-> True.
+{ let n. assume Hn.
+  exact (iff_true_intro (0 <= 2 * n) (omega_nonneg (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn))). }
+claim T6 : forall n :e omega, 0 <= 2 * n + 1 <-> True.
+{ let n. assume Hn.
+  claim Hw : 2 * n + 1 :e omega.
+  { exact (add_SNo_In_omega (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn) 1 (nat_p_omega 1 nat_1)). }
+  exact (iff_true_intro (0 <= 2 * n + 1) (omega_nonneg (2 * n + 1) Hw)). }
+claim T8 : forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n.
+{ let m. assume Hm. let n. assume Hn.
+  claim Hmmw : m + m :e omega. { exact (add_SNo_In_omega m Hm m Hm). }
+  claim Hnnw : n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+  claim E0m : 2 * m = m + m. { exact (bit0_eq_omega m Hm). }
+  claim E1n : 2 * n + 1 = ordsucc (n + n). { exact (bit1_eq_omega n Hn). }
+  apply iffI.
+  - assume H.
+    claim H2 : m + m <= ordsucc (n + n).
+    { claim Ha : 2 * m <= ordsucc (n + n).
+      { exact (E1n (fun hl__u hl__v => 2 * m <= hl__u) H). }
+      exact (E0m (fun hl__u hl__v => hl__u <= ordsucc (n + n)) Ha). }
+    apply (iffEL (m + m <= ordsucc (n + n)) (m + m = ordsucc (n + n) \/ m + m <= n + n) (SNoLe_ordsucc_iff_omega (m + m) Hmmw (n + n) Hnnw) H2).
+    + assume Heq.
+      claim Hev : even_nat (ordsucc (n + n)).
+      { exact (Heq (fun hl__u hl__v => even_nat hl__u) (even_double_thm m Hm)). }
+      exact (FalseE (not_even_and_odd (ordsucc (n + n)) (omega_ordsucc (n + n) Hnnw) Hev (even_succ_odd (n + n) Hnnw (even_double_thm n Hn))) (m <= n)).
+    + assume Hle.
+      claim H3 : 2 * m <= 2 * n.
+      { claim Hb : 2 * m <= n + n.
+        { exact (E0m (fun hl__u hl__v => hl__v <= n + n) Hle). }
+        exact ((bit0_eq_omega n Hn) (fun hl__u hl__v => 2 * m <= hl__v) Hb). }
+      exact (iffEL (2 * m <= 2 * n) (m <= n) (two_mul_le_iff_thm m Hm n Hn) H3).
+  - assume H.
+    claim H3 : 2 * m <= 2 * n.
+    { exact (iffER (2 * m <= 2 * n) (m <= n) (two_mul_le_iff_thm m Hm n Hn) H). }
+    claim Hle1 : 2 * n <= 2 * n + 1.
+    { claim Ha : 2 * n <= ordsucc (n + n).
+      { claim Hb : n + n <= ordsucc (n + n).
+        { exact (SNoLtLe (n + n) (ordsucc (n + n)) (iffER (n + n < ordsucc (n + n)) (n + n <= n + n) (SNoLt_ordsucc_SNoLe_omega (n + n) Hnnw (n + n) Hnnw) (SNoLe_ref (n + n)))). }
+        exact ((bit0_eq_omega n Hn) (fun hl__u hl__v => hl__v <= ordsucc (n + n)) Hb). }
+      exact (E1n (fun hl__u hl__v => 2 * n <= hl__v) Ha). }
+    exact (SNoLe_tra (2 * m) (2 * n) (2 * n + 1) (omega_SNo (2 * m) (mul_SNo_In_omega 2 two_omega_thm m Hm)) (omega_SNo (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn)) (omega_SNo (2 * n + 1) (add_SNo_In_omega (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn) 1 (nat_p_omega 1 nat_1))) H3 Hle1). }
+claim T9 : forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n.
+{ let m. assume Hm. let n. assume Hn.
+  claim Hmmw : m + m :e omega. { exact (add_SNo_In_omega m Hm m Hm). }
+  claim E1m : 2 * m + 1 = ordsucc (m + m). { exact (bit1_eq_omega m Hm). }
+  claim H2nw : 2 * n :e omega. { exact (mul_SNo_In_omega 2 two_omega_thm n Hn). }
+  apply iffI.
+  - assume H.
+    claim H2 : ordsucc (m + m) <= 2 * n.
+    { exact (E1m (fun hl__u hl__v => hl__u <= 2 * n) H). }
+    claim Hlt : m + m < 2 * n.
+    { exact (iffEL (ordsucc (m + m) <= 2 * n) (m + m < 2 * n) (SNoLe_ordsucc_SNoLt_omega (m + m) Hmmw (2 * n) H2nw) H2). }
+    claim Hlt2 : 2 * m < 2 * n.
+    { exact ((bit0_eq_omega m Hm) (fun hl__u hl__v => hl__v < 2 * n) Hlt). }
+    exact (andER (~ 2 = 0) (m < n) (iffEL (2 * m < 2 * n) (~ 2 = 0 /\ m < n) (lt_mult_lcancel_thm 2 two_omega_thm m Hm n Hn) Hlt2)).
+  - assume H.
+    claim Hlt2 : 2 * m < 2 * n.
+    { exact (iffER (2 * m < 2 * n) (~ 2 = 0 /\ m < n) (lt_mult_lcancel_thm 2 two_omega_thm m Hm n Hn) (andI (~ 2 = 0) (m < n) two_ne_0_thm H)). }
+    claim Hlt : m + m < 2 * n.
+    { exact ((bit0_eq_omega m Hm) (fun hl__u hl__v => hl__u < 2 * n) Hlt2). }
+    claim H2 : ordsucc (m + m) <= 2 * n.
+    { exact (iffER (ordsucc (m + m) <= 2 * n) (m + m < 2 * n) (SNoLe_ordsucc_SNoLt_omega (m + m) Hmmw (2 * n) H2nw) Hlt). }
+    exact (E1m (fun hl__u hl__v => hl__v <= 2 * n) H2). }
+claim T10 : forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n.
+{ let m. assume Hm. let n. assume Hn.
+  claim Hmmw : m + m :e omega. { exact (add_SNo_In_omega m Hm m Hm). }
+  claim Hnnw : n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+  claim E1m : 2 * m + 1 = ordsucc (m + m). { exact (bit1_eq_omega m Hm). }
+  claim E1n : 2 * n + 1 = ordsucc (n + n). { exact (bit1_eq_omega n Hn). }
+  claim Hbridge : ordsucc (m + m) <= ordsucc (n + n) <-> m <= n.
+  { apply iffI.
+    - assume H.
+      claim Hlt : m + m < ordsucc (n + n).
+      { exact (iffEL (ordsucc (m + m) <= ordsucc (n + n)) (m + m < ordsucc (n + n)) (SNoLe_ordsucc_SNoLt_omega (m + m) Hmmw (ordsucc (n + n)) (omega_ordsucc (n + n) Hnnw)) H). }
+      claim Hle : m + m <= n + n.
+      { exact (iffEL (m + m < ordsucc (n + n)) (m + m <= n + n) (SNoLt_ordsucc_SNoLe_omega (m + m) Hmmw (n + n) Hnnw) Hlt). }
+      claim H3 : 2 * m <= 2 * n.
+      { claim Ha : 2 * m <= n + n.
+        { exact ((bit0_eq_omega m Hm) (fun hl__u hl__v => hl__v <= n + n) Hle). }
+        exact ((bit0_eq_omega n Hn) (fun hl__u hl__v => 2 * m <= hl__v) Ha). }
+      exact (iffEL (2 * m <= 2 * n) (m <= n) (two_mul_le_iff_thm m Hm n Hn) H3).
+    - assume H.
+      claim H3 : 2 * m <= 2 * n.
+      { exact (iffER (2 * m <= 2 * n) (m <= n) (two_mul_le_iff_thm m Hm n Hn) H). }
+      claim Hle : m + m <= n + n.
+      { claim Ha : m + m <= 2 * n.
+        { exact ((bit0_eq_omega m Hm) (fun hl__u hl__v => hl__u <= 2 * n) H3). }
+        exact ((bit0_eq_omega n Hn) (fun hl__u hl__v => m + m <= hl__u) Ha). }
+      claim Hlt : m + m < ordsucc (n + n).
+      { exact (iffER (m + m < ordsucc (n + n)) (m + m <= n + n) (SNoLt_ordsucc_SNoLe_omega (m + m) Hmmw (n + n) Hnnw) Hle). }
+      exact (iffER (ordsucc (m + m) <= ordsucc (n + n)) (m + m < ordsucc (n + n)) (SNoLe_ordsucc_SNoLt_omega (m + m) Hmmw (ordsucc (n + n)) (omega_ordsucc (n + n) Hnnw)) Hlt). }
+  apply iffI.
+  - assume H.
+    claim H2 : ordsucc (m + m) <= ordsucc (n + n).
+    { claim Ha : 2 * m + 1 <= ordsucc (n + n).
+      { exact (E1n (fun hl__u hl__v => 2 * m + 1 <= hl__u) H). }
+      exact (E1m (fun hl__u hl__v => hl__u <= ordsucc (n + n)) Ha). }
+    exact (iffEL (ordsucc (m + m) <= ordsucc (n + n)) (m <= n) Hbridge H2).
+  - assume H.
+    claim H2 : ordsucc (m + m) <= ordsucc (n + n).
+    { exact (iffER (ordsucc (m + m) <= ordsucc (n + n)) (m <= n) Hbridge H). }
+    claim Ha : 2 * m + 1 <= ordsucc (n + n).
+    { exact (E1m (fun hl__u hl__v => hl__v <= ordsucc (n + n)) H2). }
+    exact (E1n (fun hl__u hl__v => 2 * m + 1 <= hl__v) Ha). }
+claim A9 : (forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n.
+{ apply andI.
+  - exact T9.
+  - exact T10. }
+claim A8 : (forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n).
+{ apply andI.
+  - exact T8.
+  - exact A9. }
+claim A7 : (forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n)).
+{ apply andI.
+  - exact two_mul_le_iff_thm.
+  - exact A8. }
+claim A6 : (forall n :e omega, 0 <= 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n))).
+{ apply andI.
+  - exact T6.
+  - exact A7. }
+claim A5 : (forall n :e omega, 0 <= 2 * n <-> True) /\ ((forall n :e omega, 0 <= 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n)))).
+{ apply andI.
+  - exact T5.
+  - exact A6. }
+claim A4 : (forall n :e omega, 2 * n + 1 <= 0 <-> False) /\ ((forall n :e omega, 0 <= 2 * n <-> True) /\ ((forall n :e omega, 0 <= 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n))))).
+{ apply andI.
+  - exact T4.
+  - exact A5. }
+claim A3 : (forall n :e omega, 2 * n <= 0 <-> n <= 0) /\ ((forall n :e omega, 2 * n + 1 <= 0 <-> False) /\ ((forall n :e omega, 0 <= 2 * n <-> True) /\ ((forall n :e omega, 0 <= 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n)))))).
+{ apply andI.
+  - exact T3.
+  - exact A4. }
+claim A2 : (0 <= 0 <-> True) /\ ((forall n :e omega, 2 * n <= 0 <-> n <= 0) /\ ((forall n :e omega, 2 * n + 1 <= 0 <-> False) /\ ((forall n :e omega, 0 <= 2 * n <-> True) /\ ((forall n :e omega, 0 <= 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m <= 2 * n <-> m <= n) /\ ((forall m n :e omega, 2 * m <= 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 <= 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 <= 2 * n + 1 <-> m <= n))))))).
+{ apply andI.
+  - exact T2.
+  - exact A3. }
+apply andI.
+- exact T1.
+- exact A2.
+Qed.
+
+Theorem arith_eq_thm : (forall m n :e omega, m = n <-> m = n) /\ ((0 = 0 <-> True) /\ ((forall n :e omega, 2 * n = 0 <-> n = 0) /\ ((forall n :e omega, 2 * n + 1 = 0 <-> False) /\ ((forall n :e omega, 0 = 2 * n <-> 0 = n) /\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n)))))))).
+claim T1 : forall m n :e omega, m = n <-> m = n.
+{ let m. assume Hm. let n. assume Hn. apply iffI.
+  - assume H. exact H.
+  - assume H. exact H. }
+claim Hr00 : 0 = 0.
+{ exact (fun q H => H). }
+claim T2 : 0 = 0 <-> True.
+{ exact (iff_true_intro (0 = 0) Hr00). }
+claim Ez : 2 * 0 = 0.
+{ exact (mul_SNo_zeroR 2 (omega_SNo 2 two_omega_thm)). }
+claim T3 : forall n :e omega, 2 * n = 0 <-> n = 0.
+{ let n. assume Hn.
+  apply iffI.
+  - assume H.
+    claim H2 : 2 * n = 2 * 0.
+    { exact (eq_trans_i (2 * n) 0 (2 * 0) H (eq_sym_i (2 * 0) 0 Ez)). }
+    apply (iffEL (2 * n = 2 * 0) (2 = 0 \/ n = 0) (eq_mult_lcancel_thm 2 two_omega_thm n Hn 0 (nat_p_omega 0 nat_0)) H2).
+    + assume H0. exact (FalseE (two_ne_0_thm H0) (n = 0)).
+    + assume H0. exact H0.
+  - assume H.
+    claim H2 : 2 * n = 2 * 0.
+    { exact (f_equal (fun hl__u:set => 2 * hl__u) n 0 H). }
+    exact (eq_trans_i (2 * n) (2 * 0) 0 H2 Ez). }
+claim T4 : forall n :e omega, 2 * n + 1 = 0 <-> False.
+{ let n. assume Hn.
+  claim Hnnw : n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+  apply iffI.
+  - assume H.
+    claim H2 : ordsucc (n + n) = 0.
+    { exact (eq_trans_i (ordsucc (n + n)) (2 * n + 1) 0 (eq_sym_i (2 * n + 1) (ordsucc (n + n)) (bit1_eq_omega n Hn)) H). }
+    exact (neq_ordsucc_0 (n + n) H2).
+  - assume H. exact (FalseE H (2 * n + 1 = 0)). }
+claim T5 : forall n :e omega, 0 = 2 * n <-> 0 = n.
+{ let n. assume Hn.
+  apply iffI.
+  - assume H.
+    exact (eq_sym_i n 0 (iffEL (2 * n = 0) (n = 0) (T3 n Hn) (eq_sym_i 0 (2 * n) H))).
+  - assume H.
+    exact (eq_sym_i (2 * n) 0 (iffER (2 * n = 0) (n = 0) (T3 n Hn) (eq_sym_i 0 n H))). }
+claim T6 : forall n :e omega, 0 = 2 * n + 1 <-> False.
+{ let n. assume Hn.
+  apply iffI.
+  - assume H.
+    exact (iffEL (2 * n + 1 = 0) False (T4 n Hn) (eq_sym_i 0 (2 * n + 1) H)).
+  - assume H. exact (FalseE H (0 = 2 * n + 1)). }
+claim T7 : forall m n :e omega, 2 * m = 2 * n <-> m = n.
+{ let m. assume Hm. let n. assume Hn.
+  apply iffI.
+  - assume H.
+    apply (iffEL (2 * m = 2 * n) (2 = 0 \/ m = n) (eq_mult_lcancel_thm 2 two_omega_thm m Hm n Hn) H).
+    + assume H0. exact (FalseE (two_ne_0_thm H0) (m = n)).
+    + assume H0. exact H0.
+  - assume H.
+    exact (iffER (2 * m = 2 * n) (2 = 0 \/ m = n) (eq_mult_lcancel_thm 2 two_omega_thm m Hm n Hn) (orIR (2 = 0) (m = n) H)). }
+claim T8 : forall m n :e omega, 2 * m = 2 * n + 1 <-> False.
+{ let m. assume Hm. let n. assume Hn.
+  claim Hnnw : n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+  claim Hw : 2 * n + 1 :e omega.
+  { exact (add_SNo_In_omega (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn) 1 (nat_p_omega 1 nat_1)). }
+  apply iffI.
+  - assume H.
+    claim Hev2m : even_nat (2 * m).
+    { exact ((bit0_eq_omega m Hm) (fun hl__u hl__v => even_nat hl__v) (even_double_thm m Hm)). }
+    claim Hodd : odd_nat (2 * n + 1).
+    { exact ((bit1_eq_omega n Hn) (fun hl__u hl__v => odd_nat hl__v) (even_succ_odd (n + n) Hnnw (even_double_thm n Hn))). }
+    claim Hev : even_nat (2 * n + 1).
+    { exact (H (fun hl__u hl__v => even_nat hl__u) Hev2m). }
+    exact (not_even_and_odd (2 * n + 1) Hw Hev Hodd).
+  - assume H. exact (FalseE H (2 * m = 2 * n + 1)). }
+claim T9 : forall m n :e omega, 2 * m + 1 = 2 * n <-> False.
+{ let m. assume Hm. let n. assume Hn.
+  apply iffI.
+  - assume H.
+    exact (iffEL (2 * n = 2 * m + 1) False (T8 n Hn m Hm) (eq_sym_i (2 * m + 1) (2 * n) H)).
+  - assume H. exact (FalseE H (2 * m + 1 = 2 * n)). }
+claim T10 : forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n.
+{ let m. assume Hm. let n. assume Hn.
+  claim E1m : 2 * m + 1 = ordsucc (m + m). { exact (bit1_eq_omega m Hm). }
+  claim E1n : 2 * n + 1 = ordsucc (n + n). { exact (bit1_eq_omega n Hn). }
+  apply iffI.
+  - assume H.
+    claim H2 : ordsucc (m + m) = ordsucc (n + n).
+    { exact (eq_trans_i (ordsucc (m + m)) (2 * n + 1) (ordsucc (n + n)) (eq_trans_i (ordsucc (m + m)) (2 * m + 1) (2 * n + 1) (eq_sym_i (2 * m + 1) (ordsucc (m + m)) E1m) H) E1n). }
+    claim H3 : m + m = n + n.
+    { exact (ordsucc_inj (m + m) (n + n) H2). }
+    claim H4 : 2 * m = 2 * n.
+    { exact (eq_trans_i (2 * m) (n + n) (2 * n) (eq_trans_i (2 * m) (m + m) (n + n) (bit0_eq_omega m Hm) H3) (eq_sym_i (2 * n) (n + n) (bit0_eq_omega n Hn))). }
+    exact (iffEL (2 * m = 2 * n) (m = n) (T7 m Hm n Hn) H4).
+  - assume H.
+    exact (f_equal (fun hl__u:set => 2 * hl__u + 1) m n H). }
+claim A9 : (forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n.
+{ apply andI.
+  - exact T9.
+  - exact T10. }
+claim A8 : (forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n).
+{ apply andI.
+  - exact T8.
+  - exact A9. }
+claim A7 : (forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n)).
+{ apply andI.
+  - exact T7.
+  - exact A8. }
+claim A6 : (forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n))).
+{ apply andI.
+  - exact T6.
+  - exact A7. }
+claim A5 : (forall n :e omega, 0 = 2 * n <-> 0 = n) /\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n)))).
+{ apply andI.
+  - exact T5.
+  - exact A6. }
+claim A4 : (forall n :e omega, 2 * n + 1 = 0 <-> False) /\ ((forall n :e omega, 0 = 2 * n <-> 0 = n) /\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n))))).
+{ apply andI.
+  - exact T4.
+  - exact A5. }
+claim A3 : (forall n :e omega, 2 * n = 0 <-> n = 0) /\ ((forall n :e omega, 2 * n + 1 = 0 <-> False) /\ ((forall n :e omega, 0 = 2 * n <-> 0 = n) /\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n)))))).
+{ apply andI.
+  - exact T3.
+  - exact A4. }
+claim A2 : (0 = 0 <-> True) /\ ((forall n :e omega, 2 * n = 0 <-> n = 0) /\ ((forall n :e omega, 2 * n + 1 = 0 <-> False) /\ ((forall n :e omega, 0 = 2 * n <-> 0 = n) /\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n))))))).
+{ apply andI.
+  - exact T2.
+  - exact A3. }
+apply andI.
+- exact T1.
+- exact A2.
+Qed.

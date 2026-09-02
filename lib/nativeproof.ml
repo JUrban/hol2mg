@@ -2181,6 +2181,102 @@ let builtin_premises : (string * Mg.tm) list =
          Mg.App (Mg.App (Mg.Cst "add_SNo",
            Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
            Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__n"), Mg.Var "hl__m"))))));
+    ("arith_le_thm",
+     (let le a b = Mg.App (Mg.App (Mg.Cst "SNoLe", a), b) in
+      let lt a b = Mg.App (Mg.App (Mg.Cst "SNoLt", a), b) in
+      let iff a b = Mg.App (Mg.App (Mg.Cst "iff", a), b) in
+      let conj a b = Mg.App (Mg.App (Mg.Cst "and", a), b) in
+      let dbl v = Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var v) in
+      let dbl1 v = Mg.App (Mg.App (Mg.Cst "add_SNo", dbl v), Mg.Num 1) in
+      let alln v b = Mg.AllIn (v, Mg.Cst "omega", b) in
+      let allmn b = alln "hl__m" (alln "hl__n" b) in
+      let m = Mg.Var "hl__m" and n = Mg.Var "hl__n" in
+      conj (allmn (iff (le m n) (le m n)))
+      (conj (iff (le (Mg.Num 0) (Mg.Num 0)) (Mg.Cst "True"))
+      (conj (alln "hl__n" (iff (le (dbl "hl__n") (Mg.Num 0)) (le n (Mg.Num 0))))
+      (conj (alln "hl__n" (iff (le (dbl1 "hl__n") (Mg.Num 0)) (Mg.Cst "False")))
+      (conj (alln "hl__n" (iff (le (Mg.Num 0) (dbl "hl__n")) (Mg.Cst "True")))
+      (conj (alln "hl__n" (iff (le (Mg.Num 0) (dbl1 "hl__n")) (Mg.Cst "True")))
+      (conj (allmn (iff (le (dbl "hl__m") (dbl "hl__n")) (le m n)))
+      (conj (allmn (iff (le (dbl "hl__m") (dbl1 "hl__n")) (le m n)))
+      (conj (allmn (iff (le (dbl1 "hl__m") (dbl "hl__n")) (lt m n)))
+            (allmn (iff (le (dbl1 "hl__m") (dbl1 "hl__n")) (le m n)))))))))))));
+    ("in_inters_thm",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.AllSub ("hl__s", Mg.App (Mg.Cst "Power", Mg.Var "hl__A"),
+         Mg.AllIn ("hl__x", Mg.Var "hl__A",
+           Mg.App (Mg.App (Mg.Cst "iff",
+             Mg.App (Mg.App (Mg.Cst "In", Mg.Var "hl__x"),
+               Mg.Sep ("hl__u", Mg.Var "hl__A",
+                 Mg.AllIn ("hl__Y", Mg.Var "hl__s",
+                   Mg.App (Mg.App (Mg.Cst "In", Mg.Var "hl__u"), Mg.Var "hl__Y"))))),
+             Mg.AllSub ("hl__t", Mg.Var "hl__A",
+               Mg.Imp (Mg.App (Mg.App (Mg.Cst "In", Mg.Var "hl__t"), Mg.Var "hl__s"),
+                 Mg.App (Mg.App (Mg.Cst "In", Mg.Var "hl__x"), Mg.Var "hl__t"))))))));
+    ("real_mul_linv_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R",
+       Mg.Imp (Mg.App (Mg.Cst "not",
+         Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__x"), Mg.Num 0)),
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.App (Mg.Cst "mul_SNo",
+             Mg.App (Mg.Cst "recip_SNo", Mg.Var "hl__x")), Mg.Var "hl__x")),
+           Mg.Num 1))));
+    ("real_le_mul_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "and",
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), Mg.Var "hl__x")),
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), Mg.Var "hl__y")),
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0),
+           Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__y"))))));
+    ("real_le_rneg_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"),
+           Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__y"))),
+         Mg.App (Mg.App (Mg.Cst "SNoLe",
+           Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+           Mg.Num 0)))));
+    ("real_le_total_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.App (Mg.App (Mg.Cst "or",
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__x"), Mg.Var "hl__y")),
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__x")))));
+    ("real_inv_1_thm",
+     Mg.App (Mg.App (Mg.Cst "eq",
+       Mg.App (Mg.Cst "recip_SNo", Mg.Num 1)), Mg.Num 1));
+    ("eq_add_rcancel_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.AllIn ("hl__p", Mg.Cst "omega",
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__m"), Mg.Var "hl__p")),
+             Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__n"), Mg.Var "hl__p"))),
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Var "hl__n"))))));
+    ("real_eq_add_rcancel_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.AllIn ("hl__z", Mg.Cst "R",
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__z")),
+             Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__y"), Mg.Var "hl__z"))),
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__x"), Mg.Var "hl__y"))))));
+    ("real_eq_mul_lcancel_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.AllIn ("hl__z", Mg.Cst "R",
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__y")),
+             Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__z"))),
+           Mg.App (Mg.App (Mg.Cst "or",
+             Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__x"), Mg.Num 0)),
+             Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__y"), Mg.Var "hl__z")))))));
+    ("real_le_neg2_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLe",
+           Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__x")),
+           Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__y"))),
+         Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__y"), Mg.Var "hl__x")))));
     ("nat_pred_succ_thm",
      Mg.AllIn ("hl__n", Mg.Cst "omega",
        Mg.App (Mg.App (Mg.Cst "eq",

@@ -287,6 +287,19 @@ assume H.
 exact (pos_mul_SNo_Lt (x) (y) (z) (real_SNo (x) Hx) (andEL (0 < x) (y < z) H) (real_SNo (y) Hy) (real_SNo (z) Hz) (andER (0 < x) (y < z) H)).
 Qed.
 
+// HOL Light: real.ml / REAL_EQ_MUL_LCANCEL
+Theorem REAL_EQ_MUL_LCANCEL : forall x y z :e R, x * y = x * z <-> x = 0 \/ y = z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (real_eq_mul_lcancel_thm (x) Hx (y) Hy (z) Hz).
+Qed.
+
+// HOL Light: real.ml / REAL_INV_1
+Theorem REAL_INV_1 : recip_SNo 1 = 1.
+exact real_inv_1_thm.
+Qed.
+
 // HOL Light: real.ml / REAL_EQ_LCANCEL_IMP
 Theorem REAL_EQ_LCANCEL_IMP : forall x y z :e R, ~ z = 0 /\ z * x = z * y -> x = y.
 let x. assume Hx.

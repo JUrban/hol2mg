@@ -134,7 +134,14 @@ Qed.
 // Source hash: md5:34458dd4d8abc78d9e447bc0cb321a51
 // Status: generalization_required (bridges: empty_case:A)
 Theorem INTERS : forall A:set, forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = {x :e A | forall u c= A, u :e s -> x :e u}.
-Admitted.
+let A.
+let s. assume Hs.
+apply (set_ext ({x :e A | forall Y :e s, x :e Y}) ({x :e A | forall u c= A, u :e s -> x :e u})).
+- let x1. assume Hx1.
+  exact (SepI (A) (fun x:set => forall u c= A, u :e s -> x :e u) (x1) (SepE1 (A) (fun x:set => forall Y :e s, x :e Y) (x1) Hx1) ((andEL (x1 :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y} -> forall hl__t c= A, hl__t :e s -> x1 :e hl__t) ((forall hl__t c= A, hl__t :e s -> x1 :e hl__t) -> x1 :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y}) (in_inters_thm (A) (s) Hs (x1) (SepE1 (A) (fun x:set => forall Y :e s, x :e Y) (x1) Hx1))) Hx1)).
+- let x. assume Hx.
+  exact ((andER (x :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y} -> forall hl__t c= A, hl__t :e s -> x :e hl__t) ((forall hl__t c= A, hl__t :e s -> x :e hl__t) -> x :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y}) (in_inters_thm (A) (s) Hs (x) (SepE1 (A) (fun x:set => forall u c= A, u :e s -> x :e u) (x) Hx))) (SepE2 (A) (fun x:set => forall u c= A, u :e s -> x :e u) (x) Hx)).
+Qed.
 
 // HOL Light: sets.ml:102 / DIFF
 // Source hash: md5:2ccfb5b0e79eb389ed764d3582c271bb
@@ -377,7 +384,11 @@ Qed.
 // Source hash: md5:90f987e51ed1bea30a7181c0682ececf
 // Status: generalization_required (bridges: empty_case:A)
 Theorem IN_INTERS : forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t.
-Admitted.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+exact (in_inters_thm (A) (s) Hs (x) Hx).
+Qed.
 
 // HOL Light: sets.ml:198 / IN_DIFF
 // Source hash: md5:b5cd0dac99fd349231cf6297ee30479a

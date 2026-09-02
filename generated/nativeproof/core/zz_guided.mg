@@ -16,10 +16,12 @@ Qed.
 Theorem DIST_REFL : forall n :e omega, abs_SNo (n + - n) = 0.
 claim E1 : (forall n :e omega, abs_SNo (n + - n) = 0) <-> (forall n :e omega, minus_nat n n + minus_nat n n = 0).
 { exact (all_in_iff_cong (omega) (fun n:set => abs_SNo (n + - n) = 0) (fun n:set => minus_nat n n + minus_nat n n = 0) (fun n Hn => ((dist_thm (n) Hn (n) Hn) (fun hl__u hl__v => (abs_SNo (n + - n) = 0) <-> (hl__u = 0)) (iff_refl (abs_SNo (n + - n) = 0))))). }
-claim F0 : forall n :e omega, minus_nat n n + minus_nat n n = 0.
+claim E2 : (forall n :e omega, minus_nat n n + minus_nat n n = 0) <-> (forall n :e omega, minus_nat n n = 0 /\ minus_nat n n = 0).
+{ exact (all_in_iff_cong (omega) (fun n1:set => minus_nat n1 n1 + minus_nat n1 n1 = 0) (fun n1:set => minus_nat n1 n1 = 0 /\ minus_nat n1 n1 = 0) (fun n1 Hn1 => ((andER ((minus_nat n1 n1 + minus_nat n1 n1 = 0 <-> minus_nat n1 n1 = 0 /\ minus_nat n1 n1 = 0) -> True) (True -> (minus_nat n1 n1 + minus_nat n1 n1 = 0 <-> minus_nat n1 n1 = 0 /\ minus_nat n1 n1 = 0)) (iff_true_intro (minus_nat n1 n1 + minus_nat n1 n1 = 0 <-> minus_nat n1 n1 = 0 /\ minus_nat n1 n1 = 0) (add_eq_0_thm (minus_nat n1 n1) (minus_nat_In_omega (n1) Hn1 (n1) Hn1) (minus_nat n1 n1) (minus_nat_In_omega (n1) Hn1 (n1) Hn1)))) (fun p:prop => fun H:p => H)))). }
+claim F0 : forall n :e omega, minus_nat n n = 0 /\ minus_nat n n = 0.
 { let n. assume Hn.
-exact ((andER (minus_nat n n + minus_nat n n = 0 -> minus_nat n n = 0 /\ minus_nat n n = 0) (minus_nat n n = 0 /\ minus_nat n n = 0 -> minus_nat n n + minus_nat n n = 0) (add_eq_0_thm (minus_nat n n) (minus_nat_In_omega (n) Hn (n) Hn) (minus_nat n n) (minus_nat_In_omega (n) Hn (n) Hn))) (andI (minus_nat n n = 0) (minus_nat n n = 0) ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))) ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))))). }
-exact (iffER (forall n :e omega, abs_SNo (n + - n) = 0) (forall n :e omega, minus_nat n n + minus_nat n n = 0) E1 F0).
+exact (andI (minus_nat n n = 0) (minus_nat n n = 0) ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))) ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n)))). }
+exact (iffER (forall n :e omega, abs_SNo (n + - n) = 0) (forall n :e omega, minus_nat n n + minus_nat n n = 0) E1 (iffER (forall n :e omega, minus_nat n n + minus_nat n n = 0) (forall n :e omega, minus_nat n n = 0 /\ minus_nat n n = 0) E2 F0)).
 Qed.
 
 // HOL Light: realax.ml / DIST_SYM (leaf-guided)
@@ -33,43 +35,11 @@ exact (((ADD_SYM (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm) (minus_nat n
 exact (iffER (forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m)) (forall m n :e omega, minus_nat m n + minus_nat n m = abs_SNo (n + - m)) E1 F0).
 Qed.
 
-// HOL Light: arith.ml / EQ_ADD_RCANCEL (leaf-guided)
-Theorem EQ_ADD_RCANCEL : forall m n p :e omega, m + p = n + p <-> m = n.
-claim E1 : (forall m n p :e omega, m + p = n + p <-> m = n) <-> (forall m n p :e omega, p + m = n + p <-> m = n).
-{ exact (all_in_iff_cong (omega) (fun m:set => forall n p :e omega, m + p = n + p <-> m = n) (fun m:set => forall n p :e omega, p + m = n + p <-> m = n) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => forall p :e omega, m + p = n + p <-> m = n) (fun n:set => forall p :e omega, p + m = n + p <-> m = n) (fun n Hn => (all_in_iff_cong (omega) (fun p:set => m + p = n + p <-> m = n) (fun p:set => p + m = n + p <-> m = n) (fun p Hp => (iff_iff_cong (m + p = n + p) (p + m = n + p) (m = n) (m = n) ((add_SNo_com (m) (p) ((andER (SNo m -> True) (True -> SNo m) (iff_true_intro (SNo m) (omega_SNo (m) Hm))) (fun p:prop => fun H:p => H)) ((andER (SNo p -> True) (True -> SNo p) (iff_true_intro (SNo p) (omega_SNo (p) Hp))) (fun p:prop => fun H:p => H))) (fun hl__u hl__v => (m + p = n + p) <-> (hl__u = n + p)) (iff_refl (m + p = n + p))) (iff_refl (m = n))))))))). }
-claim F0 : forall m n p :e omega, p + m = n + p <-> m = n.
-{ let m. assume Hm.
-let n. assume Hn.
-let p. assume Hp.
-apply iffI.
-- assume H1.
-  exact ((andEL (p + m = p + n -> m = n) (m = n -> p + m = p + n) (EQ_ADD_LCANCEL (p) Hp (m) Hm (n) Hn)) ((H1 (fun hl__u hl__v => hl__u = (p + m)) (fun q H => H)) (fun hl__u hl__v => hl__u = p + n) (ADD_SYM (n) Hn (p) Hp))).
-- assume H.
-  exact (((ADD_SYM (p) Hp (m) Hm) (fun hl__u hl__v => hl__u = (p + m)) (fun q H => H)) (fun hl__u hl__v => hl__u = n + p) (H (fun hl__u hl__v => (m + p) = (hl__u + p)) (fun q H => H))). }
-exact (iffER (forall m n p :e omega, m + p = n + p <-> m = n) (forall m n p :e omega, p + m = n + p <-> m = n) E1 F0).
-Qed.
-
 // HOL Light: arith.ml / LE_ADDR (leaf-guided)
 Theorem LE_ADDR : forall m n :e omega, n <= m + n.
 let m. assume Hm.
 let n. assume Hn.
 exact ((andER (n <= m + n -> exists hl__d :e omega, m + n = n + hl__d) ((exists hl__d :e omega, m + n = n + hl__d) -> n <= m + n) (le_exists_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (ex_intro (fun hl__w:set => hl__w :e omega /\ m + n = n + hl__w) (m) (andI (m :e omega) (m + n = n + m) Hm (ADD_SYM (m) Hm (n) Hn)))).
-Qed.
-
-// HOL Light: calc_int.ml / REAL_EQ_ADD_RCANCEL (leaf-guided)
-Theorem REAL_EQ_ADD_RCANCEL : forall x y z :e R, x + z = y + z <-> x = y.
-claim E1 : (forall x y z :e R, x + z = y + z <-> x = y) <-> (forall x y z :e R, z + x = y + z <-> x = y).
-{ exact (all_in_iff_cong (R) (fun x:set => forall y z :e R, x + z = y + z <-> x = y) (fun x:set => forall y z :e R, z + x = y + z <-> x = y) (fun x Hx => (all_in_iff_cong (R) (fun y:set => forall z :e R, x + z = y + z <-> x = y) (fun y:set => forall z :e R, z + x = y + z <-> x = y) (fun y Hy => (all_in_iff_cong (R) (fun z:set => x + z = y + z <-> x = y) (fun z:set => z + x = y + z <-> x = y) (fun z Hz => (iff_iff_cong (x + z = y + z) (z + x = y + z) (x = y) (x = y) ((add_SNo_com (x) (z) ((andER (SNo x -> True) (True -> SNo x) (iff_true_intro (SNo x) (real_SNo (x) Hx))) (fun p:prop => fun H:p => H)) ((andER (SNo z -> True) (True -> SNo z) (iff_true_intro (SNo z) (real_SNo (z) Hz))) (fun p:prop => fun H:p => H))) (fun hl__u hl__v => (x + z = y + z) <-> (hl__u = y + z)) (iff_refl (x + z = y + z))) (iff_refl (x = y))))))))). }
-claim F0 : forall x y z :e R, z + x = y + z <-> x = y.
-{ let x. assume Hx.
-let y. assume Hy.
-let z. assume Hz.
-apply iffI.
-- assume H1.
-  exact ((andEL (z + x = z + y -> x = y) (x = y -> z + x = z + y) (REAL_EQ_ADD_LCANCEL (z) Hz (x) Hx (y) Hy)) ((H1 (fun hl__u hl__v => hl__u = (z + x)) (fun q H => H)) (fun hl__u hl__v => hl__u = z + y) (REAL_ADD_SYM (y) Hy (z) Hz))).
-- assume H.
-  exact (((REAL_ADD_SYM (z) Hz (x) Hx) (fun hl__u hl__v => hl__u = (z + x)) (fun q H => H)) (fun hl__u hl__v => hl__u = y + z) (H (fun hl__u hl__v => (x + z) = (hl__u + z)) (fun q H => H))). }
-exact (iffER (forall x y z :e R, x + z = y + z <-> x = y) (forall x y z :e R, z + x = y + z <-> x = y) E1 F0).
 Qed.
 
 // HOL Light: realarith.ml / REAL_LT_LE (leaf-guided)

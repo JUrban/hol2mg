@@ -47,7 +47,7 @@ let m. assume Hm.
 let n. assume Hn.
 apply iffI.
 - assume H1.
-  exact (ordsucc_inj (m) (n) H1).
+  exact ((andEL (m + n = n + n -> m = n) (m = n -> m + n = n + n) (eq_add_rcancel_thm (m) Hm (n) Hn (n) Hn)) ((andER (m + n = n + n -> m = n) (m = n -> m + n = n + n) (eq_add_rcancel_thm (m) Hm (n) Hn (n) Hn)) (ordsucc_inj (m) (n) H1))).
 - assume H.
   exact (H (fun hl__u hl__v => (ordsucc m) = (ordsucc hl__u)) (fun q H => H)).
 Qed.

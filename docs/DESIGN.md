@@ -2344,6 +2344,25 @@ through mul_SNo_SL_omega and even_add_thm) — landing FINITE_RULES, HD, TL,
 CONS_11, LE_ADD_LCANCEL, LEFT_SUB_DISTRIB, EVEN_MULT.  Also `lam_empty`/`lam_ext`
 (set_ext + lamI/lamE) staged for the ZIP equations.
 
+N29 (532 -> 542, +10, zero lost; INTERS and EQ_ADD_RCANCEL_0 ride the cascade): the
+real-order cluster and set intersection.  logic.mg `real_mul_linv_thm`
+(recip_SNo_invR + mul_SNo_com + SNo_recip_SNo), `real_le_mul_thm`
+(mul_SNo_nonneg_nonneg), `real_le_rneg_thm` (add_SNo_Le1 both ways with the
+minus inverse laws), `real_le_total_thm` (SNoLtLe_or + SNoLtLe),
+`real_inv_1_thm` (recip_SNo_invR at 1 through mul_SNo_oneL),
+`real_eq_add_rcancel_thm` (add_SNo_cancel_R / f_equal), `real_eq_mul_lcancel_thm`
+(xm on x = 0, mul_SNo_nonzero_cancel), `real_le_neg2_thm` (minus_SNo_Le_contra +
+minus_SNo_invol), `in_inters_thm` (SepI/SepE2 + PowerE) — landing REAL_MUL_LINV,
+REAL_LE_MUL, REAL_LE_RNEG, REAL_LE_TOTAL, REAL_INV_1, REAL_EQ_ADD_RCANCEL,
+REAL_EQ_MUL_LCANCEL, REAL_LE_NEG2, IN_INTERS.  Regression note: the first full
+pass lost EQ_ADD_RCANCEL (its fragile leaf-guided proof stopped closing once the
+nine new builtins changed the search); fixed by the established transplant
+pattern — a direct omega-typed `eq_add_rcancel_thm` hand lemma — and the rerun
+was clean.  Also staged for N30: `two_omega_thm`, `two_ne_0_thm`,
+`even_double_thm`, `two_mul_le_iff_thm`, and the full `arith_le_thm` tower
+(ten conjuncts; bit0/bit1 transports to ordsucc form, parity contradiction for
+the mixed-parity boundary case, lt_mult_lcancel for the strict case).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
