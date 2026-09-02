@@ -1,6 +1,17 @@
 // Native proofs guided by recorded proof leaves (docs/DESIGN.md 24.3):
 // rewrite-normalization to True with the leaf lemmas, one congruence step per claim.
 
+// HOL Light: arith.ml / ADD_SUB (leaf-guided)
+Theorem ADD_SUB : forall m n :e omega, minus_nat (m + n) n = m.
+claim E1 : (forall m n :e omega, minus_nat (m + n) n = m) <-> (forall m n :e omega, minus_nat (n + m) n = m).
+{ exact (all_in_iff_cong (omega) (fun m:set => forall n :e omega, minus_nat (m + n) n = m) (fun m:set => forall n :e omega, minus_nat (n + m) n = m) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => minus_nat (m + n) n = m) (fun n:set => minus_nat (n + m) n = m) (fun n Hn => ((add_SNo_com (m) (n) ((andER (SNo m -> True) (True -> SNo m) (iff_true_intro (SNo m) (omega_SNo (m) Hm))) (fun p:prop => fun H:p => H)) ((andER (SNo n -> True) (True -> SNo n) (iff_true_intro (SNo n) (omega_SNo (n) Hn))) (fun p:prop => fun H:p => H))) (fun hl__u hl__v => (minus_nat (m + n) n = m) <-> (minus_nat hl__u n = m)) (iff_refl (minus_nat (m + n) n = m))))))). }
+claim F0 : forall m n :e omega, minus_nat (n + m) n = m.
+{ let m. assume Hm.
+let n. assume Hn.
+exact (sub_add_self_thm (n) Hn (m) Hm). }
+exact (iffER (forall m n :e omega, minus_nat (m + n) n = m) (forall m n :e omega, minus_nat (n + m) n = m) E1 F0).
+Qed.
+
 // HOL Light: realax.ml / DIST_REFL (leaf-guided)
 Theorem DIST_REFL : forall n :e omega, abs_SNo (n + - n) = 0.
 claim E1 : (forall n :e omega, abs_SNo (n + - n) = 0) <-> (forall n :e omega, minus_nat n n + minus_nat n n = 0).

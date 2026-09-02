@@ -261,7 +261,9 @@ Admitted.
 // Source hash: md5:ef48fb6935c79f467f87c85fe2194b14
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
 Theorem FINITE_RULES : forall A:set, finite Empty /\ forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x).
-Admitted.
+let A.
+exact (finite_rules_thm (A)).
+Qed.
 
 // HOL Light: sets.ml:137 / INFINITE
 // Source hash: md5:7c9d659d5cdcc1d82c3e2e38114de923

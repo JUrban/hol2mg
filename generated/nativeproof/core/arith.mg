@@ -445,6 +445,14 @@ let n. assume Hn.
 exact ((andEL (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) ((andER (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (SNoLe_add_omega (m) Hm (n) Hn))).
 Qed.
 
+// HOL Light: arith.ml / LE_ADD_LCANCEL
+Theorem LE_ADD_LCANCEL : forall m n p :e omega, m + n <= m + p <-> n <= p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (le_add_lcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
 // HOL Light: arith.ml / LE_ADD_RCANCEL
 Theorem LE_ADD_RCANCEL : forall m n p :e omega, m + p <= n + p <-> m <= n.
 let m. assume Hm.
@@ -509,6 +517,13 @@ let n. assume Hn.
 exact (even_add_thm (m) Hm (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / EVEN_MULT
+Theorem EVEN_MULT : forall m n :e omega, even_nat (m * n) <-> even_nat m \/ even_nat n.
+let m. assume Hm.
+let n. assume Hn.
+exact (even_mult_thm (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / SUB_0
 Theorem SUB_0 : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
 let m. assume Hm.
@@ -526,6 +541,13 @@ Qed.
 Theorem SUB_REFL : forall n :e omega, minus_nat n n = 0.
 let n. assume Hn.
 exact ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))).
+Qed.
+
+// HOL Light: arith.ml / ADD_SUB2
+Theorem ADD_SUB2 : forall m n :e omega, minus_nat (m + n) m = n.
+let m. assume Hm.
+let n. assume Hn.
+exact (sub_add_self_thm (m) Hm (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / SUB_EQ_0
@@ -556,6 +578,14 @@ let m. assume Hm.
 let n. assume Hn.
 let p. assume Hp.
 exact (sub_add_lcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
+// HOL Light: arith.ml / LEFT_SUB_DISTRIB
+Theorem LEFT_SUB_DISTRIB : forall m n p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p).
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (left_sub_distrib_thm (m) Hm (n) Hn (p) Hp).
 Qed.
 
 // HOL Light: arith.ml / DIVISION_0

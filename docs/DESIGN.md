@@ -2329,6 +2329,21 @@ SUB_EQ_0, SUB_ADD_LCANCEL, EVEN_ADD, ODD, ADD_EQ_0, INT_FORALL_POS.  Tooling:
 the check_public.sh known-props exclusion grep now passes `--` so propositions
 starting with `-` (e.g. `- 0 = 0.`) no longer error.
 
+N28 (523 -> 532, +9, zero lost; ADD_SUB and ADD_SUB2 ride the sub_add_self cascade):
+finite sets, list projections, cancellation and sum parity of products.  logic.mg
+`finite_rules_thm` (finite_Empty + adjoin_finite, SetAdjoin definitional),
+`hd_cons_thm` (seq_nth_cons_0 through the seq_hd definition), `nat_pred_succ_thm`
+(If_i_0 + add_SNo_1_ordsucc + add_SNo_minus_R2), `tl_cons_thm` (seq_ext over the
+nat_pred length bridge), `cons_11_thm` (f_equal via seq_hd/seq_tl projections one
+way, f_equal2 on seq_cons back), `le_add_lcancel_thm` (add_SNo_Le2 with -m and
+add_SNo_minus_L2), `sub_add_self_thm` (sub_add_lcancel at p = 0),
+`left_sub_distrib_thm` (SNoLtLe_or split: zero side by sub_eq_0 + nonneg_mul_SNo_Le,
+positive side by add_minus_nat_le + mul_SNo_distrL + sub_add_self),
+`even_mult_thm` (nat_ind; successor step is a four-way even_or_odd bash reducing
+through mul_SNo_SL_omega and even_add_thm) — landing FINITE_RULES, HD, TL,
+CONS_11, LE_ADD_LCANCEL, LEFT_SUB_DISTRIB, EVEN_MULT.  Also `lam_empty`/`lam_ext`
+(set_ext + lamI/lamE) staged for the ZIP equations.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
