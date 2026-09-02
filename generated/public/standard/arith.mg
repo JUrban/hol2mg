@@ -91,7 +91,15 @@ Admitted.
 // Source hash: md5:5b4fba1c352fe48a98f89b51b62bcc46
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem EQ_ADD_LCANCEL : forall m n p :e omega, m + n = m + p <-> n = p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_cancel_L (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (m + n) = (m + hl__u)) (fun q H => H)).
+Qed.
 
 // HOL Light: arith.ml:89 / EQ_ADD_RCANCEL
 // Source hash: md5:06430763a15d98b7a40784460fae4f1d
@@ -642,7 +650,10 @@ Admitted.
 // Source hash: md5:2b6bcbd0da941a0d69352fddce245478
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem NOT_LE : forall m n :e omega, ~ m <= n <-> n < m.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (not_SNoLe_iff_omega (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:440 / NOT_LT
 // Source hash: md5:7cff267ecb6a5da7fb22cc74b9054892
@@ -698,7 +709,10 @@ Admitted.
 // Source hash: md5:c840eadf57a06b476726b6575f1ed37c
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
 Theorem LE_ADD : forall m n :e omega, m <= m + n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andEL (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) ((andER (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (SNoLe_add_omega (m) Hm (n) Hn))).
+Qed.
 
 // HOL Light: arith.ml:514 / LE_ADDR
 // Source hash: md5:388d6384219669f49ee02ea2d3eb0b8c
@@ -728,7 +742,15 @@ Admitted.
 // Source hash: md5:fa1ba3595f41a7ff0b64db1a981cc64a
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
 Theorem LE_ADD_RCANCEL : forall m n p :e omega, m + p <= n + p <-> m <= n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Le1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
+- assume H.
+  exact (add_SNo_Le1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
+Qed.
 
 // HOL Light: arith.ml:534 / LT_ADD_LCANCEL
 // Source hash: md5:22e15eb8f48632119400254608722b14
@@ -740,7 +762,15 @@ Admitted.
 // Source hash: md5:ffcde4693946774f17e195ed51beb542
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_lt_SNoLt)
 Theorem LT_ADD_RCANCEL : forall m n p :e omega, m + p < n + p <-> m < n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Lt1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
+- assume H.
+  exact (add_SNo_Lt1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
+Qed.
 
 // HOL Light: arith.ml:542 / LE_ADD2
 // Source hash: md5:199e7302a6920e8a106f4669706b742c

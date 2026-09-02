@@ -56,6 +56,18 @@ let p. assume Hp.
 exact (add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)).
 Qed.
 
+// HOL Light: arith.ml / EQ_ADD_LCANCEL
+Theorem EQ_ADD_LCANCEL : forall m n p :e omega, m + n = m + p <-> n = p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_cancel_L (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (m + n) = (m + hl__u)) (fun q H => H)).
+Qed.
+
 // HOL Light: arith.ml / BIT0
 Theorem BIT0 : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
@@ -359,6 +371,13 @@ let n. assume Hn.
 exact (SNoLtLe_or (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
 Qed.
 
+// HOL Light: arith.ml / NOT_LE
+Theorem NOT_LE : forall m n :e omega, ~ m <= n <-> n < m.
+let m. assume Hm.
+let n. assume Hn.
+exact (not_SNoLe_iff_omega (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / LT_IMP_LE
 Theorem LT_IMP_LE : forall m n :e omega, m < n -> m <= n.
 let m. assume Hm.
@@ -373,5 +392,36 @@ let m. assume Hm.
 let n. assume Hn.
 assume H.
 exact (H (fun hl__u hl__v => m <= hl__u) ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (n)))).
+Qed.
+
+// HOL Light: arith.ml / LE_ADD
+Theorem LE_ADD : forall m n :e omega, m <= m + n.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andEL (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) ((andER (m < ordsucc (m + n) -> m <= m + n) (m <= m + n -> m < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (SNoLe_add_omega (m) Hm (n) Hn))).
+Qed.
+
+// HOL Light: arith.ml / LE_ADD_RCANCEL
+Theorem LE_ADD_RCANCEL : forall m n p :e omega, m + p <= n + p <-> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Le1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
+- assume H.
+  exact (add_SNo_Le1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
+Qed.
+
+// HOL Light: arith.ml / LT_ADD_RCANCEL
+Theorem LT_ADD_RCANCEL : forall m n p :e omega, m + p < n + p <-> m < n.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+apply iffI.
+- assume H1.
+  exact (add_SNo_Lt1_cancel (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H1).
+- assume H.
+  exact (add_SNo_Lt1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
 Qed.
 

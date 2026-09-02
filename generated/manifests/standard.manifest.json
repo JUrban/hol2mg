@@ -14080,7 +14080,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -14178,7 +14178,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -14247,7 +14247,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -29236,7 +29236,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -74779,7 +74779,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -88877,7 +88877,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -89021,7 +89021,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -90604,7 +90604,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -98579,7 +98579,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -120480,7 +120480,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -123452,7 +123452,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": true,
    "fully_proved": false
   },
@@ -124164,7 +124164,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -126632,7 +126632,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -127339,7 +127339,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -127444,7 +127444,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -127693,7 +127693,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -127728,7 +127728,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -131882,7 +131882,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -134095,7 +134095,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -135144,7 +135144,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -135252,7 +135252,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -135431,7 +135431,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -135537,7 +135537,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -135573,7 +135573,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -135681,7 +135681,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },

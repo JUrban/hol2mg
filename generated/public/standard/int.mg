@@ -235,7 +235,7 @@ let x. assume Hx.
 let y. assume Hy.
 apply (xm (x <= y)).
 - assume H.
-  exact ((If_i_1 ((if x <= y then y else x) :e int) (if x <= y then y else x) (0) (((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hy)) (fun hl__u hl__v => hl__u = (if (if x <= y then y else x) :e int then if x <= y then y else x else 0)) (fun q H => H)).
+  exact (((If_i_1 (x <= y) (y) (x) H) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (y :e int) (y) (0) Hy) (fun hl__u hl__v => hl__u = (if y :e int then y else 0)) (fun q H => H))).
 - assume H1.
   exact ((If_i_1 ((if x <= y then y else x) :e int) (if x <= y then y else x) (0) (((If_i_0 (x <= y) (y) (x) H1) (fun hl__u hl__v => hl__u = (if x <= y then y else x)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hx)) (fun hl__u hl__v => hl__u = (if (if x <= y then y else x) :e int then if x <= y then y else x else 0)) (fun q H => H)).
 Qed.
@@ -257,7 +257,7 @@ let x. assume Hx.
 let y. assume Hy.
 apply (xm (x <= y)).
 - assume H.
-  exact ((If_i_1 ((if x <= y then x else y) :e int) (if x <= y then x else y) (0) (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hx)) (fun hl__u hl__v => hl__u = (if (if x <= y then x else y) :e int then if x <= y then x else y else 0)) (fun q H => H)).
+  exact (((If_i_1 (x <= y) (x) (y) H) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u = if hl__u :e int then hl__u else 0) ((If_i_1 (x :e int) (x) (0) Hx) (fun hl__u hl__v => hl__u = (if x :e int then x else 0)) (fun q H => H))).
 - assume H1.
   exact ((If_i_1 ((if x <= y then x else y) :e int) (if x <= y then x else y) (0) (((If_i_0 (x <= y) (x) (y) H1) (fun hl__u hl__v => hl__u = (if x <= y then x else y)) (fun q H => H)) (fun hl__u hl__v => hl__u :e int) Hy)) (fun hl__u hl__v => hl__u = (if (if x <= y then x else y) :e int then if x <= y then x else y else 0)) (fun q H => H)).
 Qed.
@@ -2021,7 +2021,12 @@ Admitted.
 // Source hash: md5:7f7251417bbcd9f3edf0d1f4f0f39c5e
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_SGN_0 : (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) = 0.
-Admitted.
+apply (xm (0 < 0)).
+- assume H.
+  exact (in_1_eq_0 (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) (FalseE ((SNoLt_irref (0)) H) ((if 0 < 0 then 1 else if 0 < 0 then - 1 else 0) :e 1))).
+- assume H1.
+  exact (((If_i_0 (0 < 0) (1) (if 0 < 0 then - 1 else 0) H1) (fun hl__u hl__v => hl__u = (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0)) (fun q H => H)) (fun hl__u hl__v => hl__u = 0) (If_i_0 (0 < 0) (- 1) (0) H1)).
+Qed.
 
 // HOL Light: int.ml:573 / INT_SGN_ABS
 // Source hash: md5:3ac799572e9d56333c6059ef833ed74e
@@ -3336,7 +3341,15 @@ Qed.
 // Source hash: md5:90483bad4d23245d9f65f0717469c8bf
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, hol_real_R, omega_Subq_R, omega_Subq_int)
 Theorem REAL_ZPOW_0 : forall x :e R, (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ (- 0))) = 1.
-Admitted.
+let x. assume Hx.
+claim L: (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ 0)) = 1.
+{ apply (xm (0 <= 0)).
++ assume H.
+  exact (((If_i_1 (0 <= 0) (x ^ 0) (recip_SNo (x ^ 0)) H) (fun hl__u hl__v => hl__u = (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ 0))) (fun q H => H)) (fun hl__u hl__v => hl__u = 1) (exp_SNo_nat_0 (x) (real_SNo (x) Hx))).
++ assume H1.
+  exact (FalseE (H1 (SNoLe_ref (0))) ((if 0 <= 0 then x ^ 0 else recip_SNo (x ^ 0)) = 1)). }
+exact ((eq_sym_i (- 0) (0) minus_SNo_0) (fun hl__u hl__v => (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ hl__u)) = 1) L).
+Qed.
 
 // HOL Light: int.ml:2654 / REAL_ZPOW_1
 // Source hash: md5:6531b16427f4a368c486dd84f34f5963
