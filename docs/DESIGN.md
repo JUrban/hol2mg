@@ -2302,6 +2302,12 @@ N24 (507 -> 508, +1, zero lost): strict multiplicative cancellation.  logic.mg
 with pos_mul_SNo_Lt closing the impossible branches; backward directly by
 pos_mul_SNo_Lt with `0 < m` from lt_nz) — landing LT_MULT_LCANCEL.
 
+N25 (508 -> 509, +1, zero lost): pair equality.  logic.mg `pair_eq_thm` (projections via f_equal
+over `_ 0`/`_ 1` and the tuple_2 axioms forward, f_equal2 on the pair constructor
+backward; the lemma's grouped binder order differs from PAIR_EQ's interleaved one, so
+the builtin AST mirrors the lemma and the conclusion match carries it) — landing
+PAIR_EQ.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

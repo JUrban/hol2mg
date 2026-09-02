@@ -1148,3 +1148,18 @@ apply iffI.
   claim H0m: 0 < m. { exact (iffER (0 < m) (~ m = 0) (lt_nz_thm m Hm) Hm0). }
   exact (pos_mul_SNo_Lt m n p Hsm H0m Hsn Hsp (andER (~ m = 0) (n < p) H)).
 Qed.
+
+Theorem pair_eq_thm : forall A B:set, forall a c :e A, forall b d :e B, (a,b) = (c,d) <-> a = c /\ b = d.
+let A. let B. let a. assume Ha. let c. assume Hc. let b. assume Hb. let d. assume Hd.
+apply iffI.
+- assume H.
+  apply andI.
+  + claim E0: (a,b) 0 = (c,d) 0.
+    { exact (f_equal (fun hl__u:set => hl__u 0) (a,b) (c,d) H). }
+    exact (eq_trans_i a ((a,b) 0) c (eq_sym_i ((a,b) 0) a (tuple_2_0_eq a b)) (eq_trans_i ((a,b) 0) ((c,d) 0) c E0 (tuple_2_0_eq c d))).
+  + claim E1: (a,b) 1 = (c,d) 1.
+    { exact (f_equal (fun hl__u:set => hl__u 1) (a,b) (c,d) H). }
+    exact (eq_trans_i b ((a,b) 1) d (eq_sym_i ((a,b) 1) b (tuple_2_1_eq a b)) (eq_trans_i ((a,b) 1) ((c,d) 1) d E1 (tuple_2_1_eq c d))).
+- assume H.
+  exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u,hl__v)) a c b d (andEL (a = c) (b = d) H) (andER (a = c) (b = d) H)).
+Qed.

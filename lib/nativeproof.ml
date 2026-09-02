@@ -2151,6 +2151,17 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.App (Mg.Cst "not",
                Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Num 0))),
              Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__n"), Mg.Var "hl__p")))))));
+    ("pair_eq_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.AllIn ("hl__a", Mg.Var "hl__A", Mg.AllIn ("hl__c", Mg.Var "hl__A",
+         Mg.AllIn ("hl__b", Mg.Var "hl__B", Mg.AllIn ("hl__d", Mg.Var "hl__B",
+           Mg.App (Mg.App (Mg.Cst "iff",
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.Tuple [ Mg.Var "hl__a"; Mg.Var "hl__b" ]),
+               Mg.Tuple [ Mg.Var "hl__c"; Mg.Var "hl__d" ])),
+             Mg.App (Mg.App (Mg.Cst "and",
+               Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__a"), Mg.Var "hl__c")),
+               Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__b"), Mg.Var "hl__d"))))))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,
