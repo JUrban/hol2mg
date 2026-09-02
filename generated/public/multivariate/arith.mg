@@ -1044,7 +1044,10 @@ Admitted.
 // Source hash: md5:69260c51e4311efc1cb831f28a1f7069
 // Status: transport_required (bridges: hol_num_omega)
 Theorem SUB_SUC : forall m n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus_nat m n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (sub_suc_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:857 / SUB_REFL
 // Source hash: md5:b82c8da4d002065b76e1b7ea3c8ae4b1
