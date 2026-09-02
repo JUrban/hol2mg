@@ -2224,7 +2224,9 @@ Admitted.
 // Source hash: md5:85a59e4ef2440743785ab04d2db8ad7b
 // Status: transport_required (bridges: hol_int_int, hol_num_omega, omega_Subq_int)
 Theorem INT_FORALL_POS : forall P:set -> prop, (forall n :e omega, P n) <-> forall i :e int, 0 <= i -> P i.
-Admitted.
+let P.
+exact (int_forall_pos_thm (P)).
+Qed.
 
 // HOL Light: int.ml:630 / INT_EXISTS_POS
 // Source hash: md5:33b8060ca21d591df783c1b3bdacd01a
