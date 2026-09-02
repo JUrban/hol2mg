@@ -653,7 +653,12 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
                         | None -> bnd0)
               | _ -> bnd0) in
             (* pattern variables the conclusion leaves open are bound by matching the
-               hypothesis' own premises against the available hypotheses (back-chaining) *)
+               hypothesis' own premises against the available hypotheses (back-chaining);
+               bind from PProp premises first — they determine the variables uniquely,
+               while a membership premise can mis-bind against any hypothesis of that
+               carrier.  Only the binding order changes; `args` keeps the real order. *)
+            let bind_prems = List.filter (function PProp _ -> true | _ -> false) prems
+                             @ List.filter (function PProp _ -> false | _ -> true) prems in
             let bnd = List.fold_left (fun bnd pr ->
               let miss = List.filter (fun v -> not (List.mem_assoc v bnd)) pvars in
               if miss = [] then bnd else
@@ -677,7 +682,7 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
                              then (x, Mg.App (Mg.App (Mg.Cst "choose_in", a'),
                                               Mg.Lam ("hl__w", Mg.Set, Mg.Cst "True"))) :: bnd
                              else bnd
-                         | _ -> bnd)))) bnd0 prems in
+                         | _ -> bnd)))) bnd0 bind_prems in
             let bnd = (match wrap with
               | `NotApp np' when not (List.for_all (fun v -> List.mem_assoc v bnd) pvars) ->
                   let miss = List.filter (fun v -> not (List.mem_assoc v bnd)) pvars in
@@ -2095,6 +2100,46 @@ let builtin_premises : (string * Mg.tm) list =
            Mg.App (Mg.App (Mg.Cst "or",
              Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Num 0)),
              Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__n"), Mg.Var "hl__p")))))));
+    ("divmod_uniq_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.AllIn ("hl__q", Mg.Cst "omega", Mg.AllIn ("hl__r", Mg.Cst "omega",
+         Mg.Imp (Mg.App (Mg.App (Mg.Cst "and",
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"),
+             Mg.App (Mg.App (Mg.Cst "add_SNo",
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__q"), Mg.Var "hl__n")),
+               Mg.Var "hl__r"))),
+           Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__r"), Mg.Var "hl__n")),
+           Mg.App (Mg.App (Mg.Cst "and",
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "div_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
+               Mg.Var "hl__q")),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "mod_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
+               Mg.Var "hl__r"))))))));
+    ("div_uniq_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.AllIn ("hl__q", Mg.Cst "omega", Mg.AllIn ("hl__r", Mg.Cst "omega",
+         Mg.Imp (Mg.App (Mg.App (Mg.Cst "and",
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"),
+             Mg.App (Mg.App (Mg.Cst "add_SNo",
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__q"), Mg.Var "hl__n")),
+               Mg.Var "hl__r"))),
+           Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__r"), Mg.Var "hl__n")),
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "div_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
+             Mg.Var "hl__q")))))));
+    ("mod_uniq_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.AllIn ("hl__q", Mg.Cst "omega", Mg.AllIn ("hl__r", Mg.Cst "omega",
+         Mg.Imp (Mg.App (Mg.App (Mg.Cst "and",
+           Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"),
+             Mg.App (Mg.App (Mg.Cst "add_SNo",
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__q"), Mg.Var "hl__n")),
+               Mg.Var "hl__r"))),
+           Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__r"), Mg.Var "hl__n")),
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "mod_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
+             Mg.Var "hl__r")))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

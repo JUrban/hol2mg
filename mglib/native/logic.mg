@@ -1024,3 +1024,90 @@ apply iffI.
   assume H0.
   exact (f_equal (fun hl__u:set => m * hl__u) n p H0).
 Qed.
+
+Theorem quotrem_le_aux : forall n q1 r1 q2 r2 :e omega, r1 < n -> q1 <= q2 -> q1 * n + r1 = q2 * n + r2 -> q1 = q2 /\ r1 = r2.
+let n. assume Hn. let q1. assume Hq1. let r1. assume Hr1. let q2. assume Hq2. let r2. assume Hr2.
+assume HR1. assume HLE. assume HEQ.
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsq1: SNo q1. { exact (omega_SNo q1 Hq1). }
+claim Hsr1: SNo r1. { exact (omega_SNo r1 Hr1). }
+claim Hsr2: SNo r2. { exact (omega_SNo r2 Hr2). }
+apply ((iffEL (q1 <= q2) (exists d :e omega, q2 = q1 + d) (le_exists_thm q1 Hq1 q2 Hq2)) HLE).
+let d. assume Hd0. apply Hd0. assume Hd HD.
+claim Hsd: SNo d. { exact (omega_SNo d Hd). }
+claim Hdn: d * n :e omega. { exact (mul_SNo_In_omega d Hd n Hn). }
+claim E1: q2 * n = q1 * n + d * n.
+{ claim E0: q2 * n = (q1 + d) * n.
+  { exact (f_equal (fun hl__u:set => hl__u * n) q2 (q1 + d) HD). }
+  exact (eq_trans_i (q2 * n) ((q1 + d) * n) (q1 * n + d * n) E0 (mul_SNo_distrR q1 d n Hsq1 Hsd Hsn)). }
+claim E2: q1 * n + r1 = q1 * n + (d * n + r2).
+{ claim E21: q2 * n + r2 = (q1 * n + d * n) + r2.
+  { exact (f_equal (fun hl__u:set => hl__u + r2) (q2 * n) (q1 * n + d * n) E1). }
+  claim E22: (q1 * n + d * n) + r2 = q1 * n + (d * n + r2).
+  { exact (eq_sym_i (q1 * n + (d * n + r2)) ((q1 * n + d * n) + r2) (add_SNo_assoc (q1 * n) (d * n) r2 (SNo_mul_SNo q1 n Hsq1 Hsn) (SNo_mul_SNo d n Hsd Hsn) Hsr2)). }
+  exact (eq_trans_i (q1 * n + r1) (q2 * n + r2) (q1 * n + (d * n + r2)) HEQ (eq_trans_i (q2 * n + r2) ((q1 * n + d * n) + r2) (q1 * n + (d * n + r2)) E21 E22)). }
+claim E3: r1 = d * n + r2.
+{ exact (add_SNo_cancel_L (q1 * n) r1 (d * n + r2) (SNo_mul_SNo q1 n Hsq1 Hsn) Hsr1 (SNo_add_SNo (d * n) r2 (SNo_mul_SNo d n Hsd Hsn) Hsr2) E2). }
+apply (nat_inv d (omega_nat_p d Hd)).
+assume Hd00.
+claim EQ1: q1 = q2.
+{ claim T1: q2 = q1 + 0. { exact ((Hd00 (fun hl__u hl__v => q2 = q1 + hl__u)) HD). }
+  exact (eq_sym_i q2 q1 (eq_trans_i q2 (q1 + 0) q1 T1 (add_SNo_0R q1 Hsq1))). }
+claim EQ2: r1 = r2.
+{ claim T2: r1 = 0 * n + r2. { exact ((Hd00 (fun hl__u hl__v => r1 = hl__u * n + r2)) E3). }
+  exact (eq_trans_i r1 (0 * n + r2) r2 T2 (eq_trans_i (0 * n + r2) (0 + r2) r2 (f_equal (fun hl__u:set => hl__u + r2) (0 * n) 0 (mul_SNo_zeroL n Hsn)) (add_SNo_0L r2 Hsr2))). }
+exact (andI (q1 = q2) (r1 = r2) EQ1 EQ2).
+assume Hex2. apply Hex2. let d1. assume Hd10. apply Hd10. assume Hd1n Hdd1.
+claim Hd1o: d1 :e omega. { exact (nat_p_omega d1 Hd1n). }
+claim Hsd1: SNo d1. { exact (omega_SNo d1 Hd1o). }
+claim LN: n <= d * n.
+{ claim F1: d * n = d1 * n + n.
+  { claim F0: d * n = (d1 + 1) * n.
+    { exact ((eq_sym_i (d1 + 1) (ordsucc d1) (add_SNo_1_ordsucc d1 Hd1o)) (fun hl__u hl__v => d * n = hl__u * n) (Hdd1 (fun hl__u hl__v => d * n = hl__u * n) (fun q H => H))). }
+    claim F2: (d1 + 1) * n = d1 * n + 1 * n.
+    { exact (mul_SNo_distrR d1 1 n Hsd1 SNo_1 Hsn). }
+    claim F3: d1 * n + 1 * n = d1 * n + n.
+    { exact (f_equal (fun hl__u:set => d1 * n + hl__u) (1 * n) n (mul_SNo_oneL n Hsn)). }
+    exact (eq_trans_i (d * n) ((d1 + 1) * n) (d1 * n + n) F0 (eq_trans_i ((d1 + 1) * n) (d1 * n + 1 * n) (d1 * n + n) F2 F3)). }
+  claim F4: n <= n + d1 * n. { exact (SNoLe_add_omega n Hn (d1 * n) (mul_SNo_In_omega d1 Hd1o n Hn)). }
+  claim F5: n <= d1 * n + n.
+  { exact ((add_SNo_com n (d1 * n) Hsn (SNo_mul_SNo d1 n Hsd1 Hsn)) (fun hl__u hl__v => n <= hl__u) F4). }
+  exact ((eq_sym_i (d * n) (d1 * n + n) F1) (fun hl__u hl__v => n <= hl__u) F5). }
+claim LR: n <= r1.
+{ claim G1: d * n <= d * n + r2. { exact (SNoLe_add_omega (d * n) Hdn r2 Hr2). }
+  claim G2: d * n <= r1.
+  { exact ((eq_sym_i r1 (d * n + r2) E3) (fun hl__u hl__v => d * n <= hl__u) G1). }
+  exact (SNoLe_tra n (d * n) r1 Hsn (SNo_mul_SNo d n Hsd Hsn) Hsr1 LN G2). }
+exact (FalseE (SNoLt_irref n (SNoLeLt_tra n r1 n Hsn Hsr1 Hsn LR HR1)) (q1 = q2 /\ r1 = r2)).
+Qed.
+
+Theorem divmod_uniq_thm : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q /\ mod_nat m n = r.
+let m. assume Hm. let n. assume Hn. let q. assume Hq. let r. assume Hr. assume H.
+claim HE: m = q * n + r. { exact (andEL (m = q * n + r) (r < n) H). }
+claim HR: r < n. { exact (andER (m = q * n + r) (r < n) H). }
+claim Hn0: ~ n = 0.
+{ exact (iffEL (0 < n) (~ n = 0) (lt_nz_thm n Hn) (SNoLeLt_tra 0 r n SNo_0 (omega_SNo r Hr) (omega_SNo n Hn) (omega_nonneg r Hr) HR)). }
+claim HD: m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
+{ exact (div_mod_nat m Hm n Hn Hn0). }
+claim HEQ: div_nat m n * n + mod_nat m n = q * n + r.
+{ exact (eq_trans_i (div_nat m n * n + mod_nat m n) m (q * n + r) (eq_sym_i m (div_nat m n * n + mod_nat m n) (andEL (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) HD)) HE). }
+apply (SNoLtLe_or (div_nat m n) q (omega_SNo (div_nat m n) (div_nat_omega m Hm n Hn)) (omega_SNo q Hq)).
+assume H1.
+claim A: div_nat m n = q /\ mod_nat m n = r.
+{ exact (quotrem_le_aux n Hn (div_nat m n) (div_nat_omega m Hm n Hn) (mod_nat m n) (mod_nat_omega m Hm n Hn) q Hq r Hr (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) HD) (SNoLtLe (div_nat m n) q H1) HEQ). }
+exact A.
+assume H1.
+claim A: q = div_nat m n /\ r = mod_nat m n.
+{ exact (quotrem_le_aux n Hn q Hq r Hr (div_nat m n) (div_nat_omega m Hm n Hn) (mod_nat m n) (mod_nat_omega m Hm n Hn) HR H1 (eq_sym_i (div_nat m n * n + mod_nat m n) (q * n + r) HEQ)). }
+exact (andI (div_nat m n = q) (mod_nat m n = r) (eq_sym_i q (div_nat m n) (andEL (q = div_nat m n) (r = mod_nat m n) A)) (eq_sym_i r (mod_nat m n) (andER (q = div_nat m n) (r = mod_nat m n) A))).
+Qed.
+
+Theorem div_uniq_thm : forall m n q r :e omega, m = q * n + r /\ r < n -> div_nat m n = q.
+let m. assume Hm. let n. assume Hn. let q. assume Hq. let r. assume Hr. assume H.
+exact (andEL (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm m Hm n Hn q Hq r Hr H)).
+Qed.
+
+Theorem mod_uniq_thm : forall m n q r :e omega, m = q * n + r /\ r < n -> mod_nat m n = r.
+let m. assume Hm. let n. assume Hn. let q. assume Hq. let r. assume Hr. assume H.
+exact (andER (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm m Hm n Hn q Hq r Hr H)).
+Qed.

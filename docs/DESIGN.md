@@ -2284,6 +2284,19 @@ pos_mul_SNo_Lt, mul_SNo_pos_pos; logic.mg `lt_nz_thm` (`0 < n <-> ~ n = 0` by
 SNoLeE dichotomy) and `eq_mult_lcancel_thm` (xm on `m = 0`, cancel or zero out) —
 landing LT_NZ and EQ_MULT_LCANCEL.
 
+N22 (504 -> 506, +2, zero lost): divmod uniqueness.  logic.mg `quotrem_le_aux` (the WLOG half:
+with q1 <= q2, `le_exists` yields q2 = q1 + d; d = 0 closes both equalities, d = succ
+forces n <= d·n <= r1 against r1 < n), `divmod_uniq_thm` (SNoLtLe_or gives both WLOG
+directions through the aux), and the `div/mod_uniq_thm` projections — landing
+DIVMOD_UNIQ and DIV_UNIQ.
+
+N23 (504 -> 507 together with N22, +3, zero lost — landed as one increment): back-chain
+binding order.  The application machinery binds open
+pattern variables from PProp premises before membership premises (a membership premise
+mis-binds against any hypothesis of that carrier — MOD_UNIQ's open `q` grabbed
+`r :e omega` while DIV_UNIQ's open `r` got lucky); only the *binding* order changes,
+the citation's argument order is untouched.  Lands MOD_UNIQ.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
