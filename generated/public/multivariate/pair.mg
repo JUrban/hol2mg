@@ -40,7 +40,14 @@ Admitted.
 // Source hash: md5:71770245f4ddd568d85751053a9e5a6e
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem PAIR_EQ : forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b.
-Admitted.
+let A.
+let B.
+let x. assume Hx.
+let y. assume Hy.
+let a. assume Ha.
+let b. assume Hb.
+exact (pair_eq_thm (A) (B) (x) Hx (a) Ha (y) Hy (b) Hb).
+Qed.
 
 // HOL Light: pair.ml:82 / PAIR_SURJECTIVE
 // Source hash: md5:8a85c46beb474e1e63192937ada8908b
