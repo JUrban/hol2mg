@@ -441,6 +441,17 @@ apply iffI.
   exact (add_SNo_Lt1 (m) (p) (n) (omega_SNo (m) Hm) (omega_SNo (p) Hp) (omega_SNo (n) Hn) H).
 Qed.
 
+// HOL Light: arith.ml / EVEN
+Theorem EVEN : (even_nat 0 <-> True) /\ forall n :e omega, even_nat (ordsucc n) <-> ~ even_nat n.
+exact even_thm.
+Qed.
+
+// HOL Light: arith.ml / NOT_EVEN
+Theorem NOT_EVEN : forall n :e omega, ~ even_nat n <-> odd_nat n.
+let n. assume Hn.
+exact (not_even_thm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / SUB_0
 Theorem SUB_0 : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
 let m. assume Hm.
