@@ -204,6 +204,12 @@ apply iffI.
   exact H.
 Qed.
 
+// HOL Light: sets.ml / FINITE_RULES
+Theorem FINITE_RULES : forall A:set, finite Empty /\ forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x).
+let A.
+exact (finite_rules_thm (A)).
+Qed.
+
 // HOL Light: sets.ml / CHOICE
 Theorem CHOICE : forall A:set, forall s c= A, choose_in A (fun x:set => x :e s) = choose_in A (fun x:set => x :e s).
 let A.

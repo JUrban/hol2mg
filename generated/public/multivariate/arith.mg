@@ -756,7 +756,11 @@ Admitted.
 // Source hash: md5:6949599388ac43ea08036b19ef3b235c
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
 Theorem LE_ADD_LCANCEL : forall m n p :e omega, m + n <= m + p <-> n <= p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (le_add_lcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:530 / LE_ADD_RCANCEL
 // Source hash: md5:fa1ba3595f41a7ff0b64db1a981cc64a
@@ -986,7 +990,10 @@ Qed.
 // Source hash: md5:0fbaae8611372953bf1896ba201fd510
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem EVEN_MULT : forall m n :e omega, even_nat (m * n) <-> even_nat m \/ even_nat n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (even_mult_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:759 / EVEN_EXP
 // Source hash: md5:b04db5ebd41c85a7b94bf0f8080a989d
@@ -1095,7 +1102,10 @@ Admitted.
 // Source hash: md5:fded8a3febfff115683ebeef0d44f517
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_SUB2 : forall m n :e omega, minus_nat (m + n) m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (sub_add_self_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:869 / SUB_EQ_0
 // Source hash: md5:e64d68168f7bbad2ee434f90a4ec9ed4
@@ -1151,7 +1161,11 @@ Admitted.
 // Source hash: md5:49b856e55db126122c82af1cf054995d
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem LEFT_SUB_DISTRIB : forall m n p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (left_sub_distrib_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:906 / RIGHT_SUB_DISTRIB
 // Source hash: md5:ad1cb55d6a3ff598e4b02b87dcb37398
