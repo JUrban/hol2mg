@@ -990,3 +990,37 @@ claim L2: forall m n :e omega, n * div_nat m n + mod_nat m n = m.
   exact (eq_trans_i (n * div_nat m n + mod_nat m n) (div_nat m n * n + mod_nat m n) m E2 (L1 m Hm n Hn)). }
 exact (andI (forall m n :e omega, div_nat m n * n + mod_nat m n = m) (forall m n :e omega, n * div_nat m n + mod_nat m n = m) L1 L2).
 Qed.
+
+Theorem lt_nz_thm : forall n :e omega, 0 < n <-> ~ n = 0.
+let n. assume Hn.
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+apply iffI.
+- assume H. assume H0.
+  exact (SNoLt_irref 0 (H0 (fun hl__u hl__v => 0 < hl__u) H)).
+- assume H.
+  apply (SNoLeE 0 n SNo_0 Hsn (omega_nonneg n Hn)).
+  assume H1. exact H1.
+  assume H1. exact (FalseE (H (eq_sym_i 0 n H1)) (0 < n)).
+Qed.
+
+Theorem eq_mult_lcancel_thm : forall m n p :e omega, m * n = m * p <-> m = 0 \/ n = p.
+let m. assume Hm. let n. assume Hn. let p. assume Hp.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsp: SNo p. { exact (omega_SNo p Hp). }
+apply iffI.
+- assume H.
+  apply (xm (m = 0)).
+  assume H0. exact (orIL (m = 0) (n = p) H0).
+  assume H0. exact (orIR (m = 0) (n = p) (mul_SNo_nonzero_cancel m n p Hsm H0 Hsn Hsp H)).
+- assume H.
+  apply H.
+  assume H0.
+  claim E1: m * n = 0.
+  { exact (eq_trans_i (m * n) (0 * n) 0 (f_equal (fun hl__u:set => hl__u * n) m 0 H0) (mul_SNo_zeroL n Hsn)). }
+  claim E2: m * p = 0.
+  { exact (eq_trans_i (m * p) (0 * p) 0 (f_equal (fun hl__u:set => hl__u * p) m 0 H0) (mul_SNo_zeroL p Hsp)). }
+  exact (eq_trans_i (m * n) 0 (m * p) E1 (eq_sym_i (m * p) 0 E2)).
+  assume H0.
+  exact (f_equal (fun hl__u:set => m * hl__u) n p H0).
+Qed.

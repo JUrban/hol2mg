@@ -2276,6 +2276,14 @@ definitional unfolds; `division_0_thm`; `division_simp_thm` with the n = 0 case 
 land MOD_ZERO, DIV_ZERO, DIVISION_0 and DIVISION_SIMP.  DIV_0/MOD_0/DIVMOD_UNIQ still
 need Eps-uniqueness arithmetic.
 
+N21 (492 -> 504, +12, zero lost; the cascade brings LT_LMULT, MOD_LT_EQ_LT,
+REAL_EQ_LCANCEL_IMP, REAL_LT_LMUL, REAL_LT_MUL, REAL_LT_NZ, REAL_MUL_LNEG,
+REAL_NEG_L/RMUL): multiplicative negation and cancellation.  Builtins
+mul_SNo_minus_distrL/R (lands REAL_MUL_RNEG by application), mul_SNo_nonzero_cancel,
+pos_mul_SNo_Lt, mul_SNo_pos_pos; logic.mg `lt_nz_thm` (`0 < n <-> ~ n = 0` by
+SNoLeE dichotomy) and `eq_mult_lcancel_thm` (xm on `m = 0`, cancel or zero out) —
+landing LT_NZ and EQ_MULT_LCANCEL.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

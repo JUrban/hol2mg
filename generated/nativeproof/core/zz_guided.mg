@@ -59,6 +59,22 @@ apply iffI.
 exact (iffER (forall x y :e R, x < y <-> x <= y /\ ~ x = y) (forall x y :e R, ~ y <= x <-> x <= y /\ ~ x = y) E1 F0).
 Qed.
 
+// HOL Light: realarith.ml / REAL_LT_NZ (leaf-guided)
+Theorem REAL_LT_NZ : forall n :e omega, ~ n = 0 <-> 0 < n.
+claim E1 : (forall n :e omega, ~ n = 0 <-> 0 < n) <-> (forall n :e omega, ~ n = 0 <-> ~ n = 0).
+{ exact (all_in_iff_cong (omega) (fun n:set => ~ n = 0 <-> 0 < n) (fun n:set => ~ n = 0 <-> ~ n = 0) (fun n Hn => (iff_iff_cong (~ n = 0) (~ n = 0) (0 < n) (~ n = 0) (iff_refl (~ n = 0)) (minus_SNo_0 (fun hl__u hl__v => hl__u < n <-> ~ n = hl__u) ((minus_SNo_0 (fun hl__u hl__v => hl__u = (- 0)) (fun q H => H)) (fun hl__u hl__v => hl__u < n <-> ~ n = hl__u) (lt_nz_thm (n) Hn)))))). }
+claim F0 : forall n :e omega, ~ n = 0 <-> ~ n = 0.
+{ let n. assume Hn.
+apply iffI.
+- assume H2.
+  assume H3.
+  exact (H2 H3).
+- assume H.
+  assume H1.
+  exact (H H1). }
+exact (iffER (forall n :e omega, ~ n = 0 <-> 0 < n) (forall n :e omega, ~ n = 0 <-> ~ n = 0) E1 F0).
+Qed.
+
 // HOL Light: realarith.ml / REAL_NOT_LT (leaf-guided)
 Theorem REAL_NOT_LT : forall x y :e R, ~ x < y <-> y <= x.
 claim E1 : (forall x y :e R, ~ x < y <-> y <= x) <-> (forall x y :e R, ~ ~ y <= x <-> y <= x).

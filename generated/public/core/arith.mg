@@ -293,7 +293,11 @@ Admitted.
 // Source hash: md5:51da4c7d79c6b1277495df6bcee7b900
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem EQ_MULT_LCANCEL : forall m n p :e omega, m * n = m * p <-> m = 0 \/ n = p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (eq_mult_lcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:199 / EQ_MULT_RCANCEL
 // Source hash: md5:b0b6632633c6cc3999bb29b53a4787f9
@@ -693,7 +697,9 @@ Qed.
 // Source hash: md5:44fb2896bb81711114737091050171b2
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem LT_NZ : forall n :e omega, 0 < n <-> ~ n = 0.
-Admitted.
+let n. assume Hn.
+exact (lt_nz_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:464 / LE_1
 // Source hash: md5:53332fbfbd5458191f309a947caf8233
@@ -823,7 +829,12 @@ Admitted.
 // Source hash: md5:5dcee080a2851fb186a6dd59f8b365f3
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem LT_LMULT : forall m n p :e omega, ~ m = 0 /\ n < p -> m * n < m * p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+assume H.
+exact (pos_mul_SNo_Lt (m) (n) (p) (omega_SNo (m) Hm) ((andER (0 < m -> ~ m = 0) (~ m = 0 -> 0 < m) (lt_nz_thm (m) Hm)) (andEL (~ m = 0) (n < p) H)) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andER (~ m = 0) (n < p) H)).
+Qed.
 
 // HOL Light: arith.ml:590 / LE_MULT_LCANCEL
 // Source hash: md5:8c8353caf459eb2e8bd8beddecc8bb62
@@ -1297,7 +1308,14 @@ Admitted.
 // Source hash: md5:0bba73e717068929738c68fef39f9109
 // Status: transport_required (bridges: hol_num_omega, nat_lt_SNoLt)
 Theorem MOD_LT_EQ_LT : forall m n :e omega, mod_nat m n < n <-> 0 < n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact (SNoLeLt_tra (0) (mod_nat m n) (n) (omega_SNo (0) (nat_p_omega (0) nat_0)) (omega_SNo (mod_nat m n) (mod_nat_omega (m) Hm (n) Hn)) (omega_SNo (n) Hn) (omega_nonneg (mod_nat m n) (mod_nat_omega (m) Hm (n) Hn)) H1).
+- assume H.
+  exact (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn ((andEL (0 < n -> ~ n = 0) (~ n = 0 -> 0 < n) (lt_nz_thm (n) Hn)) H))).
+Qed.
 
 // HOL Light: arith.ml:1125 / DIVMOD_UNIQ_LEMMA
 // Source hash: md5:47c8935d0ad689bcaeb3475178ef9faf
