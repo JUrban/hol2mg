@@ -1901,6 +1901,13 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.App (Mg.App (Mg.Cst "and",
                mg_in (Mg.Var "hl__x") (Mg.Var "hl__s")),
                mg_in (Mg.Var "hl__y") (Mg.Var "hl__t"))))))))));
+    ("sub_suc_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "minus_nat",
+           Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__m")),
+           Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+         Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Var "hl__n")))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

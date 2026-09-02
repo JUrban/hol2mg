@@ -677,3 +677,43 @@ apply iffI.
 - assume H.
   exact (tuple_2_Sigma s (fun hl__w:set => t) x (andEL (x :e s) (y :e t) H) y (andER (x :e s) (y :e t) H)).
 Qed.
+
+Theorem sub_suc_thm : forall m n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus_nat m n.
+let m. assume Hm. let n. assume Hn.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsmn: SNo (- ordsucc n). { exact (SNo_minus_SNo (ordsucc n) (omega_SNo (ordsucc n) (omega_ordsucc n Hn))). }
+claim Hmono1: n <= m -> ordsucc n <= ordsucc m.
+{ assume H.
+  claim L1: n + 1 <= m + 1. { exact (add_SNo_Le1 n 1 m Hsn SNo_1 Hsm H). }
+  exact ((add_SNo_1_ordsucc n Hn) (fun hl__u hl__v => hl__u <= ordsucc m) ((add_SNo_1_ordsucc m Hm) (fun hl__u hl__v => n + 1 <= hl__u) L1)). }
+claim Hmono2: ordsucc n <= ordsucc m -> n <= m.
+{ assume H.
+  claim L1: n + 1 <= m + 1.
+  { exact ((eq_sym_i (n + 1) (ordsucc n) (add_SNo_1_ordsucc n Hn)) (fun hl__u hl__v => hl__u <= m + 1) ((eq_sym_i (m + 1) (ordsucc m) (add_SNo_1_ordsucc m Hm)) (fun hl__u hl__v => ordsucc n <= hl__u) H)). }
+  exact (add_SNo_Le1_cancel n 1 m Hsn SNo_1 Hsm L1). }
+claim Heq: ordsucc m + - ordsucc n = m + - n.
+{ claim E1: ordsucc m + - ordsucc n = (m + 1) + - ordsucc n.
+  { exact ((eq_sym_i (m + 1) (ordsucc m) (add_SNo_1_ordsucc m Hm)) (fun hl__u hl__v => ordsucc m + - ordsucc n = hl__u + - ordsucc n) (fun q H => H)). }
+  claim E2: (m + 1) + - ordsucc n = m + (1 + - ordsucc n).
+  { exact (eq_sym_i (m + (1 + - ordsucc n)) ((m + 1) + - ordsucc n) (add_SNo_assoc m 1 (- ordsucc n) Hsm SNo_1 Hsmn)). }
+  claim E5: 1 + - ordsucc n = - n.
+  { exact (eq_trans_i (1 + - ordsucc n) (- ordsucc n + 1) (- n) (add_SNo_com 1 (- ordsucc n) SNo_1 Hsmn) (god1_negative_successor_add_one n Hn)). }
+  claim E6: m + (1 + - ordsucc n) = m + - n.
+  { exact (f_equal (fun hl__u:set => m + hl__u) (1 + - ordsucc n) (- n) E5). }
+  exact (eq_trans_i (ordsucc m + - ordsucc n) (m + (1 + - ordsucc n)) (m + - n) (eq_trans_i (ordsucc m + - ordsucc n) ((m + 1) + - ordsucc n) (m + (1 + - ordsucc n)) E1 E2) E6). }
+prove (if ordsucc n <= ordsucc m then ordsucc m + - ordsucc n else 0) = if n <= m then m + - n else 0.
+apply (xm (n <= m)).
+- assume H1.
+  claim F1: (if ordsucc n <= ordsucc m then ordsucc m + - ordsucc n else 0) = ordsucc m + - ordsucc n.
+  { exact (If_i_1 (ordsucc n <= ordsucc m) (ordsucc m + - ordsucc n) 0 (Hmono1 H1)). }
+  claim F2: (if n <= m then m + - n else 0) = m + - n.
+  { exact (If_i_1 (n <= m) (m + - n) 0 H1). }
+  exact (eq_trans_i (if ordsucc n <= ordsucc m then ordsucc m + - ordsucc n else 0) (m + - n) (if n <= m then m + - n else 0) (eq_trans_i (if ordsucc n <= ordsucc m then ordsucc m + - ordsucc n else 0) (ordsucc m + - ordsucc n) (m + - n) F1 Heq) (eq_sym_i (if n <= m then m + - n else 0) (m + - n) F2)).
+- assume H1.
+  claim F1: (if ordsucc n <= ordsucc m then ordsucc m + - ordsucc n else 0) = 0.
+  { exact (If_i_0 (ordsucc n <= ordsucc m) (ordsucc m + - ordsucc n) 0 (fun hl__H : ordsucc n <= ordsucc m => H1 (Hmono2 hl__H))). }
+  claim F2: (if n <= m then m + - n else 0) = 0.
+  { exact (If_i_0 (n <= m) (m + - n) 0 H1). }
+  exact (eq_trans_i (if ordsucc n <= ordsucc m then ordsucc m + - ordsucc n else 0) 0 (if n <= m then m + - n else 0) F1 (eq_sym_i (if n <= m then m + - n else 0) 0 F2)).
+Qed.

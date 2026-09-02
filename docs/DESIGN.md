@@ -2242,6 +2242,12 @@ logic.mg `right_imp_exists_thm` (xm on P; `choose_in` witness in the negative br
 `SNoLe_0_iff_omega`), `in_cross_thm` (Sigma projections + tuple_2_Sigma) — landing
 RIGHT_IMP_EXISTS_THM, SUB_0, IN_CROSS.
 
+N16 (479 -> 480, +1, zero lost): successor subtraction.  logic.mg `sub_suc_thm` — both minus_nat
+Ifs case-split together via the succ-monotonicity of `<=` (add_SNo_Le1/its cancel over
+`+ 1` with `add_SNo_1_ordsucc` transports), and the true branch collapses through
+God1's `god1_negative_successor_add_one` (`- ordsucc n + 1 = - n`); lands SUB_SUC.
+ADD_SUB/ADD_SUB2 should follow via guided premises in the fixpoint.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
