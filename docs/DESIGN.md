@@ -2260,6 +2260,13 @@ both `k+k` and `(j+j)+1` pushes the contradiction down to `j + j` through
 `ordsucc_inj`), and the public-facing `even_thm`/`not_even_thm` — landing EVEN and
 NOT_EVEN.  All six Megalodon-checked on first composition.
 
+N19 (483 -> 486, +3, zero lost; LE_ADDR and SUB_ADD ride the cascade): subtraction
+witnesses.  logic.mg `minus_nat_In_omega` (double
+descent: nat_ind on the subtrahend with `nat_inv` on the minuend, stepping through
+`sub_suc_thm`), `add_minus_nat_le` (`m + (n + -m) = n` via the 3_0_1 commutation and
+the right inverse), and `le_exists_thm` — landing LE_EXISTS with `minus_nat n m` as
+the existential witness.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

@@ -410,6 +410,13 @@ assume H.
 exact (H (fun hl__u hl__v => m <= hl__u) ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u <= hl__u) (SNoLe_ref (n)))).
 Qed.
 
+// HOL Light: arith.ml / LE_EXISTS
+Theorem LE_EXISTS : forall m n :e omega, m <= n <-> exists d :e omega, n = m + d.
+let m. assume Hm.
+let n. assume Hn.
+exact (le_exists_thm (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / LE_ADD
 Theorem LE_ADD : forall m n :e omega, m <= m + n.
 let m. assume Hm.
@@ -463,5 +470,13 @@ Theorem SUB_SUC : forall m n :e omega, minus_nat (ordsucc m) (ordsucc n) = minus
 let m. assume Hm.
 let n. assume Hn.
 exact (sub_suc_thm (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / SUB_ADD
+Theorem SUB_ADD : forall m n :e omega, n <= m -> minus_nat m n + n = m.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (((add_SNo_com (minus_nat m n) (n) (omega_SNo (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm)) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (minus_nat m n + n)) (fun q H => H)) (fun hl__u hl__v => hl__u = m) (add_minus_nat_le (n) Hn (m) Hm H)).
 Qed.
 

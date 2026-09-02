@@ -861,3 +861,61 @@ apply iffI.
 - assume H. assume H2.
   exact (not_even_and_odd n Hn H2 H).
 Qed.
+
+Theorem minus_nat_In_omega : forall m :e omega, forall n :e omega, minus_nat n m :e omega.
+let m0. assume Hm0.
+claim Hbase: forall n :e omega, minus_nat n 0 :e omega.
+{ let n. assume Hn.
+  claim E: minus_nat n 0 = n.
+  { exact (andER (minus_nat 0 n = 0) (minus_nat n 0 = n) (sub_0_thm n Hn)). }
+  exact ((eq_sym_i (minus_nat n 0) n E) (fun hl__u hl__v => hl__u :e omega) Hn). }
+claim Hstep: forall hl__k, nat_p hl__k -> (forall n :e omega, minus_nat n hl__k :e omega) -> forall n :e omega, minus_nat n (ordsucc hl__k) :e omega.
+{ let hl__k. assume Hk. assume IH. let n. assume Hn.
+  apply (nat_inv n (omega_nat_p n Hn)).
+  assume Hn0.
+  claim E: minus_nat 0 (ordsucc hl__k) = 0.
+  { exact (andEL (minus_nat 0 (ordsucc hl__k) = 0) (minus_nat (ordsucc hl__k) 0 = ordsucc hl__k) (sub_0_thm (ordsucc hl__k) (omega_ordsucc hl__k (nat_p_omega hl__k Hk)))). }
+  claim E2: minus_nat n (ordsucc hl__k) = 0.
+  { exact ((eq_sym_i n 0 Hn0) (fun hl__u hl__v => minus_nat hl__u (ordsucc hl__k) = 0) E). }
+  exact ((eq_sym_i (minus_nat n (ordsucc hl__k)) 0 E2) (fun hl__u hl__v => hl__u :e omega) (nat_p_omega 0 nat_0)).
+  assume Hex. apply Hex. let n1. assume Hn10. apply Hn10. assume Hn1p Hnn1.
+  claim E: minus_nat (ordsucc n1) (ordsucc hl__k) = minus_nat n1 hl__k.
+  { exact (sub_suc_thm n1 (nat_p_omega n1 Hn1p) hl__k (nat_p_omega hl__k Hk)). }
+  claim M: minus_nat n1 hl__k :e omega.
+  { exact (IH n1 (nat_p_omega n1 Hn1p)). }
+  claim E2: minus_nat n (ordsucc hl__k) = minus_nat n1 hl__k.
+  { exact ((eq_sym_i n (ordsucc n1) Hnn1) (fun hl__u hl__v => minus_nat hl__u (ordsucc hl__k) = minus_nat n1 hl__k) E). }
+  exact ((eq_sym_i (minus_nat n (ordsucc hl__k)) (minus_nat n1 hl__k) E2) (fun hl__u hl__v => hl__u :e omega) M). }
+exact (nat_ind (fun hl__w:set => forall n :e omega, minus_nat n hl__w :e omega) Hbase Hstep m0 (omega_nat_p m0 Hm0)).
+Qed.
+
+Theorem add_minus_nat_le : forall m n :e omega, m <= n -> m + minus_nat n m = n.
+let m. assume Hm. let n. assume Hn. assume H.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsmm: SNo (- m). { exact (SNo_minus_SNo m Hsm). }
+claim E1: minus_nat n m = n + - m.
+{ prove (if m <= n then n + - m else 0) = n + - m.
+  exact (If_i_1 (m <= n) (n + - m) 0 H). }
+claim E2: m + minus_nat n m = m + (n + - m).
+{ exact (f_equal (fun hl__u:set => m + hl__u) (minus_nat n m) (n + - m) E1). }
+claim E3: m + (n + - m) = n + (m + - m).
+{ exact (add_SNo_com_3_0_1 m n (- m) Hsm Hsn Hsmm). }
+claim E4: n + (m + - m) = n.
+{ exact (eq_trans_i (n + (m + - m)) (n + 0) n (f_equal (fun hl__u:set => n + hl__u) (m + - m) 0 (add_SNo_minus_SNo_rinv m Hsm)) (add_SNo_0R n Hsn)). }
+exact (eq_trans_i (m + minus_nat n m) (m + (n + - m)) n E2 (eq_trans_i (m + (n + - m)) (n + (m + - m)) n E3 E4)).
+Qed.
+
+Theorem le_exists_thm : forall m n :e omega, m <= n <-> exists d :e omega, n = m + d.
+let m. assume Hm. let n. assume Hn.
+apply iffI.
+- assume H.
+  witness (minus_nat n m).
+  apply andI.
+  + exact (minus_nat_In_omega m Hm n Hn).
+  + exact (eq_sym_i (m + minus_nat n m) n (add_minus_nat_le m Hm n Hn H)).
+- assume H.
+  apply H. let d. assume Hd0. apply Hd0. assume Hd HE.
+  claim L: m <= m + d. { exact (SNoLe_add_omega m Hm d Hd). }
+  exact ((eq_sym_i n (m + d) HE) (fun hl__u hl__v => m <= hl__u) L).
+Qed.

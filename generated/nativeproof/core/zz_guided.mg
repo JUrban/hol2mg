@@ -17,6 +17,13 @@ apply iffI.
 exact (iffER (forall m n p :e omega, m + p = n + p <-> m = n) (forall m n p :e omega, p + m = n + p <-> m = n) E1 F0).
 Qed.
 
+// HOL Light: arith.ml / LE_ADDR (leaf-guided)
+Theorem LE_ADDR : forall m n :e omega, n <= m + n.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andER (n <= m + n -> exists hl__d :e omega, m + n = n + hl__d) ((exists hl__d :e omega, m + n = n + hl__d) -> n <= m + n) (le_exists_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (ex_intro (fun hl__w:set => hl__w :e omega /\ m + n = n + hl__w) (m) (andI (m :e omega) (m + n = n + m) Hm (ADD_SYM (m) Hm (n) Hn)))).
+Qed.
+
 // HOL Light: calc_int.ml / REAL_EQ_ADD_RCANCEL (leaf-guided)
 Theorem REAL_EQ_ADD_RCANCEL : forall x y z :e R, x + z = y + z <-> x = y.
 claim E1 : (forall x y z :e R, x + z = y + z <-> x = y) <-> (forall x y z :e R, z + x = y + z <-> x = y).
