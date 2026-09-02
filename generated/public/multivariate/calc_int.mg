@@ -18,7 +18,15 @@ Admitted.
 // Source hash: md5:86bc5f725d9ce64b845a1d50e047aeb4
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_EQ_ADD_LCANCEL : forall x y z :e R, x + y = x + z <-> y = z.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+apply iffI.
+- assume H1.
+  exact (add_SNo_cancel_L (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) H1).
+- assume H.
+  exact (H (fun hl__u hl__v => (x + y) = (x + hl__u)) (fun q H => H)).
+Qed.
 
 // HOL Light: calc_int.ml:82 / REAL_EQ_ADD_RCANCEL
 // Source hash: md5:426cab645a1d4c17efb3ef1d1d848008

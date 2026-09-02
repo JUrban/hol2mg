@@ -144,7 +144,20 @@ Admitted.
 // Source hash: md5:fe8deb5afa569c3d017b30fc27deeb8a
 // Status: transport_required (bridges: hol_cart_setexp, hol_num_omega)
 Theorem COND_COMPONENT : forall A B:set, A <> Empty -> B <> Empty -> forall b:prop, forall x y :e A :^: idx B, forall i :e omega, (if b then x else y) i = if b then x i else y i.
-Admitted.
+let A.
+let B.
+assume H.
+assume H1.
+let b.
+let x. assume Hx.
+let y. assume Hy.
+let i. assume Hi.
+apply (xm (b)).
+- assume H2.
+  exact (((If_i_1 (b) (x i) (y i) H2) (fun hl__u hl__v => hl__u = (if b then x i else y i)) (fun q H => H)) (fun hl__u hl__v => (if b then x else y) i = hl__u) ((If_i_1 (b) (x) (y) H2) (fun hl__u hl__v => ((if b then x else y) i) = (hl__u i)) (fun q H => H))).
+- assume H3.
+  exact (((If_i_0 (b) (x i) (y i) H3) (fun hl__u hl__v => hl__u = (if b then x i else y i)) (fun q H => H)) (fun hl__u hl__v => (if b then x else y) i = hl__u) ((If_i_0 (b) (x) (y) H3) (fun hl__u hl__v => ((if b then x else y) i) = (hl__u i)) (fun q H => H))).
+Qed.
 
 // HOL Light: Multivariate/vectors.ml:193 / VECTOR_ADD_SYM
 // Source hash: md5:c46c544694035afa1b3adf36e9200ac4

@@ -77,6 +77,15 @@ apply iffI.
   exact (SNoLe_tra (a) (x) (b) (real_SNo (a) Ha) (real_SNo (x) Hx) (real_SNo (b) Hb) (andEL (a <= x) (x <= b) H2) (andER (a <= x) (x <= b) H2)).
 Qed.
 
+// HOL Light:  / REAL_LE_LADD_IMP
+Theorem REAL_LE_LADD_IMP : forall x y z :e R, y <= z -> x + y <= x + z.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+assume H.
+exact (add_SNo_Le2 (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) H).
+Qed.
+
 // HOL Light:  / REAL_LE_REFL
 Theorem REAL_LE_REFL : forall x :e R, x <= x.
 let x. assume Hx.

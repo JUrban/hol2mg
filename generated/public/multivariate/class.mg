@@ -312,7 +312,20 @@ Qed.
 // Source hash: md5:abd733d2ca6bac4ed355d508eb6d38ff
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_RAND : forall A B:set, B <> Empty -> forall b:prop, forall f:set -> set, (forall x :e A, f x :e B) -> forall x y :e A, f (if b then x else y) = if b then f x else f y.
-Admitted.
+let A.
+let B.
+assume H.
+let b.
+let f.
+assume H1.
+let x. assume Hx.
+let y. assume Hy.
+apply (xm (b)).
+- assume H2.
+  exact (((If_i_1 (b) (f x) (f y) H2) (fun hl__u hl__v => hl__u = (if b then f x else f y)) (fun q H => H)) (fun hl__u hl__v => f (if b then x else y) = hl__u) ((If_i_1 (b) (x) (y) H2) (fun hl__u hl__v => (f (if b then x else y)) = (f hl__u)) (fun q H => H))).
+- assume H3.
+  exact (((If_i_0 (b) (f x) (f y) H3) (fun hl__u hl__v => hl__u = (if b then f x else f y)) (fun q H => H)) (fun hl__u hl__v => f (if b then x else y) = hl__u) ((If_i_0 (b) (x) (y) H3) (fun hl__u hl__v => (f (if b then x else y)) = (f hl__u)) (fun q H => H))).
+Qed.
 
 // HOL Light: class.ml:355 / COND_RATOR
 // Source hash: md5:daf8a0139729304ef354db21fe53723a
@@ -346,7 +359,16 @@ Qed.
 // Source hash: md5:517d4149a3b1212d2fd976fea9192f45
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_SWAP : forall A:set, forall p:prop, forall x y :e A, (if ~ p then x else y) = if p then y else x.
-Admitted.
+let A.
+let p.
+let x. assume Hx.
+let y. assume Hy.
+apply (xm (~ p)).
+- assume H.
+  exact (((If_i_0 (p) (y) (x) H) (fun hl__u hl__v => hl__u = (if p then y else x)) (fun q H => H)) (fun hl__u hl__v => (if ~ p then x else y) = hl__u) (If_i_1 (~ p) (x) (y) H)).
+- assume H1.
+  exact ((andER ((if ~ p then x else y) = (if p then y else x) -> (p -> (if ~ p then x else y) = y) /\ (~ p -> (if ~ p then x else y) = x)) ((p -> (if ~ p then x else y) = y) /\ (~ p -> (if ~ p then x else y) = x) -> (if ~ p then x else y) = if p then y else x) (cond_elim_thm (A) (fun hl__w:set => (if ~ p then x else y) = hl__w) (p) (y) Hy (x) Hx)) (andI (p -> (if ~ p then x else y) = y) (~ p -> (if ~ p then x else y) = x) (fun hl__H5 : p => (If_i_0 (~ p) (x) (y) H1)) (fun hl__H6 : ~ p => (FalseE (H1 hl__H6) ((if ~ p then x else y) = x))))).
+Qed.
 
 // HOL Light: class.ml:388 / MONO_COND
 // Source hash: md5:3bf95bbe2ccb554b6786e9c177f87e70
@@ -370,7 +392,13 @@ Qed.
 // Source hash: md5:a175440e00beddf5149a7ff13668add1
 // Status: generalization_required (bridges: empty_case:A)
 Theorem COND_ELIM_THM : forall A:set, forall P:set -> prop, forall c:prop, forall x y :e A, P (if c then x else y) <-> (c -> P x) /\ (~ c -> P y).
-Admitted.
+let A.
+let P.
+let c.
+let x. assume Hx.
+let y. assume Hy.
+exact (cond_elim_thm (A) (P) (c) (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: class.ml:418 / SKOLEM_THM
 // Source hash: md5:7032340324a1a8ad7909cb040961f738
