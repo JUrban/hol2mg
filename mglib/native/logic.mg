@@ -1111,3 +1111,40 @@ Theorem mod_uniq_thm : forall m n q r :e omega, m = q * n + r /\ r < n -> mod_na
 let m. assume Hm. let n. assume Hn. let q. assume Hq. let r. assume Hr. assume H.
 exact (andER (div_nat m n = q) (mod_nat m n = r) (divmod_uniq_thm m Hm n Hn q Hq r Hr H)).
 Qed.
+
+Theorem lt_mult_lcancel_thm : forall m n p :e omega, m * n < m * p <-> ~ m = 0 /\ n < p.
+let m. assume Hm. let n. assume Hn. let p. assume Hp.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsp: SNo p. { exact (omega_SNo p Hp). }
+claim Hsmn: SNo (m * n). { exact (SNo_mul_SNo m n Hsm Hsn). }
+claim Hsmp: SNo (m * p). { exact (SNo_mul_SNo m p Hsm Hsp). }
+apply iffI.
+- assume H.
+  claim Hm0: ~ m = 0.
+  { assume H0.
+    claim Z1: m * n = 0.
+    { exact (eq_trans_i (m * n) (0 * n) 0 (f_equal (fun hl__u:set => hl__u * n) m 0 H0) (mul_SNo_zeroL n Hsn)). }
+    claim Z2: m * p = 0.
+    { exact (eq_trans_i (m * p) (0 * p) 0 (f_equal (fun hl__u:set => hl__u * p) m 0 H0) (mul_SNo_zeroL p Hsp)). }
+    claim Z3: 0 < 0.
+    { exact (Z2 (fun hl__u hl__v => 0 < hl__u) (Z1 (fun hl__u hl__v => hl__u < m * p) H)). }
+    exact (SNoLt_irref 0 Z3). }
+  claim H0m: 0 < m.
+  { exact (iffER (0 < m) (~ m = 0) (lt_nz_thm m Hm) Hm0). }
+  apply andI.
+  + exact Hm0.
+  + apply (SNoLt_trichotomy_or n p Hsn Hsp).
+    assume H1.
+    apply H1.
+    assume H2. exact H2.
+    assume H2.
+    claim Z: m * n = m * p. { exact (f_equal (fun hl__u:set => m * hl__u) n p H2). }
+    exact (FalseE (SNoLt_irref (m * n) ((eq_sym_i (m * n) (m * p) Z) (fun hl__u hl__v => m * n < hl__u) H)) (n < p)).
+    assume H2.
+    exact (FalseE (SNoLt_irref (m * n) (SNoLt_tra (m * n) (m * p) (m * n) Hsmn Hsmp Hsmn H (pos_mul_SNo_Lt m p n Hsm H0m Hsp Hsn H2))) (n < p)).
+- assume H.
+  claim Hm0: ~ m = 0. { exact (andEL (~ m = 0) (n < p) H). }
+  claim H0m: 0 < m. { exact (iffER (0 < m) (~ m = 0) (lt_nz_thm m Hm) Hm0). }
+  exact (pos_mul_SNo_Lt m n p Hsm H0m Hsn Hsp (andER (~ m = 0) (n < p) H)).
+Qed.

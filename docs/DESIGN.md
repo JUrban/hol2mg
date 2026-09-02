@@ -2297,6 +2297,11 @@ mis-binds against any hypothesis of that carrier — MOD_UNIQ's open `q` grabbed
 `r :e omega` while DIV_UNIQ's open `r` got lucky); only the *binding* order changes,
 the citation's argument order is untouched.  Lands MOD_UNIQ.
 
+N24 (507 -> 508, +1, zero lost): strict multiplicative cancellation.  logic.mg
+`lt_mult_lcancel_thm` (`m·n < m·p <-> ~m = 0 /\ n < p`: forward by trichotomy on n, p
+with pos_mul_SNo_Lt closing the impossible branches; backward directly by
+pos_mul_SNo_Lt with `0 < m` from lt_nz) — landing LT_MULT_LCANCEL.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
