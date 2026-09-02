@@ -2267,6 +2267,15 @@ descent: nat_ind on the subtrahend with `nat_inv` on the minuend, stepping throu
 the right inverse), and `le_exists_thm` — landing LE_EXISTS with `minus_nat n m` as
 the existential witness.
 
+N20 (486 -> 492, +6, zero lost): negation order and the divmod cluster.  logic.mg `real_le_lneg`
+(`- x <= y <-> 0 <= x + y` by additive monotonicity both ways) lands REAL_LE_LNEG.
+The divmod discovery: prelude.mg already proves `div_mod_nat`, `div_nat_omega` and
+`mod_nat_omega` — so DIVISION is pure citation (new builtins), and four short logic.mg
+lemmas (`mod_zero_thm`/`div_zero_thm` — one If_i_1 with a refl premise each over the
+definitional unfolds; `division_0_thm`; `division_simp_thm` with the n = 0 case split)
+land MOD_ZERO, DIV_ZERO, DIVISION_0 and DIVISION_SIMP.  DIV_0/MOD_0/DIVMOD_UNIQ still
+need Eps-uniqueness arithmetic.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

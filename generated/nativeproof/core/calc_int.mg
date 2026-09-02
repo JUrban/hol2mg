@@ -50,6 +50,13 @@ Theorem REAL_NEG_0 : - 0 = 0.
 exact minus_SNo_0.
 Qed.
 
+// HOL Light: calc_int.ml / REAL_LE_LNEG
+Theorem REAL_LE_LNEG : forall x y :e R, - x <= y <-> 0 <= x + y.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_lneg (x) Hx (y) Hy).
+Qed.
+
 // HOL Light: calc_int.ml / REAL_OF_NUM_POW
 Theorem REAL_OF_NUM_POW : forall x n :e omega, x ^ n = x ^ n.
 let x. assume Hx.

@@ -919,3 +919,74 @@ apply iffI.
   claim L: m <= m + d. { exact (SNoLe_add_omega m Hm d Hd). }
   exact ((eq_sym_i n (m + d) HE) (fun hl__u hl__v => m <= hl__u) L).
 Qed.
+
+Theorem real_le_lneg : forall x y :e R, - x <= y <-> 0 <= x + y.
+let x. assume Hx. let y. assume Hy.
+claim Hsx: SNo x. { exact (real_SNo x Hx). }
+claim Hsy: SNo y. { exact (real_SNo y Hy). }
+claim Hsmx: SNo (- x). { exact (SNo_minus_SNo x Hsx). }
+apply iffI.
+- assume H.
+  claim L1: - x + x <= y + x. { exact (add_SNo_Le1 (- x) x y Hsmx Hsx Hsy H). }
+  claim L2: 0 <= y + x.
+  { exact ((add_SNo_minus_SNo_linv x Hsx) (fun hl__u hl__v => hl__u <= y + x) L1). }
+  exact ((add_SNo_com y x Hsy Hsx) (fun hl__u hl__v => 0 <= hl__u) L2).
+- assume H.
+  claim L1: - x + 0 <= - x + (x + y). { exact (add_SNo_Le2 (- x) 0 (x + y) Hsmx SNo_0 (SNo_add_SNo x y Hsx Hsy) H). }
+  claim L2: - x <= - x + (x + y).
+  { exact ((add_SNo_0R (- x) Hsmx) (fun hl__u hl__v => hl__u <= - x + (x + y)) L1). }
+  claim E1: - x + (x + y) = (- x + x) + y. { exact (add_SNo_assoc (- x) x y Hsmx Hsx Hsy). }
+  claim E2: (- x + x) + y = 0 + y.
+  { exact (f_equal (fun hl__u:set => hl__u + y) (- x + x) 0 (add_SNo_minus_SNo_linv x Hsx)). }
+  claim E3: 0 + y = y. { exact (add_SNo_0L y Hsy). }
+  claim E: - x + (x + y) = y.
+  { exact (eq_trans_i (- x + (x + y)) ((- x + x) + y) y E1 (eq_trans_i ((- x + x) + y) (0 + y) y E2 E3)). }
+  exact (E (fun hl__u hl__v => - x <= hl__u) L2).
+Qed.
+
+Theorem mod_zero_thm : forall n :e omega, mod_nat n 0 = n.
+let n. assume Hn.
+prove (if 0 = 0 then n else n + - div_nat n 0 * 0) = n.
+exact (If_i_1 (0 = 0) n (n + - div_nat n 0 * 0) (fun q H => H)).
+Qed.
+
+Theorem div_zero_thm : forall n :e omega, div_nat n 0 = 0.
+let n. assume Hn.
+prove (if 0 = 0 then 0 else Eps_i (fun q => q :e omega /\ exists r :e omega, r < 0 /\ n = q * 0 + r)) = 0.
+exact (If_i_1 (0 = 0) 0 (Eps_i (fun q => q :e omega /\ exists r :e omega, r < 0 /\ n = q * 0 + r)) (fun q H => H)).
+Qed.
+
+Theorem division_0_thm : forall m n :e omega, (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) /\ (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n).
+let m. assume Hm. let n. assume Hn.
+apply andI.
+- assume H0.
+  apply andI.
+  + exact ((eq_sym_i n 0 H0) (fun hl__u hl__v => div_nat m hl__u = 0) (div_zero_thm m Hm)).
+  + exact ((eq_sym_i n 0 H0) (fun hl__u hl__v => mod_nat m hl__u = m) (mod_zero_thm m Hm)).
+- assume H0.
+  exact (div_mod_nat m Hm n Hn H0).
+Qed.
+
+Theorem division_simp_thm : (forall m n :e omega, div_nat m n * n + mod_nat m n = m) /\ forall m n :e omega, n * div_nat m n + mod_nat m n = m.
+claim L1: forall m n :e omega, div_nat m n * n + mod_nat m n = m.
+{ let m. assume Hm. let n. assume Hn.
+  apply (xm (n = 0)).
+  assume H0.
+  claim Ed: div_nat m n = 0. { exact ((eq_sym_i n 0 H0) (fun hl__u hl__v => div_nat m hl__u = 0) (div_zero_thm m Hm)). }
+  claim Em: mod_nat m n = m. { exact ((eq_sym_i n 0 H0) (fun hl__u hl__v => mod_nat m hl__u = m) (mod_zero_thm m Hm)). }
+  claim E1: div_nat m n * n + mod_nat m n = 0 * n + m.
+  { exact (f_equal2 (fun hl__u:set => fun hl__v:set => hl__u * n + hl__v) (div_nat m n) 0 (mod_nat m n) m Ed Em). }
+  claim E2: 0 * n + m = m.
+  { exact (eq_trans_i (0 * n + m) (0 + m) m (f_equal (fun hl__u:set => hl__u + m) (0 * n) 0 (mul_SNo_zeroL n (omega_SNo n Hn))) (add_SNo_0L m (omega_SNo m Hm))). }
+  exact (eq_trans_i (div_nat m n * n + mod_nat m n) (0 * n + m) m E1 E2).
+  assume H0.
+  exact (eq_sym_i m (div_nat m n * n + mod_nat m n) (andEL (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat m Hm n Hn H0))). }
+claim L2: forall m n :e omega, n * div_nat m n + mod_nat m n = m.
+{ let m. assume Hm. let n. assume Hn.
+  claim E: n * div_nat m n = div_nat m n * n.
+  { exact (mul_SNo_com n (div_nat m n) (omega_SNo n Hn) (omega_SNo (div_nat m n) (div_nat_omega m Hm n Hn))). }
+  claim E2: n * div_nat m n + mod_nat m n = div_nat m n * n + mod_nat m n.
+  { exact (f_equal (fun hl__u:set => hl__u + mod_nat m n) (n * div_nat m n) (div_nat m n * n) E). }
+  exact (eq_trans_i (n * div_nat m n + mod_nat m n) (div_nat m n * n + mod_nat m n) m E2 (L1 m Hm n Hn)). }
+exact (andI (forall m n :e omega, div_nat m n * n + mod_nat m n = m) (forall m n :e omega, n * div_nat m n + mod_nat m n = m) L1 L2).
+Qed.

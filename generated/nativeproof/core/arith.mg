@@ -480,3 +480,35 @@ assume H.
 exact (((add_SNo_com (minus_nat m n) (n) (omega_SNo (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm)) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (minus_nat m n + n)) (fun q H => H)) (fun hl__u hl__v => hl__u = m) (add_minus_nat_le (n) Hn (m) Hm H)).
 Qed.
 
+// HOL Light: arith.ml / DIVISION_0
+Theorem DIVISION_0 : forall m n :e omega, (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) /\ (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n).
+let m. assume Hm.
+let n. assume Hn.
+exact (andI (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n) (andEL (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n) (division_0_thm (m) Hm (n) Hn)) (fun hl__H1 : ~ n = 0 => (andI (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (andEL (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn hl__H1)) (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn hl__H1))))).
+Qed.
+
+// HOL Light: arith.ml / DIVISION
+Theorem DIVISION : forall m n :e omega, ~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (andI (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (andEL (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn H)) (andER (m = div_nat m n * n + mod_nat m n) (mod_nat m n < n) (div_mod_nat (m) Hm (n) Hn H))).
+Qed.
+
+// HOL Light: arith.ml / DIV_ZERO
+Theorem DIV_ZERO : forall n :e omega, div_nat n 0 = 0.
+let n. assume Hn.
+exact (div_zero_thm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / MOD_ZERO
+Theorem MOD_ZERO : forall n :e omega, mod_nat n 0 = n.
+let n. assume Hn.
+exact (mod_zero_thm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / DIVISION_SIMP
+Theorem DIVISION_SIMP : (forall m n :e omega, div_nat m n * n + mod_nat m n = m) /\ forall m n :e omega, n * div_nat m n + mod_nat m n = m.
+exact division_simp_thm.
+Qed.
+
