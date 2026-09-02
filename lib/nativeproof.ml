@@ -1849,6 +1849,28 @@ let builtin_premises : (string * Mg.tm) list =
            Mg.App (Mg.App (Mg.Cst "eq",
              Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"), Mg.Var "hl__t")),
              Mg.Cst "seq_nil"))))));
+    ("forall_pair_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.AllIn ("hl__p",
+             Mg.App (Mg.App (Mg.Cst "setprod", Mg.Var "hl__A"), Mg.Var "hl__B"),
+             Mg.App (Mg.Var "hl__P", Mg.Var "hl__p"))),
+           Mg.AllIn ("hl__x", Mg.Var "hl__A",
+             Mg.AllIn ("hl__y", Mg.Var "hl__B",
+               Mg.App (Mg.Var "hl__P",
+                 Mg.Tuple [ Mg.Var "hl__x"; Mg.Var "hl__y" ]))))))));
+    ("exists_pair_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.All ("hl__P", Mg.Arr (Mg.Set, Mg.Prop),
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.ExIn ("hl__p",
+             Mg.App (Mg.App (Mg.Cst "setprod", Mg.Var "hl__A"), Mg.Var "hl__B"),
+             Mg.App (Mg.Var "hl__P", Mg.Var "hl__p"))),
+           Mg.ExIn ("hl__x", Mg.Var "hl__A",
+             Mg.ExIn ("hl__y", Mg.Var "hl__B",
+               Mg.App (Mg.Var "hl__P",
+                 Mg.Tuple [ Mg.Var "hl__x"; Mg.Var "hl__y" ]))))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

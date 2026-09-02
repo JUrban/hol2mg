@@ -583,3 +583,39 @@ claim E2: ordsucc (seq_len t) = 0.
 { exact (eq_trans_i (ordsucc (seq_len t)) (seq_len (seq_cons h t)) (0) (eq_sym_i (seq_len (seq_cons h t)) (ordsucc (seq_len t)) (seq_len_cons A h Hh t Ht)) (eq_trans_i (seq_len (seq_cons h t)) (seq_len seq_nil) (0) E (seq_len_nil))). }
 exact (neq_ordsucc_0 (seq_len t) E2).
 Qed.
+
+Theorem forall_pair_thm : forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2).
+let A. let B. let P.
+apply iffI.
+- assume H. let p1. assume Hp1. let p2. assume Hp2.
+  exact (H (p1,p2) (tuple_2_Sigma A (fun hl__w:set => B) p1 Hp1 p2 Hp2)).
+- assume H. let p. assume Hp.
+  claim E: (p 0,p 1) = p.
+  { exact (tuple_Sigma_eta A (fun hl__w:set => B) p Hp). }
+  claim HP: P (p 0,p 1).
+  { exact (H (p 0) (ap0_Sigma A (fun hl__w:set => B) p Hp) (p 1) (ap1_Sigma A (fun hl__w:set => B) p Hp)). }
+  exact (E (fun hl__u hl__v => P hl__u) HP).
+Qed.
+
+Theorem exists_pair_thm : forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2).
+let A. let B. let P.
+apply iffI.
+- assume H.
+  apply H. let p. assume Hp0. apply Hp0. assume Hp HP.
+  witness (p 0).
+  apply andI.
+  + exact (ap0_Sigma A (fun hl__w:set => B) p Hp).
+  + witness (p 1).
+    apply andI.
+    * exact (ap1_Sigma A (fun hl__w:set => B) p Hp).
+    * claim E: (p 0,p 1) = p.
+      { exact (tuple_Sigma_eta A (fun hl__w:set => B) p Hp). }
+      exact ((eq_sym_i (p 0,p 1) p E) (fun hl__u hl__v => P hl__u) HP).
+- assume H.
+  apply H. let p1. assume Hp10. apply Hp10. assume Hp1 H1.
+  apply H1. let p2. assume Hp20. apply Hp20. assume Hp2 HP.
+  witness (p1,p2).
+  apply andI.
+  + exact (tuple_2_Sigma A (fun hl__w:set => B) p1 Hp1 p2 Hp2).
+  + exact HP.
+Qed.

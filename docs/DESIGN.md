@@ -2228,6 +2228,13 @@ first (`hl__h :e hl__A` matched `t :e finseq A`), leaving the candidate unusable
 Still open: CONS_11 (injectivity hand lemma), DIVISION/MOD cluster, LE_EXISTS, EVEN,
 IN_ELIM_THM, FORALL_PAIR_THM, dist.
 
+N14 (472 -> 475, +3, zero lost; PAIR_SURJECTIVE rides the cascade): pair quantifiers.  logic.mg `forall_pair_thm` and
+`exists_pair_thm` — both one-screen proofs over God1's Sigma toolkit (tuple_2_Sigma,
+tuple_Sigma_eta, ap0/ap1_Sigma), landing FORALL_PAIR_THM and EXISTS_PAIR_THM.
+Remaining N14+ agenda: LE_EXISTS (needs an omega-closure lemma for truncated
+subtraction), DIVISION/MOD cluster, EVEN/NOT_EVEN parity induction, dist, SUB_0
+(minus_nat case analysis), CONS_11.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
