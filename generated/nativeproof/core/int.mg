@@ -500,6 +500,12 @@ apply (xm (0 < 0)).
   exact (((If_i_0 (0 < 0) (1) (if 0 < 0 then - 1 else 0) H1) (fun hl__u hl__v => hl__u = (if 0 < 0 then 1 else if 0 < 0 then - 1 else 0)) (fun q H => H)) (fun hl__u hl__v => hl__u = 0) (If_i_0 (0 < 0) (- 1) (0) H1)).
 Qed.
 
+// HOL Light: int.ml / INT_FORALL_POS
+Theorem INT_FORALL_POS : forall P:set -> prop, (forall n :e omega, P n) <-> forall i :e int, 0 <= i -> P i.
+let P.
+exact (int_forall_pos_thm (P)).
+Qed.
+
 // HOL Light: int.ml / INT_GE
 Theorem INT_GE : forall x y :e int, y <= x <-> y <= x.
 let x. assume Hx.

@@ -1,6 +1,16 @@
 // Native proofs guided by recorded proof leaves (docs/DESIGN.md 24.3):
 // rewrite-normalization to True with the leaf lemmas, one congruence step per claim.
 
+// HOL Light: realax.ml / DIST_REFL (leaf-guided)
+Theorem DIST_REFL : forall n :e omega, abs_SNo (n + - n) = 0.
+claim E1 : (forall n :e omega, abs_SNo (n + - n) = 0) <-> (forall n :e omega, minus_nat n n + minus_nat n n = 0).
+{ exact (all_in_iff_cong (omega) (fun n:set => abs_SNo (n + - n) = 0) (fun n:set => minus_nat n n + minus_nat n n = 0) (fun n Hn => ((dist_thm (n) Hn (n) Hn) (fun hl__u hl__v => (abs_SNo (n + - n) = 0) <-> (hl__u = 0)) (iff_refl (abs_SNo (n + - n) = 0))))). }
+claim F0 : forall n :e omega, minus_nat n n + minus_nat n n = 0.
+{ let n. assume Hn.
+exact ((andER (minus_nat n n + minus_nat n n = 0 -> minus_nat n n = 0 /\ minus_nat n n = 0) (minus_nat n n = 0 /\ minus_nat n n = 0 -> minus_nat n n + minus_nat n n = 0) (add_eq_0_thm (minus_nat n n) (minus_nat_In_omega (n) Hn (n) Hn) (minus_nat n n) (minus_nat_In_omega (n) Hn (n) Hn))) (andI (minus_nat n n = 0) (minus_nat n n = 0) ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))) ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))))). }
+exact (iffER (forall n :e omega, abs_SNo (n + - n) = 0) (forall n :e omega, minus_nat n n + minus_nat n n = 0) E1 F0).
+Qed.
+
 // HOL Light: realax.ml / DIST_SYM (leaf-guided)
 Theorem DIST_SYM : forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m).
 claim E1 : (forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m)) <-> (forall m n :e omega, minus_nat m n + minus_nat n m = abs_SNo (n + - m)).
@@ -102,5 +112,16 @@ apply iffI.
   assume H1.
   exact (H1 H). }
 exact (iffER (forall x y :e R, ~ x < y <-> y <= x) (forall x y :e R, ~ ~ y <= x <-> y <= x) E1 F0).
+Qed.
+
+// HOL Light: arith.ml / ADD_SUBR (leaf-guided)
+Theorem ADD_SUBR : forall m n :e omega, minus_nat n (m + n) = 0.
+claim E1 : (forall m n :e omega, minus_nat n (m + n) = 0) <-> (forall m n :e omega, n <= m + n).
+{ exact (all_in_iff_cong (omega) (fun m:set => forall n :e omega, minus_nat n (m + n) = 0) (fun m:set => forall n :e omega, n <= m + n) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => minus_nat n (m + n) = 0) (fun n:set => n <= m + n) (fun n Hn => ((andER ((minus_nat n (m + n) = 0 <-> n <= m + n) -> True) (True -> (minus_nat n (m + n) = 0 <-> n <= m + n)) (iff_true_intro (minus_nat n (m + n) = 0 <-> n <= m + n) (sub_eq_0_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn)))) TRUTH))))). }
+claim F0 : forall m n :e omega, n <= m + n.
+{ let m. assume Hm.
+let n. assume Hn.
+exact ((andER (n <= m + n -> exists hl__d :e omega, m + n = n + hl__d) ((exists hl__d :e omega, m + n = n + hl__d) -> n <= m + n) (le_exists_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (ex_intro (fun hl__w:set => hl__w :e omega /\ m + n = n + hl__w) (m) (andI (m :e omega) (m + n = n + m) Hm (ADD_SYM (m) Hm (n) Hn)))). }
+exact (iffER (forall m n :e omega, minus_nat n (m + n) = 0) (forall m n :e omega, n <= m + n) E1 F0).
 Qed.
 

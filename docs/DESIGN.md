@@ -2315,6 +2315,20 @@ nonneg_abs/neg_abs on the difference, both minus_nat Ifs resolved per branch, th
 n = m diagonal collapsing through SNoLe_antisym), plus `mod_0_thm`/`div_0_thm`
 (uniqueness at q = r = 0) — landing dist, MOD_0, DIV_0.
 
+N27 (513 -> 523, +10, zero lost; ADD_SUBR, ADD_SUBR2, SUB_REFL and DIST_REFL ride the
+cascade): subtraction-order bridge, parity of sums, positive-integer quantifier
+transfer.  logic.mg `sub_eq_0_thm` (`minus_nat m n = 0 <-> m <= n`, two nat_ind
+inductions with nat_inv case splits and the SNoLe/SNoLt ordsucc bridges),
+`sub_add_lcancel_thm` (nat_ind over the common summand via ordsucc_add_SNo_L +
+f_equal2), `even_add_thm` (nat_ind on m; the successor step is a four-way
+even_or_odd case bash against the even_thm successor equation), `odd_thm`
+(mirror of even_thm through not_even_and_odd / even_succ_odd / odd_succ_even),
+`add_eq_0_thm` (SNoLe_add_omega + SNoLe_0_iff_omega), `int_forall_pos_thm`
+(int_nonneg_omega one way, Subq_omega_int + omega_nonneg back) — landing
+SUB_EQ_0, SUB_ADD_LCANCEL, EVEN_ADD, ODD, ADD_EQ_0, INT_FORALL_POS.  Tooling:
+the check_public.sh known-props exclusion grep now passes `--` so propositions
+starting with `-` (e.g. `- 0 = 0.`) no longer error.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

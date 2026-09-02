@@ -1260,3 +1260,227 @@ apply (xm (n <= m)).
     exact (eq_trans_i (minus_nat m n + minus_nat n m) (0 + (n + - m)) (n + - m) S1 (add_SNo_0L (n + - m) (SNo_add_SNo n (- m) Hsn Hsmm))). }
   exact (eq_trans_i (abs_SNo (m + - n)) (- (m + - n)) (minus_nat m n + minus_nat n m) HA (eq_trans_i (- (m + - n)) (n + - m) (minus_nat m n + minus_nat n m) HNE (eq_sym_i (minus_nat m n + minus_nat n m) (n + - m) HS))).
 Qed.
+
+Theorem add_eq_0_thm : forall m n :e omega, m + n = 0 <-> m = 0 /\ n = 0.
+let m. assume Hm. let n. assume Hn.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+apply iffI.
+- assume H.
+  claim Lm: m <= 0.
+  { exact (H (fun hl__u hl__v => m <= hl__u) (SNoLe_add_omega m Hm n Hn)). }
+  claim Ln: n <= 0.
+  { claim L1: n <= n + m. { exact (SNoLe_add_omega n Hn m Hm). }
+    claim L2: n <= m + n.
+    { exact ((add_SNo_com n m Hsn Hsm) (fun hl__u hl__v => n <= hl__u) L1). }
+    exact (H (fun hl__u hl__v => n <= hl__u) L2). }
+  exact (andI (m = 0) (n = 0) (iffEL (m <= 0) (m = 0) (SNoLe_0_iff_omega m Hm) Lm) (iffEL (n <= 0) (n = 0) (SNoLe_0_iff_omega n Hn) Ln)).
+- assume H.
+  claim E: m + n = 0 + 0.
+  { exact (f_equal2 (fun hl__u:set => fun hl__v:set => hl__u + hl__v) m 0 n 0 (andEL (m = 0) (n = 0) H) (andER (m = 0) (n = 0) H)). }
+  exact (eq_trans_i (m + n) (0 + 0) 0 E (add_SNo_0L 0 SNo_0)).
+Qed.
+
+Theorem int_forall_pos_thm : forall P:set -> prop, (forall n :e omega, P n) <-> forall i :e int, 0 <= i -> P i.
+let P : set -> prop.
+apply iffI.
+- assume H. let i. assume Hi. assume Hnn.
+  exact (H i (int_nonneg_omega i Hi Hnn)).
+- assume H. let n. assume Hn.
+  exact (H n (Subq_omega_int n Hn) (omega_nonneg n Hn)).
+Qed.
+Theorem odd_thm : (odd_nat 0 <-> False) /\ forall n :e omega, odd_nat (ordsucc n) <-> ~ odd_nat n.
+apply andI.
+- apply iffI.
+  + assume H.
+    exact (not_even_and_odd 0 (nat_p_omega 0 nat_0) even_zero H).
+  + assume H. exact (FalseE H (odd_nat 0)).
+- let n. assume Hn.
+  apply iffI.
+  + assume H. assume Hodd.
+    exact (not_even_and_odd (ordsucc n) (omega_ordsucc n Hn) (odd_succ_even n Hn Hodd) H).
+  + assume H.
+    apply (even_or_odd n Hn).
+    * assume He. exact (even_succ_odd n Hn He).
+    * assume Ho. exact (FalseE (H Ho) (odd_nat (ordsucc n))).
+Qed.
+Theorem sub_eq_0_thm : forall m n :e omega, minus_nat m n = 0 <-> m <= n.
+claim L1 : forall hl__w, nat_p hl__w -> forall m :e omega, m <= hl__w -> minus_nat m hl__w = 0.
+{ claim Hbase : forall m :e omega, m <= 0 -> minus_nat m 0 = 0.
+  { let m. assume Hm. assume Hle.
+    claim Hm0 : m = 0.
+    { exact (iffEL (m <= 0) (m = 0) (SNoLe_0_iff_omega m Hm) Hle). }
+    exact (Hm0 (fun hl__u hl__v => minus_nat hl__v 0 = 0) (andEL (minus_nat 0 0 = 0) (minus_nat 0 0 = 0) (sub_0_thm 0 (nat_p_omega 0 nat_0)))). }
+  claim Hstep : forall hl__k, nat_p hl__k -> (forall m :e omega, m <= hl__k -> minus_nat m hl__k = 0) -> forall m :e omega, m <= ordsucc hl__k -> minus_nat m (ordsucc hl__k) = 0.
+  { let hl__k. assume Hknat. assume IH. let m. assume Hm. assume Hle.
+    claim Hkw : hl__k :e omega. { exact (nat_p_omega hl__k Hknat). }
+    claim HSkw : ordsucc hl__k :e omega. { exact (omega_ordsucc hl__k Hkw). }
+    apply (nat_inv m (omega_nat_p m Hm)).
+    - assume Hm0.
+      exact (Hm0 (fun hl__u hl__v => minus_nat hl__v (ordsucc hl__k) = 0) (andEL (minus_nat 0 (ordsucc hl__k) = 0) (minus_nat (ordsucc hl__k) 0 = ordsucc hl__k) (sub_0_thm (ordsucc hl__k) HSkw))).
+    - assume Hex. apply Hex. let hl__j. assume Hj0. apply Hj0. assume Hjnat. assume Hjeq.
+      claim Hjw : hl__j :e omega. { exact (nat_p_omega hl__j Hjnat). }
+      claim Hle2 : ordsucc hl__j <= ordsucc hl__k.
+      { exact (Hjeq (fun hl__u hl__v => hl__u <= ordsucc hl__k) Hle). }
+      claim Hltj : hl__j < ordsucc hl__k.
+      { exact (iffEL (ordsucc hl__j <= ordsucc hl__k) (hl__j < ordsucc hl__k) (SNoLe_ordsucc_SNoLt_omega hl__j Hjw (ordsucc hl__k) HSkw) Hle2). }
+      claim Hlej : hl__j <= hl__k.
+      { exact (iffEL (hl__j < ordsucc hl__k) (hl__j <= hl__k) (SNoLt_ordsucc_SNoLe_omega hl__j Hjw hl__k Hkw) Hltj). }
+      claim E1 : minus_nat (ordsucc hl__j) (ordsucc hl__k) = minus_nat hl__j hl__k.
+      { exact (sub_suc_thm hl__j Hjw hl__k Hkw). }
+      claim E2 : minus_nat hl__j hl__k = 0.
+      { exact (IH hl__j Hjw Hlej). }
+      exact (Hjeq (fun hl__u hl__v => minus_nat hl__v (ordsucc hl__k) = 0) (eq_trans_i (minus_nat (ordsucc hl__j) (ordsucc hl__k)) (minus_nat hl__j hl__k) 0 E1 E2)). }
+  exact (nat_ind (fun hl__w:set => forall m :e omega, m <= hl__w -> minus_nat m hl__w = 0) Hbase Hstep). }
+claim L2 : forall hl__w, nat_p hl__w -> forall m :e omega, minus_nat m hl__w = 0 -> m <= hl__w.
+{ claim Hbase : forall m :e omega, minus_nat m 0 = 0 -> m <= 0.
+  { let m. assume Hm. assume H.
+    claim Em : minus_nat m 0 = m.
+    { exact (andER (minus_nat 0 m = 0) (minus_nat m 0 = m) (sub_0_thm m Hm)). }
+    claim Hm0 : m = 0.
+    { exact (eq_trans_i m (minus_nat m 0) 0 (eq_sym_i (minus_nat m 0) m Em) H). }
+    exact (Hm0 (fun hl__u hl__v => hl__v <= 0) (SNoLe_ref 0)). }
+  claim Hstep : forall hl__k, nat_p hl__k -> (forall m :e omega, minus_nat m hl__k = 0 -> m <= hl__k) -> forall m :e omega, minus_nat m (ordsucc hl__k) = 0 -> m <= ordsucc hl__k.
+  { let hl__k. assume Hknat. assume IH. let m. assume Hm. assume H.
+    claim Hkw : hl__k :e omega. { exact (nat_p_omega hl__k Hknat). }
+    claim HSkw : ordsucc hl__k :e omega. { exact (omega_ordsucc hl__k Hkw). }
+    apply (nat_inv m (omega_nat_p m Hm)).
+    - assume Hm0.
+      exact (Hm0 (fun hl__u hl__v => hl__v <= ordsucc hl__k) (omega_nonneg (ordsucc hl__k) HSkw)).
+    - assume Hex. apply Hex. let hl__j. assume Hj0. apply Hj0. assume Hjnat. assume Hjeq.
+      claim Hjw : hl__j :e omega. { exact (nat_p_omega hl__j Hjnat). }
+      claim H2 : minus_nat (ordsucc hl__j) (ordsucc hl__k) = 0.
+      { exact (Hjeq (fun hl__u hl__v => minus_nat hl__u (ordsucc hl__k) = 0) H). }
+      claim H3 : minus_nat hl__j hl__k = 0.
+      { exact (eq_trans_i (minus_nat hl__j hl__k) (minus_nat (ordsucc hl__j) (ordsucc hl__k)) 0 (eq_sym_i (minus_nat (ordsucc hl__j) (ordsucc hl__k)) (minus_nat hl__j hl__k) (sub_suc_thm hl__j Hjw hl__k Hkw)) H2). }
+      claim Hlej : hl__j <= hl__k. { exact (IH hl__j Hjw H3). }
+      claim Hltj : hl__j < ordsucc hl__k.
+      { exact (iffER (hl__j < ordsucc hl__k) (hl__j <= hl__k) (SNoLt_ordsucc_SNoLe_omega hl__j Hjw hl__k Hkw) Hlej). }
+      claim Hle2 : ordsucc hl__j <= ordsucc hl__k.
+      { exact (iffER (ordsucc hl__j <= ordsucc hl__k) (hl__j < ordsucc hl__k) (SNoLe_ordsucc_SNoLt_omega hl__j Hjw (ordsucc hl__k) HSkw) Hltj). }
+      exact (Hjeq (fun hl__u hl__v => hl__v <= ordsucc hl__k) Hle2). }
+  exact (nat_ind (fun hl__w:set => forall m :e omega, minus_nat m hl__w = 0 -> m <= hl__w) Hbase Hstep). }
+let m. assume Hm. let n. assume Hn.
+apply iffI.
+- assume H. exact (L2 n (omega_nat_p n Hn) m Hm H).
+- assume H. exact (L1 n (omega_nat_p n Hn) m Hm H).
+Qed.
+Theorem sub_add_lcancel_thm : forall m n p :e omega, minus_nat (m + n) (m + p) = minus_nat n p.
+claim Lmain : forall hl__w, nat_p hl__w -> forall n p :e omega, minus_nat (hl__w + n) (hl__w + p) = minus_nat n p.
+{ claim Hbase : forall n p :e omega, minus_nat (0 + n) (0 + p) = minus_nat n p.
+  { let n. assume Hn. let p. assume Hp.
+    exact (f_equal2 (fun hl__u:set => fun hl__v:set => minus_nat hl__u hl__v) (0 + n) n (0 + p) p (add_SNo_0L n (omega_SNo n Hn)) (add_SNo_0L p (omega_SNo p Hp))). }
+  claim Hstep : forall hl__k, nat_p hl__k -> (forall n p :e omega, minus_nat (hl__k + n) (hl__k + p) = minus_nat n p) -> forall n p :e omega, minus_nat (ordsucc hl__k + n) (ordsucc hl__k + p) = minus_nat n p.
+  { let hl__k. assume Hknat. assume IH. let n. assume Hn. let p. assume Hp.
+    claim Hkw : hl__k :e omega. { exact (nat_p_omega hl__k Hknat). }
+    claim E1 : ordsucc hl__k + n = ordsucc (hl__k + n). { exact (ordsucc_add_SNo_L hl__k Hkw n Hn). }
+    claim E2 : ordsucc hl__k + p = ordsucc (hl__k + p). { exact (ordsucc_add_SNo_L hl__k Hkw p Hp). }
+    claim E3 : minus_nat (ordsucc hl__k + n) (ordsucc hl__k + p) = minus_nat (ordsucc (hl__k + n)) (ordsucc (hl__k + p)).
+    { exact (f_equal2 (fun hl__u:set => fun hl__v:set => minus_nat hl__u hl__v) (ordsucc hl__k + n) (ordsucc (hl__k + n)) (ordsucc hl__k + p) (ordsucc (hl__k + p)) E1 E2). }
+    claim E4 : minus_nat (ordsucc (hl__k + n)) (ordsucc (hl__k + p)) = minus_nat (hl__k + n) (hl__k + p).
+    { exact (sub_suc_thm (hl__k + n) (add_SNo_In_omega hl__k Hkw n Hn) (hl__k + p) (add_SNo_In_omega hl__k Hkw p Hp)). }
+    exact (eq_trans_i (minus_nat (ordsucc hl__k + n) (ordsucc hl__k + p)) (minus_nat (ordsucc (hl__k + n)) (ordsucc (hl__k + p))) (minus_nat n p) E3 (eq_trans_i (minus_nat (ordsucc (hl__k + n)) (ordsucc (hl__k + p))) (minus_nat (hl__k + n) (hl__k + p)) (minus_nat n p) E4 (IH n Hn p Hp))). }
+  exact (nat_ind (fun hl__w:set => forall n p :e omega, minus_nat (hl__w + n) (hl__w + p) = minus_nat n p) Hbase Hstep). }
+let m. assume Hm.
+exact (Lmain m (omega_nat_p m Hm)).
+Qed.
+Theorem even_add_thm : forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n).
+claim Hbase : forall n :e omega, even_nat (0 + n) <-> (even_nat 0 <-> even_nat n).
+{ let n. assume Hn.
+  claim G0 : even_nat n <-> (even_nat 0 <-> even_nat n).
+  { apply iffI.
+    - assume Hu.
+      apply iffI.
+      + assume Hv. exact Hu.
+      + assume Hv. exact even_zero.
+    - assume Hu. exact (iffEL (even_nat 0) (even_nat n) Hu even_zero). }
+  exact (add_SNo_0L n (omega_SNo n Hn) (fun hl__u hl__v => even_nat hl__v <-> (even_nat 0 <-> even_nat n)) G0). }
+claim Hstep : forall hl__k, nat_p hl__k -> (forall n :e omega, even_nat (hl__k + n) <-> (even_nat hl__k <-> even_nat n)) -> forall n :e omega, even_nat (ordsucc hl__k + n) <-> (even_nat (ordsucc hl__k) <-> even_nat n).
+{ let hl__k. assume Hknat. assume IH. let n. assume Hn.
+  claim Hkw : hl__k :e omega. { exact (nat_p_omega hl__k Hknat). }
+  claim Hknw : hl__k + n :e omega. { exact (add_SNo_In_omega hl__k Hkw n Hn). }
+  claim E1 : ordsucc hl__k + n = ordsucc (hl__k + n). { exact (ordsucc_add_SNo_L hl__k Hkw n Hn). }
+  claim A1 : even_nat (ordsucc (hl__k + n)) <-> ~ even_nat (hl__k + n).
+  { exact (andER (even_nat 0 <-> True) (forall hl__z :e omega, even_nat (ordsucc hl__z) <-> ~ even_nat hl__z) even_thm (hl__k + n) Hknw). }
+  claim A2 : even_nat (ordsucc hl__k) <-> ~ even_nat hl__k.
+  { exact (andER (even_nat 0 <-> True) (forall hl__z :e omega, even_nat (ordsucc hl__z) <-> ~ even_nat hl__z) even_thm hl__k Hkw). }
+  claim IHn : even_nat (hl__k + n) <-> (even_nat hl__k <-> even_nat n). { exact (IH n Hn). }
+  claim G1 : even_nat (ordsucc (hl__k + n)) <-> (even_nat (ordsucc hl__k) <-> even_nat n).
+  { apply (even_or_odd hl__k Hkw).
+    - assume Hek. apply (even_or_odd n Hn).
+      + assume Hen.
+        claim Hiff : even_nat hl__k <-> even_nat n.
+        { apply iffI.
+          - assume Hu. exact Hen.
+          - assume Hu. exact Hek. }
+        claim HEK : even_nat (hl__k + n).
+        { exact (iffER (even_nat (hl__k + n)) (even_nat hl__k <-> even_nat n) IHn Hiff). }
+        claim HnL : ~ even_nat (ordsucc (hl__k + n)).
+        { assume Hu. exact (iffEL (even_nat (ordsucc (hl__k + n))) (~ even_nat (hl__k + n)) A1 Hu HEK). }
+        claim HnR : ~ (even_nat (ordsucc hl__k) <-> even_nat n).
+        { assume Hu.
+          claim HSk : even_nat (ordsucc hl__k).
+          { exact (iffER (even_nat (ordsucc hl__k)) (even_nat n) Hu Hen). }
+          exact (iffEL (even_nat (ordsucc hl__k)) (~ even_nat hl__k) A2 HSk Hek). }
+        apply iffI.
+        * assume Hu. exact (FalseE (HnL Hu) (even_nat (ordsucc hl__k) <-> even_nat n)).
+        * assume Hu. exact (FalseE (HnR Hu) (even_nat (ordsucc (hl__k + n)))).
+      + assume Hon.
+        claim HnEn : ~ even_nat n.
+        { assume Hu. exact (not_even_and_odd n Hn Hu Hon). }
+        claim HnEK : ~ even_nat (hl__k + n).
+        { assume Hu.
+          exact (HnEn (iffEL (even_nat hl__k) (even_nat n) (iffEL (even_nat (hl__k + n)) (even_nat hl__k <-> even_nat n) IHn Hu) Hek)). }
+        claim HL1 : even_nat (ordsucc (hl__k + n)).
+        { exact (iffER (even_nat (ordsucc (hl__k + n))) (~ even_nat (hl__k + n)) A1 HnEK). }
+        claim HnSk : ~ even_nat (ordsucc hl__k).
+        { assume Hu. exact (iffEL (even_nat (ordsucc hl__k)) (~ even_nat hl__k) A2 Hu Hek). }
+        claim HR1 : even_nat (ordsucc hl__k) <-> even_nat n.
+        { apply iffI.
+          - assume Hu. exact (FalseE (HnSk Hu) (even_nat n)).
+          - assume Hu. exact (FalseE (HnEn Hu) (even_nat (ordsucc hl__k))). }
+        apply iffI.
+        * assume Hu. exact HR1.
+        * assume Hu. exact HL1.
+    - assume Hok. apply (even_or_odd n Hn).
+      + assume Hen.
+        claim HnEk : ~ even_nat hl__k.
+        { assume Hu. exact (not_even_and_odd hl__k Hkw Hu Hok). }
+        claim HnEK : ~ even_nat (hl__k + n).
+        { assume Hu.
+          exact (HnEk (iffER (even_nat hl__k) (even_nat n) (iffEL (even_nat (hl__k + n)) (even_nat hl__k <-> even_nat n) IHn Hu) Hen)). }
+        claim HL1 : even_nat (ordsucc (hl__k + n)).
+        { exact (iffER (even_nat (ordsucc (hl__k + n))) (~ even_nat (hl__k + n)) A1 HnEK). }
+        claim HSk : even_nat (ordsucc hl__k).
+        { exact (iffER (even_nat (ordsucc hl__k)) (~ even_nat hl__k) A2 HnEk). }
+        claim HR1 : even_nat (ordsucc hl__k) <-> even_nat n.
+        { apply iffI.
+          - assume Hu. exact Hen.
+          - assume Hu. exact HSk. }
+        apply iffI.
+        * assume Hu. exact HR1.
+        * assume Hu. exact HL1.
+      + assume Hon.
+        claim HnEk : ~ even_nat hl__k.
+        { assume Hu. exact (not_even_and_odd hl__k Hkw Hu Hok). }
+        claim HnEn : ~ even_nat n.
+        { assume Hu. exact (not_even_and_odd n Hn Hu Hon). }
+        claim Hiff : even_nat hl__k <-> even_nat n.
+        { apply iffI.
+          - assume Hu. exact (FalseE (HnEk Hu) (even_nat n)).
+          - assume Hu. exact (FalseE (HnEn Hu) (even_nat hl__k)). }
+        claim HEK : even_nat (hl__k + n).
+        { exact (iffER (even_nat (hl__k + n)) (even_nat hl__k <-> even_nat n) IHn Hiff). }
+        claim HnL : ~ even_nat (ordsucc (hl__k + n)).
+        { assume Hu. exact (iffEL (even_nat (ordsucc (hl__k + n))) (~ even_nat (hl__k + n)) A1 Hu HEK). }
+        claim HSk : even_nat (ordsucc hl__k).
+        { exact (iffER (even_nat (ordsucc hl__k)) (~ even_nat hl__k) A2 HnEk). }
+        claim HnR : ~ (even_nat (ordsucc hl__k) <-> even_nat n).
+        { assume Hu. exact (HnEn (iffEL (even_nat (ordsucc hl__k)) (even_nat n) Hu HSk)). }
+        apply iffI.
+        * assume Hu. exact (FalseE (HnL Hu) (even_nat (ordsucc hl__k) <-> even_nat n)).
+        * assume Hu. exact (FalseE (HnR Hu) (even_nat (ordsucc (hl__k + n)))). }
+  exact (E1 (fun hl__u hl__v => even_nat hl__v <-> (even_nat (ordsucc hl__k) <-> even_nat n)) G1). }
+let m. assume Hm.
+exact (nat_ind (fun hl__w:set => forall n :e omega, even_nat (hl__w + n) <-> (even_nat hl__w <-> even_nat n)) Hbase Hstep m (omega_nat_p m Hm)).
+Qed.

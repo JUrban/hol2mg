@@ -33,7 +33,7 @@ if [ -s "$known.sorted" ]; then
   : > "$tmp/keep.txt"
   while read -r n; do
     prop=$(grep -h "^Theorem $n : " "$dir"/*.mg | head -1 | sed "s/^Theorem $n : //")
-    if [ -n "$prop" ] && grep -qF "$prop" "$tmp/native_props.txt"; then :; else echo "$n" >> "$tmp/keep.txt"; fi
+    if [ -n "$prop" ] && grep -qF -- "$prop" "$tmp/native_props.txt"; then :; else echo "$n" >> "$tmp/keep.txt"; fi
   done < "$known.sorted"
   sort -u "$tmp/keep.txt" > "$known.sorted"
 fi

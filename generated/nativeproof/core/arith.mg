@@ -64,6 +64,13 @@ let p. assume Hp.
 exact (andI (m + n = n + m) ((m + n) + p = m + n + p /\ m + n + p = n + m + p) (add_SNo_com (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)) (andI ((m + n) + p = m + n + p) (m + n + p = n + m + p) ((add_SNo_assoc (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m + n + p)) (fun q H => H)) (add_SNo_com_3_0_1 (m) (n) (p) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (omega_SNo (p) Hp)))).
 Qed.
 
+// HOL Light: arith.ml / ADD_EQ_0
+Theorem ADD_EQ_0 : forall m n :e omega, m + n = 0 <-> m = 0 /\ n = 0.
+let m. assume Hm.
+let n. assume Hn.
+exact (add_eq_0_thm (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / EQ_ADD_LCANCEL
 Theorem EQ_ADD_LCANCEL : forall m n p :e omega, m + n = m + p <-> n = p.
 let m. assume Hm.
@@ -484,10 +491,22 @@ Theorem EVEN : (even_nat 0 <-> True) /\ forall n :e omega, even_nat (ordsucc n) 
 exact even_thm.
 Qed.
 
+// HOL Light: arith.ml / ODD
+Theorem ODD : (odd_nat 0 <-> False) /\ forall n :e omega, odd_nat (ordsucc n) <-> ~ odd_nat n.
+exact odd_thm.
+Qed.
+
 // HOL Light: arith.ml / NOT_EVEN
 Theorem NOT_EVEN : forall n :e omega, ~ even_nat n <-> odd_nat n.
 let n. assume Hn.
 exact (not_even_thm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / EVEN_ADD
+Theorem EVEN_ADD : forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n).
+let m. assume Hm.
+let n. assume Hn.
+exact (even_add_thm (m) Hm (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / SUB_0
@@ -503,12 +522,40 @@ let n. assume Hn.
 exact (sub_suc_thm (m) Hm (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / SUB_REFL
+Theorem SUB_REFL : forall n :e omega, minus_nat n n = 0.
+let n. assume Hn.
+exact ((andER (minus_nat n n = 0 -> n <= n) (n <= n -> minus_nat n n = 0) (sub_eq_0_thm (n) Hn (n) Hn)) (SNoLe_ref (n))).
+Qed.
+
+// HOL Light: arith.ml / SUB_EQ_0
+Theorem SUB_EQ_0 : forall m n :e omega, minus_nat m n = 0 <-> m <= n.
+let m. assume Hm.
+let n. assume Hn.
+exact (sub_eq_0_thm (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / ADD_SUBR2
+Theorem ADD_SUBR2 : forall m n :e omega, minus_nat m (m + n) = 0.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andER (minus_nat m (m + n) = 0 -> m <= m + n) (m <= m + n -> minus_nat m (m + n) = 0) (sub_eq_0_thm (m) Hm (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (SNoLe_add_omega (m) Hm (n) Hn)).
+Qed.
+
 // HOL Light: arith.ml / SUB_ADD
 Theorem SUB_ADD : forall m n :e omega, n <= m -> minus_nat m n + n = m.
 let m. assume Hm.
 let n. assume Hn.
 assume H.
 exact (((add_SNo_com (minus_nat m n) (n) (omega_SNo (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm)) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (minus_nat m n + n)) (fun q H => H)) (fun hl__u hl__v => hl__u = m) (add_minus_nat_le (n) Hn (m) Hm H)).
+Qed.
+
+// HOL Light: arith.ml / SUB_ADD_LCANCEL
+Theorem SUB_ADD_LCANCEL : forall m n p :e omega, minus_nat (m + n) (m + p) = minus_nat n p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (sub_add_lcancel_thm (m) Hm (n) Hn (p) Hp).
 Qed.
 
 // HOL Light: arith.ml / DIVISION_0
