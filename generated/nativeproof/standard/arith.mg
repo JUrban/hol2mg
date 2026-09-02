@@ -468,7 +468,15 @@ let m. assume Hm.
 let n. assume Hn.
 let p. assume Hp.
 assume H.
-exact (pos_mul_SNo_Lt (m) (n) (p) (omega_SNo (m) Hm) ((andER (0 < m -> ~ m = 0) (~ m = 0 -> 0 < m) (lt_nz_thm (m) Hm)) (andEL (~ m = 0) (n < p) H)) (omega_SNo (n) Hn) (omega_SNo (p) Hp) (andER (~ m = 0) (n < p) H)).
+exact ((andEL (ordsucc (m * n) <= m * p -> m * n < m * p) (m * n < m * p -> ordsucc (m * n) <= m * p) (SNoLe_ordsucc_SNoLt_omega (m * n) (mul_SNo_In_omega (m) Hm (n) Hn) (m * p) (mul_SNo_In_omega (m) Hm (p) Hp))) ((andER (ordsucc (m * n) <= m * p -> m * n < m * p) (m * n < m * p -> ordsucc (m * n) <= m * p) (SNoLe_ordsucc_SNoLt_omega (m * n) (mul_SNo_In_omega (m) Hm (n) Hn) (m * p) (mul_SNo_In_omega (m) Hm (p) Hp))) ((andER (m * n < m * p -> ~ m = 0 /\ n < p) (~ m = 0 /\ n < p -> m * n < m * p) (lt_mult_lcancel_thm (m) Hm (n) Hn (p) Hp)) H))).
+Qed.
+
+// HOL Light: arith.ml / LT_MULT_LCANCEL
+Theorem LT_MULT_LCANCEL : forall m n p :e omega, m * n < m * p <-> ~ m = 0 /\ n < p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (lt_mult_lcancel_thm (m) Hm (n) Hn (p) Hp).
 Qed.
 
 // HOL Light: arith.ml / EVEN
