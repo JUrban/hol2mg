@@ -2252,6 +2252,14 @@ N17 (480 -> 481, +1, zero lost): filtering.  logic.mg `filter_thm` — both FILT
 seq_foldr_nil/cons instances *up to definitional conversion* (seq_filter unfolds to the
 fold, the fold step beta-reduces to the If), so the whole proof is two `exact`s.
 
+N18 (481 -> 483, +2, zero lost): parity.  A six-lemma logic.mg toolkit over the `k + k`
+definitions: `even_zero`, `even_succ_odd`/`odd_succ_even` (the arithmetic core:
+`(k+1)+(k+1) = ((k+k)+1)+1` via assoc + the 3b_1_2 commutation), `even_or_odd`
+(nat_ind), `not_even_and_odd` (complete induction via `nat_complete_ind`: a number
+both `k+k` and `(j+j)+1` pushes the contradiction down to `j + j` through
+`ordsucc_inj`), and the public-facing `even_thm`/`not_even_thm` — landing EVEN and
+NOT_EVEN.  All six Megalodon-checked on first composition.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

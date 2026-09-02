@@ -1923,6 +1923,19 @@ let builtin_premises : (string * Mg.tm) list =
                  Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"),
                    Mg.App (Mg.App (Mg.Cst "seq_filter", Mg.Var "hl__P"), Mg.Var "hl__t")),
                  Mg.App (Mg.App (Mg.Cst "seq_filter", Mg.Var "hl__P"), Mg.Var "hl__t")))))))));
+    ("even_thm",
+     Mg.App (Mg.App (Mg.Cst "and",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.Cst "even_nat", Mg.Num 0)), Mg.Cst "True")),
+       Mg.AllIn ("hl__n", Mg.Cst "omega",
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.App (Mg.Cst "even_nat", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+           Mg.App (Mg.Cst "not", Mg.App (Mg.Cst "even_nat", Mg.Var "hl__n"))))));
+    ("not_even_thm",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.Cst "not", Mg.App (Mg.Cst "even_nat", Mg.Var "hl__n"))),
+         Mg.App (Mg.Cst "odd_nat", Mg.Var "hl__n"))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

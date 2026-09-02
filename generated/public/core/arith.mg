@@ -916,7 +916,8 @@ Admitted.
 // Source hash: md5:042754ef93062b568529b3c88d4528d5
 // Status: transport_required (bridges: hol_num_omega)
 Theorem EVEN : (even_nat 0 <-> True) /\ forall n :e omega, even_nat (ordsucc n) <-> ~ even_nat n.
-Admitted.
+exact even_thm.
+Qed.
 
 // HOL Light: arith.ml:720 / ODD
 // Source hash: md5:c105a6929490a222b6b0ce5bd1c9de43
@@ -928,7 +929,9 @@ Admitted.
 // Source hash: md5:81b33199298138f3effba7c6605e5fdc
 // Status: transport_required (bridges: hol_num_omega)
 Theorem NOT_EVEN : forall n :e omega, ~ even_nat n <-> odd_nat n.
-Admitted.
+let n. assume Hn.
+exact (not_even_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:728 / NOT_ODD
 // Source hash: md5:c1eb2dc93bf829fc21b22bf5347d4d8b
