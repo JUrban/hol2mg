@@ -6,7 +6,10 @@
 // Source hash: md5:bb7a1d14b94cbe95cb66a8c29bf49c59
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_prod_setprod)
 Theorem dist : forall n m :e omega, abs_SNo (m + - n) = minus_nat m n + minus_nat n m.
-Admitted.
+let n. assume Hn.
+let m. assume Hm.
+exact (dist_thm (n) Hn (m) Hm).
+Qed.
 
 // HOL Light: realax.ml:61 / DIST_REFL
 // Source hash: md5:8a2c28376a8c6a0a12341c3797b33b4c

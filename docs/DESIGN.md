@@ -2308,6 +2308,13 @@ backward; the lemma's grouped binder order differs from PAIR_EQ's interleaved on
 the builtin AST mirrors the lemma and the conclusion match carries it) — landing
 PAIR_EQ.
 
+N26 (509 -> 513, +4, zero lost; DIST_SYM rides the cascade): natural distance and the
+zero divisions.  logic.mg `dist_thm`
+(`abs_SNo (m + -n) = minus_nat m n + minus_nat n m` by the n <= m / ~(n <= m) split:
+nonneg_abs/neg_abs on the difference, both minus_nat Ifs resolved per branch, the
+n = m diagonal collapsing through SNoLe_antisym), plus `mod_0_thm`/`div_0_thm`
+(uniqueness at q = r = 0) — landing dist, MOD_0, DIV_0.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

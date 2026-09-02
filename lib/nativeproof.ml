@@ -2162,6 +2162,25 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.App (Mg.App (Mg.Cst "and",
                Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__a"), Mg.Var "hl__c")),
                Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__b"), Mg.Var "hl__d"))))))))));
+    ("mod_0_thm",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "mod_nat", Mg.Num 0), Mg.Var "hl__n")),
+         Mg.Num 0)));
+    ("div_0_thm",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.App (Mg.Cst "div_nat", Mg.Num 0), Mg.Var "hl__n")),
+         Mg.Num 0)));
+    ("dist_thm",
+     Mg.AllIn ("hl__n", Mg.Cst "omega", Mg.AllIn ("hl__m", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.Cst "abs_SNo",
+           Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__m"),
+             Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__n")))),
+         Mg.App (Mg.App (Mg.Cst "add_SNo",
+           Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
+           Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__n"), Mg.Var "hl__m"))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

@@ -1163,3 +1163,100 @@ apply iffI.
 - assume H.
   exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u,hl__v)) a c b d (andEL (a = c) (b = d) H) (andER (a = c) (b = d) H)).
 Qed.
+
+Theorem mod_0_thm : forall n :e omega, mod_nat 0 n = 0.
+let n. assume Hn.
+apply (xm (n = 0)).
+assume H0.
+exact ((eq_sym_i n 0 H0) (fun hl__u hl__v => mod_nat 0 hl__u = 0) (mod_zero_thm 0 (nat_p_omega 0 nat_0))).
+assume H0.
+claim HE: 0 = 0 * n + 0.
+{ exact (eq_sym_i (0 * n + 0) 0 (eq_trans_i (0 * n + 0) (0 + 0) 0 (f_equal (fun hl__u:set => hl__u + 0) (0 * n) 0 (mul_SNo_zeroL n (omega_SNo n Hn))) (add_SNo_0L 0 SNo_0))). }
+claim HR: 0 < n.
+{ exact (iffER (0 < n) (~ n = 0) (lt_nz_thm n Hn) H0). }
+exact (mod_uniq_thm 0 (nat_p_omega 0 nat_0) n Hn 0 (nat_p_omega 0 nat_0) 0 (nat_p_omega 0 nat_0) (andI (0 = 0 * n + 0) (0 < n) HE HR)).
+Qed.
+
+Theorem div_0_thm : forall n :e omega, div_nat 0 n = 0.
+let n. assume Hn.
+apply (xm (n = 0)).
+assume H0.
+exact ((eq_sym_i n 0 H0) (fun hl__u hl__v => div_nat 0 hl__u = 0) (div_zero_thm 0 (nat_p_omega 0 nat_0))).
+assume H0.
+claim HE: 0 = 0 * n + 0.
+{ exact (eq_sym_i (0 * n + 0) 0 (eq_trans_i (0 * n + 0) (0 + 0) 0 (f_equal (fun hl__u:set => hl__u + 0) (0 * n) 0 (mul_SNo_zeroL n (omega_SNo n Hn))) (add_SNo_0L 0 SNo_0))). }
+claim HR: 0 < n.
+{ exact (iffER (0 < n) (~ n = 0) (lt_nz_thm n Hn) H0). }
+exact (div_uniq_thm 0 (nat_p_omega 0 nat_0) n Hn 0 (nat_p_omega 0 nat_0) 0 (nat_p_omega 0 nat_0) (andI (0 = 0 * n + 0) (0 < n) HE HR)).
+Qed.
+
+Theorem dist_thm : forall n m :e omega, abs_SNo (m + - n) = minus_nat m n + minus_nat n m.
+let n. assume Hn. let m. assume Hm.
+claim Hsn: SNo n. { exact (omega_SNo n Hn). }
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+claim Hsmn: SNo (- n). { exact (SNo_minus_SNo n Hsn). }
+claim Hsmm: SNo (- m). { exact (SNo_minus_SNo m Hsm). }
+apply (xm (n <= m)).
+- assume H1.
+  claim HP: 0 <= m + - n.
+  { claim P1: n + - n <= m + - n. { exact (add_SNo_Le1 n (- n) m Hsn Hsmn Hsm H1). }
+    exact ((add_SNo_minus_SNo_rinv n Hsn) (fun hl__u hl__v => hl__u <= m + - n) P1). }
+  claim HA: abs_SNo (m + - n) = m + - n.
+  { exact (nonneg_abs_SNo (m + - n) HP). }
+  claim HM1: minus_nat m n = m + - n.
+  { prove (if n <= m then m + - n else 0) = m + - n.
+    exact (If_i_1 (n <= m) (m + - n) 0 H1). }
+  apply (xm (m <= n)).
+  + assume H2.
+    claim HEQ: n = m. { exact (SNoLe_antisym n m Hsn Hsm H1 H2). }
+    claim HM2: minus_nat n m = n + - m.
+    { prove (if m <= n then n + - m else 0) = n + - m.
+      exact (If_i_1 (m <= n) (n + - m) 0 H2). }
+    claim HZ: n + - m = 0.
+    { exact ((eq_sym_i n m HEQ) (fun hl__u hl__v => hl__u + - m = 0) (add_SNo_minus_SNo_rinv m Hsm)). }
+    claim HS: minus_nat m n + minus_nat n m = m + - n.
+    { claim S1: minus_nat m n + minus_nat n m = (m + - n) + (n + - m).
+      { exact (f_equal2 (fun hl__u:set => fun hl__v:set => hl__u + hl__v) (minus_nat m n) (m + - n) (minus_nat n m) (n + - m) HM1 HM2). }
+      claim S2: (m + - n) + (n + - m) = (m + - n) + 0.
+      { exact (f_equal (fun hl__u:set => (m + - n) + hl__u) (n + - m) 0 HZ). }
+      claim S3: (m + - n) + 0 = m + - n.
+      { exact (add_SNo_0R (m + - n) (SNo_add_SNo m (- n) Hsm Hsmn)). }
+      exact (eq_trans_i (minus_nat m n + minus_nat n m) ((m + - n) + (n + - m)) (m + - n) S1 (eq_trans_i ((m + - n) + (n + - m)) ((m + - n) + 0) (m + - n) S2 S3)). }
+    exact (eq_trans_i (abs_SNo (m + - n)) (m + - n) (minus_nat m n + minus_nat n m) HA (eq_sym_i (minus_nat m n + minus_nat n m) (m + - n) HS)).
+  + assume H2.
+    claim HM2: minus_nat n m = 0.
+    { prove (if m <= n then n + - m else 0) = 0.
+      exact (If_i_0 (m <= n) (n + - m) 0 H2). }
+    claim HS: minus_nat m n + minus_nat n m = m + - n.
+    { claim S1: minus_nat m n + minus_nat n m = (m + - n) + 0.
+      { exact (f_equal2 (fun hl__u:set => fun hl__v:set => hl__u + hl__v) (minus_nat m n) (m + - n) (minus_nat n m) 0 HM1 HM2). }
+      exact (eq_trans_i (minus_nat m n + minus_nat n m) ((m + - n) + 0) (m + - n) S1 (add_SNo_0R (m + - n) (SNo_add_SNo m (- n) Hsm Hsmn))). }
+    exact (eq_trans_i (abs_SNo (m + - n)) (m + - n) (minus_nat m n + minus_nat n m) HA (eq_sym_i (minus_nat m n + minus_nat n m) (m + - n) HS)).
+- assume H1.
+  claim HLT: m < n.
+  { exact (iffEL (~ n <= m) (m < n) (not_SNoLe_iff_omega n Hn m Hm) H1). }
+  claim HNEG: m + - n < 0.
+  { claim P1: m + - n < n + - n. { exact (add_SNo_Lt1 m (- n) n Hsm Hsmn Hsn HLT). }
+    exact ((add_SNo_minus_SNo_rinv n Hsn) (fun hl__u hl__v => m + - n < hl__u) P1). }
+  claim HA: abs_SNo (m + - n) = - (m + - n).
+  { exact (neg_abs_SNo (m + - n) (SNo_add_SNo m (- n) Hsm Hsmn) HNEG). }
+  claim HNE: - (m + - n) = n + - m.
+  { claim N1: - (m + - n) = - m + - - n.
+    { exact (minus_add_SNo_distr m (- n) Hsm Hsmn). }
+    claim N2: - m + - - n = - m + n.
+    { exact (f_equal (fun hl__u:set => - m + hl__u) (- - n) n (minus_SNo_invol n Hsn)). }
+    claim N3: - m + n = n + - m.
+    { exact (add_SNo_com (- m) n Hsmm Hsn). }
+    exact (eq_trans_i (- (m + - n)) (- m + - - n) (n + - m) N1 (eq_trans_i (- m + - - n) (- m + n) (n + - m) N2 N3)). }
+  claim HM1: minus_nat m n = 0.
+  { prove (if n <= m then m + - n else 0) = 0.
+    exact (If_i_0 (n <= m) (m + - n) 0 H1). }
+  claim HM2: minus_nat n m = n + - m.
+  { prove (if m <= n then n + - m else 0) = n + - m.
+    exact (If_i_1 (m <= n) (n + - m) 0 (SNoLtLe m n HLT)). }
+  claim HS: minus_nat m n + minus_nat n m = n + - m.
+  { claim S1: minus_nat m n + minus_nat n m = 0 + (n + - m).
+    { exact (f_equal2 (fun hl__u:set => fun hl__v:set => hl__u + hl__v) (minus_nat m n) 0 (minus_nat n m) (n + - m) HM1 HM2). }
+    exact (eq_trans_i (minus_nat m n + minus_nat n m) (0 + (n + - m)) (n + - m) S1 (add_SNo_0L (n + - m) (SNo_add_SNo n (- m) Hsn Hsmm))). }
+  exact (eq_trans_i (abs_SNo (m + - n)) (- (m + - n)) (minus_nat m n + minus_nat n m) HA (eq_trans_i (- (m + - n)) (n + - m) (minus_nat m n + minus_nat n m) HNE (eq_sym_i (minus_nat m n + minus_nat n m) (n + - m) HS))).
+Qed.
