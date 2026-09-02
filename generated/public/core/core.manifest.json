@@ -352,7 +352,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -61606,7 +61606,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -64409,7 +64409,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": true,
    "fully_proved": false
   },
@@ -74653,7 +74653,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -83026,7 +83026,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true

@@ -641,6 +641,17 @@ and close_term_inner st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string
         match match_tm pvars cpat goal with
         | None -> None
         | Some bnd0 ->
+            (* for a negated conclusion, bind from it first: the premise back-chaining
+               below can otherwise mis-bind against an unrelated membership hypothesis *)
+            let bnd0 = (match wrap with
+              | `NotApp np' ->
+                  let miss = List.filter (fun v -> not (List.mem_assoc v bnd0)) pvars in
+                  if miss = [] then bnd0
+                  else (match List.find_map (fun h2 ->
+                          match_tm miss (Mg.subst bnd0 np') h2.prop) hyps with
+                        | Some ext -> ext @ bnd0
+                        | None -> bnd0)
+              | _ -> bnd0) in
             (* pattern variables the conclusion leaves open are bound by matching the
                hypothesis' own premises against the available hypotheses (back-chaining) *)
             let bnd = List.fold_left (fun bnd pr ->
@@ -1811,6 +1822,33 @@ let builtin_premises : (string * Mg.tm) list =
      Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
        Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"),
          Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__m"), Mg.Var "hl__n")))));
+    ("add_SNo_com_3_0_1",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"),
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__y"), Mg.Var "hl__z"))),
+               Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__y"),
+                 Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("mul_SNo_com_3_0_1",
+     Mg.All ("hl__x", Mg.Set, Mg.All ("hl__y", Mg.Set, Mg.All ("hl__z", Mg.Set,
+       Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__x"),
+         Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__y"),
+           Mg.Imp (Mg.App (Mg.Cst "SNo", Mg.Var "hl__z"),
+             Mg.App (Mg.App (Mg.Cst "eq",
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"),
+                 Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__y"), Mg.Var "hl__z"))),
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__y"),
+                 Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__x"), Mg.Var "hl__z"))))))))));
+    ("not_cons_nil",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__h", Mg.Var "hl__A",
+       Mg.AllIn ("hl__t", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.App (Mg.Cst "not",
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"), Mg.Var "hl__t")),
+             Mg.Cst "seq_nil"))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

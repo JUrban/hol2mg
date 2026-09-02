@@ -2216,6 +2216,18 @@ NOT_LE), `cond_elim_thm` (If_i_1/0 Leibniz both ways; lands COND_ELIM_THM — th
 reverse direction rewrites a *hypothesis*, which stays out of the generic prover's
 reach), `SNoLe_add_omega` (add_SNo_Le2 at y:=0; lands LE_ADD).
 
+N13 (467 -> 472, +5, zero lost; REAL_ADD_AC and REAL_MUL_AC ride the cascade):
+associativity-commutativity bundles and list discrimination.
+Builtins add_SNo_com_3_0_1 / mul_SNo_com_3_0_1 (God1's mixed-middle lemmas — exactly the
+`m + n + p = n + m + p` conjunct the AC bundles die on; lands ADD_AC, MULT_AC);
+logic.mg `not_cons_nil` (length discrimination via seq_len_cons + neq_ordsucc_0; lands
+NOT_CONS_NIL).  One matcher repair: for a builtin with a negated conclusion (the
+`NotApp` variant), pattern variables are now bound from the negated conclusion *before*
+premise back-chaining — the back-chain used to grab an unrelated membership hypothesis
+first (`hl__h :e hl__A` matched `t :e finseq A`), leaving the candidate unusable.
+Still open: CONS_11 (injectivity hand lemma), DIVISION/MOD cluster, LE_EXISTS, EVEN,
+IN_ELIM_THM, FORALL_PAIR_THM, dist.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

@@ -574,3 +574,12 @@ claim E: m + 0 = m. { exact (add_SNo_0R m Hsm). }
 claim L: m + 0 <= m + n. { exact (add_SNo_Le2 m 0 n Hsm SNo_0 Hsn (omega_nonneg n Hn)). }
 exact (E (fun hl__u hl__v => hl__u <= m + n) L).
 Qed.
+
+Theorem not_cons_nil : forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil.
+let A. let h. assume Hh. let t. assume Ht. assume H.
+claim E: seq_len (seq_cons h t) = seq_len seq_nil.
+{ exact (f_equal (fun hl__u:set => seq_len hl__u) (seq_cons h t) (seq_nil) H). }
+claim E2: ordsucc (seq_len t) = 0.
+{ exact (eq_trans_i (ordsucc (seq_len t)) (seq_len (seq_cons h t)) (0) (eq_sym_i (seq_len (seq_cons h t)) (ordsucc (seq_len t)) (seq_len_cons A h Hh t Ht)) (eq_trans_i (seq_len (seq_cons h t)) (seq_len seq_nil) (0) E (seq_len_nil))). }
+exact (neq_ordsucc_0 (seq_len t) E2).
+Qed.
