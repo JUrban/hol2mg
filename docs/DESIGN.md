@@ -2235,6 +2235,13 @@ Remaining N14+ agenda: LE_EXISTS (needs an omega-closure lemma for truncated
 subtraction), DIVISION/MOD cluster, EVEN/NOT_EVEN parity induction, dist, SUB_0
 (minus_nat case analysis), CONS_11.
 
+N15 (475 -> 479, +4, zero lost; RIGHT_EXISTS_IMP_THM rides the cascade): choice under
+implication, truncated subtraction, cross membership.
+logic.mg `right_imp_exists_thm` (xm on P; `choose_in` witness in the negative branch),
+`sub_0_thm` (minus_nat unfolds through `prove`; the m <= 0 branch collapses through
+`SNoLe_0_iff_omega`), `in_cross_thm` (Sigma projections + tuple_2_Sigma) — landing
+RIGHT_IMP_EXISTS_THM, SUB_0, IN_CROSS.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

@@ -1871,6 +1871,36 @@ let builtin_premises : (string * Mg.tm) list =
              Mg.ExIn ("hl__y", Mg.Var "hl__B",
                Mg.App (Mg.Var "hl__P",
                  Mg.Tuple [ Mg.Var "hl__x"; Mg.Var "hl__y" ]))))))));
+    ("right_imp_exists_thm",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.Imp (Mg.App (Mg.App (Mg.Cst "neq", Mg.Var "hl__A"), Mg.Cst "Empty"),
+         Mg.All ("hl__P", Mg.Prop, Mg.All ("hl__Q", Mg.Arr (Mg.Set, Mg.Prop),
+           Mg.App (Mg.App (Mg.Cst "iff",
+             Mg.Imp (Mg.Var "hl__P",
+               Mg.ExIn ("hl__x", Mg.Var "hl__A",
+                 Mg.App (Mg.Var "hl__Q", Mg.Var "hl__x")))),
+             Mg.ExIn ("hl__x", Mg.Var "hl__A",
+               Mg.Imp (Mg.Var "hl__P",
+                 Mg.App (Mg.Var "hl__Q", Mg.Var "hl__x")))))))));
+    ("sub_0_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "and",
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Num 0), Mg.Var "hl__m")),
+           Mg.Num 0)),
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Num 0)),
+           Mg.Var "hl__m"))));
+    ("in_cross_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.AllIn ("hl__x", Mg.Var "hl__A", Mg.AllIn ("hl__y", Mg.Var "hl__B",
+         Mg.AllSub ("hl__s", Mg.Var "hl__A", Mg.AllSub ("hl__t", Mg.Var "hl__B",
+           Mg.App (Mg.App (Mg.Cst "iff",
+             mg_in (Mg.Tuple [ Mg.Var "hl__x"; Mg.Var "hl__y" ])
+               (Mg.App (Mg.App (Mg.Cst "setprod", Mg.Var "hl__s"), Mg.Var "hl__t"))),
+             Mg.App (Mg.App (Mg.Cst "and",
+               mg_in (Mg.Var "hl__x") (Mg.Var "hl__s")),
+               mg_in (Mg.Var "hl__y") (Mg.Var "hl__t"))))))))));
     ("nat_0", Mg.App (Mg.Cst "nat_p", Mg.Num 0));
     ("nat_ordsucc",
      Mg.All ("hl__n", Mg.Set,

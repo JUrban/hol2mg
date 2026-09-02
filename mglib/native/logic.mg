@@ -619,3 +619,61 @@ apply iffI.
   + exact (tuple_2_Sigma A (fun hl__w:set => B) p1 Hp1 p2 Hp2).
   + exact HP.
 Qed.
+
+Theorem right_imp_exists_thm : forall A:set, A <> Empty -> forall P:prop, forall Q:set -> prop, P -> (exists x :e A, Q x) <-> exists x :e A, P -> Q x.
+let A. assume HA. let P. let Q.
+apply iffI.
+- assume H.
+  apply (xm P).
+  + assume HP.
+    apply (H HP). let x. assume Hx0. apply Hx0. assume Hx HQ.
+    witness x. apply andI.
+    * exact Hx.
+    * assume HP2. exact HQ.
+  + assume HnP.
+    witness (choose_in A (fun hl__w:set => True)).
+    apply andI.
+    * exact (choose_in_in A HA (fun hl__w:set => True)).
+    * assume HP2. exact (FalseE (HnP HP2) (Q (choose_in A (fun hl__w:set => True)))).
+- assume H. assume HP.
+  apply H. let x. assume Hx0. apply Hx0. assume Hx HPQ.
+  witness x. apply andI.
+  + exact Hx.
+  + exact (HPQ HP).
+Qed.
+
+Theorem sub_0_thm : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
+let m. assume Hm.
+claim Hsm: SNo m. { exact (omega_SNo m Hm). }
+apply andI.
+- prove (if m <= 0 then 0 + - m else 0) = 0.
+  apply (xm (m <= 0)).
+  + assume H1.
+    claim Hm0: m = 0. { exact (iffEL (m <= 0) (m = 0) (SNoLe_0_iff_omega m Hm) H1). }
+    claim E1: (if m <= 0 then 0 + - m else 0) = 0 + - m. { exact (If_i_1 (m <= 0) (0 + - m) 0 H1). }
+    claim E2: 0 + - m = 0.
+    { claim E3: - m = 0.
+      { exact (eq_trans_i (- m) (- 0) 0 (f_equal (fun hl__u:set => - hl__u) m 0 Hm0) minus_SNo_0). }
+      exact (eq_trans_i (0 + - m) (0 + 0) 0 (f_equal (fun hl__u:set => 0 + hl__u) (- m) 0 E3) (add_SNo_0L 0 SNo_0)). }
+    exact (eq_trans_i (if m <= 0 then 0 + - m else 0) (0 + - m) 0 E1 E2).
+  + assume H1.
+    exact (If_i_0 (m <= 0) (0 + - m) 0 H1).
+- prove (if 0 <= m then m + - 0 else 0) = m.
+  claim E1: (if 0 <= m then m + - 0 else 0) = m + - 0. { exact (If_i_1 (0 <= m) (m + - 0) 0 (omega_nonneg m Hm)). }
+  claim E2: m + - 0 = m.
+  { exact (eq_trans_i (m + - 0) (m + 0) m (f_equal (fun hl__u:set => m + hl__u) (- 0) 0 minus_SNo_0) (add_SNo_0R m Hsm)). }
+  exact (eq_trans_i (if 0 <= m then m + - 0 else 0) (m + - 0) m E1 E2).
+Qed.
+
+Theorem in_cross_thm : forall A B:set, forall x :e A, forall y :e B, forall s c= A, forall t c= B, (x,y) :e s :*: t <-> x :e s /\ y :e t.
+let A. let B. let x. assume Hx. let y. assume Hy. let s. assume Hs. let t. assume Ht.
+apply iffI.
+- assume H.
+  apply andI.
+  + claim H0: ((x,y) 0) :e s. { exact (ap0_Sigma s (fun hl__w:set => t) (x,y) H). }
+    exact ((tuple_2_0_eq x y) (fun hl__u hl__v => hl__u :e s) H0).
+  + claim H1: ((x,y) 1) :e t. { exact (ap1_Sigma s (fun hl__w:set => t) (x,y) H). }
+    exact ((tuple_2_1_eq x y) (fun hl__u hl__v => hl__u :e t) H1).
+- assume H.
+  exact (tuple_2_Sigma s (fun hl__w:set => t) x (andEL (x :e s) (y :e t) H) y (andER (x :e s) (y :e t) H)).
+Qed.
