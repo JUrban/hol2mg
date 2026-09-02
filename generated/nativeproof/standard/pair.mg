@@ -18,6 +18,17 @@ let t. assume Ht.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: pair.ml / PAIR_EQ
+Theorem PAIR_EQ : forall A B:set, forall x :e A, forall y :e B, forall a :e A, forall b :e B, (x,y) = (a,b) <-> x = a /\ y = b.
+let A.
+let B.
+let x. assume Hx.
+let y. assume Hy.
+let a. assume Ha.
+let b. assume Hb.
+exact (pair_eq_thm (A) (B) (x) Hx (a) Ha (y) Hy (b) Hb).
+Qed.
+
 // HOL Light: pair.ml / PAIR_SURJECTIVE
 Theorem PAIR_SURJECTIVE : forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y).
 let A.
