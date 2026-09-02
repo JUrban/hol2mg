@@ -46,7 +46,11 @@ Admitted.
 // Source hash: md5:8a85c46beb474e1e63192937ada8908b
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem PAIR_SURJECTIVE : forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y).
-Admitted.
+let A.
+let B.
+let p. assume Hp.
+exact ((andEL ((exists hl__p :e A :*: B, p = hl__p) -> exists hl__x :e A, exists hl__y :e B, p = (hl__x,hl__y)) ((exists hl__x :e A, exists hl__y :e B, p = (hl__x,hl__y)) -> exists hl__p :e A :*: B, p = hl__p) (exists_pair_thm (A) (B) (fun hl__w:set => p = hl__w))) (ex_intro (fun hl__w:set => hl__w :e A :*: B /\ p = hl__w) (p) (andI (p :e A :*: B) (p = p) Hp (fun q H => H)))).
+Qed.
 
 // HOL Light: pair.ml:92 / FST
 // Source hash: md5:e9c3a4a3164ca2f9e6fad2d535f8ab0f
@@ -124,13 +128,21 @@ Qed.
 // Source hash: md5:259d29f2f6087c2bd6a11a52412f4491
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem FORALL_PAIR_THM : forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2).
-Admitted.
+let A.
+let B.
+let P.
+exact (forall_pair_thm (A) (B) (P)).
+Qed.
 
 // HOL Light: pair.ml:299 / EXISTS_PAIR_THM
 // Source hash: md5:64b789e52ff2b13a976b5610389dc69b
 // Status: generalization_required (bridges: empty_case:A, empty_case:B, hol_prod_setprod)
 Theorem EXISTS_PAIR_THM : forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2).
-Admitted.
+let A.
+let B.
+let P.
+exact (exists_pair_thm (A) (B) (P)).
+Qed.
 
 // HOL Light: pair.ml:303 / LAMBDA_PAIR_THM
 // Source hash: md5:5cd80d8f0fe05eb8b4cf070c629deed9

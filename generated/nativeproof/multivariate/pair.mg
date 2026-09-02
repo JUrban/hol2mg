@@ -18,6 +18,14 @@ let t. assume Ht.
 exact (fun q H => H).
 Qed.
 
+// HOL Light: pair.ml / PAIR_SURJECTIVE
+Theorem PAIR_SURJECTIVE : forall A B:set, forall p :e A :*: B, exists x :e A, exists y :e B, p = (x,y).
+let A.
+let B.
+let p. assume Hp.
+exact ((andEL ((exists hl__p :e A :*: B, p = hl__p) -> exists hl__x :e A, exists hl__y :e B, p = (hl__x,hl__y)) ((exists hl__x :e A, exists hl__y :e B, p = (hl__x,hl__y)) -> exists hl__p :e A :*: B, p = hl__p) (exists_pair_thm (A) (B) (fun hl__w:set => p = hl__w))) (ex_intro (fun hl__w:set => hl__w :e A :*: B /\ p = hl__w) (p) (andI (p :e A :*: B) (p = p) Hp (fun q H => H)))).
+Qed.
+
 // HOL Light: pair.ml / FST
 Theorem FST : forall A B:set, forall x :e A, forall y :e B, x = x.
 let A.
@@ -66,6 +74,22 @@ assume H.
 let x. assume Hx.
 let y. assume Hy.
 exact (fun q H => H).
+Qed.
+
+// HOL Light: pair.ml / FORALL_PAIR_THM
+Theorem FORALL_PAIR_THM : forall A B:set, forall P:set -> prop, (forall p :e A :*: B, P p) <-> forall p1 :e A, forall p2 :e B, P (p1,p2).
+let A.
+let B.
+let P.
+exact (forall_pair_thm (A) (B) (P)).
+Qed.
+
+// HOL Light: pair.ml / EXISTS_PAIR_THM
+Theorem EXISTS_PAIR_THM : forall A B:set, forall P:set -> prop, (exists p :e A :*: B, P p) <-> exists p1 :e A, exists p2 :e B, P (p1,p2).
+let A.
+let B.
+let P.
+exact (exists_pair_thm (A) (B) (P)).
 Qed.
 
 // HOL Light: pair.ml / LAMBDA_PAIR
