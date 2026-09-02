@@ -6,7 +6,11 @@
 // Source hash: md5:a7dfbac61d36cd2920f9283264877110
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_ADD_AC : forall m n p :e R, m + n = n + m /\ ((m + n) + p = m + n + p /\ m + n + p = n + m + p).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (andI (m + n = n + m) ((m + n) + p = m + n + p /\ m + n + p = n + m + p) (add_SNo_com (m) (n) (real_SNo (m) Hm) (real_SNo (n) Hn)) (andI ((m + n) + p = m + n + p) (m + n + p = n + m + p) ((add_SNo_assoc (m) (n) (p) (real_SNo (m) Hm) (real_SNo (n) Hn) (real_SNo (p) Hp)) (fun hl__u hl__v => hl__u = (m + n + p)) (fun q H => H)) (add_SNo_com_3_0_1 (m) (n) (p) (real_SNo (m) Hm) (real_SNo (n) Hn) (real_SNo (p) Hp)))).
+Qed.
 
 // HOL Light: calc_int.ml:72 / REAL_ADD_RINV
 // Source hash: md5:73346d8a152a33c6ab509f9a667fb540
