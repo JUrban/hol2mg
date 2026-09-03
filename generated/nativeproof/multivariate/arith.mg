@@ -455,6 +455,13 @@ let n. assume Hn.
 exact (not_SNoLe_iff_omega (m) Hm (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / NOT_LT
+Theorem NOT_LT : forall m n :e omega, ~ m < n <-> n <= m.
+let m. assume Hm.
+let n. assume Hn.
+exact (not_lt_thm (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / LT_IMP_LE
 Theorem LT_IMP_LE : forall m n :e omega, m < n -> m <= n.
 let m. assume Hm.
@@ -591,6 +598,11 @@ let n. assume Hn.
 exact (odd_add_thm (m) Hm (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / SUB
+Theorem SUB : (forall m :e omega, minus_nat m 0 = m) /\ forall m n :e omega, minus_nat m (ordsucc n) = nat_pred (minus_nat m n).
+exact sub_thm.
+Qed.
+
 // HOL Light: arith.ml / SUB_0
 Theorem SUB_0 : forall m :e omega, minus_nat 0 m = 0 /\ minus_nat m 0 = m.
 let m. assume Hm.
@@ -654,12 +666,28 @@ let p. assume Hp.
 exact (sub_add_lcancel_thm (m) Hm (n) Hn (p) Hp).
 Qed.
 
+// HOL Light: arith.ml / SUB_ADD_RCANCEL
+Theorem SUB_ADD_RCANCEL : forall m n p :e omega, minus_nat (m + p) (n + p) = minus_nat m n.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (sub_add_rcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
 // HOL Light: arith.ml / LEFT_SUB_DISTRIB
 Theorem LEFT_SUB_DISTRIB : forall m n p :e omega, m * minus_nat n p = minus_nat (m * n) (m * p).
 let m. assume Hm.
 let n. assume Hn.
 let p. assume Hp.
 exact (left_sub_distrib_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
+// HOL Light: arith.ml / RIGHT_SUB_DISTRIB
+Theorem RIGHT_SUB_DISTRIB : forall m n p :e omega, minus_nat m n * p = minus_nat (m * p) (n * p).
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (right_sub_distrib_thm (m) Hm (n) Hn (p) Hp).
 Qed.
 
 // HOL Light: arith.ml / DIVISION_0

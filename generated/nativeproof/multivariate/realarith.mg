@@ -57,6 +57,13 @@ let y. assume Hy.
 exact (real_neg_sub_thm (x) Hx (y) Hy).
 Qed.
 
+// HOL Light: realarith.ml / REAL_NOT_LT
+Theorem REAL_NOT_LT : forall x y :e R, ~ x < y <-> y <= x.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_not_lt_thm (x) Hx (y) Hy).
+Qed.
+
 // HOL Light: realarith.ml / REAL_LT_LE
 Theorem REAL_LT_LE : forall x y :e R, x < y <-> x <= y /\ ~ x = y.
 let x. assume Hx.
