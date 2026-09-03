@@ -57,7 +57,8 @@ Admitted.
 // Source hash: md5:d0fd371bb2d6e755ceedbebcf7d79ab1
 // Status: transport_required (bridges: hol_num_omega)
 Theorem ARITH_EVEN : (forall n :e omega, even_nat n <-> even_nat n) /\ ((even_nat 0 <-> True) /\ ((forall n :e omega, even_nat (2 * n) <-> True) /\ forall n :e omega, even_nat (2 * n + 1) <-> False)).
-Admitted.
+exact arith_even_thm.
+Qed.
 
 // HOL Light: calc_num.ml:108 / ARITH_ODD
 // Source hash: md5:c05b7c7d661d6de729af3af17c67c193

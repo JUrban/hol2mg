@@ -218,7 +218,7 @@ Qed.
 // HOL Light: sets.ml / FINITE_RULES
 Theorem FINITE_RULES : forall A:set, finite Empty /\ forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x).
 let A.
-exact (finite_rules_thm (A)).
+exact (andI (finite Empty) (forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x)) finite_Empty (andER (finite Empty) (forall hl__x :e A, forall hl__s c= A, finite hl__s -> finite (SetAdjoin hl__s hl__x)) (finite_rules_thm (A)))).
 Qed.
 
 // HOL Light: sets.ml / CHOICE
@@ -1466,6 +1466,12 @@ apply iffI.
   exact ((andEL (f x = f y -> x = y) (x = y -> f x = f y) (H2 (x) Hx (y) Hy)) H3).
 Qed.
 
+// HOL Light: sets.ml / FINITE_EMPTY
+Theorem FINITE_EMPTY : forall A:set, finite Empty.
+let A.
+exact finite_Empty.
+Qed.
+
 // HOL Light: sets.ml / CARD_PSUBSET_IMP
 Theorem CARD_PSUBSET_IMP : forall A:set, forall a b c= A, a c= b /\ ~ finite_cardinality a = finite_cardinality b -> a c= b /\ a <> b.
 let A.
@@ -1872,6 +1878,22 @@ apply iffI.
   exact H1.
 - assume H.
   exact H.
+Qed.
+
+// HOL Light: sets.ml / FINITE_UNION_OF_EMPTY
+Theorem FINITE_UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = Empty.
+let A.
+assume H.
+let P.
+exact (union_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (finite) (P) finite_Empty).
+Qed.
+
+// HOL Light: sets.ml / FINITE_INTERSECTION_OF_EMPTY
+Theorem FINITE_INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+let A.
+assume H.
+let P.
+exact (intersection_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (finite) (P) finite_Empty).
 Qed.
 
 // HOL Light: sets.ml / FORALL_IN_CLAUSES

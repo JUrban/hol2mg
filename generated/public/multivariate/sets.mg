@@ -269,7 +269,7 @@ Admitted.
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
 Theorem FINITE_RULES : forall A:set, finite Empty /\ forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x).
 let A.
-exact (finite_rules_thm (A)).
+exact (andI (finite Empty) (forall x :e A, forall s c= A, finite s -> finite (SetAdjoin s x)) finite_Empty (andER (finite Empty) (forall hl__x :e A, forall hl__s c= A, finite hl__s -> finite (SetAdjoin hl__s hl__x)) (finite_rules_thm (A)))).
 Qed.
 
 // HOL Light: sets.ml:137 / INFINITE
@@ -2553,7 +2553,9 @@ Admitted.
 // Source hash: md5:63b9756b3dc363d57c2ba5dd2500a8b7
 // Status: generalization_required (bridges: empty_case:A, hol_finite_finite)
 Theorem FINITE_EMPTY : forall A:set, finite Empty.
-Admitted.
+let A.
+exact finite_Empty.
+Qed.
 
 // HOL Light: sets.ml:1390 / FINITE_SUBSET
 // Source hash: md5:cbe809cab3573cf324dd84b560f89471
@@ -4610,13 +4612,21 @@ Admitted.
 // Source hash: md5:ab7a993d4740468c3c3658460e4af2e6
 // Status: transport_required (bridges: hol_finite_finite)
 Theorem FINITE_UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ Union u = Empty.
-Admitted.
+let A.
+assume H.
+let P.
+exact (union_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (finite) (P) finite_Empty).
+Qed.
 
 // HOL Light: sets.ml:4223 / FINITE_INTERSECTION_OF_EMPTY
 // Source hash: md5:5f96c69d92f715c098e9a445167dcbbc
 // Status: transport_required (bridges: hol_finite_finite)
 Theorem FINITE_INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P:set -> prop, exists u c= Power A, finite u /\ (forall c :e u, P c) /\ {x :e A | forall Y :e u, x :e Y} = A.
-Admitted.
+let A.
+assume H.
+let P.
+exact (intersection_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (finite) (P) finite_Empty).
+Qed.
 
 // HOL Light: sets.ml:4227 / FINITE_UNION_OF_INC
 // Source hash: md5:995382e9ae1f4040e8830222bd4b0ac7
