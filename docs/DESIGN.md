@@ -2376,6 +2376,22 @@ EQ_ADD_RCANCEL; its old self-contained synthesized proof (xm + If_i_1 +
 minus_SNo_0 transport) was transplanted verbatim as `real_zpow_0_thm` and the
 rerun was clean.
 
+N31 (544 -> 552, +8, zero lost): powers, strict-order existentials and modular
+congruence.  logic.mg `real_le_negtotal_thm` (SNoLtLe_or + minus_SNo_Le_contra),
+`real_lt_le_thm` (antisym split), `real_eq_mul_rcancel_thm` /
+`real_entire_thm` (xm + mul_SNo_nonzero_cancel with commutations),
+`length_append_thm` (a tuple_2_0_eq one-liner through the seq_append pair),
+`real_pow_add_thm` (exp_SNo_nat_mul_add reversed), `lt_exists_thm`
+(le_exists_thm at ordsucc m with the m + ordsucc d = ordsucc (m + d) bridge),
+`exp_eq_0_thm` (exp_SNo_nat_pos positivity refutation one way, nat_inv +
+exp_SNo_nat_S + zeroL back), `mod_eq_thm` (division_0_thm decomposition,
+add_SNo_com_3b_1_2 rearrangement, mul_SNo_distrR, mod_uniq_thm) — landing
+REAL_LE_NEGTOTAL, REAL_LT_LE (already guided, now stable), REAL_EQ_MUL_RCANCEL,
+REAL_ENTIRE, LENGTH_APPEND, REAL_POW_ADD, LT_EXISTS, EXP_EQ_0, MOD_EQ.
+Regression fix: the first pass traded fragile guided proofs again (REAL_LT_NZ
+lost, REAL_EQ_RCANCEL_IMP gained); a direct `real_lt_nz_thm` hand lemma
+restored it and the rerun was clean.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

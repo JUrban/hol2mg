@@ -104,6 +104,15 @@ let t2. assume Ht2.
 exact (cons_11_thm (A) (h1) Hh1 (h2) Hh2 (t1) Ht1 (t2) Ht2).
 Qed.
 
+// HOL Light: lists.ml / LENGTH_APPEND
+Theorem LENGTH_APPEND : forall A:set, A <> Empty -> forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m.
+let A.
+assume H.
+let l. assume Hl.
+let m. assume Hm.
+exact (length_append_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl (m) Hm).
+Qed.
+
 // HOL Light: lists.ml / ALLPAIRS_SYM
 Theorem ALLPAIRS_SYM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i).
 let A.
