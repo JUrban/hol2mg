@@ -58,6 +58,14 @@ apply andI.
   exact (seq_map_cons (A) (f) (h) Hh (t) Ht).
 Qed.
 
+// HOL Light: lists.ml / LAST
+Theorem LAST : forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+exact (last_cons_thm (A) (h) Hh (t) Ht).
+Qed.
+
 // HOL Light: lists.ml / ALL
 Theorem ALL : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_all P seq_nil <-> True) /\ (seq_all P (seq_cons h t) <-> P h /\ seq_all P t).
 let A.

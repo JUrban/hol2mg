@@ -265,6 +265,14 @@ let n. assume Hn.
 exact (exp_eq_0_thm (m) Hm (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / EXP_ADD
+Theorem EXP_ADD : forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (exp_add_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
 // HOL Light: arith.ml / LE
 Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
 exact (andI (forall m :e omega, m <= 0 <-> m = 0) (forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n) SNoLe_0_iff_omega SNoLe_ordsucc_iff_omega).

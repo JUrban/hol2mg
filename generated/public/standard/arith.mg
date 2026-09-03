@@ -374,7 +374,11 @@ Admitted.
 // Source hash: md5:5354063bdd0efd0e1ad534d027f52f61
 // Status: transport_required (bridges: add_nat_add_SNo, exp_nat_exp_SNo_nat, hol_num_omega, mul_nat_mul_SNo)
 Theorem EXP_ADD : forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (exp_add_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:241 / EXP_ONE
 // Source hash: md5:eb2015c8843538f921a09b3810597c78
