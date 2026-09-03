@@ -1024,7 +1024,11 @@ Qed.
 // Source hash: md5:8289a329af7ef354b5c3755c64c97b38
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_EQ_MUL_RCANCEL : forall x y z :e R, x * z = y * z <-> x = y \/ z = 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (real_eq_mul_rcancel_thm (x) Hx (y) Hy (z) Hz).
+Qed.
 
 // HOL Light: real.ml:674 / REAL_MUL_LINV_UNIQ
 // Source hash: md5:b01ec3aecf5046e9acceb4fdde422eaf
@@ -1193,7 +1197,11 @@ Admitted.
 // Source hash: md5:7444b9839b1bd878ee901b5bf4897d75
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, hol_real_R)
 Theorem REAL_POW_ADD : forall x :e R, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n.
-Admitted.
+let x. assume Hx.
+let m. assume Hm.
+let n. assume Hn.
+exact (real_pow_add_thm (x) Hx (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: real.ml:837 / REAL_POW_NZ
 // Source hash: md5:7dc1e846a77d3968d6e607e4cbb9f181

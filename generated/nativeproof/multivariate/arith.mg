@@ -251,6 +251,13 @@ apply andI.
   exact (exp_SNo_nat_S (m) (omega_SNo (m) Hm) (n) (omega_nat_p (n) Hn)).
 Qed.
 
+// HOL Light: arith.ml / EXP_EQ_0
+Theorem EXP_EQ_0 : forall m n :e omega, m ^ n = 0 <-> m = 0 /\ ~ n = 0.
+let m. assume Hm.
+let n. assume Hn.
+exact (exp_eq_0_thm (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / LE
 Theorem LE : (forall m :e omega, m <= 0 <-> m = 0) /\ forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n.
 exact (andI (forall m :e omega, m <= 0 <-> m = 0) (forall m n :e omega, m <= ordsucc n <-> m = ordsucc n \/ m <= n) SNoLe_0_iff_omega SNoLe_ordsucc_iff_omega).
@@ -455,6 +462,13 @@ Theorem LE_EXISTS : forall m n :e omega, m <= n <-> exists d :e omega, n = m + d
 let m. assume Hm.
 let n. assume Hn.
 exact (le_exists_thm (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / LT_EXISTS
+Theorem LT_EXISTS : forall m n :e omega, m < n <-> exists d :e omega, n = m + ordsucc d.
+let m. assume Hm.
+let n. assume Hn.
+exact (lt_exists_thm (m) Hm (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / LE_ADD
@@ -690,5 +704,15 @@ Qed.
 Theorem MOD_0 : forall n :e omega, mod_nat 0 n = 0.
 let n. assume Hn.
 exact (mod_0_thm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / MOD_EQ
+Theorem MOD_EQ : forall m n p q :e omega, m = n + q * p -> mod_nat m p = mod_nat n p.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+let q. assume Hq.
+assume H.
+exact ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => mod_nat hl__u p = mod_nat n p) (H (fun hl__u hl__v => mod_nat hl__u p = mod_nat n p) (mod_eq_thm (m) Hm (n) Hn (p) Hp (q) Hq H))).
 Qed.
 

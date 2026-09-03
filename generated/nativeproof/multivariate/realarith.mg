@@ -43,11 +43,31 @@ assume H.
 exact (SNoLt_tra (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) (andEL (x < y) (y < z) H) (andER (x < y) (y < z) H)).
 Qed.
 
+// HOL Light: realarith.ml / REAL_LT_LE
+Theorem REAL_LT_LE : forall x y :e R, x < y <-> x <= y /\ ~ x = y.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_lt_le_thm (x) Hx (y) Hy).
+Qed.
+
 // HOL Light: realarith.ml / REAL_LT_REFL
 Theorem REAL_LT_REFL : forall x :e R, ~ x < x.
 let x. assume Hx.
 assume H.
 exact ((SNoLt_irref (x)) H).
+Qed.
+
+// HOL Light: realarith.ml / REAL_ENTIRE
+Theorem REAL_ENTIRE : forall x y :e R, x * y = 0 <-> x = 0 \/ y = 0.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_entire_thm (x) Hx (y) Hy).
+Qed.
+
+// HOL Light: realarith.ml / REAL_LE_NEGTOTAL
+Theorem REAL_LE_NEGTOTAL : forall x :e R, 0 <= x \/ 0 <= - x.
+let x. assume Hx.
+exact (real_le_negtotal_thm (x) Hx).
 Qed.
 
 // HOL Light: realarith.ml / REAL_MUL_RID
@@ -102,6 +122,12 @@ Qed.
 Theorem REAL_POS : forall n :e omega, 0 <= n.
 let n. assume Hn.
 exact (seq_len_nil (fun hl__u hl__v => hl__u <= n) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= n) (omega_nonneg (n) Hn))).
+Qed.
+
+// HOL Light: realarith.ml / REAL_LT_NZ
+Theorem REAL_LT_NZ : forall n :e omega, ~ n = 0 <-> 0 < n.
+let n. assume Hn.
+exact (real_lt_nz_thm (n) Hn).
 Qed.
 
 // HOL Light: realarith.ml / REAL_POS_LT

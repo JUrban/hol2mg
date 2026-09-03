@@ -112,7 +112,10 @@ Admitted.
 // Source hash: md5:9510a08cce604f85797f2316f36822ad
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LT_LE : forall x y :e R, x < y <-> x <= y /\ ~ x = y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_lt_le_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: realarith.ml:80 / REAL_LT_REFL
 // Source hash: md5:2aafb55745197a56ff930d9170ecc6da
@@ -145,13 +148,18 @@ Admitted.
 // Source hash: md5:c73ec8d4b697cc457d33e442909ab1bb
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_ENTIRE : forall x y :e R, x * y = 0 <-> x = 0 \/ y = 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_entire_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: realarith.ml:106 / REAL_LE_NEGTOTAL
 // Source hash: md5:a4d82fde70726c79802821676edc4ed6
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LE_NEGTOTAL : forall x :e R, 0 <= x \/ 0 <= - x.
-Admitted.
+let x. assume Hx.
+exact (real_le_negtotal_thm (x) Hx).
+Qed.
 
 // HOL Light: realarith.ml:110 / REAL_LE_SQUARE
 // Source hash: md5:dc0d07c4fc09a788c2ef40abf97ab583
@@ -237,7 +245,9 @@ Qed.
 // Source hash: md5:a30a85766a8dbbc964242396cfce7cc1
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LT_NZ : forall n :e omega, ~ n = 0 <-> 0 < n.
-Admitted.
+let n. assume Hn.
+exact (real_lt_nz_thm (n) Hn).
+Qed.
 
 // HOL Light: realarith.ml:156 / REAL_POS_LT
 // Source hash: md5:14450394b10aeb942300184b9ecd85b2
