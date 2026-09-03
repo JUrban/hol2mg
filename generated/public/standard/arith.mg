@@ -6,7 +6,8 @@
 // Source hash: md5:3ff80b99169ffd6a4390c5531f21b50a
 // Status: transport_required (bridges: hol_num_omega)
 Theorem PRE : nat_pred 0 = 0 /\ forall n :e omega, nat_pred (ordsucc n) = n.
-Admitted.
+exact pre_thm.
+Qed.
 
 // HOL Light: arith.ml:48 / ADD
 // Source hash: md5:1f8f01fbee723861c7f85ddd9b79a210
@@ -1032,7 +1033,10 @@ Admitted.
 // Source hash: md5:85b50e207bff537349929a26ca720c76
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ODD_ADD : forall m n :e omega, odd_nat (m + n) <-> ~ (odd_nat m <-> odd_nat n).
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (odd_add_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:770 / ODD_MULT
 // Source hash: md5:4d0b87b1b46bc6ab933f56d6ee5c130f
