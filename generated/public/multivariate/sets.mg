@@ -4472,13 +4472,25 @@ Admitted.
 // Source hash: md5:1392cadcd430d06336ba3bbb701bac2a
 // Status: exact_native
 Theorem UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = Empty.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+assume H1.
+exact (union_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (P) (Q) H1).
+Qed.
 
 // HOL Light: sets.ml:4049 / INTERSECTION_OF_EMPTY
 // Source hash: md5:00b95ce7f141ca720ae6975e5372e059
 // Status: exact_native
 Theorem INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = A.
-Admitted.
+let A.
+assume H.
+let P.
+let Q.
+assume H1.
+exact (intersection_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (P) (Q) H1).
+Qed.
 
 // HOL Light: sets.ml:4059 / ARBITRARY
 // Source hash: md5:ebb3dfc9269b12bd3ecf47beb3fe4538

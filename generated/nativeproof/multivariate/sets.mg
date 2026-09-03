@@ -1844,6 +1844,26 @@ apply iffI.
     exact (andER (R0 x y) (R' x y) (H (x) Hx (y) Hy H1)).
 Qed.
 
+// HOL Light: sets.ml / UNION_OF_EMPTY
+Theorem UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = Empty.
+let A.
+assume H.
+let P.
+let Q.
+assume H1.
+exact (union_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (P) (Q) H1).
+Qed.
+
+// HOL Light: sets.ml / INTERSECTION_OF_EMPTY
+Theorem INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+let A.
+assume H.
+let P.
+let Q.
+assume H1.
+exact (intersection_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (P) (Q) H1).
+Qed.
+
 // HOL Light: sets.ml / ARBITRARY
 Theorem ARBITRARY : forall A:set, True <-> True.
 let A.

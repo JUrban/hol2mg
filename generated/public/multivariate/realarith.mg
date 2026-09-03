@@ -85,7 +85,10 @@ Qed.
 // Source hash: md5:71f0e85dbb5cc3f47767ea5b89a5de99
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_NEG_SUB : forall x y :e R, - (x + - y) = y + - x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_neg_sub_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: realarith.ml:57 / REAL_LE_LT
 // Source hash: md5:8e0089780695ef5e810e804680df89d9
