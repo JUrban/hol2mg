@@ -76,7 +76,10 @@ Admitted.
 // Source hash: md5:82e6e51b7d92dcb9f49ebba7b7564ea1
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_SUB_LE : forall x y :e R, 0 <= x + - y <-> y <= x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_sub_le_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: realarith.ml:52 / REAL_NEG_SUB
 // Source hash: md5:71f0e85dbb5cc3f47767ea5b89a5de99
@@ -165,7 +168,9 @@ Qed.
 // Source hash: md5:dc0d07c4fc09a788c2ef40abf97ab583
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LE_SQUARE : forall x :e R, 0 <= x * x.
-Admitted.
+let x. assume Hx.
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= x * x) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x * x) (real_le_square_thm (x) Hx))).
+Qed.
 
 // HOL Light: realarith.ml:116 / REAL_MUL_RID
 // Source hash: md5:008b00c859df3f26559ae3884ad35c57

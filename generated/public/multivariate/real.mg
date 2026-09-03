@@ -1034,19 +1034,29 @@ Qed.
 // Source hash: md5:b01ec3aecf5046e9acceb4fdde422eaf
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_MUL_LINV_UNIQ : forall x y :e R, x * y = 1 -> recip_SNo y = x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (real_mul_linv_uniq_thm (x) Hx (y) Hy H).
+Qed.
 
 // HOL Light: real.ml:683 / REAL_MUL_RINV_UNIQ
 // Source hash: md5:e04dc8157f02887c308fca7ee5e1ae43
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_MUL_RINV_UNIQ : forall x y :e R, x * y = 1 -> recip_SNo x = y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (real_mul_linv_uniq_thm (y) Hy (x) Hx (H (fun hl__u hl__v => (y * x) = hl__u) (mul_SNo_com (y) (x) (real_SNo (y) Hy) (real_SNo (x) Hx)))).
+Qed.
 
 // HOL Light: real.ml:688 / REAL_INV_INV
 // Source hash: md5:15378ada745a2d9d74f5b75bb47f417d
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_INV_INV : forall x :e R, recip_SNo (recip_SNo x) = x.
-Admitted.
+let x. assume Hx.
+exact (real_inv_inv_thm (x) Hx).
+Qed.
 
 // HOL Light: real.ml:696 / REAL_EQ_INV2
 // Source hash: md5:fe4661bdce06eae5ac283a5a10b22cc2
@@ -1107,7 +1117,13 @@ Qed.
 // Source hash: md5:5a5340582646f88dbc477867ddfbd395
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_INV_EQ_1 : forall x :e R, recip_SNo x = 1 <-> x = 1.
-Admitted.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact (real_inv_1_thm (fun hl__u hl__v => x = hl__u) (H1 (fun hl__u hl__v => x = recip_SNo hl__u) ((real_inv_inv_thm (x) Hx) (fun hl__u hl__v => hl__u = (recip_SNo (recip_SNo x))) (fun q H => H)))).
+- assume H.
+  exact (H (fun hl__u hl__v => recip_SNo x = hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => recip_SNo hl__u = hl__u) real_inv_1_thm)).
+Qed.
 
 // HOL Light: real.ml:756 / REAL_DIV_1
 // Source hash: md5:e9dce434ea10fa2b1b0e1bab0d5d1d0c
