@@ -2208,6 +2208,45 @@ let builtin_premises : (string * Mg.tm) list =
                    Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
                  Mg.App (Mg.App (Mg.Cst "seq_nth",
                    Mg.App (Mg.Cst "seq_tl", Mg.Var "hl__l")), Mg.Var "hl__n"))))))));
+    ("bounds_linear_thm",
+     Mg.AllIn ("hl__A", Mg.Cst "omega", Mg.AllIn ("hl__B", Mg.Cst "omega",
+       Mg.AllIn ("hl__C", Mg.Cst "omega",
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.AllIn ("hl__n", Mg.Cst "omega",
+             Mg.App (Mg.App (Mg.Cst "SNoLe",
+               Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__A"), Mg.Var "hl__n")),
+               Mg.App (Mg.App (Mg.Cst "add_SNo",
+                 Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__B"), Mg.Var "hl__n")),
+                 Mg.Var "hl__C")))),
+           Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__A"), Mg.Var "hl__B"))))));
+    ("lt_le_omega_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__m"), Mg.Var "hl__n")),
+         Mg.App (Mg.App (Mg.Cst "and",
+           Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Var "hl__m"), Mg.Var "hl__n")),
+           Mg.App (Mg.Cst "not",
+             Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Var "hl__n")))))));
+    ("arith_lt_thm",
+     (let lt a b = Mg.App (Mg.App (Mg.Cst "SNoLt", a), b) in
+      let le a b = Mg.App (Mg.App (Mg.Cst "SNoLe", a), b) in
+      let iff a b = Mg.App (Mg.App (Mg.Cst "iff", a), b) in
+      let conj a b = Mg.App (Mg.App (Mg.Cst "and", a), b) in
+      let dbl v = Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var v) in
+      let dbl1 v = Mg.App (Mg.App (Mg.Cst "add_SNo", dbl v), Mg.Num 1) in
+      let alln v b = Mg.AllIn (v, Mg.Cst "omega", b) in
+      let allmn b = alln "hl__m" (alln "hl__n" b) in
+      let m = Mg.Var "hl__m" and n = Mg.Var "hl__n" in
+      conj (allmn (iff (lt m n) (lt m n)))
+      (conj (iff (lt (Mg.Num 0) (Mg.Num 0)) (Mg.Cst "False"))
+      (conj (alln "hl__n" (iff (lt (dbl "hl__n") (Mg.Num 0)) (Mg.Cst "False")))
+      (conj (alln "hl__n" (iff (lt (dbl1 "hl__n") (Mg.Num 0)) (Mg.Cst "False")))
+      (conj (alln "hl__n" (iff (lt (Mg.Num 0) (dbl "hl__n")) (lt (Mg.Num 0) n)))
+      (conj (alln "hl__n" (iff (lt (Mg.Num 0) (dbl1 "hl__n")) (Mg.Cst "True")))
+      (conj (allmn (iff (lt (dbl "hl__m") (dbl "hl__n")) (lt m n)))
+      (conj (allmn (iff (lt (dbl "hl__m") (dbl1 "hl__n")) (le m n)))
+      (conj (allmn (iff (lt (dbl1 "hl__m") (dbl "hl__n")) (lt m n)))
+            (allmn (iff (lt (dbl1 "hl__m") (dbl1 "hl__n")) (lt m n)))))))))))));
     ("reverse_thm",
      Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__x", Mg.Var "hl__A",
        Mg.AllIn ("hl__l", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),

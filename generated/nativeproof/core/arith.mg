@@ -448,6 +448,13 @@ let n. assume Hn.
 exact (SNoLtLe_or (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn)).
 Qed.
 
+// HOL Light: arith.ml / LT_LE
+Theorem LT_LE : forall m n :e omega, m < n <-> m <= n /\ ~ m = n.
+let m. assume Hm.
+let n. assume Hn.
+exact (lt_le_omega_thm (m) Hm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / NOT_LE
 Theorem NOT_LE : forall m n :e omega, ~ m <= n <-> n < m.
 let m. assume Hm.

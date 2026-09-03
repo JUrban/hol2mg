@@ -35,6 +35,31 @@ exact (((ADD_SYM (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm) (minus_nat n
 exact (iffER (forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m)) (forall m n :e omega, minus_nat m n + minus_nat n m = abs_SNo (n + - m)) E1 F0).
 Qed.
 
+// HOL Light: arith.ml / LT_ANTISYM (leaf-guided)
+Theorem LT_ANTISYM : forall m n :e omega, ~ (m < n /\ n < m).
+claim E1 : (forall m n :e omega, ~ (m < n /\ n < m)) <-> (forall m n :e omega, ~ (m <= n /\ ~ m = n /\ n < m)).
+{ exact (all_in_iff_cong (omega) (fun m:set => forall n :e omega, ~ (m < n /\ n < m)) (fun m:set => forall n :e omega, ~ (m <= n /\ ~ m = n /\ n < m)) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => ~ (m < n /\ n < m)) (fun n:set => ~ (m <= n /\ ~ m = n /\ n < m)) (fun n Hn => (not_iff_cong (m < n /\ n < m) (m <= n /\ ~ m = n /\ n < m) (and_iff_cong (m < n) (m <= n /\ ~ m = n) (n < m) (n < m) ((andER ((m < n <-> m <= n /\ ~ m = n) -> True) (True -> (m < n <-> m <= n /\ ~ m = n)) (iff_true_intro (m < n <-> m <= n /\ ~ m = n) ((andER ((m < n <-> m <= n /\ ~ m = n) -> True) (True -> (m < n <-> m <= n /\ ~ m = n)) (iff_true_intro (m < n <-> m <= n /\ ~ m = n) (lt_le_omega_thm (m) Hm (n) Hn))) (fun p:prop => fun H:p => H)))) (fun p:prop => fun H:p => H)) (iff_refl (n < m)))))))). }
+claim F0 : forall m n :e omega, ~ (m <= n /\ ~ m = n /\ n < m).
+{ let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact ((andER (m <= n) (~ m = n) (andEL (m <= n /\ ~ m = n) (n < m) H)) (SNoLe_antisym (m) (n) (omega_SNo (m) Hm) (omega_SNo (n) Hn) (andEL (m <= n) (~ m = n) (andEL (m <= n /\ ~ m = n) (n < m) H)) (SNoLtLe (n) (m) (andER (m <= n /\ ~ m = n) (n < m) H)))). }
+exact (iffER (forall m n :e omega, ~ (m < n /\ n < m)) (forall m n :e omega, ~ (m <= n /\ ~ m = n /\ n < m)) E1 F0).
+Qed.
+
+// HOL Light: arith.ml / LT_IMP_NE (leaf-guided)
+Theorem LT_IMP_NE : forall m n :e omega, m < n -> ~ m = n.
+claim E1 : (forall m n :e omega, m < n -> ~ m = n) <-> (forall m n :e omega, m <= n /\ ~ m = n -> ~ m = n).
+{ exact (all_in_iff_cong (omega) (fun m:set => forall n :e omega, m < n -> ~ m = n) (fun m:set => forall n :e omega, m <= n /\ ~ m = n -> ~ m = n) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => m < n -> ~ m = n) (fun n:set => m <= n /\ ~ m = n -> ~ m = n) (fun n Hn => (imp_iff_cong (m < n) (m <= n /\ ~ m = n) (~ m = n) (~ m = n) ((andER ((m < n <-> m <= n /\ ~ m = n) -> True) (True -> (m < n <-> m <= n /\ ~ m = n)) (iff_true_intro (m < n <-> m <= n /\ ~ m = n) ((andER ((m < n <-> m <= n /\ ~ m = n) -> True) (True -> (m < n <-> m <= n /\ ~ m = n)) (iff_true_intro (m < n <-> m <= n /\ ~ m = n) (lt_le_omega_thm (m) Hm (n) Hn))) (fun p:prop => fun H:p => H)))) (fun p:prop => fun H:p => H)) (iff_refl (~ m = n))))))). }
+claim F0 : forall m n :e omega, m <= n /\ ~ m = n -> ~ m = n.
+{ let m. assume Hm.
+let n. assume Hn.
+assume H.
+assume H1.
+exact ((andER (m <= n) (~ m = n) H) H1). }
+exact (iffER (forall m n :e omega, m < n -> ~ m = n) (forall m n :e omega, m <= n /\ ~ m = n -> ~ m = n) E1 F0).
+Qed.
+
 // HOL Light: arith.ml / MOD_MULT_LMOD (leaf-guided)
 Theorem MOD_MULT_LMOD : forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n.
 claim E1 : (forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) <-> (forall m n p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n).

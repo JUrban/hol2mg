@@ -2434,6 +2434,27 @@ even_double/bit transports) and `odd_add_thm` (odd/even iff-transfer through
 even_add_thm) — landing ZIP, PRE, FINITE_EMPTY, ARITH_EVEN, ODD_ADD.
 `butlast_thm` is staged the same way (probes Qed) for N35.
 
+N35+N36 (575 -> 586, zero lost; LT_ANTISYM, LT_IMP_NE and LT_LE ride the
+lt_le_omega cascade): the list cluster completed and the last two numeral
+towers.  logic.mg `butlast_thm` (ZIP playbook: Empty_eq/lamE nil collapse,
+domain-abstraction f_equal, lam_ext + nat_pred_in index shift),
+`reverse_thm` (~400 lines: minus_nat_in for in-range indices, the
+Sn + -Si = n + -i and n + -i = ordsucc (n + -Si) index algebra via
+minus_add_SNo_distr / add_SNo_com_3b_1_2 / add_SNo_minus_R2, boundary i =
+seq_len l through In_irref and the additive inverse), `el_thm` (seq_nth_tl
+in range; out of range both sides collapse to 0 by beta0 and Pi_eta),
+`sub_thm` (le_exists decomposition on both n and ordsucc n),
+`not_lt_thm`, `sub_add_rcancel_thm`, `right_sub_distrib_thm` (commutation
+transports), `lt_le_omega_thm`, `arith_lt_thm` (ten conjuncts; the
+mixed-parity strict cases go through real_lt_nz_thm, lt_mult_lcancel and a
+parity contradiction — an earlier draft of the last conjunct used an
+ordsucc-iff or-split that sent the checker into a >40 minute elaboration;
+rewritten via lt_le split + parity it checks in seconds), and
+`bounds_linear_thm` (instantiating the bound at ordsucc C and cancelling).
+Transplants along the way: real_not_lt_thm (REAL_NOT_LT).  Landing BUTLAST,
+EL, SUB, NOT_LT, SUB_ADD_RCANCEL, RIGHT_SUB_DISTRIB, REVERSE, ARITH_LT;
+BOUNDS_LINEAR staged for N37.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order
