@@ -36,7 +36,11 @@ Qed.
 // Source hash: md5:426cab645a1d4c17efb3ef1d1d848008
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_EQ_ADD_RCANCEL : forall x y z :e R, x + z = y + z <-> x = y.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (real_eq_add_rcancel_thm (x) Hx (y) Hy (z) Hz).
+Qed.
 
 // HOL Light: calc_int.ml:86 / REAL_MUL_RZERO
 // Source hash: md5:7ea0eb7bbd0309ffcf17a00c946f188f
@@ -119,13 +123,19 @@ Qed.
 // Source hash: md5:85c3ab5d47bd2b0c864b2ca1fc5d711f
 // Status: transport_required (bridges: hol_real_R)
 Theorem REAL_LE_NEG2 : forall x y :e R, - x <= - y <-> y <= x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_neg2_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: calc_int.ml:141 / REAL_LE_RNEG
 // Source hash: md5:1aa11f97f16232fc1462bb09baed0e0b
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_LE_RNEG : forall x y :e R, x <= - y <-> x + y <= 0.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_rneg_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: calc_int.ml:152 / REAL_OF_NUM_POW
 // Source hash: md5:3f6f8954e52c4d38ffbcfa9d9984644d

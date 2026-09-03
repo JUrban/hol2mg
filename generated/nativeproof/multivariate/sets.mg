@@ -109,6 +109,17 @@ apply (set_ext (s :/\: t) ({x :e A | x :e s /\ x :e t})).
   exact (binintersectI (s) (t) (x) (andEL (x :e s) (x :e t) (SepE2 (A) (fun x:set => x :e s /\ x :e t) (x) Hx)) (andER (x :e s) (x :e t) (SepE2 (A) (fun x:set => x :e s /\ x :e t) (x) Hx))).
 Qed.
 
+// HOL Light: sets.ml / INTERS
+Theorem INTERS : forall A:set, forall s c= Power A, {x :e A | forall Y :e s, x :e Y} = {x :e A | forall u c= A, u :e s -> x :e u}.
+let A.
+let s. assume Hs.
+apply (set_ext ({x :e A | forall Y :e s, x :e Y}) ({x :e A | forall u c= A, u :e s -> x :e u})).
+- let x1. assume Hx1.
+  exact (SepI (A) (fun x:set => forall u c= A, u :e s -> x :e u) (x1) (SepE1 (A) (fun x:set => forall Y :e s, x :e Y) (x1) Hx1) ((andEL (x1 :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y} -> forall hl__t c= A, hl__t :e s -> x1 :e hl__t) ((forall hl__t c= A, hl__t :e s -> x1 :e hl__t) -> x1 :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y}) (in_inters_thm (A) (s) Hs (x1) (SepE1 (A) (fun x:set => forall Y :e s, x :e Y) (x1) Hx1))) Hx1)).
+- let x. assume Hx.
+  exact ((andER (x :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y} -> forall hl__t c= A, hl__t :e s -> x :e hl__t) ((forall hl__t c= A, hl__t :e s -> x :e hl__t) -> x :e {hl__u :e A | forall hl__Y :e s, hl__u :e hl__Y}) (in_inters_thm (A) (s) Hs (x) (SepE1 (A) (fun x:set => forall u c= A, u :e s -> x :e u) (x) Hx))) (SepE2 (A) (fun x:set => forall u c= A, u :e s -> x :e u) (x) Hx)).
+Qed.
+
 // HOL Light: sets.ml / DIFF
 Theorem DIFF : forall A:set, forall s t c= A, s :\: t = {x :e A | x :e s /\ ~ x :e t}.
 let A.
@@ -267,6 +278,14 @@ apply iffI.
   exact (andI (x :e s) (x :e t) (binintersectE1 (s) (t) (x) H1) (binintersectE2 (s) (t) (x) H1)).
 - assume H.
   exact (binintersectI (s) (t) (x) (andEL (x :e s) (x :e t) H) (andER (x :e s) (x :e t) H)).
+Qed.
+
+// HOL Light: sets.ml / IN_INTERS
+Theorem IN_INTERS : forall A:set, forall s c= Power A, forall x :e A, x :e {x :e A | forall Y :e s, x :e Y} <-> forall t c= A, t :e s -> x :e t.
+let A.
+let s. assume Hs.
+let x. assume Hx.
+exact (in_inters_thm (A) (s) Hs (x) Hx).
 Qed.
 
 // HOL Light: sets.ml / IN_DIFF

@@ -21,6 +21,14 @@ apply iffI.
   exact (H (fun hl__u hl__v => (x + y) = (x + hl__u)) (fun q H => H)).
 Qed.
 
+// HOL Light: calc_int.ml / REAL_EQ_ADD_RCANCEL
+Theorem REAL_EQ_ADD_RCANCEL : forall x y z :e R, x + z = y + z <-> x = y.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (real_eq_add_rcancel_thm (x) Hx (y) Hy (z) Hz).
+Qed.
+
 // HOL Light: calc_int.ml / REAL_MUL_RZERO
 Theorem REAL_MUL_RZERO : forall x :e R, x * 0 = 0.
 let x. assume Hx.
@@ -69,6 +77,20 @@ Theorem REAL_LE_LNEG : forall x y :e R, - x <= y <-> 0 <= x + y.
 let x. assume Hx.
 let y. assume Hy.
 exact (real_le_lneg (x) Hx (y) Hy).
+Qed.
+
+// HOL Light: calc_int.ml / REAL_LE_NEG2
+Theorem REAL_LE_NEG2 : forall x y :e R, - x <= - y <-> y <= x.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_neg2_thm (x) Hx (y) Hy).
+Qed.
+
+// HOL Light: calc_int.ml / REAL_LE_RNEG
+Theorem REAL_LE_RNEG : forall x y :e R, x <= - y <-> x + y <= 0.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_le_rneg_thm (x) Hx (y) Hy).
 Qed.
 
 // HOL Light: calc_int.ml / REAL_OF_NUM_POW

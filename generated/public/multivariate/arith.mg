@@ -112,7 +112,11 @@ Qed.
 // Source hash: md5:06430763a15d98b7a40784460fae4f1d
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem EQ_ADD_RCANCEL : forall m n p :e omega, m + p = n + p <-> m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (eq_add_rcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:93 / EQ_ADD_LCANCEL_0
 // Source hash: md5:78d9c27522bd6ab37ab738cde3777789
@@ -124,7 +128,14 @@ Admitted.
 // Source hash: md5:2e29e6871e91a202a12f117e40301f84
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem EQ_ADD_RCANCEL_0 : forall m n :e omega, m + n = n <-> m = 0.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+apply iffI.
+- assume H1.
+  exact ((andEL (m + n = 0 + n -> m = 0) (m = 0 -> m + n = 0 + n) (eq_add_rcancel_thm (m) Hm (0) (nat_p_omega (0) nat_0) (n) Hn)) (((add_SNo_0L (n) (omega_SNo (n) Hn)) (fun hl__u hl__v => hl__u = (0 + n)) (fun q H => H)) (fun hl__u hl__v => m + n = hl__u) H1)).
+- assume H.
+  exact ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => hl__u + n = n) (add_SNo_0L (n) (omega_SNo (n) Hn))).
+Qed.
 
 // HOL Light: arith.ml:105 / BIT0
 // Source hash: md5:430d599f5e1293326bc126e234c8d908
@@ -1100,7 +1111,8 @@ Admitted.
 
 // HOL Light: arith.ml:865 / ADD_SUB2
 // Source hash: md5:fded8a3febfff115683ebeef0d44f517
-// Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
+// Status: native_reuse (bridges: add_nat_add_SNo, hol_num_omega)
+// Reuse: this proposition is already a theorem of the target library (reproved natively).
 Theorem ADD_SUB2 : forall m n :e omega, minus_nat (m + n) m = n.
 let m. assume Hm.
 let n. assume Hn.
