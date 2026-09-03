@@ -301,7 +301,10 @@ Qed.
 // Source hash: md5:d2c8d3697871de5ec75407210bed3147
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MULT_EQ_0 : forall m n :e omega, m * n = 0 <-> m = 0 \/ n = 0.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (mult_eq_0_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:192 / EQ_MULT_LCANCEL
 // Source hash: md5:51da4c7d79c6b1277495df6bcee7b900
@@ -755,7 +758,10 @@ Qed.
 // Source hash: md5:388d6384219669f49ee02ea2d3eb0b8c
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_le_SNoLe)
 Theorem LE_ADDR : forall m n :e omega, n <= m + n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andEL (n < ordsucc (m + n) -> n <= m + n) (n <= m + n -> n < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) ((andER (n < ordsucc (m + n) -> n <= m + n) (n <= m + n -> n < ordsucc (m + n)) (SNoLt_ordsucc_SNoLe_omega (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (le_addr_thm (m) Hm (n) Hn))).
+Qed.
 
 // HOL Light: arith.ml:518 / LT_ADD
 // Source hash: md5:2e1e52e6c3f1a6ac0ab9e2d91fa5ff5a
@@ -1147,7 +1153,10 @@ Qed.
 // Source hash: md5:0b66514f75173feaca31fb0ff9ea74cc
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega)
 Theorem ADD_SUBR : forall m n :e omega, minus_nat n (m + n) = 0.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact ((andER (minus_nat n (m + n) = 0 -> n <= m + n) (n <= m + n -> minus_nat n (m + n) = 0) (sub_eq_0_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (le_addr_thm (m) Hm (n) Hn)).
+Qed.
 
 // HOL Light: arith.ml:882 / SUB_ADD
 // Source hash: md5:0a5b1061c758157ba0232b8361b301a2
@@ -1674,7 +1683,11 @@ Admitted.
 // Source hash: md5:e15d4fa7273b2a2eca9839b4f6ffb7b5
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem MOD_MULT_RMOD : forall m n p :e omega, mod_nat (m * mod_nat p n) n = mod_nat (m * p) n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (mod_mult_rmod_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:1446 / MOD_MULT_LMOD
 // Source hash: md5:4c8570d754ae89c7e88ddec10c9f7206
