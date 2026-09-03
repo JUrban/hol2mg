@@ -2363,6 +2363,19 @@ was clean.  Also staged for N30: `two_omega_thm`, `two_ne_0_thm`,
 (ten conjuncts; bit0/bit1 transports to ordsucc form, parity contradiction for
 the mixed-parity boundary case, lt_mult_lcancel for the strict case).
 
+N30 (542 -> 544 core, +2, zero lost; std 558 -> 571 and mv 536 -> 550 along the way):
+the numeral comparison towers.  logic.mg `arith_le_thm` and `arith_eq_thm` (the
+ten-conjunct ARITH_LE/ARITH_EQ bundles: bit0/bit1 transports into ordsucc form,
+`two_mul_le_iff_thm` by pos_mul_SNo_Lt refutation, the mixed-parity boundary
+cases by an even/odd contradiction via `even_double_thm`, the strict case
+through lt_mult_lcancel_thm, equalities through eq_mult_lcancel_thm with
+`two_ne_0_thm`), plus helpers `two_omega_thm`, `iff_true_intro` reuse, and the
+claim-ladder assembly pattern (T1..T10 + A9..A2) that keeps bullet depth at
+one.  Regression fix: the mv pass lost REAL_ZPOW_0 the same way N29 lost
+EQ_ADD_RCANCEL; its old self-contained synthesized proof (xm + If_i_1 +
+minus_SNo_0 transport) was transplanted verbatim as `real_zpow_0_thm` and the
+rerun was clean.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

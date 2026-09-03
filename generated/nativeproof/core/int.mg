@@ -633,12 +633,6 @@ Qed.
 // HOL Light: int.ml / REAL_ZPOW_0
 Theorem REAL_ZPOW_0 : forall x :e R, (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ (- 0))) = 1.
 let x. assume Hx.
-claim L: (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ 0)) = 1.
-{ apply (xm (0 <= 0)).
-+ assume H.
-  exact (((If_i_1 (0 <= 0) (x ^ 0) (recip_SNo (x ^ 0)) H) (fun hl__u hl__v => hl__u = (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ 0))) (fun q H => H)) (fun hl__u hl__v => hl__u = 1) (exp_SNo_nat_0 (x) (real_SNo (x) Hx))).
-+ assume H1.
-  exact (FalseE (H1 (SNoLe_ref (0))) ((if 0 <= 0 then x ^ 0 else recip_SNo (x ^ 0)) = 1)). }
-exact ((eq_sym_i (- 0) (0) minus_SNo_0) (fun hl__u hl__v => (if 0 <= 0 then x ^ 0 else recip_SNo (x ^ hl__u)) = 1) L).
+exact (real_zpow_0_thm (x) Hx).
 Qed.
 

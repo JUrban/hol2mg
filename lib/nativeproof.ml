@@ -2181,6 +2181,34 @@ let builtin_premises : (string * Mg.tm) list =
          Mg.App (Mg.App (Mg.Cst "add_SNo",
            Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
            Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__n"), Mg.Var "hl__m"))))));
+    ("real_zpow_0_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.If (Mg.App (Mg.App (Mg.Cst "SNoLe", Mg.Num 0), Mg.Num 0),
+           Mg.App (Mg.App (Mg.Cst "exp_SNo_nat", Mg.Var "hl__x"), Mg.Num 0),
+           Mg.App (Mg.Cst "recip_SNo",
+             Mg.App (Mg.App (Mg.Cst "exp_SNo_nat", Mg.Var "hl__x"),
+               Mg.App (Mg.Cst "minus_SNo", Mg.Num 0))))),
+         Mg.Num 1)));
+    ("arith_eq_thm",
+     (let eq a b = Mg.App (Mg.App (Mg.Cst "eq", a), b) in
+      let iff a b = Mg.App (Mg.App (Mg.Cst "iff", a), b) in
+      let conj a b = Mg.App (Mg.App (Mg.Cst "and", a), b) in
+      let dbl v = Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var v) in
+      let dbl1 v = Mg.App (Mg.App (Mg.Cst "add_SNo", dbl v), Mg.Num 1) in
+      let alln v b = Mg.AllIn (v, Mg.Cst "omega", b) in
+      let allmn b = alln "hl__m" (alln "hl__n" b) in
+      let m = Mg.Var "hl__m" and n = Mg.Var "hl__n" in
+      conj (allmn (iff (eq m n) (eq m n)))
+      (conj (iff (eq (Mg.Num 0) (Mg.Num 0)) (Mg.Cst "True"))
+      (conj (alln "hl__n" (iff (eq (dbl "hl__n") (Mg.Num 0)) (eq n (Mg.Num 0))))
+      (conj (alln "hl__n" (iff (eq (dbl1 "hl__n") (Mg.Num 0)) (Mg.Cst "False")))
+      (conj (alln "hl__n" (iff (eq (Mg.Num 0) (dbl "hl__n")) (eq (Mg.Num 0) n)))
+      (conj (alln "hl__n" (iff (eq (Mg.Num 0) (dbl1 "hl__n")) (Mg.Cst "False")))
+      (conj (allmn (iff (eq (dbl "hl__m") (dbl "hl__n")) (eq m n)))
+      (conj (allmn (iff (eq (dbl "hl__m") (dbl1 "hl__n")) (Mg.Cst "False")))
+      (conj (allmn (iff (eq (dbl1 "hl__m") (dbl "hl__n")) (Mg.Cst "False")))
+            (allmn (iff (eq (dbl1 "hl__m") (dbl1 "hl__n")) (eq m n)))))))))))));
     ("arith_le_thm",
      (let le a b = Mg.App (Mg.App (Mg.Cst "SNoLe", a), b) in
       let lt a b = Mg.App (Mg.App (Mg.Cst "SNoLt", a), b) in
