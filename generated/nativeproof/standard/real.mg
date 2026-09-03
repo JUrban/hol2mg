@@ -354,7 +354,7 @@ let x. assume Hx.
 let y. assume Hy.
 let z. assume Hz.
 assume H.
-exact (mul_SNo_nonzero_cancel (z) (x) (y) (real_SNo (z) Hz) (fun hl__H : z = 0 => ((andEL (~ z = 0) (z * x = z * y) H) hl__H)) (real_SNo (x) Hx) (real_SNo (y) Hy) (andER (~ z = 0) (z * x = z * y) H)).
+exact (mul_SNo_nonzero_cancel (z) (x) (y) (real_SNo (z) Hz) (fun hl__H2 : z = 0 => ((andEL (~ z = 0) (z * x = z * y) H) hl__H2)) (real_SNo (x) Hx) (real_SNo (y) Hy) (andER (~ z = 0) (z * x = z * y) H)).
 Qed.
 
 // HOL Light: real.ml / real_sgn
