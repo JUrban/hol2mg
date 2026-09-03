@@ -2418,6 +2418,22 @@ quantifier, UnionE_impred + Empty_eq; note the left-associated conjunction in
 the existential body) — landing EXP_ADD, REAL_NEG_SUB, LAST,
 INTERSECTION_OF_EMPTY, UNION_OF_EMPTY.
 
+N34 (568 -> 575, +7, zero lost; FINITE_INTERSECTION_OF_EMPTY and
+FINITE_UNION_OF_EMPTY ride the cascade): the ZIP equations and parity/pred
+odds-and-ends.  logic.mg `zip_thm` — the first full pair/lambda-extensionality
+proof (~250 lines): the nil lambda collapses through Empty_eq + lamE, lambda
+domains are rewritten by f_equal with a domain abstraction (fun D => fun i :e D
+=> body) so no rewriting under binders is ever needed, the two lambdas meet on
+the common domain via lam_ext with an xm (i = 0) pointwise split, and the
+out-of-range second component (t2 shorter than t1) is handled by beta0 on the
+cons pair and Pi_eta (seq_fun_in) + beta0 on the raw tail — both sides collapse
+to 0.  Also `pre_thm`, `finite_empty_thm` (with the quantifier-free
+`finite_Empty` builtin: a vacuous forall in a builtin leaves an unbound
+metavariable and never matches), `arith_even_thm` (four conjuncts over
+even_double/bit transports) and `odd_add_thm` (odd/even iff-transfer through
+even_add_thm) — landing ZIP, PRE, FINITE_EMPTY, ARITH_EVEN, ODD_ADD.
+`butlast_thm` is staged the same way (probes Qed) for N35.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

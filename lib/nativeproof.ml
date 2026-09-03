@@ -2181,6 +2181,70 @@ let builtin_premises : (string * Mg.tm) list =
          Mg.App (Mg.App (Mg.Cst "add_SNo",
            Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__m"), Mg.Var "hl__n")),
            Mg.App (Mg.App (Mg.Cst "minus_nat", Mg.Var "hl__n"), Mg.Var "hl__m"))))));
+    ("butlast_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.AllIn ("hl__h", Mg.Var "hl__A",
+       Mg.AllIn ("hl__t", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+         Mg.App (Mg.App (Mg.Cst "and",
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.Cst "seq_butlast", Mg.Cst "seq_nil")),
+             Mg.Cst "seq_nil")),
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.Cst "seq_butlast",
+               Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"), Mg.Var "hl__t"))),
+             Mg.If (Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__t"), Mg.Cst "seq_nil"),
+               Mg.Cst "seq_nil",
+               Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h"),
+                 Mg.App (Mg.Cst "seq_butlast", Mg.Var "hl__t")))))))));
+    ("pre_thm",
+     Mg.App (Mg.App (Mg.Cst "and",
+       Mg.App (Mg.App (Mg.Cst "eq",
+         Mg.App (Mg.Cst "nat_pred", Mg.Num 0)), Mg.Num 0)),
+       Mg.AllIn ("hl__n", Mg.Cst "omega",
+         Mg.App (Mg.App (Mg.Cst "eq",
+           Mg.App (Mg.Cst "nat_pred", Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
+           Mg.Var "hl__n"))));
+    ("finite_Empty",
+     Mg.App (Mg.Cst "finite", Mg.Cst "Empty"));
+    ("finite_empty_thm",
+     Mg.All ("hl__A", Mg.Set,
+       Mg.App (Mg.Cst "finite", Mg.Cst "Empty")));
+    ("arith_even_thm",
+     (let evn t = Mg.App (Mg.Cst "even_nat", t) in
+      let iff a b = Mg.App (Mg.App (Mg.Cst "iff", a), b) in
+      let conj a b = Mg.App (Mg.App (Mg.Cst "and", a), b) in
+      let dbl v = Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var v) in
+      let dbl1 v = Mg.App (Mg.App (Mg.Cst "add_SNo", dbl v), Mg.Num 1) in
+      let alln b = Mg.AllIn ("hl__n", Mg.Cst "omega", b) in
+      conj (alln (iff (evn (Mg.Var "hl__n")) (evn (Mg.Var "hl__n"))))
+      (conj (iff (evn (Mg.Num 0)) (Mg.Cst "True"))
+      (conj (alln (iff (evn (dbl "hl__n")) (Mg.Cst "True")))
+            (alln (iff (evn (dbl1 "hl__n")) (Mg.Cst "False")))))));
+    ("odd_add_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.Cst "odd_nat",
+           Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__m"), Mg.Var "hl__n"))),
+         Mg.App (Mg.Cst "not",
+           Mg.App (Mg.App (Mg.Cst "iff",
+             Mg.App (Mg.Cst "odd_nat", Mg.Var "hl__m")),
+             Mg.App (Mg.Cst "odd_nat", Mg.Var "hl__n")))))));
+    ("zip_thm",
+     Mg.All ("hl__A", Mg.Set, Mg.All ("hl__B", Mg.Set,
+       Mg.AllIn ("hl__h1", Mg.Var "hl__A",
+         Mg.AllIn ("hl__t1", Mg.App (Mg.Cst "finseq", Mg.Var "hl__A"),
+           Mg.AllIn ("hl__h2", Mg.Var "hl__B",
+             Mg.AllIn ("hl__t2", Mg.App (Mg.Cst "finseq", Mg.Var "hl__B"),
+               Mg.App (Mg.App (Mg.Cst "and",
+                 Mg.App (Mg.App (Mg.Cst "eq",
+                   Mg.App (Mg.App (Mg.Cst "seq_zip", Mg.Cst "seq_nil"), Mg.Cst "seq_nil")),
+                   Mg.Cst "seq_nil")),
+                 Mg.App (Mg.App (Mg.Cst "eq",
+                   Mg.App (Mg.App (Mg.Cst "seq_zip",
+                     Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h1"), Mg.Var "hl__t1")),
+                     Mg.App (Mg.App (Mg.Cst "seq_cons", Mg.Var "hl__h2"), Mg.Var "hl__t2"))),
+                   Mg.App (Mg.App (Mg.Cst "seq_cons",
+                     Mg.Tuple [ Mg.Var "hl__h1"; Mg.Var "hl__h2" ]),
+                     Mg.App (Mg.App (Mg.Cst "seq_zip", Mg.Var "hl__t1"), Mg.Var "hl__t2")))))))))));
     ("union_of_empty_thm",
      Mg.All ("hl__A", Mg.Set,
        Mg.Imp (Mg.App (Mg.Cst "not",

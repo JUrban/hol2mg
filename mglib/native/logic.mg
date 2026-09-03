@@ -2621,3 +2621,310 @@ apply andI.
     let Y. assume HzY. assume HYE.
     exact (EmptyE Y HYE).
 Qed.
+
+Theorem zip_thm : forall A B:set, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_zip seq_nil seq_nil = seq_nil /\ seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2).
+let A. let B. let h1. assume Hh1. let t1. assume Ht1. let h2. assume Hh2. let t2. assume Ht2.
+claim Lnil : (fun hl__i :e seq_len seq_nil => (seq_nth seq_nil hl__i, seq_nth seq_nil hl__i)) = Empty.
+{ apply (Empty_eq (fun hl__i :e seq_len seq_nil => (seq_nth seq_nil hl__i, seq_nth seq_nil hl__i))).
+  let z. assume Hz.
+  apply (lamE (seq_len seq_nil) (fun hl__i:set => (seq_nth seq_nil hl__i, seq_nth seq_nil hl__i)) z Hz).
+  let x. assume Hc. apply Hc. assume HxD. assume Hrest.
+  claim Hx0 : x :e 0.
+  { exact (seq_len_nil (fun hl__u hl__v => x :e hl__u) HxD). }
+  exact (EmptyE x Hx0). }
+claim Znil : seq_zip seq_nil seq_nil = seq_nil.
+{ prove (seq_len seq_nil, fun hl__i :e seq_len seq_nil => (seq_nth seq_nil hl__i, seq_nth seq_nil hl__i)) = (0, Empty).
+  exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (seq_len seq_nil) 0 (fun hl__i :e seq_len seq_nil => (seq_nth seq_nil hl__i, seq_nth seq_nil hl__i)) Empty seq_len_nil Lnil). }
+claim Hlt1 : seq_len t1 :e omega. { exact (seq_len_omega A t1 Ht1). }
+claim Hlt2 : seq_len t2 :e omega. { exact (seq_len_omega B t2 Ht2). }
+claim Hnlt1 : nat_p (seq_len t1). { exact (omega_nat_p (seq_len t1) Hlt1). }
+claim Hnlt2 : nat_p (seq_len t2). { exact (omega_nat_p (seq_len t2) Hlt2). }
+claim Ezl : seq_len (seq_zip t1 t2) = seq_len t1.
+{ exact (tuple_2_0_eq (seq_len t1) (fun hl__k :e seq_len t1 => (seq_nth t1 hl__k, seq_nth t2 hl__k))). }
+claim Ec1 : forall i :e ordsucc (seq_len t1), ~ i = 0 -> seq_nth (seq_cons h1 t1) i = seq_nth t1 (nat_pred i).
+{ let i. assume Hi. assume Hine.
+  claim L1 : (ordsucc (seq_len t1), fun hl__k :e ordsucc (seq_len t1) => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k)) 1 i = (fun hl__k :e ordsucc (seq_len t1) => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k)) i.
+  { rewrite (tuple_2_1_eq (ordsucc (seq_len t1)) (fun hl__k :e ordsucc (seq_len t1) => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k))). exact (fun q H => H). }
+  claim L2 : (fun hl__k :e ordsucc (seq_len t1) => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k)) i = (if i = 0 then h1 else seq_nth t1 (nat_pred i)).
+  { exact (beta (ordsucc (seq_len t1)) (fun hl__k => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k)) i Hi). }
+  claim L3 : (if i = 0 then h1 else seq_nth t1 (nat_pred i)) = seq_nth t1 (nat_pred i).
+  { exact (If_i_0 (i = 0) h1 (seq_nth t1 (nat_pred i)) Hine). }
+  exact (eq_trans_i (seq_nth (seq_cons h1 t1) i) ((fun hl__k :e ordsucc (seq_len t1) => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k)) i) (seq_nth t1 (nat_pred i)) L1 (eq_trans_i ((fun hl__k :e ordsucc (seq_len t1) => if hl__k = 0 then h1 else seq_nth t1 (nat_pred hl__k)) i) (if i = 0 then h1 else seq_nth t1 (nat_pred i)) (seq_nth t1 (nat_pred i)) L2 L3)). }
+claim Enth2 : forall i, nat_p i -> ~ i = 0 -> seq_nth (seq_cons h2 t2) i = seq_nth t2 (nat_pred i).
+{ let i. assume Hni. assume Hine.
+  apply (xm (i :e ordsucc (seq_len t2))).
+  - assume Hin.
+    claim L1 : (ordsucc (seq_len t2), fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) 1 i = (fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i.
+    { rewrite (tuple_2_1_eq (ordsucc (seq_len t2)) (fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k))). exact (fun q H => H). }
+    claim L2 : (fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i = (if i = 0 then h2 else seq_nth t2 (nat_pred i)).
+    { exact (beta (ordsucc (seq_len t2)) (fun hl__k => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i Hin). }
+    claim L3 : (if i = 0 then h2 else seq_nth t2 (nat_pred i)) = seq_nth t2 (nat_pred i).
+    { exact (If_i_0 (i = 0) h2 (seq_nth t2 (nat_pred i)) Hine). }
+    exact (eq_trans_i (seq_nth (seq_cons h2 t2) i) ((fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i) (seq_nth t2 (nat_pred i)) L1 (eq_trans_i ((fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i) (if i = 0 then h2 else seq_nth t2 (nat_pred i)) (seq_nth t2 (nat_pred i)) L2 L3)).
+  - assume Hout.
+    claim Hlp : ordsucc (nat_pred i) = i.
+    { apply (nat_inv i Hni).
+      + assume Hz. exact (FalseE (Hine Hz) (ordsucc (nat_pred i) = i)).
+      + assume Hex. apply Hex. let x. assume Hc. apply Hc. assume Hxn. assume Hxe.
+        claim E1 : nat_pred i = x.
+        { claim E2 : nat_pred (ordsucc x) = x. { exact (nat_pred_succ_thm x (nat_p_omega x Hxn)). }
+          exact (Hxe (fun hl__u hl__v => nat_pred hl__v = x) E2). }
+        exact (eq_trans_i (ordsucc (nat_pred i)) (ordsucc x) i (f_equal (fun hl__u:set => ordsucc hl__u) (nat_pred i) x E1) (eq_sym_i i (ordsucc x) Hxe)). }
+    claim Hnpout : ~ nat_pred i :e seq_len t2.
+    { assume Hj.
+      claim Hin2 : ordsucc (nat_pred i) :e ordsucc (seq_len t2).
+      { exact (nat_ordsucc_in_ordsucc (seq_len t2) Hnlt2 (nat_pred i) Hj). }
+      exact (Hout (Hlp (fun hl__u hl__v => hl__u :e ordsucc (seq_len t2)) Hin2)). }
+    claim EL0 : seq_nth (seq_cons h2 t2) i = 0.
+    { claim L1 : (ordsucc (seq_len t2), fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) 1 i = (fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i.
+      { rewrite (tuple_2_1_eq (ordsucc (seq_len t2)) (fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k))). exact (fun q H => H). }
+      claim L2 : (fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i = 0.
+      { exact (beta0 (ordsucc (seq_len t2)) (fun hl__k => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i Hout). }
+      exact (eq_trans_i (seq_nth (seq_cons h2 t2) i) ((fun hl__k :e ordsucc (seq_len t2) => if hl__k = 0 then h2 else seq_nth t2 (nat_pred hl__k)) i) 0 L1 L2). }
+    claim ER0 : seq_nth t2 (nat_pred i) = 0.
+    { claim Ef : (fun hl__k :e seq_len t2 => t2 1 hl__k) = t2 1.
+      { exact (Pi_eta (seq_len t2) (fun hl__u:set => B) (t2 1) (seq_fun_in B t2 Ht2)). }
+      claim E1 : seq_nth t2 (nat_pred i) = (fun hl__k :e seq_len t2 => t2 1 hl__k) (nat_pred i).
+      { exact (eq_sym_i ((fun hl__k :e seq_len t2 => t2 1 hl__k) (nat_pred i)) (seq_nth t2 (nat_pred i)) (f_equal (fun hl__u:set => hl__u (nat_pred i)) (fun hl__k :e seq_len t2 => t2 1 hl__k) (t2 1) Ef)). }
+      claim E2 : (fun hl__k :e seq_len t2 => t2 1 hl__k) (nat_pred i) = 0.
+      { exact (beta0 (seq_len t2) (fun hl__k => t2 1 hl__k) (nat_pred i) Hnpout). }
+      exact (eq_trans_i (seq_nth t2 (nat_pred i)) ((fun hl__k :e seq_len t2 => t2 1 hl__k) (nat_pred i)) 0 E1 E2). }
+    exact (eq_trans_i (seq_nth (seq_cons h2 t2) i) 0 (seq_nth t2 (nat_pred i)) EL0 (eq_sym_i (seq_nth t2 (nat_pred i)) 0 ER0)). }
+claim Lfun : (fun hl__i :e ordsucc (seq_len t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) = (fun hl__i :e ordsucc (seq_len t1) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)).
+{ apply (lam_ext (ordsucc (seq_len t1)) (fun hl__i:set => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) (fun hl__i:set => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i))).
+  let i. assume Hi.
+  apply (xm (i = 0)).
+  - assume Hi0.
+    claim E2 : (seq_nth (seq_cons h1 t1) 0, seq_nth (seq_cons h2 t2) 0) = (h1, h2).
+    { exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (seq_nth (seq_cons h1 t1) 0) h1 (seq_nth (seq_cons h2 t2) 0) h2 (seq_nth_cons_0 A h1 Hh1 t1 Ht1) (seq_nth_cons_0 B h2 Hh2 t2 Ht2)). }
+    claim E1 : (seq_nth (seq_cons h1 t1) i, seq_nth (seq_cons h2 t2) i) = (h1, h2).
+    { exact (Hi0 (fun hl__u hl__v => (seq_nth (seq_cons h1 t1) hl__v, seq_nth (seq_cons h2 t2) hl__v) = (h1, h2)) E2). }
+    claim E3 : (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) = (h1, h2).
+    { exact (If_i_1 (i = 0) (h1,h2) (seq_nth (seq_zip t1 t2) (nat_pred i)) Hi0). }
+    exact (eq_trans_i (seq_nth (seq_cons h1 t1) i, seq_nth (seq_cons h2 t2) i) (h1, h2) (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) E1 (eq_sym_i (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) (h1, h2) E3)).
+  - assume Hine.
+    claim Hni : nat_p i. { exact (nat_p_trans (ordsucc (seq_len t1)) (nat_ordsucc (seq_len t1) Hnlt1) i Hi). }
+    claim Hnp : nat_pred i :e seq_len t1. { exact (nat_pred_in (seq_len t1) Hnlt1 i Hi Hine). }
+    claim EL : (seq_nth (seq_cons h1 t1) i, seq_nth (seq_cons h2 t2) i) = (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)).
+    { exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (seq_nth (seq_cons h1 t1) i) (seq_nth t1 (nat_pred i)) (seq_nth (seq_cons h2 t2) i) (seq_nth t2 (nat_pred i)) (Ec1 i Hi Hine) (Enth2 i Hni Hine)). }
+    claim Ez : seq_nth (seq_zip t1 t2) (nat_pred i) = (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)).
+    { claim L1 : (seq_len t1, fun hl__k :e seq_len t1 => (seq_nth t1 hl__k, seq_nth t2 hl__k)) 1 (nat_pred i) = (fun hl__k :e seq_len t1 => (seq_nth t1 hl__k, seq_nth t2 hl__k)) (nat_pred i).
+      { rewrite (tuple_2_1_eq (seq_len t1) (fun hl__k :e seq_len t1 => (seq_nth t1 hl__k, seq_nth t2 hl__k))). exact (fun q H => H). }
+      claim L2 : (fun hl__k :e seq_len t1 => (seq_nth t1 hl__k, seq_nth t2 hl__k)) (nat_pred i) = (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)).
+      { exact (beta (seq_len t1) (fun hl__k => (seq_nth t1 hl__k, seq_nth t2 hl__k)) (nat_pred i) Hnp). }
+      exact (eq_trans_i (seq_nth (seq_zip t1 t2) (nat_pred i)) ((fun hl__k :e seq_len t1 => (seq_nth t1 hl__k, seq_nth t2 hl__k)) (nat_pred i)) (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)) L1 L2). }
+    claim E3 : (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) = seq_nth (seq_zip t1 t2) (nat_pred i).
+    { exact (If_i_0 (i = 0) (h1,h2) (seq_nth (seq_zip t1 t2) (nat_pred i)) Hine). }
+    exact (eq_trans_i (seq_nth (seq_cons h1 t1) i, seq_nth (seq_cons h2 t2) i) (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)) (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) EL (eq_trans_i (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)) (seq_nth (seq_zip t1 t2) (nat_pred i)) (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) (eq_sym_i (seq_nth (seq_zip t1 t2) (nat_pred i)) (seq_nth t1 (nat_pred i), seq_nth t2 (nat_pred i)) Ez) (eq_sym_i (if i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred i)) (seq_nth (seq_zip t1 t2) (nat_pred i)) E3))). }
+claim Edom1 : (fun hl__i :e seq_len (seq_cons h1 t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) = (fun hl__i :e ordsucc (seq_len t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)).
+{ exact (f_equal (fun hl__D:set => fun hl__i :e hl__D => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) (seq_len (seq_cons h1 t1)) (ordsucc (seq_len t1)) (seq_len_cons A h1 Hh1 t1 Ht1)). }
+claim Edom2 : (fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) = (fun hl__i :e ordsucc (seq_len t1) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)).
+{ exact (f_equal (fun hl__D:set => fun hl__i :e hl__D => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) (ordsucc (seq_len (seq_zip t1 t2))) (ordsucc (seq_len t1)) (f_equal (fun hl__u:set => ordsucc hl__u) (seq_len (seq_zip t1 t2)) (seq_len t1) Ezl)). }
+claim EA : seq_len (seq_cons h1 t1) = ordsucc (seq_len (seq_zip t1 t2)).
+{ exact (eq_trans_i (seq_len (seq_cons h1 t1)) (ordsucc (seq_len t1)) (ordsucc (seq_len (seq_zip t1 t2))) (seq_len_cons A h1 Hh1 t1 Ht1) (f_equal (fun hl__u:set => ordsucc hl__u) (seq_len t1) (seq_len (seq_zip t1 t2)) (eq_sym_i (seq_len (seq_zip t1 t2)) (seq_len t1) Ezl))). }
+claim EF : (fun hl__i :e seq_len (seq_cons h1 t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) = (fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)).
+{ exact (eq_trans_i (fun hl__i :e seq_len (seq_cons h1 t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) (fun hl__i :e ordsucc (seq_len t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) (fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) Edom1 (eq_trans_i (fun hl__i :e ordsucc (seq_len t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) (fun hl__i :e ordsucc (seq_len t1) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) (fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) Lfun (eq_sym_i (fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) (fun hl__i :e ordsucc (seq_len t1) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) Edom2))). }
+claim Zcons : seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2).
+{ prove (seq_len (seq_cons h1 t1), fun hl__i :e seq_len (seq_cons h1 t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) = (ordsucc (seq_len (seq_zip t1 t2)), fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)).
+  exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (seq_len (seq_cons h1 t1)) (ordsucc (seq_len (seq_zip t1 t2))) (fun hl__i :e seq_len (seq_cons h1 t1) => (seq_nth (seq_cons h1 t1) hl__i, seq_nth (seq_cons h2 t2) hl__i)) (fun hl__i :e ordsucc (seq_len (seq_zip t1 t2)) => if hl__i = 0 then (h1,h2) else seq_nth (seq_zip t1 t2) (nat_pred hl__i)) EA EF). }
+exact (andI (seq_zip seq_nil seq_nil = seq_nil) (seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2)) Znil Zcons).
+Qed.
+
+Theorem pre_thm : nat_pred 0 = 0 /\ forall n :e omega, nat_pred (ordsucc n) = n.
+apply andI.
+- exact (If_i_1 (0 = 0) 0 (0 + - 1) (fun q H => H)).
+- exact nat_pred_succ_thm.
+Qed.
+Theorem finite_empty_thm : forall A:set, finite Empty.
+let A. exact finite_Empty.
+Qed.
+Theorem arith_even_thm : (forall n :e omega, even_nat n <-> even_nat n) /\ ((even_nat 0 <-> True) /\ ((forall n :e omega, even_nat (2 * n) <-> True) /\ forall n :e omega, even_nat (2 * n + 1) <-> False)).
+claim T1 : forall n :e omega, even_nat n <-> even_nat n.
+{ let n. assume Hn. apply iffI.
+  - assume H. exact H.
+  - assume H. exact H. }
+claim T2 : even_nat 0 <-> True.
+{ exact (iff_true_intro (even_nat 0) even_zero). }
+claim T3 : forall n :e omega, even_nat (2 * n) <-> True.
+{ let n. assume Hn.
+  claim Hev : even_nat (2 * n).
+  { exact ((bit0_eq_omega n Hn) (fun hl__u hl__v => even_nat hl__v) (even_double_thm n Hn)). }
+  exact (iff_true_intro (even_nat (2 * n)) Hev). }
+claim T4 : forall n :e omega, even_nat (2 * n + 1) <-> False.
+{ let n. assume Hn.
+  claim Hnnw : n + n :e omega. { exact (add_SNo_In_omega n Hn n Hn). }
+  claim Hodd : odd_nat (2 * n + 1).
+  { exact ((bit1_eq_omega n Hn) (fun hl__u hl__v => odd_nat hl__v) (even_succ_odd (n + n) Hnnw (even_double_thm n Hn))). }
+  claim Hw : 2 * n + 1 :e omega.
+  { exact (add_SNo_In_omega (2 * n) (mul_SNo_In_omega 2 two_omega_thm n Hn) 1 (nat_p_omega 1 nat_1)). }
+  apply iffI.
+  - assume H. exact (not_even_and_odd (2 * n + 1) Hw H Hodd).
+  - assume H. exact (FalseE H (even_nat (2 * n + 1))). }
+apply andI.
+- exact T1.
+- apply andI.
+  + exact T2.
+  + apply andI.
+    * exact T3.
+    * exact T4.
+Qed.
+Theorem odd_add_thm : forall m n :e omega, odd_nat (m + n) <-> ~ (odd_nat m <-> odd_nat n).
+let m. assume Hm. let n. assume Hn.
+claim Hmnw : m + n :e omega. { exact (add_SNo_In_omega m Hm n Hn). }
+claim I1 : odd_nat (m + n) <-> ~ even_nat (m + n).
+{ apply iffI.
+  - assume H. assume He. exact (not_even_and_odd (m + n) Hmnw He H).
+  - assume H. exact (iffEL (~ even_nat (m + n)) (odd_nat (m + n)) (not_even_thm (m + n) Hmnw) H). }
+claim I2 : even_nat (m + n) <-> (even_nat m <-> even_nat n).
+{ exact (even_add_thm m Hm n Hn). }
+claim E : (even_nat m <-> even_nat n) <-> (odd_nat m <-> odd_nat n).
+{ apply iffI.
+  - assume Hee.
+    apply iffI.
+    + assume Hom.
+      claim HnEn : ~ even_nat n.
+      { assume Hen. exact (not_even_and_odd m Hm (iffER (even_nat m) (even_nat n) Hee Hen) Hom). }
+      exact (iffEL (~ even_nat n) (odd_nat n) (not_even_thm n Hn) HnEn).
+    + assume Hon.
+      claim HnEm : ~ even_nat m.
+      { assume Hem. exact (not_even_and_odd n Hn (iffEL (even_nat m) (even_nat n) Hee Hem) Hon). }
+      exact (iffEL (~ even_nat m) (odd_nat m) (not_even_thm m Hm) HnEm).
+  - assume Hoo.
+    apply iffI.
+    + assume Hem.
+      apply (even_or_odd n Hn).
+      * assume Hen. exact Hen.
+      * assume Hon.
+        exact (FalseE (not_even_and_odd m Hm Hem (iffER (odd_nat m) (odd_nat n) Hoo Hon)) (even_nat n)).
+    + assume Hen.
+      apply (even_or_odd m Hm).
+      * assume Hem. exact Hem.
+      * assume Hom.
+        exact (FalseE (not_even_and_odd n Hn Hen (iffEL (odd_nat m) (odd_nat n) Hoo Hom)) (even_nat m)). }
+apply iffI.
+- assume H.
+  assume Hoo.
+  claim Hee : even_nat m <-> even_nat n.
+  { exact (iffER (even_nat m <-> even_nat n) (odd_nat m <-> odd_nat n) E Hoo). }
+  claim Hev : even_nat (m + n).
+  { exact (iffER (even_nat (m + n)) (even_nat m <-> even_nat n) I2 Hee). }
+  exact (iffEL (odd_nat (m + n)) (~ even_nat (m + n)) I1 H Hev).
+- assume H.
+  claim HnE : ~ even_nat (m + n).
+  { assume Hev.
+    exact (H (iffEL (even_nat m <-> even_nat n) (odd_nat m <-> odd_nat n) E (iffEL (even_nat (m + n)) (even_nat m <-> even_nat n) I2 Hev))). }
+  exact (iffER (odd_nat (m + n)) (~ even_nat (m + n)) I1 HnE).
+Qed.
+
+Theorem butlast_thm : forall A:set, forall h :e A, forall t :e finseq A, seq_butlast seq_nil = seq_nil /\ seq_butlast (seq_cons h t) = if t = seq_nil then seq_nil else seq_cons h (seq_butlast t).
+let A. let h. assume Hh. let t. assume Ht.
+claim Enp0 : nat_pred 0 = 0.
+{ exact (If_i_1 (0 = 0) 0 (0 + - 1) (fun q H => H)). }
+claim EA0 : nat_pred (seq_len seq_nil) = 0.
+{ exact (eq_trans_i (nat_pred (seq_len seq_nil)) (nat_pred 0) 0 (f_equal (fun hl__u:set => nat_pred hl__u) (seq_len seq_nil) 0 seq_len_nil) Enp0). }
+claim Lnil0 : (fun hl__i :e nat_pred (seq_len seq_nil) => seq_nth seq_nil hl__i) = Empty.
+{ apply (Empty_eq (fun hl__i :e nat_pred (seq_len seq_nil) => seq_nth seq_nil hl__i)).
+  let z. assume Hz.
+  apply (lamE (nat_pred (seq_len seq_nil)) (fun hl__i:set => seq_nth seq_nil hl__i) z Hz).
+  let x. assume Hc. apply Hc. assume HxD. assume Hrest.
+  exact (EmptyE x (EA0 (fun hl__u hl__v => x :e hl__u) HxD)). }
+claim Bnil : seq_butlast seq_nil = seq_nil.
+{ prove (nat_pred (seq_len seq_nil), fun hl__i :e nat_pred (seq_len seq_nil) => seq_nth seq_nil hl__i) = (0, Empty).
+  exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (nat_pred (seq_len seq_nil)) 0 (fun hl__i :e nat_pred (seq_len seq_nil) => seq_nth seq_nil hl__i) Empty EA0 Lnil0). }
+apply andI.
+- exact Bnil.
+- apply (xm (t = seq_nil)).
+  + assume He.
+    claim EIf : (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) = seq_nil.
+    { exact (If_i_1 (t = seq_nil) seq_nil (seq_cons h (seq_butlast t)) He). }
+    claim Hnilf : seq_nil :e finseq A. { exact (seq_nil_finseq A). }
+    claim EA1 : nat_pred (seq_len (seq_cons h seq_nil)) = 0.
+    { claim E1 : seq_len (seq_cons h seq_nil) = ordsucc (seq_len seq_nil).
+      { exact (seq_len_cons A h Hh seq_nil Hnilf). }
+      claim E2 : nat_pred (ordsucc (seq_len seq_nil)) = seq_len seq_nil.
+      { exact (nat_pred_succ_thm (seq_len seq_nil) (seq_len_omega A seq_nil Hnilf)). }
+      exact (eq_trans_i (nat_pred (seq_len (seq_cons h seq_nil))) (nat_pred (ordsucc (seq_len seq_nil))) 0 (f_equal (fun hl__u:set => nat_pred hl__u) (seq_len (seq_cons h seq_nil)) (ordsucc (seq_len seq_nil)) E1) (eq_trans_i (nat_pred (ordsucc (seq_len seq_nil))) (seq_len seq_nil) 0 E2 seq_len_nil)). }
+    claim Lnil1 : (fun hl__i :e nat_pred (seq_len (seq_cons h seq_nil)) => seq_nth (seq_cons h seq_nil) hl__i) = Empty.
+    { apply (Empty_eq (fun hl__i :e nat_pred (seq_len (seq_cons h seq_nil)) => seq_nth (seq_cons h seq_nil) hl__i)).
+      let z. assume Hz.
+      apply (lamE (nat_pred (seq_len (seq_cons h seq_nil))) (fun hl__i:set => seq_nth (seq_cons h seq_nil) hl__i) z Hz).
+      let x. assume Hc. apply Hc. assume HxD. assume Hrest.
+      exact (EmptyE x (EA1 (fun hl__u hl__v => x :e hl__u) HxD)). }
+    claim Bcons0 : seq_butlast (seq_cons h seq_nil) = seq_nil.
+    { prove (nat_pred (seq_len (seq_cons h seq_nil)), fun hl__i :e nat_pred (seq_len (seq_cons h seq_nil)) => seq_nth (seq_cons h seq_nil) hl__i) = (0, Empty).
+      exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (nat_pred (seq_len (seq_cons h seq_nil))) 0 (fun hl__i :e nat_pred (seq_len (seq_cons h seq_nil)) => seq_nth (seq_cons h seq_nil) hl__i) Empty EA1 Lnil1). }
+    claim Ecast : seq_butlast (seq_cons h t) = seq_butlast (seq_cons h seq_nil).
+    { exact (f_equal (fun hl__u:set => seq_butlast (seq_cons h hl__u)) t seq_nil He). }
+    exact (eq_trans_i (seq_butlast (seq_cons h t)) (seq_butlast (seq_cons h seq_nil)) (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) Ecast (eq_trans_i (seq_butlast (seq_cons h seq_nil)) seq_nil (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) Bcons0 (eq_sym_i (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) seq_nil EIf))).
+  + assume Hne.
+    claim EIf : (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) = seq_cons h (seq_butlast t).
+    { exact (If_i_0 (t = seq_nil) seq_nil (seq_cons h (seq_butlast t)) Hne). }
+    claim Hltw : seq_len t :e omega. { exact (seq_len_omega A t Ht). }
+    claim Hnlt : nat_p (seq_len t). { exact (omega_nat_p (seq_len t) Hltw). }
+    claim Hlt0 : ~ seq_len t = 0.
+    { assume Hz. exact (Hne (seq_len_0_nil A t Ht Hz)). }
+    claim Lpred : ordsucc (nat_pred (seq_len t)) = seq_len t.
+    { apply (nat_inv (seq_len t) Hnlt).
+      - assume Hz. exact (FalseE (Hlt0 Hz) (ordsucc (nat_pred (seq_len t)) = seq_len t)).
+      - assume Hex. apply Hex. let x. assume Hc. apply Hc. assume Hxn. assume Hxe.
+        claim E1 : nat_pred (seq_len t) = x.
+        { claim E2 : nat_pred (ordsucc x) = x. { exact (nat_pred_succ_thm x (nat_p_omega x Hxn)). }
+          exact (Hxe (fun hl__u hl__v => nat_pred hl__v = x) E2). }
+        exact (eq_trans_i (ordsucc (nat_pred (seq_len t))) (ordsucc x) (seq_len t) (f_equal (fun hl__u:set => ordsucc hl__u) (nat_pred (seq_len t)) x E1) (eq_sym_i (seq_len t) (ordsucc x) Hxe)). }
+    claim Hnpw : nat_pred (seq_len t) :e omega. { exact (nat_pred_omega (seq_len t) Hltw). }
+    claim Hnnp : nat_p (nat_pred (seq_len t)). { exact (omega_nat_p (nat_pred (seq_len t)) Hnpw). }
+    claim Ebl : seq_len (seq_butlast t) = nat_pred (seq_len t).
+    { exact (tuple_2_0_eq (nat_pred (seq_len t)) (fun hl__k :e nat_pred (seq_len t) => seq_nth t hl__k)). }
+    claim EA1 : nat_pred (seq_len (seq_cons h t)) = seq_len t.
+    { claim E1 : seq_len (seq_cons h t) = ordsucc (seq_len t). { exact (seq_len_cons A h Hh t Ht). }
+      exact (eq_trans_i (nat_pred (seq_len (seq_cons h t))) (nat_pred (ordsucc (seq_len t))) (seq_len t) (f_equal (fun hl__u:set => nat_pred hl__u) (seq_len (seq_cons h t)) (ordsucc (seq_len t)) E1) (nat_pred_succ_thm (seq_len t) Hltw)). }
+    claim EA2 : ordsucc (seq_len (seq_butlast t)) = seq_len t.
+    { exact (eq_trans_i (ordsucc (seq_len (seq_butlast t))) (ordsucc (nat_pred (seq_len t))) (seq_len t) (f_equal (fun hl__u:set => ordsucc hl__u) (seq_len (seq_butlast t)) (nat_pred (seq_len t)) Ebl) Lpred). }
+    claim EA : nat_pred (seq_len (seq_cons h t)) = ordsucc (seq_len (seq_butlast t)).
+    { exact (eq_trans_i (nat_pred (seq_len (seq_cons h t))) (seq_len t) (ordsucc (seq_len (seq_butlast t))) EA1 (eq_sym_i (ordsucc (seq_len (seq_butlast t))) (seq_len t) EA2)). }
+    claim Lfun : (fun hl__i :e seq_len t => seq_nth (seq_cons h t) hl__i) = (fun hl__i :e seq_len t => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)).
+    { apply (lam_ext (seq_len t) (fun hl__i:set => seq_nth (seq_cons h t) hl__i) (fun hl__i:set => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i))).
+      let i. assume Hi.
+      apply (xm (i = 0)).
+      - assume Hi0.
+        claim E1 : seq_nth (seq_cons h t) i = h.
+        { claim E2 : seq_nth (seq_cons h t) 0 = h. { exact (seq_nth_cons_0 A h Hh t Ht). }
+          exact (Hi0 (fun hl__u hl__v => seq_nth (seq_cons h t) hl__v = h) E2). }
+        claim E3 : (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) = h.
+        { exact (If_i_1 (i = 0) h (seq_nth (seq_butlast t) (nat_pred i)) Hi0). }
+        exact (eq_trans_i (seq_nth (seq_cons h t) i) h (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) E1 (eq_sym_i (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) h E3)).
+      - assume Hine.
+        claim HiS : i :e ordsucc (seq_len t).
+        { exact (ordsuccI1 (seq_len t) i Hi). }
+        claim EcL : seq_nth (seq_cons h t) i = seq_nth t (nat_pred i).
+        { claim L1 : (ordsucc (seq_len t), fun hl__k :e ordsucc (seq_len t) => if hl__k = 0 then h else seq_nth t (nat_pred hl__k)) 1 i = (fun hl__k :e ordsucc (seq_len t) => if hl__k = 0 then h else seq_nth t (nat_pred hl__k)) i.
+          { rewrite (tuple_2_1_eq (ordsucc (seq_len t)) (fun hl__k :e ordsucc (seq_len t) => if hl__k = 0 then h else seq_nth t (nat_pred hl__k))). exact (fun q H => H). }
+          claim L2 : (fun hl__k :e ordsucc (seq_len t) => if hl__k = 0 then h else seq_nth t (nat_pred hl__k)) i = (if i = 0 then h else seq_nth t (nat_pred i)).
+          { exact (beta (ordsucc (seq_len t)) (fun hl__k => if hl__k = 0 then h else seq_nth t (nat_pred hl__k)) i HiS). }
+          claim L3 : (if i = 0 then h else seq_nth t (nat_pred i)) = seq_nth t (nat_pred i).
+          { exact (If_i_0 (i = 0) h (seq_nth t (nat_pred i)) Hine). }
+          exact (eq_trans_i (seq_nth (seq_cons h t) i) ((fun hl__k :e ordsucc (seq_len t) => if hl__k = 0 then h else seq_nth t (nat_pred hl__k)) i) (seq_nth t (nat_pred i)) L1 (eq_trans_i ((fun hl__k :e ordsucc (seq_len t) => if hl__k = 0 then h else seq_nth t (nat_pred hl__k)) i) (if i = 0 then h else seq_nth t (nat_pred i)) (seq_nth t (nat_pred i)) L2 L3)). }
+        claim Him : i :e ordsucc (nat_pred (seq_len t)).
+        { exact (Lpred (fun hl__u hl__v => i :e hl__v) Hi). }
+        claim Hnpi : nat_pred i :e nat_pred (seq_len t).
+        { exact (nat_pred_in (nat_pred (seq_len t)) Hnnp i Him Hine). }
+        claim EcR : seq_nth (seq_butlast t) (nat_pred i) = seq_nth t (nat_pred i).
+        { claim L1 : (nat_pred (seq_len t), fun hl__k :e nat_pred (seq_len t) => seq_nth t hl__k) 1 (nat_pred i) = (fun hl__k :e nat_pred (seq_len t) => seq_nth t hl__k) (nat_pred i).
+          { rewrite (tuple_2_1_eq (nat_pred (seq_len t)) (fun hl__k :e nat_pred (seq_len t) => seq_nth t hl__k)). exact (fun q H => H). }
+          claim L2 : (fun hl__k :e nat_pred (seq_len t) => seq_nth t hl__k) (nat_pred i) = seq_nth t (nat_pred i).
+          { exact (beta (nat_pred (seq_len t)) (fun hl__k => seq_nth t hl__k) (nat_pred i) Hnpi). }
+          exact (eq_trans_i (seq_nth (seq_butlast t) (nat_pred i)) ((fun hl__k :e nat_pred (seq_len t) => seq_nth t hl__k) (nat_pred i)) (seq_nth t (nat_pred i)) L1 L2). }
+        claim E3 : (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) = seq_nth (seq_butlast t) (nat_pred i).
+        { exact (If_i_0 (i = 0) h (seq_nth (seq_butlast t) (nat_pred i)) Hine). }
+        exact (eq_trans_i (seq_nth (seq_cons h t) i) (seq_nth t (nat_pred i)) (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) EcL (eq_trans_i (seq_nth t (nat_pred i)) (seq_nth (seq_butlast t) (nat_pred i)) (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) (eq_sym_i (seq_nth (seq_butlast t) (nat_pred i)) (seq_nth t (nat_pred i)) EcR) (eq_sym_i (if i = 0 then h else seq_nth (seq_butlast t) (nat_pred i)) (seq_nth (seq_butlast t) (nat_pred i)) E3))). }
+    claim Edom1 : (fun hl__i :e nat_pred (seq_len (seq_cons h t)) => seq_nth (seq_cons h t) hl__i) = (fun hl__i :e seq_len t => seq_nth (seq_cons h t) hl__i).
+    { exact (f_equal (fun hl__D:set => fun hl__i :e hl__D => seq_nth (seq_cons h t) hl__i) (nat_pred (seq_len (seq_cons h t))) (seq_len t) EA1). }
+    claim Edom2 : (fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) = (fun hl__i :e seq_len t => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)).
+    { exact (f_equal (fun hl__D:set => fun hl__i :e hl__D => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) (ordsucc (seq_len (seq_butlast t))) (seq_len t) EA2). }
+    claim EF : (fun hl__i :e nat_pred (seq_len (seq_cons h t)) => seq_nth (seq_cons h t) hl__i) = (fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)).
+    { exact (eq_trans_i (fun hl__i :e nat_pred (seq_len (seq_cons h t)) => seq_nth (seq_cons h t) hl__i) (fun hl__i :e seq_len t => seq_nth (seq_cons h t) hl__i) (fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) Edom1 (eq_trans_i (fun hl__i :e seq_len t => seq_nth (seq_cons h t) hl__i) (fun hl__i :e seq_len t => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) (fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) Lfun (eq_sym_i (fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) (fun hl__i :e seq_len t => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) Edom2))). }
+    claim Bcons : seq_butlast (seq_cons h t) = seq_cons h (seq_butlast t).
+    { prove (nat_pred (seq_len (seq_cons h t)), fun hl__i :e nat_pred (seq_len (seq_cons h t)) => seq_nth (seq_cons h t) hl__i) = (ordsucc (seq_len (seq_butlast t)), fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)).
+      exact (f_equal2 (fun hl__u:set => fun hl__v:set => (hl__u, hl__v)) (nat_pred (seq_len (seq_cons h t))) (ordsucc (seq_len (seq_butlast t))) (fun hl__i :e nat_pred (seq_len (seq_cons h t)) => seq_nth (seq_cons h t) hl__i) (fun hl__i :e ordsucc (seq_len (seq_butlast t)) => if hl__i = 0 then h else seq_nth (seq_butlast t) (nat_pred hl__i)) EA EF). }
+    exact (eq_trans_i (seq_butlast (seq_cons h t)) (seq_cons h (seq_butlast t)) (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) Bcons (eq_sym_i (if t = seq_nil then seq_nil else seq_cons h (seq_butlast t)) (seq_cons h (seq_butlast t)) EIf)).
+Qed.

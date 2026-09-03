@@ -93,6 +93,17 @@ let t. assume Ht.
 exact (filter_thm (A) (P) (h) Hh (t) Ht).
 Qed.
 
+// HOL Light: lists.ml / ZIP
+Theorem ZIP : forall A B:set, forall h1 :e A, forall t1 :e finseq A, forall h2 :e B, forall t2 :e finseq B, seq_zip seq_nil seq_nil = seq_nil /\ seq_zip (seq_cons h1 t1) (seq_cons h2 t2) = seq_cons (h1,h2) (seq_zip t1 t2).
+let A.
+let B.
+let h1. assume Hh1.
+let t1. assume Ht1.
+let h2. assume Hh2.
+let t2. assume Ht2.
+exact (zip_thm (A) (B) (h1) Hh1 (t1) Ht1 (h2) Hh2 (t2) Ht2).
+Qed.
+
 // HOL Light: lists.ml / NOT_CONS_NIL
 Theorem NOT_CONS_NIL : forall A:set, forall h :e A, forall t :e finseq A, ~ seq_cons h t = seq_nil.
 let A.

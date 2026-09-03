@@ -3415,7 +3415,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -20902,7 +20902,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -22066,7 +22066,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -23800,7 +23800,7 @@
     "UNION_OF_EMPTY"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -69714,7 +69714,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -72495,7 +72495,7 @@
     "num_RECURSION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -105377,7 +105377,7 @@
     "ZIP_DEF"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": false
