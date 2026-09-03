@@ -30,6 +30,14 @@ apply andI.
   exact (seq_append_cons (A) (h) Hh (t) Ht (l) Hl).
 Qed.
 
+// HOL Light: lists.ml / REVERSE
+Theorem REVERSE : forall A:set, forall x :e A, forall l :e finseq A, seq_rev seq_nil = seq_nil /\ seq_rev (seq_cons x l) = seq_append (seq_rev l) (seq_cons x seq_nil).
+let A.
+let x. assume Hx.
+let l. assume Hl.
+exact (reverse_thm (A) (x) Hx (l) Hl).
+Qed.
+
 // HOL Light: lists.ml / LENGTH
 Theorem LENGTH : forall A:set, A <> Empty -> seq_len seq_nil = 0 /\ forall h :e A, forall t :e finseq A, seq_len (seq_cons h t) = ordsucc (seq_len t).
 let A.
@@ -66,6 +74,14 @@ let t. assume Ht.
 exact (last_cons_thm (A) (h) Hh (t) Ht).
 Qed.
 
+// HOL Light: lists.ml / BUTLAST
+Theorem BUTLAST : forall A:set, forall h :e A, forall t :e finseq A, seq_butlast seq_nil = seq_nil /\ seq_butlast (seq_cons h t) = if t = seq_nil then seq_nil else seq_cons h (seq_butlast t).
+let A.
+let h. assume Hh.
+let t. assume Ht.
+exact (butlast_thm (A) (h) Hh (t) Ht).
+Qed.
+
 // HOL Light: lists.ml / ALL
 Theorem ALL : forall A:set, forall P:set -> prop, forall h :e A, forall t :e finseq A, (seq_all P seq_nil <-> True) /\ (seq_all P (seq_cons h t) <-> P h /\ seq_all P t).
 let A.
@@ -82,6 +98,15 @@ let P.
 let h. assume Hh.
 let t. assume Ht.
 exact (andI (seq_ex P seq_nil <-> False) (seq_ex P (seq_cons h t) <-> P h \/ seq_ex P t) (seq_ex_nil (P)) (seq_ex_cons (A) (P) (h) Hh (t) Ht)).
+Qed.
+
+// HOL Light: lists.ml / EL
+Theorem EL : forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth l 0 = seq_hd l /\ seq_nth l (ordsucc n) = seq_nth (seq_tl l) n.
+let A.
+assume H.
+let l. assume Hl.
+let n. assume Hn.
+exact (andI (seq_nth l 0 = seq_hd l) (seq_nth l (ordsucc n) = seq_nth (seq_tl l) n) (andEL (seq_nth l 0 = seq_hd l) (seq_nth l (ordsucc n) = seq_nth (seq_tl l) n) (el_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl (n) Hn)) (andER (seq_nth l 0 = seq_hd l) (seq_nth l (ordsucc n) = seq_nth (seq_tl l) n) (el_thm (A) (fun hl__H1 : A = Empty => (H hl__H1)) (l) Hl (n) Hn))).
 Qed.
 
 // HOL Light: lists.ml / FILTER

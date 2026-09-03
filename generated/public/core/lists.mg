@@ -41,7 +41,11 @@ Qed.
 // Source hash: md5:7a7d177a687f80c4814a45c86aef55f8
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem REVERSE : forall A:set, forall x :e A, forall l :e finseq A, seq_rev seq_nil = seq_nil /\ seq_rev (seq_cons x l) = seq_append (seq_rev l) (seq_cons x seq_nil).
-Admitted.
+let A.
+let x. assume Hx.
+let l. assume Hl.
+exact (reverse_thm (A) (x) Hx (l) Hl).
+Qed.
 
 // HOL Light: lists.ml:42 / LENGTH
 // Source hash: md5:17c615469c05a454f2fd034489234849
@@ -89,7 +93,11 @@ Qed.
 // Source hash: md5:b5b341e30ed8ba1286f7407014f0f75b
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem BUTLAST : forall A:set, forall h :e A, forall t :e finseq A, seq_butlast seq_nil = seq_nil /\ seq_butlast (seq_cons h t) = if t = seq_nil then seq_nil else seq_cons h (seq_butlast t).
-Admitted.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+exact (butlast_thm (A) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:57 / REPLICATE
 // Source hash: md5:9a34391ecfb036827021fde7076af99b
@@ -165,7 +173,12 @@ Admitted.
 // Source hash: md5:90e8be5936c40bee20461b9eb5985f6a
 // Status: generalization_required (bridges: hol_list_finseq, hol_num_omega)
 Theorem EL : forall A:set, A <> Empty -> forall l :e finseq A, forall n :e omega, seq_nth l 0 = seq_hd l /\ seq_nth l (ordsucc n) = seq_nth (seq_tl l) n.
-Admitted.
+let A.
+assume H.
+let l. assume Hl.
+let n. assume Hn.
+exact (andI (seq_nth l 0 = seq_hd l) (seq_nth l (ordsucc n) = seq_nth (seq_tl l) n) (andEL (seq_nth l 0 = seq_hd l) (seq_nth l (ordsucc n) = seq_nth (seq_tl l) n) (el_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl (n) Hn)) (andER (seq_nth l 0 = seq_hd l) (seq_nth l (ordsucc n) = seq_nth (seq_tl l) n) (el_thm (A) (fun hl__H1 : A = Empty => (H hl__H1)) (l) Hl (n) Hn))).
+Qed.
 
 // HOL Light: lists.ml:107 / FILTER
 // Source hash: md5:5e58d440998c996ea4b717dc791fcf55

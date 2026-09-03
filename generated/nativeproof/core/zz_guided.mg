@@ -59,24 +59,3 @@ let p. assume Hp.
 exact (((MOD_MULT_LMOD (m) Hm (n) Hn (mod_nat p n) (mod_nat_omega (p) Hp (n) Hn)) (fun hl__u hl__v => hl__u = (mod_nat (mod_nat m n * mod_nat p n) n)) (fun q H => H)) (fun hl__u hl__v => hl__u = mod_nat (m * p) n) (mod_mult_rmod_thm (m) Hm (n) Hn (p) Hp)).
 Qed.
 
-// HOL Light: realarith.ml / REAL_NOT_LT (leaf-guided)
-Theorem REAL_NOT_LT : forall x y :e R, ~ x < y <-> y <= x.
-claim E1 : (forall x y :e R, ~ x < y <-> y <= x) <-> (forall x y :e R, ~ (x <= y /\ ~ x = y) <-> y <= x).
-{ exact (all_in_iff_cong (R) (fun x:set => forall y :e R, ~ x < y <-> y <= x) (fun x:set => forall y :e R, ~ (x <= y /\ ~ x = y) <-> y <= x) (fun x Hx => (all_in_iff_cong (R) (fun y:set => ~ x < y <-> y <= x) (fun y:set => ~ (x <= y /\ ~ x = y) <-> y <= x) (fun y Hy => (iff_iff_cong (~ x < y) (~ (x <= y /\ ~ x = y)) (y <= x) (y <= x) (not_iff_cong (x < y) (x <= y /\ ~ x = y) ((andER ((x < y <-> x <= y /\ ~ x = y) -> True) (True -> (x < y <-> x <= y /\ ~ x = y)) (iff_true_intro (x < y <-> x <= y /\ ~ x = y) ((andER ((x < y <-> x <= y /\ ~ x = y) -> True) (True -> (x < y <-> x <= y /\ ~ x = y)) (iff_true_intro (x < y <-> x <= y /\ ~ x = y) (real_lt_le_thm (x) Hx (y) Hy))) (fun p:prop => fun H:p => H)))) (fun p:prop => fun H:p => H))) (iff_refl (y <= x))))))). }
-claim F0 : forall x y :e R, ~ (x <= y /\ ~ x = y) <-> y <= x.
-{ let x. assume Hx.
-let y. assume Hy.
-apply iffI.
-- assume H2.
-  apply (xm (y <= x)).
-  + assume H3. exact H3.
-  + assume H4.
-    claim L: False.
-    { exact (H2 ((andEL (x < y -> x <= y /\ ~ x = y) (x <= y /\ ~ x = y -> x < y) (real_lt_le_thm (x) Hx (y) Hy)) ((andER (x < y -> ~ y <= x) (~ y <= x -> x < y) (real_lt_iff (y) Hy (x) Hx)) H4))). }
-    exact (FalseE L (y <= x)).
-- assume H.
-  assume H1.
-  exact ((andER (x <= y) (~ x = y) H1) (SNoLe_antisym (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) (andEL (x <= y) (~ x = y) H1) H)). }
-exact (iffER (forall x y :e R, ~ x < y <-> y <= x) (forall x y :e R, ~ (x <= y /\ ~ x = y) <-> y <= x) E1 F0).
-Qed.
-
