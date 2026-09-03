@@ -2406,6 +2406,18 @@ twice through minus_SNo_invol, recip_SNo_0 twice, recip_SNo_poscase +
 recip_SNo_pos_invol) — landing REAL_SUB_LE, MOD_MULT_RMOD, REAL_MUL_LINV_UNIQ,
 LE_ADDR, REAL_LE_SQUARE, MULT_EQ_0, LENGTH_EQ_NIL, REAL_INV_INV.
 
+N33 (563 -> 568, +5, zero lost): power addition, negated subtraction, list last
+and the empty intersection/union schemas.  logic.mg `exp_add_thm` (the omega
+twin of real_pow_add), `real_neg_sub_thm` (minus_add_SNo_distr + minus_SNo_invol
++ add_SNo_com), `last_cons_thm` (xm on t = seq_nil; the empty side collapses to
+seq_nth_cons_0 through seq_len_nil, the non-empty side rebuilds the index as
+ordsucc (nat_pred (seq_len t)) via nat_inv and steps through seq_nth_cons_S,
+with ordsuccI2 giving the membership), `intersection_of_empty_thm` /
+`union_of_empty_thm` (witness Empty; SepI/SepE1 with the vacuous bounded
+quantifier, UnionE_impred + Empty_eq; note the left-associated conjunction in
+the existential body) — landing EXP_ADD, REAL_NEG_SUB, LAST,
+INTERSECTION_OF_EMPTY, UNION_OF_EMPTY.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

@@ -1963,6 +1963,26 @@ apply iffI.
       exact ((andEL (forall x y :e t, x <> y -> R0 x y) (forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) (andER (forall x y :e s, x <> y -> R0 x y) ((forall x y :e t, x <> y -> R0 x y) /\ forall x y :e A, x :e s :\: t /\ y :e t :\: s -> R0 x y /\ R0 y x) H)) (x) H5 (y) H3 H1).
 Qed.
 
+// HOL Light: sets.ml / UNION_OF_EMPTY
+Theorem UNION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = Empty.
+let A.
+assume H.
+let P.
+let Q.
+assume H1.
+exact (union_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (P) (Q) H1).
+Qed.
+
+// HOL Light: sets.ml / INTERSECTION_OF_EMPTY
+Theorem INTERSECTION_OF_EMPTY : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+let A.
+assume H.
+let P.
+let Q.
+assume H1.
+exact (intersection_of_empty_thm (A) (fun hl__H : A = Empty => (H hl__H)) (P) (Q) H1).
+Qed.
+
 // HOL Light: sets.ml / ARBITRARY
 Theorem ARBITRARY : forall A:set, True <-> True.
 let A.

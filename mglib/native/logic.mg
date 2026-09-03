@@ -2526,3 +2526,98 @@ apply (SNoLt_trichotomy_or_impred x 0 Hsx SNo_0 (recip_SNo (recip_SNo x) = x)).
   { exact (recip_SNo_pos_invol x Hsx Hgt). }
   exact (eq_trans_i (recip_SNo (recip_SNo x)) (recip_SNo (recip_SNo_pos x)) x E2 (eq_trans_i (recip_SNo (recip_SNo_pos x)) (recip_SNo_pos (recip_SNo_pos x)) x E3 E4)).
 Qed.
+
+Theorem exp_add_thm : forall m n p :e omega, m ^ (n + p) = m ^ n * m ^ p.
+let m. assume Hm. let n. assume Hn. let p. assume Hp.
+exact (eq_sym_i (m ^ n * m ^ p) (m ^ (n + p)) (exp_SNo_nat_mul_add m (omega_SNo m Hm) n (omega_nat_p n Hn) p (omega_nat_p p Hp))).
+Qed.
+Theorem real_neg_sub_thm : forall x y :e R, - (x + - y) = y + - x.
+let x. assume Hx. let y. assume Hy.
+claim Hsx : SNo x. { exact (real_SNo x Hx). }
+claim Hsy : SNo y. { exact (real_SNo y Hy). }
+claim Hsny : SNo (- y). { exact (SNo_minus_SNo y Hsy). }
+claim E1 : - (x + - y) = - x + - - y.
+{ exact (minus_add_SNo_distr x (- y) Hsx Hsny). }
+claim E2 : - x + - - y = - x + y.
+{ exact (f_equal (fun hl__u:set => - x + hl__u) (- - y) y (minus_SNo_invol y Hsy)). }
+claim E3 : - x + y = y + - x.
+{ exact (add_SNo_com (- x) y (SNo_minus_SNo x Hsx) Hsy). }
+exact (eq_trans_i (- (x + - y)) (- x + - - y) (y + - x) E1 (eq_trans_i (- x + - - y) (- x + y) (y + - x) E2 E3)).
+Qed.
+Theorem last_cons_thm : forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t.
+let A. let h. assume Hh. let t. assume Ht.
+claim Hlc : seq_len (seq_cons h t) = ordsucc (seq_len t). { exact (seq_len_cons A h Hh t Ht). }
+claim Hltw : seq_len t :e omega. { exact (seq_len_omega A t Ht). }
+claim Enp : nat_pred (seq_len (seq_cons h t)) = seq_len t.
+{ claim E1 : nat_pred (ordsucc (seq_len t)) = seq_len t. { exact (nat_pred_succ_thm (seq_len t) Hltw). }
+  exact (Hlc (fun hl__u hl__v => nat_pred hl__v = seq_len t) E1). }
+claim Elast : seq_last (seq_cons h t) = seq_nth (seq_cons h t) (seq_len t).
+{ prove seq_nth (seq_cons h t) (nat_pred (seq_len (seq_cons h t))) = seq_nth (seq_cons h t) (seq_len t).
+  exact (f_equal (fun hl__u:set => seq_nth (seq_cons h t) hl__u) (nat_pred (seq_len (seq_cons h t))) (seq_len t) Enp). }
+apply (xm (t = seq_nil)).
+- assume He.
+  claim EIf : (if t = seq_nil then h else seq_last t) = h.
+  { exact (If_i_1 (t = seq_nil) h (seq_last t) He). }
+  claim Elt0 : seq_len t = 0.
+  { exact (He (fun hl__u hl__v => seq_len hl__v = 0) seq_len_nil). }
+  claim E0 : seq_nth (seq_cons h t) (seq_len t) = h.
+  { claim E1 : seq_nth (seq_cons h t) 0 = h. { exact (seq_nth_cons_0 A h Hh t Ht). }
+    exact (Elt0 (fun hl__u hl__v => seq_nth (seq_cons h t) hl__v = h) E1). }
+  exact (eq_trans_i (seq_last (seq_cons h t)) (seq_nth (seq_cons h t) (seq_len t)) (if t = seq_nil then h else seq_last t) Elast (eq_trans_i (seq_nth (seq_cons h t) (seq_len t)) h (if t = seq_nil then h else seq_last t) E0 (eq_sym_i (if t = seq_nil then h else seq_last t) h EIf))).
+- assume He.
+  claim EIf : (if t = seq_nil then h else seq_last t) = seq_last t.
+  { exact (If_i_0 (t = seq_nil) h (seq_last t) He). }
+  claim Hlt0 : ~ seq_len t = 0.
+  { assume Hz. exact (He (seq_len_0_nil A t Ht Hz)). }
+  claim Lpred : ordsucc (nat_pred (seq_len t)) = seq_len t.
+  { apply (nat_inv (seq_len t) (omega_nat_p (seq_len t) Hltw)).
+    + assume Hz. exact (FalseE (Hlt0 Hz) (ordsucc (nat_pred (seq_len t)) = seq_len t)).
+    + assume Hex. apply Hex. let x. assume Hc2. apply Hc2. assume Hxnat. assume Hxeq.
+      claim E1 : nat_pred (seq_len t) = x.
+      { claim E2 : nat_pred (ordsucc x) = x. { exact (nat_pred_succ_thm x (nat_p_omega x Hxnat)). }
+        exact (Hxeq (fun hl__u hl__v => nat_pred hl__v = x) E2). }
+      claim E3 : ordsucc (nat_pred (seq_len t)) = ordsucc x.
+      { exact (f_equal (fun hl__u:set => ordsucc hl__u) (nat_pred (seq_len t)) x E1). }
+      exact (eq_trans_i (ordsucc (nat_pred (seq_len t))) (ordsucc x) (seq_len t) E3 (eq_sym_i (seq_len t) (ordsucc x) Hxeq)). }
+  claim Hidx : nat_pred (seq_len t) :e seq_len t.
+  { claim E1 : nat_pred (seq_len t) :e ordsucc (nat_pred (seq_len t)). { exact (ordsuccI2 (nat_pred (seq_len t))). }
+    exact (Lpred (fun hl__u hl__v => nat_pred (seq_len t) :e hl__u) E1). }
+  claim Ecs : seq_nth (seq_cons h t) (ordsucc (nat_pred (seq_len t))) = seq_nth t (nat_pred (seq_len t)).
+  { exact (seq_nth_cons_S A h Hh t Ht (nat_pred (seq_len t)) Hidx). }
+  claim E0 : seq_nth (seq_cons h t) (seq_len t) = seq_last t.
+  { claim E1 : seq_nth (seq_cons h t) (seq_len t) = seq_nth (seq_cons h t) (ordsucc (nat_pred (seq_len t))).
+    { exact (f_equal (fun hl__u:set => seq_nth (seq_cons h t) hl__u) (seq_len t) (ordsucc (nat_pred (seq_len t))) (eq_sym_i (ordsucc (nat_pred (seq_len t))) (seq_len t) Lpred)). }
+    exact (eq_trans_i (seq_nth (seq_cons h t) (seq_len t)) (seq_nth (seq_cons h t) (ordsucc (nat_pred (seq_len t)))) (seq_last t) E1 Ecs). }
+  exact (eq_trans_i (seq_last (seq_cons h t)) (seq_nth (seq_cons h t) (seq_len t)) (if t = seq_nil then h else seq_last t) Elast (eq_trans_i (seq_nth (seq_cons h t) (seq_len t)) (seq_last t) (if t = seq_nil then h else seq_last t) E0 (eq_sym_i (if t = seq_nil then h else seq_last t) (seq_last t) EIf))).
+Qed.
+Theorem intersection_of_empty_thm : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ {x :e A | forall Y :e u, x :e Y} = A.
+let A. assume HA. let P : set -> prop. let Q : set -> prop. assume HP.
+witness Empty.
+apply andI.
+- exact (Subq_Empty (Power A)).
+- apply andI.
+  + apply andI.
+    * exact HP.
+    * let c. assume Hc. exact (FalseE (EmptyE c Hc) (Q c)).
+  + apply (set_ext {x :e A | forall Y :e Empty, x :e Y} A).
+    * let z. assume Hz. exact (SepE1 A (fun hl__u => forall Y :e Empty, hl__u :e Y) z Hz).
+    * let z. assume Hz.
+      apply (SepI A (fun hl__u => forall Y :e Empty, hl__u :e Y) z Hz).
+      let Y. assume HY. exact (FalseE (EmptyE Y HY) (z :e Y)).
+Qed.
+
+Theorem union_of_empty_thm : forall A:set, A <> Empty -> forall P Q:set -> prop, P Empty -> exists u c= Power A, P u /\ (forall c :e u, Q c) /\ Union u = Empty.
+let A. assume HA. let P : set -> prop. let Q : set -> prop. assume HP.
+witness Empty.
+apply andI.
+- exact (Subq_Empty (Power A)).
+- apply andI.
+  + apply andI.
+    * exact HP.
+    * let c. assume Hc. exact (FalseE (EmptyE c Hc) (Q c)).
+  + apply (Empty_eq (Union Empty)).
+    let z. assume Hz.
+    apply (UnionE_impred Empty z Hz False).
+    let Y. assume HzY. assume HYE.
+    exact (EmptyE Y HYE).
+Qed.

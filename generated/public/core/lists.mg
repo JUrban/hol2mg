@@ -79,7 +79,11 @@ Qed.
 // Source hash: md5:8ceaa343a4f12fbf270147102b54e937
 // Status: generalization_required (bridges: empty_case:A, hol_list_finseq)
 Theorem LAST : forall A:set, forall h :e A, forall t :e finseq A, seq_last (seq_cons h t) = if t = seq_nil then h else seq_last t.
-Admitted.
+let A.
+let h. assume Hh.
+let t. assume Ht.
+exact (last_cons_thm (A) (h) Hh (t) Ht).
+Qed.
 
 // HOL Light: lists.ml:53 / BUTLAST
 // Source hash: md5:b5b341e30ed8ba1286f7407014f0f75b
