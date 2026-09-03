@@ -2392,6 +2392,20 @@ Regression fix: the first pass traded fragile guided proofs again (REAL_LT_NZ
 lost, REAL_EQ_RCANCEL_IMP gained); a direct `real_lt_nz_thm` hand lemma
 restored it and the rerun was clean.
 
+N32 (552 -> 563, +11, zero lost; MOD_MULT_LMOD, MOD_MULT_MOD2, REAL_INV_EQ_1 and
+REAL_MUL_RINV_UNIQ ride the cascade): subtraction order, modular multiplication
+and reciprocal algebra.  logic.mg `real_sub_le_thm` (add_SNo_Le1 on both sides
+with the minus inverse laws), `mod_mult_rmod_thm` (the unconditioned
+division_simp_thm decomposition of p, mul_SNo_distrL/assoc, then mod_eq_thm —
+no zero split needed), `real_mul_linv_uniq_thm` (y <> 0 from neq_1_0, then
+associativity against recip_SNo_invR), `le_addr_thm` (SNoLe_add_omega
+commuted), `real_le_square_thm` (SNo_sqr_nonneg), `mult_eq_0_thm` (the omega
+twin of real_entire), `length_eq_nil_thm` (seq_len_0_nil / seq_len_nil),
+`real_inv_inv_thm` (SNoLt_trichotomy_or_impred three-way: recip_SNo_negcase
+twice through minus_SNo_invol, recip_SNo_0 twice, recip_SNo_poscase +
+recip_SNo_pos_invol) — landing REAL_SUB_LE, MOD_MULT_RMOD, REAL_MUL_LINV_UNIQ,
+LE_ADDR, REAL_LE_SQUARE, MULT_EQ_0, LENGTH_EQ_NIL, REAL_INV_INV.
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

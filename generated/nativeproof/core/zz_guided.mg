@@ -35,11 +35,28 @@ exact (((ADD_SYM (minus_nat m n) (minus_nat_In_omega (n) Hn (m) Hm) (minus_nat n
 exact (iffER (forall m n :e omega, abs_SNo (m + - n) = abs_SNo (n + - m)) (forall m n :e omega, minus_nat m n + minus_nat n m = abs_SNo (n + - m)) E1 F0).
 Qed.
 
-// HOL Light: arith.ml / LE_ADDR (leaf-guided)
-Theorem LE_ADDR : forall m n :e omega, n <= m + n.
+// HOL Light: arith.ml / MOD_MULT_LMOD (leaf-guided)
+Theorem MOD_MULT_LMOD : forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n.
+claim E1 : (forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) <-> (forall m n p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n).
+{ exact (all_in_iff_cong (omega) (fun m:set => forall n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) (fun m:set => forall n p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => forall p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) (fun n:set => forall p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n) (fun n Hn => (all_in_iff_cong (omega) (fun p:set => mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) (fun p:set => mod_nat (p * mod_nat m n) n = mod_nat (m * p) n) (fun p Hp => ((mul_SNo_com (mod_nat m n) (p) (omega_SNo (mod_nat m n) (mod_nat_omega (m) Hm (n) Hn)) ((andER (SNo p -> True) (True -> SNo p) (iff_true_intro (SNo p) (omega_SNo (p) Hp))) (fun p:prop => fun H:p => H))) (fun hl__u hl__v => (mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) <-> (mod_nat hl__u n = mod_nat (m * p) n)) (iff_refl (mod_nat (mod_nat m n * p) n = mod_nat (m * p) n))))))))). }
+claim E2 : (forall m n p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n) <-> (forall m n p :e omega, mod_nat (p * m) n = mod_nat (m * p) n).
+{ exact (all_in_iff_cong (omega) (fun m1:set => forall n p :e omega, mod_nat (p * mod_nat m1 n) n = mod_nat (m1 * p) n) (fun m1:set => forall n p :e omega, mod_nat (p * m1) n = mod_nat (m1 * p) n) (fun m1 Hm1 => (all_in_iff_cong (omega) (fun n1:set => forall p :e omega, mod_nat (p * mod_nat m1 n1) n1 = mod_nat (m1 * p) n1) (fun n1:set => forall p :e omega, mod_nat (p * m1) n1 = mod_nat (m1 * p) n1) (fun n1 Hn1 => (all_in_iff_cong (omega) (fun p1:set => mod_nat (p1 * mod_nat m1 n1) n1 = mod_nat (m1 * p1) n1) (fun p1:set => mod_nat (p1 * m1) n1 = mod_nat (m1 * p1) n1) (fun p1 Hp1 => ((mod_mult_rmod_thm (p1) Hp1 (n1) Hn1 (m1) Hm1) (fun hl__u hl__v => (mod_nat (p1 * mod_nat m1 n1) n1 = mod_nat (m1 * p1) n1) <-> (hl__u = mod_nat (m1 * p1) n1)) (iff_refl (mod_nat (p1 * mod_nat m1 n1) n1 = mod_nat (m1 * p1) n1))))))))). }
+claim E3 : (forall m n p :e omega, mod_nat (p * m) n = mod_nat (m * p) n) <-> (forall m n p :e omega, mod_nat (m * p) n = mod_nat (m * p) n).
+{ exact (all_in_iff_cong (omega) (fun m2:set => forall n p :e omega, mod_nat (p * m2) n = mod_nat (m2 * p) n) (fun m2:set => forall n p :e omega, mod_nat (m2 * p) n = mod_nat (m2 * p) n) (fun m2 Hm2 => (all_in_iff_cong (omega) (fun n2:set => forall p :e omega, mod_nat (p * m2) n2 = mod_nat (m2 * p) n2) (fun n2:set => forall p :e omega, mod_nat (m2 * p) n2 = mod_nat (m2 * p) n2) (fun n2 Hn2 => (all_in_iff_cong (omega) (fun p2:set => mod_nat (p2 * m2) n2 = mod_nat (m2 * p2) n2) (fun p2:set => mod_nat (m2 * p2) n2 = mod_nat (m2 * p2) n2) (fun p2 Hp2 => ((mul_SNo_com (p2) (m2) ((andER (SNo p2 -> True) (True -> SNo p2) (iff_true_intro (SNo p2) (omega_SNo (p2) Hp2))) (fun p:prop => fun H:p => H)) ((andER (SNo m2 -> True) (True -> SNo m2) (iff_true_intro (SNo m2) (omega_SNo (m2) Hm2))) (fun p:prop => fun H:p => H))) (fun hl__u hl__v => (mod_nat (p2 * m2) n2 = mod_nat (m2 * p2) n2) <-> (mod_nat hl__u n2 = mod_nat (m2 * p2) n2)) (iff_refl (mod_nat (p2 * m2) n2 = mod_nat (m2 * p2) n2))))))))). }
+claim F0 : forall m n p :e omega, mod_nat (m * p) n = mod_nat (m * p) n.
+{ let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (fun q H => H). }
+exact (iffER (forall m n p :e omega, mod_nat (mod_nat m n * p) n = mod_nat (m * p) n) (forall m n p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n) E1 (iffER (forall m n p :e omega, mod_nat (p * mod_nat m n) n = mod_nat (m * p) n) (forall m n p :e omega, mod_nat (p * m) n = mod_nat (m * p) n) E2 (iffER (forall m n p :e omega, mod_nat (p * m) n = mod_nat (m * p) n) (forall m n p :e omega, mod_nat (m * p) n = mod_nat (m * p) n) E3 F0))).
+Qed.
+
+// HOL Light: arith.ml / MOD_MULT_MOD2 (leaf-guided)
+Theorem MOD_MULT_MOD2 : forall m n p :e omega, mod_nat (mod_nat m n * mod_nat p n) n = mod_nat (m * p) n.
 let m. assume Hm.
 let n. assume Hn.
-exact ((andER (n <= m + n -> exists hl__d :e omega, m + n = n + hl__d) ((exists hl__d :e omega, m + n = n + hl__d) -> n <= m + n) (le_exists_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (ex_intro (fun hl__w:set => hl__w :e omega /\ m + n = n + hl__w) (m) (andI (m :e omega) (m + n = n + m) Hm (ADD_SYM (m) Hm (n) Hn)))).
+let p. assume Hp.
+exact (((MOD_MULT_LMOD (m) Hm (n) Hn (mod_nat p n) (mod_nat_omega (p) Hp (n) Hn)) (fun hl__u hl__v => hl__u = (mod_nat (mod_nat m n * mod_nat p n) n)) (fun q H => H)) (fun hl__u hl__v => hl__u = mod_nat (m * p) n) (mod_mult_rmod_thm (m) Hm (n) Hn (p) Hp)).
 Qed.
 
 // HOL Light: realarith.ml / REAL_NOT_LT (leaf-guided)
@@ -61,16 +78,5 @@ apply iffI.
   assume H1.
   exact ((andER (x <= y) (~ x = y) H1) (SNoLe_antisym (x) (y) (real_SNo (x) Hx) (real_SNo (y) Hy) (andEL (x <= y) (~ x = y) H1) H)). }
 exact (iffER (forall x y :e R, ~ x < y <-> y <= x) (forall x y :e R, ~ (x <= y /\ ~ x = y) <-> y <= x) E1 F0).
-Qed.
-
-// HOL Light: arith.ml / ADD_SUBR (leaf-guided)
-Theorem ADD_SUBR : forall m n :e omega, minus_nat n (m + n) = 0.
-claim E1 : (forall m n :e omega, minus_nat n (m + n) = 0) <-> (forall m n :e omega, n <= m + n).
-{ exact (all_in_iff_cong (omega) (fun m:set => forall n :e omega, minus_nat n (m + n) = 0) (fun m:set => forall n :e omega, n <= m + n) (fun m Hm => (all_in_iff_cong (omega) (fun n:set => minus_nat n (m + n) = 0) (fun n:set => n <= m + n) (fun n Hn => ((andER ((minus_nat n (m + n) = 0 <-> n <= m + n) -> True) (True -> (minus_nat n (m + n) = 0 <-> n <= m + n)) (iff_true_intro (minus_nat n (m + n) = 0 <-> n <= m + n) (sub_eq_0_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn)))) TRUTH))))). }
-claim F0 : forall m n :e omega, n <= m + n.
-{ let m. assume Hm.
-let n. assume Hn.
-exact ((andER (n <= m + n -> exists hl__d :e omega, m + n = n + hl__d) ((exists hl__d :e omega, m + n = n + hl__d) -> n <= m + n) (le_exists_thm (n) Hn (m + n) (add_SNo_In_omega (m) Hm (n) Hn))) (ex_intro (fun hl__w:set => hl__w :e omega /\ m + n = n + hl__w) (m) (andI (m :e omega) (m + n = n + m) Hm (ADD_SYM (m) Hm (n) Hn)))). }
-exact (iffER (forall m n :e omega, minus_nat n (m + n) = 0) (forall m n :e omega, n <= m + n) E1 F0).
 Qed.
 

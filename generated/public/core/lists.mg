@@ -320,7 +320,11 @@ Admitted.
 // Source hash: md5:a50730425650e431b90f58c470a41521
 // Status: transport_required (bridges: hol_list_finseq, hol_num_omega)
 Theorem LENGTH_EQ_NIL : forall A:set, A <> Empty -> forall l :e finseq A, seq_len l = 0 <-> l = seq_nil.
-Admitted.
+let A.
+assume H.
+let l. assume Hl.
+exact (length_eq_nil_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl).
+Qed.
 
 // HOL Light: lists.ml:214 / LENGTH_EQ_CONS
 // Source hash: md5:e87970b38cc89e65c536115c9b94fc0e

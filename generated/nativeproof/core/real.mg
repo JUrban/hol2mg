@@ -303,9 +303,41 @@ let z. assume Hz.
 exact (real_eq_mul_rcancel_thm (x) Hx (y) Hy (z) Hz).
 Qed.
 
+// HOL Light: real.ml / REAL_MUL_LINV_UNIQ
+Theorem REAL_MUL_LINV_UNIQ : forall x y :e R, x * y = 1 -> recip_SNo y = x.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (real_mul_linv_uniq_thm (x) Hx (y) Hy H).
+Qed.
+
+// HOL Light: real.ml / REAL_MUL_RINV_UNIQ
+Theorem REAL_MUL_RINV_UNIQ : forall x y :e R, x * y = 1 -> recip_SNo x = y.
+let x. assume Hx.
+let y. assume Hy.
+assume H.
+exact (real_mul_linv_uniq_thm (y) Hy (x) Hx (H (fun hl__u hl__v => (y * x) = hl__u) (mul_SNo_com (y) (x) (real_SNo (y) Hy) (real_SNo (x) Hx)))).
+Qed.
+
+// HOL Light: real.ml / REAL_INV_INV
+Theorem REAL_INV_INV : forall x :e R, recip_SNo (recip_SNo x) = x.
+let x. assume Hx.
+exact (real_inv_inv_thm (x) Hx).
+Qed.
+
 // HOL Light: real.ml / REAL_INV_1
 Theorem REAL_INV_1 : recip_SNo 1 = 1.
 exact real_inv_1_thm.
+Qed.
+
+// HOL Light: real.ml / REAL_INV_EQ_1
+Theorem REAL_INV_EQ_1 : forall x :e R, recip_SNo x = 1 <-> x = 1.
+let x. assume Hx.
+apply iffI.
+- assume H1.
+  exact (real_inv_1_thm (fun hl__u hl__v => x = hl__u) (H1 (fun hl__u hl__v => x = recip_SNo hl__u) ((real_inv_inv_thm (x) Hx) (fun hl__u hl__v => hl__u = (recip_SNo (recip_SNo x))) (fun q H => H)))).
+- assume H.
+  exact (H (fun hl__u hl__v => recip_SNo x = hl__u) ((H (fun hl__u hl__v => hl__u = (x)) (fun q H => H)) (fun hl__u hl__v => recip_SNo hl__u = hl__u) real_inv_1_thm)).
 Qed.
 
 // HOL Light: real.ml / REAL_POW_ADD

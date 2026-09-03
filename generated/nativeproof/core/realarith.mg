@@ -43,6 +43,13 @@ assume H.
 exact (SNoLt_tra (x) (y) (z) (real_SNo (x) Hx) (real_SNo (y) Hy) (real_SNo (z) Hz) (andEL (x < y) (y < z) H) (andER (x < y) (y < z) H)).
 Qed.
 
+// HOL Light: realarith.ml / REAL_SUB_LE
+Theorem REAL_SUB_LE : forall x y :e R, 0 <= x + - y <-> y <= x.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_sub_le_thm (x) Hx (y) Hy).
+Qed.
+
 // HOL Light: realarith.ml / REAL_LT_LE
 Theorem REAL_LT_LE : forall x y :e R, x < y <-> x <= y /\ ~ x = y.
 let x. assume Hx.
@@ -68,6 +75,12 @@ Qed.
 Theorem REAL_LE_NEGTOTAL : forall x :e R, 0 <= x \/ 0 <= - x.
 let x. assume Hx.
 exact (real_le_negtotal_thm (x) Hx).
+Qed.
+
+// HOL Light: realarith.ml / REAL_LE_SQUARE
+Theorem REAL_LE_SQUARE : forall x :e R, 0 <= x * x.
+let x. assume Hx.
+exact (seq_len_nil (fun hl__u hl__v => hl__u <= x * x) ((seq_len_nil (fun hl__u hl__v => hl__u = (seq_len seq_nil)) (fun q H => H)) (fun hl__u hl__v => hl__u <= x * x) (real_le_square_thm (x) Hx))).
 Qed.
 
 // HOL Light: realarith.ml / REAL_MUL_RID

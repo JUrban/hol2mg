@@ -606,7 +606,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -54388,7 +54388,7 @@
     "list_INDUCT"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -55264,7 +55264,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -60622,7 +60622,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -61813,7 +61813,7 @@
     "num_INDUCTION"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -77481,7 +77481,7 @@
    "proof_imported": false,
    "proof_leaves": [],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "literal_fact_proved": false,
    "fully_proved": false
   },
@@ -77523,7 +77523,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -79699,7 +79699,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -83179,7 +83179,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -83506,7 +83506,7 @@
     "TRUTH"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true
@@ -88426,7 +88426,7 @@
     "real_sub"
    ],
    "proof_error": "",
-   "natively_proved": false,
+   "natively_proved": true,
    "proof_source": "pilot",
    "literal_fact_proved": true,
    "fully_proved": true

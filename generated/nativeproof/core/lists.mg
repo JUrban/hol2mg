@@ -113,6 +113,14 @@ let m. assume Hm.
 exact (length_append_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl (m) Hm).
 Qed.
 
+// HOL Light: lists.ml / LENGTH_EQ_NIL
+Theorem LENGTH_EQ_NIL : forall A:set, A <> Empty -> forall l :e finseq A, seq_len l = 0 <-> l = seq_nil.
+let A.
+assume H.
+let l. assume Hl.
+exact (length_eq_nil_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl).
+Qed.
+
 // HOL Light: lists.ml / ALLPAIRS_SYM
 Theorem ALLPAIRS_SYM : forall A B:set, A <> Empty -> B <> Empty -> forall P:set -> set -> prop, forall l :e finseq A, forall m :e finseq B, (forall i :e seq_len l, forall j :e seq_len m, P (seq_nth l i) (seq_nth m j)) <-> forall i :e seq_len m, forall j :e seq_len l, P (seq_nth l j) (seq_nth m i).
 let A.
