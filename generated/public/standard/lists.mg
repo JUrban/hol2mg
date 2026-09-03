@@ -297,7 +297,12 @@ Admitted.
 // Source hash: md5:87d5d63471bb0040381d1296f836489b
 // Status: transport_required (bridges: add_nat_add_SNo, hol_list_finseq, hol_num_omega)
 Theorem LENGTH_APPEND : forall A:set, A <> Empty -> forall l m :e finseq A, seq_len (seq_append l m) = seq_len l + seq_len m.
-Admitted.
+let A.
+assume H.
+let l. assume Hl.
+let m. assume Hm.
+exact (length_append_thm (A) (fun hl__H : A = Empty => (H hl__H)) (l) Hl (m) Hm).
+Qed.
 
 // HOL Light: lists.ml:202 / MAP_APPEND
 // Source hash: md5:e005972551ddebaef8cd43f82996650d

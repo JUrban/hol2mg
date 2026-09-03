@@ -295,9 +295,25 @@ let z. assume Hz.
 exact (real_eq_mul_lcancel_thm (x) Hx (y) Hy (z) Hz).
 Qed.
 
+// HOL Light: real.ml / REAL_EQ_MUL_RCANCEL
+Theorem REAL_EQ_MUL_RCANCEL : forall x y z :e R, x * z = y * z <-> x = y \/ z = 0.
+let x. assume Hx.
+let y. assume Hy.
+let z. assume Hz.
+exact (real_eq_mul_rcancel_thm (x) Hx (y) Hy (z) Hz).
+Qed.
+
 // HOL Light: real.ml / REAL_INV_1
 Theorem REAL_INV_1 : recip_SNo 1 = 1.
 exact real_inv_1_thm.
+Qed.
+
+// HOL Light: real.ml / REAL_POW_ADD
+Theorem REAL_POW_ADD : forall x :e R, forall m n :e omega, x ^ (m + n) = x ^ m * x ^ n.
+let x. assume Hx.
+let m. assume Hm.
+let n. assume Hn.
+exact (real_pow_add_thm (x) Hx (m) Hm (n) Hn).
 Qed.
 
 // HOL Light: real.ml / REAL_EQ_LCANCEL_IMP

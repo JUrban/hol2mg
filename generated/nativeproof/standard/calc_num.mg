@@ -21,3 +21,8 @@ Theorem ARITH_LE : (forall m n :e omega, m <= n <-> m <= n) /\ ((0 <= 0 <-> True
 exact arith_le_thm.
 Qed.
 
+// HOL Light: calc_num.ml / ARITH_EQ
+Theorem ARITH_EQ : (forall m n :e omega, m = n <-> m = n) /\ ((0 = 0 <-> True) /\ ((forall n :e omega, 2 * n = 0 <-> n = 0) /\ ((forall n :e omega, 2 * n + 1 = 0 <-> False) /\ ((forall n :e omega, 0 = 2 * n <-> 0 = n) /\ ((forall n :e omega, 0 = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m = 2 * n <-> m = n) /\ ((forall m n :e omega, 2 * m = 2 * n + 1 <-> False) /\ ((forall m n :e omega, 2 * m + 1 = 2 * n <-> False) /\ forall m n :e omega, 2 * m + 1 = 2 * n + 1 <-> m = n)))))))).
+exact arith_eq_thm.
+Qed.
+

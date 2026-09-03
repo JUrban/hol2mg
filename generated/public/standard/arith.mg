@@ -350,7 +350,10 @@ Qed.
 // Source hash: md5:200ce7eb2e9d1e4094a26e883f454e19
 // Status: transport_required (bridges: exp_nat_exp_SNo_nat, hol_num_omega)
 Theorem EXP_EQ_0 : forall m n :e omega, m ^ n = 0 <-> m = 0 /\ ~ n = 0.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (exp_eq_0_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:227 / EXP_EQ_1
 // Source hash: md5:b056dde8dc164a58dd4be9c2bea6eac5
@@ -734,7 +737,10 @@ Qed.
 // Source hash: md5:fceb9b438eb7a0d431cb8377b206b932
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, nat_lt_SNoLt)
 Theorem LT_EXISTS : forall m n :e omega, m < n <-> exists d :e omega, n = m + ordsucc d.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (lt_exists_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:509 / LE_ADD
 // Source hash: md5:c840eadf57a06b476726b6575f1ed37c
@@ -1464,7 +1470,13 @@ Admitted.
 // Source hash: md5:5cc679121cbb2dfc6d326dfb62631dac
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo)
 Theorem MOD_EQ : forall m n p q :e omega, m = n + q * p -> mod_nat m p = mod_nat n p.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+let q. assume Hq.
+assume H.
+exact ((H (fun hl__u hl__v => hl__u = (m)) (fun q H => H)) (fun hl__u hl__v => mod_nat hl__u p = mod_nat n p) (H (fun hl__u hl__v => mod_nat hl__u p = mod_nat n p) (mod_eq_thm (m) Hm (n) Hn (p) Hp (q) Hq H))).
+Qed.
 
 // HOL Light: arith.ml:1220 / DIV_LE
 // Source hash: md5:ed213853e53733fccb8b2667dd52f482
