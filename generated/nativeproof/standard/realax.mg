@@ -8,6 +8,14 @@ let m. assume Hm.
 exact (dist_thm (n) Hn (m) Hm).
 Qed.
 
+// HOL Light: realax.ml / BOUNDS_LINEAR
+Theorem BOUNDS_LINEAR : forall A B C :e omega, (forall n :e omega, A * n <= B * n + C) <-> A <= B.
+let A. assume HA.
+let B. assume HB.
+let C. assume HC.
+exact (bounds_linear_thm (A) HA (B) HB (C) HC).
+Qed.
+
 // HOL Light: realax.ml / real_sub
 Theorem real_sub : forall x y :e R, x + - y = x + - y.
 let x. assume Hx.
