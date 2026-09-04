@@ -681,7 +681,10 @@ Admitted.
 // Source hash: md5:5815fc366cdba65f86ca1533c12dfa30
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem LT_LE : forall m n :e omega, m < n <-> m <= n /\ ~ m = n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+exact (lt_le_omega_thm (m) Hm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:433 / NOT_LE
 // Source hash: md5:2b6bcbd0da941a0d69352fddce245478
