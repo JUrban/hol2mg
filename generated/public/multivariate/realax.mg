@@ -90,7 +90,11 @@ Admitted.
 // Source hash: md5:c057c0f22cb183ad0dbcced755e63d25
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_le_SNoLe)
 Theorem BOUNDS_LINEAR : forall A B C :e omega, (forall n :e omega, A * n <= B * n + C) <-> A <= B.
-Admitted.
+let A. assume HA.
+let B. assume HB.
+let C. assume HC.
+exact (bounds_linear_thm (A) HA (B) HB (C) HC).
+Qed.
 
 // HOL Light: realax.ml:188 / BOUNDS_LINEAR_0
 // Source hash: md5:5ad77f70c8d16293232ac47479307650

@@ -100,7 +100,10 @@ Admitted.
 // Source hash: md5:61487e4dca4462e49e36c954d6891ad8
 // Status: transport_required (bridges: hol_num_omega, hol_real_R, omega_Subq_R)
 Theorem REAL_SUB_LT : forall x y :e R, 0 < x + - y <-> y < x.
-Admitted.
+let x. assume Hx.
+let y. assume Hy.
+exact (real_sub_lt_thm (x) Hx (y) Hy).
+Qed.
 
 // HOL Light: realarith.ml:66 / REAL_NOT_LT
 // Source hash: md5:9f9aa22e7fc28bbd0573eab5b4b96e79

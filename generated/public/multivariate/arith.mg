@@ -321,7 +321,11 @@ Qed.
 // Source hash: md5:b0b6632633c6cc3999bb29b53a4787f9
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem EQ_MULT_RCANCEL : forall m n p :e omega, m * p = n * p <-> m = n \/ p = 0.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (eq_mult_rcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
 
 // HOL Light: arith.ml:203 / MULT_2
 // Source hash: md5:aefb67ed10cad5150806e529a2aa3bae
@@ -997,7 +1001,9 @@ Qed.
 // Source hash: md5:c1eb2dc93bf829fc21b22bf5347d4d8b
 // Status: transport_required (bridges: hol_num_omega)
 Theorem NOT_ODD : forall n :e omega, ~ odd_nat n <-> even_nat n.
-Admitted.
+let n. assume Hn.
+exact (not_odd_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:732 / EVEN_OR_ODD
 // Source hash: md5:de0b9e761db913184af2149b2552baa1
@@ -1060,7 +1066,9 @@ Admitted.
 // Source hash: md5:f8bdc0efbfadf167ba7811ce8538978e
 // Status: transport_required (bridges: hol_num_omega, mul_nat_mul_SNo)
 Theorem EVEN_DOUBLE : forall n :e omega, even_nat (2 * n).
-Admitted.
+let n. assume Hn.
+exact (even_double2_thm (n) Hn).
+Qed.
 
 // HOL Light: arith.ml:786 / ODD_DOUBLE
 // Source hash: md5:4fb6aed950b2d928b15ac734317b0f2c
@@ -1329,7 +1337,11 @@ Admitted.
 // Source hash: md5:505d039010e6691c5d52c24fc3ac9cc6
 // Status: transport_required (bridges: add_nat_add_SNo, hol_num_omega, mul_nat_mul_SNo, nat_lt_SNoLt)
 Theorem DIVMOD_EXIST : forall m n :e omega, ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n.
-Admitted.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (divmod_exist_thm (m) Hm (n) Hn H).
+Qed.
 
 // HOL Light: arith.ml:1085 / DIVMOD_EXIST_0
 // Source hash: md5:5f7772a1ff424cc9936518ad8c4474f3
