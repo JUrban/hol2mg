@@ -77,7 +77,8 @@ Qed.
 // Source hash: md5:e5112e671f199bff97bc4cb1eed87f79
 // Status: transport_required (bridges: hol_num_omega, nat_le_SNoLe, nat_lt_SNoLt)
 Theorem ARITH_LT : (forall m n :e omega, m < n <-> m < n) /\ ((0 < 0 <-> False) /\ ((forall n :e omega, 2 * n < 0 <-> False) /\ ((forall n :e omega, 2 * n + 1 < 0 <-> False) /\ ((forall n :e omega, 0 < 2 * n <-> 0 < n) /\ ((forall n :e omega, 0 < 2 * n + 1 <-> True) /\ ((forall m n :e omega, 2 * m < 2 * n <-> m < n) /\ ((forall m n :e omega, 2 * m < 2 * n + 1 <-> m <= n) /\ ((forall m n :e omega, 2 * m + 1 < 2 * n <-> m < n) /\ forall m n :e omega, 2 * m + 1 < 2 * n + 1 <-> m < n)))))))).
-Admitted.
+exact arith_lt_thm.
+Qed.
 
 // HOL Light: calc_num.ml:157 / ARITH_GE
 // Source hash: md5:b9654ecd22f3517f1d28e8327c6aaac2

@@ -57,11 +57,16 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 |---|---|---|---|---|---|
 | core | 2685 | 2697 | 2592 | 57 | 847 (recorded from pilot rounds 7–8, DESIGN 22.6) |
 | standard | 4290 | 4396 | 3839 | 57 | — |
-| multivariate | 17138 | 17332 | 3305 | 57 | — |
+| multivariate | 17138 | 17332 | 3311 | 57 | — |
 
-Native proof synthesis (DESIGN §23): 586 core, 613 standard and 591 multivariate public theorems additionally carry *generated
-native proofs* in the God1 declarative style (`natively_proved`, emitted with `Qed` in the
-public shards; `generated/nativeproof/`, `tools/check_nativeproof.sh`).  Seven theorems
+Native proof synthesis (DESIGN §23): 586 core, 615 standard and 593 multivariate theorems
+carry *generated
+native proofs* in the God1 declarative style (`natively_proved`; standalone modules in
+`generated/nativeproof/`, checked by `tools/check_nativeproof.sh`).  Of these, the
+self-contained proofs are emitted with `Qed` directly in the public shards; the handful of
+leaf-guided proofs (currently 6 core) live only in `generated/nativeproof/<profile>/zz_guided.mg`
+because their premises may occur later in shard composition order, so the public-shard `Qed`
+count is correspondingly lower than the headline.  Seven theorems
 are counted under both `literal_proved` and `fully_proved` (`model_and_imported` in the
 manifest); an eighth, INFINITY_AX, has both discharges recorded but is not yet
 `transport_checked`.
