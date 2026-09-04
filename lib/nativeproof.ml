@@ -99,6 +99,8 @@ let rec replace_tm old_t by_t t =
 
 type st = { mutable fuel : int; mutable names : (string, unit) Hashtbl.t;
             memo : (string, int) Hashtbl.t; (* failed close_term: context key -> max adepth tried *)
+            mutable prem_tail : hyp list;   (* constant premise suffix of hyps (physical identity) *)
+            mutable prem_key : string;      (* its precomputed memo-key fragment *)
             pps : (Mg.tm, string) Hashtbl.t (* memoized pp of hypothesis props (memo keys) *) }
 
 let spend st n = st.fuel <- st.fuel - n; if st.fuel < 0 then raise Give_up
@@ -287,7 +289,11 @@ let rec close_term st (hyps : hyp list) (goal : Mg.tm) (adepth : int) : string o
   let key = lazy (
     let b = Buffer.create 256 in
     Buffer.add_string b (pp goal); Buffer.add_char b '|';
-    List.iter (fun h -> Buffer.add_string b (pp_st st h.prop); Buffer.add_char b ';') hyps;
+    let rec go = function
+      | l when l == st.prem_tail -> Buffer.add_string b st.prem_key
+      | [] -> ()
+      | h :: r -> Buffer.add_string b (pp_st st h.prop); Buffer.add_char b ';'; go r in
+    go hyps;
     Buffer.contents b) in
   match Hashtbl.find_opt st.memo (Lazy.force key) with
   | Some a when a >= adepth -> None
@@ -3105,7 +3111,17 @@ let iff_builtins : (string * Mg.tm) list =
 let native_lemma_premises : (string * Mg.tm) list ref = ref []
 
 let load_native_lemmas (dir : string) : unit =
-  let files = ["prelude.mg"; "finseq.mg"; "order.mg"; "logic.mg"] in
+  (* Opt-in for now: injecting parsed lemmas into every goal's premise set slows
+     full passes 2-3x (even 30 extras) and loses marginal proofs to fuel exhaustion
+     (std 615 -> 605 with the wide set).  Until premises are indexed by head symbol
+     (audit-3 rec 2), auto-injection is enabled only via NPNATIVELOAD=logic or
+     NPNATIVEALL=1; the parser itself is exercised and kept for that sprint step. *)
+  let files =
+    if Sys.getenv_opt "NPNATIVEALL" <> None
+    then ["prelude.mg"; "finseq.mg"; "order.mg"; "logic.mg"]
+    else if Sys.getenv_opt "NPNATIVELOAD" <> None
+    then ["logic.mg"]
+    else [] in
   let manual = List.map fst builtin_premises in
   let acc = ref [] in
   List.iter (fun f ->
@@ -3138,7 +3154,7 @@ let load_native_lemmas (dir : string) : unit =
 (* congruence closing of `l <-> r` as a proof term, for the recorded-proof import
    (docs/DESIGN.md 24.3): premises are citable named facts (instances, previous claims) *)
 let congruence_iff ?(budget = 4000) ~(premises : (string * Mg.tm) list) (l : Mg.tm) (r : Mg.tm) : string option =
-  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512; prem_tail = []; prem_key = "" } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ !native_lemma_premises @ iff_builtins) in
   try iff_congruence st hyps0 l r with Give_up | Stack_overflow -> None
@@ -3151,11 +3167,15 @@ let default_budget =
 let prove ?budget ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
   let budget = match budget with Some b -> b | None -> default_budget in
-  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512; prem_tail = []; prem_key = "" } in
   let premises = premises @ builtin_premises @ !native_lemma_premises in
   ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.map (fun (n, p) -> { hname = n; prop = p }) premises in
+  st.prem_tail <- hyps0;
+  st.prem_key <- (let b = Buffer.create 4096 in
+    List.iter (fun h -> Buffer.add_string b (pp_st st h.prop); Buffer.add_char b ';') hyps0;
+    Buffer.contents b);
   try
     let lines = prove_goal st hyps0 goal 0 in
     if List.length lines > max_lines then None else Some (String.concat "\n" lines)
@@ -3168,7 +3188,7 @@ let prove_via_rewrites ?(budget = 6000) ~(premises : (string * Mg.tm) list) (goa
   if premises = [] then None else
   let dbg = np_debug in
   (if dbg then Printf.eprintf "[rw] goal: %s | premises: %s\n%!" (String.sub (pp goal) 0 (min 120 (String.length (pp goal)))) (String.concat "," (List.map fst premises)));
-  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
+  let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512; prem_tail = []; prem_key = "" } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ !native_lemma_premises @ iff_builtins) in
   let trivially cur =
