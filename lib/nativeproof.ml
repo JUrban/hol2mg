@@ -2208,6 +2208,44 @@ let builtin_premises : (string * Mg.tm) list =
                    Mg.App (Mg.Cst "ordsucc", Mg.Var "hl__n"))),
                  Mg.App (Mg.App (Mg.Cst "seq_nth",
                    Mg.App (Mg.Cst "seq_tl", Mg.Var "hl__l")), Mg.Var "hl__n"))))))));
+    ("even_double2_thm",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.Cst "even_nat",
+         Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Num 2), Mg.Var "hl__n"))));
+    ("not_odd_thm",
+     Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.Cst "not",
+           Mg.App (Mg.Cst "odd_nat", Mg.Var "hl__n"))),
+         Mg.App (Mg.Cst "even_nat", Mg.Var "hl__n"))));
+    ("eq_mult_rcancel_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.AllIn ("hl__p", Mg.Cst "omega",
+         Mg.App (Mg.App (Mg.Cst "iff",
+           Mg.App (Mg.App (Mg.Cst "eq",
+             Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__m"), Mg.Var "hl__p")),
+             Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__n"), Mg.Var "hl__p"))),
+           Mg.App (Mg.App (Mg.Cst "or",
+             Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"), Mg.Var "hl__n")),
+             Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__p"), Mg.Num 0)))))));
+    ("real_sub_lt_thm",
+     Mg.AllIn ("hl__x", Mg.Cst "R", Mg.AllIn ("hl__y", Mg.Cst "R",
+       Mg.App (Mg.App (Mg.Cst "iff",
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Num 0),
+           Mg.App (Mg.App (Mg.Cst "add_SNo", Mg.Var "hl__x"),
+             Mg.App (Mg.Cst "minus_SNo", Mg.Var "hl__y")))),
+         Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__y"), Mg.Var "hl__x")))));
+    ("divmod_exist_thm",
+     Mg.AllIn ("hl__m", Mg.Cst "omega", Mg.AllIn ("hl__n", Mg.Cst "omega",
+       Mg.Imp (Mg.App (Mg.Cst "not",
+         Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__n"), Mg.Num 0)),
+         Mg.ExIn ("hl__q", Mg.Cst "omega", Mg.ExIn ("hl__r", Mg.Cst "omega",
+           Mg.App (Mg.App (Mg.Cst "and",
+             Mg.App (Mg.App (Mg.Cst "eq", Mg.Var "hl__m"),
+               Mg.App (Mg.App (Mg.Cst "add_SNo",
+                 Mg.App (Mg.App (Mg.Cst "mul_SNo", Mg.Var "hl__q"), Mg.Var "hl__n")),
+                 Mg.Var "hl__r"))),
+             Mg.App (Mg.App (Mg.Cst "SNoLt", Mg.Var "hl__r"), Mg.Var "hl__n"))))))));
     ("bounds_linear_thm",
      Mg.AllIn ("hl__A", Mg.Cst "omega", Mg.AllIn ("hl__B", Mg.Cst "omega",
        Mg.AllIn ("hl__C", Mg.Cst "omega",
@@ -3058,12 +3096,51 @@ let iff_builtins : (string * Mg.tm) list =
        Mg.Imp (Mg.App (Mg.Cst "not", Mg.Var "hl__p"),
          Mg.App (Mg.App (Mg.Cst "iff", Mg.Var "hl__p"), Mg.Cst "False")))) ]
 
+(* Auto-extracted native lemma premises (audit-3 rec 4): statements are parsed from
+   the single-line `Theorem <name> : <prop>.` headers of mglib/native/*.mg at startup,
+   so hand lemmas no longer need a manually mirrored OCaml AST.  Names already present
+   in the manual builtin_premises table are skipped (order/behavior preserved); parse
+   failures (multi-line statements, unsupported syntax) are skipped silently and can
+   stay manual. *)
+let native_lemma_premises : (string * Mg.tm) list ref = ref []
+
+let load_native_lemmas (dir : string) : unit =
+  let files = ["prelude.mg"; "finseq.mg"; "order.mg"; "logic.mg"] in
+  let manual = List.map fst builtin_premises in
+  let acc = ref [] in
+  List.iter (fun f ->
+    let path = Filename.concat dir f in
+    if Sys.file_exists path then begin
+      let ic = open_in path in
+      (try
+        while true do
+          let line = input_line ic in
+          let n = String.length line in
+          if n > 10 && String.sub line 0 8 = "Theorem " && line.[n - 1] = '.' then
+            (match String.index_opt line ':' with
+             | Some ci ->
+                let name = String.trim (String.sub line 8 (ci - 8)) in
+                let prop = String.sub line (ci + 1) (n - ci - 2) in
+                if name <> "" && not (List.mem name manual)
+                   && not (List.mem_assoc name !acc) then
+                  (try acc := (name, Mg.parse_template prop) :: !acc
+                   with _ -> ())
+             | None -> ())
+        done
+      with End_of_file -> ());
+      close_in ic
+    end) files;
+  native_lemma_premises := List.rev !acc;
+  if np_debug then
+    Printf.eprintf "[np] loaded %d native lemma premises from %s\n%!"
+      (List.length !native_lemma_premises) dir
+
 (* congruence closing of `l <-> r` as a proof term, for the recorded-proof import
    (docs/DESIGN.md 24.3): premises are citable named facts (instances, previous claims) *)
 let congruence_iff ?(budget = 4000) ~(premises : (string * Mg.tm) list) (l : Mg.tm) (r : Mg.tm) : string option =
   let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
-  let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
+  let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ !native_lemma_premises @ iff_builtins) in
   try iff_congruence st hyps0 l r with Give_up | Stack_overflow -> None
 
 let default_budget =
@@ -3075,7 +3152,7 @@ let prove ?budget ?(max_lines = 200) ?(premises : (string * Mg.tm) list = [])
     (goal : Mg.tm) : string option =
   let budget = match budget with Some b -> b | None -> default_budget in
   let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
-  let premises = premises @ builtin_premises in
+  let premises = premises @ builtin_premises @ !native_lemma_premises in
   ignore collect_names;  (* statement binders may be shadowed by let/assume; nothing is pre-seeded *)
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
   let hyps0 = List.map (fun (n, p) -> { hname = n; prop = p }) premises in
@@ -3093,7 +3170,7 @@ let prove_via_rewrites ?(budget = 6000) ~(premises : (string * Mg.tm) list) (goa
   (if dbg then Printf.eprintf "[rw] goal: %s | premises: %s\n%!" (String.sub (pp goal) 0 (min 120 (String.length (pp goal)))) (String.concat "," (List.map fst premises)));
   let st = { fuel = budget; names = Hashtbl.create 64; memo = Hashtbl.create 4096; pps = Hashtbl.create 512 } in
   List.iter (fun (n, _) -> Hashtbl.replace st.names n ()) premises;
-  let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ iff_builtins) in
+  let hyps0 = List.fold_left (fun acc (n, p) -> augment n p acc) [] (premises @ builtin_premises @ !native_lemma_premises @ iff_builtins) in
   let trivially cur =
     if cur = Mg.Cst "True" then Some "exact (fun p:prop => fun H:p => H)." else
     match prove ~budget:800 ~premises cur with

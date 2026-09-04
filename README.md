@@ -59,7 +59,7 @@ status (`exact_native`, `transport_required`, `generalization_required`, `native
 | standard | 4290 | 4396 | 3839 | 57 | — |
 | multivariate | 17138 | 17332 | 3311 | 57 | — |
 
-Native proof synthesis (DESIGN §23): 586 core, 615 standard and 593 multivariate theorems
+Native proof synthesis (DESIGN §23): 592 core, 615 standard and 593 multivariate theorems
 carry *generated
 native proofs* in the God1 declarative style (`natively_proved`; standalone modules in
 `generated/nativeproof/`, checked by `tools/check_nativeproof.sh`).  Of these, the

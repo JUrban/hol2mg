@@ -79,6 +79,7 @@ let () =
         | Some l -> String.split_on_char ',' l
         | None -> List.filter Sys.file_exists [ "mglib/native/prelude.mg"; "mglib/native/finseq.mg"; "mglib/native/order.mg" ]) in
       List.iter Mg.load_signature_names natives;
+      Nativeproof.load_native_lemmas (Filename.concat (Filename.dirname sig_file) "native");
       let ex = read_export export_file in
       let reg = Registry.load (String.split_on_char ',' mappings) ex.type_constructors in
       Emptycase.rules := List.map (fun (l, r, _) -> (l, r)) reg.Registry.empty_rules;

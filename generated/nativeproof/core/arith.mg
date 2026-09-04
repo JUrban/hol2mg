@@ -247,6 +247,14 @@ let p. assume Hp.
 exact (eq_mult_lcancel_thm (m) Hm (n) Hn (p) Hp).
 Qed.
 
+// HOL Light: arith.ml / EQ_MULT_RCANCEL
+Theorem EQ_MULT_RCANCEL : forall m n p :e omega, m * p = n * p <-> m = n \/ p = 0.
+let m. assume Hm.
+let n. assume Hn.
+let p. assume Hp.
+exact (eq_mult_rcancel_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
 // HOL Light: arith.ml / MULT_2
 Theorem MULT_2 : forall n :e omega, 2 * n = n + n.
 let n. assume Hn.
@@ -584,6 +592,12 @@ let n. assume Hn.
 exact (not_even_thm (n) Hn).
 Qed.
 
+// HOL Light: arith.ml / NOT_ODD
+Theorem NOT_ODD : forall n :e omega, ~ odd_nat n <-> even_nat n.
+let n. assume Hn.
+exact (not_odd_thm (n) Hn).
+Qed.
+
 // HOL Light: arith.ml / EVEN_ADD
 Theorem EVEN_ADD : forall m n :e omega, even_nat (m + n) <-> (even_nat m <-> even_nat n).
 let m. assume Hm.
@@ -603,6 +617,12 @@ Theorem ODD_ADD : forall m n :e omega, odd_nat (m + n) <-> ~ (odd_nat m <-> odd_
 let m. assume Hm.
 let n. assume Hn.
 exact (odd_add_thm (m) Hm (n) Hn).
+Qed.
+
+// HOL Light: arith.ml / EVEN_DOUBLE
+Theorem EVEN_DOUBLE : forall n :e omega, even_nat (2 * n).
+let n. assume Hn.
+exact (even_double2_thm (n) Hn).
 Qed.
 
 // HOL Light: arith.ml / SUB
@@ -695,6 +715,14 @@ let m. assume Hm.
 let n. assume Hn.
 let p. assume Hp.
 exact (right_sub_distrib_thm (m) Hm (n) Hn (p) Hp).
+Qed.
+
+// HOL Light: arith.ml / DIVMOD_EXIST
+Theorem DIVMOD_EXIST : forall m n :e omega, ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n.
+let m. assume Hm.
+let n. assume Hn.
+assume H.
+exact (divmod_exist_thm (m) Hm (n) Hn H).
 Qed.
 
 // HOL Light: arith.ml / DIVISION_0

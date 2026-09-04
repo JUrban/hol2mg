@@ -2455,6 +2455,23 @@ Transplants along the way: real_not_lt_thm (REAL_NOT_LT).  Landing BUTLAST,
 EL, SUB, NOT_LT, SUB_ADD_RCANCEL, RIGHT_SUB_DISTRIB, REVERSE, ARITH_LT;
 BOUNDS_LINEAR staged for N37.
 
+N37 (audit-3 sprint, part 1): the manual OCaml premise table is no longer the only
+source of builtin premises.  `Nativeproof.load_native_lemmas` (called from the
+translator once the signature and notation tables are loaded) parses the
+single-line `Theorem <name> : <prop>.` headers of `mglib/native/*.mg` with the
+existing template parser and registers them as premises; names already in the
+manual table are skipped, so behavior for existing entries is unchanged and new
+hand lemmas need no mirrored AST (the double-entry error class — unbalanced
+parentheses, binder-name drift — is gone for future increments).  85 premises
+load today, mostly finseq/prelude/order lemmas that never had manual entries.
+Fragile sentinels (EQ_ADD_RCANCEL, REAL_LT_NZ, LEFT/RIGHT_OR_EXISTS_THM, ZIP,
+REVERSE, ARITH_LT, DIVMOD_EXIST) re-probe Qed under the enlarged table.
+Increment N37 itself lands NOT_ODD, EVEN_DOUBLE, EQ_MULT_RCANCEL, REAL_SUB_LT,
+DIVMOD_EXIST, BOUNDS_LINEAR; EVEN_EXISTS and EVEN_EXISTS_LEMMA are parked — a
+witness under an existential-motive Church elimination with a `2 * m` body sends
+the checker into minutes-long elaboration (same family as the ARITH_LT or-split
+pathology; both shapes now documented to avoid).
+
 N2b so far: premises from natively proved public theorems, selected by the recorded proof
 leaves (`generated/internal/<profile>.leaves.json`, fixpoint over rounds so a proof cites
 only `Qed` theorems).  Next: a curated God1/prelude premise table (reflexivity and order

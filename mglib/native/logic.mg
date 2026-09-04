@@ -3481,3 +3481,74 @@ apply iffI.
   { exact (SNoLe_add_omega (B * n) (mul_SNo_In_omega B HB n Hn) C HC). }
   exact (SNoLe_tra (A * n) (B * n) (B * n + C) (omega_SNo (A * n) (mul_SNo_In_omega A HA n Hn)) (omega_SNo (B * n) (mul_SNo_In_omega B HB n Hn)) (omega_SNo (B * n + C) (add_SNo_In_omega (B * n) (mul_SNo_In_omega B HB n Hn) C HC)) H1 H2).
 Qed.
+
+Theorem even_double2_thm : forall n :e omega, even_nat (2 * n).
+let n. assume Hn.
+exact ((bit0_eq_omega n Hn) (fun hl__u hl__v => even_nat hl__v) (even_double_thm n Hn)).
+Qed.
+Theorem not_odd_thm : forall n :e omega, ~ odd_nat n <-> even_nat n.
+let n. assume Hn.
+apply iffI.
+- assume H.
+  apply (even_or_odd n Hn).
+  + assume He. exact He.
+  + assume Ho. exact (FalseE (H Ho) (even_nat n)).
+- assume H. assume Ho.
+  exact (not_even_and_odd n Hn H Ho).
+Qed.
+Theorem eq_mult_rcancel_thm : forall m n p :e omega, m * p = n * p <-> m = n \/ p = 0.
+let m. assume Hm. let n. assume Hn. let p. assume Hp.
+claim base : p * m = p * n <-> p = 0 \/ m = n.
+{ exact (eq_mult_lcancel_thm p Hp m Hm n Hn). }
+apply iffI.
+- assume H.
+  claim H2 : p * m = p * n.
+  { exact (eq_trans_i (p * m) (n * p) (p * n) (eq_trans_i (p * m) (m * p) (n * p) (mul_SNo_com p m (omega_SNo p Hp) (omega_SNo m Hm)) H) (mul_SNo_com n p (omega_SNo n Hn) (omega_SNo p Hp))). }
+  apply (iffEL (p * m = p * n) (p = 0 \/ m = n) base H2).
+  + assume H0. exact (orIR (m = n) (p = 0) H0).
+  + assume H0. exact (orIL (m = n) (p = 0) H0).
+- assume H. apply H.
+  + assume H0.
+    exact (f_equal (fun hl__u:set => hl__u * p) m n H0).
+  + assume H0.
+    claim E1 : m * p = 0.
+    { exact (H0 (fun hl__u hl__v => m * hl__v = 0) (mul_SNo_zeroR m (omega_SNo m Hm))). }
+    claim E2 : n * p = 0.
+    { exact (H0 (fun hl__u hl__v => n * hl__v = 0) (mul_SNo_zeroR n (omega_SNo n Hn))). }
+    exact (eq_trans_i (m * p) 0 (n * p) E1 (eq_sym_i (n * p) 0 E2)).
+Qed.
+Theorem real_sub_lt_thm : forall x y :e R, 0 < x + - y <-> y < x.
+let x. assume Hx. let y. assume Hy.
+claim Hsx : SNo x. { exact (real_SNo x Hx). }
+claim Hsy : SNo y. { exact (real_SNo y Hy). }
+claim Hsny : SNo (- y). { exact (SNo_minus_SNo y Hsy). }
+claim Hsxy : SNo (x + - y). { exact (SNo_add_SNo x (- y) Hsx Hsny). }
+apply iffI.
+- assume H.
+  claim H2 : 0 + y < (x + - y) + y.
+  { exact (add_SNo_Lt1 0 y (x + - y) SNo_0 Hsy Hsxy H). }
+  claim E1 : 0 + y = y. { exact (add_SNo_0L y Hsy). }
+  claim E2 : (x + - y) + y = x.
+  { claim E3 : (x + - y) + - - y = x. { exact (add_SNo_minus_R2 x (- y) Hsx Hsny). }
+    exact ((minus_SNo_invol y Hsy) (fun hl__u hl__v => (x + - y) + hl__u = x) E3). }
+  claim H3 : y < (x + - y) + y.
+  { exact (E1 (fun hl__u hl__v => hl__u < (x + - y) + y) H2). }
+  exact (E2 (fun hl__u hl__v => y < hl__u) H3).
+- assume H.
+  claim H2 : y + - y < x + - y.
+  { exact (add_SNo_Lt1 y (- y) x Hsy Hsny Hsx H). }
+  claim E1 : y + - y = 0. { exact (add_SNo_minus_SNo_rinv y Hsy). }
+  exact (E1 (fun hl__u hl__v => hl__u < x + - y) H2).
+Qed.
+Theorem divmod_exist_thm : forall m n :e omega, ~ n = 0 -> exists q r :e omega, m = q * n + r /\ r < n.
+let m. assume Hm. let n. assume Hn. assume Hne.
+claim Hdiv : m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n.
+{ exact (andER (n = 0 -> div_nat m n = 0 /\ mod_nat m n = m) (~ n = 0 -> m = div_nat m n * n + mod_nat m n /\ mod_nat m n < n) (division_0_thm m Hm n Hn) Hne). }
+witness (div_nat m n).
+apply andI.
+- exact (div_nat_omega m Hm n Hn).
+- witness (mod_nat m n).
+  apply andI.
+  + exact (mod_nat_omega m Hm n Hn).
+  + exact Hdiv.
+Qed.
